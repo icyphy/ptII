@@ -52,7 +52,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 70.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 1, 754, 551}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 105, 754, 560}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[539, 442]">
     </property>
@@ -132,7 +132,7 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={475, 388, 508, 348}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={475, 388, 508, 355}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -143,10 +143,6 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -155,8 +151,8 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
 <title>Position</title>
 <xLabel>Time (seconds)</xLabel>
 <yLabel>Distance</yLabel>
-<xRange min="0.0" max="500.0"/>
-<yRange min="0.0" max="11485.844839026198"/>
+<xRange min="0.0" max="10.052917438668839"/>
+<yRange min="0.0" max="6.858073244318716"/>
 </plot>?>
         </configure>
     </entity>
@@ -166,6 +162,8 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
                 </property>
                 <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                </property>
+                <property name="style2" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
                 </property>
             </property>
         </property>
@@ -181,32 +179,18 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
             <property name="output"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
         <port name="gear" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
             </property>
         </port>
         <port name="throttle" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
         <port name="velocity" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
@@ -285,8 +269,6 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
-                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
@@ -306,8 +288,6 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
@@ -364,7 +344,7 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 60.0">
                 </property>
             </property>
-            <property name="efficiencyFunction" class="ptolemy.data.expr.Parameter" value="(function(rpm:double) (1/(1+((rpm-1800)/100)^2)))">
+            <property name="efficiencyFunction" class="ptolemy.data.expr.Parameter" value="(function(rpm:double) (1/(1+((rpm-300)/100)^2)))">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -427,18 +407,10 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                        </property>
-                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                        </property>
                     </property>
                 </port>
             </entity>
@@ -451,18 +423,10 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                        </property>
-                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                        </property>
                     </property>
                 </port>
             </entity>
@@ -480,18 +444,10 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                        </property>
-                    </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                        </property>
-                    </property>
                 </port>
             </entity>
             <entity name="compute Acceleration" class="ptolemy.actor.lib.Expression">
@@ -509,31 +465,15 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                     </property>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                        </property>
-                    </property>
                 </port>
                 <port name="f" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                        </property>
-                    </property>
                 </port>
                 <port name="throttle" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                        </property>
-                    </property>
                 </port>
                 <port name="rpm" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                        </property>
-                    </property>
                 </port>
             </entity>
             <entity name="Expression2" class="ptolemy.actor.lib.Expression">
@@ -549,17 +489,9 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                        </property>
-                    </property>
                 </port>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                        </property>
-                    </property>
                 </port>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -626,18 +558,10 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
     </entity>
     <entity name="Plot velocity" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -645,7 +569,7 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 387, 508, 348}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 387, 508, 355}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -656,10 +580,6 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -668,8 +588,8 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
 <title>velocity</title>
 <xLabel>time (seconds)</xLabel>
 <yLabel>speed</yLabel>
-<xRange min="0.0" max="500.0"/>
-<yRange min="0.0" max="28.591719932939142"/>
+<xRange min="0.0" max="10.052917438668839"/>
+<yRange min="0.0" max="1.732135628887806"/>
 </plot>?>
         </configure>
     </entity>
@@ -686,10 +606,6 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
             <property name="output"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
-            </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
