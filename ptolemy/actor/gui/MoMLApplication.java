@@ -132,6 +132,11 @@ public class MoMLApplication {
         // this after parsing all the args in case we get an error above,
         // which may cause the exception to not get reported.
         MessageHandler.setMessageHandler(new GraphicalMessageHandler());
+
+        // Even if the user is set up for foreign locale, use the US locale.
+        // This is because certain parts of Ptolemy (like the expression 
+        // language) are not localized.
+        java.util.Locale.setDefault(java.util.Locale.US);
     }
 
     ///////////////////////////////////////////////////////////////////
