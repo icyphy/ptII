@@ -34,6 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 
+import java.awt.Window;
 import java.io.Writer;
 import java.io.IOException;
 
