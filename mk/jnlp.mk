@@ -556,7 +556,7 @@ jnlp_verify:
 	done;
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII3.0/jnlp
+DIST_BASE = ptolemyII/ptII3.0/jnlp-$(PTVERSION)
 DIST_DIR = /vol/ptolemy/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
