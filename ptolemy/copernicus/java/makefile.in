@@ -139,15 +139,17 @@ compareAll: treeShakeAll profileAll compareTreeShakeJars
 
 # TreeShake all versions of the generated code.
 treeShakeAll: treeShakeWithoutCodegen  \
-		treeShakeSnapshots \
 		treeShake \
 	 	obfuscate
 
+#		treeShakeSnapshots
+
 # Profile all versions of the generated code.
 profileAll: profileTreeShakeWithoutCodegen \
-	profileTreeShakeSnapshots \
 	profileTreeShake \
-        profileObfuscate \
+        profileObfuscate
+
+#	profileTreeShakeSnapshots
 
 ######################################################
 # Rules for dealing with final codegen version
