@@ -56,18 +56,43 @@ public final class ImageUnpartition extends SDFAtomicActor {
         new Parameter(this, "XPartitionSize", new IntToken("4"));
         new Parameter(this, "YPartitionSize", new IntToken("2"));
 
-        SDFIOPort inputport = (SDFIOPort) newPort("partition");
-        inputport.setInput(true);
-        setTokenConsumptionRate(inputport, 3168);
-        inputport.setDeclaredType(IntMatrixToken.class);
+        partition = (SDFIOPort) newPort("partition");
+        partition.setInput(true);
+        setTokenConsumptionRate(partition, 3168);
+        partition.setDeclaredType(IntMatrixToken.class);
 
-        SDFIOPort outputport = (SDFIOPort) newPort("image");
-        outputport.setOutput(true);
-        setTokenProductionRate(outputport, 1);
-        outputport.setDeclaredType(IntMatrixToken.class);
+        image = (SDFIOPort) newPort("image");
+        image.setOutput(true);
+        setTokenProductionRate(image, 1);
+        image.setDeclaredType(IntMatrixToken.class);
     }
 
-    public void initialize() throws IllegalActionException {
+    public SDFIOPort partition;
+    public SDFIOPort image;
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            ImageUnpartition newobj = (ImageUnpartition)(super.clone(ws));
+            newobj.image = (SDFIOPort)newobj.getPort("image");
+            newobj.partition = (SDFIOPort)newobj.getPort("partition");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
+
+    /** 
+     * Initialize this actor
+     */
+    public void initialize() { 
 	Parameter p;
 	p = (Parameter) getAttribute("XFramesize");
         xframesize = ((IntToken)p.getToken()).intValue();
@@ -78,35 +103,42 @@ public final class ImageUnpartition extends SDFAtomicActor {
         p = (Parameter) getAttribute("YPartitionSize");
         ypartsize = ((IntToken)p.getToken()).intValue();
 
-        partition = ((SDFIOPort) getPort("partition"));
-        image = ((SDFIOPort) getPort("image"));
         frame = new int[yframesize * xframesize];
         message = new IntMatrixToken[3168];
     }
 
-    public void fire() throws IllegalActionException {
+    /** 
+     * Fire this actor
+     * Consume a single IntMatrixToken on the input.  Produce IntMatrixTokens
+     * on the output port by partitioning the input matrix.
+     */
+    public void fire() {
         int i, j;
 	int x, y;
         int a;
 
-        partition.getArray(0, message);
+        try {
+            partition.getArray(0, message);
+    
+            for(j = 0, a = 0; j < yframesize; j += ypartsize)
+                for(i = 0; i < xframesize; i += xpartsize, a++) {
+                    part = message[a].intArray();
+                    for(y = 0; y < ypartsize; y++)
+                        System.arraycopy(part, y * xpartsize,
+                                frame, (j + y) * xframesize + i, xpartsize);
+                }
 
-	for(j = 0, a = 0; j < yframesize; j += ypartsize)
-            for(i = 0; i < xframesize; i += xpartsize, a++) {
-                part = message[a].intArray();
-                for(y = 0; y < ypartsize; y++)
-                    System.arraycopy(part, y * xpartsize,
-                            frame, (j + y) * xframesize + i, xpartsize);
-	    }
-
-        IntMatrixToken omessage = new IntMatrixToken(frame, 144, 176);
-	image.send(0, omessage);
-
+            IntMatrixToken omessage = new IntMatrixToken(frame, 144, 176);
+            image.send(0, omessage);
+        }
+        catch (IllegalActionException e) {
+            // getArray and send should never throw an exception.
+            throw new InternalErrorException(e.getMessage());
+        }            
     }
 
     IntMatrixToken message[];
-    SDFIOPort partition;
-    SDFIOPort image;
+
     private int partitions[][];
     private int part[];
     private int frame[];

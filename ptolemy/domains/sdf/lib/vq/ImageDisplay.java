@@ -1,4 +1,4 @@
-/*
+/* Display an Black and White image on the screen using the Picture class.
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
@@ -45,6 +45,13 @@ import ptolemy.media.Picture;
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay
 /**
+This class displays an image on the screen using the ptolemy.media.Picture
+class.  For a sequence of images that are all the same size, this class 
+will continually update the picture with new data.   If the size of the 
+input image changes, then a new Picture object is created.  This class 
+will only accept a IntMatrixToken on its input, and assumes that the 
+input image contains greyscale pixel intensities between 0 and 255 (inclusive).
+
 @author Steve Neuendorffer
 @version $Id$
 */
@@ -65,9 +72,36 @@ public final class ImageDisplay extends SDFAtomicActor {
         _panel = null;
     }
 
+    public IOPort image;
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            ImageDisplay newobj = (ImageDisplay)(super.clone(ws));
+            newobj.image = (TypedIOPort)newobj.getPort("image");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
+
+
+    /** 
+     * Initialize this actor.
+     * If setPanel has not been called, then create a frame to display the 
+     * image in.
+     * @exception IllegalActionException If a contained method throws it.
+     */ 
     public void initialize() throws IllegalActionException {
 
-        _port_image = (IOPort) getPort("image");
+        image = (IOPort) getPort("image");
         _oldxsize = 0;
         _oldysize = 0;
         if(_panel == null) {
@@ -79,9 +113,20 @@ public final class ImageDisplay extends SDFAtomicActor {
         System.out.println("initialize");
     }
 
+    /**
+     * Fire this actor.  
+     * Consume an IntMatrixToken from the input port.  If the image is not
+     * the same size as the previous image, or this is the first image, then 
+     * create a new Picture object to represent the image, and put it in the
+     * appropriate panel (either the panel set using setPanel, or the frame 
+     * created during the initialize phase).
+     * Convert the pixels from greyscale to RGBA triples (setting the 
+     * image to be opaque) and update the picture.
+     * @exception IllegalActionException If a contained method throws it.
+     */
     public void fire() throws IllegalActionException {
         IntMatrixToken message = (IntMatrixToken)
-            _port_image.get(0);
+            image.get(0);
         int frame[][] = message.intMatrix();
         int xsize = message.getColumnCount();
         int ysize = message.getRowCount();
@@ -141,6 +186,9 @@ public final class ImageDisplay extends SDFAtomicActor {
         _picture.repaint();
     }
 
+    /** Set the panel that this actor should display data in.  If setPanel
+     * is not called, then the actor will create its own frame for display.
+     */
     public void setPanel(Panel panel) {
         _panel = panel;
     }
@@ -164,8 +212,6 @@ public final class ImageDisplay extends SDFAtomicActor {
     private Picture _picture;
     private _PictureFrame _frame;
     private Panel _panel;
-    private IOPort _port_image;
     private int _oldxsize, _oldysize;
     private int _RGBbuffer[] = null;
-
 }

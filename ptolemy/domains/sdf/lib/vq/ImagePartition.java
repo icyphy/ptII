@@ -41,6 +41,11 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// ImagePartition
 /**
+This actor partitions an image into smaller subimages.  Each input matrix
+should have dimensions XFrameSize by YFrameSize, and each output matrix 
+will have dimensions XPartitionSize by YPartitionSize.  The output images
+are row scanned from the input image.
+
 @author Steve Neuendorffer
 @version $Id$
 */
@@ -56,18 +61,44 @@ public final class ImagePartition extends SDFAtomicActor {
         new Parameter(this, "XPartitionSize", new IntToken("4"));
         new Parameter(this, "YPartitionSize", new IntToken("2"));
 
-        SDFIOPort outputport = (SDFIOPort) newPort("partition");
-        outputport.setOutput(true);
-        setTokenProductionRate(outputport, 3168);
-        outputport.setDeclaredType(IntMatrixToken.class);
+        partition = (SDFIOPort) newPort("partition");
+        partition.setOutput(true);
+        setTokenProductionRate(partition, 3168);
+        partition.setDeclaredType(IntMatrixToken.class);
 
-        SDFIOPort inputport = (SDFIOPort) newPort("image");
-        inputport.setInput(true);
-        setTokenConsumptionRate(inputport, 1);
-        inputport.setDeclaredType(IntMatrixToken.class);
+        image = (SDFIOPort) newPort("image");
+        image.setInput(true);
+        setTokenConsumptionRate(image, 1);
+        image.setDeclaredType(IntMatrixToken.class);
 
     }
 
+    public SDFIOPort partition;
+    public SDFIOPort image;
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            ImagePartition newobj = (ImagePartition)(super.clone(ws));
+            newobj.image = (SDFIOPort)newobj.getPort("image");
+            newobj.partition = (SDFIOPort)newobj.getPort("partition");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
+
+    /** 
+     * Initialize this actor
+     * @exception IllegalActionException If a contained method throws it.
+     */
     public void initialize() throws IllegalActionException {
 	Parameter p;
 	p = (Parameter) getAttribute("XFramesize");
@@ -79,23 +110,26 @@ public final class ImagePartition extends SDFAtomicActor {
         p = (Parameter) getAttribute("YPartitionSize");
         ypartsize = ((IntToken)p.getToken()).intValue();
 
-        partition = ((SDFIOPort) getPort("partition"));
-        image = ((SDFIOPort) getPort("image"));
         part = new int[xpartsize*ypartsize];
-        partitions = new IntMatrixToken[3168];
+        partitions = new IntMatrixToken[xframesize * yframesize
+                / xpartsize / ypartsize];
     }
 
+    /** 
+     * Fire this actor
+     * Consume a single IntMatrixToken on the input.  Produce IntMatrixTokens
+     * on the output port by partitioning the input matrix.
+     * 
+     * @exception IllegalActionException If a contained method throws it.
+     */
     public void fire() throws IllegalActionException {
         int i, j;
 	int x, y;
         int a;
-        int numpartitions = xframesize * yframesize / xpartsize / ypartsize;
 
         message = (IntMatrixToken) image.get(0);
         frame = message.intArray();
 
-	//for(j = 0, a = numpartitions - 1 ; j < yframesize; j += ypartsize)
-        //    for(i = 0; i < xframesize; i += xpartsize, a--) {
         for(j = 0, a = 0 ; j < yframesize; j += ypartsize)
             for(i = 0; i < xframesize; i += xpartsize, a++) {
                 for(y = 0; y < ypartsize; y++)
@@ -105,12 +139,9 @@ public final class ImagePartition extends SDFAtomicActor {
             }
 
         partition.sendArray(0, partitions);
-
     }
 
-    IntMatrixToken message;
-    SDFIOPort partition;
-    SDFIOPort image;
+    private IntMatrixToken message;
     private IntMatrixToken partitions[];
     private int part[];
     private int frame[];

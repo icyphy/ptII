@@ -69,7 +69,7 @@ public final class ImageSequence extends SDFAtomicActor {
         new Parameter(this, "XImageSize", new IntToken("176"));
         new Parameter(this, "YImageSize", new IntToken("144"));
         new Parameter(this, "Start Frame", new IntToken("0"));
-        new Parameter(this, "End Frame", new IntToken("30"));
+        new Parameter(this, "End Frame", new IntToken("29"));
     }
 
     public void initialize() throws IllegalActionException {

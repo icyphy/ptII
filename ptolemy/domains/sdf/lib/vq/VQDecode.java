@@ -41,6 +41,10 @@ import java.net.*;
 //////////////////////////////////////////////////////////////////////////
 //// VQDecode
 /**
+This actor decompresses a vector quantized signal.   This operation is simply 
+a table lookup into the codebook.
+FIXME This should be generalized to a Table-lookup actor.
+
 @author Steve Neuendorffer
 @version $Id$
 */
@@ -69,7 +73,14 @@ public final class VQDecode extends SDFAtomicActor {
 
     }
 
-    public void fire() throws IllegalActionException {
+   /** 
+     * Fire this actor.
+     * Consume a Vector on the input, and perform Vector Quantization using
+     * Hierarchical Table-Lookup Vector Quantization.  Send the computed
+     * codeword on the output.
+     * @exception IllegalActionException if a contained method throws it.
+     */
+     public void fire() throws IllegalActionException {
         int j;
         int numpartitions =
             _xframesize * _yframesize / _xpartsize / _ypartsize;
