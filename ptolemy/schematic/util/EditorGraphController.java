@@ -54,8 +54,8 @@ import java.util.HashMap;
  * Edges can connect to Terminals, but not entities.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
- * @version	$Id$
- * @rating      Red
+ * @version $Id$
+ * @rating Red
  */
 public class EditorGraphController extends GraphController {
  

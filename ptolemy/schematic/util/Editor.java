@@ -30,6 +30,7 @@
 
 package ptolemy.schematic.util;
 
+import diva.graph.schematic.*;
 import diva.graph.JGraph;
 import diva.graph.GraphPane;
 import diva.graph.BasicGraphController;
@@ -75,8 +76,9 @@ public class Editor {
         TutorialWindow f = new TutorialWindow("Simple");
 	GraphPane pane = new GraphPane(new EditorGraphController(), 
 				       new SchematicGraphImpl());
-        _editor = new JGraph(pane);
-        f.getContentPane().add("Center", _editor);
+	_editor = new JGraph(pane);
+
+	f.getContentPane().add("Center", _editor);
         f.setSize(800, 600);
         f.setVisible(true);
     }
