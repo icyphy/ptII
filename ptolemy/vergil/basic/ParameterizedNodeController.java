@@ -104,5 +104,5 @@ public class ParameterizedNodeController extends NamedObjController {
 
     /** The configure action, which handles edit parameters requests. */
     protected static ConfigureAction _configureAction
-    = new ConfigureAction("Configure (Ctrl-E)");
+            = new ConfigureAction("Configure");
 }

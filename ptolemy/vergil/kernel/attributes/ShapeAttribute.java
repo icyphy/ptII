@@ -37,6 +37,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -81,6 +82,11 @@ public abstract class ShapeAttribute extends Attribute {
 
         _icon = new ShapeIcon(this, "_icon", _getDefaultShape());
         _icon.setPersistent(false);
+        
+        // Create a location because, for some mysterious reason,
+        // if there isn't one, then the icon is not shown in the
+        // icon editor.
+        new Location(this, "_location");
 
         lineWidth = new Parameter(this, "lineWidth");
         lineWidth.setTypeEquals(BaseType.DOUBLE);

@@ -62,10 +62,12 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.debugger.BreakpointDialogFactory;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogFactory;
+import ptolemy.vergil.toolbox.EditIconAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PortSite;
+import ptolemy.vergil.toolbox.RemoveIconAction;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelFigure;
@@ -124,8 +126,6 @@ public class ActorController extends AttributeController {
             _menuFactory.addMenuItemFactory(
                     _portDialogFactory);
             _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(new EditIconAction()));
-            _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(new RemoveIconAction()));
         }
 
@@ -134,8 +134,12 @@ public class ActorController extends AttributeController {
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_lookInsideAction));
+            _editIconAction.setConfiguration(_configuration);
             _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(new EditIconAction()));
+                    new MenuActionFactory(_editIconAction));
+            _removeIconAction.setConfiguration(_configuration);
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_removeIconAction));
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(new RemoveIconAction()));
         }
@@ -206,6 +210,12 @@ public class ActorController extends AttributeController {
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_lookInsideAction));
+            _editIconAction.setConfiguration(_configuration);
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_editIconAction));
+            _removeIconAction.setConfiguration(_configuration);
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_removeIconAction));
         }
     }
 
@@ -226,10 +236,18 @@ public class ActorController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The action that handles edit custom icon.
+     */
+    protected EditIconAction _editIconAction = new EditIconAction();
+            
     /** The action that handles look inside.  This is accessed by
      *  by ActorViewerController to create a hot key for the editor.
      */
     protected LookInsideAction _lookInsideAction = new LookInsideAction();
+
+    /** The action that handles removing a custom icon.
+     */
+    protected RemoveIconAction _removeIconAction = new RemoveIconAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -533,7 +551,7 @@ public class ActorController extends AttributeController {
     private class LookInsideAction extends FigureAction {
 
         public LookInsideAction() {
-            super("Look Inside (Ctrl+L)");
+            super("Look Inside");
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
             putValue(GUIUtilities.ACCELERATOR_KEY,

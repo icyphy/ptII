@@ -35,10 +35,7 @@ import java.net.URL;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.graph.GraphController;
 
@@ -88,54 +85,6 @@ public class NamedObjController extends LocatableNodeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
-    /** Action to edit a custom icon.
-     */
-    protected class EditIconAction extends FigureAction {
-
-        public EditIconAction() {
-            super("Edit Custom Icon");
-            // For some inexplicable reason, the I key doesn't work here.
-            // putValue(GUIUtilities.ACCELERATOR_KEY,
-            //       KeyStroke.getKeyStroke(KeyEvent.VK_I, Event.CTRL_MASK));
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
-
-        /** Process the edit icon command.
-         *  @param e The event.
-         */
-        public void actionPerformed(ActionEvent e) {
-            if (_configuration == null) {
-                MessageHandler.error(
-                        "Cannot edit icon without a configuration.");
-                return;
-            }
-
-            // Determine which entity was selected for the action.
-            super.actionPerformed(e);
-            NamedObj object = getTarget();
-            
-            try {
-                // FIXME: This should be done as a change request!
-                EditorIcon icon = (EditorIcon)object
-                        .getAttribute("_icon", EditorIcon.class);
-                if (icon == null) {
-                    icon = new EditorIcon(object, "_icon");
-                } else if (icon instanceof XMLIcon) {
-                    // There is an icon currently that is not custom.
-                    // Without trashing the _iconDescription, we can remove
-                    // this icon and replace it.
-                    icon.setContainer(null);
-                    icon = new EditorIcon(object, "_icon");
-                }
-                _configuration.openModel(icon);
-            } catch (Exception ex) {
-                MessageHandler.error("Custom Icon failed.", ex);
-            }
-        }
-    }
     
     /** This is an action that accesses the documentation for a Ptolemy
      *  object associated with a figure.  Note that this base class does
@@ -176,57 +125,6 @@ public class NamedObjController extends LocatableNodeController {
                         + className
                         + "\nTry Running \"make\" in ptII/doc."
                         + "\nor installing the documentation component.", ex);
-            }
-        }
-    }
-    
-    /** Action to remove a custom icon.
-     */
-    protected class RemoveIconAction extends FigureAction {
-
-        public RemoveIconAction() {
-            super("Remove Custom Icon");
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
-
-        /** Process the remove icon command.
-         *  @param e The event.
-         */
-        public void actionPerformed(ActionEvent e) {
-
-            // Determine which entity was selected for the look inside action.
-            super.actionPerformed(e);
-            NamedObj object = getTarget();
-            
-            try {
-                EditorIcon icon = (EditorIcon)object
-                        .getAttribute("_icon", EditorIcon.class);
-                // An XMLIcon is not a custom icon, so don't remove it.
-                if (!(icon instanceof XMLIcon)) {
-                    NamedObj context = MoMLChangeRequest.getDeferredToParent(object);
-                    if (context == null) {
-                        context = object;
-                    }
-                    String moml;
-                    if (context != object) {
-                        moml = "<entity name=\""
-                                + object.getName(context)
-                                + "\"><deleteProperty name=\""
-                                + icon.getName()
-                                + "\"/></entity>";
-                    } else {
-                        moml = "<deleteProperty name=\""
-                                + icon.getName()
-                                + "\"/>";
-                    }
-                    MoMLChangeRequest request
-                            = new MoMLChangeRequest(this, context, moml);
-                    context.requestChange(request);
-                }
-            } catch (Exception ex) {
-                MessageHandler.error("Remove custom Icon failed.", ex);
             }
         }
     }

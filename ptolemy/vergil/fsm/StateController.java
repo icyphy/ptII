@@ -127,7 +127,7 @@ public class StateController extends AttributeController {
      */
     private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
-            super("Look Inside (Ctrl+L)");
+            super("Look Inside");
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
             putValue(GUIUtilities.ACCELERATOR_KEY,

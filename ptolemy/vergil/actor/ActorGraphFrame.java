@@ -458,10 +458,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
     ///////////////////////////////////////////////////////////////////
     //// InstantiateEntityAction
 
-    /** An action to import a library of components. */
+    /** An action to instantiate an entity given a class name. */
     private class InstantiateEntityAction extends AbstractAction {
 
-        /** Create a new action to import a library of components. */
+        /** Create a new action to instantiate an entity. */
         public InstantiateEntityAction() {
             super("Instantiate Entity");
             putValue("tooltip", "Instantiate an entity by class name");

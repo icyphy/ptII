@@ -58,9 +58,11 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.ConfigureAction;
+import ptolemy.vergil.toolbox.EditIconAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
+import ptolemy.vergil.toolbox.RemoveIconAction;
 import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.canvas.Figure;
 import diva.canvas.connector.Connector;
@@ -210,6 +212,8 @@ public abstract class BasicGraphController extends AbstractGraphController
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
         _portController.setConfiguration(configuration);
+        _editIconAction.setConfiguration(configuration);
+        _removeIconAction.setConfiguration(configuration);
     }
 
     /** Set the figure associated with the given semantic object, and if
@@ -371,7 +375,11 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** The configure action. */
     protected static ConfigureAction _configureAction
-    = new ConfigureAction("Configure (Ctrl-E)");
+            = new ConfigureAction("Configure");
+            
+    /** The edit custom icon action. */
+    protected static EditIconAction _editIconAction
+            = new EditIconAction();
 
     /** The interactor for creating context sensitive menus on the
      *  graph itself.
@@ -383,6 +391,10 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** The port controller. */
     protected NamedObjController _portController;
+
+    /** The remove custom icon action. */
+    protected static RemoveIconAction _removeIconAction
+            = new RemoveIconAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -593,6 +605,8 @@ public abstract class BasicGraphController extends AbstractGraphController
         public SchematicContextMenuFactory(GraphController controller) {
             super(controller);
             addMenuItemFactory(new MenuActionFactory(_configureAction));
+            addMenuItemFactory(new MenuActionFactory(_editIconAction));
+            addMenuItemFactory(new MenuActionFactory(_removeIconAction));
         }
 
         protected NamedObj _getObjectFromFigure(Figure source) {

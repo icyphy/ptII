@@ -168,7 +168,7 @@ public class LocatableNodeController extends BasicNodeController {
      *  @param node The node to render.
      */
     protected Figure _renderNode(java.lang.Object node) {
-        if (_hide(node)) {
+        if (node == null || _hide(node)) {
             // Return an empty figure.
             Figure newFigure = new CompositeFigure();
             newFigure.setInteractor(getNodeInteractor());

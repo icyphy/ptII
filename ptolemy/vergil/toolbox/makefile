@@ -52,6 +52,7 @@ JSRCS = \
 	AnnotationEditorFactory.java \
 	AttributeBoundsManipulator.java \
 	ConfigureAction.java \
+	EditIconAction.java \
 	FigureAction.java \
 	GraphicElement.java \
 	MenuActionFactory.java \
@@ -60,6 +61,7 @@ JSRCS = \
 	PtolemyListCellRenderer.java \
 	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
+	RemoveIconAction.java \
 	SnapConstraint.java \
 	TextEditorConfigureFactory.java \
 	TextEditorFactory.java \

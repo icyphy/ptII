@@ -102,8 +102,11 @@ public class SingleWindowConfiguration extends Configuration {
                     try {
                         Tableau tableau = factory.createTableau(effigy);
                         if (tableau != null) {
-                            // The first tableau is a master.
-                            tableau.setMaster(true);
+                            // The first tableau is a master if the container
+                            // of the containing effigy is the model directory.
+                            if (effigy.getContainer() instanceof ModelDirectory) {
+                                tableau.setMaster(true);
+                            }
                             tableau.setEditable(effigy.isModifiable());
                             //THALES MODIF
                             catchTableau(tableau);
@@ -127,8 +130,11 @@ public class SingleWindowConfiguration extends Configuration {
                 if (tableau == null) {
                     throw new Exception("Tableau factory returns null.");
                 }
-                                // The first tableau is a master.
-                tableau.setMaster(true);
+                // The first tableau is a master if the container
+                // of the containing effigy is the model directory.
+                if (effigy.getContainer() instanceof ModelDirectory) {
+                    tableau.setMaster(true);
+                }
                 tableau.setEditable(effigy.isModifiable());
                                 //THALES MODIF
                 catchTableau(tableau);

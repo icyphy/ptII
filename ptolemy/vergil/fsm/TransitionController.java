@@ -163,8 +163,8 @@ public class TransitionController extends BasicEdgeController {
     protected Configuration _configuration;
 
     /** The configure action, which handles edit parameters requests. */
-    protected static ConfigureAction _configureAction =
-    new ConfigureAction("Configure (Ctrl-E)");
+    protected static ConfigureAction _configureAction
+            = new ConfigureAction("Configure");
 
     /** The action that handles look inside. */
     protected LookInsideAction _lookInsideAction = new LookInsideAction();
@@ -316,7 +316,7 @@ public class TransitionController extends BasicEdgeController {
      */
     private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
-            super("Look Inside (Ctrl+L)");
+            super("Look Inside)");
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
             putValue(GUIUtilities.ACCELERATOR_KEY,

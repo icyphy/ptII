@@ -162,6 +162,8 @@ public class IconController extends ParameterizedNodeController {
                         "in " + object + " even " +
                         "though one did not previously exist.");
             }
+            // FIXME: This text should not be hardwired here, but rather
+            // should be provided by a method of the enclosing class.
             result.setToolTipText(object.getClass().getName());
             return result;
         }
