@@ -183,7 +183,7 @@ public class HDEDirector extends DEDirector {
      *  the workspace. Increment the version number of the workspace.
      */
     public HDEDirector() {
-        this(null);
+        super();
     }
 
     /**  Construct a director in the  workspace with an empty name.
@@ -235,6 +235,9 @@ public class HDEDirector extends DEDirector {
      *  @exception IllegalActionException If the firing actor throws it.
      */
     public void fire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("HDE director firing!");
+        }
         _stopRequested = false;
         while (true) {
 
@@ -302,28 +305,6 @@ public class HDEDirector extends DEDirector {
                     // Actor requests that it not be fired again.
                     _disableActor(actorToFire);
                     //break;
-                }
-            }
-
-
-            // Check whether the next time stamp is equal to current time.
-            synchronized(_eventQueue) {
-                if (!_eventQueue.isEmpty()) {
-                    DEEvent next = _eventQueue.get();
-                    // If the next event is in the future,
-                    // proceed to postfire().
-
-                    if (next.timeStamp() > getCurrentTime()) {
-                        break;
-                    } else if (next.timeStamp() < getCurrentTime()) {
-                        throw new InternalErrorException(
-                                "fire(): the time stamp of the next event "
-                                + next.timeStamp() + " is smaller than the "
-                                + "current time " + getCurrentTime() + " !");
-                    }
-                } else {
-                    // The queue is empty, proceed to postfire().
-                    break;
                 }
             }
         }
