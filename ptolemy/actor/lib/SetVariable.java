@@ -34,8 +34,11 @@ import java.util.List;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ExplicitChangeContext;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -52,13 +55,21 @@ import ptolemy.util.MessageHandler;
 //////////////////////////////////////////////////////////////////////////
 //// SetVariable
 /**
-   Set the value of a variable contained by the container.
-   The change to the value of the variable is implemented in a
-   change request, and consequently will not take hold until the
-   end of the current iteration.  This helps ensure that users
-   of value of the variable will see changes to the value
-   deterministically (independent of the schedule of execution
-   of the actors).
+   Set the value of a variable contained by the container.  The result
+   may occur at two different times, depending on the value of the
+   delayed parameter. 
+
+   <p> If <it>delayed</it> is true, then the change to
+   the value of the variable is implemented in a change request, and
+   consequently will not take hold until the end of the current
+   toplevel iteration.  This helps ensure that users of value of the
+   variable will see changes to the value deterministically
+   (independent of the schedule of execution of the actors).
+
+   <p> If <it>delayed</it> is false, then the change to the value of
+   the variable is performed immediately.  This allows more frequent
+   reconfiguration, and can mimic the operation of PGM's graph
+   variables.
 
    <p>
    Note that the variable name is observed during preinitialize().
@@ -101,6 +112,10 @@ public class SetVariable extends TypedAtomicActor
 
         variableName = new StringAttribute(this, "variableName");
         variableName.setExpression("parameter");
+
+        delayed = new Parameter(this, "delayed");
+        delayed.setTypeEquals(BaseType.BOOLEAN);
+        delayed.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,6 +126,9 @@ public class SetVariable extends TypedAtomicActor
 
     /** The name of the variable in the container to set. */
     public StringAttribute variableName;
+
+    /** Parameter that determines when reconfiguration occurs. */
+    public Parameter delayed;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -138,7 +156,15 @@ public class SetVariable extends TypedAtomicActor
      * the change context returned is this actor.
      */
     public Entity getContext() {
-        return this;
+        try {
+            if(delayed.getToken().equals(BooleanToken.TRUE)) {
+                return (Entity)toplevel();
+            } else {
+                return this;
+            }
+        } catch (IllegalActionException ex) {
+            return this;
+        }
     }
 
     /** Return the (presumably Settable) attribute modified by this
@@ -193,35 +219,22 @@ public class SetVariable extends TypedAtomicActor
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             final Token value = input.get(0);
-            ChangeRequest request =
-                new ChangeRequest(this, "SetVariable change request") {
-                    protected void _execute() throws IllegalActionException {
-                        Attribute variable = getModifiedVariable();
-                        if (variable instanceof Variable) {
-                            ((Variable)variable).setToken(value);
-                            // NOTE: If we don't call validate(), then the
-                            // change will not propagate to dependents.
-                            ((Variable)variable).validate();
-                        } else if (variable instanceof Settable) {
-                            ((Settable)variable).setExpression(
-                                    value.toString());
-                            // NOTE: If we don't call validate(), then the
-                            // change will not propagate to dependents.
-                            ((Settable)variable).validate();
-                        } else {
-                            throw new IllegalActionException(SetVariable.this,
-                                    "Cannot set the value of the variable "
-                                    + "named: "
-                                    + variableName.getExpression());
+            if(delayed.getToken().equals(BooleanToken.TRUE)) {
+                ChangeRequest request =
+                    new ChangeRequest(this, "SetVariable change request") {
+                        protected void _execute() throws IllegalActionException {
+                            _setValue(value);
                         }
-                    }
-                };
-
-            // To prevent prompting for saving the model, mark this
-            // change as non-persistent.
-            request.setPersistent(false);
-            request.addChangeListener(this);
-            requestChange(request);
+                    };
+                
+                // To prevent prompting for saving the model, mark this
+                // change as non-persistent.
+                request.setPersistent(false);
+                request.addChangeListener(this);
+                requestChange(request);
+            } else {
+                _setValue(value);
+            }
         }
         return true;
     }
@@ -238,6 +251,30 @@ public class SetVariable extends TypedAtomicActor
         Attribute attribute = getModifiedVariable();
         if (attribute instanceof Variable) {
             ((Variable)attribute).setTypeAtLeast(input);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+
+    private void _setValue(Token value) throws IllegalActionException {
+        Attribute variable = getModifiedVariable();
+        if (variable instanceof Variable) {
+            ((Variable)variable).setToken(value);
+            // NOTE: If we don't call validate(), then the
+            // change will not propagate to dependents.
+            ((Variable)variable).validate();
+        } else if (variable instanceof Settable) {
+            ((Settable)variable).setExpression(
+                    value.toString());
+            // NOTE: If we don't call validate(), then the
+            // change will not propagate to dependents.
+            ((Settable)variable).validate();
+        } else {
+            throw new IllegalActionException(SetVariable.this,
+                    "Cannot set the value of the variable "
+                    + "named: "
+                    + variableName.getExpression());
         }
     }
 }
