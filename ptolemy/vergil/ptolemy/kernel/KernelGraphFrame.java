@@ -173,9 +173,6 @@ public class KernelGraphFrame extends GraphFrame {
      */
     protected void _addMenus() {
 	super._addMenus();
-       	_executeMenu = new JMenu("Execute");
-        _executeMenu.setMnemonic(KeyEvent.VK_X);
-	_menubar.add(_executeMenu);
 	diva.gui.GUIUtilities.addMenuItem(_editMenu, _newPortAction);
        	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newPortAction);
 
@@ -183,12 +180,8 @@ public class KernelGraphFrame extends GraphFrame {
 	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newRelationAction);
 
         _toolbar.add(_directorComboBox);
+    }
 
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _executeSystemAction);
-	diva.gui.GUIUtilities.addMenuItem(_executeMenu, _executeSystemAction);
-	diva.gui.GUIUtilities.addToolBarButton(_toolbar, 
-					       _executeSystemAction);
-	    }
     /** Create a new graph pane.
      */
     protected GraphPane _createGraphPane() {
@@ -316,7 +309,6 @@ public class KernelGraphFrame extends GraphFrame {
                 }
             }
         });
-	_executeSystemAction = new ExecuteSystemAction();
 	_editIconAction = new EditIconAction();
 	_lookInsideAction = new LookInsideAction();
 	_getDocumentationAction = new GetDocumentationAction();
@@ -368,7 +360,6 @@ public class KernelGraphFrame extends GraphFrame {
     /**
      * The factory for creating context menus on entities.
      */
-    // FIXME this has to move into the visual notation.
     private class EntityContextMenuFactory extends PtolemyMenuFactory {
 	public EntityContextMenuFactory(GraphController controller) {
 	    super(controller);
@@ -383,7 +374,6 @@ public class KernelGraphFrame extends GraphFrame {
     /**
      * The factory for creating context menus on ports.
      */
-    // FIXME this has to move into the visual notation.
     public class PortContextMenuFactory extends PtolemyMenuFactory {
 	public PortContextMenuFactory(GraphController controller) {
 	    super(controller);
@@ -437,28 +427,6 @@ public class KernelGraphFrame extends GraphFrame {
 	    protected String _getName() {
 		return null;
 	    }     
-	}
-    }
-    
-    private class ExecuteSystemAction extends AbstractAction {
-	public ExecuteSystemAction() {
-	    super("Go");
-	    putValue("tooltip", "Execute The Model");
-	    putValue(Action.ACCELERATOR_KEY, 
-		     KeyStroke.getKeyStroke(KeyEvent.VK_G, 
-					    java.awt.Event.CTRL_MASK));
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-		     new Integer(KeyEvent.VK_G));
-	}
-
-	public void actionPerformed(ActionEvent e) {
-	    try {
-		PtolemyEffigy effigy = 
-		    (PtolemyEffigy)getTableau().getContainer();
-		new RunTableau(effigy, effigy.uniqueName("tableau"));
-	    } catch (Exception ex) {
-		MessageHandler.error("Execution Failed", ex);
-	    }	    
 	}
     }
     
@@ -685,7 +653,6 @@ public class KernelGraphFrame extends GraphFrame {
     private Action _newPortAction;
     private Action _newRelationAction;
     private JMenu _executeMenu;
-    private Action _executeSystemAction;
 
     private JComboBox _directorComboBox;
     private DefaultComboBoxModel _directorModel;
