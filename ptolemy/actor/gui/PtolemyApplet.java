@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -37,6 +37,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 // Ptolemy imports
+import ptolemy.gui.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 
@@ -55,10 +56,24 @@ controlling the background color.
 @author Edward A. Lee
 @version $Id$
 */
-public class PtolemyApplet extends Applet {
+public class PtolemyApplet extends Applet implements ExecutionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Report that an execution error occured.  This is
+     *  called by the manager.
+     */
+    public void executionError(Manager manager, Exception ex) {
+        report(ex);
+    }
+
+    /** Report that execution of the model has finished.  This is
+     *  called by the manager.
+     */
+    public void executionFinished(Manager manager) {
+        showStatus("Execution finished.");
+    }
 
     /** Return generic applet information.
      *  @return A string giving minimal information about Ptolemy II.
@@ -84,7 +99,7 @@ public class PtolemyApplet extends Applet {
     /** Initialize the applet. This method is called by the browser
      *  or applet viewer to inform this applet that it has been
      *  loaded into the system. It is always called before
-     *  the first time that the start method is called.
+     *  the first time that the start() method is called.
      *  In this base class, this method creates a new workspace,
      *  and creates a manager and a top-level composite actor
      *  in the workspace, both of which are accessible
@@ -117,23 +132,36 @@ public class PtolemyApplet extends Applet {
         }
     }
 
+    /** Report that the manager state has changed.  This is
+     *  called by the manager.
+     */
+    public void managerStateChanged(Manager manager) {
+        showStatus(manager.getState().getDescription());
+    }
+
     /** Report an exception.  This prints a message to the standard error
      *  stream, followed by the stack trace.
      */
     public void report(Exception ex) {
-        System.err.println("Exception thrown by applet.\n"
-                + ex.getMessage() + "\nStack trace:\n");
+        String msg = "Exception thrown by applet.\n"
+                + ex.getMessage() + "\nStack trace:\n";
+        System.err.println(msg);
         ex.printStackTrace();
+        showStatus("Exception occurred.");
+        new Message(msg + "\nSee Java console for stack trace.");
     }
 
     /** Report an exception with an additional message.  Currently
      *  this prints a message to standard error, followed by the stack trace,
      *  although soon it will pop up a message window instead.
      */
-    public void report(String msg, Exception ex) {
-        System.err.println("Exception thrown by applet.\n" + msg + "\n"
-                + ex.getMessage() + "\nStack trace:\n");
+    public void report(String message, Exception ex) {
+        String msg = "Exception thrown by applet.\n" + message + "\n"
+                + ex.getMessage() + "\nStack trace:\n";
+        System.err.println(msg);
         ex.printStackTrace();
+        showStatus("Exception occurred.");
+        new Message(msg + "\nSee Java console for stack trace.");
     }
 
     /** Start execution of the model. This method is called by the
@@ -172,7 +200,9 @@ public class PtolemyApplet extends Applet {
 
     /** Concatenate two parameter info string arrays and return the result.
      *  This is provided to make it easy for derived classes to override
-     *  the getParameterInfo() method.
+     *  the getParameterInfo() method. The returned array has length equal
+     *  to the sums of the lengths of the two arguments, and containing
+     *  the arrays contained by the arguments.
      *
      *  @param first The first string array.
      *  @param second The second string array.
@@ -209,7 +239,7 @@ public class PtolemyApplet extends Applet {
         return panel;
     }
 
-    /** Execute the system.
+    /** Execute the model.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _go() throws IllegalActionException {
@@ -225,9 +255,13 @@ public class PtolemyApplet extends Applet {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected variables                    ////
 
-    /** The background color set as a parameter.
+    /** The background color as set by the background applet parameter.
+     *  This is protected so that derived classes can find out what the
+     *  background color is.  The Applet base class does not provide
+     *  a getBackground() method.  Derived classes may wish to know the
+     *  color so they can match it in some of their components.
      */
-    protected Color _background;
+    Color _background;
 
     /** The workspace that the applet is built in. Each applet has 
      *  it own workspace.
