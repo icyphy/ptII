@@ -105,9 +105,9 @@ test CrossRefList-2.2 {Create a CrossRefList, try to enumerate it} {
     set owner [java::new Object]
     set crlone [java::new pt.kernel.CrossRefList $owner]
     set enum [$crlone enumerate]
-    list [$enum hasMoreElements] [expr {[$enum nextElement]== [java::null]}]
-} {0 1}
-
+    catch {$enum nextElement} errmsg
+    list $errmsg [$enum hasMoreElements]
+} {{java.util.NoSuchElementException: exhausted enumeration} 0}
 
 ######################################################################
 ####
