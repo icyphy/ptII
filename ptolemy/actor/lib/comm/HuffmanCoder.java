@@ -123,7 +123,7 @@ public class HuffmanCoder extends HuffmanBasic {
         }
 
         // FIXME: If the input is not found in the alphabet,
-        // which means it's probability of occurence is zero,
+        // which means it's probability of occurrence is zero,
         // we might want to ignore it (or give a warning message.)
         //if (!validInput) {
         //  throw new IllegalActionException(this,
