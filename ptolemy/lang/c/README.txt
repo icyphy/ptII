@@ -1,4 +1,5 @@
 
+
 This directory implements a C code generator "back end" for software synthesis
 in Ptolemy II.  This code converts Java abstract syntax trees (after static
 resolution has been performed) into equivalent C code.
@@ -12,3 +13,5 @@ method calls, inheritance, import statements, interfaces, reflection, garbage
 collection.
 
 
+@author Shuvra S. Bhattacharyya 
+@version $Id$
