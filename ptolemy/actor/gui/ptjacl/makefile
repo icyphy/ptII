@@ -66,6 +66,10 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'JTextAreaTclShell$$1.class' \
+	'JTextAreaTclShell$$2.class' \
+	'JTextAreaTclShell$$3.class' \
+	'JTextAreaTclShell$$ShellKeyListener.class' \
 	'TclShellTableau$$1.class' \
 	'TclShellTableau$$Factory.class' \
 	'TclShellTableau$$TclShellFrame.class' \
