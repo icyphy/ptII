@@ -288,7 +288,7 @@ JAVACC =	"@JAVACC@"
 
 # Set to $PTII/lib if $PTII/lib/synthesis.jar was found and used
 # in $PTII/bin/ptinvoke.in
-PSDF_DIR =	@PSDF_DIR@ 
+PSDF_DIR =	@PSDF_DIR@
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat
