@@ -1,6 +1,6 @@
 /* An attribute that represents a location of a node in a schematic.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2002-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 
 */
 
@@ -41,12 +41,16 @@ import java.util.StringTokenizer;
 //////////////////////////////////////////////////////////////////////////
 //// Location
 /**
-This attribute represents a location of a node in a schematic.
-By default, an instance of this class is not visible in a user interface.
-This is indicated to the user interface by returning NONE to the
-getVisibility() method.  The location is specified by calling
-setExpression() with a string that has the form "x,y" or "[x,y]"
-or "{x,y}", where x and y can be parsed into doubles.
+An attribute that represents a location of a node in a schematic.
+
+<p>By default, an instance of this class is not visible in a user
+interface.  This is indicated to the user interface by returning NONE
+to the getVisibility() method.  The location is specified by calling
+setExpression() with a string that has the form "x,y" or "[x,y]" or
+"{x,y}", where x and y can be parsed into doubles.
+
+<p>The default location is a two dimensional location with value {0.0, 0.0}.
+This class can also handle locations with greater than two dimensions.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -66,7 +70,7 @@ public class Location extends SingletonAttribute
         super(workspace);
     }
 
-    /** Construct an attribute with the given name and position.
+    /** Construct an attribute with the given container and name.
      *  @param container The container.
      *  @param name The name of the vertex.
      *  @exception IllegalActionException If the attribute is not of an
@@ -132,7 +136,7 @@ public class Location extends SingletonAttribute
      *  depth, with each line (including the last one)
      *  terminated with a newline. If this object is non-persistent,
      *  then nothing is written.
-     *  @param output The output stream to write to.
+     *  @param output The output writer to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use instead of the current name.
      *  @exception IOException If an I/O error occurs.
@@ -140,6 +144,8 @@ public class Location extends SingletonAttribute
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
+        // If the object is not persistent, and we are not
+        // at level 0, do nothing.
         if (_suppressMoML(depth)) {
             return;
         }
@@ -150,6 +156,7 @@ public class Location extends SingletonAttribute
                 StringUtilities.escapeForXML(value) + "\"";
         }
 
+        // It might be better to use multiple writes here for performance.
         output.write(_getIndentPrefix(depth)
                 + "<"
                 + _elementName
@@ -165,25 +172,41 @@ public class Location extends SingletonAttribute
                 + _elementName + ">\n");
     }
 
-    /** Get the value of the attribute that has been set by setExpression()
-     *  or by setLocation(), whichever was most recently called,
-     *  or return an empty string if neither has been called.
+    /** Get the value that has been set by setExpression() or by
+     *  setLocation(), whichever was most recently called, or return
+     *  an empty string if neither has been called.
+     *
+     *  <p>If setExpression(String value) was called, then the return
+     *  value is exactly what ever was passed in as the argument to
+     *  setExpression.  This means that there is no guarantee that
+     *  the return value of getExpression() is a well formed Ptolemy 
+     *  array expression.
+     *
+     *  <p>If setLocation(double[] location) was called, then the
+     *  return value is a well formed Ptolemy array expression that
+     *  starts with "{" and ends with "}", for example "{0.0, 0.0}"
+     *
      *  @return The expression.
      *  @see #setExpression(String)
      */
     public String getExpression() {
         if (_expressionSet) {
+            // FIXME: If setExpression() was called with a string that does
+            // not begin and end with curly brackets, then getExpression()
+            // will not return something that is parseable by setExpression()
             return _expression;
         }
         if (_location == null || _location.length == 0) {
             return "";
         }
-        StringBuffer result = new StringBuffer();
+        // We tack on { } around the value that is returned so that it
+        // can be passed to setExpression().
+        StringBuffer result = new StringBuffer("{");
         for (int i = 0; i < _location.length - 1; i++) {
             result.append(_location[i]);
             result.append(", ");
         }
-        result.append(_location[_location.length - 1]);
+        result.append(_location[_location.length - 1] + "}");
         return result.toString();
     }
 
@@ -219,7 +242,7 @@ public class Location extends SingletonAttribute
     /** Set the value of the attribute by giving some expression.
      *  This expression is not parsed until validate() is called, and
      *  the container and value listeners are not notified until validate()
-     *  is called.
+     *  is called.  See the class comment for a description of the format.
      *  @param expression The value of the attribute.
      *  @see #getExpression()
      */
@@ -242,10 +265,12 @@ public class Location extends SingletonAttribute
      */
     public void setLocation(double[] location)
             throws IllegalActionException {
-        boolean changed = _setLocation(location);
-        if (changed) {
+        _expressionSet = false;
+        if (_setLocation(location)) {
+            // If the location was modified in _setLocation(),
+            // we mark this object as being modified.
+
             // Make sure the new value is exported in MoML.  EAL 12/03.
-            // FIXME NOW: We never get here when dragging objects... Why?
             setModifiedFromClass(true);
         }
     }
@@ -268,13 +293,14 @@ public class Location extends SingletonAttribute
         if (_location == null) {
             return "(" + className + ", Location = null)";
         }
-        return "(" + className + ", Location = (" + getExpression() + "))";
+        return "(" + className + ", Location = " + getExpression() + ")";
     }
 
     /** Parse the location specification given by setExpression(), if there
      *  has been one, and otherwise set the location to 0.0, 0.0.
      *  Notify the container and any value listeners of the new location,
      *  if it has changed.
+     *  See the class comment for a description of the format.
      *  @exception IllegalActionException If the expression is invalid.
      */
     public void validate() throws IllegalActionException {
@@ -291,7 +317,8 @@ public class Location extends SingletonAttribute
         } else {
             // Parse the specification: a comma specified list of doubles,
             // optionally surrounded by square or curley brackets.
-            StringTokenizer tokenizer = new StringTokenizer(_expression, ",[]{}");
+            StringTokenizer tokenizer =
+                new StringTokenizer(_expression, ",[]{}");
             location = new double[tokenizer.countTokens()];
             int count = tokenizer.countTokens();
             for (int i = 0; i < count; i++) {
@@ -301,9 +328,8 @@ public class Location extends SingletonAttribute
         }
         // Set and notify.
         _setLocation(location);
-        // The above call sets _expressionSet to false, which is incorrect.
-        // We know from above that it is true.
-        _expressionSet = true;
+        // FIXME: If _setLocation() returns true, should we call
+        // setModifiedFromClass() like we do elsewhere?
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -317,7 +343,6 @@ public class Location extends SingletonAttribute
      */
     private boolean _setLocation(double[] location)
             throws IllegalActionException {
-        _expressionSet = false;
         // If the location is unchanged, return false.
         if (_location != null
                 && location != null
@@ -334,8 +359,10 @@ public class Location extends SingletonAttribute
             }
         }
         
-        // FIXME NOW: We never get here when dragging!  The location is getting set
-        // some other way! (or not getting set????)
+        if (_location.length != location.length) {
+            // If location is of size 3, then we end up here.
+            _location = new double[location.length];
+        }
 
         // Copy location array into member array _location.
         // Just referencing _location to location isn't enough, we need
