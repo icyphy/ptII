@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
    a TypedCompositeActor with a FSMDirector as local director. The mode
    control logic is captured by a mode controller, an instance of FSMActor
    contained by the composite actor. Each state of the mode controller
-   represents a mode of operation and can be refined by an opaque CompositeActor 
+   represents a mode of operation and can be refined by an opaque CompositeActor
    contained by the same composite actor.
    <p>
    When a modal model is fired, this director first transfers the input tokens
@@ -77,24 +77,24 @@ import ptolemy.kernel.util.Workspace;
    exception is thrown. If there is exactly one preemptive transition enabled
    then it is chosen and the choice actions contained by the transition are
    executed. The refinement of the current state is not fired. Any output token
-   produced by the mode controller is transferred to the output ports of the 
-   modal model and the input ports of the mode controller. 
+   produced by the mode controller is transferred to the output ports of the
+   modal model and the input ports of the mode controller.
    <p>
-   If no preemptive transition is enabled, the refinements of the current state 
-   are fired. Any output token produced by the refinements is transferred to 
-   the output ports of the modal model and the input ports of the mode 
-   controller. After this, the non-preemptive transitions from the current 
-   state of the mode controller are examined. If there is more than one 
-   transition enabled, an exception is thrown. If there is exactly one 
-   non-preemptive transition enabled then it is chosen and the choice actions 
-   contained by the transition are executed. Any output token produced by the 
-   mode controller is transferred to the output ports of the modal model and 
-   the input ports of the mode controller. 
+   If no preemptive transition is enabled, the refinements of the current state
+   are fired. Any output token produced by the refinements is transferred to
+   the output ports of the modal model and the input ports of the mode
+   controller. After this, the non-preemptive transitions from the current
+   state of the mode controller are examined. If there is more than one
+   transition enabled, an exception is thrown. If there is exactly one
+   non-preemptive transition enabled then it is chosen and the choice actions
+   contained by the transition are executed. Any output token produced by the
+   mode controller is transferred to the output ports of the modal model and
+   the input ports of the mode controller.
    <p>
-   At the end of one firing, the modal model transfer its outputs to outside 
-   domain. The mode controller does not change state during successive firings 
-   in one iteration in order to support outside domains that iterate to a fixed 
-   point. When the modal model is postfired, the chosen transition of the latest 
+   At the end of one firing, the modal model transfer its outputs to outside
+   domain. The mode controller does not change state during successive firings
+   in one iteration in order to support outside domains that iterate to a fixed
+   point. When the modal model is postfired, the chosen transition of the latest
    firing is committed. The commit actions contained by the transition are executed and
    the current state of the mode controller is set to the destination state of
    the transition.
@@ -732,7 +732,7 @@ public class FSMDirector extends Director
      *  @exception IllegalActionException Not thrown in this base class.
      *  FIXME: Changed by liuj, not yet reviewed.
      */
-    public void setModelTime(Time newTime) 
+    public void setModelTime(Time newTime)
         throws IllegalActionException {
         _currentTime = newTime;
     }

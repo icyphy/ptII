@@ -35,11 +35,11 @@ import ptolemy.actor.util.FunctionDependency;
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfFSMActor
 /** An instance of FunctionDependencyOfFSMActor describes the function
-    dependency relation between the externally visible ports of an FSM 
-    actor. 
+    dependency relation between the externally visible ports of an FSM
+    actor.
     <p>
-    This class makes a conservative approximation of the dependency 
-    relation by assuming that all the output ports depend on all the 
+    This class makes a conservative approximation of the dependency
+    relation by assuming that all the output ports depend on all the
     input ports.
 
     @see FunctionDependency

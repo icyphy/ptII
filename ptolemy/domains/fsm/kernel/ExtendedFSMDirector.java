@@ -1,7 +1,7 @@
 /* This director extends FSMDirector by specifying whether a port should
-   consume token in the state transition.
+   consume a token in the state transition.
 
-Copyright (c) 1999-2004 The Regents of the University of California.
+Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -51,20 +51,20 @@ import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExtendedFSMDirector
-/** 
+/**
    This director extends FSMDirector by specifying whether a port should
-   consume token in the state transition. An input port will consume one
+   consume a token in the state transition. An input port will consume one
    token if it appears in: (1) at least one guard expressions in all the
    transitions that go from the current state, and/or (2) the output actions
    of the enabled transition. If an input port does not appear in the
    above two cases, it will not consume tokens.
-   
+
    FIXME: The input ports appeared in SetActions of the enabled transition
    should also be included.
    FIXME: Doesn't handle multi-port.
    FIXME: Currently, the port rate is either 1 or 0, but we are going to
    extend it. The current implementation also does not support state
-   refinement. 
+   refinement.
 
    @author Rachel Zhou
    @version $Id$
@@ -75,7 +75,7 @@ import ptolemy.kernel.util.Workspace;
 
 
 public class ExtendedFSMDirector extends FSMDirector {
-        
+
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -83,7 +83,7 @@ public class ExtendedFSMDirector extends FSMDirector {
     public ExtendedFSMDirector() {
         super();
     }
-    
+
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -100,7 +100,7 @@ public class ExtendedFSMDirector extends FSMDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     /** Construct a director in the  workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
@@ -109,11 +109,11 @@ public class ExtendedFSMDirector extends FSMDirector {
     public ExtendedFSMDirector(Workspace workspace) {
         super(workspace);
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
+
     /** Get the enabled transition and the referred input ports in its
      *  outputActions. If they are not referred by the guard expressions,
      *  transfer these inputs before the super class fire() is called.
@@ -147,7 +147,7 @@ public class ExtendedFSMDirector extends FSMDirector {
         }
         super.fire();
     }
-    
+
     /** Given a state, get a list of referred input ports in the guard
      *  expressions of all the transitions that go out from this state.
      * @param currentState The given state.
@@ -158,7 +158,7 @@ public class ExtendedFSMDirector extends FSMDirector {
             throws IllegalActionException {
         //System.out.println("currentState" + currentState.getName());
         _guardReferredInputPorts.clear();
-        Iterator transitions = 
+        Iterator transitions =
             currentState.nonpreemptiveTransitionList().iterator();
         while (transitions.hasNext()) {
             Transition transition = (Transition)transitions.next();
@@ -166,7 +166,7 @@ public class ExtendedFSMDirector extends FSMDirector {
             String string = transition.getGuardExpression();
             if (string == "") {
                 throw new IllegalActionException(this,
-                        "guard expression on " + transition.getName() + 
+                        "guard expression on " + transition.getName() +
                         "is null!");
             }
             PtParser parser = new PtParser();
@@ -179,7 +179,7 @@ public class ExtendedFSMDirector extends FSMDirector {
             getReferredInputPorts(set, _guardReferredInputPorts);
         }
     }
-    
+
     /** Given a transition, get a list of referred input ports in the
      *  outputActions of that transition.
      * @param currentState The given state.
@@ -197,7 +197,7 @@ public class ExtendedFSMDirector extends FSMDirector {
             = new ParseTreeFreeVariableCollector();
         FSMActor controller = getController();
         ParserScope scope = controller.getPortScope();
-        
+
         if (string != "") {
             Map map = parser.generateAssignmentMap(string);
             Set set = new HashSet();
@@ -211,7 +211,7 @@ public class ExtendedFSMDirector extends FSMDirector {
            }
         }
     }
-    
+
     /** Given a set of ports, get those are input ports and put them
      *  in the indicated referred list.
      * @param set The given set of ports
@@ -224,12 +224,12 @@ public class ExtendedFSMDirector extends FSMDirector {
             IOPort inputPort = (IOPort)inputPortList.get(i);
             if (set.contains(inputPort.getName())) {
                 referredList.add(inputPort);
-                //System.out.println("referred input port is " + 
+                //System.out.println("referred input port is " +
                         //inputPort.getName());
             }
         }
     }
-    
+
     /** Initialize the director. Get the referred input ports
      *  in the guard expressions of all the transitions that go out
      *  from the initial state.
@@ -242,7 +242,7 @@ public class ExtendedFSMDirector extends FSMDirector {
         //System.out.println(controller.getInitialState().getName());
         getGuardReferredInputPorts(controller.getInitialState());
     }
-    
+
     /** Return a peek receiver that is a one-place buffer.
      *  @return A peek receiver that is a one-place buffer.
      */
@@ -250,7 +250,7 @@ public class ExtendedFSMDirector extends FSMDirector {
         return super.newReceiver();
         //return new PeekReceiver();
     }
-    
+
     /** Get the referred input ports in the guard expressions
      *  of all the transitions that go out from the current state.
      *  Then call super class postfire().
@@ -263,8 +263,8 @@ public class ExtendedFSMDirector extends FSMDirector {
         _consumeToken = false;
         return postfireValue;
     }
-    
-    /** Overide by super class by only transferring inputs for those
+
+    /** Override by super class by only transferring inputs for those
      *  input ports that appear in at least one guard expression
      *  of all the transitions that go out from the current state.
      */
@@ -286,17 +286,17 @@ public class ExtendedFSMDirector extends FSMDirector {
             return true;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                  ////
-    
+
     // A flag indicates whether the receiver is a peek one or not.
     private boolean _consumeToken;
-    
+
     // A list of input ports that appear at least in one guard
-    // expression in all the transitions that go from the current state, 
+    // expression in all the transitions that go from the current state,
     private LinkedList _guardReferredInputPorts = new LinkedList();
-    
+
     // A list of input ports that appear in the output actions of
     // the enabled transition.
     private LinkedList _outputActionReferredInputPorts = new LinkedList();
