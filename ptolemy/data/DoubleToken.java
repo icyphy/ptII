@@ -424,14 +424,13 @@ public class DoubleToken extends ScalarToken {
         return new DoubleToken(1.0);
     }
 
-    /** Get the value contained in this Token as a String.
-     *  It uses java.text.NumberFormat to format the number.
-     *  @return The value contained in this token as a String.
+    /** Return the value contained in this Token as a String.
+     *  This method uses java.text.NumberFormat to format the number.
+     *  @return A String.
+     *  @deprecated Use toString() instead.
      */
     public String stringValue() {
-        NumberFormat nf = NumberFormat.getNumberInstance();
-        nf.setMinimumFractionDigits(1);
-        return nf.format(_value);
+        return toString();
     }
 
     /** Return a new Token whose value is the value of the argument Token
@@ -483,17 +482,18 @@ public class DoubleToken extends ScalarToken {
         return new DoubleToken(result);
     }
 
-    /** Return a description of the token as a string.
-     *  In this base class, we return the fully qualified class name.
-     *  @return A String representation of this token.
+    /** Return the value contained in this Token as a String.
+     *  This method uses java.text.NumberFormat to format the number.
+     *  @return A String.
      */
     public String toString() {
-        String str =  getClass().getName() + "(" + stringValue() + ")";
-        return str;
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        nf.setMinimumFractionDigits(1);
+        return nf.format(_value);
     }
 
     /** Returns a new token representing the additive identity.
-     *  @return A new Token containing the additive identity.
+     *  @return A Token.
      */
     public Token zero() {
         return new DoubleToken(0);

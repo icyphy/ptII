@@ -187,7 +187,7 @@ public class CorbaActorClient extends TypedAtomicActor {
         super.initialize();
         // String tokenize the parameter ORBInitProperties
         StringTokenizer st = new StringTokenizer(
-                (ORBInitProperties.getToken()).stringValue());
+                (ORBInitProperties.getToken()).toString());
         String[] args = new String[st.countTokens()];
         int i = 0;
         while (st.hasMoreTokens()) {
@@ -206,9 +206,9 @@ public class CorbaActorClient extends TypedAtomicActor {
             NamingContext ncRef = NamingContextHelper.narrow(objRef);
             //resolve the remote actor reference in Naming
             NameComponent namecomp = new NameComponent(
-                    (remoteActorName.getToken()).stringValue(), "");
+                    (remoteActorName.getToken()).toString(), "");
             _debug(getName(), " looking for name: ", 
-                    (remoteActorName.getToken()).stringValue());
+                    (remoteActorName.getToken()).toString());
             NameComponent path[] = {namecomp};
             // locate the remote actor
             _remoteActor = 
@@ -380,7 +380,7 @@ public class CorbaActorClient extends TypedAtomicActor {
                     Token inputToken = port.get(0);
                     try {
                         _remoteActor.transferInput(
-                                inputName, i, inputToken.stringValue());
+                                inputName, i, inputToken.toString());
                     } catch (SystemException ex) {
                         throw new InvalidStateException(this,
                                 "Communication failiar." + ex.getMessage());

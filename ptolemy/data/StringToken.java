@@ -84,10 +84,10 @@ public class StringToken extends Token {
         try {
             if (typeInfo == CPO.HIGHER) {
                 StringToken tmp = (StringToken)this.convert(token);
-                String result = _value + tmp.stringValue();
+                String result = _value + tmp.toString();
                 return new StringToken(result);
             } else if (token instanceof StringToken) {
-                String result = _value + ((StringToken)token).stringValue();
+                String result = _value + ((StringToken)token).toString();
                 return new StringToken(result);
             } else if (typeInfo == CPO.LOWER) {
                 return token.addReverse(this);
@@ -113,7 +113,7 @@ public class StringToken extends Token {
     public Token addReverse(ptolemy.data.Token token)
 	    throws IllegalActionException {
         StringToken tmp = (StringToken)this.convert(token);
-        String result = tmp.stringValue() + _value;
+        String result = tmp.toString() + _value;
         return new StringToken(result);
     }
 
@@ -147,7 +147,7 @@ public class StringToken extends Token {
 
 	if (token instanceof MatrixToken || token instanceof ScalarToken ||
                 token instanceof BooleanToken) {
-	    String str = token.stringValue();
+	    String str = token.toString();
 	    return new StringToken(str);
 	}
         throw new IllegalActionException("cannot convert from token " +
@@ -173,7 +173,7 @@ public class StringToken extends Token {
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof StringToken) {
-            if ( _value.compareTo(token.stringValue()) == 0) {
+            if ( _value.compareTo(token.toString()) == 0) {
                 return new BooleanToken(true);
             } else {
                 return new BooleanToken(false);
@@ -187,19 +187,18 @@ public class StringToken extends Token {
     }
 
     /** Return the value of this Token as a String.
-     *  @return The value of this Token as a String.
+     *  @return A String.
+     *  @deprecated Use toString() instead.
      */
     public String stringValue() {
-        return _value;
+        return toString();
     }
 
-    /** Return the string description of the object.  If there is no such
-     *  object, then return a description of the token.
-     *  @return The String description of this token.
+    /** Return the value of this Token as a String.
+     *  @return A String.
      */
     public String toString() {
-        String str = getClass().getName() + "(" + _value + ")";
-        return str;
+        return _value;
     }
 
     /** Return a StringToken containing an empty string, which is considered

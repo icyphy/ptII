@@ -123,7 +123,7 @@ public class CTZeroCrossingDetector extends CTActor
 
         if(_eventNow) {
             _debug(getFullName() + " Emitting event: " +
-                    _inputToken.stringValue());
+                    _inputToken.toString());
             output.broadcast(_inputToken);
             _eventNow = false;
         }

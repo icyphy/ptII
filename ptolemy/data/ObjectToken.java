@@ -117,22 +117,22 @@ public class ObjectToken extends Token {
 
     /** Return the string description of the object.  If there is no such
      *  object, then return a description of the token.
+     *  @return A String.
+     *  @deprecated Use toString() instead.
+     */
+    public String stringValue() {
+	return toString();
+    }
+
+    /** Return the string description of the object.  If there is no such
+     *  object, then return a description of the token.
+     *  @return A String.
      */
     public String toString() {
         if (_value != null) {
             return _value.toString();
         } else {
             return super.toString();
-        }
-    }
-
-    /** Return the string value of the object.  Get t
-     */
-    public String stringValue() {
-        if (_value != null) {
-            return _value.toString();
-        } else {
-            return super.stringValue();
         }
     }
 

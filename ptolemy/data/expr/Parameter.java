@@ -150,7 +150,7 @@ public class Parameter extends Variable {
                 token = getToken();
             } catch (IllegalActionException ex) {}
             if (token != null) {
-                value = token.stringValue();
+                value = token.toString();
             }
         }
         String valueTerm = "";

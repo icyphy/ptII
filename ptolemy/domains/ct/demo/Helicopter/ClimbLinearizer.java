@@ -198,7 +198,7 @@ public class ClimbLinearizer extends CTActor{
      *  @exception IllegalActionException Never thrown.*
      */
     public void updateParameters() throws IllegalActionException {
-        String taps = ((StringToken)paramAlphaV.getToken()).stringValue();
+        String taps = ((StringToken)paramAlphaV.getToken()).toString();
         StringTokenizer stokens = new StringTokenizer(taps);
         int index = 0;
         if(stokens.countTokens() < 4) {

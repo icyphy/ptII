@@ -158,14 +158,25 @@ public abstract class MatrixToken extends Token {
     /** Return a String representing the value of this token.
      *  The syntax is that understood by the parser in the data.expr
      *  package.
+     *  @return A String.
+     *  @deprecated Use toString() instead.
      */
     public String stringValue() {
+	return toString();
+    }
+
+    /** Return a String representing the value of this token.
+     *  The syntax is that understood by the parser in the data.expr
+     *  package.
+     *  @return A String.
+     */
+    public String toString() {
         int rowCount = getRowCount();
         int columnCount = getColumnCount();
 	String s = "[";
 	for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                s += getElementAsToken(i, j).stringValue();
+                s += getElementAsToken(i, j).toString();
                 if (j < columnCount - 1) s += ", ";
             }
             if (i < rowCount - 1) s += "; ";
@@ -174,3 +185,4 @@ public abstract class MatrixToken extends Token {
 	return s;
     }
 }
+

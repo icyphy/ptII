@@ -296,11 +296,12 @@ public class BooleanToken extends Token {
         return TRUE;
     }
 
-    /** Get the value contained in this token as a String.
-     *  @return The value contained in this token as a String.
+    /** Return the value contained in this token as a String.
+     *  @return A String.
+     *  @deprecated Use toString() instead.
      */
     public String stringValue() {
-        return (new Boolean(_value)).toString();
+        return toString();
     }
 
     /** Return this token minus the argument.  For booleans, subtraction
@@ -340,12 +341,11 @@ public class BooleanToken extends Token {
         return addReverse(leftArg);
     }
 
-    /** Create a string representation of the value in the token.
-     *  @return A String representation of this token.
+    /** Return the value contained in this token as a String.
+     *  @return A String.
      */
     public String toString() {
-        String str = getClass().getName() + "(" + _value + ")";
-        return str;
+        return (new Boolean(_value)).toString();
     }
 
     /** Returns a token representing the additive identity.

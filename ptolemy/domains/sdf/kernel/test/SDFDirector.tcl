@@ -101,12 +101,12 @@ test SDFDirector-5.1 {Test action methods} {
 
     $manager run
     list [$a2 getHistory]
-} {{ptolemy.data.IntToken(0)
-ptolemy.data.IntToken(1)
-ptolemy.data.IntToken(2)
-ptolemy.data.IntToken(3)
-ptolemy.data.IntToken(4)
-ptolemy.data.IntToken(5)
+} {{0
+1
+2
+3
+4
+5
 }}
 
 test SDFDirector-5.2 {Test action methods} {
@@ -125,12 +125,12 @@ test SDFDirector-5.2 {Test action methods} {
     _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
     $manager run
     list [$a3 getHistory]
-} {{ptolemy.data.IntToken(0)
-ptolemy.data.IntToken(1)
-ptolemy.data.IntToken(2)
-ptolemy.data.IntToken(3)
-ptolemy.data.IntToken(4)
-ptolemy.data.IntToken(5)
+} {{0
+1
+2
+3
+4
+5
 }}
 
 test SDFDirector-5.3 {Test action methods} {
@@ -157,18 +157,18 @@ test SDFDirector-5.3 {Test action methods} {
 
     $manager run
     list [$a3 getHistory] [$a4 getHistory]
-} {{ptolemy.data.IntToken(0)
-ptolemy.data.IntToken(2)
-ptolemy.data.IntToken(4)
-ptolemy.data.IntToken(6)
-ptolemy.data.IntToken(8)
-ptolemy.data.IntToken(10)
-} {ptolemy.data.IntToken(1)
-ptolemy.data.IntToken(3)
-ptolemy.data.IntToken(5)
-ptolemy.data.IntToken(7)
-ptolemy.data.IntToken(9)
-ptolemy.data.IntToken(11)
+} {{0
+2
+4
+6
+8
+10
+} {1
+3
+5
+7
+9
+11
 }}
 
 test SDFDirector-5.4 {Test action methods} {
@@ -190,18 +190,18 @@ test SDFDirector-5.4 {Test action methods} {
     _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
     $manager run
     list [$a4 getHistory]
-} {{ptolemy.data.IntToken(0)
-ptolemy.data.IntToken(1)
-ptolemy.data.IntToken(2)
-ptolemy.data.IntToken(3)
-ptolemy.data.IntToken(4)
-ptolemy.data.IntToken(5)
-ptolemy.data.IntToken(6)
-ptolemy.data.IntToken(7)
-ptolemy.data.IntToken(8)
-ptolemy.data.IntToken(9)
-ptolemy.data.IntToken(10)
-ptolemy.data.IntToken(11)
+} {{0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
 }}
 
 ######################################################################
@@ -240,12 +240,12 @@ test SDFDirector-6.1 {Test wormhole activation} {
     _testSetToken $iter  [java::new {ptolemy.data.IntToken int} 6]
     $manager run
     list [$a3 getHistory]
-} {{ptolemy.data.IntToken(0)
-ptolemy.data.IntToken(1)
-ptolemy.data.IntToken(2)
-ptolemy.data.IntToken(3)
-ptolemy.data.IntToken(4)
-ptolemy.data.IntToken(5)
+} {{0
+1
+2
+3
+4
+5
 }}
 
 test SDFDirector-6.2 {Test transparent activation} {
@@ -277,12 +277,12 @@ test SDFDirector-6.2 {Test transparent activation} {
     _testSetToken $iter  [java::new {ptolemy.data.IntToken int} 6]
     $manager run
     list [$a3 getHistory]
-} {{ptolemy.data.IntToken(0)
-ptolemy.data.IntToken(1)
-ptolemy.data.IntToken(2)
-ptolemy.data.IntToken(3)
-ptolemy.data.IntToken(4)
-ptolemy.data.IntToken(5)
+} {{0
+1
+2
+3
+4
+5
 }}
 
 

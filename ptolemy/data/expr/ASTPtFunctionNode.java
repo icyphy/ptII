@@ -141,7 +141,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                         " recursive call to null parser.");
             }
             NamedList scope = _parser.getScope();
-            exp = childTokens[0].stringValue();
+            exp = childTokens[0].toString();
             ASTPtRootNode tree = _parser.generateParseTree(exp, scope);
             return tree.evaluateParseTree();
         }
@@ -163,7 +163,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 argValues[i] = new Long(((LongToken)child).longValue());
                 argTypes[i] = Long.TYPE;
             } else if (child instanceof StringToken) {
-                argValues[i] = new String(((StringToken)child).stringValue());
+                argValues[i] = new String(((StringToken)child).toString());
                 argTypes[i] = argValues[i].getClass();
             } else if (child instanceof BooleanToken) {
                 argValues[i] =

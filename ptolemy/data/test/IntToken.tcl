@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test IntToken-1.0 {Create an empty instance} {
     set p [java::new ptolemy.data.IntToken]
     $p toString
-} {ptolemy.data.IntToken(0)}
+} {0}
 
 ######################################################################
 ####
@@ -61,7 +61,7 @@ test IntToken-1.0 {Create an empty instance} {
 test IntToken-1.1 {Create a non-empty instance from an int} {
     set p [java::new {ptolemy.data.IntToken int} 5]
     $p toString
-} {ptolemy.data.IntToken(5)}
+} {5}
 
 ######################################################################
 ####
@@ -69,7 +69,7 @@ test IntToken-1.1 {Create a non-empty instance from an int} {
 test IntToken-1.2 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.IntToken String} "7"]
     $p toString
-} {ptolemy.data.IntToken(7)}
+} {7}
 
 ######################################################################
 ####
@@ -120,7 +120,7 @@ test IntToken-2.5 {Test additive identity} {
     set token [$p zero]
 
     list [$token toString]
-} {ptolemy.data.IntToken(0)}
+} {0}
 ######################################################################
 ####
 # 
@@ -129,7 +129,7 @@ test IntToken-2.6 {Test multiplicative identity} {
     set token [$p one]
 
     list [$token toString]
-} {ptolemy.data.IntToken(1)}
+} {1}
 
 ######################################################################
 ####
@@ -141,7 +141,7 @@ test IntToken-3.0 {Test adding ints.} {
     set res2 [$p addReverse $p]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.IntToken(14) ptolemy.data.IntToken(14)}
+} {14 14}
 
 ######################################################################
 ####
@@ -159,7 +159,7 @@ test IntToken-4.0 {Test dividing ints.} {
     set res4 [$tok1 divideReverse $tok2]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
-} {ptolemy.data.IntToken(1) ptolemy.data.IntToken(1) ptolemy.data.IntToken(0) ptolemy.data.IntToken(2)}
+} {1 1 0 2}
 
 ######################################################################
 ####
@@ -173,7 +173,7 @@ test IntToken-5.0 {Test equality between ints.} {
     set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+} {true false}
 
 ######################################################################
 ####
@@ -186,7 +186,7 @@ test IntToken-6.0 {Test modulo between ints.} {
     set res2 [$tok1 moduloReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.IntToken(1) ptolemy.data.IntToken(2)}
+} {1 2}
 
 ######################################################################
 ####
@@ -199,7 +199,7 @@ test intToken-7.0 {Test multiply operator between ints.} {
     set res2 [$tok1 multiplyReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.IntToken(14) ptolemy.data.IntToken(14)}
+} {14 14}
 
 ######################################################################
 ####
@@ -212,7 +212,7 @@ test IntToken-8.0 {Test subtract operator between ints.} {
     set res2 [$tok1 subtractReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.IntToken(5) ptolemy.data.IntToken(-5)}
+} {5 -5}
 
 ######################################################################
 ####
@@ -228,4 +228,4 @@ test IntToken-9.0 {Create an non-empty instance and add it to Strings} {
     set token6 [$token4 add $token5]
 
     list [$token6 toString]
-} {{ptolemy.data.StringToken(value is 2323.....)}}
+} {{value is 2323.....}}

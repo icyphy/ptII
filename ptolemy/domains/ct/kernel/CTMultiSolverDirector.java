@@ -124,7 +124,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         if (param == BreakpointODESolver) {
             if(_debugging) _debug(getName() + "breakpoint solver updating.");
             _bpsolverclassname =
-                ((StringToken)param.getToken()).stringValue();
+                ((StringToken)param.getToken()).toString();
             _breakpointsolver =
                 _instantiateODESolver(_bpsolverclassname);
         } else {

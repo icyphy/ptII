@@ -203,7 +203,7 @@ public class AccelerLinearizer extends CTActor{
      *  @exception IllegalActionException Never thrown.*
      */
     public void updateParameters() throws IllegalActionException {
-        String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
+        String taps = ((StringToken)paramAlphaP.getToken()).toString();
         StringTokenizer stokens = new StringTokenizer(taps);
         int index = 0;
         if(stokens.countTokens() < 5) {
@@ -215,7 +215,7 @@ public class AccelerLinearizer extends CTActor{
             _alphaP[index++] = (new Double(valueToken)).doubleValue();
         }
 
-        taps = ((StringToken)paramAlphaA.getToken()).stringValue();
+        taps = ((StringToken)paramAlphaA.getToken()).toString();
         stokens = new StringTokenizer(taps);
         index = 0;
         if(stokens.countTokens() < 3) {

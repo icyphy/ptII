@@ -53,7 +53,7 @@ test Pulse-1.1 {test constructor and clone with default values} {
     set indexesVal [[$newIndexes getToken] toString]
 
     list $valuesVal $indexesVal
-} {{ptolemy.data.ArrayToken(ptolemy.data.IntToken)([1, 0])} {ptolemy.data.IntMatrixToken([0, 1])}}
+} {{array[1, 0]} {[0, 1]}}
 
 ######################################################################
 #### Check type of values parameter

@@ -84,7 +84,7 @@ test PtParser-2.2 {Construct a Parser, try simple integer expressions} {
     set res4  [ $root evaluateParseTree ]
 
     list [$res toString] [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {ptolemy.data.IntToken(9) ptolemy.data.IntToken(-5) ptolemy.data.IntToken(24) ptolemy.data.IntToken(2) ptolemy.data.IntToken(2)}
+} {9 -5 24 2 2}
 
 ######################################################################
 ####
@@ -97,7 +97,7 @@ test PtParser-2.3 {Construct a Parser, try complex integer expressions} {
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {ptolemy.data.IntToken(-13)}
+} {-13}
 ######################################################################
 ####
 # 
@@ -130,7 +130,7 @@ test PtParser-2.5 {Construct a Parser, try complex double expressions} {
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {ptolemy.data.DoubleToken(-10.9)}
+} {-10.9}
 ######################################################################
 ####
 # 
@@ -143,7 +143,7 @@ test PtParser-2.6 {Construct a Parser, try creating complex numbers} {
     set res2  [ $root evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString]
-} {{ptolemy.data.ComplexToken(0.0 + 2.0i)} {ptolemy.data.ComplexToken(3.0 + 2.0i)}}
+} {{0.0 + 2.0i} {3.0 + 2.0i}}
 ######################################################################
 ####
 # 
@@ -155,7 +155,7 @@ test PtParser-3.0 {Construct a Parser,mixing doubles, strings and integers using
     list [$res toString]
     # for some reason TclBlend puts brackets around the result, it seems 
     # because there are spaces within the paranthesis???
-} {{ptolemy.data.StringToken(-27.5 hello 11)}}
+} {{-27.5 hello 11}}
 ######################################################################
 ####
 # 
@@ -176,7 +176,7 @@ test PtParser-4.0 {Construct a Parser, try basic relational operators} {
     set res6  [ $root6 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString] [$res6 toString] 
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true)}
+} {true true true false false true}
 ######################################################################
 ####
 # 
@@ -191,7 +191,7 @@ test PtParser-4.1 {Construct a Parser, try  relational operators with arithetic 
     set res3  [ $root3 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]  
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+} {true true false}
 ######################################################################
 ####
 # 
@@ -204,7 +204,7 @@ test PtParser-4.2 {Construct a Parser,test use of equality operator on strings} 
     set res2  [ $root2 evaluateParseTree ]
    
     list [$res1 toString] [$res2 toString]  
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+} {true false}
 ######################################################################
 ####
 # 
@@ -218,7 +218,7 @@ test PtParser-5.0 {Construct a Parser, test use of logical operators} {
     set res3  [ $root3 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]  
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true)}
+} {true false true}
 ######################################################################
 ####
 # 
@@ -231,7 +231,7 @@ test PtParser-5.1 {Construct a Parser, unary minus & unary logical not} {
     set res2  [ $root2 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] 
-} {ptolemy.data.BooleanToken(false) ptolemy.data.IntToken(-7)}
+} {false -7}
 ######################################################################
 ####
 # 
@@ -259,7 +259,7 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
     set res1  [ $root1 evaluateParseTree ]
    
     list [$res1 toString] 
-} {{ptolemy.data.StringToken(11.45 hello world)}}
+} {{11.45 hello world}}
 ######################################################################
 ####
 # 
@@ -291,7 +291,7 @@ test PtParser-6.1 {Test reEvaluation of parse Tree} {
     set res2  [ $root1 {evaluateParseTree} ]
     
     list [$res1 toString] [$res2 toString] 
-} {{ptolemy.data.StringToken(11.45 hello world)} {ptolemy.data.StringToken(111.45 hello world)}}
+} {{11.45 hello world} {111.45 hello world}}
 ######################################################################
 ####
 # 
@@ -301,7 +301,7 @@ test PtParser-7.0 {Construct a Parser, try simple functional if then else} {
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {ptolemy.data.IntToken(7)}
+} {7}
 
 ######################################################################
 ####
@@ -312,7 +312,7 @@ test PtParser-7.1 {Construct a Parser, try harder if then else} {
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {ptolemy.data.StringToken(hello)}
+} {hello}
 ######################################################################
 ####
 # 
@@ -322,7 +322,7 @@ test PtParser-7.2 {Test complicated expression within boolean test condition} {
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {ptolemy.data.DoubleToken(24.0)}
+} {24.0}
 ######################################################################
 ####
 # 
@@ -332,7 +332,7 @@ test PtParser-7.3 {Test nested if then elses} {
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {ptolemy.data.StringToken(hello)}
+} {hello}
 ######################################################################
 ####
 # 
@@ -342,7 +342,7 @@ test PtParser-7.4 {Test many levels of parenthesis nesting} {
     set res  [ $root evaluateParseTree ]
 
     list  [$res toString] 
-} {ptolemy.data.StringToken(hello)}
+} {hello}
 ######################################################################
 ####
 # 
@@ -364,7 +364,7 @@ test PtParser-8.0 {Test method calls on PtTokens} {
     set res2 [ $root2 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.DoubleToken(7.0) ptolemy.data.DoubleToken(2.0)}
+} {7.0 2.0}
 ######################################################################
 ####
 # 
@@ -381,7 +381,7 @@ test PtParser-8.1 {Test bitwise operators} {
     set res4  [ $root4 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {ptolemy.data.IntToken(0) ptolemy.data.IntToken(7) ptolemy.data.IntToken(1) ptolemy.data.IntToken(-6)}
+} {0 7 1 -6}
 ######################################################################
 ####
 # 
@@ -396,7 +396,7 @@ test PtParser-8.2 {Test more complicated bitwise operations, and bitwise ops on 
     set res3  [ $root3 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {ptolemy.data.IntToken(-5) ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+} {-5 true false}
 
 ######################################################################
 ####
@@ -453,7 +453,7 @@ test PtParser-10.0 {Test that constants can be registered and recognized by the 
     set res1 [ $root1 evaluateParseTree ]
     set value4 [$res1 toString]
     list $value1 $value2 $value3 $value4
-} {ptolemy.data.DoubleToken(5.86) ptolemy.data.StringToken(1.5neil) ptolemy.data.BooleanToken(true) ptolemy.data.LongToken(1000)}
+} {5.86 1.5neil true 1000}
 ######################################################################
 ####
 # Need to test that functions can access methods registered in the 
@@ -474,7 +474,7 @@ test PtParser-10.1 {Test that functions can access registered classes.
 
     
     list $value1 $value2
-} {ptolemy.data.IntToken(1) ptolemy.data.DoubleToken(0.5)}
+} {1 0.5}
 
 test PtParser-10.2 {Test for reasonable error messages on type problems} {
     set e [java::new {ptolemy.kernel.Entity String} E]
@@ -533,6 +533,7 @@ test PtParser-12.3 {Test matrix construction.} {
 
     list $col $row $value1 $value2
 } {2 1 0.5 -0.5}
+
 # Test matrix construction, using regularly spaced vector as row.
 test PtParser-12.3 {Test matrix construction.} {
     set p1 [java::new ptolemy.data.expr.PtParser]
@@ -545,6 +546,7 @@ test PtParser-12.3 {Test matrix construction.} {
 
     list $col $row $v1 $v2
 } {10 1 1 10}
+
 # Test matrix construction, using regularly spaced vector as row.
 test PtParser-12.4 {Test matrix construction.} {
     set p1 [java::new ptolemy.data.expr.PtParser]
@@ -555,6 +557,7 @@ test PtParser-12.4 {Test matrix construction.} {
 
     list $col $row
 } {1 1}
+
 # Test matrix construction, using regularly spaced vector as row.
 test PtParser-12.5 {Test matrix construction.} {
     set p1 [java::new ptolemy.data.expr.PtParser]
@@ -619,7 +622,7 @@ test PtParser-13.0 {Test array reference.} {
     set root2 [ $p1 generateParseTree "v1(0+1,2)+v1(0, v2-1).add(v2)" $nl]
     set res2 [ [ $root2 evaluateParseTree ] toString ]
     list $res1 $res2
-} {{ptolemy.data.ComplexToken(1.0 + 6.0i)} {ptolemy.data.ComplexToken(2.0 + 6.0i)}}
+} {{1.0 + 6.0i} {2.0 + 6.0i}}
 ######################################################################
 ####
 # Test that constant expressions are evaluated only once.

@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test StringToken-2.1 {Create an empty instance} {
     set p [java::new ptolemy.data.StringToken]
     $p toString
-} {ptolemy.data.StringToken()}
+} {}
 
 ######################################################################
 ####
@@ -68,8 +68,8 @@ test StringToken-2.2 {Create an empty instance and query its value} {
 # 
 test StringToken-2.3 {Create an non-empty instance} {
     set p [java::new ptolemy.data.StringToken foo]
-    list [$p toString] [$p stringValue]
-} {ptolemy.data.StringToken(foo) foo}
+    list [$p toString]
+} {foo}
 
 ######################################################################
 ####
@@ -80,7 +80,7 @@ test StringToken-3.0 {Test adding Strings} {
     set res [$p1 add $p2]
 
     list [$res toString]
-} {ptolemy.data.StringToken(foobar)}
+} {foobar}
 
 ######################################################################
 ####
@@ -94,7 +94,7 @@ test DoubleToken-3.1 {Test adding String and boolean} {
     set res3 [$tok2 add $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {ptolemy.data.StringToken(footrue) ptolemy.data.StringToken(truefoo) ptolemy.data.StringToken(truefoo)}
+} {footrue truefoo truefoo}
 
 ######################################################################
 ####
@@ -108,7 +108,7 @@ test DoubleToken-3.2 {Test adding String and long} {
     set res3 [$tok2 add $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {ptolemy.data.StringToken(foo3) ptolemy.data.StringToken(3foo) ptolemy.data.StringToken(3foo)}
+} {foo3 3foo 3foo}
 
 ######################################################################
 ####
@@ -122,7 +122,7 @@ test DoubleToken-3.3 {Test adding String and int} {
     set res3 [$tok2 add $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {ptolemy.data.StringToken(foo4) ptolemy.data.StringToken(4foo) ptolemy.data.StringToken(4foo)}
+} {foo4 4foo 4foo}
 
 ######################################################################
 ####
@@ -138,7 +138,7 @@ test DoubleToken-3.4 {Test adding String and Complex} {
     set res3 [$tok2 add $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {{ptolemy.data.StringToken(foo3.3 + 4.4i)} {ptolemy.data.StringToken(3.3 + 4.4ifoo)} {ptolemy.data.StringToken(3.3 + 4.4ifoo)}}
+} {{foo3.3 + 4.4i} {3.3 + 4.4ifoo} {3.3 + 4.4ifoo}}
 
 ######################################################################
 ####
@@ -152,7 +152,7 @@ test DoubleToken-3.5 {Test adding String and double} {
     set res3 [$tok2 add $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {ptolemy.data.StringToken(foo2.5) ptolemy.data.StringToken(2.5foo) ptolemy.data.StringToken(2.5foo)}
+} {foo2.5 2.5foo 2.5foo}
 
 ######################################################################
 ####
@@ -165,7 +165,7 @@ test StringToken-4.0 {Test isEqualTo} {
     set res1 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]
     set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok3]
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+} {true false}
 
 ######################################################################
 ####

@@ -102,7 +102,7 @@ public class FileWrite extends Sink {
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
-                String value = token.stringValue();
+                String value = token.toString();
                 System.out.println(value + "\n");
             }
         }

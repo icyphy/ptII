@@ -197,7 +197,7 @@ public class HoverLinearizer extends CTActor{
      *  @exception IllegalActionException Never thrown.*
      */
     public void updateParameters() throws IllegalActionException {
-        String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
+        String taps = ((StringToken)paramAlphaP.getToken()).toString();
         StringTokenizer stokens = new StringTokenizer(taps);
         int index = 0;
         int tokencount = stokens.countTokens();

@@ -379,10 +379,11 @@ public class ComplexToken extends ScalarToken {
     }
 
     /** Return the value contained in this Token as a String.
-     *  @return The value contained in this token as a String.
+     *  @return A String.
+     *  @deprecated Use toString() instead.
      */
     public String stringValue() {
-        return _value.toString();
+	return toString();
     }
 
     /** Return a new Token whose value is the value of the argument token
@@ -441,14 +442,11 @@ public class ComplexToken extends ScalarToken {
         return new ComplexToken(result);
     }
 
-    /** Return a description of the token as a string.
-     *  This implementation returns the fully qualified class name and
-     *  the string representation of the contained value.
-     *  @return A String representation of this token.
+    /** Return the value contained in this Token as a String.
+     *  @return A String.
      */
     public String toString() {
-        String str =  getClass().getName() + "(" + stringValue() + ")";
-        return str;
+        return _value.toString();
     }
 
     /** Returns a new token representing the additive identity.

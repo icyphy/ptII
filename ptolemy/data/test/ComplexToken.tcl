@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test ComplexToken-1.0 {Create an empty instance} {
     set p [java::new ptolemy.data.ComplexToken]
     $p toString
-} {ptolemy.data.ComplexToken(0.0 + 0.0i)}
+} {0.0 + 0.0i}
 
 ######################################################################
 ####
@@ -62,7 +62,7 @@ test ComplexToken-1.1 {Create a non-empty instance from a Complex} {
     set c [java::new {ptolemy.math.Complex double double} 1.1 2.2]
     set p [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c]
     $p toString
-} {ptolemy.data.ComplexToken(1.1 + 2.2i)}
+} {1.1 + 2.2i}
 
 ######################################################################
 ####
@@ -70,7 +70,7 @@ test ComplexToken-1.1 {Create a non-empty instance from a Complex} {
 #test ComplexToken-1.2 {Create a non-empty instance from an String} {
 #    set p [java::new {ptolemy.data.ComplexToken String} "7.77"]
 #    $p toString
-#} {ptolemy.data.ComplexToken(7.77)}
+#} {7.77}
 
 ######################################################################
 ####
@@ -124,7 +124,7 @@ test ComplexToken-2.5 {Test additive identity} {
     set token [$p zero]
 
     list [$token toString]
-} {{ptolemy.data.ComplexToken(0.0 + 0.0i)}}
+} {{0.0 + 0.0i}}
 
 ######################################################################
 ####
@@ -134,7 +134,7 @@ test ComplexToken-2.6 {Test multiplicative identity} {
     set token [$p one]
 
     list [$token toString]
-} {{ptolemy.data.ComplexToken(1.0 + 0.0i)}}
+} {{1.0 + 0.0i}}
 
 ######################################################################
 ####
@@ -146,7 +146,7 @@ test ComplexToken-3.0 {Test adding Complex} {
     set res [$p add $p]
 
     list [$res toString]
-} {{ptolemy.data.ComplexToken(11.0 + 13.2i)}}
+} {{11.0 + 13.2i}}
 
 ######################################################################
 ####
@@ -160,7 +160,7 @@ test ComplexToken-3.1 {Test adding Complex and double} {
     set res3 [$d add $p]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {{ptolemy.data.ComplexToken(8.0 + 6.6i)} {ptolemy.data.ComplexToken(8.0 + 6.6i)} {ptolemy.data.ComplexToken(8.0 + 6.6i)}}
+} {{8.0 + 6.6i} {8.0 + 6.6i} {8.0 + 6.6i}}
 
 ######################################################################
 ####
@@ -174,7 +174,7 @@ test ComplexToken-3.2 {Test adding Complex and int} {
     set res3 [$i add $p]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {{ptolemy.data.ComplexToken(7.5 + 6.6i)} {ptolemy.data.ComplexToken(7.5 + 6.6i)} {ptolemy.data.ComplexToken(7.5 + 6.6i)}}
+} {{7.5 + 6.6i} {7.5 + 6.6i} {7.5 + 6.6i}}
 
 ######################################################################
 ####
@@ -186,7 +186,7 @@ test ComplexToken-4.0 {Test dividing Complex} {
     set res [$p divide $p]
 
     list [$res toString]
-} {{ptolemy.data.ComplexToken(1.0 + 0.0i)}}
+} {{1.0 + 0.0i}}
 
 ######################################################################
 ####
@@ -199,7 +199,7 @@ test ComplexToken-4.1 {Test dividing Complex and double} {
     set res2 [$p divideReverse $d]
 
     list [$res1 toString] [$res2 toString]
-} {{ptolemy.data.ComplexToken(4.0 + 2.0i)} {ptolemy.data.ComplexToken(0.2 - 0.1i)}}
+} {{4.0 + 2.0i} {0.2 - 0.1i}}
 
 ######################################################################
 ####
@@ -213,7 +213,7 @@ test ComplexToken-4.2 {Test dividing Complex and int} {
     set res3 [$i divide $p]
  
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {{ptolemy.data.ComplexToken(4.0 + 2.0i)} {ptolemy.data.ComplexToken(0.2 - 0.1i)} {ptolemy.data.ComplexToken(0.2 - 0.1i)}}
+} {{4.0 + 2.0i} {0.2 - 0.1i} {0.2 - 0.1i}}
 
 ######################################################################
 ####
@@ -229,7 +229,7 @@ test ComplexToken-5.0 {Test equality between Complex} {
     set res2 [$p1 {isEqualTo ptolemy.data.Token} $p2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+} {true false}
 
 ######################################################################
 ####
@@ -250,7 +250,7 @@ test ComplexToken-5.1 {Test equality between Complex and double} {
     set res4 [$d1 {isEqualTo ptolemy.data.Token} $p2]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+} {true false true false}
 
 ######################################################################
 ####
@@ -268,7 +268,7 @@ test ComplexToken-5.2 {Test equality between Complex and int} {
     set res4 [$i1 {isEqualTo ptolemy.data.Token} $p2]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+} {true false true false}
 
 ######################################################################
 ####
@@ -292,7 +292,7 @@ test ComplexToken-7.0 {Test multiply operator between Complex} {
     set res1 [$p1 multiply $p2]
 
     list [$res1 toString]
-} {{ptolemy.data.ComplexToken(-7.0 + 22.0i)}}
+} {{-7.0 + 22.0i}}
 
 ######################################################################
 ####
@@ -306,7 +306,7 @@ test ComplexToken-7.1 {Test multiply between Complex and double} {
     set res3 [$d multiply $p1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {{ptolemy.data.ComplexToken(12.0 + 18.0i)} {ptolemy.data.ComplexToken(12.0 + 18.0i)} {ptolemy.data.ComplexToken(12.0 + 18.0i)}}
+} {{12.0 + 18.0i} {12.0 + 18.0i} {12.0 + 18.0i}}
 
 ######################################################################
 ####
@@ -320,7 +320,7 @@ test ComplexToken-7.2 {Test multiply between Complex and int} {
     set res3 [$i multiply $p1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {{ptolemy.data.ComplexToken(12.0 + 18.0i)} {ptolemy.data.ComplexToken(12.0 + 18.0i)} {ptolemy.data.ComplexToken(12.0 + 18.0i)}}
+} {{12.0 + 18.0i} {12.0 + 18.0i} {12.0 + 18.0i}}
 
 ######################################################################
 ####
@@ -334,7 +334,7 @@ test ComplexToken-8.0 {Test subtract between Complex} {
     set res1 [$p1 subtract $p2]
 
     list [$res1 toString]
-} {{ptolemy.data.ComplexToken(-2.0 - 2.0i)}}
+} {{-2.0 - 2.0i}}
 
 ######################################################################
 ####
@@ -349,5 +349,5 @@ test ComplexToken-8.1 {Test subtract operator between Complex and double} {
     set res3 [$d subtract $p1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {{ptolemy.data.ComplexToken(-6.0 + 7.0i)} {ptolemy.data.ComplexToken(6.0 - 7.0i)} {ptolemy.data.ComplexToken(6.0 - 7.0i)}}
+} {{-6.0 + 7.0i} {6.0 - 7.0i} {6.0 - 7.0i}}
 

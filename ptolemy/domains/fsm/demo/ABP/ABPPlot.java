@@ -113,7 +113,7 @@ public class ABPPlot extends DEActor {
         // parameters
         _yMin = ((DoubleToken)_paramYMin.getToken()).doubleValue();
         _yMax = ((DoubleToken)_paramYMax.getToken()).doubleValue();
-        String legs = ((StringToken)_paramLegends.getToken()).stringValue();
+        String legs = ((StringToken)_paramLegends.getToken()).toString();
         if(!legs.equals("")) {
             StringTokenizer stokens = new StringTokenizer(legs);
             int index = 0;

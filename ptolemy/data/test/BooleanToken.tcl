@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test BooleanToken-1.0 {Create an empty instance} {
     set p [java::new ptolemy.data.BooleanToken]
     $p toString
-} {ptolemy.data.BooleanToken(false)}
+} {false}
 
 ######################################################################
 ####
@@ -61,7 +61,7 @@ test BooleanToken-1.0 {Create an empty instance} {
 test BooleanToken-1.1 {Create an instance with a value} {
     set token [java::new {ptolemy.data.BooleanToken boolean} true]
     $token toString
-} {ptolemy.data.BooleanToken(true)}
+} {true}
 
 ######################################################################
 ####
@@ -69,7 +69,7 @@ test BooleanToken-1.1 {Create an instance with a value} {
 test BooleanToken-1.2 {Create an instance from a string value} {
     set token [java::new {ptolemy.data.BooleanToken String} "true"]
     $token toString
-} {ptolemy.data.BooleanToken(true)}
+} {true}
 
 ######################################################################
 ####
@@ -93,7 +93,7 @@ test BooleanToken-3.0 {Create an non-empty instance and add it to Strings} {
     set token6 [$token4 add $token5]
 
     list [$token6 toString]
-} {{ptolemy.data.StringToken(value is truetrue.....)}}
+} {{value is truetrue.....}}
 
 ######################################################################
 ####

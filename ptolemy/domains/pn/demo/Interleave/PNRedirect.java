@@ -68,15 +68,15 @@ public class PNRedirect extends AtomicActor{
         int i;
         Token data;
 	System.out.println(this.getName() + " writes *before* " +
-                _initValue.stringValue() + " to " + _output.getName());
+                _initValue.toString() + " to " + _output.getName());
 	_output.broadcast(_initValue);
 	System.out.println(this.getName() + " writes " + 
-                _initValue.stringValue()+" to "+_output.getName());
+                _initValue.toString()+" to "+_output.getName());
 	while (true) {
 	    data = _input.get(0);
 	    _output.broadcast(data);
 	    System.out.println(this.getName() + " writes " + 
-                    data.stringValue()+" to "+_output.getName());
+                    data.toString()+" to "+_output.getName());
 	}
     }
 

@@ -164,7 +164,7 @@ public final class ImageSequence extends SDFAtomicActor {
         InputStream source = null;
 
         String fileroot = 
-            ((StringToken)imageURLTemplate.getToken()).stringValue();
+            ((StringToken)imageURLTemplate.getToken()).toString();
         _startFrame = ((IntToken)startFrame.getToken()).intValue();
         _endFrame = ((IntToken)endFrame.getToken()).intValue();
         _imageColumns = ((IntToken)imageColumns.getToken()).intValue();

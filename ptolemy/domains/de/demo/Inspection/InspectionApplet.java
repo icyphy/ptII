@@ -122,7 +122,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
      */
     public void executionFinished(Manager manager) {
         super.executionFinished(manager);
-        _query.setDisplay("average", _recorder.getLatest(0).stringValue());
+        _query.setDisplay("average", _recorder.getLatest(0).toString());
     }
 
     /** Initialize the applet.

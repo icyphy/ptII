@@ -65,7 +65,7 @@ public class PNImageSource extends AtomicActor {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-	String filename = ((StringToken)_filename.getToken()).stringValue();
+	String filename = ((StringToken)_filename.getToken()).toString();
         if (_file != null && !filename.equals("")) {
             try {
                 //_file = new BufferedReader(new FileReader(filename));
@@ -95,7 +95,7 @@ public class PNImageSource extends AtomicActor {
             if (!dataread.equals("P1")) {
                 System.out.println("First line is not P1. It is "+dataread);
                 throw new IllegalActionException("File format of "+
-                        ((StringToken)_filename.getToken()).stringValue()+
+                        ((StringToken)_filename.getToken()).toString()+
                         " not recognized");
             } else {
                 dataread = _file.readLine();

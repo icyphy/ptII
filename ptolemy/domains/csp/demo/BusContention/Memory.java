@@ -129,7 +129,7 @@ public class Memory extends CSPActor {
 
             if( br >= 0 && br < _numInChannels ) {
                 token = (StringToken)branches[br].getToken();
-                _strValue = token.stringValue();
+                _strValue = token.toString();
             } else if ( br >= _numInChannels && br < numBranches ) {
                 _strValue = "write";
             } else if( br == -1 ) {

@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test LongToken-1.0 {Create an empty instance} {
     set p [java::new ptolemy.data.LongToken]
     $p toString
-} {ptolemy.data.LongToken(0)}
+} {0}
 
 ######################################################################
 ####
@@ -61,7 +61,7 @@ test LongToken-1.0 {Create an empty instance} {
 test LongToken-1.1 {Create an instance with a value} {
     set token [java::new {ptolemy.data.LongToken long} 7]
     $token toString
-} {ptolemy.data.LongToken(7)}
+} {7}
 
 ######################################################################
 ####
@@ -69,7 +69,7 @@ test LongToken-1.1 {Create an instance with a value} {
 test LongToken-1.2 {Create an instance from a string value} {
     set token [java::new {ptolemy.data.LongToken String} "5"]
     $token toString
-} {ptolemy.data.LongToken(5)}
+} {5}
 
 ######################################################################
 ####
@@ -125,7 +125,7 @@ test LongToken-2.5 {Test additive identity} {
     set token [$p zero]
 
     list [$token toString]
-} {ptolemy.data.LongToken(0)}
+} {0}
 ######################################################################
 ####
 # 
@@ -134,7 +134,7 @@ test LongToken-2.6 {Test multiplicative identity} {
     set token [$p one]
 
     list [$token toString]
-} {ptolemy.data.LongToken(1)}
+} {1}
 
 ######################################################################
 ####
@@ -146,7 +146,7 @@ test LongToken-3.0 {Test adding longs.} {
     set res2 [$p addReverse $p]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.LongToken(14) ptolemy.data.LongToken(14)}
+} {14 14}
 ######################################################################
 ####
 # 
@@ -159,7 +159,7 @@ test LongToken-3.1 {Test adding longs and ints.} {
     set res3 [$tok2 add $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {ptolemy.data.LongToken(9) ptolemy.data.LongToken(9) ptolemy.data.LongToken(9)}
+} {9 9 9}
 
 ######################################################################
 ####
@@ -176,7 +176,7 @@ test LongToken-4.0 {Test dividing longs.} {
     set res4 [$tok1 divideReverse $tok2]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
-} {ptolemy.data.LongToken(1) ptolemy.data.LongToken(1) ptolemy.data.LongToken(0) ptolemy.data.LongToken(2)}
+} {1 1 0 2}
 
 ######################################################################
 ####
@@ -190,7 +190,7 @@ test LongToken-4.1 {Test dividing longs and ints.} {
     set res3 [$tok2 divide $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {ptolemy.data.LongToken(3) ptolemy.data.LongToken(0) ptolemy.data.LongToken(0)}
+} {3 0 0}
 
 ######################################################################
 ####
@@ -204,7 +204,7 @@ test LongToken-5.0 {Test equality between longs.} {
     set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+} {true false}
 ######################################################################
 ####
 # 
@@ -220,7 +220,7 @@ test LongToken-5.1 {Test equality between longs and ints.} {
     set res3 [$tok2 {isEqualTo ptolemy.data.Token} $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true)}
+} {true false true}
 
 ######################################################################
 ####
@@ -233,7 +233,7 @@ test LongToken-6.0 {Test modulo between longs.} {
     set res2 [$tok1 moduloReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.LongToken(1) ptolemy.data.LongToken(2)}
+} {1 2}
 ######################################################################
 ####
 # 
@@ -247,7 +247,7 @@ test LongToken-6.1 {Test modulo operator between longs and ints.} {
     set res3 [$tok2 modulo $tok1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {ptolemy.data.LongToken(1) ptolemy.data.LongToken(3) ptolemy.data.LongToken(3)}
+} {1 3 3}
 
 ######################################################################
 ####
@@ -260,7 +260,7 @@ test longToken-7.0 {Test multiply operator between longs.} {
     set res2 [$tok1 multiplyReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.LongToken(14) ptolemy.data.LongToken(14)}
+} {14 14}
 ######################################################################
 ####
 # 
@@ -274,7 +274,7 @@ test LongToken-7.1 {Test multiply operator between longs and ints.} {
     set res3 [$tok2 multiply $tok1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {ptolemy.data.LongToken(21) ptolemy.data.LongToken(21) ptolemy.data.LongToken(21)}
+} {21 21 21}
 
 
 ######################################################################
@@ -288,7 +288,7 @@ test LongToken-8.0 {Test subtract operator between longs.} {
     set res2 [$tok1 subtractReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.LongToken(5) ptolemy.data.LongToken(-5)}
+} {5 -5}
 ######################################################################
 ####
 # 
@@ -302,7 +302,7 @@ test LongToken-8.1 {Test subtract operator between longs and ints.} {
     set res3 [$tok2 subtract $tok1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {ptolemy.data.LongToken(4) ptolemy.data.LongToken(-4) ptolemy.data.LongToken(-4)}
+} {4 -4 -4}
 
 ######################################################################
 ####
@@ -318,4 +318,4 @@ test LongToken-9.0 {Create an non-empty instance and add it to Strings} {
     set token6 [$token4 add $token5]
 
     list [$token6 toString]
-} {{ptolemy.data.StringToken(value is 2323.....)}}
+} {{value is 2323.....}}

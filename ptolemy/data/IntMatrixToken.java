@@ -445,12 +445,6 @@ public final class IntMatrixToken extends MatrixToken {
 	return new IntMatrixToken(result);
     }
 
-    /** Return a representation of the token as a String.
-     */
-    public String toString() {
-        return getClass().getName() + "(" + stringValue() + ")";
-    }
-
     /** Return a new Token representing the additive identity.
      *  The returned token contains a matrix whose elements are
      *  all zero, and the size of the matrix is the same as the

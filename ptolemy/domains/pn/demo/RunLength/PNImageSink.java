@@ -70,7 +70,7 @@ public class PNImageSink extends AtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-	String filename = ((StringToken)_filename.getToken()).stringValue();
+	String filename = ((StringToken)_filename.getToken()).toString();
 	try {
             //_file = new BufferedReader(new FileReader(filename));
             _file = new FileOutputStream(filename);

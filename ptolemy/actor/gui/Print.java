@@ -107,7 +107,7 @@ public class Print extends TypedAtomicActor implements Placeable {
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
-                String value = token.stringValue();
+                String value = token.toString();
                 textArea.append(value + "\n");
 
                 // Regrettably, the default in swing is that the top

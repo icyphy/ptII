@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test Token-1.0 {Create an instance} {
     set p [java::new ptolemy.data.Token]
     $p toString
-} {ptolemy.data.Token}
+} {present}
 
 ######################################################################
 ####
@@ -199,5 +199,5 @@ test Token-5.0 {Test convert} {
     set p2 [java::new ptolemy.data.Token]
     set p3 [$p1 convert $p2]
     $p3 toString
-} {ptolemy.data.Token}
+} {present}
 

@@ -770,7 +770,8 @@ public class Variable extends Attribute implements Typeable {
 	    } else {
                 throw new IllegalActionException(this,
 		    "Variable.setTypeEquals(): the currently contained " +
-		    "token " + _token.toString() + " is not compatible " +
+		    "token " + _token.getClass().getName() + "(" +
+		    _token.toString() + ") is not compatible " +
 		    "with the desired type " + type.toString());
 	    }
         }

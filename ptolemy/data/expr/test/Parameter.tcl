@@ -268,7 +268,7 @@ test Parameter-8.0 {Check that previous dependencies are cleared when a new Toke
     set value2 [[$param1 getToken] toString]
     
     list $value2
-} {ptolemy.data.IntToken(20)}
+} {20}
 #################################
 ####
 # 
@@ -294,7 +294,7 @@ test Parameter-9.0 {Check that notification works properly when a Parameter is r
     set res2 [[$param3 getToken] toString]
 
     list $res1 $res2
-} {ptolemy.data.IntToken(6600) ptolemy.data.IntToken(1100)}
+} {6600 1100}
 
 #################################
 ####
@@ -308,7 +308,7 @@ test Parameter11.0 {Check that variables are in the scope of variables.} {
     $a setExpression "b"
     set ra [$a getToken]
     $ra toString
-} {ptolemy.data.IntToken(1)}
+} {1}
 
 #################################
 ####

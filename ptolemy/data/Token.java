@@ -46,7 +46,7 @@ so the default implementation in this base class throws an exception.
 <p>
 Instances of this
 base class can be used to represent pure events, i.e., to
-indicate that an event is present. To support this use, the stringValue()
+indicate that an event is present. To support this use, the toString()
 method returns the String "present".
 <p>
 
@@ -241,13 +241,13 @@ public class Token {
             + this.getClass().getName() + ".");
     }
 
-    /** Return the String "present" to indicate that an event is present.
-     *  This method should be overridden in the derived classes to
-     *  return the data in the token as a String.
-     *  @return The String "present".
+    /** Return a description of the token as a string.
+     *  In this base class, we return the fully qualified class name.
+     *  @return A description of this object as a String.
+     *  @deprecated Use toString() instead.
      */
     public String stringValue() {
-        return "present";
+        return toString();
     }
 
     /** Return a new Token whose value is the value of the argument Token
@@ -281,12 +281,13 @@ public class Token {
         + this.getClass().getName() + ".");
     }
 
-    /** Return a description of the token as a string.
-     *  In this base class, we return the fully qualified class name.
-     *  @return A description of this object as a String.
+    /** Return the String "present" to indicate that an event is present.
+     *  This method should be overridden in the derived classes to
+     *  return the data in the token as a String.
+     *  @return The String "present".
      */
     public String toString() {
-        return getClass().getName();
+        return "present";
     }
 
     /** Returns a new token representing the additive identity.

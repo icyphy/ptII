@@ -204,7 +204,7 @@ public class CruiseLinearizer extends CTActor{
      *  @exception IllegalActionException Never thrown.*
      */
     public void updateParameters() throws IllegalActionException {
-        String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
+        String taps = ((StringToken)paramAlphaP.getToken()).toString();
         StringTokenizer stokens = new StringTokenizer(taps);
         int index = 0;
         if(stokens.countTokens() < 5) {
@@ -216,7 +216,7 @@ public class CruiseLinearizer extends CTActor{
             _alphaP[index++] = (new Double(valueToken)).doubleValue();
         }
 
-        taps = ((StringToken)paramAlphaV.getToken()).stringValue();
+        taps = ((StringToken)paramAlphaV.getToken()).toString();
         stokens = new StringTokenizer(taps);
         index = 0;
         if(stokens.countTokens() < 4) {

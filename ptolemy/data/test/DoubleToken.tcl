@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test DoubleToken-1.0 {Create an empty instance} {
     set p [java::new ptolemy.data.DoubleToken]
     $p toString
-} {ptolemy.data.DoubleToken(0.0)}
+} {0.0}
 
 ######################################################################
 ####
@@ -61,7 +61,7 @@ test DoubleToken-1.0 {Create an empty instance} {
 test DoubleToken-1.1 {Create a non-empty instance from an double} {
     set p [java::new {ptolemy.data.DoubleToken double} 5.5]
     $p toString
-} {ptolemy.data.DoubleToken(5.5)}
+} {5.5}
 
 ######################################################################
 ####
@@ -69,7 +69,7 @@ test DoubleToken-1.1 {Create a non-empty instance from an double} {
 test DoubleToken-1.2 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.DoubleToken String} "7.77"]
     $p toString
-} {ptolemy.data.DoubleToken(7.77)}
+} {7.77}
 
 ######################################################################
 ####
@@ -125,7 +125,7 @@ test DoubleToken-2.5 {Test additive identity} {
     set token [$p zero]
 
     list [$token toString]
-} {ptolemy.data.DoubleToken(0.0)}
+} {0.0}
 ######################################################################
 ####
 # 
@@ -134,7 +134,7 @@ test DoubleToken-2.6 {Test multiplicative identity} {
     set token [$p one]
 
     list [$token toString]
-} {ptolemy.data.DoubleToken(1.0)}
+} {1.0}
 
 ######################################################################
 ####
@@ -146,7 +146,7 @@ test DoubleToken-3.0 {Test adding doubles.} {
     set res2 [$p addReverse $p]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.DoubleToken(24.4) ptolemy.data.DoubleToken(24.4)}
+} {24.4 24.4}
 ######################################################################
 ####
 # 
@@ -159,7 +159,7 @@ test DoubleToken-3.1 {Test adding doubles and ints.} {
     set res3 [$tok2 add $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {ptolemy.data.DoubleToken(14.2) ptolemy.data.DoubleToken(14.2) ptolemy.data.DoubleToken(14.2)}
+} {14.2 14.2 14.2}
 
 ######################################################################
 ####
@@ -171,7 +171,7 @@ test DoubleToken-4.0 {Test dividing doubles.} {
     set res2 [$p divideReverse $p]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.DoubleToken(1.0) ptolemy.data.DoubleToken(1.0)}
+} {1.0 1.0}
 ######################################################################
 ####
 # 
@@ -184,7 +184,7 @@ test DoubleToken-4.1 {Test dividing doubles and ints.} {
     set res3 [$tok2 divide $tok1]
  
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {ptolemy.data.DoubleToken(6.1) ptolemy.data.DoubleToken(0.164) ptolemy.data.DoubleToken(0.164)}
+} {6.1 0.164 0.164}
 
 ######################################################################
 ####
@@ -198,7 +198,7 @@ test DoubleToken-5.0 {Test equality between doubles.} {
     set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+} {true false}
 ######################################################################
 ####
 # 
@@ -214,7 +214,7 @@ test DoubleToken-5.1 {Test equality between doubles and ints.} {
     set res3 [$tok2 {isEqualTo ptolemy.data.Token} $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true)}
+} {true false true}
 
 ######################################################################
 ####
@@ -227,7 +227,7 @@ test DoubleToken-6.0 {Test modulo between doubles.} {
     set res2 [$tok1 moduloReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.DoubleToken(0.0) ptolemy.data.DoubleToken(2.2)}
+} {0.0 2.2}
 ######################################################################
 ####
 # 
@@ -241,7 +241,7 @@ test DoubleToken-6.1 {Test modulo operator between doubles and ints.} {
     set res3 [$tok2 modulo $tok1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {ptolemy.data.DoubleToken(0.2) ptolemy.data.DoubleToken(3.0) ptolemy.data.DoubleToken(3.0)}
+} {0.2 3.0 3.0}
 
 ######################################################################
 ####
@@ -254,7 +254,7 @@ test DoubleToken-7.0 {Test multiply operator between doubles.} {
     set res2 [$tok1 multiplyReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.DoubleToken(148.84) ptolemy.data.DoubleToken(26.84)}
+} {148.84 26.84}
 ######################################################################
 ####
 # 
@@ -268,7 +268,7 @@ test DoubleToken-7.1 {Test multiply operator between doubles and ints.} {
     set res3 [$tok2 multiply $tok1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {ptolemy.data.DoubleToken(36.6) ptolemy.data.DoubleToken(36.6) ptolemy.data.DoubleToken(36.6)}
+} {36.6 36.6 36.6}
 
 
 ######################################################################
@@ -282,7 +282,7 @@ test DoubleToken-8.0 {Test subtract operator between doubles.} {
     set res2 [$tok1 subtractReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {ptolemy.data.DoubleToken(0.0) ptolemy.data.DoubleToken(-10.0)}
+} {0.0 -10.0}
 ######################################################################
 ####
 # 
@@ -296,4 +296,4 @@ test DoubleToken-8.1 {Test subtract operator between doubles and ints.} {
     set res3 [$tok2 subtract $tok1]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {ptolemy.data.DoubleToken(9.2) ptolemy.data.DoubleToken(-9.2) ptolemy.data.DoubleToken(-9.2)}
+} {9.2 -9.2 -9.2}

@@ -182,36 +182,26 @@ public class ArrayToken extends Token {
 	return new ArrayToken(oneValArray);
     }
 
-    /** Return a String representing the value of this token.
+    /** Return a String representing of the value of this token.
+     *  @return A String.
+     *  @deprecated Use toString() instead.
      */
     public String stringValue() {
+	return toString();
+    }
+
+    /** Return a String representing of the value of this token.
+     *  @return A String.
+     */
+    public String toString() {
 	String s = "array[";
 	for (int i=0; i<length(); i++) {
-	    s += _value[i].stringValue();
+	    s += _value[i].toString();
 	    if (i < (length()-1)) {
 		s += ", ";
 	    }
 	}
 	return s + "]";
-    }
-
-    /** Return the name of this class, the class name of the element tokens,
-     *  and the string value of the element tokens. The format is
-     *  <i>class_name</i>(<i>element_token_class_name</i>)([<i>
-     *  string_value_of_element_tokens_separated_by_,</i>]).
-     *  @return A String.
-     */
-    public String toString() {
-	String result = getClass().getName() + "(" +
-			_value[0].getClass().getName() + ")([";
-	for (int i=0; i<_value.length; i++) {
-	    result += _value[i].stringValue();
-	    if (i < (_value.length-1)) {
-		result += ", ";
-	    }
-	}
-	result += "])";
-	return result;
     }
 
     /** Returns a new ArrayToken representing the additive identity.

@@ -62,7 +62,7 @@ test UtilityFunctions-1.0 {Check readFile method} {
     set value [$res toString]
 
     list $value
-} {ptolemy.data.StringToken(Greetings...)}
+} {Greetings...}
 ######################################################################
 ####
 # result is 50 as the string for the re-invoked parser is 3+43+4 !
@@ -76,4 +76,4 @@ test UtilityFunctions-1.0 {Check recurive calls to the parser with eval method} 
     set value [$res toString]
 
     list $value
-} {ptolemy.data.IntToken(50)}
+} {50}

@@ -79,7 +79,7 @@ public class ParameterEditor extends PtolemyQuery implements Configurer {
                 Parameter param = 
                     (Parameter) attribute;
                 addLine(param.getName(), param.getName(), 
-                        param.getToken().stringValue());
+                        param.getToken().toString());
                 attachParameter(param, param.getName());
             }
         }

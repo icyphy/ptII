@@ -89,8 +89,8 @@ public class DoubleToFix extends Transformer {
      */
 
     public void fire() throws IllegalActionException {
-	String _precision = ((StringToken) precision.getToken()).stringValue();
-	String _mode = ((StringToken) mode.getToken()).stringValue();
+	String _precision = ((StringToken) precision.getToken()).toString();
+	String _mode = ((StringToken) mode.getToken()).toString();
 	// System.out.println(" PRECISION: " + _precision);
 	if (input.hasToken(0)) {
     	    DoubleToken in = (DoubleToken)input.get(0);

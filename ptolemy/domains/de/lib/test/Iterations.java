@@ -81,7 +81,7 @@ public class Iterations {
         while (tokens.hasMoreElements()) {
             Token token = (Token)tokens.nextElement();
             if (result.length() > 0) result.append(", ");
-            result.append(token.stringValue());
+            result.append(token.toString());
         }
         return result.toString();
     }

@@ -132,7 +132,7 @@ public abstract class CTSingleSolverDirector extends CTDirector {
         if(param == ODESolver) {
             if(_debugging) _debug(getFullName() + " solver updating...");
             _solverclassname =
-                ((StringToken)((Parameter)param).getToken()).stringValue();
+                ((StringToken)((Parameter)param).getToken()).toString();
             _defaultSolver = _instantiateODESolver(_solverclassname);
             _setCurrentODESolver(_defaultSolver);
         } else {

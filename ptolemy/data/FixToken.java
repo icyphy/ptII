@@ -212,23 +212,25 @@ public class FixToken extends ScalarToken {
 	FixPoint result = _value.subtract( arg.fixpointValue() );
 	return new FixToken(result);
     }
-    /** Get the value contained in this Token as a String in the form
+    /** Return the value contained in this Token as a String in the form
+     *  of "<i>integerbits . fractionbits</i>". This giving the same
+     *  string representation on all possible platforms, facilitating a
+     *  more robust testing of FixToken.  
+     *  @return String in <i>integerbits . fractionbits</i> format
+     *  @deprecated Use toString() instead.
+     */
+    public String stringValue() {
+	return toString();
+    }
+
+    /** Return the value contained in this Token as a String in the form
      *  of "<i>integerbits . fractionbits</i>". This giving the same
      *  string representation on all possible platforms, facilitating a
      *  more robust testing of FixToken.  
      *  @return String in <i>integerbits . fractionbits</i> format
      */
-    public String stringValue() {
-	return _value.toString();
-    }
-
-    /** Return a description of the token as a string.
-     *  In this base class, we return the fully qualified class name.
-     *  @return A String representation of this token.
-     */
     public String toString() {
-        String str =  getClass().getName() + "(" + _value.doubleValue() + ")";
-        return str;
+	return _value.toString();
     }
 
     /** Returns a new token representing the additive identity with a

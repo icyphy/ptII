@@ -108,7 +108,7 @@ test IntMatrixToken-1.0 {Create an empty instance} {
 
     $p toString
 
-} {ptolemy.data.IntMatrixToken([0])}
+} {[0]}
 
 
 
@@ -126,7 +126,7 @@ test IntMatrixToken-1.1 {Create a non-empty instance from an int} {
 
     $p toString
 
-} {ptolemy.data.IntMatrixToken([5, 4; 3, 2])}
+} {[5, 4; 3, 2]}
 
 
 
@@ -238,7 +238,7 @@ test IntMatrixToken-2.5 {Test additive identity} {
 
     list [$token toString]
 
-} {{ptolemy.data.IntMatrixToken([0, 0; 0, 0])}}
+} {{[0, 0; 0, 0]}}
 
 ######################################################################
 
@@ -252,7 +252,7 @@ test IntMatrixToken-2.6 {Test multiplicative identity} {
 
     list [$token toString]
 
-} {{ptolemy.data.IntMatrixToken([1, 0; 0, 1])}}
+} {{[1, 0; 0, 1]}}
 
 
 
@@ -276,7 +276,7 @@ test IntMatrixToken-3.0 {Test adding ints.} {
 
     list [$res1 toString] 
 
-} {{ptolemy.data.IntMatrixToken([7, 5; 6, 3])}}
+} {{[7, 5; 6, 3]}}
 
 
 
@@ -322,7 +322,7 @@ test IntMatrixToken-5.0 {Test equality between ints.} {
 
     list [$res1 toString] [$res2 toString]
 
-} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
+} {true false}
 
 
 

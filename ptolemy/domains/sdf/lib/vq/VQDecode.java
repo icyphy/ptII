@@ -188,7 +188,7 @@ public final class VQDecode extends SDFAtomicActor {
         _codewords =  new IntToken[_blockCount];
         _blocks = new IntMatrixToken[_blockCount];
 
-        String filename = ((StringToken)codeBook.getToken()).stringValue();
+        String filename = ((StringToken)codeBook.getToken()).toString();
          try {
             if (filename != null) {
                 if(_baseurl != null) {

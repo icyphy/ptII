@@ -422,11 +422,12 @@ public class IntToken extends ScalarToken {
         return new IntToken(1);
     }
 
-    /** Get the value contained in this Token as a String.
-     *  @return The value contained in this token as a String.
+    /** Return the value contained in this Token as a String.
+     *  @return A String.
+     *  @deprecated Use toString() instead.
      */
     public String stringValue() {
-        return Integer.toString(_value);
+        return toString();
     }
 
     /** Return a new Token whose value is the value of the argument Token
@@ -477,12 +478,11 @@ public class IntToken extends ScalarToken {
         return new IntToken(result);
     }
 
-    /** Return a representation of the token as a String.
-     *  @return A String representation of this token.
+    /** Return the value contained in this Token as a String.
+     *  @return A String.
      */
     public String toString() {
-        String str = getClass().getName() + "(" + stringValue() + ")";
-        return str;
+        return Integer.toString(_value);
     }
 
     /** Returns a new token representing the additive identity.

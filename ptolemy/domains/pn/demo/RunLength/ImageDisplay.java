@@ -69,7 +69,7 @@ public final class ImageDisplay extends AtomicActor {
         _oldysize = 0;
 	StringToken name =
 	    (StringToken)((Parameter)getAttribute("FrameName")).getToken();
-	_framename = name.stringValue();
+	_framename = name.toString();
 	if(_panel == null) {
             _frame = new _PictureFrame(_framename);
             _panel = _frame.getPanel();
