@@ -4768,6 +4768,10 @@ echo "$as_me: WARNING: '\"$JAVAC\" quickTime3dTest.java' failed, looking for
 echo "$as_me: WARNING: 'Did not find \"$SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip\"'" >&2;}
 	  else
 	     QTJAVA_ZIP="$SAFE_PROGRAMFILES/$QTJAVA_ZIP"
+	     echo "$as_me:$LINENO: result: ok, found '$QTJAVA_ZIP'" >&5
+echo "${ECHO_T}ok, found '$QTJAVA_ZIP'" >&6
+	     echo "$as_me:$LINENO: checking again for Quicktime for Java" >&5
+echo $ECHO_N "checking again for Quicktime for Java... $ECHO_C" >&6
 	     if "$JAVAC" -classpath "$QTJAVA_ZIP" quickTimeTest.java ; then
 	         echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
@@ -4804,7 +4808,7 @@ fi
 if test -z "$PTQUICKTIME_DIR"; then
     ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/quicktime"
 else
-    if ! -z "$QTJAVA_ZIP"; then
+    if test ! -z "$QTJAVA_ZIP"; then
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
         <classpathentry kind=\"lib\" path=\"$QTJAVA_ZIP\"/>"
     fi
