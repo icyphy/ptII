@@ -54,7 +54,7 @@ JARFILE = 	$(TYPACKAGE).jar
 # Classes that are included in the jar file as Java Beand.
 JBEANCLASSES =	pt/plot/Plot.class pt/plot/PlotLive.class
 
-SRCDIRS = 	demo
+SRCDIRS = 	demo apps
 DIRS = 		$(SRCDIRS) doc #test
 
 # Sources that compile under JDK1.0.2 and later
