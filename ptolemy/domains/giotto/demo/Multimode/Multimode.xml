@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Multimode with SDF" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+<entity name="Multimode" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0.1">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 230]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -445,11 +445,17 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>mode1</title>
+
 <xLabel></xLabel>
+
 <yLabel></yLabel>
+
 <xRange min="0.0" max="0.8"/>
+
 <yRange min="1.0" max="10.0"/>
+
 <default connected="no" marks="dots" stems="yes"/>
+
 </plot>?>
                 </configure>
             </entity>
@@ -553,11 +559,17 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>mode2</title>
+
 <xLabel></xLabel>
+
 <yLabel></yLabel>
+
 <xRange min="0.0" max="0.8"/>
+
 <yRange min="1.0" max="10.0"/>
+
 <default connected="no" marks="dots" stems="yes"/>
+
 </plot>?>
                 </configure>
             </entity>
@@ -626,11 +638,17 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>outputs</title>
+
 <xLabel></xLabel>
+
 <yLabel></yLabel>
+
 <xRange min="0.0" max="0.8"/>
+
 <yRange min="1.0" max="10.0"/>
+
 <default connected="no" marks="dots" stems="yes"/>
+
 </plot>?>
         </configure>
     </entity>
