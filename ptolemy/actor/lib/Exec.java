@@ -376,11 +376,11 @@ public class Exec extends TypedAtomicActor {
 
             _outputGobbler =
                 new _StreamReaderThread(_process.getInputStream(),
-                        "Exec Stdout Gobbler");
+                        "Exec Stdout Gobbler" + _count++);
 
             _errorGobbler =
                 new _StreamReaderThread(_process.getErrorStream(),
-                        "Exec Stderr Gobbler", _outputGobbler);
+                        "Exec Stderr Gobbler" + _count++, _outputGobbler);
 
             _errorGobbler.start();
             _outputGobbler.start();
@@ -494,6 +494,7 @@ public class Exec extends TypedAtomicActor {
          *  if we read any data, notify the other thread. 
          */
         public void run() {
+            System.out.println("Exec: " + this + "run()");
             try {
                 InputStreamReader inputStreamReader =
                     new InputStreamReader(_inputStream);
@@ -523,6 +524,7 @@ public class Exec extends TypedAtomicActor {
                         _otherStream.notifyStringBuffer();
                     }
                 }
+                System.out.println("Exec: " + this + "run(): leaving");
             } catch (IOException ioe) {
                 _lockingStringBuffer.append("IOException: " + ioe);
             }
@@ -690,4 +692,8 @@ public class Exec extends TypedAtomicActor {
     // We use this to handle the case where we are blocking on
     // stdout, but stderr gets output and we want to proceed.
     private boolean _appendCalled = false;
+
+    // Instance count, used for debugging.
+    private static int _count = 0;
+
 }
