@@ -2,7 +2,7 @@
 
 Some algorithms are from
 
-[1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
+ [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
     Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
 
 This file was automatically generated with a preprocessor, so that
@@ -37,428 +37,427 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
 */
 
-        package ptolemy.math;
+package ptolemy.math;
 
 //////////////////////////////////////////////////////////////////////////
-        //// DoubleMatrixMath
+//// DoubleMatrixMath
+/**
+This class provides a library for mathematical operations on
+matrices of doubles.
 
-        /**
- * This class provides a library for mathematical operations on
- * matrices of doubles.
- * <p>
- * Rows and column numbers of matrices are specified with zero-based indices.
- *
- * All calls expect matrix arguments to be non-null. In addition, all
- * rows of the matrix are expected to have the same number of columns.
- *
- * @author Jeff Tsay
- */
+Rows and column numbers of matrices are specified with zero-based indices.
 
-        public class DoubleMatrixMath {
+All calls expect matrix arguments to be non-null. In addition, all
+rows of the matrix are expected to have the same number of columns.
+@author Jeff Tsay
+@version $Id$
+*/
 
-            // private constructor prevents construction of this class.
-            private DoubleMatrixMath() {}
+public class DoubleMatrixMath {
 
-            /** Return a new matrix that is constructed from the argument by
-             *  adding the second argument to every element.
-             *  @param matrix A matrix of doubles.
-             *  @param z The double number to add.
-             *  @return A new matrix of doubles.
-             */
-            public static final double[][] add(double[][] matrix, double z) {
-                double[][] retval = new double[_rows(matrix)][_columns(matrix)];
-                for (int i = 0; i < _rows(matrix); i++) {
-                    for (int j = 0; j < _columns(matrix); j++) {
-                        retval[i][j] = matrix[i][j] + z;
-                    }
+    // private constructor prevents construction of this class.
+    private DoubleMatrixMath() {}
+
+    /** Return a new matrix that is constructed from the argument by
+     *  adding the second argument to every element.
+     *  @param matrix A matrix of doubles.
+     *  @param z The double number to add.
+     *  @return A new matrix of doubles.
+     */
+    public static final double[][] add(double[][] matrix, double z) {
+        double[][] retval = new double[_rows(matrix)][_columns(matrix)];
+        for (int i = 0; i < _rows(matrix); i++) {
+            for (int j = 0; j < _columns(matrix); j++) {
+                retval[i][j] = matrix[i][j] + z;
+            }
+        }
+        return retval;
+    }
+
+    /** Return a new matrix that is constructed from the argument by
+     *  adding the second matrix to the first one.
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     *  @param matrix1 The first matrix of doubles.
+     *  @param matrix2 The second matrix of doubles.
+     *  @return A new matrix of doubles.
+     */
+    public static final double[][] add(final double[][] matrix1,
+            final double[][] matrix2) {
+        _checkSameDimension("add", matrix1, matrix2);
+
+        double[][] retval = new double[_rows(matrix1)][_columns(matrix1)];
+        for (int i = 0; i < _rows(matrix1); i++) {
+            for (int j = 0; j < _columns(matrix1); j++) {
+                retval[i][j] = matrix1[i][j] + matrix2[i][j];
+            }
+        }
+        return retval;
+    }
+
+    /** Return a new matrix that is a copy of the matrix argument.
+     *  @param matrix A matrix of doubles.
+     *  @return A new matrix of doubles.
+     */
+    public static final double[][] allocCopy(final double[][] matrix) {
+        return crop(matrix, 0, 0, _rows(matrix), _columns(matrix)) ;
+    }
+
+    /** Return a new array that is formed by applying an instance of a
+     *  DoubleBinaryOperation to each element in the input matrix,
+     *  using z as the left operand in all cases and the matrix elements
+     *  as the right operands (op.operate(z, matrix[i][j])).
+     */
+    public static final double[][] applyBinaryOperation(
+            DoubleBinaryOperation op, final double z, final double[][] matrix) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+
+        double[][] retval = new double[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; i < columns; j++) {
+                retval[i][j] = op.operate(z, matrix[i][j]);
+            }
+        }
+        return retval;
+    }
+
+    /** Return a new array that is formed by applying an instance of a
+     *  DoubleBinaryOperation to each element in the input matrix,
+     *  using the matrix elements as the left operands and z as the right
+     *  operand in all cases (op.operate(matrix[i][j], z)).
+     */
+    public static final double[][] applyBinaryOperation(
+            DoubleBinaryOperation op, final double[][] matrix, final double z) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+
+        double[][] retval = new double[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; i < columns; j++) {
+                retval[i][j] = op.operate(matrix[i][j], z);
+            }
+        }
+        return retval;
+    }
+
+    /** Return a new array that is formed by applying an instance of a
+     *  DoubleBinaryOperation to the two matrices, element by element,
+     *  using the elements of the first matrix as the left operands and the
+     *  elements of the second matrix as the right operands.
+     *  (op.operate(matrix1[i][j], matrix2[i][j])).
+     *  If the matrices are not the same size, throw an IllegalArgumentException.
+     */
+    public static final double[][] applyBinaryOperation(
+            DoubleBinaryOperation op, final double[][] matrix1, final double[][] matrix2) {
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
+
+        _checkSameDimension("applyBinaryOperation", matrix1, matrix2);
+
+        double[][] retval = new double[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; i < columns; j++) {
+                retval[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
+            }
+        }
+        return retval;
+    }
+
+    /** Return a new array that is formed by applying an instance of a
+     *  DoubleUnaryOperation to each element in the input matrix
+     *  (op.operate(matrix[i][j])).
+     */
+    public static final double[][] applyUnaryOperation(
+            final DoubleUnaryOperation op, final double[][] matrix) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+
+        double[][] retval = new double[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; i < columns; j++) {
+                retval[i][j] = op.operate(matrix[i][j]);
+            }
+        }
+        return retval;
+    }
+
+
+
+    /** Return a new matrix that is a sub-matrix of the input
+     *  matrix argument. The row and column from which to start
+     *  and the number of rows and columns to span are specified.
+     *  @param matrix A matrix of doubles.
+     *  @param rowStart An int specifying which row to start on.
+     *  @param colStart An int specifying which column to start on.
+     *  @param rowSpan An int specifying how many rows to copy.
+     *  @param colSpan An int specifying how many columns to copy.
+     */
+    public static final double[][] crop(final double[][] matrix,
+            final int rowStart, final int colStart,
+            final int rowSpan, final int colSpan) {
+        double[][] retval = new double[rowSpan][colSpan];
+        for (int i = 0; i < rowSpan; i++) {
+            System.arraycopy(matrix[rowStart + i], colStart,
+                    retval[i], 0, colSpan);
+        }
+        return retval;
+    }
+
+    /** Return the determinate of a square matrix.
+     *  If the matrix is not square, throw an IllegalArgumentException.
+     *  This algorithm uses LU decomposition, and is taken from [1]
+     */
+    public static final double determinate(final double[][] matrix) {
+        _checkSquare("determinate", matrix);
+
+        double[][] a;
+        double det = 1.0;
+        int n = _rows(matrix);
+
+        a = allocCopy(matrix);
+
+        for (int pivot = 0; pivot < n-1; pivot++) {
+            // find the biggest absolute pivot
+            double big = Math.abs(a[pivot][pivot]);
+            int swapRow = 0; // initialize for no swap
+            for (int row = pivot + 1; row < n; row++) {
+                double absElement = Math.abs(a[row][pivot]);
+                if (absElement > big) {
+                    swapRow = row;
+                    big = absElement;
                 }
-                return retval;
             }
 
-            /** Return a new matrix that is constructed from the argument by
-             *  adding the second matrix to the first one.
-             *  If the two matrices are not the same size, throw an IllegalArgumentException.
-             *  @param matrix1 The first matrix of doubles.
-             *  @param matrix2 The second matrix of doubles.
-             *  @return A new matrix of doubles.
-             */
-            public static final double[][] add(final double[][] matrix1,
-                    final double[][] matrix2) {
-                _checkSameDimension("add", matrix1, matrix2);
+            // unless swapRow is still zero we must swap two rows
+            if (swapRow != 0) {
+                double[] aPtr = a[pivot];
+                a[pivot] = a[swapRow];
+                a[swapRow] = aPtr;
 
-                double[][] retval = new double[_rows(matrix1)][_columns(matrix1)];
-                for (int i = 0; i < _rows(matrix1); i++) {
-                    for (int j = 0; j < _columns(matrix1); j++) {
-                        retval[i][j] = matrix1[i][j] + matrix2[i][j];
-                    }
-                }
-                return retval;
+                // change sign of determinate because of swap
+                det *= -a[pivot][pivot];
+            } else {
+                // calculate the determinate by the product of the pivots
+                det *= a[pivot][pivot];
             }
 
-            /** Return a new matrix that is a copy of the matrix argument.
-             *  @param matrix A matrix of doubles.
-             *  @return A new matrix of doubles.
-             */
-            public static final double[][] allocCopy(final double[][] matrix) {
-                return crop(matrix, 0, 0, _rows(matrix), _columns(matrix)) ;
-            }
+            // if almost singular matrix, give up now
 
-            /** Return a new array that is formed by applying an instance of a
-             *  DoubleBinaryOperation to each element in the input matrix,
-             *  using z as the left operand in all cases and the matrix elements
-             *  as the right operands (op.operate(z, matrix[i][j])).
-             */
-            public static final double[][] applyBinaryOperation(
-                    DoubleBinaryOperation op, final double z, final double[][] matrix) {
-                int rows = _rows(matrix);
-                int columns = _columns(matrix);
-
-                double[][] retval = new double[rows][columns];
-                for (int i = 0; i < rows; i++) {
-                    for (int j = 0; i < columns; j++) {
-                        retval[i][j] = op.operate(z, matrix[i][j]);
-                    }
-                }
-                return retval;
-            }
-
-            /** Return a new array that is formed by applying an instance of a
-             *  DoubleBinaryOperation to each element in the input matrix,
-             *  using the matrix elements as the left operands and z as the right
-             *  operand in all cases (op.operate(matrix[i][j], z)).
-             */
-            public static final double[][] applyBinaryOperation(
-                    DoubleBinaryOperation op, final double[][] matrix, final double z) {
-                int rows = _rows(matrix);
-                int columns = _columns(matrix);
-
-                double[][] retval = new double[rows][columns];
-                for (int i = 0; i < rows; i++) {
-                    for (int j = 0; i < columns; j++) {
-                        retval[i][j] = op.operate(matrix[i][j], z);
-                    }
-                }
-                return retval;
-            }
-
-            /** Return a new array that is formed by applying an instance of a
-             *  DoubleBinaryOperation to the two matrices, element by element,
-             *  using the elements of the first matrix as the left operands and the
-             *  elements of the second matrix as the right operands.
-             *  (op.operate(matrix1[i][j], matrix2[i][j])).
-             *  If the matrices are not the same size, throw an IllegalArgumentException.
-             */
-            public static final double[][] applyBinaryOperation(
-                    DoubleBinaryOperation op, final double[][] matrix1, final double[][] matrix2) {
-                int rows = _rows(matrix1);
-                int columns = _columns(matrix1);
-
-                _checkSameDimension("applyBinaryOperation", matrix1, matrix2);
-
-                double[][] retval = new double[rows][columns];
-                for (int i = 0; i < rows; i++) {
-                    for (int j = 0; i < columns; j++) {
-                        retval[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
-                    }
-                }
-                return retval;
-            }
-
-            /** Return a new array that is formed by applying an instance of a
-             *  DoubleUnaryOperation to each element in the input matrix
-             *  (op.operate(matrix[i][j])).
-             */
-            public static final double[][] applyUnaryOperation(
-                    final DoubleUnaryOperation op, final double[][] matrix) {
-                int rows = _rows(matrix);
-                int columns = _columns(matrix);
-
-                double[][] retval = new double[rows][columns];
-                for (int i = 0; i < rows; i++) {
-                    for (int j = 0; i < columns; j++) {
-                        retval[i][j] = op.operate(matrix[i][j]);
-                    }
-                }
-                return retval;
-            }
-
-
-
-            /** Return a new matrix that is a sub-matrix of the input
-             *  matrix argument. The row and column from which to start
-             *  and the number of rows and columns to span are specified.
-             *  @param matrix A matrix of doubles.
-             *  @param rowStart An int specifying which row to start on.
-             *  @param colStart An int specifying which column to start on.
-             *  @param rowSpan An int specifying how many rows to copy.
-             *  @param colSpan An int specifying how many columns to copy.
-             */
-            public static final double[][] crop(final double[][] matrix,
-                    final int rowStart, final int colStart,
-                    final int rowSpan, final int colSpan) {
-                double[][] retval = new double[rowSpan][colSpan];
-                for (int i = 0; i < rowSpan; i++) {
-                    System.arraycopy(matrix[rowStart + i], colStart,
-                            retval[i], 0, colSpan);
-                }
-                return retval;
-            }
-
-            /** Return the determinate of a square matrix.
-             *  If the matrix is not square, throw an IllegalArgumentException.
-             *  This algorithm uses LU decomposition, and is taken from [1]
-             */
-            public static final double determinate(final double[][] matrix) {
-                _checkSquare("determinate", matrix);
-
-                double[][] a;
-                double det = 1.0;
-                int n = _rows(matrix);
-
-                a = allocCopy(matrix);
-
-                for (int pivot = 0; pivot < n-1; pivot++) {
-                    // find the biggest absolute pivot
-                    double big = Math.abs(a[pivot][pivot]);
-                    int swapRow = 0; // initialize for no swap
-                    for (int row = pivot + 1; row < n; row++) {
-                        double absElement = Math.abs(a[row][pivot]);
-                        if (absElement > big) {
-                            swapRow = row;
-                            big = absElement;
-                        }
-                    }
-
-                    // unless swapRow is still zero we must swap two rows
-                    if (swapRow != 0) {
-                        double[] aPtr = a[pivot];
-                        a[pivot] = a[swapRow];
-                        a[swapRow] = aPtr;
-
-                        // change sign of determinate because of swap
-                        det *= -a[pivot][pivot];
-                    } else {
-                        // calculate the determinate by the product of the pivots
-                        det *= a[pivot][pivot];
-                    }
-
-                    // if almost singular matrix, give up now
-
-                    // FIXME use epsilon instead of this ugly constant
-                    if (Math.abs(det) <= 1E-50) {
-                        return det;
-                    }
-
-                    double pivotInverse = 1.0 / a[pivot][pivot];
-                    for (int col = pivot + 1; col < n; col++) {
-                        a[pivot][col] *= pivotInverse;
-                    }
-
-                    for (int row = pivot + 1; row < n; row++) {
-                        double temp = a[row][pivot];
-                        for (int col = pivot + 1; col < n; col++) {
-                            a[row][col] -= a[pivot][col] * temp;
-                        }
-                    }
-                }
-
-                // last pivot, no reduction required
-                det *= a[n-1][n-1];
-
+            // FIXME use epsilon instead of this ugly constant
+            if (Math.abs(det) <= 1E-50) {
                 return det;
             }
 
-            /** Return a new matrix that is constructed by placing the elements of the input
-             *  array on the diagonal of the square matrix, starting from the top left corner
-             *  down to the bottom right corner. All other elements are zero. The size of of the
-             *  matrix is n x n, where n is the length of the input array.
-             */
-            public static final double[][] diag(final double[] array) {
-                int n = array.length;
+            double pivotInverse = 1.0 / a[pivot][pivot];
+            for (int col = pivot + 1; col < n; col++) {
+                a[pivot][col] *= pivotInverse;
+            }
 
-                double[][] retval = new double[n][n];
-
-                // assume the matrix is zero-filled
-
-                for (int i = 0; i < n; i++) {
-                    retval[i][i] = array[i];
+            for (int row = pivot + 1; row < n; row++) {
+                double temp = a[row][pivot];
+                for (int col = pivot + 1; col < n; col++) {
+                    a[row][col] -= a[pivot][col] * temp;
                 }
-
-                return retval;
             }
+        }
+
+        // last pivot, no reduction required
+        det *= a[n-1][n-1];
+
+        return det;
+    }
+
+    /** Return a new matrix that is constructed by placing the elements of the input
+     *  array on the diagonal of the square matrix, starting from the top left corner
+     *  down to the bottom right corner. All other elements are zero. The size of of the
+     *  matrix is n x n, where n is the length of the input array.
+     */
+    public static final double[][] diag(final double[] array) {
+        int n = array.length;
+
+        double[][] retval = new double[n][n];
+
+        // assume the matrix is zero-filled
+
+        for (int i = 0; i < n; i++) {
+            retval[i][i] = array[i];
+        }
+
+        return retval;
+    }
 
 
-            /** Return a new matrix that is constructed by element by element
-             *  division of the two matrix arguments. Each element of the
-             *  first matrix is divided by the corresponding element of the
-             *  second matrix.
-             *  If the two matrices are not the same size, throw an IllegalArgumentException.
-             */
-            public static final double[][] divideElements(final double[][] matrix1,
-                    final double[][] matrix2) {
-                int rows = _rows(matrix1);
-                int columns = _columns(matrix1);
+    /** Return a new matrix that is constructed by element by element
+     *  division of the two matrix arguments. Each element of the
+     *  first matrix is divided by the corresponding element of the
+     *  second matrix.
+     *  If the two matrices are not the same size, throw an IllegalArgumentException.
+     */
+    public static final double[][] divideElements(final double[][] matrix1,
+            final double[][] matrix2) {
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
 
-                _checkSameDimension("divideElements", matrix1, matrix2);
+        _checkSameDimension("divideElements", matrix1, matrix2);
 
-                double[][] retval = new double[rows][columns];
-                for (int i = 0; i < rows; i++) {
-                    for (int j = 0; j < columns; j++) {
-                        retval[i][j] = matrix1[i][j] / matrix2[i][j];
-                    }
-                }
-                return retval;
+        double[][] retval = new double[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                retval[i][j] = matrix1[i][j] / matrix2[i][j];
             }
+        }
+        return retval;
+    }
 
-            /** Return a new array that is filled with the contents of the matrix.
-             *  The doubles are stored row by row, i.e. using the notation
-             *  (row, column), the entries of the array are in the following order
-             *  for a (m, n) matrix :
-             *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
-             *  @param A matrix of doubles.
-             *  @return A new array of doubles.
-             */
-            public static final double[] fromMatrixToArray(final double[][] matrix) {
-                return fromMatrixToArray(matrix, _rows(matrix), _columns(matrix));
+    /** Return a new array that is filled with the contents of the matrix.
+     *  The doubles are stored row by row, i.e. using the notation
+     *  (row, column), the entries of the array are in the following order
+     *  for a (m, n) matrix :
+     *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
+     *  @param A matrix of doubles.
+     *  @return A new array of doubles.
+     */
+    public static final double[] fromMatrixToArray(final double[][] matrix) {
+        return fromMatrixToArray(matrix, _rows(matrix), _columns(matrix));
+    }
+
+    /** Return a new array that is filled with the contents of the matrix.
+     *  The maximum numbers of rows and columns to copy are specified so
+     *  that entries lying outside of this range can be ignored. The
+     *  maximum rows to copy cannot exceed the number of rows in the matrix,
+     *  and the maximum columns to copy cannot exceed the number of columns
+     *  in the matrix.
+     *  The doubles are stored row by row, i.e. using the notation
+     *  (row, column), the entries of the array are in the following order
+     *  for a matrix, limited to m rows and n columns :
+     *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
+     *  @param matrix A matrix of doubles.
+     *  @return A new array of doubles.
+     */
+    public static final double[] fromMatrixToArray(final double[][] matrix,
+            int maxRow, int maxCol) {
+        double[] retval = new double[maxRow * maxCol];
+        for (int i = 0; i < maxRow; i++) {
+            System.arraycopy(matrix[i], 0, retval, i * maxCol, maxCol);
+        }
+        return retval;
+    }
+
+    /** Return a new matrix, which is defined by Aij = 1/(i+j+1),
+     *  the Hilbert matrix. The matrix is square with one
+     *  dimension specifier required. This matrix is useful because it always
+     *  has an inverse.
+     */
+    public static final double[][] hilbert(final int dim) {
+        double[][] retval = new double[dim][dim];
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                retval[i][j] = 1.0 / (double) (i + j + 1);
             }
-
-            /** Return a new array that is filled with the contents of the matrix.
-             *  The maximum numbers of rows and columns to copy are specified so
-             *  that entries lying outside of this range can be ignored. The
-             *  maximum rows to copy cannot exceed the number of rows in the matrix,
-             *  and the maximum columns to copy cannot exceed the number of columns
-             *  in the matrix.
-             *  The doubles are stored row by row, i.e. using the notation
-             *  (row, column), the entries of the array are in the following order
-             *  for a matrix, limited to m rows and n columns :
-             *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
-             *  @param matrix A matrix of doubles.
-             *  @return A new array of doubles.
-             */
-            public static final double[] fromMatrixToArray(final double[][] matrix,
-                    int maxRow, int maxCol) {
-                double[] retval = new double[maxRow * maxCol];
-                for (int i = 0; i < maxRow; i++) {
-                    System.arraycopy(matrix[i], 0, retval, i * maxCol, maxCol);
-                }
-                return retval;
-            }
-
-            /** Return a new matrix, which is defined by Aij = 1/(i+j+1),
-             *  the Hilbert matrix. The matrix is square with one
-             *  dimension specifier required. This matrix is useful because it always
-             *  has an inverse.
-             */
-            public static final double[][] hilbert(final int dim) {
-                double[][] retval = new double[dim][dim];
-                for (int i = 0; i < dim; i++) {
-                    for (int j = 0; j < dim; j++) {
-                        retval[i][j] = 1.0 / (double) (i + j + 1);
-                    }
-                }
-                return retval;
-            }
+        }
+        return retval;
+    }
 
 
-            /** Return an new identity matrix with the specified dimension. The
-             *  matrix is square, so only one dimension specifier is needed.
-             */
-            public static final double[][] identity(final int dim) {
-                double[][] retval = new double[dim][dim];
-                // we rely on the fact Java fills the allocated matrix with 0's
-                for (int i = 0; i < dim; i++) {
-                    retval[i][i] = 1.0;
-                }
-                return retval;
-            }
+    /** Return an new identity matrix with the specified dimension. The
+     *  matrix is square, so only one dimension specifier is needed.
+     */
+    public static final double[][] identity(final int dim) {
+        double[][] retval = new double[dim][dim];
+        // we rely on the fact Java fills the allocated matrix with 0's
+        for (int i = 0; i < dim; i++) {
+            retval[i][i] = 1.0;
+        }
+        return retval;
+    }
 
-            /** Return a new matrix that is constructed by inverting the input
-             *  matrix. If the input matrix is singular, null is returned.
-             *  This method is from [1]
-             */
-            public static final double[][] inverse(final double[][] A) {
-                _checkSquare("inverse", A);
+    /** Return a new matrix that is constructed by inverting the input
+     *  matrix. If the input matrix is singular, null is returned.
+     *  This method is from [1]
+     */
+    public static final double[][] inverse(final double[][] A) {
+        _checkSquare("inverse", A);
 
-                int n = _rows(A);
+        int n = _rows(A);
 
-                double[][] Ai = allocCopy(A);
+        double[][] Ai = allocCopy(A);
 
-                // We depend on each of the elements being initialized to 0
-                int[] pivotFlag = new int[n];
-                int[] swapCol = new int[n];
-                int[] swapRow = new int[n];
+        // We depend on each of the elements being initialized to 0
+        int[] pivotFlag = new int[n];
+        int[] swapCol = new int[n];
+        int[] swapRow = new int[n];
 
-                int irow = 0, icol = 0;
+        int irow = 0, icol = 0;
 
-                for (int i = 0; i < n; i++) { // n iterations of pivoting
-                    // find the biggest pivot element
-                    double big = 0.0;
-                    for (int row = 0; row < n; row++) {
-                        if (pivotFlag[row] == 0) {
-                            for (int col = 0; col < n; col++) {
-                                if (pivotFlag[col] == 0) {
-                                    double absElement = Math.abs(Ai[row][col]);
-                                    if (absElement >= big) {
-                                        big = absElement;
-                                        irow = row;
-                                        icol = col;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    pivotFlag[icol]++;
-
-                    // swap rows to make this diagonal the biggest absolute pivot
-                    if (irow != icol) {
-                        for (int col = 0; col < n; col++) {
-                            double temp = Ai[irow][col];
-                            Ai[irow][col] = Ai[icol][col];
-                            Ai[icol][col] = temp;
-                        }
-                    }
-
-                    // store what we swapped
-                    swapRow[i] = irow;
-                    swapCol[i] = icol;
-
-                    // if the pivot is zero, the matrix is singular
-                    if (Ai[icol][icol] == 0.0) {
-                        return null;
-                    }
-
-                    // divide the row by the pivot
-                    double pivotInverse = 1.0 / Ai[icol][icol];
-                    Ai[icol][icol] = 1.0; // pivot = 1 to avoid round off
+        for (int i = 0; i < n; i++) { // n iterations of pivoting
+            // find the biggest pivot element
+            double big = 0.0;
+            for (int row = 0; row < n; row++) {
+                if (pivotFlag[row] == 0) {
                     for (int col = 0; col < n; col++) {
-                        Ai[icol][col] *= pivotInverse;
-                    }
-
-                    // fix the other rows by subtracting
-                    for (int row = 0; row < n; row++) {
-                        if (row != icol) {
-                            double temp = Ai[row][icol];
-                            Ai[row][icol] = 0.0;
-                            for (int col = 0; col < n; col++) {
-                                Ai[row][col] -= Ai[icol][col] * temp;
+                        if (pivotFlag[col] == 0) {
+                            double absElement = Math.abs(Ai[row][col]);
+                            if (absElement >= big) {
+                                big = absElement;
+                                irow = row;
+                                icol = col;
                             }
                         }
                     }
                 }
+            }
+            pivotFlag[icol]++;
 
-                // fix the effect of all the swaps for final answer
-                for (int swap = n - 1; swap >= 0; swap--) {
-                    if (swapRow[swap] != swapCol[swap]) {
-                        for (int row = 0; row < n; row++) {
-                            double temp = Ai[row][swapRow[swap]];
-                            Ai[row][swapRow[swap]] = Ai[row][swapCol[swap]];
-                            Ai[row][swapCol[swap]] = temp;
-                        }
+            // swap rows to make this diagonal the biggest absolute pivot
+            if (irow != icol) {
+                for (int col = 0; col < n; col++) {
+                    double temp = Ai[irow][col];
+                    Ai[irow][col] = Ai[icol][col];
+                    Ai[icol][col] = temp;
+                }
+            }
+
+            // store what we swapped
+            swapRow[i] = irow;
+            swapCol[i] = icol;
+
+            // if the pivot is zero, the matrix is singular
+            if (Ai[icol][icol] == 0.0) {
+                return null;
+            }
+
+            // divide the row by the pivot
+            double pivotInverse = 1.0 / Ai[icol][icol];
+            Ai[icol][icol] = 1.0; // pivot = 1 to avoid round off
+            for (int col = 0; col < n; col++) {
+                Ai[icol][col] *= pivotInverse;
+            }
+
+            // fix the other rows by subtracting
+            for (int row = 0; row < n; row++) {
+                if (row != icol) {
+                    double temp = Ai[row][icol];
+                    Ai[row][icol] = 0.0;
+                    for (int col = 0; col < n; col++) {
+                        Ai[row][col] -= Ai[icol][col] * temp;
                     }
                 }
-
-                return Ai;
             }
+        }
+
+        // fix the effect of all the swaps for final answer
+        for (int swap = n - 1; swap >= 0; swap--) {
+            if (swapRow[swap] != swapCol[swap]) {
+                for (int row = 0; row < n; row++) {
+                    double temp = Ai[row][swapRow[swap]];
+                    Ai[row][swapRow[swap]] = Ai[row][swapCol[swap]];
+                    Ai[row][swapCol[swap]] = temp;
+                }
+            }
+        }
+
+        return Ai;
+    }
 
 
             /** Replace the first matrix argument elements with the values of
