@@ -63,7 +63,6 @@ public class MonitorValue extends Sink {
         super(container, name);
 
         value = new Parameter(this, "value");
-        value.setTypeSameAs(input);
     }
 
     ///////////////////////////////////////////////////////////////////
