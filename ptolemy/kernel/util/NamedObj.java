@@ -1195,7 +1195,7 @@ public class NamedObj implements
      *  resets the override property.
      *  @return True if propagateValues() has been called.
      *  @see #propagateValue()
-     *  @see #setDerivedLevel()
+     *  @see #setDerivedLevel(int)
      */
     public boolean isOverridden() {
         // Return true only if _override is a list of length 1
