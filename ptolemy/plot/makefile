@@ -233,16 +233,12 @@ include $(ROOT)/mk/ptdist.mk
 # Fix the temporary directory used when building a distribution
 fixtmpdist:
 	@echo "Fixing $(PTTMPDIR)/$(PTDIST)"
-	echo "all:" > $(PTTMPDIR)/$(PTDIST)/makefile
-	echo "	cd ptolemy/plot; $(MAKE) all" >> $(PTTMPDIR)/$(PTDIST)/makefile
-	echo "sources:" > $(PTTMPDIR)/$(PTDIST)/makefile
-	echo "	cd ptolemy/plot; $(MAKE) sources" >> \
+	echo "makefiles all sources install docs depend checkjunk sccsinfo sccsclean test extraclean clean:" > $(PTTMPDIR)/$(PTDIST)/makefile
+	echo '	cd ptolemy/plot; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
+	echo "realclean itcldocs tests idocs weblint dists:" >> \
 		$(PTTMPDIR)/$(PTDIST)/makefile
-	echo "install:" >> $(PTTMPDIR)/$(PTDIST)/makefile
-	echo "	cd ptolemy/plot; $(MAKE) install" >> \
+	echo "	echo \"Nothing need be done for $$@ in ptolemy/plot\"" >> \
 		$(PTTMPDIR)/$(PTDIST)/makefile
-	echo "clean:" >> $(PTTMPDIR)/$(PTDIST)/makefile
-	echo "	cd ptolemy/plot; $(MAKE) clean" >> $(PTTMPDIR)/$(PTDIST)/makefile
 	echo "$(PTDIST) - A Java plotting package" > \
 		$(PTTMPDIR)/$(PTDIST)/README
 	echo "Ptplot is a set of two dimensional signal plotters >> \
