@@ -415,6 +415,22 @@ public class UtilityFunctions {
 	return new LongToken(Runtime.getRuntime().totalMemory());
     }
 
+    /** Return the zero matrix with the given number of rows and columns.
+     *  @return The zero matrix with the given number of rows and columns.
+     */
+    public static DoubleMatrixToken zeroMatrix(int rows, int columns) {
+        double[][] mtr = new double[rows][columns];
+	DoubleMatrixToken result = null;
+	try {
+            result = new DoubleMatrixToken(mtr, DoubleMatrixToken.DO_NOT_COPY);
+	} catch (IllegalActionException ex) {
+            throw new InternalErrorException("UtilityFunctions.zeroMatrix: "
+                    + "Cannot create DoubleMatrixToken. "
+                    + ex.getMessage());
+        }
+        return result;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

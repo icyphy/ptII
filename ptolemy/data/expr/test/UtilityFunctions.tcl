@@ -143,3 +143,13 @@ test UtilityFunctions-3.1 {Check readMatrix method twice} {
     set matrix [$tree evaluateParseTree]
     $matrix toString
 } {[1.0, 2.0; 3.0, 4.0]}
+
+######################################################################
+####
+test UtilityFunctions-5.1 {Test zeroMatrix} {
+    set parser [java::new ptolemy.data.expr.PtParser]
+    set tree [$parser generateParseTree "zeroMatrix(2,3)"]
+    set matrix [$tree evaluateParseTree]
+    $matrix toString
+} {[0.0, 0.0, 0.0; 0.0, 0.0, 0.0]}
+
