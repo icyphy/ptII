@@ -322,7 +322,8 @@ bldmastrcoverage:
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
 		remote1configure \
 		remote1distjsall \
-		remote1distjsrestore
+		remote1distjsrestore \
+		remote1build
 
 # Remove the remote dist
 remote1nuke:
@@ -464,6 +465,17 @@ remote1distjsrestore:
 		    fi ; \
 		done ; \
 	fi
+
+
+# Remove the JavaScope instrumentation
+remote1build:
+	@echo "#"
+	@echo "# Now running make in $(REMOTE1PTIIDIST)"
+	@echo "# on  `hostname`"
+	@echo "#"
+	@echo `date`
+	(cd $(REMOTE1PTIIDIST);	PTII=$(REMOTE1PTIIDIST) $(MAKE))
+
 
 
 ##################################################################### 
