@@ -425,7 +425,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 Object[] portTypeArray = portTypeList.toArray();
                 result = (Type)lattice.leastUpperBound(portTypeArray);
             }
-	    return result;
+            return result;
         } finally {
             _workspace.doneReading();
         }

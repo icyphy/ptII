@@ -240,9 +240,9 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException {
-	for (int i = 0; i < numberOfTokens; i++) {
-	    put(tokenArray[i]);
-	}
+        for (int i = 0; i < numberOfTokens; i++) {
+            put(tokenArray[i]);
+        }
     }
 
     /** Set the container.
