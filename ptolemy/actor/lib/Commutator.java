@@ -90,6 +90,14 @@ public class Commutator extends Transformer implements SequenceActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The parameter controlling the output port production rate.
+     *  This parameter contains an IntToken, initially with a value of 0.
+     */
+    public Parameter productionRate;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the base
@@ -102,7 +110,7 @@ public class Commutator extends Transformer implements SequenceActor {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         Commutator newobj = (Commutator)super.clone(ws);
-        newobj._productionRate = (Parameter)
+        newobj.productionRate = (Parameter)
             (newobj.output.getAttribute("tokenProductionRate"));
         return newobj;
     }
@@ -115,7 +123,7 @@ public class Commutator extends Transformer implements SequenceActor {
     public void connectionsChanged(Port port) {
         if (port == input) {
             try {
-                _productionRate.setToken(new IntToken(input.getWidth()));
+                productionRate.setToken(new IntToken(input.getWidth()));
                 // NOTE: schedule is invalidated automatically already
                 // by the changed connections.
             } catch (IllegalActionException ex) {
@@ -182,9 +190,6 @@ public class Commutator extends Transformer implements SequenceActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The parameter controlling the output port production rate.
-    private Parameter _productionRate;
 
     // The channel number for the next input.
     private int _currentInputPosition;

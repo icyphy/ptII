@@ -89,6 +89,14 @@ public class Distributor extends Transformer implements SequenceActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The parameter controlling the input port consumption rate.
+     *  This parameter contains an IntToken, initially with a value of 0.
+     */
+    public Parameter consumptionRate;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the base
@@ -101,7 +109,7 @@ public class Distributor extends Transformer implements SequenceActor {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         Distributor newobj = (Distributor)super.clone(ws);
-        newobj._consumptionRate = (Parameter)
+        newobj.consumptionRate = (Parameter)
             (newobj.input.getAttribute("tokenConsumptionRate"));
         return newobj;
     }
@@ -116,7 +124,7 @@ public class Distributor extends Transformer implements SequenceActor {
     public void connectionsChanged(Port port) {
         if (port == output) {
             try {
-                _consumptionRate.setToken(new IntToken(output.getWidth()));
+                consumptionRate.setToken(new IntToken(output.getWidth()));
                 _currentOutputPosition = 0;
                 // NOTE: schedule is invalidated automatically already
                 // by the changed connections.
@@ -169,9 +177,6 @@ public class Distributor extends Transformer implements SequenceActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The parameter controlling the input port consumption rate.
-    private Parameter _consumptionRate;
 
     // The channel number for the next output.
     private int _currentOutputPosition;
