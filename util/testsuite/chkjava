@@ -109,7 +109,15 @@ do
 				sawprotected=0
 				sawprivate=0
 			    } else {
-				sawprivate=1
+			        # If we have a private constructor, then
+			        # allow it to be at the top of the file.
+			        # ArrayMath.java has one.
+				split($2,constr,"(");
+				np=split(FILENAME,path,"/")
+				split(path[np],classname,".")
+				if (constr[1] !=  classname[1]) {
+				    sawprivate=1
+				}
 			    }
 			}    
         $0 ~ /^[	 ]*\/\/*[ 	]*[Ii]nner.*[Cc]lass/ {
