@@ -427,8 +427,10 @@ public class SoundPlayback {
 	_isAudioPlaybackActive = false;
 	if (_playbackMode == "speaker") {
 	    // Stop real-time playback to speaker.
-	    _sourceLine.stop();
-	    _sourceLine.close();
+	    if (_sourceLine != null) {
+		_sourceLine.stop();
+		_sourceLine.close();
+	    }
 	    _sourceLine = null;
 	} else if (_playbackMode == "file") {
 	    // Record data to sound file.
