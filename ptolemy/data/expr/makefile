@@ -80,6 +80,7 @@ JSRCS = \
 	Constants.java \
 	ConversionUtilities.java \
 	ExplicitScope.java \
+	ExpressionFunction.java \
 	FixPointFunctions.java \
 	GeneralToken.java \
 	ModelScope.java \

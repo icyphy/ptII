@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtRootNode
@@ -126,6 +127,8 @@ public class ASTPtRootNode implements Node, Cloneable {
         }
     }
 
+    
+
     /** Evaluate the parse tree.
      *  @exception IllegalActionException If an error occurs
      *  trying to evaluate the PtToken type and/or value to be stored in
@@ -160,10 +163,40 @@ public class ASTPtRootNode implements Node, Cloneable {
         return _ptType;
     }
 
+    /** Return true if this node is (hierarchically) congruent to the
+     *  given node, under the given renaming of bound identifiers.
+     *  Derived classes should extend this method to add additional
+     *  necessary congruency checks.
+     *  @param node The node to compare to.
+     *  @param renaming A map from String to String that gives a
+     *  renaming from identifiers in this node to identifiers in the
+     *  given node.
+     */
+    public boolean isCongruent(ASTPtRootNode node, Map renaming) {
+        // Check to see that they are the same kind of node.
+        if(node._id != _id) {
+            return false;
+        }
+        // Check that they have the same number of children.
+        if(node._children.size() != _children.size()) {
+            return false;
+        }
+        // Check that their children are congruent.
+        Iterator children = _children.iterator();
+        Iterator nodeChildren = node._children.iterator();
+        while(children.hasNext()) {
+            ASTPtRootNode child = (ASTPtRootNode)children.next();
+            ASTPtRootNode nodeChild = (ASTPtRootNode)nodeChildren.next();
+            if(!child.isCongruent(nodeChild, renaming)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /** Return true if this node represents a constant value.  This will
-     *  be set to true if the node is a constant leaf node (a literal, or a
-     *  reference to a constant, or if all of the children of this node are
-     *  constant.
+     *  be set to true if the node is a constant leaf node (either it is a
+     *  constant leaf node, or a pure function with constant children.)
      */
     public boolean isConstant() {
         return _isConstant;

@@ -123,6 +123,6 @@ test FunctionToken-11.1 {test isEqualTo} {
     set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) 4+a+b"]
     
     list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
-} {true true truee} {Equals is not implemented properly.  It should be equal under argument renaming.}
+} {true true true} {Equals is not implemented properly.  It should be equal under argument renaming.}
 
 

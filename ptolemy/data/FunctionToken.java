@@ -56,6 +56,10 @@ are supported.
 */
 public class FunctionToken extends Token {
 
+    /** Create a new FunctionToken from the given string.
+     *  @exception IllegalActionException If an error occurs, or the 
+     *  string cannot be parsed into a function.
+     */
     public FunctionToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
@@ -71,6 +75,10 @@ public class FunctionToken extends Token {
         }
     }
 
+    /** Create a new FunctionToken that applies the given function.
+     * The type of the function token will be the same as the given
+     * type.
+     */
     public FunctionToken(Function f, FunctionType type) {
         _function = f;
         _type = type;
@@ -79,6 +87,11 @@ public class FunctionToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Apply this function to the given list of arguments.
+     *  @exception IllegalActionException If the arguments are not
+     *  compatible with this function, or an error occurs during
+     *  evaluation.
+     */
     public Token apply(List args) throws IllegalActionException {
         return _function.apply(args);
     }
@@ -91,20 +104,20 @@ public class FunctionToken extends Token {
     }
 
     /** Return the type of this token.
-     *  @return BaseType.GENERAL
+     *  @return A FunctionType.
      */
     public Type getType() {
         return _type;
     }
 
     /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  FunctionToken.
+     *  Token.  For function tokens, checking for closeness is the same
+     *  as checking for equality.
      *  @param rightArgument The token to add to this token.
      *  @param epsilon The value that we use to determine whether two
      *  tokens are close.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
+     *  @exception IllegalActionException If the argument is not a
+     *  FunctionToken.
      *  @return A BooleanToken containing the result.
      */
     public BooleanToken isCloseTo(
@@ -114,11 +127,11 @@ public class FunctionToken extends Token {
     }
 
     /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  FunctionToken.
+     *  Token.  Two function tokens are equal if they correspond to the 
+     *  same expression, under renaming of any bound variables.
      *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
+     *  @exception IllegalActionException  If the argument is not a
+     *  FunctionToken.
      *  @return A BooleanToken containing the result.
      */
     public BooleanToken isEqualTo(Token rightArgument)
@@ -128,7 +141,7 @@ public class FunctionToken extends Token {
         // renaming of bound variables) is probably more appropriate.
         FunctionToken convertedArgument = (FunctionToken)rightArgument;
         return BooleanToken.getInstance(
-                toString().compareTo(convertedArgument.toString()) == 0);
+                convertedArgument._function.isCongruent(_function));
     }
 
     /** Return a String representation of this function
@@ -143,6 +156,7 @@ public class FunctionToken extends Token {
     // The object that implements the function.
     private Function _function;
 
+    // The type of this function.
     private FunctionType _type;
 
     ///////////////////////////////////////////////////////////////////
@@ -165,6 +179,16 @@ public class FunctionToken extends Token {
          *  @return The number of arguments of the function.
          */
         public int getNumberOfArguments();
+        
+        /** Return true if this function is congruent to the given
+         *  function.  Classes should implement this method so that
+         *  two functions are congruent under any renaming of the
+         *  bound variables of the function.  For simplicity, a
+         *  function need only be congruent to other functions of the
+         *  same class.
+         *  @param function The function to check congruency against.
+         */
+        public boolean isCongruent(Function function);
     }
 }
 
