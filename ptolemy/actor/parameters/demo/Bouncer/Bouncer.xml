@@ -159,7 +159,7 @@ actor.</text></svg></configure>
         </property>
     </property>
     <property name="annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the initial default value of the _location&#10;parameter of the Bouncer composite actor is&#10;&quot;[243.0, locationY]&quot;.  If you drag the Bouncer&#10;icon, then you may see an error, and the&#10;_location parameter will be incorrectly set.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the initial default value of the _location&#10;parameter of the Bouncer composite actor is&#10;&quot;[243.0, locationY]&quot;.  If you drag the Bouncer&#10;icon, then you should edit the _location parameter&#10;and change the Y value to &quot;locationY&quot;.">
         </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
         </property>
@@ -173,7 +173,7 @@ actor.</text></svg></configure>
     <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
     </property>
     <entity name="Bouncer" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.actor.parameters.LocationParameter" value="[243.0, locationY]">
+        <property name="_location" class="ptolemy.actor.parameters.LocationParameter" value="[250.0, locationY]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -330,7 +330,7 @@ actor.</text></svg></configure>
         </property>
     </entity>
     <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="151.8246325898279">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="109.5172947533979">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
