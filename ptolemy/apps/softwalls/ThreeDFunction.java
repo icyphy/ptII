@@ -66,62 +66,62 @@ public class ThreeDFunction {
      *     is generated during file i/o.
      */
     public ThreeDFunction(String fileName) throws IllegalActionException {
-	int xPoints, yPoints, thetaPoints;
+        int xPoints, yPoints, thetaPoints;
         double xSpan, ySpan, thetaSpan;
-	double dimension;
+        double dimension;
 
-	try {
-	    BufferedReader in =
-		new BufferedReader(new FileReader(fileName));
+        try {
+            BufferedReader in =
+                new BufferedReader(new FileReader(fileName));
 
             /** Read the dimension of the state space and ignore it,
              * since we know it's value is 3.
              */
-	    dimension = _readDouble(in);
+            dimension = _readDouble(in);
 
-	    //Read x grid information.
-	    _xLowerBound = _readDouble(in);
-	    _xStepSize = _readDouble(in);
-	    _xUpperBound = _readDouble(in);
+            //Read x grid information.
+            _xLowerBound = _readDouble(in);
+            _xStepSize = _readDouble(in);
+            _xUpperBound = _readDouble(in);
 
-	    //Read y grid information.
-	    _yLowerBound = _readDouble(in);
-	    _yStepSize = _readDouble(in);
-	    _yUpperBound = _readDouble(in);
+            //Read y grid information.
+            _yLowerBound = _readDouble(in);
+            _yStepSize = _readDouble(in);
+            _yUpperBound = _readDouble(in);
 
-	    //Read theta grid information.
-	    _thetaLowerBound = _readDouble(in);
-	    _thetaStepSize = _readDouble(in);
-	    _thetaUpperBound = _readDouble(in);
+            //Read theta grid information.
+            _thetaLowerBound = _readDouble(in);
+            _thetaStepSize = _readDouble(in);
+            _thetaUpperBound = _readDouble(in);
 
 //             //Complain if the theta values don't make sense
 //             if ((_thetaLowerBound != 0.0) || (_thetaUpperBound >= Math.PI)) {
 //                 throw new IllegalActionException("Bad bounds on theta");
 //             }
 
-	    //Initialize the values array;
+            //Initialize the values array;
             xSpan = _xUpperBound - _xLowerBound;
             ySpan = _yUpperBound - _yLowerBound;
             thetaSpan = _thetaUpperBound - _thetaLowerBound;
-	    xPoints = (int)Math.round(xSpan / _xStepSize) + 1;
-	    yPoints = (int)Math.round(ySpan / _yStepSize) + 1;
-	    thetaPoints = (int)Math.round(thetaSpan / _thetaStepSize) + 1;
-	    _values = new double[xPoints][yPoints][thetaPoints];
+            xPoints = (int)Math.round(xSpan / _xStepSize) + 1;
+            yPoints = (int)Math.round(ySpan / _yStepSize) + 1;
+            thetaPoints = (int)Math.round(thetaSpan / _thetaStepSize) + 1;
+            _values = new double[xPoints][yPoints][thetaPoints];
 
-	    /** Fill in the values array with values, sorted in
+            /** Fill in the values array with values, sorted in
              * reverse lexicographical order.
              */
-	    for (int t = 0; t < thetaPoints; t = t + 1) {
-		for (int y = 0; y < yPoints; y = y + 1) {
-		    for (int x = 0; x < xPoints; x = x + 1) {
-			_values[x][y][t] = _readDouble(in);
-		    }
-		}
-	    }
+            for (int t = 0; t < thetaPoints; t = t + 1) {
+                for (int y = 0; y < yPoints; y = y + 1) {
+                    for (int x = 0; x < xPoints; x = x + 1) {
+                        _values[x][y][t] = _readDouble(in);
+                    }
+                }
+            }
 
-	    //Close the file.
-	    in.close();
-	}
+            //Close the file.
+            in.close();
+        }
         catch (FileNotFoundException f) {
             throw new IllegalActionException(f.getMessage());
         }
@@ -327,19 +327,19 @@ public class ThreeDFunction {
      *  @return double value read from the file
      **/
     private double _readDouble(BufferedReader reader) throws IOException {
-	String line;
-	String token;
-	if (_tokenizer.hasMoreTokens()) {
-	    return (new Double(_tokenizer.nextToken())).doubleValue();
-	}
-	else {
-	    try {
-		_tokenizer = new StringTokenizer(reader.readLine());
-		return _readDouble(reader);
-	    }
-	    catch (IOException i) {
-		throw i;
-	    }
-	}
+        String line;
+        String token;
+        if (_tokenizer.hasMoreTokens()) {
+            return (new Double(_tokenizer.nextToken())).doubleValue();
+        }
+        else {
+            try {
+                _tokenizer = new StringTokenizer(reader.readLine());
+                return _readDouble(reader);
+            }
+            catch (IOException i) {
+                throw i;
+            }
+        }
     }
 }
