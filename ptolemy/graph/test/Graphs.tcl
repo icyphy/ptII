@@ -115,7 +115,7 @@ test Graphs-1.3 {test parent graph} {
 ######################################################################
 ####
 #
-test Graphs-1.4 {Clutster diagonal nodes of a "diamond"} {
+test Graphs-1.4 {Cluster diagonal nodes of a "diamond"} {
 	set p1 [java::new ptolemy.graph.Graph]
 	set n1 [java::new {java.lang.String String} node1]
 	set n2 [java::new {java.lang.String String} node2]
