@@ -79,10 +79,7 @@ all: jclass $(PTCLASSJAR)
 install: all 
 
 demo: 
-	CLASSPATH=$(CLASSPATH) appletviewer QRCompileApplet.html
-
-show: QRcompile.class
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.pn.demo.QR.QRCompileApplet.html
+	CLASSPATH=$(CLASSPATH) appletviewer QRCompileApplet.htm
 
 docs: javadocs
 
