@@ -63,6 +63,7 @@ JSIMPLE_TESTS = \
 	Manager.tcl \
 	NoRoomException.tcl \
 	NoTokenException.tcl \
+	IODependence.tcl \
 	IOPort.tcl \
 	IORelation.tcl \
 	QueueReceiver.tcl \

@@ -736,9 +736,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
             // clear the IODependence attribute if there is one
             // already.
+            // FIXME: how to cache it and make it work with MoMLChangeRequest? 
             if (_IODependence != null) {
                 _IODependence.clear();
-            } else {
+            } else if (getExecutiveDirector() != null) {
                 try {
                     _IODependence = new IODependence(this, "IODependence");
                 } catch (NameDuplicationException e) {
