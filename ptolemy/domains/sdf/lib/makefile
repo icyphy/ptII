@@ -59,7 +59,8 @@ JSRCS = \
 	SDFDelay.java \
 	SDF2Delay.java \
 	SDFSplit.java \
-	SDFJoin.java 
+	SDFJoin.java \
+	testlistener.java
 
 
 EXTRA_SRCS =	$(JSRCS)
