@@ -177,8 +177,10 @@ public final class SNR extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
 
         int i, j;
-        int originalFrame[] = new int[_originalXFramesize * _originalYFramesize];
-        int modifiedFrame[] = new int[_modifiedXFramesize * _modifiedYFramesize];
+        int originalFrame[] =
+            new int[_originalXFramesize * _originalYFramesize];
+        int modifiedFrame[] =
+            new int[_modifiedXFramesize * _modifiedYFramesize];
         int signalPower = 0;
         int noisePower = 0;
         int originalFrameElement;
