@@ -47,7 +47,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.sched.*;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -166,16 +167,16 @@ public class CharonCodeGenerator extends Attribute {
 
     /** Topology analysis and initialization.
      *
-     * @ return Ture if in giotto domain, False if in other domains.
+     * @ return Ture if container is not null.
      */
     private boolean _initialize() throws IllegalActionException {
 	_container = (TypedCompositeActor) getContainer();
-	return true;
+	return (_container != null);
     }
 
     /** Topology analysis to get a list of agents.
      *  The agents should be TypedCompositeActor with parameter charonMode
-     *  as null (default) or true.
+     *  as null (by default) or true.
      *
      * @param actor Container to be analyzed to return agent list.
      * @return List of agents defined in model.
@@ -206,21 +207,16 @@ public class CharonCodeGenerator extends Attribute {
             _workspace.getReadAccess();
             Actor container = (Actor)input.getContainer();
             Director excDirector = ((Actor) container).getExecutiveDirector();
-	    //int depthOfDirector = excDirector.depthInHierarchy();
 	    int depthOfContainer = ((NamedObj) container).depthInHierarchy();
-//System.out.println(input.getName()+ " ======== " + depthOfContainer);
             LinkedList result = new LinkedList();
 	    Iterator ports = input.connectedPortList().iterator();
             while (ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
                 int depth = port.depthInHierarchy();
-//System.out.println(port.getName() + " " + depth);
                 if (port.isInput() && depth <= depthOfContainer) {
                     result.addLast(port);
-//System.out.println("input-----" + port.getName() + " " + depth);
                 } else if (port.isOutput() && (depth == (depthOfContainer + 1))) {
                     result.addLast(port);
-//System.out.println("output----" + port.getName() + " " + depth);
                 }
 	    }
 	    return result;
@@ -279,10 +275,8 @@ public class CharonCodeGenerator extends Attribute {
 
 	    while (subAgentInputs.hasNext()) {
 		TypedIOPort input = (TypedIOPort) subAgentInputs.next();
-//		System.out.println(subAgent.getName() + " " + input.getName() + " start");
 		LinkedList sourceList = shallowSourcePortList(input);
 		ListIterator sources = sourceList.listIterator();
-//		System.out.println("finish");
 		boolean privateVariable = true;
 		while (sources.hasNext()) {
 		    TypedIOPort source = (TypedIOPort) sources.next();
@@ -542,8 +536,6 @@ public class CharonCodeGenerator extends Attribute {
 				+ " = "
 				+ parameterName
 				+ " ;";
-		} else {
-		    // this should never happen!
 		}
 	    } else {
 
@@ -658,7 +650,6 @@ public class CharonCodeGenerator extends Attribute {
 		       + _endLine;
 
 	    Actor[] refinements = st.getRefinement();
-//	    System.out.println(((NamedObj)refinements[0]).getName());
 	    CompositeActor refinement = (CompositeActor) refinements[0];
 
 	    flowString = _graphToText(refinement);
@@ -737,7 +728,6 @@ public class CharonCodeGenerator extends Attribute {
 	    // to the container output directly and they have same names
 	    // for simplicity at this time.
 	    // FIXME: we really need to reconsider the methods of ports.
-	    // I always found something I do not need but could not find what I need!
 	    List outputs = beginActor.outputPortList();
 	    ListIterator outputIterator = outputs.listIterator();
 	    String outputName = "";
@@ -772,11 +762,11 @@ public class CharonCodeGenerator extends Attribute {
 		    throw new IllegalActionException("There is only one connection to the input!");
 		} else {
 		    TypedIOPort source = (TypedIOPort) sources.get(0);
-		    // just an integrator
+		    // if there is just an integrator
 		    if (source.isInput()) {
 			txtString += source.getName() + " ; }" + _endLine;
 		    }
-		    // some expression actor
+		    // if there is some expression actor
 		    else {
 			AtomicActor expressionActor = (AtomicActor) source.getContainer();
 			if (Expression.class.isInstance(expressionActor)) {
