@@ -131,8 +131,14 @@ public class TestToken extends Token {
                         + token + 
                         " into a test token, which is not possible.");
             }
+        } 
+
+        /** Return the class for tokens that this basetype represents.
+         */
+        public Class getTokenClass() {
+            return TestToken.class;
         }
- 
+
         /** Test if the argument type is compatible with this type.
 	 *  The method returns true if this type is UNKNOWN, since any type
 	 *  is a substitution instance of it. If this type is not UNKNOWN,

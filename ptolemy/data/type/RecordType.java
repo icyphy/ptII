@@ -204,6 +204,12 @@ public class RecordType extends StructuredType {
         return fieldType._resolvedType;
     }
 
+    /** Return the class for tokens that this type represents.
+     */
+    public Class getTokenClass() {
+        return RecordToken.class;
+    }
+
     /** Return the InequalityTerm representing the type of the specified
      *  label.
      *  @return An InequalityTerm.

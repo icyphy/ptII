@@ -107,6 +107,12 @@ public class TopMatrixType extends StructuredType
         return _instance;
     }
 
+    /** Return the class for tokens that this type represents.
+     */
+    public Class getTokenClass() {
+        return Token.class;
+    }
+
     /** Return a hash code value for this object.
      *  @return The hash code for the TopMatrixType class.
      */

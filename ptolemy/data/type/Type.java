@@ -67,6 +67,10 @@ public interface Type {
      */
     public boolean equals(Object object);
 
+    /** Return the class for tokens that this type represents.
+     */
+    public Class getTokenClass();
+
     /** Test if the argument type is compatible with this type.
      *  Compatible is defined as follows: If this type is a constant, the
      *  argument is compatible if it is the same or less than this type in
