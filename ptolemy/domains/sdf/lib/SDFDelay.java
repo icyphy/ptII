@@ -90,7 +90,7 @@ public class SDFDelay extends SDFAtomicActor {
             /* Set the Consumption rate on the port.  A good way to think of
              * this is that you are making a contract with the Ptolemy system.
              * If you always consume one token from this port when fired,
-             * then Ptolemy will always guarauntee that there will be a token
+             * then Ptolemy will always guarantee that there will be a token
              * ready when you are fired.
              */
             setTokenConsumptionRate(inputport, 1);
