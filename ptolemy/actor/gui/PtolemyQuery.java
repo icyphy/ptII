@@ -170,7 +170,12 @@ public class PtolemyQuery extends Query
             // have write access to the workspace.
             String name = attribute.getName();
             try {
-                if (attribute instanceof IntRangeParameter) {
+                if (attribute.getVisibility() == Settable.NOT_EDITABLE) {
+                    String defaultValue = attribute.getExpression();
+                    addDisplay(name, name, defaultValue);
+                    attachParameter(attribute, name);
+                    foundStyle = true;
+                } else if (attribute instanceof IntRangeParameter) {
                     int current = ((IntRangeParameter)attribute)
                         .getCurrentValue();
                     int min = ((IntRangeParameter)attribute).getMinValue();
