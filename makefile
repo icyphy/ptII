@@ -122,7 +122,7 @@ OPTIONAL_FILES = \
 KRUFT = \
 	vergil.jnlp \
 	vergilDSP.jnlp \
-	vergilHybridSystems.jnlp.in \
+	vergilHybridSystems.jnlp \
 	vergilPtiny.jnlp \
 	vergilPtinySandbox.jnlp
 
