@@ -1,4 +1,4 @@
-# Makefile for the SDF domain kernel
+# Makefile for the NC domain kernel
 #
 # @Authors: Christopher Hylands
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/kernel
+ME =		ptolemy/domains/nc/kernel
 
 DIRS = 		test
 
@@ -48,13 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ArrayFIFOQueue.java \
-	BaseSDFScheduler.java \
-	SDFDirector.java \
-	SDFIOPort.java \
-	SDFReceiver.java \
-	SDFScheduler.java \
-	SDFUtilities.java
+	FIXME.java
 
 EXTRA_SRCS =	$(JSRCS)
 
