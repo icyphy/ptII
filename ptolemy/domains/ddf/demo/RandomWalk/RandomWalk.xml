@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RandomWalk" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {8, 4, 796, 466}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 4, 796, 468}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 350]">
     </property>
@@ -56,7 +56,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 200.0]">
         </property>
         <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
-            <property name="runUntilDeadlock" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="runUntilDeadlockInOneIteration" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
             </property>
@@ -107,6 +107,12 @@
         <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
             <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="numberOfSteps">
             </property>
+            <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 180.0]">
             </property>
         </entity>
@@ -114,6 +120,12 @@
             <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="numberOfSteps">
             </property>
             <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 250.0]">
             </property>
@@ -144,7 +156,7 @@
                 </property>
             </entity>
             <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {518, 383, 508, 355}, maximized = false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 383, 508, 355}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
                 </property>
@@ -155,8 +167,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>XYPlotter</title>
-<xRange min="-36.41339835849568" max="7.943204517425096"/>
-<yRange min="-1.4160378350974696" max="38.44727174335193"/>
+<xRange min="-40.28937550785407" max="12.631549791132466"/>
+<yRange min="-54.01424076131257" max="42.13286070641883"/>
 </plot>?>
                 </configure>
             </entity>

@@ -383,7 +383,9 @@ public class DDFDirector extends Director {
     /** Initialize the model controlled by this director. Initialize the 
      *  actors associated with this director. set all the state variables 
      *  to the their initial values.  The order in which the actors are 
-     *  initialized is arbitrary.
+     *  initialized is arbitrary. If actors connected directly to output 
+     *  ports have initial production, then copy that initial production 
+     *  to the outside of the composite actor.
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
@@ -397,6 +399,24 @@ public class DDFDirector extends Director {
         _disabledActors.clear();
         
         super.initialize();
+        
+        Iterator outputPorts 
+                = ((Actor) getContainer()).outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort outputPort = (IOPort) outputPorts.next();
+            for (int i = 0; i < outputPort.getWidthInside(); i++) {
+                while (outputPort.hasTokenInside(i)) {
+                    Token token = outputPort.getInside(i);
+
+                    if (_debugging) {
+                        _debug("transferring initial tokens from "
+                                + outputPort.getFullName());
+                    }
+
+                    outputPort.send(i, token); 
+                }
+            }
+        }
     }
     
     /** Initialize the given actor. This method is called by the 
@@ -421,10 +441,10 @@ public class DDFDirector extends Director {
         if (maximumCapacity > 0) {           
             _checkDownstreamReceiversCapacity(actor, maximumCapacity);
         }
-        
+     
         _updateConnectedActorsStatus(actor);
         
-        // Determine requiredFiringsPerIteration for each actor.
+        // Determine requiredFiringsPerIteration for this actor.
         // The default value 0 means no requirement on this actor.
         int[] flags = (int[]) _actorsFlags.get(actor);
         flags[_REQUIRED_FIRINGS_PER_ITERATION] = 0;
