@@ -161,13 +161,11 @@ test TimedQueueReceiver-5.1 {get(), put(), check _rcvrTime and _lastTime} {
 	set tok1 1
 	set tok2 1
     }   
-
     if { $rcvrTime0 == 5.5 && $rcvrTime1 == 15.2 && $rcvrTime2 == 17.2 } {
 	set rcvrTime0 1
 	set rcvrTime1 1
 	set rcvrTime2 1
     }
-
     if { $threadTime0 == 5.5 && $threadTime1 == 15.2 && $threadTime2 == 17.2 } {
 	set threadTime0 1
 	set threadTime1 1
@@ -177,11 +175,42 @@ test TimedQueueReceiver-5.1 {get(), put(), check _rcvrTime and _lastTime} {
     list $tok0 $tok1 $tok2 $rcvrTime0 $rcvrTime1 $rcvrTime2 $threadTime0 $threadTime1 $threadTime2 $lastTime
 } {1 1 1 1 1 1 1 1 1 17.2}
 
+######################################################################
+####
+#
+test TimedQueueReceiver-5.2 {get(), put(), check _rcvrTime and _lastTime} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
+    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    $topLevel setDirector $dir
+    $topLevel setManager $manager
+    set actorA [java::new ptolemy.domains.odf.kernel.test.ODFPutToken $topLevel "actorA" 3] 
+    set actorB [java::new ptolemy.domains.odf.kernel.test.ODFGetToken $topLevel "actorB" 3] 
+    $dir setCompletionTime 5.0
+
+    set token0 [java::new ptolemy.data.Token]
+    set token1 [java::new ptolemy.data.Token]
+    set token2 [java::new ptolemy.data.Token]
+    $actorA setToken $token0 5.5 0
+    $actorA setToken $token1 15.2 1
+    $actorA setToken $token2 37.2 2
+    set portA [$actorA getPort "output"]
+    set portB [$actorB getPort "input"]
+    set rel [$topLevel connect $portB $portA "rel"]
+
+    $manager run
+
+    set lastTime [$actorB getLastTime]
+
+    list $lastTime
+
+} {0.0}
 
 ######################################################################
 ####
 #
-test TimedQueueReceiver-5.1 {Put delayed event into empty queue; check rcvrTime and lastTime} {
+test TimedQueueReceiver-5.3 {Put delayed event into empty queue; check rcvrTime and lastTime} {
     set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
     set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
@@ -193,7 +222,7 @@ test TimedQueueReceiver-5.1 {Put delayed event into empty queue; check rcvrTime 
 ######################################################################
 ####
 #
-test TimedQueueReceiver-5.2 {Put delayed event into non-empty queue; check rcvrTime and lastTime} {
+test TimedQueueReceiver-5.4 {Put delayed event into non-empty queue; check rcvrTime and lastTime} {
     set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
     set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
@@ -207,7 +236,7 @@ test TimedQueueReceiver-5.2 {Put delayed event into non-empty queue; check rcvrT
 ######################################################################
 ####
 #
-test TimedQueueReceiver-5.3 {Put current time event into empty queue; check rcvrTime and lastTime} {
+test TimedQueueReceiver-5.5 {Put current time event into empty queue; check rcvrTime and lastTime} {
     set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
     set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
@@ -220,7 +249,7 @@ test TimedQueueReceiver-5.3 {Put current time event into empty queue; check rcvr
 ######################################################################
 ####
 #
-test TimedQueueReceiver-5.4 {Put current time event into non-empty queue; check rcvrTime and lastTime} {
+test TimedQueueReceiver-5.6 {Put current time event into non-empty queue; check rcvrTime and lastTime} {
     set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
     set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
@@ -234,7 +263,7 @@ test TimedQueueReceiver-5.4 {Put current time event into non-empty queue; check 
 ######################################################################
 ####
 #
-test TimedQueueReceiver-5.5 {Single put; check rcvrTime and lastTime} {
+test TimedQueueReceiver-5.7 {Single put; check rcvrTime and lastTime} {
     set actor [java::new ptolemy.domains.odf.kernel.ODFActor]
     set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"]
     set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
