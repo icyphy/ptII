@@ -8,6 +8,7 @@
 <group>
 <input source="ptolemy/configs/annotation.xml"/>
 <input source="ptolemy/configs/utilityParameter.xml"/>
+<input source="ptolemy/configs/image.xml"/>
 <input source="ptolemy/configs/utilityIntRangeParameter.xml"/>
 <input source="ptolemy/configs/utilityPortParameter.xml"/>
 <input source="ptolemy/configs/utilityRequireVersion.xml"/>
