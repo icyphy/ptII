@@ -75,6 +75,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	channel.xml \
 	comp.xml \
 	goodChannel.xml \
+	quickComp.xml \
 	user.xml
 
 	#$(JGRAPHICAL_TESTS)
