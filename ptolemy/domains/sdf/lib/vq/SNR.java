@@ -184,8 +184,11 @@ public final class SNR extends SDFAtomicActor {
         int originalFrameElement;
         int modifiedFrameElement;
         
-        // variable Power of Signal to Noise Ration in dB scale
-        double SNR; 
+        // Variable Power of Signal to Noise Ration in dB scale
+        // (Note that this cannot be called SNR because the class is
+        // also named SNR and JavaScope has a bug that causes compilation
+        // to fail if a class has a variable by the same name.
+        double SNRValue; 
         
         SDFIOPort outputport = (SDFIOPort) getPort("SNRvalue");
         SDFIOPort inputport1 = (SDFIOPort) getPort("inoriginal");
@@ -229,10 +232,10 @@ public final class SNR extends SDFAtomicActor {
                     (originalFrameElement - modifiedFrameElement);
             }
         
-        SNR = 10 * Math.log ((double) signalPower / noisePower) / 
+        SNRValue = 10 * Math.log ((double) signalPower / noisePower) / 
             Math.log (10.0) ;
         
-        _message = new DoubleToken(SNR);
+        _message = new DoubleToken(SNRValue);
         outputport.send(0, _message);
     }
     
