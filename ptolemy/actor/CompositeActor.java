@@ -289,7 +289,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  For others, recursively call on the container, until the
      *  toplevel composite actor is reached.
      *  This method is read-synchronized on the workspace.
-     *  @see setManager
+     *  @see #setManager(Manager)
      *
      *  @return The Manager of the topology that contains the composite actor.
      */
@@ -588,8 +588,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @exception IllegalActionException If this actor already has a 
      *  container, or the manager is not in the same workspace as this 
      *  actor.
-     *
-     *  @see getManager
+     *  @see #getManager()
      */
     public void setManager(Manager manager)
             throws IllegalActionException {
