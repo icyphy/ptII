@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// CollisionDetector
 
-/** 
+/**
 This actor models a typical physical layer front end of a wireless
 receiver. It models a receiver where messages have a non-zero duration
 and messages can collide with one another, causing a failure to receive.
@@ -177,10 +177,10 @@ public class CollisionDetector extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Create and configure the ports.       
+        // Create and configure the ports.
         message = new WirelessIOPort(this, "message", true, false);
         new Attribute(message, "_showName");
-        
+
         power = new TypedIOPort(this, "power", true, false);
         power.setTypeEquals(BaseType.DOUBLE);
         new Attribute(power, "_showName");
@@ -188,71 +188,71 @@ public class CollisionDetector extends TypedAtomicActor {
         duration = new TypedIOPort(this, "duration", true, false);
         duration.setTypeEquals(BaseType.DOUBLE);
         new Attribute(duration, "_showName");
-        
+
         received = new TypedIOPort(this, "received", false, true);
         received.setTypeSameAs(message);
         new Attribute(received, "_showName");
-        
+
         collided = new TypedIOPort(this, "collided", false, true);
         collided.setTypeSameAs(message);
         new Attribute(collided, "_showName");
-        
+
         // Configure parameters.
         SNRThresholdInDB = new Parameter(this, "SNRThresholdInDB");
         SNRThresholdInDB.setTypeEquals(BaseType.DOUBLE);
         SNRThresholdInDB.setExpression("Infinity");
-        
+
         powerThreshold = new Parameter(this, "powerThreshold");
         powerThreshold.setTypeEquals(BaseType.DOUBLE);
         powerThreshold.setExpression("0.0");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
     /** The input port for message.  This has undeclared type.
      */
     public TypedIOPort message;
-    
+
     /** The input port for power. This has type double, and is typically
      *  a power density, in units such as watts per square meter.
      */
     public TypedIOPort power;
-    
+
     /** The time that a message transmission takes.
      */
     public TypedIOPort duration;
-    
+
     /** The output port that produces messages that do not
      *  encounter a collison. This has the same type as the message input.
      */
     public TypedIOPort received;
-    
+
     /** The output port that produces messages that cannot be
      *  received because of a collision. This has the same type as the
      *  message input.
      */
     public TypedIOPort collided;
-    
-    /** The threshold for the signal to be recognized from interference. 
+
+    /** The threshold for the signal to be recognized from interference.
      *  It is specified in decibels (10 * log<sub>10</sub>(<i>r</i>),
      *  where <i>r</i> is the power ratio.  This is a double that
      *  defaults to Infinity, which indicates that all overlapping
      *  messages are lost to collisions.
      */
     public Parameter SNRThresholdInDB;
-    
-    /** The power threshold above which the signal can be 
+
+    /** The power threshold above which the signal can be
      *  detected at the receiver. Any message with a received power
      *  below this number is ignored.  This has type double
      *  and defaults to 0.0, which indicates that no message
      *  (with nonzero power) is ignored.
      */
     public Parameter powerThreshold;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** If the specified attribute is <i>SNRThresholdInDB</i>,
      *  or <i>powerThreshold<i> then
      *  check that a positive number is given. Otherwise,
@@ -269,28 +269,28 @@ public class CollisionDetector extends TypedAtomicActor {
             if (SNRThresholdInDBValue <= 0.0) {
                 throw new IllegalActionException(this,
                 "SNRThresholdInDB is required to be positive. "
-                + "Attempt to set it to: " 
-                + SNRThresholdInDBValue);            
+                + "Attempt to set it to: "
+                + SNRThresholdInDBValue);
             } else {
                 // Convert to linear scale.
-                _SNRThresholdInDB = 
+                _SNRThresholdInDB =
                         Math.pow(10, SNRThresholdInDBValue/10);
             }
-            
+
         } else if (attribute == powerThreshold) {
             _powerThreshold = ((DoubleToken)
                     powerThreshold.getToken()).doubleValue();
             if (_powerThreshold < 0.0) {
                 throw new IllegalActionException(this,
                 "powerThreshold is required to be nonnegative. "
-                + "Attempt to set it to: " 
-                + _powerThreshold);            
+                + "Attempt to set it to: "
+                + _powerThreshold);
             }
         } else {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -313,7 +313,7 @@ public class CollisionDetector extends TypedAtomicActor {
      *  hashtable indexed with the time that the message shall be completed,
      *  and loop through the hashtable to check whether there is collision.
      *  If the current time matches one of the times that we have previously
-     *  recorded as the completion time for a transmission, then output the 
+     *  recorded as the completion time for a transmission, then output the
      *  received message to the <i>received<i> output port if it is not
      *  lost to a collision; otherwise, output it to the <i>collided<i>
      *  output port.
@@ -342,7 +342,7 @@ public class CollisionDetector extends TypedAtomicActor {
                     _debug("Message power is below threshold. Ignoring.");
                 }
             } else {
-                // Record the reception.        
+                // Record the reception.
                 Reception reception = new Reception();
                 reception.data = message.get(0);
                 reception.power = powerValue;
@@ -353,17 +353,17 @@ public class CollisionDetector extends TypedAtomicActor {
                 if (_debugging) {
                     _debug("Message is above threshold and has duration: " + reception.duration);
                 }
-            
+
                 // Update the total power density.
-                _totalPower = _totalPower + reception.power; 
-                        
+                _totalPower = _totalPower + reception.power;
+
                 // Put the new reception into the list of prior receptions.
                 double time = currentTime + reception.duration;
                 reception.expiration = time;
-                
+
                 _receptions.add(reception);
-            
-                // Schedule this actor to be fired at the end of 
+
+                // Schedule this actor to be fired at the end of
                 // the duration of the message.
                 getDirector().fireAt(this, time);
             }
@@ -371,7 +371,7 @@ public class CollisionDetector extends TypedAtomicActor {
         // Loop through the prior receptions (and the new one)
         // to mark whether a message is collided acording to the new total
         // power density. Also, any prior receptions that are now
-        // expiring are sent to one of the two outputs.  
+        // expiring are sent to one of the two outputs.
         Iterator priorReceptions = _receptions.listIterator();
         while (priorReceptions.hasNext()) {
             Reception priorReception = (Reception)priorReceptions.next();
@@ -389,13 +389,13 @@ public class CollisionDetector extends TypedAtomicActor {
                 }
                 // The time matches a pending reception.
                 priorReceptions.remove();
-                
+
                 // Update the total power.
                 _totalPower = _totalPower - priorReception.power;
-                
+
                 // Quantization errors may take this negative. Do not allow.
                 if (_totalPower < 0.0) _totalPower = 0.0;
-                
+
                 if(!priorReception.collided) {
                     received.send(0, priorReception.data);
                     if (_debugging) {
@@ -409,7 +409,7 @@ public class CollisionDetector extends TypedAtomicActor {
                 }
                 continue;
             }
-            
+
             // Check the snr to see whether to mark this prior reception
             // collided.
             double powerWithoutThisOne = _totalPower - priorReception.power;
@@ -428,9 +428,9 @@ public class CollisionDetector extends TypedAtomicActor {
                     + _totalPower);
                 }
             }
-        }            
+        }
     }
-    
+
     /** Initialize the private variables.
      *  @exception IllegalActionException If thrown by the base class.
      */
@@ -442,7 +442,7 @@ public class CollisionDetector extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private double _powerThreshold;
     private double _SNRThresholdInDB;
     private double _totalPower;

@@ -82,7 +82,7 @@ public class WirelessToWired extends TypedAtomicActor {
     public WirelessToWired(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         properties = new TypedIOPort(this, "properties", false, true);
         new Attribute(properties, "_showName");
 
@@ -90,23 +90,23 @@ public class WirelessToWired extends TypedAtomicActor {
         inputChannelName = new StringParameter(this, "inputChannelName");
         inputChannelName.setExpression("AtomicWirelessChannel");
 
-        // Create and configure the ports.       
+        // Create and configure the ports.
         input = new WirelessIOPort(this, "input", true, false);
         input.outsideChannel.setExpression("$inputChannelName");
 
         data = new TypedIOPort(this, "data", false, true);
         data.setTypeSameAs(input);
         new Attribute(data, "_showName");
-        
+
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" +
                 "</svg>\n");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** Port that transmits the data received on the <i>input</i>
      *  port.
      */
@@ -128,7 +128,7 @@ public class WirelessToWired extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
- 
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then resets the type constraints.
      *  @param workspace The workspace for the new object.
@@ -153,14 +153,14 @@ public class WirelessToWired extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 
         super.fire();
-      
+
         if (input.hasToken(0)) {
             Token inputValue = input.get(0);
             if (_debugging) {
                 _debug("Input signal received: " + inputValue.toString());
             }
             data.send(0, inputValue);
-            
+
             // Do not send properties if the port has no destinations.
             // This prevents run-time type errors from occurring.
             if (properties.numberOfSinks() == 0) {

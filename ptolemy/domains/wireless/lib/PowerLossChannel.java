@@ -98,9 +98,9 @@ indicates that by default, there is no range limit.
 <p>
 Any receiver that is within the specified range when transmit()
 is called will receive the transmission, unless the <i>lossProbability</i>
-parameter is set to greater than zero. 
+parameter is set to greater than zero.
 
-<p> 
+<p>
 @author Edward A. Lee
 @version $Id$
 */
@@ -119,7 +119,7 @@ public class PowerLossChannel extends LimitedRangeChannel {
     public PowerLossChannel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Set the default properties.  Note that this type is a
         // subtype of the base class type (it includes more fields).
         defaultProperties.setExpression("{range=Infinity, power=Infinity}");
@@ -137,13 +137,13 @@ public class PowerLossChannel extends LimitedRangeChannel {
         efficiency = new Parameter(this, "efficiency");
         efficiency.setTypeEquals(BaseType.DOUBLE);
         efficiency.setExpression("1.0");
-        
+
         powerLossFactor = new Parameter(this, "powerLossFactor");
         powerLossFactor.setTypeEquals(BaseType.DOUBLE);
         powerLossFactor.setExpression(
                 "efficiency / (4 * PI * distance * distance)");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -184,17 +184,17 @@ public class PowerLossChannel extends LimitedRangeChannel {
      */
     public RecordToken transformProperties(
             RecordToken properties,
-            WirelessIOPort source, 
+            WirelessIOPort source,
             WirelessIOPort destination)
             throws IllegalActionException {
         // Use the superclass to merge the record argument with the
         // default properties and to apply registered transformers.
         RecordToken merged = super.transformProperties(
                 properties, source, destination);
-                
+
         // Get the transmit power.
         ScalarToken transmitPower = (ScalarToken)merged.get("power");
-        
+
         // Evaluate the power loss factor, which will have been updated
         // with the new value of "distance."
         double powerLossFactorValue
@@ -203,15 +203,15 @@ public class PowerLossChannel extends LimitedRangeChannel {
         // Calculate the receive power.
         double receivePower
                 = transmitPower.doubleValue() * powerLossFactorValue;
-        
+
         // Create a record token with the receive power.
         String[] names = {"power"};
         Token[] values = {new DoubleToken(receivePower)};
         RecordToken newPower = new RecordToken(names, values);
-        
+
         // Merge the receive power into the merged token.
         RecordToken result = RecordToken.merge(newPower, merged);
-        
+
         // Report the new received power.
         if (_debugging) {
             _debug(" * receive properties: \""

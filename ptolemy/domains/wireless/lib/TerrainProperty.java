@@ -57,15 +57,15 @@ import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
 //// TerrainProperty
 
 /**
-This actor implements the PropertyTransformer interface. 
-It register itself with the wireless channel specified by 
-the <i>channelName<i> parameter. The channel may call it 
-getProperty() method to get the property. 
+This actor implements the PropertyTransformer interface.
+It register itself with the wireless channel specified by
+the <i>channelName<i> parameter. The channel may call it
+getProperty() method to get the property.
 
 @author Yang Zhao
 @version $Id$
 */
-public class TerrainProperty extends TypedAtomicActor 
+public class TerrainProperty extends TypedAtomicActor
         implements PropertyTransformer {
 
     /** Construct an actor with the specified container and name.
@@ -96,23 +96,23 @@ public class TerrainProperty extends TypedAtomicActor
         _yPoints[2] = 5;
         _xPoints[3] = 20;
         _yPoints[3] = 0;
-        
+
         //Crate the icon.
         _icon = new EditorIcon(this, "_icon");
-        _terrain =  
+        _terrain =
                 new FilledShapeAttribute(_icon, "terrain") {
             protected Shape _newShape() {
                 return new Polygon(_xPoints, _yPoints, _numberOfPoints);
             }
         };
-        
+
         // Set the color to green.
         _terrain.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
-        // NOTE: The width is not used, but this triggers a 
+        // NOTE: The width is not used, but this triggers a
         // call to _newShape().
         _terrain.width.setToken(new IntToken(10));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     public StringParameter channelName;
@@ -144,21 +144,21 @@ public class TerrainProperty extends TypedAtomicActor
                     _xPoints[i]= ((IntToken)xypointArray.
                             getElement(0)).intValue();
                     _yPoints[i]= ((IntToken)xypointArray.
-                            getElement(1)).intValue();        
+                            getElement(1)).intValue();
                 }
                 _number++;
                 //set the width different to trigget the shape change...
                 _terrain.width.setToken(new IntToken(_number));
-                
+
             } else {
-                throw new IllegalActionException (this, 
+                throw new IllegalActionException (this,
                 "xPoints is required to be an integer array");
             }
         } else {
             super.attributeChanged(attribute);
         }
     }
-    
+
 
     /** Initialize the _registeredWithChannel.
      */
@@ -176,7 +176,7 @@ public class TerrainProperty extends TypedAtomicActor
                     + ".");
         }
         _offset = location.getLocation();
-        
+
         CompositeEntity container = (CompositeEntity) getContainer();
         _channelName = channelName.stringValue();
         Entity channel = container.getEntity(_channelName);
@@ -196,16 +196,16 @@ public class TerrainProperty extends TypedAtomicActor
      *  in the property to be zero, otherwise, do nothing.
      *  FIXME: should the terrain property affect the power value
      *  or should it affect the receivers in range?
-     *  FIXME: check java.util to see if there is standard method to 
+     *  FIXME: check java.util to see if there is standard method to
      *  do this check...
      * @param properties The transform properties.
      * @param sender The sending port.
      * @param destination The receiving port.
      * @return The modified transform properties.
-     * @exception IllegalActionException If failed to execute the model. 
+     * @exception IllegalActionException If failed to execute the model.
      */
-    public RecordToken transformProperties(RecordToken properties, 
-            WirelessIOPort sender, WirelessIOPort destination) 
+    public RecordToken transformProperties(RecordToken properties,
+            WirelessIOPort sender, WirelessIOPort destination)
             throws IllegalActionException {
         double[] p1 = _locationOf(sender);
         double[] p2 = _locationOf(destination);
@@ -220,7 +220,7 @@ public class TerrainProperty extends TypedAtomicActor
             if (x1 - x0 != 0) {
                 k = (y1-y0)/(x1-x0);
                 a = p1[1]-y0-k*(p1[0]-x0);
-                b=  p2[1]-y0-k*(p2[0]-x0);     
+                b=  p2[1]-y0-k*(p2[0]-x0);
             } else {
                 a = p1[0]-x0;
                 b = p2[0]-x0;
@@ -228,7 +228,7 @@ public class TerrainProperty extends TypedAtomicActor
             if(p2[0]-p1[0] != 0) {
                 k = (p2[1]-p1[1])/(p2[0]-p1[0]);
                 c = y0 - p1[1]-k*(x0-p1[0]);
-                d = y1 - p1[1]-k*(x1-p1[0]); 
+                d = y1 - p1[1]-k*(x1-p1[0]);
             } else {
                 c = x0 - p1[0];
                 d = x1 - p1[0];
@@ -236,17 +236,17 @@ public class TerrainProperty extends TypedAtomicActor
             if (a*b<0 && c*d<0) {
                 cross = true;
                 break;
-            } 
+            }
             } //for j.
         }//for i.
         if (cross) {
             Token transmitPower = properties.get("power");
-        
+
             // Create a record token with the receive power.
             String[] names = {"power"};
             Token[] values = {new DoubleToken(0.0)};
             RecordToken newPower = new RecordToken(names, values);
-        
+
             // Merge the receive power into the merged token.
             RecordToken result = RecordToken.merge(newPower, properties);
             return result;
@@ -254,7 +254,7 @@ public class TerrainProperty extends TypedAtomicActor
             return properties;
         }
     }
-    
+
     /** Override the base class to call wrap up to unregister this with the
      *  channel.
      */
@@ -264,7 +264,7 @@ public class TerrainProperty extends TypedAtomicActor
             _channel.unregisterPropertyTransformer(this, null);
         }
     }
-    /** Return the location of the given WirelessIOPort. 
+    /** Return the location of the given WirelessIOPort.
      *  @param port A port with a location.
      *  @return The location of the port.
      *  @exception IllegalActionException If a valid location attribute cannot
@@ -283,7 +283,7 @@ public class TerrainProperty extends TypedAtomicActor
         }
         return location.getLocation();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
     private WirelessChannel _channel;
@@ -292,13 +292,13 @@ public class TerrainProperty extends TypedAtomicActor
     private FilledShapeAttribute _terrain;
     private int _numberOfPoints;
     // this variable is merely used to set the ShapeAttribute
-    // with different width, so that is can update the shape.    
+    // with different width, so that is can update the shape.
     private int _number;
-    
-    //the location of this actor. This is used as (0,0) when 
-    //create the shape.     
-    private double[] _offset; 
-    
+
+    //the location of this actor. This is used as (0,0) when
+    //create the shape.
+    private double[] _offset;
+
     private String _channelName;
     // Name of the location attribute.
     private static final String LOCATION_ATTRIBUTE_NAME = "_location";

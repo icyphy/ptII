@@ -85,7 +85,7 @@ public class LimitedRangeChannel extends DelayChannel {
     public LimitedRangeChannel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Force the type of the defaultProperties to at least include
         // the range field.
         String[] labels = {"range"};
@@ -95,7 +95,7 @@ public class LimitedRangeChannel extends DelayChannel {
         defaultProperties.setTypeAtMost(type);
         defaultProperties.setExpression("{range=Infinity}");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -112,7 +112,7 @@ public class LimitedRangeChannel extends DelayChannel {
     public void valueChanged(Settable settable) {
         _receiversInRangeCacheValid = false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -158,7 +158,7 @@ public class LimitedRangeChannel extends DelayChannel {
             range = field.doubleValue();
         }
         boolean result = (_distanceBetween(source, destination) <= range);
-        
+
         // Whether a port is in range depends on the
         // transmit properties of this sender, so we set up
         // a listener to be notified of any changes in those

@@ -112,7 +112,7 @@ public class NodeRandomizer extends TypedAtomicActor {
         seed = new Parameter(this, "seed");
         seed.setExpression("0L");
         seed.setTypeEquals(BaseType.LONG);
-        
+
         trigger = new TypedIOPort(this, "trigger", true, false);
     }
 
@@ -145,7 +145,7 @@ public class NodeRandomizer extends TypedAtomicActor {
      *  This parameter contains a LongToken, initially with value 0.
      */
     public Parameter seed;
-    
+
     /** A trigger input to cause this actor to fire in domains
      *  that require a trigger.  This has undeclared type.
      */
@@ -166,7 +166,7 @@ public class NodeRandomizer extends TypedAtomicActor {
         };
         requestChange(doRandomize);
     }
-    
+
     /** Override the base class to randomize the positions of the nodes
      *  if <i>randomizeInPreinitialize</i> is set to true. Also initialize
      *  the random number generator so that if a nonzero seed is provided,
@@ -227,7 +227,7 @@ public class NodeRandomizer extends TypedAtomicActor {
             if (!((BooleanToken)markValue).booleanValue()) {
                 continue;
             }
-            
+
             for (int i = 0; i < dimensions; i++) {
                 ArrayToken lowHigh = (ArrayToken)rangeValue.getElement(i);
                 if (lowHigh.length() < 2) {

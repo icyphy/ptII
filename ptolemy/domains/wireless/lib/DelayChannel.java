@@ -92,7 +92,7 @@ public class DelayChannel extends ErasureChannel {
         propagationSpeed.setTypeEquals(BaseType.DOUBLE);
         propagationSpeed.setExpression("Infinity");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -101,10 +101,10 @@ public class DelayChannel extends ErasureChannel {
      *  to Infinity, which means that there is no delay.
      */
     public Parameter propagationSpeed;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** If the specified attribute is <i>propagationSpeed</i>, then
      *  check that a positive number is given. Otherwise,
      *  defer to the base class.
@@ -119,13 +119,13 @@ public class DelayChannel extends ErasureChannel {
                     .doubleValue();
             if (speed <= 0.0) {
                 throw new IllegalActionException(this,
-                "Invalid value for propagationSpeed: " + speed);            
+                "Invalid value for propagationSpeed: " + speed);
             }
         } else {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** If the current time matches one of the times that we have previously
      *  recorded as the reception time for a transmission, then deliver
      *  the token to the receiver.
@@ -149,7 +149,7 @@ public class DelayChannel extends ErasureChannel {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -182,7 +182,7 @@ public class DelayChannel extends ErasureChannel {
      *   does not support clear.
      */
     protected void _transmitTo(
-            Token token, 
+            Token token,
             WirelessIOPort sender,
             WirelessReceiver receiver,
             RecordToken properties)
@@ -208,7 +208,7 @@ public class DelayChannel extends ErasureChannel {
                     = (WirelessIOPort)receiver.getContainer();
             double distance = _distanceBetween(sender, destination);
             double time = director.getCurrentTime() + distance/speed;
-            
+
             if (_receptions == null) {
                 _receptions = new HashMap();
             }
@@ -219,14 +219,14 @@ public class DelayChannel extends ErasureChannel {
             reception.receiver = receiver;
             reception.properties = properties;
             _receptions.put(timeDouble, reception);
-            
+
             director.fireAt(this, time);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Record of scheduled receptions, indexed by time.
     private HashMap _receptions;
 

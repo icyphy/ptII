@@ -59,7 +59,7 @@ receiver is independent of whether it occurs to any other receiver.
 <p>
 For convenience, a variable named "distance" is available and
 equal to the distance between the transmitter and the receiver
-when the <i>lossProbability</i> is evaluated.  Thus, the 
+when the <i>lossProbability</i> is evaluated.  Thus, the
 loss probability can be given as an expression that depends
 on this distance.
 <p>
@@ -91,19 +91,19 @@ public class ErasureChannel extends AtomicWirelessChannel {
     public ErasureChannel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         lossProbability = new Parameter(this, "lossProbability");
         lossProbability.setTypeEquals(BaseType.DOUBLE);
         lossProbability.setExpression("0.0");
-        
+
         seed = new Parameter(this, "seed");
         seed.setExpression("0L");
         seed.setTypeEquals(BaseType.LONG);
-        
+
         _distance = new Variable(this, "distance");
         _distance.setExpression("Infinity");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -113,7 +113,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
      *  no loss occurs.
      */
     public Parameter lossProbability;
-    
+
     /** The seed that controls the random number generation.
      *  A seed of zero is interpreted to mean that no seed is specified,
      *  which means that each execution of the model could result in
@@ -129,7 +129,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Initialize the random number generator with the seed, if it
      *  has been given.  A seed of zero is interpreted to mean that no
      *  seed is specified.  In such cases, a seed based on the current
@@ -146,7 +146,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
             _random.setSeed(System.currentTimeMillis() + hashCode());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -173,7 +173,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
     protected void _transmitTo(
             Token token,
             WirelessIOPort sender,
-            WirelessReceiver receiver, 
+            WirelessReceiver receiver,
             RecordToken properties)
             throws IllegalActionException {
         // Get the distance and set the "distance" variable.
@@ -210,4 +210,3 @@ public class ErasureChannel extends AtomicWirelessChannel {
     /** A random number generator.
      */
     protected Random _random = new Random();
-}

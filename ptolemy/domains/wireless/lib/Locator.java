@@ -76,15 +76,15 @@ public class Locator extends TypedAtomicActor {
     public Locator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         // Create and configure the parameters.
         inputChannelName = new StringParameter(this, "inputChannelName");
         inputChannelName.setExpression("InputChannel");
 
         outputChannelName = new StringParameter(this, "outputChannelName");
         outputChannelName.setExpression("OutputChannel");
-        
-        // Create and configure the ports.       
+
+        // Create and configure the ports.
         input = new WirelessIOPort(this, "input", true, false);
         input.outsideChannel.setExpression("$inputChannelName");
 
@@ -95,10 +95,10 @@ public class Locator extends TypedAtomicActor {
         TypeAttribute portType = new TypeAttribute(output, "type");
         portType.setExpression("{location={double}, time=double}");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** Port that receives a trigger input that causes transmission
      *  of location and time information on the <i>output</i> port.
      */
@@ -122,7 +122,7 @@ public class Locator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
- 
+
     /** Generate an event on the <i>output</i> port that indicates the
      *  current position and time of the last input on the <i>input</i>
      *  port.  The value of the input is ignored.
@@ -130,7 +130,7 @@ public class Locator extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 
         super.fire();
-      
+
         if (input.hasToken(0)) {
             Token inputValue = input.get(0);
             if (_debugging) {
@@ -139,14 +139,14 @@ public class Locator extends TypedAtomicActor {
 
             // Construct the message about the input signal detected.
             String[] labels = {"location", "time"};
-            
+
             // Get the location and wrap each coordinate in a token.
             double[] location = _getLocation();
             Token[] locationArray = new Token[location.length];
             for (int i = 0; i < location.length; i++) {
                 locationArray[i] = new DoubleToken(location[i]);
             }
-            
+
             double time = getDirector().getCurrentTime();
             Token[] values = {
                 new ArrayToken(locationArray),
@@ -157,7 +157,7 @@ public class Locator extends TypedAtomicActor {
             output.send(0, result);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

@@ -85,14 +85,14 @@ public class GetProperties extends TypedAtomicActor {
     public GetProperties(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         output = new TypedIOPort(this, "output", false, true);
         // NOTE: This is lame: disable default type inference.
         // Without this line, the output type will be inferred
         // from the type of the trigger input.
         output.setTypeEquals(BaseType.UNKNOWN);
 
-        // Create and configure the ports.       
+        // Create and configure the ports.
         trigger = new TypedIOPort(this, "trigger", true, false);
 
         _attachText("_iconDescription", "<svg>\n" +
@@ -100,10 +100,10 @@ public class GetProperties extends TypedAtomicActor {
                 + "style=\"fill:green\"/>\n" +
                 "</svg>\n");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
- 
+
     /** Port that triggers execution.
      */
     public TypedIOPort trigger;
@@ -115,7 +115,7 @@ public class GetProperties extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
- 
+
     /** Read the properties from the specified input port and produce
      *  them at the output. If there are no properties, then produce
      *  no output.
@@ -125,19 +125,19 @@ public class GetProperties extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 
         super.fire();
-        
+
         // Read and discard the input token.
         if (trigger.hasToken(0)) {
             Token inputValue = trigger.get(0);
         }
-        
+
         Iterator connectedPorts = trigger.sourcePortList().iterator();
         while (connectedPorts.hasNext()) {
             IOPort port = (IOPort)connectedPorts.next();
             if (port.isInput() && port instanceof WirelessIOPort) {
                 // Found the port.
                 Token propertiesValue = ((WirelessIOPort)port).getProperties(0);
-            
+
                 // Do not send properties if the port has no destinations.
                 // This prevents run-time type errors from occurring.
                 if (propertiesValue != null && output.numberOfSinks() > 0) {
@@ -156,7 +156,7 @@ public class GetProperties extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        
+
         Iterator connectedPorts = trigger.sourcePortList().iterator();
         while (connectedPorts.hasNext()) {
             IOPort port = (IOPort)connectedPorts.next();
@@ -168,7 +168,7 @@ public class GetProperties extends TypedAtomicActor {
                 CompositeEntity container2 = (CompositeEntity)container.getContainer();
                 if (container2 == null) {
                     throw new IllegalActionException(this,
-                    "The container does not have a container.");         
+                    "The container does not have a container.");
                 }
                 Entity channel = container2.getEntity(channelName);
                 if (channel instanceof AtomicWirelessChannel) {

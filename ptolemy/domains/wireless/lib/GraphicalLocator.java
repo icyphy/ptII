@@ -70,20 +70,20 @@ public class GraphicalLocator extends Locator {
     public GraphicalLocator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         outputRange = new Parameter(this, "outputRange");
         outputRange.setToken("100.0");
         outputRange.setTypeEquals(BaseType.DOUBLE);
-        
+
         output.outsideTransmitProperties.setExpression("{range=outputRange}");
-        
+
         // Hide the ports in Vergil.
         new Attribute(output, "_hide");
         new Attribute(input, "_hide");
-        
+
         // Create an icon for this sensor node.
         EditorIcon node_icon = new EditorIcon(this, "_icon");
-        
+
         // The icon has two parts: a circle and an antenna.
         // Create a circle that indicates the signal radius.
         _circle = new EllipseAttribute(node_icon, "_circle");
@@ -95,18 +95,18 @@ public class GraphicalLocator extends Locator {
 
         // Create the green antenna shape.
         PolygonAttribute  antenna = new PolygonAttribute(node_icon, "antenna2");
-        antenna.vertices.setToken("{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}");  
+        antenna.vertices.setToken("{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}");
         antenna.width.setToken("10");
         antenna.height.setToken("30");
         // Set the color to green.
         antenna.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
-        
+
         node_icon.setPersistent(false);
-        
-        // Hide the name of this sensor node. 
+
+        // Hide the name of this sensor node.
         new Attribute(this, "_hideName");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -115,10 +115,10 @@ public class GraphicalLocator extends Locator {
      *  a circle with this as its radius.
      */
     public Parameter outputRange;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
- 
+
     /** Generate an event on the <i>output</i> port that indicates the
      *  current position and time of the last input on the <i>input</i>
      *  port.  Also, change the color of the icon to red and schedule
@@ -129,14 +129,14 @@ public class GraphicalLocator extends Locator {
         if (input.hasToken(0)) {
             // Change the color of the icon to red.
             _circle.fillColor.setToken("{1.0, 0.0, 0.1, 0.7}");
-            
+
             // Request refiring one second later to change
             // the icon back to blue.
             Director director = getDirector();
             director.fireAt(this, director.getCurrentTime() + 1.0);
         } else {
             // Set color to blue.
-            _circle.fillColor.setToken("{0.0, 0.0, 1.0, 0.05}");            
+            _circle.fillColor.setToken("{0.0, 0.0, 1.0, 0.05}");
         }
         super.fire();
     }

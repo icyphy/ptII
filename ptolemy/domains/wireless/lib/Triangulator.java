@@ -109,7 +109,7 @@ public class Triangulator extends TypedAtomicActor {
     public Triangulator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         input = new TypedIOPort (this, "input", true, false);
         TypeAttribute inputType = new TypeAttribute(input, "type");
         inputType.setExpression("{location={double}, time=double}");
@@ -130,7 +130,7 @@ public class Triangulator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The input port for an event detection, which is a record
      *  containing the location of a sensor that has detected the
      *  event and the time at which the sensor detected the event.
@@ -180,7 +180,7 @@ public class Triangulator extends TypedAtomicActor {
 
         while (input.hasToken(0)) {
             RecordToken recordToken = (RecordToken)input.get(0);
-            
+
             ArrayToken locationArray = (ArrayToken)recordToken.get("location");
             if (locationArray.length() < 2) {
                 throw new IllegalActionException(this,
@@ -190,7 +190,7 @@ public class Triangulator extends TypedAtomicActor {
             double locationY = ((DoubleToken)locationArray.getElement(1)).doubleValue();
 
             double time = ((DoubleToken)recordToken.get("time")).doubleValue();
-            
+
             // First check whether the location matches one already in the
             // buffer.  At the same time, identify the entry with the
             // oldest time and the newest time.
@@ -222,10 +222,10 @@ public class Triangulator extends TypedAtomicActor {
                 for (int i = 0; i < 3; i++) {
                     if (_times[i] < oldestTime) {
                         oldestTime = _times[i];
-                    }                    
-                }                
+                    }
+                }
             }
-            
+
             // Next check whether we have three observations within
             // the specified time window.  Since the time entries are
             // all initialized to negative infinity, the time span
@@ -244,17 +244,17 @@ public class Triangulator extends TypedAtomicActor {
             // FIXME: Pass in the arrays for scalability.
             // FIXME: Replace naked 3 everywhere.
             double[] result = _locate(
-                    _locationsX[0], 
-                    _locationsY[0], 
-                    _times[0], 
-                    _locationsX[1], 
+                    _locationsX[0],
+                    _locationsY[0],
+                    _times[0],
+                    _locationsX[1],
                     _locationsY[1],
                     _times[1],
-                    _locationsX[2], 
-                    _locationsY[2], 
-                    _times[2], 
+                    _locationsX[2],
+                    _locationsY[2],
+                    _times[2],
                     speed);
-                
+
             if (Double.isInfinite(result[2]) || Double.isNaN(result[2])) {
                 // Result is not valid (inconsistent data).
                 return;
@@ -262,7 +262,7 @@ public class Triangulator extends TypedAtomicActor {
             Token[] resultArray = new Token[2];
             resultArray[0] = new DoubleToken(result[0]);
             resultArray[1] = new DoubleToken(result[1]);
-        
+
             output.broadcast(new ArrayToken(resultArray));
         }
     }
@@ -272,7 +272,7 @@ public class Triangulator extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         for (int i = 0; i < 3; i++) {
             _locationsX[i] = Double.NEGATIVE_INFINITY;
             _locationsY[i] = Double.NEGATIVE_INFINITY;
@@ -299,8 +299,8 @@ public class Triangulator extends TypedAtomicActor {
     // @return True if the calculated location and time is consistent with the
     //  observations.
     private static boolean _checkResult(double[] result,
-            double x1, double y1, double t1, 
-            double x2, double y2, double t2, 
+            double x1, double y1, double t1,
+            double x2, double y2, double t2,
             double x3, double y3, double t3,
             double v) {
         if (result[2] > t1 || result[2] > t2 || result[2] > t3) {
@@ -310,7 +310,7 @@ public class Triangulator extends TypedAtomicActor {
                 Math.abs(_distance(x1, y1, result[0], result[1])/v - (t1 - result[2]));
         double tdiff2 =
                 Math.abs(_distance(x2, y2, result[0], result[1])/v - (t2 - result[2]));
-        double tdiff3 = 
+        double tdiff3 =
                 Math.abs(_distance(x3, y3, result[0], result[1])/v - (t3 - result[2]));
         // FIXME: make the check threshold a parameter?
         if (tdiff1 > 1e-5 || tdiff2 > 1e-5 || tdiff3 > 1e-5) {
@@ -319,7 +319,7 @@ public class Triangulator extends TypedAtomicActor {
             return true;
         }
     }
-    
+
     /** Return the Cartesian distance between (x1, y1) and (x2, y2).
      *  @param x1 The first x coordinate.
      *  @param y1 The first y coordinate.
@@ -433,10 +433,10 @@ public class Triangulator extends TypedAtomicActor {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Buffer of three readings.
     private double[] _locationsX = new double[3];
     private double[] _locationsY = new double[3];

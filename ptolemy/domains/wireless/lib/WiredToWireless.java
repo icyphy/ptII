@@ -67,7 +67,7 @@ public class WiredToWireless extends TypedAtomicActor {
     public WiredToWireless(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         data = new TypedIOPort(this, "data", true, false);
         new Attribute(data, "_showName");
 
@@ -75,12 +75,12 @@ public class WiredToWireless extends TypedAtomicActor {
         new Attribute(properties, "_showName");
         // FIXME: This should be constrained to be a record token.
         // How to do that?
-        
+
         // Create and configure the parameters.
         outputChannelName = new StringParameter(this, "outputChannelName");
         outputChannelName.setExpression("AtomicWirelessChannel");
 
-        // Create and configure the ports.       
+        // Create and configure the ports.
         output = new WirelessIOPort(this, "output", false, true);
         output.outsideChannel.setExpression("$outputChannelName");
         output.setTypeSameAs(data);
@@ -90,10 +90,10 @@ public class WiredToWireless extends TypedAtomicActor {
                 + "style=\"fill:white\"/>\n" +
                 "</svg>\n");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** Port that receives the data to be transmitted on the <i>output</i>
      *  port.
      */
@@ -115,7 +115,7 @@ public class WiredToWireless extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
- 
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then resets the type constraints.
      *  @param workspace The workspace for the new object.
@@ -131,7 +131,7 @@ public class WiredToWireless extends TypedAtomicActor {
         newObject.output.setTypeSameAs(newObject.data);
         return newObject;
     }
-    
+
     /** Read at most one token from the <i>data</i> and <i>properties</i>
      *  ports and transmit the data on the <i>output</i> port with the
      *  specified properties.  If there are no properties, then send with
@@ -140,7 +140,7 @@ public class WiredToWireless extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
 
         super.fire();
-      
+
         if (data.hasToken(0)) {
             Token inputValue = data.get(0);
             if (_debugging) {
