@@ -145,7 +145,7 @@ COPERNICUSPACKAGES = \
 			ptolemy.copernicus.kernel \
 			ptolemy.copernicus.c \
 			ptolemy/copernicus/java/*.java \
-			$(JHDLPACKAGE)
+			$(JHDLPACKAGE) \
 			ptolemy.copernicus.shallow
 
 PTINYPACKAGES = \
