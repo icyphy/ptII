@@ -222,9 +222,50 @@ test SDFDirector-6.1 {Test wormhole activation} {
     $c1 connect [java::field $a2 output] $p2 R3
     $e1 connect $p2 [java::field $a3 input] R4
 
-#set debug ptolemy.domains.sdf.kernel.Debug
-#set debugger [java::new ptolemy.domains.sdf.kernel.DebugListener]
-#java::call $debug register $debugger
+#set debugger [java::new ptolemy.kernel.util.StreamListener]
+#$d3 addDebugListener $debugger
+#set s3 [$d3 getScheduler]
+#$s3 addDebugListener $debugger
+#$d5 addDebugListener $debugger
+#set s5 [$d5 getScheduler]
+#$s5 addDebugListener $debugger
+
+    set iter [$d3 getAttribute iterations]
+    _testSetToken $iter  [java::new {ptolemy.data.IntToken int} 6]
+    $manager run
+    list [$a3 getHistory] 
+} {{ptolemy.data.IntToken(0)
+ptolemy.data.IntToken(1)
+ptolemy.data.IntToken(2)
+ptolemy.data.IntToken(3)
+ptolemy.data.IntToken(4)
+ptolemy.data.IntToken(5)
+}}
+
+test SDFDirector-6.2 {Test transparent activation} {
+    # NOTE: Uses the setup above
+    set e1 [java::new ptolemy.actor.TypedCompositeActor $w]
+    set d3 [java::new ptolemy.domains.sdf.kernel.SDFDirector $e1 D3]
+    $e1 setName E0
+    $e1 setManager $manager
+    $e1 setDirector $d3
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e1 Ramp]
+    set c1 [java::new ptolemy.actor.TypedCompositeActor $e1 Cont]
+    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    $p1 setInput 1
+    set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p2]
+    $p2 setOutput 1
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $c1 Delay]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e1 Consumer]
+    $e1 connect [java::field $a1 output] $p1 R1
+    $c1 connect $p1 [java::field $a2 input] R2
+    $c1 connect [java::field $a2 output] $p2 R3
+    $e1 connect $p2 [java::field $a3 input] R4
+
+#set debugger [java::new ptolemy.kernel.util.StreamListener]
+#$d3 addDebugListener $debugger
+#set s3 [$d3 getScheduler]
+#$s3 addDebugListener $debugger
 
     set iter [$d3 getAttribute iterations]
     _testSetToken $iter  [java::new {ptolemy.data.IntToken int} 6]
