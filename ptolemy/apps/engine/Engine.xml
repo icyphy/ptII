@@ -77,7 +77,7 @@
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -90,8 +90,6 @@
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
-        </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -115,12 +113,14 @@
                 </property>
             </property>
         </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-65.0, 70.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -4, 1018, 743}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1018, 743}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7966072943172">
     </property>
@@ -192,8 +192,6 @@
             <entity name="Intake" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Intake">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 295.0">
@@ -201,8 +199,6 @@
             </entity>
             <entity name="Compression" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Compression">
-                </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
@@ -212,8 +208,6 @@
             <entity name="Cmp_w_Ign" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Cmp_w_Ign">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 215.0">
@@ -221,8 +215,6 @@
             </entity>
             <entity name="Exp_wo_Ign" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Exp_wo_Ign">
-                </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
@@ -232,8 +224,6 @@
             <entity name="Exp_w_Ign" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Exp_w_Ign">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="655.0, 285.0">
@@ -241,8 +231,6 @@
             </entity>
             <entity name="Exhaust" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Exhaust-01">
-                </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
@@ -252,8 +240,6 @@
             <entity name="Exh_w_neg_phi_o1" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Exhaust-02">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 805.0">
@@ -261,8 +247,6 @@
             </entity>
             <entity name="Exh_w_pos_phi_o1" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Exh_w_pos_phi_o1">
-                </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
@@ -460,8 +444,6 @@
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -483,6 +465,8 @@
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 90.0">
                 </property>
@@ -616,8 +600,6 @@
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -639,6 +621,8 @@
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 90.0">
                 </property>
@@ -859,8 +843,6 @@
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -882,6 +864,8 @@
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 55.0">
                 </property>
@@ -1015,8 +999,6 @@
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -1038,6 +1020,8 @@
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 35.0">
                 </property>
@@ -1214,8 +1198,6 @@
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -1237,6 +1219,8 @@
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 60.0">
                 </property>
@@ -1370,8 +1354,6 @@
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -1393,6 +1375,8 @@
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 60.0">
                 </property>
@@ -1526,8 +1510,6 @@
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -1549,6 +1531,8 @@
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 60.0">
                 </property>
@@ -1682,8 +1666,6 @@
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -1705,6 +1687,8 @@
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 60.0">
                 </property>
@@ -1895,7 +1879,7 @@
     <entity name="phi_c" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {258, 206, 521, 220}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 521, 220}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 165]">
         </property>
@@ -1910,8 +1894,8 @@
 <title>phi_c1</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="10.0"/>
+<yRange min="0.0" max="32388.112233920983"/>
 </plot>?>
         </configure>
     </entity>
@@ -1931,7 +1915,7 @@
     <entity name="Torque" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {258, 206, 521, 220}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 521, 220}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 165]">
         </property>
@@ -1946,8 +1930,8 @@
 <title>Torque</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="10.0"/>
+<yRange min="-2.189821275211948" max="2.1875006471798923"/>
 </plot>?>
         </configure>
     </entity>
@@ -2532,7 +2516,7 @@
             </property>
             <property name="InitialStateVector" class="ptolemy.data.expr.Parameter" value="{0.0,0.0,0.0,0.0,0.0}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-6, -6, 1036, 780}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={122, 122, 1036, 780}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -2596,16 +2580,12 @@
             <entity name="DriveTrain" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="DriveTrain">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 5.0">
                 </property>
             </entity>
             <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="-225.0, -85.0">
@@ -2668,8 +2648,6 @@
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -2691,6 +2669,8 @@
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="-455.0, -120.0">
                 </property>
@@ -3413,8 +3393,6 @@
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -3436,6 +3414,8 @@
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="600.0, -15.0">
                 </property>
@@ -4204,8 +4184,6 @@
                 </property>
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
-                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-                </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -4227,6 +4205,8 @@
                         <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                         </property>
                     </property>
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="-455.0, -120.0">
                 </property>
@@ -4964,7 +4944,7 @@
     <entity name="ma" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {258, 206, 521, 220}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 521, 220}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 165]">
         </property>
@@ -4977,8 +4957,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>ma</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="10.0"/>
+<yRange min="0.0" max="3.02107261677836E-4"/>
 </plot>?>
         </configure>
     </entity>
@@ -5256,7 +5236,7 @@
     <entity name="omega_cs" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {258, 206, 521, 220}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 521, 220}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 165]">
         </property>
@@ -5271,8 +5251,8 @@
 <title>omega_cs</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="10.0"/>
+<yRange min="0.0" max="853.5288101553014"/>
 </plot>?>
         </configure>
     </entity>
