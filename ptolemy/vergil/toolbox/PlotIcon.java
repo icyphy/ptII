@@ -6,7 +6,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.moml.*;
-import ptolemy.actor.gui.*;
+import ptolemy.actor.lib.gui.Plotter;
 import ptolemy.plot.Plot;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
