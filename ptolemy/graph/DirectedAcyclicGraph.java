@@ -418,7 +418,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         _computeTransitiveClosure();
         if ( !isAcyclic()) {
             throw new InvalidStateException("DirectedAcyclicGraph._check: " +
-                    Cycle in CPO.");
+                    "Cycle in CPO.");
         }
 
         // find bottom
