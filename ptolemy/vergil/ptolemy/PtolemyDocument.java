@@ -50,6 +50,7 @@ import diva.util.*;
 
 import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.datatransfer.*;
 import java.awt.Dimension;
 import java.awt.event.*;
@@ -69,6 +70,7 @@ import java.net.URL;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
 /**
@@ -210,22 +212,11 @@ public class PtolemyDocument extends AbstractDocument
      *  will return the same view until createView is called again.
      */
     public JComponent createView() {
-	//JPanel view = new JPanel();
-	//view.setLayout(new OverlayLayout(view));
-	
 	VisualNotation notation = _getVisualNotation(getModel());
 	GraphPane pane = notation.createView(this);
 	JGraph jgraph = new JGraph(pane);
 	GraphController controller =
 	    jgraph.getGraphPane().getGraphController();
-
-	/*	JPanel panel = new JPanel();
-	panel.setMinimumSize(new Dimension(200, 100));
-	panel.setMaximumSize(new Dimension(200, 100));
-	panel.setAlignmentX(1);
-	panel.setAlignmentY(1);
-	view.add(panel);
-	view.add(jgraph);*/
 
 	new EditorDropTarget(jgraph, getApplication());
        
@@ -234,11 +225,20 @@ public class PtolemyDocument extends AbstractDocument
                 KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
         jgraph.setRequestFocusEnabled(true);
+	jgraph.addMouseListener(new FocusMouseListener());
 	jgraph.setAlignmentX(1);
 	jgraph.setAlignmentY(1);
 	jgraph.setBackground(PtolemyModule.BACKGROUND_COLOR);
 	_view = jgraph;
-	return jgraph;
+	// Ugh..  I hate setting the size like this.
+	jgraph.setPreferredSize(new Dimension(600, 450));
+	jgraph.setSize(600, 450);
+	
+	// Ugh, I hate having to add scrollbars manually.
+	JScrollPane scrollPane = new JScrollPane(jgraph);
+	scrollPane.setVerticalScrollBarPolicy(scrollPane.VERTICAL_SCROLLBAR_NEVER);
+	scrollPane.setHorizontalScrollBarPolicy(scrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        return scrollPane;
     }
 
     /** Return the toplevel composite entity of the

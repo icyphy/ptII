@@ -64,6 +64,7 @@ import java.net.*;
 
 import java.awt.Component;
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.Container;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -542,14 +543,14 @@ public class PtolemyModule implements Module {
 	    // We have "" because that is the name that was given in the
 	    // treepane constructor.
 	    //System.out.println("lib = " + lib.description());
-		// createNodes(pane, "TreePane", library);
+	    // createNodes(pane, "TreePane", library);
 	    JTree designTree = new JDesignTree(library);
 	    designTree.setBackground(BACKGROUND_COLOR);
 	    JScrollPane scrollPane = new JScrollPane(designTree);
 	    scrollPane.setMinimumSize(new Dimension(200, 200));
 	    scrollPane.setPreferredSize(new Dimension(200, 200));
-	    pane.setLayout(new BorderLayout());
-	    pane.add(scrollPane, BorderLayout.CENTER);
+	    // add at zero because the panner should stay at the bottom.
+	    pane.add(scrollPane, 0);
 	    
 	    JSplitPane splitPane = frame.getSplitPane();
 	    splitPane.resetToPreferredSizes();
