@@ -90,7 +90,7 @@ test InvalidStateException-5.1 {Create a InvalidStateException with a \
     set pe [java::new {ptolemy.kernel.util.InvalidStateException \
 	    ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{Object name: <Unnamed Object>:
+} {{Object name: .<Unnamed Object>:
 Detail String}}
 
 
@@ -116,7 +116,7 @@ test InvalidStateException-7.1 {Create a InvalidStateException with an \
     set pe [java::new ptolemy.kernel.util.InvalidStateException $n1 $n2 \
 	    "Detail Message"]
     list [$pe getMessage]
-} {{Object names: <Unnamed Object> and <Unnamed Object>:
+} {{Object names: .<Unnamed Object> and .<Unnamed Object>:
 Detail Message}}
 
 ######################################################################
@@ -129,7 +129,7 @@ test InvalidStateException-7.2 {Create a InvalidStateException with a \
     set pe [java::new ptolemy.kernel.util.InvalidStateException $n1 $n2 \
 	    "Detail Message"]
     list [$pe getMessage]
-} {{Object names: .NamedObj 1 and <Unnamed Object>:
+} {{Object names: .NamedObj 1 and .<Unnamed Object>:
 Detail Message}}
 
 ######################################################################
@@ -142,7 +142,7 @@ test InvalidStateException-7.3 {Create a InvalidStateException with an \
     set pe [java::new ptolemy.kernel.util.InvalidStateException $n1 $n2 \
 	    "Detail Message"]
     list [$pe getMessage]
-} {{Object names: <Unnamed Object> and .NamedObj 2:
+} {{Object names: .<Unnamed Object> and .NamedObj 2:
 Detail Message}}
 
 ######################################################################

@@ -83,7 +83,7 @@ test NoSuchItemException-5.1 {Create a NoSuchItemException with a NamedObj \
     set n1 [java::new ptolemy.kernel.util.NamedObj]
     set pe [java::new {ptolemy.kernel.util.NoSuchItemException ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{Object name: <Unnamed Object>:
+} {{Object name: .<Unnamed Object>:
 Detail String}}
 
 ######################################################################

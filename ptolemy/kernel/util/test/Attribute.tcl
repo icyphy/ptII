@@ -176,7 +176,7 @@ test Attribute-8.2 {setContainer, different workspace} {
     # Builds on 8.1 above
     catch {$b setContainer $c} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Object names: <Unnamed Object> and .N.C:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object> and .N.C:
 Cannot set container because workspaces are different.}}
 
 test Attribute-8.3 {setContainer, then setContainer again} {

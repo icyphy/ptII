@@ -64,7 +64,7 @@ test KernelException-7.1 {Create a KernelException with an unnamed NamedObj \
     set n2 [java::new ptolemy.kernel.util.NamedObj]
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{Object names: <Unnamed Object> and <Unnamed Object>:
+} {{Object names: .<Unnamed Object> and .<Unnamed Object>:
 Detail Message}}
 
 ######################################################################
@@ -76,7 +76,7 @@ test KernelException-7.2 {Create a KernelException with a named NamedObj \
     set n2 [java::new ptolemy.kernel.util.NamedObj]
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{Object names: .NamedObj 1 and <Unnamed Object>:
+} {{Object names: .NamedObj 1 and .<Unnamed Object>:
 Detail Message}}
 
 ######################################################################
@@ -88,7 +88,7 @@ test KernelException-7.3 {Create a KernelException with an unnamed NamedObj \
     set n2 [java::new ptolemy.kernel.util.NamedObj "NamedObj 2"]
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 "Detail Message"]
     list [$pe getLocalizedMessage]
-} {{Object names: <Unnamed Object> and .NamedObj 2:
+} {{Object names: .<Unnamed Object> and .NamedObj 2:
 Detail Message}}
 
 ######################################################################
@@ -112,7 +112,7 @@ test KernelException-7.5 {Create a KernelException with a unnamed NamedObj \
     set n2 [java::new ptolemy.kernel.util.NamedObj]
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 [java::null]]
     list [$pe getMessage]
-} {{Object names: <Unnamed Object> and <Unnamed Object>}}
+} {{Object names: .<Unnamed Object> and .<Unnamed Object>}}
 
 ######################################################################
 ####
@@ -123,7 +123,7 @@ test KernelException-7.6 {Create a KernelException with a null NamedObj \
     set n2 [java::new ptolemy.kernel.util.NamedObj]
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 [java::null]]
     list [$pe getMessage]
-} {{Object name: <Unnamed Object>}}
+} {{Object name: .<Unnamed Object>}}
 
 
 ######################################################################
@@ -135,7 +135,7 @@ test KernelException-7.7 {Create a KernelException with an unnamed NamedObj \
     set n2 [java::null]
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 [java::null]]
     list [$pe getMessage]
-} {{Object name: <Unnamed Object>}}
+} {{Object name: .<Unnamed Object>}}
 
 ######################################################################
 ####
