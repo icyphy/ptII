@@ -223,7 +223,7 @@ public class Token implements Serializable {
     }
 
     /** Return a new Token whose value is the value of the argument Token
-     *  multiplied with the value of this Token.
+     *  multiplied by the value of this Token.
      *  It  should be overridden in derived classes to provide type specific
      *  actions for multiply.
      *  @param leftFactor The token whose value we multiply the value of this

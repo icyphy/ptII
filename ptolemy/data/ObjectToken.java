@@ -79,7 +79,7 @@ public class ObjectToken extends Token {
      *  @param token The token to be converted to an ObjectToken.
      *  @return An ObjectToken.
      *  @exception IllegalActionException If the conversion
-     *   cannot be carried out in a lossless fashion.
+     *   cannot be carried out.
      */
     public static Token convert(Token token)
 	    throws IllegalActionException {

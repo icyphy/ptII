@@ -76,8 +76,7 @@ public class StringToken extends Token {
      *  this Token.
      *  @param token The token to add to this Token
      *  @exception IllegalActionException If the passed token is
-     *   not of a type that can be added to this Tokens value in a
-     *   lossless fashion.
+     *   not of a type that can be added to this Tokens value.
      *  @return A new StringToken containing the result.
      */
     public Token add(Token token) throws IllegalActionException {
@@ -108,8 +107,7 @@ public class StringToken extends Token {
      *  this Token.
      *  @param token The token to concatenate this Token to.
      *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value in
-     *   a lossless fashion.
+     *   is not of a type that can be added to this Tokens value.
      *  @return A new StringToken containing the result.
      */
     public Token addReverse(ptolemy.data.Token token)
@@ -130,7 +128,7 @@ public class StringToken extends Token {
      *  @param token The token to be converted to a StringToken.
      *  @return A StringToken
      *  @exception IllegalActionException If the conversion cannot
-     *   be carried out in a lossless fashion.
+     *   be carried out.
      */
     public static Token convert(Token token)
 	    throws IllegalActionException {

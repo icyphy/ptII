@@ -108,8 +108,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @param t The token to add to this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the specified token is
-     *   not of a type that can be added to this token in a lossless
-     *   fashion.
+     *   not of a type that can be added to this token.
      */
     public Token add(Token t)
 	    throws IllegalActionException {
@@ -200,7 +199,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @param token The token to be converted to a FixMatrixToken.
      *  @return A FixMatrixToken
      *  @exception IllegalActionException If the conversion cannot
-     *   be carried out in a lossless fashion.
+     *   be carried out.
      */
     public static Token convert(Token token)
 	    throws IllegalActionException {

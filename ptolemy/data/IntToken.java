@@ -87,8 +87,7 @@ public class IntToken extends ScalarToken {
      *  the returned Token type chosen to achieve a lossless conversion.
      *  @param rightArg The token to add to this Token.
      *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value in
-     *   a lossless fashion.
+     *   is not of a type that can be added to this Tokens value.
      *  @return A new Token containing the result.
      */
     public Token add(ptolemy.data.Token rightArg)
@@ -121,8 +120,7 @@ public class IntToken extends ScalarToken {
      *  a lossless conversion.
      *  @param leftArg The token to add this Token to.
      *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value in
-     *   a lossless fashion.
+     *   is not of a type that can be added to this Tokens value.
      *  @return A new Token containing the result.
      */
     public Token addReverse(ptolemy.data.Token leftArg)
@@ -152,7 +150,7 @@ public class IntToken extends ScalarToken {
      *  @param token The token to be converted to a IntToken.
      *  @return A IntToken.
      *  @exception IllegalActionException If the conversion
-     *   cannot be carried out in a lossless fashion.
+     *   cannot be carried out.
      */
     public static Token convert(Token token)
             throws IllegalActionException {
@@ -179,8 +177,7 @@ public class IntToken extends ScalarToken {
      *  the result will be an integer which is the quotient.
      *  @param divisor The token to divide this Token by
      *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be divide this Tokens value by in a
-     *  lossless fashion.
+     *  not of a type that can be divide this Tokens value by.
      *  @return A new Token containing the result.
      */
     public Token divide(Token divisor) throws IllegalActionException {
@@ -210,8 +207,7 @@ public class IntToken extends ScalarToken {
      *  a lossless conversion.
      *  @param dividend The token to be divided by the value of this Token.
      *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be divided by this Tokens value in
-     *   a lossless fashion.
+     *   is not of a type that can be divided by this Tokens value.
      *  @return A new Token containing the result.
      */
     public Token divideReverse(Token dividend)
@@ -326,7 +322,7 @@ public class IntToken extends ScalarToken {
      *  chosen to achieve a lossless conversion.
      *  @param rightArg The token to modulo this Token by.
      *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be  used with modulo in a lossless fashion.
+     *  not of a type that can be  used with modulo.
      *  @return A new Token containing the result.
      */
     public Token modulo(Token rightArg) throws IllegalActionException {
@@ -358,8 +354,7 @@ public class IntToken extends ScalarToken {
      *  type chosen to achieve a lossless conversion.
      *  @param leftArg The token to apply modulo to by the value of this Token.
      *  @exception IllegalActionException If the passed token
-     *   is not of a type that can apply modulo by this Tokens value in
-     *   a lossless fashion.
+     *   is not of a type that can apply modulo by this Tokens value.
      *  @return A new Token containing the result.
      */
     public Token moduloReverse(Token leftArg) throws IllegalActionException {
@@ -369,13 +364,12 @@ public class IntToken extends ScalarToken {
     }
 
     /** Return a new Token whose value is the value of this Token
-     *  multiplied with the value of the argument Token.
+     *  multiplied by the value of the argument Token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
      *  @param rightFactor The token to multiply this Token by.
      *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be multiplied by this Tokens value in
-     *  a lossless fashion.
+     *  not of a type that can be multiplied to this Tokens value.
      *  @return A new Token containing the result.
      */
     public Token multiply(Token rightFactor) throws IllegalActionException {
@@ -402,14 +396,13 @@ public class IntToken extends ScalarToken {
     }
 
     /** Return a new Token whose value is the value of the argument Token
-     *  multiplied with the value of this Token.
+     *  multiplied by the value of this Token.
      *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
      *  @param leftFactor The token to be multiplied by the value of
      *   this Token.
      *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be multiplied by this Tokens value in
-     *   a lossless fashion.
+     *   is not of a type that can be multiplied by this Tokens value.
      *  @return A new Token containing the result.
      */
     public Token multiplyReverse(Token leftFactor)
@@ -432,8 +425,7 @@ public class IntToken extends ScalarToken {
      *  chosen to achieve a lossless conversion.
      *  @param rightArg The token to subtract to this Token.
      *  @exception IllegalActionException If the passed token is
-     *   not of a type that can be subtracted from this Tokens value in
-     *   a lossless fashion.
+     *   not of a type that can be subtracted from this Tokens value.
      *  @return A new Token containing the result.
      */
     public Token subtract(Token rightArg) throws IllegalActionException {
@@ -464,8 +456,7 @@ public class IntToken extends ScalarToken {
      *  chosen to achieve a lossless conversion.
      *  @param leftArg The token to add this Token to.
      *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value in
-     *   a lossless fashion.
+     *   is not of a type that can be added to this Tokens value.
      *  @return A new Token containing the result.
      */
     public Token subtractReverse(Token leftArg) throws IllegalActionException {

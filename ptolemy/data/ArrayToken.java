@@ -44,10 +44,6 @@ A token that contains an array of tokens.
 @version $Id$
 */
 
-// FIXME: to support operations like adding each element of an array
-// with a certain value, an extra set of methods like elementAdd(),
-// elementSubtract(), etc may be needed.
-
 public class ArrayToken extends Token {
 
     /** Construct an ArrayToken with the specified token array. All the
@@ -166,7 +162,7 @@ public class ArrayToken extends Token {
     }
 
     /** Return a new ArrayToken whose value is the value of this Token
-     *  multiplied with the value of the argument Token.
+     *  multiplied by the value of the argument Token.
      *  The argument token must be a scalar token. The operation of this
      *  method can be viewed as scaling the elements of this token by the
      *  argument. The resulting token will have the same dimension as this
@@ -174,8 +170,8 @@ public class ArrayToken extends Token {
      *  result of the element of this token and the argument.
      *  @param rightFactor The token to multiply this Token by.
      *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be multiplied with the elements of this
-     *   Token in a lossless fashion.
+     *   not of a type that can be multiplied to the elements of this
+     *   Token.
      *  @return A new ArrayToken.
      */
     public Token multiply(Token rightFactor) throws IllegalActionException {

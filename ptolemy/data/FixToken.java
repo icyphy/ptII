@@ -183,8 +183,7 @@ public class FixToken extends ScalarToken {
      *  @param divisor A FixToken.
      *  @return A new FixToken.
      *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be divide this Tokens value by in a
-     *  lossless fashion.
+     *  not of a type that can be divide this Tokens value by.
      */
     public Token divide(Token divisor)
 	    throws IllegalActionException {
@@ -325,8 +324,7 @@ public class FixToken extends ScalarToken {
      *  @param arg A FixToken.
      *  @return A new FixToken.
      *  @exception IllegalActionException If the specified token
-     *  is not of a type that can be multiplied to this Token in
-     *  a lossless fashion.
+     *  is not of a type that can be multiplied to this Token.
      */
     public Token multiply(Token token)
             throws IllegalActionException {
@@ -390,8 +388,7 @@ public class FixToken extends ScalarToken {
      *  @param token A FixToken.
      *  @return A new FixToken.
      *  @exception IllegalActionException If the specified token is
-     *   not of a type that can be subtracted from this Token in a
-     *   lossless fashion.
+     *   not of a type that can be subtracted from this Token.
      */
     public Token subtract(Token rightArg)
 	    throws IllegalActionException {

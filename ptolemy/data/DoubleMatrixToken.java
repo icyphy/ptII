@@ -111,8 +111,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @param t The token to add to this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the specified token is
-     *   not of a type that can be added to this token in a lossless
-     *   fashion.
+     *   not of a type that can be added to this token.
      */
     public final Token add(Token t)
             throws IllegalActionException {
@@ -186,7 +185,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @param token The token to be converted to a DoubleMatrixToken.
      *  @return A DoubleMatrixToken
      *  @exception IllegalActionException If the conversion cannot
-     *   be carried out in a lossless fashion.
+     *   be carried out.
      */
     public static final Token convert(Token token)
             throws IllegalActionException {
@@ -333,8 +332,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @param t The token to add to this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the specified token is
-     *   not of a type that can be added to this token in a lossless
-     *   fashion.
+     *   not of a type that can be added to this token.
      */
     public final Token multiply(final Token t)
             throws IllegalActionException {
@@ -440,8 +438,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @param t The token to subtract to this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the specified token is
-     *   not of a type that can be added to this token in a lossless
-     *   fashion.
+     *   not of a type that can be added to this token.
      */
     public final Token subtract(final Token t)
             throws IllegalActionException {

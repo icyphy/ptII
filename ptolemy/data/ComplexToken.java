@@ -91,8 +91,7 @@ public class ComplexToken extends ScalarToken {
      *  @param token The token to add to this Token.
      *  @return A new Token containing the result.
      *  @exception IllegalActionException If the specified token
-     *   is not of a type that can be added to this Tokens value in
-     *   a lossless fashion.
+     *   is not of a type that can be added to this Tokens value.
      */
     public Token add(Token token)
 	    throws IllegalActionException {
@@ -155,7 +154,7 @@ public class ComplexToken extends ScalarToken {
      *  @param token The token to be converted to a ComplexToken.
      *  @return A ComplexToken.
      *  @exception IllegalActionException If the conversion
-     *   cannot be carried out in a lossless fashion.
+     *   cannot be carried out.
      */
     public static Token convert(Token token)
 	    throws IllegalActionException {
@@ -194,8 +193,7 @@ public class ComplexToken extends ScalarToken {
      *
      *  @param divisor The token to divide this Token by
      *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be divide this Tokens value by in a
-     *  lossless fashion.
+     *  not of a type that can divide this Tokens value by.
      *  @return A new Token containing the result.
      */
     public Token divide(Token divisor)
@@ -304,8 +302,7 @@ public class ComplexToken extends ScalarToken {
      *  @param token The token to multiply to this Token.
      *  @return A new Token containing the result.
      *  @exception IllegalActionException If the specified token
-     *   is not of a type that can be multiplied to this Token in
-     *   a lossless fashion.
+     *   is not of a type that can be multiplied to this Token.
      */
     public Token multiply(Token token)
 	    throws IllegalActionException {
@@ -367,8 +364,7 @@ public class ComplexToken extends ScalarToken {
      *  @param rightArg The token to subtract this Token by
      *  @return A new Token containing the result.
      *  @exception IllegalActionException If the specified token is
-     *   not of a type that can be subtracted from this Token in a
-     *   lossless fashion.
+     *   not of a type that can be subtracted from this Token.
      */
     public Token subtract(Token rightArg)
 	    throws IllegalActionException {
