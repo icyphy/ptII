@@ -70,7 +70,7 @@ token into at least one of the receivers contained by the actor.
 @author Steve Neuendorffer, Jim Armstrong
 @version $Id$
 @since Ptolemy II 2.0
- */
+*/
 public class HDEReceiver extends DEReceiver {
 
     /** Construct an empty DEReceiver with no container.
