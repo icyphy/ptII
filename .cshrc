@@ -12,26 +12,17 @@ if (! $?PTII ) setenv PTII $HOME
 # Try to set up for Java.
 if ( ! $?PTJAVA_HOME ) then
 	# Search the likely places
-	if ( ! $?PTJAVA_HOME && -d /opt/jdk1.2latest ) then
-		setenv PTJAVA_HOME /opt/jdk1.2latest
-	endif
-	if ( ! $?PTJAVA_HOME && -d /usr/java ) then
-		setenv PTJAVA_HOME /usr/java
-	endif
-	if ( ! $?PTJAVA_HOME && -d /opt/jdk1.1.6 ) then
-		setenv PTJAVA_HOME /opt/jdk1.1.6
-	endif
-	if ( ! $?PTJAVA_HOME && -d /opt/java) then
-		setenv PTJAVA_HOME /opt/java
-	endif
-	if ( ! $?PTJAVA_HOME && -d /usr/eesww/lang/jdk1.1latest) then
-		setenv PTJAVA_HOME /usr/eesww/lang/jdk1.1latest
+	if ( ! $?PTJAVA_HOME && -d /vol/doppler/doppler2/tools/java/j2sdk1_3_1) then
+		setenv PTJAVA_HOME /vol/doppler/doppler2/tools/java/j2sdk1_3_1
 	endif
 	if ( ! $?PTJAVA_HOME && -d /usr/local/java) then
 		setenv PTJAVA_HOME /usr/local/java
 	endif
-	if ( ! $?PTJAVA_HOME && -d /usr/sww/X11/bin/java) then
-		setenv PTJAVA_HOME /usr/sww/X11/bin/java
+	if ( ! $?PTJAVA_HOME && -d /usr/java ) then
+		setenv PTJAVA_HOME /usr/java
+	endif
+	if ( ! $?PTJAVA_HOME && -d /opt/java) then
+		setenv PTJAVA_HOME /opt/java
 	endif
 endif
 
