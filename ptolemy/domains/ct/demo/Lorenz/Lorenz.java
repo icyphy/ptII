@@ -30,16 +30,9 @@
 
 package ptolemy.domains.ct.demo.Lorenz;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.JPanel;
-
 import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.gui.*;
 import ptolemy.domains.ct.lib.*;
 import ptolemy.actor.*;
-import ptolemy.gui.Query;
-import ptolemy.gui.QueryListener;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.lib.gui.XYPlotter;
 import ptolemy.actor.gui.*;
