@@ -168,8 +168,6 @@
             <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
                 <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true}">
                 </property>
-                <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 180.0">
                 </property>
             </entity>
@@ -248,6 +246,8 @@
         <link port="falseRelation.control" relation="controlRelation"/>
     </entity>
     <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
+        <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
         <doc>Create a sequence of bernoulli random variables</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 245.0">
         </property>

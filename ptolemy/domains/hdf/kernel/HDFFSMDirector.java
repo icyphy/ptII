@@ -178,11 +178,8 @@ public class HDFFSMDirector extends FSMDirector {
             _chooseTransition(st.nonpreemptiveTransitionList());
 
         if (tr != null) {
-            //TypedCompositeActor trRefinement =
-                //(TypedCompositeActor)(tr.getRefinement())[0];
-            //TypedActor[] trRefinements = tr.getRefinement();
-            //TypedCompositeActor trRefinement =
-              //  (TypedCompositeActor)(trRefinements[0]);
+            TypedActor[] trRefinements = (tr.getRefinement());
+
             Actor[] actors = tr.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
@@ -369,7 +366,7 @@ public class HDFFSMDirector extends FSMDirector {
         CompositeActor container = (CompositeActor)getContainer();
         // FIXME
         //TypedActor currentRefinement =
-        TypedActor[] currentRefinement = curState.getRefinement();
+        //TypedActor[] currentRefinement = curState.getRefinement();
         Transition lastChosenTr = _getLastChosenTransition();
         TypedCompositeActor actor;
         Director refinementDir;
@@ -562,7 +559,8 @@ public class HDFFSMDirector extends FSMDirector {
                 if (insideReceivers != null
                     && insideReceivers[i] != null) {
                     for (int j = 0; j < insideReceivers[i].length; j++) {
-                        if (insideReceivers[i][j].hasToken()) {
+                        while (insideReceivers[i][j].hasToken()) {
+                            // clear tokens.
                             insideReceivers[i][j].get();
                         }
                     }
@@ -571,7 +569,8 @@ public class HDFFSMDirector extends FSMDirector {
                     ptolemy.data.Token t = port.get(i);
                     if (insideReceivers != null
                             && insideReceivers[i] != null) {
-                        for (int j = 0; j < insideReceivers[i].length; j++) {
+                        for (int j = 0;
+                            j < insideReceivers[i].length; j++) {
                             insideReceivers[i][j].put(t);
                         }
                         // Successfully transferred data, so return true.
@@ -799,21 +798,35 @@ public class HDFFSMDirector extends FSMDirector {
                     SDFUtilities.setTokenConsumptionRate
                         (inputPortOutside, portRateToSet);
                 } else {
-                    /*if (lastChosenTr != null) { 
-                        TypedCompositeActor trRefinement =
-                            // FIXME
-                            (TypedCompositeActor)(lastChosenTr.getRefinement())[0];
-                        //TypedActor trRefinement = (lastChosenTr.getRefinement())[0];
-                        if (trRefinement != null){
-                            String trRefinementName = trRefinement.getFullName();
-                            if (thisPortContainer.getFullName() == trRefinementName) {
-                                int portRateToSet = SDFUtilities
-                                    .getTokenConsumptionRate(refineInPort);
-                                SDFUtilities.setTokenConsumptionRate
-                                    (inputPortOutside, portRateToSet);   
+                    State curState = ctrl.currentState();
+                    List transitionList =
+                        curState.nonpreemptiveTransitionList();
+                    Iterator transitions = transitionList.iterator();
+                    while (transitions.hasNext()) {
+                        Transition transition =
+                            (Transition)transitions.next();
+                        if (transition != null) { 
+                            TypedActor[] trRefinements
+                                = (transition.getRefinement());
+                            if (trRefinements != null){
+                                TypedCompositeActor trRefinement
+                                    = (TypedCompositeActor)
+                                    (trRefinements[0]);
+                                String trRefinementName 
+                                    = trRefinement.getFullName();
+                                if (thisPortContainer.getFullName()
+                                    == trRefinementName) {
+                                    int portRateToSet = SDFUtilities
+                                        .getTokenConsumptionRate
+                                        (refineInPort);
+                                    SDFUtilities.
+                                        setTokenConsumptionRate
+                                        (inputPortOutside,
+                                        portRateToSet);   
+                                }
                             }
                         }    
-                    }*/
+                    }
                 }
             }
         }
