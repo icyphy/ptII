@@ -475,13 +475,21 @@ public class DoubleToken extends ScalarToken {
 
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
-     *  @return A String created using java.text.NumberFormat
+     *  The exact form of the number depends on its value, and may be either
+     *  decimal or exponential.  In general, exponential is used for numbers
+     *  whose magnitudes are very large or very small, except for zero which
+     *  is always represented as 0.0.  The behavior is roughly the same as
+     *  Double.toString(), except that we limit the precision to seven
+     *  fractional digits.  If you really must have better precision, 
+     *  then use <code>Double.toString(token.doubleValue())</code>.
+     *  @return A String representing the double value of this token.
      */
     public String toString() {
-        //NumberFormat nf = NumberFormat.getNumberInstance();
-        //nf.setMinimumFractionDigits(1);
-        DecimalFormat format = new DecimalFormat("#0.#####E0##");
-        return format.format(_value);
+        double mag = Math.abs(_value);
+        if(mag == 0.0 || (mag < 1000000 && mag > .001))
+            return _regularFormat.format(_value);
+        else 
+            return _exponentialFormat.format(_value);    
     }
 
     /** Returns a new token representing the additive identity.
@@ -494,4 +502,7 @@ public class DoubleToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private double _value;
+
+    DecimalFormat _regularFormat =     new DecimalFormat("#####0.0######");
+    DecimalFormat _exponentialFormat = new DecimalFormat("0.0######E0##");
 }
