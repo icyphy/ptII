@@ -315,6 +315,28 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "This TARfile (ptplot${PTVERSION}.tar.gz), will unpack into" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "called ptplot${PTVERSION}, and the configure-make-make install" \
+		>> $(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "process will not install any files outside of this " >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "ptplot5.1p2 directory." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "So if you unpack the TARfile into /usr/local, after " >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "installing you will have /usr/local/ptplot${PTVERSION}," >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "and you may want to tell users to add " >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "/usr/local/ptplot${PTVERSION}/bin to their PATH." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "The scripts in the bin directory will run the plotter" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "as a standalone application, or they can add" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "/usr/local/ptplot${PTVERSION} to their Java CLASSPATH." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "To build under Solaris:" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "set the PTII variable to this directory " >> \
