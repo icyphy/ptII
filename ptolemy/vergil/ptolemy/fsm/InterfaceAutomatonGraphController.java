@@ -57,16 +57,14 @@ the "Compose With" menu item to the Graph menu.
  */
 public class InterfaceAutomatonGraphController extends FSMGraphController {
 
-    /** Create a new controller with the specified graph frame and the
-     *  directory of the current model.
-     *  @param graphFrame An instance of InterfaceAutomatonGraphFrame.
+    /** Create a new controller with the specified directory of the current
+     *  model. The directory is for setting the current directory of
+     *  the file chooser invoked by the "Compose With" menu item.
      *  @param directory An instance of File that specifies the directory
      *   of the current model.
      */
-    public InterfaceAutomatonGraphController(
-            InterfaceAutomatonGraphFrame graphFrame, File directory) {
+    public InterfaceAutomatonGraphController(File directory) {
 	super();
-	_graphFrame = graphFrame;
 	_directory = directory;
     }
 
@@ -93,9 +91,6 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
 
     // The action for composing with another interface automaton.
     private ComposeWithAction _composeWithAction = new ComposeWithAction();
-
-    // The graph frame that created this controller.
-    private InterfaceAutomatonGraphFrame _graphFrame;
 
     // The directory of the current model.
     private File _directory;
@@ -140,7 +135,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                     fileDialog.setCurrentDirectory(new File(cwd));
                 }
             }
-            int returnVal = fileDialog.showOpenDialog(_graphFrame);
+            int returnVal = fileDialog.showOpenDialog(getFrame());
             if (returnVal == JFileChooser.APPROVE_OPTION) {
 	        _directory = fileDialog.getCurrentDirectory();
                 try {
@@ -151,7 +146,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                     File file = fileDialog.getSelectedFile().getCanonicalFile();
 		    URL url = file.toURL();
 
-		    Tableau tableau = _graphFrame.getTableau();
+		    Tableau tableau = getFrame().getTableau();
 		    // NOTE: The following is mostly copied from
 		    // Tableau._read()
                     if (tableau == null) {
@@ -168,7 +163,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
 
                     // compose the two interface automata and show result
 		    InterfaceAutomaton model1 =
-		            (InterfaceAutomaton)_graphFrame.getModel();
+		            (InterfaceAutomaton)getFrame().getModel();
                     InterfaceAutomatonGraphFrame graphFrame2 =
 	                  (InterfaceAutomatonGraphFrame)
 			          newAutomatonTableau.getFrame();
@@ -178,7 +173,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                     InterfaceAutomaton composition = model1.compose(model2);
                     configuration.openModel(composition);
                 } catch (Exception ex) {
-                    _graphFrame.report("Error reading input", ex);
+                    getFrame().report("Error reading input", ex);
                 }
             }
         }

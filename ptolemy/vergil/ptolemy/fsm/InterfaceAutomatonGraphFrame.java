@@ -71,7 +71,7 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
      *  local variables that may not have yet been created.
      */
     protected GraphPane _createGraphPane() {
-	_controller = new InterfaceAutomatonGraphController(this, _directory);
+	_controller = new InterfaceAutomatonGraphController(_directory);
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
 	final FSMGraphModel graphModel = new FSMGraphModel(getModel());
