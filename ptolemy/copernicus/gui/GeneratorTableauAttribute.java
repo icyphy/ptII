@@ -94,9 +94,6 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 	sootC = new StringAttribute(choiceStyle, "sootC");
 	sootC.setExpression("c");
 
-	sootJHDL = new StringAttribute(choiceStyle, "sootJHDL");
-	sootJHDL.setExpression("jhdl");
-
 	sootShallow = new StringAttribute(choiceStyle, "sootShallow");
 	sootShallow.setExpression("shallow");
 
@@ -238,10 +235,6 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
      */
     public StringAttribute sootDeep;
 
-    /** The name of the deep code generator.  The default value is "jhdl".
-     */
-    public StringAttribute sootJHDL;
-
     /** The name of the shallow code generator.
      *	The default value is "shallow".
      */
@@ -315,8 +308,6 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
             choiceStyle.getAttribute("sootC");
         newObject.sootDeep = (StringAttribute)
             choiceStyle.getAttribute("sootDeep");
-        newObject.sootJHDL = (StringAttribute)
-            choiceStyle.getAttribute("sootJHDL");
         newObject.sootShallow = (StringAttribute)
             choiceStyle.getAttribute("sootShallow");
 
