@@ -71,8 +71,11 @@ JSRCS = \
 	Switch.java \
 	Super.java \
 	SuperChild.java \
+	TestTypeSafeEnumeration.java \
+	UseTypeSafeEnumeration.java \
 	UseFields.java \
-	UseMethods.java
+	UseMethods.java \
+	UseTypeSafeEnumeration.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
