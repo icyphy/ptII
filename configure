@@ -20,7 +20,7 @@ ac_help="$ac_help
   --with-javacc=DIR       use JavaCC.zip from DIR,
                            defaults to \$PTII/vendors/sun/JavaCC"
 ac_help="$ac_help
-  --with-jtclsh=SCRIPT    tclsh is at. jtclsh is
+  --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
                            used for running the test scripts"
 
 # Initialize some variables set by options.
@@ -764,7 +764,7 @@ fi
 #--------------------------------------------------------------------
 echo $ac_n "checking the Java compiler with a simple compile""... $ac_c" 1>&6
 echo "configure:767: checking the Java compiler with a simple compile" >&5
-# We need to run javac in the mk directory so that javac from jdk1.1.6
+# We need to run javac in the config directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
 startdir=`pwd`
 cd $srcdir/config
@@ -924,121 +924,55 @@ JavaCC can be downloaded from http://www.sun.com/suntest'" 1>&2
 fi
 
 #--------------------------------------------------------------------
-#	See if there was a command-line option for where Tcl Blend is
+#	See if there was a command-line option for where Jacl is
 #--------------------------------------------------------------------
 
-# We only need to find Tcl Blend if $PTII/util/testsuite
+# We only need to find Jacl if $PTII/util/testsuite
 # exists.  If we are shipping ptplot, then this directory might not
 # exist
+PTJACL_JAR=$PTII/ptjacl.jar
+# The reference version of JDK 1.2 has a -native flag
+# If we don't use -native, then some of the threading tests fail
+PTJACL_JFLAG=-native
+JTCLSH='$(JAVA) $PTJACL_JFLAG tcl.lang.Shell'
+
 if test ! -d "$PTII/util/testsuite"; then
-    echo "$ac_t""$PTII/testsuite is not a directory, so we need not
-find Tcl Blend or Jacl" 1>&6
-    JTCLSH=jtclsh
+    echo "$ac_t""$PTII/util/testsuite is not a directory, so we need not
+find Jacl" 1>&6
 else
-    # Check whether --with-jtclsh or --without-jtclsh was given.
-if test "${with_jtclsh+set}" = set; then
-  withval="$with_jtclsh"
-  JTCLSH=$withval
+    echo $ac_n "checking for ptjacl.jar""... $ac_c" 1>&6
+echo "configure:945: checking for ptjacl.jar" >&5
+    # Check whether --with-ptjacl_jar or --without-ptjacl_jar was given.
+if test "${with_ptjacl_jar+set}" = set; then
+  withval="$with_ptjacl_jar"
+  PTJACL_JAR=$withval
 else
-  JTCLSH=jtclsh
+  PTJACL_JAR=$PTII/ptjacl.jar
 fi
 
-    if test "$JTCLSH" != "jtclsh"; then
-	echo $ac_n "checking for jtclsh""... $ac_c" 1>&6
-echo "configure:949: checking for jtclsh" >&5
-	echo "$ac_t""$JTCLSH" 1>&6;
+
+    if test -f "$PTJACL_JAR"; then
+	echo "$ac_t""$PTJACL_JAR" 1>&6
+	echo $ac_n "checking for how to run jacl""... $ac_c" 1>&6
+echo "configure:958: checking for how to run jacl" >&5
+	# This command starts up Jacl
+	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR $JAVA $JACL_JFLAG tcl.lang.Shell; then
+		echo "$ac_t""CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell" 1>&6
+	else
+		PTJACL_JFLAG=
+		echo "$ac_t""'$JAVA -native' failed,
+  use CLASSPATH=$PTJACL_JAR $JAVA tcl.lang.Shell" 1>&6
+		JTCLSH='$(JAVA) tcl.lang.Shell'
+	fi
     else
-	# Extract the first word of "jtclsh", so it can be a program name with args.
-set dummy jtclsh; ac_word=$2
-echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:955: checking for $ac_word" >&5
-if eval "test \"`echo '$''{'ac_cv_path_JTCLSH'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  case "$JTCLSH" in
-  /*)
-  ac_cv_path_JTCLSH="$JTCLSH" # Let the user override the test with a path.
-  ;;
-  *)
-  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
-  for ac_dir in $PATH; do
-    test -z "$ac_dir" && ac_dir=.
-    if test -f $ac_dir/$ac_word; then
-      ac_cv_path_JTCLSH="$ac_dir/$ac_word"
-      break
-    fi
-  done
-  IFS="$ac_save_ifs"
-  ;;
-esac
-fi
-JTCLSH="$ac_cv_path_JTCLSH"
-if test -n "$JTCLSH"; then
-  echo "$ac_t""$JTCLSH" 1>&6
-else
-  echo "$ac_t""no" 1>&6
+	echo "configure: warning: The ptjacl.jar file was not found at '$PTJACL_JAR'
+  ptjacl.jar is only necessary if you plan on running the test suite.
+  You can download ptjacl.jar from
+  http://ptolemy.eecs.berkeley.edu/~cxh/java/jacl/ptjacl.html" 1>&2
+    fi	 
 fi
 
-	if test ! -x "$JTCLSH"; then	
-	    echo "configure: warning: jtclsh not found, so we'll look for tclsh.
-jtclsh is a startup script for Tcl Blend, which is used to run the test suite.
-You only need to have jtclsh or tclsh if you are planning on running
-the test suite.
-See http://www.scriptics.com/java for Tcl Blend sources and binaries." 1>&2
 
-	    case "`uname -s`" in
-		    CYGWIN_NT-4.0) DEFAULT_TCLSH=tclsh80;;
-		    *) DEFAULT_TCLSH=tclsh;;
-	    esac
-	echo "DEFAULT_TCLSH=$DEFAULT_TCLSH"
-	    # Apparently AC_PATH_PROGS fails if the path contains directories
-	    # with spaces in their names.
-	    for ac_prog in "tclsh80 tclsh8.0 tclsh tclsh80.exe"
-do
-# Extract the first word of "$ac_prog", so it can be a program name with args.
-set dummy $ac_prog; ac_word=$2
-echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:1002: checking for $ac_word" >&5
-if eval "test \"`echo '$''{'ac_cv_path_TCLSH'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  case "$TCLSH" in
-  /*)
-  ac_cv_path_TCLSH="$TCLSH" # Let the user override the test with a path.
-  ;;
-  *)
-  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
-  for ac_dir in $PATH; do
-    test -z "$ac_dir" && ac_dir=.
-    if test -f $ac_dir/$ac_word; then
-      ac_cv_path_TCLSH="$ac_dir/$ac_word"
-      break
-    fi
-  done
-  IFS="$ac_save_ifs"
-  ;;
-esac
-fi
-TCLSH="$ac_cv_path_TCLSH"
-if test -n "$TCLSH"; then
-  echo "$ac_t""$TCLSH" 1>&6
-else
-  echo "$ac_t""no" 1>&6
-fi
-
-test -n "$TCLSH" && break
-done
-test -n "$TCLSH" || TCLSH="$DEFAULT_TCLSH"
-
-	    if test ! -x "$TCLSH"; then	
-		    echo "configure: warning: tclsh80 not found either,
-	so we default to '$TCLSH'.
-	tclsh is only necessary for the test suite." 1>&2;
-	    fi
-	    JTCLSH=$TCLSH
-	fi     
-    fi 
-fi
 
 # Keep these substitutions alphabetical, with a description
 
@@ -1063,6 +997,12 @@ fi
 # JDK Version determined by running confTest.class and getting java.version
 
 
+# ptjacl.jar file, used to run the test suites
+
+
+# Flag to pass to java when we start up jacl
+
+
 # Location of the JDK
 
 
@@ -1070,7 +1010,272 @@ fi
 
 
 # Files we substitute in
-trap '' 1 2 15
+if test -f "$PTJACL_JAR"; then
+	trap '' 1 2 15
+cat > confcache <<\EOF
+# This file is a shell script that caches the results of configure
+# tests run on this system so they can be shared between configure
+# scripts and configure runs.  It is not useful on other systems.
+# If it contains results you don't want to keep, you may remove or edit it.
+#
+# By default, configure uses ./config.cache as the cache file,
+# creating it if it does not exist already.  You can give configure
+# the --cache-file=FILE option to use a different cache file; that is
+# what configure does when it calls configure scripts in
+# subdirectories, so they share the cache.
+# Giving --cache-file=/dev/null disables caching, for debugging configure.
+# config.status only pays attention to the cache file if you give it the
+# --recheck option to rerun configure.
+#
+EOF
+# The following way of writing the cache mishandles newlines in values,
+# but we know of no workaround that is simple, portable, and efficient.
+# So, don't put newlines in cache variables' values.
+# Ultrix sh set writes to stderr and can't be redirected directly,
+# and sets the high bit in the cache file unless we assign to the vars.
+(set) 2>&1 |
+  case `(ac_space=' '; set) 2>&1` in
+  *ac_space=\ *)
+    # `set' does not quote correctly, so add quotes (double-quote substitution
+    # turns \\\\ into \\, and sed turns \\ into \).
+    sed -n \
+      -e "s/'/'\\\\''/g" \
+      -e "s/^\\([a-zA-Z0-9_]*_cv_[a-zA-Z0-9_]*\\)=\\(.*\\)/\\1=\${\\1='\\2'}/p"
+    ;;
+  *)
+    # `set' quotes correctly as required by POSIX, so do not add quotes.
+    sed -n -e 's/^\([a-zA-Z0-9_]*_cv_[a-zA-Z0-9_]*\)=\(.*\)/\1=${\1=\2}/p'
+    ;;
+  esac >> confcache
+if cmp -s $cache_file confcache; then
+  :
+else
+  if test -w $cache_file; then
+    echo "updating cache $cache_file"
+    cat confcache > $cache_file
+  else
+    echo "not updating unwritable cache $cache_file"
+  fi
+fi
+rm -f confcache
+
+trap 'rm -fr conftest* confdefs* core core.* *.core $ac_clean_files; exit 1' 1 2 15
+
+test "x$prefix" = xNONE && prefix=$ac_default_prefix
+# Let make expand exec_prefix.
+test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
+
+# Any assignment to VPATH causes Sun make to only execute
+# the first set of double-colon rules, so remove it if not needed.
+# If there is a colon in the path, we need to keep it.
+if test "x$srcdir" = x.; then
+  ac_vpsub='/^[ 	]*VPATH[ 	]*=[^:]*$/d'
+fi
+
+trap 'rm -f $CONFIG_STATUS conftest*; exit 1' 1 2 15
+
+# Transform confdefs.h into DEFS.
+# Protect against shell expansion while executing Makefile rules.
+# Protect against Makefile macro expansion.
+cat > conftest.defs <<\EOF
+s%#define \([A-Za-z_][A-Za-z0-9_]*\) *\(.*\)%-D\1=\2%g
+s%[ 	`~#$^&*(){}\\|;'"<>?]%\\&%g
+s%\[%\\&%g
+s%\]%\\&%g
+s%\$%$$%g
+EOF
+DEFS=`sed -f conftest.defs confdefs.h | tr '\012' ' '`
+rm -f conftest.defs
+
+
+# Without the "./", some shells look in PATH for config.status.
+: ${CONFIG_STATUS=./config.status}
+
+echo creating $CONFIG_STATUS
+rm -f $CONFIG_STATUS
+cat > $CONFIG_STATUS <<EOF
+#! /bin/sh
+# Generated automatically by configure.
+# Run this file to recreate the current configuration.
+# This directory was configured as follows,
+# on host `(hostname || uname -n) 2>/dev/null | sed 1q`:
+#
+# $0 $ac_configure_args
+#
+# Compiler output produced by configure, useful for debugging
+# configure, is in ./config.log if it exists.
+
+ac_cs_usage="Usage: $CONFIG_STATUS [--recheck] [--version] [--help]"
+for ac_option
+do
+  case "\$ac_option" in
+  -recheck | --recheck | --rechec | --reche | --rech | --rec | --re | --r)
+    echo "running \${CONFIG_SHELL-/bin/sh} $0 $ac_configure_args --no-create --no-recursion"
+    exec \${CONFIG_SHELL-/bin/sh} $0 $ac_configure_args --no-create --no-recursion ;;
+  -version | --version | --versio | --versi | --vers | --ver | --ve | --v)
+    echo "$CONFIG_STATUS generated by autoconf version 2.12"
+    exit 0 ;;
+  -help | --help | --hel | --he | --h)
+    echo "\$ac_cs_usage"; exit 0 ;;
+  *) echo "\$ac_cs_usage"; exit 1 ;;
+  esac
+done
+
+ac_given_srcdir=$srcdir
+
+trap 'rm -fr `echo "mk/ptII.mk bin/ptjacl ptolemy/plot/ptplot" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
+EOF
+cat >> $CONFIG_STATUS <<EOF
+
+# Protect against being on the right side of a sed subst in config.status.
+sed 's/%@/@@/; s/@%/@@/; s/%g\$/@g/; /@g\$/s/[\\\\&%]/\\\\&/g;
+ s/@@/%@/; s/@@/@%/; s/@g\$/%g/' > conftest.subs <<\\CEOF
+$ac_vpsub
+$extrasub
+s%@CFLAGS@%$CFLAGS%g
+s%@CPPFLAGS@%$CPPFLAGS%g
+s%@CXXFLAGS@%$CXXFLAGS%g
+s%@DEFS@%$DEFS%g
+s%@LDFLAGS@%$LDFLAGS%g
+s%@LIBS@%$LIBS%g
+s%@exec_prefix@%$exec_prefix%g
+s%@prefix@%$prefix%g
+s%@program_transform_name@%$program_transform_name%g
+s%@bindir@%$bindir%g
+s%@sbindir@%$sbindir%g
+s%@libexecdir@%$libexecdir%g
+s%@datadir@%$datadir%g
+s%@sysconfdir@%$sysconfdir%g
+s%@sharedstatedir@%$sharedstatedir%g
+s%@localstatedir@%$localstatedir%g
+s%@libdir@%$libdir%g
+s%@includedir@%$includedir%g
+s%@oldincludedir@%$oldincludedir%g
+s%@infodir@%$infodir%g
+s%@mandir@%$mandir%g
+s%@JAVAC@%$JAVAC%g
+s%@JAVA@%$JAVA%g
+s%@JJTREE@%$JJTREE%g
+s%@CLASSPATHSEPARATOR@%$CLASSPATHSEPARATOR%g
+s%@JAVACC@%$JAVACC%g
+s%@JAVACC_DIR@%$JAVACC_DIR%g
+s%@JDEPENDFLAG@%$JDEPENDFLAG%g
+s%@JTCLSH@%$JTCLSH%g
+s%@JTREE@%$JTREE%g
+s%@JVERSION@%$JVERSION%g
+s%@PTJACL_JAR@%$PTJACL_JAR%g
+s%@PTJACL_JFLAG@%$PTJACL_JFLAG%g
+s%@PTJAVA_DIR@%$PTJAVA_DIR%g
+s%@PTII_DEFAULT@%$PTII_DEFAULT%g
+
+CEOF
+EOF
+
+cat >> $CONFIG_STATUS <<\EOF
+
+# Split the substitutions into bite-sized pieces for seds with
+# small command number limits, like on Digital OSF/1 and HP-UX.
+ac_max_sed_cmds=90 # Maximum number of lines to put in a sed script.
+ac_file=1 # Number of current file.
+ac_beg=1 # First line for current file.
+ac_end=$ac_max_sed_cmds # Line after last line for current file.
+ac_more_lines=:
+ac_sed_cmds=""
+while $ac_more_lines; do
+  if test $ac_beg -gt 1; then
+    sed "1,${ac_beg}d; ${ac_end}q" conftest.subs > conftest.s$ac_file
+  else
+    sed "${ac_end}q" conftest.subs > conftest.s$ac_file
+  fi
+  if test ! -s conftest.s$ac_file; then
+    ac_more_lines=false
+    rm -f conftest.s$ac_file
+  else
+    if test -z "$ac_sed_cmds"; then
+      ac_sed_cmds="sed -f conftest.s$ac_file"
+    else
+      ac_sed_cmds="$ac_sed_cmds | sed -f conftest.s$ac_file"
+    fi
+    ac_file=`expr $ac_file + 1`
+    ac_beg=$ac_end
+    ac_end=`expr $ac_end + $ac_max_sed_cmds`
+  fi
+done
+if test -z "$ac_sed_cmds"; then
+  ac_sed_cmds=cat
+fi
+EOF
+
+cat >> $CONFIG_STATUS <<EOF
+
+CONFIG_FILES=\${CONFIG_FILES-"mk/ptII.mk bin/ptjacl ptolemy/plot/ptplot"}
+EOF
+cat >> $CONFIG_STATUS <<\EOF
+for ac_file in .. $CONFIG_FILES; do if test "x$ac_file" != x..; then
+  # Support "outfile[:infile[:infile...]]", defaulting infile="outfile.in".
+  case "$ac_file" in
+  *:*) ac_file_in=`echo "$ac_file"|sed 's%[^:]*:%%'`
+       ac_file=`echo "$ac_file"|sed 's%:.*%%'` ;;
+  *) ac_file_in="${ac_file}.in" ;;
+  esac
+
+  # Adjust a relative srcdir, top_srcdir, and INSTALL for subdirectories.
+
+  # Remove last slash and all that follows it.  Not all systems have dirname.
+  ac_dir=`echo $ac_file|sed 's%/[^/][^/]*$%%'`
+  if test "$ac_dir" != "$ac_file" && test "$ac_dir" != .; then
+    # The file is in a subdirectory.
+    test ! -d "$ac_dir" && mkdir "$ac_dir"
+    ac_dir_suffix="/`echo $ac_dir|sed 's%^\./%%'`"
+    # A "../" for each directory in $ac_dir_suffix.
+    ac_dots=`echo $ac_dir_suffix|sed 's%/[^/]*%../%g'`
+  else
+    ac_dir_suffix= ac_dots=
+  fi
+
+  case "$ac_given_srcdir" in
+  .)  srcdir=.
+      if test -z "$ac_dots"; then top_srcdir=.
+      else top_srcdir=`echo $ac_dots|sed 's%/$%%'`; fi ;;
+  /*) srcdir="$ac_given_srcdir$ac_dir_suffix"; top_srcdir="$ac_given_srcdir" ;;
+  *) # Relative path.
+    srcdir="$ac_dots$ac_given_srcdir$ac_dir_suffix"
+    top_srcdir="$ac_dots$ac_given_srcdir" ;;
+  esac
+
+
+  echo creating "$ac_file"
+  rm -f "$ac_file"
+  configure_input="Generated automatically from `echo $ac_file_in|sed 's%.*/%%'` by configure."
+  case "$ac_file" in
+  *Makefile*) ac_comsub="1i\\
+# $configure_input" ;;
+  *) ac_comsub= ;;
+  esac
+
+  ac_file_inputs=`echo $ac_file_in|sed -e "s%^%$ac_given_srcdir/%" -e "s%:% $ac_given_srcdir/%g"`
+  sed -e "$ac_comsub
+s%@configure_input@%$configure_input%g
+s%@srcdir@%$srcdir%g
+s%@top_srcdir@%$top_srcdir%g
+" $ac_file_inputs | (eval "$ac_sed_cmds") > $ac_file
+fi; done
+rm -f conftest.s*
+
+EOF
+cat >> $CONFIG_STATUS <<EOF
+
+EOF
+cat >> $CONFIG_STATUS <<\EOF
+chmod a+x bin/ptjacl; cp bin/ptjacl bin/ptjaclapp
+exit 0
+EOF
+chmod +x $CONFIG_STATUS
+rm -fr confdefs* $ac_clean_files
+test "$no_create" = yes || ${CONFIG_SHELL-/bin/sh} $CONFIG_STATUS || exit 1
+
+else
+	trap '' 1 2 15
 cat > confcache <<\EOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
@@ -1191,40 +1396,6 @@ sed 's/%@/@@/; s/@%/@@/; s/%g\$/@g/; /@g\$/s/[\\\\&%]/\\\\&/g;
  s/@@/%@/; s/@@/@%/; s/@g\$/%g/' > conftest.subs <<\\CEOF
 $ac_vpsub
 $extrasub
-s%@CFLAGS@%$CFLAGS%g
-s%@CPPFLAGS@%$CPPFLAGS%g
-s%@CXXFLAGS@%$CXXFLAGS%g
-s%@DEFS@%$DEFS%g
-s%@LDFLAGS@%$LDFLAGS%g
-s%@LIBS@%$LIBS%g
-s%@exec_prefix@%$exec_prefix%g
-s%@prefix@%$prefix%g
-s%@program_transform_name@%$program_transform_name%g
-s%@bindir@%$bindir%g
-s%@sbindir@%$sbindir%g
-s%@libexecdir@%$libexecdir%g
-s%@datadir@%$datadir%g
-s%@sysconfdir@%$sysconfdir%g
-s%@sharedstatedir@%$sharedstatedir%g
-s%@localstatedir@%$localstatedir%g
-s%@libdir@%$libdir%g
-s%@includedir@%$includedir%g
-s%@oldincludedir@%$oldincludedir%g
-s%@infodir@%$infodir%g
-s%@mandir@%$mandir%g
-s%@JAVAC@%$JAVAC%g
-s%@JAVA@%$JAVA%g
-s%@JJTREE@%$JJTREE%g
-s%@JTCLSH@%$JTCLSH%g
-s%@TCLSH@%$TCLSH%g
-s%@CLASSPATHSEPARATOR@%$CLASSPATHSEPARATOR%g
-s%@JAVACC@%$JAVACC%g
-s%@JAVACC_DIR@%$JAVACC_DIR%g
-s%@JDEPENDFLAG@%$JDEPENDFLAG%g
-s%@JTREE@%$JTREE%g
-s%@JVERSION@%$JVERSION%g
-s%@PTJAVA_DIR@%$PTJAVA_DIR%g
-s%@PTII_DEFAULT@%$PTII_DEFAULT%g
 
 CEOF
 EOF
@@ -1332,3 +1503,4 @@ chmod +x $CONFIG_STATUS
 rm -fr confdefs* $ac_clean_files
 test "$no_create" = yes || ${CONFIG_SHELL-/bin/sh} $CONFIG_STATUS || exit 1
 
+fi
