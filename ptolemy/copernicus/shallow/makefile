@@ -71,7 +71,7 @@ all: jclass
 install: all $(PTPACKAGE).jar
 
 demo: shallowDemo
-shallowDemo: compileShallowDemo runShallowDemo
+shallowDemo: compileShallowDemo runOrthoCommDemo timeOrthoCommDemo
 
 TARGETPACKAGE = 	ptolemy.copernicus.shallow.cg
 TARGETPATH =		ptolemy/copernicus/shallow/cg
@@ -79,18 +79,22 @@ TARGETPATH =		ptolemy/copernicus/shallow/cg
 JADTARGETPACKAGE =	ptolemy.copernicus.shallow.cg.jad
 JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/shallow/cg/jad
 
-# IIR
+# OrthogonalCom - There is no .xml file for this model
+MODEL = OrthogonalCom
+SOURCECLASS = ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
+
+# Usually, we run shallow code gen on OrthogonalCom, but
+# if the lines below are uncommented, and we run 
+#   make compileShallowDemo runShallowDemo
+# then we run on the IIR test model.  To run the demo without editing this
+# file, use:
+#   make compileShallowDemo runShallowDemo MODEL=IIR SOURCECLASS=../../../ptolemy/actor/lib/test/auto/IIR.xml	
+#
 #MODEL = IIR
 #SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/$(MODEL).xml
 
-MODEL = OrthogonalCom
-SOURCECLASS = $(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/$(MODEL).xml
-
-SHALLOWTARGETCLASS = $(TARGETPACKAGE).CG$(MODEL)
 
 JVM_SIZE = -Xmx256m
-
-# make SOURCECLASS=../test/RampFileWriter.xml compileDemo
 
 # Soot command line arguments for the user.  To list all the arguments, use
 # make SOOT_USER_ARGS=-h
@@ -98,6 +102,9 @@ SOOT_USER_ARGS =
 
 # Time that we should let code generation run before exiting in ms.
 WATCH_DOG_TIMEOUT = 100000
+
+# The tests and the UI use the compileShallowDemo rule, so if you
+# change this rule, be sure to run make tests
 compileShallowDemo: $(JCLASS)
 	@echo "generate shallow code for '$(SOURCECLASS)'"
 	$(JAVA) $(JVM_SIZE) \
@@ -106,20 +113,44 @@ compileShallowDemo: $(JCLASS)
 	ptolemy.copernicus.shallow.Main "$(SOURCECLASS)" -d "$(ROOT)"  \
 		-p wjtp.watchDog time:$(WATCH_DOG_TIMEOUT) \
 		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.writeJimple1 outDir:$(TARGETPACKAGE)/jimple1 \
-		-p wjtp.writeJimple2 outDir:$(TARGETPACKAGE)/jimple2 \
+		-p wjtp.writeJimple1 outDir:$(TARGETPATH)/jimple1 \
+		-p wjtp.writeJimple2 outDir:$(TARGETPATH)/jimple2 \
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
 
+# Partial Java command to run the code generation output.
+RUN_COMMAND =	$(JAVA) -Xfuture -classpath "$(ROOT)" \
+		-Dptolemy.ptII.dir=$(PTII) \
+		ptolemy.actor.gui.CompositeActorApplication
+
+# Run the OrthoComm demo
+ORTHOCOMMTARGETCLASS = $(TARGETPACKAGE).CGToplevelModel
+runOrthoCommDemo:
+	@echo "Run the model"
+	$(RUN_COMMAND) \
+		-class $(ORTHOCOMMTARGETCLASS) \
+		-director.iterations 10
+
+# Time the OrthoComm demo
+TIMEORTHOCOMM_ITERATIONS = 50000
+timeOrthoCommDemo:
+	@echo "Run the model for $(TIMEORTHOCOMM_ITERATIONS) iterations"
+	$(RUN_COMMAND) \
+		-class $(ORTHOCOMMTARGETCLASS) \
+		-director.iterations $(TIMEORTHOCOMM_ITERATIONS) | tail 
+
+
+# The tests and the UI use the runShallowDemo rule, so if you
+# change this rule, be sure to run make tests
+SHALLOWTARGETCLASS = $(TARGETPACKAGE).CG$(MODEL)
 runShallowDemo:
 	@echo "Run the model"
-	$(JAVA) -Xfuture -classpath "$(ROOT)" \
-		-Dptolemy.ptII.dir=$(PTII) \
-		ptolemy.actor.gui.CompositeActorApplication \
-		-class $(SHALLOWTARGETCLASS) -director.iterations 50000
+	$(RUN_COMMAND) \
+		-class $(SHALLOWTARGETCLASS)
 
-# Jad is a Java disassembler
+# Jad is a Java disassembler.  Because of licensing restrictions
+# jad is not shipped with Ptolemy II
 JAD=jad
 
 # Generate a .java file from a class file and recompile it
