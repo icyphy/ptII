@@ -183,26 +183,21 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         ptolemy.graph.sched.Schedule schedule = scheduler.schedule();
         _debugMessage("Returned from P-APGAN; the schedule follows.\n"); 
         _debugMessage(schedule.toString() + "\n"); 
+
         SymbolicScheduleElement result = 
                  _expandAPGAN(psdfGraph, scheduler.getClusteredGraphRoot(), 
                  scheduler);
-
-        // Extract the schedule.
-        Schedule scheduleResult = null;
-        if (result instanceof SymbolicSchedule) {
-            scheduleResult = ((SymbolicSchedule)result).schedule();
-        } else {
-            // FIXME: handle this case (single-node graph?).
+        if (result instanceof SymbolicFiring) {
+            // FIXME: need to convert this to a schedule.
         }
-
         _debugMessage("Completed PSDFScheduler._getSchedule().\n The "
-                + "schedule follows.\n" + scheduleResult.toString() + "\n");
+                + "schedule follows.\n" + result.toString() + "\n");
 
-         // FIXME: scheduleResult is not executable.
-         // return scheduleResult;
+         // FIXME: result is not executable.
+         return (Schedule)result;
 
          // Just return an empty schedule for now
-         return new Schedule();
+         // return new Schedule();
     }
 
     // Print a debugging message if the debugging flag is turned on.
@@ -283,15 +278,14 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                         + denominator + ")";
                 String secondIterations = "(" + producedExpression + ") / ("
                         + denominator + ")";
+
                 first.setIterationCount(firstIterations);
                 second.setIterationCount(secondIterations);
 
-                schedule.add(first);
-                schedule.add(second);
-                SymbolicSchedule symbolicSchedule = 
-                        new SymbolicSchedule(schedule, "1");
+                SymbolicSchedule symbolicSchedule = new SymbolicSchedule("1");
+                symbolicSchedule.add((ScheduleElement)first);
+                symbolicSchedule.add((ScheduleElement)second);
                 return symbolicSchedule;
-               
             }
         } catch (Exception exception) {
             throw new RuntimeException("Error converting cluster hierarchy to "
@@ -299,29 +293,22 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         }
     }
 
-    /** A schedule element whose iteration count is given by an 
-     *  expression.
+    /** An actor firing with an iteration count that is determined by
+     *  a symbolic expression.
      */
-    private abstract class SymbolicScheduleElement extends ScheduleElement {
-        /** Construct a schedule element with an iteration count of 1, and
-         *  with no parent schedule element.
+    private class SymbolicFiring extends Firing implements 
+            SymbolicScheduleElement {
+        /** Construct a firing with the given actor and the given
+         *  expression.  The given actor
+         *  is assumed to fire the number of times determined by
+         *  evaluating the given expression.  
+         *  @param actor The actor in the firing.
+         *  @param expression The expression associated with the firing.
          */
-        public SymbolicScheduleElement()
+        public SymbolicFiring(Actor actor, String expression)
                 throws IllegalActionException {
-            super();
-            setIterationCount("1");
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
-
-        /** Return the actor invocation sequence in the form of a sequence of
-         *  actors.
-         *  @return The actor invocation sequence.
-         */
-        public Iterator actorIterator() {
-            _scheduleElement.setIterationCount(getIterationCount());
-            return _scheduleElement.actorIterator();
+            super(actor); 
+            setIterationCount(expression);
         }
 
         /** Return the most recent expression that was used to set the
@@ -333,15 +320,6 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             return _expression;
         }
 
-        /** Return the actor invocation sequence in the form of a sequence of
-         *  firings.
-         *  @return The actor invocation sequence.
-         */
-        public Iterator firingIterator() {
-            _scheduleElement.setIterationCount(getIterationCount());
-            return _scheduleElement.firingIterator();
-        }
-       
         /** Return the current iteration count of this firing.
          */
         public int getIterationCount() {
@@ -351,8 +329,17 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                 return token.intValue();
             } catch (Exception ex) {
                 // FIXME: this isn't very nice.
+                System.err.println("Error evaluating parse tree for expression"
+                        + ": " + expression()); 
                 throw new RuntimeException(ex.getMessage());
             }
+        }
+
+        /** Get the parse tree of the iteration expression. 
+         *  @return The parse tree.
+         */
+        public ASTPtRootNode parseTree() {
+            return _parseTree;
         }
 
         /** Set the expression associated with the iteration count.
@@ -365,18 +352,111 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
          */
         public void setIterationCount(String expression) {
             _expression = expression;
+            // FIXME: Need better exception handling.
+            try {
+                PtParser parser = new PtParser();
+                _parseTree = parser.generateParseTree(expression);
+            } catch (Exception exception) {
+                throw new RuntimeException("Error setting iteration count to "
+                        + expression + ".\n" + exception.getMessage());
+            }
+        }
+
+        /**
+         * Output a string representation of this symbolic firing.
+         */
+        public String toString() {
+            String result = "Fire Actor " + getActor().toString();
+            result += "[" +  expression() + "] times";
+            return result;
+        }
+
+        // The iteration expression. This is stored separately for
+        // diagnostic purposes only.
+        private String _expression;
+
+        // The parse tree of the iteration expression.
+        private ASTPtRootNode _parseTree;
+
+    }
+
+    /** A schedule whose iteration count is given by an expression.
+     */
+    private class SymbolicSchedule extends Schedule  implements 
+            SymbolicScheduleElement {
+        /** Construct a symbolic schedule with the given expression.
+         *  This schedule is assumed to fire the number of times determined
+         *  by evaluating the given expression.
+         *  @param expression The expression associated with the schedule. 
+         */
+        public SymbolicSchedule(String expression)
+                throws IllegalActionException {
+            setIterationCount(expression);
+        }
+
+        /** Return the most recent expression that was used to set the
+         *  iteration count of this symbolic firing.
+         *  @return The most recent expression.
+         *  @see setIterationCount(String).
+         */
+        public String expression() {
+            return _expression;
+        }
+
+        /** Return the current iteration count of this symbolic schedule.
+         */
+        public int getIterationCount() {
+            try {
+                IntToken token = (IntToken)
+                        _evaluateExpressionInModelScope(_parseTree);
+                return token.intValue();
+            } catch (Exception ex) {
+                // FIXME: this isn't very nice.
+                throw new RuntimeException(ex.getMessage());
+            }
         }
 
         /** Get the parse tree of the iteration expression. 
          *  @return The parse tree.
          */
-        public ASTPtRootNode _parseTree() {
+        public ASTPtRootNode parseTree() {
             return _parseTree;
         }
 
-        /** The schedule element that is being symbolically iterated. 
+        /** Set the expression associated with the iteration count.
+         *  The expression will probably be something like
+         *  "a2::in::tokenConsumptionRate/gcd(a2::in::tokenConsumptionRate,
+         *  a::out::tokenProductionRate)."
+         *
+         *  @param expression The expression to be associated with the iteration
+         *  count.
          */
-        protected ScheduleElement _scheduleElement;
+        public void setIterationCount(String expression) {
+            _expression = expression;
+            // FIXME: Need better exception handling.
+            try {
+                PtParser parser = new PtParser();
+                _parseTree = parser.generateParseTree(expression);
+            } catch (Exception exception) {
+                throw new RuntimeException("Error setting iteration count to "
+                        + expression + ".\n" + exception.getMessage());
+            }
+        }
+
+        /** Return a string representation of this symbolic schedule.
+         *  @return The string representation.
+         */
+        public String toString() {
+            String result = "Execute Symbolic Schedule{\n";
+            Iterator elements = iterator();
+            while (elements.hasNext()) {
+                ScheduleElement element = (ScheduleElement)elements.next();
+                result += element + "\n";
+            }
+            result += "}";
+            result += "[" + expression() + "] times"; 
+            return result; 
+        }
 
         // The iteration expression. This is stored separately for
         // diagnostic purposes only.
@@ -386,68 +466,26 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         private ASTPtRootNode _parseTree;
     }
 
-    /** An actor firing with an iteration count that is determined by
-     *  a symbolic expression.
-     */
-    private class SymbolicFiring extends SymbolicScheduleElement {
-        /** Construct a firing with the given actor and the given
-         *  expression.  The given actor
-         *  is assumed to fire the number of times determined by
-         *  evaluating the given expression.  
-         *  @param actor The actor in the firing.
-         *  @param expression The expression associated with the firing.
-         */
-        public SymbolicFiring(Actor actor, String expression)
-                throws IllegalActionException {
-            _scheduleElement = new Firing(actor);
-            setIterationCount(expression);
-        }
-    
-        /**
-         * Output a string representation of this symbolic firing.
-         */
-        public String toString() {
-            String result = "Fire Actor " 
-                    + ((Firing)_scheduleElement).getActor().toString();
-            result += "[" +  expression() + "] times";
-            return result;
-        }
-    }
+    /** An interface for schedule elements whose iteration counts are
+     *  in terms of symbolic expressions.
+     */ 
+    private interface SymbolicScheduleElement {
+        // FIXME: populate with more methods as appropriate.
 
-    /** A schedule whose iteration count is given by an expression.
-     */
-    private class SymbolicSchedule extends SymbolicScheduleElement {
-        /** Construct a symbolic schedule with the given schedule 
-         *  and the given expression.
-         *  The given schedule is assumed to fire the number of times determined
-         *  by evaluating the given expression.
-         *  @param schedule The schedule.
-         *  @param expression The expression associated with the schedule. 
+        /** Get the parse tree of the iteration expression. 
+         *  @return The parse tree.
          */
-        public SymbolicSchedule(Schedule schedule, String expression)
-                throws IllegalActionException {
-            _scheduleElement = schedule;
-            setIterationCount(expression);
-        }
+        public ASTPtRootNode parseTree();
 
-        /** Return the schedule associated with this symbolic schedule.
-         *  @return The schedule.
+        /** Set the expression associated with the iteration count.
+         *  The expression will probably be something like
+         *  "a2::in::tokenConsumptionRate/gcd(a2::in::tokenConsumptionRate,
+         *  a::out::tokenProductionRate)."
+         *
+         *  @param expression The expression to be associated with the iteration
+         *  count.
          */
-        public Schedule schedule() {
-            return (Schedule)_scheduleElement;
-        }
-
-        /** Return a string representation of this symbolic schedule.
-         *  @return The string representation.
-         */
-        public String toString() {
-            Schedule schedule = (Schedule)_scheduleElement;
-            String result = "Execute Symbolic Schedule{\n";
-            result += schedule.toString();
-            result += "} ";
-            result += "[" + expression() + "] times"; 
-            return result; 
-        }
+        public void setIterationCount(String expression);
     }
 
     /** Scope implementation with local caching. */
