@@ -62,7 +62,6 @@ JSRCS = \
 	DirectedAcyclicCFG.java \
 	DominatorCFG.java \
 	IntervalChain.java \
-	IntervalMerge.java \
 	IntervalDFG.java
 
 OTHER_FILES_TO_BE_JARED = \
