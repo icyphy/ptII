@@ -55,6 +55,8 @@ public class TrackedPropertyMap extends PropertyMap {
 
     /** Add the visitor with the argument class object to the set of visitors
      *  that have visited this object.
+     *  @param The class to be added.
+     *  @return true if the set did not already contain the specified element.
      */
     public boolean addVisitor(Class c) {
         return _visitedBySet.add(c);
@@ -67,6 +69,7 @@ public class TrackedPropertyMap extends PropertyMap {
 
     /** Remove the visitor with the argument class object from the set of
      *  visitors that have visited this object.
+     *  @param The class to be added.
      */
     public boolean removeVisitor(Class c) {
         return _visitedBySet.remove(c);
@@ -74,6 +77,7 @@ public class TrackedPropertyMap extends PropertyMap {
 
     /** Return an iterator over the class objects of the visitors that have
      *  visited this object.
+     *  @return The Iterator of visitor class objects that have visited.
      */
     public Iterator visitorIterator() {
         return _visitedBySet.iterator();
@@ -81,6 +85,7 @@ public class TrackedPropertyMap extends PropertyMap {
 
     /** Return true iff this object was visited by a visitor with the
      *  argument class object.
+     *  @return true if the class argument has visited.
      */
     public boolean wasVisitedBy(Class c) {
         return _visitedBySet.contains(c);
