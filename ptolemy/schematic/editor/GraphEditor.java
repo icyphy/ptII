@@ -35,6 +35,7 @@ import ptolemy.schematic.util.IconLibrary;
 import ptolemy.schematic.util.IconLibraryFactory;
 import ptolemy.schematic.util.LibraryIcon;
 import ptolemy.actor.*;
+import ptolemy.actor.gui.ParameterEditor;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.data.expr.Parameter;
@@ -312,28 +313,35 @@ public class GraphEditor extends MDIApplication {
 
         action = new AbstractAction ("Edit Director Parameters") {
             public void actionPerformed(ActionEvent e) {
-                /*   // Create a dialog and attach the dialog values 
-                // to the parameters of the object                    
-                Document d = getCurrentDocument();
+                GraphDocument d = (GraphDocument)getCurrentDocument();
                 if (d == null) {
                     return;
                 } 
-                Schematic schematic =
-                    (Schematic) d.getCurrentSheet().getModel();
-                SchematicDirector object = schematic.getDirector();
-
-                System.out.println(object);
-                JFrame frame = new JFrame("Parameters for " + object);
-                JPanel pane = (JPanel) frame.getContentPane();
-                
-                Query query = new ParameterQuery(object);
-                Enumeration parameters = object.deepParameters();
-                pane.add(query);
-                frame.setVisible(true);
-                frame.pack();
-                */
+                try {
+		    CompositeActor toplevel = 
+                        (CompositeActor) d.getGraph();                    
+		    Director director = toplevel.getDirector();
+		    JFrame frame =
+                        new JFrame("Parameters for " + director.getName());
+                    JPanel pane = (JPanel) frame.getContentPane();
+		    Query query;
+		    try {
+			query = new ParameterEditor(director);
+		    } catch (Exception ex) {
+			ex.printStackTrace();
+			throw new RuntimeException(ex.getMessage());
+		    }
+                    
+		    pane.add(query);
+                    frame.setVisible(true);
+                    frame.pack();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    throw new GraphException(ex.getMessage());
+                }
             }
         };
+            
         addAction(action);
         addMenuItem(menuDevel, action, 'P', "Edit Director Parameters");
 
@@ -446,8 +454,6 @@ public class GraphEditor extends MDIApplication {
     public void parseLibraries () {
         URL iconlibURL = null;
         URL entitylibURL = null;
-        // Get the path to the icon library. Read the PTII root from
-        // the system properties
         try {
             iconlibURL = getGUIResources().getResource("rootIconLibrary"); 
             entitylibURL = getGUIResources().getResource("rootEntityLibrary"); 

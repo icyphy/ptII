@@ -411,6 +411,8 @@ public class EditorGraphController extends CompositeGraphController {
 	public SchematicContextMenu(CompositeEntity target) {
 	    super(target);
 	    
+            // FIXME this action is similar to one in the application.
+            // Merge them (GUIActions?)
 	    Action action;
 	    action = new AbstractAction ("Get Director Parameters") {
 		public void actionPerformed(ActionEvent e) {
@@ -437,10 +439,11 @@ public class EditorGraphController extends CompositeGraphController {
             };
             action.putValue("target", target);
             action.putValue("tooltip", "Get Director Parameters");
+            
             JMenuItem item = add(action);
             item.setToolTipText("Get Director Parameters");
             action.putValue("menuItem", item);  
-
+                        
 	    //FIXME
 	    JLabel domain = new JLabel("Domain");
 	    add(domain);
