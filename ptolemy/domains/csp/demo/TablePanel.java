@@ -1,8 +1,39 @@
+/* A panel that graphical represents the Dining Philosophers
+
+ Copyright (c) 1998-1999 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+*/
+
 /**
  * A panel that graphically represents the Dining Philosophers.
  * This contains all the objects and controls the whole thing.
  *
  * @author Neil Smyth, modified from a file by John Hall
+ * @version $Id$
  */
 
 package ptolemy.domains.csp.demo;
@@ -13,12 +44,87 @@ import ptolemy.domains.csp.demo.Coordinate;
 import ptolemy.domains.csp.lib.CSPPhilosopher;
 
 class TablePanel extends Panel {
-    // Coordinates of chopsticks
-    private ChopstickCoords[] chopsticksLoc = new ChopstickCoords[5];
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-    // Coordinates of philosophers
-    private PhilosopherCoords[] philsLoc = new PhilosopherCoords[5];
-    private CSPPhilosopher[] _philosophers;
+
+    /**
+     * Paint the panel. The state of all the chopsticks and philosophers
+     * must be checked.
+     */
+    public void paint(Graphics g) {
+        Coordinate newOrigin;
+		
+        synchronized (this) {
+            Dimension d = this.size();
+            newOrigin = new Coordinate (d.width / 2, d.height / 2);
+
+            /*
+             * Test to see if the panel has been resized. If so then all
+             * coordinates must be recalculated.
+             */
+            if (! newOrigin.equals(origin)) {
+                origin = newOrigin;
+                initPos();
+            }
+			
+            // draw the table.
+            g.drawOval(origin.X - tableR, 
+                    origin.Y - tableR, tableR * 2, tableR * 2);
+
+            for (int i = 0; i < 5; i++) {
+				// draw each philosopher.
+                if (_philosophers[i].gotLeft && _philosophers[i].gotRight) {
+                                
+                    g.fillOval(philsLoc[i].pos.X, 
+                            philsLoc[i].pos.Y, 2 * pR, 2 * pR);
+                } else {
+                    g.drawOval(philsLoc[i].pos.X, 
+                            philsLoc[i].pos.Y, 2 * pR, 2 * pR);
+                }
+
+                int j = (i - 1 + 5) % 5;
+                if (! (_philosophers[i].gotLeft ||
+                        _philosophers[j].gotRight)) {
+                    // chopstick is on the table.
+                    g.drawLine(chopsticksLoc[i].pos[0].X, 
+                            chopsticksLoc[i].pos[0].Y, 
+                            chopsticksLoc[i].pos[1].X, 
+                            chopsticksLoc[i].pos[1].Y);
+                }
+                else {
+                    if (_philosophers[i].gotLeft) {
+                        // the philosopher on the right has it.
+                        g.drawLine(philsLoc[i].leftPos[0].X, 
+                                philsLoc[i].leftPos[0].Y, 
+                                philsLoc[i].leftPos[1].X, 
+                                philsLoc[i].leftPos[1].Y);
+                        if (_philosophers[j].waitingRight) {
+                            // the philosopher on the left is waiting for it.
+                            g.fillOval(philsLoc[j].rightPos[1].X - 2, 
+                                    philsLoc[j].rightPos[1].Y - 2, 4, 4);
+                        }
+                    }
+                    else {
+                        // the philosopher on the left has it.
+                        g.drawLine(philsLoc[j].rightPos[0].X, 
+                                philsLoc[j].rightPos[0].Y, 
+                                philsLoc[j].rightPos[1].X, 
+                                philsLoc[j].rightPos[1].Y);
+                        if (_philosophers[i].waitingLeft) {
+                            // the philosopher on the right is waiting for it.
+                            g.fillOval(philsLoc[i].leftPos[1].X - 2, 
+                                    philsLoc[i].leftPos[1].Y - 2, 4, 4);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Constructs the new panel. Initialises the objects and the display.
@@ -31,6 +137,16 @@ class TablePanel extends Panel {
         }
         initPos();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Coordinates of chopsticks
+    private ChopstickCoords[] chopsticksLoc = new ChopstickCoords[5];
+
+    // Coordinates of philosophers
+    private PhilosopherCoords[] philsLoc = new PhilosopherCoords[5];
+    private CSPPhilosopher[] _philosophers;
 
     /*
      * Constants used to draw the table and philosophers.
@@ -141,80 +257,8 @@ class TablePanel extends Panel {
         chopsticksLoc[4].setPos(p, q);
     }
 
-    /**
-     * Paint the panel. The state of all the chopsticks and philosophers
-     * must be checked.
-     */
-    public void paint(Graphics g) {
-        Coordinate newOrigin;
-		
-        synchronized (this) {
-            Dimension d = this.size();
-            newOrigin = new Coordinate (d.width / 2, d.height / 2);
-
-            /*
-             * Test to see if the panel has been resized. If so then all
-             * coordinates must be recalculated.
-             */
-            if (! newOrigin.equals(origin)) {
-                origin = newOrigin;
-                initPos();
-            }
-			
-            // draw the table.
-            g.drawOval(origin.X - tableR, 
-                    origin.Y - tableR, tableR * 2, tableR * 2);
-
-            for (int i = 0; i < 5; i++) {
-				// draw each philosopher.
-                if (_philosophers[i].gotLeft && _philosophers[i].gotRight) {
-                                
-                    g.fillOval(philsLoc[i].pos.X, 
-                            philsLoc[i].pos.Y, 2 * pR, 2 * pR);
-                } else {
-                    g.drawOval(philsLoc[i].pos.X, 
-                            philsLoc[i].pos.Y, 2 * pR, 2 * pR);
-                }
-
-                int j = (i - 1 + 5) % 5;
-                if (! (_philosophers[i].gotLeft ||
-                        _philosophers[j].gotRight)) {
-                    // chopstick is on the table.
-                    g.drawLine(chopsticksLoc[i].pos[0].X, 
-                            chopsticksLoc[i].pos[0].Y, 
-                            chopsticksLoc[i].pos[1].X, 
-                            chopsticksLoc[i].pos[1].Y);
-                }
-                else {
-                    if (_philosophers[i].gotLeft) {
-                        // the philosopher on the right has it.
-                        g.drawLine(philsLoc[i].leftPos[0].X, 
-                                philsLoc[i].leftPos[0].Y, 
-                                philsLoc[i].leftPos[1].X, 
-                                philsLoc[i].leftPos[1].Y);
-                        if (_philosophers[j].waitingRight) {
-                            // the philosopher on the left is waiting for it.
-                            g.fillOval(philsLoc[j].rightPos[1].X - 2, 
-                                    philsLoc[j].rightPos[1].Y - 2, 4, 4);
-                        }
-                    }
-                    else {
-                        // the philosopher on the left has it.
-                        g.drawLine(philsLoc[j].rightPos[0].X, 
-                                philsLoc[j].rightPos[0].Y, 
-                                philsLoc[j].rightPos[1].X, 
-                                philsLoc[j].rightPos[1].Y);
-                        if (_philosophers[i].waitingLeft) {
-                            // the philosopher on the right is waiting for it.
-                            g.fillOval(philsLoc[i].leftPos[1].X - 2, 
-                                    philsLoc[i].leftPos[1].Y - 2, 4, 4);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classess                    ////
 
     // Inner Classes implementing the coordinates
     
