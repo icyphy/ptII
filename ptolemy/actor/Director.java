@@ -103,7 +103,7 @@ the workspace to be write-protected. (Note that the workspace might still be
 not-write-protected, it all depends on other directors in the simulation).
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
-@version: @(#)Director.java	1.50 10/13/98
+@version: $Id$
 */
 public class Director extends NamedObj implements Executable {
 
