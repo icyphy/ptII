@@ -51,7 +51,7 @@
 # 19) Warn if there is no trailing newline
 # 20) Warn if the class comment has * on each line.
 
-# Determine if we are on windows and try to set JAVAHOME
+# Determine if we are on windows
 windows=no
 case "${OSTYPE-no}" in
 # Cygwin Bash
