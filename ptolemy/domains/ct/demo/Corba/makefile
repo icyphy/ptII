@@ -47,6 +47,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ModelServer.java \
 	NonlinearClient.java \
+	NonlinearClientApplication.java \
 	NonlinearServant.java	
 
 EXTRA_SRCS =	$(JSRCS)
