@@ -129,6 +129,22 @@ public class KernelRuntimeException extends RuntimeException {
             Throwable cause, String detail) {
         StringBuffer prefixBuffer = new StringBuffer();
         String name;
+
+        // This method could be a static method in KernelException,
+        // but there are no constructors in KernelException or any of
+        // KernelException's derived classes that take a Collection
+        // as an argument, so we leave this constructor here since
+        // there is little point in adding features that are not used.
+
+        // If you make a formatting change here, be sure to update
+        // KernelException.generateMessage(Nameable, Nameable,
+        //  Throwable, String)
+
+        if (objects.size() == 1) {
+            prefixBuffer.append("Object name: ");
+        } else if (objects.size() > 1) {
+            prefixBuffer.append("Object names: ");
+        }
         Iterator objectIterator = objects.iterator();
         while(objectIterator.hasNext()) {
             Object object = objectIterator.next();
@@ -142,11 +158,13 @@ public class KernelRuntimeException extends RuntimeException {
         }
 
         String prefix = prefixBuffer.toString();
-        if (prefix.length() >= 2 ) {
+
+        if (prefix.endsWith(", ")) {
             // Remove the trailing ", " which was added processing the
             // last element of the collection.
             prefix = prefix.substring(0, prefix.length()-2);
         }
+
         _setMessage(KernelException.generateMessage(prefix, cause, detail));
         _setCause(cause);
     }
