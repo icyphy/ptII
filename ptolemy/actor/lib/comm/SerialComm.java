@@ -326,6 +326,7 @@ public class SerialComm extends TypedAtomicActor
     // it makes the 'try' block in fire() have an exception whose
     // message is the word "null".
     static {
+        // FIXME: this will not work under anything but Windows
         new com.sun.comm.Win32Driver().initialize();
     }
 }
