@@ -300,6 +300,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /** Generate code for a model.
+     *  <p>For example:
+     *  <pre>
+     *  java -classpath $PTII ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
+     *  </pre>
+     *  or   
+     *  <pre>   
+     *  $PTII/bin/ptinvoke ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
+     *  </pre>
      *  @param args An array of Strings, each element names a MoML file
      *  containing a model.
      */
