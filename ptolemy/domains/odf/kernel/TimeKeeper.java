@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (davisj@eecs.berkeley.edu)
+@ProposedRating Yellow (davisj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
@@ -49,18 +49,19 @@ ODFReceivers that are contained by the actor that the thread controls.
 As tokens flow through the ODFReceivers, the TimeKeeper keeps track 
 of the advancement of time. 
 <P>
-ODFReceivers each have three important variables: rcvrTime, lastTime
-and priority. The rcvrTime of an ODFReceiver is equal to the time of
-the oldest event that resides on the receiver. The lastTime is equal
-to the time of the newest event residing on the receiver.
+ODFReceivers each have three important variables: <I>receiver time</I>, 
+<I>last time</I> and <I>priority</I>. The receiver time of an ODFReceiver 
+is equal to the time of the oldest event that resides on the receiver. 
+The last time is equal to the time of the newest event residing on the 
+receiver.
 <P>
 A TimeKeeper manages the ODFReceivers of its actor by keeping track of
-the receiver with the minimum rcvrTime. The actor is allowed to consume
-a token from a receiver if that receiver has the unique, minimum
-rcvrTime of all receivers managed by the TimeKeeper. The TimeKeeper
-keeps track of its receiver's priorities as well. The receiver with the
+the receiver with the minimum receiver time. The actor is allowed to 
+consume a token from a receiver if that receiver has the unique, minimum
+receiver time of all receivers managed by the TimeKeeper. The TimeKeeper
+keeps track of its receivers' priorities as well. The receiver with the
 highest priority is enabled to have its token consumed if the receiver
-shares a common minimum rcvrTime with one or more additional receivers.
+shares a common minimum receive time with one or more additional receivers.
 <P>
 The receiver priorities are set using the method setRcvrPriorities() in 
 the following manner. All of the input receivers associated with a given 
@@ -81,36 +82,27 @@ TimeKeeper to determine what the current time is.
 
 @author John S. Davis II
 @version $Id$
-@see ptolemy.domains.odf.kernel.RcvrTimeTriple
 @see ptolemy.domains.odf.kernel.ODFThread
 */
 public class TimeKeeper {
 
     /** Construct a time keeper to manage local time of an actor in
      *  the ODF domain. Set the receiver priorities of all receivers
-     *  contained by the actor of this time keeper. Initialize the
-     *  list of RcvrTimeTriples contained by this time keeper.
+     *  contained by the actor of this time keeper. 
      * @param actor The ODFActor for which time will be managed.
      * @exception IllegalActionException if there is an error
      *  while setting the receiver priorities.
      */
-    public TimeKeeper(Actor actor) throws IllegalActionException {
-	_actor = actor;
+    public TimeKeeper(Actor anActor) throws IllegalActionException {
+	actor = anActor;
         _rcvrTimeList = new LinkedList();
 
         setRcvrPriorities(); 
-	initializeRcvrList();
+	// initializeRcvrList();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return the actor that this TimeKeeper manages time for. 
-     * @return The actor that this TimeKeeper manages time for.
-     */
-    public Actor getActor() {
-	return _actor;
-    }
 
     /** Return the current time of this TimeKeeper. The current time is
      *  equal to the time stamp associated with the token most recently
@@ -121,11 +113,11 @@ public class TimeKeeper {
         return _currentTime;
     }
 
-    /** Return the active ODFReceiver with the oldest rcvrTime of all 
-     *  ODFReceivers contained in the actor that this TimeKeeper 
-     *  controls. An ODFReceiver is considered active if its rcvrTime
-     *  is nonnegative. If all ODFReceivers of the managed actor are
-     *  no longer active, then return the first ODFReceiver to become
+    /** Return the active ODFReceiver with the oldest receiver time of 
+     *  all ODFReceivers contained in the actor that this TimeKeeper 
+     *  controls. An ODFReceiver is considered active if its receiver 
+     *  time is nonnegative. If all ODFReceivers of the managed actor 
+     *  are no longer active, then return the first ODFReceiver to become
      *  inactive. 
      * @return ODFReceiver Return the oldest active ODFReceiver managed 
      *  by this TimeKeeper.
@@ -140,12 +132,11 @@ public class TimeKeeper {
 
     /** Return the RcvrTimeTriple of this time keeper's list such that
      *  the returned triple contains the receiver with the highest 
-     *  priority given that it has the lowest nonnegative rcvrTime of 
-     *  all receivers managed by this TimeKeeper. Return null if this 
-     *  time keeper's list of RcvrTimeTriples is empty.
-     * @return The RcvrTimeTriple consisting of the receiver with the
-     *  highest priority and lowest nonnegative rcvrTime. If no triples
-     *  exist, return null.
+     *  priority given that it has the lowest nonnegative receiver 
+     *  time of all receivers managed by this TimeKeeper. Return null 
+     *  if this time keeper's list of receivers is empty.
+     * @return The TimedQueueReceiver with the highest priority and 
+     *  lowest nonnegative rcvrTime. If no receivers exist, return null.
      */
     public synchronized  TimedQueueReceiver getHighestPriorityReceiver() {
         double time = -10.0;
@@ -186,27 +177,25 @@ public class TimeKeeper {
     /** Return the earliest possible time stamp of the next token to be
      *  consumed by the actor managed by this time keeper. Consider 
      *  this returned time value as a greatest lower bound. The next 
-     *  time is equal to the oldest (smallest valued) rcvrTime of all 
-     *  receivers managed by this thread.
+     *  time is equal to the oldest (smallest valued) receiver time of 
+     *  all receivers managed by this thread.
      * @return The next earliest possible time stamp to be produced by
      *  this actor.
      */
     public double getNextTime() {
         if( _rcvrTimeList.size() == 0 ) {
-	    // System.out.println("List size is 0 inside of getNextTime");
             return _currentTime;
         }
-	// System.out.println("List size is not 0 inside of getNextTime");
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
         return triple.getTime();
     }
 
     /** Return true if the minimum receiver time is unique to a single
      *  receiver. Return true if there are no input receivers. Return
-     *  false if two or more receivers share the same rcvrTime and this
-     *  rcvrTime is less than that of any other receivers contained by
-     *  the same actor.
-     * @return True if the minimum rcvrTime is unique to a single 
+     *  false if two or more receivers share the same receiver time and 
+     *  this receiver time is less than that of any other receivers 
+     *  contained by the same actor.
+     * @return True if the minimum receiver time is unique to a single 
      *  receiver or if there are no receivers; otherwise return false.
      */
     public synchronized boolean hasMinRcvrTime() {
@@ -223,70 +212,12 @@ public class TimeKeeper {
 	return true;
     }
 
-    /** Initialize the RcvrTimeList of this time keeper by properly
-     *  ordering all triples. Set this object to be the receiving
-     *  time keeper for all receivers contained by the actor managed
-     *  by this time keeper. Set this object to be the sending
-     *  time keeper for all receivers contained by output ports that
-     *  are connected to input ports of the actor managed by this 
-     *  time keeper.
-     * @exception IllegalActionException If there is an error
-     *  while accessing the receivers contained by the actor
-     *  that this time keeper manages.
-     */
-    public void initializeRcvrList() throws IllegalActionException {
-        Actor actor = (Actor)getActor();
-	Enumeration enum = actor.inputPorts();
-
-	//
-	// Set the receiving time keeper for all contained receivers
-	// and update the RcvrTimeTable
-	//
-        while( enum.hasMoreElements() ) {
-	    IOPort inport = (IOPort)enum.nextElement();
-            Receiver[][] rcvrs = inport.getReceivers();
-            for( int i = 0; i < rcvrs.length; i++ ) {
-                for( int j = 0; j < rcvrs[i].length; j++ ) {
-		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j];
-                    // rcvr.setReceivingTimeKeeper(this);
-                    // rcvr.setReceivingTimeKeeper(_timeKeeper);
-		    // System.out.println("About to be updated inside initializeRcvrList()");
-		    updateRcvrList(rcvr, rcvr.getRcvrTime(), 
-			    rcvr.getPriority());
-		    // System.out.println("List size is " + _rcvrTimeList.size());
-		}
-	    }
-	}
-
-	//
-	// Now set the sending time keeper for all 
-	// input connected receivers.
-	//
-	enum = actor.outputPorts();
-	while( enum.hasMoreElements() ) {
-	    IOPort outport = (IOPort)enum.nextElement();
-            Receiver[][] rcvrs = outport.getRemoteReceivers();
-	    if( rcvrs == null ) {
-		// FIXME: Not necessary anymore
-		System.out.println("Null Rcvrs!!!");
-	    } else {
-	    }
-            for( int i = 0; i < rcvrs.length; i++ ) {
-                for( int j = 0; j < rcvrs[i].length; j++ ) {
-		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j];
-                    // rcvr.setSendingTimeKeeper(this);
-		}
-	    }
-	}
-    }
-
     /** Cause the actor managed by this time keeper to send a NullToken
-     *  to all output channels that have a rcvrTime less than the
-     *  current time of this thread. Associate a time stamp with each
+     *  to all output channels that have a receiver time less than the
+     *  current time of this time keeper. Associate a time stamp with each
      *  NullToken that is equal to the current time of this thread.
      */
     public synchronized void sendOutNullTokens() {
-        Actor actor = getActor();
 	Enumeration ports = actor.outputPorts();
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
@@ -322,10 +253,9 @@ public class TimeKeeper {
 	    rcvr = triple.getReceiver();
 	    updateRcvrList(rcvr, rcvr.getRcvrTime(), rcvr.getPriority() );
 	}
-	// System.out.println("NextTime is now " + getNextTime() );
     }
 
-    /** Set the current time of this TimeKeeper. If the new specified
+    /** Set the current time of this TimeKeeper. If the specified
      *  time is less than the previous value for current time, then
      *  throw an IllegalArgumentException. Do not throw an
      *  IllegalActionException if the current time is set to 
@@ -338,7 +268,7 @@ public class TimeKeeper {
 	if( time < _currentTime && 
 		time != TimedQueueReceiver.INACTIVE ) {
 	    throw new IllegalArgumentException(
-		    ((NamedObj)getActor()).getName() + " - Attempt to "
+		    ((NamedObj)actor).getName() + " - Attempt to "
 		    + "set current time in the past.");
 	}
         _currentTime = time;
@@ -358,7 +288,6 @@ public class TimeKeeper {
     public synchronized void setRcvrPriorities() 
             throws IllegalActionException {
         LinkedList listOfPorts = new LinkedList();
-        Actor actor = (Actor)getActor();
 	Enumeration enum = actor.inputPorts();
 	if( !enum.hasMoreElements() ) {
             return;
@@ -384,15 +313,10 @@ public class TimeKeeper {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
                     ((ODFReceiver)rcvrs[i][j]).setPriority(
 			    currentPriority);
-                    // ((ODFReceiver)rcvrs[i][j]).setReceivingTimeKeeper(this);
-                    // ((ODFReceiver)rcvrs[i][j]).setReceivingTimeKeeper(_timeKeeper);
-
 		    // Is the following necessary?? 
 		    //
-		    // System.out.println("About to be updated inside setRcvrPriorities()");
 		    updateRcvrList( (ODFReceiver)rcvrs[i][j], 
 			    _currentTime, currentPriority );
-		    // System.out.println("List size is " + _rcvrTimeList.size());
 
                     currentPriority++;
                 }
@@ -419,7 +343,7 @@ public class TimeKeeper {
 	     throws IllegalActionException { 
 	if( delay < 0.0 ) {
 	    throw new IllegalActionException(
-		    ((NamedObj)getActor()).getName() + " - Attempt to "
+		    ((NamedObj)actor).getName() + " - Attempt to "
 		    + "set negative delay time.");
 	}
 	_delayTime = delay;
@@ -451,7 +375,7 @@ public class TimeKeeper {
      * @deprecated
      */
     synchronized void printRcvrList() {
-	String name = ((NamedObj)getActor()).getName();
+	String name = ((NamedObj)actor).getName();
         System.out.println("\n***Print "+name+"'s RcvrList.");
         System.out.println("   Number of Receivers in RcvrList = "
                 + _rcvrTimeList.size() );
@@ -538,10 +462,13 @@ public class TimeKeeper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                       public variables                    ////
 
     // The actor that is managed by this time keeper.
-    private Actor _actor;
+    public final Actor actor;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
 
     // The _rcvrTimeList stores RcvrTimeTriples and is used to
     // order the receivers according to time and priority.
