@@ -43,7 +43,6 @@ mems
 nsmail
 ptjar_tmpdir
 ptolemy/PtolemyII.ptml
-ptolemy/actor/corba
 ptolemy/actor/lib/Broadcast.java
 ptolemy/actor/lib/javasound/test/pitchshift
 ptolemy/actor/lib/javasound/test/outfile.wav
