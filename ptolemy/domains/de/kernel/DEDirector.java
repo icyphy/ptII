@@ -1031,7 +1031,8 @@ public class DEDirector extends Director {
                                 // wait.  This can lead to deadlock if the UI
                                 // waits for the change request to complete
                                 // (which it typically does).
-                                _eventQueue.wait();
+                                //_eventQueue.wait();
+                                workspace().wait(_eventQueue);
                             } catch (InterruptedException e) {
                                 // If the wait is interrupted,
                                 // then stop waiting.
@@ -1050,6 +1051,12 @@ public class DEDirector extends Director {
                 } else {
                     nextEvent = (DEEvent)_eventQueue.get();
                 }
+            }
+
+            // An embedded director should not process events in the future.
+            if (!_isTopLevel() &&
+                    _eventQueue.get().timeStamp() > getCurrentTime()) {
+                break;
             }
 
             if (actorToFire == null) {
