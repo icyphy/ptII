@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SamplerWithDefault1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Sampler3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 107]">
     </property>
     <property name="DE" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -26,34 +26,17 @@
         <property name="_location" class="ptolemy.moml.Location" value="95.0, 70.0">
         </property>
     </property>
-    <entity name="SamplerWithDefault" class="ptolemy.domains.de.lib.SamplerWithDefault">
-        <property name="initialValue" class="ptolemy.data.expr.Parameter" value="5.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="318.5, 168.5">
-        </property>
-        <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.5, 1.0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 159.5">
+        <property name="_location" class="ptolemy.moml.Location" value="60.0, 160.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -91,7 +74,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="160.0, 158.5">
+        <property name="_location" class="ptolemy.moml.Location" value="160.0, 160.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -114,39 +97,56 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.0,0.0},{2.0,2.0},{4.0,4.0},{6.0,6.0},{8.0,8.0}}">
+    <entity name="1:Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{5.0,0.0},{1.0,2.0},{3.0,4.0},{5.0,6.0},{7.0,8.0}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="536.5, 174.5">
+        <property name="_location" class="ptolemy.moml.Location" value="565.0, 170.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <property name="initialValue" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="305.0, 170.0">
+        </property>
+        <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="365.0, 175.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="370.0, 170.0">
         </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="SamplerWithDefault.input" relation="relation"/>
-    <link port="SamplerWithDefault.output" relation="relation4"/>
-    <link port="SamplerWithDefault.trigger" relation="relation2"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Clock.output" relation="relation3"/>
-    <link port="1:Clock.output" relation="relation2"/>
-    <link port="Ramp.output" relation="relation"/>
+    <link port="1:Clock.output" relation="relation"/>
+    <link port="Ramp.output" relation="relation5"/>
     <link port="Ramp.trigger" relation="relation3"/>
-    <link port="CurrentTime.output" relation="relation5"/>
+    <link port="CurrentTime.output" relation="relation7"/>
     <link port="CurrentTime.trigger" relation="relation4"/>
-    <link port="Test.input" relation="relation4"/>
-    <link port="Test.input" relation="relation5"/>
+    <link port="1:Test.input" relation="relation4"/>
+    <link port="1:Test.input" relation="relation7"/>
+    <link port="Sampler.input" relation="relation5"/>
+    <link port="Sampler.output" relation="relation4"/>
+    <link port="Sampler.trigger" relation="relation"/>
 </entity>
