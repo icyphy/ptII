@@ -113,22 +113,16 @@ public class Print extends TypedAtomicActor implements Placeable {
                 // Regrettably, the default in swing is that the top
                 // of the textarea is visible, not the most recent text.
                 // So we have to manually move the scrollbar.
-                // FIXME: Unfortunately, this doesn't work.
-                // There appears to be no way in swing to do this...
-                // Putting it in SwingUtilities.invokeLater() doesn't help...
-
-                /*
-                JScrollBar bar = _scrollPane.getVerticalScrollBar();
-                if (bar != null) {
-                    bar.setValue(bar.getMaximum() - bar.getVisibleAmount());
-                }
-                */
+                // The (undocumented) way to do this is to set the
+                // caret position (despite the fact that the caret
+                // is already where want it).
                 try {
                     int lineOffset =
                     textArea.getLineEndOffset(textArea.getLineCount() - 1);
                     textArea.setCaretPosition(lineOffset);
                 } catch (BadLocationException ex) {
-                    // Ignore
+                    // Ignore ... worst case is that the scrollbar
+                    // doesn't move.
                 }
             }
         }
