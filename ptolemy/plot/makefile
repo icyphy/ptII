@@ -172,9 +172,13 @@ install: all jars \
 # PlotBox uses PlotFormatter which uses ptolemy.gui.Query and other classes
 PTOLEMYGUIFILES = ptolemy/gui/*.class
 
+# PlotFrame uses StringUtilities.getProperty() 
+PTOLEMYUTILFILES = ptolemy/util/*.class
+
 # Class files used in all applets and applications
 BASECLASSFILES = \
 		$(PTOLEMYGUIFILES) \
+		$(PTOLEMYUTILFILES) \
 		$(ME)/CmdLineArgException.class \
 		$(ME)/EPSGraphics.class \
 		$(ME)/Histogram.class \
