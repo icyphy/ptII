@@ -32,6 +32,7 @@ package ptplot;
 //   - steps between points rather than connected lines.
 //   - cubic spline interpolation
 //   - get rid of all of the deprecated lines and require JDK1.1
+//   - fix missing fill button under MacOS8.x/Netscape4.04
 //     
 // NOTE: The XOR drawing mode is needed in order to be able to erase
 // plotted points and restore the grid line, tick marks, and boundary
