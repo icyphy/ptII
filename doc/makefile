@@ -137,6 +137,10 @@ OPTIONAL_FILES =	\
 	codeDocPtiny \
 	uml
 
+# Packages under the com package
+COMPACKAGES =		com.JLex \
+			com.microstar.xml
+
 # Java packages for copernicus 
 
 # Don't include copernicus.jhdl because it requires byucc.jhdl from JHDL.jar
@@ -147,11 +151,37 @@ OPTIONAL_FILES =	\
 # So, we expand the ptolemy.copernicus.java package
 COPERNICUSPACKAGES = \
 			ptolemy.copernicus.applet \
-			ptolemy.copernicus.kernel \
 			ptolemy.copernicus.c \
+			ptolemy.copernicus.gui \
+			ptolemy.copernicus.kernel \
 			ptolemy/copernicus/java/*.java \
 			$(JHDLPACKAGE) \
 			ptolemy.copernicus.shallow
+
+# Packages used by Diva
+DIVAPACKAGES = \
+	diva.canvas \
+	diva.canvas.connector \
+	diva.canvas.demo \
+	diva.canvas.event \
+	diva.canvas.interactor \
+	diva.canvas.test \
+	diva.canvas.toolbox \
+	diva.graph \
+	diva.graph.basic \
+	diva.graph.layout \
+	diva.graph.modular \
+	diva.graph.test \
+	diva.graph.toolbox \
+	diva.gui \
+	diva.gui.toolbox \
+	diva.resource \
+	diva.util \
+	diva.util.aelfred \
+	diva.util.java2d \
+	diva.util.jester \
+	diva.util.test \
+	diva.util.xml
 
 # Packages used by HyVisual
 HYVISUALPACKAGES = \
@@ -170,10 +200,13 @@ HYVISUALPACKAGES = \
 			ptolemy.domains.ct.kernel.solver \
 			ptolemy.domains.ct.kernel.util \
 			ptolemy.domains.ct.lib \
+			ptolemy.domains.dt.kernel \
 			ptolemy.domains.fsm.kernel \
+			ptolemy.domains.fsm.modal \
 			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sdf.lib \
 			ptolemy.domains.sdf.lib.vq \
+			ptolemy.hsif \
 			ptolemy.media.javasound \
 			ptolemy.vergil.fsm.modal
 
@@ -194,22 +227,25 @@ PTINYPACKAGES = \
 # actor.lib.comm uses the Java comm api for communicating with
 # serial ports.  javacomm is not always available, so actor.lib.comm
 # is not part of the default build	
-#COMMPACKAGES =		ptolemy.actor.lib.io.comm
+#PTCOMMPACKAGES =		ptolemy.actor.lib.io.comm
 
 # GR domain uses Java 3D, which is not part of the default
 # JDK1.3 download, so we can't include the GR domain classes in
 # the default build.
 #GRPACKAGES =		ptolemy.domains.gr.kernel \
-#			ptolemy.domains.gr.lib
+#			ptolemy.domains.gr.lib \
+
 
 # ptoelmy.actor.lib.joystick.Joystick uses the Joystick API
 #JOYSTICKPACKAGES =	ptolemy.actor.lib.joystick
 
 ALLPACKAGES =		$(COMMPACKAGES) \
 			$(COPERNICUSPACKAGES) \
-			$(JOYSTICKPACKAGES) \
-			$(PTINYPACKAGES) \
+			$(DIVAPACKAGES) \
 			$(GRPACKAGES) \
+			$(JOYSTICKPACKAGES) \
+			$(PTCOMMPACKAGES) \
+			$(PTINYPACKAGES) \
 			$(SUPERBPACKAGES) \
 			jni \
 			ptolemy.plot \
@@ -227,15 +263,27 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.actor.lib.net \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
+			ptolemy.caltrop \
+			ptolemy.caltrop.actors \
+			ptolemy.caltrop.ddi \
+			ptolemy.caltrop.util \
 			ptolemy.domains.ci.kernel \
 			ptolemy.domains.ci.lib \
 			ptolemy.domains.csp.kernel \
 			ptolemy.domains.csp.lib \
 			ptolemy.domains.dde.kernel \
 			ptolemy.domains.dde.lib \
+			ptolemy.domains.hde.kernel \
+			ptolemy.domains.hde.lib \
+			ptolemy.domains.hdf.kernel \
+			ptolemy.domains.hdf.lib \
 			ptolemy.domains.giotto.kernel \
 			ptolemy.domains.pn.kernel \
+			ptolemy.domains.pn.kernel.event \
 			ptolemy.domains.petrinet.kernel \
+			ptolemy.domains.psdf.kernel \
+			ptolemy.domains.rtp.kernel \
+			ptolemy.domains.rtp.lib \
 			ptolemy.domains.sr.kernel \
 			ptolemy.domains.sr.lib \
 			ptolemy.domains.tm.kernel \
@@ -263,8 +311,8 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.vergil.fsm.ia \
 			ptolemy.vergil.kernel \
 			ptolemy.vergil.toolbox \
-			ptolemy.vergil.tree
-
+			ptolemy.vergil.tree \
+			util.testsuite
 
 all: suball whatsnew.htm whatsnewVergil.htm \
 	codeDoc/tree.html codeDocHyVisual/doc/codeDoc/tree.html
