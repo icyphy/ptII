@@ -1222,3 +1222,25 @@ test IOPort-15.1 {test clone()} {
 } configuration {input multiport opaque {width 0}} receivers {
 } remotereceivers {
 }}
+
+test IOPort-16.1 {test opaque deepInsidePorts} {
+    set e1 [java::new ptolemy.actor.CompositeActor]
+    $e1 setName E1
+    set d1 [java::new ptolemy.actor.Director $e1 D1]
+    set p1 [java::new ptolemy.actor.IOPort $e1 P1]
+    set e2 [java::new ptolemy.actor.CompositeActor $e1 E2]
+    set d2 [java::new ptolemy.actor.Director $e2 D2]
+    set p2 [java::new ptolemy.actor.IOPort $e2 P2]
+    set e3 [java::new ptolemy.actor.AtomicActor $e2 E3]
+    set p3 [java::new ptolemy.actor.IOPort $e3 P3]
+
+    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
+    $p1 link $r1
+    $p2 link $r1
+    set r2 [java::new ptolemy.actor.IORelation $e2 R2]
+    $p2 link $r2
+    $p3 link $r2
+
+    list [enumToFullNames [$p1 deepInsidePorts]] \
+            [enumToFullNames [$p2 deepInsidePorts]]
+} {.E1.E2.P2 .E1.E2.E3.P3}
