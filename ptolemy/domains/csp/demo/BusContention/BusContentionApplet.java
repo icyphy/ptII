@@ -118,8 +118,8 @@ public class BusContentionApplet extends CSPApplet {
 	Panel topPanel = new Panel();
 	topPanel.setSize( new Dimension(600, 50) );
 
-	// The '2' argument specifies a 'go' and 'stop' button.
-	topPanel.add( _createRunControls(2), BorderLayout.NORTH );
+	// The '3' argument specifies a 'go', 'stop' and 'layout' buttons.
+	topPanel.add( _createRunControls(3), BorderLayout.NORTH );
 	add( topPanel, BorderLayout.NORTH );
 
 	constructPtolemyModel();
@@ -134,7 +134,7 @@ public class BusContentionApplet extends CSPApplet {
 
         try {
 	    SwingUtilities.invokeAndWait(new Runnable (){
-		public void run () {
+		public void run() {
 		    displayGraph(_jgraph, finalModel);
 		}
 	    });
@@ -144,7 +144,7 @@ public class BusContentionApplet extends CSPApplet {
             System.exit(0);
         }
 
-        StateListener listener = 
+        StateListener listener =
 	        new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_processActor1.addListeners(listener);
 	_processActor2.addListeners(listener);
@@ -152,7 +152,7 @@ public class BusContentionApplet extends CSPApplet {
     }
 
     /**  Construct the graph representing the topology.
-     * This is sort of bogus because it's totally hird-wired,
+     * This is sort of bogus because it's totally hard-wired,
      * but it will do for now...
      */
     public GraphModel constructDivaGraph() {
@@ -282,14 +282,14 @@ public class BusContentionApplet extends CSPApplet {
     }
 
     /** Construct the graph widget with the default constructor (giving
-     *  it an empty graph). 
+     *  it an empty graph).
      */
     public void displayGraph(JGraph g, GraphModel model) {
 	_divaPanel.add( g, BorderLayout.NORTH );
-	g.setPreferredSize( new Dimension(600,400) );
+	g.setPreferredSize( new Dimension(600, 400) );
 
-        // Make sure we have the right renderers and then 
-	// display the graph
+        // Make sure we have the right renderers and then
+	// display the graph.
         final GraphPane gp = (GraphPane) g.getCanvasPane();
         final GraphView gv = gp.getGraphView();
         gv.setNodeRenderer(new ThreadRenderer());
@@ -324,6 +324,27 @@ public class BusContentionApplet extends CSPApplet {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** In addition to creating the buttons provided by the base class,
+     *  if the number of iterations has not been specified, then create
+     *  a dialog box for that number to be entered.  The panel containing
+     *  the buttons and the entry box is returned.
+     *  @param numButtons The number of buttons to create.
+     */
+    protected Panel _createRunControls(int numButtons) {
+        Panel controlPanel = super._createRunControls(numButtons);
+
+        if (numButtons > 2) {
+            Button layout = new Button("Layout");
+            controlPanel.add(layout);
+            layout.addActionListener(new LayoutListener());
+        }
+
+        return controlPanel;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The Actors
@@ -349,6 +370,58 @@ public class BusContentionApplet extends CSPApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    ///////////////////////////////////////////////////////////////////
+    //// LayoutListener
+
+    private class LayoutListener implements ActionListener {
+	public void actionPerformed(ActionEvent evt) {
+	    final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
+	    final GraphView gv = gp.getGraphView();
+	    final GraphModel m = _model;
+	    try {
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+			LevelLayout staticLayout = new LevelLayout();
+			staticLayout.setOrientation(LevelLayout.HORIZONTAL);
+			staticLayout.layout(gv, m.getGraph());
+			gp.repaint();
+		    }
+		});
+	    } catch (Exception e) {
+		System.out.println(e);
+	    }
+	}
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// LocalEdgeRenderer
+
+    /**
+     * LocalEdgeRenderer draws arrowheads on both ends of the connector
+     */
+    public class LocalEdgeRenderer implements EdgeRenderer {
+        /**
+         * Render the edge
+         */
+        public Connector render(Edge edge, Site tailSite, Site headSite) {
+            StraightConnector c = new StraightConnector(tailSite, headSite);
+
+            // Create an arrow at the head
+            Arrowhead headArrow = new Arrowhead(
+                    headSite.getX(), headSite.getY(),
+                    headSite.getNormal());
+            c.setHeadEnd(headArrow);
+
+            // Create an arrow at the tail
+            Arrowhead tailArrow = new Arrowhead(
+                    tailSite.getX(), tailSite.getY(),
+                    tailSite.getNormal());
+            c.setTailEnd(tailArrow);
+
+            c.setUserObject(edge);
+            return c;
+        }
+    }
     ///////////////////////////////////////////////////////////////////
     //// StateListener
     /**
@@ -451,36 +524,6 @@ public class BusContentionApplet extends CSPApplet {
             w.setAnchor(SwingConstants.SOUTH);
             w.getLabel().setAnchor(SwingConstants.NORTH);
             return w;
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// LocalEdgeRenderer
-
-    /**
-     * LocalEdgeRenderer draws arrowheads on both ends of the connector
-     */
-    public class LocalEdgeRenderer implements EdgeRenderer {
-        /**
-         * Render the edge
-         */
-        public Connector render(Edge edge, Site tailSite, Site headSite) {
-            StraightConnector c = new StraightConnector(tailSite, headSite);
-
-            // Create an arrow at the head
-            Arrowhead headArrow = new Arrowhead(
-                    headSite.getX(), headSite.getY(),
-                    headSite.getNormal());
-            c.setHeadEnd(headArrow);
-
-            // Create an arrow at the tail
-            Arrowhead tailArrow = new Arrowhead(
-                    tailSite.getX(), tailSite.getY(),
-                    tailSite.getNormal());
-            c.setTailEnd(tailArrow);
-
-            c.setUserObject(edge);
-            return c;
         }
     }
 }
