@@ -51,8 +51,7 @@ import javax.swing.event.*;
  *  @author Steve Neuendorffer 
  *  @version $Id$
  */
-public class ParameterEditor extends PtolemyQuery implements Configurer,
-    QueryListener {
+public class ParameterEditor extends PtolemyQuery implements Configurer {
     /** Create a new configurer that will configure the given NamedObject.
      *  @exception IllegalActionException If a subclass of this configurer
      *  cannot configure the given target.  Not thrown in this base class.
