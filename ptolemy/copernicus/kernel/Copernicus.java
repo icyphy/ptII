@@ -159,8 +159,15 @@ public class Copernicus {
         // we never update the model with this data.
         String generatorAttributeFileName =
             exportMoMLToTemporaryFile(_generatorAttribute);
+        // We add the filename as an attribute so that we can use its
+        // value to substitute.
+        // We substitute forward slashes for backward slashes because
+        // having backward slashes in attributes causes TokenMgrErrors
+        // while reading in a model.
         new Parameter(_generatorAttribute, "_generatorAttributeFileName",
-                new StringToken(generatorAttributeFileName));
+                new StringToken(StringUtilities
+                        .substitute(generatorAttributeFileName,
+                                "\\", "/")));
 
         compileAndRun(_generatorAttribute);
     }
