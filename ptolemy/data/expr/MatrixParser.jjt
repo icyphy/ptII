@@ -20,10 +20,8 @@ public class MatrixParser {
     /** Read a Matrix from File. */
     public Vector readMatrix() {
 	Vector m = null;
-        System.out.println(" --- In Matrix Parser -- ");
 	try {
 	    m = matrix();
-            System.out.println(" --- got Matrix -- ");
 	} catch (Exception e) {
 	    System.out.println("Oops.");
 	    System.out.println(e.getMessage());

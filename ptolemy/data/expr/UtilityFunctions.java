@@ -138,7 +138,7 @@ public class UtilityFunctions {
         {
 
             File fileT = new File(filename);
-            System.out.println("Trying to open file: " + fileT.toString());
+            // System.out.println("Trying to open file: " + fileT.toString());
 
             FileReader fin = null;
 
