@@ -82,7 +82,7 @@ public class Distributor extends Transformer implements SequenceActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         // These parameters are required for SDF
-        _consumptionRate = new Parameter(input, "tokenConsumptionRate",
+        _tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate",
                 new IntToken(0));
 
         output.setMultiport(true);
@@ -94,7 +94,7 @@ public class Distributor extends Transformer implements SequenceActor {
     /** The parameter controlling the input port consumption rate.
      *  This parameter contains an IntToken, initially with a value of 0.
      */
-    public Parameter consumptionRate;
+    public Parameter tokenConsumptionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -109,7 +109,7 @@ public class Distributor extends Transformer implements SequenceActor {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         Distributor newobj = (Distributor)super.clone(ws);
-        newobj.consumptionRate = (Parameter)
+        newobj.tokenConsumptionRate = (Parameter)
             (newobj.input.getAttribute("tokenConsumptionRate"));
         return newobj;
     }
@@ -124,7 +124,7 @@ public class Distributor extends Transformer implements SequenceActor {
     public void connectionsChanged(Port port) {
         if (port == output) {
             try {
-                consumptionRate.setToken(new IntToken(output.getWidth()));
+                tokenConsumptionRate.setToken(new IntToken(output.getWidth()));
                 _currentOutputPosition = 0;
                 // NOTE: schedule is invalidated automatically already
                 // by the changed connections.
