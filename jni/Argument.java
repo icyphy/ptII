@@ -60,6 +60,8 @@ public class Argument extends Attribute implements Settable {
     public Argument(GenericJNIActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        // FIXME: Why do I need to call setContainer? (3/17/04)
+        setContainer(container);
     }
 
     /** Default constructor */
