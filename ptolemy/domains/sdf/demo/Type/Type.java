@@ -307,82 +307,6 @@ public class Type extends SDFApplet implements ChangeListener {
     // Construct the graph representing the Ptolemy type lattice
     private JGraph _constructLatticeModel() {
 	BasicGraphModel model = new BasicGraphModel();
-	
-        // nodes, with user object set to the actor
-        Object nNaT = model.createNode(BaseType.NAT);
-        Object nInt = model.createNode(BaseType.INT);
-        Object nDouble = model.createNode(BaseType.DOUBLE);
-        Object nComplex = model.createNode(BaseType.COMPLEX);
-        Object nString = model.createNode(BaseType.STRING);
-        Object nGeneral = model.createNode(BaseType.GENERAL);
-        Object nBoolean = model.createNode(BaseType.BOOLEAN);
-        Object nObject = model.createNode(BaseType.OBJECT);
-        Object nScalar = model.createNode(BaseType.SCALAR);
-        Object nLong = model.createNode(BaseType.LONG);
-
-	Object root = model.getRoot();
-        model.addNode(nNaT, root);
-        model.addNode(nInt, root);
-        model.addNode(nDouble, root);
-        model.addNode(nComplex, root);
-        model.addNode(nString, root);
-        model.addNode(nGeneral, root);
-        model.addNode(nBoolean, root);
-        model.addNode(nObject, root);
-        model.addNode(nScalar, root);
-        model.addNode(nLong, root);
-
-        // Edges
-        Object e;
-
-	e = model.createEdge(null);
-	model.setEdgeTail(e, nObject);
-	model.setEdgeHead(e, nNaT);
-
-        e = model.createEdge(null);
-	model.setEdgeTail(e, nGeneral);
-	model.setEdgeHead(e, nObject);
-
-	e = model.createEdge(null);
-	model.setEdgeTail(e, nGeneral);
-	model.setEdgeHead(e, nString);
-
-	e = model.createEdge(null);
-	model.setEdgeTail(e, nString);
-	model.setEdgeHead(e, nBoolean);
-
-	e = model.createEdge(null);
-	model.setEdgeTail(e, nBoolean);
-	model.setEdgeHead(e, nNaT);
-
-	e = model.createEdge(null);
-	model.setEdgeTail(e, nString);
-	model.setEdgeHead(e, nScalar);
-
-        e = model.createEdge(null);
-	model.setEdgeTail(e, nScalar);
-	model.setEdgeHead(e, nLong);
-
-        e = model.createEdge(null);
-	model.setEdgeTail(e, nLong);
-	model.setEdgeHead(e, nInt);
-
-        e = model.createEdge(null);
-	model.setEdgeTail(e, nInt);
-	model.setEdgeHead(e, nNaT);
-
-        e = model.createEdge(null);
-	model.setEdgeTail(e, nDouble);
-	model.setEdgeHead(e, nInt);
-
-        e = model.createEdge(null);
-	model.setEdgeTail(e, nComplex);
-	model.setEdgeHead(e, nDouble);
-
-	e = model.createEdge(null);
-	model.setEdgeTail(e, nScalar);
-	model.setEdgeHead(e, nComplex);
-
         // Make sure we have the right renderers and then
         // display the graph
         GraphController gc = new TypeGraphController();
@@ -397,22 +321,70 @@ public class Type extends SDFApplet implements ChangeListener {
         jgraph.setMinimumSize(new Dimension(400, 290));
         jgraph.setPreferredSize(new Dimension(400, 290));
         jgraph.setMaximumSize(new Dimension(400, 290));
-   
-        LayoutTarget target = new BasicLayoutTarget(gc);
-        LayoutUtilities.place(target, nGeneral, 230, 30); 
-        LayoutUtilities.place(target, nScalar, 120, 80);
-        LayoutUtilities.place(target, nString, 170, 55); 
-        LayoutUtilities.place(target, nComplex, 90, 125); 
-        LayoutUtilities.place(target, nDouble, 90, 170);  
-        LayoutUtilities.place(target, nLong, 170, 140);  
-        LayoutUtilities.place(target, nInt, 120, 220);  
-        LayoutUtilities.place(target, nBoolean, 250, 120); 
-        LayoutUtilities.place(target, nObject, 340, 140); 
-        LayoutUtilities.place(target, nNaT, 230, 260); 
+
+        // nodes, with user object set to the actor
+        Object nNaT = model.createNode(BaseType.NAT);
+        Object nInt = model.createNode(BaseType.INT);
+        Object nDouble = model.createNode(BaseType.DOUBLE);
+        Object nComplex = model.createNode(BaseType.COMPLEX);
+        Object nString = model.createNode(BaseType.STRING);
+        Object nGeneral = model.createNode(BaseType.GENERAL);
+        Object nBoolean = model.createNode(BaseType.BOOLEAN);
+        Object nObject = model.createNode(BaseType.OBJECT);
+        Object nScalar = model.createNode(BaseType.SCALAR);
+        Object nLong = model.createNode(BaseType.LONG);
+ 
+        gc.addNode(nGeneral, 230, 30); 
+        gc.addNode(nScalar, 120, 80);
+        gc.addNode(nString, 170, 55); 
+        gc.addNode(nComplex, 90, 125); 
+        gc.addNode(nDouble, 90, 170);  
+        gc.addNode(nLong, 170, 140);  
+        gc.addNode(nInt, 120, 220);  
+        gc.addNode(nBoolean, 250, 120); 
+        gc.addNode(nObject, 340, 140); 
+        gc.addNode(nNaT, 230, 260);      
+	
+        Object e;
+        e = model.createEdge(null);
+	gc.addEdge(e, nObject, nNaT);
+
+        e = model.createEdge(null);
+	gc.addEdge(e, nGeneral, nObject);
+
+	e = model.createEdge(null);
+	gc.addEdge(e, nGeneral, nString);
+
+	e = model.createEdge(null);
+	gc.addEdge(e, nString, nBoolean);
+
+	e = model.createEdge(null);
+	gc.addEdge(e, nBoolean, nNaT);
+
+	e = model.createEdge(null);
+	gc.addEdge(e, nString, nScalar);
+
+        e = model.createEdge(null);
+	gc.addEdge(e, nScalar, nLong);
+
+        e = model.createEdge(null);
+	gc.addEdge(e, nLong, nInt);
+
+        e = model.createEdge(null);
+	gc.addEdge(e, nInt, nNaT);
+
+        e = model.createEdge(null);
+	gc.addEdge(e, nDouble, nInt);
+
+        e = model.createEdge(null);
+	gc.addEdge(e, nComplex, nDouble);
+
+	e = model.createEdge(null);
+	gc.addEdge(e, nScalar, nComplex);
 
         return jgraph;
     }
-
+        
     // Initialize the trace model.
     //
     private void _initTraceModel(TraceModel model) {
