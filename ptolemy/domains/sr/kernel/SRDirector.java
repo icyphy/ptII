@@ -592,7 +592,7 @@ public class SRDirector extends StaticSchedulingDirector {
      *  values and types.
      */
     private void _init() {
-	try {
+        try {
             String schedulerClassName =
                 "ptolemy.domains.sr.kernel.SRRandomizedScheduler";
             scheduler = new Parameter(
@@ -600,11 +600,11 @@ public class SRDirector extends StaticSchedulingDirector {
             scheduler.setTypeEquals(BaseType.STRING);
             attributeChanged(scheduler);
 
-	    iterations = new Parameter(this, "iterations", new IntToken(0));
+            iterations = new Parameter(this, "iterations", new IntToken(0));
             iterations.setTypeEquals(BaseType.INT);
-	    setCurrentTime(0.0);
+            setCurrentTime(0.0);
         } catch (KernelException ex) {
-	    throw new InternalErrorException(
+            throw new InternalErrorException(
                     "Cannot initialize SRDirector: " + ex.getMessage());
         }
 
