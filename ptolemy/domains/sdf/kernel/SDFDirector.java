@@ -49,7 +49,7 @@ import java.util.Enumeration;
      Furthermore, it creates Receivers of type QueueReceiver, which is
      consistant with a dataflow domain.
 
-     The SDF director has a single parameter, "Iterations" corresponding to a
+     The SDF director has a single parameter, "iterations" corresponding to a
      limit on the number of times the director will fire its hierarchy
      before it returns false in postfire.   If this number is not greater
      than zero, then no limit is set and postfire will always return false.
@@ -91,7 +91,12 @@ public class SDFDirector extends StaticSchedulingDirector {
         _init();
     }
 
-
+    /** A Parameter representing the number of times that postfire may be
+     *  called before it returns false.  If the value is less than or
+     *  equal to zero, then the simulation will never return false in postfire.
+     *  The default value is an IntToken with the value zero.
+     */
+    public Parameter iterations;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -118,26 +123,28 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException Not Thrown
      */
     public boolean prefire() throws IllegalActionException {
+        _postfirereturns = true;
         return true;
     }
 
     /** Increment the number of iterations.
      *  If an iteration limit has been set, then 
      *  see if the limit has been reached.  If so, return false.
-     *  otherwise return true.
+     *  otherwise return true if all of the fired actors since the last
+     *  call to prefire returned true.
      *  @return True if the Director wants to be fired again in the 
      *  future.
      *  @exception IllegalActionException Not thrown.
      */
     public boolean postfire() throws IllegalActionException {
-        int iterations = ((IntToken) (_parameteriterations.getToken()))
+        int numiterations = ((IntToken) (iterations.getToken()))
             .intValue();
         _iteration++;
-        if((iterations > 0) && (_iteration >= iterations)) {
+        if((numiterations > 0) && (_iteration >= numiterations)) {
             _iteration = 0;
             return false;
         }
-        return true;
+        return _postfirereturns;
     }
 
     /** Calculate the current schedule, and fire the contained actors
@@ -161,12 +168,12 @@ public class SDFDirector extends StaticSchedulingDirector {
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
                 if(!actor.prefire()) {
-                    throw new IllegalActionException("SDF Schedule " +
-                            "invalid.   Actor " +
+                    throw new IllegalActionException(this, 
+                            (ComponentEntity) actor, "Actor " +
                             "is not ready to fire.");
                 }
                 actor.fire();
-                actor.postfire();
+                _postfirereturns &= actor.postfire();
             }
         }
     }
@@ -203,17 +210,19 @@ public class SDFDirector extends StaticSchedulingDirector {
             // if setScheduler fails, then we should just set it to Null.
             // this should never happen because we don't override
             // setScheduler() to do sanity checks.
-            Debug.println("Illegal schedule caught, " +
-                "which should never happen!");
+            throw new InternalErrorException(
+                    "Could not create Default Scheduler:\n" + 
+                    e.getMessage());
         }
 
         try {
-            _parameteriterations
-                = new Parameter(this,"Iterations",new IntToken(0));
+            iterations
+                = new Parameter(this,"iterations",new IntToken(0));
         }
         catch (Exception e) {
-            Debug.println("Cannot create default iterations parameter.");
-            Debug.println("This should never happen.");
+            throw new InternalErrorException(
+                    "Cannot create default iterations parameter:\n" + 
+                    e.getMessage());
         }
 
 
@@ -224,7 +233,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     ////                         private variables                 ////
 
     private int _iteration = 0;
-    private Parameter _parameteriterations;
+    private boolean _postfirereturns = true;
 
     // Support for mutations.
     // private CircularList _pendingMutations = null;

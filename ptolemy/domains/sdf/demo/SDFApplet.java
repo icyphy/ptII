@@ -99,8 +99,7 @@ public class SDFApplet extends PtolemyApplet {
         try {
             // Initialization
             _director = new SDFDirector();
-            Parameter iterparam =
-                (Parameter)_director.getAttribute("Iterations");
+            Parameter iterparam = _director.iterations;
             iterparam.setToken(new IntToken(iterations));
             SDFScheduler scheduler = new SDFScheduler();
 
@@ -153,7 +152,7 @@ public class SDFApplet extends PtolemyApplet {
         int result = 1;
         if(_director != null) {
             Parameter iterparam =
-                (Parameter)_director.getAttribute("Iterations");
+                _director.iterations;
             result = ((IntToken)(iterparam.getToken())).intValue();
         }
         if(_iterationsbox != null) {
@@ -172,8 +171,7 @@ public class SDFApplet extends PtolemyApplet {
     protected void _go() {
         try {
             int iterations = _getIterations();
-            Parameter iterparam =
-                (Parameter)_director.getAttribute("Iterations");
+            Parameter iterparam = _director.iterations;
 
             iterparam.setToken(new IntToken(iterations));
         } catch (Exception ex) {
