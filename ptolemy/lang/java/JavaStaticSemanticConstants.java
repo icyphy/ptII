@@ -39,7 +39,8 @@ import ptolemy.lang.java.nodetypes.NodeClassID;
 //// JavaStaticSemanticConstants
 /** Constants associated with Java static semantic analysis.
  *
- *  @author Jeff Tsay
+ *  @author Jeff Tsay, Shuvra S. Bhattacharyya 
+ *  @version $Id$
  */
 public interface JavaStaticSemanticConstants extends NodeClassID {
 
