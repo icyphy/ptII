@@ -19,7 +19,7 @@
         </property>
     </property>
     <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
-        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../doc/img/PtolemyII.jpg&quot;">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../../doc/img/PtolemyII.jpg&quot;">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="148.078125, 222.203125">
         </property>
