@@ -58,6 +58,7 @@ JSRCS = \
 	Previous.java \
 	Queue.java \
 	QueueWithNextOut.java \
+	Register.java \
 	Sampler.java \
 	Server.java \
 	SingleEvent.java \
@@ -69,6 +70,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	deentities.xml \
+	QueueIcon.xml \
+	ServerIcon.xml \
 	TimedDelayIcon.xml \
 	VariableDelayIcon.xml
 

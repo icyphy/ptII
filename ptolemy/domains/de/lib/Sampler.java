@@ -39,6 +39,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -49,8 +50,9 @@ import ptolemy.kernel.util.Workspace;
    port when a token is received on the <i>trigger</i> port, then the
    value of the <i>initialValue</i> parameter is produced.  If, however,
    the <i>initialValue</i> parameter contains no value, then no output is
-   produced.  The inputs can be of any token type, and the output is
-   constrained to be of a type at least that of the input.
+   produced.  The inputs can be of any token type, but the <i>output</i>
+   port is constrained to be of a type at least that of the <i>input</i>
+   port and the <i>initialValue</i> parameter (if it has a value).
 
    <p> Both the <i>input</i> port and the <i>output</i> port are multiports.
    Generally, their widths should match. Otherwise, if the width of the
@@ -78,12 +80,6 @@ import ptolemy.kernel.util.Workspace;
 */
 
 public class Sampler extends DETransformer {
-    /* FIXME: It would be nice to have a version of this actor which
-       is a Register.  The difference is that a register ignores the
-       value of its input at the current time until after its output
-       has been generated.  A register could be used to break feedback
-       loops, whereas this cannot.
-    */
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -108,10 +104,13 @@ public class Sampler extends DETransformer {
                 "<rect x=\"-30\" y=\"-20\" "
                 + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
-                + "<polyline points=\"-30,10 2,10 2,0\"/>\n"
-                + "<polyline points=\"-30,-10 -20,-10 -20,0 -10,0 10,-7\"/>\n"
+                + "<polyline points=\"0,20 0,0\"/>\n"
+                + "<polyline points=\"-30,-0 -10,0 10,-7\"/>\n"
                 + "<polyline points=\"10,0 30,0\"/>\n"
                 + "</svg>\n");
+                
+        StringAttribute cardinality = new StringAttribute(trigger, "_cardinal");
+        cardinality.setExpression("SOUTH");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -159,6 +158,8 @@ public class Sampler extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
+        
         int inputWidth = input.getWidth();
         int outputWidth = output.getWidth();
         int commonWidth = Math.min(inputWidth, outputWidth);
@@ -206,6 +207,7 @@ public class Sampler extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
+        super.prefire();
         // If the trigger input is not connected, never fire.
         if (trigger.getWidth() > 0) {
             return (trigger.hasToken(0));
@@ -259,9 +261,9 @@ public class Sampler extends DETransformer {
         return typeConstraints;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Token[] _lastInputs;
+    /** The recorded inputs last seen. */
+    protected Token[] _lastInputs;
 }
