@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
+@ProposedRating Red (davisj@eecs.berkeley.edu)
+@AcceptedRating Red (davisj@eecs.berkeley.edu)
 
 */
 
@@ -47,10 +47,8 @@ public class Branch {
 
     /** Construct a Branch object.
      */
-    public Branch(boolean guard, BoundaryReceiver prodRcvr,
-	    BoundaryReceiver consRcvr, BranchController cntlr) 
-	    throws IllegalActionException {
-        _guard = guard;
+    public Branch(BoundaryReceiver prodRcvr, BoundaryReceiver consRcvr, 
+	    BranchController cntlr) throws IllegalActionException {
         _controller = cntlr;
         
         Receiver[][] receivers;
@@ -72,36 +70,44 @@ public class Branch {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     */
-    public int numberOfEngagements() {
-        return _successfulEngagements;
-    }
-    
     /** 
      */
-    protected void engagementWasSuccessful() {
-    	_successfulEngagements++;
+    public void beginEngagement() {
+	if( !_currentlyEngaged ) {
+	    _currentlyEngaged = true;
+	} else {
+	    throw new TerminateBranchException("Can not begin "
+		    + "an engagement if currently engaged.");
+	}
     }
 
+    /** 
+     */
+    public void completeEngagement() {
+	if( _currentlyEngaged ) {
+	    _completedEngagements++;
+	    _currentlyEngaged = false ;
+	} else {
+	    throw new TerminateBranchException("Can not complete "
+		    + "an engagement if not currently engaged.");
+	}
+    }
+
+    /**
+     */
+    public int numberOfCompletedEngagements() {
+        return _completedEngagements;
+    }
+    
     /** Return the controller that manges conditional rendezvous for this
      *  branch when performing a CIF or CDO.
      *  @return The controller that manages conditional rendezvous for
      *  this branch.
      *  FIXME: Is this necesary? What about package friendly variable?
-     */
     public BranchController getController() {
         return _controller;
     }
-
-    /** Returns the guard for this guarded communication statement.
-     *  If it is true the branch is said to be enabled.
-     *  @return True if the branch is  enabled.
-     *  FIXME: Is this necesary? What about package friendly variable?
      */
-    public boolean getGuard() {
-        return _guard;
-    }
 
     /** Return the Consumer BoundaryReceiver that this branch puts data into.
      *  @return The Consumer BoundaryReceiver that this branch puts data into.
@@ -130,11 +136,17 @@ public class Branch {
 
     /** 
      */
-    public boolean isBranchCommitted() {
-        if( _controller._canBranchEngage(this) ) {
+    public boolean isBranchPermitted() {
+        if( _controller.canBranchEngage(this) ) {
             return true;
         }
     	return false;
+    }
+
+    /**
+     */
+    public boolean isStopped() {
+        return _stopped;
     }
 
     /** Register that the receiver controlled by this branch
@@ -160,11 +172,18 @@ public class Branch {
      */
     public void transferTokens() {
         try {
-            Token token = null;
-            token = _prodRcvr.get(this);
+	    beginEngagement();
+            Token token = _prodRcvr.get(this);
             _consRcvr.put(token, this);
+	    completeEngagement();
         } catch( TerminateBranchException e ) {
-            // Do nothing
+	    registerRcvrUnBlocked();
+	    if( isActive() ) {
+		setStopped(true);
+		_controller._branchBlocked();
+	    }
+            // Register unblocked
+	    // Set stopped (if active)
             return;
         }
     }
@@ -172,23 +191,25 @@ public class Branch {
     ///////////////////////////////////////////////////////////////////
     ////                    package friendly methods               ////
 
+    //////////////////////////////////////////////////////////////////
+    ////                       protected methods                  ////
+
     /** Set a flag indicating this branch should fail.
      *  @param value Boolean indicating whether this branch is still alive.
      */
-    void setActive(boolean value) {
+    protected void setActive(boolean value) {
         _active = value;
     }
 
-    //////////////////////////////////////////////////////////////////
-    ////                       protected methods                  ////
+    /** 
+     */
+    protected void setStopped(boolean value) {
+        _stopped = value;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 
-    // The guard for this guarded communication statement.
-    // FIXME: Should this be optimized?
-    protected boolean _guard;
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -201,12 +222,12 @@ public class Branch {
     // The controller of this thread is trying to perform a conditional
     // rendezvous for.
     private BranchController _controller;
-
     private BoundaryReceiver _prodRcvr;
     private BoundaryReceiver _consRcvr;
     
     private boolean _rcvrBlocked = false;
-    
-    private int _successfulEngagements = 0;
+    private int _completedEngagements = 0;
+    private boolean _currentlyEngaged = false;
+    private boolean _stopped = false;
 
 }

@@ -1,4 +1,4 @@
-/* Interface for the actor that contain a ConditionalBranchControl.
+/* 
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -35,11 +35,8 @@ import ptolemy.actor.Actor;
 //////////////////////////////////////////////////////////////////////////
 //// MultiBranchActor
 /**
-MultiBranchActor is an actor that contain a controller to manage
-the conditional branches for performing conditional communication within
-CSP domain.
 
-@author Bilung Lee
+@author John S. Davis II
 @version $Id$
 @see BranchController
 */
@@ -50,6 +47,11 @@ public interface MultiBranchActor extends Actor {
 
     /** Return the the conditional branch controller of this actor.
      *  @return The conditional branch controller.
-     */
     public BranchController getBranchController();
+     */
+
+    /** Return the the conditional branch controller of this actor.
+     *  @return The conditional branch controller.
+     */
+    public boolean hasProcessDirector();
 }

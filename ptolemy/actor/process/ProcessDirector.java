@@ -103,6 +103,11 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     */
+    public void _branchBlocked(boolean isInput) {
+    }
+
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (It must be added
      *  by the user if he wants it to be there).
@@ -537,6 +542,16 @@ public class ProcessDirector extends Director {
     /** Implementations of this method must be synchronized.
      */
     protected synchronized void _actorWriteUnBlocked() {
+    }
+
+    /** 
+     */
+    protected synchronized void _branchBlocked(BranchController cntlr) {
+    }
+
+    /** 
+     */
+    protected synchronized void _branchUnBlocked(BranchController cntlr) {
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -110,7 +110,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
                 //
                 // Get Permission From Controlling Branch
                 //
-                if( !brnch.isBranchCommitted() ) {
+                if( !brnch.isBranchPermitted() ) {
                     throw new TerminateBranchException("");
                 }
                 
@@ -122,7 +122,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
                 //
                 // Inform The Controlling Branch Of Success
                 //
-            	brnch.engagementWasSuccessful();
+            	brnch.completeEngagement();
             	return super.get();
             }
         }
@@ -207,7 +207,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
                 //
                 // Get Permission From Controlling Branch
                 //
-                if( !brnch.isBranchCommitted() ) {
+                if( !brnch.isBranchPermitted() ) {
                     throw new TerminateBranchException("");
                 }
             
@@ -220,7 +220,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
                 //
                 // Inform The Controlling Branch Of Success
                 //
-            	brnch.engagementWasSuccessful();
+            	brnch.completeEngagement();
             }
         }
     }
