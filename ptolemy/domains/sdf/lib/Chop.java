@@ -35,6 +35,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -139,12 +140,16 @@ public class Chop extends SDFTransformer {
 
         numberToRead = new Parameter(this, "numberToRead");
         numberToRead.setExpression("128");
+        numberToRead.setTypeEquals(BaseType.INT);
         numberToWrite = new Parameter(this, "numberToWrite");
         numberToWrite.setExpression("64");
+        numberToWrite.setTypeEquals(BaseType.INT);
         offset = new Parameter(this, "offset");
         offset.setExpression("0");
+        offset.setTypeEquals(BaseType.INT);
         usePastInputs = new Parameter(this, "usePastInputs");
         usePastInputs.setExpression("true");
+        usePastInputs.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
