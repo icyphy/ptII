@@ -68,6 +68,12 @@ public class SootDFGBuilder extends SootASTVisitor {
     public Stmt processDefinitionStmt(DefinitionStmt stmt, 
 				      Value rightOp, Value leftOp) {
 	
+	if (DEBUG) {
+	    System.out.println("Definition Statment "+stmt);
+	    System.out.println("\tRight Op="+rightOp);
+	    System.out.println("\tLeft Op="+leftOp);
+	}
+
 	Node rightNode = _valueMap.getValueNode(rightOp);
 	Node leftNode = _valueMap.getValueNode(leftOp);
 
@@ -80,10 +86,12 @@ public class SootDFGBuilder extends SootASTVisitor {
     public Value processValue(Value val, boolean left) 
 	throws SootASTException {
 
+	if (DEBUG) System.out.println("SootDFGBuilder:Value="+val);
+
 	if (!left)
 	    _valueMap.getOrAddValueNode(val); // make sure it is added
-	//else
-	//_valueMap.addValueNode(val,left);	
+	else
+	    _valueMap.addValueNode(val);	
 
 	Value v = super.processValue(val,left);
 	return v;
@@ -149,26 +157,6 @@ public class SootDFGBuilder extends SootASTVisitor {
 	if (baseEdge == null)
 	    _graph.addEdge(baseNode,ifrNode,BASE_WEIGHT);
 	
-	/*
-	if (dupIfr == null) {
-	    //System.out.println("No dup");
-	    // No matching IFR. Add edge for base.
-	    _graph.addEdge(baseNode,ifrNode,_graph.BASE_WEIGHT);
- 	} else {
-	    //System.out.println("dup:"+ifr+" "+dupIfr);
-	    // A matching IFR has been found. Delete the Node that
-	    // has been created for ifr and create a reference
-	    // between ifr with the Node of the matching ifr.
-	    _graph.removeNode(ifrNode);
-	    _valueMap.replaceValueNode(ifr,dupIfr);
-	    if (left) {
-		// An assignment is being made. Create a new node
-		// with the existing IFR.
-		Node newNode = _valueMap.addValueNode(dupIfr);
-		_graph.addEdge(baseNode,newNode,_graph.BASE_WEIGHT);
-	    }
-	}
-	*/
  	return ifr;
     }
 
@@ -238,6 +226,8 @@ public class SootDFGBuilder extends SootASTVisitor {
      * edges corresponding to base references for referenced objects.
      **/
     public static final String BASE_WEIGHT = "base";
+
+    public static boolean DEBUG = false;
 
     protected SootBlockDirectedGraph _graph;
 

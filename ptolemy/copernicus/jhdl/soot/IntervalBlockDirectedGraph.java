@@ -83,6 +83,13 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
 	if (DEBUG) 
 	    System.out.println(toShortString()+":Completed IDFG");
+
+	if (DEBUG) {
+	    String filename = new String(toShortString()+"graph");
+	    PtDirectedGraphToDotty.writeDotFile(filename,this);
+;
+	}
+	
     }
 
     protected void _processChain() 
@@ -441,7 +448,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	return ibdg;
     }
 
-    public static boolean DEBUG=true;
+    public static boolean DEBUG=false;
 
     public static void main(String args[]) {
 	
@@ -477,26 +484,3 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
 }
 
-/**
-
-Required definitions:
-
-A key task of this class is to combine the dataflow graphs of 
-all basic blocks in the method. As part of this process, it is
-necessary to "combine" or "join" the results of two mutually
-exclusive control paths. Specifically, we must insert multiplexer
-nodes to choose between assignments to a variable that occur in both
-mutually exclusive control paths. 
-
-It is common for an assignment to occur in one control path but not
-the other. When this occurs, we must decide whether to create an
-"unassigned" node in the control path that does not contain the
-assignment and multiplex the "unassigned" node (which may be assigned
-further up the tree in a preceeding branch) or to avoid multiplexing.
-
-If the variable in question is first assigned at this point, 
-only assigned in the current basic
-block (or this is the first assignment  
-
-
- **/

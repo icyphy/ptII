@@ -192,6 +192,11 @@ public class ValueMap extends HashListMap {
 	}
 	Node n = _graph.addNodeWeight(nodeValue);
 	add(nodeValue,n);
+
+	if (DEBUG) System.out.print("ValueMap:Adding node="+n+" with weight "+
+				    nodeValue + " of type " +
+				    nodeValue.getClass().getName()
+				    +"\n");
 	return n;
     }
 
@@ -416,12 +421,15 @@ public class ValueMap extends HashListMap {
 
 
     /**
-     * This method will update the ValueMap to reflect the Nodes
-     * found within the underlying graph. Specifically,
-     * it will add Nodes/Values to the map corresponding to 
-     * Nodes/Values found in the graph that are not in the ValueMap.
+     * This method will clear all mappings within the ValueMap and
+     * rebuild the mappings based on the topology of the underlying
+     * graph. 
      *
-     * TODO: remove Nodes/Values from ValueMap?
+     * This method will iterate through all graph Nodes in a
+     * topological order. A new mapping will be added for each Value
+     * weighted Node in the graph. Nodes with non-Value weights will
+     * not have a mapping.
+     *
      **/
     public void updateMap() {
 
@@ -437,9 +445,12 @@ public class ValueMap extends HashListMap {
 
 	for (Iterator i = topologicalOrder.iterator(); i.hasNext(); ) {
 	    Node n = (Node) i.next();
-	    add(n.getWeight(),n);
+	    if (n.hasWeight()) {
+		Object o = n.getWeight();
+		if (o instanceof Value)
+		    add(o,n);
+	    }
 	}	
-
     }
 
 
@@ -461,22 +472,28 @@ public class ValueMap extends HashListMap {
 	// Add all nodes from dfg to graph
 	for (Iterator i = succeedingGraph.nodes().iterator(); i.hasNext();) {
 	    Node node = (Node) i.next();	    
-	    if (DEBUG) System.out.print("Adding node="+node+" with weight "+
+	    if (DEBUG) System.out.print("ValueMap:Merging node="+node+
+					" with weight "+
 					node.getWeight() + " of type " +
 					node.getWeight().getClass().getName()
 					+"\n");
 	    Object nodeWeight = node.getWeight();
-	    // Some nodes don't have a Value weight (binary mux node)
-	    Value nodeValue = (Value) nodeWeight;
-
 	    Node newNode = null;
-	    if (!successor.isAssigned(node)) {
-		newNode = this.getValueNode(nodeValue);		    
+	    if (nodeWeight instanceof Value) {
+		// Some nodes don't have a Value weight (binary mux node)
+		Value nodeValue = (Value) nodeWeight;
+		
+		if (!successor.isAssigned(node)) {
+		    newNode = this.getValueNode(nodeValue);		    
+		}
+		if (newNode == null) {
+		    newNode = this.addValueNode(nodeValue);
+		}
+	    } else {
+		// create a new non-Value weighted Node
+		newNode = _graph.addNodeWeight(nodeWeight);
 	    }
-	    if (newNode == null) {
-		newNode = this.addValueNode(nodeValue);
-	    }
-	    nodeMap.put(node,newNode);	    
+	    nodeMap.put(node,newNode);
 	}
 
 	// Iterate through all edges and add to graph
@@ -504,7 +521,7 @@ public class ValueMap extends HashListMap {
      * A debugging flag. This can be set to true to enable a number of
      * verbose debugging messages to standard output.
      **/
-    public boolean DEBUG = false;
+    public static boolean DEBUG = false;
 
     /**
      * This is the underlying graph for which the Nodes and Values are

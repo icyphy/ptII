@@ -507,8 +507,20 @@ public class SDFGToJHDLCircuit {
 
     public static void main(String args[]) {
 
+
+	// Print out graphs from original method
+	ValueMap.DEBUG = true;
+	//SootASTVisitor.DEBUG = true;
+	SootDFGBuilder.DEBUG = true;
 	SootBlockDirectedGraph graphs[] = 
 	    ControlSootDFGBuilder.createDataFlowGraphs(args,true);
+	
+
+	System.exit(0);
+
+	// Set debug flags
+	ValueMap.DEBUG = true;
+	IntervalBlockDirectedGraph.DEBUG = true;
 
 	SootBlockDirectedGraph sbdg=null;
 	try {
