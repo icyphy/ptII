@@ -269,7 +269,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         _readInputs();
         Transition transition;
         State currentState = controller.currentState();
-        _lastIntransientState = currentState;
+        //_lastIntransientState = currentState;
         Actor[] actors = currentState.getRefinement();
         
         // NOTE: Paranoid coding.
@@ -283,7 +283,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             if (_stopRequested) break;
             if (actors[i].prefire()) {
                 actors[i].fire();
-                actors[i].postfire();
+                _refinementPostfire = actors[i].postfire();
             }
         }
 
@@ -467,7 +467,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         
         FSMActor controller = getController();
         CompositeActor container = (CompositeActor)getContainer();
-        TypedActor[] currentRefinement = _lastIntransientState.getRefinement();
+        /*TypedActor[] currentRefinement = _lastIntransientState.getRefinement();
         
         if (currentRefinement == null || currentRefinement.length != 1) {
             throw new IllegalActionException(this,
@@ -476,7 +476,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         }
 
         boolean postfireReturn = currentRefinement[0].postfire();
-        
+        */
         if (_sendRequest && _embeddedInHDF) {
             _sendRequest = false;
             ChangeRequest request =
@@ -492,8 +492,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         if (!_embeddedInHDF) {
             makeStateTransition();
         }
-
-        return postfireReturn;
+        return _refinementPostfire;
+        //return postfireReturn;
     }
 
     /** Return true if the mode controller is ready to fire.
@@ -918,5 +918,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     
     // The last intransient state reached. This referes to the
     // current state if it is intransient.
-    private State _lastIntransientState;
+    //private State _lastIntransientState;
+    
+    private boolean _refinementPostfire;
 }
