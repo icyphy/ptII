@@ -75,5 +75,81 @@ demo: $(PTCLASSJAR)
 depend:
 	@echo "no dependencies in this directory"
 
+# FIXME: we can't ship these
+JAVASRC_STUBS=$(PTII)/vendors/sun/src
+
+codegen: generate_codegen compile_codegen preverify ramp.prc run_codegen 
+generate_codegen:
+	@if [ ! -d "$(JAVASRC_STUBS)" ]; then \
+		echo "Warning $(JAVASRC_STUBS) does not exist"; \
+	fi
+	CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS) \
+	$(JAVA) -verbose:class  ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	-class  ptolemy.kvm.demo.ramp.RampSystem \
+	-iterations 500 \
+	-outdir $(ROOT) -outpkg cg.ramp
+run_codegen: 	
+	(cd $(ROOT)/cg/ramp; \
+		$(JAVA) -classpath ../.. cg.ramp.CG_Main)
+
+J2ME_CLDC = $(PTII)/vendors/sun/j2me_cldc
+J2ME_CLDC = /j2me_cldc
+
+
+
+compile_codegen: $(ROOT)/cg/ramp/CG_Main.class
+$(ROOT)/cg/ramp/CG_Main.class: $(ROOT)/cg/ramp/CG_Main.java
+	(cd $(ROOT)/cg/ramp; \
+	javac -g:none -verbose \
+		-bootclasspath $(J2ME_CLDC)/bin/api/classes  \
+		-classpath $(ROOT) \
+		CG_Main.java)
+
+preverify:
+	(cd $(ROOT)/cg/ramp; \
+	for class in *.class; do \
+	$(J2ME_CLDC)/bin/preverify \
+		-classpath "$(J2ME_CLDC)/bin/api/classes$(CLASSPATHSEPARATOR)$(ROOT)" \
+		$(ME)/`basename $$class .class`; \
+	done)
+
+
+ramp.prc: $(J2ME_CLDC)/tools/palm/src/palm/database/MakePalmApp.class
+	(cd $(ROOT)/cg/ramp; \
+	java -classpath $(J2ME_CLDC)/tools/palm/src \
+	 palm.database.MakePalmApp \
+	-v -v \
+	-version "1.0" \
+	-bootclasspath $(J2ME_CLDC)/bin/api/classes  \
+	-classpath $(PTII) \
+	cg.ramp.CG_Main)
+
+$(J2ME_CLDC)/tools/palm/src/palm/database/MakePalmApp.class: \
+		$(J2ME_CLDC)/tools/palm/src/palm/database/MakePalmApp.java
+	(cd $(J2ME_CLDC)/tools/palm/src/palm/database; javac *.java)
+
+run:
+	(cd $(ROOT)/cg/ramp; \
+	java -verbose:class \
+		-Xint \
+		-Xbootclasspath/p:$(J2ME_CLDC)/bin/api/classes \
+		-classpath ../.. \
+		cg.ramp.CG_Main)
+
+javap_all:
+	(cd $(ROOT)/cg/ramp; \
+	javap -classpath $PTII `ls -1 *.class | awk '{s=substr($0,1,length($0)-6); print "cg.ramp."s}' `)
+
+fix:
+	(cd $(ROOT)/cg/ramp; \
+	for files in *.java; do \
+		sed 's@\(import ptolemy.*;\)@//\1@' $$files > tmp; \
+		diff $$files  tmp; \
+		cp tmp $$files; \
+	done)
+
+kvm:
+	$(J2ME_CLDC)/kvm/VmWin/build/kvm.exe -classpath "$(J2ME_CLDC)/api/classes\;./output" cg.ramp.CG_Main
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
