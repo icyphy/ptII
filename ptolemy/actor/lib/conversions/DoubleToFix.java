@@ -67,20 +67,45 @@ public class DoubleToFix extends Transformer {
    
 	mode = new Parameter(this, "mode", new StringToken("SATURATE"));
         mode.setTypeEquals(BaseType.STRING);
+
+	_precision = ((StringToken) precision.getToken()).toString();
+	_mode = ((StringToken) mode.getToken()).toString();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The name of the file to write to. This parameter contains
-     *  a StringToken.
-     */
+    /** The precision of the Fix point */
     public Parameter precision;
 
+    /** The mode used to convert a double into a fix point. */
     public Parameter mode;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+   /** If the argument is the precision parameter, check that it is
+     *  positive.
+     *  @exception IllegalActionException If the meanTime value is
+     *   not positive.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == precision) {
+            System.out.println(" ---- Attribute Changed For Precision");
+            _precision = ((StringToken)precision.getToken()).toString();
+	    System.out.println(" ---- Precision: " + _precision );
+	} else {
+	    if (attribute == mode) {
+		System.out.println(" ---- Attribute Changed For Mode");
+		_mode = ((StringToken)mode.getToken()).toString();
+		
+		System.out.println(" ---- Mode: " + _mode );
+	    } else {
+		super.attributeChanged(attribute);
+	    }
+        }
+    }
 
     /** Read at most one token from each input and convert the Token
      *  value in a FixToken with a given precision.  
@@ -89,15 +114,18 @@ public class DoubleToFix extends Transformer {
      */
 
     public void fire() throws IllegalActionException {
-	String _precision = ((StringToken) precision.getToken()).toString();
-	String _mode = ((StringToken) mode.getToken()).toString();
-	// System.out.println(" PRECISION: " + _precision);
 	if (input.hasToken(0)) {
     	    DoubleToken in = (DoubleToken)input.get(0);
 	    FixToken result = new FixToken(_precision, in.doubleValue() );    
 	    result.setRoundingMode( _mode );
+	    result.print();
             output.send(0, result);
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private String _precision = null;
+    private String _mode = null;
 }
