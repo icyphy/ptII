@@ -61,7 +61,7 @@ test QuickSmoke-1.1 {Compile and run the SDF IIR test} {
     global PTII
     set result [sootCodeGeneration $PTII \
 		[file join $relativePathToPTII ptolemy actor lib test auto \
-		     IIR.xml] "Deep" 1000 0 0 smokeTest]
+		     IIR.xml] "Deep" "" 0 0 smokeTest]
     list {}
 } {{}}
 
