@@ -265,7 +265,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  @exception IllegalActionException Never thrown in this director.
      */
     public boolean prefire() throws IllegalActionException {
-        if(_debugging) _debug(this.getFullName() + "prefire.");
+        if(_debugging) _debug(this.getFullName(), "prefire.");
         if(STAT) {
             NSTEP++;
         }
