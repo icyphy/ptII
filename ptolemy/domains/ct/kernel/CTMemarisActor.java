@@ -29,33 +29,35 @@
 
 package ptolemy.domains.ct.kernel;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.Actor;
 
 //////////////////////////////////////////////////////////////////////////
-//// CTMemarisActor
+//// CTStatefulActor
 /**
-An interface for actors that can remember their states. The states
-of the actor can be used for rolling back the simulation when needed.
-This ability is essential when embedding CT subsystem inside an
-event based system.
+An interface for actors that have state. The state of the actor can be 
+marked (saved). The saved state can be restored so that the actor goes
+back to its previously marked state. This feature is used for rolling
+back the simulation when needed, which is essential when embedding
+CT subsystem in an event based system.
 <P>
-The interface defines two methods, saveStates() and restoreStates().
-If the saveStates() method is called, the current states of the actor, 
-for example local variables, should be remembered. When the 
-restoreStates() is called, the saved states should be restored. 
+The interface defines two methods, markState() and goToMarkedState().
+If the markState() method is called, the current state of the actor, 
+for example values of the local variables, should be remembered. When the 
+goToMarkedState() method is called after that, the markedd states 
+should be restored. 
 @author  Jie Liu
 @version $Id$
-@see classname
-@see full-classname
+FIXME: Changed to CTStatefulActor.java 
 */
-public interface CTMemarisActor {
+public interface CTMemarisActor extends Actor{
     
-    /** Restore the saved States. If there's no saved states, throws
+    /** Go to the marked state. If there's no marked state, throws
      *  an exception.
-     *  @exception IllegalActionException If there were no saved state.
+     *  @exception IllegalActionException If there were no marked state.
      */
     public void restoreStates() throws IllegalActionException ;
 
-    /** Save the current state of the actor.
+    /** Mark the current state of the actor.
      */
     public void saveStates();
 

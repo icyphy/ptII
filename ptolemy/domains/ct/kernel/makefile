@@ -66,6 +66,7 @@ JSRCS = \
 	CTReceiver.java \
 	CTScheduler.java \
 	CTSingleSolverDirector.java \
+	CTStatefulActor.java \
 	CTStepSizeControlActor.java \
 	NumericalNonconvergeException.java \
 	ODESolver.java

@@ -1,4 +1,4 @@
-/* Interface for actors that generates discrete events.
+/* An interface for actors that can remembers their state.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -23,30 +23,41 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+@ProposedRating Red (liuj@eecs.berkeley.edu)
+
 */
 
 package ptolemy.domains.ct.kernel;
-
+import ptolemy.kernel.util.*;
 import ptolemy.actor.Actor;
 
 //////////////////////////////////////////////////////////////////////////
-//// CTEventInterpreter
+//// CTStatefulActor
 /**
-Interface for CT actors that generates continuous signals (waveforms) from 
-discrete events. Typical implementations of event interpreters are 
-zero-order holds and impulses.
-
-@author Jie Liu
+An interface for actors that have state. The state of the actor can be 
+marked (saved). The saved state can be restored so that the actor goes
+back to its previously marked state. This feature is used for rolling
+back the simulation when needed, which is essential when embedding
+CT subsystem in an event based system.
+<P>
+The interface defines two methods, markState() and goToMarkedState().
+If the markState() method is called, the current state of the actor, 
+for example values of the local variables, should be remembered. When the 
+goToMarkedState() method is called after that, the markedd states 
+should be restored. 
+@author  Jie Liu
 @version $Id$
 */
-public interface CTEventInterpreter extends Actor{
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
-
-    /** Consume the discrete event that happens at the current time. If there
-     *  is nosuch events, do nothing.
+public interface CTStatefulActor extends Actor{
+    
+    /** Go to the marked state. If there's no marked state, throws
+     *  an exception.
+     *  @exception IllegalActionException If there were no marked state.
      */
-    public void consumeCurrentEvents();
+    public void goToMarkedState() throws IllegalActionException ;
+
+    /** Mark the current state of the actor.
+     */
+    public void markState();
 
 }

@@ -30,7 +30,7 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.kernel.util.*;
+import ptolemy.actor.Actor;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTStepSizeControlActor
@@ -51,7 +51,7 @@ they will be asked for the (predicted) next step size.
 @author  Jie Liu
 @version $ID$
 */
-public interface CTStepSizeControlActor {
+public interface CTStepSizeControlActor extends Actor{
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

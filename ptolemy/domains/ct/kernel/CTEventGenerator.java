@@ -27,6 +27,8 @@
 
 package ptolemy.domains.ct.kernel;
 
+import ptolemy.actor.Actor;
+
 //////////////////////////////////////////////////////////////////////////
 //// CTEventGenerator
 /**
@@ -37,7 +39,7 @@ implementations of event generator are samplers, event detectors, etc.
 @author Jie Liu
 @version $Id$
 */
-public interface CTEventGenerator {
+public interface CTEventGenerator extends Actor{
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////

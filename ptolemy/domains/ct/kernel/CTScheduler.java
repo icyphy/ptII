@@ -217,13 +217,13 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return an enumeration of event generator.
+    /** Return an enumeration of event generators.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
-     *  Otherwise, it calls _classifyActors to reconstruct, and save
+     *  Otherwise, it reconstructs the enumeration, and save
      *  the new version.
-     *  This method read-synchronize on the workspace.
+     *  This method read-synchronizes on the workspace.
      *  @return An enumeration of event generator.
      */
     public Enumeration eventGenerateActors() {

@@ -27,6 +27,7 @@
 
 package ptolemy.domains.ct.kernel;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.Actor;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDynamicActor
@@ -49,7 +50,7 @@ reported by some event detectors.
 @author Jie Liu
 @version $Id$
 */
-public interface CTDynamicActor {
+public interface CTDynamicActor extends Actor{
     /** Emit the tentative output.
      *  @exception IllegalActionException If the data transfer is not
      *       completed.

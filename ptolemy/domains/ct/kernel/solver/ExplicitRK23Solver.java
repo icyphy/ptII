@@ -217,7 +217,6 @@ public class ExplicitRK23Solver extends VariableStepSolver{
         }
     }
 
-
     /** Hook method for suggestedNextStepSize() method of
      *  integrators.
      *  @param integrator The integrator of that calls this method.
