@@ -238,9 +238,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if (attribute instanceof Parameter) {
                 _referencedParameters.add(attribute);
             }
-            result.append(_component.getFullName().replace('.', '_'));
-            result.append("_");
-            result.append(refName);
+            result.append(attribute.getFullName().replace('.', '_'));
             int[] channelAndOffset = _getChannelAndOffset(name);
             if (channelAndOffset[0] != -1) {
                 throw new IllegalActionException(_component,
@@ -317,10 +315,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return result.toString();
     }
     
-    /** Get the size of a parameter or port.
-     * @param name
-     * @return
-     * @throws IllegalActionException
+    /** Get the size of a parameter or port. The size of a parameter
+     *  is the length of its array if the parameter's type is array,
+     *  and 1 otherwise. The size of a port is its receiver length.
+     * @param name The name of the port or parameter.
+     * @return The size of a parameter or port.
+     * @throws IllegalActionException If no port or parameter of
+     *  the given name is found.
      */
     public int getSize(String name)
             throws IllegalActionException {
@@ -350,6 +351,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         while (outputPorts.hasNext()) {
             IOPort port  = (IOPort) inputPorts.next();
             if (port.getName().equals(name)) {
+                // FIXME: We assume the length of each channel of the 
+                // port is same.
                 return port.getRemoteReceivers()[0].length;
             }
         }
@@ -387,17 +390,25 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 continue;
             }
 
+            int flag = 0;
             boolean foundIt = false;
             StringTokenizer tokenizer = new StringTokenizer(subcode, "()", true);
             if (tokenizer.hasMoreTokens()) {
                 // Do the trim so "$ ref (" can be recognized.
                 String token = (tokenizer.nextToken()).trim();
-                if (token.equals("ref") && tokenizer.hasMoreTokens()) {
+                if ((token.equals("ref") || token.equals("val")
+                        || token.equals("size")) && tokenizer.hasMoreTokens()) {
+                    if (token.equals("ref")) {
+                        flag = 1;
+                    } else if (token.equals("val")) {
+                        flag = 2;
+                    } else {
+                        flag = 3;
+                    }
                     String openParen = tokenizer.nextToken();
                     if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
                         String name = tokenizer.nextToken();
                         if (name.equals("(") || name.equals(")")) {
-                            // found "$ref((" or "$ref()"
                             throw new IllegalActionException(_component,
                                     "Illegal expression: $" + subcode);
                         }
@@ -405,73 +416,28 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                             String closeParen = tokenizer.nextToken();
                             if (closeParen.equals(")")) {
                                 if (name.trim().equals("")) {
-                                    throw new IllegalActionException(
-                                            _component, "Illegal expression: $"
-                                                    + subcode);
+                                    throw new IllegalActionException(_component,
+                                            "Illegal expression: $" + token + "("
+                                                + name + ")");
                                 }
-                                foundIt = true;
                                 name = name.trim();
-                                result.append(getReference(name));
+                                if (flag == 1) {
+                                    result.append(getReference(name));    
+                                } else if (flag == 2) {
+                                    result.append(getParameterValue(name));
+                                } else {
+                                    result.append(getSize(name));
+                                }
                                 while (tokenizer.hasMoreTokens()) {
                                     result.append(tokenizer.nextToken());
-                                }
-                            }
-                        }
-                    }
-                } else if (token.equals("val") && tokenizer.hasMoreTokens()) {
-                    String openParen = tokenizer.nextToken();
-                    if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
-                        String macroName = tokenizer.nextToken();
-                        if (macroName.equals("(") || macroName.equals(")")) {
-                            // found "val((" or "val()"
-                            throw new IllegalActionException(_component,
-                                    "Illegal expression: " + subcode);
-                        }
-                        if (tokenizer.hasMoreTokens()) {
-                            String closeParen = tokenizer.nextToken();
-                            if (closeParen.equals(")")) {
-                                if (macroName.trim().equals("")) {
-                                    throw new IllegalActionException(
-                                            _component, "Illegal expression: "
-                                                    + "val(" + macroName + ")");
                                 }
                                 foundIt = true;
-                                macroName = macroName.trim();
-                                result.append(getParameterValue(macroName));
-                                while (tokenizer.hasMoreTokens()) {
-                                    result.append(tokenizer.nextToken());
-                                }
                             }
                         }
-                    }
-                } else if (token.equals("size") && tokenizer.hasMoreTokens()) {
-                    String openParen = tokenizer.nextToken();
-                    if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
-                        String macroName = tokenizer.nextToken();
-                        if (macroName.equals("(") || macroName.equals(")")) {
-                            throw new IllegalActionException(_component,
-                                    "Illegal expression: " + subcode);
-                        }
-                        if (tokenizer.hasMoreTokens()) {
-                            String closeParen = tokenizer.nextToken();
-                            if (closeParen.equals(")")) {
-                                if (macroName.trim().equals("")) {
-                                    throw new IllegalActionException(
-                                            _component, "Illega expression: "
-                                            + "size(" + macroName + ")");
-                                }
-                            }
-                            foundIt = true;
-                            macroName = macroName.trim();
-                            result.append(getSize(macroName));
-                            while (tokenizer.hasMoreTokens()) {
-                                result.append(tokenizer.nextToken());
-                            }
-                        }
-                        
                     }
                 }
-             }
+            }
+            
             if (!foundIt) {
                 result.append("$");
                 result.append(subcode);

@@ -178,7 +178,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateInitializeCode() 
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment(
+         code.append(comment(
                 "Initialize " + getContainer().getFullName()));
         Iterator actors = ((CompositeActor)getContainer())
                 .deepEntityList().iterator();
@@ -210,22 +210,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 Iterator parameters = parameterSet.iterator();
                 while (parameters.hasNext()) {
                     Parameter parameter= (Parameter)parameters.next();
-                    String type = parameter.getType().toString();
-                    boolean isArrayType = false;
-                    if (type.charAt(0) == '{') {
-                        // This should be an ArrayType.
-                        StringTokenizer tokenizer
-                            = new StringTokenizer(type, "{}");
-                        type = tokenizer.nextToken();
-                        isArrayType = true;
-                    }
-                    if (type.equals("boolean")) {
-                        type = "bool";
-                    }
-                    code.append("static ");
-                    code.append(type);
-                    code.append(" ");
-                    code.append(parameter.getFullName().replace('.', '_'));
+                    boolean isArrayType = _generateType(parameter, code);
                     if (isArrayType) {
                         code.append("[ ]");
                     }
@@ -242,27 +227,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 if (inputPort.getWidth() == 0) {
                     break;
                 }
-                String type = inputPort.getType().toString();
-                boolean isArrayType = false;
-                if (type.charAt(0) == '{') {
-                    // This should be an ArrayType.
-                    StringTokenizer tokenizer
-                        = new StringTokenizer(type, "{}");
-                    type = tokenizer.nextToken();
-                    isArrayType = true;
-                }
-                if (type.equals("boolean")) {
-                    type = "bool";
-                }
-                code.append("static ");
-                code.append(type);
-                code.append(" ");
-                code.append(inputPort.getFullName().replace('.', '_'));
-                
+                // FIXME: What if port is ArrayType.
+                _generateType(inputPort, code);
                 if (inputPort.isMultiport()) {
                     code.append("[" + inputPort.getWidth() + "]");
                 }
-                // For multi-rate SDF. 
                 int bufferCapacity = getBufferCapacity(inputPort);
                 if (bufferCapacity > 1) {
                     code.append("[" + bufferCapacity + "]");
@@ -277,22 +246,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 // Only generate declarations for those output ports with
                 // port width zero. 
                 if (outputPort.getWidth() == 0) {
-                    String type = outputPort.getType().toString();
-                    boolean isArrayType = false;
-                    if (type.charAt(0) == '{') {
-                        // This should be an ArrayType.
-                        StringTokenizer tokenizer
-                            = new StringTokenizer(type, "{}");
-                        type = tokenizer.nextToken();
-                        isArrayType = true;
-                    }
-                    if (type.equals("boolean")) {
-                        type = "bool";
-                    }
-                    code.append("static ");
-                    code.append(type);
-                    code.append(" ");
-                    code.append(outputPort.getFullName().replace('.', '_'));
+                    _generateType(outputPort, code);
                     code.append(";\n");
                 }
             }
@@ -422,6 +376,42 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
+    
+    /** Given a port or parameter, append a string in the form
+     *  "static <i>type</i> <i>objectName</i>" to the given string buffer.
+     *  Return true if the type of the port or parameter is ArrayType.
+     *  This method is only called in generateVariableDeclarations() method.
+     *  @param object The port or parameter.
+     *  @return True if the type the port or parameter is ArrayType
+     */
+    private boolean _generateType(NamedObj object, StringBuffer code) {
+        String type = "";
+        if (object instanceof Parameter) {
+            type = ((Parameter)object).getType().toString();
+        } else if (object instanceof TypedIOPort) {
+            type = ((TypedIOPort)object).getType().toString();
+        }
+        boolean isArrayType = false;
+        if (type.charAt(0) == '{') {
+            // This is an ArrayType.
+            StringTokenizer tokenizer = new StringTokenizer(type, "{}");
+            type = tokenizer.nextToken();
+            isArrayType = true;
+        }
+        if (type.equals("boolean")) {
+            type = "bool";
+        }
+        code.append("static ");
+        code.append(type);
+        code.append(" ");
+        code.append(object.getFullName().replace('.', '_'));
+        return isArrayType;
+    }
+    
+    
+    
+    //////////////////////////////////////////////////////////////////
+    ////                     private variables                    ////
     
     // A hash map that stores the code generator helpers associated
     // with the actors.
