@@ -24,6 +24,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.demo;
@@ -83,7 +86,7 @@ public class HistogramApplet extends Applet implements Runnable {
         // The applet has two panels, stacked vertically
         setLayout(new BorderLayout());
         Panel appletPanel = new Panel();
-        appletPanel.setLayout(new GridLayout(2,1));
+        appletPanel.setLayout(new GridLayout(2, 1));
         add(appletPanel, "Center");
 
         // _plot is the drawing panel for DEPlot actor.
@@ -115,7 +118,7 @@ public class HistogramApplet extends Applet implements Runnable {
 
         // Adding check box in the control panel.
         Panel checkboxPanel = new Panel();
-        checkboxPanel.setLayout(new GridLayout(2,1));
+        checkboxPanel.setLayout(new GridLayout(2, 1));
         checkboxPanel.add(_clockCheckbox);
         checkboxPanel.add(_poissonCheckbox);
         controlPanel.add(checkboxPanel);
@@ -123,7 +126,7 @@ public class HistogramApplet extends Applet implements Runnable {
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(2,1));
+        simulationParam.setLayout(new GridLayout(2, 1));
         controlPanel.add(simulationParam);
         // Done adding simulation parameter panel.
 
@@ -140,14 +143,15 @@ public class HistogramApplet extends Applet implements Runnable {
         simulationParam.add(sb);
         _meanIntervalLabel = new Label("Mean interarrival time = 1");
         sb.add(_meanIntervalLabel, "South");
-        _meanIntervalScrollbar = new Scrollbar(Scrollbar.HORIZONTAL, 1, 1, 1,10);
+        _meanIntervalScrollbar = new Scrollbar(Scrollbar.HORIZONTAL,
+                1, 1, 1, 10);
         sb.add(_meanIntervalScrollbar, "North");
         _meanIntervalScrollbar.addAdjustmentListener(new IntervalSbListener());
         // Done adding scroll bar and label in the applet panel.
 
         // Add a sub panel in the control panel
         Panel subPanel = new Panel();
-        subPanel.setLayout(new GridLayout(2,1));
+        subPanel.setLayout(new GridLayout(2, 1));
         controlPanel.add(subPanel);
         // Done adding a sub panel.
 
@@ -189,7 +193,8 @@ public class HistogramApplet extends Applet implements Runnable {
             DEPlot dePlot = new DEPlot(topLevel, "Plot", plot);
             String[] legends = {"Bus", "Passenger", "Wait time"} ;
             dePlot.setLegend(legends);
-            DEHistogram deHist = new DEHistogram(topLevel, "Histogram", 0.1, hist);
+            DEHistogram deHist = new DEHistogram(topLevel, "Histogram",
+                    0.1, hist);
             _stat = new DEStatistics(topLevel, "Stat");
 
             // Create the connections.
@@ -231,7 +236,8 @@ public class HistogramApplet extends Applet implements Runnable {
                         _poisson.output.unlink(r1);
                         _clock.output.link(r1);
                         _bus = _clock;
-                        _meanInterval = (Parameter)_clock.getAttribute("interval");
+                        _meanInterval = (Parameter)_clock.getAttribute(
+                                "interval");
                     }
                 } else {
                     _meanInterval = (Parameter)_poisson.getAttribute("lambda");
