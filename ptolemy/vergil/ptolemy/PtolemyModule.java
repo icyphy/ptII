@@ -297,19 +297,22 @@ public class PtolemyModule implements Module {
 	    List iconList = entity.attributeList(XMLIcon.class);
 	    if(iconList.size() == 0) {
 		try {
+		  System.out.println("1st");
 		    icon = new XMLIcon(entity, entity.uniqueName("icon"));
 		} catch (Exception ex) {
 		    throw new InternalErrorException("duplicated name, but " + 
 						     "there were no other icons.");
 		}
 	    } else if(iconList.size() == 1) {
+	      System.out.println("2nd");
 		icon = (XMLIcon)iconList.get(0);
 	    } else {
 		throw new InternalErrorException("entity " + entity + 
 				 "contains more than one icon");
 	    }
-
-	    new IconEditor(new ApplicationContext("Icon editor"), icon);
+	    ApplicationContext appContext = new ApplicationContext();
+	    appContext.setTitle("Icon editor");
+	    new IconEditor(appContext, icon);
 	}
     }
 
