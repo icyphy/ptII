@@ -60,7 +60,6 @@ JSRCS = \
 	Schematic.java \
 	SchematicElement.java \
 	SchematicEntity.java \
-	SchematicParameter.java \
 	SchematicParser.java \
 	SchematicPort.java \
 	SchematicRelation.java \
