@@ -2793,6 +2793,13 @@ public class XmlParser {
   }
 
 
+    /** Return the current element */
+    public String getCurrentElement() {
+        // Ptolemy localization for MoMLParser so that we 
+        // can get the currentElement from within MoMLParser.attribute()
+        return currentElement;
+    }
+
   /**
     * Find the type of an entity.
     * @returns An integer constant representing the entity type.
