@@ -50,7 +50,8 @@ public class Skeleton {
         int files = args.length;
 
         if (files < 1) {
-            System.out.println("usage : ptolemy.lang.java.Skeleton [-d] f1.java [f2.java ...]");
+            System.out.println("usage : ptolemy.lang.java.Skeleton " +
+                    "[-d] [-i] f1.java [f2.java ...]");
             return;
         }
 
@@ -78,7 +79,8 @@ public class Skeleton {
                 ast.accept(new FindExtraImportsVisitor(true), null);
             }
 
-            String outCode = (String) ast.accept(new JavaCodeGenerator(), null);
+            String outCode = (String) ast.accept(new JavaCodeGenerator(),
+                    null);
 
             String outFileName = StringManip.partBeforeLast(filename, '.') +
                 ".jskel";
@@ -120,15 +122,15 @@ public class Skeleton {
         } while (moreOptions && (i < length));
     }
 
-    /** The index at which the first file to skeletonize is found in the arguments
-     *  array.
+    /** The index at which the first file to skeletonize is found in
+     *  the arguments array.
      */
     protected static int _fileStart = 0;
 
     protected static boolean _debug = false;
 
-    /** True if the user wants to eliminate unnecessary import statements in the
-     *  skeleton output file. This takes a much longer time.
+    /** True if the user wants to eliminate unnecessary import statements
+     *  in the skeleton output file. This takes a much longer time.
      */
     protected static boolean _eliminateImports = false;
 }
