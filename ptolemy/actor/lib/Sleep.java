@@ -45,6 +45,9 @@ An actor that calls Thread.sleep() on the current thread the first
 time fire() is called.  The sleep delays the inputs for a certain
 amount of real time, specified by the <i>sleepTime</i> parameter.
 
+<p>Note that one way to slow dow the execution of a model while running
+inside vergil is to turn on animation.
+
 <p>If the width of the output port is less than that of the input port,
 the tokens in the extra channels are lost.
 
