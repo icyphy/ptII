@@ -103,17 +103,12 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_jsimple test_skeleton \
+tests:: $(EXTRA_SRCS) jclass test_jsimple \
 		ASTReflect PrintTree RegenerateCode codegen
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
-
-test_skeleton:
-	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS)" \
-	  $(JAVA) ptolemy.lang.java.Skeleton -i \
-		FindExtraImportsVisitorTest.java
 
 # Print out the AST for a class
 ASTReflect:
