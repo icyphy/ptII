@@ -51,7 +51,6 @@ EXTRA_SRCS = \
 	main.htm \
 	packages.htm \
 	performance.htm \
-	rating.htm \
 	reviews.htm \
 	style.htm \
 	testing.htm \
