@@ -151,6 +151,8 @@ public class Plotter extends TypedAtomicActor
         super.initialize();
         if (plot == null) {
             setPanel(_panel);
+        } else {
+            plot.clear(false);
         }
         plot.repaint();
     }
