@@ -34,12 +34,15 @@ package ptolemy.actor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -123,6 +126,27 @@ public class IORelation extends ComponentRelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change in an attribute.  This method is called by
+     *  a contained attribute when its value changes.  This overrides
+     *  the base class so that if the attribute is an instance of
+     *  Parameter and the name is "width", then the width of the Relation
+     *  is set.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container.
+     */
+    public void attributeChanged(Attribute attribute) 
+        throws IllegalActionException {
+        if (attribute instanceof Parameter &&
+            "width".equals(attribute.getName())) {
+            IntToken t = (IntToken)((Parameter)attribute).getToken();
+            if (t != null) {
+                int width = t.intValue();
+                setWidth(width);
+            }
+        }
+    }
 
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
