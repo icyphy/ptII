@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -34,107 +34,161 @@ import java.util.Stack;
 //////////////////////////////////////////////////////////////////////////
 //// TypeAnalyzerState
 /**
- *
- *
- *  @author Thomas Feng
- *  @version $Id$
- *  @since Ptolemy II 4.1
- *  @Pt.ProposedRating Red (tfeng)
- */
+   The state of a type analyzer. As the type analyzer traverses an Eclipse
+   Abstract Syntax Tree (AST), it records its state in an object of this
+   class. This state is passed to the handlers that handle special events
+   in the traversal. The handlers may then retrieve information about the
+   current state of the analyzer.
+ 
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class TypeAnalyzerState {
 
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
-    /**
-     *  @return Returns the variableStack.
-     */
-    public LocalClassLoader getClassLoader() {
-        return _loader;
-    }
-
-    /**
-     *  @param loader The variableStack to set.
-     */
-    public void setClassLoader(LocalClassLoader loader) {
-        _loader = loader;
-    }
-
-    /**
-     *  @return Returns the variableStack.
-     */
-    public Class getCurrentClass() {
-        return _currentClass;
-    }
-
-    /**
-     *  @param currentClass The variableStack to set.
-     */
-    public void setCurrentClass(Class currentClass) {
-        _currentClass = currentClass;
-    }
-
-    /**
-     *  @return Returns the variableStack.
-     */
-    public Stack getPreviousClasses() {
-        return _previousClasses;
-    }
-
-    /**
-     *  @param previousClasses The variableStack to set.
-     */
-    public void setPreviousClasses(Stack previousClasses) {
-        _previousClasses = previousClasses;
-    }
-
-    public void enterClass(Class c) {
-        _previousClasses.push(_currentClass);
-        _currentClass = c;
-        _loader.setCurrentClass(_currentClass, false);
-    }
-
-    public void leaveClass() {
-        _currentClass = (Class)_previousClasses.pop();
-        _loader.setCurrentClass(_currentClass, false);
-    }
-
-    /**
-     *
-     *  @param name
-     *  @param type
+    /** Add a variable to the current scope.
+     *  
+     *  @param name The name of the variable.
+     *  @param type The type of the variable.
      */
     public void addVariable(String name, Type type) {
         Hashtable table = (Hashtable)_variableStack.peek();
         table.put(name, type);
     }
 
-    /**
-     *
-     *  @param name
-     *  @return
+    /** Enter the scope of a class. The current class is set to the class
+     *  entered and the last current class is pushed to the previous class
+     *  stack.
+     *  
+     *  @param c The class entered.
+     *  @see #leaveClass()
      */
-    public Type getVariable(String name) {
-        int i = _variableStack.size() - 1;
-        if (i == -1)
-            return null;
-
-        Hashtable table = (Hashtable)_variableStack.peek();
-        while (!table.containsKey(name) && i >= 1)
-            table = (Hashtable)_variableStack.get(--i);
-
-        return (Type)table.get(name);
+    public void enterClass(Class c) {
+        _previousClasses.push(_currentClass);
+        _currentClass = c;
+        _loader.setCurrentClass(_currentClass, false);
     }
 
-    /**
-     *  @return Returns the variableStack.
+    /** Get the class loader.
+     * 
+     *  @return The class loader used to load unresolved classes.
+     *  @see #setClassLoader(LocalClassLoader)
+     */
+    public LocalClassLoader getClassLoader() {
+        return _loader;
+    }
+
+    /** Get the current class (the class currently being inspected).
+     * 
+     *  @return The current class. It may be <tt>null</tt> when there
+     *   is no current class.
+     *  @see #setCurrentClass(Class)
+     */
+    public Class getCurrentClass() {
+        return _currentClass;
+    }
+
+    /** Get the previous class stack. The previous class stack stores
+     *  all the entered but not exited class definitions, not including
+     *  the current class. Each element in the stack is of type {@link
+     *  Class}. The bottom element in the stack is always <tt>null</tt>.
+     * 
+     *  @return The previous class stack.
+     *  @see #setPreviousClasses(Stack)
+     */
+    public Stack getPreviousClasses() {
+        return _previousClasses;
+    }
+
+    /** Get the type of a variable with its name in the current scope
+     *  and all the scopes enclosing the current scope.
+     *
+     *  @param name The variable name.
+     *  @return The type of the variable, or <tt>null</tt> if it is not
+     *   found.
+     */
+    public Type getVariable(String name) {
+       int i = _variableStack.size() - 1;
+       if (i == -1)
+           return null;
+
+       Hashtable table = (Hashtable)_variableStack.peek();
+       while (!table.containsKey(name) && i >= 1)
+           table = (Hashtable)_variableStack.get(--i);
+
+       return (Type)table.get(name);
+   }
+
+    /** Get the variable stack. The variable stack is a stack of scopes.
+     *  Each element in this stack is of type {@link Hashtable}, with
+     *  variable names as its keys and types of those variables as its
+     *  values. The top element in this stack is considered the current
+     *  scope. Other elements in it are scopes enclosing the current
+     *  scope.
+     *  
+     *  @return The variable stack.
+     *  @see #setVariableStack(Stack)
      */
     public Stack getVariableStack() {
         return _variableStack;
     }
 
-    /**
-     *  @param variableStack The variableStack to set.
+    /** Leave a class declaration. The current class is set back to the
+     *  last current class (the class on the top of the previous class
+     *  stack).
+     *  
+     *  @see #enterClass(Class)
+     */
+    public void leaveClass() {
+        _currentClass = (Class)_previousClasses.pop();
+        _loader.setCurrentClass(_currentClass, false);
+    }
+
+    /** Set the class loader.
+     * 
+     *  @param loader The class loader.
+     *  @see #getClassLoader()
+     */
+    public void setClassLoader(LocalClassLoader loader) {
+        _loader = loader;
+    }
+
+    /** Get the current class (the class currently being inspected).
+     * 
+     *  @param currentClass The current class, or <tt>null</tt> if there
+     *   is no current class.
+     *  @see #setCurrentClass(Class)
+     */
+    public void setCurrentClass(Class currentClass) {
+        _currentClass = currentClass;
+    }
+
+    /** Set the previous class stack. The previous class stack stores
+     *  all the entered but not exited class definitions, not including
+     *  the current class. Each element in the stack is of type {@link
+     *  Class}. The bottom element in the stack is always <tt>null</tt>.
+     * 
+     *  @param previousClasses The previous class stack.
+     *  @see #getPreviousClasses()
+     */
+    public void setPreviousClasses(Stack previousClasses) {
+        _previousClasses = previousClasses;
+    }
+
+    /** Set the variable stack. The variable stack is a stack of scopes.
+     *  Each element in this stack is of type {@link Hashtable}, with
+     *  variable names as its keys and types of those variables as its
+     *  values. The top element in this stack is considered the current
+     *  scope. Other elements in it are scopes enclosing the current
+     *  scope.
+     * 
+     *  @param variableStack The variable stack.
+     *  @see #getVariableStack()
      */
     public void setVariableStack(Stack variableStack) {
         _variableStack = variableStack;
@@ -144,7 +198,7 @@ public class TypeAnalyzerState {
     ////                        private fields                     ////
 
     /** The stack of currently opened scopes for variable
-     *  declaration. Each element is a {@link Hashtable}. In each table,
+     *  declaration. Each element is a {@link Hashtable}. In each table, 
      *  keys are variable names while values are {@link Type}'s of the
      *  corresponding variables.
      */
@@ -165,5 +219,4 @@ public class TypeAnalyzerState {
      *  yet.
      */
     private Stack _previousClasses = new Stack();
-
 }
