@@ -88,8 +88,9 @@ public class StaticSchedulingDirector extends Director {
      *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  thrown in the derived classes if the director is not compatible with
+     *  the specified container.
      */
     public StaticSchedulingDirector(CompositeActor container, String name)
             throws IllegalActionException {
