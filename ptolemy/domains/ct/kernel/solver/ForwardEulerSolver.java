@@ -59,27 +59,7 @@ public class ForwardEulerSolver extends FixedStepSolver{
      *  the workspace. Increment the version number of the workspace.
      */	
     public ForwardEulerSolver() {
-        super();
-        try {
-            setName(_name);
-        } catch (NameDuplicationException ex) {
-            throw new InternalErrorException( "Scheduler name duplication.");
-        }
-    }
-
-    /** Construct a solver in the default workspace with the given name.
-     *  If the name argument is null, then the name is set to the empty
-     *  string. The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param name Name of this solver.
-     */
-    public ForwardEulerSolver(String name) {
-        super(name);
-        try {
-            setName(_name);
-        } catch (NameDuplicationException ex) {
-            throw new InternalErrorException( "Scheduler name duplication.");
-        }
+        super(_name);
     }
 
     /** Construct a solver in the given workspace with the given name.
@@ -91,13 +71,8 @@ public class ForwardEulerSolver extends FixedStepSolver{
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this solver.
      */
-    public ForwardEulerSolver(Workspace workspace, String name) {
-        super(workspace, name);
-        try {
-            setName(_name);
-        } catch (NameDuplicationException ex) {
-            throw new InternalErrorException( "Scheduler name duplication.");
-        }
+    public ForwardEulerSolver(Workspace workspace) {
+        super(workspace, _name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,7 +119,7 @@ public class ForwardEulerSolver extends FixedStepSolver{
         dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
     }
 
-    /** Abstract fire() method for integrators.
+    /**  fire() method for integrators.
      *
      *  @param integrator The integrator of that calls this method.
      * @exception IllegalActionException Not thrown in this base
