@@ -50,7 +50,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
-//// LocatableNodeController
+//// LocatableNodeDragInteractor
 /**
 An interaction role that drags nodes that have locatable objects
 as semantic objects.  When the node is dragged, this interactor
@@ -86,6 +86,11 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 		    double[] location = _controller.getLocation(node);
 		    location[0] += x;
 		    location[1] += y;
+		    _controller.setLocation(node, location);
+		} else {
+		    double[] location = new double[2];
+		    location[0] = figure.getBounds().getCenterX();
+		    location[1] = figure.getBounds().getCenterY();
 		    _controller.setLocation(node, location);
 		}
             }
