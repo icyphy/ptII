@@ -106,21 +106,24 @@ SOOT_USER_ARGS =
 
 # Useful rule for quickly testing
 demo: compileShallowDemo runShallowDemo disassembleShallowDemo
+# AUXCLASSPATH is used by the code coverage tests in the nightly build
 compileShallowDemo: $(JCLASS)
 	@echo "generate shallow code for $(SOURCEPACKAGE)"
 	$(JAVA) $(JVM_SIZE) \
-	 -classpath "$(CLASSPATH)" \
+	 -classpath "$(CLASSPATH)$(AUXCLASSPATH)" \
 	ptolemy.copernicus.java.Main $(SOURCECLASS) -d "$(ROOT)"  \
 		-p wjtp.at targetPackage:$(SHALLOWTARGETPACKAGE) \
 		-p wjtp.mt targetPackage:$(SHALLOWTARGETPACKAGE) \
 		$(SOOT_USER_ARGS)
 	@echo "Here is that javap output"
-	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
+	javap -verbose -l -s \
+		-classpath "$(ROOT)$(AUXCLASSPATH)" \
+		$(SHALLOWTARGETCLASS)
 
 runShallowDemo:
 	@echo "Run the model"
 	$(JAVA) \
-	-Xfuture -classpath "$(CLASSPATH)" \
+	-Xfuture -classpath "$(CLASSPATH)$(AUXCLASSPATH)" \
 	ptolemy.actor.gui.CompositeActorApplication \
 	-iterations 50 \
 	-class $(SHALLOWTARGETCLASS)
@@ -132,8 +135,10 @@ disassembleShallowDemo:
 	jad -d cg cg/$(SHALLOWTARGETNAME).class
 	sh ./jad2java cg/$(SHALLOWTARGETNAME).jad \
 		> cg/$(SHALLOWTARGETNAME).java
-	$(JAVAC) -classpath $(ROOT) cg/$(SHALLOWTARGETNAME).java
-	CLASSPATH=$(ROOT) /opt/jdk1.3latest/bin/java \
+	$(JAVAC) -classpath "$(ROOT)$(AUXCLASSPATH) \
+		cg/$(SHALLOWTARGETNAME).java
+	CLASSPATH="$(ROOT)$(AUXCLASSPATH) \
+		/opt/jdk1.3latest/bin/java \
 		ptolemy.actor.gui.CompositeActorApplication \
 		-class ptolemy.copernicus.java.test.cg.$(SHALLOWTARGETNAME)
 
