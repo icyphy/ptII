@@ -229,14 +229,14 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    }
 	    return false;
 	} else {
+
+	    // only works for DE domain
+	    _expectedNextIterationTime = getCurrentTime();
+
 	    if (getCurrentTime() < _expectedNextIterationTime) {
 		if (_debugging) {
 		    _debug("*** Prefire returned false.");
 		}
-
-		// only works for DE domain
-		_expectedNextIterationTime = getCurrentTime();
-
 		return false;
 	    }
 	    if (_debugging) {
