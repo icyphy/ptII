@@ -521,10 +521,12 @@ public class Configuration extends CompositeEntity {
     private String _effigyIdentifier(Effigy effigy, NamedObj entity) {
         // Set the identifier of the effigy to be that
         // of the parent with the model name appended.
-        Effigy parentEffigy = (Effigy)effigy.getContainer();
-        if (parentEffigy == null) {
+        NamedObj parent = effigy.getContainer();
+        if (!(parent instanceof Effigy)) {
             return effigy.getFullName();
         }
+        Effigy parentEffigy = (Effigy) parent;
+        
         // Note that we add a # the first time, and
         // then add . after that.  So
         // file:/c:/foo.xml#bar.bif is ok, but
