@@ -376,7 +376,12 @@ if {"[info command java::cast]" == ""} {
 proc jdkPrintArray {javaArrayObj} {
     set result {}
     for {set i 0} {$i < [$javaArrayObj length]} {incr i} {
-	lappend result [[$javaArrayObj get $i] toString]
+	set element [$javaArrayObj get $i]
+	if [ catch {java::info class $element} ] {
+	    lappend result $element
+	} else {
+	    lappend result $element toString]
+	}
     }
     return $result
 }
