@@ -778,7 +778,7 @@ public class IntegerMatrixMath {
      *  entries are denoted by (row, column).
      *  @param array An array of ints.
      *  @param rows An integer representing the number of rows of the new
-     *  matrix. 
+     *  matrix.
      *  @param cols An integer representing the number of columns of the new
      *  matrix.
      *  @return A new matrix of ints.

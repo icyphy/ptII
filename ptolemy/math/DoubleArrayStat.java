@@ -559,7 +559,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables               ////
-    
+
     // Common instance of Random to be shared by all methods that need
     // a random number.  If we do not share a single Random, then
     // under Windows, closely spaced calls to nextGaussian() on two
