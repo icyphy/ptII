@@ -40,7 +40,7 @@ An Entity is a vertex in a flat graph. It incorporates the notion of graph
 connections and disconnections. Relation is the equivalent of a graph edge.
 Entities and Relations are linked together via Ports.
 @author John S. Davis II
-@version $Id$
+@version @(#)Entity.java	1.7	11/20/97
 @see Port
 @see Relation
 */
@@ -205,6 +205,8 @@ public class Entity extends NamedObj {
     /** Return the number of Entities connected to this Entity
      * through the specified Port.
      * @param portName The name of the specified Port.
+     * @exception pt.kernel.GraphException Attempt to inappropriately
+     *  access a Jtolemy graph method or class.
      */	
     public int numberOfConnectedEntities(String portName) 
 	    throws GraphException {
@@ -219,7 +221,7 @@ public class Entity extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    // A list of Ports owned by this Entity.
+    /* A list of Ports owned by this Entity. */
     private PortList _portList;
 }
 
