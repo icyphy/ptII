@@ -124,9 +124,6 @@ public class TypedIORelation extends IORelation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Throw an exception if the specified port cannot be linked to this
@@ -141,11 +138,4 @@ public class TypedIORelation extends IORelation {
                     "TypedIORelation can only link to a TypedIOPort.");
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
 }
