@@ -53,6 +53,7 @@ public interface Settable {
 
     /** Set the value of the attribute by giving some expression.
      *  @param expression The value of the attribute.
+     *  @exception IllegalActionException If the expression is invalid.
      */
-    public void setExpression(String expression);
+    public void setExpression(String expression) throws IllegalActionException;
 }
