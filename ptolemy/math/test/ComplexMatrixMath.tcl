@@ -54,6 +54,7 @@ set c3 [java::new ptolemy.math.Complex -4.9 -6.0]
 set c4 [java::new ptolemy.math.Complex -7.0 8.0]
 set c5 [java::new ptolemy.math.Complex -0.25 0.4]
 set c6 [java::new ptolemy.math.Complex -1.0 0.0]
+set c7 [java::new ptolemy.math.Complex 9.0 9.0]
 
 # Complex array of length 0
 set ca0 [java::new {ptolemy.math.Complex[]} 0]
@@ -387,5 +388,19 @@ test ComplexMatrixMath-5.4.1 {arePartsWithin} {
 test ComplexMatrixMath-5.4.2 {arePartsWithin} {
     set mr [java::call ptolemy.math.ComplexMatrixMath \
 	    arePartsWithin $m3 $m33 15.0]
+    epsilonDiff $mr 1
+} {}
+
+####################################################################
+test ComplexMatrixMath-5.4.2 {within} {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+	    within $m3 $m33 $c0]
+    epsilonDiff $mr 0
+} {}
+
+####################################################################
+test ComplexMatrixMath-5.4.2 {within} {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+	    within $m3 $m33 $c7]
     epsilonDiff $mr 1
 } {}
