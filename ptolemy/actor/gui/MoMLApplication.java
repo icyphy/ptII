@@ -44,7 +44,8 @@ import javax.swing.UIManager;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.data.expr.Variable;
+import ptolemy.actor.ExecutionListener;
+import ptolemy.actor.Manager;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
@@ -55,6 +56,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.Documentation;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.MessageHandler;
@@ -121,8 +123,7 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (eal)
    @see Configuration
 */
-public class MoMLApplication {
-
+public class MoMLApplication implements ExecutionListener {
 
     /** Parse the specified command-line arguments, instanting classes
      *  and reading files that are specified.
@@ -194,6 +195,25 @@ public class MoMLApplication {
 
         try {
             _parseArgs(args);
+            
+            // Run if -run argument was specified.
+            if (_run) {
+                runModels();
+                if (_exit) {
+                    // In vergil, this gets called in the
+                    // swing thread, which hangs everything
+                    // if we call waitForFinish() directly.
+                    // So instead, we create a new thread to
+                    // do it.
+                    Thread waitThread = new Thread() {
+                    	public void run() {
+                            waitForFinish();
+                            System.exit(0);                            
+                        }
+                    };
+                    waitThread.start();
+                }
+            }
         } catch (Exception ex) {
             // Make sure that we do not eat the exception if there are
             // problems parsing.  For example, "ptolemy -FOO bar bif.xml"
@@ -217,11 +237,36 @@ public class MoMLApplication {
 
             MessageHandler.error(errorMessage, ex);
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Reduce the count of executing models by one.  If the number of
+     *  executing models drops to zero, then notify threads that might
+     *  be waiting for this event.
+     *  @param manager The manager calling this method.
+     *  @param throwable The throwable being reported.
+     */
+    public synchronized void executionError(Manager manager,
+            Throwable throwable) {
+        _activeCount--;
+        if (_activeCount == 0) {
+            notifyAll();
+        }
+    }
+
+    /**  Reduce the count of executing models by one.  If the number of
+     *  executing models drops ot zero, then notify threads that might
+     *  be waiting for this event.
+     *  @param manager The manager calling this method.
+     */
+    public synchronized void executionFinished(Manager manager) {
+        _activeCount--;
+        if (_activeCount == 0) {
+            notifyAll();
+        }
+    }
 
     /** Create a new instance of this application, passing it the
      *  command-line arguments.
@@ -229,7 +274,7 @@ public class MoMLApplication {
      */
     public static void main(String args[]) {
         try {
-            new MoMLApplication(args);
+            MoMLApplication application = new MoMLApplication(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
             System.exit(0);
@@ -242,6 +287,55 @@ public class MoMLApplication {
             } catch (InterruptedException e) {
             }
             System.exit(0);
+        }
+    }
+    
+    /** Do nothing.
+     *  @param manager The manager calling this method.
+     */
+    public void managerStateChanged(Manager manager) {
+    }
+
+    /** Return a list of the Ptolemy II models that were created by processing
+     *  the command-line arguments.
+     *  @return A list of instances of NamedObj.
+     */
+    public List models() {
+        LinkedList result = new LinkedList();
+        ModelDirectory directory
+            = (ModelDirectory)_configuration
+            .getEntity(Configuration._DIRECTORY_NAME);
+        Iterator effigies = directory.entityList().iterator();
+        while (effigies.hasNext()) {
+            Effigy effigy = (Effigy)effigies.next();
+            if (effigy instanceof PtolemyEffigy) {
+                NamedObj model = ((PtolemyEffigy)effigy).getModel();
+                result.add(model);
+            }
+        }
+        return result;
+    }
+
+    /** Start the models running, each in a new thread, then return.
+     *  @exception IllegalActionException If the manager throws it.
+     */
+    public void runModels() throws IllegalActionException {
+        Iterator models = models().iterator();
+        while (models.hasNext()) {
+            NamedObj model = (NamedObj)models.next();
+            if (model instanceof CompositeActor) {
+                CompositeActor actor = (CompositeActor)model;
+                // Create a manager if necessary.
+                Manager manager = actor.getManager();
+                if (manager == null) {
+                    manager = new Manager(actor.workspace(), "manager");
+                    actor.setManager(manager);
+                }
+                manager.addExecutionListener(this);
+                _activeCount++;
+                // Run the model in a new thread.
+                manager.startRun();
+            }
         }
     }
 
@@ -367,11 +461,23 @@ public class MoMLApplication {
         }
     }
 
+    /** Wait for all executing runs to finish, then return.
+     */
+    public synchronized void waitForFinish() {
+        while (_activeCount > 0) {
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                break;
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Return a string summarizing the command-line arguments,
-     *  including an configuration directories in a base path,
+     *  including any configuration directories in a base path,
      *  typically "ptolemy/configs".
      *  Some subclasses of this class use configurations from ptolemy/configs.
      *  For example, if ptolemy/configs/full/configuration.xml exists
@@ -386,28 +492,29 @@ public class MoMLApplication {
     protected String _configurationUsage(String commandTemplate,
             String [][] commandOptions,
             String [] commandFlags) {
-        String result = "Usage: " + commandTemplate + "\n\n"
-            + "Options that take values:\n";
+        StringBuffer result = new StringBuffer(
+                "Usage: " + commandTemplate + "\n\n"
+				+ "Options that take values:\n");
         int i;
         // Print any command options from this class first
         for (i = 0; i < _commandOptions.length; i++) {
-            result += " " + _commandOptions[i][0] +
-                " " + _commandOptions[i][1] + "\n";
+            result.append(" " + _commandOptions[i][0] +
+                " " + _commandOptions[i][1] + "\n");
         }
 
         for (i = 0; i < commandOptions.length; i++) {
-            result += " " + commandOptions[i][0] +
-                " " + commandOptions[i][1] + "\n";
+            result.append(" " + commandOptions[i][0] +
+                " " + commandOptions[i][1] + "\n");
         }
 
-        result += "\nBoolean flags:\n";
+        result.append("\nFlags (do not take values):\n");
         // Print any command flags from this class first
         for (i = 0; i < _commandFlags.length; i++) {
-            result += " " + _commandFlags[i];
+            result.append(" " + _commandFlags[i] + "\n");
         }
 
         for (i = 0; i < commandFlags.length; i++) {
-            result += " " + commandFlags[i];
+            result.append(" " + commandFlags[i] + "\n");
         }
 
         try {
@@ -422,10 +529,15 @@ public class MoMLApplication {
             File [] configurationDirectories =
                 configurationDirectory.listFiles(filter);
             if (configurationDirectories != null) {
-                result += "\nThe following Boolean flags start up using "
-                    + "different configurations:\n";
+                result.append("\nThe following (mutually exclusive) flags " +
+                        "specify alternative configurations:\n");
                 for (i = 0; i < configurationDirectories.length; i++) {
-                    result += " -" + configurationDirectories[i].getName();
+                    String configurationName = configurationDirectories[i].getName();
+                    result.append(" -" + configurationName);
+                    // Pad out to a fixed number of spaces to get good alignment.
+                    for (int j = configurationName.length(); j < 20; j++) {
+                    	result.append(" ");
+                    }
                     String configurationFileName = configurationDirectories[i]
                         + File.separator
                         + "configuration.xml";
@@ -438,8 +550,7 @@ public class MoMLApplication {
 
                         // FIXME: Skip jxta, since it starts up the jxta config
                         // tools.
-                        if (!configurationDirectories[i]
-                                .getName().equals("jxta")) {
+                        if (!configurationName.equals("jxta")) {
                             URL specificationURL =
                                 specToURL(configurationFileName);
                             Configuration configuration =
@@ -453,26 +564,26 @@ public class MoMLApplication {
                                 Documentation doc =
                                     (Documentation)configuration
                                     .getAttribute("_doc");
-                                result += "\t" + doc.getValue() + "\n";
+                                result.append("\t\t" + doc.getValue() + "\n");
                                 printDefaultConfigurationMessage = false;
                             }
                         }
                     } catch (Exception ex) {
-                        //result += "\tCould not read configuration"
-                        //    + "\n" + ex;
+                        //result.append("\tCould not read configuration"
+                        //    + "\n" + ex);
                         //ex.printStackTrace();
                     }
                     if (printDefaultConfigurationMessage) {
-                        result += "\tuses "
-                            + configurationFileName + "\n";
+                        result.append("\t\tuses "
+                            + configurationFileName + "\n");
                     }
                 }
             }
         } catch (Exception ex) {
-            result += "Warning: Failed to find configuration(s) in '"
-                + _basePath + "'" + ex;
+            result.append("Warning: Failed to find configuration(s) in '"
+                + _basePath + "'" + ex);
         }
-        return result;
+        return result.toString();
     }
 
     /** Return a default Configuration, or null to do without one.
@@ -510,6 +621,11 @@ public class MoMLApplication {
             System.out.println(_usage());
             // NOTE: This means the test suites cannot test -help
             System.exit(0);
+        } else if (arg.equals("-run")) {
+            _run = true;
+        } else if (arg.equals("-runThenExit")) {
+            _run = true;
+            _exit = true;
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
@@ -522,6 +638,7 @@ public class MoMLApplication {
             // Ignore blank argument.
         } else {
             if (_expectingClass) {
+                // Previous argument was -class
                 _expectingClass = false;
 
                 // Create the class.
@@ -541,15 +658,15 @@ public class MoMLApplication {
 
                 // If there is a configuration, then create an effigy
                 // for the class, and enter it in the directory.
-                if (_config != null) {
+                if (_configuration != null) {
 
                     // Create an effigy for the model.
                     PtolemyEffigy effigy
-                        = new PtolemyEffigy(_config.workspace());
+                        = new PtolemyEffigy(_configuration.workspace());
                     effigy.setModel(newModel);
 
                     ModelDirectory directory
-                        = (ModelDirectory)_config.getEntity("directory");
+                        = (ModelDirectory)_configuration.getEntity("directory");
 
                     effigy.setName(arg);
                     if (directory != null) {
@@ -579,9 +696,9 @@ public class MoMLApplication {
                     // If a configuration has been found, then
                     // defer to it to read the model.  Otherwise,
                     // assume the file is an XML file.
-                    if (_config != null) {
+                    if (_configuration != null) {
                         ModelDirectory directory =
-                            (ModelDirectory)_config.getEntity("directory");
+                            (ModelDirectory)_configuration.getEntity("directory");
                         if (directory == null) {
                             throw new InternalErrorException(
                                     "No model directory!");
@@ -592,7 +709,10 @@ public class MoMLApplication {
                         //long startTime = (new Date()).getTime();
 
                         // Now defer to the model reader.
-                        _config.openModel(base, inURL, key);
+                        Tableau tableau = _configuration.openModel(base, inURL, key);
+                        
+                        // FIXME: If the -run option was given, then start a run.
+                        // FIXME: If the -fullscreen option was given, open full screen.
 
                         //System.out.println("Model open done: " +
                         //                   Manager.timeAndMemory(startTime));
@@ -606,7 +726,7 @@ public class MoMLApplication {
                             NamedObj toplevel =
                                 _parser.parse(base, inURL);
                             if (toplevel instanceof Configuration) {
-                                _config = (Configuration)toplevel;
+                                _configuration = (Configuration)toplevel;
                             }
                         } catch (Exception ex) {
                             // Unfortunately, java.util.zip.ZipException
@@ -646,9 +766,9 @@ public class MoMLApplication {
      */
     protected void _parseArgs(String args[]) throws Exception {
         if (args.length > 0) {
-            _config = _createDefaultConfiguration();
+            _configuration = _createDefaultConfiguration();
         } else {
-            _config = _createEmptyConfiguration();
+            _configuration = _createEmptyConfiguration();
         }
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
@@ -683,25 +803,36 @@ public class MoMLApplication {
 
             boolean match = false;
             ModelDirectory directory =
-                (ModelDirectory)_config.getEntity("directory");
+                (ModelDirectory)_configuration.getEntity("directory");
             if (directory == null) {
                 throw new InternalErrorException("No model directory!");
             }
-            Iterator proxies
-                = directory.entityList(Effigy.class).iterator();
-            while (proxies.hasNext()) {
-                Effigy effigy = (Effigy)proxies.next();
+            Iterator effigies
+                    = directory.entityList(Effigy.class).iterator();
+            while (effigies.hasNext()) {
+                Effigy effigy = (Effigy)effigies.next();
                 if (effigy instanceof PtolemyEffigy) {
                     NamedObj model = ((PtolemyEffigy)effigy).getModel();
-                    System.out.println("model = " + model.getFullName());
+                    // System.out.println("model = " + model.getFullName());
                     Attribute attribute = model.getAttribute(name);
                     if (attribute instanceof Settable) {
                         match = true;
+                        // Use a MoMLChangeRequest so that visual rendition (if
+                        // any) is updated and listeners are notified.
+                        String moml = "<property name=\""
+                                + name
+                                + "\" value=\""
+                                + value
+                                + "\"/>";
+                        MoMLChangeRequest request = new MoMLChangeRequest(this, model, moml);
+                        model.requestChange(request);
+                        /* Formerly (before the change request):
                         ((Settable)attribute).setExpression(value);
                         if (attribute instanceof Variable) {
                             // Force evaluation so that listeners are notified.
                             ((Variable)attribute).getToken();
                         }
+                        */
                     }
                     if (model instanceof CompositeActor) {
                         Director director
@@ -710,12 +841,23 @@ public class MoMLApplication {
                             attribute = director.getAttribute(name);
                             if (attribute instanceof Settable) {
                                 match = true;
+                                // Use a MoMLChangeRequest so that visual rendition (if
+                                // any) is updated and listeners are notified.
+                                String moml = "<property name=\""
+                                        + name
+                                        + "\" value=\""
+                                        + value
+                                        + "\"/>";
+                                MoMLChangeRequest request = new MoMLChangeRequest(this, director, moml);
+                                director.requestChange(request);
+                                /* Formerly (before change request):
                                 ((Settable)attribute).setExpression(value);
                                 if (attribute instanceof Variable) {
                                     // Force evaluation so that listeners
                                     // are notified.
                                     ((Variable)attribute).getToken();
                                 }
+                                */
                             }
                         }
                     }
@@ -731,10 +873,10 @@ public class MoMLApplication {
         // then we show them now.  This is deferred until now because
         // how they are shown may depend on command-line arguments
         // and/or parameters in some MoML file that is read.
-        if (_config == null) {
+        if (_configuration == null) {
             throw new IllegalActionException("No configuration provided.");
         }
-        _config.showAll();
+        _configuration.showAll();
     }
 
     /** Read a Configuration from the URL given by the specified string.
@@ -786,16 +928,17 @@ public class MoMLApplication {
      */
     protected String _basePath = "ptolemy/configs";
 
-
     /** The command-line options that are either present or not. */
     protected String _commandFlags[] = {
         "-help",
+        "-run",
+        "-runThenExit",
         "-test",
         "-version",
     };
 
     /** The command-line options that take arguments. */
-    protected  String _commandOptions[][] = {
+    protected  static String _commandOptions[][] = {
         {"-class",  "<classname>"},
         {"-<parameter name>", "<parameter value>"},
     };
@@ -803,11 +946,17 @@ public class MoMLApplication {
     /** The form of the command line. */
     protected String _commandTemplate = "moml [ options ] [file ...]";
 
-    // The configuration model of this application.
-    protected Configuration _config;
+    /** The configuration model of this application. */
+    protected Configuration _configuration;
+    
+    /** Indicator that -runThenExit was requested. */
+    protected boolean _exit = false;
 
-    // The parser used to construct the configuration.
+    /** The parser used to construct the configuration. */
     protected MoMLParser _parser;
+    
+    /** If true, then -run was specified on the command line. */
+    protected boolean _run = false;
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
@@ -852,6 +1001,9 @@ public class MoMLApplication {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // The count of currently executing runs.
+    private int _activeCount = 0;
 
     // Flag indicating that the previous argument was -class.
     private boolean _expectingClass = false;

@@ -30,15 +30,10 @@ package ptolemy.actor.gui;
 
 // Ptolemy imports
 import java.net.URL;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.ExecutionListener;
-import ptolemy.actor.Manager;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 
@@ -87,8 +82,7 @@ import ptolemy.util.MessageHandler;
    @see ModelFrame
    @see RunTableau
 */
-public class PtExecuteApplication extends MoMLApplication
-    implements ExecutionListener {
+public class PtExecuteApplication extends MoMLApplication {
 
     /** Parse the specified command-line arguments, creating models
      *  and running them.
@@ -107,32 +101,6 @@ public class PtExecuteApplication extends MoMLApplication
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Reduce the count of executing models by one.  If the number of
-     *  executing models drops ot zero, then notify threads that might
-     *  be waiting for this event.
-     *  @param manager The manager calling this method.
-     *  @param throwable The throwable being reported.
-     */
-    public synchronized void executionError(Manager manager,
-            Throwable throwable) {
-        _activeCount--;
-        if (_activeCount == 0) {
-            notifyAll();
-        }
-    }
-
-    /**  Reduce the count of executing models by one.  If the number of
-     *  executing models drops ot zero, then notify threads that might
-     *  be waiting for this event.
-     *  @param manager The manager calling this method.
-     */
-    public synchronized void executionFinished(Manager manager) {
-        _activeCount--;
-        if (_activeCount == 0) {
-            notifyAll();
-        }
-    }
 
     /** Create a new instance of this application, passing it the
      *  command-line arguments.
@@ -156,67 +124,6 @@ public class PtExecuteApplication extends MoMLApplication
             } catch (InterruptedException e) {
             }
             System.exit(0);
-        }
-    }
-
-    /** Do nothing.
-     *  @param manager The manager calling this method.
-     */
-    public void managerStateChanged(Manager manager) {
-    }
-
-    /** Return a list of the Ptolemy II models that were created by processing
-     *  the command-line arguments.
-     *  @return A list of instances of NamedObj.
-     */
-    public List models() {
-        LinkedList result = new LinkedList();
-        ModelDirectory directory
-            = (ModelDirectory)_configuration
-            .getEntity(Configuration._DIRECTORY_NAME);
-        Iterator effigies = directory.entityList().iterator();
-        while (effigies.hasNext()) {
-            Effigy effigy = (Effigy)effigies.next();
-            if (effigy instanceof PtolemyEffigy) {
-                NamedObj model = ((PtolemyEffigy)effigy).getModel();
-                result.add(model);
-            }
-        }
-        return result;
-    }
-
-    /** Start the models running, each in a new thread, then return.
-     *  @exception IllegalActionException If the manager throws it.
-     */
-    public void runModels() throws IllegalActionException {
-        Iterator models = models().iterator();
-        while (models.hasNext()) {
-            NamedObj model = (NamedObj)models.next();
-            if (model instanceof CompositeActor) {
-                CompositeActor actor = (CompositeActor)model;
-                // Create a manager if necessary.
-                Manager manager = actor.getManager();
-                if (manager == null) {
-                    manager = new Manager(actor.workspace(), "manager");
-                    actor.setManager(manager);
-                }
-                manager.addExecutionListener(this);
-                _activeCount++;
-                // Run the model in a new thread.
-                manager.startRun();
-            }
-        }
-    }
-
-    /** Wait for all executing runs to finish, then return.
-     */
-    public synchronized void waitForFinish() {
-        while (_activeCount > 0) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                break;
-            }
         }
     }
 
@@ -369,12 +276,6 @@ public class PtExecuteApplication extends MoMLApplication
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The count of currently executing runs.
-    private int _activeCount = 0;
-
-    // The configuration.
-    private Configuration _configuration;
 
     // The subdirectory (if any) of ptolemy/configs where the configuration
     // may be found.  For example if vergil was called with -ptiny,
