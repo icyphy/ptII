@@ -228,9 +228,23 @@ public class CompositePtolemyModel implements CompositeModel {
                     if (count != 2) {
                         // A vertex is needed, so create one.
                         try {
-                            Vertex vertex = new Vertex(relation,
-                                    relation.uniqueName("vertex"));
+                            String name = relation.uniqueName("vertex");
+                            Vertex vertex = new Vertex(relation, name);
                             nodes.add(vertex);
+                            
+                            // Have to manually handle propagation, since
+                            // the MoML parser is not involved.
+                            // FIXME: Could get name collision here!
+                            // (Unlikely though since auto naming will take
+                            // into account subclasses).
+                            List heritageList = relation.getHeritageList();
+                            Iterator heritage = heritageList.iterator();
+                            while (heritage.hasNext()) {
+                                ComponentRelation inherited 
+                                        = (ComponentRelation)heritage.next();
+                                new Vertex(inherited, name);
+                            }                
+
                         } catch (Exception e) {
                             throw new InternalErrorException(
                                     "Failed to create a vertex! " +

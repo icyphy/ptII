@@ -473,9 +473,22 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             // Create a vertex if one is not found
             if (rootVertex == null) {
                 try {
-                    // FIXME: This needs to be propagated.
-                    rootVertex = new Vertex(relation,
-                            relation.uniqueName("vertex"));
+                    String name = relation.uniqueName("vertex");
+                    rootVertex = new Vertex(relation, name);
+                    
+                    // Have to manually handle propagation, since
+                    // the MoML parser is not involved.
+                    // FIXME: This could cause a name collision!
+                    // (Unlikely though since auto naming will take
+                    // into account subclasses).
+                    List heritageList = relation.getHeritageList();
+                    Iterator heritage = heritageList.iterator();
+                    while (heritage.hasNext()) {
+                        ComponentRelation inherited 
+                                = (ComponentRelation)heritage.next();
+                        new Vertex(inherited, name);
+                    }                
+
                 }
                 catch (Exception e) {
                     throw new InternalErrorException(
