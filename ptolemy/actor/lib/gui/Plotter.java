@@ -245,7 +245,11 @@ public class Plotter extends TypedAtomicActor
                     plot.setButtons(true);
                 }
                 _container.add(plot);
-                plot.setBackground(_container.getBackground());
+		// java.awt.Component.setBackground(color) says that
+		// if the color "parameter is null then this component
+		// will inherit the  background color of its parent."
+                //plot.setBackground(_container.getBackground());
+		plot.setBackground(null);
             }
         }
         // If configurations have been deferred, implement them now.
