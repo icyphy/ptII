@@ -232,7 +232,7 @@ public class KernelException extends Exception {
             Throwable cause, String detail) {
         String object1String = getFullName(object1);
         String object2String = getFullName(object2);
-        String prefix;
+        String prefix = null;
 
         // KernelException.getFullName() returns the empty string if
         // argument was null, and it returns "<Unnamed Object>" if the
@@ -242,14 +242,22 @@ public class KernelException extends Exception {
 
         if (!object1String.equals("")) {
             if (!object2String.equals("")) {
-                prefix = object1String + " and " + object2String;
+
+                // If you modify the formatting here, be sure to make
+                // a similar change to 
+                // KernelRuntimeException(Collection, Throwable, String)
+
+                prefix = "Object names: "
+                    + object1String + " and " + object2String;
             } else {
-                prefix = object1String;
+                prefix = "Object name: " + object1String;
             }
         } else {
-            prefix = object2String;
+            if (!object2String.equals("")) {
+                prefix = "Object name: " + object2String;
+            }
         }
-        return generateMessage("Object name: " + prefix, cause, detail);
+        return generateMessage(prefix, cause, detail);
     }
 
     /** Generate a properly formatted detail message.
