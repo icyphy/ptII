@@ -53,11 +53,11 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
        
     /** Create a new visitor that uses the default type policy. */
     public ResolveInheritanceVisitor() {
-        this(new TypeVisitor());
+        this(new TypePolicy(new TypeIdentifier()));
     }
 
-    public ResolveInheritanceVisitor(TypeVisitor typeVisitor) {
-        _typeVisitor = typeVisitor;
+    public ResolveInheritanceVisitor(TypePolicy typePolicy) {
+        _typePolicy = typePolicy;
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
@@ -196,7 +196,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
               MethodDecl d = (MethodDecl) methodItr.next();
 
-	          if (_typeVisitor.doMethodsConflict(d, methodMember)) {
+	          if (_typePolicy.doMethodsConflict(d, methodMember)) {
 
    	             // Note: member is overriden method, d is overriding method
 
@@ -216,7 +216,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
     	         TypeNode dtype = d.getType();
 
-	             if (!_typeVisitor.compareTypes(d.getType(),
+	             if (!_typePolicy.compareTypes(d.getType(),
                      methodMember.getType())) {
   	                ApplicationUtility.error("overriding of " + memberName +
                     " changes return type");
@@ -334,12 +334,9 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         return null;
     }
    
-    /** A TypeVisitor used to do comparison of types. */
-    protected TypeVisitor _typeVisitor = null;
+    /** The type policy used to do comparison of types. */
+    protected TypePolicy _typePolicy = null;
     
     /** The Class object of this visitor. */
-    private static Class _myClass = new ResolveInheritanceVisitor().getClass();
-    
-   
-    
+    private static Class _myClass = new ResolveInheritanceVisitor().getClass();           
 }

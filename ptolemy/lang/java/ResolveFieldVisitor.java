@@ -33,7 +33,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 
 package ptolemy.lang.java;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,9 +53,11 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     }
     
     public ResolveFieldVisitor(TypeVisitor typeVisitor) {
-       super(TM_CUSTOM);
+        super(TM_CUSTOM);
      
-       _typeVisitor = typeVisitor;
+        _typeID = typeVisitor.typeIdentifier();
+        _typePolicy = typeVisitor.typePolicy();
+        _typeVisitor = typeVisitor;               
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
@@ -76,7 +77,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
-        FieldContext subCtx = new FieldContext((FieldContext) args.get(0));
+        FieldContext subCtx = (FieldContext) ((FieldContext) args.get(0)).clone();
         ClassDecl d = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 
         subCtx.currentClass = d.getDefType();
@@ -90,7 +91,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
-        FieldContext subCtx = new FieldContext((FieldContext) args.get(0));
+        FieldContext subCtx = (FieldContext) ((FieldContext) args.get(0)).clone();
         subCtx.inStatic = ((node.getModifiers() & STATIC_MOD) != 0);
         
         LinkedList childArgs = TNLManip.cons(subCtx);
@@ -101,7 +102,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
-        FieldContext subCtx = new FieldContext((FieldContext) args.get(0));
+        FieldContext subCtx = (FieldContext) ((FieldContext) args.get(0)).clone();
         subCtx.inStatic = ((node.getModifiers() & STATIC_MOD) != 0);
         
         LinkedList childArgs = TNLManip.cons(subCtx);
@@ -173,7 +174,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitStaticInitNode(StaticInitNode node, LinkedList args) {
-        FieldContext subCtx = new FieldContext((FieldContext) args.get(0));
+        FieldContext subCtx = (FieldContext) ((FieldContext) args.get(0)).clone();
         
         subCtx.inStatic = true;
                 
@@ -185,7 +186,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
-        FieldContext subCtx = new FieldContext((FieldContext) args.get(0));
+        FieldContext subCtx = (FieldContext) ((FieldContext) args.get(0)).clone();
         ClassDecl d = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 
         subCtx.currentClass = d.getDefType();
@@ -209,7 +210,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
         FieldContext ctx = (FieldContext) args.get(0);  
     
-        FieldContext subCtx = new FieldContext(ctx);
+        FieldContext subCtx = (FieldContext) ctx.clone();
         
         subCtx.methodArgs = null;
         
@@ -220,7 +221,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         TypeNode ot = _typeVisitor.type(expr);
         
-        if (!(_typeVisitor.isReferenceType(ot) || _typeVisitor.isArrayType(ot))) {
+        if (!(_typePolicy.isReferenceType(ot) || _typePolicy.isArrayType(ot))) {
            ApplicationUtility.error("attempt to select from non-reference type " + ot);
         } else {                                           
            resolveAField(node, false, false, ctx);
@@ -260,7 +261,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         if ((d.getModifiers() & STATIC_MOD) == 0) {        
            ClassDecl typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) node.getFType());
            
-           if (!_typeVisitor.isSubClass(ctx.currentClassDecl, typeDecl)) {
+           if (!_typePolicy.isSubClass(ctx.currentClassDecl, typeDecl)) {
               ApplicationUtility.error("access to non-static " + d.getName() +
                " that does not exist in this class");
            }                 
@@ -282,8 +283,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         
         TNLManip.traverseList(this, node, args, node.getArgs());
 
-        FieldContext subCtx = new FieldContext(ctx);
-        
+        FieldContext subCtx = (FieldContext) ctx.clone();        
         subCtx.methodArgs = node.getArgs();
                          
         node.setMethod((ExprNode) node.getMethod().accept(this, TNLManip.cons(subCtx)));
@@ -326,7 +326,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         
         TypeNameNode typeName = node.getDtype();
         
-        if (_typeVisitor.kind(typeName) != TypeVisitor.TYPE_KIND_CLASS) {
+        if (!_typeID.isClassKind(_typeID.kind(typeName))) {
            ApplicationUtility.error("can't allocate something of non-class type " +
             typeName.getName().getIdent());
         } else {
@@ -390,6 +390,66 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     }
     
     // default visit is from ResolveVisitorBase
+    
+    
+    /** Return true iff MethodDecl m1 is more specific 
+     *  (in the sense of 14.11.2.2) than MethodDecl m2.  Actually, the right term 
+     *  should be "no less specific than", but the Reference Manual is the 
+     *  Reference Manual. 
+     */
+    public boolean isMoreSpecific(final MethodDecl m1, final MethodDecl m2) {
+
+        List params1 = m1.getParams();
+        List params2 = m2.getParams();
+
+        if (params2.size() != params2.size()) {         
+           return false;
+        }
+
+        ClassDecl container2 = (ClassDecl) m2.getContainer();
+        TypeNameNode classType2 = container2.getDefType(); 
+
+        ClassDecl container1 = (ClassDecl) m1.getContainer();
+        TypeNameNode classType1 = container1.getDefType(); 
+
+        if (!_typePolicy.isAssignableFromType(classType2, classType1)) {
+           return false;
+        }
+
+        Iterator params1Itr = params1.iterator();
+        Iterator params2Itr = params2.iterator();
+        
+        while (params1Itr.hasNext()) {
+            TypeNode param2 = (TypeNode) params2Itr.next();
+            TypeNode param1 = (TypeNode) params1Itr.next();
+
+            if (!_typePolicy.isAssignableFromType(param2, param1)) {
+               return false;
+            }
+        }
+        return true;    
+    }
+
+    public boolean isCallableWith(MethodDecl m, List argTypes) {
+        List formalTypes = m.getParams();
+
+        if (argTypes.size() != formalTypes.size()) {
+           return false;
+        }
+
+        Iterator formalItr = formalTypes.iterator();
+        Iterator argItr = argTypes.iterator();
+
+        while (formalItr.hasNext()) {
+           TypeNode formalType = (TypeNode) formalItr.next();
+           TypeNode argType = (TypeNode) argItr.next();
+
+           if (!_typePolicy.isAssignableFromType(formalType, argType)) {
+              return false;
+           }
+        }
+        return true;
+    }           
     
     protected void resolveAField(FieldAccessNode node, boolean thisAccess, boolean isSuper, 
      FieldContext ctx) {
@@ -458,7 +518,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
                 
         while (methods.hasNext()) {
            MethodDecl method = (MethodDecl) methods.next();
-           if (_typeVisitor.isCallableWith(method, argTypes)) {
+           if (isCallableWith(method, argTypes)) {
               matches.addLast(method);
            }          
         }
@@ -480,7 +540,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
               if (m1 == m2) {
                 continue; // get out of this inner loop      
               }
-              if (!_typeVisitor.isMoreSpecific(m1, m2) || _typeVisitor.isMoreSpecific(m2, m1)) {
+              if (!isMoreSpecific(m1, m2) || isMoreSpecific(m2, m1)) {
                  thisOne = false; // keep looking
                  continue; // get out of this inner loop      
               }             
@@ -495,15 +555,17 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         return null;
     }
 
-    protected static class FieldContext {
+    protected static class FieldContext implements Cloneable {
         public FieldContext() {}
 
-        public FieldContext(FieldContext ctx) {
-            currentClass = ctx.currentClass;
-            currentClassDecl = ctx.currentClassDecl;
-            inStatic = ctx.inStatic;
-            methodArgs = ctx.methodArgs;
+        public Object clone() {
+            try {
+              return super.clone();
+            } catch (CloneNotSupportedException cnse) {
+              throw new InternalError("clone of FieldContext not supported");
+            }
         }
+        
         /** The type representing the class we are currently in. */
         public TypeNameNode currentClass = null;
         
@@ -516,10 +578,11 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         /** A list of the method arguments. */
         public List methodArgs = null;
     }
-
-    /** The visitor used for resolving types. */
+    
+    protected final TypeIdentifier _typeID;
+    protected final TypePolicy _typePolicy;    
     protected final TypeVisitor _typeVisitor;
-
+    
     /** The current package. */
     protected PackageDecl _currentPackage = null;    
     

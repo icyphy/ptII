@@ -55,6 +55,93 @@ import ptolemy.lang.java.nodetypes.*;
  */
 public class StaticResolution implements JavaStaticSemanticConstants {
 
+    public static final void buildEnvironments() {
+        
+        Iterator nodeItr = pass0ResolvedList.iterator();
+        
+        while (nodeItr.hasNext()) {
+           CompileUnitNode node = (CompileUnitNode) nodeItr.next();
+           node.accept(new ResolveClassVisitor(), null);              
+        }
+           
+        nodeItr = pass0ResolvedList.iterator();
+        
+        while (nodeItr.hasNext()) {
+           CompileUnitNode node = (CompileUnitNode) nodeItr.next();
+           node.accept(new ResolveInheritanceVisitor(_defaultTypePolicy), null);              
+              
+           String filename = (String) node.getDefinedProperty(IDENT_KEY);
+              
+           if (filename != null) {
+              allPass1ResolvedMap.put(filename, node);
+           }
+        }
+
+        pass0ResolvedList.clear();                    
+    }
+
+    public static TypeVisitor getDefaultTypeVisitor() {
+        return _defaultTypeVisitor;
+    }
+
+    public static PackageDecl importPackage(Environ env, NameNode name) {
+        resolveAName(name, SYSTEM_PACKAGE.getEnviron(), null, null,
+         CG_PACKAGE);
+
+        PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
+
+        Environ packageEnv = decl.getEnviron();
+  
+        Iterator declItr = packageEnv.allProperDecls();
+
+        while (declItr.hasNext()) {
+           JavaDecl type = (JavaDecl) declItr.next();
+           if (type.category != CG_PACKAGE) {
+              env.add(type); // conflicts appear on use only
+           }
+        }
+        
+        return decl;
+    }
+
+    /** Uncache the resolved compile node with the given canonical filename
+     *  (disregarding the file extension), if the node has undergone a static 
+     *  resolution pass greater than or equal to the argument pass. This method 
+     *  must be used with care because references to declarations originally 
+     *  created in resolving the node may be left in other compile unit nodes. 
+     *  Because declarations are only equal reflexively, dangling references to 
+     *  declarations will cause problems. Return true iff a node with the given 
+     *  canonical filename (disregarding the file extension) was removed
+     *  from the cache.
+     */
+    public static boolean invalidateCompileUnit(String canonicalFilename, int pass) {
+        if ((pass < 0) || (pass > 2)) {
+           throw new IllegalArgumentException("invalid pass number : " + pass);
+        }
+        
+        String noExtensionFilename = 
+         StringManip.partAfterLast(canonicalFilename, '.');
+        
+        boolean found = false;
+        
+        if (pass == 2) {
+           found = (allPass2ResolvedMap.remove(noExtensionFilename) != null);        
+        } 
+        
+        if (found || (pass == 1)) {
+           found = (allPass1ResolvedMap.remove(noExtensionFilename) != null);        
+        }
+    
+        if (found || (pass == 0)) {
+           found = (allPass0ResolvedMap.remove(noExtensionFilename) != null);        
+        }
+        
+        return found;
+    }
+       
+     
+     
+
     /** Returns a String representation of node, with qualifiers separated by periods,
      *  if node is a NameNode. If node is AbsentTreeNode.instance, return "absent name".
      */
@@ -289,14 +376,52 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     /** Return the declaration with the given qualified name, category,
      *  and method arguments, which must be defined in the given 
      *  CompileUnitNode, which must have gone through pass 1 static
-     *  resolution. If the category is a method, the methodArgs
-     *  parameter should be a List of TypeNode's and typeVisitor should
-     *  be an instance of TypeVisitor that implements a type policy. 
-     *  Otherwise, methodArgs and typeVisitor will be ignored. Throw a 
-     *  NoSuchElementException if the declaration cannot be found.
+     *  resolution. 
+     *  @param compileUnit The compile unit node in which to look for the 
+     *   declaration.
+     *  @param qualifiedName The string representing the fully qualified
+     *   name of the declaration to look for.
+     *  @param category The category of the declaration to look for,
+     *   either CG_CLASS, CG_INTERFACE, or CG_FIELD.
+     *  @return The declaration that was searched for.
+     *  @throws NoSuchElementException if the declaration cannot be found.     
      */
     public static JavaDecl findDecl(CompileUnitNode compileUnit,
-     String qualifiedName, int category, List methodArgs, TypeVisitor typeVisitor) {
+     String qualifiedName, int category) {
+        Environ env = (Environ) compileUnit.getDefinedProperty(ENVIRON_KEY);
+        NameNode nameNode = (NameNode) makeNameNode(qualifiedName);
+        
+        // is this really necessary?
+        PackageDecl pkgDecl = 
+         (PackageDecl) compileUnit.getDefinedProperty(PACKAGE_KEY);
+        
+        EnvironIter environIter = findPossibles(nameNode, env, null, 
+         pkgDecl, category);
+              
+        // no check for multiple matches (this should be handled by
+        // the static resolution passes)
+        return (JavaDecl) environIter.nextDecl();                  
+    }
+
+    /** Return the method or constructor declaration with the given qualified name, 
+     *  category, and method arguments, which must be defined in the given 
+     *  CompileUnitNode, which must have gone through pass 1 static
+     *  resolution.  
+     *  @param compileUnit The compile unit node in which to look for the 
+     *   declaration.
+     *  @param qualifiedName The string representing the fully qualified
+     *   name of the declaration to look for.
+     *  @param category The category of the declaration to look for,
+     *   either CG_METHOD or CG_CONSTRUCTOR.
+     *  @param methodArgs A list of TypeNodes of the parameters of the
+     *   method or constructor.
+     *  @param typeVisitor The TypeVisitor to use to get type information.     
+     *  @return The declaration that was searched for.
+     *  @throws NoSuchElementException if the declaration cannot be found.
+     */
+    public static MemberDecl findInvokableDecl(CompileUnitNode compileUnit,
+     String qualifiedName, int category, List methodArgs, 
+     TypeVisitor typeVisitor) {
         Environ env = (Environ) compileUnit.getDefinedProperty(ENVIRON_KEY);
         NameNode nameNode = (NameNode) makeNameNode(qualifiedName);
         
@@ -307,26 +432,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         EnvironIter environIter = findPossibles(nameNode, env, null, 
          pkgDecl, category);
          
-        if (category == CG_METHOD) {
-           ResolveFieldVisitor resolveFieldVisitor = new ResolveFieldVisitor(typeVisitor);
-           return resolveFieldVisitor.resolveCall(environIter, methodArgs);       
-        }          
-     
+        ResolveFieldVisitor resolveFieldVisitor = 
+         new ResolveFieldVisitor(typeVisitor);
+         
         // no check for multiple matches (this should be handled by
-        // the static resolution passes)
-        return (JavaDecl) environIter.nextDecl();                  
+        // the static resolution passes)         
+        return (MemberDecl) resolveFieldVisitor.resolveCall(environIter, methodArgs);       
     }
-    
-    /*
-    public static TypeNameNode getUserTypeInCompileUnit(
-     CompileUnitNode compileUnit, String qualifiedName, int category) {
-        ClassDecl classDecl = 
-         (ClassDecl) getDeclInCompileUnit(compileUnit, qualifiedName,
-                      category, null);
-          
-                             
-    }
-    */
     
     /** Load the source file with the given filename. The filename may be
      *  relative or absolute. If primary is true, do full resolution of the 
@@ -350,7 +462,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  do partial resolution only.
      */ 
     public static CompileUnitNode loadCanonical(String filename, int pass) {        
-        System.out.println(">loading " + filename);
+        ApplicationUtility.trace(">loading " + filename);
   
         String noExtensionName = StringManip.partBeforeLast(filename, '.');
         
@@ -367,7 +479,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         return load(loadedAST, pass);                          
     }
         
-    /** Load a CompileUnitNode that has been parsed. 
+    /** Load a CompileUnitNode that has been parsed. Go through all passes
+     *  of static resolution up to the argument pass number. 
      *
      */
     public static CompileUnitNode load(CompileUnitNode node, int pass) {                                                                        
@@ -380,14 +493,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
           return resolvePass1(node);              
            
           case 2:                    
-          node = resolvePass0(node);
+          node = resolvePass0(node);                    
           node = resolvePass1(node);          
           return resolvePass2(node);              
           
           default:
-          ApplicationUtility.error("invalid pass number (" + pass + ")");
+          throw new IllegalArgumentException("invalid pass number (" + pass + ")");
         }                 
-        return null;
     }
     
     /** Do pass 0 resolution on a CompileUnitNode that just been built by
@@ -423,8 +535,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  node. 
      */
     public static CompileUnitNode resolvePass1(CompileUnitNode node) {    
-        // ensure pass 0 has been run
-        //node = resolvePass0(node);
     
         buildEnvironments();
     
@@ -450,8 +560,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  node. 
      */
     public static CompileUnitNode resolvePass2(CompileUnitNode node) {        
-        // ensure pass 0 and pass 1 have been run
-        //node = resolvePass1(node); // will call buildEnvironments()
     
         String filename = (String) node.getProperty(IDENT_KEY);    
 
@@ -465,7 +573,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
                                 
         node.accept(new ResolveNameVisitor(), null);     
-        node.accept(new ResolveFieldVisitor(), null);                               
+        node.accept(new ResolveFieldVisitor(_defaultTypeVisitor), null);                               
           
         if (filename != null) {
            allPass2ResolvedMap.put(filename, node);              
@@ -473,52 +581,12 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                   
         return node;
     }
-    
-    public static final void buildEnvironments() {
-        
-        Iterator nodeItr = pass0ResolvedList.iterator();
-        
-        while (nodeItr.hasNext()) {
-           CompileUnitNode node = (CompileUnitNode) nodeItr.next();
-           node.accept(new ResolveClassVisitor(), null);              
-        }
-           
-        nodeItr = pass0ResolvedList.iterator();
-        
-        while (nodeItr.hasNext()) {
-           CompileUnitNode node = (CompileUnitNode) nodeItr.next();
-           node.accept(new ResolveInheritanceVisitor(), null);              
-              
-           String filename = (String) node.getDefinedProperty(IDENT_KEY);
-              
-           if (filename != null) {
-              allPass1ResolvedMap.put(filename, node);
-           }
-        }
 
-        pass0ResolvedList.clear();                    
+    public static void setDefaultTypeVisitor(TypeVisitor typeVisitor) {
+        _defaultTypeVisitor = typeVisitor;
+        _defaultTypePolicy = typeVisitor.typePolicy();
     }
-        
-    public static final PackageDecl importPackage(Environ env, NameNode name) {
-        resolveAName(name, SYSTEM_PACKAGE.getEnviron(), null, null,
-         CG_PACKAGE);
-
-        PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
-
-        Environ packageEnv = decl.getEnviron();
-  
-        Iterator declItr = packageEnv.allProperDecls();
-
-        while (declItr.hasNext()) {
-           JavaDecl type = (JavaDecl) declItr.next();
-           if (type.category != CG_PACKAGE) {
-              env.add(type); // conflicts appear on use only
-           }
-        }
-        
-        return decl;
-    }
-
+            
     protected static final ClassDecl _requireClass(Environ env, String name) {
         Decl decl = env.lookup(name);
 
@@ -559,8 +627,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 
     /** A List containing values of CompileUnitNodes that have only been parsed
      *  and have undergone package resolution, but not including nodes that
-     *  have undergone later stages of static resolution, indexed by the 
-     *  canonical filename of the source file, without the filename extension.
+     *  have undergone later stages of static resolution.
      */
     public static final List pass0ResolvedList = new LinkedList();
 
@@ -583,7 +650,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  source file, without the filename extension.
      */
     public static final Map allPass2ResolvedMap = new HashMap();
-    
+
+    public static TypeVisitor _defaultTypeVisitor = new TypeVisitor();
+    public static TypePolicy _defaultTypePolicy = _defaultTypeVisitor.typePolicy();
+        
     static {
         SYSTEM_PACKAGE  = new PackageDecl("", null);
         UNNAMED_PACKAGE = new PackageDecl("", SYSTEM_PACKAGE);
