@@ -34,7 +34,7 @@ ME =		ptolemy/domains/dde/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS = 		helloWorld LocalZeno
+DIRS = 		HelloWorld LocalZeno
 
 CLASSPATH =	$(ROOT)
 
