@@ -30,74 +30,88 @@ package ptolemy.actor.util;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
-import ptolemy.actor.Executable;
-import ptolemy.actor.TimedDirector;
 import ptolemy.data.TokenUtilities;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Utilities;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// Time
 /**
-   A Time class represents time in a model. It contains two double values, 
-   one is the time value and the other one is the time resolution.  The 
-   time resolution has a default value 1e-10 and can be configured through
-   directors. The time value has a precision specified by the time resolution.
+   A Time class represents model time in a model. It is different from
+   the real time, which is time in hardware. It contains a double value that 
+   represents the time value. 
+   
+   <p> The time value has a precision specified by the time resolution of 
+   the director that executes the model. Therefore, a time object needs to be
+   constructed during the initialization phase. Another reason is that 
+   when the time resolution changes, the precision of time objects also needs
+   updated.  
    
    <p> This class supports two operations only, add and subtract, where the 
    operand can be either a double or a Time object. This class also implements
-   the Comparable interface, where two time objects can compare with each other. 
+   the Comparable interface, where two time objects can compare with each other.
 
    @author Haiyang Zheng
    @version $Id$
-   @since Ptolemy II 4.0
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Red (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
 public class Time implements Comparable {
+    
+    /** Construct a Time object with 0.0 as the time value in
+     *  the given actor. 
+     *  @param container The atomic actor that contains this time object.
+     */
+    public Time(Actor container) {
+        // FIXME: cannot use AtomicActor because the TimeKeeper for DDE
+        // does not specify the container of time as an AtomicActor 
+        Director director = container.getDirector();
+        _init(director);
+    }
+
+    /** Construct a Time object with the specified value as its
+     *  time value in the given actor. 
+     *  @param container The atomic actor that contains this time object.
+     *  @param value The time value.
+     */
+    public Time(Actor container, double value) {
+        Director director = container.getDirector();
+        _init(director);
+        _setTimeValue(value);
+    }
 
     /** Construct a Time object with 0.0 as the time value in
-     *  the given container. 
-     *  @param container The container of this time object.
-     *  @exception IllegalActionException If the container is 
-     *  neither a timed director nor an actor, or the director
-     *  of the container (an actor) is not a timed director.
+     *  the given director. 
+     *  @param container The director that contains this time object.
      */
-    public Time(Executable container) throws IllegalActionException {
+    public Time(Director container) {
         _init(container);
     }
 
     /** Construct a Time object with the specified value as its
-     *  time value in the given container. 
-     *  @param container The container of this time object.
+     *  time value in the given director. 
+     *  @param container The director that contains this time object.
      *  @param value The time value.
-     *  @exception IllegalActionException If the container is 
-     *  neither a timed director nor an actor, or the director
-     *  of the container (an actor) is not a timed director.
      */
-    public Time(Executable container, double value) 
-        throws IllegalActionException {
+    public Time(Director container, double value) {
         _init(container);
-        setTimeValue(value);
+        _setTimeValue(value);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     /** Increase the time by the given double value.
      *  @param timeValue The amount of time increment.
      */
-    public void add(double timeValue) {
-        _time = _time + timeValue;
-        _time = Utilities.round(_time, _getTimeResolution());
+    public Time add(double timeValue) {
+        return new Time(_container, _time + timeValue);
     }
 
     /** Increase the time by the time value specified by the time object.
      *  @param time The time object the specifies the time increment.
      */
-    public void add(Time time) {
-        add(time.getTimeValue());
+    public Time add(Time time) {
+        return add(time.getTimeValue());
     }
 
     /** Return -1, 0, or 1 if this time object is less than, equal to, or 
@@ -127,6 +141,19 @@ public class Time implements Comparable {
         }
     }
 
+    /** Return true if this time object has the same time value as
+     *  that of the given time object. Note that it is different from
+     *  the equals method.
+     * 
+     *  @param time The time object that this time object is compared to.
+     *  @return True if the two time objects have the same time value.
+     */    
+    public boolean equalTo(Time time) {
+        // Since comparison for equality is very common,
+        // the equalTo method is created. 
+        return (this.compareTo(time) == 0);    
+    }
+    
     /** Return the time value.
      *  @return The time value contained in this class as a double.
      */
@@ -134,26 +161,18 @@ public class Time implements Comparable {
         return _time;
     }
 
-    /** Set the time value.
-     *  @param newTime The new time value.
-     */
-    public void setTimeValue(double newTime) {
-        _time = Utilities.round(newTime, _getTimeResolution());
-    }
-
     /** Decrease the time by the given double value.
      *  @param timeValue The amount of time decrement.
      */
-    public void subtract(double timeValue) {
-        _time = _time - timeValue;
-        _time = Utilities.round(_time, _getTimeResolution());
+    public Time subtract(double timeValue) {
+        return new Time(_container, _time - timeValue);
     }
 
     /** Decrease the time by the time value specified by the time object.
      *  @param time The time object the specifies the time decrement.
      */
-    public void subtract(Time time) {
-        subtract(time.getTimeValue());
+    public Time subtract(Time time) {
+        return subtract(time.getTimeValue());
     }
 
     /** Return the time value of this class as a string that can be parsed
@@ -168,6 +187,7 @@ public class Time implements Comparable {
      *  @return A String representing the time value of this class.
      */
     public String toString() {
+        // FIXME: support unit system
         if (Double.isNaN(_time) || Double.isInfinite(_time)) {
             return Double.toString(_time);
         } else {
@@ -180,47 +200,38 @@ public class Time implements Comparable {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    // Initialize the states. Throw an IllegalActionException if the
-    // given container argument is neither a timed director nor an actor, 
-    // or the director of the container (an actor) is not a timed director.
-    private void _init(Executable container) throws IllegalActionException {
-        boolean wrongContainerType = true;
-        if (container instanceof Actor) {
-            Director director = ((Actor)container).getDirector();
-            if (director instanceof TimedDirector) {
-                wrongContainerType = false;
-            }
-        } else if (container instanceof TimedDirector) {
-            wrongContainerType = false;
-        }
-        if (wrongContainerType) {
-            throw new IllegalActionException("Can not create " +
-                "a Time object because the container is neither " +
-                "a director nor an actor.");
-        }
+    // Initialize the states. 
+    private void _init(Director container) {
         _container = container;
         _time = 0.0;
     }
 
-    // If the container is a director, get its time resolution. 
-    // If the container is an actor, get the time resolution of its director.
-    // Because we already check the container type in the constructor,
-    // and there is no way to change the container, we do not check 
-    // again in this method.
+    // Get the time resolution of the container director. 
     private double _getTimeResolution() {
-        if (_container instanceof Actor) {
-            return ((Actor)_container).getDirector().getTimeResolution();
+        if (_container == null) {
+            // FIXME: This should not happen if we constrain all time objects
+            // to be instantiated duirng initialize method.
+            
+            throw new InternalErrorException("Director is null. Cannot " +
+                "initialize a Time object. An actor should only initialize "  
+                + "a Time object in the initialize method.");
+            // return the default value for time resolution if there
+            // is no director.
+            // return 1e-10;
         } else {
-            return ((Director)_container).getTimeResolution();
+            return _container.getTimeResolution();
         }
+    }
+
+    // Set the time value.
+    private void _setTimeValue(double newTime) {
+        _time = Utilities.round(newTime, _getTimeResolution());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The container of this time object.
-    private Executable _container;
+    // The director that contains this time object.
+    private Director _container;
     // The time value.
     private double _time;
 }

@@ -29,6 +29,8 @@
 
 package ptolemy.actor.util;
 
+import ptolemy.actor.Director;
+
 //////////////////////////////////////////////////////////////////////////
 //// TimedEvent
 /**
@@ -49,7 +51,7 @@ public class TimedEvent {
      *  @param time The time stamp.
      *  @param obj The contents
      */
-    public TimedEvent(double time, Object obj) {
+    public TimedEvent(Time time, Object obj) {
         timeStamp = time;
         contents = obj;
     }
@@ -58,7 +60,7 @@ public class TimedEvent {
     ////                         public members                    ////
 
     /** The time stamp. */
-    public double timeStamp;
+    public Time timeStamp;
 
     /** The event object. */
     public Object contents;
@@ -76,6 +78,12 @@ public class TimedEvent {
      * If this is violated, ClassCastException will be thrown.
      */
     public static class TimeComparator implements CQComparator {
+        
+        public TimeComparator(Director director) {
+            _director = director;
+            _binWidth = new TimedEvent(new Time(_director, 1.0), null);
+            _zeroReference = new TimedEvent(new Time(_director, 0.0), null);
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
@@ -98,9 +106,9 @@ public class TimedEvent {
             TimedEvent a = (TimedEvent) object1;
             TimedEvent b = (TimedEvent) object2;
 
-            if ( a.timeStamp < b.timeStamp )  {
+            if ( a.timeStamp.compareTo(b.timeStamp) < 0)  {
                 return -1;
-            } else if ( a.timeStamp > b.timeStamp ) {
+            } else if ( a.timeStamp.compareTo(b.timeStamp) > 0 ) {
                 return 1;
             } else {
                 return 0;
@@ -122,9 +130,9 @@ public class TimedEvent {
          *   TimedEvent.
          */
         public long getVirtualBinNumber(Object entry) {
-            return (long)((((TimedEvent)entry).timeStamp
-                                  - _zeroReference.timeStamp)/
-                    _binWidth.timeStamp);
+            return (long)(((TimedEvent)entry).timeStamp.subtract(
+                _zeroReference.timeStamp).getTimeValue()
+                / _binWidth.timeStamp.getTimeValue());
         }
 
         /** Given an array of TimedEvent objects, find the appropriate bin
@@ -145,7 +153,8 @@ public class TimedEvent {
         public void setBinWidth(Object[] entryArray) {
             if ( entryArray == null ) {
                 // Reset to default.
-                _binWidth = new TimedEvent(1.0, null);
+                _binWidth = new TimedEvent(
+                    new Time(_director, 1.0), null);
                 return;
             }
             if ( entryArray.length == 1) {
@@ -157,8 +166,8 @@ public class TimedEvent {
 
             double average = 0;
             for (int i = 1; i < entryArray.length; ++i) {
-                diff[i-1] = ((TimedEvent)entryArray[i]).timeStamp -
-                    ((TimedEvent)entryArray[i-1]).timeStamp;
+                diff[i-1] = ((TimedEvent)entryArray[i]).timeStamp.subtract(
+                ((TimedEvent)entryArray[i-1]).timeStamp).getTimeValue();
                 average = average + diff[i-1];
             }
             average = average / diff.length;
@@ -176,7 +185,8 @@ public class TimedEvent {
                 return;
             }
             effAverage = effAverage / nEffSamples;
-            _binWidth = new TimedEvent(3.0 * effAverage, null);
+            _binWidth = new TimedEvent(
+                new Time(_director, 3.0 * effAverage), null);
         }
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -190,11 +200,14 @@ public class TimedEvent {
 
         ///////////////////////////////////////////////////////////////////
         ////                         private members                   ////
+        
+        // The director that contains this comparator.
+        private Director _director;
 
         // The bin width.
-        private TimedEvent _binWidth = new TimedEvent(1.0, null);
+        private TimedEvent _binWidth; 
 
         // The zero reference.
-        private TimedEvent _zeroReference = new TimedEvent(0.0, null);
+        private TimedEvent _zeroReference;
     }
 }
