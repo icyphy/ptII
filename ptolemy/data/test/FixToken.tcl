@@ -99,21 +99,91 @@ test FixToken-3.1 {Test Addition} {
     set pa [java::new ptolemy.data.FixToken $c31 ]
     set pb [java::new ptolemy.data.FixToken $c32 ]
     set res [$pa add $pb]    
+
     list [$pa toString] [$pb toString] [$res toString]
 
 } {fix(3.2333984375,16,4) fix(-1.54541015625,16,4) fix(1.68798828125,16,4)}
 
 test FixToken-3.2 {Test Subtraction} {
     set res [$pa subtract $pb]   
+
     list [$res toString]
 } {fix(4.77880859375,16,4)}
 
 test FixToken-3.3 {Test Multiply} {
     set res [$pa multiply $pb]   
+
     list [$res toString]
 } {fix(-4.996926784515381,27,3)}
 
 test FixToken-3.4 {Test Divide} {    
    set res [$pa divide $pb]    	
+
    list [$res toString]
 } {fix(-2.09228515625,16,4)}
+
+######################################################################
+
+test FixToken-4.0 {Test fixValue} {
+    set c1 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
+    set p  [java::new ptolemy.data.FixToken $c1 ]
+    set res1 [$p fixValue]
+    list [$res1 toBitString]
+} {101.100100101101}
+
+test FixToken-4.1 {Test doubleValue} {
+    catch {$p doubleValue} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.FixToken to a double losslessly.}}
+
+test FixToken-4.2 {Test intValue} {
+    catch {$p intValue} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.FixToken to an int losslessly.}}
+
+test FixToken-4.3 {Test longValue} {
+    catch {$p longValue} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.FixToken to a long losslessly.}}
+
+test FixToken-4.4 {Test stringValue} {
+    $p stringValue
+} {fix(5.573486328125,16,4)}
+
+######################################################################
+
+######################################################################
+# Test isEqualTo operator applied to other Complex and Tokens types 
+# below it in the lossless type hierarchy.
+test FixToken-5.0 {Test equality between FixTokens} {
+
+    set p1 [java::new ptolemy.math.Precision "(32/4)" ]
+    set c1 [java::call ptolemy.math.Quantizer round 5.375 $p1 ]
+    set r1 [java::new ptolemy.data.FixToken $c1 ]
+
+    set p2 [java::new ptolemy.math.Precision "(32/2)" ]
+    set c2 [java::call ptolemy.math.Quantizer round 5.375 $p2 ]
+    set r2 [java::new ptolemy.data.FixToken $c2 ]
+
+    set p3 [java::new ptolemy.math.Precision "(32/6)" ]
+    set c3 [java::call ptolemy.math.Quantizer round 5.375 $p3 ]
+    set r3 [java::new ptolemy.data.FixToken $c3 ]
+
+    set res1 [$r1 {isEqualTo ptolemy.data.Token} $r1]
+    set res2 [$r1 {isEqualTo ptolemy.data.Token} $r2]
+    set res3 [$r1 {isEqualTo ptolemy.data.Token} $r3]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString]
+} {true false true}
+
+test FixToken-5.1 {Test equality between FixToken and IntToken} {
+
+    set i1 [java::new {ptolemy.data.IntToken int} 8]
+    set i2 [java::new {ptolemy.data.IntToken int} 4]
+
+        catch { [$r1 {isEqualTo ptolemy.data.Token} $i1] } msg
+	list $msg
+
+} {{ptolemy.kernel.util.IllegalActionException: FixToken.isEqualTo: type of argument: ptolemy.data.IntToken is incomparable with FixToken in the type  hierarchy.}}
+
+
