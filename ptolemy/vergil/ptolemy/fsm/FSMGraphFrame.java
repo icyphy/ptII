@@ -260,6 +260,7 @@ public class FSMGraphFrame extends GraphFrame {
 	public StateContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new RenameDialogFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	    //addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
             /** FIXME: removed temporarily until edit icon works.
