@@ -538,7 +538,7 @@ public class CTScheduler extends Scheduler{
             // their location in the schedule. So they are assigned 
             // in the _schedule() method.
 
-            //FIXME: Sould also do the following checks:
+            //FIXME: Should also do the following checks:
             // For each eventGenerator, its successors should either
             // be eventInterpreters or "Discrete (composite) actors."
             // For each "discrete (composite) actor," its predecessors
