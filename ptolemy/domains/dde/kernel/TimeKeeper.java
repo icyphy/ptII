@@ -247,8 +247,10 @@ public class TimeKeeper {
     public synchronized void sendOutNullTokens() {
 	Enumeration ports = _actor.outputPorts();
         double time = getCurrentTime();
+	/*
 	System.out.println("\t\t" + ((NamedObj)_actor).getName() +
 		": null token time = " + time);
+	*/
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
 	    Receiver rcvrs[][] = (Receiver[][])port.getRemoteReceivers();
