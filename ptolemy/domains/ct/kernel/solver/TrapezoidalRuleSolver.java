@@ -130,24 +130,25 @@ public class TrapezoidalRuleSolver extends ODESolver {
             
         double f1 = integrator.getDerivative();
         double h = dir.getCurrentStepSize();
-        double pstate;
+        double tentativeState;
         if (getRound() == 0) {
             // prediction
-            pstate = integrator.getState() + f1*h;
+            tentativeState = integrator.getState() + f1*h;
             // for error control
-            integrator.setAuxVariables(0, pstate);
+            integrator.setAuxVariables(0, tentativeState);
         } else {
             //correction
             double f2 = ((DoubleToken)integrator.input.get(0)).doubleValue();
-            pstate = integrator.getState() + (h*(f1+f2))/(double)2.0;
-            double error = Math.abs(pstate-integrator.getTentativeState());
+            tentativeState = integrator.getState() + (h*(f1+f2))/(double)2.0;
+            double error = 
+                Math.abs(tentativeState-integrator.getTentativeState());
             if( !(error < dir.getValueResolution())) {
                 _voteForConvergence(false);
             }
             integrator.setTentativeDerivative(f2);
         }
-        integrator.setTentativeState(pstate);
-        integrator.output.broadcast(new DoubleToken(pstate));
+        integrator.setTentativeState(tentativeState);
+        integrator.output.broadcast(new DoubleToken(tentativeState));
     }
 
     /** Perform the isThisStepAccurate() test for the integrator under
@@ -219,14 +220,14 @@ public class TrapezoidalRuleSolver extends ODESolver {
             throw new IllegalActionException( this,
                     " must have a CT director.");
         }
-        CTScheduler sch = (CTScheduler)dir.getScheduler();
-        if (sch == null) {
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
             throw new IllegalActionException( dir,
                     " must have a director to fire.");
         }
         resetRound();
         // prediction
-        Iterator actors = sch.dynamicActorList().iterator();
+        Iterator actors = scheduler.dynamicActorList().iterator();
         while(actors.hasNext()) {
             Actor next = (Actor)actors.next();
             _debug("Guessing..."+((Nameable)next).getName());
@@ -241,14 +242,14 @@ public class TrapezoidalRuleSolver extends ODESolver {
             }
             incrementRound();
             _setConverge(true);
-            actors = sch.scheduledStateTransitionActorList().iterator();
+            actors = scheduler.scheduledStateTransitionActorList().iterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + "Firing..."+((Nameable)next).getName());
 
                 next.fire();
             }
-            actors = sch.scheduledDynamicActorList().iterator();
+            actors = scheduler.scheduledDynamicActorList().iterator();
             while(actors.hasNext()) {
                 Actor next = (Actor)actors.next();
                 _debug(getFullName() + " refiring..."+
@@ -260,7 +261,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
                 //startOverLastStep();
                 resetRound();
                 // prediction
-                actors = sch.scheduledDynamicActorList().iterator();
+                actors = scheduler.scheduledDynamicActorList().iterator();
                 while(actors.hasNext()) {
                     Actor next = (Actor)actors.next();
                     _debug(getFullName()+" asking..."+

@@ -49,7 +49,7 @@ This solver finds the derivatives of the state variables of an ODE
 with respect to the current time. 
 For example, if the ODE is
 <pre>
-    x' = f(x,t)
+    x' = f(x, t)
 </pre>,
 the current time is t0, and
 <pre>
