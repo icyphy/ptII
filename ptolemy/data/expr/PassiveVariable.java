@@ -1,4 +1,4 @@
-/* A PassiveVariable is a Variable that does not propogate its changes.
+/* A PassiveVariable is a Variable that does not propagate its changes.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.

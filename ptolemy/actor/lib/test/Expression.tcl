@@ -82,7 +82,7 @@ test Expression-3.1 {run with a simple expression} {
 } {6 7 8}
 
 # FIXME: The following test fails because of limitations in the
-# type system.  When types can propogate through expressions.
+# type system.  When types can propagate through expressions.
 # test Expression-4.1 {run with a simple expression} {
 #     $expression setExpression "time + 5"
 #     $m execute
