@@ -48,6 +48,7 @@ import soot.Trap;
 import soot.Type;
 import soot.Value;
 import soot.ValueBox;
+import soot.jimple.CastExpr;
 import soot.jimple.InvokeStmt;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
@@ -167,7 +168,14 @@ public class ExceptionEliminator extends SceneTransformer implements HasPhaseOpt
                                 RefType.v(PtolemyUtilities.runtimeExceptionClass));
 
                     }
-                } else if (value instanceof SpecialInvokeExpr) {
+                } else if(value instanceof CastExpr) {
+                    CastExpr expr = (CastExpr) value;
+                    Type castType = expr.getCastType();
+                    if(castType instanceof RefType &&
+                            _isPtolemyException(((RefType)castType).getSootClass())) {
+                        expr.setCastType(RefType.v(PtolemyUtilities.runtimeExceptionClass));
+                    }
+                } else if(value instanceof SpecialInvokeExpr) {
                     // Fix the exception constructors.
                     SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
                     SootClass exceptionClass =

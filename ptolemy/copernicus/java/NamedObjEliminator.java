@@ -228,6 +228,13 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                                             unit);
                                 }
                                 body.getUnits().remove(unit);
+                            } else if(expr.getMethod().getSubSignature().equals(
+                                    PtolemyUtilities.handleModelErrorMethod.getSubSignature())) {
+                                // Replace handleModelError with a throw clause.
+                                body.getUnits().insertBefore(
+                                        Jimple.v().newThrowStmt(expr.getArg(1)),
+                                        unit);
+                                body.getUnits().remove(unit);
                             }
                         }
                     }
