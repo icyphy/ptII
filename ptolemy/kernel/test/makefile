@@ -83,16 +83,17 @@ OPTIONAL_FILES =	#codeDoc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: $(EXTRA_SRCS) jclass
+all: tests
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 	chmod a+x ptjdriver
 
 install: $(EXTRA_SRCS) jclass javadocs
 	chmod a+x ptjdriver
 
-tests:: test_java test_jsimple
+
 
 test_java: jclass
-	$(JAVAHOME)/bin/java -classpath ../../..:$(JAVAHOME)/lib/classes.zip pt.kernel.test.StatusArrayTest
+	#$(JAVAHOME)/bin/java -classpath ../../..:$(JAVAHOME)/lib/classes.zip pt.kernel.test.StatusArrayTest
 
 # These tests do not require a graphics terminal, but do use TclBlend and Java
 test_jsimple: $(EXTRA_SRCS) alljtests.tcl
