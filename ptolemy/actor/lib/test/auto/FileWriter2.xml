@@ -17,7 +17,7 @@
         </property>
     </property>
     <entity name="Reader" class="ptolemy.actor.lib.Reader">
-        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;file:./FileWriter1Output.txt&quot;">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;file:///&quot; + property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/actor/lib/test/auto/FileWriter1Output.txt&quot;">
         </property>
         <property name="refresh" class="ptolemy.data.expr.Parameter" value="false">
         </property>

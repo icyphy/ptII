@@ -4,7 +4,7 @@
 <entity name="FileWriter1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[246, 49]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -35,7 +35,7 @@
         </port>
     </entity>
     <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
-        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;FileWriter1Output.txt&quot;">
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/actor/lib/test/auto/FileWriter1Output.txt&quot;">
         </property>
         <doc>Write out tokens to a file or stdout</doc>
         <property name="_location" class="ptolemy.moml.Location" value="226.5, 184.5">
