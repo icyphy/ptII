@@ -47,6 +47,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	Iterations.java \
+	Mutate.java \
 	SimpleDelay.java \
 	TestSource.java \
 	Time.java
