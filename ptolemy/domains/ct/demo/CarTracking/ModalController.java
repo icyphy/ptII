@@ -122,7 +122,7 @@ public class ModalController extends CTCompositeActor {
         HSDirector modalDirector = new HSDirector(this, "modalDirector");
         modalDirector.controllerName.setExpression("\"Controller\"");
         StreamListener dbl = new StreamListener();
-        modalDirector.addDebugListener(dbl);
+        //modalDirector.addDebugListener(dbl);
 
         // create normal state refinement.
         CTCompositeActor normalRefinement = new
@@ -225,7 +225,7 @@ public class ModalController extends CTCompositeActor {
         Transition tooFar = new Transition(bangbang, "tooFar");
         decelerating.outgoingPort.link(tooFar);
         accelerating.incomingPort.link(tooFar);
-        tooClose.setGuardExpression("farAlarm_S");
+        tooFar.setGuardExpression("farAlarm_S");
         // no actions on this transition.
         
         // Director for the erroneous state.
