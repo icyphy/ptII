@@ -171,7 +171,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             // Set the result token to be false token
             // because the variable is discrete and has no value.
             // Note usually the usage is "x_isPresent && x"
-            node.setToken(new BooleanToken(false));
+            _evaluatedChildToken = new BooleanToken(false);
 
             if (_construction) {
                 _relationList.addRelation(0, 0.0);
@@ -191,7 +191,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // evaluate the leaf node.
         super.visitLeafNode(node);
 
-        ptolemy.data.Token result = node.getToken();
+        ptolemy.data.Token result = _evaluatedChildToken;
 
         if (!(result instanceof BooleanToken)) return;
 
@@ -249,9 +249,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
 
-        _evaluateChild(node, 0);
-
-        ptolemy.data.Token result = node.jjtGetChild(0).getToken();
+        ptolemy.data.Token result = _evaluateChild(node, 0);
 
         if (!(result instanceof BooleanToken)) {
             throw new IllegalActionException("Cannot perform logical "
@@ -265,12 +263,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         boolean flag = node.isLogicalAnd();
         for (int i = 1; i < numChildren; i++) {
-            ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
-
             // Evaluate the child
-            child.visit(this);
-            // Get its value.
-            ptolemy.data.Token nextToken = child.getToken();
+            ptolemy.data.Token nextToken = _evaluateChild(node, i);
+           
             if (!(nextToken instanceof BooleanToken)) {
                 throw new IllegalActionException("Cannot perform logical "
                         + "operation on " + nextToken + " which is a "
@@ -282,7 +277,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 result = ((BooleanToken)nextToken).or((BooleanToken)result);
             }
         }
-        node.setToken(result);
+        _evaluatedChildToken = result;
     }
 
     /** Visit the relation node. The evaluation part is the same as normal
@@ -312,7 +307,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 // Set the result token to be false token
                 // because the variable is discrete and has no value.
                 // Note usually the usage is "x_isPresent && x == 1.0"
-                node.setToken(new BooleanToken(false));
+                _evaluatedChildToken = new BooleanToken(false);
 
                 if (_construction) {
                     _relationList.addRelation(0, 0.0);
@@ -402,7 +397,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             }
             _difference = ((ScalarToken)leftScalar.subtract(rightScalar)).doubleValue();
         }
-        node.setToken(result);
+        _evaluatedChildToken = result;
 
         if (_construction) {
             _relationList.addRelation(_relationType, _difference);
