@@ -57,12 +57,13 @@ ALLJSRCS = 		ptolemy/plot/*.java \
 			ptolemy/kernel/util/*.java \
 			ptolemy/actor/*.java \
 			ptolemy/actor/util/*.java \
-			ptolemy/data/*.java \
-			ptolemy/data/expr/*.java \
 			ptolemy/domains/ct/kernel/*.java \
 			ptolemy/domains/ct/lib/*.java \
 			ptolemy/domains/de/kernel/*.java \
 			ptolemy/domains/de/lib/*.java \
+			ptolemy/data/*.java \
+			ptolemy/data/expr/*.java
+
 
 all: suball codeDoc/tree.html
 javadocs: codeDoc/tree.html
