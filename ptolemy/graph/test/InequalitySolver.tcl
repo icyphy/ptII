@@ -137,8 +137,9 @@ test InequalitySolver-2.3 {solver for the least solution} {
     set sat [$s solveLeast]
     list $sat [$ta getValue] [$tb getValue] \
 	 [enumToInfo [$s bottomVariables]] [enumToInfo [$s topVariables]] \
+	 [enumToInfo [$s variables]] \
 	 [enumToInfo [$s unsatisfiedInequalities]]
-} {1 z z {A(variable)_z B(variable)_z} {} {}}
+} {1 z z {A(variable)_z B(variable)_z} {} {A(variable)_z B(variable)_z} {}}
 
 ######################################################################
 ####
@@ -147,8 +148,9 @@ test InequalitySolver-2.4 {solver for the greatest solution} {
     set sat [$s solveGreatest]
     list $sat [$ta getValue] [$tb getValue] \
 	 [enumToInfo [$s bottomVariables]] [enumToInfo [$s topVariables]] \
+         [enumToInfo [$s variables]] \
 	 [enumToInfo [$s unsatisfiedInequalities]]
-} {1 x x {} {} {}}
+} {1 x x {} {} {A(variable)_x B(variable)_x} {}}
 
 ######################################################################
 ####
