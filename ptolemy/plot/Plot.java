@@ -296,7 +296,7 @@ public class Plot extends PlotBox {
             }
         };
         _deferIfNecessary(doClear);
-   }
+    }
 
     /** Clear the plot of data points in the specified dataset.
      *  This calls repaint() to request an update of the display.
@@ -1028,7 +1028,7 @@ public class Plot extends PlotBox {
                     startx >= _ulx && startx <= _lrx &&
                     starty >= _uly && starty <= _lry) {
                 graphics.drawLine((int)startx, (int)starty,
-                    (int)endx, (int)endy);
+                        (int)endx, (int)endy);
             }
         } else {
             // draw unconditionally.
@@ -1602,8 +1602,8 @@ public class Plot extends PlotBox {
             if (errorBar) {
                 if (yLowEB <= 0.0 || yHighEB <= 0.0) {
                     System.err.println("Can't plot non-positive Y values "+
-                        "when the logarithmic Y axis value is specified: " +
-                        y);
+                            "when the logarithmic Y axis value is specified: " +
+                            y);
                     return;
                 }
                 yLowEB = Math.log(yLowEB)*_LOG10SCALE;
@@ -1921,7 +1921,7 @@ public class Plot extends PlotBox {
                 int nexty = _lry - (int) ((nextp.y - _yMin) * _yscale);
                 // NOTE: I have no idea why I have to give this point backwards.
                 if (nextp.connected) _drawLine(graphics, dataset,
-                nextx, nexty,  xpos, ypos, true);
+                        nextx, nexty,  xpos, ypos, true);
                 nextp.connected = false;
             }
 
@@ -1940,9 +1940,9 @@ public class Plot extends PlotBox {
 
             if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
             if (pt.errorBar)
-            _drawErrorBar(graphics, dataset, xpos,
-            _lry - (long)((pt.yLowEB - _yMin) * _yscale),
-            _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
+                _drawErrorBar(graphics, dataset, xpos,
+                        _lry - (long)((pt.yLowEB - _yMin) * _yscale),
+                        _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
 
             // Restore the color, in case the box gets redrawn.
             graphics.setColor(_foreground);

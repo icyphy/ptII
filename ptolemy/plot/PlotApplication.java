@@ -143,7 +143,7 @@ public class PlotApplication extends PlotFrame {
         // look and feel of the platform we are running on.
         try {
             UIManager.setLookAndFeel(
-                UIManager.getSystemLookAndFeelClassName());
+                    UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             // Ignore exceptions, which only result in the wrong look and feel.
         }
