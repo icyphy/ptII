@@ -30,6 +30,7 @@ package ptolemy.vergil.kernel.attributes;
 
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
@@ -43,7 +44,8 @@ import ptolemy.kernel.util.NamedObj;
 //// AttributeValueAttribute
 /**
    This is a text attribute whose text string is derived from the
-   expression of a parameter.  <p>
+   value of a parameter. <p>
+
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
@@ -118,21 +120,37 @@ public class AttributeValueAttribute extends AbstractTextAttribute {
      */
     protected String _getText() {
         NamedObj container = (NamedObj)getContainer();
-        if (container != null) {
-            Attribute associatedAttribute = 
-                ModelScope.getScopedVariable(null, container, _attributeName);
-            if (associatedAttribute instanceof Settable) {
-                String value = ((Settable)associatedAttribute).getExpression();
-                String truncated = value;
-                int width = _displayWidth;
-                if (value.length() > width) {
-                    truncated = value.substring(0, width) + "...";
+        try {
+            if (container != null) {
+                Attribute associatedAttribute = 
+                    ModelScope.getScopedVariable(null, container, _attributeName);
+                if (associatedAttribute instanceof Variable) {
+                    String value = 
+                        ((Variable)associatedAttribute).getToken().toString();
+                    String truncated = value;
+                    int width = _displayWidth;
+                    if (value.length() > width) {
+                        truncated = value.substring(0, width) + "...";
+                    }
+                    if (truncated.length() == 0) {
+                        truncated = " ";
+                    }
+                    return truncated;
+                } else if (associatedAttribute instanceof Settable) {
+                    String value = ((Settable)associatedAttribute).getExpression();
+                    String truncated = value;
+                    int width = _displayWidth;
+                    if (value.length() > width) {
+                        truncated = value.substring(0, width) + "...";
+                    }
+                    if (truncated.length() == 0) {
+                        truncated = " ";
+                    }
+                    return truncated;
                 }
-                if (truncated.length() == 0) {
-                    truncated = " ";
-                }
-                return truncated;
             }
+        } catch (Exception ex) {
+            return "???";
         }
         return "???";
     }
