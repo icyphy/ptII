@@ -42,8 +42,8 @@ if [ $# -lt 1 ]; then
     echo "Source files will be loaded from $PTII/packagename/file and a review created in reviewtopdir/packagename/reviewname"
     exit 2
 fi
-# It generates PostScript and PDF versions of the source files and
-# of the javadoc output
+
+# It generates PostScript and PDF versions of the source file
 
 # The name of the directory that the review materials will reside in
 reviewtopdir=$1
@@ -76,10 +76,9 @@ echo "Please edit this file and check in to CVS"
 
 mkdir $reviewdir
 
-####################################
-echo "Generating codeDoc"
+#
+# Generate PostScript of the code
 cd $PTII/$packagename
-
 # Remove the directories from the filenames
 shortfiles=""
 for file in $files
@@ -87,44 +86,14 @@ do
    shortfiles=" $shortfiles `basename $file`"
 done
 
-# copy the source files into the review directory.
-cp $files $reviewdir
+enscript -Gp - $shortfiles > $reviewdir/javafiles.ps
+
+# Convert it to 2up
 cd $reviewdir
-
-# generate HTML codedocs from the java sources.
-mkdir codeDoc
-
-CLASSPATH=$PTII
-export CLASSPATH
-javadoc -d codeDoc $shortfiles
-
-####################################
-cd $reviewdir/codeDoc
-
-echo "Generating PostScript of the docs in `pwd`"
-
-# find which directories ended up with javadocs...  these must be
-# subdirs of the package
-htmldirs=`find $packagename -name "*.htm*" -exec dirname {} \; | sort -u`
-
-echo "dirs with html are :\n$htmldirs"
-
-if [ "$DISPLAY" = "" ]; then
-    echo "$0: Warning: \$DISPLAY is not set, so we are not generating PS or PDF of the docs"
-else
-    # html2ps is a hack that often does not work
-    sh $PTII/util/testsuite/html2ps -d ../javadocs.ps $htmldirs
-    psnup -n 2 < ../javadocs.ps > ../javadocs2up.ps
-fi
-
-cd ..
-
-# Generate PostScript of the code
-enscript -Gp - $shortfiles > javafiles.ps
 psnup -n 2 < javafiles.ps > javafiles2up.ps
 
-# Generate PDF
-distill *.ps
+# Generate PDF of the 2up
+distill javafiles2up.ps
 
 date=`date +"%h %e, %Y "`
 
@@ -177,8 +146,6 @@ done
 cat >>$reviewfile <<EOF
   <li> <a href="$reviewdate/javafiles2up.pdf" target="_top">2 up PDF</a>
   </menu>
-<li> Javadoc:
-    <a href="$reviewdate/javadocs2up.pdf" target="_top">2 up PDF</a>
 <li> <i>UML Diagram</i>
 </menu>
 
@@ -237,7 +204,7 @@ EOF
 
 # Do a little checking
 retval=0
-outputfiles="javafiles.ps javafiles2up.ps javafiles.pdf javafiles2up.pdf javadocs.ps javadocs2up.ps javadocs.pdf javadocs2up.pdf"
+outputfiles="javafiles.ps javafiles2up.ps javafiles2up.pdf"
 for outputfile in $outputfiles
 do
     if [ ! -f $outputfile ]; then
