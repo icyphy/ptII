@@ -82,6 +82,7 @@ OPTIONAL_FILES = \
 	'BasicGraphController$$1.class' \
 	'BasicGraphController$$NewPortAction.class' \
 	'BasicGraphController$$SchematicContextMenuFactory.class' \
+	'BasicGraphController$$2.class' \
 	'BasicGraphFrame$$1.class' \
 	'BasicGraphFrame$$CopyAction.class' \
 	'BasicGraphFrame$$CutAction.class' \
@@ -104,6 +105,9 @@ OPTIONAL_FILES = \
 	'IconController$$IconRenderer.class' \
 	'NamedObjController$$GetDocumentationAction.class' \
 	'ParameterizedNodeController$$1.class'
+	'RunnableGraphController$$PauseModelAction.class' \
+	'RunnableGraphController$$RunModelAction.class' \
+	'RunnableGraphController$$StopModelAction.class
 
 JCLASS = $(JSRCS:%.java=%.class)
 
