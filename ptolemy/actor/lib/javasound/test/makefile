@@ -67,8 +67,7 @@ EXTRA_SRCS =	$(TCL_SRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 MISC_FILES = \
 	auto \
 	pitchshift \
-	voice.au \
-	voice.wav
+	voice.au
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
