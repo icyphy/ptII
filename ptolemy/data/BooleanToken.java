@@ -270,8 +270,7 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @return A new BooleanToken containing the result.
      */
     protected Token _add(Token rightArgument) {
-        boolean rightValue = ((BooleanToken)rightArgument).booleanValue();
-        if ((_value || rightValue) && !(_value && rightValue)) {
+        if (_value || ((BooleanToken)rightArgument).booleanValue()) {
             return TRUE;
         } else {
             return FALSE;
@@ -360,8 +359,7 @@ public class BooleanToken extends AbstractConvertibleToken
      */
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
-        boolean rightValue = ((BooleanToken)rightArgument).booleanValue();
-        if (rightValue && _value) {
+        if (_value && ((BooleanToken)rightArgument).booleanValue()) {
             return TRUE;
         } else {
             return FALSE;
