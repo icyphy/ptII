@@ -366,7 +366,8 @@ public class FSMActor extends CompositeEntity
                          names.hasNext();) {
                         String name = (String)names.next();
                         NamedObj object = action.getDestination(name);
-                        if (object instanceof Variable) {
+                        if (object instanceof Variable && 
+                            deepContains(object)) {
                             list.add(object);
                         }
                     }
@@ -382,7 +383,8 @@ public class FSMActor extends CompositeEntity
                          names.hasNext();) {
                         String name = (String)names.next();
                         NamedObj object = action.getDestination(name);
-                        if (object instanceof Variable) {
+                        if (object instanceof Variable &&
+                            deepContains(object)) {
                             list.add(object);
                         }
                     }

@@ -146,7 +146,7 @@ test ConstVariableModelAnalysis-2.1 {test modal model.} {
     $p1 setExpression "1"
     $p2 setExpression "2"
     $t1_action setExpression "p1=1"
-    $t2_action setExpression "ramp.step=2"
+    $t2_action setExpression "p1=2"
 
     set dynamicVariableSet [java::new java.util.HashSet]
     $dynamicVariableSet add $a
@@ -158,5 +158,5 @@ test ConstVariableModelAnalysis-2.1 {test modal model.} {
 	[lsort [listToNames [$analysis getConstVariables $e1]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
 	[lsort [listToNames [$analysis getConstVariables $fsm]]]
-} {init step {firingCountLimit init} p2}
+} {init step {firingCountLimit init step} p2}
 
