@@ -44,9 +44,9 @@ given by the <i>message</i> parameter.
 The inputs are read and checked in the postfire() method only.
 
 @author Haiyang Zheng
-@version
+@version $Id$
+@since Ptolemy II 2.1
 */
-
 public class ThrowModelError extends Sink {
 
     /** Construct an actor in the specified container with the specified
