@@ -61,9 +61,8 @@ public class RecordType extends StructuredType {
      *  arrays must have the same length, and their elements have one to
      *  one correspondence. That is, the i'th entry in the types array is
      *  the type for the i'th label in the labels array. To construct the
-     *  empty record type, which is the greatest record type, set the length
-     *  of the argument arrays to 0.
-     *  @param labels A String array.
+     *  empty record type, set the length of the argument arrays to 0.
+     *  @param labels An array of String.
      *  @param types An array of Type.
      *  @exception IllegalArgumentException If the two arrays do not have
      *   the same size.
@@ -119,27 +118,26 @@ public class RecordType extends StructuredType {
      *  RecordToken, and its type must be a subtype of this record type.
      *  If this type is a variable, convert the the argument into a
      *  substitution instance of this variable.
-     *  @param t A token.
+     *  @param token A token.
      *  @return An RecordToken.
      *  @exception IllegalActionException If lossless conversion
      *   cannot be done.
      */
-    public Token convert(Token t) throws IllegalActionException {
-        if ( !isCompatible(t)) {
+    public Token convert(Token token) throws IllegalActionException {
+        if ( !isCompatible(token)) {
             throw new IllegalArgumentException("RecordType.convert: " +
-                    "Cannot convert the token " + t.toString() +
+                    "Cannot convert the token " + token.toString() +
                     " to this type " + this.toString());
         }
 
-        RecordToken argRecTok = (RecordToken)t;
+        RecordToken argRecTok = (RecordToken)token;
         Object[] labelsObj = _fields.keySet().toArray();
         String[] labels = new String[labelsObj.length];
         Token[] values = new Token[labelsObj.length];
         for (int i=0; i<labelsObj.length; i++) {
             labels[i] = (String)labelsObj[i];
             Token orgToken = argRecTok.get(labels[i]);
-            FieldType fieldType = (FieldType)_fields.get(labels[i]);
-            Type type = fieldType._resolvedType;
+            Type type = this.get(labels[i]);
             values[i] = type.convert(orgToken);
         }
 
@@ -173,25 +171,24 @@ public class RecordType extends StructuredType {
      *  variable, the argument is compatible if its type is a substitution
      *  instance of this type, or if it can be converted losslessly to a
      *  substitution instance of this type.
-     *  @param t A Token.
+     *  @param token A Token.
      *  @return True if the argument is compatible with this type.
      */
-    public boolean isCompatible(Token t) {
-        if ( !(t instanceof RecordToken)) {
+    public boolean isCompatible(Token token) {
+        if ( !(token instanceof RecordToken)) {
             return false;
         }
 
-        RecordToken argRecTok = (RecordToken)t;
+        RecordToken argRecTok = (RecordToken)token;
         Iterator iter = _fields.keySet().iterator();
         while (iter.hasNext()) {
             String label = (String)iter.next();
-            if (argRecTok.get(label) == null) {
+	    Token value = (Token)argRecTok.get(label);
+            if (value == null) {
                 // argument token does not contain this label
                 return false;
             }
-            FieldType fieldType = (FieldType)_fields.get(label);
-            Type type = fieldType._declaredType;
-            Token value = (Token)argRecTok.get(label);
+            Type type = (Type)this.get(label);
             if ( !type.isCompatible(value)) {
                 return false;
             }
@@ -218,16 +215,16 @@ public class RecordType extends StructuredType {
 
     /** Determine if the argument represents the same RecordType as this
      *  object.
-     *  @param t A Type.
+     *  @param type A Type.
      *  @return True if the argument represents the same RecordType as
      *   this object; false otherwise.
      */
-    public boolean isEqualTo(Type t) {
-        if ( !(t instanceof RecordType)) {
+    public boolean isEqualTo(Type type) {
+        if ( !(type instanceof RecordType)) {
             return false;
         }
 
-        RecordType argRecType = (RecordType)t;
+        RecordType argRecType = (RecordType)type;
 
         // check my label set is the same as that of the argument
         Set myLabelSet = _fields.keySet();
@@ -255,29 +252,25 @@ public class RecordType extends StructuredType {
      *  @return True if this type is instantiable.
      */
     public boolean isInstantiable() {
-        Iterator iter = _fields.values().iterator();
-        while (iter.hasNext()) {
-            FieldType fieldType = (FieldType)iter.next();
-            Type type = fieldType._resolvedType;
+        Iterator iter = _fields.keySet().iterator();
+	while (iter.hasNext()) {
+	    String label = (String)iter.next();
+	    Type type = this.get(label);
             if ( !type.isInstantiable()) {
                 return false;
             }
         }
-
         return true;
     }
 
     /** Return true if the specified type is a substitution instance of this
-     *  type. For the argument to be a substitution instance, this type must
-     *  be a variable, and the argument must be a type that can be obtained
-     *  by replacing the BaseType.ANY component of the declared type by
-     *  another type. This means that these two record types must have the
-     *  same set of labels.
+     *  type.
      *  @parameter type A Type.
      *  @return True if the argument is a substitution instance of this type.
+     *  @see Type#isSubstitutionInstance
      */
     public boolean isSubstitutionInstance(Type type) {
-        if (isConstant() || ( !(type instanceof RecordType))) {
+        if ( !(type instanceof RecordType)) {
             return false;
         }
 
