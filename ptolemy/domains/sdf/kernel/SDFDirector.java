@@ -1,5 +1,4 @@
-/* An SDFDirector governs the execution of a CompositeActor containing
-   SDFActors
+/* Director for the synchronous dataflow model of computation.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -98,7 +97,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  Increment the version number of the workspace.
      *  The SDFDirector will have a default scheduler of type SDFScheduler.
      *
-     *  @param workspace The workspace of this object.
+     *  @param workspace The workspace for this object.
      */
     public SDFDirector(Workspace workspace) {
         super(workspace);
@@ -106,7 +105,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
     /** Construct a director in the given container with the given name.
-     *  If the container argument must not be null, or a
+     *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
@@ -124,9 +123,13 @@ public class SDFDirector extends StaticSchedulingDirector {
         _init();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
     /** A Parameter representing the number of times that postfire may be
      *  called before it returns false.  If the value is less than or
-     *  equal to zero, then the simulation will never return false in postfire.
+     *  equal to zero, then the execution will never return false in postfire,
+     *  and thus the execution can continue forever.
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
@@ -135,7 +138,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     ////                         public methods                    ////
 
     /** Clone the director into the specified workspace. This calls the
-     *  base class and then copies the parameter of this director.  The new
+     *  base class and then sets the interations member.  The new
      *  actor will have the same parameter values as the old.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
@@ -220,11 +223,13 @@ public class SDFDirector extends StaticSchedulingDirector {
         return new SDFReceiver();
     }
 
-    /** The SDFDirector always returns true,
-     *  assuming that it can be fired.   It does
-     *  not call prefire on any contained actors.
+    /** Check the input ports of the container composite actor (if there
+     *  are any) to see whether they have enough tokens, and return true
+     *  if they do.  If there are no input ports, then also return true.
+     *  Otherwise, return false.  Note that this does not call prefire()
+     *  on the contained actors.
+     *  @exception IllegalActionException If port methods throw it.
      *  @return True.
-     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
         _postfirereturns = true;
@@ -234,24 +239,23 @@ public class SDFDirector extends StaticSchedulingDirector {
 	int inputCount = 0;
 	while(inputPorts.hasNext()) {
 	    IOPort inputPort = (IOPort) inputPorts.next();
-	    if (_debugging) _debug("checking input " +
-                    inputPort.getFullName());
-
-	    int threshold =
-		SDFScheduler.getTokenConsumptionRate(inputPort);
-	    if (_debugging) _debug("Threshold = " + threshold);
+	    int threshold = SDFScheduler.getTokenConsumptionRate(inputPort);
+	    if (_debugging) {
+                _debug("checking input " + inputPort.getFullName());
+                _debug("Threshold = " + threshold);
+            }
 	    Receiver receivers[][] = inputPort.getReceivers();
 
 	    int channel;
-	    for(channel = 0;
-		channel < inputPort.getWidth();
-		channel++) {
+	    for(channel = 0; channel < inputPort.getWidth(); channel++) {
 		if(!receivers[channel][0].hasToken(threshold)) {
-		    if(_debugging) _debug("Channel " + channel + 
-					  " does not have enough tokens." +
-					  " Prefire returns false on " + 
-					  container.getFullName());
-		    return false;
+		    if(_debugging) {
+                        _debug("Channel " + channel + 
+                               " does not have enough tokens." +
+                               " Prefire returns false on " + 
+                               container.getFullName());
+                    }
+                    return false;
 		}
 	    }
 	}
@@ -293,11 +297,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         return _postfirereturns;
     }
 
-    /** Return true if transfers data from an input port of the
-     *  container to the ports it is connected to on the inside.
-     *  This method differs from the base class method in that this
-     *  method will transfer enough tokens to complete an internal iteration,
-     *  while the base class method will transfer at most one token.
+    /** Override the base class method to transfer enough tokens to
+     *  complete an internal iteration.
      *  This behavior is required to handle the case of non-homogeneous
      *  opaque composite actors. The port argument must be an opaque
      *  input port. If any channel of the input port has no data, then
@@ -391,17 +392,9 @@ public class SDFDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return true if this director requires write access
-     *  on the workspace during execution. Most director functions
-     *  during execution do not need write access on the workspace.
-     *  A director will generally only need write access on the workspace if
-     *  it performs mutations locally, instead of queueing them with the
-     *  manager.
-     *  <p>
-     *  In this class, return true, indicating that SDF does not perform local
-     *  mutations.
-     *
-     *  @return false
+    /** Override the base class to indicate that this director does not
+     *  need write access on the workspace during an iteration.
+     *  @return False.
      */
     protected boolean _writeAccessRequired() {
         return false;
