@@ -345,7 +345,7 @@ public class MoMLParser extends HandlerBase {
      *  then return a StringReader
      *  that will read the locally cached version of this DTD
      *  (the public variable MoML_DTD_1). Otherwise, return null,
-     *  which has the effect of defering to &AElig;lfred for
+     *  which has the effect of deferring to &AElig;lfred for
      *  resolution of the URI.  Derived classes may return a
      *  a modified URI (a string), an InputStream, or a Reader.
      *  In the latter two cases, the input character stream is
