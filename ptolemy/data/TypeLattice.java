@@ -61,7 +61,7 @@ public final class TypeLattice
      *  ptolemy.graph.CPO.SAME, ptolemy.graph.CPO.HIGHER,
      *  ptolemy.graph.CPO.INCOMPARABLE, indicating the first argument
      *  is lower than, equal to, higher than, or incomparable with the
-     *  second arguemnt in the type hierarchy, respectively.
+     *  second argument in the type hierarchy, respectively.
      *  @param c1 a Class representing a token type.
      *  @param c2 a Class representing a token type.
      *  @return An integer.
@@ -79,7 +79,7 @@ public final class TypeLattice
      *  ptolemy.graph.CPO.INCOMPARABLE, indicating that the class
      *  representing the first argument is lower than, equal to,
      *  higher than, or incomparable with the class representing the
-     *  second arguemnt in the type hierarchy, respectively.
+     *  second argument in the type hierarchy, respectively.
      *  @param t1 a Token.
      *  @param t1 a Token.
      *  @return An integer.
