@@ -1,6 +1,6 @@
 /* Generate a convolutional code
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -75,9 +75,11 @@ A good convolutional code should have large Hamming distance between
 any two of its codewords. This generally cannot be easily observed
 unless by checking its complete code book. However, there are some
 basic lines that all "good" codes should satisfy:
-1. "k" should be strictly smaller than "n", otherwise the code is
+<ol>
+<li> "k" should be strictly smaller than "n", otherwise the code is
 not uniquely decodable.
-2. "k" should not be higher than the highest order of all polynomials,
+<li> "k" should not be higher than the highest order of all polynomials,
+</ol>
 otherwise, some bits never get involved in computing parities.
 In the above two cases, the actor will throw an exception. However, they
 do not guarantee the codeword can be decoded successfully, and it is
@@ -306,7 +308,7 @@ public class ConvolutionalCoder extends Transformer {
     }
 
     //////////////////////////////////////////////////////////////
-    ////           private parameters and variables           ////
+    ////           private variables                          ////
 
     // Consumption rate of the input port.
     private Parameter _inputRate;
