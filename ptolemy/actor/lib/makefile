@@ -31,27 +31,23 @@
 
 # This directory contains polymorphic actors.
 
+ME =		ptolemy/actor/lib
+
+DIRS = 		test #doc
+
 # Root of the Java directory
 ROOT =		../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-#JAVAHOME =   $(LATEST_JAVAHOME)
-DIRS = 		test #doc
 
-CLASSPATH = ../../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.actor.lib
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/actor/lib
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	lib
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
-
 
 # Keep this list alphabetized.
 JSRCS = \
