@@ -31,23 +31,29 @@
 # 
 
 if [ $# -lt 4 ]; then 
-    echo "Usage: mkjnlp jnlpfile number_of_jars_to_load_eagerly mainjar otherjars . . ."
+    echo "Usage: mkjnlp jnlpfile basedirectory number_of_jars_to_load_eagerly mainjar otherjars . . ."
     exit 5
 fi
 
 jnlpfile=$1
 eagerjars=$2
-mainjar=$3
-shift; shift; shift
+basedirectory=$3
+mainjar=$4
+shift; shift; shift; shift
 tmpfile=/tmp/mkjnlp.$$
 
 otherjars="$@"
+
+if [ ! -d $basedirectory ]; then
+    echo "$0: '$basedirectory' does not exist or is not a directory"
+    exit 5
+fi
 
 for file in $otherjars
 do
     # Use ls -lg because Cygwin ls -l includes the group and
     # Solaris 8 ls -l does not
-    otherjarssizes="$otherjarssizes `ls -lg $file | awk '{print $5}' - `"
+    otherjarssizes="$otherjarssizes `ls -lg $basedirectory/$file | awk '{print $5}' - `"
 done
 
 # Read in the jar files and generate jar and package lines for them
@@ -81,7 +87,7 @@ awk '{
 		}
 	    }
 	    part = package
-	    printf("\t<jar href=%c%s%c\n\t\tpart=%c%s%c", 34, jars[n], 34, 34, part, 34)
+	    printf("\t<jar href=%c%s/%s%c\n\t\tpart=%c%s%c", 34, basedirectory, jars[n], 34, 34, part, 34)
 	    printf("\n\t\tsize=%c%s%c", 34, sizes[n], 34)
 	    if (jars[n] == mainjar) {
 		printf("\n\t\tmain=%ctrue%c", 34, 34)
@@ -107,7 +113,8 @@ awk '{
 	    }
 	}
     }
-}' eagerjars=$eagerjars \
+}' basedirectory=$basedirectory \
+    eagerjars=$eagerjars \
     mainjar=$mainjar \
     otherjars="$otherjars" \
     otherjarssizes="$otherjarssizes" \
