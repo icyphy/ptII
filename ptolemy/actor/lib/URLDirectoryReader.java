@@ -321,7 +321,8 @@ public class URLDirectoryReader extends URLReader {
                     + urlConnection.getContentType());
         }
         BufferedReader in =
-            new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            new BufferedReader(
+                    new InputStreamReader(urlConnection.getInputStream()));
         if (!contentType.startsWith("text/plain")
                 && !urlConnection.getURL().toString().endsWith("/")) {
             // text/plain urls need not end with /, but
