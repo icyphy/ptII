@@ -23,9 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
-@ProposedRating Red (eal)
-@AcceptedRating Red (cxh)
 */
 
 package ptolemy.domains.de.lib.test;
@@ -40,6 +37,12 @@ import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+/**
+  @author Edward A. Lee
+  @version $Id$
+  @Pt.ProposedRating Red (eal)
+  @Pt.AcceptedRating Red (cxh)
+*/
 public class SimpleDelay extends TypedAtomicActor {
 
     public SimpleDelay(TypedCompositeActor container, String name)
