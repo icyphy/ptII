@@ -260,13 +260,35 @@ public class TypeApplet extends SDFApplet {
       * Initialize the trace model.
       */
      public void initTraceModel(TraceModel model) {
-         model.addTrace(_ramp1.output, new TraceModel.Trace());
-         model.addTrace(_ramp2.output, new TraceModel.Trace());
-         model.addTrace(_expr.getPort("input1"), new TraceModel.Trace());
-         model.addTrace(_expr.getPort("input2"), new TraceModel.Trace());
-         model.addTrace(_expr.output, new TraceModel.Trace());
-         model.addTrace(_plotter.input, new TraceModel.Trace());
-         model.addTrace(_printer.input, new TraceModel.Trace());
+         TraceModel.Trace t;
+
+         t = new TraceModel.Trace();
+         t.setUserObject("ramp1.output");
+         model.addTrace(_ramp1.output, t);
+
+         t = new TraceModel.Trace();
+         t.setUserObject("ramp2.output");
+         model.addTrace(_ramp2.output, t);
+
+         t = new TraceModel.Trace();
+         t.setUserObject("expr.input1");
+         model.addTrace(_expr.getPort("input1"), t);
+
+         t = new TraceModel.Trace();
+         t.setUserObject("expr.input2");
+         model.addTrace(_expr.getPort("input2"), t);
+
+         t = new TraceModel.Trace();
+         t.setUserObject("expr.output");
+         model.addTrace(_expr.output, t);
+
+         t = new TraceModel.Trace();
+         t.setUserObject("plotter.input");
+         model.addTrace(_plotter.input, t);
+
+         t = new TraceModel.Trace();
+         t.setUserObject("printer.input");
+         model.addTrace(_printer.input, t);
      }
 
       /**
@@ -317,7 +339,7 @@ public class TypeApplet extends SDFApplet {
         // Configure the view
         TraceView traceView = tracePane.getTraceView();
         traceView.setTimeScale(0.5);
-        traceView.setLayout(10,10,500,30,5);
+        traceView.setLayout(10,10,400,20,20);
         traceView.setTraceModel(traceModel);
 
         return traceWidget;
