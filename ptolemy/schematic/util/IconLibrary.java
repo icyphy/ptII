@@ -45,18 +45,14 @@ called suiblibraries.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class IconLibrary extends NamedObj{
+public class IconLibrary extends PTMLObject {
 
     /** 
      * Create an IconLibrary object with the name "iconlibrary".
      * The library will have an empty string for the description and version.
      */
     public IconLibrary() {
-        super("iconlibrary");
-        _sublibraries = (LLMap) new LLMap();
-        _icons = (LLMap) new LLMap();
-        _description = new String("");
-        _version = new String("");
+        this("iconlibrary");
     }
 
     /** 
@@ -67,7 +63,6 @@ public class IconLibrary extends NamedObj{
         super(name);
         _sublibraries = (LLMap) new LLMap();
         _icons = (LLMap) new LLMap();
-        _description = new String("");
         _version = new String("");
    }
 
@@ -97,13 +92,6 @@ public class IconLibrary extends NamedObj{
      */
     public boolean containsSubLibrary(String name) {
         return _sublibraries.includesKey(name);
-    }
-
-    /**
-     * Return a long description string of the the Icons in thie Library.
-     */
-    public String getDescription() {
-        return _description;
     }
 
     /**
@@ -154,13 +142,6 @@ public class IconLibrary extends NamedObj{
         _sublibraries.removeAt(name);
     }
 
-    /**
-     * Set the string that contains the long description of this library.
-     */
-    public void setDescription(String s) {
-        _description = s;;
-    }
-
     /** Set the string that represents the version of this library.
      */
     public void setVersion(String s) {
@@ -177,7 +158,6 @@ public class IconLibrary extends NamedObj{
         return _sublibraries.keys();
     }
 
-    private String _description;
     private String _version;
     private LLMap _sublibraries;
     private LLMap _icons;

@@ -97,16 +97,15 @@ public class PTMLObjectFactory {
                 iconlibrary.setDescription(child.getPCData());
             } else if(etype.equals("terminalstyle")) {
             } else {
-                _unknownElementType(etype, "iconlibrary");
+                _unknownElementType(e, "iconlibrary");
             }
         }
         Enumeration attributes = e.attributeNames();
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
-            String v = e.getAttribute(n);
             if (n.equals("name")) {
                 try {
-                    iconlibrary.setName(v);
+                    iconlibrary.setName(_getString(e, n));
                 } catch (Exception ex) {};
             }
         }
@@ -154,8 +153,7 @@ public class PTMLObjectFactory {
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
-            String etype = child.getElementType();
-            _unknownElementType(etype, "GraphicElement");
+            _unknownElementType(child, "GraphicElement");
         }
         
         Enumeration attributes = e.attributeNames();
@@ -192,26 +190,103 @@ public class PTMLObjectFactory {
                     icon.addGraphicElement(g);
                 }
             } else {
-                _unknownElementType(etype, "icon");
+                _unknownElementType(e, "icon");
             }    
         }
         Enumeration attributes = e.attributeNames();
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
-            String v = e.getAttribute(n);
             if (n.equals("name")) {
                 try {
-                    icon.setName(v);
+                    icon.setName(_getString(e, n));
                 } catch (Exception ex) {};
             }
         }
         return icon;
     }
 
+    private static Terminal _createTerminal(XMLElement e)
+        throws IllegalActionException {
+
+        _verifyElement(e, "terminal");
+
+        Terminal terminal = new Terminal();
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
+            _unknownElementType(child, "terminal");
+        }
+
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("name")) {
+                try {                    
+                    terminal.setName(_getString(e, n));
+                } catch (Exception ex) {};
+            } else if (n.equals("input")) {
+                terminal.setInput(_getBoolean(e, n));
+            } else if (n.equals("output")) {
+                terminal.setOutput(_getBoolean(e, n));
+            } else if (n.equals("multi")) {
+                terminal.setMulti(_getBoolean(e, n));
+            } else if (n.equals("x")) {
+                terminal.setX(_getDouble(e, n));
+            } else if (n.equals("y")) {
+                terminal.setY(_getDouble(e, n));
+            }
+        }
+        return terminal;
+    }
+
+    /** Return a boolean corresponding to the value of the attribute with
+     * the given name in the given XMLElement.
+     * @throws IllegalActionException If the value of the XML attribute
+     *  is not "true" or "false"
+     */
+    private static boolean _getBoolean(XMLElement e, String name) 
+        throws IllegalActionException {
+        String v = e.getAttribute(name);
+        if(v == "true") 
+            return true;
+        else if(v == "false")
+            return false;
+        else throw new IllegalActionException(
+                "Attribute " + name + " with value " + v + 
+                    " does not represent a valid boolean.");
+    }
+   
+    /** Return a double corresponding to the value of the attribute with
+     * the given name in the given XMLElement.
+     * @throws IllegalActionException If the value of the XML attribute
+     *  does not represent a valid double
+     */
+    private static double _getDouble(XMLElement el, String name) 
+        throws IllegalActionException {
+        String v = el.getAttribute(name);
+        try {
+            Double d = new Double(v);
+            return d.doubleValue();
+        } catch (NumberFormatException e) {
+            throw new IllegalActionException(
+                    "Attribute " + name + " with value " + v + 
+                    " does not represent a valid double.");
+        }
+    }
+
+    /** Return a boolean corresponding to the value of the attribute with
+     * the given name in the given XMLElement.
+     */
+    private static String _getString(XMLElement el, String name) {
+        String v = el.getAttribute(name);
+        return v;
+    }
+
     /** 
      * Print a message about the unknown element
      */
-    private static void _unknownElementType(String etype, String parent) {
+    private static void _unknownElementType(XMLElement el, String parent) {
+            String etype = el.getElementType();
                 System.out.println("Unrecognized element type = " +
                     etype + " found in " + parent);
     }
@@ -235,6 +310,7 @@ public class PTMLObjectFactory {
                     "differs from expected " + elementtype + ".");
         }
      }
+
                    
 }
 

@@ -37,85 +37,81 @@ import collections.*;
 import ptolemy.schematic.xml.XMLElement;
 
 //////////////////////////////////////////////////////////////////////////
-//// Icon
+//// TerminalStyle
 /**
 
-An icon is the graphical representation of a schematic entity.
-Icons are stored hierarchically in icon libraries.   Every icon has a 
+An TerminalStyle is the graphical representation of a schematic entity.
+TerminalStyles are stored hierarchically in TerminalStyle libraries.  
+Every TerminalStyle has a 
 name, along with a graphical representation.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class Icon extends PTMLObject {
+public class TerminalStyle extends PTMLObject {
 
     /**
-     * Create a new Icon with the name "icon". 
-     * By default, the icon contains no graphic
+     * Create a new TerminalStyle with the name "TerminalStyle". 
+     * By default, the TerminalStyle contains no graphic
      * representations.
      */
-    public Icon () {
-        this("icon");
+    public TerminalStyle () {
+        this("TerminalStyle");
     }
 
     /**
-     * Create a new Icon with the given name.
-     * By default, the icon contains no graphic
+     * Create a new TerminalStyle with the given name.
+     * By default, the TerminalStyle contains no graphic
      * representations.
      */
-    public Icon (String name) {
+    public TerminalStyle (String name) {
         super(name);
-        _graphics = (CircularList) new CircularList();
+        _terminals = (CircularList) new CircularList();
     }
 
     /**
-     * Add a new graphic to the icon. The format
-     * is specified in the "format" attribute of the XMLElement.
-     * The XMLElement must be of element type "graphic".
+     * Add a new Terminal to the TerminalStyle.  The Terminal will be 
+     * added at the end of the current terminals.
      *
-     * @throw IllegalActionException if the element is not of element type
-     * "graphic"
-     * @throw IllegalActionException if a graphic with the same type as
-     * the element is already associated with this Icon.
      */
-    public void addGraphicElement (GraphicElement g) 
+    public void addTerminal (Terminal t) 
             throws IllegalActionException {
-        _graphics.insertLast(g);
-    }
+        _terminals.insertLast(t);
+        }
 
     /**
-     * Test if this icon contains a graphic in the
+     * Test if this TerminalStyle contains a Terminal in the
      * given format.
      */
-    public boolean containsGraphicElement (GraphicElement g) {
-        return _graphics.includes(g);
+    public boolean containsTerminal (Terminal t) {
+        return _terminals.includes(t);
     }
 
     /**
-     * Return an enumeration over the names of the graphics formats
-     * supported by this icon.
+     * Return an enumeration over the terminals in this TerminalStyle.
      *
-     * @return Enumeration of String.
+     * @return Enumeration of Terminals.
      */
-    public Enumeration graphicElements() {
-        return _graphics.elements();
+    public Enumeration terminals() {
+        return _terminals.elements();
     }
 
     /**
-     * Remove a graphic element from the icon. Throw an exception if
-     * the graphic element is not contained in this icon
+     * Remove a graphic element from the TerminalStyle. Throw an exception if
+     * the graphic element is not contained in this TerminalStyle
      */
-    public void removeGraphicElement (GraphicElement g)
+    public void removeTermainal (Terminal t)
             throws IllegalActionException {
         try {
-            _graphics.removeOneOf(g);
+            _terminals.removeOneOf(t);
         }
         catch (NoSuchElementException e) {
-            throw new IllegalActionException("removeGraphicElement:" +
-                    "GraphicElement not found in icon.");
+            throw new IllegalActionException("removeTerminal:" +
+                    "Terminal not found in TerminalStyle.");
         }
     }
 
-    CircularList _graphics;
+    CircularList _terminals;
+
 }
 

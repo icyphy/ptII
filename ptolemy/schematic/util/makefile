@@ -51,7 +51,10 @@ JSRCS = \
 	GraphicElement.java \
 	Icon.java \
 	IconLibrary.java \
-	PTMLObjectFactory.java  
+	PTMLObject.java \
+	PTMLObjectFactory.java \
+	Terminal.java \
+	TerminalStyle.java	
 
 EXTRA_SRCS =	$(JSRCS)
 
