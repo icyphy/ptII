@@ -101,6 +101,22 @@ Miedrich, and Ron Rabakukk
 */
 public class BrowserLauncher {
 
+    /** Launch the browser on the first argument.  If there is
+     *  no first argument, then open http://ptolemy.eecs.berkeley.edu
+     * 
+     *  <p> For example, to open the user's default browser on foo.html:
+     *  <pre>
+     *  java -classpath $PTII ptolemy.actor.gui.BrowserLauncher foo.html
+     *  <pre>
+     */
+    public static void main(String args[]) throws Exception {
+        if (args.length > 1) {
+            BrowserLauncher.openURL(args[0]);
+        } else {
+            BrowserLauncher.openURL("http://ptolemy.eecs.berkeley.edu");
+        }
+    }
+      
     /**
      * Attempts to open the default web browser to the given URL.
      * @param url The URL to open
