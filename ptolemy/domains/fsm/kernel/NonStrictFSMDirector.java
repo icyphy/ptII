@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// ExtendedFSMDirector
+//// NonStrictFSMDirector
 /**
    This director extends FSMDirector by consuming only input tokens that
    are needed in the current state. An input port will consume one
@@ -79,13 +79,13 @@ import ptolemy.kernel.util.Workspace;
 */
 
 
-public class ExtendedFSMDirector extends FSMDirector {
+public class NonStrictFSMDirector extends FSMDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      */
-    public ExtendedFSMDirector() {
+    public NonStrictFSMDirector() {
         super();
     }
 
@@ -101,7 +101,7 @@ public class ExtendedFSMDirector extends FSMDirector {
      *  @exception NameDuplicationException If the container not a
      *   CompositeActor and the name collides with an entity in the container.
      */
-    public ExtendedFSMDirector(CompositeEntity container, String name)
+    public NonStrictFSMDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -111,7 +111,7 @@ public class ExtendedFSMDirector extends FSMDirector {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this director.
      */
-    public ExtendedFSMDirector(Workspace workspace) {
+    public NonStrictFSMDirector(Workspace workspace) {
         super(workspace);
     }
 

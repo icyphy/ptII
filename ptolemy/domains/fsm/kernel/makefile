@@ -54,7 +54,6 @@ JSRCS = \
 	ChoiceAction.java \
 	CommitAction.java \
 	CommitActionsAttribute.java \
-	ExtendedFSMDirector.java \
 	FSMActor.java \
 	FSMDirector.java \
 	FunctionDependencyOfFSMActor.java \
@@ -63,6 +62,7 @@ JSRCS = \
 	InterfaceAutomatonTransition.java \
 	MultipleEnabledTransitionsException.java \
 	MultirateFSMDirector.java \
+	NonStrictFSMDirector.java \
 	OutputActionsAttribute.java \
 	ParseTreeEvaluatorForGuardExpression.java \
 	RelationList.java \
