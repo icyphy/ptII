@@ -46,9 +46,9 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate(
     void *new_array;
     va_list next_argument;
     PCCG_ARRAY_INSTANCE *result;
-    //extern PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
+    /* extern PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS; */
     
-    //FIXME: Initialize generic array class
+    /* FIXME: Initialize generic array class */
     
     va_start(next_argument, empty_dimensions);    
 

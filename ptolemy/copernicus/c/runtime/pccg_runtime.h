@@ -34,6 +34,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 #define _runtime_h
 
 #include "pccg.h"
+#include <string.h> /* Solaris needs this */
 #include <setjmp.h>
 
 

@@ -76,7 +76,7 @@ typedef struct
 
 typedef float PCCG_ARRAY_INSTANCE;
 
-//FIXME: Make this a structure typedef.
+/* FIXME: Make this a structure typedef. */
 typedef char  PCCG_ARRAY_char_elem;
 typedef short PCCG_ARRAY_short_elem;
 typedef long  PCCG_ARRAY_long_elem;
@@ -85,7 +85,7 @@ typedef double PCCG_ARRAY_double_elem;
 
 typedef PCCG_ARRAY_INSTANCE *PCCG_ARRAY_INSTANCE_PTR;
 
-//extern PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
+/* extern PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS; */
 
 /* Allocate storage for an array. FIXME: complete this function.
    and its code. It should use varargs. */
