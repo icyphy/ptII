@@ -237,7 +237,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  on the designated port of this Actor during each firing.
      *
      *  @return The number of tokens produced on the port, as specified in
-     *  the TokenProductionRate parameter.
+     *  the tokenProductionRate parameter.
      */
     public int getTokenProductionRate() throws IllegalActionException {
 	return ((IntToken)tokenProductionRate.getToken()).intValue();
