@@ -154,7 +154,7 @@ makes extensive use of <code>-binary</code>.
 <ol>
 <li>If the first byte of the data file is not a <code>d</code>, then
 we assume that the file contains 4 byte floats with no plot commands.
-<li>If the first byte of the data file is a <code>d<code>, then 
+<li>If the first byte of the data file is a <code>d</code>, then 
 we assume that the plot commands are encoded as single characters,
 and the numeric data is a 4 byte float.  
  <br>The commands are encoded as follows:
