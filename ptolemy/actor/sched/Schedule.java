@@ -30,9 +30,11 @@
 
 package ptolemy.actor.sched;
 import ptolemy.actor.Executable;
+import ptolemy.kernel.util.InvalidStateException;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Schedule
@@ -148,6 +150,7 @@ public class Schedule extends ScheduleElement {
 	super();
 	// This list will contain the schedule elements.
 	_schedule = new LinkedList();
+	_scheduleVersion = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -159,6 +162,7 @@ public class Schedule extends ScheduleElement {
      * @param sa The schedule element to add.
      */
     public void add(ScheduleElement sa) {
+	_scheduleVersion++;
 	_schedule.add(sa);
     }
 
@@ -171,6 +175,7 @@ public class Schedule extends ScheduleElement {
      *  @param sa The schedule element to add.
      */
     public void add(int index, ScheduleElement sa) {
+	_scheduleVersion++; 
 	_schedule.add(index, sa);
     }
 
@@ -180,7 +185,7 @@ public class Schedule extends ScheduleElement {
      *  schedule is not valid, then the returned iterator will contain 
      *  null elements.
      *  <p>
-     *  Note that the behavior of an iterator is unspecified if the
+     *  Note that the behavior of this iterator is unspecified if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
      *  
@@ -209,7 +214,7 @@ public class Schedule extends ScheduleElement {
      *  lowest-level nodes must be an instance of Firing. If not, then
      *  the returned iterator will contain null elements.
      *  <p>
-     *  Note that the behavior of an iterator is unspecified if the
+     *  Note that the behavior of this iterator is unspecified if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
      *  
@@ -239,14 +244,14 @@ public class Schedule extends ScheduleElement {
      *  The elements of the iterator sequence are instances of Firing
      *  or Schedule.
      *  <p>
-     *  Note that the behavior of an iterator is unspecified if the
+     *  A runtime exception is thrown if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
      *
      *  @return An iterator over the schedule elements of this schedule.
      */
     public Iterator iterator() {
-	return(_schedule.iterator());
+	return new ScheduleIterator();
     }
 
     /** Remove the schedule element at the specified position in the
@@ -256,7 +261,61 @@ public class Schedule extends ScheduleElement {
      *  @return The schedule element that was removed.
      */ 
     public ScheduleElement remove(int index) {
+	_scheduleVersion++;
 	return((ScheduleElement)_schedule.remove(index));
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** An adapter class for iterating over the elements of this
+     *  schedule. An exception is thrown if the schedule structure
+     *  changes while this iterator is active.
+     */
+    private class ScheduleIterator implements Iterator {
+	/** Construct a ScheduleIterator.
+	 */
+	public ScheduleIterator() {
+	    _currentVersion = _scheduleVersion;
+	    _currentElement = 0;
+	}
+
+	/** Return true if the iteration has more elements.
+	 * @exception IllegalActionException If the schedule
+	 *  data structure has changed since this iterator
+	 *  was created.
+	 * @return true if the iterator has more elements.
+	 */
+	public boolean hasNext() {
+	    if (_currentVersion != _scheduleVersion) {
+		throw new InvalidStateException(
+                  "Schedule structure changed while iterator is active.");
+	    } else {
+		return(_currentElement <= _schedule.size());
+	    }
+	}
+
+	/** Return the next object in the iteration.
+	 * @return the next object in the iteration.
+	 */
+	public Object next() throws NoSuchElementException {
+	    if (!hasNext()) {
+		throw new NoSuchElementException("No element to return.");
+	    } else if (_currentVersion != _scheduleVersion) {
+		throw new InvalidStateException(
+                  "Schedule structure changed while iterator is active.");
+	    } else {
+		return _schedule.get(_currentElement++);
+	    }
+	}
+
+	/** Throw an exception, since removal is not allowed.
+	 */
+	public void remove() {
+	    throw new UnsupportedOperationException();
+	}
+	private long _currentVersion;
+	private int _currentElement;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -264,4 +323,6 @@ public class Schedule extends ScheduleElement {
 
     // The list of schedule elements contained by this schedule.
     private List _schedule;
+    // The current version of this schedule.
+    private long _scheduleVersion;
 }
