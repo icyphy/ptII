@@ -484,6 +484,7 @@ public class DEDirector extends Director implements TimedDirector {
 
                         // This actor requests not to be fired again.
                         _disableActor(actorToFire);
+                        break;
                     }
 
                     _debug(new FiringEvent(this, actorToFire,
