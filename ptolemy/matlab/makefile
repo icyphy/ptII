@@ -87,10 +87,12 @@ all: jclass
 
 jclass: $(PTMATLAB_LIB)
 
-install: jclass jars $(PTPACKAGE)Windows.jar
-	@echo "'$(PTPACKAGE).jar' requires gcc, so we install it in $PTII/lib"
-	@echo "for hosts that might not have gcc installed"
-	cp $(PTPACKAGE).jar $(PTPACKAGE)Windows.jar $(ROOT)/lib
+# MAJOR_OS_NAME is set by configure to the major name of the OS
+# Under all versions of Windows, MAJOR_OS_NAME = Windows
+install: jclass jars $(PTPACKAGE).jar 
+	@echo "'$(PTPACKAGE).jar' requires gcc, so we install it in \$PTII/lib"
+	@echo "for hosts that might not have gcc installed and for Web Start."
+	cp $(PTPACKAGE).jar $(PTPACKAGE)$(MAJOR_OS_NAME).jar $(ROOT)/lib
 
 clean: ptmatlab_clean
 
@@ -112,7 +114,7 @@ $(PTMATLAB_LIB): ptmatlab.cc Engine.class
 
 
 # Jar file for Web Start that contains the dll
-$(PTPACKAGE)Windows.jar: $(PTMATLAB_LIB)
+$(PTPACKAGE)$(MAJOR_OS_NAME).jar: $(PTMATLAB_LIB)
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	-cp $< $(PTJAR_TMPDIR)
