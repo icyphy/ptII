@@ -23,6 +23,9 @@
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
+#
+#						PT_COPYRIGHT_VERSION_2
+#						COPYRIGHTENDKEY
 ##########################################################################
 
 # Root of Ptolemy II directory
