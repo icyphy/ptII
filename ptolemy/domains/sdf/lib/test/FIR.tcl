@@ -37,7 +37,6 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-set VERBOSE 1
 ######################################################################
 #### Test FIR in an SDF model
 #
