@@ -112,7 +112,7 @@ test VergilConfiguration-1.2 {make sure that everything inside the Ptiny configu
 ####
 #
 test VergilConfiguration-1.2.1 {make sure that everything inside the Hybrid configuration can be expanded} {
-    expandConfiguration "ptolemy/configs/hybrid/configuration.xml"
+    expandConfiguration "ptolemy/configs/hyvisual/configuration.xml"
 } {0}
 
 ######################################################################
