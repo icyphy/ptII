@@ -36,6 +36,7 @@ import javax.swing.JMenuItem;
 import javax.swing.AbstractAction;
 import javax.swing.event.*;
 import diva.canvas.*;
+import diva.canvas.event.*;
 import diva.graph.*;
 import diva.graph.model.*;
 import diva.gui.toolbox.*;
@@ -64,17 +65,22 @@ public class FigureAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
 	Object source = e.getSource();
-	if(source instanceof Figure) {
+	if(source instanceof LayerEvent) {
 	    // Action activated using an ActionInteractor.
-	    Figure figure = (Figure) source;
+	    LayerEvent event = (LayerEvent) source;
+	    Figure figure = (Figure) event.getFigureSource();
 	    Node node = (Node) figure.getUserObject();
 	    Icon icon = (Icon) node.getSemanticObject();
 	    _target = (NamedObj) icon.getContainer();
-	} else if(source instanceof JComponent) {
+	    _x = event.getX();
+	    _y = event.getY();
+	} else if(source instanceof JMenuItem) {
 	    // Action activated using a context menu.
 	    JMenuItem item = (JMenuItem) source;
 	    JContextMenu menu = (JContextMenu)item.getParent();
 	    _target = (NamedObj) menu.getTarget();
+	    _x = item.getX();
+	    _y = item.getY();
 	} else {
 	    _target = null;
 	}
@@ -84,5 +90,15 @@ public class FigureAction extends AbstractAction {
 	return _target;
     }
 
+    public int getX() {
+	return _x;
+    }
+
+    public int getY() {
+	return _y;
+    }
+
     private NamedObj _target = null;
+    private int _x = 0;
+    private int _y = 0;
 }
