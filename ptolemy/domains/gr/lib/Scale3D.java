@@ -70,7 +70,7 @@ public class Scale3D extends GRTransform {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        scaleInput = new TypedIOPort(this, "scale input");
+        scaleInput = new TypedIOPort(this, "scaleInput");
         scaleInput.setInput(true);
 
         scaleFactor = new Parameter(this, "scaleFactor",new DoubleToken(1.0));

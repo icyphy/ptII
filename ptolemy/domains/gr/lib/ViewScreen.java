@@ -91,18 +91,18 @@ public class ViewScreen extends GRActor implements Placeable {
         sceneGraphIn.setMultiport(true);
 
         horizontalResolution = new Parameter(this,
-                               "horizontal resolution",new IntToken(400));
+                               "horizontalResolution",new IntToken(400));
         verticalResolution = new Parameter(this,
-                             "vertical resolution",new IntToken(400));
+                             "verticalResolution",new IntToken(400));
         rotatable = new Parameter(this, 
-                    "allow model rotation",new BooleanToken(true));
+                    "rotatable",new BooleanToken(true));
         scalable = new Parameter(this, 
-                   "allow model zooming",new BooleanToken(false));
+                   "scalable",new BooleanToken(false));
         translatable = new Parameter(this,
-                       "allow model translation",new BooleanToken(false));
-        showAxes = new Parameter(this,"show axes",new BooleanToken(false));
+                       "translatable",new BooleanToken(false));
+        showAxes = new Parameter(this,"showAxes",new BooleanToken(false));
         iterationSynchronized = new Parameter(this,
-                       "one frame per iteration",new BooleanToken(false));
+                       "iterationSynchronized",new BooleanToken(false));
 
 
         _lastTransform = new Transform3D();

@@ -71,12 +71,12 @@ public class Torus3D extends GRShadedShape {
         super(container, name);
 
 
-        angleSpan = new Parameter(this, "span of revolution", new DoubleToken(2*Math.PI));
+        angleSpan = new Parameter(this, "angleSpan", new DoubleToken(2*Math.PI));
         slices = new Parameter(this, "slices", new IntToken(28));
         crossSectionRadius
-            = new Parameter(this,"cross-section radius", new DoubleToken(0.15));
+            = new Parameter(this,"crossSectionRadius", new DoubleToken(0.15));
         hullRadius
-            = new Parameter(this,"hull radius",new DoubleToken(0.75));
+            = new Parameter(this,"hullRadius",new DoubleToken(0.75));
     }
 
     ///////////////////////////////////////////////////////////////////

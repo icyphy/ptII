@@ -50,11 +50,11 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
     <entity name="Translate" class="ptolemy.domains.gr.lib.Translate3D">
         <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="-0.35">
+        <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="-0.35">
         </property>
-        <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="xAngle" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -71,30 +71,30 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
         <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
+        <port name="xTranslate" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="ytranslate" class="ptolemy.actor.TypedIOPort">
+        <port name="yTranslate" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="ztranslate" class="ptolemy.actor.TypedIOPort">
+        <port name="zTranslate" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
     <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
-        <property name="horizontal resolution" class="ptolemy.data.expr.Parameter" value="400">
+        <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
         </property>
-        <property name="vertical resolution" class="ptolemy.data.expr.Parameter" value="400">
+        <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="400">
         </property>
-        <property name="allow model rotation" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="rotatable" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="allow model zooming" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="scalable" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="allow model translation" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="translatable" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="show axes" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="showAxes" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="one frame per iteration" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -125,9 +125,9 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
         </property>
         <property name="initialAngle" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="axis direction" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 1.0]">
+        <property name="axisDirection" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 1.0]">
         </property>
-        <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.35, 0.0]">
+        <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.35, 0.0]">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="318.0000009536743, 264.0">
         </property>
@@ -181,18 +181,18 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
         <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="scale input" class="ptolemy.actor.TypedIOPort">
+        <port name="scaleInput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
     <entity name="Translate2" class="ptolemy.domains.gr.lib.Translate3D">
         <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.3">
+        <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.3">
         </property>
-        <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="0.55">
+        <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.55">
         </property>
-        <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="318.0000009536743, 185.0">
         </property>
@@ -203,13 +203,13 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
         <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
+        <port name="xTranslate" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="ytranslate" class="ptolemy.actor.TypedIOPort">
+        <port name="yTranslate" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="ztranslate" class="ptolemy.actor.TypedIOPort">
+        <port name="zTranslate" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
@@ -377,11 +377,11 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
         <entity name="0:Translate0" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="0.4">
+            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.4">
             </property>
-            <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="292.0, 256.5">
             </property>
@@ -392,24 +392,24 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
-            <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="xTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="ytranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="yTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="ztranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="zTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
         <entity name="0:Translate11" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="-0.5">
+            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="-0.5">
             </property>
-            <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="279.5, 191.5">
             </property>
@@ -420,13 +420,13 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
-            <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="xTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="ytranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="yTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="ztranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="zTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
@@ -450,11 +450,11 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
         <entity name="0:Translate6" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="-0.7">
+            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="-0.7">
             </property>
-            <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="-0.05">
+            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="-0.05">
             </property>
-            <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="292.0, 61.5">
             </property>
@@ -465,13 +465,13 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
-            <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="xTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="ytranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="yTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="ztranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="zTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
@@ -529,11 +529,11 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
         <entity name="0:Translate1" class="ptolemy.domains.gr.lib.Translate3D">
             <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="xTranslation" class="ptolemy.data.expr.Parameter" value="0.7">
+            <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.7">
             </property>
-            <property name="yTranslation" class="ptolemy.data.expr.Parameter" value="-0.05">
+            <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="-0.05">
             </property>
-            <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="276.0, 126.5">
             </property>
@@ -544,13 +544,13 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
-            <port name="xtranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="xTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="ytranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="yTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="ztranslate" class="ptolemy.actor.TypedIOPort">
+            <port name="zTranslate" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>
@@ -574,7 +574,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II."</text>
             <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
-            <port name="scale input" class="ptolemy.actor.TypedIOPort">
+            <port name="scaleInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
         </entity>

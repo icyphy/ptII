@@ -65,20 +65,20 @@ public class Translate3D extends GRTransform {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        xTranslate = new TypedIOPort(this, "xtranslate",true,false);
+        xTranslate = new TypedIOPort(this, "xTranslate",true,false);
         xTranslate.setTypeEquals(BaseType.DOUBLE);
-        yTranslate = new TypedIOPort(this, "ytranslate",true,false);
+        yTranslate = new TypedIOPort(this, "yTranslate",true,false);
         yTranslate.setTypeEquals(BaseType.DOUBLE);
-        zTranslate = new TypedIOPort(this, "ztranslate",true,false);
+        zTranslate = new TypedIOPort(this, "zTranslate",true,false);
         zTranslate.setTypeEquals(BaseType.DOUBLE);
 
 
         initialXTranslation = new Parameter(this, 
-                                  "xTranslation", new DoubleToken(0.0));
+                                  "initialXTranslation", new DoubleToken(0.0));
         initialYTranslation = new Parameter(this, 
-                                  "yTranslation", new DoubleToken(0.0));
+                                  "initialYTranslation", new DoubleToken(0.0));
         initialZTranslation = new Parameter(this, 
-                                  "zTranslation", new DoubleToken(0.0));
+                                  "initialZTranslation", new DoubleToken(0.0));
 
     }
 

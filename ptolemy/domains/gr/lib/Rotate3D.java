@@ -78,10 +78,10 @@ public class Rotate3D extends GRTransform {
         initialAngle = new Parameter(this, "initialAngle", 
                        new DoubleToken(0.0));
 
-        axisDirection = new Parameter(this, "axis direction",
+        axisDirection = new Parameter(this, "axisDirection",
                 new DoubleMatrixToken(new double[][] {{ 0.0, 1.0, 0.0}} ));
 
-        pivotLocation  = new Parameter(this, "pivot location",
+        pivotLocation  = new Parameter(this, "pivotLocation",
                 new DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
 
     }
