@@ -1020,7 +1020,38 @@ void genState ()
 	strcat (str2, "));\n");
 	strcat (protectedMembers, str1);
 	strcat (consStuff, str2);
+
+	// Parameter code for the constructor
+	// FIXME: deal with arrays
+	sprintf (str2,"\n        // %s\n", stateDescriptor);
 	strcat (javaConsStuff, str2);
+	sprintf (str2,"        %s = new Parameter(this, \"%s\");\n",
+		 stateName, stateName);
+	strcat (javaConsStuff, str2);
+	// stateDefault already has leading and trailing double quotes.
+	sprintf (str2,"        %s.setExpression(%s);\n",
+		 stateName, stateDefault);
+	strcat (javaConsStuff, str2);
+
+	// Parameter code for the declaration
+	sprintf (str2, "\n    /**\n"); 
+	strcat (javaPortsAndParameters, str2);
+	char descriptString[MEDBUFSIZE];
+	if (strlen(stateDescriptor) > 0) {
+	    if(unescape(descriptString, stateDescriptor, MEDBUFSIZE))
+		yywarn("warning: Descriptor too long. May be truncated.");
+	    sprintf(str1, "     *  %s parameter with initial value %s.\n",
+		descriptString, stateDefault);
+	    strcat (javaPortsAndParameters, str1);
+	} else {
+	    sprintf(str1, "     * Parameter %s with initial value %s.\n",
+		 stateName, stateDefault);
+            strcat(javaPortsAndParameters, str1);
+        }
+	sprintf(str1, "     */\n");
+        strcat (javaPortsAndParameters, str1);
+	sprintf(str1, "     public Parameter %s;\n", stateName);
+	strcat(javaPortsAndParameters, str1);
 }
 
 /* describe the states */
@@ -1135,7 +1166,7 @@ void genPort ()
 		 portName, ptIIType);
 	strcat (javaConsStuff, str2);
 
-	// Ports and Parameters 
+	// Ports
 	sprintf (str2, "\n    /**\n"); 
 	strcat (javaPortsAndParameters, str2);
 	char descriptString[MEDBUFSIZE];
@@ -1880,6 +1911,7 @@ void genDef ()
 	fprintf (fp, "package ptolemy.domains.sdf.cgc;\n\n");
 	fprintf (fp, "import ptolemy.actor.TypedAtomicActor;\n");
 	fprintf (fp, "import ptolemy.actor.TypedIOPort;\n");
+	fprintf (fp, "import ptolemy.data.expr.Parameter;\n");
 	fprintf (fp, "import ptolemy.data.type.BaseType;\n");
 	fprintf (fp, "import ptolemy.kernel.CompositeEntity;\n");
 	fprintf (fp, "import ptolemy.kernel.util.IllegalActionException;\n");
