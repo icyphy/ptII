@@ -63,7 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  The strings to be compared will be taken from the inputs if they are
  available, and otherwise will be taken from the corresponding parameters.
 
-@author Vinay Krishnan, Daniel Lázaro Cuadrado (contributor: Edward A. Lee)
+@author Vinay Krishnan, Daniel L&aacute;zaro Cuadrado (contributor: Edward A. Lee)
 @version $Id$
 @since Ptolemy II 3.0.3
 */
