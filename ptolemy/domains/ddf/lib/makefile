@@ -34,7 +34,7 @@ ME =		ptolemy/domains/ddf/lib
 # Rule for index.xml uses this
 TITLE = 	"Dynamic dataflow actors"
 
-DIRS = 		
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../../..
