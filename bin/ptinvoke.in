@@ -193,6 +193,17 @@ fi
 JHDL_JAR="@JHDL_JAR@"
 
 
+#### Backtracking facility
+# The Backtracking facility uses Eclipse jar files
+# Set to backtrack and used in $PTII/ptolemy/makefile if Eclipse was found
+PTBACKTRACK_DIR=@PTBACKTRACK_DIR@
+BACKTRACK_JARS=""
+if [ "$PTBACKTRACK_DIR" = "backtrack" ]; then
+    PTBACKTRACK_JARS="@PTBACKTRACK_JARS@"
+    # PTBACKTRACK_JARS will always have a CLASSPATHSEPARATOR prefix
+    BACKTRACK_JARS="${PTBACKTRACK_JARS}"
+fi
+
 #### Cal 
 # Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
 PTCALTROP_DIR=@PTCALTROP_DIR@
@@ -427,7 +438,7 @@ fi
 # a version of java cup
 #
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${X10_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
