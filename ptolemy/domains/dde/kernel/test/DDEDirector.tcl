@@ -61,14 +61,15 @@ test DDEDirector-2.1 {Check compositionality} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    # $toplevel setName "toplevel"
     set wormhole [java::new ptolemy.actor.TypedCompositeActor $toplevel "wormhole"]
-    set topdir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "topdirector"]
-    set wormdir [java::new ptolemy.domains.dde.kernel.DDEDirector $wormhole "wormdirector"]
+    set topdir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "topdir"]
+    set wormdir [java::new ptolemy.domains.dde.kernel.DDEDirector $wormhole "wormdir"]
     
     # Assign Directors/Managers
     $toplevel setManager $mgr
-    $toplevel setDirector $topdir
-    $wormhole setDirector $wormdir
+    # $toplevel setDirector $topdir
+    # $wormhole setDirector $wormdir
     
     # Instantiate Actors
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
