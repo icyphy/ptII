@@ -534,8 +534,9 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     }
 
     /** Send a debug message to all debug listeners that have registered.
-     * Note that each individual listener will append a newline to
-     * the message.
+     *  By convention, messages should not include a newline at the end.
+     *  The newline will be added by the listener, if appropriate.
+     *  @param message The message.
      */
     protected final void _debug(String message) {
         if (_debugListeners == null) {
@@ -545,6 +546,58 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             while (listeners.hasMoreElements()) {
                 ((DebugListener)listeners.nextElement()).message(message);
             }
+        }
+    }
+
+    /** Send a debug message to all debug listeners that have registered.
+     *  The message is a concatenation of the two parts, with a space between
+     *  them.
+     *  By convention, messages should not include a newline at the end.
+     *  The newline will be added by the listener, if appropriate.
+     *  @param part1 The first part of the message.
+     *  @param part2 The second part of the message.
+     */
+    protected final void _debug(String part1, String part2) {
+        if (_debugListeners == null) {
+            return;
+        } else {
+            _debug(part1 + " " + part2);
+        }
+    }
+
+    /** Send a debug message to all debug listeners that have registered.
+     *  The message is a concatenation of the three parts, with a space between
+     *  them.
+     *  By convention, messages should not include a newline at the end.
+     *  The newline will be added by the listener, if appropriate.
+     *  @param part1 The first part of the message.
+     *  @param part2 The second part of the message.
+     *  @param part3 The third part of the message.
+     */
+    protected final void _debug(String part1, String part2, String part3) {
+        if (_debugListeners == null) {
+            return;
+        } else {
+            _debug(part1 + " " + part2 + " " + part3);
+        }
+    }
+
+    /** Send a debug message to all debug listeners that have registered.
+     *  The message is a concatenation of the four parts, with a space between
+     *  them.
+     *  By convention, messages should not include a newline at the end.
+     *  The newline will be added by the listener, if appropriate.
+     *  @param part1 The first part of the message.
+     *  @param part2 The second part of the message.
+     *  @param part3 The third part of the message.
+     *  @param part4 The fourth part of the message.
+     */
+    protected final void _debug(String part1, String part2,
+            String part3, String part4) {
+        if (_debugListeners == null) {
+            return;
+        } else {
+            _debug(part1 + " " + part2 + " " + part3 + " " + part4);
         }
     }
 
