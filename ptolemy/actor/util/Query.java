@@ -156,10 +156,10 @@ public class Query extends Panel {
      */
     public void line(String name, String label, String defvalue, int width) {
         Label lbl = new Label(label);
-        TextField entrybox = new TextField(defvalue, width);
-        entrybox.addActionListener(new LineListener(name));
-        _addPair(lbl, entrybox);
-        _entries.put(name, entrybox);
+        TextField entryBox = new TextField(defvalue, width);
+        entryBox.addActionListener(new LineListener(name));
+        _addPair(lbl, entryBox);
+        _entries.put(name, entryBox);
     }
 
     /** Create an on-off check box.
