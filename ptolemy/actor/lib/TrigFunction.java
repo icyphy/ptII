@@ -36,7 +36,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.lib.conversions.RectangularToPolar; // for javadoc 
+import ptolemy.actor.lib.conversions.RectangularToPolar; // for javadoc
 
 
 // NOTE: If you update the list of functions, then you will want

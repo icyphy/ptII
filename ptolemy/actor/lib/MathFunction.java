@@ -48,7 +48,7 @@ equal to the specified math function of the input.
 The input and output types are DoubleToken.  The functions
 are a subset of those in the java.lang.Math class.  They are:
 <ul>
-<li> <b>exp</b>: The exponential function. 
+<li> <b>exp</b>: The exponential function.
 This is the default function for this actor
 If the argument is NaN, then the result is NaN.
 <li> <b>log</b>: The natural logarithm function.
@@ -61,7 +61,7 @@ If the argument is NaN, then the result is NaN.
 If the second operand is zero, then the result is NaN.
 </ul>
 <p>
-NOTE: Some functions like exp, log, square, and sqrt act on a single 
+NOTE: Some functions like exp, log, square, and sqrt act on a single
 operand only.  Other functions like remainder act on two operands.
 The actor acquires a second input when the function is changed to
 remainder, and loses the input when the function is changed back.
@@ -90,7 +90,7 @@ public class MathFunction extends TypedAtomicActor {
         function = new StringAttribute(this, "function");
         function.setExpression("exp");
         _function = EXP;
-        
+
         // Ports
         firstOperand = new TypedIOPort(this, "firstOperand", true, false);
         output = new TypedIOPort(this, "output", false, true);
@@ -106,7 +106,7 @@ public class MathFunction extends TypedAtomicActor {
      */
     public StringAttribute function;
 
-    /** The port for the first operand. 
+    /** The port for the first operand.
      *  The port has type BaseType.DOUBLE
      */
     public TypedIOPort firstOperand = null;
@@ -124,7 +124,7 @@ public class MathFunction extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-            
+
     /** Override the base class to determine which function is being
      *  specified.
      *  @param attribute The attribute that changed.
@@ -183,7 +183,7 @@ public class MathFunction extends TypedAtomicActor {
                 if (secondOperand.hasToken(0)) {
                     in2 = ((DoubleToken) secondOperand.get(0)).doubleValue();
                 }
-            } 
+            }
             output.send(0, new DoubleToken(_doFunction(in1,in2)));
         }
     }
@@ -209,20 +209,20 @@ public class MathFunction extends TypedAtomicActor {
         if (count > _resultArray.length) {
             _resultArray = new DoubleToken[count];
         }
-        
+
         if (firstOperand.hasToken(0,count)) {
             Token[] inArray1 = firstOperand.get(0,count);
-            
-            
+
+
             if (_function == REMAINDER) {
                 if (secondOperand.hasToken(0,count)) {
                     Token[] inArray2 = secondOperand.get(0,count);
                     for (int i = 0; i < count; i++) {
                         double input1 =
                             ((DoubleToken)(inArray1[i])).doubleValue();
-                        double input2 = 
+                        double input2 =
                             ((DoubleToken)(inArray2[i])).doubleValue();
-                        _resultArray[i] = 
+                        _resultArray[i] =
                             new DoubleToken(_doFunction(input1,input2));
                     }
                     output.send(0, _resultArray, count);
@@ -246,21 +246,21 @@ public class MathFunction extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-     
+
     /** Create the second port needed by remainder function
      */
-    private void _createSecondPort() 
+    private void _createSecondPort()
             throws NameDuplicationException, IllegalActionException {
-        
+
         if (secondOperand == null) {
             secondOperand = new TypedIOPort(this, "secondOperand", true, false);
         } else if (secondOperand.getContainer() == null) {
             secondOperand = new TypedIOPort(this, "secondOperand", true, false);
-        }        
+        }
         secondOperand.setTypeEquals(BaseType.DOUBLE);
     }
 
-    
+
     /** Calculate the function on the given argument.
      *  @param in The input value.
      *  @return The result of applying the function.
@@ -307,4 +307,4 @@ public class MathFunction extends TypedAtomicActor {
     private static final int SQRT = 3;
     private static final int REMAINDER = 4;
 }
-            
+
