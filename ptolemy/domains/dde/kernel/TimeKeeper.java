@@ -598,7 +598,7 @@ public class TimeKeeper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         methods			   ////
+    ////                         private methods		   ////
 
     /** Add the specified RcvrTimeTriple to the list of triples.
      *  If the time stamp of the specified triple is
