@@ -313,27 +313,6 @@ public class PBOThreadDirector extends Director {
 
     }*/
 
-    /** Schedule a firing of the given actor at the given time. It does
-     *  nothing in this base class. Derived classes
-     *  should override this method.
-     *  <p>
-     *  Note that this method is not made abstract to facilitate the use
-     *  of the test suite.
-     *  @param actor The actor scheduled to be fired.
-     *  @param time The scheduled time.
-     *  @exception IllegalActionException If the operation is not
-     *    permissible (e.g. the given time is in the past).
-     */
-    public void fireAt(Actor actor, double time)
-            throws IllegalActionException {
-
-        // do nothing in this base class.
-        // Note that, alternatively, this method could have been abstract.
-        // But we didn't do that, because otherwise we wouldn't be able
-        // to run Tcl Blend testscript on this class.
-
-    }
-
     /** Return the current time of the model being executed by this director.
      *  This time can be set with the setCurrentTime method. In this base
      *  class, time never passes, and there are no restrictions on valid

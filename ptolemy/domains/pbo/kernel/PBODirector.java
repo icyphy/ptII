@@ -247,27 +247,6 @@ public class PBODirector extends Director {
         }
     }
 
-    /** Schedule a firing of the given actor at the given time. It does
-     *  nothing in this base class. Derived classes
-     *  should override this method.
-     *  <p>
-     *  Note that this method is not made abstract to facilitate the use
-     *  of the test suite.
-     *  @param actor The actor scheduled to be fired.
-     *  @param time The scheduled time.
-     *  @exception IllegalActionException If the operation is not
-     *    permissible (e.g. the given time is in the past).
-     */
-    public void fireAt(Actor actor, double time)
-            throws IllegalActionException {
-
-        // do nothing in this base class.
-        // Note that, alternatively, this method could have been abstract.
-        // But we didn't do that, because otherwise we wouldn't be able
-        // to run Tcl Blend testscript on this class.
-
-    }
-
     /** Return the next time of interest in the model being executed by
      *  this director. This method is useful for domains that perform
      *  speculative execution (such as CT).  Such a domain in a hierarchical
