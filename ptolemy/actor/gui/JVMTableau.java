@@ -30,7 +30,10 @@ package ptolemy.actor.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.swing.BoxLayout;
@@ -125,9 +128,16 @@ public class JVMTableau extends Tableau {
 
             try {
                 Properties properties = System.getProperties();
-                Enumeration propertyNames = properties.propertyNames();
-                while (propertyNames.hasMoreElements()) {
-                    String propertyName = (String)propertyNames.nextElement();
+                Enumeration propertyNamesEnumeration =
+                    properties.propertyNames();
+                // Sort by property name
+                ArrayList propertyNamesList =
+                    Collections.list(propertyNamesEnumeration);
+                Collections.sort(propertyNamesList);
+
+                Iterator propertyNames = propertyNamesList.iterator();
+                while (propertyNames.hasNext()) {
+                    String propertyName = (String)propertyNames.next();
                     propertyBuffer.append(propertyName + " = "
                             + properties
                             .getProperty(propertyName)
