@@ -181,7 +181,7 @@ public class IORelation extends ComponentRelation {
             Receiver[][] result = new Receiver[0][0];
             Iterator inputs =
                 linkedDestinationPortList(except).iterator();
-            Receiver[][] recvrs = new Receiver[0][0];
+            Receiver[][] receivers = new Receiver[0][0];
             // NOTE: We have to be careful here to keep track of
             // multiple occurrences of a port in this list.
             // EAL 7/30/00.
@@ -193,7 +193,7 @@ public class IORelation extends ComponentRelation {
                     // if p is a transparent port and this relation links
                     // from the inside, then get the Receivers outside p.
                     try {
-                        recvrs = p.getRemoteReceivers(this);
+                        receivers = p.getRemoteReceivers(this);
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(
                                 "IORelation.deepReceivers: Internal error: "
@@ -216,14 +216,14 @@ public class IORelation extends ComponentRelation {
                         }
                         seen.put(p, new Integer(occurrence));
 
-                        recvrs = p.getReceivers(this, occurrence);
+                        receivers = p.getReceivers(this, occurrence);
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(
                                 "IORelation.deepReceivers: Internal error: "
                                 + e.getMessage());
                     }
                 }
-                result = _cascade(result, recvrs);
+                result = _cascade(result, receivers);
             }
             return result;
         } finally {
@@ -660,10 +660,12 @@ public class IORelation extends ComponentRelation {
                 IOPort p = (IOPort) ports.next();
                 if (p.isInsideLinked(this)) {
                     // I am linked on the inside...
-                    int piw = p._getInsideWidth(this);
-                    int pow = p.getWidth();
-                    int diff = pow - piw;
-                    if (diff > _inferredWidth) _inferredWidth = diff;
+                    int portInsideWidth = p._getInsideWidth(this);
+                    int portOutsideWidth = p.getWidth();
+                    int difference = portOutsideWidth - portInsideWidth;
+                    if (difference > _inferredWidth) {
+                        _inferredWidth = difference;
+                    }
                 }
             }
             _inferredWidthVersion = version;

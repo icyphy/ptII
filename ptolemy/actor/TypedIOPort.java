@@ -61,7 +61,7 @@ import java.util.List;
 //// TypedIOPort
 /**
 An IOPort with a type. This class implements the Typeable interface.
-The type is represented by an intance of Type in data.type package.
+The type is represented by an instance of Type in data.type package.
 It can be declared by calling setTypeEquals(). If this method is not
 called, or called with a BaseType.NAT argument, the type of this port
 will be set by type resolution using the type constraints. The type
@@ -261,19 +261,19 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  the workspace when it is blocked. Thus this method releases
      *  read access on the workspace before calling put.
      *
-     *  @param channelindex The index of the channel, from 0 to width-1.
+     *  @param channelIndex The index of the channel, from 0 to width-1.
      *  @param token The token to send.
      *  @exception IllegalActionException If the token to be sent cannot
      *   be converted to the type of this port, or if the token is null.
      *  @exception NoRoomException If there is no room in the receiver.
      */
-    public void send(int channelindex, Token token)
+    public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         if (token == null) {
             throw new IllegalActionException(this,
                     "Cannot send a null token.");
         }
-        Receiver[][] farRec;
+        Receiver[][] farReceivers;
         try {
             try {
                 _workspace.getReadAccess();
@@ -289,24 +289,24 @@ public class TypedIOPort extends IOPort implements Typeable {
 
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
-                farRec = getRemoteReceivers();
-                if (farRec == null || farRec[channelindex] == null) {
+                farReceivers = getRemoteReceivers();
+                if (farReceivers == null || farReceivers[channelIndex] == null) {
                     return;
                 }
             } finally {
                 _workspace.doneReading();
             }
 
-            for (int j = 0; j < farRec[channelindex].length; j++) {
+            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
                 TypedIOPort port =
-                    (TypedIOPort)farRec[channelindex][j].getContainer();
+                    (TypedIOPort)farReceivers[channelIndex][j].getContainer();
                 Type farType = port.getType();
 
                 if (farType.isEqualTo(token.getType())) {
-                    farRec[channelindex][j].put(token);
+                    farReceivers[channelIndex][j].put(token);
                 } else {
                     Token newToken = farType.convert(token);
-                    farRec[channelindex][j].put(newToken);
+                    farReceivers[channelIndex][j].put(newToken);
                 }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
@@ -326,7 +326,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  easy to leave output ports unconnected when you are not interested
      *  in the output.
      *  <p>
-     *  To improve effiecency for the common case where the type of the
+     *  To improve efficiency for the common case where the type of the
      *  tokens to send matches the type of this port and all connected
      *  ports, this method assumes that all of the tokens in the
      *  specified portion of the token array are of the same
@@ -366,7 +366,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public void send(int channelIndex, Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
-        Receiver[][] farRec;
+        Receiver[][] farReceivers;
         Token token = null;
         try {
             try {
@@ -385,27 +385,27 @@ public class TypedIOPort extends IOPort implements Typeable {
                 }
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
-                farRec = getRemoteReceivers();
-                if (farRec == null || farRec[channelIndex] == null) {
+                farReceivers = getRemoteReceivers();
+                if (farReceivers == null || farReceivers[channelIndex] == null) {
                     System.out.println("returning now...");
                     return;
                 }
             } finally {
                 _workspace.doneReading();
             }
-            for (int j = 0; j < farRec[channelIndex].length; j++) {
+            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
                 TypedIOPort port =
-                    (TypedIOPort)farRec[channelIndex][j].getContainer();
+                    (TypedIOPort)farReceivers[channelIndex][j].getContainer();
                 Type farType = port.getType();
                 if (farType.isEqualTo(token.getType())) {
                     // Good, no conversion necessary.
-                    farRec[channelIndex][j].putArray(tokenArray, vectorLength);
+                    farReceivers[channelIndex][j].putArray(tokenArray, vectorLength);
                 } else {
 		    // Note: This is very bad for performance!
 		    // For better efficiency, make sure
 		    // all ports have the same type.
 		    for (int i = 0; i < vectorLength; i++) {
-			farRec[channelIndex][j].put(
+			farReceivers[channelIndex][j].put(
                                 farType.convert(tokenArray[i]));
 		    }
                 }

@@ -43,7 +43,7 @@ import java.util.List;
 //// AbstractReceiver
 /**
 An abstract implementation of the Receiver interface.  The container methods
-and some of the more esoteric methids are implemented, while the most
+and some of the more esoteric methods are implemented, while the most
 domain-specific methods are left undefined.
 
 @author Steve Neuendorffer

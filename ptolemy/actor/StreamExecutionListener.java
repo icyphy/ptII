@@ -84,14 +84,14 @@ public class StreamExecutionListener implements ExecutionListener {
      */
     public void managerStateChanged(Manager manager) {
         Manager.State state = manager.getState();
-        String msg;
+        String message;
         if (state == manager.ITERATING) {
-            msg = state.getDescription() + " number "
+            message = state.getDescription() + " number "
                 + manager.getIterationCount();
         } else {
-            msg = state.getDescription();
+            message = state.getDescription();
         }
-        _output.println(msg);
+        _output.println(message);
     }
 
     ///////////////////////////////////////////////////////////////////

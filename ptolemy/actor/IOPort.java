@@ -185,12 +185,12 @@ public class IOPort extends ComponentPort {
 	    throws IllegalActionException, NoRoomException {
         try {
             _workspace.getReadAccess();
-            Receiver farRecs[][] = getRemoteReceivers();
-            if (farRecs == null) {
+            Receiver farReceivers[][] = getRemoteReceivers();
+            if (farReceivers == null) {
                 return;
             }
 
-            for (int j = 0; j < farRecs.length; j++) {
+            for (int j = 0; j < farReceivers.length; j++) {
                 send(j, token);
             }
         } finally {
@@ -211,8 +211,8 @@ public class IOPort extends ComponentPort {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         IOPort newObject = (IOPort)super.clone(workspace);
-        newObject._insideinputversion = -1;
-        newObject._insideoutputversion = -1;
+        newObject._insideInputVersion = -1;
+        newObject._insideOutputVersion = -1;
         newObject._width = 0;
         newObject._widthVersion = -1;
         newObject._farReceivers = null;
@@ -431,15 +431,16 @@ public class IOPort extends ComponentPort {
             // Cache is invalid.  Update it.
             _insideReceivers = new Receiver[width][0];
             int index = 0;
-            Iterator insideRels = insideRelationList().iterator();
-            while (insideRels.hasNext()) {
-                IORelation r = (IORelation) insideRels.next();
-                Receiver[][] rr = r.deepReceivers(this);
-                if (rr != null) {
-                    int size = java.lang.Math.min(rr.length, width-index);
+            Iterator insideRelations = insideRelationList().iterator();
+            while (insideRelations.hasNext()) {
+                IORelation relation = (IORelation) insideRelations.next();
+                Receiver[][] deepReceiver = relation.deepReceivers(this);
+                if (deepReceiver != null) {
+                    int size = java.lang.Math.min(deepReceiver.length,
+                            width-index);
                     for (int i = 0; i < size; i++) {
-                        if (rr[i] != null) {
-                            _insideReceivers[index++] = rr[i];
+                        if (deepReceiver[i] != null) {
+                            _insideReceivers[index++] = deepReceiver[i];
                         }
                     }
                 }
@@ -472,29 +473,31 @@ public class IOPort extends ComponentPort {
      */
     public Token get(int channelIndex)
             throws NoTokenException, IllegalActionException {
-        Receiver[][] localRec;
+        Receiver[][] localReceivers;
         try {
             try {
                 _workspace.getReadAccess();
                 // Note that the getReceivers() method might throw an
                 // IllegalActionException if there's no director.
-                localRec = getReceivers();
-                if (localRec[channelIndex] == null) {
+                localReceivers = getReceivers();
+                if (localReceivers[channelIndex] == null) {
                     throw new NoTokenException(this,
                             "get: no receiver at index: " + channelIndex + ".");
                 }
             } finally {
                 _workspace.doneReading();
             }
-            Token tt = null;
-            for (int j = 0; j < localRec[channelIndex].length; j++) {
-                Token ttt = localRec[channelIndex][j].get();
-                if (tt == null) tt = ttt;
+            Token token = null;
+            for (int j = 0; j < localReceivers[channelIndex].length; j++) {
+                Token localToken = localReceivers[channelIndex][j].get();
+                if (token == null) {
+                    token = localToken;
+                }
             }
-            if (tt == null) {
+            if (token == null) {
                 throw new NoTokenException(this, "get: No token to return.");
             }
-            return tt;
+            return token;
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may be thrown if the port is not an input port.
             throw new IllegalActionException(this,
@@ -536,14 +539,14 @@ public class IOPort extends ComponentPort {
      */
     public Token[] get(int channelIndex, int vectorLength)
             throws NoTokenException, IllegalActionException {
-        Receiver[][] localRec;
+        Receiver[][] localReceivers;
         try {
             try {
                 _workspace.getReadAccess();
                 // Note that the getReceivers() method might throw an
                 // IllegalActionException if there's no director.
-                localRec = getReceivers();
-                if (localRec[channelIndex] == null) {
+                localReceivers = getReceivers();
+                if (localReceivers[channelIndex] == null) {
                     throw new NoTokenException(this,
                             "get: no receiver at index: " + channelIndex + ".");
                 }
@@ -552,7 +555,7 @@ public class IOPort extends ComponentPort {
             }
 
 	    Token[] retArray =
-                localRec[channelIndex][0].getArray(vectorLength);
+                localReceivers[channelIndex][0].getArray(vectorLength);
 
 
             if (retArray == null) {
@@ -597,8 +600,8 @@ public class IOPort extends ComponentPort {
             int width = 0;
             Iterator relations = insideRelationList().iterator();
             while(relations.hasNext()) {
-                IORelation r = (IORelation) relations.next();
-                width += r.getWidth();
+                IORelation relation = (IORelation) relations.next();
+                width += relation.getWidth();
             }
 
             if (width <= 0) return _EMPTY_RECEIVER_ARRAY;
@@ -614,21 +617,21 @@ public class IOPort extends ComponentPort {
             HashMap seen = new HashMap();
 
             while (relations.hasNext()) {
-                IORelation r = (IORelation) relations.next();
+                IORelation relation = (IORelation) relations.next();
 
                 int occurrence = 0;
-                if (seen.containsKey(r)) {
+                if (seen.containsKey(relation)) {
                     // Have seen this relation before.  Increment
                     // the occurrence number.
-                    occurrence = ((Integer)(seen.get(r))).intValue();
+                    occurrence = ((Integer)(seen.get(relation))).intValue();
                     occurrence++;
                 }
-                seen.put(r, new Integer(occurrence));
+                seen.put(relation, new Integer(occurrence));
 
-                Receiver[][] rr = getReceivers(r, occurrence);
-                if (rr != null) {
-                    for (int i = 0; i < rr.length; i++) {
-                        _localInsideReceivers[index++] = rr[i];
+                Receiver[][] receivers = getReceivers(relation, occurrence);
+                if (receivers != null) {
+                    for (int i = 0; i < receivers.length; i++) {
+                        _localInsideReceivers[index++] = receivers[i];
                     }
                 }
             }
@@ -701,22 +704,24 @@ public class IOPort extends ComponentPort {
                 // EAL 7/30/00.
                 HashMap seen = new HashMap();
                 while (relations.hasNext()) {
-                    IORelation r = (IORelation) relations.next();
+                    IORelation relation = (IORelation) relations.next();
                     // A null link (supported since indexed links) might
                     // yield a null relation here. EAL 7/19/00.
-                    if (r != null) {
+                    if (relation != null) {
                         int occurrence = 0;
-                        if (seen.containsKey(r)) {
+                        if (seen.containsKey(relation)) {
                             // Have seen this relation before.  Increment
                             // the occurrence number.
-                            occurrence = ((Integer)(seen.get(r))).intValue();
+                            occurrence =
+                                ((Integer)(seen.get(relation))).intValue();
                             occurrence++;
                         }
-                        seen.put(r, new Integer(occurrence));
-                        Receiver[][] rr = getReceivers(r, occurrence);
-                        if (rr != null) {
-                            for (int i = 0; i < rr.length; i++) {
-                                _localReceivers[index++] = rr[i];
+                        seen.put(relation, new Integer(occurrence));
+                        Receiver[][] receiverRelation =
+                            getReceivers(relation, occurrence);
+                        if (receiverRelation != null) {
+                            for (int i = 0; i < receiverRelation.length; i++) {
+                                _localReceivers[index++] = receiverRelation[i];
                             }
                         }
 		    }
@@ -783,14 +788,14 @@ public class IOPort extends ComponentPort {
             _workspace.getReadAccess();
             // Allow inside relations also to support opaque,
             // non-atomic entities.
-            boolean insidelink = isInsideLinked(relation);
-            if (!isLinked(relation) && !insidelink) {
+            boolean insideLink = isInsideLinked(relation);
+            if (!isLinked(relation) && !insideLink) {
                 throw new IllegalActionException(this, relation,
                         "getReceivers: Relation argument is not " +
                         "linked to me.");
             }
             boolean opaque = isOpaque();
-            if (!isInput() && !(opaque && insidelink && isOutput())) {
+            if (!isInput() && !(opaque && insideLink && isOutput())) {
                 return _EMPTY_RECEIVER_ARRAY;
             }
 
@@ -831,31 +836,33 @@ public class IOPort extends ComponentPort {
                 int insideWidth = insideReceivers.length;
                 int index = 0;
                 result = new Receiver[width][];
-                Iterator outsideRels = linkedRelationList().iterator();
+                Iterator outsideRelations = linkedRelationList().iterator();
                 int seen = 0;
-                while(outsideRels.hasNext()) {
-                    IORelation outsideRel = (IORelation) outsideRels.next();
+                while(outsideRelations.hasNext()) {
+                    IORelation outsideRelation =
+                        (IORelation) outsideRelations.next();
                     // A null link (supported since indexed links) might
                     // yield a null relation here. EAL 7/19/00.
-                    if (outsideRel != null) {
-                        if(outsideRel == relation) {
+                    if (outsideRelation != null) {
+                        if(outsideRelation == relation) {
                             if (seen == occurrence) {
                                 // Have to be careful here to get the right
                                 // occurrence of the relation.  EAL 7/30/00.
                                 result = new Receiver[width][];
-                                int rstSize =
-                                java.lang.Math.min(width, insideWidth-index);
-                                for (int i = 0; i< rstSize; i++) {
+                                int receiverSize =
+                                    java.lang.Math.min(width,
+                                            insideWidth-index);
+                                for (int i = 0; i< receiverSize; i++) {
                                     result[i] = insideReceivers[index++];
                                 }
                                 break;
                             } else {
                                 seen++;
-                                index += outsideRel.getWidth();
+                                index += outsideRelation.getWidth();
                                 if(index > insideWidth) break;
                             }
                         } else {
-                            index += outsideRel.getWidth();
+                            index += outsideRelation.getWidth();
                             if(index > insideWidth) break;
                         }
                     }
@@ -902,19 +909,18 @@ public class IOPort extends ComponentPort {
             Receiver[][] farReceivers = new Receiver[width][0];
             Iterator relations = linkedRelationList().iterator();
             int index = 0;
-            boolean foundremoteinput = false;
+            boolean foundRemoteInput = false;
             while(relations.hasNext()) {
                 IORelation relation = (IORelation) relations.next();
                 // A null link (supported since indexed links) might
                 // yield a null relation here. EAL 7/19/00.
                 if (relation != null) {
-                    Receiver[][] rr;
-                    rr = relation.deepReceivers(this);
-                    if (rr != null) {
-                        for(int i = 0; i < rr.length; i++) {
-                            farReceivers[index] = rr[i];
+                    Receiver[][] deepReceivers = relation.deepReceivers(this);
+                    if (deepReceivers != null) {
+                        for(int i = 0; i < deepReceivers.length; i++) {
+                            farReceivers[index] = deepReceivers[i];
                             index++;
-                            foundremoteinput = true;
+                            foundRemoteInput = true;
                         }
                     } else {
                         // create a number of null entries in farReceivers
@@ -925,7 +931,7 @@ public class IOPort extends ComponentPort {
             }
             // No longer needed, davisj (3/29/99)
             /*
-            if (!foundremoteinput) {
+            if (!foundRemoteInput) {
                 // No remote receivers
                 farReceivers = null;
             }
@@ -979,11 +985,12 @@ public class IOPort extends ComponentPort {
                 return _EMPTY_RECEIVER_ARRAY;
             }
             Receiver[][] result = new Receiver[width][];
-            Iterator insideRels = insideRelationList().iterator();
+            Iterator insideRelations = insideRelationList().iterator();
             int index = 0;
-            while(insideRels.hasNext()) {
-                IORelation insideRel = (IORelation) insideRels.next();
-                if(insideRel == relation) {
+            while(insideRelations.hasNext()) {
+                IORelation insideRelation =
+                    (IORelation) insideRelations.next();
+                if(insideRelation == relation) {
                     int size = java.lang.Math.min
                         (width, outsideReceivers.length-index);
                     //NOTE: if size = 0, the for loop is skipped.
@@ -992,7 +999,7 @@ public class IOPort extends ComponentPort {
                     }
                     break;
                 }
-                index += insideRel.getWidth();
+                index += insideRelation.getWidth();
             }
             return result;
         } finally {
@@ -1044,12 +1051,12 @@ public class IOPort extends ComponentPort {
      */
     public boolean hasRoom(int channelIndex) throws IllegalActionException {
         try {
-            Receiver[][] farRecs = getRemoteReceivers();
-            if (farRecs == null || farRecs[channelIndex] == null) {
+            Receiver[][] farReceivers = getRemoteReceivers();
+            if (farReceivers == null || farReceivers[channelIndex] == null) {
                 return false;
             }
-            for (int j = 0; j < farRecs[channelIndex].length; j++) {
-                if (!farRecs[channelIndex][j].hasRoom()) return false;
+            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+                if (!farReceivers[channelIndex][j].hasRoom()) return false;
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an input port.
@@ -1077,12 +1084,12 @@ public class IOPort extends ComponentPort {
         try {
             // The getReceivers() method throws an IllegalActionException if
             // there's no director.
-            Receiver[][] recs = getReceivers();
-            if (recs == null || recs[channelIndex] == null) {
+            Receiver[][] receivers = getReceivers();
+            if (receivers == null || receivers[channelIndex] == null) {
                 return false;
             }
-            for (int j = 0; j < recs[channelIndex].length; j++) {
-                if (recs[channelIndex][j].hasToken()) return true;
+            for (int j = 0; j < receivers[channelIndex].length; j++) {
+                if (receivers[channelIndex][j].hasToken()) return true;
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an input port.
@@ -1112,12 +1119,12 @@ public class IOPort extends ComponentPort {
         try {
             // The getReceivers() method throws an IllegalActionException if
             // there's no director.
-            Receiver[][] recs = getReceivers();
-            if (recs == null || recs[channelIndex] == null) {
+            Receiver[][] receivers = getReceivers();
+            if (receivers == null || receivers[channelIndex] == null) {
                 return false;
             }
-            for (int j = 0; j < recs[channelIndex].length; j++) {
-                if (recs[channelIndex][j].hasToken(tokens)) return true;
+            for (int j = 0; j < receivers[channelIndex].length; j++) {
+                if (receivers[channelIndex][j].hasToken(tokens)) return true;
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an input port.
@@ -1159,7 +1166,7 @@ public class IOPort extends ComponentPort {
         }
         // Status has not been set.  Try to infer it.
         long version = _workspace.getVersion();
-        if (_insideinputversion != version) {
+        if (_insideInputVersion != version) {
             try {
                 _workspace.getReadAccess();
                 // Check to see whether any port linked on the inside
@@ -1171,7 +1178,7 @@ public class IOPort extends ComponentPort {
                     // Rule out case where this port itself is listed...
                     if (p != this && p.isInput()) _isInput = true;
                 }
-                _insideinputversion = version;
+                _insideInputVersion = version;
             } finally {
                 _workspace.doneReading();
             }
@@ -1188,7 +1195,7 @@ public class IOPort extends ComponentPort {
         // No need to synchronize this because the action is atomic
         // and synchronization would just ensure that no write action
         // is in progress.
-        return _isMulitport;
+        return _isMultiport;
     }
 
     /** Return true if the port is an output. The port is an output
@@ -1205,7 +1212,7 @@ public class IOPort extends ComponentPort {
         }
         // Status has not been set.  Try to infer it.
         long version = _workspace.getVersion();
-        if (_insideoutputversion != version) {
+        if (_insideOutputVersion != version) {
             try {
                 _workspace.getReadAccess();
                 // Check to see whether any port linked on the
@@ -1217,7 +1224,7 @@ public class IOPort extends ComponentPort {
                     // Rule out case where this port itself is listed...
                     if (p != this && p.isOutput()) _isOutput = true;
                 }
-                _insideoutputversion = version;
+                _insideOutputVersion = version;
             } finally {
                 _workspace.doneReading();
             }
@@ -1278,19 +1285,19 @@ public class IOPort extends ComponentPort {
      */
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
-        Receiver[][] farRec;
+        Receiver[][] farReceivers;
         try {
             try {
                 _workspace.getReadAccess();
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
-                farRec = getRemoteReceivers();
-                if (farRec == null || farRec[channelIndex] == null) return;
+                farReceivers = getRemoteReceivers();
+                if (farReceivers == null || farReceivers[channelIndex] == null) return;
             } finally {
                 _workspace.doneReading();
             }
-            for (int j = 0; j < farRec[channelIndex].length; j++) {
-                farRec[channelIndex][j].put(token);
+            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+                farReceivers[channelIndex][j].put(token);
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may occur if the port is not an output port.
@@ -1329,19 +1336,19 @@ public class IOPort extends ComponentPort {
      */
     public void send(int channelIndex, Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
-        Receiver[][] farRec;
+        Receiver[][] farReceivers;
         try {
             try {
                 _workspace.getReadAccess();
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
-                farRec = getRemoteReceivers();
-                if (farRec == null || farRec[channelIndex] == null) return;
+                farReceivers = getRemoteReceivers();
+                if (farReceivers == null || farReceivers[channelIndex] == null) return;
             } finally {
                 _workspace.doneReading();
             }
-            for (int j = 0; j < farRec[channelIndex].length; j++) {
-                farRec[channelIndex][j].putArray(tokenArray, vectorLength);
+            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+                farReceivers[channelIndex][j].putArray(tokenArray, vectorLength);
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may occur if the port is not an output port.
@@ -1422,16 +1429,16 @@ public class IOPort extends ComponentPort {
      *  director of the container, if there is one.
      *  It is write-synchronized on the workspace.
      *
-     *  @param isMulitport True to make the port a multiport.
+     *  @param isMultiport True to make the port a multiport.
      */
-    public void setMultiport(boolean isMulitport) {
+    public void setMultiport(boolean isMultiport) {
         // No need for the try ... finally construct here because no
         // exception can occur.  Note that although the action here is
         // atomic, we still need to obtain write access to be sure that
         // the change is not made in the middle of another read in another
         // thread.
         _workspace.getWriteAccess();
-        _isMulitport = isMulitport;
+        _isMultiport = isMultiport;
         _invalidate();
         _workspace.doneWriting();
     }
@@ -1723,11 +1730,11 @@ public class IOPort extends ComponentPort {
      *  any subset of the words "input", "output", "multiport", and "opaque",
      *  separated by spaces, plus a subfield of the form "{width
      *  <i>integer</i>}", where the integer is the width of the port.
-     *  The field keywork is "configuration".
+     *  The field keyword is "configuration".
      *  <p>
      *  If the detail argument sets the bit defined by the constant
      *  RECEIVERS, then append to the description a field containing
-     *  the receivers contained by this port.  The keywork is "receivers"
+     *  the receivers contained by this port.  The keyword is "receivers"
      *  and the format is like the Receivers array, an array of groups, with
      *  each group receiving from a channel.
      *  Each group is a list of receiver descriptions (it may also be empty).
@@ -1862,7 +1869,7 @@ public class IOPort extends ComponentPort {
             output.write(_getIndentPrefix(depth)
                     + "<property name=\"output\"/>\n");
         }
-        if (_isMulitport) {
+        if (_isMultiport) {
             output.write(_getIndentPrefix(depth)
                     + "<property name=\"multiport\"/>\n");
         }
@@ -1918,9 +1925,9 @@ public class IOPort extends ComponentPort {
         if (container instanceof CompositeActor) {
             CompositeActor castContainer = (CompositeActor)container;
             if (castContainer.isOpaque() && !castContainer.isAtomic()) {
-                Receiver rec = castContainer.newInsideReceiver();
-                rec.setContainer(this);
-                return rec;
+                Receiver receiver = castContainer.newInsideReceiver();
+                receiver.setContainer(this);
+                return receiver;
             }
         }
         throw new IllegalActionException(this,
@@ -1949,9 +1956,9 @@ public class IOPort extends ComponentPort {
             throw new IllegalActionException(this,
                     "Cannot create a receiver without a container.");
         }
-        Receiver rec = container.newReceiver();
-        rec.setContainer(this);
-        return rec;
+        Receiver receiver = container.newReceiver();
+        receiver.setContainer(this);
+        return receiver;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2056,14 +2063,14 @@ public class IOPort extends ComponentPort {
     // validity of the cache.
     // 'transient' means that the variable will not be serialized.
     private boolean _isInput, _isOutput;
-    private transient long _insideinputversion = -1;
-    private transient long _insideoutputversion = -1;
+    private transient long _insideInputVersion = -1;
+    private transient long _insideOutputVersion = -1;
 
     // Flag that the input/output status has been set.
     private boolean _isInputOutputStatusSet = false;
 
     // Indicate whether the port is a multiport. Default false.
-    private boolean _isMulitport = false;
+    private boolean _isMultiport = false;
 
     // The cached width of the port, which is the sum of the widths of the
     // linked relations.  The default 0 because initially there are no

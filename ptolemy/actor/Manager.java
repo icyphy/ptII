@@ -540,7 +540,7 @@ public class Manager extends NamedObj implements Runnable {
 		_changeRequests = new LinkedList();
 	    }
 	    _changeRequests.add(change);
-	    // Now call stopfire so we can be sure the model will give us
+	    // Now call stopFire so we can be sure the model will give us
 	    // back control.
 	    _container.stopFire();
 	}
@@ -597,17 +597,17 @@ public class Manager extends NamedObj implements Runnable {
 		        Inequality ineq = (Inequality)unsatisfied.next();
 		        InequalityTerm term =
                             (InequalityTerm)ineq.getLesserTerm();
-		        Object typeObj = term.getAssociatedObject();
-		        if (typeObj != null) {
-			    // typeObj is a Typeable
-			    conflicts.add(typeObj);
+		        Object typeObject = term.getAssociatedObject();
+		        if (typeObject != null) {
+			    // typeObject is a Typeable
+			    conflicts.add(typeObject);
 		        }
 
 		        term = (InequalityTerm)ineq.getGreaterTerm();
-		        typeObj = term.getAssociatedObject();
-		        if (typeObj != null) {
-			    // typeObj is a Typeable
-			    conflicts.add(typeObj);
+		        typeObject = term.getAssociatedObject();
+		        if (typeObject != null) {
+			    // typeObject is a Typeable
+			    conflicts.add(typeObject);
 		        }
 		    }
                 }
@@ -628,9 +628,9 @@ public class Manager extends NamedObj implements Runnable {
                         "Type conflicts occurred in " + _container.getFullName()
                         + " on the following Typeables:");
 	    }
-	} catch (IllegalActionException iae) {
+	} catch (IllegalActionException illegalAction) {
 	    // this should not happen.
-	    throw new InternalErrorException(iae.getMessage());
+	    throw new InternalErrorException(illegalAction.getMessage());
 	} finally {
 	    _workspace.doneWriting();
 	}
@@ -767,11 +767,11 @@ public class Manager extends NamedObj implements Runnable {
      *  Instead, call setManager in the CompositeActor class (or a
      *  derived class).
      */
-    protected void _makeManagerOf(CompositeActor ca) {
-        if (ca != null) {
+    protected void _makeManagerOf(CompositeActor compositeActor) {
+        if (compositeActor != null) {
             _workspace.remove(this);
         }
-        _container = ca;
+        _container = compositeActor;
     }
 
     /** Notify listeners that execution has completed successfully.
@@ -798,7 +798,6 @@ public class Manager extends NamedObj implements Runnable {
             _debug("State is: " + _state.getDescription());
         }
         if (_executionListeners != null) {
-            String msg = _state.getDescription();
             Iterator listeners = _executionListeners.iterator();
             while(listeners.hasNext()) {
                 ExecutionListener listener =
@@ -849,9 +848,9 @@ public class Manager extends NamedObj implements Runnable {
             // further with the model.
             _changeRequests = null;
 
-            Iterator enum = clonedList.iterator();
-            while (enum.hasNext()) {
-                ChangeRequest request = (ChangeRequest)enum.next();
+            Iterator changeRequests = clonedList.iterator();
+            while (changeRequests.hasNext()) {
+                ChangeRequest request = (ChangeRequest)changeRequests.next();
                 request.execute();
                 if (_debugging) {
                     _debug("Manager executed change request with description: "

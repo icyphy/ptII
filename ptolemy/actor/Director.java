@@ -193,7 +193,7 @@ public class Director extends Attribute implements Executable {
         // do nothing in this base class.
         // Note that, alternatively, this method could have been abstract.
         // But we didn't do that, because otherwise we wouldn't be able
-        // to run Tcl Blend testscript on this class.
+        // to run Tcl Blend test script on this class.
 
     }
 
@@ -297,7 +297,7 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Invoke a specified number of iterations of the actor. An
-     *  iteration is equivalant to invoking prefire(), fire(), and
+     *  iteration is equivalent to invoking prefire(), fire(), and
      *  postfire(), in that order. In an iteration, if prefire()
      *  returns true, then fire() will be called once, followed by
      *  postfire(). Otherwise, if prefire() returns false, fire()
@@ -364,10 +364,10 @@ public class Director extends Attribute implements Executable {
                 // find out which of those actors has a local director.
                 if (actor instanceof CompositeActor &&
                         ((CompositeActor)actor).isOpaque()) {
-                    CompositeActor ca = (CompositeActor) actor;
-                    // ca.getDirector() is guaranteed to return a local
-                    // director, not the executive director.
-                    if (ca.getDirector().needWriteAccess()) {
+                    CompositeActor compositeActor = (CompositeActor) actor;
+                    // compositeActor.getDirector() is guaranteed to return a
+                    // local director, not the executive director.
+                    if (compositeActor.getDirector().needWriteAccess()) {
                         // If any of the directors need a write access, then
                         // everyone has to respect it.
                         return true;
@@ -647,19 +647,19 @@ public class Director extends Attribute implements Executable {
                     "transferInputs: port argument is not an opaque" +
                     "input port.");
         }
-        boolean trans = false;
-        Receiver[][] insiderecs = port.deepGetReceivers();
+        boolean wasTransferred = false;
+        Receiver[][] insideReceivers = port.deepGetReceivers();
         for (int i = 0; i < port.getWidth(); i++) {
 	    if (port.hasToken(i)) {
                 try {
                     Token t = port.get(i);
-                    if (insiderecs != null && insiderecs[i] != null) {
+                    if (insideReceivers != null && insideReceivers[i] != null) {
                         if(_debugging) _debug(getName(),
                                 "transferring input from " + port.getName());
-                        for (int j = 0; j < insiderecs[i].length; j++) {
-                            insiderecs[i][j].put(t);
+                        for (int j = 0; j < insideReceivers[i].length; j++) {
+                            insideReceivers[i][j].put(t);
                         }
-                        trans = true;
+                        wasTransferred = true;
                     }
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
@@ -669,7 +669,7 @@ public class Director extends Attribute implements Executable {
                 }
             }
         }
-        return trans;
+        return wasTransferred;
     }
 
     /** Transfer data from an output port of the
@@ -682,7 +682,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      *  @param port The port to transfer tokens from.
-     *  @return True if at least one data token is transfered.
+     *  @return True if at least one data token is transferred.
      */
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
@@ -691,17 +691,17 @@ public class Director extends Attribute implements Executable {
                     "transferOutputs: port argument is not " +
                     "an opaque output port.");
         }
-        boolean trans = false;
-        Receiver[][] insiderecs = port.getInsideReceivers();
-        if (insiderecs != null) {
-            for (int i = 0; i < insiderecs.length; i++) {
-                if (insiderecs[i] != null) {
-                    for (int j = 0; j < insiderecs[i].length; j++) {
-			if (insiderecs[i][j].hasToken()) {
+        boolean wasTransferred = false;
+        Receiver[][] insideReceivers = port.getInsideReceivers();
+        if (insideReceivers != null) {
+            for (int i = 0; i < insideReceivers.length; i++) {
+                if (insideReceivers[i] != null) {
+                    for (int j = 0; j < insideReceivers[i].length; j++) {
+			if (insideReceivers[i][j].hasToken()) {
                             try {
-                                Token t = insiderecs[i][j].get();
+                                Token t = insideReceivers[i][j].get();
                                 port.send(i, t);
-                                trans = true;
+                                wasTransferred = true;
                             } catch (NoTokenException ex) {
                                 throw new InternalErrorException(
                                         "Director.transferOutputs: " +
@@ -713,7 +713,7 @@ public class Director extends Attribute implements Executable {
                 }
             }
         }
-        return trans;
+        return wasTransferred;
     }
 
     /** Invoke the wrapup() method of all the actors contained in the

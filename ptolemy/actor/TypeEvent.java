@@ -53,13 +53,13 @@ public class TypeEvent {
     /** Construct a TypeEvent, with the specified port and the
      *  old and new types of the port.
      *  @param port The port whose type is changed.
-     *  @param oldtype The type of the port before the change.
-     *  @param newtype The type of the port after the change.
+     *  @param oldType The type of the port before the change.
+     *  @param newType The type of the port after the change.
      */
-    public TypeEvent(TypedIOPort port, Type oldtype, Type newtype) {
+    public TypeEvent(TypedIOPort port, Type oldType, Type newType) {
         _port = port;
-        _oldtype = oldtype;
-        _newtype = newtype;
+        _oldType = oldType;
+        _newType = newType;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -76,20 +76,20 @@ public class TypeEvent {
      *  @return The type of the port before the change.
      */
     public Type getOldType() {
-        return _oldtype;
+        return _oldType;
     }
 
     /** Return the new type.
      *  @return The type of the port after the change.
      */
     public Type getNewType() {
-        return _newtype;
+        return _newType;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                    ////
 
     private TypedIOPort _port = null;
-    private Type _oldtype;
-    private Type _newtype;
+    private Type _oldType;
+    private Type _newType;
 }

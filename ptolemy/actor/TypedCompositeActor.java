@@ -167,11 +167,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	        // to the ports that the actor can send data to.
 		Iterator ports = ((Entity)actor).portList().iterator();
 		while (ports.hasNext()) {
-		    TypedIOPort srcport = (TypedIOPort)ports.next();
-		    Receiver[][] receivers = srcport.getRemoteReceivers();
+		    TypedIOPort sourcePort = (TypedIOPort)ports.next();
+		    Receiver[][] receivers = sourcePort.getRemoteReceivers();
 
-		    List destPorts = _receiverToPort(receivers);
-		    result.addAll(_checkTypesFromTo(srcport, destPorts));
+		    List destinationPorts = _receiverToPort(receivers);
+		    result.addAll(_checkTypesFromTo(sourcePort, destinationPorts));
 		}
 	    }
 
@@ -179,10 +179,10 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    // this composite actor to input ports of contained actors.
 	    Iterator boundaryPorts = portList().iterator();
 	    while (boundaryPorts.hasNext()) {
-		TypedIOPort srcport = (TypedIOPort)boundaryPorts.next();
-		Receiver[][] receivers = srcport.deepGetReceivers();
-		List destPorts = _receiverToPort(receivers);
-	    	result.addAll(_checkTypesFromTo(srcport, destPorts));
+		TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
+		Receiver[][] receivers = sourcePort.deepGetReceivers();
+		List destinationPorts = _receiverToPort(receivers);
+	    	result.addAll(_checkTypesFromTo(sourcePort, destinationPorts));
 	    }
 
 	    return result;
@@ -230,8 +230,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             throws NameDuplicationException {
         try {
             workspace().getWriteAccess();
-            TypedIORelation rel = new TypedIORelation(this, name);
-            return rel;
+            TypedIORelation relation = new TypedIORelation(this, name);
+            return relation;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
             // exception.
@@ -287,11 +287,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		// actor to the ports that the actor can send data to.
 		Iterator ports = ((Entity)actor).portList().iterator();
 		while (ports.hasNext()) {
-		    TypedIOPort srcport = (TypedIOPort)ports.next();
-                    Receiver[][] receivers = srcport.getRemoteReceivers();
+		    TypedIOPort sourcePort = (TypedIOPort)ports.next();
+                    Receiver[][] receivers = sourcePort.getRemoteReceivers();
 
-                    List destPorts = _receiverToPort(receivers);
-                    result.addAll(_typeConstraintsFromTo(srcport, destPorts));
+                    List destinationPorts = _receiverToPort(receivers);
+                    result.addAll(_typeConstraintsFromTo(sourcePort, destinationPorts));
 		}
             }
 
@@ -299,10 +299,10 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             // this composite actor to input ports of contained actors.
 	    Iterator boundaryPorts = portList().iterator();
             while (boundaryPorts.hasNext()) {
-                TypedIOPort srcport = (TypedIOPort)boundaryPorts.next();
-                Receiver[][] receivers = srcport.deepGetReceivers();
-                List destPorts = _receiverToPort(receivers);
-                result.addAll(_typeConstraintsFromTo(srcport, destPorts));
+                TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
+                Receiver[][] receivers = sourcePort.deepGetReceivers();
+                List destinationPorts = _receiverToPort(receivers);
+                result.addAll(_typeConstraintsFromTo(sourcePort, destinationPorts));
             }
 
 	    // collect constraints from contained Typeables
@@ -314,9 +314,9 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
 	    Iterator attributes = attributeList().iterator();
 	    while (attributes.hasNext()) {
-		Attribute att = (Attribute)attributes.next();
-		if (att instanceof Typeable) {
-		    result.addAll(((Typeable)att).typeConstraintList());
+		Attribute attribute = (Attribute)attributes.next();
+		if (attribute instanceof Typeable) {
+		    result.addAll(((Typeable)attribute).typeConstraintList());
 		}
 	    }
 
@@ -414,26 +414,26 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // assuming the source port is connected to all the ports in the
     // group of destination ports.  Return an list of
     // TypedIOPorts that have type conflicts.
-    private List _checkTypesFromTo(TypedIOPort srcport, List destPortList) {
+    private List _checkTypesFromTo(TypedIOPort sourcePort, List destinationPortList) {
 	List result = new LinkedList();
 
-	boolean isUndeclared = srcport.getTypeTerm().isSettable();
+	boolean isUndeclared = sourcePort.getTypeTerm().isSettable();
 	if (!isUndeclared) {
-	    // srcport has a declared type.
-	    Type srcDeclared = srcport.getType();
-	    Iterator destPorts = destPortList.iterator();
-	    while (destPorts.hasNext()) {
-            	TypedIOPort destport = (TypedIOPort)destPorts.next();
-		isUndeclared = destport.getTypeTerm().isSettable();
+	    // sourcePort has a declared type.
+	    Type srcDeclared = sourcePort.getType();
+	    Iterator destinationPorts = destinationPortList.iterator();
+	    while (destinationPorts.hasNext()) {
+            	TypedIOPort destinationPort = (TypedIOPort)destinationPorts.next();
+		isUndeclared = destinationPort.getTypeTerm().isSettable();
 
 	    	if (!isUndeclared) {
 	    	    // both source/destination ports are declared, check type
-	    	    Type destDeclared = destport.getType();
+	    	    Type destDeclared = destinationPort.getType();
 		    int compare = TypeLattice.compare(srcDeclared,
                             destDeclared);
 		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-		    	result.add(srcport);
-		    	result.add(destport);
+		    	result.add(sourcePort);
+		    	result.add(destinationPort);
 	    	    }
 		}
 	    }
@@ -459,21 +459,21 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // Return the type constraints on all connections starting from the
     // specified source port to all the ports in a group of destination
     // ports.
-    private List _typeConstraintsFromTo(TypedIOPort srcport,
-            List destPortList) {
+    private List _typeConstraintsFromTo(TypedIOPort sourcePort,
+            List destinationPortList) {
 	List result = new LinkedList();
 
-	boolean srcUndeclared = srcport.getTypeTerm().isSettable();
-	Iterator destPorts = destPortList.iterator();
-	while (destPorts.hasNext()) {
-            TypedIOPort destport = (TypedIOPort)destPorts.next();
-	    boolean destUndeclared = destport.getTypeTerm().isSettable();
+	boolean srcUndeclared = sourcePort.getTypeTerm().isSettable();
+	Iterator destinationPorts = destinationPortList.iterator();
+	while (destinationPorts.hasNext()) {
+            TypedIOPort destinationPort = (TypedIOPort)destinationPorts.next();
+	    boolean destUndeclared = destinationPort.getTypeTerm().isSettable();
 
 	    if (srcUndeclared || destUndeclared) {
 	    	// at least one of the source/destination ports does not have
 		// declared type, form type constraint.
-		Inequality ineq = new Inequality(srcport.getTypeTerm(),
-                        destport.getTypeTerm());
+		Inequality ineq = new Inequality(sourcePort.getTypeTerm(),
+                        destinationPort.getTypeTerm());
 		result.add(ineq);
 	    }
 	}

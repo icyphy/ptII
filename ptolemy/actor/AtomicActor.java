@@ -196,15 +196,15 @@ public class AtomicActor extends ComponentEntity implements Actor {
             try {
                 _workspace.getReadAccess();
                 // Update the cache.
-                List inports = new LinkedList();
+                List inputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
                 while(ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
                     if( p.isInput()) {
-                        inports.add(p);
+                        inputPorts.add(p);
                     }
                 }
-                _cachedInputPorts = inports;
+                _cachedInputPorts = inputPorts;
                 _inputPortsVersion = _workspace.getVersion();
             } finally {
                 _workspace.doneReading();
@@ -214,7 +214,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     }
 
     /** Invoke a specified number of iterations of the actor. An
-     *  iteration is equivalant to invoking prefire(), fire(), and
+     *  iteration is equivalent to invoking prefire(), fire(), and
      *  postfire(), in that order. In an iteration, if prefire()
      *  returns true, then fire() will be called once, followed by
      *  postfire(). Otherwise, if prefire() returns false, fire()
@@ -280,12 +280,12 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @return A new object implementing the Receiver interface.
      */
     public Receiver newReceiver() throws IllegalActionException {
-        Director dir = getDirector();
-        if (dir == null) {
+        Director director = getDirector();
+        if (director == null) {
             throw new IllegalActionException(this,
                     "Cannot create a receiver without a director.");
         }
-        return dir.newReceiver();
+        return director.newReceiver();
     }
 
     /** List the output ports.
@@ -457,8 +457,8 @@ public class AtomicActor extends ComponentEntity implements Actor {
     private void _createReceivers() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
         while (inputPorts.hasNext()) {
-            IOPort inport = (IOPort)inputPorts.next();
-            inport.createReceivers();
+            IOPort inputPort = (IOPort)inputPorts.next();
+            inputPort.createReceivers();
         }
     }
 

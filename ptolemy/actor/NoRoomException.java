@@ -56,18 +56,18 @@ public class NoRoomException extends RuntimeException {
 
     /** Construct a NoRoomException originating from the given object,
      *  with the given error message.
-     *  @param obj The originating object.
+     *  @param object The originating object.
      *  @param message The message.
      */
-    public NoRoomException(Nameable obj, String message) {
+    public NoRoomException(Nameable object, String message) {
         String name;
-        if (obj == null) {
+        if (object == null) {
             name = new String("");;
         } else {
             try {
-                name = obj.getFullName();
+                name = object.getFullName();
             } catch (InvalidStateException ex) {
-                name = obj.getName();
+                name = object.getName();
             }
         }
         _setMessage(name + ": " + message);
@@ -85,7 +85,7 @@ public class NoRoomException extends RuntimeException {
     ////                         protected methods                 ////
 
     /** Set the error message to the given string.
-     *  @param msg The message.
+     *  @param message The message.
      */
     protected void _setMessage(String message) {
         _message = message;

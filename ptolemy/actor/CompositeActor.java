@@ -208,19 +208,19 @@ public class CompositeActor extends CompositeEntity implements Actor {
                         "Cannot fire a non-opaque actor.");
             }
             // Use the local director to transfer inputs.
-            Iterator inports = inputPortList().iterator();
-            while(inports.hasNext()) {
-                IOPort p = (IOPort)inports.next();
+            Iterator inputPorts = inputPortList().iterator();
+            while(inputPorts.hasNext()) {
+                IOPort p = (IOPort)inputPorts.next();
                 _director.transferInputs(p);
             }
             _director.fire();
             // Use the executive director to transfer outputs.
-            Director edir = getExecutiveDirector();
-            if (edir != null) {
+            Director executiveDirector = getExecutiveDirector();
+            if (executiveDirector != null) {
                 Iterator outports = outputPortList().iterator();
                 while(outports.hasNext()) {
                     IOPort p = (IOPort)outports.next();
-                    edir.transferOutputs(p);
+                    executiveDirector.transferOutputs(p);
                 }
             }
         } finally {
@@ -333,15 +333,15 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _workspace.getReadAccess();
             if(_inputPortsVersion != _workspace.getVersion()) {
                 // Update the cache.
-                List inports = new LinkedList();
+                List inputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
                 while(ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
                     if( p.isInput()) {
-                        inports.add(p);
+                        inputPorts.add(p);
                     }
                 }
-                _cachedInputPorts = inports;
+                _cachedInputPorts = inputPorts;
                 _inputPortsVersion = _workspace.getVersion();
             }
 
@@ -361,7 +361,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     }
 
     /** Invoke a specified number of iterations of the actor. An
-     *  iteration is equivalant to invoking prefire(), fire(), and
+     *  iteration is equivalent to invoking prefire(), fire(), and
      *  postfire(), in that order. In an iteration, if prefire()
      *  returns true, then fire() will be called once, followed by
      *  postfire(). Otherwise, if prefire() returns false, fire()
@@ -443,12 +443,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @return A new object implementing the Receiver interface.
      */
     public Receiver newReceiver() throws IllegalActionException {
-        Director dir = getExecutiveDirector();
-        if (dir == null) {
+        Director director = getExecutiveDirector();
+        if (director == null) {
             throw new IllegalActionException(this,
                     "Cannot create a receiver without an executive director.");
         }
-        return dir.newReceiver();
+        return director.newReceiver();
     }
 
     /** Create a new IORelation with the specified name, add it to the
@@ -464,8 +464,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
             throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
-            IORelation rel = new IORelation(this, name);
-            return rel;
+            IORelation relation = new IORelation(this, name);
+            return relation;
         } finally {
             _workspace.doneWriting();
         }
@@ -869,8 +869,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
     private void _createReceivers() throws IllegalActionException {
         Iterator ports = portList().iterator();
         while (ports.hasNext()) {
-            IOPort oneport = (IOPort)ports.next();
-            oneport.createReceivers();
+            IOPort onePort = (IOPort)ports.next();
+            onePort.createReceivers();
         }
     }
 
