@@ -66,12 +66,15 @@ This FAQ can be found at:
 	<menu>
 	<li> <a href="#Adding actors"><b>5.1 How do I add an actor?</b></a>
 
-	<li> <a href="#Interfacing to C/C++"><b>5.1 How do I interface to C/C++</b></a>
 
-	<li> <a href="#Customizing the GUI"><b>5.3 How do I customize the GUI?</b></a>
-	<li> <a href="#MoML"><b>5.4 What file format are the models stored in?</b></a>
-	<li> <a href="#Scripting"><b>5.5 Is there a scripting interface to Ptolemy II?</b></a>
-	<li> <a href="#Contributions"><b>5.6 Does the Ptolemy project take software contributions?</b></a>
+	<li> <a name="#PolymorphicActors"><b>5.2 What makes an actor domain polymorphic?</b></a>
+
+	<li> <a href="#Interfacing to C/C++"><b>5.3 How do I interface to C/C++</b></a>
+
+	<li> <a href="#Customizing the GUI"><b>5.4 How do I customize the GUI?</b></a>
+	<li> <a href="#MoML"><b>5.5 What file format are the models stored in?</b></a>
+	<li> <a href="#Scripting"><b>5.6 Is there a scripting interface to Ptolemy II?</b></a>
+	<li> <a href="#Contributions"><b>5.7 Does the Ptolemy project take software contributions?</b></a>
 	</menu>
 
 </menu>
@@ -570,7 +573,35 @@ property("ptolemy.ptII.dir") + "/ptolemy/actor/lib/test/auto/FileWriter1Output.t
 <dd> See the <code>Add Actor</code> link in
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/index.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/</code></a>
 
-<dt> <a name="Interfacing to C/C++"><b>5.1 How do I interface to C/C++</b></a>
+<dt> <a name="PolymorphicActors"><b>5.2 What makes an actor domain polymorphic?</b></a>
+<dd>
+As for making actors domain polymorphic, the general rule we follow is:
+
+<menu>
+<li> return false in prefire() if there is insufficient input data to fire
+<li> consume a token at each input if one is present in fire()
+<li> produce outputs in fire()
+<li> update the state of the actor in postfire(), not fire
+</menu>
+
+
+If more than one output token is produced on an output port or
+consumed on an input port in fire(), then the input port should have a
+tokenConsumptionRate parameter or the output port tokenProductionRate
+Parameter indicating how many tokens are produced.  (To see sample
+values, in the FIR actor, right click on the input or output port and
+select configure).
+
+
+ <p>If these rules are followed, then the actor will work in at least:
+
+   DE, SDF, CT, PN, SR, CI
+
+ <br>The most difficult of the rules to follow is updating the state only
+in postfire(). This rule only matters in CT because CT may 
+have to backtrack time
+
+<dt> <a name="Interfacing to C/C++"><b>5.3 How do I interface to C/C++</b></a>
 <dd>
 Ptolemy II is written in Java, and Java has the Java Native Interface
 (JNI), see
@@ -592,7 +623,7 @@ that JNI in truly platform independent manner so that the same
 code will work on multiple platforms.
 
 
-<dt> <a name="Customizing the GUI"><b>5.3 How do I customize the GUI?</b></a>
+<dt> <a name="Customizing the GUI"><b>5.4 How do I customize the GUI?</b></a>
 <dd> 
 Ptolemy II uses Diva to display block diagram editors.
  <br>Information about Diva can be found at
@@ -615,14 +646,14 @@ adds this feature with this line:
 </pre>
 
 
-<dt> <a name="MoML"><b>5.4 What file format are the models stored in?</b></a>
+<dt> <a name="MoML"><b>5.5 What file format are the models stored in?</b></a>
 <dd> Ptolemy II stores models in an XML format called MoML.
 The design doc covers MoML in detail.
  <p>The beauty of using a human readable (though verbose) file
 format is that we can use standard tools like XSLT and sed to 
 transform models.
 	
-<dt> <a name="Scripting"><b>5.5 Is there a scripting interface to Ptolemy II ?</b></a>
+<dt> <a name="Scripting"><b>5.6 Is there a scripting interface to Ptolemy II ?</b></a>
 
 <dd> The PythonScript actor includes and interface to
 <a href="http://www.jython.org/#in_browser" target="_top">Jython</a>,
@@ -646,7 +677,7 @@ and avoiding the usual edit/compile/run loop.
 
 
 
-<dt> <a name="Contributions"><b>5.6 Does the Ptolemy project take software contributions?</b></a>
+<dt> <a name="Contributions"><b>5.7 Does the Ptolemy project take software contributions?</b></a>
 <dd> Yes, the Ptolemy project has a long history of folding in software
 contributions from off site developers.
 
