@@ -83,7 +83,7 @@ import ptolemy.util.StringUtilities;
    the appropriate method to use by using reflection, matching the
    types of the arguments.
 
-   @author  Neil Smyth, Christopher Hylands, Bart Kienhuis, Edward A. Lee, Steve Neuendorffer
+   @author Christopher Hylands Brooks, Tobin Fricke, Bart Kienhuis, Edward A. Lee, Steve Neuendorffer, Neil Smyth
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Yellow (eal)
@@ -120,65 +120,58 @@ public class UtilityFunctions {
     }
 
     /** Concatenate two arrays.  
-        The arrays must have the same type.
-	Example: concatenate({1,2,3},{4,5,6}) == {1,2,3,4,5,6}.
-	@exception IllegalActionException If the arrays do not have 
-                   compatible types.
-	@param token1 First array from which tokens are copied to the result 
-	@param token2 Second array from which tokens are copied to the result
-	@return an array containing all of the elements of the first argument
-	(in order), followed by all of the arguments of the second argument
-	(in order).
-	@author Tobin Fricke
+     *  The arrays must have the same type.
+     *  Example: concatenate({1,2,3},{4,5,6}) == {1,2,3,4,5,6}.
+     *  @param token1 First array from which tokens are copied to the result.
+     *  @param token2 Second array from which tokens are copied to the result.
+     *  @return An array containing all of the elements of the first argument
+     *   (in order), followed by all of the arguments of the second argument
+     *   (in order).
+     *  @exception IllegalActionException If the arrays do not have 
+     *   compatible types.
      */
-
     public static ArrayToken concatenate(ArrayToken token1, ArrayToken token2) 
-	throws IllegalActionException {
-	
-	Token array1[] = token1.arrayValue();
-	Token array2[] = token2.arrayValue();
+            throws IllegalActionException {
+       Token array1[] = token1.arrayValue();
+       Token array2[] = token2.arrayValue();
 
-	int nElements = array1.length + array2.length;
-	Token resultArray[] = new Token[nElements];
+       int nElements = array1.length + array2.length;
+       Token resultArray[] = new Token[nElements];
 
-	System.arraycopy(array1, 0, resultArray, 0,             array1.length);
-	System.arraycopy(array2, 0, resultArray, array1.length, array2.length);
-	
-	return new ArrayToken(resultArray);
+       System.arraycopy(array1, 0, resultArray, 0,             array1.length);
+       System.arraycopy(array2, 0, resultArray, array1.length, array2.length);
+    
+       return new ArrayToken(resultArray);    
     }
 
     /** Concatenate an array of arrays into a single array.  
-	Example: concatenate({{1,2,3},{4,5},{6,7}}) == {1,2,3,4,5,6,7}.
-	@exception IllegalActionException If the argument is not an array of
-        arrays.
-	@param token Array of arrays which are to be concatenated
-	@author Tobin Fricke
+     *  Example: concatenate({{1,2,3},{4,5},{6,7}}) == {1,2,3,4,5,6,7}.
+     *  @param token Array of arrays which are to be concatenated.
+     *  @exception IllegalActionException If the argument is not an array of
+     *   arrays.
      */
+    public static ArrayToken concatenate(ArrayToken token) throws IllegalActionException {
+        if (!(token.getElementType() instanceof ArrayType )) {
+            throw new IllegalActionException(
+                   "The argument to concatenate(ArrayToken) "
+                   + "must be an array of arrays.");
+        }
 
-    public static ArrayToken concatenate(ArrayToken token) 
-	throws IllegalActionException {
-	
-	int nElements = 0;
-	
-	for (int i=0; i<token.length(); i++) {
-	    if (! (token.getElement(i) instanceof ArrayToken ))
-		throw new IllegalActionException("The argument to "+
- 		 "concatenate(ArrayToken) must be an array of arrays.");
-	    nElements += ((ArrayToken)(token.getElement(i))).length();
-	}
-
-	Token result[] = new Token[nElements];
-	int cursor = 0;
-
-	for (int i=0; i<token.length(); i++) {
-	    Token array[] = ((ArrayToken)(token.getElement(i))).arrayValue();
-	    System.arraycopy(array, 0, result, cursor, array.length);
-	    cursor += array.length;
-	}
-
-	return new ArrayToken(result);
+        int nElements = 0;
+        for (int i = 0; i < token.length(); i++) {
+             nElements += ((ArrayToken)(token.getElement(i))).length();
+        }
+        
+        Token result[] = new Token[nElements];
+        int cursor = 0;
+        for (int i = 0; i < token.length(); i++) {
+            Token array[] = ((ArrayToken)(token.getElement(i))).arrayValue();
+            System.arraycopy(array, 0, result, cursor, array.length);
+            cursor += array.length;            
+        }
+        
+        return new ArrayToken(result);
     }
-
 
     /** Return a record token that contains the names of all the
      *  constants and their values.
@@ -1292,7 +1285,6 @@ public class UtilityFunctions {
      *  not via their add method (which concatenates two strings),
      *  but are accumulated in a StringBuffer, which is much more 
      *  efficient.
-     *  
      *  @param array An array.
      *  @return The sum of the elements of the array.
      *  @exception IllegalActionException If the length of the
@@ -1302,21 +1294,22 @@ public class UtilityFunctions {
     public static final Token sum(ArrayToken array)
             throws IllegalActionException {
         if (array == null || array.length() < 1) {
-            throw new IllegalActionException("sum() function cannot be applied to an empty array");
+            throw new IllegalActionException(
+                "sum() function cannot be applied to an empty array");
         }
-
-	if (array.getElement(0) instanceof StringToken) {
-	    int length = 0;
-	    for (int i = 0; i < array.length(); i++) 
-		length = length + 
-		    ((StringToken)(array.getElement(i))).stringValue().length();
-	    StringBuffer buffer = new StringBuffer(length);	    
-	    for (int i = 0; i < array.length(); i++) 
-		buffer.append(((StringToken)
-			       (array.getElement(i))).stringValue());
-	    return new StringToken(buffer.toString());
-	}  
-
+        if (array.getElement(0) instanceof StringToken) {
+            int length = 0;
+            for (int i = 0; i < array.length(); i++) {
+                length += ((StringToken)(array.getElement(i)))
+                        .stringValue().length();
+            }
+            StringBuffer buffer = new StringBuffer(length);
+            for (int i = 0; i < array.length(); i++) {
+                buffer.append(((StringToken)(array.getElement(i)))
+                        .stringValue());
+            }
+            return new StringToken(buffer.toString());
+        }  
         Token result = array.getElement(0);
         for (int i = 1; i < array.length(); i++) {
             result = result.add(array.getElement(i));
