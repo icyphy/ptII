@@ -433,3 +433,51 @@ test ComponentPort-9.1 {Check _deepInsidePorts on opaque ports} {
     set p1 [java::new ptolemy.kernel.test.TestComponentPort $e1 P1]
     enumToFullNames [$p1 testDeepInsidePorts [java::null] ]
 } {.E1.P1}
+
+######################################################################
+####
+#
+test Port-10.1 {Test unlinkAllInside} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1 E2]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set e3 [java::new ptolemy.kernel.ComponentEntity $e2 E3]
+    set p3 [java::new ptolemy.kernel.ComponentPort $e3 P3]
+
+    set r1 [java::new ptolemy.kernel.ComponentRelation $e1 R1]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $e2 R2]
+    $p1 link $r1
+    $p2 link $r1
+    $p2 link $r2
+    $p3 link $r2
+
+    set result1 [list [_testPortLinkedRelations $p1 $p2 $p3] [_testPortInsideRelations $p1 $p2 $p3]]
+    $p2 unlinkAll
+    set result2 [list [_testPortLinkedRelations $p1 $p2 $p3] [_testPortInsideRelations $p1 $p2 $p3]]
+    $p2 unlinkAllInside
+    set result3 [list [_testPortLinkedRelations $p1 $p2 $p3] [_testPortInsideRelations $p1 $p2 $p3]]
+    list $result1 $result2 $result3
+} {{{{} R1 R2} {R1 R2 {}}} {{{} {} R2} {R1 R2 {}}} {{{} {} R2} {R1 {} {}}}}
+
+test Port-10.2 {Test removePort} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1 E2]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set e3 [java::new ptolemy.kernel.ComponentEntity $e2 E3]
+    set p3 [java::new ptolemy.kernel.ComponentPort $e3 P3]
+
+    set r1 [java::new ptolemy.kernel.ComponentRelation $e1 R1]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $e2 R2]
+    $p1 link $r1
+    $p2 link $r1
+    $p2 link $r2
+    $p3 link $r2
+
+    set result1 [list [_testPortLinkedRelations $p1 $p2 $p3] [_testPortInsideRelations $p1 $p2 $p3]]
+    $p2 setContainer [java::null]
+    set result3 [list [_testPortLinkedRelations $p1 $p2 $p3] [_testPortInsideRelations $p1 $p2 $p3]]
+    list $result1 $result3
+} {{{{} R1 R2} {R1 R2 {}}} {{{} {} R2} {R1 {} {}}}}
+

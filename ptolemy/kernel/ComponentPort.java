@@ -466,6 +466,35 @@ public class ComponentPort extends Port {
         }
     }
 
+    /** Specify the container entity, adding the port to the list of ports
+     *  in the container.  This class overrides the base class to remove
+     *  all inside links if the given container is null.
+     *  This method is write-synchronized on the
+     *  workspace and increments its version number.
+     *  @param entity The container.
+     *  @exception IllegalActionException If this port is not of the
+     *   expected class for the container, or it has no name,
+     *   or the port and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   a port with the name of this port.
+     */
+    public void setContainer(Entity entity)
+            throws IllegalActionException, NameDuplicationException {
+        if (entity != null && _workspace != entity.workspace()) {
+            throw new IllegalActionException(this, entity,
+                    "Cannot set container because workspaces are different.");
+        }
+        try {
+            _workspace.getWriteAccess();
+            super.setContainer(entity);
+            if (entity == null) {
+                unlinkAllInside();
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
     /** Unlink the specified Relation. If the Relation
      *  is not linked to this port, do nothing. If the relation is linked
      *  more than once, then unlink all occurrences.
