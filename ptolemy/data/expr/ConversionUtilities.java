@@ -358,6 +358,10 @@ public class ConversionUtilities {
                                tokenClass)) {
                 Type type = new ArrayType(BaseType.GENERAL);
                 return type;
+            } else if (ptolemy.data.RecordToken.class.isAssignableFrom(
+                               tokenClass)) {
+                Type type = new RecordType(new String[0], new Type[0]);
+                return type;
             } else if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
                 Type type = BaseType.forClassName(tokenClass.getName());
                 if (type == null) {
