@@ -57,7 +57,7 @@ if [ $# -eq 2 ]; then
     TMP_DIR=$2
 else
     case "${OSTYPE-no}" in
-	cygwin32*)
+	cygwin*)
 	    # On the PC, we need to have a drive path to make this directory
 	    # absolute
 	    dirs="c:\\tmp\\ c:\\temp\\ d:\\tmp\\ d:\\temp\\"
