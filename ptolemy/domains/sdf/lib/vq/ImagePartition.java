@@ -77,12 +77,12 @@ public class ImagePartition extends Transformer {
             new Parameter(this, "partitionRows", new IntToken("2"));
         partitionRows.setTypeEquals(BaseType.INT);
 
-        output_tokenProductionRate = 
+        output_tokenProductionRate =
             new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setExpression(
                 "imageColums * imageRows / partitionColumns / partitionRows");
-        
+
         input.setTypeEquals(BaseType.INT_MATRIX);
         output.setTypeEquals(BaseType.INT_MATRIX);
     }
@@ -159,11 +159,11 @@ public class ImagePartition extends Transformer {
         }
         int image[][] = message.intMatrix();
 
-        for(j = 0, partitionNumber = 0; 
+        for(j = 0, partitionNumber = 0;
             j < _imageRows;
             j += _partitionRows)
-            for(i = 0; 
-                i < _imageColumns; 
+            for(i = 0;
+                i < _imageColumns;
                 i += _partitionColumns, partitionNumber++) {
                 for(y = 0; y < _partitionRows; y++)
                     System.arraycopy(image[j + y], i,

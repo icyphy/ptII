@@ -77,12 +77,12 @@ public class ImageUnpartition extends Transformer {
             new Parameter(this, "partitionRows", new IntToken("2"));
         partitionRows.setTypeEquals(BaseType.INT);
 
-        input_tokenConsumptionRate = 
+        input_tokenConsumptionRate =
             new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setExpression(
                 "imageColums * imageRows / partitionColumns / partitionRows");
- 
+
         input.setTypeEquals(BaseType.INT_MATRIX);
         output.setTypeEquals(BaseType.INT_MATRIX);
     }
@@ -150,11 +150,11 @@ public class ImageUnpartition extends Transformer {
 
         Token _partitions[] = input.get(0, _partitionCount);
 
-        for(j = 0, partitionNumber = 0; 
-            j < _imageRows; 
+        for(j = 0, partitionNumber = 0;
+            j < _imageRows;
             j += _partitionRows)
-            for(i = 0; 
-                i < _imageColumns; 
+            for(i = 0;
+                i < _imageColumns;
                 i += _partitionColumns, partitionNumber++) {
                 IntMatrixToken partition = (IntMatrixToken)
                     _partitions[partitionNumber];

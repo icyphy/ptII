@@ -74,7 +74,7 @@ public class VQDecode extends Transformer {
                 new StringToken("/ptolemy/domains/sdf" +
                         "/lib/vq/data/usc_hvq_s5.dat"));
         codeBook.setTypeEquals(BaseType.STRING);
-        
+
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
         blockCount.setTypeEquals(BaseType.INT);
         _blockCount = ((IntToken)blockCount.getToken()).intValue();
@@ -121,7 +121,7 @@ public class VQDecode extends Transformer {
 
     /** The input rate */
     public Parameter input_tokenConsumptionRate;
-    
+
     /** The output rate */
     public Parameter output_tokenProductionRate;
 
