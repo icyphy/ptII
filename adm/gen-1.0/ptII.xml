@@ -216,7 +216,7 @@ Berkeley, CA 94706</property>
                                 <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_122.jvm</property>
                             </arrayItem>
                         </property>
-                        <property name="timeout">10</property>
+                        <property name="timeout">15</property>
                         <property name="JVMResolution">2</property>
                         <property name="bundledJVMSource">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13.jvm</property>
                         <property name="bundledJVMArguments"/>
@@ -250,7 +250,7 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
                         <property name="showConsole">False</property>
-                        <property name="launcherUIDisplayTime">15</property>
+                        <property name="launcherUIDisplayTime">20</property>
                         <property name="fileName">vergil.exe</property>
                     </extendedProperty>
                     <property name="title">Vergil Launcher</property>
@@ -337,7 +337,7 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
                         <property name="showConsole">False</property>
-                        <property name="launcherUIDisplayTime">15</property>
+                        <property name="launcherUIDisplayTime">20</property>
                         <property name="fileName">vergildsp.exe</property>
                     </extendedProperty>
                     <property name="title">Vergil (DSP Only) Launcher</property>
@@ -636,7 +636,7 @@ Berkeley, CA 94706</property>
                         <arrayItem type="com.installshield.product.actions.SourceFile">
                             <property name="usingGNUPattern">False</property>
                             <property name="resolveRuntimeFileName">False</property>
-                            <property name="type">0</property>
+                            <property name="type">2</property>
                             <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\designdoc\doc\design\design.pdf</property>
                         </arrayItem>
                     </property>
