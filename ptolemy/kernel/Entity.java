@@ -184,6 +184,7 @@ public class Entity extends NamedObj {
                         ": " + fields[i].getName());
             }
         }
+        _cloneFixAttributeFields(newEntity);
         return newEntity;
     }
 

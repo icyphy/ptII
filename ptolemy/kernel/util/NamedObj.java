@@ -460,31 +460,8 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
                 */
             }
 
-            // If the new object has any public fields whose name
-            // matches that of an attribute, then set the public field
-            // equal to the attribute.
-            Class myClass = getClass();
-            Field fields[] = myClass.getFields();
-            for (int i = 0; i < fields.length; i++) {
-                try {
-                    // VersionAttribute has a final field
-                    if ( !Modifier.isFinal(fields[i].getModifiers())
-                            && fields[i].get(newObject) instanceof Settable) {
-                        fields[i].set(newObject,
-                                newObject.getAttribute(fields[i].getName()));
-                    }
-                } catch (IllegalAccessException e) {
-
-                    // FIXME: This would be a nice
-                    // place for exception chaining.
-                    throw new CloneNotSupportedException(
-                            "The field associated with "
-                            + fields[i].getName()
-                            + " could not be automatically cloned because "
-                            + e.getMessage() + ".  This can be caused if "
-                            + "the field is not defined in a public class.");
-                }
-            }
+            _cloneFixAttributeFields(newObject);
+         
             return newObject;
         } finally {
             _workspace.doneReading();
@@ -1416,6 +1393,45 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         }
     }
 
+    /** Fix the fields of the given object which point to Attributes.
+     * The object is assumed to be a clone of this one.  The fields
+     * are fixed to point to the corresponding attribute of the clone,
+     * instead of pointing to attributes of this object.
+     */
+    protected void _cloneFixAttributeFields(NamedObj newObject)
+            throws CloneNotSupportedException {
+        // If the new object has any public fields whose name
+        // matches that of an attribute, then set the public field
+        // equal to the attribute.
+        Class myClass = getClass();
+        Field fields[] = myClass.getFields();
+        for (int i = 0; i < fields.length; i++) {
+            try {
+                // VersionAttribute has a final field
+                if ( !Modifier.isFinal(fields[i].getModifiers())) {
+                    Object object = fields[i].get(this);
+                    if(object instanceof Attribute) {
+                        String name = ((NamedObj) object).getName(this);
+                        fields[i].set(newObject,
+                                newObject.getAttribute(name));
+//                         System.out.println("setting field " + fields[i].getName()); 
+//                         System.out.println("to point to " + fields[i].get(newObject));
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                
+                // FIXME: This would be a nice
+                // place for exception chaining.
+                throw new CloneNotSupportedException(
+                        "The field associated with "
+                        + fields[i].getName()
+                        + " could not be automatically cloned because "
+                        + e.getMessage() + ".  This can be caused if "
+                        + "the field is not defined in a public class.");
+            }
+        }
+    }
+    
     /** Send a debug event to all debug listeners that have registered.
      *  @param event The event.
      */
