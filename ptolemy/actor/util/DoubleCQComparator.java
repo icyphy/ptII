@@ -54,6 +54,8 @@ public class DoubleCQComparator implements CQComparator{
      * @param object2 the second Double argument
      * @return a negative integer, zero, or a positive integer as the first
      *         argument is less than, equal to, or greater than the second.
+     * @exception ClassCastException object1 and object2 has to be instances
+     *            of Double
      */
     public int compare(Object object1, Object object2) {
 
@@ -80,6 +82,8 @@ public class DoubleCQComparator implements CQComparator{
      *  @param binWidth the width of the CalendarQueue bin
      *  @return the index of the bin containing that key, according to the
      *          zero reference, and bin width.
+     *  @exception ClassCastException key, zeroReference, and binWidth have
+     *             to be instances of Double.
      */
     public int getBinIndex(Object key, Object zeroReference, Object binWidth) {
         Double a = (Double) key;
@@ -99,8 +103,9 @@ public class DoubleCQComparator implements CQComparator{
      *  If the argument is not an instance of Double[], then a
      *  ClassCastException will be thrown.
      *
-     * @param keyArray : an array of Double objects.
-     * @return SortBinWidth object representing quantization bin width 
+     *  @param keyArray : an array of Double objects.
+     *  @return SortBinWidth object representing quantization bin width 
+     *  @exception ClassCastException keyArray has to be an array of Double
      *
      */
     public Object getBinWidth(Object[] keyArray) {

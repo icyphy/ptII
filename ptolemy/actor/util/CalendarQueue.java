@@ -32,28 +32,25 @@ import collections.*;
 //////////////////////////////////////////////////////////////////////////
 //// CalendarQueue
 /**
-This class implements a fast sorted queue. It is similar to priority queue,
-with the only difference is in priority queue, event with 'highest
-priority' will be dequeued first, while in sorted queue, event with
-'lowest key' will be dequeued first).
+This class implements a fast priority queue. Entries are sorted ascendingly
+according to their sort-key. A dequeue operation will remove entry that has
+smallest sort-key. As will be explained in the next paragraph, this class
+can be used in many different applications, not just for DE domain.
 <p>
-The sort-keys are defined by the Object interface.
+For reusability, the sort-keys is only restricted to be instances of Object.
+A client needs to implement CQComparator interface to define how the
+sort-keys are arranged in the queue. This implementation is then passed into
+the CalendarQueue's constructor. Note that the CQComparator object can be 
+shared among different independent queues.
 <p>
 Entries are enqueued using the put() method, and dequeued using the take()
 method. The take() method returns the entry associated with 
 'lowest key'.
 <p>
-There are 2 modes of operation which affect <i>only</i> how put() method 
-behaves, namely BAGMODE and SETMODE. The default mode is BAGMODE.
-This mode of operation affect put() method in the following way. If the
-queue is in BAGMODE, then the put() method will not check for the
-occurence of the entry being enqueued; i.e. it's possible to have multiple
-occurences of identical entries. On the other hand, the SETMODE implies
-that the put() method will check for the occurence of the enqueued entry,
-<i>before</i> actually enqueueing it. This does not, however, imply single
-occurence of all entries, but simply, all put() method being invoked while
-the queue is in 'Set' mode will effectively do nothing if the enqueued
-entry is already in there.
+CalendarQueue operates like a 'bag' collection. This simply means that
+entry will be added into the queue even if it already exists in the queue.
+If a 'set' behaviour is desired, one can simply derive from CalendarQueue and
+override the put() method. 
 <p>
 Associated with the take() method, we have getNextKey() and getPreviousKey().
 The first returns the current smallest sort-key, while the latter returns 
@@ -76,8 +73,8 @@ CalendarQueue.cc".
 
 public class CalendarQueue {
 
-    /** Construct an empty queue.
-     *  The mode of operation is 'Bag' by default.
+    /** Construct an empty queue with a given CQComparator object
+     *  for arranging entries into bins.
      */
     public CalendarQueue(CQComparator comparator) {
         _cqComparator = comparator;
@@ -93,18 +90,15 @@ public class CalendarQueue {
     /** Add one entry to the queue. An entry is specified by an object and
      *  a Object object. If the Object object is null, then an exception
      *  is thrown.
-     *  As explained above, this method will do nothing if the mode of
-     *  operation is SETMODE and the enqueued entry is already in the queue.
      *
      * @param obj Object to be put
      * @param key Object corresponding to the Object put
-     * @exception IllegalArgumentException
+     * @exception IllegalArgumentException key may not be null
      */
-    public void put(Object key, Object obj)
-            throws IllegalArgumentException {
+    public void put(Object key, Object obj) {
         if (key == null)
             throw new IllegalArgumentException(
-                    "SortedQueue.put() can't accept null Object object"
+                    "SortedQueue.put() can't accept null key"
                     );
 
         // if this is the first put since the queue creation,
