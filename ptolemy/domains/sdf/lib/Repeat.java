@@ -54,6 +54,7 @@ An actor that repeats each input token the specified number of times
 change, and hence affects the number of invocations of downstream actors.
 
 @author Shankar Rao
+@version $Id$
 */
 
 public class Repeat extends SDFAtomicActor {
