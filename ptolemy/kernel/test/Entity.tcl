@@ -279,8 +279,11 @@ test Entity-9.0 {Test description} {
     }}
 }}
 
+######################################################################
+####
+#
 test Entity-9.1 {Test cloning} {
-    # NOTE: Uses system above
+    # NOTE: Uses the setup constructed in 9.0
     set e2 [$e1 clone]
     $e2 description 15
 } {ptolemy.kernel.Entity {W.E1} ports {
@@ -289,3 +292,11 @@ test Entity-9.1 {Test cloning} {
     {ptolemy.kernel.Port {W.E1.P2} links {
     }}
 }}
+
+######################################################################
+####
+#
+test Entity-9.2 {Test connectedPorts} {
+    # NOTE: Uses the setup constructed in 9.0
+    enumToNames [$e1 connectedPorts]
+} {P2 P1}
