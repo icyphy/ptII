@@ -315,7 +315,7 @@ public class DEDirector extends Director {
         } else if (attribute == synchronizeToRealTime) {
             _synchronizeToRealTime =
                 ((BooleanToken)synchronizeToRealTime.getToken())
-                        .booleanValue();
+                .booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -387,7 +387,7 @@ public class DEDirector extends Director {
                             FiringEvent.BEFORE_POSTFIRE));
                     if (!actorToFire.postfire()) {
                         _debug("*** Postfire returned false:",
-                        ((Nameable)actorToFire).getName());
+                                ((Nameable)actorToFire).getName());
                         // Actor requests that it not be fired again.
                         _disableActor(actorToFire);
                     }
@@ -457,7 +457,7 @@ public class DEDirector extends Director {
             throws IllegalActionException {
         if (_eventQueue == null) {
             throw new IllegalActionException(this,
-            "Calling fireAt() before preinitialize().");
+                    "Calling fireAt() before preinitialize().");
         }
         synchronized(_eventQueue) {
             // NOTE: This does not check whether the actor is in the
@@ -484,7 +484,7 @@ public class DEDirector extends Director {
             throws IllegalActionException {
         if (_eventQueue == null) {
             throw new IllegalActionException(this,
-            "Calling fireAtCurrentTime() before preinitialize().");
+                    "Calling fireAtCurrentTime() before preinitialize().");
         }
         synchronized(_eventQueue) {
             // NOTE: This does not check whether the actor is in the
@@ -511,7 +511,7 @@ public class DEDirector extends Director {
             throws IllegalActionException {
         if (_eventQueue == null) {
             throw new IllegalActionException(this,
-            "Calling fireAtRelativeTime() before preinitialize().");
+                    "Calling fireAtRelativeTime() before preinitialize().");
         }
         synchronized(_eventQueue) {
             // NOTE: This does not check whether the actor is in the
@@ -708,7 +708,7 @@ public class DEDirector extends Director {
      */
     public boolean postfire() throws IllegalActionException {
         boolean stop = ((BooleanToken)stopWhenQueueIsEmpty.getToken())
-               .booleanValue();
+            .booleanValue();
         if (_noMoreActorsToFire && (stop || _exceedStopTime)) {
             return false;
         } else if (_isEmbedded() && !_eventQueue.isEmpty()) {
@@ -741,18 +741,18 @@ public class DEDirector extends Director {
             getExecutiveDirector().getCurrentTime();
         double nextEventTime = Double.MAX_VALUE;
         if (!_eventQueue.isEmpty()) {
-                nextEventTime =  _eventQueue.get().timeStamp();
+            nextEventTime =  _eventQueue.get().timeStamp();
         }
         // FIXME: Ideally, we should add this test. But DT does not
         // return a correct getCurrentTime.
         /*
-        if (outsideCurrentTime > nextEventTime + 1e-10) {
-            throw new IllegalActionException(this,
-                    "Missed a firing at "
-                    + nextEventTime + "."
-                    + " The outside time is already " +
-                    + outsideCurrentTime + ".");
-        }
+          if (outsideCurrentTime > nextEventTime + 1e-10) {
+          throw new IllegalActionException(this,
+          "Missed a firing at "
+          + nextEventTime + "."
+          + " The outside time is already " +
+          + outsideCurrentTime + ".");
+          }
         */
         // Now we check if there's any input.
         Iterator inputPorts = container.inputPortList().iterator();
@@ -886,7 +886,7 @@ public class DEDirector extends Director {
      *  @return True if data are transferred.
      */
     public boolean transferOutputs(IOPort port)
-           throws IllegalActionException {
+            throws IllegalActionException {
         boolean anyWereTransferred = false;
         boolean moreTransfersRemaining = true;
         while (moreTransfersRemaining) {
@@ -1004,7 +1004,7 @@ public class DEDirector extends Director {
                             currentTime = currentEvent.timeStamp();
 
                             long elapsedTime = System.currentTimeMillis()
-                                    - _realStartTime;
+                                - _realStartTime;
                             // NOTE: We assume that the elapsed time can be
                             // safely cast to a double.  This means that
                             // the DE domain has an upper limit on running
@@ -1012,7 +1012,7 @@ public class DEDirector extends Director {
                             // is probably longer than the sun is going to last
                             // (and maybe even longer than Sun Microsystems).
                             double elapsedTimeInSeconds =
-                                    ((double)elapsedTime)/1000.0;
+                                ((double)elapsedTime)/1000.0;
                             if (currentTime <= elapsedTimeInSeconds) {
                                 break;
                             }
@@ -1021,7 +1021,7 @@ public class DEDirector extends Director {
                             if (timeToWait > 0) {
                                 if (_debugging) {
                                     _debug("Waiting for real time to pass: "
-                                           + timeToWait);
+                                            + timeToWait);
                                 }
                                 //synchronized(_eventQueue) {
                                 try {
@@ -1044,10 +1044,10 @@ public class DEDirector extends Director {
                     actorToFire = currentEvent.actor();
 
                     if (_disabledActors != null &&
-                        _disabledActors.contains(actorToFire)) {
+                            _disabledActors.contains(actorToFire)) {
                         // This actor has requested that it not be fired again.
                         if (_debugging) _debug("Skipping actor: ",
-                            ((Nameable)actorToFire).getFullName());
+                                ((Nameable)actorToFire).getFullName());
                         actorToFire = null;
                         continue;
                     }

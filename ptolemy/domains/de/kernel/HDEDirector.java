@@ -235,7 +235,7 @@ public class HDEDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /** Advance current time to the next event in the event queue,
+    /** Advance current time to the next event in the event queue,
      *  and fire one or more actors that have events at that time.
      *  If <i>synchronizeToRealTime</i> is true, then before firing,
      *  wait until real time matches or exceeds the time stamp of the event.
@@ -282,28 +282,28 @@ public class HDEDirector extends DEDirector {
                     break;
                 }
                 _debug(new FiringEvent(this, actorToFire,
-                               FiringEvent.BEFORE_PREFIRE));
+                        FiringEvent.BEFORE_PREFIRE));
                 if (!actorToFire.prefire()) {
                     _debug("*** Prefire returned false.");
                     break;
                 }
                 _debug(new FiringEvent(this, actorToFire,
-                               FiringEvent.AFTER_PREFIRE));
+                        FiringEvent.AFTER_PREFIRE));
                 _debug(new FiringEvent(this, actorToFire,
-                               FiringEvent.BEFORE_FIRE));
+                        FiringEvent.BEFORE_FIRE));
                 actorToFire.fire();
                 _debug(new FiringEvent(this, actorToFire,
-                               FiringEvent.AFTER_FIRE));
+                        FiringEvent.AFTER_FIRE));
                 _debug(new FiringEvent(this, actorToFire,
-                               FiringEvent.BEFORE_POSTFIRE));
+                        FiringEvent.BEFORE_POSTFIRE));
                 if (!actorToFire.postfire()) {
                     _debug("*** Postfire returned false:",
                             ((Nameable)actorToFire).getName());
                     // Actor requests that it not be fired again.
                     _disableActor(actorToFire);
-                    }
+                }
                 _debug(new FiringEvent(this, actorToFire,
-                               FiringEvent.AFTER_POSTFIRE));
+                        FiringEvent.AFTER_POSTFIRE));
             } else {
                 // Not debugging.
                 if (((Nameable)actorToFire).getContainer() == null) {
@@ -316,8 +316,8 @@ public class HDEDirector extends DEDirector {
                 actorToFire.fire();
                 if (!actorToFire.postfire()) {
                     // Actor requests that it not be fired again.
-                        _disableActor(actorToFire);
-                        //break;
+                    _disableActor(actorToFire);
+                    //break;
                 }
             }
 
@@ -365,11 +365,11 @@ public class HDEDirector extends DEDirector {
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
 
-        public boolean transferOutputs(IOPort port)
-	throws IllegalActionException {
-        return super.transferOutputs(port);
-        anyWereTransferred |= moreTransfersRemaining;
-	}
-	return anyWereTransferred;
-        }*/
+     public boolean transferOutputs(IOPort port)
+     throws IllegalActionException {
+     return super.transferOutputs(port);
+     anyWereTransferred |= moreTransfersRemaining;
+     }
+     return anyWereTransferred;
+     }*/
 }
