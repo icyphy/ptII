@@ -166,15 +166,6 @@ public final class DEEvent implements Comparable {
         return _depth;
     }
 
-    /** Return true if this event has the same tag with the argument DE event.
-     *  @param event The DE event to compare against.
-     *  @return True if this event has the same tag with the specified one.
-     */
-    public final boolean hasTheSameTagAs(DEEvent event) {
-        return (timeStamp().equals(event.timeStamp())) &&
-            (microstep() == event.microstep());
-    }
-
     /** Return true if this event has the same tag with the specified one,
      *  and their depths are the same.
      *  @param event The event to compare against.
@@ -183,6 +174,15 @@ public final class DEEvent implements Comparable {
      */
     public final boolean hasTheSameTagAndDepthAs(DEEvent event) {
         return hasTheSameTagAs(event) && (depth() == event.depth());
+    }
+
+    /** Return true if this event has the same tag with the argument DE event.
+     *  @param event The DE event to compare against.
+     *  @return True if this event has the same tag with the specified one.
+     */
+    public final boolean hasTheSameTagAs(DEEvent event) {
+        return (timeStamp().equals(event.timeStamp())) &&
+            (microstep() == event.microstep());
     }
 
     /** Return the destination IO port of this event. Note that
@@ -254,3 +254,4 @@ public final class DEEvent implements Comparable {
 
     // The timestamp of the event.
     private Time _timestamp;
+}

@@ -343,21 +343,22 @@ public class DEDirector extends Director implements TimedDirector {
         }
     }
 
-    /** Advance the current model tag to that of the earliest event in the event
-     *  queue, and fire all actors that have requested or are triggered to be
-     *  fired at the current tag. If <i>synchronizeToRealTime</i> is true, then
-     *  before firing, wait until real time matches or exceeds the timestamp of
-     *  the event. Note that the default unit for time is seconds.
+    /** Advance the current model tag to that of the earliest event in
+     *  the event queue, and fire all actors that have requested or
+     *  are triggered to be fired at the current tag. If
+     *  <i>synchronizeToRealTime</i> is true, then before firing, wait
+     *  until real time matches or exceeds the timestamp of the
+     *  event. Note that the default unit for time is seconds.
      *  <p>
      *  Each actor is iterated repeatedly (prefire(), fire(), postfire()),
      *  until either it has no more input tokens, or its prefire() method
      *  returns false.
      *  <p>
-     *  If there are no events in the event queue, then the behavior depends
-     *  on the <i>stopWhenQueueIsEmpty</i> parameter. If it is false,
-     *  then this thread will stall until events become available in the event
-     *  queue. Otherwise, time will advance to the stop time and the execution
-     *  will halt.
+     *  If there are no events in the event queue, then the behavior
+     *  depends on the <i>stopWhenQueueIsEmpty</i> parameter. If it is
+     *  false, then this thread will stall until events become
+     *  available in the event queue. Otherwise, time will advance to
+     *  the stop time and the execution will halt.
      *
      *  @exception IllegalActionException If the firing actor throws it, or
      *  event queue is not ready, or an event is missed, or time is set
@@ -542,7 +543,8 @@ public class DEDirector extends Director implements TimedDirector {
                     } else if ((next.timeStamp().compareTo(getModelTime()) < 0)
                             || next.microstep() < _microstep) {
                         throw new IllegalActionException(
-                                "The tag of the next event (" + next.timeStamp()
+                                "The tag of the next event ("
+                                + next.timeStamp()
                                 + "." + next.microstep()
                                 + ") can not be less than"
                                 + " the current tag (" + getModelTime() + "."
@@ -846,9 +848,10 @@ public class DEDirector extends Director implements TimedDirector {
      *  Throw an exception if the current model time is greater than the next
      *  event timestamp.
      *  @return True if the composite actor is ready to fire.
-     *  @exception IllegalActionException If there is a missed event, or the
-     *  prefire method of the super class throws it, or can not query the tokens
-     *  of the input ports of the container of this director.
+     *  @exception IllegalActionException If there is a missed event,
+     *  or the prefire method of the super class throws it, or can not
+     *  query the tokens of the input ports of the container of this
+     *  director.
      */
     public boolean prefire() throws IllegalActionException {
         // NOTE: The inside model does not need to have the same
@@ -922,7 +925,8 @@ public class DEDirector extends Director implements TimedDirector {
     }
 
     /** Set the current timestamp to the model start time, invoke the
-     *  preinitialize() methods of all actors deeply contained by the container.
+     *  preinitialize() methods of all actors deeply contained by the
+     *  container.
      *  <p>
      *  This method should be invoked once per execution, before any
      *  iteration. Actors cannot produce output data in their preinitialize()
@@ -1324,7 +1328,7 @@ public class DEDirector extends Director implements TimedDirector {
                 }
             }
             // Set the depths of the input ports to the maximum one.
-            inputsIterator =inputPorts.iterator();
+            inputsIterator = inputPorts.iterator();
             while (inputsIterator.hasNext()) {
                 IOPort input = (IOPort)inputsIterator.next();
                 if (_debugging) {
@@ -1378,7 +1382,8 @@ public class DEDirector extends Director implements TimedDirector {
                         names.append(", ");
                     }
                     names.append(
-                            ((Nameable)cycleNodes[i]).getContainer().getFullName());
+                            ((Nameable)cycleNodes[i])
+                            .getContainer().getFullName());
                 }
             }
             throw new IllegalActionException(
@@ -1411,7 +1416,8 @@ public class DEDirector extends Director implements TimedDirector {
     /** Calculate the depth of an actor.
      *  @param actor An actor whose depth is requested.
      *  @return An integer indicating the depth of the given actor.
-     *  @throws IllegalActionException If any port of this actor is not sorted.
+     *  @exception IllegalActionException If any port of this actor
+     *  is not sorted.
      */
     private int _getDepthOfActor(Actor actor) throws IllegalActionException {
         if (_sortValid != workspace().getVersion()
@@ -1464,7 +1470,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  by using Object.wait(long) to let elapsed real time catch up with the
      *  current model time.
      *  @return The next actor to be fired, which can be null.
-     *  @throws IllegalActionException If event queue is not ready, or
+     *  @exception IllegalActionException If event queue is not ready, or
      *  an event is missed, or time is set backwards.
      */
     private Actor _getNextActorToFire() throws IllegalActionException {
@@ -1741,7 +1747,8 @@ public class DEDirector extends Director implements TimedDirector {
             stopWhenQueueIsEmpty.setExpression("true");
             stopWhenQueueIsEmpty.setTypeEquals(BaseType.BOOLEAN);
 
-            synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
+            synchronizeToRealTime = new Parameter(this,
+                    "synchronizeToRealTime");
             synchronizeToRealTime.setExpression("false");
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
@@ -1767,7 +1774,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  This method is used when the director is embedded inside an opaque
      *  composite actor. If the queue is empty, then throw an
      *  IllegalActionException.
-     *  @throws IllegalActionException If the queue is empty.
+     *  @exception IllegalActionException If the queue is empty.
      */
     private void _requestFiring() throws IllegalActionException {
         DEEvent nextEvent = null;

@@ -205,7 +205,8 @@ public class DECQEventQueue implements DEEventQueue {
         public final long getVirtualBinNumber(Object event) {
             long value = (long)(
                     (((DEEvent)event).timeStamp()
-                            .subtract(_zeroReference.timeStamp())).getDoubleValue()
+                            .subtract(_zeroReference.timeStamp()))
+                               .getDoubleValue()
                     / _binWidth.timeStamp().getDoubleValue()
                     );
             if (value != Long.MAX_VALUE) {
@@ -261,7 +262,8 @@ public class DECQEventQueue implements DEEventQueue {
             }
             effectiveAverage /= (double)effectiveSamples;
             _binWidth =
-                new DEEvent((Actor)null, new Time(_director, 3.0 * effectiveAverage),
+                new DEEvent((Actor)null,
+                        new Time(_director, 3.0 * effectiveAverage),
                         0, 0);
         }
 

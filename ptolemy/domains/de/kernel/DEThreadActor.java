@@ -88,16 +88,6 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-    /** Create a thread for the actor and start the thread.
-     */
-    public void initialize() {
-        // start a thread.
-        _thread = new PtolemyThread(this);
-        _isWaiting = true;
-        _thread.start();
-    }
-
     /** Awake the thread running this actor.
      */
     public void fire() {
@@ -116,6 +106,15 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
                 }
             }
         }
+    }
+
+    /** Create a thread for the actor and start the thread.
+     */
+    public void initialize() {
+        // start a thread.
+        _thread = new PtolemyThread(this);
+        _isWaiting = true;
+        _thread.start();
     }
 
     /** Implement this method to define the job of the threaded actor.
@@ -189,8 +188,9 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
                     while (port.hasToken(channel)) {
                         port.get(channel);
                     }
-                } catch (IllegalActionException e) {
-                    throw new InternalErrorException(KernelException.stackTraceToString(e));
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(this, ex,
+                            "Failed to empty ports?");
                 }
             }
         }
