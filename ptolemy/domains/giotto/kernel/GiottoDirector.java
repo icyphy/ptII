@@ -841,16 +841,18 @@ public class GiottoDirector extends StaticSchedulingDirector {
 								  actor).getName(container));
 			Parameter actorFreqPara = (Parameter) ((NamedObj)
 							       actor).getAttribute("frequency");
-			actorFreq = ((IntToken) actorFreqPara.
-				     getToken()).intValue();
-			pout.println("    taskfreq "
-				     + actorFreq
-				     + " do "
-				     + actorName
-				     + "("
-				     + actorName
-				     + "_driver);"
-				     );
+                        if (actorFreqPara != null) {
+                            actorFreq = ((IntToken) actorFreqPara.
+                                    getToken()).intValue();
+                            pout.println("    taskfreq "
+                                    + actorFreq
+                                    + " do "
+                                    + actorName
+                                    + "("
+                                    + actorName
+                                    + "_driver);"
+                                         );
+                        }
 		    }
 		    pout.println("  }");
 		}
