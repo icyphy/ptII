@@ -601,7 +601,7 @@ test BackwardCompatibility-8.1 {Is a parameter, does not have _editorFactory} {
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.kernel.util.Location" value="355.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 200.0">
         </property>
         <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
         </property>
