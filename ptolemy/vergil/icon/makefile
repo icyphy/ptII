@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	AttributeValueIcon.java \
 	BoxedValueIcon.java \
+	EditorIcon.java \
 	SimpleSelection.java \
 	XMLIcon.java \
 	ValueIcon.java \
