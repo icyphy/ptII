@@ -42,7 +42,7 @@ Handles deadlocks and creates Processes corresponding to all PN actors
 @author Mudit Goel
 @version $Id$
 */
-public class PNDirector extends Director {
+public class PNDirector extends ProcessDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -130,7 +130,7 @@ public class PNDirector extends Director {
                 increaseActiveCount();
                 actor.createReceivers();
                 actor.initialize();
-                PNThread pnt = new PNThread(actor, this);
+                ProcessThread pnt = new ProcessThread(actor, this);
                 _threadlist.insertFirst(pnt);
             }
         }
@@ -237,7 +237,7 @@ public class PNDirector extends Director {
         Enumeration threads = _threadlist.elements();
         //Starting threads;
         while (threads.hasMoreElements()) {
-            PNThread pnt = (PNThread)threads.nextElement();
+            ProcessThread pnt = (ProcessThread)threads.nextElement();
             pnt.start();
         }
         _threadlist.clear();
@@ -378,7 +378,7 @@ public class PNDirector extends Director {
     // blocked queue. 1 if check is being done when a process stopped.
     // This is not synchronized and thus should be called from a synchronized
     // method
-    private synchronized void _checkForDeadlock() {
+    protected synchronized void _checkForDeadlock() {
 	if (_readBlockCount + _writeBlockCount >= _activeActorsCount) {
 	    _deadlock = true;
             //System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" **************************");
@@ -389,7 +389,7 @@ public class PNDirector extends Director {
     }
 
     //Check if all threads are either blocked or paused
-    private synchronized void _checkForPause() {
+    protected synchronized void _checkForPause() {
 	//System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" *PAUSED*"+"pausedcoint = "+_pausedcount);
 	if (_readBlockCount + _writeBlockCount + _pausedcount >= _activeActorsCount) {
 	    _paused = true;
@@ -445,7 +445,7 @@ public class PNDirector extends Director {
     //Returns false only if it detects a mutation.
     //Returns true for termination
     //This is not synchronized and should be synchronized in the calling method
-    private boolean _handleDeadlock() 
+    protected boolean _handleDeadlock() 
 	    throws IllegalActionException {
         //Maintaining cache so that I can synchronize after this
 	boolean urgentmut;
