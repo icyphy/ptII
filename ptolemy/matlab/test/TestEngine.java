@@ -60,46 +60,46 @@ public class TestEngine {
         Engine eng = new Engine();
         eng.setDebugging((byte)0);
 
-        eng.open();
-        eng.evalString("clear");
+        long [] engineHandle = eng.open();
+        eng.evalString(engineHandle, "clear");
         DoubleMatrixToken tx = new DoubleMatrixToken(new double[][]{{1,2,3}});
         System.out.println("\nNote: All data output is via " 
 			   + "Token.toString() on tokens");
-        System.out.println("that are put/get from the matlab engine.");
+        System.out.println("that are put/get from the matlab engineHandle.");
         System.out.println("\nCreate 1x3 double matrix x:");
-        eng.put("x", tx);
+        eng.put(engineHandle, "x", tx);
         System.out.println("x = "+tx.toString());
         System.out.println("Eval: y = x.*x;");
-        eng.evalString("y = x.*x;");
-        DoubleMatrixToken ty = (DoubleMatrixToken) eng.get("y");
+        eng.evalString(engineHandle, "y = x.*x;");
+        DoubleMatrixToken ty = (DoubleMatrixToken) eng.get(engineHandle, "y");
         System.out.println("y = "+ty.toString());
 
         System.out.println("\nCreate 2x3 double matrix x:");
         tx = new DoubleMatrixToken(new double[][]{{1,2,3},{4,5,6}});
-        eng.put("x", tx);
+        eng.put(engineHandle, "x", tx);
         System.out.println("x = "+tx.toString());
         System.out.println("Eval: y = x.*x;");
-        eng.evalString("y = x.*x;");
-        ty = (DoubleMatrixToken) eng.get("y");
+        eng.evalString(engineHandle, "y = x.*x;");
+        ty = (DoubleMatrixToken) eng.get(engineHandle, "y");
         System.out.println("y = "+ty.toString());
 
         System.out.println("\nEval: z = exp(j*pi/2*x);");
-        eng.evalString("z = exp(j*pi/2*x);");
-        ComplexMatrixToken tz = (ComplexMatrixToken) eng.get("z");
+        eng.evalString(engineHandle, "z = exp(j*pi/2*x);");
+        ComplexMatrixToken tz = (ComplexMatrixToken) eng.get(engineHandle, "z");
         System.out.println("z = "+tz.toString());
 
         System.out.println("\nEval: w = z';");
-        eng.evalString("w = z';");
-        ComplexMatrixToken tw = (ComplexMatrixToken) eng.get("w");
+        eng.evalString(engineHandle, "w = z';");
+        ComplexMatrixToken tw = (ComplexMatrixToken) eng.get(engineHandle, "w");
         System.out.println("w = "+tw.toString());
 
         System.out.println("\nCreate 1xn string s:");
         StringToken ts = new StringToken("a string");
         System.out.println("s = "+ts.toString());
-        eng.put("s", ts);
+        eng.put(engineHandle, "s", ts);
         System.out.println("\nEval: rc = [s;s];");
-        eng.evalString("rc = [s;s];");
-        Token ta = eng.get("rc");
+        eng.evalString(engineHandle, "rc = [s;s];");
+        Token ta = eng.get(engineHandle, "rc");
         System.out.println("rc = "+ta.toString());
 
         System.out.println("\nCreate 2xn string s:");
@@ -107,10 +107,10 @@ public class TestEngine {
           new StringToken("str one"),
           new StringToken("str two")});
         System.out.println("s = "+ta.toString());
-        eng.put("s", ta);
+        eng.put(engineHandle, "s", ta);
         System.out.println("\nEval: rr = [s,s];");
-        eng.evalString("rr = [s,s];");
-        ta = eng.get("rr");
+        eng.evalString(engineHandle, "rr = [s,s];");
+        ta = eng.get(engineHandle, "rr");
         System.out.println("rr = "+ta.toString());
 
         System.out.println("\nCreate 1x1 struct r (RecordToken):");
@@ -119,14 +119,14 @@ public class TestEngine {
             new Token[]{tx, new RecordToken(new String[]{"a"},new Token[]{new
                           IntToken()}),ts});
         System.out.println("r = "+tr.toString());
-        eng.put("r",tr);
-        Token t = eng.get("r");
+        eng.put(engineHandle, "r",tr);
+        Token t = eng.get(engineHandle, "r");
         System.out.println("\nRead back 1x1 struct r into RecordToken t:");
         System.out.println("t = "+t.toString());
 
         System.out.println("\nEval: ta = [r,r,r;r,r,r];");
-        eng.evalString("ta = [r,r,r;r,r,r];");
-        t = eng.get("ta");
+        eng.evalString(engineHandle, "ta = [r,r,r;r,r,r];");
+        t = eng.get(engineHandle, "ta");
         System.out.println("\nRead 2x3 struct ta into ArrayToken "
 			   + "of ArrayToken of RecordTokens:");
         System.out.println("ta = "+t.toString());
@@ -144,12 +144,12 @@ public class TestEngine {
                                                       new Complex(6.0,6.0)}})});
         ta = new ArrayToken(new Token[]{r1,r2,r3});
         System.out.println("ta = "+ta.toString());
-        eng.put("ta",ta);
-        eng.evalString("tb = ta;");
-        ta = (ArrayToken)eng.get("tb");
+        eng.put(engineHandle, "ta",ta);
+        eng.evalString(engineHandle, "tb = ta;");
+        ta = (ArrayToken)eng.get(engineHandle, "tb");
         System.out.println("\nRead 1x3 cell array back into tb:");
         System.out.println("tb = "+ta.toString());
 
-        eng.close();
+        eng.close(engineHandle);
     }
 }
