@@ -47,6 +47,8 @@ import ptolemy.kernel.ComponentRelation;
 */
 public class Arc {
     /** Return the head of this link.   This will be the icon of a state.
+     *  @return The head of this link
+     *  @see #setHead(Object)
      */
     public Object getHead() {
         return _head;
@@ -54,18 +56,24 @@ public class Arc {
 
     /** Return the relation that this link represents.  This should always
      *  be an instance of Transition.
+     *  @return The relation that represents this link
+     *  @see #setRelation(ComponentRelation)
      */
     public ComponentRelation getRelation() {
         return _relation;
     }
 
     /** Return the tail of this link.   This will be the icon of a state.
+     *  @param return The tail of this link.
+     *  @see #setTail(Object)
      */
     public Object getTail() {
         return _tail;
     }
 
     /** Set the head of this link.  This will be the icon of a state.
+     *  @param head The head of this link.
+     *  @see #getHead()
      */
     public void setHead(Object head) {
         _head = head;
@@ -73,12 +81,16 @@ public class Arc {
 
     /** Set the relation that this link represents.  This should always
      *  be an instance of Transition.
+     *  @param relation The relation of this link.
+     *  @see #getRelation()
      */
     public void setRelation(ComponentRelation relation) {
         _relation = relation;
     }
 
     /** Set the tail of this link.  This will be the icon of a state.
+     *  @param tail The Tail of this link.
+     *  @see #getTail()
      */
     public void setTail(Object tail) {
         _tail = tail;
