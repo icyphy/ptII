@@ -42,6 +42,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JFileChooser;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -53,7 +55,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.actor.gui.TextEffigy;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
@@ -128,10 +129,35 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    public static void writeGiottoCode(TypedCompositeActor model, File directory)
+                throws IllegalActionException, NameDuplicationException {
+
+    String modelName = StringUtilities.sanitizeName(model.getName());
+    String giottoDirectoryName = directory.getAbsolutePath() + "/" + modelName + "/";
+
+    File outDirFile = new File(giottoDirectoryName);
+    if (!outDirFile.isDirectory()) {
+        outDirFile.mkdirs();
+    }
+
+    File writeGiottoFile = new File(giottoDirectoryName, modelName + ".giotto");
+    try {
+        FileWriter giottoWriter = new FileWriter(writeGiottoFile);
+        giottoWriter.write(generateGiottoCode(model));
+        giottoWriter.close();
+    } catch (IOException e) {
+        throw new IllegalActionException(model, e,
+                "Failed to open file " + modelName + ".giotto" + " for writing.");
+    }
+}
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                    ////
+
     /** Generate Giotto code for the given model.
      *  @return The Giotto code.
      */
-    public static String generateCode(TypedCompositeActor model)
+    public static String generateGiottoCode(TypedCompositeActor model)
             throws IllegalActionException {
         String generatedCode = "";
 
@@ -164,9 +190,6 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
 
         return generatedCode;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
 
     /** Throw an exception if the given string is a valid giotto
      *  reserved word, which prevents it from being used as an identifier.
@@ -766,7 +789,7 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
      * It creates the directory c_functionality/fcode with the files
      * f_code.c and f_code.h in it.
      */
-    public static void writeFrameworkCode(TypedCompositeActor model)
+    public static void writeFrameworkCode(TypedCompositeActor model, File directory)
                     throws IllegalActionException, NameDuplicationException {
 
         dataTypes = new HashSet(); // Creating a set of all the unique types used
@@ -779,19 +802,18 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
 
         _generateCodeStrings(model);
 
-        // TODO: Get the ptolemy installation directory
-        String directoryName = "ptolemy/domains/giotto/kernel/"+StringUtilities.sanitizeName(model.getName())+"/c_functionality/fcode/";
-        File directory;
+        String fcodeDirectoryName =  directory.getAbsolutePath() + "/"
+        + StringUtilities.sanitizeName(model.getName()) + "/c_functionality/fcode/";
             
-        File outDirFile = new File(directoryName);
+        File outDirFile = new File(fcodeDirectoryName);
         if (!outDirFile.isDirectory()) {
             outDirFile.mkdirs();
         }
 
-        File writeFCFile = new File(directoryName, "f_code.c");
-        File writeFHFile = new File(directoryName, "f_code.h");
+        File writeFCFile = new File(fcodeDirectoryName, "f_code.c");
+        File writeFHFile = new File(fcodeDirectoryName, "f_code.h");
         //File writeTCFile = new File(directoryName, "task_code.c"); // This file is unneeded once we have the function declarations in the header file
-        File writeTHFile = new File(directoryName, "task_code.h");
+        File writeTHFile = new File(fcodeDirectoryName, "task_code.h");
         try {
             FileWriter FCwriter = new FileWriter(writeFCFile);
             FCwriter.write(_generateFrameworkImplementationCode(model));
@@ -1118,8 +1140,8 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
 
 	    varDeclString = _tabChar + "// Counter to optimize the copying to execute only when required" + _endLine;
 	    varDeclString += _tabChar + "static int copy_counter = 0;" + _endLine;
-            arrayInitString = "";
-	    assgtStmtString = _tabChar + "if (copy_counter > 0) {" + _endLine;
+        arrayInitString = "";
+	    assgtStmtString = "";
 
             Map driverIOMap = new LinkedHashMap();
             boolean firstParameter = true;
@@ -1172,20 +1194,24 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
 		    String sourceActorName = 
 			StringUtilities.sanitizeName(
 				   port.getContainer().getName());
-		    assgtStmtString += _tabChar + _tabChar + "if (!(copy_counter % "
+		    assgtStmtString += _tabChar + "// Reduction of number of copies - slightly suboptimal when" + _endLine
+                         + _tabChar + "//   " + sourceActorName + "_FREQ does not perfeclty divide " + actorName + "_FREQ" + _endLine
+                         + _tabChar + "if (!(copy_counter % "
 			             + "(" + actorName + "_FREQ/" + sourceActorName + "_FREQ) )) {" + _endLine
+                         + _tabChar + _tabChar + "// Preventing null pointer copies" + _endLine
+                         + _tabChar + _tabChar + "if (*" + sanitizedPortName2 + ") {" + _endLine
 			             + _tabChar + _tabChar + _tabChar + "for( i=0 ; i<" + arrayLength + " ; i++ ) {" + _endLine
 			             + _tabChar + _tabChar + _tabChar + _tabChar + "(*" + sanitizedPortName + ")[i] = (*" + sanitizedPortName2 + ")[i];" + _endLine
-			             + _tabChar + _tabChar + _tabChar + "}" + _endLine
-			             + _tabChar + _tabChar + "}" + _endLine;
+                         + _tabChar + _tabChar + _tabChar + "}" + _endLine
+                         + _tabChar + _tabChar + "}" + _endLine
+                         + _tabChar + "}" + _endLine;
 		}
 		else {
-		    assgtStmtString += _tabChar + _tabChar + "*" + sanitizedPortName
+		    assgtStmtString += _tabChar + "*" + sanitizedPortName
 			                 + " = *" + sanitizedPortName2 + ";" + _endLine;
 		}
             }
-	    assgtStmtString += _tabChar + "}" + _endLine
-		                  + _tabChar + "copy_counter = (copy_counter % " + actorName + "_FREQ) + 1;" + _endLine;
+	    assgtStmtString += _tabChar + "copy_counter = (copy_counter % " + actorName + "_FREQ) + 1;" + _endLine;
 
         FCinDriversImplString += ") {" + _endLine;
             FHfuncDeclString += ");" + _endLine + _endLine;
@@ -1331,39 +1357,49 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
          */
         public void createEditor(NamedObj object, Frame parent) {
             try {
-                Configuration configuration
-                    = ((TableauFrame)parent).getConfiguration();
-
-                // NamedObj container = (NamedObj)object.getContainer();
-
-                TypedCompositeActor model = (TypedCompositeActor)
-                    GiottoCEmachineFrameworkGenerator.this.getContainer();
-
-                // Preinitialize and resolve types.
-                CompositeActor toplevel = (CompositeActor)model.toplevel();
-                Manager manager = toplevel.getManager();
-                if (manager == null) {
-                    manager = new Manager(
-                            toplevel.workspace(), "manager");
-                    toplevel.setManager(manager);
+                // Open a dialog box for the user to choose the directory to save the files
+                JFileChooser dirDialog = new JFileChooser();
+                dirDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                dirDialog.setDialogTitle("Choose Directory to store files...");
+                String cwd = StringUtilities.getProperty("user.dir");
+                if (cwd != null) {
+                    dirDialog.setCurrentDirectory(new File(cwd));
                 }
+                int returnVal = dirDialog.showDialog(parent, "Generate Files");
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File directory = dirDialog.getSelectedFile();
 
-                manager.preinitializeAndResolveTypes();
-                
-                // Generate the Framework code and write it into the
-                // corresponding files.
-                writeFrameworkCode(model);
-
-                // Generate the Giotto Code
-                TextEffigy codeEffigy = TextEffigy.newTextEffigy(
-                        configuration.getDirectory(),
-                        generateCode(model));
-                codeEffigy.setModified(true);
-                configuration.createPrimaryTableau(codeEffigy);
-                
-                // end the model execution.
-                manager.stop();
-                manager.wrapup();
+                    Configuration configuration
+                        = ((TableauFrame)parent).getConfiguration();
+    
+                    // NamedObj container = (NamedObj)object.getContainer();
+    
+                    TypedCompositeActor model = (TypedCompositeActor)
+                        GiottoCEmachineFrameworkGenerator.this.getContainer();
+    
+                    // Preinitialize and resolve types.
+                    CompositeActor toplevel = (CompositeActor)model.toplevel();
+                    Manager manager = toplevel.getManager();
+                    if (manager == null) {
+                        manager = new Manager(
+                                toplevel.workspace(), "manager");
+                        toplevel.setManager(manager);
+                    }
+    
+                    manager.preinitializeAndResolveTypes();
+                    
+                    // Generate the Giotto Code and write it into the
+                    // corresponding files.
+                    writeGiottoCode(model, directory);
+                    
+                    // Generate the Framework code and write it into the
+                    // corresponding files.
+                    writeFrameworkCode(model, directory);
+    
+                    // end the model execution.
+                    manager.stop();
+                    manager.wrapup();
+                }
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
                         "Cannot generate code. Perhaps outside Vergil?");
