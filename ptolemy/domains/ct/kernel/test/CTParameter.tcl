@@ -68,8 +68,11 @@ test CTParameter-1.2 {Construct a CTParameter with a Init Token} {
     # Note: Use the above setup
     set t1 [java::new {ptolemy.data.DoubleToken double} 1.0]
     set p2 [java::new ptolemy.domains.ct.kernel.CTParameter $a1 P2 $t1]
+    #list [[$a1 getAttribute P2] getName] \
+    #	    [[[$a1 getAttribute P2] getToken] doubleValue]
     list [[$a1 getAttribute P2] getName] \
-	    [[[$a1 getAttribute P2] getToken] doubleValue]
+	    [_testDoubleValue $a1 P2]
+
 } {P2 1.0}
 
 ######################################################################
