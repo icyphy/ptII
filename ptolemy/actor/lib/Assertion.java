@@ -193,7 +193,7 @@ public class Assertion extends TypedAtomicActor {
 
         BooleanToken result = (BooleanToken) assertion.getToken();
 
-        if (result.booleanValue()) {
+        if (!result.booleanValue()) {
             throw new IllegalActionException(this,
                     "Assertion fails! " +
                     assertion.getExpression());
