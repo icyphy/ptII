@@ -534,7 +534,7 @@ TOKEN : /* function definition */
 
 < DEFAULT, StringModeIDBrace, StringModeIDParen > TOKEN : /* Function names */
 {
-  	< ID: ( <LETTER> )+ (["0"-"9", "$", "@"] | <LETTER> )* >
+    < ID: ( <LETTER> )+ (["0"-"9", "$", "@"] | <LETTER> )* >
   | 	< #LETTER: ["a"-"z", "A"-"Z", "_"] > 		
 } 
 
@@ -562,7 +562,8 @@ TOKEN : /* Assignment */
 
 < StringModeIDNone > TOKEN :
 {
-    < SMID: ( <SMLETTER> )+ (["0"-"9", "$", "@"] | <SMLETTER> )* > :StringMode
+    // String mode identifiers with lone dollars can't contain dollars.
+    < SMID: ( <SMLETTER> )+ (["0"-"9", "@"] | <SMLETTER> )* > :StringMode
   | < #SMLETTER: ["a"-"z", "A"-"Z", "_"] > 	
 }
 

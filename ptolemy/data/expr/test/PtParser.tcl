@@ -1038,10 +1038,10 @@ test PtParser-19.6 {Test String mode} {
 
 test PtParser-19.7 {Test String mode} {
     set p [java::new ptolemy.data.expr.PtParser]
-    set root [ $p generateStringParseTree "\$bar \${bar}\$(bar)" ]
+    set root [ $p generateStringParseTree "\$bar\$bar \${bar}\$(bar)" ]
     set res  [ $evaluator evaluateParseTree $root $scope]
     list [$res toString]
-} {{"baz bazbaz"}}
+} {{"bazbaz bazbaz"}}
 
 test PtParser-19.8 {Test String mode} {
     set p [java::new ptolemy.data.expr.PtParser]
