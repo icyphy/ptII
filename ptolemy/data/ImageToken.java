@@ -1,6 +1,6 @@
 /* An abstract class that tokens which contain images should derive from.
 
- Copyright (c) 1999-2003 The Regents of the University of California.
+ Copyright (c) 2002-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+
 */
 package ptolemy.data;
 
@@ -38,7 +41,7 @@ library.
 
 @author James Yeh
 @version $Id$
-@since Ptolemy II 2.1
+@since Ptolemy II 3.0
 */
 public abstract class ImageToken extends Token {
 
