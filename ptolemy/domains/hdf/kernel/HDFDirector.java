@@ -94,9 +94,9 @@ value of this parameter is 100.
 <OL>
 <LI>
 A. Girault, B. Lee, and E. A. Lee,
-``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
-Finite State Machines with Multiple Concurrency Models</A>, '' April 13,
-1998.</LI>
+``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">
+Hierarchical Finite State Machines with Multiple Concurrency Models</A>,
+'' April 13, 1998.</LI>
 </ol>
 
 @see HDFFSMDirector
@@ -405,7 +405,6 @@ public class HDFDirector extends SDFDirector {
 
     /** Return a list of all the input ports contained by the
      *  deeply contained entities of the container of this director.
-     *
      *  @return The list of input ports.
      */
     private List _getInputPortList() {
@@ -435,7 +434,6 @@ public class HDFDirector extends SDFDirector {
 
     /** Return a list of all the output ports contained by the
      *  deeply contained entities of the container of this director.
-     *
      *  @return The list of output ports.
      */
     private List _getOutputPortList() {
@@ -501,18 +499,15 @@ public class HDFDirector extends SDFDirector {
         }
     }
 
-
-    // The hashmap for the schedule cache.
+    // Hash maps for the schedule cache.
     private Map _scheduleCache;
     private List _scheduleKeyList;
+    private Map _externalRatesCache;
+    private List _externalRatesKeyList;
+    private String _mostRecentRates;
     private List _inputPortList;
     private List _outputPortList;
     private int _cacheSize = 100;
-
-    private Map _externalRatesCache;
-    private List _externalRatesKeyList;
-
-    private String _mostRecentRates;
 
     // A flag indicating whether the initialize() method is
     // called immediately after the preinitialize() method.
