@@ -61,6 +61,12 @@ public interface CTGeneralDirector {
      */
     public double getCurrentStepSize();
 
+    /** Return the error tolerance, used by state and output step size 
+     *  actors.
+     *  @return The error tolerance.
+     */
+    public double getErrorTolerance();
+
     /** Return the executive CT general director of this director, or null if
      *  this director is at the top level or the executive director is
      *  not a CT general director. 

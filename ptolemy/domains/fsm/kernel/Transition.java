@@ -31,6 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.BooleanToken;
@@ -834,16 +835,21 @@ public class Transition extends ComponentRelation {
             workspace().getReadAccess();
 
             CompositeEntity container = (CompositeEntity) getContainer();
+            double errorTolerance = 1e-4;
 
             if (container != null) {
                 TypedCompositeActor modalModel = (TypedCompositeActor) container
                     .getContainer();
 
-                if ((modalModel != null)
-                        && modalModel.getDirector() instanceof HSDirector) {
-                    _exeDirectorIsHSDirector = true;
-                } else {
-                    _exeDirectorIsHSDirector = false;
+                if (modalModel != null) {
+                    Director director = modalModel.getDirector();
+                    if (director instanceof HSDirector) {
+                        errorTolerance = 
+                            ((HSDirector)director).getErrorTolerance();
+                        _exeDirectorIsHSDirector = true;
+                    } else {
+                        _exeDirectorIsHSDirector = false;
+                    }
                 }
             }
 
@@ -856,8 +862,9 @@ public class Transition extends ComponentRelation {
                 // the top level CT director.
                 // Add a getErrorTolerance() method to the CTGeneralDirector
                 // class.
-                _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList,
-                        1e-4);
+                _parseTreeEvaluator = 
+                    new ParseTreeEvaluatorForGuardExpression(_relationList,
+                        errorTolerance);
 
                 // Invalid a relation list for the transition.
                 _relationList.destroy();

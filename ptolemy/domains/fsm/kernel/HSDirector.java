@@ -331,6 +331,23 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
     }
 
+    /** Return error tolerance used for detecting enabled transitions.
+     *  @return The error tolerance used for detecting enabled transitions.
+     */
+    public final double getErrorTolerance() {
+        CompositeActor container = (CompositeActor) getContainer();
+        Director executiveDirector = container.getExecutiveDirector();
+
+        if (executiveDirector instanceof CTGeneralDirector) {
+            return ((CTGeneralDirector)executiveDirector).getErrorTolerance();
+        } else {
+            // This should never happen because a modal model with
+            // an HSDirector must be used inside a CT model.
+            throw new InternalErrorException("A modal model with "
+                    + "an HSDirector must be used inside a CT model.");
+        }
+    }
+
     /** Return the executive CT director of this director, or null if
      *  this director is at the top level or the executive director is
      *  not a CT general director.
