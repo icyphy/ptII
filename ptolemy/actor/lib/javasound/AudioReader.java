@@ -143,7 +143,7 @@ public class AudioReader extends URLReader {
             try {
                 // This jar url should work:
                 //jar:file:/C:/ptII/ptolemy/actor/lib/javasound/javasound.jar!/ptolemy/actor/lib/javasound/voice.wav
-                //sourceURL.setExpression("jar:" 
+                //sourceURL.setExpression("jar:"
                 //        + "+ property(\"ptolemy.ptII.dirAsURL\") "
                 //        + "+ \"ptolemy/actor/lib/javasound/javasound.jar\""
                 //        + " + \"!/ptolemy/actor/lib/javasound/voice.wav\"");
@@ -158,7 +158,7 @@ public class AudioReader extends URLReader {
                 // The url is inside double quotes because this is a Parameter.
                 sourceURL.setExpression("\"\"");
             }
-        }    
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
