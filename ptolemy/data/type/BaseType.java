@@ -252,15 +252,15 @@ public abstract class BaseType implements Type, Serializable {
     new UnsizedMatrixType.DoubleMatrixType();
 
     /** The fix data type */
-    public static class FixType extends BaseType {
-        private FixType() {
-            super(FixToken.class, "fixedpoint");
-        }
-        public Token convert(Token t) throws IllegalActionException {
-            return FixToken.convert(t);
-        }
-    }
-    public static final FixType FIX = new FixType();
+  //   public static class FixType extends BaseType {
+//         private FixType() {
+//             super(FixToken.class, "fixedpoint");
+//         }
+//         public Token convert(Token t) throws IllegalActionException {
+//             return FixToken.convert(t);
+//         }
+//     }
+    public static final FixType FIX = FixType.BOTTOM; //new FixType();
 
     public static final UnsizedMatrixType.FixMatrixType FIX_MATRIX =
     new UnsizedMatrixType.FixMatrixType();

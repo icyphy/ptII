@@ -50,6 +50,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	ArrayType.java \
 	BaseType.java \
+	FixType.java \
 	RecordType.java \
 	SizedMatrixType.java \
 	StructuredType.java \
