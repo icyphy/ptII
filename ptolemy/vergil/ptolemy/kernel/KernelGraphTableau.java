@@ -30,77 +30,12 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
-import ptolemy.gui.Top;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.actor.gui.*;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.moml.Locatable;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.ptolemy.EditorDropTarget;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.TableauFactory;
-
-import diva.canvas.CanvasUtilities;
-import diva.canvas.Site;
-import diva.canvas.Figure;
-import diva.canvas.connector.FixedNormalSite;
-import diva.canvas.connector.Terminal;
-import diva.canvas.interactor.SelectionModel;
-
-import diva.gui.View;
-import diva.gui.AbstractView;
-import diva.gui.Document;
-import diva.gui.toolbox.FocusMouseListener;
-
-import diva.graph.JGraph;
-
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.GraphUtilities;
-import diva.graph.MutableGraphModel;
-import diva.graph.basic.BasicLayoutTarget;
-import diva.graph.layout.LevelLayout;
-import diva.graph.layout.LayoutTarget;
-import diva.graph.toolbox.DeletionListener;
+import ptolemy.kernel.util.*;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.geom.Rectangle2D;
-import java.awt.print.Printable;
-import java.awt.print.PrinterJob;
-import java.awt.print.PrinterException;
-import java.awt.print.PageFormat;
 
-import java.io.IOException;
-import java.io.StringWriter;
-
-import java.util.HashSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.KeyStroke;
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphTableau
