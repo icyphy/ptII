@@ -16,6 +16,7 @@ infrastructure.
 
 	<LI> <A HREF="#ptplot pronounciation"><B>1.2 How do I pronounce 'ptplot'?</B></A>
 
+	<LI> <A HREF="#ptplot copyright"><B>1.3 What is the copyright?</B></A>
 <LI> <A HREF="#ptplot faq: installation"><B>2. Installation questions</B></A>
 	<MENU>
 	<LI> <A HREF="#downloading Ptplot"><B>2.1 How do I download
@@ -39,6 +40,7 @@ infrastructure.
 <LI> <A HREF="#ptplot faq: How do I . . ."><B>3. How do I  . . .</B></A>
 	<MENU>
 	<LI> <A HREF="#mydata><B>3.1 Plot my own data?</B></A>
+	<LI> <A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
 	</MENU>
 
 </MENU>
@@ -56,6 +58,10 @@ further.
 <DT> <A NAME="ptplot pronounciation"><B>1.2 How do I pronounce 'ptplot'?</B>
 <DD> pee-tee-plot.  Unlike with Ptolemy, the initial p in the pt is pronounced.
 
+<DT> <A NAME="ptplot copyright"><B>1.3 What is the copyright?</B></A>
+<DD> Ptplot is released under the fairly liberal UC Berkeley copyright.
+Most files have the copyright at the top, for example, see
+<A HREF="../../Plot.java"><CODE>Plot.java</CODE></A>
 </DL>
 
 <H2><A NAME="ptplot faq: installation"><B>2. Installation questions</B></A></H2>
@@ -101,6 +107,43 @@ Your mail should include:
 <DL>
 <DT> <A NAME="mydata"><B>3.1 How do I plot my own data?</B></A>
 <DD>
+There are several ways to plot data using ptplot.
+
+ <P>One is to create a datafile that consists of datasets and x,y pairs
+See:
+<A HREF="../../demo/bargraph.plt"><CODE>demo/bargraph.plt</CODE></A>
+
+ <P>Binary data files are also supported, see
+<A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
+
+ <P>Another ways it to call <CODE>plot().addPoint</CODE>.
+The <A HREF="../../demo/FourierSeries.html">Fourier Series demo</A>
+uses this methodd.
+
+The PlotFourierSeries class at
+<A HREF="../../demo/PlotFourierSeries.java"><CODE>demo/PlotFourierSeries.java</CODE></A> is what actually does the plotting.
+
+ <P> You can also plot data dynamically by creating a class that has a
+<CODE>addPoints()</CODE> method which gets called by the PlotLive class.
+
+The 
+<A HREF="../../demo/Live.html"><CODE>demo/Live.html</CODE></A> demo
+illustrates live plotting.
+The PlotLiveDemo class at
+<A HREF="demo/PlotLiveDemo.java"><CODE>demo/PlotLiveDemo.java</CODE></A>
+is what actually does the plotting.
+
+<DT> <A NAME="binarydata"><B>3.2 How do I plot binary data?</B></A>
+<DD>Ptplot can plot binary datafiles.  The format was originally created
+by Joe Buck for the X11 <CODE>pxgraph</CODE> program.
+For details on the format, see the description of the 
+
+<CODE>-binary</CODE> option in <A
+HREF="../../Pxgraph.java"><CODE>Pxgraph.java</CODE></A>.  You might
+find the 
+<A HREF="../codeDoc/ptplot.Pxgraph.htl">javadoc Pxgraph documentation</A>
+easier to read.
+
 </DL>
 
 <p>
