@@ -317,7 +317,7 @@ public abstract class DEDirector extends Director {
      *  the time stamp of the event. 
      *  The depth is used to prioritize events that have equal
      *  time stamps.  A smaller depth corresponds to a higher priority.
-     *  A "pure event" is one where no token is transfered.  The event
+     *  A "pure event" is one where no token is transferred.  The event
      *  is associated with a destination actor.  That actor will be fired
      *  when the time stamp of the event is the oldest in the system.
      *  Note that the actor may have no new data at its input ports

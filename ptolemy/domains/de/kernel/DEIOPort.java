@@ -196,7 +196,7 @@ public class DEIOPort extends TypedIOPort {
             // FIXME: Shouldn't this use the base class method, rather
             // than copying it and editing it?
             // FIXME: Since the modification is inside the loop (cast to
-            // DEReceiver), this method is overrided by copying and editing
+            // DEReceiver), this method is overriden by copying and editing
             // the base class one. Note that, once we permit level crossing
             // connection, this method won't be valid anymore. Until that
             // time, this method should work sufficiently well.
