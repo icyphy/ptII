@@ -75,6 +75,30 @@ public class TextEffigy extends Effigy {
 	return _doc;
     }
 
+    /** Create a new effigy in the given container containing the specified
+     *  text.  The new effigy will have a new instance of
+     *  DefaultStyledDocument associated with it.
+     *  @param container The container for the effigy.
+     *  @param text The text to insert in the effigy.
+     *  @return A new instance of TextEffigy.
+     *  @exception Exception If the text effigy cannot be
+     *   contained by the specified container, or if the specified
+     *   text cannot be inserted into the document.
+     */
+    public static TextEffigy newTextEffigy(
+            CompositeEntity container, String text)
+            throws Exception {
+        // Create a new effigy.
+        TextEffigy effigy = new TextEffigy(container, 
+                container.uniqueName("effigy"));
+        Document doc = new DefaultStyledDocument();
+        effigy.setDocument(doc);
+        if (text != null) {
+            doc.insertString(0, text, null);
+        }
+        return effigy;
+    }		
+
     /** Create a new effigy in the given container by reading the specified
      *  URL. If the specified URL is null, then create a blank effigy.
      *  The extension of the URL is not checked, so this will open any file.

@@ -142,7 +142,8 @@ public class TextEditorTableau extends Tableau {
                 return tableau;
 	    } else {
                 // The effigy is not an instance of TextEffigy.
-                // See whether it contains an instance of TextEffigy.
+                // See whether it contains an instance of TextEffigy,
+                // and if it does, show that effigy.
                 List effigies = effigy.entityList(TextEffigy.class);
                 if (effigies.size() > 0) {
                     TextEffigy textEffigy = (TextEffigy)effigies.get(0);
@@ -152,11 +153,25 @@ public class TextEditorTableau extends Tableau {
                     // Attempt to use it's url attribute and create a new
                     // instance of TextEffigy contained by the specified one.
                     URL url = effigy.url.getURL();
-                    TextEffigy textEffigy = TextEffigy.newTextEffigy(
-                            effigy, url, url);
+                    TextEffigy textEffigy;
+                    if (effigy instanceof PtolemyEffigy) {
+                        // NOTE: It seems unfortunate here to have
+                        // to distinctly support MoML.  Would it make
+                        // sense for the Effigy base class to have a method
+                        // that gives a textual description of the data?
+                        String moml = ((PtolemyEffigy)effigy)
+                                .getModel().exportMoML();
+                        textEffigy = TextEffigy.newTextEffigy(effigy, moml);
+                    } else {
+                        textEffigy = TextEffigy.newTextEffigy(effigy, url, url);
+                    }
                     TextEditorTableau textTableau =
-                           (TextEditorTableau)createTableau(textEffigy);
+                            (TextEditorTableau)createTableau(textEffigy);
                     textTableau.setEditable(false);
+                    if (url != null) {
+                        textEffigy.identifier.setExpression(
+                                url.toExternalForm());
+                    }
                     return textTableau;
                 }
             }
