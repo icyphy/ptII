@@ -491,7 +491,8 @@ public class IOPort extends ComponentPort {
                 localReceivers = getReceivers();
                 if (localReceivers[channelIndex] == null) {
                     throw new NoTokenException(this,
-                            "get: no receiver at index: " + channelIndex + ".");
+                            "get: no receiver at index: "
+                            + channelIndex + ".");
                 }
             } finally {
                 _workspace.doneReading();
@@ -557,7 +558,8 @@ public class IOPort extends ComponentPort {
                 localReceivers = getReceivers();
                 if (localReceivers[channelIndex] == null) {
                     throw new NoTokenException(this,
-                            "get: no receiver at index: " + channelIndex + ".");
+                            "get: no receiver at index: "
+                            + channelIndex + ".");
                 }
             } finally {
                 _workspace.doneReading();
@@ -829,7 +831,8 @@ public class IOPort extends ComponentPort {
                     }
                     if (result.length != width)  {
                         throw new InvalidStateException(this,
-                                "getReceivers(IORelation, int): Invalid receivers. "
+                                "getReceivers(IORelation, int): "
+                                + "Invalid receivers. "
                                 + "Need to call createReceivers().");
                     }
                 }
