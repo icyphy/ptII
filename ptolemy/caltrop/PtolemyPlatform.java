@@ -79,10 +79,10 @@ import ptolemy.kernel.util.IllegalActionException;
    particular, it contains a context and a method that creates the global
    environment to be used with Ptolemy.
 
-   @author J&#246;rn W. Janneck , Christopher Chang 
+   @author J&#246;rn W. Janneck, Christopher Chang, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
+   @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red (cxh)
  */
 public class PtolemyPlatform implements Platform {
@@ -102,28 +102,27 @@ public class PtolemyPlatform implements Platform {
                 public void call(Object[] args) {
                     System.out.println(args[0]);
                 }
-
+                
                 public int arity() {
                     return 1;
                 }
             }));
-
+        
         env.bind("SOP", _theContext.createFunction(new Function() {
                 public Object apply(Object[] args) {
                     try {
                         System.out.println(args[0]);
                         return args[0];
                     } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Function '$not': Cannot apply.", ex);
+                        throw new FunctionCallException("$not", args[0], ex);
                     }
                 }
-
+                
                 public int arity() {
                     return 1;
                 }
             }));
-
+        
         env.bind("Integers", _theContext.createFunction(new Function() {
                 public Object apply(Object[] args) {
                     try {
@@ -133,25 +132,23 @@ public class PtolemyPlatform implements Platform {
                             new IntegerList(_theContext, a, b);
                         return _theContext.createList(res);
                     } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Function 'Integers': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "Integers", args[0], args[1], ex);
                     }
                 }
-
+                
                 public int arity() {
                     return 2;
                 }
             }));
-
+        
         env.bind("$not", _theContext.createFunction(new Function() {
                 public Object apply(Object[] args) {
                     try {
                         BooleanToken b = (BooleanToken) args[0];
-                        ;
                         return b.not();
                     } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Function '$not': Cannot apply.", ex);
+                        throw new FunctionCallException("$not", args[0], ex);
                     }
                 }
 
@@ -167,8 +164,8 @@ public class PtolemyPlatform implements Platform {
                         BooleanToken b = (BooleanToken) args[1];
                         return a.and(b);
                     } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Function '$and': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$and", args[0], args[1], ex);
                     }
                 }
 
@@ -184,8 +181,8 @@ public class PtolemyPlatform implements Platform {
                         BooleanToken b = (BooleanToken) args[1];
                         return a.or(b);
                     } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Function '$or': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$or", args[0], args[1], ex);
                     }
                 }
 
@@ -201,8 +198,8 @@ public class PtolemyPlatform implements Platform {
                         Token b = (Token) args[1];
                         return a.isEqualTo(b);
                     } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Function '$eq': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$eq", args[0], args[1], ex);
                     }
                 }
 
@@ -218,8 +215,8 @@ public class PtolemyPlatform implements Platform {
                         Token b = (Token) args[1];
                         return a.isEqualTo(b).not();
                     } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Function '$ne': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$ne", args[0], args[1], ex);
                     }
                 }
 
@@ -235,8 +232,8 @@ public class PtolemyPlatform implements Platform {
                         ScalarToken b = (ScalarToken) args[1];
                         return a.isLessThan(b);
                     } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Function '$lt': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$lt", args[0], args[1], ex);
                     }
                 }
 
@@ -250,15 +247,13 @@ public class PtolemyPlatform implements Platform {
                     try {
                         ScalarToken a = (ScalarToken) args[0];
                         ScalarToken b = (ScalarToken) args[1];
-                        if (a.isLessThan(b).booleanValue() || a.isEqualTo(b).booleanValue())
-                            return BooleanToken.TRUE;
-                        else
-                            return BooleanToken.FALSE;
+                        return a.isGreaterThan(b).not();
                     } catch (Exception ex) {
-                        throw new InterpreterException("Function '$le': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$le", args[0], args[1], ex);
                     }
                 }
-
+                
                 public int arity() {
                     return 2;
                 }
@@ -271,7 +266,8 @@ public class PtolemyPlatform implements Platform {
                         ScalarToken b = (ScalarToken) args[1];
                         return a.isGreaterThan(b);
                     } catch (Exception ex) {
-                        throw new InterpreterException("Function '$gt': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$gt", args[0], args[1], ex);
                     }
                 }
 
@@ -285,12 +281,10 @@ public class PtolemyPlatform implements Platform {
                     try {
                         ScalarToken a = (ScalarToken) args[0];
                         ScalarToken b = (ScalarToken) args[1];
-                        if (a.isGreaterThan(b).booleanValue() || a.isEqualTo(b).booleanValue())
-                            return BooleanToken.TRUE;
-                        else
-                            return BooleanToken.FALSE;
+                        return a.isLessThan(b).not();
                     } catch (Exception ex) {
-                        throw new InterpreterException("Function '$ge': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$ge", args[0], args[1], ex);
                     }
                 }
 
@@ -306,7 +300,8 @@ public class PtolemyPlatform implements Platform {
 
                         return a.zero().subtract(a);
                     } catch (Exception ex) {
-                        throw new InterpreterException("Function '$negate': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$negate", args[0], ex);
                     }
                 }
 
@@ -316,32 +311,39 @@ public class PtolemyPlatform implements Platform {
             }));
 
         env.bind("$add", _theContext.createFunction(new Function() {
+                // Compute the add operation on scalar arguments, the
+                // list concatenation operation on lists, or the set
+                // union on sets.
                 public Object apply(Object[] args) {
                     try {
                         Token a = (Token) args[0];
                         Token b = (Token) args[1];
-
-                        if (a instanceof ObjectToken && b instanceof ObjectToken) {
+                        
+                        if (a instanceof ObjectToken && 
+                                b instanceof ObjectToken) {
                             Object oa = ((ObjectToken) a).getValue();
                             Object ob = ((ObjectToken) b).getValue();
-                            if (oa instanceof Collection && ob instanceof Collection) {
+                            if (oa instanceof Collection && 
+                                    ob instanceof Collection) {
                                 Collection result;
-                                if (oa instanceof Set)
+                                if (oa instanceof Set) {
                                     result = new HashSet((Set) oa);
-                                else if (oa instanceof List)
+                                } else if (oa instanceof List) {
                                     result = new ArrayList((List) oa);
-                                else
-                                    throw new RuntimeException("WTF");
+                                } else {
+                                    throw new Exception("Unknown object type: expected Set or List.");
+                                }
                                 result.addAll((Collection) ob);
                                 return new ObjectToken(result);
                             } else {
-                                throw new InterpreterException("Unknown object types.");
+                                throw new Exception("Unknown object types: expected Collection.");
                             }
                         } else {
                             return a.add(b);
                         }
                     } catch (Exception ex) {
-                        throw new InterpreterException("Function '$add': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$add", args[0], args[1], ex);
                     }
                 }
 
@@ -351,25 +353,30 @@ public class PtolemyPlatform implements Platform {
             }));
 
         env.bind("$mul", _theContext.createFunction(new Function() {
+                // Compute the multiply operation on scalar arguments,
+                // or the set intersection operation on sets.
                 public Object apply(Object[] args) {
                     try {
                         Token a = (Token) args[0];
                         Token b = (Token) args[1];
-                        if (a instanceof ObjectToken && b instanceof ObjectToken) {
+                        if (a instanceof ObjectToken &&
+                                b instanceof ObjectToken) {
                             Object oa = ((ObjectToken) a).getValue();
                             Object ob = ((ObjectToken) b).getValue();
-                            if (oa instanceof Set && ob instanceof Collection) {
+                            if (oa instanceof Set &&
+                                    ob instanceof Collection) {
                                 Set result = new HashSet((Set) oa);
                                 result.retainAll((Collection) ob);
                                 return new ObjectToken(result);
                             } else {
-                                throw new InterpreterException("Cannot perform set intersection: bad object types.");
+                                throw new InterpreterException("Unknown object types: expected Set and Collection.");
                             }
                         } else {
                             return a.multiply(b);
                         }
                     } catch (Exception ex) {
-                        throw new InterpreterException("Function '$mul': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$mul", args[0], args[1], ex);
                     }
                 }
 
@@ -379,32 +386,38 @@ public class PtolemyPlatform implements Platform {
             }));
 
         env.bind("$sub", _theContext.createFunction(new Function() {
+                // Compute the subtraction operation on scalar arguments,
+                // or the set subtraction operation on sets.
                 public Object apply(Object[] args) {
                     try {
                         Token a = (Token) args[0];
                         Token b = (Token) args[1];
 
-                        if (a instanceof ObjectToken && b instanceof ObjectToken) {
+                        if (a instanceof ObjectToken && 
+                                b instanceof ObjectToken) {
                             Object oa = ((ObjectToken) a).getValue();
                             Object ob = ((ObjectToken) b).getValue();
-                            if (oa instanceof Collection && ob instanceof Collection) {
+                            if (oa instanceof Collection && 
+                                    ob instanceof Collection) {
                                 Collection result;
-                                if (oa instanceof Set)
+                                if (oa instanceof Set) {
                                     result = new HashSet((Set) oa);
-                                else if (oa instanceof List)
+                                } else if (oa instanceof List) {
                                     result = new ArrayList((List) oa);
-                                else
-                                    throw new RuntimeException("WTF");
+                                } else {
+                                    throw new Exception("Unknown object type: expected Set or List.");
+                                }
                                 result.removeAll((Collection) ob);
                                 return new ObjectToken(result);
                             } else {
-                                throw new InterpreterException("Unknown object types.");
+                                throw new InterpreterException("Unknown object types: expected Collection.");
                             }
                         } else {
                             return a.subtract(b);
                         }
                     } catch (Exception ex) {
-                        throw new InterpreterException("Function '$sub': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$sub", args[0], args[1], ex);
                     }
 
                 }
@@ -421,7 +434,8 @@ public class PtolemyPlatform implements Platform {
                         Token b = (Token) args[1];
                         return a.divide(b);
                     } catch (Exception ex) {
-                        throw new InterpreterException("Function '$div': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$div", args[0], args[1], ex);
                     }
                 }
 
@@ -437,7 +451,8 @@ public class PtolemyPlatform implements Platform {
                         Token b = (Token) args[1];
                         return a.modulo(b);
                     } catch (Exception ex) {
-                        throw new InterpreterException("Function '$mod': Cannot apply.", ex);
+                        throw new FunctionCallException(
+                                "$mod", args[0], args[1], ex);
                     }
                 }
 
@@ -447,6 +462,8 @@ public class PtolemyPlatform implements Platform {
             }));
 
         env.bind("$size", _theContext.createFunction(new Function() {
+                // Compute the number of elements in the given set,
+                // list, or array.
                 public Object apply(Object[] args) {
                     try {
                         Token a = (Token) args[0];
@@ -455,15 +472,15 @@ public class PtolemyPlatform implements Platform {
                             if (oa instanceof Collection) {
                                 return new IntToken(((Collection) oa).size());
                             } else {
-                                throw new InterpreterException("Can only take $size of set, list, or map.");
+                                throw new InterpreterException("Unknown object type: expected Collection.");
                             }
                         } else if (a instanceof ArrayToken) {
                             return _theContext.createInteger(((ArrayToken) a).length());
                         } else {
-                            throw new InterpreterException("$size needs an ObjectToken or ArrayToken.");
+                            throw new InterpreterException("Unknown type: expected Array, Set, or List");
                         }
                     } catch (Exception ex) {
-                        throw new InterpreterException("Function '$size': Cannot apply.", ex);
+                        throw new FunctionCallException("$size", args[0], ex);
                     }
                 }
 
@@ -473,6 +490,9 @@ public class PtolemyPlatform implements Platform {
             }));
 
         env.bind("$createList", _theContext.createFunction(new Function() {
+                // Create a list that contains the results of applying
+                // the second argument (a one argument function) to
+                // every element in the first argument (a collection).
                 public Object apply(Object[] args) {
                     try {
                         Collection c = _theContext.getCollection(args[0]);
@@ -481,13 +501,15 @@ public class PtolemyPlatform implements Platform {
                         List res = new ArrayList();
                         for (Iterator i = c.iterator(); i.hasNext(); ) {
                             argument[0] = i.next();
-                            Object listFragment = _theContext.applyFunction(f, argument);
+                            Object listFragment = 
+                                _theContext.applyFunction(f, argument);
                             res.addAll(_theContext.getCollection(listFragment));
                         }
                         return _theContext.createList(res);
                     }
                     catch (Exception ex) {
-                        throw new InterpreterException("Cannot create list.", ex);
+                        throw new FunctionCallException(
+                                "Failed to create list.", args[0], args[1], ex);
                     }
                 }
 
@@ -497,6 +519,9 @@ public class PtolemyPlatform implements Platform {
             }));
 
         env.bind("$createSet", _theContext.createFunction(new Function() {
+                // Create a set that contains the results of applying
+                // the second argument (a one argument function) to
+                // every element in the first argument (a collection).
                 public Object apply(Object[] args) {
                     try {
                         Collection c = _theContext.getCollection(args[0]);
@@ -505,13 +530,15 @@ public class PtolemyPlatform implements Platform {
                         Set res = new HashSet();
                         for (Iterator i = c.iterator(); i.hasNext(); ) {
                             argument[0] = i.next();
-                            Object setFragment = _theContext.applyFunction(f, argument);
+                            Object setFragment =
+                                _theContext.applyFunction(f, argument);
                             res.addAll(_theContext.getCollection(setFragment));
                         }
                         return _theContext.createSet(res);
                     }
                     catch (Exception ex) {
-                        throw new InterpreterException("Cannot create set.", ex);
+                        throw new FunctionCallException(
+                                "Failed to create set.", args[0], args[1], ex);
                     }
                 }
 
@@ -521,6 +548,9 @@ public class PtolemyPlatform implements Platform {
             }));
 
         env.bind("$createMap", _theContext.createFunction(new Function() {
+                // Create a map that contains the results of applying
+                // the second argument (a one argument function) to
+                // every element in the first argument (a collection).
                 public Object apply(Object[] args) {
                     try {
                         Collection c = _theContext.getCollection(args[0]);
@@ -536,7 +566,8 @@ public class PtolemyPlatform implements Platform {
                         return _theContext.createMap(res);
                     }
                     catch (Exception ex) {
-                        throw new InterpreterException("Cannot create map.", ex);
+                        throw new FunctionCallException(
+                                "Failed to create map.", args[0], args[1], ex);
                     }
                 }
 
@@ -546,6 +577,9 @@ public class PtolemyPlatform implements Platform {
             }));
 
         env.bind("$iterate", _theContext.createProcedure(new Procedure() {
+                // Invoke the second argument (a one argument
+                // procedure) on every element of the first argument
+                // (a collection).
                 public void call(Object[] args) {
                     try {
                         Collection c = _theContext.getCollection(args[0]);
@@ -557,7 +591,8 @@ public class PtolemyPlatform implements Platform {
                         }
                     }
                     catch (Exception ex) {
-                        throw new InterpreterException("Cannot iterate.", ex);
+                        throw new FunctionCallException(
+                                "Iteration failed.", args[0], args[1], ex);
                     }
                 }
 
@@ -567,6 +602,7 @@ public class PtolemyPlatform implements Platform {
             }));
 
         env.bind("listToArray", _theContext.createFunction(new Function() {
+                // Convert the given list to an array.
                 public Object apply(Object[] args) {
                     try {
                         ObjectToken input = (ObjectToken)args[0];
@@ -576,8 +612,8 @@ public class PtolemyPlatform implements Platform {
                         return new ArrayToken(tokens);
                     }
                     catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Cannot convert to ArrayToken.", ex);
+                        throw new FunctionCallException(
+                                "listToArray", args[0], ex);
                     }
                 }
 
@@ -696,8 +732,8 @@ public class PtolemyPlatform implements Platform {
         return env;
     }
 
-
-    public final static Platform  thePlatform = new PtolemyPlatform();
+    // The singleton platform.
+    public final static Platform thePlatform = new PtolemyPlatform();
 
     /**
      * This Context represents the Ptolemy II system of data objects
@@ -711,441 +747,448 @@ public class PtolemyPlatform implements Platform {
      * @see caltrop.interpreter.ExprEvaluator
      * @see caltrop.interpreter.StmtEvaluator
      */
-    private static final Context _theContext = new Context() {
+    private static final Context _theContext = 
+    new Context() {
+        
+        public Object createNull() {
+            try {
+                return new ObjectToken(null);
+            } catch (IllegalActionException ex) {
+                throw new InterpreterException(
+                        "Failed to create null.", ex);
+            }
+        }
+    	
+        public boolean isNull(Object o) {
+            return o instanceof ObjectToken &&
+                ((ObjectToken)o).getValue() == null;
+        }
+
+    	
+        public Object createBoolean(boolean b) {
+            return b ? BooleanToken.TRUE : BooleanToken.FALSE;
+        }
+    	
+        public boolean isBoolean(Object o) {
+            return o instanceof BooleanToken;
+        }
+    	
+        public boolean booleanValue(Object b) {
+            try {
+                return ((BooleanToken) b).booleanValue();
+            } catch (Exception ex) {
+                throw new InterpreterException(
+                        "Failed to retrieve boolean value.", ex);
+            }
+        }
+
+    	
+        public Object createCharacter(char c) {
+            try {
+                return new ObjectToken(new Character(c));
+            } catch (IllegalActionException iae) {
+                throw new InterpreterException(
+                        "Failed to create character value.");
+            }
+        }
+    	
+        public boolean isCharacter(Object o) {
+            return o instanceof ObjectToken &&
+                ((ObjectToken)o).getValue() instanceof Character;
+        }
+    	
+        public char charValue(Object o) {
+            return ((Character)((ObjectToken)o).getValue()).charValue();
+        }
+
+    	
+        public Object createInteger(String s) {
+            try {
+                return new IntToken(s);
+            } catch (IllegalActionException ex) {
+                throw new InterpreterException(
+                        "Failed to create integer value from string: '"
+                        + s + "'.", ex);
+            }
+        }
+    	
+        public Object createInteger(int n) {
+            return new IntToken(n);
+        }
+    	
+        public boolean isInteger(Object o) {
+            return o instanceof IntToken;
+        }
+        
+        public int intValue(Object o) {
+            try {
+                return ((IntToken) o).intValue();
+            } catch (Exception ex) {
+                throw new InterpreterException(
+                        "Failed to retrieve integer value.", ex);
+            }
+        }
+
             
-            
-            ///////// Simple Data Objects
-            
-            public Object createNull() {
-    		try {
-                    return new ObjectToken(null);
-    		} catch (IllegalActionException ex) {
-                    throw new InterpreterException(
-                            "Cannot create null token.", ex);
-    		}
-            }
-    	
-            public boolean isNull(Object o) {
-    		return o instanceof ObjectToken &&
-                    ((ObjectToken)o).getValue() == null;
-            }
-    	
-            public Object createBoolean(boolean b) {
-    		return b ? BooleanToken.TRUE : BooleanToken.FALSE;
-            }
-    	
-            public boolean isBoolean(Object o) {
-    		return o instanceof BooleanToken;
-            }
-    	
-            public boolean booleanValue(Object b) {
-    		try {
-                    return ((BooleanToken) b).booleanValue();
-   		} catch (Exception ex) {
-                    throw new InterpreterException(
-                            "Cannot test token, expected boolean.", ex);
-    		}
-            }
-    	
-            public Object createCharacter(char c) {
-    		try {
-                    return new ObjectToken(new Character(c));
-    		} catch (IllegalActionException iae) {
-                    throw new InterpreterException("Cannot create character token.");
-    		}
-            }
-    	
-            public boolean isCharacter(Object o) {
-    		return o instanceof ObjectToken &&
-                    ((ObjectToken)o).getValue() instanceof Character;
-            }
-    	
-            public char charValue(Object o) {
-    		return ((Character)((ObjectToken)o).getValue()).charValue();
-            }
-    	
-            public Object createInteger(String s) {
-    		try {
-                    return new IntToken(s);
-    		} catch (IllegalActionException ex) {
-                    throw new InterpreterException(
-                            "Cannot create integer token from string: '"
-                            + s + "'.", ex);
-    		}
-            }
-    	
-            public Object createInteger(int n) {
-    		return new IntToken(n);
-            }
-    	
-            public boolean isInteger(Object o) {
-    		return o instanceof IntToken;
-            }
-            
-            public int intValue(Object o) {
-    		try {
-                    return ((IntToken) o).intValue();
-    		} catch (Exception ex) {
-                    throw new InterpreterException(
-                            "Cannot cast token, expected int.", ex);
-    		}
-            }
-            
-            public Object createReal(double d) {
-                return new DoubleToken(d);
-            }
+        public Object createReal(double d) {
+            return new DoubleToken(d);
+        }
  
-            public Object createReal(String s) {
-    		try {
-                    return new DoubleToken(s);
-    		} catch (IllegalActionException ex) {
-                    throw new InterpreterException(
-                            "Cannot create double token from string: '"
-                            + s + "'.", ex);
-    		}
+        public Object createReal(String s) {
+            try {
+                return new DoubleToken(s);
+            } catch (IllegalActionException ex) {
+                throw new InterpreterException(
+                        "Failed to create real value from string: '"
+                        + s + "'.", ex);
             }
+        }
             
-            public boolean isReal(Object o) {
-    		return o instanceof DoubleToken;
-            }
+        public boolean isReal(Object o) {
+            return o instanceof DoubleToken;
+        }
             
-            public double realValue(Object o) {
-    		try {
-                    return ((DoubleToken) o).doubleValue();
-    		} catch (Exception ex) {
+        public double realValue(Object o) {
+            try {
+                return ((DoubleToken) o).doubleValue();
+            } catch (Exception ex) {
+                throw new InterpreterException(
+                        "Failed to retrieve real value.", ex);
+            }
+        }
+    	
+    	
+        public Object createString(String s) {
+            return new StringToken(s);
+        }
+    	
+        public boolean isString(Object o) {
+            return o instanceof StringToken;
+        }
+    	
+        public String stringValue(Object o) {
+            try {
+                return ((StringToken) o).stringValue();
+            } catch (Exception ex) {
+                throw new InterpreterException(
+                        "Failed to retrieve string value.", ex);
+            }
+        }
+    	
+    	
+        ///////// Collections
+        public Object createList(List a) {
+            try {
+                return new ObjectToken(a);
+            } catch (IllegalActionException ex) {
+                throw new InterpreterException(
+                        "Failed to create list value.", ex);
+            }
+        }
+    	
+        public boolean isList(Object o) {
+            return (o instanceof PtArrayList) ||
+                (o instanceof ObjectToken &&
+                        ((ObjectToken)o).getValue() instanceof List);
+        }
+    	
+        public List getList(Object o) {
+            if (o instanceof ArrayToken) {
+                return new PtArrayList((ArrayToken) o);
+            } else {
+                try {
+                    return (List) ((ObjectToken) o).getValue();
+                } catch (Exception ex) {
                     throw new InterpreterException(
-                            "Cannot cast token, expected double.", ex);
-    		}
+                            "Failed to retrieve list value.", ex);
+                }
             }
+        }
+
     	
-    	
-            public Object createString(String s) {
-    		return new StringToken(s);
+        public Object createSet(Set s) {
+            try {
+                return new ObjectToken(s);
+            } catch (IllegalActionException ex) {
+                throw new InterpreterException(
+                        "Failed to create set value.", ex);
             }
+        }
     	
-            public boolean isString(Object o) {
-    		return o instanceof StringToken;
+        public boolean isSet(Object o) {
+            return o instanceof ObjectToken &&
+                ((ObjectToken)o).getValue() instanceof Set;
+        }
+    	
+        public Set getSet(Object o) {
+            return (Set)((ObjectToken)o).getValue();
+        }
+    	
+
+        public Object createMap(Map m) {
+            try {
+                return new ObjectToken(m);
+            } catch (IllegalActionException ex) {
+                throw new InterpreterException(
+                        "Failed to create map value.", ex);
             }
+        }
     	
-            public String stringValue(Object o) {
-    		try {
-                    return ((StringToken) o).stringValue();
-    		} catch (Exception ex) {
-                    throw new InterpreterException(
-                            "Cannot cast token, expected string.", ex);
-    		}
+        public boolean isMap(Object o) {
+            return o instanceof ObjectToken &&
+                ((ObjectToken)o).getValue() instanceof Map;
+        }
+    	
+        public Map getMap(Object a) {
+            try {
+                return (Map)((ObjectToken)a).getValue();
             }
-    	
-    	
-            ///////// Collections
-    	
-            // FIXMELATER: implement collection classes
-            public Object createList(List a) {
-    		try {
-                    return new ObjectToken(a);
-    		} catch (IllegalActionException ex) {
-                    throw new InterpreterException(
-                            "Cannot create list token.", ex);
-    		}
+            catch (Exception ex) {
+                throw new InterpreterException(
+                        "Failed to retrieve map value", ex);
             }
+        }
     	
-            public boolean isList(Object o) {
-    		return (o instanceof PtArrayList) ||
-                    (o instanceof ObjectToken &&
-                            ((ObjectToken)o).getValue() instanceof List);
+
+        public Object applyMap(Object map, Object arg) {
+            Map m = getMap(map);
+            return m.get(arg);
+        }
+
+    	
+        public boolean isCollection(Object o) {
+            return o instanceof ObjectToken &&
+                ((ObjectToken)o).getValue() instanceof Collection;
+        }
+    	
+        public Collection getCollection(Object a) {
+            try {
+                return (Collection)((ObjectToken)a).getValue();
             }
-    	
-            public List getList(Object o) {
-    		if (o instanceof ArrayToken) {
-                    return new PtArrayList((ArrayToken) o);
-    		} else {
-                    try {
-                        return (List) ((ObjectToken) o).getValue();
-                    } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Cannot cast token, expected a List.", ex);
-                    }
-    		}
+            catch (Exception ex) {
+                throw new InterpreterException(
+                        "Failed to retrieve collection value.", ex);
             }
+        }
     	
-            public Object createSet(Set s) {
-    		try {
-                    return new ObjectToken(s);
-    		} catch (IllegalActionException ex) {
-                    throw new InterpreterException(
-                            "Cannot create set token.", ex);
-    		}
+        ///////// Functional and procedural closures
+        public Object createFunction(Function f) {
+            Type[] argTypes = new Type[f.arity()];
+            for (int i = 0; i < argTypes.length; i++)
+                argTypes[i] = BaseType.UNKNOWN;
+            return new FunctionToken(new PtCalFunction(f),
+                    new FunctionType(argTypes, BaseType.UNKNOWN));
+        }
+    	
+        public boolean isFunction(Object a) {
+            return (a instanceof FunctionToken) ||
+                (a instanceof ObjectToken &&
+                        ((ObjectToken)a).getValue() instanceof Function);
+        }
+    	
+        public Object applyFunction(Object function, Object[] args) {
+            // TODO: perhaps need to optimize array creation
+            try {
+                if (function instanceof FunctionToken) {
+                    Token[] tokenArgs = new Token[args.length];
+                    System.arraycopy(args, 0, tokenArgs, 0, args.length);
+                    return ((FunctionToken) function).apply(tokenArgs);
+                } else {
+                    return ((Function)((ObjectToken)function).getValue()).apply(args);
+                }
+            } catch (Exception ex) {
+                throw new InterpreterException("Function application failed.",
+                        ex);
             }
-    	
-            public boolean isSet(Object o) {
-    		return o instanceof ObjectToken &&
-                    ((ObjectToken)o).getValue() instanceof Set;
-            }
-    	
-            public Set getSet(Object o) {
-    		return (Set)((ObjectToken)o).getValue();
-            }
-    	
-            public Object createMap(Map m) {
-    		try {
-                    return new ObjectToken(m);
-    		} catch (IllegalActionException ex) {
-                    throw new InterpreterException(
-                            "Cannot create map token.", ex);
-    		}
-            }
-    	
-            public boolean isMap(Object o) {
-    		return o instanceof ObjectToken &&
-                    ((ObjectToken)o).getValue() instanceof Map;
-            }
-    	
-            public Map getMap(Object a) {
-    		try {
-                    return (Map)((ObjectToken)a).getValue();
-    		}
-    		catch (Exception ex) {
-                    throw new InterpreterException(
-                            "Could not extract map from token: "
-                            + a.toString(), ex);
-    		}
-            }
-    	
-            public Object applyMap(Object map, Object arg) {
-    		Map m = getMap(map);
-    		return m.get(arg);
-            }
-    	
-            public boolean isCollection(Object o) {
-    		return o instanceof ObjectToken &&
-                    ((ObjectToken)o).getValue() instanceof Collection;
-            }
-    	
-            public Collection getCollection(Object a) {
-    		try {
-                    return (Collection)((ObjectToken)a).getValue();
-    		}
-    		catch (Exception ex) {
-                    throw new InterpreterException(
-                            "Could not extract collection from token: "
-                            + a.toString(), ex);
-    		}
-            }
-    	
-    	
-            ///////// Functional and procedural closures
-    	
-            public Object createFunction(Function f) {
     		
-    		Type[] argTypes = new Type[f.arity()];
-    		for (int i = 0; i < argTypes.length; i++)
-                    argTypes[i] = BaseType.UNKNOWN;
-    		return new FunctionToken(new PtCalFunction(f),
-                        new FunctionType(argTypes, BaseType.UNKNOWN));
+        } 
+
+    	
+        public Object createProcedure(Procedure p) {
+            try {
+                return new ObjectToken(p);
+            } catch (IllegalActionException ex) {
+                throw new InterpreterException(
+                        "Failed to create procedure.", ex);
             }
+        }
     	
-            public boolean isFunction(Object a) {
-    		return (a instanceof FunctionToken) ||
-                    (a instanceof ObjectToken &&
-                            ((ObjectToken)a).getValue() instanceof Function);
+        public boolean isProcedure(Object a) {
+            return a instanceof ObjectToken && 
+                ((ObjectToken) a).getValue() instanceof Procedure;
+        }
+    	
+        public void callProcedure(Object procedure, Object[] args) {
+            try {
+                ObjectToken pToken = (ObjectToken) procedure;
+                Procedure p = (Procedure) pToken.getValue();
+                p.call(args);
+            } catch (Exception ex) {
+                throw new InterpreterException("Procedure call failed.",
+                        ex);
             }
+        }
     	
-            public Object applyFunction(Object function, Object[] args) {
-    		// TODO: perhaps need to optimize array creation
-    		try {
-                    if (function instanceof FunctionToken) {
-                        Token[] tokenArgs = new Token[args.length];
-                        System.arraycopy(args, 0, tokenArgs, 0, args.length);
-                        return ((FunctionToken) function)
-                            .apply(tokenArgs);
-                    } else {
-                        return ((Function)((ObjectToken)function).getValue()).apply(args);
-                    }
-    		} catch (Exception ex) {
-                    throw new InterpreterException("Cannot apply function.",
-                            ex);
-    		}
-    		
-            } 
-    	
-            public Object createProcedure(Procedure p) {
-    		try {
-                    return new ObjectToken(p);
-    		} catch (IllegalActionException ex) {
-                    throw new InterpreterException(
-                            "Could not create procedure token.", ex);
-    		}
+        ///////// Class
+        public Object createClass(Class c) {
+            try {
+                return new ObjectToken(new ClassObject(c, this));
+            } catch (IllegalActionException ex) {
+                throw new InterpreterException(
+                        "Cannot create class token.", ex);
             }
+        }
     	
-            public boolean  isProcedure(Object a) {
-    		return a instanceof ObjectToken && 
-                    ((ObjectToken) a).getValue() instanceof Procedure;
-            }
-    	
-            public void callProcedure(Object procedure, Object[] args) {
-    		try {
-                    ObjectToken pToken = (ObjectToken) procedure;
-                    Procedure p = (Procedure) pToken.getValue();
-                    p.call(args);
-    		} catch (Exception ex) {
-                    throw new InterpreterException("Error in procedure call.",
-                            ex);
-    		}
-            }
-    	
-    	
-            ///////// Class
-    	
-            public Object createClass(Class c) {
-    		try {
-                    return new ObjectToken(new ClassObject(c, this));
-    		} catch (IllegalActionException ex) {
-                    throw new InterpreterException(
-                            "Cannot create class token.", ex);
-    		}
-            }
-    	
-            public boolean isClass(Object o) {
-    		return o instanceof ObjectToken && 
-                    ((ObjectToken)o).getValue() instanceof ClassObject;
-            }
+        public boolean isClass(Object o) {
+            return o instanceof ObjectToken && 
+                ((ObjectToken)o).getValue() instanceof ClassObject;
+        }
             
-            public Class getJavaClass(Object o) {
-    		try {
-                    return ((ClassObject)((ObjectToken)o).getValue()).getClassObject();
-    		}
-    		catch (ClassCastException e) {
-                    if (o instanceof ObjectToken)
-                        throw new RuntimeException("Expected ClassObject, got instance of '" + ((ObjectToken)o).getValue().getClass().getName() + "'.", e);
-                    else
-                        throw new RuntimeException("Expected ClassObject inside ObjectToken, got instance of '" + o.getClass().getName() + "' as a token, with value: " + o + ".", e);
-    		}
+        public Class getJavaClass(Object o) {
+            try {
+                return ((ClassObject)((ObjectToken)o).getValue()).getClassObject();
             }
-    	
-    	
-            ///////// Misc.
-    	
-            public Object getLocation(Object structure, Object[] location) {
-    		// FIXME
-    		return null;
+            catch (ClassCastException e) {
+                if (o instanceof ObjectToken) {
+                    throw new RuntimeException(
+                            "Expected ClassObject, got instance of '" + 
+                            ((ObjectToken)o).getValue().getClass().getName() +
+                            "'.", e);
+                } else {
+                    throw new RuntimeException(
+                            "Expected ClassObject inside ObjectToken, got instance of '" + o.getClass().getName() + "' as a token, with value: " + o + ".", e);
+                }
             }
+        }
     	
-            public void setLocation(Object structure,
-                    Object[] location, Object value) {
-    		// FIXME
-            }
+        ///////// Misc.
+        public Object getLocation(Object structure, Object[] location) {
+            // FIXME
+            return null;
+        }
     	
-            public Class getJavaClassOfObject(Object o) {
+        public void setLocation(Object structure,
+                Object[] location, Object value) {
+            // FIXME
+        }
+    	
+        public Class getJavaClassOfObject(Object o) {
+            // FIXME very preliminary. what about FunctionToken?
+            // also, how will reflection work on methods that
+            // need bytes, etc.
     		
-    		// FIXME very preliminary. what about FunctionToken?
-    		// also, how will reflection work on methods that
-    		// need bytes, etc.
-    		
-    		if (o == null) {
-                    return Object.class;
-    		} else if (o instanceof BooleanToken) {
-                    return Boolean.class;
-    		} else if (o instanceof DoubleToken) {
-                    return Double.class;
-    		} else if (o instanceof IntToken) {
-                    return Integer.class;
-    		} else if (o instanceof StringToken) {
-                    return String.class;
-    		} else if (o instanceof ObjectToken) {
-                    Object v = ((ObjectToken)o).getValue();
-                    if (v instanceof ClassObject)
-                        return Class.class;
-                    else
-                        return v.getClass();
-    		} else if (o instanceof Token) {
-                    return o.getClass();
-    		} else throw new InterpreterException(
-                        "Unrecognized Token type in toClass:"
-                        + o.getClass().toString());
-            }
+            if (o == null) {
+                return Object.class;
+            } else if (o instanceof BooleanToken) {
+                return Boolean.class;
+            } else if (o instanceof DoubleToken) {
+                return Double.class;
+            } else if (o instanceof IntToken) {
+                return Integer.class;
+            } else if (o instanceof StringToken) {
+                return String.class;
+            } else if (o instanceof ObjectToken) {
+                Object v = ((ObjectToken)o).getValue();
+                if (v instanceof ClassObject)
+                    return Class.class;
+                else
+                    return v.getClass();
+            } else if (o instanceof Token) {
+                return o.getClass();
+            } else throw new InterpreterException(
+                    "Unrecognized Token type in toClass:"
+                    + o.getClass().toString());
+        }
     	
-            public Object toJavaObject(Object o) {
-    		if (o instanceof BooleanToken) {
-                    return new Boolean(booleanValue(o));
-    		} else if (o instanceof DoubleToken) {
-                    return new Double(realValue(o));
-    		} else if (o instanceof IntToken) {
-                    return new Integer(intValue(o));
-    		} else if (o instanceof StringToken) {
-                    return stringValue(o);
-    		} else if (o instanceof ObjectToken) {
-                    Object v = ((ObjectToken)o).getValue();
-                    if (v instanceof ClassObject)
-                        return ((ClassObject)v).getClassObject();
-                    else
-                        return ((ObjectToken) o).getValue();
-    		} else if (o instanceof Token) {
+        public Object toJavaObject(Object o) {
+            if (o instanceof BooleanToken) {
+                return new Boolean(booleanValue(o));
+            } else if (o instanceof DoubleToken) {
+                return new Double(realValue(o));
+            } else if (o instanceof IntToken) {
+                return new Integer(intValue(o));
+            } else if (o instanceof StringToken) {
+                return stringValue(o);
+            } else if (o instanceof ObjectToken) {
+                Object v = ((ObjectToken)o).getValue();
+                if (v instanceof ClassObject)
+                    return ((ClassObject)v).getClassObject();
+                else
+                    return ((ObjectToken) o).getValue();
+            } else if (o instanceof Token) {
+                return o;
+            } else throw new InterpreterException(
+                    "Unrecognized Token type in toClass:"
+                    + o.getClass().toString());
+        }
+    	
+        public Object fromJavaObject(Object o) {
+            try {
+                if (o instanceof Token) {
                     return o;
-    		} else throw new InterpreterException(
-                        "Unrecognized Token type in toClass:"
-                        + o.getClass().toString());
+                } else if (o instanceof Boolean) {
+                    return new BooleanToken(((Boolean) o).booleanValue());
+                } else if (o instanceof Double) {
+                    return new DoubleToken(((Double) o).doubleValue());
+                } else if (o instanceof Integer) {
+                    return new IntToken(((Integer) o).intValue());
+                } else if (o instanceof String) {
+                    return new StringToken((String) o);
+                } else if (o instanceof Class) {
+                    return new ObjectToken(new ClassObject((Class)o, this)); 
+                } else {
+                    return new ObjectToken(o);
+                }
+            } catch (IllegalActionException ex) {
+                throw new InterpreterException(
+                        "Couldn't create ObjectToken from Java Object "
+                        + o.toString(), ex);
             }
+        }
     	
-            public Object fromJavaObject(Object o) {
-    		try {
-                    if (o instanceof Token) {
-                        return o;
-                    } else if (o instanceof Boolean) {
-                        return new BooleanToken(((Boolean) o).booleanValue());
-                    } else if (o instanceof Double) {
-                        return new DoubleToken(((Double) o).doubleValue());
-                    } else if (o instanceof Integer) {
-                        return new IntToken(((Integer) o).intValue());
-                    } else if (o instanceof String) {
-                        return new StringToken((String) o);
-                    } else if (o instanceof Class) {
-                        return new ObjectToken(new ClassObject((Class)o, this)); 
-                    } else {
-                        return new ObjectToken(o);
+        public Object selectField(Object composite, String fieldName) {
+            Class c = getJavaClassOfObject(composite);
+            Field f;
+            try {
+                f = c.getField(fieldName);
+                return fromJavaObject(f.get(toJavaObject(composite)));
+            } catch (IllegalAccessException iae) {
+                throw new InterpreterException(
+                        "Tried to access field " + fieldName +
+                        " in " + composite.toString(), iae);
+            } catch (NoSuchFieldException nsfe1) {
+                // maybe the enclosing object is a Class?
+                if (isClass(composite)) {
+                    try {
+                        f = getJavaClass(composite).getField(fieldName);
+                        return fromJavaObject(f.get(null));
+                    } catch (NoSuchFieldException nsfe2) {
+                        return new MethodObject(
+                                toJavaObject(composite),
+                                fieldName,
+                                this);
+                    } catch (IllegalAccessException iae) {
+                        throw new InterpreterException(
+                                "Tried to access field " + fieldName +
+                                " in " + composite.toString(), iae);
                     }
-    		} catch (IllegalActionException ex) {
-                    throw new InterpreterException(
-                            "Couldn't create ObjectToken from Java Object "
-                            + o.toString(), ex);
-    		}
-            }
-    	
-            public Object selectField(Object composite, String fieldName) {
-    		Class c = this.getJavaClassOfObject(composite);
-    		Field f;
-    		try {
-                    f = c.getField(fieldName);
-                    return this.fromJavaObject(f.get(this.toJavaObject(composite)));
-    		} catch (IllegalAccessException iae) {
-                    throw new InterpreterException(
-                            "Tried to access field " + fieldName +
-                            " in " + composite.toString(), iae);
-    		} catch (NoSuchFieldException nsfe1) {
-                    // maybe the enclosing object is a Class?
-                    if (this.isClass(composite)) {
-                        try {
-                            f = this.getJavaClass(composite).getField(fieldName);
-                            return this.fromJavaObject(f.get(null));
-                        } catch (NoSuchFieldException nsfe2) {
-                            return new MethodObject(this.toJavaObject(composite), fieldName, this);
-                        } catch (IllegalAccessException iae) {
-                            throw new InterpreterException(
-                                    "Tried to access field " + fieldName +
-                                    " in " + composite.toString(), iae);
-                        }
-                    } else {
-                        // assume it is a method
-                        try {
-                            return new ObjectToken(new MethodObject(this.toJavaObject(composite), fieldName, this));
-                        } catch (IllegalActionException iae) {
-                            throw new InterpreterException(
-                                    "Tried to access field " + fieldName +
-                                    " in " + composite.toString(), iae);
-                        }
+                } else {
+                    // assume it is a method
+                    try {
+                        return new ObjectToken(
+                                new MethodObject(
+                                        toJavaObject(composite),
+                                        fieldName,
+                                        this));
+                    } catch (IllegalActionException iae) {
+                        throw new InterpreterException(
+                                "Tried to access field " + fieldName +
+                                " in " + composite.toString(), iae);
                     }
-    		}
+                }
             }
-        };
+        }
+    };
 }
 
 

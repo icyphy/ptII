@@ -59,6 +59,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	CalIOException.java \
+	FunctionCallException.java \
 	PtolemyPlatform.java
 
 OTHER_FILES_TO_BE_JARED = \
