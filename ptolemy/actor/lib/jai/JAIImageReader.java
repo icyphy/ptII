@@ -32,6 +32,7 @@ package ptolemy.actor.lib.jai;
 import com.sun.media.jai.codec.FileSeekableStream;
 
 import java.io.IOException;
+import java.net.URL;
 
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
@@ -43,14 +44,14 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// JAIImageReader
 /**
-Load an image and create a JAIImageToken from it.  The file to be loaded
-is specified as a relative URL from the base URL path.  Usually the base
-path should be set to the root ptolemy classpath.  Supports BMP, FPX,
+This actor reads an image from a file or a URL.  The file or URL is 
+specified using any form acceptable to FileAttribute.  Supports BMP, FPX,
 GIF, JPEG, PNG, PBM, PGM, PPM, and TIFF file formats.
 
 @author James Yeh, Steve Neuendorffer
@@ -71,17 +72,17 @@ public class JAIImageReader extends Source {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
-        imageURLTemplate = new Parameter(this, "imageURLTemplate",
-            new StringToken("ptolemy/actor/lib/jmf/"
-                            + "goldhill.gif"));
-        imageURLTemplate.setTypeEquals(BaseType.STRING);
+        fileOrURL = new FileAttribute(this, "fileOrURL");
 }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The image filename template */
-    public Parameter imageURLTemplate;
+    /** The file name or URL from which to read.  This is a string with
+     *  any form accepted by File Attribute.
+     *  @see FileAttribute
+     */
+    public FileAttribute fileOrURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -94,11 +95,11 @@ public class JAIImageReader extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _urlToken = (StringToken)imageURLTemplate.getToken();
-        if (_urlToken == null) {
+        URL url = fileOrURL.asURL();
+        if (url == null) {
             throw new IllegalActionException("URLToken was null");
         } else {
-            _fileRoot = _urlToken.stringValue();
+            _fileRoot = url.getFile();
             try {
                 _stream = new FileSeekableStream(_fileRoot);
             } catch (IOException error) {

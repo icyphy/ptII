@@ -6,10 +6,24 @@
     <?moml
       <group>
         <doc>Java Advanced Imaging actors</doc>
+	<entity name="JAIDCT" class="ptolemy.actor.lib.jai.JAIDCT">
+	</entity>
+	<entity name="JAIDFT" class="ptolemy.actor.lib.jai.JAIDFT">
+	</entity>
+	<entity name="JAIEdgeDetection" class="ptolemy.actor.lib.jai.JAIEdgeDetection">
+	</entity>
+	<entity name="JAIIDCT" class="ptolemy.actor.lib.jai.JAIIDCT">
+	</entity>
+	<entity name="JAIIDFT" class="ptolemy.actor.lib.jai.JAIIDFT">
+	</entity>
 	<entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
 	</entity>
 	<entity name="JAIInterpolation" class="ptolemy.actor.lib.jai.JAIInterpolation">
 	</entity>
+	<entity name="JAIInvert" class="ptolemy.actor.lib.jai.JAIInvert">
+	</entity>	
+	<entity name="JAItemp" class="ptolemy.actor.lib.jai.JAItemp">
+	</entity>	
       </group>
     ?>
   </configure>
