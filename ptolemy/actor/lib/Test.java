@@ -27,6 +27,7 @@
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+review output port.
 */
 
 package ptolemy.actor.lib;
@@ -85,9 +86,14 @@ be, within the specified <i>tolerance</i> (which defaults to
 10<sup>-9</sup>.  The input data type is undeclared, so it can
 resolve to anything.
 <p>
-If the result is correct, the actor outputs a boolean true. While
-checking is in progress, and if the result is incorrect, the output is
-boolean false.
+
+During ever iteration in which this actor checks an input value
+against a value from <i>correctValues</i>, the actor outputs a boolean
+with value false.  After reacing the end of the <i>correctValues</i>,
+this actor outputs true from its output port on every firing,
+regardless of the input data, indicating that the test has passed.
+This is useful for implementing tests that have data-dependent
+stopping conditions.
 
 @see NonStrictTest
 @author Edward A. Lee, Christopher Hylands, Jim Armsrong
@@ -108,8 +114,10 @@ public class Test extends Sink {
     public Test(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        outputCorrect = new TypedIOPort(this, "output", false, true);
-        outputCorrect.setTypeEquals(BaseType.BOOLEAN);
+
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.BOOLEAN);
+
         Token[] defaultEntries = new Token[1];
         defaultEntries[0] = new BooleanToken(true);
         ArrayToken defaultArray = new ArrayToken(defaultEntries);
@@ -134,15 +142,19 @@ public class Test extends Sink {
      */
     public Parameter tolerance;
 
+    /** An output port, which outputs true when the actor has reached
+     * the end of the <i>correctValues</i>, indicating that the test
+     * has passed.  Otherwise the port outputs false.
+     */
+    public TypedIOPort output;
 
-    public TypedIOPort outputCorrect;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** If the attribute being changed is <i>tolerance</i>, then check
      *  that it is increasing and nonnegative.
      *  @exception IllegalActionException If the indexes vector is not
-     *   increasing and nonnegative, or the indexes is not a row vector.
+     *  increasing and nonnegative, or the indexes is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -159,7 +171,7 @@ public class Test extends Sink {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _numberOfInputTokensSeen = 0;
-        outputCorrect.send(0, new BooleanToken(false));
+        output.send(0, new BooleanToken(false));
     }
 
     /** Read one token from each input channel and compare against
@@ -182,9 +194,11 @@ public class Test extends Sink {
                     input.get(i);
                 }
             }
-            outputCorrect.send(0, new BooleanToken(true));
+            // Indicate that the test has passed.
+            output.send(0, new BooleanToken(true));
             return true;
-        } else { outputCorrect.send(0, new BooleanToken(false));
+        } else { 
+            output.send(0, new BooleanToken(false));
         }
         Token referenceToken
             = ((ArrayToken)(correctValues.getToken()))
