@@ -73,6 +73,8 @@ public class ECSLStep extends ContinuousClock {
         // Hide the SampleTime port.
         SampleTime = new Parameter(this, "SampleTime");
         SampleTime.setVisibility(Settable.EXPERT);
+
+        numberOfCycles.setExpression("1");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,6 +101,7 @@ public class ECSLStep extends ContinuousClock {
         if (attribute == After) {
             // FIXME: Ther is probably a better way to do this.
             values.setExpression("{0.0, " + After.getToken() + "}");
+            super.attributeChanged(values);
         } else {
             super.attributeChanged(attribute);
         }
