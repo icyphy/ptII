@@ -131,27 +131,6 @@ public class ZeroCrossingDetector extends Transformer
         }
     }
 
-    /** Emit the event at current time if there is any. There will be no
-     *  current event after emitting it. If there is no current event,
-     *  do nothing.
-     *  @exception IllegalActionException If the event cannot be broadcasted.
-     *
-    public void emitCurrentEvents() throws IllegalActionException{
-        if(_debugging)
-            _debug(this.getFullName() + " checking for current event...");
-
-        if(_eventNow) {
-            if(_debugging) _debug(getFullName() + " Emitting event: " +
-                    _inputToken.toString());
-            if (input.getWidth() != 0) {
-                output.broadcast(_inputToken);
-            } else {
-                output.broadcast(new DoubleToken(0.0));
-            }
-            _eventNow = false;
-        }
-        }*/
-
     /** Consume the input token and the trigger token. The trigger token
      *  will be used for finding the zero crossing in the isThisStepAccurate()
      *  method to control the step size. The input token will be
@@ -202,6 +181,8 @@ public class ZeroCrossingDetector extends Transformer
     public void initialize() throws IllegalActionException {
         super.initialize();
         _first = true;
+        _eventMissed = false;
+        _enabled = false;
 	_eventNow = false;
         if(_debugging) _debug(getFullName() + "initialize");
     }
