@@ -32,7 +32,7 @@
 ME =		doc
 
 # Sub directories to run make in.
-DIRS =		 coding design tour tutorial ui  #internals #usersGuides
+DIRS =		 coding design img tour tutorial ui  #internals #usersGuides
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -91,6 +91,10 @@ VERGIL_DOCS = \
 	ptII1.0.releaseVergil.htm \
 	troubleshootingVergil.htm
 
+# Include these jars in PTAUXALLJAR
+PTAUXALLJARS = \
+		img/img.jar
+
 # All the doc/ files that are referred to by files in ptolemy/config
 PTAUXALLJAR =	docConfig.jar
 
@@ -101,7 +105,7 @@ PTAUXALLJAR =	docConfig.jar
 OTHER_FILES_TO_BE_JARED = \
 	$(VERGIL_DOCS) \
 	$(UI_FILES_TO_BE_JARED) \
-	img/ptIIplanet.gif
+
 	#doc/design/usingVergil/index.htm 
 
 
