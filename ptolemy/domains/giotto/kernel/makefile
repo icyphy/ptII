@@ -50,8 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	GiottoDirector.java \
 	GiottoReceiver.java \
-	GiottoScheduler.java \
-	GiottoActorComparator.java
+	GiottoScheduler.java
 
 EXTRA_SRCS =	$(JSRCS)
 
