@@ -119,10 +119,16 @@ public class $task implements TaskInterface, Serializable {
 EOF1
 done
 
+set -x
 # Create the driver
 drivers1=`egrep "^driver" $giottoFile | awk '{print substr($2, 1, length($2) - length("driver"))"inputdriver"}'`
 drivers2=`egrep ":=" $giottoFile | awk '{print substr($4, 1, length($4)-1)}'`
-drivers="$drivers1 $drivers2"
+
+# Handle sensors like "    real_port  positionX   uses GetPosX;"
+drivers3=`egrep "uses" $giottoFile | awk '{print substr($4, 1, length($4)-1)}'`
+
+# Get one filename per line
+drivers="`echo $drivers1 $drivers2 $drivers3 | awk '{for(i=1;i<=NF;i++) {print $i}}'`"
 for driver in $drivers
 do
   driverFileName=$basename/$driver.java
@@ -160,3 +166,4 @@ public class $driver implements DriverInterface, Serializable {
 }
 EOF2
 done
+
