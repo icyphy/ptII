@@ -201,7 +201,6 @@ public class RecordUpdater extends TypedAtomicActor {
      *  @return a list of Inequality.
      */
     public List typeConstraintList() {
-        Object[] portArray = outputPortList().toArray();
         String[] labels = new String[0];
         Type[] types = new Type[0];
 
