@@ -63,7 +63,9 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	design.pdf \
+	design1PDFPlaceHolder.pdf \
+	design2PDFPlaceHolder.pdf \
+	design3PDFPlaceHolder.pdf \
 	html \
 	src \
 	usingVergil \
