@@ -23,159 +23,342 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (yourname@eecs.berkeley.edu)
+@ProposedRating Red (janneck@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ddf.kernel;
 
+
+import ptolemy.actor.AbstractReceiver;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.NoRoomException;
+import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.kernel.SDFReceiver;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
-//// DDFDirector
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
+
 /**
-Director for dynamic dataflow.
-<p>
-The SDF director has a single parameter, "iterations", corresponding to a
-limit on the number of times the director will fire its hierarchy
-before it returns false in postfire.  FIXME: Explain what an iteration
-is, and elaborate, as in the DDF chapter from Ptolemy Classic.
-The default value of the iterations parameter is an IntToken with value zero,
-which indicates that the run should proceed indefinitely.
-<p>
-This director is based on the design in Ptolemy Classic by Soonhoi Ha,
-Edward A. Lee, and Thomas M. Parks.
+ * This director implements a variant of dynamic dataflow (DDF). Actors are fired in an unspecified order. In one
+ * iteration of the model, each actor is fired at most once. The iteration ends when all remaining actors (i.e.
+ * those that did not fire during the current iteration) cannot fire (i.e. they return false on prefire()).
+ * <p>
+ * This DDF implementation allows proper rollback, i.e. it may be repeatedly fired without intervening postfire()
+ * and it restores the queues to their original state.
+ *
+ * @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+ */
 
-@author Gilles Guerassimoff
-@version $Id$
-*/
 public class DDFDirector extends Director {
 
-    // NOTE: This class shares some code with SDFDirector.
-    // Should SDFDirector be a base class?
+    ///////////////////////////////////////////////////////////////////
+    //// override:  Director                                       ////
+    ///////////////////////////////////////////////////////////////////
 
-    /** Construct a director in the default workspace with an empty string
-     *  as its name. The director is added to the list of objects in
-     *  the workspace. Increment the version number of the workspace.
-     */
-    public DDFDirector() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+
+        // get my contained actors
+        CompositeActor container = (CompositeActor)this.getContainer();
+        List entities = container.entityList();
+        actors = new ArrayList();
+        for (Iterator i = entities.iterator(); i.hasNext(); ) {
+            Object e = i.next();
+            if (e instanceof Actor) {
+                actors.add(e);
+            }
+        }
+        iterationCount = 0;
+    }
+
+    public boolean prefire() throws IllegalActionException {
+        reFire = false;
+        return super.prefire();
+    }
+
+    public void fire() throws IllegalActionException {
+        if (reFire) {
+            rollbackReceivers();
+        }
+        reFire = true;
+
+        List unfiredActors = new ArrayList(actors);
+        firedActors = new HashSet();
+        boolean hasFired = true;
+        while (hasFired) {
+            hasFired = false;
+            for (ListIterator i = unfiredActors.listIterator(); i.hasNext(); ) {
+                Actor a = (Actor)i.next();
+                if (a.prefire()) {
+                    a.fire();
+                    i.remove();
+                    firedActors.add(a);
+                    hasFired = true;
+                }
+            }
+        }
+    }
+
+    public boolean postfire() throws IllegalActionException {
+        commitReceivers();
+        for (Iterator i = firedActors.iterator(); i.hasNext(); ) {
+            Actor a = (Actor)i.next();
+            a.postfire();
+        }
+
+        iterationCount += 1;
+        int iterationLimit = ((IntToken)(iterations.getToken())).intValue();
+        if (iterationLimit > 0 && iterationCount >= iterationLimit) {
+            iterationCount = 0;
+            return false;
+        }
+
+        return super.postfire();
+    }
+
+    public Receiver newReceiver() {
+        return new DDFReceiver();
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         DDFDirector                       ////
+    ///////////////////////////////////////////////////////////////////
+
+    public DDFDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
-        _init();
+        init();
     }
 
-    /** Construct a director in the given workspace with an empty name.
-     *  The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace for this object.
-     */
-    public DDFDirector(Workspace workspace) {
+    public DDFDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        _init();
+        init();
     }
 
-    /** Construct a director in the given container with the given name.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
-     *
-     *  @param container Container of the director.
-     *  @param name Name of this director.
-     *  @exception IllegalActionException If the director is not compatible
-     *   with the specified container.
-     *  @exception NameDuplicationException If the name collides with an
-     *   attribute in the container.
-     */
     public DDFDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _init();
+        init();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                 ////
+
+    /**
+     * Inform the director that the specified receiver has changed its state
+     * (i.e. that a token has been added to or removed from it).
+     *
+     * @param r The receiver.
+     */
+
+    private void notifyReceiverChange(DDFReceiver r) {
+        modifiedReceivers.add(r);
+    }
+
+    /**
+     * Undo all changes made to all receivers since the last time they
+     * were committed.
+     */
+
+    private void rollbackReceivers() {
+        for (Iterator i = modifiedReceivers.iterator(); i.hasNext(); ) {
+            DDFReceiver r = (DDFReceiver)i.next();
+            r.rollback();
+        }
+        modifiedReceivers.clear();
+    }
+
+    /**
+     * Commit the changes made to all receivers instantiated by this director.
+     */
+
+    private void commitReceivers() {
+        for (Iterator i = modifiedReceivers.iterator(); i.hasNext(); ) {
+            DDFReceiver r = (DDFReceiver)i.next();
+            r.commit();
+        }
+        modifiedReceivers.clear();
+    }
+
+    private void init() throws IllegalActionException, NameDuplicationException {
+        iterations = new Parameter(this, "iterations", new IntToken(0));
+        iterations.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
+
     /** A Parameter representing the number of times that postfire may be
      *  called before it returns false.  If the value is less than or
      *  equal to zero, then the execution will never return false in postfire,
      *  and thus the execution can continue forever.
+     * <p>
      *  The default value is an IntToken with the value zero.
      */
+
     public Parameter iterations;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         private fields                    ////
 
-    /** Execute one iteration of the graph.
-     *
-     *  @exception IllegalActionException If this director does
-     *   not have a container.
-     */
-    public void fire() throws IllegalActionException {
-        // FIXME: Implement a reasonable algorithm.
-        super.fire();
-    }
 
-    /** Return a new receiver consistent with the DDF domain.
-     *  @return A new SDFReceiver.
-     */
-    public Receiver newReceiver() {
-        return new SDFReceiver();
-    }
+    private Set modifiedReceivers = new HashSet();
+    private List actors = null;
 
-    /** Preinitialize the actors associated with this director and
-     *  initialize the number of iterations to zero.  The order in which
-     *  the actors are preinitialized is arbitrary.
-     *  @exception IllegalActionException If the preinitialize() method of
-     *  one of the associated actors throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        _iteration = 0;
-    }
-
-    /** Return false if the system has finished executing by
-     *  reaching the iteration limit. Increment the number of iterations.
-     *  @return True if the Director wants to be fired again in the
-     *   future.
-     *  @exception IllegalActionException Not thrown in this class.
-     */
-    public boolean postfire() throws IllegalActionException {
-        int numiterations = ((IntToken) (iterations.getToken())).intValue();
-        _iteration++;
-        if((numiterations > 0) && (_iteration >= numiterations)) {
-            _iteration = 0;
-            return false;
-        }
-        return true;
-    }
+    private Collection firedActors = null;
+    private boolean    reFire = false;
+    private int iterationCount;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         nested & inner classes            ////
 
-    /** Initialize the object.
+
+
+    /**
+     * This receiver implements a queue that realizes a commit/rollback protocol. It notifies the
+     * enclosing director if it changes its state. The director can commit the state or roll it
+     * back to the last state that has been committed.
      */
-    private void _init() {
-        try {
-            iterations = new Parameter(this,"iterations",new IntToken(0));
-        } catch (Exception e) {
-            throw new InternalErrorException(
-                    "Cannot create default iterations parameter:\n" +
-                    e.getMessage());
+    class DDFReceiver extends AbstractReceiver {
+
+        ///////////////////////////////////////////////////////////////////
+        //// implement: AbstractReceiver                               ////
+        ///////////////////////////////////////////////////////////////////
+
+        public Token get() throws NoTokenException {
+            if (next >= queue.size())
+                throw new NoTokenException("Attempt to read from an empty queue.");
+
+            Token v = (Token)queue.get(next++);
+            notifyReceiverChange(this);
+            return v;
         }
+
+        public boolean hasRoom() {
+            return true;
+        }
+
+        public boolean hasRoom(int i) {
+            return true;
+        }
+
+        public boolean hasToken() {
+            return next < queue.size();
+        }
+
+        public boolean hasToken(int i) {
+            return (next + i - 1) < queue.size();
+        }
+
+        public void put(Token token) throws NoRoomException {
+            queue.add(token);
+            added += 1;
+            notifyReceiverChange(this);
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        //// DDFReceiver                                               ////
+        ///////////////////////////////////////////////////////////////////
+
+        DDFReceiver() {
+            super();
+        }
+
+        DDFReceiver(IOPort container) throws IllegalActionException {
+            super(container);
+        }
+
+        void  rollback() {
+            for (int i = 0; i < added; i++)
+                queue.remove(queue.size() - 1);
+            next = 0;
+            added = 0;
+        }
+
+        void  commit() {
+            for (int i = 0; i < next; i++)
+                queue.remove(0);
+            next = 0;
+            added = 0;
+        }
+
+        private List queue = new ArrayList();
+        private int  next = 0;
+        private int  added = 0;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    /**
+     * This is a simplified version of the DDF receiver, which does not support rollback,
+     * and which is more efficient as a result. Because it does not need access to the
+     * director that instantiated it, it can be <tt>static</tt>.
+     * <p>
+     * Perhaps we should let the user choose whether rollback is needed?
+     */
 
-    private int _iteration = 0;
+    static class SimpleDDFReceiver extends AbstractReceiver {
+
+        ///////////////////////////////////////////////////////////////////
+        //// implement: AbstractReceiver                               ////
+        ///////////////////////////////////////////////////////////////////
+
+        public Token get() throws NoTokenException {
+            Token v = (Token)queue.get(0);
+            queue.remove(0);
+            return v;
+        }
+
+        public boolean hasRoom() {
+            return true;
+        }
+
+        public boolean hasRoom(int i) {
+            return true;
+        }
+
+        public boolean hasToken() {
+            return 1 <= queue.size();
+        }
+
+        public boolean hasToken(int i) {
+            return i <= queue.size();
+        }
+
+        public void put(Token token) throws NoRoomException {
+            queue.add(token);
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        //// SimpleDDFReceiver                                         ////
+        ///////////////////////////////////////////////////////////////////
+
+        SimpleDDFReceiver() {
+            super();
+        }
+
+        SimpleDDFReceiver(IOPort container) throws IllegalActionException {
+            super(container);
+        }
+
+        private List queue = new ArrayList();
+    }
 }
