@@ -1,6 +1,6 @@
 package ptolemy.lang;
 
-class MutableBoolean {
+public class MutableBoolean {
 
   public MutableBoolean() {
     this(Boolean.FALSE);

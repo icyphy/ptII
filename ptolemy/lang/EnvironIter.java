@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-class EnvironIter implements Iterator {
+public class EnvironIter implements Iterator {
 
   // no elements
   public EnvironIter() {

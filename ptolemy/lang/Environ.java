@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Iterator;
 
-class Environ {
+public class Environ {
 
   public Environ() {
     this(null, new LinkedList());

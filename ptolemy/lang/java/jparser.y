@@ -339,7 +339,7 @@ TypeImportOnDemandStatement :
 /* $5 $6 at end */
 ClassDeclaration :
 	  ClassModifiersOpt CLASS SimpleName SuperOpt InterfacesOpt ClassBody
-		{ $$ = new ClassDeclNode($1, (TreeNode) $3, (TreeNode) $4, (LinkedList) $5,
+		{ $$ = new ClassDeclNode($1, (NameNode) $3, (TreeNode) $4, (LinkedList) $5,
          (LinkedList) $6); }
 	;
 
@@ -450,7 +450,7 @@ FieldVariableDeclaration :
 		     DeclaratorNode decl = (DeclaratorNode) itr.next();
 		     result = cons(new FieldDeclNode($1,
 						            makeArrayType((TypeNode) $2, decl.getDims()),
-						            decl.getSimpName(), decl.getInitExpr()),
+						            decl.getName(), decl.getInitExpr()),
 				               result);
 		   }
 
@@ -735,7 +735,7 @@ ConstantFieldDeclaration :
 	    while (itr.hasNext()) {
 		    DeclaratorNode decl = (DeclaratorNode) itr.next();
 		    result = cons(new FieldDeclNode($1, makeArrayType((TypeNode) $2, decl.getDims()),
-						           decl.getSimpName(), decl.getInitExpr()),
+						           decl.getName(), decl.getInitExpr()),
 				              result);
 		  }
 
@@ -830,7 +830,7 @@ LocalVariableDeclarationStatement :
 		      DeclaratorNode decl = (DeclaratorNode) itr.next();
 		      result = cons(new VarDeclNode(
                         makeArrayType((TypeNode) $1, decl.getDims()),
-                        decl.getSimpName(), decl.getInitExpr()), result);
+                        decl.getName(), decl.getInitExpr()), result);
 		  }
      $$ = result;
    }

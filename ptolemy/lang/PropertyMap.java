@@ -3,7 +3,7 @@ package ptolemy.lang;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-class PropertyMap extends HashMap {
+public class PropertyMap extends HashMap {
 
   public PropertyMap() {
   }

@@ -8,27 +8,33 @@ import java.util.StringTokenizer;
 class GenerateVisitor {
 
   public static void main(String[] args) throws IOException {
-    if (args.length < 2) {
-       System.out.println("Usage : GenerateVisitor pkgName typeNameListFile [visitor class name] [base node name]");
+    if (args.length < 1) {
+       System.out.println("Usage : GenerateVisitor TypeNameListFile [VisitorClassName] [BaseNodeName]");
+       return;
     }
 
-    File fsrc  = new File(args[1]);
+    GenerateVisitor genVisitor = new GenerateVisitor(args);
 
-    String visitorClassName;
+    genVisitor.generate();
+  }
+
+  public GenerateVisitor(String[] args) throws IOException {
+
+    File fsrc  = new File(args[0]);
+
     String visitorOutFile;
-    if (args.length < 3) {
-       visitorClassName = "Visitor";
+    if (args.length < 2) {
+       _visitorClassName = "Visitor";
        visitorOutFile = "Visitor.java";
     } else {
-       visitorClassName = args[2];
-       visitorOutFile = visitorClassName + ".java";
+       _visitorClassName = args[1];
+       visitorOutFile = _visitorClassName + ".java";
     }
 
-    String baseNodeName;
-    if (args.length < 4) {
-       baseNodeName = "TreeNode";
+    if (args.length < 3) {
+       _baseNodeName = "TreeNode";
     } else {
-       baseNodeName = args[3];
+       _baseNodeName = args[2];
     }
 
     File fdest = new File(visitorOutFile);
@@ -39,227 +45,137 @@ class GenerateVisitor {
        fdest.createNewFile();
     }
 
-    FileWriter ofs;
-    LineNumberReader ifs;
-
     try {
-      ofs = new FileWriter(fdest);
+      _ofs = new FileWriter(fdest);
     } catch (FileNotFoundException e) {
       System.out.println("Couldn't open destination file.");
       return;
     }
 
     try {
-      ifs = new LineNumberReader(new FileReader(fsrc));
+      _ifs = new LineNumberReader(new FileReader(fsrc));
     } catch (FileNotFoundException e) {
       System.out.println("Couldn't open input file.");
       return;
     }
 
-    pkgName = args[0];
+    // initialize _lastLine
+    _lastLine = _ifs.readLine();
 
-    ofs.write(copyrightStr);
-    String s = "package " + pkgName + ";\n\n" +
-               "import java.util.LinkedList;\n" +
-               "import ptolemy.lang.TreeNode;\n" + // hack!!!
-               "import ptolemy.lang.IVisitor;\n\n" +
-               "class "+ visitorClassName + " implements IVisitor {\n" +
-               "    public " + visitorClassName + "() {\n" +
+    // get common header for nodes and visitor
+    String commonHeader = _readBlock("cheader");
+
+    // get header for visitor
+    _visitorHeader = commonHeader + _readBlock("vheader");
+
+    // get header for nodes
+    _nodeHeader = commonHeader + _readBlock("nheader");
+  }
+
+  /** Generate the visitor class and the node class files */
+  public void generate() throws IOException {
+
+    _ofs.write(_visitorHeader);
+    _ofs.write("public class "+ _visitorClassName + " implements IVisitor {\n" +
+               "    public " + _visitorClassName + "() {\n" +
                "        this(TM_CHILDREN_FIRST);\n" +
                "    }\n\n" +
-               "    public " + visitorClassName + "(int traversalMethod) {\n" +
+               "    public " + _visitorClassName + "(int traversalMethod) {\n" +
                "        if (traversalMethod > TM_CUSTOM) {\n" +
                "           throw new RuntimeException(\"Illegal traversal method\");\n" +
                "        }\n" +
                "        _traversalMethod = traversalMethod;\n" +
-               "    }\n\n";
-    ofs.write(s);
+               "    }\n\n");
 
-    LinkedList typeList = new LinkedList();
-    LinkedList parentTypeList = new LinkedList();
-    LinkedList concreteList = new LinkedList();
-    LinkedList singletonList = new LinkedList();
+    _readPlacement();
 
-    LinkedList methodListList = new LinkedList();
+    _readClassInfo();
 
-    StringTokenizer strTokenizer;
-    String className;
-    String marker;
+    _ifs.close();
 
-    // get common header
-    s = ifs.readLine();
-
-    String header = "";
-
-    if (s.equals("header")) {
-       boolean endHeader = false;
-       StringBuffer headerBuf = new StringBuffer();
-       do {
-         s = ifs.readLine();
-         endHeader = s.equals("header");
-
-         if (!endHeader) {
-            headerBuf.append(s);
-            headerBuf.append('\n');
-         }
-       } while (!endHeader);
-
-       headerBuf.append('\n');
-       header = headerBuf.toString();
-       s = ifs.readLine();
-    }
-
-    if (s.startsWith("mplace")) {
-       defaultPlacement = s.charAt(7);
-       s = ifs.readLine();
-    }
-
-    // get class info
-    do {
-      if ((s != null) && (s.length() > 4) &&
-          !(s.startsWith("//"))) {
-
-         strTokenizer = new StringTokenizer(s);
-
-         className = strTokenizer.nextToken();
-
-         try {
-            typeList.addLast(className);
-         } catch (NullPointerException e) {
-            System.err.println("Not enough parameters in line : " + s);
-            return;
-         }
-
-         String nextToken = strTokenizer.nextToken();
-
-         try {
-            parentTypeList.addLast(nextToken);
-         } catch (NullPointerException e) {
-            System.err.println("Not enough parameters in line : " + s);
-            return;
-         }
-
-         nextToken = strTokenizer.nextToken();
-
-         boolean single;
-         try {
-            single = nextToken.equals("S");
-            concreteList.addLast(new Boolean(single || nextToken.equals("C")));
-            singletonList.addLast(new Boolean(single));
-         } catch (NullPointerException e) {
-            System.err.println("Not enough parameters in line : " + s);
-            return;
-         }
-
-         LinkedList methodList = new LinkedList();
-
-         if (single) {
-            ClassField cf  = new ClassField(className, "instance",
-             "public static final", "new " + className + "()");
-
-            methodList.addLast(cf);
-
-            MethodSignature ms = new MethodSignature(className);
-
-            methodList.addLast(ms);
-         }
-
-         while (strTokenizer.hasMoreTokens()) {
-           marker = strTokenizer.nextToken();
-           char markChar = marker.charAt(0);
-           switch (markChar) {
-
-           case 'c':
-           case 'm':
-           {
-             MethodSignature ms =
-               new MethodSignature(markChar, strTokenizer, className);
-             methodList.addLast(ms);
-           }
-           break;
-
-           case 'k':
-           {
-             MethodSignature ms =
-               new MethodSignature(markChar, strTokenizer, className);
-
-             methodList.addLast(ms);
-
-             LinkedList accessorMethodList = ms.accessors();
-
-             methodList.addAll(accessorMethodList);
-           }
-           break;
-
-           default:
-           throw new RuntimeException("Unrecognized marker : " + marker);
-           }
-         }
-
-         methodListList.addLast(methodList);
-      }
-      s = ifs.readLine();
-    } while (s != null);
-
-    ifs.close();
-
-    ListIterator itr = typeList.listIterator();
-    ListIterator parItr = parentTypeList.listIterator();
-    ListIterator concreteItr = concreteList.listIterator();
-    ListIterator singletonItr = singletonList.listIterator();
-    ListIterator methodListItr = methodListList.listIterator();
+    ListIterator itr = _typeList.listIterator();
+    ListIterator parItr = _parentTypeList.listIterator();
+    ListIterator concreteItr = _isConcreteList.listIterator();
+    ListIterator singletonItr = _isSingletonList.listIterator();
+    ListIterator interfaceItr = _isInterfaceList.listIterator();
+    ListIterator methodListItr = _methodListList.listIterator();
+    ListIterator implListItr = _implListList.listIterator();
 
     while (itr.hasNext()) {
       String typeName = (String) itr.next();
       String parentTypeName = (String) parItr.next();
-      boolean concrete = ((Boolean) concreteItr.next()).booleanValue();
-      boolean singleton = ((Boolean) singletonItr.next()).booleanValue();
+      boolean isConcrete = ((Boolean) concreteItr.next()).booleanValue();
+      boolean isSingleton = ((Boolean) singletonItr.next()).booleanValue();
+      boolean isInterface = ((Boolean) interfaceItr.next()).booleanValue();
       LinkedList methodList = (LinkedList) methodListItr.next();
+      LinkedList implList = (LinkedList) implListItr.next();
 
-      if (concrete) {
-         s = "\n" +
-             "    public Object visit" + typeName + "(" + typeName +
-             " node, LinkedList args) {\n" +
-             "        return _defaultVisit(node, args);\n" +
-             "    }\n";
-         ofs.write(s);
+      if (isConcrete) {
+         _ofs.write(
+          "\n" +
+          "    public Object visit" + typeName + "(" + typeName +
+          " node, LinkedList args) {\n" +
+          "        return _defaultVisit(node, args);\n" +
+          "    }\n");
       }
 
-      generateNodeFile(typeName, parentTypeName, concrete, singleton, methodList, header);
+      _generateNodeFile(typeName, parentTypeName, isConcrete, isSingleton,
+       isInterface, methodList, implList);
     }
 
-    s = "\n" +
-        "    /** Specify the order in visiting the nodes. */\n" +
-        "    public final int traversalMethod() { return _traversalMethod; }\n";
+    _ofs.write(
+     "\n" +
+     "    /** Specify the order in visiting the nodes. */\n" +
+     "    public final int traversalMethod() { return _traversalMethod; }\n" +
+     "\n" +
+     "    /** The default visit method. */\n" +
+     "    protected Object _defaultVisit(" + _baseNodeName + " node, LinkedList args) {\n" +
+     "        return null;\n" +
+     "    }\n" +
+     "\n" +
+     "    protected final int _traversalMethod;\n" +
+     "}\n");
 
-    s = s +
-        "\n" +
-        "    /** The default visit method. */\n" +
-        "    protected Object _defaultVisit(" + baseNodeName + " node, LinkedList args) {\n" +
-        "        return null;\n" +
-        "    }\n";
-
-    /*
-    String pfsi = "    public static final int ";
-    s = s +
-        "\n" +
-        pfsi + "TM_CHILDREN_FIRST = 0;\n" +
-        pfsi + "TM_SELF_FIRST = 1;\n" +
-        pfsi + "TM_CUSTOM = 2;\n";
-    */
-
-    s = s +
-        "\n" +
-        "    protected final int _traversalMethod;\n" +
-        "}\n";
-
-    ofs.write(s);
-    ofs.close();
+    _ofs.close();
   }
 
-  public static void generateNodeFile(String typeName, String parentTypeName,
-   boolean concrete, boolean singleton, LinkedList methodList, String header)
-   throws IOException {
+  protected String _readBlock(String marker) throws IOException {
+    while ((_lastLine != null) && _lastLine.equals("")) {
+      _lastLine = _ifs.readLine();
+    }
+
+    String beginTag = "<" + marker + ">";
+    String endTag   = "</" + marker + ">";
+
+    if ((_lastLine == null) || !_lastLine.equals(beginTag)) {
+       return "";
+    }
+
+    StringBuffer sb = new StringBuffer();
+
+    boolean endHeader = false;
+    do {
+       _lastLine = _ifs.readLine();
+
+       endHeader = ((_lastLine == null) || _lastLine.equals(endTag));
+
+       if (!endHeader) {
+          sb.append(_lastLine);
+          sb.append('\n');
+       }
+    } while (!endHeader);
+
+    _lastLine = _ifs.readLine();
+
+    sb.append('\n');
+
+    return sb.toString();
+  }
+
+
+  protected void _generateNodeFile(String typeName, String parentTypeName,
+   boolean isConcrete, boolean isSingleton, boolean isInterface,
+   LinkedList methodList, LinkedList implList) throws IOException {
     File fdest = new File(typeName + ".java");
 
     if (!fdest.createNewFile()) {
@@ -272,20 +188,45 @@ class GenerateVisitor {
 
     StringBuffer sb = new StringBuffer();
 
-    sb.append(header);
+    sb.append(_nodeHeader);
 
-    if (!concrete) {
+    sb.append("public ");
+
+    if (!isConcrete && !isInterface) {
        sb.append("abstract ");
-    }
-
-    if (singleton) {
+    } else if (isSingleton) {
        sb.append("final ");
     }
 
-    sb.append("class ");
+    if (isInterface) {
+       sb.append("interface ");
+    } else {
+       sb.append("class ");
+    }
+
     sb.append(typeName);
-    sb.append(" extends ");
-    sb.append(parentTypeName);
+
+    if (!parentTypeName.equals("<none>")) {
+       sb.append(" extends ");
+       sb.append(parentTypeName);
+    }
+
+    ListIterator implItr = implList.listIterator();
+
+    if (implItr.hasNext()) {
+       sb.append(" implements ");
+
+       do {
+         String interfaceName = (String) implItr.next();
+
+         sb.append(interfaceName);
+
+         if (implItr.hasNext()) {
+            sb.append(", ");
+         }
+       } while (implItr.hasNext());
+    }
+
     sb.append(" {\n");
 
     // do methods first
@@ -318,33 +259,132 @@ class GenerateVisitor {
     fw.close();
   }
 
+  protected void _readPlacement() throws IOException {
+    _lastLine = _ifs.readLine();
 
-  private static String pkgName;
+    if (_lastLine.startsWith("mplace")) {
+       _defaultPlacement = _lastLine.charAt(7);
+       _lastLine = _ifs.readLine();
+    }
+  }
 
-  private static final String copyrightStr =
-"/* Copyright (c) 1998-1999 The Regents of the University of California.\n" +
-"All rights reserved.\n\n" +
-"Permission is hereby granted, without written agreement and without\n" +
-"license or royalty fees, to use, copy, modify, and distribute this\n" +
-"software and its documentation for any purpose, provided that the above\n" +
-"copyright notice and the following two paragraphs appear in all copies\n" +
-"of this software.\n\n" +
-"IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY\n" +
-"FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES\n" +
-"ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF\n" +
-"THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF\n" +
-"SUCH DAMAGE.\n\n" +
-"THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,\n" +
-"INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF\n" +
-"MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE\n" +
-"PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF\n" +
-"CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,\n" +
-"ENHANCEMENTS, OR MODIFICATIONS.\n\n" +
-"                                        PT_COPYRIGHT_VERSION_2\n" +
-"                                        COPYRIGHTENDKEY\n\n" +
-"@ProposedRating Red (ctsay@eecs.berkeley.edu)\n" +
-"@AcceptedRating Red (ctsay@eecs.berkeley.edu)\n\n" +
-"*/\n\n";
+  protected void _readClassInfo() throws IOException {
+    StringTokenizer strTokenizer;
+    String className;
+    String marker;
+
+    do {
+      if ((_lastLine != null) && (_lastLine.length() > 4) &&
+          !(_lastLine.startsWith("//"))) {
+
+         strTokenizer = new StringTokenizer(_lastLine);
+
+         className = strTokenizer.nextToken();
+
+         System.out.println("Reading class info for : " + className);
+
+         try {
+            _typeList.addLast(className);
+         } catch (NullPointerException e) {
+            System.err.println("Not enough parameters in line : " + _lastLine);
+            return;
+         }
+
+         String nextToken = strTokenizer.nextToken();
+
+         boolean isSingleton;
+         boolean isInterface;
+         try {
+            isSingleton = nextToken.equals("S");
+            _isSingletonList.addLast(new Boolean(isSingleton));
+
+            _isConcreteList.addLast(new Boolean(
+             isSingleton || nextToken.equals("C")));
+
+            isInterface = nextToken.equals("I");
+            _isInterfaceList.addLast(new Boolean(isInterface));
+
+         } catch (NullPointerException e) {
+            System.err.println("Not enough parameters in line : " + _lastLine);
+            return;
+         }
+
+         try {
+            nextToken = strTokenizer.nextToken();
+            _parentTypeList.addLast(nextToken);
+         } catch (NullPointerException e) {
+            System.err.println("Not enough parameters in line : " + _lastLine);
+           return;
+         }
+
+         LinkedList methodList = new LinkedList();
+         LinkedList implList   = new LinkedList();
+
+         if (isSingleton) {
+            ClassField cf  = new ClassField(className, "instance",
+             "public static final", "new " + className + "()");
+
+            methodList.addLast(cf);
+
+            MethodSignature ms = new MethodSignature(className);
+
+            methodList.addLast(ms);
+         }
+
+         while (strTokenizer.hasMoreTokens()) {
+           marker = strTokenizer.nextToken();
+           char markChar = marker.charAt(0);
+           switch (markChar) {
+
+           case 'c':
+           case 'm':
+           {
+             MethodSignature ms =
+               new MethodSignature(markChar, strTokenizer, className,
+                _defaultPlacement, isInterface);
+             methodList.addLast(ms);
+           }
+           break;
+
+           case 'k':
+           {
+             MethodSignature ms =
+               new MethodSignature(markChar, strTokenizer, className,
+                _defaultPlacement, isInterface);
+
+             methodList.addLast(ms);
+
+             LinkedList accessorMethodList = ms.accessors();
+
+             methodList.addAll(accessorMethodList);
+           }
+           break;
+
+           case 'i':
+           {
+             boolean isName;
+             do {
+                nextToken = strTokenizer.nextToken();
+
+                isName = ((nextToken != null) && !nextToken.equals("i"));
+                if (isName) {
+                  implList.addLast(nextToken);
+                }
+             } while (isName);
+           }
+           break;
+
+           default:
+           throw new RuntimeException("Unrecognized marker : " + marker);
+           }
+         }
+
+         _methodListList.addLast(methodList);
+         _implListList.addLast(implList);
+      }
+      _lastLine = _ifs.readLine();
+    } while (_lastLine != null);
+  }
 
   private static final String ident = "    ";
 
@@ -355,14 +395,18 @@ class GenerateVisitor {
     public MethodSignature(String className) {
       _defConstruct = false;
       _construct = true;
-      _singleton = true;
+      _isSingleton = true;
+      _isInterface = false;
       _name = className;
       _returnType = "";
     }
 
     // a constructor or method
-    public MethodSignature(char sigType, StringTokenizer strToken, String className)
+    public MethodSignature(char sigType, StringTokenizer strToken,
+     String className, char defaultPlacement, boolean isInterface)
      throws IOException {
+
+      _isInterface = isInterface;
 
       System.out.println("method sig constructor begin");
 
@@ -405,11 +449,36 @@ class GenerateVisitor {
             }
          }
 
-         _paramTypes.addLast(s);
+         if (s.equals("[")) { // super constructor argument
+            StringBuffer sb = new StringBuffer();
+            boolean isInit;
 
-         String paramName = strToken.nextToken();
+            s = strToken.nextToken();
 
-         _paramNames.addLast(paramName);
+            sb.append(s);
+
+            do {
+               s = strToken.nextToken();
+
+               isInit = !s.equals("]");
+
+               if (isInit) {
+                  sb.append(' ');
+                  sb.append(s);
+               }
+            } while (isInit);
+
+            _superArgs.addLast(sb.toString());
+
+         } else {
+
+            _paramTypes.addLast(s);
+
+            String paramName = strToken.nextToken();
+
+            _paramNames.addLast(paramName);
+            _superArgs.addLast(paramName);
+         }
 
          s = strToken.nextToken();
 
@@ -427,14 +496,14 @@ class GenerateVisitor {
 
         if (_superParams > 0) {
 
-           ListIterator nameItr = _paramNames.listIterator();
+           ListIterator argsItr = _superArgs.listIterator();
 
            sb.append(ident);
            sb.append(ident);
            sb.append("super(");
 
            for (int i = 0; i < _superParams; i++) {
-               sb.append((String) nameItr.next());
+               sb.append((String) argsItr.next());
 
                if (i < (_superParams - 1)) {
                   sb.append(", ");
@@ -482,7 +551,7 @@ class GenerateVisitor {
                  sb.append("setProperty(\"");
                  sb.append(nameStr);
                  sb.append("\", ");
-                 sb.append(nameStr);
+                 sb.append(_wrapPrimitive(typeStr, nameStr));
                  sb.append(");");
                  break;
 
@@ -544,12 +613,13 @@ class GenerateVisitor {
     public String toString() {
       StringBuffer sb = new StringBuffer(ident);
 
-
-      sb.append(_singleton ? "private " : "public ");
-
+      sb.append(_isSingleton ? "private " : "public ");
 
       if (!_construct) { // if !constructor
-         sb.append("final ");
+
+         if (!_isInterface) {
+            sb.append("final ");
+         }
          sb.append(_returnType);
          sb.append(" ");
       }
@@ -570,13 +640,17 @@ class GenerateVisitor {
         }
       }
 
-      sb.append(") {\n");
+      sb.append(')');
 
-      sb.append(methodBody());
-      sb.append('\n');
-
-      sb.append(ident);
-      sb.append("}\n");
+      if (_isInterface) {
+         sb.append(";");
+      } else {
+         sb.append(" {\n");
+         sb.append(methodBody());
+         sb.append('\n');
+         sb.append(ident);
+         sb.append("}\n");
+      }
 
       return sb.toString();
     }
@@ -676,8 +750,8 @@ class GenerateVisitor {
            // do nothing
            break;
 
-           case 'p':
-           // do nothing
+           case 'p': // property
+           // do nothing : data is accessed through PropertyMap methods
            break;
 
            default:
@@ -691,11 +765,35 @@ class GenerateVisitor {
         }
 
         varCount++;
-
-
       }
 
       return retval;
+    }
+
+    protected String _wrapPrimitive(String typeStr, String nameStr) {
+      String wrapper = null;
+
+      if (typeStr.startsWith("int")) {
+         wrapper = "Integer";
+      } else if (typeStr.startsWith("char")) {
+         wrapper = "Character";
+      } else if (typeStr.startsWith("long")) {
+         wrapper = "Long";
+      } else if (typeStr.startsWith("byte")) {
+         wrapper = "Byte";
+      } else if (typeStr.startsWith("float")) {
+         wrapper = "Float";
+      } else if (typeStr.startsWith("double")) {
+         wrapper = "Double";
+      } else if (typeStr.startsWith("boolean")) {
+         wrapper = "Boolean";
+      }
+
+      if (wrapper != null) {
+         return "new " + wrapper + "(" + nameStr + ")";
+      } else {
+         return nameStr;
+      }
     }
 
     protected String _returnType;
@@ -704,13 +802,15 @@ class GenerateVisitor {
     protected LinkedList _paramTypes = new LinkedList();
     protected LinkedList _paramNames = new LinkedList();
     protected LinkedList _varPlacements = new LinkedList();
+    protected LinkedList _superArgs = new LinkedList();
 
     protected int _superParams = 0;
 
     protected String _methodBody = null;
 
-    protected boolean _singleton = false;
+    protected boolean _isSingleton = false;
     protected boolean _construct = false;
+    protected boolean _isInterface = false;
     protected boolean _defConstruct = false;
   }
 
@@ -766,7 +866,23 @@ class GenerateVisitor {
     return (isPrimitiveType(s) || s.startsWith("String"));
   }
 
-  public static boolean flatMembers = false;
+  protected char _defaultPlacement = 'l';
 
-  public static char defaultPlacement = 'l';
+  protected FileWriter _ofs;
+  protected LineNumberReader _ifs;
+
+  protected LinkedList _typeList = new LinkedList();
+  protected LinkedList _parentTypeList = new LinkedList();
+  protected LinkedList _isConcreteList = new LinkedList();
+  protected LinkedList _isSingletonList = new LinkedList();
+  protected LinkedList _isInterfaceList = new LinkedList();
+  protected LinkedList _methodListList = new LinkedList();
+  protected LinkedList _implListList = new LinkedList();
+
+  protected String _visitorClassName;
+  protected String _baseNodeName;
+  protected String _nodeHeader;
+  protected String _visitorHeader;
+
+  protected String _lastLine;
 }

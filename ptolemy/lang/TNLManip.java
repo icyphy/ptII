@@ -3,7 +3,7 @@ package ptolemy.lang;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-class TNLManip {
+public class TNLManip {
 
     private TNLManip() {}
 
