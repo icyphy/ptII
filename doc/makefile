@@ -62,7 +62,7 @@ EXTRA_SRCS = \
 	kvm.htm \
 	main.htm \
 	mainheader.htm \
-	ptII0.4.release.htm \
+	ptII1.0.release.htm \
 	ptIIfaq.htm \
 	toc.css \
 	toc.htm \
