@@ -30,31 +30,23 @@ package pt.kernel;
 //////////////////////////////////////////////////////////////////////////
 //// NamedObj
 /** 
+NamedObj (named Object) is the baseclass for most of the common
+Ptolemy objects. 
 
-NamedObj (named object) is the baseclass for most of the common
-Ptolemy objects. */
-
-/* FIXME: In addition to a name, a NamedObj has a reference
-to a container object, which is always an Entity (derived from Node
-and then, in turn, from NamedObj). This reference can be null. 
-I dont think this is required */
-
-/** @author Richard Stevens
-<P>  Richard Stevens is an employee of the U.S. Government, whose
-  written work is not subject to copyright.  His contributions to 
-  this work fall within the scope of 17 U.S.C. A7 105. <P>
-
+@author Mudit Goel
 @version $Id$
-
 */
 
 public class NamedObj {
-    /** Construct an object with an empty string as its name. */	
+
+    /** Construct an object with an empty string as its name. 
+     */	
     public NamedObj() {
-        this("");
+        setName("");
     }
 
-    /** Construct an object with the given name. */	
+    /** Construct an object with the given name. 
+     */	
     public NamedObj(String name) {
 	setName(name);
     }
@@ -62,60 +54,25 @@ public class NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /* FIXME: Return the Entity object that contains this object.
-     *  Return null if this object has no container. */	
-//    NOTE: I dont think this is required any more  -Mudit Goel Oct 1/97
-//    public Entity getContainer() { return _container; } 
+    /** 
+     * @returns the name of the object. 
+     */	
+    public String getName() { 
+        return _name; 
+    }
 
-    /*  FIXME: Return the object's full name.
-     *  If the object has no container,
-     *  the full name is the object name preceded by a dot.
-     *
-     *  If the object has a container, 
-     *  the full name is the full name of the container
-     *  followed by a dot and the object name.
+    /** 
+     * @param name of the object.  
      */
-//   NOTE: I dont think that this is required -Mudit Goel Oct 1/97
-/*     public String getFullName() {
-        if(_container == null) { return "." + _name; }
-        else { return _container.getFullName() + "." + _name; }
-    }  */
-
-    /** Get the name of the object. */	
-    public String getName() { return _name; }
-
-    /*FIXME: Specify the Entity object that contains this object. */	
-//    NOTE: I dont think this is required -Mudit Goel Oct 1/97
-//    public void setContainer(Entity container) { _container = container; }
-
-   /* FIXME: IS name without a dot still required? -Mudit Goel Oct 97
-    *  Specify the name of the object. The name may not have an 
-    *  embedded dot. */
-    public void setName(String name) throws IllegalArgumentException {
-        if (name.indexOf('.') >= 0) { 
-	  throw new IllegalArgumentException
-	    ("NamedObj name (" + name + ") has illegal embedded dot (.)");
-	}
+    public void setName(String name) {
         _name = name;
     }
 
-    /* FIXME: Fullname still bothers. -Mudit Goel Oct 97
-     *  Return a description of the object.
-     *  The description is the full name followed by a colon
-     *  followed by the full class name.
-     */	
-/*    public String toString() {
-        return getFullName() + ": " + getClass().getName();
-    } */
 
-
-    /** Returns a reference to the existing paramList, or if the List does 
-     *  not exist, then it creates one and returns a reference to it.  */
-    /* Added by Mudit Goel Oct, 1997 */
-    /* FIXME: Currently it assumes that each NamedObj can have only one
-     * ParamList
+    /** 
+     * @returns a reference to the list of parameters.  
      */
-      public ParamList getParam(){
+    public ParamList getParam(){
       	  if( _paramList == null){
               _paramList = new ParamList();
           }
@@ -125,25 +82,6 @@ public class NamedObj {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
-
-    /** Create a unique name for an object added to a container object.
-     * Names are of the form "name#num" where "name" is the name of the
-     * container object and "num" is typically an enumeration of the order 
-     * in which the object in question was added to the container.
-     * FIXME: Does createNewName_ really work? And is it required??
-     * Added by John Davis on 6/17/97
-     * @param containerName The name of the container object.
-     * @param cntVariable The Enumeration of the added object's order 
-     * of inclusion.
-     * @return Return the new cntVariable.
-     */
-// IS it really required? -Mudit Goel Oct, 97
-/*    protected int _createNewName(String newName, int countVariable) {
-        countVariable++;
-        newName = newName + "#" + countVariable;
-        return countVariable;
-    }  */
-
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
@@ -156,5 +94,4 @@ public class NamedObj {
 
      private String _name;
      private ParamList _paramList = null;
-//   private Entity _container;
 }
