@@ -37,7 +37,7 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		util solver test demo doc
+DIRS = 		util solver test demo #doc
 
 CLASSPATH =	../../../..
 

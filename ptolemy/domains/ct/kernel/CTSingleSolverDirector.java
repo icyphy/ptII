@@ -167,7 +167,15 @@ public class CTSingleSolverDirector extends CTDirector {
                         // ask if this step is acceptable
                         if (!_isStateAcceptable()) {
                             setCurrentTime(_getFireBeginTime());
-                            _refineStepWRTState();
+                            setCurrentStepSize(_refinedStepWRTState());
+                            if(VERBOSE) {
+                                System.out.println("execute the system from "+
+                                        getCurrentTime() +" step size" + 
+                                        getCurrentStepSize());
+                            }
+                            if(STAT) {
+                                NFAIL++;
+                            }
                         } else {
                             break;
                         }
@@ -184,8 +192,12 @@ public class CTSingleSolverDirector extends CTDirector {
                 }
                 produceOutput();
                 if (!_isOutputAcceptable()) {
+                    System.out.println("Output not satisfied.");
                     setCurrentTime(_getFireBeginTime());
-                    _refineStepWRTOutput();
+                    setCurrentStepSize(_refinedStepWRTOutput());
+                    if(STAT) {
+                        NFAIL++;
+                    }
                 }else {
                     break;
                 }
@@ -261,6 +273,7 @@ public class CTSingleSolverDirector extends CTDirector {
         if(bps != null) {
             bps.clear();
         }
+        fireAt(null, getCurrentTime());
         fireAt(null, getStopTime());
         sch.setValid(false);
         _first = true;
@@ -304,7 +317,7 @@ public class CTSingleSolverDirector extends CTDirector {
         if (VERBOSE) {
             System.out.println("Director prefire.");
         }
-        if(DEBUG) {
+        if(STAT) {
             NSTEP++;
         }
         if(!scheduleValid()) {
@@ -433,13 +446,19 @@ public class CTSingleSolverDirector extends CTDirector {
     protected void _processBreakpoints() throws IllegalActionException {
         double bp;
         TotallyOrderedSet breakPoints = getBreakPoints();
+        double tnow = getCurrentTime();
         // If now is a break point, remove the break point from table;
         if(breakPoints != null) {
             while (!breakPoints.isEmpty()) {
                 bp = ((Double)breakPoints.first()).doubleValue();
-                if(bp <= getCurrentTime()) {
+                if(bp < (tnow-getTimeResolution())) {
                     // break point in the past or at now.
                     breakPoints.removeFirst();
+                } else if(Math.abs(bp-tnow) < getTimeResolution()){
+                    // break point now!
+                    breakPoints.removeFirst();
+                    _setIsBPIteration(true);
+                    break;
                 } else {
                     double iterEndTime = getCurrentTime()+getCurrentStepSize();
                     if (iterEndTime > bp) {
@@ -527,13 +546,20 @@ public class CTSingleSolverDirector extends CTDirector {
      *  @return the refined step size.
      *  @exception IllegalActionException If the scheduler throws it.
      */
-    protected double _refineStepWRTState() throws IllegalActionException {
+    protected double _refinedStepWRTState() throws IllegalActionException {
+        if(VERBOSE) {
+            System.out.println("refine step wrt state.");
+        }
         double refinedstep = getCurrentStepSize();
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.stateTransitionSSCActors();
         while (sscs.hasMoreElements()) {
             CTStepSizeControlActor a = 
                 (CTStepSizeControlActor) sscs.nextElement();
+            if(DEBUG) {
+                System.out.println(((Nameable)a).getName() + "refine..."
+                        + a.refinedStepSize());
+            }
             refinedstep = Math.min(refinedstep, a.refinedStepSize());
         }
         return refinedstep;
@@ -546,7 +572,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  @return the refined step size.
      *  @exception IllegalActionException If the scheduler throws it.
      */
-    protected double _refineStepWRTOutput() throws IllegalActionException {
+    protected double _refinedStepWRTOutput() throws IllegalActionException {
         double refinedstep = getCurrentStepSize();
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.outputSSCActors();
@@ -599,6 +625,5 @@ public class CTSingleSolverDirector extends CTDirector {
     // the start time of a iteration. This value is remembered so that
     // we don't need to resolve it from the end time and step size.
     private double _fireBeginTime;
-
 
 }

@@ -338,10 +338,11 @@ public class CTBaseIntegrator extends CTActor
      *  @return The predicteded next step size.
      */
     public double refinedStepSize() {
+        double curstep = ((CTDirector)getDirector()).getCurrentStepSize();
         if(_successful) {
-            return ((CTDirector)getDirector()).getCurrentStepSize();
+            return curstep;
         }else {
-            return 0.5*((CTDirector)getDirector()).getCurrentStepSize();
+            return (double)0.5*curstep;
         }
     }
 

@@ -104,71 +104,6 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if this is a breakpoint iteration. A breakpoint
-     *  iteration is the iteration just after a breakpoint. In a 
-     *  breakpoint iteration, the ODE solver is the breakpoint 
-     *  ODE solver, and the step size is the minimum step size.
-     *  @return True if this is a breakpoint iteration.
-     */
-    public boolean isBPIteration() {
-        return _bpIteration;
-    }
-
-    /**  Fire the system for one iteration. One iteration is defined as
-     *   simulating the system at one time point, which includes
-     *   resolving states and producing outputs. For the first iteration
-     *   it only produces the output, since the initial states are
-     *   the "real" states of the system, and no more resolving is needed.
-     *   The step size of one iteration is determined by the suggested
-     *   next step size and the breakpoints. If the first breakpoint in 
-     *   the breakpoint table is in the middle of the "intended" step.
-     *   Then the current step size is reduced to breakpoint - current
-     *   time. The result of such a step is the left limit of the states
-     *   at the breakpoint. If the start time of the integration step
-     *   equals to the first breakpoint in the breakpoint table, i.e.
-     *   this is the first step after a breakpoint, then the ODE solver
-     *   is changed to breakpointODESolver and the step size is set
-     *   to the minimum step size. The breakpoint is then removed
-     *   from the breakpoint table.
-     *   <P>
-     *   All the actors are prefired before an iteration is begun. If 
-     *   any one of them returns false, then the iteration is not 
-     *   proceeded, and the function returns.
-     *
-     *  @exception IllegalActionException If thrown by the ODE solver.
-     *//**  Fire the system for one iteration.
-     *
-     *  @exception IllegalActionException If thrown by the ODE solver.
-     
-    public void fire() throws IllegalActionException {
-        if (_first) {
-            _first = false;
-            produceOutput();
-            return;
-        }
-        updateStates(); // call postfire on all actors
-
-        //Refine step size and set ODE Solvers.
-        setCurrentODESolver(_defaultSolver);
-        setCurrentStepSize(getSuggestedNextStepSize());
-
-        // prefire all the actors.
-        boolean ready = true;
-        CompositeActor ca = (CompositeActor) getContainer();
-        Enumeration actors = ca.deepGetEntities();
-        while(actors.hasMoreElements()) {
-            Actor a = (Actor) actors.nextElement();
-            ready = ready && a.prefire();
-        }
-
-        if(ready) {
-            ODESolver solver = getCurrentODESolver();
-            solver.proceedOneStep();
-            produceOutput();
-        }
-    }
-    */
-
     /** Return the default ODE solver.
      *  @return The default ODE solver
      */
@@ -193,119 +128,9 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
      *       thrown by a contained actor.
      */
     public void initialize() throws IllegalActionException {
-        /*if (VERBOSE||DEBUG) {
-            System.out.println("MultiSolverDirector initialize.");
-        }
-        CompositeActor ca = (CompositeActor) getContainer();
-        if (ca == null) {
-            if(DEBUG) {
-                System.out.println("Director has no container.");
-            }
-            throw new IllegalActionException(this, "Has no container.");
-        }
-        if (ca.getContainer() != null) {
-            if(DEBUG) {
-                System.out.println("Director can only be the top director.");
-            }
-            throw new IllegalActionException(this,
-            " can only serve as the top level director.");
-        }
-        CTScheduler sch = (CTScheduler)getScheduler();
-        if (sch == null) {
-            if(DEBUG) {
-                System.out.println("Director does not have a scheduler.");
-            }
-            throw new IllegalActionException( this,
-            "does not have a scheduler.");
-        }
-        _initialize();
-        */
         super.initialize();
         fireAt(null, getCurrentTime());
     }
-
-    /** Return false if the current time reaches the step time. 
-     *  @return false If the simulation stop time expires.
-     *  @exception IllegalActionException If there is no ODE solver, or
-     *        thrown by the solver.
-     
-    public boolean postfire() throws IllegalActionException {
-        if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
-            fireAt(null, getStopTime());
-        }
-        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeResolution()) {
-            updateStates(); // call postfire on all actors.
-            return false;
-        }
-        if(getStopTime() < getCurrentTime()) {
-            throw new InvalidStateException(this,
-            " stop time is less than the current time.");
-        }
-        return true;
-    }
-    */
-
-    /** Return true always, indicating that the system is always ready
-     *  for one iteration. The schedule
-     *  is recomputed if there is any mutation. The parameters are
-     *  updated, since this is the safe place to change parameters.
-     *
-     *  @return True Always
-     *  @exception IllegalActionException Never thrown in this method.
-     
-    public boolean prefire() throws IllegalActionException {
-        if (VERBOSE) {
-            System.out.println("Director prefire.");
-        }
-        if(STAT) {
-            NSTEP++;
-        }
-        if(!scheduleValid()) {
-            // mutation occurred, redo the schedule;
-            CTScheduler scheduler = (CTScheduler)getScheduler();
-            if (scheduler == null) {
-                throw new IllegalActionException (this,
-                "does not have a Scheuler.");
-            }
-            scheduler.schedule();
-            setScheduleValid(true);
-        }
-        updateParameters();
-        return true;
-    }
-    */
-
-    /** produce outputs. Fire all the actors in the output schedule.
-     *  @exception IllegalActionException If the actor on the output
-     *      schedule throws it.
-     
-    public void produceOutput() throws IllegalActionException {
-        CTScheduler scheduler = (CTScheduler) getScheduler();
-        // Integrators emit output.
-        // FIXME: Do we need this? If the last fire of the integrators
-        //        has already emitted token, then the output actors
-        //        can use them. That is at least true for implicit methods.
-        Enumeration integrators = scheduler.dynamicActorSchedule();
-        while(integrators.hasMoreElements()) {
-            CTDynamicActor integrator=(CTDynamicActor)integrators.nextElement();
-            if(VERBOSE) {
-                System.out.println("Excite State..."+
-                    ((Nameable)integrator).getName());
-            }
-            integrator.emitTentativeOutputs();
-        }
-        // outputSchdule.fire()
-        Enumeration outputactors = scheduler.outputSchedule();
-        while(outputactors.hasMoreElements()) {
-            Actor nextoutputactor = (Actor)outputactors.nextElement();
-            if(VERBOSE) {
-                System.out.println("Fire output..."+
-                    ((Nameable)nextoutputactor).getName());
-            }
-            nextoutputactor.fire();
-        }
-    }
-    */
 
     /** Update given parameter. If the parameter does not exist, 
      *  throws an exception.
@@ -334,43 +159,6 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         }
     }
 
-    /** Call postfire() on all actors. For a correct CT simulation,
-     *  the state of an actor can only change at this stage of an
-     *  iteration.
-     *  @exception IllegalActionException If any of the actors 
-     *      throws it.
-     
-    public void updateStates() throws IllegalActionException {
-        CompositeActor container = (CompositeActor) getContainer();
-        Enumeration allactors = container.deepGetEntities();
-        while(allactors.hasMoreElements()) {
-            Actor nextactor = (Actor)allactors.nextElement();
-            if(DEBUG) {
-                System.out.println("Postfire:"+((NamedObj)nextactor).getName());
-            }
-            nextactor.postfire();
-        }
-    }
-    */
-    /** Wrapup the simulation. Show the statistics if needed. The statistics
-     *  includes the number of step simulated, the number of function
-     *  evaluations (firing all actors in the state transition schedule),
-     *  and the number of failed steps (due to error control).
-     *  
-     *  @exception IllegalActionException Never thrown.
-     *  
-     
-    public void wrapup() throws IllegalActionException{
-        if(STAT) {
-            System.out.println("**************STATISTICS***************");
-            System.out.println("Total # of STEPS "+NSTEP);
-            System.out.println("Total # of Function Evaluation "+NFUNC);
-            System.out.println("Total # of Failed Steps "+NFAIL);
-        }
-        super.wrapup();
-    }
-    */
-
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
@@ -386,6 +174,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         double tnow = getCurrentTime();
         _setIsBPIteration(false);
         //choose ODE solver
+        setCurrentODESolver(_defaultSolver);
         // If now is a break point, remove the break point from table;
         if(breakPoints != null) {
             while (!breakPoints.isEmpty()) {
@@ -398,10 +187,13 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                     breakPoints.removeFirst();
                     setCurrentODESolver(_breakpointSolver);
                     setCurrentStepSize(getMinStepSize());
+                    if(DEBUG) {
+                        System.out.println("IN BREAKPOINT iteration.");
+                    }
                     _setIsBPIteration(true);
                     break;
                 } else {
-                    double iterEndTime = getCurrentTime()+getCurrentStepSize();
+                    double iterEndTime = tnow+getCurrentStepSize();
                     if (iterEndTime > bp) {
                         setCurrentStepSize(bp-getCurrentTime());
                     }
@@ -418,7 +210,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
      */
     protected double _predictNextStepSize() throws IllegalActionException {
         if(!isBPIteration()) {
-            double predictedstep = getCurrentStepSize();
+            double predictedstep = 10.0*getCurrentStepSize();
             CTScheduler sched = (CTScheduler)getScheduler();
             Enumeration sscs = sched.stateTransitionSSCActors();
             while (sscs.hasMoreElements()) {
@@ -433,73 +225,11 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                 predictedstep = Math.min(predictedstep, a.predictedStepSize());
             }
             return predictedstep;
+        } else {
+            return getInitialStepSize();
         }
-        return getInitialStepSize();
     }
     
-    /** Set whether this is a breakpoint processing iteration.
-     *  @param bp True if this is a breakpoint iteration.
-     */
-    protected void _setIsBPIteration(boolean bp) {
-        _bpIteration = bp;
-    }
-    /** Set the current time to the start time and the suggested
-     *  next step
-     *  size to the initial step size. The start time is
-     *  set as a breakpoint in the breakpoint table.
-     *  It invoke the initialize() method for all the Actors in the
-     *  system. The ODE solver are instantiated, and the current solver
-     *  is set to be the breakpoint solver. The breakpoint table is cleared,
-     *  and the start time is set to be the first breakpoint. 
-     *  Invalidate the schedule.
-     *  This method does not 
-     *  check the container and the scheduler, so the 
-     *  caller should check.
-     *  @exception IllegalActionException If thrown by director actors.
-     
-    protected void _initialize() throws IllegalActionException{
-        if(STAT) {
-            NSTEP=0;
-            NFUNC=0;
-            NFAIL=0;
-        }
-        if(VERBOSE) {
-            System.out.println("updating parameters");
-        }
-        updateParameters();
-        // Instantiate ODE solvers
-        if(VERBOSE) {
-            System.out.println("instantiating Defalut ODE solver "+
-            _defaultsolverclass);
-        }
-        if(_defaultSolver == null) {
-            _defaultSolver = _instantiateODESolver(_defaultsolverclass);
-        }
-        if(VERBOSE) {
-            System.out.println("instantiating Breakpoint ODE solver "+
-            _breakpointsolverclass);
-        }
-        if(_breakpointSolver == null) {
-            _breakpointSolver = _instantiateODESolver(_breakpointsolverclass);
-        }
-        setCurrentODESolver(_breakpointSolver);
-        // set time
-        setCurrentTime(getStartTime());
-        setSuggestedNextStepSize(getInitialStepSize());
-        TotallyOrderedSet bps = getBreakPoints();
-        if(bps != null) {
-            bps.clear();
-        }
-        fireAt(null, getCurrentTime());
-        setScheduleValid(false);
-        _first = true;
-        if (VERBOSE) {
-            System.out.println("Director.super initialize.");
-        }
-        super.initialize();
-    }
-    */
-
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                      ////
     private void _initParameters() {
@@ -540,8 +270,5 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     // The default solver.
     private ODESolver _breakpointSolver = null;
     //indicate the first round of execution.
-    private boolean _first;
-    //indicate whether this is a breakpoint iteration.
-    private boolean _bpIteration = false;
-    
+    private boolean _first; 
 }

@@ -311,6 +311,16 @@ public abstract class CTDirector extends StaticSchedulingDirector
         _breakPoints.insert(new Double(time));
     }
 
+    /** Return true if this is a breakpoint iteration. A breakpoint
+     *  iteration is the iteration just after a breakpoint. In a 
+     *  breakpoint iteration, the ODE solver is the breakpoint 
+     *  ODE solver, and the step size is the minimum step size.
+     *  @return True if this is a breakpoint iteration.
+     */
+    public boolean isBPIteration() {
+        return _bpIteration;
+    }
+
     /** Return a new CTReceiver.
      *  @return A new CTReceiver.
      */
@@ -523,6 +533,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return newsolver;
     }
 
+    /** Set whether this is a breakpoint processing iteration.
+     *  @param bp True if this is a breakpoint iteration.
+     */
+    protected void _setIsBPIteration(boolean bp) {
+        _bpIteration = bp;
+    }
+
     /** Returns false, indicating that this director does not need to 
      *  modify the topology during the execution.
      *
@@ -605,7 +622,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
     private double _valueResolution;
     private double _timeResolution;
 
-
+    //indicate whether this is a breakpoint iteration.
+    private boolean _bpIteration = false;
+    
+    // List of parameter change events.
     private LinkedList _parameterEvents = null;
 
     // Simulation progress variables.
