@@ -1,6 +1,6 @@
-/* A debug listener that sends messages to a stream or to standard out.
+/* A director schedule listener that plots the schedule.
 
- Copyright (c) 1998-2001 The Regents of the University of California.
+ Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,13 +24,14 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
+@ProposedRating Red (johane@eecs.berkeley.edu)
+@AcceptedRating Red (johane@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.rtos.kernel;
-//import ptolemy.kernel.util.*;
-import ptolemy.plot.*;
+
+import ptolemy.kernel.util.RecorderListener; // For javadoc
+import ptolemy.plot.Plot;
 import ptolemy.plot.plotml.PlotMLParser;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -43,8 +44,8 @@ A director schedule listener that plots the schedule.
 
 @author Johan Eker
 @version $Id$
-@see NamedObj
-@see RecorderListener
+@see ptolemy.kernel.util.NamedObj
+@see ptolemy.kernel.util.RecorderListener
 
 */
 public class SchedulePlotter implements ScheduleListener {

@@ -1,6 +1,6 @@
-/* Interface debug listeners.
+/* Interface for listeners that receive schedule messages.
 
- Copyright (c) 1998-2001 The Regents of the University of California.
+ Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,20 +24,20 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
+@ProposedRating Red (johane@eecs.berkeley.edu)
+@AcceptedRating Red (johane@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.rtos.kernel;
 
 //////////////////////////////////////////////////////////////////////////
-//// DebugListener
+//// ScheduleListener
 /**
-Interface for listeners that receive debug messages.
+Interface for listeners that receive schedule messages.
 
 @author  Johan Eker
 @version $Id$
-@see NamedObj
+@see ptolemy.kernel.util.NamedObj
 
 */
 public interface ScheduleListener {
