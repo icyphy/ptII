@@ -776,7 +776,7 @@ else
 	AC_MSG_CHECKING([for java.home prop by running a test program ])
 	if env CLASSPATH="$PTII/config" "$JAVA" JavaHome > /dev/null; then
 	    # Run it again and get the results with \ converted to /
-	    PTJAVA_HOME=`CLASSPATH="$PTII/config" "$JAVA" JavaHome | sed 's@\\\@/@'g`
+	    PTJAVA_HOME=`CLASSPATH="$PTII/config" "$JAVA" JavaHome`
 	    AC_MSG_RESULT($PTJAVA_HOME)
 
 	    AC_MSG_CHECKING([for javax.comm.properties ])
