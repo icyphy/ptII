@@ -43,9 +43,10 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
@@ -230,35 +231,35 @@ public class InterfaceAutomaton extends FSMActor {
     public String getInfo() {
         String info = getFullName() + "\n";
 
-	Set inputNames = inputNameSet();
-	Set outputNames = outputNameSet();
-	Set internalNames = internalTransitionNameSet();
+        Set inputNames = inputNameSet();
+        Set outputNames = outputNameSet();
+        Set internalNames = internalTransitionNameSet();
 
         info += "  " + entityList().size() + " states\n";
         info += "  " + relationList().size() + " transitions\n";
-	info += "  " + inputNames.size() + " input names\n";
-	info += "  " + outputNames.size() + " output names\n";
-	info += "  " + internalNames.size() + " internal transition names\n";
+        info += "  " + inputNames.size() + " input names\n";
+        info += "  " + outputNames.size() + " output names\n";
+        info += "  " + internalNames.size() + " internal transition names\n";
 
         info += "  Input Names:\n";
-	Iterator iterator = inputNames.iterator();
-	while (iterator.hasNext()) {
-	    info += "    " + iterator.next().toString() + "\n";
-	}
+        Iterator iterator = inputNames.iterator();
+        while (iterator.hasNext()) {
+            info += "    " + iterator.next().toString() + "\n";
+        }
 
         info += "  Output Names:\n";
-	iterator = outputNames.iterator();
-	while (iterator.hasNext()) {
-	    info += "    " + iterator.next().toString() + "\n";
-	}
+        iterator = outputNames.iterator();
+        while (iterator.hasNext()) {
+            info += "    " + iterator.next().toString() + "\n";
+        }
 
         info += "  Internal Transition Names:\n";
-	iterator = internalNames.iterator();
-	while (iterator.hasNext()) {
-	    info += "    " + iterator.next().toString() + "\n";
-	}
+        iterator = internalNames.iterator();
+        while (iterator.hasNext()) {
+            info += "    " + iterator.next().toString() + "\n";
+        }
 
-	return info;
+        return info;
     }
 
     /** Return the names of the input ports as a Set.
@@ -343,6 +344,54 @@ public class InterfaceAutomaton extends FSMActor {
             set.add(port.getName());
         }
         return set;
+    }
+
+    /** Rename the labels on some transitions. The argument is a Map
+     *  specifying which transition labels should be renamed. The keys of the
+     *  Map are the old label names, and the values are the new label names.
+     *  Neither the keys nor the values should include the ending character
+     *  "?", "!", or ";" that indicate the type of the transtion. And this
+     *  method does not change the type. 
+     *  <p>
+     *  For input and output transitions, this method also renames the ports
+     *  associated with the renamed transitions, if these ports are created
+     *  already. For internal transitions, this method renames the parameter
+     *  associated with the renamed transition.
+     *  @param nameMap A map between the old and the new label names.
+     *  @exception IllegalActionException If the new name is not legal.
+     *  @exception NameDuplicationException If the requested name change will
+     *   cause name collision.
+     */
+    public void renameTransitionLabels(Map nameMap)
+            throws IllegalActionException, NameDuplicationException {
+        Iterator iterator = relationList().iterator();
+        while (iterator.hasNext()) {
+            InterfaceAutomatonTransition transition =
+                (InterfaceAutomatonTransition)iterator.next();
+            String oldLabel = transition.getLabel();
+            int length = oldLabel.length();
+            String oldLabelName = oldLabel.substring(0, length-1);
+            String newLabelName = (String)nameMap.get(oldLabelName);
+            if (newLabelName != null) {
+                String ending = oldLabel.substring(length-1, length);
+                String newLabel = newLabelName + ending;
+                transition.label.setExpression(newLabel);
+
+                // change port or parameter name
+                if (ending.equals("?") || ending.equals("!")) {
+                    TypedIOPort port = (TypedIOPort)getPort(oldLabelName);
+                    if (port != null) {
+                        port.setName(newLabelName);
+                    }
+                } else if (ending.equals(";")) {
+                    Parameter param = (Parameter)getAttribute(oldLabelName);
+                    param.setName(newLabelName);
+                } else {
+                    throw new InternalErrorException("Transition label "
+                        + "does not end with ?, !, or ;");
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
