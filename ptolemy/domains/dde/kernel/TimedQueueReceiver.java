@@ -37,7 +37,9 @@ import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.*;
 
-import java.util.Enumeration;
+// import java.util.Enumeration;
+import java.util.List;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedQueueReceiver
@@ -266,10 +268,11 @@ public class TimedQueueReceiver {
                  (ComponentEntity)innerPort.getContainer(); 
 
          Port outerPort = null; 
-         Enumeration enum = innerPort.connectedPorts(); 
+         List portList = innerPort.connectedPortList(); 
+         Iterator ports = portList.iterator();
          ComponentEntity outerEntity = null; 
-         while( enum.hasMoreElements() ) {
-             outerPort = (Port)enum.nextElement();
+         while( ports.hasNext() ) {
+             outerPort = (Port)ports.next();
              outerEntity = (ComponentEntity)outerPort.getContainer();
              if( outerEntity == innerEntity.getContainer() ) {
 		 // We are connected to a boundary port. Now
