@@ -199,7 +199,7 @@ public class PlotMLParser extends PlotBoxMLParser {
                 throw (XmlException)ex;
             } else {
                 String msg = "XML element \"" + elementName
-                        + "\" triggers exception:\n  " + ex.toString();
+                    + "\" triggers exception:\n  " + ex.toString();
                 throw new XmlException(msg,
                         _currentExternalEntity(),
                         _parser.getLineNumber(),

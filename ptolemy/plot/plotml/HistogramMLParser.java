@@ -115,10 +115,10 @@ public class HistogramMLParser extends PlotMLParser {
                     // is ignored.
                     if (widthSpec != null && offsetSpec != null) {
                         double width =
-                                (Double.valueOf(widthSpec)).doubleValue();
+                            (Double.valueOf(widthSpec)).doubleValue();
                         histogram.setBinWidth(width);
                         double offset =
-                                (Double.valueOf(offsetSpec)).doubleValue();
+                            (Double.valueOf(offsetSpec)).doubleValue();
                         histogram.setBinOffset(offset);
                     }
                 }
@@ -147,7 +147,7 @@ public class HistogramMLParser extends PlotMLParser {
                 throw (XmlException)ex;
             } else {
                 String msg = "XML element \"" + elementName
-                        + "\" triggers exception:\n  " + ex.toString();
+                    + "\" triggers exception:\n  " + ex.toString();
                 throw new XmlException(msg,
                         _currentExternalEntity(),
                         _parser.getLineNumber(),

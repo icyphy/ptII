@@ -101,8 +101,8 @@ public class PxgraphApplet extends PlotApplet {
                 showStatus("Done reading arguments");
             } catch (CmdLineArgException e) {
                 System.err.println(
-                    "PxgraphApplet: failed to parse `"
-                    + pxgraphargs + "': " + e);
+                        "PxgraphApplet: failed to parse `"
+                        + pxgraphargs + "': " + e);
             } catch (FileNotFoundException e) {
                 System.err.println(e.toString());
             } catch (IOException e) {

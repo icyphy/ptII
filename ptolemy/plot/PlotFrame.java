@@ -317,7 +317,7 @@ public class PlotFrame extends Frame {
         // Open the dialog.
         String[] buttons = {"Apply", "Cancel"};
         PanelDialog dialog =
-                new PanelDialog(this, "Set plot format", panel, buttons);
+            new PanelDialog(this, "Set plot format", panel, buttons);
 
         if (dialog.buttonPressed().equals("Cancel")) {
             // Restore original values.

@@ -915,7 +915,7 @@ public class PxgraphParser {
                             while (c != '\n')
                                 datasetname.append(in.readChar());
                             _plot.addLegend(currentdataset,
-                                     datasetname.toString());
+                                    datasetname.toString());
                             _plot.setConnected(true);
                             break;
                         case 'm':

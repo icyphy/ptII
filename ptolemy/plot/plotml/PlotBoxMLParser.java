@@ -143,7 +143,7 @@ public class PlotBoxMLParser extends HandlerBase {
             _plot.setXLabel(_currentCharData.toString());
         } else if (elementName.equals("xLog")) {
             _plot.setXLog(true);
-        // xRange and yRange are dealt with in startElement().
+            // xRange and yRange are dealt with in startElement().
         } else if (elementName.equals("yLabel")) {
             _plot.setYLabel(_currentCharData.toString());
         } else if (elementName.equals("yLog")) {
@@ -287,7 +287,7 @@ public class PlotBoxMLParser extends HandlerBase {
                 throw (XmlException)ex;
             } else {
                 String msg = "XML element \"" + elementName
-                        + "\" triggers exception:\n  " + ex.toString();
+                    + "\" triggers exception:\n  " + ex.toString();
                 throw new XmlException(msg,
                         _currentExternalEntity(),
                         _parser.getLineNumber(),
@@ -317,9 +317,9 @@ public class PlotBoxMLParser extends HandlerBase {
             throws XmlException {
         if(object == null) {
             throw new XmlException(message,
-                   _currentExternalEntity(),
-                   _parser.getLineNumber(),
-                   _parser.getColumnNumber());
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
         }
     }
 

@@ -1448,22 +1448,22 @@ public class PlotBox extends Panel {
                 if (labxpos > preLength) {
                     // calculate the length of the label
                     preLength = xCoord1
-                            + _labelFontMetrics.stringWidth(label)/2 + 10;
+                        + _labelFontMetrics.stringWidth(label)/2 + 10;
 
-                    // Draw the label.
-                    // NOTE: 3 pixel spacing between axis and labels.
-                    graphics.drawString(label, labxpos, _lry + 3 + labelheight);
+                        // Draw the label.
+                        // NOTE: 3 pixel spacing between axis and labels.
+                        graphics.drawString(label, labxpos, _lry + 3 + labelheight);
 
-                    // Draw the label mark on the axis
-                    graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
-                    graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
+                        // Draw the label mark on the axis
+                        graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
+                        graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
 
-                    // Draw the grid line
-                    if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
-                        graphics.setColor(Color.lightGray);
-                        graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
-                        graphics.setColor(_foreground);
-                    }
+                        // Draw the grid line
+                        if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
+                            graphics.setColor(Color.lightGray);
+                            graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
+                            graphics.setColor(_foreground);
+                        }
                 }
             }
         }
@@ -1670,22 +1670,22 @@ public class PlotBox extends Panel {
         // NOTE: If you modify this, you should change the _DTD variable
         // accordingly.
         if (_title != null) output.println(
-            "<title>" + _title + "</title>");
+                "<title>" + _title + "</title>");
         if (_xlabel != null) output.println(
-            "<xLabel>" + _xlabel + "</xLabel>");
+                "<xLabel>" + _xlabel + "</xLabel>");
         if (_ylabel != null) output.println(
-            "<yLabel>" + _ylabel + "</yLabel>");
+                "<yLabel>" + _ylabel + "</yLabel>");
         if (_xRangeGiven) output.println(
-            "<xRange min=\"" + _xlowgiven + "\" max=\"" + _xhighgiven + "\"/>");
+                "<xRange min=\"" + _xlowgiven + "\" max=\"" + _xhighgiven + "\"/>");
         if (_yRangeGiven) output.println(
-            "<yRange min=\"" + _ylowgiven + "\" max=\"" + _yhighgiven + "\"/>");
+                "<yRange min=\"" + _ylowgiven + "\" max=\"" + _yhighgiven + "\"/>");
         if (_xticks != null && _xticks.size() > 0) {
             output.println("<xTicks>");
             int last = _xticks.size() - 1;
             for (int i = 0; i <= last; i++) {
                 output.println("  <tick label=\""
-                + (String)_xticklabels.elementAt(i) + "\" position=\""
-                + (Double)_xticks.elementAt(i) + "\"/>");
+                        + (String)_xticklabels.elementAt(i) + "\" position=\""
+                        + (Double)_xticks.elementAt(i) + "\"/>");
             }
             output.println("</xTicks>");
         }
@@ -1694,8 +1694,8 @@ public class PlotBox extends Panel {
             int last = _yticks.size() - 1;
             for (int i = 0; i <= last; i++) {
                 output.println("  <tick label=\""
-                + (String)_yticklabels.elementAt(i) + "\" position=\""
-                + (Double)_yticks.elementAt(i) + "\"/>");
+                        + (String)_yticklabels.elementAt(i) + "\" position=\""
+                        + (Double)_yticks.elementAt(i) + "\"/>");
             }
             output.println("</yTicks>");
         }
@@ -2570,63 +2570,63 @@ public class PlotBox extends Panel {
     // seems to be no other way to ensure that the generated data exactly
     // matches the DTD.
     private static final String _DTD =
-"<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | \n"
-+ "	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | \n"
-+ "     yRange | yTicks)*>\n"
-+ "  <!ELEMENT barGraph EMPTY>\n"
-+ "    <!ATTLIST barGraph width CDATA #IMPLIED>\n"
-+ "    <!ATTLIST barGraph offset CDATA #IMPLIED>\n"
-+ "  <!ELEMENT bin EMPTY>\n"
-+ "    <!ATTLIST bin width CDATA #IMPLIED>\n"
-+ "    <!ATTLIST bin offset CDATA #IMPLIED>\n"
-+ "  <!ELEMENT dataset (m | move | p | point)*>\n"
-+ "    <!ATTLIST dataset connected (yes | no) #IMPLIED>\n"
-+ "    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>\n"
-+ "    <!ATTLIST dataset name CDATA #IMPLIED>\n"
-+ "    <!ATTLIST dataset stems (yes | no) #IMPLIED>\n"
-+ "  <!ELEMENT default EMPTY>\n"
-+ "    <!ATTLIST default connected (yes | no) \"yes\">\n"
-+ "    <!ATTLIST default marks (none | dots | points | various) \"none\">\n"
-+ "    <!ATTLIST default stems (yes | no) \"no\">\n"
-+ "  <!ELEMENT noColor EMPTY>\n"
-+ "  <!ELEMENT noGrid EMPTY>\n"
-+ "  <!ELEMENT title (#PCDATA)>\n"
-+ "  <!ELEMENT wrap EMPTY>\n"
-+ "  <!ELEMENT xLabel (#PCDATA)>\n"
-+ "  <!ELEMENT xLog EMPTY>\n"
-+ "  <!ELEMENT xRange EMPTY>\n"
-+ "    <!ATTLIST xRange min CDATA #REQUIRED>\n"
-+ "    <!ATTLIST xRange max CDATA #REQUIRED>\n"
-+ "  <!ELEMENT xTicks (tick)+>\n"
-+ "  <!ELEMENT yLabel (#PCDATA)>\n"
-+ "  <!ELEMENT yLog EMPTY>\n"
-+ "  <!ELEMENT yRange EMPTY>\n"
-+ "    <!ATTLIST yRange min CDATA #REQUIRED>\n"
-+ "    <!ATTLIST yRange max CDATA #REQUIRED>\n"
-+ "  <!ELEMENT yTicks (tick)+>\n"
-+ "    <!ELEMENT tick EMPTY>\n"
-+ "      <!ATTLIST tick label CDATA #REQUIRED>\n"
-+ "      <!ATTLIST tick position CDATA #REQUIRED>\n"
-+ "    <!ELEMENT m EMPTY>\n"
-+ "      <!ATTLIST m x CDATA #IMPLIED>\n"
-+ "      <!ATTLIST m x CDATA #REQUIRED>\n"
-+ "      <!ATTLIST m lowErrorBar CDATA #IMPLIED>\n"
-+ "      <!ATTLIST m highErrorBar CDATA #IMPLIED>\n"
-+ "    <!ELEMENT move EMPTY>\n"
-+ "      <!ATTLIST move x CDATA #IMPLIED>\n"
-+ "      <!ATTLIST move x CDATA #REQUIRED>\n"
-+ "      <!ATTLIST move lowErrorBar CDATA #IMPLIED>\n"
-+ "      <!ATTLIST move highErrorBar CDATA #IMPLIED>\n"
-+ "    <!ELEMENT p EMPTY>\n"
-+ "      <!ATTLIST p x CDATA #IMPLIED>\n"
-+ "      <!ATTLIST p x CDATA #REQUIRED>\n"
-+ "      <!ATTLIST p lowErrorBar CDATA #IMPLIED>\n"
-+ "      <!ATTLIST p highErrorBar CDATA #IMPLIED>\n"
-+ "    <!ELEMENT point EMPTY>\n"
-+ "      <!ATTLIST point x CDATA #IMPLIED>\n"
-+ "      <!ATTLIST point x CDATA #REQUIRED>\n"
-+ "      <!ATTLIST point lowErrorBar CDATA #IMPLIED>\n"
-+ "      <!ATTLIST point highErrorBar CDATA #IMPLIED>";
+    "<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | \n"
+    + "	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | \n"
+    + "     yRange | yTicks)*>\n"
+    + "  <!ELEMENT barGraph EMPTY>\n"
+    + "    <!ATTLIST barGraph width CDATA #IMPLIED>\n"
+    + "    <!ATTLIST barGraph offset CDATA #IMPLIED>\n"
+    + "  <!ELEMENT bin EMPTY>\n"
+    + "    <!ATTLIST bin width CDATA #IMPLIED>\n"
+    + "    <!ATTLIST bin offset CDATA #IMPLIED>\n"
+    + "  <!ELEMENT dataset (m | move | p | point)*>\n"
+    + "    <!ATTLIST dataset connected (yes | no) #IMPLIED>\n"
+    + "    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>\n"
+    + "    <!ATTLIST dataset name CDATA #IMPLIED>\n"
+    + "    <!ATTLIST dataset stems (yes | no) #IMPLIED>\n"
+    + "  <!ELEMENT default EMPTY>\n"
+    + "    <!ATTLIST default connected (yes | no) \"yes\">\n"
+    + "    <!ATTLIST default marks (none | dots | points | various) \"none\">\n"
+    + "    <!ATTLIST default stems (yes | no) \"no\">\n"
+    + "  <!ELEMENT noColor EMPTY>\n"
+    + "  <!ELEMENT noGrid EMPTY>\n"
+    + "  <!ELEMENT title (#PCDATA)>\n"
+    + "  <!ELEMENT wrap EMPTY>\n"
+    + "  <!ELEMENT xLabel (#PCDATA)>\n"
+    + "  <!ELEMENT xLog EMPTY>\n"
+    + "  <!ELEMENT xRange EMPTY>\n"
+    + "    <!ATTLIST xRange min CDATA #REQUIRED>\n"
+    + "    <!ATTLIST xRange max CDATA #REQUIRED>\n"
+    + "  <!ELEMENT xTicks (tick)+>\n"
+    + "  <!ELEMENT yLabel (#PCDATA)>\n"
+    + "  <!ELEMENT yLog EMPTY>\n"
+    + "  <!ELEMENT yRange EMPTY>\n"
+    + "    <!ATTLIST yRange min CDATA #REQUIRED>\n"
+    + "    <!ATTLIST yRange max CDATA #REQUIRED>\n"
+    + "  <!ELEMENT yTicks (tick)+>\n"
+    + "    <!ELEMENT tick EMPTY>\n"
+    + "      <!ATTLIST tick label CDATA #REQUIRED>\n"
+    + "      <!ATTLIST tick position CDATA #REQUIRED>\n"
+    + "    <!ELEMENT m EMPTY>\n"
+    + "      <!ATTLIST m x CDATA #IMPLIED>\n"
+    + "      <!ATTLIST m x CDATA #REQUIRED>\n"
+    + "      <!ATTLIST m lowErrorBar CDATA #IMPLIED>\n"
+    + "      <!ATTLIST m highErrorBar CDATA #IMPLIED>\n"
+    + "    <!ELEMENT move EMPTY>\n"
+    + "      <!ATTLIST move x CDATA #IMPLIED>\n"
+    + "      <!ATTLIST move x CDATA #REQUIRED>\n"
+    + "      <!ATTLIST move lowErrorBar CDATA #IMPLIED>\n"
+    + "      <!ATTLIST move highErrorBar CDATA #IMPLIED>\n"
+    + "    <!ELEMENT p EMPTY>\n"
+    + "      <!ATTLIST p x CDATA #IMPLIED>\n"
+    + "      <!ATTLIST p x CDATA #REQUIRED>\n"
+    + "      <!ATTLIST p lowErrorBar CDATA #IMPLIED>\n"
+    + "      <!ATTLIST p highErrorBar CDATA #IMPLIED>\n"
+    + "    <!ELEMENT point EMPTY>\n"
+    + "      <!ATTLIST point x CDATA #IMPLIED>\n"
+    + "      <!ATTLIST point x CDATA #REQUIRED>\n"
+    + "      <!ATTLIST point lowErrorBar CDATA #IMPLIED>\n"
+    + "      <!ATTLIST point highErrorBar CDATA #IMPLIED>";
 
 
     ///////////////////////////////////////////////////////////////////
@@ -2664,7 +2664,7 @@ public class PlotBox extends Panel {
             // methods, so those methods set a variable _zooming that
             // is used by _zoomBox to determine whether to draw a box.
             // if ((event.getModifiers() & event.BUTTON1_MASK)!= 0) {
-                PlotBox.this._zoomBox(event.getX(), event.getY());
+            PlotBox.this._zoomBox(event.getX(), event.getY());
             // }
         }
         public void mouseMoved(MouseEvent event) {
