@@ -28,6 +28,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
+@ProposedRating Red
+@AcceptedRating Red
 */
 package ptolemy.plot;
 
