@@ -941,6 +941,8 @@ else
 
 	PTGMP_OK=no
 	startdir=`pwd`
+	# Make sure that we check for CXX before cding in to config
+	AC_PROG_CXX
         cd "$srcdir/config"
         AC_MSG_CHECKING([gmp by compiling a C small program])
 	if "$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LD_FLAGS $PTGMP_LIB -lgmp ; then
@@ -953,7 +955,6 @@ else
     $RESULTS])
 	fi
 
-	AC_PROG_CXX
         AC_MSG_CHECKING([gmp by compiling a C++ small program])
 	if "$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LD_FLAGS $PTGMP_LIB -lgmpxx -lgmp ; then
 	    ./gmpTest2
