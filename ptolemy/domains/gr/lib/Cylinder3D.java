@@ -90,7 +90,7 @@ public class Cylinder3D extends GRShadedShape {
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameters of the new actor.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
