@@ -31,7 +31,7 @@
 
 ME = 		ptolemy/domains/pn/demo
 
-DIRS = Interleave Prime QR
+DIRS =		QR
 
 # Root of the Java directory
 ROOT =		../../../..
