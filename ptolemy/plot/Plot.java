@@ -175,7 +175,7 @@ public class Plot extends PlotBox {
                         x);
                 return;
             }
-            x = Math.log(x)/_LN10;
+            x = Math.log(x)*_LOG10SCALE;
         }
         if (_ylog) {
             if (y <= 0.0) {
@@ -184,7 +184,7 @@ public class Plot extends PlotBox {
                         y);
                 return;
             }
-            y = Math.log(y)/_LN10;
+            y = Math.log(y)*_LOG10SCALE;
         }
         _addPoint(_graphics, dataset, x, y, connected);
     }
