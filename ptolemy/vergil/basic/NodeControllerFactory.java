@@ -37,7 +37,7 @@ import diva.graph.GraphController;
 //////////////////////////////////////////////////////////////////////////
 //// NodeControllerFactory
 /**
-   This is attribute that produces a custom node controller.
+   This is an attribute that produces a custom node controller.
    This base class produces a node controller that offers only a
    configure command in the context menu, and invokes a dialog to
    edit parameters in response to that command.  It does this by

@@ -104,6 +104,9 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Cancel full screen mode. Note that this should be called
+     *  in the swing event thread.
+     */
     public void cancelFullScreen() {
         if (_screen == null) {
             // Already canceled.
