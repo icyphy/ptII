@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="LevelCrossingDetectorDetectsGlitches" class="ptolemy.actor.TypedCompositeActor">
+<entity name="LevelCrossingDetectorDetectsGlitches_2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
@@ -50,9 +50,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 5, 845, 571}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 5, 998, 571}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[630, 453]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[783, 453]">
     </property>
     <property name="level1" class="ptolemy.data.expr.Parameter" value="0.5">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -134,16 +134,45 @@ from transient states.
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 180.0]">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9183235903168">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.0, 226.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{407.8701862373737, 225.0476641414142}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 500.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 395.0]">
+        </property>
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">When glitches happen, a level corssing
+detector generates an event each time 
+a level crossing occurs.
+
+For example, at time 1.50005, as the
+value of the signal jumps from 1.5 to 0.0,
+to 2.0, then to -1.0, and finally settles
+down at 1.0. The first event detector 
+generates 4 events because the signal
+crosses the level 0.5 four times.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 180.0]">
         </property>
     </property>
     <entity name="SignalWithGlitches" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -581,24 +610,6 @@ The final state (state4) simply connects the input to the output.</text></svg></
             </property>
         </port>
     </entity>
-    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 350.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-        </port>
-    </entity>
     <entity name="Integral of the Signal" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -606,7 +617,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[405, 197]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 350.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -637,7 +648,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="2.0"/>
-<yRange min="-0.45" max="1.25"/>
+<yRange min="-1.0" max="2.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
@@ -660,30 +671,61 @@ The final state (state4) simply connects the input to the output.</text></svg></
 <yLabel></yLabel>
 <xRange min="0.0" max="2.0"/>
 <yRange min="-1.0" max="2.0"/>
+<default marks="dots"/>
 </plot>?>
         </configure>
     </entity>
-    <entity name="Detected Events" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 125.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 506, 432, 236}, maximized=false}">
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Detected an event at &quot;">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[424, 181]">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 75.0]">
         </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Detected Events</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="15.0" max="55.0"/>
-<yRange min="0.5" max="0.5"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 350.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+    </entity>
+    <entity name="Detected Events" class="ptolemy.actor.lib.gui.Display">
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Detected Events">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 503, 290, 227}, maximized=false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.84228515625, 134.9609375]">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.84228515625, 134.9609375]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -691,17 +733,23 @@ The final state (state4) simply connects the input to the output.</text></svg></
         <vertex name="vertex1" value="[260.0, 135.0]">
         </vertex>
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[400.0, 125.0]">
+        </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[435.0, 125.0]">
-        </vertex>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="SignalWithGlitches.input" relation="relation"/>
     <link port="SignalWithGlitches.output" relation="relation3"/>
@@ -714,12 +762,19 @@ The final state (state4) simply connects the input to the output.</text></svg></
     <link port="LevelCrossingDetector3.trigger" relation="relation3"/>
     <link port="Integrator.input" relation="relation3"/>
     <link port="Integrator.output" relation="relation5"/>
-    <link port="PeriodicSampler.input" relation="relation5"/>
-    <link port="PeriodicSampler.output" relation="relation11"/>
     <link port="Integral of the Signal.input" relation="relation11"/>
+    <link port="Detected Threshold Crossings.input" relation="relation7"/>
     <link port="Detected Threshold Crossings.input" relation="relation4"/>
     <link port="Detected Threshold Crossings.input" relation="relation6"/>
-    <link port="Detected Threshold Crossings.input" relation="relation7"/>
     <link port="Piecewise Continuous Signal.input" relation="relation3"/>
-    <link port="Detected Events.input" relation="relation7"/>
+    <link port="CurrentTime.output" relation="relation10"/>
+    <link port="CurrentTime.trigger" relation="relation7"/>
+    <link port="Expression.output" relation="relation8"/>
+    <link port="Expression.input" relation="relation7"/>
+    <link port="PeriodicSampler.input" relation="relation5"/>
+    <link port="PeriodicSampler.output" relation="relation11"/>
+    <link port="Detected Events.input" relation="relation2"/>
+    <link port="AddSubtract.plus" relation="relation8"/>
+    <link port="AddSubtract.plus" relation="relation10"/>
+    <link port="AddSubtract.output" relation="relation2"/>
 </entity>
