@@ -783,6 +783,7 @@ public class SRDirector extends StaticSchedulingDirector {
     private void _resetAllReceivers() {
         _debug("    SRDirector is resetting all receivers");
         _currentNumberOfKnownReceivers = 0;
+        if(_receivers==null){return;}
         Iterator receiverIterator = _receivers.iterator();
         while (receiverIterator.hasNext()) {
             ((SRReceiver) receiverIterator.next()).reset();
