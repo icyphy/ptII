@@ -52,6 +52,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.kernel.AttributeController;
 import diva.canvas.AbstractFigure;
 import diva.canvas.CanvasUtilities;
+import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.FixedNormalSite;
@@ -155,9 +156,10 @@ public class ExternalIOPortController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Override the base class to return true if the specified node contains an
-     *  attribute named "_hideInside".  This ensures that ports can be hidden
-     *  on the outside while still being visible on the outside.
+    /** Override the base class to return true if the specified node
+     *  contains an attribute named "_hideInside".  This ensures that
+     *  ports can be hidden on the outside while still being visible
+     *  on the outside.
      */
     protected boolean _hide(java.lang.Object node) {
         if (node instanceof Locatable) {
@@ -275,9 +277,18 @@ public class ExternalIOPortController extends AttributeController {
                 tsite.setNormal(normal);
                 tsite = new FixedNormalSite(tsite);
                 String name = port.getName();
+                Rectangle2D backBounds = figure.getBounds();
+                figure = new CompositeFigure(figure);
                 if (name != null && !name.equals("")
                         && !(port instanceof ParameterPort)) {
-                    figure = new NameWrapper(figure, port.getName());
+                    LabelFigure label = new LabelFigure(name,
+                            _labelFont, 1.0, SwingConstants.SOUTH_WEST);
+                    // Shift the label slightly right so it doesn't
+                    // collide with ports.
+                    label.translateTo(
+                            backBounds.getX(), 
+                            backBounds.getY());
+                    ((CompositeFigure)figure).add(label);   
                 }
                 figure = new TerminalFigure(figure, tsite)  {
                         // Override this because the tooltip may
@@ -317,102 +328,6 @@ public class ExternalIOPortController extends AttributeController {
                 figure.setToolTipText("Unknown port");
             }
             return figure;
-        }
-    }
-
-    // Class for the name of the port.
-    private class NameWrapper extends AbstractFigure {
-        /** The child
-         */
-        private Figure _child = null;
-
-        /** The label
-         */
-        private LabelFigure _label = null;
-
-        /** The label anchor
-         */
-        private int _anchor = SwingConstants.SOUTH_WEST;
-
-        /** Construct a new figure with the given child figure and
-         * the given string.
-         */
-        public NameWrapper (Figure f, String label) {
-            _child = f;
-            f.setParent(this);
-
-            _label = new LabelFigure(label, _labelFont);
-
-            _label.setPadding(0);
-            _label.setAnchor(_anchor);
-            Rectangle2D bounds = _child.getBounds();
-            _label.translateTo(bounds.getX(), bounds.getY());
-        }
-
-        /** Get the bounds of this figure.
-         */
-        public Rectangle2D getBounds () {
-            Rectangle2D bounds = _child.getBounds();
-            Rectangle2D.union(bounds, _label.getBounds(), bounds);
-            return bounds;
-        }
-
-        /** Get the child figure
-         */
-        public Figure getChild () {
-            return _child;
-        }
-
-        /** Get the label. This can be used to adjust the label
-         * appearance, anchor, and so on.
-         */
-        public LabelFigure getLabel () {
-            return _label;
-        }
-
-        /** Return the origin of the child figure in the enclosing
-         *  transform context.
-         *  @return The origin of the background figure.
-         */
-        public Point2D getOrigin () {
-            if ( _child != null ) {
-                return _child.getOrigin();
-            } else {
-                return super.getOrigin();
-            }
-        }
-
-        /** Get the shape of this figure. This is the shape
-         * of the child figure only -- the label is not included
-         * in the shape.
-         */
-        public Shape getShape () {
-            return _child.getShape();
-        }
-
-        /** We are hit if either the child or the figure is hit.
-         */
-        public boolean hit (Rectangle2D r) {
-            return _child.hit(r);
-        }
-
-        /** Paint this figure
-         */
-        public void paint (Graphics2D g) {
-            if (_child != null && isVisible()) {
-                _child.paint(g);
-                _label.paint(g);
-            }
-        }
-
-        /** Transform the figure with the supplied transform.
-         */
-        public void transform (AffineTransform at) {
-            repaint();
-            _child.transform(at);
-            Rectangle2D bounds = _child.getBounds();
-            _label.translateTo(bounds.getX(), bounds.getY());
-            repaint();
         }
     }
 }

@@ -149,7 +149,7 @@ public class ClassDefinitionController extends ActorController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                      protected methods                    ////
 
     /** Draw the node at its location. This overrides the base class
      *  to highlight the actor to indicate that it is a class definition.
