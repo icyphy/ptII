@@ -27,7 +27,7 @@
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 Review vectorized methods.
-Review get/send/hasRoom/hasToken
+Review broadcast/get/send/hasRoom/hasToken
 Review setInput/setOutput/setMultiport.
 */
 
@@ -177,7 +177,12 @@ public class IOPort extends ComponentPort {
      *  If there are no destination receivers, then nothing is sent.
      *  If the port is not connected to anything, or receivers have not been
      *  created in the remote port, then just return.
-     *  This method is read-synchronized on the workspace.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a put,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling put.
      *
      *  @param token The token to send
      *  @exception IllegalActionException If the port is not an output.
@@ -186,18 +191,85 @@ public class IOPort extends ComponentPort {
      */
     public void broadcast(Token token)
 	    throws IllegalActionException, NoRoomException {
+        Receiver[][] farReceivers;
         try {
             _workspace.getReadAccess();
-            Receiver farReceivers[][] = getRemoteReceivers();
+            farReceivers = getRemoteReceivers();
             if (farReceivers == null) {
                 return;
             }
+        } finally {
+            _workspace.doneReading();
+        }
+        // NOTE: This does not call send() here, because send()
+        // repeats the above on each call.
+        try {
+            for (int i = 0; i < farReceivers.length; i++) {
+                if (farReceivers[i] == null) continue;
 
-            for (int j = 0; j < farReceivers.length; j++) {
-                send(j, token);
+                for (int j = 0; j < farReceivers[i].length; j++) {
+                    farReceivers[i][j].put(token);
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the port is not an output port.
+            // Ignore...
+        }
+    }
+
+    /** Send the specified portion of a token array to all receivers connected
+     *  to this port. The first <i>vectorLength</i> tokens
+     *  of the token array are sent.
+     *  <p>
+     *  Tokens are in general immutable, so each receiver
+     *  is given a reference to the same token and no clones are made.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, or the channel index is out of
+     *  range, or the port is not an output port,
+     *  then just silently return.  This behavior makes it
+     *  easy to leave output ports unconnected when you are not interested
+     *  in the output.  The transfer is accomplished
+     *  by calling the vectorized put() method of the remote receivers.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, then just return.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a put,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling put.
+     *
+     *  @param tokenArray The token array to send
+     *  @param vectorLength The number of elements of of the token
+     *   array to send.
+     *  @exception NoRoomException If there is no room in the receiver.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void broadcast(Token[] tokenArray, int vectorLength)
+            throws IllegalActionException, NoRoomException {
+        Receiver[][] farReceivers;
+        try {
+            _workspace.getReadAccess();
+            farReceivers = getRemoteReceivers();
+            if (farReceivers == null) {
+                return;
             }
         } finally {
             _workspace.doneReading();
+        }
+        // NOTE: This does not call send() here, because send()
+        // repeats the above on each call.
+        try {
+            for (int i = 0; i < farReceivers.length; i++) {
+                if (farReceivers[i] == null) continue;
+                
+                for (int j = 0; j < farReceivers[i].length; j++) {
+                    farReceivers[i][j].putArray(tokenArray, vectorLength);
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the port is not an output port.
+            // Ignore...
         }
     }
 
