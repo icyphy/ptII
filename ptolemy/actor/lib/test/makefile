@@ -53,7 +53,6 @@ JSIMPLE_TESTS = \
 	AbsoluteValue.tcl \
 	Average.tcl \
 	Bernoulli.tcl \
-	BooleanExpression.tcl \
 	Clock.tcl \
 	Commutator.tcl \
 	Const.tcl \
