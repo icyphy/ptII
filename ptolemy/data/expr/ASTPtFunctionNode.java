@@ -45,14 +45,14 @@ the parse tree.
 Currently the functions supported are precisely those
 in the java.lang.Math package. However, it is relatively straightforward
 to extend this node to allow references to other functions. This
-provides a strightforward mechanism to extend the functionality of
+provides a straightforward mechanism to extend the functionality of
 the parser by adding extra functions that the parser can call. One
 example might be tcl(...) which would pass the string to a tcl
 interpreter to evaluate and return the result. This is also the mechanism
 by which files can be read into a parameter, probably via a readFile(...)
 method.
 <p>
-FIXME: need to define a basic set of functions, and inplement them.
+FIXME: need to define a basic set of functions, and implement them.
 <p>
 @author Neil Smyth
 @version $Id$
@@ -68,7 +68,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         int args = jjtGetNumChildren();
         Class[] argTypes = new Class[args];
         Object[] argValues = new Object[args];
-        // Note: Java makes a dintinction between the class objects
+        // Note: Java makes a distinction between the class objects
         // for double & Double...
         try {
             for (int i = 0; i<args; i++) {
@@ -88,7 +88,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 }
             }
             // Currently this method only looks in java.lang.Math for
-            // the invoked function, but this will be exttended
+            // the invoked function, but this will be extended
             Class destClass = Class.forName("java.lang.Math");
             Method m = destClass.getMethod(funcName, argTypes);
             Object result = m.invoke(destClass, argValues);
