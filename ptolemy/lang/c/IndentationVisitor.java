@@ -139,34 +139,12 @@ public class IndentationVisitor extends JavaVisitor implements CCodeGeneratorCon
     }
 
 
-    /*
-     *  Invoke a transition visit for a while- or do-loop node.
-     *  @param same as method _defaultVisit
-     *  @return same as method _defaultVisit
-     */
-    public Object visitLoopNode(LoopNode node, LinkedList args) {
-        return _transitionVisit(node, args);
-    }
-
-
-    /*
-     *  Invoke a transition visit for a for-loop node.
-     *  @param same as method _defaultVisit
-     *  @return same as method _defaultVisit
-     */
-    public Object visitForNode(ForNode node, LinkedList args) {
-        return _transitionVisit(node, args);
-    }
-
-
-    /*
-     *  Invoke a transition visit for a try node.
-     *  @param same as method _defaultVisit
-     *  @return same as method _defaultVisit
-     */
-    public Object visitTryNode(TryNode node, LinkedList args) {
-        return _transitionVisit(node, args);
-    }
+    /* FIXME: Remove after confirming that transition visits are
+    not needed:
+    public Object visitLoopNode(LoopNode node, LinkedList args) 
+    public Object visitForNode(ForNode node, LinkedList args) 
+    public Object visitTryNode(TryNode node, LinkedList args) 
+    */
 
 
     /**

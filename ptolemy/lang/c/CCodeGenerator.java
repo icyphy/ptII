@@ -538,12 +538,12 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
     }
 
     public Object visitExprStmtNode(ExprStmtNode node, LinkedList args) {
-        return TNLManip.arrayToList(new Object[] {
+        return TNLManip.arrayToList(new Object[] { _indent(node),
             node.childReturnValueAt(node.CHILD_INDEX_EXPR), ";\n"});
     }
 
     public Object visitForNode(ForNode node, LinkedList args) {
-        return TNLManip.arrayToList(new Object[] {"for (",
+        return TNLManip.arrayToList(new Object[] {_indent(node), "for (",
                                                       _forInitStringList(node.getInit()), "; ",
                                                       node.childReturnValueAt(node.CHILD_INDEX_TEST), "; ",
                                                       _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_UPDATE)),
@@ -936,7 +936,6 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
 
     public Object visitAssignNode(AssignNode node, LinkedList args) {
         LinkedList retList = new LinkedList();
-        retList.addLast(_indent(node));
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_EXPR1));
         retList.addLast(" = ");
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_EXPR2));
@@ -1064,6 +1063,8 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
         return retList;
     }
 
+
+
     protected List _forInitStringList(List list) {
         int length = list.size();
 
@@ -1101,10 +1102,15 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
             return retList;
 
         } else {
+            // Re-traverse the subtrees associated with the list
+            // expressions. This has the effect of ignoring indentation
+            // level settings.
             return _separateList(
                     TNLManip.traverseList(this, null, list), "; ");
         }
     }
+
+
 
     protected static LinkedList _parenExpr(TreeNode expr, LinkedList exprStrList) {
         int classID = expr.classID();
