@@ -53,6 +53,7 @@ JSRCS = \
 	CodeGenerator.java \
 	CodeGeneratorHelper.java \
 	ComponentCodeGenerator.java \
+	Director.java \
 	StaticSchedulingCodeGenerator.java
 
 EXTRA_SRCS =	$(JSRCS)
