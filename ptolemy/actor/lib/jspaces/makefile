@@ -92,7 +92,7 @@ depend:
 	@echo "no dependencies in this directory"
 
 Subscriber_Stub.class: Subscriber.java
-	$(RMIC) -d $(ROOT) -classpath $(CLASSPATH) \
+	$(RMIC) -d $(ROOT) -classpath "$(CLASSPATH)" \
 		ptolemy.actor.lib.$(PTPACKAGE).Subscriber
 
 # Get the rest of the rules
