@@ -62,7 +62,7 @@ public class ShowTreePanel extends JScrollPane {
         CompileUnitNode ast = StaticResolution.loadFileName(filename, 2);
         ASTModel model = new ASTModel(ast);
         JTree tree = new JTree(model);
-        tree.setPreferredSize(new Dimension(600,800));
+        tree.setPreferredSize(new Dimension(600, 800));
         tree.setCellRenderer(new ASTNodeRenderer());
         tree.setScrollsOnExpand(true);
 
