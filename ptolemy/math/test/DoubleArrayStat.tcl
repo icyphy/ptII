@@ -304,3 +304,28 @@ test DoubleArrayStat-4.1 {randomGaussian should be different} {
     set r2 [$v2 getrange 0]
     expr {$r1 != $r2}
 } {1}
+
+
+####################################################################
+test DoubleArrayStat-5.1 {crosscorrelation} {
+    set v1 [java::call ptolemy.math.DoubleArrayStat crossCorrelation \
+	    $p1 $p2 4 0 0]
+    set r1 [$v1 getrange ]
+    set v2 [java::call ptolemy.math.DoubleArrayStat crossCorrelation \
+	    $p1 $p2 10 2 3]
+    set r2 [$v2 getrange ]
+    list $r1 $r2 
+} {0.33 {0.04 0.06}}
+
+
+####################################################################
+test DoubleArrayStat-6.1 {autoCorrelation} {
+    set v1 [java::call ptolemy.math.DoubleArrayStat autoCorrelation \
+	    $p1 4 0 0]
+    set r1 [$v1 getrange ]
+    set v2 [java::call ptolemy.math.DoubleArrayStat autoCorrelation \
+	    $p1 10 2 3]
+    set r2 [$v2 getrange ]
+    list $r1 $r2 
+} {0.38 {0.1 0.15}}
+
