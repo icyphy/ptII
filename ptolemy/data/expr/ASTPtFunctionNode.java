@@ -34,6 +34,7 @@ Created : May 1998
 package ptolemy.data.expr;
 
 import ptolemy.data.*;
+import ptolemy.kernel.util.*;
 import java.lang.reflect.*;
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -46,13 +47,25 @@ hierarchy of node objects. This class represents function nodes in
 the parse tree.
 <p>
 A function node is created when a function call is parsed. This node
-will search for the function, using refla]ection, in the classes
+will search for the function, using reflection, in the classes
 registered for this purpose with the parser. Thus to add to the lsit
 of functions available to the expression, it is only necessary to
 create a new class with the functions defined in it and register
 it with the parser. By default only java.lang.Math and
 ptolemy.data.expr.UtilityFunctions are searched for a given function.
 <p>
+The one exception to the above rule is a recursive call to the parser. 
+The function eval() takes as an argument a StringToken, and parses 
+and evaluates the contained String by re-invoking the parser. The 
+scope for the re-evaluation (i.e. the Parameters it can refer to 
+by name) is the same as the main expression in which this function 
+call is embedded. Note that the parse tree as it is returned from 
+the parser will contain a node representing this function. Then 
+when the tree is evaluated, the call to eval() with both create 
+and evaluate the parse tree for the expression argument to obtain 
+the Token to be stored in this node.
+<p>
+FIXME: add note about function argument types and the return type.
 FIXME: need to add in ComplexToken when it is written.
 <p>
 @author Neil Smyth
@@ -65,10 +78,34 @@ FIXME: need to add in ComplexToken when it is written.
 */
 public class ASTPtFunctionNode extends ASTPtRootNode {
     protected String funcName;
+       
 
     protected ptolemy.data.Token _resolveNode()
             throws IllegalArgumentException {
         int args = jjtGetNumChildren();
+        if (funcName.compareTo("eval") == 0) {
+            // Have a recursive call to the parser.
+            String exp = "";
+            try {
+                if (parser == null) {
+                    System.out.println("HELP!!!");
+                }
+                NamedList scope = parser.getScope();
+                exp = childTokens[0].stringValue();
+                ASTPtRootNode tree = parser.generateParseTree(exp, scope);
+                return tree.evaluateParseTree();
+            } catch (IllegalActionException ex) {
+                throw new IllegalArgumentException("ASTPtFunctionNode: could " +
+                "not parse and evaluate expression " + exp + ", " + 
+                ex.getMessage());
+            } catch (IllegalArgumentException ex) {
+                throw new IllegalArgumentException("ASTPtFunctionNode: could " +
+                "not parse and evaluate expression " + exp + ", " + 
+                ex.getMessage());
+            }
+        }
+
+        // Do not have a recursive invocation of the parser.
         Class[] argTypes = new Class[args];
         Object[] argValues = new Object[args];
         // Note: Java makes a distinction between the class objects
