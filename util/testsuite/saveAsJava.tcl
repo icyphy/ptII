@@ -47,3 +47,16 @@ proc saveAsJava {model} {
     exec javac -classpath $relativePathToPTII $javaFile.java
     return [exec java -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class string range $modelName
 }
+
+
+# Generate code for all the xml files in a directory.
+proc autoSaveAsJava {autoDirectory} {
+    foreach file [glob $autoDirectory/*.xml] {
+	puts "------------------ testing $file"
+	test "Auto" "Automatic test in file $file" {
+	    saveAsJava $file
+	    list {}
+	} {{}}
+    }
+}
+
