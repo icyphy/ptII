@@ -71,9 +71,9 @@ public class ODConsonants extends ODStringSource {
         
         _consonants.insertLast( new StringTime( 4.5, "h" ) );
         
-        _consonants.insertLast( new StringTime( 500.0, ";" ) );
+        _consonants.insertLast( new StringTime( 5000.0, ";" ) );
         
-        // Up to "Hello!! The"
+        // Up to "Hello!! The" run
         
         return _consonants;
     }

@@ -62,14 +62,12 @@ public class ODPunctuation extends ODStringSource {
     public LinkedList setUpStrings() {
         
         _punctuation.insertLast( new StringTime( 2.5, "!") ); 
-        
+       
         _punctuation.insertLast( new StringTime( 3.0, "!" ) );
         
         _punctuation.insertLast( new StringTime( 3.5, " " ) );
         
-        _punctuation.insertLast( new StringTime( 5.7, " " ) );
-        
-        _punctuation.insertLast( new StringTime( 500.0, ";" ) );
+        _punctuation.insertLast( new StringTime( 5000.0, ";" ) );
         
         // Up to "Hello!! The"
         
