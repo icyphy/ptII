@@ -52,13 +52,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	ComplexToReal.java\
-	dB.java \
 	DoubleToFix.java\
 	FixToDouble.java\
 	PolarToRectangular.java\
 	RectangularToPolar.java\
 	RealToComplex.java
-	
+
 EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
