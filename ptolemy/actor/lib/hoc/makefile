@@ -52,7 +52,12 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	AbstractCase.java \
-	Case.java
+	Case.java \
+	IterateOverArray.java \
+	MobileFunction.java \
+	MobileModel.java \
+	ModelReference.java \
+	MultiInstanceComposite.java
 
 OTHER_FILES_TO_BE_JARED =
 
