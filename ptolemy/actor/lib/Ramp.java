@@ -34,6 +34,10 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
+import ptolemy.graph.Inequality;
+
+import java.util.Enumeration;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Ramp
@@ -117,23 +121,10 @@ public class Ramp extends TypedAtomicActor {
      *   added together.
      */
     public void initialize() throws IllegalActionException {
+	// FIXME: after the change that initialize() is called
+	// after type resolution, uncomment this line.
+	// _stateToken = init.getToken();
 
-	_stateToken = init.getToken();
-        if(_stateToken == null) {
-            _stateToken = new DoubleToken(0.0);
-            init.setToken(_stateToken);
-        }
-
-        Token stepToken = step.getToken();
-        if(stepToken == null) {
-            stepToken = new DoubleToken(1.0);
-            step.setToken(stepToken);
-        }
-
-	// Add up the value and step parameters and use the type of
-	// the result token as the type of the output port.
-	Class type = (_stateToken.add(stepToken)).getClass();
-        output.setDeclaredType(type);
     }
 
     /** Send out the next ramp output.
@@ -159,6 +150,40 @@ public class Ramp extends TypedAtomicActor {
         }
         // This actor never requests termination.
         return true;
+    }
+
+    /** Return the type constraints that the output type must be
+     *  greater than or equal to the type of the parameters.
+     *  If the parameters have not been set, then they are set
+     *  to type DoubleToken with value 0.0 for init and 1.0 for step.
+     */
+    // FIXME: it may be better to set the default value for
+    // parameters in the constructor. But this requires support
+    // for parameter type change.
+    public Enumeration typeConstraints() {
+        if(init.getToken() == null) {
+            init.setToken(new DoubleToken(0.0));
+        }
+        if(step.getToken() == null) {
+            step.setToken(new DoubleToken(1.0));
+        }
+
+	LinkedList result = new LinkedList();
+	Class initType = init.getToken().getClass();
+	Class stepType = step.getToken().getClass();
+        Inequality ineq = new Inequality(new TypeTerm(initType),
+					 output.getTypeTerm());
+	result.insertLast(ineq);
+        ineq = new Inequality(new TypeTerm(stepType),
+					 output.getTypeTerm());
+	result.insertLast(ineq);
+
+	// FIXME: after the change that initialize() is called
+	// after type resolution, _stateToken init should be
+	// moved to initialize().
+	_stateToken = init.getToken();
+
+	return result.elements();
     }
 
     ///////////////////////////////////////////////////////////////////
