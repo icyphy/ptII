@@ -94,8 +94,8 @@ public class SearchPath extends Vector {
      *  openSource(target, true).
      */
     public File openSource(String target) {
-        // StaticResolutoin.resolveAName() and _requireClass() 
-        // call ClassDecl.loadSource(), which in turn call this method
+        // StaticResolution.resolveAName() and _requireClass() 
+        // call ClassDecl.loadSource(), which in turn call this method.
         return openSource(target, true);
     }
 
