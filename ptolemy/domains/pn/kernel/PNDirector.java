@@ -65,7 +65,10 @@ public class PNDirector extends Director {
             if (_debug > 5 ) System.out.println("PNExecutive: execute()");
             //Creating threads for new actors created and starting them
             Enumeration allMyStars = getNewActors();
+            // Clear the actor list now so that new actors added
+            // by running actors get put into a fresh list.
             clearNewActors();
+
             while (allMyStars.hasMoreElements()) {
                 PNActor star = (PNActor)allMyStars.nextElement();     
                 Thread temp = new Thread(_processGroup, star);
@@ -75,8 +78,6 @@ public class PNDirector extends Director {
                 temp.start();
                 //System.out.println("Started star "+star.getName());
             }
-            //clearNewActors();
-            _mutate = false;
             if (_debug > 5) System.out.println(
                     "PNExecutive: execute(): after while ");
             return true;
@@ -175,9 +176,8 @@ public class PNDirector extends Director {
         }
     }
 
-    public void setMutate(boolean mutate) {
+    public void startNewActors() {
         synchronized(workspace()) {
-            _mutate = mutate;
             workspace().notifyAll();
             return;
         }
@@ -264,28 +264,32 @@ public class PNDirector extends Director {
     //Returns true for termination
     private boolean _handleDeadlock() 
 	    throws IllegalActionException {
-	// This exception should never be thrown!!
+        // This exception should never be thrown!!
         // Process deadlocks
-        if (_debug > 5 )
+        if (_debug > 5 ) {
             System.out.println("PNExecutive: _handleDeadlock()");
+        }
         synchronized(workspace()) {
-            if (_debug > 5 )
+            if (_debug > 5 ) {
                 System.out.println("PNExecutive: _handleDeadlock() synchro");
+            }
             while (!_terminate) {
-	        if (_debug > 5 )
-		    System.out.println("PNExecutive: _handleDeadlock()" +
-                            " !_terminate");
+                if (_debug > 5 ) {
+                    System.out.println("PNExecutive: _handleDeadlock()" +
+                           " !_terminate");
+                }
                 // Wait for a deadlock to occur.
-                while (!_mutate && !_terminate && !_deadlock) {
-                    try {
-                        if (_debug > 7 )
-                            System.out.println("PNExecutive: " +
-                                    "_handleDeadlock(): about to wait()");
-                        workspace().wait();
-                    } 
-                    catch (InterruptedException e) {
-                        System.err.println("Exception: " + e.toString());
-                    }
+                while (!hasNewActors() && !_terminate && !_deadlock) {
+                   try {
+                       if (_debug > 7 ) {
+                           System.out.println("PNExecutive: " +
+                                   "_handleDeadlock(): about to wait()");
+                       }
+                       workspace().wait();
+                   } 
+                   catch (InterruptedException e) {
+                       System.err.println("Exception: " + e.toString());
+                   }
                 }
                 if (_debug > 5) 
                     System.out.println("Term is " + _terminate +
@@ -294,7 +298,7 @@ public class PNDirector extends Director {
                 //FIXME: IS this the best way to check for mutation?
 		// Maybe it should check for workspace version number.
 		//FIXME: Should the flags be reset? 
-		if (_mutate) { 
+		if (hasNewActors()) { 
 		    //_terminate = false;
 		    //_deadlock = false;
 		    return false;
@@ -341,13 +345,12 @@ public class PNDirector extends Director {
                     if(port.isInput()) port.setTerminate();
                 }
             }
-        }	
+        }
     }
     
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    private boolean _mutate = true;
     // Container is the CompositeEntity the executive is responsible for
     private CompositeEntity _container;
     // Is set when a deadlock occurs
