@@ -134,6 +134,15 @@ public class Director extends NamedObj implements Executable {
         }
     }
     
+    /** Test if there are new actors waiting to be scheduled.
+     * @return true if there are new actors
+     */
+    public boolean hasNewActors() {
+        synchronized(workspace()) {
+            return (_listOfNewActors != null);
+        }
+    }
+    
     /** Clears all the actors from the list of new actors
      */
     public void clearNewActors() {
@@ -190,6 +199,53 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
+    public void addMutationListener(MutationListener listener) {
+        synchronized(workspace()) {
+            if (_mutationListeners == null) {
+                _mutationListeners = new LinkedList();
+            }
+            _mutationListeners.insertLast(listener);
+        }
+    }
+
+    public void removeMutationListener(MutationListener listener) {
+        synchronized(workspace()) {
+            _mutationListeners.removeOneOf(listener);
+        }
+    }
+
+    public void queueMutation(Mutation mutation) {
+        synchronized(workspace()) {
+            if (_pendingMutations == null) {
+                _pendingMutations = new LinkedList();
+            }
+            _pendingMutations.insertLast(mutation);
+        }
+    }
+
+    public final void processPendingMutations() {
+        synchronized(workspace()) {
+            Mutation m;
+            if (!_pendingMutations.isEmpty()) {
+                Enumeration mutations = _pendingMutations.elements();
+                while (mutations.hasMoreElements()) {
+                    m = (Mutation)mutations.nextElement();
+                    // do the mutation
+                    m.perform();
+
+                    // inform all listeners
+                    // FIXME the listeners should probably be attached to
+                    // the graph, not the director
+                    Enumeration listeners = _mutationListeners.elements();
+                    while (listeners.hasMoreElements()) {
+                        m.update((MutationListener)listeners.nextElement());
+                    }
+                }
+                // Clear the mutations
+                _pendingMutations = null;
+            }
+        }                    
+    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
@@ -199,5 +255,7 @@ public class Director extends NamedObj implements Executable {
     private boolean _schedulevalid;
     private CompositeActor _subsystem;
     private LinkedList _listOfNewActors = null;
+    private LinkedList _pendingMutations = null;
+    private LinkedList _mutationListeners = null;
     
 }
