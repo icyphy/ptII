@@ -306,6 +306,9 @@ public class Manager extends NamedObj implements Runnable {
         // avoid race conditions.  The model may not have gotten around
         // to starting when finish is requested.
         _finishRequested = true;
+        if (_debugging) {
+            _debug("finish() has been called.");
+        }
         if (_state == IDLE) return;
 
         Nameable container = getContainer();
@@ -314,7 +317,12 @@ public class Manager extends NamedObj implements Runnable {
                     "Attempted to call finish() on an executing manager " +
                     "with no associated CompositeActor model");
         }
-        ((CompositeActor)container).stopFire();
+        // Used to just call stopFire() here, but this does not set
+        // the flag in the director so that isStopRequested() returns
+        // true. We have to set that flag or the actor threads in
+        // threaded domains will not know that a stop has been requested
+        // (vs. a pause).
+        ((CompositeActor)container).stop();
 
         // Since Manager.resume() is synchronized, start a thread
         // to call resume() in order to avoid deadlock
@@ -800,7 +808,8 @@ public class Manager extends NamedObj implements Runnable {
         // actually starts up.
         _finishRequested = false;
         _thread = new PtolemyThread(this);
-        _thread.setPriority(Thread.MIN_PRIORITY);
+        // Why was the priority set to the minimum?  EAL 4/10/03.
+        // _thread.setPriority(Thread.MIN_PRIORITY);
         _thread.start();
     }
 
