@@ -1440,7 +1440,7 @@ public class Plot extends PlotBox {
 
         // If the point is not out of range, draw it.
         boolean pointinside = ypos <= _lry && ypos >= _uly &&
-                xpos <= _lrx && xpos >= _ulx;
+            xpos <= _lrx && xpos >= _ulx;
         if (!clip || pointinside) {
             int xposi = (int)xpos;
             int yposi = (int)ypos;
@@ -1476,7 +1476,7 @@ public class Plot extends PlotBox {
                 case 2:
                     // dots
                     graphics.fillOval(xposi-_radius, yposi-_radius,
-                    _diameter, _diameter);
+                            _diameter, _diameter);
                     break;
                 case 3:
                     // marks
@@ -1487,19 +1487,19 @@ public class Plot extends PlotBox {
                     case 0:
                         // filled circle
                         graphics.fillOval(xposi-_radius, yposi-_radius,
-                        _diameter, _diameter);
+                                _diameter, _diameter);
                         break;
                     case 1:
                         // cross
                         graphics.drawLine(xposi-_radius, yposi-_radius,
-                        xposi+_radius, yposi+_radius);
+                                xposi+_radius, yposi+_radius);
                         graphics.drawLine(xposi+_radius, yposi-_radius,
-                        xposi-_radius, yposi+_radius);
+                                xposi-_radius, yposi+_radius);
                         break;
                     case 2:
                         // square
                         graphics.drawRect(xposi-_radius, yposi-_radius,
-                        _diameter, _diameter);
+                                _diameter, _diameter);
                         break;
                     case 3:
                         // filled triangle
@@ -1525,19 +1525,19 @@ public class Plot extends PlotBox {
                     case 5:
                         // circle
                         graphics.drawOval(xposi-_radius, yposi-_radius,
-                        _diameter, _diameter);
+                                _diameter, _diameter);
                         break;
                     case 6:
                         // plus sign
                         graphics.drawLine(xposi, yposi-_radius, xposi,
-                        yposi+_radius);
+                                yposi+_radius);
                         graphics.drawLine(xposi-_radius, yposi, xposi+_radius,
-                        yposi);
+                                yposi);
                         break;
                     case 7:
                         // filled square
                         graphics.fillRect(xposi-_radius, yposi-_radius,
-                        _diameter, _diameter);
+                                _diameter, _diameter);
                         break;
                     case 8:
                         // triangle
@@ -1562,7 +1562,7 @@ public class Plot extends PlotBox {
                         break;
                     }
                     break;
-                    default:
+                default:
                     // none
                 }
             }
