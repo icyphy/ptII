@@ -59,6 +59,7 @@ import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
@@ -207,6 +208,9 @@ public class PlotterBase extends TypedAtomicActor
      */
     public void configure(URL base, String source, String text)
             throws Exception {
+        _base = base;
+        _source = source;
+        _text = text;
         if (plot instanceof Plot) {
             PlotMLParser parser = new PlotMLParser((Plot)plot);
             if (source != null && !source.trim().equals("")) {
@@ -484,9 +488,32 @@ public class PlotterBase extends TypedAtomicActor
         return new Plot();
     }
 
+    /** Propagate the value of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as this one, or
+     *  a ClassCastException will be thrown.
+     *  @param destination Object to which to propagate the
+     *   value.
+     *  @exception IllegalActionException If the value cannot
+     *   be propagated.
+     */
+    protected void _propagateValue(NamedObj destination)
+            throws IllegalActionException {
+        try {
+            ((Configurable)destination).configure(
+                    _base, _source, _text);
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Propagation failed.");
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
+    /** The base specified in configure(). */
+    protected URL _base;
+    
     /** Container into which this plot should be placed */
     protected Container _container;
 
@@ -495,6 +522,12 @@ public class PlotterBase extends TypedAtomicActor
 
     /** A specification of the size of the plot if it's in its own window. */
     protected SizeAttribute _plotSize;
+
+    /** The source specified in configure(). */
+    protected String _source;
+    
+    /** The text specified in configure(). */
+    protected String _text;
 
     /** A specification for the window properties of the frame.
      */
