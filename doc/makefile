@@ -43,6 +43,7 @@ include $(CONFIG)
 
 EXTRA_SRCS = \
 	acks.htm \
+	authors.htm \
 	banner.htm \
 	body.htm \
 	buttons.htm \
