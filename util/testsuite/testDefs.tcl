@@ -183,6 +183,13 @@ proc test {test_name test_description contents_of_test passing_results {testtype
 		    $code $answer $testtype
 	    puts "---- Result should have been:"
 	    puts "$passing_results"
+	    if { [llength [split $passing_results]] > 7 } {
+		puts "@@@@@ known results is more than 7 lines long, so we run diff"
+		# If the answer is more than 7 lines, try running diff
+		puts [diffText $passing_results $answer]
+		puts "@@@@@ Done running diffText"
+	    }
+
 	    puts "---- $test_name FAILED"
 	    incr FAILED
 	} else {
@@ -468,3 +475,26 @@ proc jdkStackTrace {} {
     puts $errorInfo
 }
 
+
+
+############################################################################
+#### diffText
+# Given two text arguments, exec the diff command and return the results
+proc diffText {texta textb} {
+    set atmpfile "a.diffText"
+    set btmpfile "b.diffText"
+    set afd [open $atmpfile "w"]
+    set bfd [open $btmpfile "w"]
+
+    puts $afd $texta
+    puts $bfd $textb
+    # Flush
+    close $afd
+    close $bfd
+
+    # Use catch in case diff cannot be found
+    catch {exec diff $atmpfile $btmpfile} results
+
+    file delete -force $atmpfile $btmpfile
+    return $results
+}
