@@ -169,7 +169,7 @@ public class IconViewScreen3D extends ViewScreen {
             Raster raster = new Raster(
                     new Point3f(-1.0f, -1.0f, -1.0f),
                     Raster.RASTER_COLOR,
-                    0,0,
+                    0, 0,
                     _frameWidth, _frameHeight,
                     new ImageComponent2D(
                             ImageComponent.FORMAT_RGB,

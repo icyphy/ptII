@@ -183,7 +183,7 @@ abstract public class GRShape2D extends GRActor2D {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
 
     protected BasicFigure _figure;
 

@@ -170,7 +170,7 @@ public class Translate2D extends GRTransform2D {
         }
 
         if (applyTransform) {
-            figure.translate(xOffset,yOffset);
+            figure.translate(xOffset, yOffset);
         }
     }
 }

@@ -469,12 +469,24 @@ public class ViewScreen extends GRActor3D
         */
     }
 
+    /** Get the number of horizontal pixels in the rendered image.
+     */
+    protected int _getHorizontalPixels() throws IllegalActionException {
+        return ((IntToken) horizontalResolution.getToken()).intValue();
+    }
+
     /** The ViewScreen does not have an associated Java3D node
      *
      *  @return null
      */
     protected Node _getNodeObject() {
         return null;
+    }
+
+    /** Get the number of vertical pixels in the rendered image.
+     */
+    protected int _getVerticalPixels() throws IllegalActionException {
+        return ((IntToken) verticalResolution.getToken()).intValue();
     }
 
     /** Makes the background for the viewScreen
@@ -500,18 +512,6 @@ public class ViewScreen extends GRActor3D
         }
         _branchRoot.compile();
         _simpleUniverse.addBranchGraph(_branchRoot);
-    }
-
-    /** Get the number of horizontal pixels in the rendered image.
-     */
-    protected int _getHorizontalPixels() throws IllegalActionException {
-        return ((IntToken) horizontalResolution.getToken()).intValue();
-    }
-
-    /** Get the number of vertical pixels in the rendered image.
-     */
-    protected int _getVerticalPixels() throws IllegalActionException {
-        return ((IntToken) verticalResolution.getToken()).intValue();
     }
 
     /** Start the internal Java3D renderer
