@@ -70,8 +70,8 @@ public class DoubleToken extends ScalarToken {
         } /*else if (a instanceof ComplexToken) {
             return a.add(this);
         }*/ else if (a instanceof ScalarToken) {
-            _value = _value + ((ScalarToken)a).doubleValue();
-            return new DoubleToken(_value);
+            double tmp = _value + ((ScalarToken)a).doubleValue();
+            return new DoubleToken(tmp);
         } else {
             String str = " between " + this.getClass().getName() + " and ";
             str = str + a.getClass().getName();
@@ -88,8 +88,8 @@ public class DoubleToken extends ScalarToken {
      */
     public Token subtract(Token a) throws IllegalActionException {
         if (a instanceof ScalarToken) {
-            _value = _value - ((ScalarToken)a).doubleValue();
-            return new DoubleToken(_value);
+            double tmp = _value - ((ScalarToken)a).doubleValue();
+            return new DoubleToken(tmp);
         } /*else if (a instanceof ComplexToken) {
             return a.subtract(this);
         }*/  else {
@@ -108,8 +108,8 @@ public class DoubleToken extends ScalarToken {
      */
     public Token multiply(Token a) throws IllegalActionException {
          if (a instanceof ScalarToken) {
-            _value = _value * ((ScalarToken)a).doubleValue();
-            return new DoubleToken(_value);
+            double tmp = _value * ((ScalarToken)a).doubleValue();
+            return new DoubleToken(tmp);
          } /*else if (a instanceof ComplexToken) {
             return a.multiply(this);
         }*/ else {
@@ -128,8 +128,8 @@ public class DoubleToken extends ScalarToken {
      */
     public Token divide(Token a) throws IllegalActionException {
         if (a instanceof ScalarToken) {
-            _value = _value / ((ScalarToken)a).doubleValue();
-            return new DoubleToken(_value);
+            double tmp = _value / ((ScalarToken)a).doubleValue();
+            return new DoubleToken(tmp);
         /*} else if (a instanceof ComplexToken) {
              // buggyy, do what???
         }*/ 
@@ -150,8 +150,8 @@ public class DoubleToken extends ScalarToken {
      */
     public Token modulo(Token a) throws IllegalActionException {
         if (a instanceof ScalarToken) {
-            _value = _value % ((ScalarToken)a).doubleValue();
-            return new DoubleToken(_value);
+            double tmp = _value % ((ScalarToken)a).doubleValue();
+            return new DoubleToken(tmp);
         } else {
             String str = "supported between " + this.getClass().getName();
             str = str + " and " + a.getClass().getName();
@@ -183,11 +183,7 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-    /** Set the value of the token to be the specified value.
-     */
-    public void setValue(double value) {
-	_value = value;
-    }
+    
 
     // Return a reference to a Complex. The real part of the Complex
     // is the value in the token, the imaginary part is set to 0.
@@ -215,9 +211,14 @@ public class DoubleToken extends ScalarToken {
 	    throw new IllegalArgumentException(" here na na na " + e.getMessage());
 	}
     }
+    
+    public double getValue() {
+        return _value;
+    }
 
     /** Set the value in the token 
-     *  @param d The new value for the token 
+     *  @param d The new value for the token
+     */
     public void setValue(double d) {
         _value = d;
     }
