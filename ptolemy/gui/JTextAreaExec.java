@@ -280,7 +280,6 @@ public class JTextAreaExec extends JPanel {
 			int processReturnCode = _process.waitFor();
 			synchronized(this) {
 			    _process = null;
-                            //_execses.remove(this);
 			}
 			if (processReturnCode != 0) break;
 		    } catch (InterruptedException interrupted) {
