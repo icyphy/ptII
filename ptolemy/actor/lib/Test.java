@@ -90,7 +90,7 @@ of the Stop actor to stop the test upon successfully matching the
 test data.
 
 @see NonStrictTest
-@author Edward A. Lee, Christopher Hylands, Jim Armsrong
+@author Edward A. Lee, Christopher Hylands, Jim Armstrong
 @version $Id$
 @since Ptolemy II 1.0
 */
