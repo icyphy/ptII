@@ -193,6 +193,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             }
         }
 
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor.specializeTokens(): "
+                    + "End . . .");
+        }
         return declToTokenTypeMap;
     }
 
@@ -256,6 +260,24 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     }
 
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
+        String methodName = node.getName().getIdent();
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor.visitMethodDeclNode():" +
+			       methodName);
+        }
+        // get rid of the following methods
+        if ( methodName.equals("attributeChanged") ||
+                methodName.equals("attributeTypeChanged") ||
+		methodName.equals("clone") ||
+		methodName.equals("iterate")
+             ) {
+	    System.out.println(
+                    "SpecializedTokenVisitor.visitMethodDeclNode(): " +
+                    "removing " + methodName);
+
+            return NullValue.instance;
+        }
+
         // make sure we process the parameters first
         TNLManip.traverseList(this, null, node.getParams());
 
@@ -678,6 +700,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 		return null;
 	    } else {
 		if (_debug) {
+
 		    System.err.println("SpecializedTokenVisitor._makeVariableTerm:"
 				       + " we have a Token");
 		}
