@@ -676,13 +676,6 @@ public class NamedObj implements Nameable, Debuggable,
                         + "    \"http://ptolemy.eecs.berkeley.edu"
                         + "/xml/dtd/MoML_1.dtd\">\n");
             }
-            // Add the version.
-//              output.write(_getIndentPrefix(depth)
-//                      + "<entity name=\"_createdBy\" " 
-//                      + "class=\"ptolemy.kernel.util.VersionAttribute\" "
-//                      + "value=\""
-//                      + VersionAttribute.CURRENT_VERSION.getExpression()
-//                      + "\">\n");
         }
         output.write(_getIndentPrefix(depth)
                 + "<"
@@ -695,6 +688,17 @@ public class NamedObj implements Nameable, Debuggable,
         } else {
             output.write(">\n");
         }
+
+        if (depth == 0) {
+            // Add the version.
+            output.write(_getIndentPrefix(depth+1)
+                    + "<property name=\"_createdBy\" " 
+                    + "class=\"ptolemy.kernel.util.VersionAttribute\" "
+                    + "value=\""
+                    + VersionAttribute.CURRENT_VERSION.getExpression()
+                    + "\"/>\n");
+	}
+
         if (getMoMLInfo().deferTo == null) {
             _exportMoMLContents(output, depth + 1);
         } else {

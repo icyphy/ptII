@@ -82,6 +82,7 @@ public class VersionAttribute
     public VersionAttribute(String expression) throws IllegalActionException {
 	super();
 	setExpression(expression);
+	setVisibility(Settable.NONE);
     }
 
     /** Construct an attribute with the given name contained by the
@@ -101,6 +102,7 @@ public class VersionAttribute
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _tupleList = new LinkedList();
+	setVisibility(Settable.NONE);
     }
 
     ///////////////////////////////////////////////////////////////////
