@@ -29,12 +29,14 @@
 
 package ptolemy.copernicus.kernel;
 import ptolemy.math.Complex;
+import ptolemy.math.FixPoint;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.FixToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -269,6 +271,18 @@ public class PtolemyUtilities {
                     localName, stringTokenClass, stringTokenConstructor,
                     StringConstant.v(((StringToken)token).stringValue()));
             return tokenLocal;
+        } else if (token instanceof FixToken) {
+            FixToken fixToken = (FixToken)token;
+            FixPoint fixValue = fixToken.fixValue();  
+            List args = new ArrayList(3);
+            // Some possible loss of precision?
+            args.add(DoubleConstant.v(fixValue.doubleValue()));
+            args.add(IntConstant.v(fixValue.getPrecision().getNumberOfBits()));
+            args.add(IntConstant.v(fixValue.getPrecision().getIntegerBitLength()));
+            Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
+                    localName, fixTokenClass, fixTokenThreeArgConstructor,
+                    args);
+            return tokenLocal;
         } else if (token instanceof MatrixToken ||
                    token instanceof FunctionToken) {
             // Can't do this for all tokens, because it causes an
@@ -318,6 +332,26 @@ public class PtolemyUtilities {
         return _buildConstantTokenLocal(body, insertPoint,
                 localName, tokenClass,
                 tokenConstructor, constructorArg);
+    }
+
+    private static Local _buildConstantTokenLocal(Body body,
+            Unit insertPoint, String localName,
+            SootClass tokenClass, SootMethod tokenConstructor,
+            List constructorArgs) {
+        RefType tokenType = RefType.v(tokenClass);
+        Local tokenLocal = Jimple.v().newLocal(localName, tokenType);
+        body.getLocals().add(tokenLocal);
+        body.getUnits().insertBefore(
+                Jimple.v().newAssignStmt(tokenLocal,
+                        Jimple.v().newNewExpr(tokenType)),
+                insertPoint);
+        body.getUnits().insertBefore(
+                Jimple.v().newInvokeStmt(
+                        Jimple.v().newSpecialInvokeExpr(tokenLocal,
+                                tokenConstructor,
+                                constructorArgs)),
+                insertPoint);
+        return tokenLocal;   
     }
 
     private static Local _buildConstantTokenLocal(Body body,
@@ -1179,6 +1213,7 @@ public class PtolemyUtilities {
     // Soot class representing the ptolemy.data.BooleanToken class.
     public static SootClass fixTokenClass;
     public static SootMethod fixTokenConstructor;
+    public static SootMethod fixTokenThreeArgConstructor;
     public static SootMethod fixValueMethod;
     public static SootClass fixMatrixTokenClass;
     public static SootMethod fixMatrixTokenConstructor;
@@ -1327,6 +1362,9 @@ public class PtolemyUtilities {
 
     // Soot Class representing the ptolemy.kernel.Port class.
     public static SootClass portClass;
+
+    // Soot Method representing PortParameter.getPort().
+    public static SootMethod portParameterGetPortMethod;
 
     // Soot Method representing the
     // ptolemy.actor.TypedIOPort.setTypeEquals method.
@@ -1577,6 +1615,10 @@ public class PtolemyUtilities {
         ioportClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedIOPort");
         ioportType = RefType.v(ioportClass);
+
+        Scene.v().loadClassAndSupport("ptolemy.actor.parameters.PortParameter");
+        portParameterGetPortMethod = 
+            Scene.v().getMethod("<ptolemy.actor.parameters.PortParameter: ptolemy.actor.parameters.ParameterPort getPort()>");
         portSetTypeMethod =
             Scene.v().getMethod("<ptolemy.actor.TypedIOPort: void setTypeEquals(ptolemy.data.type.Type)>");
 
@@ -1696,6 +1738,8 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.data.FixToken");
         fixTokenConstructor =
             fixTokenClass.getMethod("void <init>(ptolemy.math.FixPoint)");
+        fixTokenThreeArgConstructor =
+            fixTokenClass.getMethod("void <init>(double,int,int)");
         fixValueMethod =
             scalarTokenClass.getMethod("ptolemy.math.FixPoint fixValue()");
         fixMatrixTokenClass =
