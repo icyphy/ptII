@@ -187,8 +187,8 @@ public class FieldsForPortsTransformer extends SceneTransformer {
 
     // Given a local variable that refers to an entity, and the name
     // of an port in that object, return a new field ref that
-    // refers to that port.
-    private static FieldRef _createPortField(Local baseLocal, 
+    // refers to that port.  If no reference is found, then return null.
+    private static Value _createPortField(Local baseLocal, 
             String name, Unit unit, LocalDefs localDefs,
             Map classToObjectMap, Map portToFieldMap) {
         // FIXME: This is not enough.
@@ -204,7 +204,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 return Jimple.v().newInstanceFieldRef(
                         baseLocal, portField);
             } else {
-                return null;
+                return NullConstant.v();
             }
         } else {
             // Walk back and get the definition of the field.

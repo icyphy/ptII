@@ -75,24 +75,18 @@ proc autoDeepCG {autoDirectory} {
 ####
 #
 
-#  test Deep-1.1 {Compile and run the Orthocomm test} {
-#      set result [sootDeepCodeGeneration \
-#  	    ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom]
-#      lrange $result 0 9
-#  } {2 4 6 8 10 12 14 16 18 20}
-
 # First, do an SDF test just to be sure things are working
-test Deep-1.2 {Compile and run the SDF IIR test} {
+test Deep-1.1 {Compile and run the SDF test} {
     set result [sootCodeGeneration \
-	    [file join $relativePathToPTII ptolemy actor lib test auto \
-	    IIR.xml] "Deep"]
+  	    [file join $relativePathToPTII ptolemy actor lib test auto \
+		 MathFunction3.xml] "Deep"]
     list {}
 } {{}}
 
-test Deep-1.3 {Compile and run the SDF ArrayAppend test} {
-    set result [sootDeepCodeGeneration \
-  	    [file join $relativePathToPTII ptolemy actor lib test auto \
-  	    ArrayAppend.xml "Deep"]]
+test Deep-1.2 {Compile and run the SDF IIR test} {
+    set result [sootCodeGeneration \
+	    [file join $relativePathToPTII ptolemy actor lib test auto \
+		 IIR.xml] "Deep"]
     list {}
 } {{}}
 
