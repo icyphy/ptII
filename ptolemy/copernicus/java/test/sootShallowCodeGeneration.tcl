@@ -97,13 +97,13 @@ proc sootShallowCodeGeneration {modelPath} {
 
     set results ""
     # make -C is a GNU make extension that changes to a directory
-    # We run jsCompileShallowDemo so that we can compile under
-    # JavaScope
+    set results ""
     if [catch {set results [exec make -C .. MODEL=$model \
 	    SOURCECLASS=$modelPath compileShallowDemo]} errMsg] {
 	puts $results
 	error $errMsg
     }
+    puts $results
     # If the model has a different name than the file name, we
     # handle it here.
     set results [exec make -C .. MODEL=$modelName \

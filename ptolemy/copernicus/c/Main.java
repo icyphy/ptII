@@ -30,7 +30,7 @@
 package ptolemy.copernicus.c;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.ActorTransformer;
+import ptolemy.copernicus.java.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.util.IllegalActionException;

@@ -31,7 +31,7 @@
 package ptolemy.copernicus.jhdl;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.ActorTransformer;
+import ptolemy.copernicus.java.ActorTransformer;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.domains.sdf.kernel.SDFDirector;
