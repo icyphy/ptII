@@ -222,12 +222,18 @@ public class GraphEditor extends MDIApplication {
 	// treepane constructor.
         createTreeNodes(pane, "", lib);	
 	
-        // FIXME This should be setDividerLocation(double), but this 
-        // appears to be broken in jdk1.2.2.   
 	JSplitPane splitPane = frame.getSplitPane();
+
+	// There are differences in the way swing acts in JDK1.2 and 1.3
+	// The way to get it to work with both is to set
+	// the preferred size along with the minimum size.   JDK1.2 has a 
+	// bug where the preferred size may be inferred to be less than the
+	// minimum size when the pane is first created.  
 	pane.setMinimumSize(new Dimension(150,150));
 	((JComponent)pane.getTopComponent()).
-	    setMinimumSize(new Dimension(100,100));
+	    setMinimumSize(new Dimension(150,150));
+	((JComponent)pane.getTopComponent()).
+	    setPreferredSize(new Dimension(150,150));
 	splitPane.validate();	
     }
     
