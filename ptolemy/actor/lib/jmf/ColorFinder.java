@@ -61,22 +61,22 @@ public class ColorFinder extends TypedAtomicActor {
      *   actor with this name.
      */
     public ColorFinder(CompositeEntity container, String name)
-	    throws IllegalActionException, NameDuplicationException {
-	super(container, name);
-	input = new TypedIOPort(this, "input", true, false);
-	outputX = new TypedIOPort(this, "outputX", false, true);
-	outputY = new TypedIOPort(this, "outputY", false, true);
-	input.setTypeEquals(BaseType.OBJECT);
-	outputX.setTypeEquals(BaseType.DOUBLE);
-	outputY.setTypeEquals(BaseType.DOUBLE);
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        input = new TypedIOPort(this, "input", true, false);
+        outputX = new TypedIOPort(this, "outputX", false, true);
+        outputY = new TypedIOPort(this, "outputY", false, true);
+        input.setTypeEquals(BaseType.OBJECT);
+        outputX.setTypeEquals(BaseType.DOUBLE);
+        outputY.setTypeEquals(BaseType.DOUBLE);
 
         /** The default values correspond to the color green */
-	yLowValue = new Parameter(this, "yLowValue", new IntToken("110"));
-	yHighValue = new Parameter(this, "yHighValue", new IntToken("210"));
-	uLowValue = new Parameter(this, "uLowValue", new IntToken("85"));
-	uHighValue = new Parameter(this, "uHighValue", new IntToken("110"));
-	vLowValue = new Parameter(this, "vLowValue", new IntToken("120"));
-	vHighValue = new Parameter(this, "vHighValue", new IntToken("130"));
+        yLowValue = new Parameter(this, "yLowValue", new IntToken("110"));
+        yHighValue = new Parameter(this, "yHighValue", new IntToken("210"));
+        uLowValue = new Parameter(this, "uLowValue", new IntToken("85"));
+        uHighValue = new Parameter(this, "uHighValue", new IntToken("110"));
+        vLowValue = new Parameter(this, "vLowValue", new IntToken("120"));
+        vHighValue = new Parameter(this, "vHighValue", new IntToken("130"));
 
 
     }
@@ -125,51 +125,51 @@ public class ColorFinder extends TypedAtomicActor {
      *   or if a token is received that contains a null image.
      */
     public void fire() throws IllegalActionException {
-	super.fire();
-	if (input.hasToken(0)) {
-	    ObjectToken objectToken = (ObjectToken) input.get(0);
-	    Buffer in = (Buffer) objectToken.getValue();
-	    VideoFormat videoFormat = (VideoFormat)in.getFormat();
-	    YUVFormat yuvFormat = (YUVFormat) videoFormat;
-	    byte[] data = (byte[])in.getData();
-	    if (data != null) {
-		System.arraycopy(data, yuvFormat.getOffsetY(),
+        super.fire();
+        if (input.hasToken(0)) {
+            ObjectToken objectToken = (ObjectToken) input.get(0);
+            Buffer in = (Buffer) objectToken.getValue();
+            VideoFormat videoFormat = (VideoFormat)in.getFormat();
+            YUVFormat yuvFormat = (YUVFormat) videoFormat;
+            byte[] data = (byte[])in.getData();
+            if (data != null) {
+                System.arraycopy(data, yuvFormat.getOffsetY(),
                         YArray, 0, YArray.length);
-		System.arraycopy(data, yuvFormat.getOffsetU(),
+                System.arraycopy(data, yuvFormat.getOffsetU(),
                         UArray, 0, UArray.length);
-		System.arraycopy(data, yuvFormat.getOffsetV(),
+                System.arraycopy(data, yuvFormat.getOffsetV(),
                         VArray, 0, VArray.length);
 
-		for (int x = 0; x < frameWidth; x += 1) {
-		    for (int y = 0; y < frameHeight; y += 1) {
-			int yComp = _getYComponent(x, y);
-			int uComp = _getUComponent(x, y);
-			int vComp = _getVComponent(x, y);
+                for (int x = 0; x < frameWidth; x += 1) {
+                    for (int y = 0; y < frameHeight; y += 1) {
+                        int yComp = _getYComponent(x, y);
+                        int uComp = _getUComponent(x, y);
+                        int vComp = _getVComponent(x, y);
 
-			int compInClass =
+                        int compInClass =
                             yClass[yComp] & uClass[uComp] & vClass[vComp];
-			if (compInClass==1) {
-			    sumX += x;
-			    sumY += y;
-			    inCount += 1;
-			}
-		    }
-		}
-		if (inCount > 0) {
-		    double xLocation = (double) sumX/inCount;
-		    double yLocation = (double) (frameHeight - sumY/inCount);
-		    outputX.send(0, new DoubleToken(xLocation));
-		    outputY.send(0, new DoubleToken(yLocation));
-		    if (_debugging) {
-			_debug("just sent " + (int)xLocation
+                        if (compInClass==1) {
+                            sumX += x;
+                            sumY += y;
+                            inCount += 1;
+                        }
+                    }
+                }
+                if (inCount > 0) {
+                    double xLocation = (double) sumX/inCount;
+                    double yLocation = (double) (frameHeight - sumY/inCount);
+                    outputX.send(0, new DoubleToken(xLocation));
+                    outputY.send(0, new DoubleToken(yLocation));
+                    if (_debugging) {
+                        _debug("just sent " + (int)xLocation
                                 + "and " + (int)yLocation);
-		    }
-		}
-		inCount = 0;
-		sumX = 0;
-		sumY = 0;
-	    }
-	}
+                    }
+                }
+                inCount = 0;
+                sumX = 0;
+                sumY = 0;
+            }
+        }
     }
 
     /** Initialize this actor.
@@ -177,27 +177,27 @@ public class ColorFinder extends TypedAtomicActor {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void initialize() throws IllegalActionException {
-	super.initialize();
-	_yLow = ((IntToken)yLowValue.getToken()).intValue();
-	_yHigh = ((IntToken)yHighValue.getToken()).intValue();
-	_uLow = ((IntToken)uLowValue.getToken()).intValue();
-	_uHigh = ((IntToken)uHighValue.getToken()).intValue();
-	_vLow = ((IntToken)vLowValue.getToken()).intValue();
-	_vHigh = ((IntToken)vHighValue.getToken()).intValue();
+        super.initialize();
+        _yLow = ((IntToken)yLowValue.getToken()).intValue();
+        _yHigh = ((IntToken)yHighValue.getToken()).intValue();
+        _uLow = ((IntToken)uLowValue.getToken()).intValue();
+        _uHigh = ((IntToken)uHighValue.getToken()).intValue();
+        _vLow = ((IntToken)vLowValue.getToken()).intValue();
+        _vHigh = ((IntToken)vHighValue.getToken()).intValue();
 
-	for (int i = 0; i < histSize; i += 1) {
-	    if (i > _yLow && i < _yHigh) {
-		yClass[i] = 1; }
-	    else {
-		yClass[i] = 0; }
-	    if (i > _uLow && i < _uHigh) {
-		uClass[i] = 1; }
-	    else {
-		uClass[i] = 0; }
-	    if (i > _vLow && i < _vHigh) {
-		vClass[i] = 1; }
-	    else { vClass[i] = 0; }
-	}
+        for (int i = 0; i < histSize; i += 1) {
+            if (i > _yLow && i < _yHigh) {
+                yClass[i] = 1; }
+            else {
+                yClass[i] = 0; }
+            if (i > _uLow && i < _uHigh) {
+                uClass[i] = 1; }
+            else {
+                uClass[i] = 0; }
+            if (i > _vLow && i < _vHigh) {
+                vClass[i] = 1; }
+            else { vClass[i] = 0; }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

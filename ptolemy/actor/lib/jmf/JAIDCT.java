@@ -43,21 +43,21 @@ import javax.media.jai.RenderedOp;
 public class JAIDCT extends Transformer {
 
     public JAIDCT(CompositeEntity container, String name)
-	     throws IllegalActionException, NameDuplicationException {
-	super(container, name);
-	input.setTypeEquals(BaseType.OBJECT);
+             throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
 
     }
 
     public void fire() throws IllegalActionException {
-	super.fire();
-	dctParameters = new ParameterBlock();
-	ObjectToken objectToken = (ObjectToken) input.get(0);
-	image = (RenderedOp) objectToken.getValue();
-	dctParameters.addSource(image);
-	RenderedOp Dct = JAI.create("dct", dctParameters, null);
-	output.send(0, new ObjectToken(Dct));
+        super.fire();
+        dctParameters = new ParameterBlock();
+        ObjectToken objectToken = (ObjectToken) input.get(0);
+        image = (RenderedOp) objectToken.getValue();
+        dctParameters.addSource(image);
+        RenderedOp Dct = JAI.create("dct", dctParameters, null);
+        output.send(0, new ObjectToken(Dct));
     }
     public RenderedOp image;
     public ParameterBlock dctParameters;
