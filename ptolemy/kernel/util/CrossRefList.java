@@ -236,23 +236,28 @@ public final class CrossRefList implements Serializable  {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // NOTE: Because of a bug in various versions of JDK 1.1, we make
+    // things that should be private "friendly" (package protected).
+    // This permits them to work in applets.  Once we settle on JDK 1.2,
+    // these can be made private again.
+
     // Version number is incremented each time the list is modified.
     // This is used to make sure that elements accessed via an enumeration
     // are valid.  This is inspired by a similar mechanism in Doug Lea's
     // Java Collections.
-    private long _listVersion = 0;
+    /* private */ long _listVersion = 0;
 
     // The code ensures that if this is non-zero, then _headNode is non-null.
-    private int _size = 0;
+    /* private */ int _size = 0;
 
-    private CrossRef _headNode;
+    /* private */ CrossRef _headNode;
 
-    private CrossRef _lastNode;
+    /* private */ CrossRef _lastNode;
 
     // NOTE: In jdk 1.2 or higher, this could be made final to prohibit
     // what is called "reference reseating" (not resetting), i.e. to
     // make the variable immutable.
-    private Object _container;
+    /* private */ Object _container;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -268,13 +273,13 @@ public final class CrossRefList implements Serializable  {
 
         protected CrossRef _far;
 
-        private CrossRef _next;
+        /* private */ CrossRef _next;
 
-        private CrossRef _previous;
+        /* private */ CrossRef _previous;
 
-        private CrossRef() { this((CrossRef)null); }
+        /* private */ CrossRef() { this((CrossRef)null); }
 
-        private CrossRef(CrossRef spouse) {
+        /* private */ CrossRef(CrossRef spouse) {
             _far = spouse;
             if(_size > 0) {
                 _previous = _lastNode;
@@ -288,24 +293,24 @@ public final class CrossRefList implements Serializable  {
             ++_size;
         }
 
-        private synchronized Object _nearContainer() {
+        /* private */ synchronized Object _nearContainer() {
             return _container;
         }
 
-        private synchronized Object _farContainer() {
+        /* private */ synchronized Object _farContainer() {
             return _far._nearContainer();
         }
 
-        private synchronized CrossRefList _nearList() {
+        /* private */ synchronized CrossRefList _nearList() {
             return CrossRefList.this;
         }
 
-        private synchronized void _dissociate() {
+        /* private */ synchronized void _dissociate() {
             _unlink(); // Remove this.
             _far._unlink(); // Remove far
         }
 
-        private synchronized void _unlink() {
+        /* private */ synchronized void _unlink() {
             ++_listVersion;
             // Removes this from enclosing CrossRefList.
             if(_next != null)
@@ -324,7 +329,7 @@ public final class CrossRefList implements Serializable  {
     /** Enumerate the objects pointed to by the list.
      *  @see CrossRefList
      */
-    private class CrossRefEnumeration implements Enumeration {
+    /* private */ class CrossRefEnumeration implements Enumeration {
 
         public CrossRefEnumeration() {
             _enumeratorVersion = _listVersion;
@@ -362,9 +367,9 @@ public final class CrossRefList implements Serializable  {
             }
         }
 
-        private long _enumeratorVersion;
+        /* private */ long _enumeratorVersion;
 
-        private CrossRef _ref;
+        /* private */ CrossRef _ref;
     }
 }
 
