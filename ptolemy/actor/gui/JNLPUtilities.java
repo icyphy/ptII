@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -147,7 +147,7 @@ public class JNLPUtilities {
         // get the suffix from the jarURLName.
         if (suffix == null) {
             // If the jarURLName does not contain a ".", then we pass
-            // suffix=null to File.createTempFile(), which defaults
+            // suffix = null to File.createTempFile(), which defaults
             // to ".tmp"
             if (jarURLName.lastIndexOf('.') != -1) {
                 suffix = jarURLName.substring(jarURLName.lastIndexOf('.'));
