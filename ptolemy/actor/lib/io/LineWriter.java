@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
@@ -77,7 +77,7 @@ public class LineWriter extends Sink {
         fileName = new FileAttribute(this, "fileName");
         fileName.setExpression("System.out");
 
-	_attachText("_iconDescription", "<svg>\n"
+        _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" "
                 + "width=\"50\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
