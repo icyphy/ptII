@@ -1,4 +1,6 @@
-/*
+/* A static class that allows debug print statements to be inserted
+into code and easily ignored when not needed.
+
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
@@ -23,10 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-*/
 
-/* This is an static class that allows debug print statements to be
-   inserted into code and easily ignored when not needed.
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */

@@ -1,4 +1,5 @@
-/*
+/* An Interface for Objects that wish to be notified of debugging events.
+
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
@@ -23,8 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-*/
-/* An Interface for Objects that wish to be notified of debugging events.
+
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
