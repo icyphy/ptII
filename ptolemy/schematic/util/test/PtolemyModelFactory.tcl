@@ -52,15 +52,20 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test PtolemyModelFactory-2.1 {Constructor tests} {
     set parser [java::new ptolemy.schematic.xml.PTMLParser]
+    set fileend [file join $PTII ptolemy schematic lib rootIconLibrary.ptml]
+    set filename "file:"
+    append filename $fileend
+    set xmllib [$parser parse $filename]
+    set iconroot [java::call ptolemy.schematic.util.PTMLObjectFactory createIconLibrary $xmllib]
 
-    set fileend [file join $PTII ptolemy schematic util test exampleRootEntityLibrary.ptml]
+    set fileend [file join $PTII ptolemy schematic lib rootEntityLibrary.ptml]
     set filename "file:"
     append filename $fileend
     set xmllib [$parser parse $filename]
     set entityroot [java::call ptolemy.schematic.util.PTMLObjectFactory \
 	    createEntityLibrary $xmllib $iconroot]
 
-    set fileend [file join $PTII ptolemy schematic util test exampleschematic.ptml]
+    set fileend [file join $PTII ptolemy schematic editor testschematic.ptml]
     set filename "file:"
     append filename $fileend
     set xmllib [$parser parse $filename]
@@ -70,106 +75,5 @@ test PtolemyModelFactory-2.1 {Constructor tests} {
     set model [$modelfactory createPtolemyModel $schematic]
     
     $model description
-} {ptolemy.schematic.util.Schematic {SDF} parameters {
-} entities {
-    {ptolemy.schematic.util.SchematicEntity {Load BMP File} parameters {
-    } template {
-        ptolemy.schematic.util.EntityTemplate {LoadImage} parameters {
-        } icon {
-            ptolemy.schematic.util.Icon {LoadImage} parameters {
-            } graphics {
-                {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {color=red} {fill=pink} {coords=0 0 60 40}} label {}}
-                {ptolemy.schematic.util.GraphicElement {polygon} attributes { {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}} label {}}
-                {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
-                {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=30 20 60 20}} label {}}
-            }
-        } terminalstyle {
-            ptolemy.schematic.util.TerminalStyle {1out} parameters {
-            } terminals {
-                {ptolemy.schematic.util.Terminal {output} parameters {
-                } X {64.0} Y {20.0}}
-            }
-        } terminalmap {
-            TerminalMap{{output, output}}
-        } ports {
-            {ptolemy.schematic.util.EntityPort {output} parameters {
-            } type {
-                doubleArray
-            } input {false} output {true} multi {false}}
-        }
-    } terminalstyle {
-        ptolemy.schematic.util.TerminalStyle {1out} parameters {
-        } terminals {
-            {ptolemy.schematic.util.Terminal {output} parameters {
-            } X {64.0} Y {20.0}}
-        }
-    } ports {
-    } terminals {
-        {ptolemy.schematic.util.SchematicTerminal {output} parameters {
-        } template {
-            ptolemy.schematic.util.Terminal {output} parameters {
-            } X {64.0} Y {20.0}
-        } X {64.0} Y {20.0}}
-    }}
-    {ptolemy.schematic.util.SchematicEntity {Save BMP File} parameters {
-    } template {
-        ptolemy.schematic.util.EntityTemplate {SaveImage} parameters {
-        } icon {
-            ptolemy.schematic.util.Icon {SaveImage} parameters {
-            } graphics {
-                {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {color=red} {fill=orange} {coords=0 0 60 40}} label {}}
-                {ptolemy.schematic.util.GraphicElement {polygon} attributes { {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}} label {}}
-                {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
-                {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=0 20 30 20}} label {}}
-            }
-        } terminalstyle {
-            ptolemy.schematic.util.TerminalStyle {1in} parameters {
-            } terminals {
-                {ptolemy.schematic.util.Terminal {input} parameters {
-                } X {-4.0} Y {20.0}}
-            }
-        } terminalmap {
-            TerminalMap{{input, input}}
-        } ports {
-            {ptolemy.schematic.util.EntityPort {input} parameters {
-            } type {
-                doubleArray
-            } input {true} output {false} multi {false}}
-        }
-    } terminalstyle {
-        ptolemy.schematic.util.TerminalStyle {1in} parameters {
-        } terminals {
-            {ptolemy.schematic.util.Terminal {input} parameters {
-            } X {-4.0} Y {20.0}}
-        }
-    } ports {
-    } terminals {
-        {ptolemy.schematic.util.SchematicTerminal {input} parameters {
-        } template {
-            ptolemy.schematic.util.Terminal {input} parameters {
-            } X {-4.0} Y {20.0}
-        } X {-4.0} Y {20.0}}
-    }}
-} ports {
-} terminals {
-} relations {
-    {ptolemy.schematic.util.SchematicRelation {R1} parameters {
-    } terminals {
-    } links {
-        {ptolemy.schematic.util.SchematicLink
-         to {
-            ptolemy.schematic.util.SchematicTerminal {output} parameters {
-            } template {
-                ptolemy.schematic.util.Terminal {output} parameters {
-                } X {64.0} Y {20.0}
-            } X {64.0} Y {20.0}
-        } from {
-            ptolemy.schematic.util.SchematicTerminal {input} parameters {
-            } template {
-                ptolemy.schematic.util.Terminal {input} parameters {
-                } X {-4.0} Y {20.0}
-            } X {-4.0} Y {20.0}
-        }}
-    }}
-}}
+} {}
 

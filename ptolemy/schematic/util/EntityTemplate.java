@@ -236,6 +236,12 @@ public class EntityTemplate extends PTMLObject {
         else
             result += _icon._description(indent + 1, 0) + "\n";
 
+	result += _getIndentPrefix(indent) + "} implementation {\n";
+	if(_terminalstyle == null) 
+            result += _getIndentPrefix(indent + 1) + "null\n";
+        else
+            result += _getIndentPrefix(indent + 1) + _implementation + "\n";
+
 	result += _getIndentPrefix(indent) + "} terminalstyle {\n";
 	if(_terminalstyle == null) 
             result += _getIndentPrefix(indent + 1) + "null\n";

@@ -111,6 +111,8 @@ test PTMLObjectFactory-2.2 {Constructor tests} {
 } sublibraries {
 } entites {
     {ptolemy.schematic.util.EntityTemplate {LoadImage} parameters {
+        {ptolemy.schematic.util.SchematicParameter {filename} parameters {
+        } type {string} value {test}}
     } icon {
         ptolemy.schematic.util.Icon {LoadImage} parameters {
         } graphics {
@@ -119,6 +121,8 @@ test PTMLObjectFactory-2.2 {Constructor tests} {
             {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
             {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=30 20 60 20}} label {}}
         }
+    } implementation {
+        null
     } terminalstyle {
         ptolemy.schematic.util.TerminalStyle {1out} parameters {
         } terminals {
@@ -134,6 +138,8 @@ test PTMLObjectFactory-2.2 {Constructor tests} {
         } input {false} output {true} multi {false}}
     }}
     {ptolemy.schematic.util.EntityTemplate {SaveImage} parameters {
+        {ptolemy.schematic.util.SchematicParameter {filename} parameters {
+        } type {string} value {testout}}
     } icon {
         ptolemy.schematic.util.Icon {SaveImage} parameters {
         } graphics {
@@ -142,6 +148,8 @@ test PTMLObjectFactory-2.2 {Constructor tests} {
             {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
             {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=0 20 30 20}} label {}}
         }
+    } implementation {
+        null
     } terminalstyle {
         ptolemy.schematic.util.TerminalStyle {1in} parameters {
         } terminals {
@@ -180,10 +188,20 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
 
     $schematic description
 } {ptolemy.schematic.util.Schematic {SDF} parameters {
+    {ptolemy.schematic.util.SchematicParameter {domain} parameters {
+    } type {string} value {SDF}}
+    {ptolemy.schematic.util.SchematicParameter {starttime} parameters {
+    } type {double} value {1.0}}
+    {ptolemy.schematic.util.SchematicParameter {endtime} parameters {
+    } type {double} value {7.0}}
 } entities {
     {ptolemy.schematic.util.SchematicEntity {Load BMP File} parameters {
+        {ptolemy.schematic.util.SchematicParameter {filename} parameters {
+        } type {string} value {test}}
     } template {
         ptolemy.schematic.util.EntityTemplate {LoadImage} parameters {
+            {ptolemy.schematic.util.SchematicParameter {filename} parameters {
+            } type {string} value {test}}
         } icon {
             ptolemy.schematic.util.Icon {LoadImage} parameters {
             } graphics {
@@ -192,6 +210,8 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
                 {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
                 {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=30 20 60 20}} label {}}
             }
+	} implementation {
+	    null
         } terminalstyle {
             ptolemy.schematic.util.TerminalStyle {1out} parameters {
             } terminals {
@@ -212,6 +232,8 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
             {ptolemy.schematic.util.Terminal {output} parameters {
             } X {64.0} Y {20.0}}
         }
+    } implementation {
+        null
     } ports {
     } terminals {
         {ptolemy.schematic.util.SchematicTerminal {output} parameters {
@@ -221,8 +243,12 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
         } X {64.0} Y {20.0}}
     }}
     {ptolemy.schematic.util.SchematicEntity {Save BMP File} parameters {
+        {ptolemy.schematic.util.SchematicParameter {filename} parameters {
+        } type {string} value {test}}
     } template {
         ptolemy.schematic.util.EntityTemplate {SaveImage} parameters {
+            {ptolemy.schematic.util.SchematicParameter {filename} parameters {
+            } type {string} value {testout}}
         } icon {
             ptolemy.schematic.util.Icon {SaveImage} parameters {
             } graphics {
@@ -231,6 +257,8 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
                 {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
                 {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=0 20 30 20}} label {}}
             }
+	} implementation {
+	    null
         } terminalstyle {
             ptolemy.schematic.util.TerminalStyle {1in} parameters {
             } terminals {
@@ -251,6 +279,8 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
             {ptolemy.schematic.util.Terminal {input} parameters {
             } X {-4.0} Y {20.0}}
         }
+    } implementation {
+        null
     } ports {
     } terminals {
         {ptolemy.schematic.util.SchematicTerminal {input} parameters {

@@ -59,10 +59,12 @@ public class PtolemyModelFactory {
      * @exception NameDuplicationException If the schematic, or an object
      * contained within the schematic contains two objects with the same name.
      */
-    public CompositeEntity createPtolemyModel(Schematic schematic) 
+    public TypedCompositeActor createPtolemyModel(Schematic schematic) 
             throws IllegalActionException, NameDuplicationException {
 	String containerName = schematic.getName();
-	CompositeActor container = new CompositeActor(null, containerName);
+        System.out.println("name = " + containerName);
+	TypedCompositeActor container = new TypedCompositeActor();
+        container.setName(containerName);
 	
 	/*	Enumeration ports = schematic.ports();
 	while(ports.hasMoreElements()) {
@@ -70,7 +72,7 @@ public class PtolemyModelFactory {
 		(SchematicPort)ports.nextElement();
 	    container.addPort(_createPtolemyPort(port));
 	    }*/
-
+        System.out.println("creating entities");
 	Enumeration entities = schematic.entities();
 	while(entities.hasMoreElements()) {
 	    SchematicEntity entity = 
@@ -85,52 +87,99 @@ public class PtolemyModelFactory {
 	    container.addRelation(_createPtolemyRelation(relation));
 	}
     */
+        System.out.println("creating entities");
 	_addParameters(container, schematic);
 	return container;
     }
 
-    private void _addParameters(NamedObj model, PTMLObject schematicObject) {
-	try {
-	    Enumeration parameters = schematicObject.parameters();
-	    while(parameters.hasMoreElements()) {
-		SchematicParameter parameter =
+    private void _addParameters(NamedObj model, PTMLObject schematicObject)
+            throws IllegalActionException, NameDuplicationException {
+        Enumeration parameters = schematicObject.parameters();
+        while(parameters.hasMoreElements()) {
+            SchematicParameter parameter =
 		(SchematicParameter)parameters.nextElement();
-		Parameter modelParameter = 
-		new Parameter(model, parameter.getName());
-		Token value = new DoubleToken(parameter.getValue());
-		modelParameter.setToken(value);
-	    }
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
+            System.out.println("parameter = " + parameter.description());
+            // If a parameter with the given name already exists, then
+            // use that, otherwise create a new parameter
+            Attribute foundAttribute = 
+                model.getAttribute(parameter.getName());
+            Parameter modelParameter = null;
+            if((foundAttribute != null) && 
+                    (foundAttribute instanceof Parameter)) {
+                modelParameter = (Parameter) foundAttribute;
+            } else {
+                modelParameter = 
+                    new Parameter(model, parameter.getName());
+            }
+            
+            // Create a token representing the value of the parameter.
+            // Use reflection to get the Token class and its string 
+            // constructor.
+            Token valueToken = null;
+            try {
+                Class tokenClass = Class.forName(parameter.getType());
+                Class formalArgs[] = new Class[1];
+                formalArgs[0] = Class.forName("java.lang.String");
+                Constructor tokenConstructor = 
+                    tokenClass.getConstructor(formalArgs);
+                Object actualArgs[] = new Object[1];
+                actualArgs[0] = parameter.getValue();
+                valueToken = 
+                    (Token)tokenConstructor.newInstance(actualArgs);
+            } catch (Exception ex) {
+                throw new IllegalActionException(
+                        "Error creating parameter value: " + ex);
+            }
+            
+            modelParameter.setToken(valueToken);
+        }
     }
 
-    private void _addPtolemyEntity(CompositeEntity container, 
-				   SchematicEntity entity) {
-	try {
-	    Class formalArgs[] = new Class[2];
-	    formalArgs[0] = Class.forName("ptolemy.kernel.CompositeEntity");
-	    formalArgs[1] = Class.forName("java.lang.String");
-	    
-	    String implementation = entity.getImplementation();
-	    
-	    //FIXME add support for a schematic.
-	    System.out.println("Entity implementation = " + implementation);
-	    //	ClassLoader loader = new ClassLoader();
-	    Class entityClass = Class.forName(implementation);//loader.loadClass(implementation);
-	    Constructor entityConstructor = 
-		entityClass.getConstructor(formalArgs);
-	    Object actualArgs[] = new Object[2];
-	    actualArgs[0] = container;
-	    actualArgs[1] = entity.getName();
-	    Entity newEntity = 
-		(Entity)entityConstructor.newInstance(actualArgs);
-	    
-	    System.out.println("entity = " + newEntity.description());
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
+    private void _addPtolemyEntity(TypedCompositeActor container, 
+            SchematicEntity entity) 
+            throws IllegalActionException, NameDuplicationException {
+        System.out.println("entity = " + entity.description());
+    
+        String implementation = entity.getImplementation();
+        if(implementation == null) {
+            throw new IllegalActionException("entity cannot be " +
+                    "instantiated, it has no implementation.");
+        }
+        System.out.println("Entity implementation = " + implementation);
+        
+        Entity newEntity = null;
+        //FIXME add support for a schematic.
+        //FIXME add heuristics for determining what the implementation is.
+        //if(implementation is a class) {
+        // implementation is a hierarchical class name.  Use reflection to
+        // find the constructor and create the new actor.  
+        // All actors MUST implement the two argument constructor that
+        // takes a container and a name.
+        try {
+            Class entityClass = Class.forName(implementation);
+            Class formalArgs[] = new Class[2];
+            formalArgs[0] = Class.forName("ptolemy.actor.TypedCompositeActor");
+            formalArgs[1] = Class.forName("java.lang.String");
+            Constructor entityConstructor = 
+                entityClass.getConstructor(formalArgs);
+            Object actualArgs[] = new Object[2];
+            actualArgs[0] = container;
+            actualArgs[1] = entity.getName();
+            newEntity = 
+                (Entity)entityConstructor.newInstance(actualArgs);
+        } catch (Exception ex) {
+            throw new IllegalActionException("Error creating actor: " + ex);
+        }
+        //}	    
+        _addParameters(newEntity, entity);
+        
+        System.out.println("entity = " + newEntity.description());
     }
+
+    private void _addPtolemyRelation(TypedCompositeActor container, 
+            SchematicRelation relation) {
+    }
+
 
 //    private Port _createPtolemyPort(SchematicPort port) {
 	

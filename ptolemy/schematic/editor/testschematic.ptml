@@ -5,8 +5,8 @@
 <description>ramp-recorder...  a good first start</description>
 
 <entity name="Ramp1" template="generic.ramp">
-<parameter name="init" value="0.0" type="double"/>
-<parameter name="step" value="1.0" type="double"/>
+<parameter name="init" value="0" type="ptolemy.data.IntToken"/>
+<parameter name="step" value="4" type="ptolemy.data.IntToken"/>
 </entity>
 
 <entity name="Recorder1" template="generic.recorder">
@@ -17,9 +17,9 @@
 </relation>
 
 <!-- these parameters will get set in the Director -->
-<parameter name="domain" value="SDF" type="string"/>
-<parameter name="starttime" value="1.0" type="double"/>
-<parameter name="endtime" value="7.0" type="double"/>
+<parameter name="domain" value="SDF" type="ptolemy.data.StringToken"/>
+<parameter name="starttime" value="1.0" type="ptolemy.data.DoubleToken"/>
+<parameter name="endtime" value="7.0" type="ptolemy.data.DoubleToken"/>
 
 </schematic>
 

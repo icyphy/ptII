@@ -473,6 +473,14 @@ public class SchematicEntity extends PTMLTemplateObject
             result += _getIndentPrefix(indent + 1) + "null\n";
         else
             result += _terminalstyle._description(indent + 1, 0) + "\n";
+
+	result += _getIndentPrefix(indent) + "} implementation {\n";
+	if(_terminalstyle == null) 
+            result += _getIndentPrefix(indent + 1) + "null\n";
+        else
+            result += _getIndentPrefix(indent + 1) + 
+                getImplementation() + "\n";
+
 	result += _getIndentPrefix(indent) + "} ports {\n";
         Enumeration els = ports();
         while(els.hasMoreElements()) {

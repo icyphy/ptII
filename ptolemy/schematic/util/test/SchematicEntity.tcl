@@ -59,6 +59,8 @@ test SchematicEntity-2.1 {Constructor tests} {
     ptolemy.schematic.util.EntityTemplate {TestEntityTemplate} parameters {
     } icon {
         null
+    } implementation {
+        null
     } terminalstyle {
         null
     } terminalmap {
@@ -66,6 +68,8 @@ test SchematicEntity-2.1 {Constructor tests} {
     } ports {
     }
 } terminalstyle {
+    null
+} implementation {
     null
 } ports {
 } terminals {

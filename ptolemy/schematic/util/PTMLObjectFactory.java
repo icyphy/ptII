@@ -38,9 +38,9 @@ import ptolemy.schematic.xml.*;
 import java.net.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// XMLObjectFactory
+//// PTMLObjectFactory
 /**
-An XMLObjectFactory supports the creation of useful objects (IconLibraries, 
+An PTMLObjectFactory supports the creation of useful objects (IconLibraries, 
 DomainLibraries, etc.) from XMLElements that represent the root elements
 of the correspinding PTML file.
 
