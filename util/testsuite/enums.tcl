@@ -150,7 +150,7 @@ proc iterToObjects {iter} {
     set results {}
     if {$iter != [java::null]} {
         while {[$iter hasNext] == 1} {
-            lappend results [$iter next]
+            lappend results [$iter -noconvert next]
 	}
     }
     return $results
