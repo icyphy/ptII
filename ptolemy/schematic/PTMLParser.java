@@ -242,7 +242,7 @@ public class PTMLParser extends HandlerBase{
         else if(name.equals("domainlibrary")) {
             e=new DomainLibrary(attributes);
         }
-        else if(name.equals("entitytype")) {
+        else if(name.equals("entity")) {
             e=new SchematicEntity(attributes);
         }
         else if(name.equals("entitytype")) {
