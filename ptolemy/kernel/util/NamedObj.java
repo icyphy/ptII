@@ -1,4 +1,4 @@
-/* NamedObj is the baseclass for most of the common Ptolemy objects.
+/* Literally, an object with a name.  Baseclass to most Ptolemy classes.
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -84,3 +84,4 @@ public class NamedObj {
     private String _name;
     private ParamList _paramList = null;
 }
+
