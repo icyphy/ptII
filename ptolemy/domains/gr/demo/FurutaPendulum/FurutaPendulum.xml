@@ -513,8 +513,8 @@ The objective is to swing the pendulum up and then balance it.
 <title>u</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="0.11500000000000003"/>
-<yRange min="-0.5" max="0.0"/>
+<xRange min="0.0" max="1.4"/>
+<yRange min="-0.5" max="0.5"/>
 </plot>?>
                 </configure>    </entity>
     <entity name="ZOH1" class="ptolemy.domains.ct.lib.ZeroOrderHold">
@@ -2328,8 +2328,8 @@ The objective is to swing the pendulum up and then balance it.
 <title>E+mode</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="0.11500000000000003"/>
-<yRange min="-2.0" max="0.0"/>
+<xRange min="0.0" max="1.4"/>
+<yRange min="-2.0" max="2.0"/>
 </plot>?>
                 </configure>    </entity>
     <entity name="PeriodicSampler2" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
