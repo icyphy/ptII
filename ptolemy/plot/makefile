@@ -148,7 +148,7 @@ all: sources ptplot jclass
 	rm -f histogram
 	ln -s ptplot histogram
 install: all jars \
-		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR) \
+		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR)
 	(cd ../../bin; $(MAKE) install)
 
 # Class files used in all applets and applications
