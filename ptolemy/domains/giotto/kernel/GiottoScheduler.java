@@ -178,7 +178,9 @@ public class GiottoScheduler extends Scheduler {
             throw new NotSchedulableException("Could not get schedule, "
                     + "the number of deeply contained entities for '"
                     + compositeActor.getFullName() + "' is "
-                    + actorCount + ", which is less than 1");
+                    + actorCount + ", which is less than 1."
+                    + "If you have empty composite actors, try adding an  actor"
+                    + "to the inside of one of the empty composite actors.");
         }
 
         int[] frequencyArray = new int[actorCount];
