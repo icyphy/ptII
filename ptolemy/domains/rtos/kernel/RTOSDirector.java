@@ -39,6 +39,12 @@ import ptolemy.data.expr.Parameter;
 
 import java.util.Iterator;
 
+//////////////////////////////////////////////////////////////////////////
+//// RTOSDirector
+/**
+@author Edward A. Lee
+@version $Id$
+*/
 public class RTOSDirector extends DEDirector {
 
     public RTOSDirector() {
