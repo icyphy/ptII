@@ -47,9 +47,8 @@ help organize the tokens contained by this queue, two flags are maintained:
 to the time stamp of the token that was most recently placed in the queue.
 The _rcvrTime flag is defined as the time stamp of the oldest token in the
 queue or the last token to be removed from the queue if the queue is empty.
-Both of these flags must have monotonically, non-decreasing values with the
-exception that their values will be set to -1.0 at the conclusion of a
-simulation run.
+Both of these flags must have monotonically, non-decreasing values. At the 
+conclusion of a simulation run the receiver time is set to INACTIVE.
 <P>
 To facilitate the transfer of local time information in a manner that
 is amenable to polymorphic actors, it is necessary to have a reference
@@ -205,7 +204,8 @@ public class TimedQueueReceiver {
      * @exception NoRoomException If the queue is full.
      */
     public void put(Token token, double time) throws NoRoomException {
-	if( time < _lastTime && time != -1.0 ) {
+	if( time < _lastTime && time != INACTIVE ) {
+	    // if( time < _lastTime && time != -1.0 ) {
 	    IOPort port = (IOPort)getContainer(); 
 	    NamedObj actor = (NamedObj)port.getContainer(); 
 	    throw new IllegalArgumentException(actor.getName() + 
@@ -291,6 +291,12 @@ public class TimedQueueReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // This time value indicates that the receiver is no longer active.
+    protected static double INACTIVE = -1.0;
+
+    // This time value indicates that the receiver is no longer active.
+    protected static double NOTSTARTED = -5.0;
+
     // The time stamp of the newest token to be placed in the queue.
     private double _lastTime = 0.0;
 
@@ -298,7 +304,7 @@ public class TimedQueueReceiver {
     private double _rcvrTime = 0.0;
 
     // The time after which execution of this receiver will cease.
-    private double _completionTime = -5.0;
+    private double _completionTime = NOTSTARTED;
 
     // The priority of this receiver.
     private int _priority = 0;
