@@ -51,7 +51,8 @@ to associate that variable with a
 @author Brian K. Vogel
 @version $Id$
 */
-public class PtolemyQuery extends Query implements QueryListener {
+public class PtolemyQuery extends Query
+        implements QueryListener, ValueListener {
 
     /** Construct a panel with no queries in it.
      */
@@ -69,26 +70,47 @@ public class PtolemyQuery extends Query implements QueryListener {
      */
     public void attachParameter(Variable var, String entryName) {
 	_parameters.put(entryName, var);
+        var.addValueListener(this);
         String tip = Documentation.consolidate(var);
         if (tip != null) {
             setToolTip(entryName, tip);
         }
     }
 
-    /* Set the Variable to the value of the Query entry. This
-     * method is called whenever an entry changes. 
+    /** Set the Variable to the value of the Query entry. This
+     *  method is called whenever an entry changes. 
      */
     public void changed(String name)  {
 	// Check if the entry that changed is in the mapping.
 	if (_parameters.containsKey(name)) {
 	    // Set the variable.
-	    ((Variable)(_parameters.get(name))).setExpression(
-                    stringValue(name));
+            Variable var = (Variable)(_parameters.get(name));
+            // Temporarily disable listening, so when we are notified
+            // back, we ignore it.
+            _listening = false;
+            var.setExpression(stringValue(name));
+            // Force evaluation, but ignore errors for now.
+            try {
+                var.getToken();
+            } catch (IllegalActionException ex) {}
+            _listening = true;
 	}
+    }
+
+    /** Notify this query that the value of the specified variable has
+     *  changed.  This is called by an attached parameter when its
+     *  value changes.
+     *  @param variable The variable that has changed.
+     */
+    public void valueChanged(Variable variable) {
+        if (_listening) {
+            set(variable.getName(), variable.stringRepresentation());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private HashMap _parameters; 
+    private HashMap _parameters;
+    private boolean _listening = true;
 }
