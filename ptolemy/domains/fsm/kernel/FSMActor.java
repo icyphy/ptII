@@ -49,7 +49,6 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.actor.util.FunctionDependency;
-import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
