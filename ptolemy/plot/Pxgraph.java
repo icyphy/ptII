@@ -279,6 +279,11 @@ different line style on color machines).
 to produce scatter plots. When used with -bar, it can be used to
 produce standard bar graphs.
 
+<dt><code>-o</code> <code><i>output filename<i></code> 
+<dd>The name of the file to place the print output in.  Currently
+defaults to <code>/tmp/t.ps<code>.  See also the
+<code>-print</code> option.
+
 <dt><code>-p</code>
 <dd>Marks each data point with a small marker (pixel
 sized). This is usually used with the -nl option for
@@ -286,6 +291,11 @@ scatter plots.
 
 <dt><code>-P</code>
 <dd>Similar to <code>-p</code> but marks each pixel with a large dot.
+
+<dt><code>-print</code>
+<dd>Bring up the print dialog immeadiately upon startup.  Unfortunately,
+there is no way to automatically print in JDK1.1, the user must hit
+the <code>Ok</code> button.  See also the <code>-o<code> option.
 
 <dt><code>-rv</code>
 <dd>Reverse video. On black and white displays, this will
@@ -423,6 +433,11 @@ public class Pxgraph extends Frame {
         show();
         _plotApplet.init();
         //        _plotApplet.start();
+        if (_printDialog) {
+            // -print option
+            _print();
+        }
+
     }
 
 
@@ -500,6 +515,7 @@ public class Pxgraph extends Frame {
     public static void main(String args[]) {
         Pxgraph pxgraph = new Pxgraph(args);
 
+        // If the -test arg was set, then exit after 2 seconds.
         if (_test) {
             if (_debug > 4) System.out.println("Sleeping for 2 seconds");
             try {
@@ -560,6 +576,8 @@ public class Pxgraph extends Frame {
             {"-lw",  "<width>", "LineWidth",  "0", "(Unsupported)"},
             {"-lx",  "<xl,xh>", "XLowLimit, XHighLimit",  "0", ""},
             {"-ly",  "<yl,yh>", "YLowLimit, YHighLimit",  "0", ""},
+            // -o is not in the original X11 pxgraph.
+            {"-o",   "<output filename>", "",  "/tmp/t.ps", ""},
             {"-t",   "<title>", "TitleText",  "An X Graph", ""},
             {"-tf",  "<fontname>", "TitleFont",  "helvetica-b-14", ""},
             {"-x",   "<unitName>", "XUnitText",  "X", ""},
@@ -584,6 +602,8 @@ public class Pxgraph extends Frame {
             {"-nl", "NoLines",  ""},
             {"-p", "PixelMarkers",  ""},
             {"-P", "LargePixel",  ""},
+            // -print is not in the original X11 pxgraph.
+            {"-print", "Print",  ""},
             {"-rv", "ReverseVideo",  ""},
             // -test is not in the original X11 pxgraph.  We use it for testing
             {"-test", "Test",  ""},
@@ -756,6 +776,14 @@ public class Pxgraph extends Frame {
                     // -help is not in the original X11 pxgraph.
                     _help();
                     continue;
+                } else if (arg.equals("-o")) {
+                    // -o <output filename>
+                    _outputFile = args[i++];
+                    continue;
+                } else if (arg.equals("-print")) {
+                    // -print is not in the original X11 pxgraph
+                    _printDialog = true;
+                    continue;
                 } else if (arg.equals("-test")) {
                     // -test is not in the original X11 pxgraph.
                     _test = true;
@@ -837,7 +865,7 @@ public class Pxgraph extends Frame {
 
         Properties newprops= new Properties();
         newprops.put("awt.print.destination", "file");
-        newprops.put("awt.print.fileName", "/tmp/t.ps");
+        newprops.put("awt.print.fileName", _outputFile);
         PrintJob printjob = getToolkit().getPrintJob(this,
                 getTitle(),newprops);
         if (printjob != null) {          
@@ -913,8 +941,14 @@ public class Pxgraph extends Frame {
     // For debugging, call with -db or -debug.
     private static int _debug = 0;
 
+    // The output file name
+    private String _outputFile = "/tmp/t.ps";
+
     // The Plot applet.
     private Plot _plotApplet; 
+
+    // If true, then bring up the print dialog upon startup.  
+    private boolean _printDialog = false;
 
     // If true, then auto exit after a few seconds.
     private static boolean _test = false;
