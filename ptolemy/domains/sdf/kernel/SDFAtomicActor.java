@@ -69,8 +69,7 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
      */
     public SDFAtomicActor() {
 	super();
-        _tokenProductionRate = new HashedMap();
-        _tokenConsumptionRate = new HashedMap();
+        _init();
     }
 
     /** Construct an actor in the specified workspace with an empty
@@ -82,8 +81,7 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
      */
     public SDFAtomicActor(Workspace workspace) {
 	super(workspace);
-        _tokenProductionRate = new HashedMap();
-        _tokenConsumptionRate = new HashedMap();
+        _init();
     }
 
     /** Create a new actor in the specified container with the specified
@@ -101,36 +99,64 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
     public SDFAtomicActor(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _tokenProductionRate = new HashedMap();
-        _tokenConsumptionRate = new HashedMap();
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the number of tokens that are produced or consumed 
-     *   on the appropriate port of this Actor
+    /** Get the number of tokens that are produced or consumed 
+     *  on the designated port of this Actor.   Return zero if
+     *  setTokenConsumptionRate has not been called on this port.
      *
      *  @throw IllegalActionException if port is not contained in this actor.
-     *  @throw IllegalActionException if port is not an input IOPort.
+     *  @return The number of tokens consumed on the port, as supplied by 
+     *  setTokenConsumptionRate, or zero if setTokenConsumptionRate has 
+     *  not been called.
      */
-    public void setTokenProductionRate(IOPort p,int r) 
+    public int getTokenConsumptionRate(IOPort p) 
         throws IllegalActionException {
-        if(r <= 0) throw new IllegalActionException("setTokenRatePerFiring: Rate must be > 0");
+
         Port pp = getPort(p.getName());
-        if(!p.isOutput()) throw new IllegalActionException("IOPort " +
-                p.getName() + " is not an Output Port.");
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " + 
                 getName());
-        _tokenProductionRate = 
-            (HashedMap) _tokenProductionRate.puttingAt(p,new Integer(r));
+
+        if(! _tokenconsumptionrate.includesKey(p)) return 0;
+
+        Integer i = (Integer) _tokenconsumptionrate.at(p);
+
+        return i.intValue();
     }
 
+    /** Get the number of tokens that are produced or consumed 
+     *  on the designated port of this Actor during each firing.   
+     *  Return zero if setTokenProductionRate has not been called
+     *   on this IOPort.
+     *
+     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @return The number of tokens produced on the port, as supplied by 
+     *  setTokenProductionRate, or zero if setTokenProductionRate has not been
+     *  called
+     */
+    public int getTokenInitProduction(IOPort p) 
+        throws IllegalActionException {
+
+        Port pp = getPort(p.getName());
+        if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
+                p.getName() + " is not contained in Actor " + 
+                getName());
+        
+        if(! _tokeninitproduction.includesKey(p)) return 0;
+        Integer i = (Integer) _tokeninitproduction.at(p);
+
+        return i.intValue();
+    }
 
     /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor.   Return zero if 
-     *  setTokenProductionRate has not been called on this IOPort.
+     *  on the designated port of this Actor during each firing.   
+     *  Return zero if setTokenProductionRate has not been called
+     *   on this IOPort.
      *
      *  @throw IllegalActionException if port is not contained in this actor.
      *  @return The number of tokens produced on the port, as supplied by 
@@ -145,8 +171,8 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
                 p.getName() + " is not contained in Actor " + 
                 getName());
         
-        if(! _tokenProductionRate.includesKey(p)) return 0;
-        Integer i = (Integer) _tokenProductionRate.at(p);
+        if(! _tokenproductionrate.includesKey(p)) return 0;
+        Integer i = (Integer) _tokenproductionrate.at(p);
 
         return i.intValue();
     }
@@ -168,36 +194,67 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " + 
                 getName());
-        _tokenConsumptionRate.putAt(p,new Integer(r));
+        _tokenconsumptionrate = 
+            (HashedMap) _tokenconsumptionrate.puttingAt(p,new Integer(r));
     }
 
-
-    /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor.   Return zero if
-     *  setTokenConsumptionRate has not been called on this port.
-     *
+    /** Set the number of tokens that are produced or consumed 
+     *  on the appropriate port of this Actor during the initialization phase.
+     *  This is usually used to simulate a delay along the relation that the
+     *  port is connected to, and may be necessary in order to get the SDF
+     *  scheduler to create a valid schedule from certain kinds of topologies.
+     * 
      *  @throw IllegalActionException if port is not contained in this actor.
-     *  @return The number of tokens consumed on the port, as supplied by 
-     *  setTokenConsumptionRate, or zero if setTokenConsumptionRate has 
-     *  not been called.
+     *  @throw IllegalActionException if port is not an input IOPort.
      */
-    public int getTokenConsumptionRate(IOPort p) 
+    public void setTokenInitProduction(IOPort p,int r) 
         throws IllegalActionException {
-
+        if(r <= 0) throw new IllegalActionException(
+                "setTokenRatePerFiring: Rate must be > 0");
         Port pp = getPort(p.getName());
+        if(!p.isOutput()) throw new IllegalActionException("IOPort " +
+                p.getName() + " is not an Output Port.");
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " + 
                 getName());
-
-        if(! _tokenConsumptionRate.includesKey(p)) return 0;
-
-        Integer i = (Integer) _tokenConsumptionRate.at(p);
-
-        return i.intValue();
+        _tokeninitproduction = 
+            (HashedMap) _tokeninitproduction.puttingAt(p,new Integer(r));
     }
 
-    private HashedMap _tokenProductionRate;
-    private HashedMap _tokenConsumptionRate;
+    /** Set the number of tokens that are produced or consumed 
+     *   on the appropriate port of this Actor
+     *
+     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @throw IllegalActionException if port is not an input IOPort.
+     */
+    public void setTokenProductionRate(IOPort p,int r) 
+        throws IllegalActionException {
+        if(r <= 0) throw new IllegalActionException(
+                "setTokenRatePerFiring: Rate must be > 0");
+        Port pp = getPort(p.getName());
+        if(!p.isOutput()) throw new IllegalActionException("IOPort " +
+                p.getName() + " is not an Output Port.");
+        if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
+                p.getName() + " is not contained in Actor " + 
+                getName());
+        _tokenproductionrate = 
+            (HashedMap) _tokenproductionrate.puttingAt(p,new Integer(r));
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private methods                      ////
+    private void _init() {
+        _tokenconsumptionrate = new HashedMap();
+        _tokenproductionrate = new HashedMap();
+        _tokeninitproduction = new HashedMap();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
+
+    private HashedMap _tokenconsumptionrate;
+    private HashedMap _tokenproductionrate;
+    private HashedMap _tokeninitproduction;
 
 }
 
