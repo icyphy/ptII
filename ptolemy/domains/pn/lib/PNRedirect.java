@@ -28,7 +28,9 @@
 package pt.domains.pn.stars;
 import pt.domains.pn.kernel.*;
 import pt.kernel.*;
-import java.util.NoSuchElementException;
+import pt.data.*;
+import pt.actors.*;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNRedirect
@@ -77,9 +79,13 @@ public class PNRedirect extends PNStar{
             writeTo(_output, _initValue);
             //System.out.println(this.getName()+" writes "+_initValue.intValue()+" to "+_output.getName());
             for(i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                data = (IntToken)readFrom(_input);
-                writeTo(_output, data);
-                //System.out.println(this.getName()+" writes "+data.intValue()+" to "+_output.getName());
+                Enumeration outports = _input.deepConnectedOutputPorts();
+                while (outports.hasMoreElements()) {
+                    PNOutPort outport = (PNOutPort)outports.nextElement();
+                    data = (IntToken)readFrom(_input, outport);
+                    writeTo(_output, data);
+                    //System.out.println(this.getName()+" writes "+data.intValue()+" to "+_output.getName());
+                }
             }
         } catch (NoSuchElementException e) {
 	    System.out.println("Terminating "+this.getName());

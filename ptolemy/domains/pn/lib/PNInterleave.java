@@ -28,6 +28,8 @@
 package pt.domains.pn.stars;
 import pt.domains.pn.kernel.*;
 import pt.kernel.*;
+import pt.data.*;
+import pt.actors.*;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
@@ -41,16 +43,7 @@ between it's inputs and directing them to the output.
 @version $Id$
 */
 public class PNInterleave extends PNStar{
-    /** Constructor
-     */	
-    public PNInterleave() {
-        super();
-    }
 
-    public PNInterleave(Workspace workspace) {
-        super(workspace);
-    }
- 
     /** Constructor Adds ports to the star
      * @param myExecutive is the executive responsible for the simulation
      * @exception NameDuplicationException indicates that an attempt to add
@@ -71,6 +64,7 @@ public class PNInterleave extends PNStar{
     /** This reads tokens from each of it's inputs in a circular fashion and
      *  redirects them each to the output 
      */	
+    //FIXME: THis code shoudl change when the new kernel is in place
     public void run() {
         Token data;
         int i;
@@ -81,9 +75,13 @@ public class PNInterleave extends PNStar{
 		while (ports.hasMoreElements()) {
 		    PNPort nextPort = (PNPort)ports.nextElement();
                     if (nextPort.isInput()) {
-                        data = readFrom(nextPort);
-                        writeTo(_output, data);
-                        System.out.println(this.getName()+" writes "+((IntToken)data).intValue()+" to "+_output.getName());
+                        Enumeration outports = nextPort.deepConnectedOutputPorts();
+                        while (outports.hasMoreElements()) {
+                            PNOutPort outport = (PNOutPort)outports.nextElement();
+                            data = readFrom((PNInPort)nextPort, outport);
+                            writeTo(_output, data);
+                            System.out.println(this.getName()+" writes "+((IntToken)data).intValue()+" to "+_output.getName());
+                        }
                     }
                 }
             }
