@@ -29,16 +29,21 @@ COPYRIGHTENDKEY
 package ptolemy.backtrack.ast.transform;
 
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 
+import ptolemy.backtrack.ast.LocalClassLoader;
 import ptolemy.backtrack.ast.Type;
+import ptolemy.backtrack.ast.LocalClassLoader.ClassImport;
 
 //////////////////////////////////////////////////////////////////////////
 //// AbstractTransformer
@@ -56,6 +61,10 @@ public abstract class AbstractTransformer {
     /** The name of the checkpoint object.
      */
     public static String CHECKPOINT_NAME = "$CHECKPOINT";
+    
+    /** The name of the checkpoint record.
+     */
+    public static String CHECKPOINT_RECORD_NAME = "$RECORD$$CHECKPOINT";
     
     /** The name of the method to set a checkpoint.
      */
@@ -86,7 +95,6 @@ public abstract class AbstractTransformer {
      */
     protected org.eclipse.jdt.core.dom.Type _createType(AST ast, String type) {
         String elementName = Type.getElementType(type);
-        int dimensions = Type.dimensions(type);
         
         org.eclipse.jdt.core.dom.Type elementType;
         if (Type.isPrimitive(elementName))
@@ -98,7 +106,7 @@ public abstract class AbstractTransformer {
         }
         
         org.eclipse.jdt.core.dom.Type returnType = elementType;
-        for (int i = 1; i < dimensions; i++)
+        for (int i = 0; i < Type.dimensions(type); i++)
             returnType = ast.newArrayType(returnType);
         
         return returnType;
@@ -127,6 +135,66 @@ public abstract class AbstractTransformer {
                 oldPos = pos + 1;
         }
         return fullName;
+    }
+    
+    /** Get the shortest possible name of the a class. If there is no conflict,
+     *  the class is first imported, and only the simple class is returned;
+     *  otherwise, the its full name is returned.
+     * 
+     *  @param c The class.
+     *  @param loader The class loader used to test importation conflicts.
+     *  @param root The root of the AST. If there is no conflict and the class
+     *   has not been imported yet, a new {@link ImportDeclaration} is added to
+     *   it.
+     *  @return The shortest possible class name.
+     */
+    protected String _getClassName(Class c, LocalClassLoader loader, 
+            CompilationUnit root) {
+        String packageName = c.getPackage().getName();
+        String fullName = c.getName();
+        String simpleName;
+        int lastSeparator = _lastIndexOf(fullName, new char[]{'.', '$'});
+        if (lastSeparator == -1)
+            return fullName;
+        else
+            simpleName = fullName.substring(lastSeparator + 1);
+        
+        Iterator importedClasses = loader.getImportedClasses().iterator();
+        while (importedClasses.hasNext()) {
+            ClassImport importedClass = (ClassImport)importedClasses.next();
+            if (importedClass.getPackageName().equals(packageName) &&
+                    importedClass.getClassName().equals(simpleName))
+                // Already imported.
+                return simpleName;
+            else
+                if (importedClass.getClassName().equals(simpleName))
+                    // Conflict.
+                    return fullName;
+        }
+        
+        Iterator importedPackages = loader.getImportedPackages().iterator();
+        while (importedPackages.hasNext()) {
+            String importedPackage = (String)importedPackages.next();
+            if (importedPackage.equals(packageName))    // Already imported.
+                return simpleName;
+            else {
+                try {
+                    // Test if a class with the same name exists in the
+                    // package.
+                    loader.loadClass(importedPackage + "." + simpleName);
+                    // If exists, conflict.
+                    return fullName;
+                } catch (ClassNotFoundException e) {
+                }
+            }
+        }
+        
+        AST ast = root.getAST();
+        ImportDeclaration declaration = ast.newImportDeclaration();
+        declaration.setName(_createName(ast, fullName));
+        root.imports().add(declaration);
+        loader.importClass(fullName);
+        return simpleName;
     }
     
     /** Find the first appearance of any of the given characters in a string.
@@ -196,6 +264,24 @@ public abstract class AbstractTransformer {
         } catch (NoSuchMethodException e) {
             return false;
         }
+    }
+    
+    /** Find the last appearance of any of the given characters in a string.
+     * 
+     *  @param s The string.
+     *  @param chars The array of characters.
+     *  @param startPos The starting position from which the search begins.
+     *  @return The index of the last appearance of any of the given
+     *   characters in the string, or -1 if none of them is found.
+     */
+    protected int _lastIndexOf(String s, char[] chars) {
+        int pos = -1;
+        for (int i = 0; i < chars.length; i++) {
+            int newPos = s.lastIndexOf(chars[i]);
+            if (pos == -1 || newPos > pos)
+                pos = newPos;
+        }
+        return pos;
     }
     
     /** Remove an AST node from the its parent.

@@ -119,6 +119,22 @@ public class LocalClassLoader extends URLClassLoader {
             throw new UnknownASTException();
         }
     }
+    
+    /** Get the list of names of imported classes.
+     * 
+     *  @return The list.
+     */
+    public List getImportedClasses() {
+        return _importedClasses;
+    }
+    
+    /** Get the list of names of imported packages.
+     * 
+     *  @return The list.
+     */
+    public List getImportedPackages() {
+        return _importedPackages;
+    }
 
     /** Import a class. This function mimics the <tt>import</tt>
      *  declaration used in a Java program. It adds a class to the
@@ -364,6 +380,45 @@ public class LocalClassLoader extends URLClassLoader {
      */
     public void setEnclosingClass(String anonymousClass, Class enclosingClass) {
         _enclosingClasses.put(anonymousClass, enclosingClass);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    public nested class                    ////
+
+    /** The data structure that represent class importation. It divides
+     *  each imported class as a package name and a class name, and
+     *  store them as fields visible in {@link LocalClassLoader}.
+     *
+     *  @author Thomas Feng
+     */
+    public class ClassImport {
+
+        /** Construct a class importation.
+         *
+         *  @param packageName The package name, possibly with "." in it.
+         *  @param className The simple class name, possibly with "." in
+         *   it.
+         */
+        ClassImport(String packageName, String className) {
+            _packageName = packageName;
+            _className = className;
+        }
+        
+        public String getPackageName() {
+            return _packageName;
+        }
+        
+        public String getClassName() {
+            return _className;
+        }
+
+        /** The package name of the importation.
+         */
+        private String _packageName;
+
+        /** The simple class name of the importation.
+         */
+        private String _className;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -664,37 +719,6 @@ public class LocalClassLoader extends URLClassLoader {
                 throw new UnknownASTException();
             }
         return urls;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                    private nested class                   ////
-
-    /** The data structure that represent class importation. It divides
-     *  each imported class as a package name and a class name, and
-     *  store them as fields visible in {@link LocalClassLoader}.
-     *
-     *  @author Thomas Feng
-     */
-    private class ClassImport {
-
-        /** Construct a class importation.
-         *
-         *  @param packageName The package name, possibly with "." in it.
-         *  @param className The simple class name, possibly with "." in
-         *   it.
-         */
-        protected ClassImport(String packageName, String className) {
-            _packageName = packageName;
-            _className = className;
-        }
-
-        /** The package name of the importation.
-         */
-        protected String _packageName;
-
-        /** The simple class name of the importation.
-         */
-        protected String _className;
     }
 
     ///////////////////////////////////////////////////////////////////

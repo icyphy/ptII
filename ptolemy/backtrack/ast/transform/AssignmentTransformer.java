@@ -46,6 +46,7 @@ import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CastExpression;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.FieldAccess;
@@ -74,6 +75,7 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.ast.ASTClassNotFoundException;
 import ptolemy.backtrack.ast.Type;
 import ptolemy.backtrack.ast.TypeAnalyzerState;
+import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
 //////////////////////////////////////////////////////////////////////////
@@ -333,7 +335,7 @@ public class AssignmentTransformer extends AbstractTransformer
     
     /** Whether to refactor private static fields.
      */
-    public static boolean HANDLE_STATIC_FIELDS = true;
+    public static boolean HANDLE_STATIC_FIELDS = false;
     
     /** Whether to optimize method calls. (Not implemented yet.)
      */
@@ -346,6 +348,10 @@ public class AssignmentTransformer extends AbstractTransformer
     /** The prefix of records (new fields to be added to a class).
      */
     public static String RECORD_PREFIX = "$RECORD$";
+    
+    /** The name of the record array.
+     */
+    public static String RECORDS_NAME = "$RECORDS";
     
     /** The name of restore methods.
      */
@@ -361,18 +367,18 @@ public class AssignmentTransformer extends AbstractTransformer
      *  different number of indices.
      * 
      *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
      *  @param state The current state of the type analyzer.
      *  @param fieldName The name of the field to be handled.
      *  @param fieldType The type of the field to be handled.
      *  @param indices The number of indices.
      *  @param isStatic Whether the field is static.
-     *  @param loader The class loader.
      *  @return The declaration of the method that handles assignment to
      *   the field.
      */
     private MethodDeclaration _createAssignMethod(AST ast, 
-            TypeAnalyzerState state, String fieldName, Type fieldType, 
-            int indices, boolean isStatic) {
+            CompilationUnit root, TypeAnalyzerState state, String fieldName, 
+            Type fieldType, int indices, boolean isStatic) {
         Class currentClass = state.getCurrentClass();
         ClassLoader loader = state.getClassLoader();
         String methodName = _getAssignMethodName(fieldName);
@@ -388,7 +394,6 @@ public class AssignmentTransformer extends AbstractTransformer
 
         // Get the type of the new value. The return value has the same
         // type. 
-        int dimensions = fieldType.dimensions();
         for (int i = 0; i < indices; i++)
             try {
                 fieldType = fieldType.removeOneDimension();
@@ -408,8 +413,9 @@ public class AssignmentTransformer extends AbstractTransformer
             // Add a "$CHECKPOINT" argument.
             SingleVariableDeclaration checkpoint = 
                 ast.newSingleVariableDeclaration();
-            checkpoint.setType(ast.newSimpleType(
-                    _createName(ast, Checkpoint.class.getName())));
+            String typeName = 
+                _getClassName(Checkpoint.class, state.getClassLoader(), root);
+            checkpoint.setType(ast.newSimpleType(_createName(ast, typeName)));
             checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
             method.parameters().add(checkpoint);
         }
@@ -440,7 +446,7 @@ public class AssignmentTransformer extends AbstractTransformer
         
         // Create the method body.
         Block body = _createAssignmentBlock(ast, state, fieldName, fieldType, 
-                indices, dimensions);
+                indices);
         method.setBody(body);
         
         return method;
@@ -459,15 +465,29 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @return The method body.
      */
     private Block _createAssignmentBlock(AST ast, TypeAnalyzerState state, 
-            String fieldName, Type fieldType, int indices, int dimensions) {
+            String fieldName, Type fieldType, int indices) {
         Block block = ast.newBlock();
         
         // Test if the checkpoint object is not null.
         IfStatement ifStatement = ast.newIfStatement();
         InfixExpression testExpression = ast.newInfixExpression();
-        testExpression.setLeftOperand(ast.newSimpleName(CHECKPOINT_NAME));
-        testExpression.setOperator(InfixExpression.Operator.NOT_EQUALS);
-        testExpression.setRightOperand(ast.newNullLiteral());
+        
+        InfixExpression condition1 = ast.newInfixExpression();
+        condition1.setLeftOperand(ast.newSimpleName(CHECKPOINT_NAME));
+        condition1.setOperator(InfixExpression.Operator.NOT_EQUALS);
+        condition1.setRightOperand(ast.newNullLiteral());
+        
+        InfixExpression condition2 = ast.newInfixExpression();
+        MethodInvocation getTimestamp = ast.newMethodInvocation();
+        getTimestamp.setExpression(ast.newSimpleName(CHECKPOINT_NAME));
+        getTimestamp.setName(ast.newSimpleName("getTimestamp"));
+        condition2.setLeftOperand(getTimestamp);
+        condition2.setOperator(InfixExpression.Operator.GREATER);
+        condition2.setRightOperand(ast.newNumberLiteral("0"));
+        
+        testExpression.setLeftOperand(condition1);
+        testExpression.setOperator(InfixExpression.Operator.CONDITIONAL_AND);
+        testExpression.setRightOperand(condition2);
         ifStatement.setExpression(testExpression);
         
         // The "then" branch.
@@ -559,12 +579,13 @@ public class AssignmentTransformer extends AbstractTransformer
     /** Create the checkpoint field declaration for the current class.
      * 
      *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
      *  @param state The current state of the type analyzer.
      *  @return The field declaration, or <tt>null</tt> if the field already
      *   exists in the class or its superclasses.
      */
     private FieldDeclaration _createCheckpointField(AST ast, 
-            TypeAnalyzerState state) {
+            CompilationUnit root, TypeAnalyzerState state) {
         Class currentClass = state.getCurrentClass();
         Class parent = currentClass.getSuperclass();
         if (parent != null &&
@@ -577,12 +598,14 @@ public class AssignmentTransformer extends AbstractTransformer
         fragment.setName(ast.newSimpleName(CHECKPOINT_NAME));
         
         ClassInstanceCreation checkpoint = ast.newClassInstanceCreation();
-        checkpoint.setName(_createName(ast, Checkpoint.class.getName()));
+        String typeName = 
+            _getClassName(Checkpoint.class, state.getClassLoader(), root);
+        checkpoint.setName(_createName(ast, typeName));
         checkpoint.arguments().add(ast.newThisExpression());
         fragment.setInitializer(checkpoint);
         
         FieldDeclaration checkpointField = ast.newFieldDeclaration(fragment);
-        checkpointField.setType(_createType(ast, Checkpoint.class.getName()));
+        checkpointField.setType(_createType(ast, typeName));
         
         checkpointField.setModifiers(Modifier.PROTECTED);
         
@@ -591,19 +614,56 @@ public class AssignmentTransformer extends AbstractTransformer
         return checkpointField;
     }
     
+    /** Create the field declaration for the checkpoint record.
+     * 
+     *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
+     *  @param state The current state of the type analyzer.
+     *  @return The field declaration, or <tt>null</tt> if the field already
+     *   exists in the class or its superclasses.
+     */
+    private FieldDeclaration _createCheckpointRecord(AST ast, 
+            CompilationUnit root, TypeAnalyzerState state) {
+        Class currentClass = state.getCurrentClass();
+        Class parent = currentClass.getSuperclass();
+        if (parent != null &&
+                (state.getCrossAnalyzedTypes().contains(parent.getName()) ||
+                 _isFieldDuplicated(parent, CHECKPOINT_NAME)))
+            return null;
+        
+        VariableDeclarationFragment fragment = 
+            ast.newVariableDeclarationFragment();
+        fragment.setName(ast.newSimpleName(CHECKPOINT_RECORD_NAME));
+        ClassInstanceCreation creation = ast.newClassInstanceCreation();
+        String typeName = _getClassName(CheckpointRecord.class, 
+                state.getClassLoader(), root);
+        creation.setName(_createName(ast, typeName));
+        fragment.setInitializer(creation);
+        FieldDeclaration record = ast.newFieldDeclaration(fragment);
+        record.setType(_createType(ast, typeName));
+        record.setModifiers(Modifier.PRIVATE);
+        
+        _addToLists(_checkParentFields, parent.getName(), record);
+        
+        return record;
+    }
+    
     /** Create the record of a field. The record is stored in an extra private
      *  field of the current class.
      * 
-     *  @param currentClass The current class.
      *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
+     *  @param state The current state of the type analyzer.
      *  @param fieldName The name of the field.
      *  @param dimensions The number of dimensions of the field.
      *  @param isStatic Whether the field is static.
      *  @return The field declaration to be added to the current class
      *   declaration.
      */
-    private FieldDeclaration _createFieldRecord(Class currentClass, AST ast, 
-            String fieldName, int dimensions, boolean isStatic) {
+    private FieldDeclaration _createFieldRecord(AST ast, CompilationUnit root, 
+            TypeAnalyzerState state, String fieldName, int dimensions, 
+            boolean isStatic) {
+        Class currentClass = state.getCurrentClass();
         String recordName = _getRecordName(fieldName);
         
         // Check if the field is duplicated (possibly because the source
@@ -612,7 +672,8 @@ public class AssignmentTransformer extends AbstractTransformer
             throw new ASTDuplicatedFieldException(currentClass.getName(), 
                     recordName);
         
-        String typeName = FieldRecord.class.getName();
+        String typeName = _getClassName(FieldRecord.class, 
+                state.getClassLoader(), root);
 
         // The only fragment of this field declaration.
         VariableDeclarationFragment fragment = 
@@ -641,12 +702,22 @@ public class AssignmentTransformer extends AbstractTransformer
         return field;
     }
     
-    private TypeDeclaration _createProxyClass(AST ast) {
+    /** Create a proxy class for an anonymous class. The proxy class implements
+     *  the {@link Rollbackable} interface.
+     *  
+     *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
+     *  @param state The current state of the type analyzer.
+     *  @return The type declaration of the proxy class.
+     */
+    private TypeDeclaration _createProxyClass(AST ast, CompilationUnit root, 
+            TypeAnalyzerState state) {
         // Create the nested class.
         TypeDeclaration classDeclaration = ast.newTypeDeclaration();
         classDeclaration.setName(ast.newSimpleName(_getProxyName()));
-        classDeclaration.superInterfaces().add(
-                _createName(ast, Rollbackable.class.getName()));
+        String rollbackType = 
+            _getClassName(Rollbackable.class, state.getClassLoader(), root);
+        classDeclaration.superInterfaces().add(_createName(ast, rollbackType));
         
         // Add a restore method.
         MethodDeclaration proxy = ast.newMethodDeclaration();
@@ -655,7 +726,7 @@ public class AssignmentTransformer extends AbstractTransformer
         // Add two parameters.
         SingleVariableDeclaration timestamp = 
             ast.newSingleVariableDeclaration();
-        timestamp.setType(ast.newPrimitiveType(PrimitiveType.INT));
+        timestamp.setType(ast.newPrimitiveType(PrimitiveType.LONG));
         timestamp.setName(ast.newSimpleName("timestamp"));
         proxy.parameters().add(timestamp);
         
@@ -686,7 +757,9 @@ public class AssignmentTransformer extends AbstractTransformer
         // Add a single checkpoint parameter.
         SingleVariableDeclaration checkpoint = 
             ast.newSingleVariableDeclaration();
-        checkpoint.setType(_createType(ast, Checkpoint.class.getName()));
+        String checkpointType = 
+            _getClassName(Checkpoint.class, state.getClassLoader(), root);
+        checkpoint.setType(_createType(ast, checkpointType));
         checkpoint.setName(ast.newSimpleName("checkpoint"));
         setCheckpoint.parameters().add(checkpoint);
         
@@ -704,6 +777,40 @@ public class AssignmentTransformer extends AbstractTransformer
         
         classDeclaration.setModifiers(Modifier.FINAL);
         return classDeclaration;
+    }
+    
+    /** Create a field that stores all the records as an array.
+     * 
+     *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
+     *  @param state The current state of the type analyzer.
+     *  @param fieldNames The names of all the fields.
+     *  @return The field declaration of the record array.
+     */
+    private FieldDeclaration _createRecordArray(AST ast, CompilationUnit root, 
+            TypeAnalyzerState state, List fieldNames) {
+        VariableDeclarationFragment fragment = 
+            ast.newVariableDeclarationFragment();
+        fragment.setName(ast.newSimpleName(RECORDS_NAME));
+        ArrayCreation initializer = ast.newArrayCreation();
+        String typeName = 
+            _getClassName(FieldRecord.class, state.getClassLoader(), root);
+        initializer.setType(ast.newArrayType(_createType(ast, typeName)));
+        Iterator fields = fieldNames.iterator();
+        ArrayInitializer arrayInitializer = ast.newArrayInitializer();
+        initializer.setInitializer(arrayInitializer);
+        List expressions = arrayInitializer.expressions();
+        while (fields.hasNext()) {
+            String recordName = _getRecordName((String)fields.next());
+            expressions.add(ast.newSimpleName(recordName));
+        }
+        fragment.setInitializer(initializer);
+        FieldDeclaration array = 
+            ast.newFieldDeclaration(fragment);
+        array.setType(ast.newArrayType(_createType(ast, typeName)));
+        
+        array.setModifiers(Modifier.PRIVATE);
+        return array;
     }
     
     /** Create a restore method for a class, which restores all its state
@@ -739,7 +846,7 @@ public class AssignmentTransformer extends AbstractTransformer
         // Add a timestamp parameter.
         SingleVariableDeclaration timestamp = 
             ast.newSingleVariableDeclaration();
-        timestamp.setType(ast.newPrimitiveType(PrimitiveType.INT));
+        timestamp.setType(ast.newPrimitiveType(PrimitiveType.LONG));
         timestamp.setName(ast.newSimpleName("timestamp"));
         method.parameters().add(timestamp);
         
@@ -782,17 +889,8 @@ public class AssignmentTransformer extends AbstractTransformer
                     ast.newSimpleName(_getRecordName(fieldName)));
         
             // Set the restore method name.
-            String restoreMethodName;
-            if (fieldType.isPrimitive()) {
-                String typeName = fieldType.getName();
-                restoreMethodName = "restore" +
-                        Character.toUpperCase(typeName.charAt(0)) +
-                        typeName.substring(1);
-            } else
-                restoreMethodName = "restoreObject";
-            
             restoreMethodCall.arguments().add(ast.newSimpleName(fieldName));
-            restoreMethodCall.setName(ast.newSimpleName(restoreMethodName));
+            restoreMethodCall.setName(ast.newSimpleName("restore"));
         
             // Add two arguments to the restore method call.
             restoreMethodCall.arguments().add(ast.newSimpleName("timestamp"));
@@ -866,6 +964,7 @@ public class AssignmentTransformer extends AbstractTransformer
      *  object.
      * 
      *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
      *  @param state The current state of the type analyzer.
      *  @param isAnonymous Whether the current class is anonymous.
      *  @return The declaration of the method that restores the old value
@@ -873,7 +972,8 @@ public class AssignmentTransformer extends AbstractTransformer
      *   exists in the class or its superclasses.
      */
     private MethodDeclaration _createSetCheckpointMethod(AST ast, 
-            TypeAnalyzerState state, boolean isAnonymous) {
+            CompilationUnit root, TypeAnalyzerState state, 
+            boolean isAnonymous) {
         String methodName = _getSetCheckpointMethodName(isAnonymous);
 
         Class currentClass = state.getCurrentClass();
@@ -899,7 +999,9 @@ public class AssignmentTransformer extends AbstractTransformer
         // Add a checkpoint parameter.
         SingleVariableDeclaration checkpoint = 
             ast.newSingleVariableDeclaration();
-        checkpoint.setType(_createType(ast, Checkpoint.class.getName()));
+        String checkpointType = 
+            _getClassName(Checkpoint.class, state.getClassLoader(), root);
+        checkpoint.setType(_createType(ast, checkpointType));
         checkpoint.setName(ast.newSimpleName("checkpoint"));
         method.parameters().add(checkpoint);
         
@@ -927,8 +1029,39 @@ public class AssignmentTransformer extends AbstractTransformer
         fragment.setInitializer(ast.newSimpleName(CHECKPOINT_NAME));
         VariableDeclarationStatement tempDeclaration = 
             ast.newVariableDeclarationStatement(fragment);
-        tempDeclaration.setType(_createType(ast, Checkpoint.class.getName()));
+        tempDeclaration.setType(_createType(ast, checkpointType));
         thenBranch.statements().add(tempDeclaration);
+        
+        // Record the old checkpoint if the new checkpoint is not null.
+        // If it is null, it is impossible to roll back to the previous
+        // checkpoint.
+        IfStatement testNewCheckpoint = ast.newIfStatement();
+        InfixExpression testNull = ast.newInfixExpression();
+        testNull.setLeftOperand(ast.newSimpleName("checkpoint"));
+        testNull.setOperator(InfixExpression.Operator.NOT_EQUALS);
+        testNull.setRightOperand(ast.newNullLiteral());
+        testNewCheckpoint.setExpression(testNull);
+        Block testNewCheckpointBody = ast.newBlock();
+        testNewCheckpoint.setThenStatement(testNewCheckpointBody);
+        MethodInvocation record = ast.newMethodInvocation();
+        record.setExpression(ast.newSimpleName(CHECKPOINT_RECORD_NAME));
+        record.setName(ast.newSimpleName("add"));
+        record.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
+        MethodInvocation getTimestamp = ast.newMethodInvocation();
+        getTimestamp.setExpression(ast.newSimpleName("checkpoint"));
+        getTimestamp.setName(ast.newSimpleName("getTimestamp"));
+        record.arguments().add(getTimestamp);
+        testNewCheckpointBody.statements().add(
+                ast.newExpressionStatement(record));
+        MethodInvocation pushStates = ast.newMethodInvocation();
+        String recordType = 
+            _getClassName(FieldRecord.class, state.getClassLoader(), root);
+        pushStates.setExpression(_createName(ast, recordType));
+        pushStates.setName(ast.newSimpleName("pushState"));
+        pushStates.arguments().add(ast.newSimpleName(RECORDS_NAME));
+        testNewCheckpointBody.statements().add(
+                ast.newExpressionStatement(pushStates));
+        thenBranch.statements().add(testNewCheckpoint);
         
         // Assign the new checkpoint.
         Assignment assignment = ast.newAssignment();
@@ -1040,8 +1173,11 @@ public class AssignmentTransformer extends AbstractTransformer
     private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
             TypeAnalyzerState state) {
         Class currentClass = state.getCurrentClass();
+        Class parent = currentClass.getSuperclass();
         List newMethods = new LinkedList();
         List newFields = new LinkedList();
+        AST ast = node.getAST();
+        CompilationUnit root = (CompilationUnit)node.getRoot();
         
         // The lists for _createRestoreMethod.
         List fieldNames = new LinkedList();
@@ -1062,9 +1198,8 @@ public class AssignmentTransformer extends AbstractTransformer
                 if (isStatic && HANDLE_STATIC_FIELDS != true)
                     continue;
                 
-                // Handle only private fields.
+                // Handle only private fields or the $CHECKPOINT special field.
                 if (Modifier.isPrivate(fieldDecl.getModifiers())) {
-                    AST ast = fieldDecl.getAST();
                     Type type = Type.getType(fieldDecl);
                     
                     // Iterate over all the fragments in the field declaration.
@@ -1089,7 +1224,7 @@ public class AssignmentTransformer extends AbstractTransformer
                             
                             // Create an extra method for every different
                             // number of indices.
-                            newMethods.add(_createAssignMethod(ast, state, 
+                            newMethods.add(_createAssignMethod(ast, root, state, 
                                     fieldName, type, indices, isStatic));
                         }
                         
@@ -1097,31 +1232,49 @@ public class AssignmentTransformer extends AbstractTransformer
                         fieldTypes.add(type);
                         
                         // Create a record field.
-                        newFields.add(_createFieldRecord(currentClass, ast, 
+                        newFields.add(_createFieldRecord(ast, root, state, 
                                 fieldName, type.dimensions(), isStatic));
                     }
                 }
             }
         }
         
-        AST ast = node.getAST();
-        Class parent = state.getCurrentClass().getSuperclass();
+        // Add an array of all the records.
+        newFields.add(_createRecordArray(ast, root, state, fieldNames));
 
+        // Add a restore method.
         newMethods.add(_createRestoreMethod(ast, state, fieldNames, 
                 fieldTypes, node instanceof AnonymousClassDeclaration));
         
         MethodDeclaration setCheckpoint = 
-            _createSetCheckpointMethod(ast, state, 
+            _createSetCheckpointMethod(ast, root, state, 
                     node instanceof AnonymousClassDeclaration);
         if (setCheckpoint != null)
             newMethods.add(setCheckpoint);
         
         // Add an interface.
-        if (node instanceof TypeDeclaration)
+        if (node instanceof AnonymousClassDeclaration) 
+            bodyDeclarations.add(_createProxyClass(ast, root, state));
+        else {
+            // Create a checkpoint field.
+            FieldDeclaration checkpointField = 
+                _createCheckpointField(ast, root, state);
+            if (checkpointField != null)
+                bodyDeclarations.add(0, checkpointField);
+            
+            // Create a record for the checkpoint field.
+            FieldDeclaration record = 
+                _createCheckpointRecord(ast, root, state);
+            if (record != null)
+                newFields.add(0, record);
+
+            // Set the class to implement Rollbackable.
+            String rollbackType = 
+                _getClassName(Rollbackable.class, 
+                        state.getClassLoader(), root);
             ((TypeDeclaration)node).superInterfaces().add(
-                    _createName(ast, Rollbackable.class.getName()));
-        else
-            bodyDeclarations.add(_createProxyClass(ast));
+                    _createName(ast, rollbackType));
+        }
         
         // Add all the methods and then all the fields.
         bodyDeclarations.addAll(newMethods);
@@ -1140,12 +1293,6 @@ public class AssignmentTransformer extends AbstractTransformer
             addInvocation.arguments().add(proxy);
             body.statements().add(ast.newExpressionStatement(addInvocation));
             bodyDeclarations.add(initializer);
-        } else {
-            // Add a special checkpoint object field.
-            FieldDeclaration checkpointField = 
-                _createCheckpointField(ast, state);
-            if (checkpointField != null)
-                 bodyDeclarations.add(0, checkpointField);
         }
     }
     

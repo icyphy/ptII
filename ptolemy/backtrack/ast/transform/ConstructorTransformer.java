@@ -40,6 +40,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ConstructorInvocation;
 import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
@@ -83,6 +84,7 @@ public class ConstructorTransformer extends AbstractTransformer
     public void handle(MethodDeclaration node, TypeAnalyzerState state) {
         ASTNode classDeclaration = node.getParent();
         AST ast = node.getAST();
+        CompilationUnit root = (CompilationUnit)node.getRoot();
         
         MethodDeclaration newConstructor = 
             ast.newMethodDeclaration();
@@ -113,7 +115,9 @@ public class ConstructorTransformer extends AbstractTransformer
         // Add a checkpoint parameter.
         SingleVariableDeclaration checkpoint = 
             ast.newSingleVariableDeclaration();
-        checkpoint.setType(_createType(ast, Checkpoint.class.getName()));
+        String checkpointType = 
+            _getClassName(Checkpoint.class, state.getClassLoader(), root);
+        checkpoint.setType(_createType(ast, checkpointType));
         checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
         newConstructor.parameters().add(checkpoint);
         

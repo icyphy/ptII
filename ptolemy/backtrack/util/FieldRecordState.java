@@ -26,13 +26,12 @@ COPYRIGHTENDKEY
 
 */
 
-package ptolemy.backtrack;
+package ptolemy.backtrack.util;
 
-import java.util.LinkedList;
-import java.util.List;
+import ptolemy.backtrack.util.FieldRecord.RecordList;
 
 //////////////////////////////////////////////////////////////////////////
-//// CheckpointState
+//// FieldRecordState
 /**
  
  
@@ -42,21 +41,47 @@ import java.util.List;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class CheckpointState {
+public class FieldRecordState {
     
-    public long createCheckpoint() {
-        return ++_currentTimestamp;
+    protected FieldRecordState(int dimensions) {
+        _records = new RecordList[dimensions + 1];
     }
     
-    public long getTimestamp() {
-        return _currentTimestamp;
+    protected int _decreaseTotalNum() {
+        return --_totalNum;
     }
     
-    public List getMonitoredObjects() {
-        return _monitoredObjects;
+    protected int _getIdentifier() {
+        return _identifier;
     }
 
-    private static long _currentTimestamp = 0;
+    protected RecordList[] _getRecords() {
+        return _records;
+    }
     
-    private List _monitoredObjects = new LinkedList();
+    protected int _getTotalNum() {
+        return _totalNum;
+    }
+    
+    protected int _increaseIdentifier() {
+        return ++_identifier;
+    }
+    
+    protected int _increaseTotalNum() {
+        return ++_totalNum;
+    }
+    
+    /** The record lists for all the dimensions.
+     */
+    private RecordList[] _records;
+    
+    /** The total number of records in all the dimensions. Must be
+     *  explicitly managed when records are added or removed.
+     */
+    private int _totalNum = 0;
+    
+    /** An increasing identifier for each record.
+     */
+    private int _identifier = 0;
+    
 }

@@ -262,29 +262,23 @@ public class Type {
 
     /** Count the number of dimensions of an array type.
      *
-     *  @return The number of dimensions (>1) if the type is an array;
-     *   otherwise, return 1 (scalar).
+     *  @return The number of dimensions (>0) if the type is an array;
+     *   otherwise, return 0 (scalar).
      *  @see #dimensions(String)
      */
     public int dimensions() {
-        int bracketPos = _fullName.indexOf("[");
-        int dim = 1;
-        while (bracketPos >= 0) {
-            dim++;
-            bracketPos = _fullName.indexOf("[", bracketPos + 1);
-        }
-        return dim;
+        return dimensions(_fullName);
     }
 
     /** Count the number of dimensions of an array type.
      *
-     *  @return The number of dimensions (>1) if the type is an array;
-     *   otherwise, return 1 (scalar).
+     *  @return The number of dimensions (>0) if the type is an array;
+     *   otherwise, return 0 (scalar).
      *  @see #dimensions()
      */
     public static int dimensions(String type) {
         int bracketPos = type.indexOf("[");
-        int dim = 1;
+        int dim = 0;
         while (bracketPos >= 0) {
             dim++;
             bracketPos = type.indexOf("[", bracketPos + 1);
@@ -316,7 +310,7 @@ public class Type {
     public static String fromArrayType(String type) {
         StringBuffer buffer = new StringBuffer(getElementType(type));
         int dimensions = dimensions(type);
-        for (int i = 1; i < dimensions; i++)
+        for (int i = 0; i < dimensions; i++)
             buffer.append("[]");
         
         return buffer.toString();
@@ -369,7 +363,7 @@ public class Type {
     public static String getElementType(String type) {
         StringBuffer buffer = new StringBuffer(type);
         int length = buffer.length();
-        int dimensions = 1;
+        int dimensions = 0;
         boolean isPrimitive = true;
         
         // Count dimensions.
@@ -380,7 +374,7 @@ public class Type {
         }
         
         // Special treatment for object arrays.
-        if (dimensions > 1 && buffer.charAt(length - 1) == ';') {
+        if (dimensions > 0 && buffer.charAt(length - 1) == ';') {
             buffer.deleteCharAt(length - 1);
             buffer.deleteCharAt(0);
             length -= 2;

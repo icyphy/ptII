@@ -52,16 +52,20 @@ public class Checkpoint {
         _state.getMonitoredObjects().add(object);
     }
     
-    public synchronized int createCheckpoint() {
+    public synchronized long createCheckpoint() {
         return _state.createCheckpoint();
     }
 
-    public synchronized int getTimestamp() {
+    public synchronized long getTimestamp() {
         return _state.getTimestamp();
     }
     
     public boolean isCheckpointing() {
         return _state != null;
+    }
+    
+    public void removeObject(Rollbackable object) {
+        _state.getMonitoredObjects().remove(object);
     }
     
     public synchronized void rollback(int timestamp, boolean trim) {
