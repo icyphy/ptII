@@ -191,6 +191,18 @@ public class FSMGraphFrame extends GraphFrame {
         return pane;
     }
 
+    /** Display more detailed information than given by _about().
+     */
+    protected void _help() {
+        try {
+            URL doc = getClass().getClassLoader().getResource(
+                    "ptolemy/configs/doc/vergilFsmEditorHelp.htm");
+            getConfiguration().openModel(null, doc, doc.toExternalForm());
+        } catch (Exception ex) {
+            _about();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
