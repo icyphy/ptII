@@ -1,54 +1,20 @@
 
 To Do:
 
-respond to review
-talk to xiaojun
+outline
+find second reader
 
+FIXMEs
 write NonStrictSelect actor - prefire monotonicity
     only requires that the selected input is known
 code review
 
-FIXMEs
-
-outline
-
-SR in SR (to make the inner actor strict, use an inner director)
-FSM composite actor in SR
-embed SR in DT for timed SR
+test SR in SR (to make the inner actor strict, use an inner director)
+test SR embedded in DT for timed SR
+FSM composite actor in SR - talk to xiaojun
 
 stopwatch, global resets, UI activity, reflex game, examples by sedwards
 run ptolemy classic SR
-
-find second reader
-
-Latch - actor.lib (moved)
-LookupTable - actor.lib (moved, renamed from Server)
-NonStrictActor - actor.lib (moved)
-NonStrictTest - actor.lib (moved, renamed from SequenceTest)
-SingleTokenDistributor - actor.lib (moved)
-
-Absent - sr.lib
-AbsentToken - sr.lib
-InstantaneousDialogGenerator - sr.lib (renamed from NonStrictClient)
-NonStrictDelay - sr.lib
-NonStrictDisplay - sr.lib
-NonStrictLogicFunction - sr.lib
-NonStrictThreeBitAdder - sr.lib
-Undefined - sr.lib
-
-RampsDisconnectedGraph.xml - kernel
-RampFiringLimit.xml - kernel
-PulseOr.xml - kernel
-
-Absent - lib
-InstantaneousDialog - lib
-Latch - kernel (moved)
-NonStrictDelay - lib
-NonStrictOrCyclic - lib
-NonStrictThreeBitAdder - lib
-NonStrictThreeBitAdder2 - lib
-PulseNonStrictAnd - lib
-PulseNonStrictOr - lib
 
 -------------------------------------------------------------------------------
 
@@ -56,8 +22,6 @@ Issues:
 
 If an actor's prefire() method is called repeatedly and returns false every
 time, the actor will never be fired or postfired.  Is this right?
-
-
 
 How do we force domain-polymorphic actors to follow SR semantics?  Once
 an actor produces an output, it is not allowed to "change its mind" and
@@ -166,7 +130,7 @@ Minimizing the worst case execution time is important, because the user may desi
 
 -------------------------------------------------------------------------------
 
-Tests:
+Tests (outdated):
 
 Latch is failing - need to keep actors from firing until their inputs are
 available
