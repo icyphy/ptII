@@ -111,6 +111,9 @@ OPTIONAL_FILES = \
 	doc \
 	cg \
 	'CommandLineTemplate$$1.class' \
+	'DataUtilities$$ActorCodeGenerationScope.class' \
+	'NamedObjConstructorAnalysis.class' \
+	'TokenToNativeTransformer$$1.class' \
 	'TypeSpecializer$$ConstantTerm.class' \
 	'TypeSpecializer$$VariableTerm.class' \
 	'TypeSpecializerAnalysis$$ConstantTerm.class' \
