@@ -180,7 +180,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
             throw new IllegalActionException( this,
-            " must have a CT director.");
+                    " must have a CT director.");
         }
         double h = dir.getCurrentStepSize();
         double tentativeState;
@@ -255,13 +255,13 @@ public class TrapezoidalRuleSolver extends ODESolver {
         if (localError < tolerance) {
             if (_debugging) {
                 _debug("Integrator: " + integrator.getName() +
-                    " report a success.");
+                        " report a success.");
             }
             return true;
         } else {
             if (_debugging) {
                 _debug("Integrator: " + integrator.getName() +
-                    " reports a failure.");
+                        " reports a failure.");
             }
             return false;
         }

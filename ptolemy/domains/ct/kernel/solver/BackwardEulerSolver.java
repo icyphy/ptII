@@ -119,7 +119,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
             throw new IllegalActionException( this,
-            " must have a CT director.");
+                    " must have a CT director.");
         }
         double tentativeState = integrator.getState();
         if (_getRoundCount() == 0) {
