@@ -1,5 +1,5 @@
-/* This director extends FSMDirector by specifying whether a port should
-   consume a token in the state transition.
+/* This director extends FSMDirector by consuming only input tokens
+   that are needed in the current state.
 
 Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
@@ -52,19 +52,24 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ExtendedFSMDirector
 /**
-   This director extends FSMDirector by specifying whether a port should
-   consume a token in the state transition. An input port will consume one
-   token if it appears in: (1) at least one guard expressions in all the
-   transitions that go from the current state, and/or (2) the output actions
-   of the enabled transition. If an input port does not appear in the
-   above two cases, it will not consume tokens.
+   This director extends FSMDirector by consuming only input tokens that
+   are needed in the current state. An input port will consume one
+   token if the port name appears in: (1) at least one guard expression in any
+   transition leaving the current state and/or (2) the output actions
+   of the enabled transition.
 
+   FIXME: This is highly preliminary. Missing capabilities:
    FIXME: The input ports appeared in SetActions of the enabled transition
    should also be included.
-   FIXME: Doesn't handle multi-port.
-   FIXME: Currently, the port rate is either 1 or 0, but we are going to
-   extend it. The current implementation also does not support state
-   refinement.
+   FIXME: Doesn't handle multi-ports.
+   FIXME: Currently this director uses the default receiver of FSMDirector,
+   which is a mailbox, so there is no way to consume more than one token.
+   This director could use a different receiver and support a syntax in
+   the guard expression language to support consumption of more than one
+   token.
+   FIXME: The current implementation also does not support state
+   refinement. That is, the refinement is not examined to determine
+   whether to consume a token.
 
    @author Rachel Zhou
    @version $Id$
