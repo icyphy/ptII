@@ -43,9 +43,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	vergil
+PTPACKAGE = 	ptolemy.vergil
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		ptolemy.vergil.jar \
+		debugger/debugger.jar \
+		graph/graph.jar \
+		lib/lib.jar \
+		ptolemy/ptolemy.jar \
+		toolbox/toolbox.jar
+
+PTCLASSALLJAR = vergil.jar
 
 JSRCS = \
 	AbstractService.java \
@@ -59,7 +70,9 @@ JSRCS = \
 	VergilDocumentFactory.java \
 	VisualNotation.java 
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+		lib\rootEntityLibrary.xml \
+		lib\rootIconLibrary.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

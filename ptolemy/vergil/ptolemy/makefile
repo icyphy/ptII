@@ -43,9 +43,16 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	vergil
+PTPACKAGE = 	ptolemy.vergil.ptolemy
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		ptolemy.vergil.ptolemy.jar \
+		fsm/fsm.jar
+
+PTCLASSALLJAR = ptolemy.jar
 
 JSRCS = \
 	CompaanNotation.java \

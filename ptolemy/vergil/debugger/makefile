@@ -12,8 +12,9 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-#PTPACKAGE = 	debugger
-#PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	debugger
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = Breakpoint.java \
 	Watchers.java \
