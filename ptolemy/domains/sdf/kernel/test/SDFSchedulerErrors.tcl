@@ -35,10 +35,6 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-if {[string compare test [info procs createAndExecute]] == 1} then {
-    source [file join $PTII util testsuite auto.tcl]
-} {}
-
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 

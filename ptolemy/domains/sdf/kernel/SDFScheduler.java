@@ -1013,9 +1013,17 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             }
         }
 
+        Director director = (Director)getContainer();
+        CompositeActor model = (CompositeActor)director.getContainer();
+        
         // Get the rate of this port.
-        int currentRate = SDFUtilities._getRate(currentPort);
-
+        int currentRate;
+        if(currentActor == model) {
+            currentRate = 1;
+        } else {
+            currentRate = SDFUtilities._getRate(currentPort);
+        }
+        
         // Port rates of less than zero are not valid.
         if (currentRate < 0) {
             throw new NotSchedulableException(
@@ -1055,7 +1063,12 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         + " to " + connectedActor.getName());
             }
 
-            int connectedRate = SDFUtilities._getRate(connectedPort);
+            int connectedRate;
+            if(connectedActor == model) {
+                connectedRate = 1;
+            } else {
+                connectedRate = SDFUtilities._getRate(connectedPort);
+            }
 
             // currentFiring is the firing ratio that we've already
             // calculated for currentActor
