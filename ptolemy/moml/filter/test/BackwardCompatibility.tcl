@@ -734,15 +734,15 @@ proc createAndExecute {file} {
 	    || [file tail $file] == "VariableFIR2.xml" \
 	    || [file tail $file] == "Autocorrelation3.xml" \
 	    || [file tail $file] == "test-pn-composite-1.xml" \
-	    || "$file" == "compat3/FileWriter2.xml" \
-	    || "$file" == "compat3/ReadLineInPTII.xml" \
-	    || "$file" == "compat3/function.xml" \
-	    || "$file" == "compat3/automataActorLibrary.xml" \
-	    || "$file" == "compat3/ViterbiDecoderSoft.xml" \
-	    || "$file" == "compat3/record.xml" \
-	    || "$file" == "compat3/methodCall.xml" \
-	    || "$file" == "compat3/DatagramReaders.xml" \
-	    || "$file" == "compat3/DatagramReadersSynced.xml" \
+	    || [file tail $file] == "FileWriter2.xml" \
+	    || [file tail $file] == "ReadLineInPTII.xml" \
+	    || [file tail $file] == "function.xml" \
+	    || [file tail $file] == "automataActorLibrary.xml" \
+	    || [file tail $file] == "ViterbiDecoderSoft.xml" \
+	    || [file tail $file] == "record.xml" \
+	    || [file tail $file] == "methodCall.xml" \
+	    || [file tail $file] == "DatagramReaders.xml" \
+	    || [file tail $file] == "DatagramReadersSynced.xml" \
 	} {
 	puts "$file: Skipping Known Failure"
 	incr KNOWN_FAILED
@@ -813,7 +813,7 @@ proc createAndExecute {file} {
 
 # Use -nocomplain here so that we do not spuriously report an error
 # in alljtests.tcl if compat, compat2 or compat3 do not exist.
-foreach file [lsort [glob -nocomplain compat/*.xml compat2/*.xml compat3/*.xml]] {
+foreach file [lsort [glob -nocomplain compat/*.xml compat2/*.xml compat3/*.xml compat4/*.xml]] {
     puts "------------------ testing $file"
     test "Auto" "Automatic test in file $file" {
         set application [createAndExecute $file]
