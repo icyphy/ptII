@@ -44,6 +44,7 @@ include $(CONFIG)
 
 # Bourne Shell scripts for Unix and Cygwin
 SHELL_FILES = \
+	copernicus \
 	decompile \
 	histogram \
 	jode \
@@ -93,6 +94,8 @@ OPTIONAL_FILES = $(SHELL_FILES) \
 
 all: ptinvoke
 	-chmod a+x ptinvoke
+	rm -f copernicus
+	ln -s ptinvoke copernicus
 	rm -f histogram
 	ln -s ptinvoke histogram
 	rm -f decompile
