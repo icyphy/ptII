@@ -73,7 +73,7 @@ Cryptography Extension (JCE).
 
 TODO: include sources of information on JCE cipher and algorithms
 
-@author Rakesh Reddy
+@author Rakesh Reddy, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
 */

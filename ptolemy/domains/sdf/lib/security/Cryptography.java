@@ -72,7 +72,7 @@ key sizes.
 <p>This class and its subclasses rely on the Java Cryptography Extension (JCE)
 and Java Cryptography Architecture(JCA).
 
-@author Rakesh Reddy
+@author Rakesh Reddy, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
 */

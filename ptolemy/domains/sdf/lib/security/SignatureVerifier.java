@@ -62,7 +62,7 @@ the data input with the given key.
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
-@author Rakesh Reddy
+@author Rakesh Reddy, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
 */

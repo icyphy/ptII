@@ -64,7 +64,7 @@ private key to sign data and a public key which is sent on the
 This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
-@author Rakesh Reddy
+@author Rakesh Reddy, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
 */

@@ -75,7 +75,7 @@ its first fired.
 Cryptography Extension (JCE).
 
 
-@author Rakesh Reddy
+@author Rakesh Reddy, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
 */

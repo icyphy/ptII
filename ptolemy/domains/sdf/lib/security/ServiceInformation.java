@@ -65,7 +65,7 @@ Services are those algorithms have been implemented by providers and are
 installed on the local system.  To add providers please refer to the 
 Java Cryptography Architecture (JCA) and Java Cryptography Extension (JCE).
 
-@author Rakesh Reddy
+@author Rakesh Reddy, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
 */
