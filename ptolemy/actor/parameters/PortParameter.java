@@ -1,6 +1,6 @@
 /* A parameter that has an associated port.
 
- Copyright (c) 1997-2002 The Regents of the University of California.
+ Copyright (c) 2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,8 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bart@eecs.berkeley.edu)
-
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.parameters;
@@ -215,7 +214,7 @@ public class PortParameter extends Parameter {
      *  that this class would not function as a drop-in replacement
      *  for a Parameter. In particular, if some other parameter were
      *  to reference this one in an expression, it would not see the
-     *  current value. It would see the persisent value.
+     *  current value. It would see the persistent value.
      *  @return The token contained by this variable converted to the
      *   type of this variable, or null if there is none.
      *  @exception IllegalActionException If the expression cannot
