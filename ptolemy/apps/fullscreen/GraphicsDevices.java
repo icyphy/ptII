@@ -26,7 +26,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) */
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+*/
 
 package ptolemy.apps.fullscreen;
 
