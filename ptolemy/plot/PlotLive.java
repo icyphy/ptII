@@ -129,7 +129,7 @@ public abstract class PlotLive extends Plot implements Runnable {
      */
     public void run() {
         if (_debug >8 ) System.out.println("PlotLive: run");
-        while (true) {
+        while (Thread.currentThread() == _plotLiveThread) {
             if (_plotting) {
                 addPoints();
                 Thread.yield();
@@ -138,7 +138,7 @@ public abstract class PlotLive extends Plot implements Runnable {
                     // NOTE: Using wait here with notifyAll in the action 
                     // method leads to inexplicable deadlocks.
                     // So we just sleep.
-                    Thread.sleep(200);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {}
             }
         }
@@ -171,7 +171,8 @@ public abstract class PlotLive extends Plot implements Runnable {
     public void stop() {
         if (_debug >8 ) System.out.println("PlotLive: stop");
         if (_plotLiveThread != null) {
-            _plotLiveThread.stop();
+            // Don't stop the thread, just set it to null. 
+            //_plotLiveThread.stop();
             _plotLiveThread = null;
         }
     }
