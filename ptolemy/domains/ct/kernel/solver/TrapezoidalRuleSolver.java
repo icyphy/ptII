@@ -38,11 +38,13 @@ import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// TrapezoidalRuleSolver
-/**
-   This is a second order variable step size ODE solver that uses the
-   trapezoidal rule algorithm.
+/**This is a second order variable step size ODE solver that uses the
+   trapezoidal rule algorithm. Unlike the solvers with fixed step size, 
+   this solver adjusts its step size based on the estimation of the 
+   local truncation error.
    <p>
-   NOTE: still under development.
+   NOTE: The design of this solver, in particular, the design of estimation of 
+   the local truncation error, is still priliminary. 
    <p>
 
    For an ODE
@@ -54,9 +56,8 @@ import ptolemy.kernel.util.Workspace;
    <pre>
    x(t+h) = x(t) + (h/2)*(x'(t) + x'(t+h))
    </pre>
-   This is the most accurate second order multi-step ODE solver.
-   It is an implicit algorithm, which involves a fixed-point iteration
-   to find x(t+h) and x'(t+h).
+   This solver uses an implicit algorithm, which involves a fixed-point 
+   iteration to find x(t+h) and x'(t+h).
    <p>
    The local truncation error (LTE) control is based on the formula 9.78 in
    "Modeling and Simulation of Dynamic Systems" by Robert L. Woods and Kent L.
@@ -69,12 +70,13 @@ import ptolemy.kernel.util.Workspace;
    <pre>
    abs(x(t+h) - xx(t+h))/(2^2 - 1)
    </pre>
+   This is used to adjust the step size.
 
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (cxh)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class TrapezoidalRuleSolver extends ODESolver {
 

@@ -71,8 +71,8 @@ import ptolemy.kernel.util.Workspace;
    @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class ExplicitRK23Solver extends ODESolver {
 
@@ -105,8 +105,12 @@ public class ExplicitRK23Solver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire dynamic actors. Advance the model time. The amount of increment
-     *  is decided by the number of the round counter.
+    /** Fire dynamic actors. Advance the model time. The amount of the increment
+     *  is decided by the number of the round counter and the current step size.
+     *  In particular, at the first round, time is incremented by 1/2 of the 
+     *  current step size; at the sencond round, time is incremented by another
+     *  1/4 of the current step size; in the third round, time gets incremented
+     *  by the last 1/4 of the current step size. 
      *  @exception IllegalActionException If thrown in the super class or the
      *  model time can not be set.
      */
