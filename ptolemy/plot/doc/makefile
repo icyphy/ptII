@@ -32,7 +32,7 @@
 # Root of Tycho directory
 ROOT =		../../../..
 # True source directory
-VPATH =		$(ROOT)/java/pt/doc
+VPATH =		$(ROOT)/java/pt/plot/doc
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
