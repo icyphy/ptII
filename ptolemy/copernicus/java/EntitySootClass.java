@@ -68,8 +68,8 @@ public class EntitySootClass extends SootClass {
             SootMethod method = (SootMethod)methods.next();
             if(!method.getName().equals("<init>")) continue;
             // create the new constructor.
-            SootMethod constructor = _createSuperConstructor(this,
-                    method.getParameterTypes());
+            SootMethod constructor = _createConstructor(this,
+                    method);
             JimpleBody body = (JimpleBody)constructor.getActiveBody();
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
@@ -87,15 +87,18 @@ public class EntitySootClass extends SootClass {
         return _initMethod;
     }
 
-    // Create a constructor in theClass with the given parameterTypes.
+    // Create a constructor in theClass that has the same signature
+    // as the given method.
     // Add instructions to the body of the constructor that call the
-    // super constructor with the same arguments.
-    private SootMethod _createSuperConstructor(SootClass theClass,
-            List parameterTypes) {
+    // given method with the same arguments, and then calls the
+    // shared _CGInit initialization method.
+    private SootMethod _createConstructor(SootClass theClass,
+            SootMethod superConstructor) {
         // Create the constructor.
         SootMethod constructor = new SootMethod("<init>",
-                parameterTypes,
-                VoidType.v(), Modifier.PUBLIC);
+                superConstructor.getParameterTypes(),
+                superConstructor.getReturnType(),
+                superConstructor.getModifiers());
 
         theClass.addMethod(constructor);
         // System.out.println("creating constructor = " +
@@ -115,11 +118,6 @@ public class EntitySootClass extends SootClass {
         List parameterList = new ArrayList();
         parameterList.addAll(body.getLocals());
         parameterList.remove(thisLocal);
-
-        // get the constructor in the super class that has the same signature
-        // as the constructor we just created.
-        SootMethod superConstructor =
-            theClass.getSuperclass().getMethod(constructor.getSubSignature());
 
         // Call the super constructor.
         units.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(

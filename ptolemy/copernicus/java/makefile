@@ -92,7 +92,6 @@ deepDemo: compileDeepDemo runDeepDemo
 
 SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
 MODEL = OrthogonalCom 
-#MODEL = test
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
 
 DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
@@ -115,6 +114,7 @@ compileShallowDemo: $(JCLASS)
 	ptolemy.copernicus.java.Main $(SOURCECLASS) -d "$(ROOT)"  \
 		-p wjtp.at targetPackage:$(SHALLOWTARGETPACKAGE) \
 		-p wjtp.mt targetPackage:$(SHALLOWTARGETPACKAGE) \
+		-p wjtp.umr disabled \
 		$(SOOT_USER_ARGS)
 	@echo "Here is that javap output"
 	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)

@@ -656,6 +656,14 @@ public class PtolemyUtilities {
     public static SootMethod variableConstructorWithToken;
 
     static {
+        loadSootReferences();
+    }
+    
+    /**
+     *  Initialize the fields of this class to point to classes in the 
+     *  current soot tree.
+     */
+    public static void loadSootReferences() {
         objectClass =
             Scene.v().loadClassAndSupport("java.lang.Object");
         toStringMethod = objectClass.getMethod("java.lang.String toString()");

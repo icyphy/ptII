@@ -59,11 +59,12 @@ proc sootShallowCodeGeneration {model} {
     set classpath $relativePathToPTII[java::field java.io.File pathSeparator].[java::field java.io.File pathSeparator]$sootClasspath[java::field java.io.File pathSeparator]$builtinClasspath[java::field java.io.File pathSeparator]$rtjar
 
 
-    set args [java::new {String[]} 9 \
+    set args [java::new {String[]} 12 \
 	    [list \
 	    $model "-d" $relativePathToPTII \
 	    "-p" "wjtp.at" "targetPackage:ptolemy.copernicus.java.test.cg" \
 	    "-p" "wjtp.mt" "targetPackage:ptolemy.copernicus.java.test.cg" \
+	    "-p" "wjtp.umr" "disabled" \
 	    ]]
     set main [java::new ptolemy.copernicus.java.Main $args]
     set toplevel [$main readInModel $model]
@@ -96,6 +97,9 @@ proc sootShallowCodeGeneration {model} {
     #set thread [java::new Thread main]
     #$thread start
 
+    # Find the new classes in the new Scene.
+    # Soot tries to be smart and refresh the scene in between comilations, so so must we.
+    java::call ptolemy.copernicus.java.PtolemyUtilities loadSootReferences
 
 #    exec java -Xmx132m -classpath $classpath \
 #	    ptolemy.copernicus.java.Main 
