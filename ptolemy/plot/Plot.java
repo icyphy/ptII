@@ -1830,7 +1830,7 @@ public class Plot extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    private class Format {
+    private class Format implements Serializable {
         // Indicate whether the current dataset is connected.
         public boolean connected;
 
