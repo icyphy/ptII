@@ -250,7 +250,7 @@ public class GUIUtilities {
 
     /**
      * Return a string that contains the original string, limited to the
-     * given number of characters.  If the string is truncated, elipses
+     * given number of characters.  If the string is truncated, ellipses
      * will be appended to the end of the string
      */
     public static String ellipsis(String string, int length) {
