@@ -60,7 +60,7 @@ public class TestDebugNamedObj extends NamedObj {
     }
 
     /** Pass a message string to the debugListeners */
-    public debug(String message) {
+    public void debug(String message) {
         _debug(message);
     }
 }
