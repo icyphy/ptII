@@ -1,10 +1,10 @@
-# Makefile for the Java classes used to implement the Ptolemy kernel
+# Makefile for Communicating Sequential Process domain actors library
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, Neil Smyth
 #
-# @Version: @(#)makefile	1.16 08/20/98
+# @Version: $Id$
 #
-# @Copyright (c) 1997-1998 The Regents of the University of California.
+# @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -29,13 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
-
 # Root of the Java directory
 ROOT =		../../../..
 
-ME =		ptolemy/domains/ct/lib
+ME =		ptolemy/domains/csp/lib
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -44,9 +41,9 @@ include $(CONFIG)
 DIRS = 		#doc
 
 # Used to build zip files
-TYPACKAGE = 	ptolemy.domains.ct.lib
+TYPACKAGE = 	ptolemy.domains.csp.lib
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/domains/ct/lib
+TYPACKAGE_DIR = ptolemy/domains/csp/lib
 TYVERSION =	1.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
@@ -55,17 +52,12 @@ JARFILE = 	$(TYPACKAGE).jar
 CLASSPATH = ../../../..
 
 JSRCS = \
-	CTAdd.java \
-	CTConst.java \
-	CTGain.java \
-	CTIntegrator.java \
-	CTLookupTable.java \
-	CTMultiply.java \
-	CTPlot.java \
-	CTPrintln.java \
-	CTRamp.java \
-	CTSquareWave.java \
-	CTXYPlot.java
+	CSPMultiSink.java \
+	CSPMultiSource.java \
+	CSPSink.java \
+	CSPSource.java \
+	CSPRandMultiSink.java
+
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -75,9 +67,7 @@ MISC_FILES =	doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'CTPlot$$CTPlotFrame.class' \
-	'CTXYPlot$$CTPlotFrame.class'
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
