@@ -52,7 +52,7 @@ the ChannelState component...
 This actor also defines a set of constant that are widely used in
 the OMNET c++ classes.
 
-Based on this, it is relativly easy to translate a OMNET class
+Based on this, it is relatively easy to translate a OMNET class
 to a actor here.
 @author Yang Zhao
 @version MACActorBase.java,v 1.8 2004/04/12 15:30:36 cxh Exp

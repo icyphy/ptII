@@ -70,7 +70,7 @@ public class GraphEvent extends java.util.EventObject {
     public static final int NODE_REMOVED        = 21;
 
     /**
-     * Graph is modified signficantly and should
+     * Graph is modified significantly and should
      * be fully "refreshed"; target is the
      * graph, old value is <i>null</i>.
      */

@@ -221,7 +221,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
         repaint();
     }
 
-    /** Set the paint. All shopes will be drawn with
+    /** Set the paint. All shapes will be drawn with
      * the same paint.
      */
     public void setPaint (Paint p) {

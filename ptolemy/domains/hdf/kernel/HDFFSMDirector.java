@@ -509,7 +509,7 @@ public class HDFFSMDirector extends FSMDirector {
 
     /** Preinitialize() methods of all actors deeply contained by the
      *  container of this director. The HDF/SDF preinitialize method
-     *  will compute the initial shedule. Propagate the consumption
+     *  will compute the initial schedule. Propagate the consumption
      *  and production rates of the current state out to the
      *  corresponding ports of the container of this director.
      *  @exception IllegalActionException If the preinitialize()

@@ -162,7 +162,7 @@ socket. A MulticastSocket is a DatagramSocket with additional capabilities
 to join groups of other multicast hosts on the internet. A multicast group
 is specified by a class D IP address and a standard UDP port number.
 When one member sends a packet to a multicast group, all recipients
-subscribing to that host and port reiceive the packet.
+subscribing to that host and port receive the packet.
 Currently, The parameter <i>defaultReturnAddress</i> is overloaded to specify
 a multicast datagram IP address. When the return address is a multicast IP
 address, The parameter <i>localSocketNumber</i> is used to specify the

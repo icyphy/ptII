@@ -70,7 +70,7 @@ test CTScheduler-1.2 {Construct a CTScheduler in a workspace} {
     list [$a1 getFullName]
 } {.CTScheduler}
 
-test CTScheduler-1.3 {sheduler and its container} {
+test CTScheduler-1.3 {scheduler and its container} {
     set ca [java::new ptolemy.actor.CompositeActor]
     $ca setName CA
     set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $ca Dir]

@@ -471,7 +471,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @param sourcePort The source port.
      *  @param destinationPortList A list of destination ports.
      *  @return A list of instances of Inequality indicating the
-     *   type constraints that are not satistfied.
+     *   type constraints that are not satisfied.
      */
     protected List _checkTypesFromTo(TypedIOPort sourcePort,
             List destinationPortList) {

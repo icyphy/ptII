@@ -186,7 +186,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *  the corresponding linear threshold is 10^(<i>threshold</i>/<i>N</i>),
      *  where <i>N</i> is 20 (for amplitude decibels) or 10 (for power decibels).
      *  This parameter is a string with possible values "absolute",
-     *  "relative linear", "relative amplitude decibels" or "relatitve
+     *  "relative linear", "relative amplitude decibels" or "relative
      *  power decibels". The default value is "absolute".
      */
     public StringParameter scale;

@@ -50,7 +50,7 @@ parameter <i>codedRate</i>. During each firing, the actor consumes
 <i>k</i> bits and encode them into a block of code with length <i>n</i>.
 The rate of the code is <i>k/n</i>.
 <p>
-For a Hamming code, <i>k</i> and <i>n</i> must satisfiy the following:
+For a Hamming code, <i>k</i> and <i>n</i> must satisfy the following:
 <i>n</i> = 2<i><sup>m</sup></i> - 1
 <i>k</i> = 2<sup><i>m</i></sup> - 1 - <i>m</i>;
 where <i>m</i> is any positive integer. Note <i>m</i> = <i>n</i> - <i>k</i>.

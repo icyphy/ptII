@@ -50,7 +50,7 @@ listener directly would be problematic.  Instead, this class must be
 made aware of the ViewScreen2D object that contains the figure, as the
 ViewScreen2D object will forward all keyboard events that occur on a
 selected figure to this listener.  When initially adding a figure to
-the view scren, the view screen must call the setViewScreen() method
+the view screen, the view screen must call the setViewScreen() method
 of the figure with a reference to itself as the parameter.
 
 @author Ismael M. Sarmiento
