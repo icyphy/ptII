@@ -520,6 +520,25 @@ public class GiottoDirector extends StaticSchedulingDirector {
         return wasTransferred;
     }
 
+    /** Get the period of the giotto director in ms
+     *
+     *  @return double value of period in ms.
+     */
+    public double getPeriod() {
+	//In ptolemy model, for simulation, time is double with unit Second
+	// however, for giotto code, we need integer and its unit is microSecond
+	return _periodValue * 1000;
+    }
+
+    /** Get the period of the giotto director in ms
+     *
+     *  @return int value of period in ms.
+     */
+    public int getIntPeriod() throws IllegalActionException {
+	//In ptolemy model, for simulation, time is double with unit Second
+	// however, for giotto code, we need integer and its unit is microSecond
+	return (new Double (_periodValue * 1000)).intValue();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

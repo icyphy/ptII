@@ -121,7 +121,6 @@ public class GiottoCodeGenerator extends Attribute {
         new SingletonAttribute(this, "_hideName");
         new GiottoEditorFactory(this, "_editorFactory");
 
-	this._container = (TypedCompositeActor)_container;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -135,8 +134,10 @@ public class GiottoCodeGenerator extends Attribute {
     ////                         public methods                    ////
 
     /** Topology analysis and initialization.
+     *
+     * @ return Ture if in giotto domain, False if in other domains.
      */
-    private void _initialize() throws IllegalActionException {
+    private boolean _initialize() throws IllegalActionException {
 	// Get containers, _commActors, modes List and _modeSwitchController  .
 	// _commActors List contains actors which exist in all the modes.
 	// Often, the depth of _commActors is smaller than modal director.
@@ -144,9 +145,14 @@ public class GiottoCodeGenerator extends Attribute {
 	_commActors = new LinkedList();
 	_modeList = new LinkedList();
 
-//	_container = (TypedCompositeActor) getContainer();
+	_container = (TypedCompositeActor) getContainer();
+
+	Director director = ((CompositeActor)_container).getDirector();
+
+	if (!(director instanceof GiottoDirector))
+	  return false;
 	// FIXME _container1 should be a better name.
-	_container1 = null;
+	//_container1 = null;
 
 	_modeSwitchController   = null;
 
@@ -158,6 +164,7 @@ public class GiottoCodeGenerator extends Attribute {
 	    _commActors.addLast(actor);
 	}
 
+	return true;
     }
 
     /** Generate code for the sensors.
@@ -579,7 +586,7 @@ public class GiottoCodeGenerator extends Attribute {
     /** Generate code for the modes.
      *  @return The modes code.
      */
-    private String _modeCode(Actor modeContainer) throws IllegalActionException {
+    private String _modeCode() throws IllegalActionException {
 
 	String codeString = "";
 
@@ -589,19 +596,14 @@ public class GiottoCodeGenerator extends Attribute {
 
 	String outputName, actorName, modeName;
 
-	Parameter period = ((GiottoDirector)modeContainer.getDirector()).period;
+	modeName = StringUtilities.sanitizeName(((NamedObj) _container).getName());
 
-	//In ptolemy model, for simulation, time is double with unit Second
-	// however, for giotto code, we need integer and its unit is microSecond
-	double periodValue =
-	    ((DoubleToken)period.getToken()).doubleValue() * 1000;
-
-	modeName = StringUtilities.sanitizeName(((NamedObj) modeContainer).getName());
+	int periodValue = ((GiottoDirector) ((CompositeActor) _container).getDirector()).getIntPeriod();
 
 	codeString +=  "  mode "
 		       + modeName
 		       + " () period "
-		       + (new Double(periodValue)).intValue()
+		       + periodValue
 		       + " {"
 		       + _endLine;
 
@@ -622,7 +624,7 @@ public class GiottoCodeGenerator extends Attribute {
                     if(!outPort.isOutput()) {
                         continue;
                     }
-		    Nameable actor = outPort.getContainer();
+   		    Nameable actor = outPort.getContainer();
 		    if (actor instanceof Actor) {
 			Parameter actorFreqPara = (Parameter)
 			    ((NamedObj)actor).
@@ -685,7 +687,9 @@ public class GiottoCodeGenerator extends Attribute {
 	try {
 	    // initialization
 	    generatedCode = "";
-	    _initialize();
+	    if (!_initialize()) {
+	        return "Not in Giotto domain!";
+    	    }
 
 	    _currentDepth = depthInHierarchy();
 	    String containerName = _container.getName();
@@ -701,8 +705,11 @@ public class GiottoCodeGenerator extends Attribute {
 			     + " {"
 			     + _endLine;
 
-	    if (_modeSwitchController!= null) {
-/*                // check to make sure it is multi-modes
+	    // for one mode only
+	    generatedCode += _modeCode();
+
+/*	    if (_modeSwitchController!= null) {
+                // check to make sure it is multi-modes
 		// find the modes from the state's refinement of the
 		// _modeSwitchController
 		State initState = _modeSwitchController.getInitialState();
@@ -853,10 +860,11 @@ public class GiottoCodeGenerator extends Attribute {
 			}
 		    }
 		}
-    */
+
     	    } else {
 		generatedCode += _modeCode(_container);
 	    }
+	    */
 
 	    generatedCode +=  "}"
 			      + _endLine;
@@ -876,7 +884,7 @@ public class GiottoCodeGenerator extends Attribute {
     private LinkedList _commActors;
     private LinkedList _modeList;
     // FIXME _container1 should be a better name.
-    private TypedCompositeActor _container1;
+    //private TypedCompositeActor _container1;
     private FSMActor _modeSwitchController;
 
     private TypedCompositeActor _container;
