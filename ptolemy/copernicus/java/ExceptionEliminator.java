@@ -177,10 +177,26 @@ public class ExceptionEliminator extends SceneTransformer {
             SootClass exceptionClass =
                 ((RefType)expr.getBase().getType()).getSootClass();
             if (_isPtolemyException(exceptionClass)) {
-                box.setValue(Jimple.v().newSpecialInvokeExpr(
-                        (Local)expr.getBase(),
-                        PtolemyUtilities.runtimeExceptionConstructor,
-                        Collections.EMPTY_LIST));
+                Value foundArg = null;
+                for(Iterator args = expr.getArgs().iterator();
+                    args.hasNext();) {
+                    Value arg = (Value)args.next();
+                    if(arg.getType().equals(RefType.v(PtolemyUtilities.stringClass))) {
+                        foundArg = arg;
+                        break;
+                    }
+                }
+                if(foundArg == null) {
+                    box.setValue(Jimple.v().newSpecialInvokeExpr(
+                                         (Local)expr.getBase(),
+                                         PtolemyUtilities.runtimeExceptionConstructor,
+                                         Collections.EMPTY_LIST));
+                } else {
+                    box.setValue(Jimple.v().newSpecialInvokeExpr(
+                                         (Local)expr.getBase(),
+                                         PtolemyUtilities.runtimeExceptionStringConstructor,
+                                         foundArg));
+                }
             }
         }
     }
