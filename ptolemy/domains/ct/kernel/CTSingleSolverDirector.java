@@ -42,20 +42,21 @@ import collections.LinkedList;
 //// CTSingleSolverDirector
 /**
 A CTDirector that uses only one ODE solver. The solver is a parameter
-of the director called "ODESolver". The default solver is ForwardEulerSoler.
+of the director called "ODESolver". The default solver is the 
+ForwardEulerSoler.
 The solver of this director must be able to self start, so any solver
 that uses history points can not be the solver for this director. 
 <P>
 This director can handle explicit breakpoints, which are breakpoints
 that are registered in the breakpoint table. It does not handle 
-unexpected breakpoints like event detections.  So this director can
+unexpected breakpoints like event detections.  This director can
 only be a top-level director. Since impulse backward Euler method 
 does not advance time, it should not be used as the solver for this
 director. As a result, if the system contains impulse sources,
-this director is not ideal. Please use CTMultiSolverDirector with
+this director is not applicable. Please use CTMultiSolverDirector with
 ImpulseBESolver as the breakpoint solver for better result.
 <P>
-Each iteration of the director simulate the system for one step size.
+Each iteration of the director simulates the system for one step.
 The size of the step is determined by the ODE solver as well as 
 the breakpoints. After each iteration, the execution control will be
 returned to the manager, where possible mutations are taken care of.
@@ -171,11 +172,11 @@ public class CTSingleSolverDirector extends CTDirector {
 
     /** Initialization for the entire system. This
      *  is called exactly once at the start of the entire execution.
-     *  It set the current time to the start time and the current step
-     *  size to the initial step size.
+     *  It set the current time to the start time and the suggested 
+     *  next step size to the initial step size.
      *  It invoke the initialize() method for all the Actors in the
      *  system. Parameters are updated, so that the parameters 
-     *  set after the creation of the actor are evaluated and ready
+     *  set after the creation of the actors are evaluated and ready
      *  for use. The stop time is registered as a breakpoint.
      *  This method checks if there is a composite actor for this 
      *  director to direct, and if there is a proper scheduler for this
@@ -239,10 +240,11 @@ public class CTSingleSolverDirector extends CTDirector {
         super.initialize();
     }
 
-    /** Check if the simulatin is ended. Test if the current time is 
+    /** Return false if simulatin stop time is reached.
+     *  Test if the current time is 
      *  the stop time. If so, return false ( for stop further simulaiton).
      *  Otherwise, returns true.
-     *  @return false If the simulation is finished
+     *  @return false If the simulation is finished.
      *  @exception IllegalActionException Never thrown
      */
     public boolean postfire() throws IllegalActionException {
@@ -256,11 +258,12 @@ public class CTSingleSolverDirector extends CTDirector {
         return true;
     }
 
-    /** Check if the system is ready for one iteration. The schedule
+    /** Return true always, indicating that the system is always ready
+     *  for one iteration. The schedule
      *  is recomputed if there is any mutation. The parameters are
      *  updated, since this is the safe place to change parameters.
      *
-     *  @return true Always
+     *  @return True Always
      *  @exception IllegalActionException Never thrown in this director.
      */
     public boolean prefire() throws IllegalActionException {
@@ -367,7 +370,7 @@ public class CTSingleSolverDirector extends CTDirector {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ////                         private methods                      ////
     private void _initParameters() {
         try {
             _solverclass=

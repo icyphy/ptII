@@ -42,34 +42,42 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CTMultiSolverDirector
 /**
-A director that utilizes multiple ODE solvers. The reason of switching
-solvers is that when abrupt changes in the signal occurs ( usually called
-break points), the history information is useless for further calculation.
-At these points, it is reasonable to switch to a low order implecit method
-with minimum step size to restart the solving process. For input signals
-that contains Dirac impulses, it is also essential to switch to a
-specific solver to deal with them.
+A director that uses multiple ODE solvers. The reason of switching
+solvers is that when abrupt changes in the signal occurs (also called
+breakpoints), the history information is useless for further calculation.
+For ODE solvers that depends on history points, it is essential to switch
+to use low order implecit method
+with minimum step size to rebuild the history points. For input signals
+that contains Dirac impulses, it is also essential to switch to the 
+impulse backward Euler solver to deal with them.
+<P>
+This class has two additional parameters than the CTDirector base class,
+which are "defaultODESolver" and "breakpointODESolver". The values of the 
+parameters are Strings that specifies the full class name of ODE solvers.
+The default "defaultODESolver" is ExplicitRK23Solver. The default
+"breakpointODESolver" is the BackwardEulerSolver.
+All other parameters are maintained by the CTDirector base class. And the
+two solvers share them.
+
 @author  Jie Liu
-@version $Id$
-@see classname
-@see full-classname
+@version $Id$
+@see ptolemy.domains.ct.kernel.CTDirector
 */
 public class CTMultiSolverDirector extends CTDirector {
-    /** Construct a CTDirector with no name and no Container.
-     *  The default startTime and stopTime are all zeros. There's no
-     *  scheduler associated.
+    /** Construct a CTMultiSolverDirector with no name and no container.
+     *  All parameters take their default values.
      */
     public CTMultiSolverDirector () {
         super();
         _initParameters();
     }
 
-    /** Construct a CTDirector in the default workspace with the given name.
+    /** Construct a CTMultiSolverDirector in the default workspace with
+     *  the given name.
      *  If the name argument is null, then the name is set to the empty
      *  string. The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  The default startTime and stopTime are all zeros. There's no
-     *  scheduler associated.
+     *  All parameters take their default values.
      *
      *  @param name The name of this director.
      */
@@ -83,8 +91,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  The director is added to the list of objects in the workspace.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  The default startTime and stopTime are all zeros. There's no
-     *  scheduler associated.
+     *  All parameters take their default values.
      *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
@@ -97,87 +104,29 @@ public class CTMultiSolverDirector extends CTDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** This does the initialization for the entire subsystem. This
-     *  is called exactly once at the start of the entire execution.
-     *  It set the current time to the start time and the current step
-     *  size to the initial step size.
-     *  It invoke the initialize() method for all the Actors in the
-     *  system. The ODE solver are instanciated, and the current solver
-     *  is set to be the breakpoint solver.
+    /**  Fire the system for one iteration. One iteration is defined as
+     *   simulating the system at one time point, which includes
+     *   resolving states and producing outputs. For the first iteration
+     *   it only produces the output, since the initial states are
+     *   the "real" states of the system, and no more resolving is needed.
+     *   The step size of one iteration is determined by the suggested
+     *   next step size and the breakpoints. If the first breakpoint in 
+     *   the breakpoint table is in the middle of the "intended" step.
+     *   Then the current step size is reduced to breakpoint - current
+     *   time. The result of such a step is the left limit of the states
+     *   at the breakpoint. If the start time of the integration step
+     *   equals to the first breakpoint in the breakpoint table, i.e.
+     *   this is the first step after a breakpoint, then the ODE solver
+     *   is changed to breakpointODESolver and the step size is set
+     *   to the minimum step size. The breakpoint is then removed
+     *   from the breakpoint table.
+     *   <P>
+     *   All the actors are prefired before an iteration is begun. If 
+     *   any one of them returns false, then the iteratin is not 
+     *   proceeded, and the function returns.
      *
-     *  @exception IllegalActionException If there's no scheduler or
-     *       thrown by a contained actor.
-     */
-    public void initialize() throws IllegalActionException {
-        if (VERBOSE||DEBUG) {
-            System.out.println("MultiSolverDirector initialize.");
-        }
-        CompositeActor ca = (CompositeActor) getContainer();
-        if (ca == null) {
-            if(DEBUG) {
-                System.out.println("Director has no container.");
-            }
-            throw new IllegalActionException(this, "Has no container.");
-        }
-        if (ca.getContainer() != null) {
-            if(DEBUG) {
-                System.out.println("Director can only be the top director.");
-            }
-            throw new IllegalActionException(this,
-            " can only serve as the top level director.");
-        }
-        CTScheduler sch = (CTScheduler)getScheduler();
-        if (sch == null) {
-            if(DEBUG) {
-                System.out.println("Director does not have a scheduler.");
-            }
-            throw new IllegalActionException( this,
-            "does not have a scheduler.");
-        }
-        _initialize();
-    }
-
-
-    /** Perform mutation and process pause/stop request.
-     *  If the CTSubSystem is requested a stop (if CTSubSystem.isPaused()
-     *  returns true) then pause the thread.
-     *  The pause can be wake up by notify(), at that time if the
-     *  CTSubSystem is not paused (isPaused() returns false) then
-     *  resume the simulation. So the simulation can only be
-     *  paused at the prefire stage.
-     *  If stop is requested return false, otherwise return true.
-     *  Transfer time from the outer domain, if there is any. If this
-     *  is the toplevel domain, if the currenttime + currentstepsize
-     *  is greater than the stop time, set the currentStepSize to be
-     *  stopTime-currentTime.
-     *
-     *  @return true If stop is not requested
-     *  @exception IllegalActionException If the pause is interrupted or it
-     *       is thrown by a contained actor.
-     *  @exception NameDuplicationException If thrown by a contained actor.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (VERBOSE) {
-            System.out.println("Director prefire.");
-        }
-        if(STAT) {
-            NSTEP++;
-        }
-        if(!scheduleValid()) {
-            // mutation occured, redo the schedule;
-            CTScheduler scheduler = (CTScheduler)getScheduler();
-            if (scheduler == null) {
-                throw new IllegalActionException (this,
-                "does not have a Scheuler.");
-            }
-            scheduler.schedule();
-            setScheduleValid(true);
-        }
-        updateParameters();
-        return true;
-   }
-
-   /**  Fire the system for one iteration.
+     *  @exception IllegalActionException If thrown by the ODE solver.
+     *//**  Fire the system for one iteration.
      *
      *  @exception IllegalActionException If thrown by the ODE solver.
      */
@@ -229,10 +178,60 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
+    /** Return the default ODE solver.
+     *  @return The default ODE solver
+     */
+    public ODESolver getDefaultSolver() {
+        return _defaultSolver;
+    }
 
-    /** Test if the current time is the stop time.
-     *  If so, return false ( for stop further simulaiton).
-     *  @return false If the simulation time expires.
+    /** Return the breakpoint ODE solver.
+     *  @return The breakpoint ODE solver.
+     */
+    public ODESolver getBreakpointSolver() {
+        return _breakpointSolver;
+    }
+
+    /** This does the initialization for the entire subsystem. This
+     *  is called exactly once at the start of the entire execution.
+     *  It checks if it contianer and its scheduler is correct. 
+     *  Otherwise throw an exception. It then calls _intialize()
+     *  method to initialize parameters and times.
+     *
+     *  @exception IllegalActionException If there's no scheduler or
+     *       thrown by a contained actor.
+     */
+    public void initialize() throws IllegalActionException {
+        if (VERBOSE||DEBUG) {
+            System.out.println("MultiSolverDirector initialize.");
+        }
+        CompositeActor ca = (CompositeActor) getContainer();
+        if (ca == null) {
+            if(DEBUG) {
+                System.out.println("Director has no container.");
+            }
+            throw new IllegalActionException(this, "Has no container.");
+        }
+        if (ca.getContainer() != null) {
+            if(DEBUG) {
+                System.out.println("Director can only be the top director.");
+            }
+            throw new IllegalActionException(this,
+            " can only serve as the top level director.");
+        }
+        CTScheduler sch = (CTScheduler)getScheduler();
+        if (sch == null) {
+            if(DEBUG) {
+                System.out.println("Director does not have a scheduler.");
+            }
+            throw new IllegalActionException( this,
+            "does not have a scheduler.");
+        }
+        _initialize();
+    }
+
+    /** Return false if the current time reaches the step time. 
+     *  @return false If the simulation stop time expires.
      *  @exception IllegalActionException If there is no ODE solver, or
      *        thrown by the solver.
      */
@@ -251,22 +250,38 @@ public class CTMultiSolverDirector extends CTDirector {
         return true;
     }
 
-    /** wrapup . Show the statistics.
+    /** Return true always, indicating that the system is always ready
+     *  for one iteration. The schedule
+     *  is recomputed if there is any mutation. The parameters are
+     *  updated, since this is the safe place to change parameters.
+     *
+     *  @return True Always
+     *  @exception IllegalActionException Never thrown in this method.
      */
-    public void wrapup() throws IllegalActionException{
-        if(STAT) {
-            System.out.println("**************STATISTICS***************");
-            System.out.println("Total # of STEPS "+NSTEP);
-            System.out.println("Total # of Function Evaluation "+NFUNC);
-            System.out.println("Total # of Failed Steps "+NFAIL);
+    public boolean prefire() throws IllegalActionException {
+        if (VERBOSE) {
+            System.out.println("Director prefire.");
         }
-        super.wrapup();
+        if(STAT) {
+            NSTEP++;
+        }
+        if(!scheduleValid()) {
+            // mutation occured, redo the schedule;
+            CTScheduler scheduler = (CTScheduler)getScheduler();
+            if (scheduler == null) {
+                throw new IllegalActionException (this,
+                "does not have a Scheuler.");
+            }
+            scheduler.schedule();
+            setScheduleValid(true);
+        }
+        updateParameters();
+        return true;
     }
-
-
-    /** produce outputs
+    
+    /** produce outputs. Fire all the actors in the output schedule.
      *  @exception IllegalActionException If the actor on the output
-     *      path throws it.
+     *      schedule throws it.
      */
     public void produceOutput() throws IllegalActionException {
         CTScheduler scheduler = (CTScheduler) getScheduler();
@@ -295,21 +310,10 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
-    /** update States
-     */
-    public void updateStates() throws IllegalActionException {
-        CompositeActor container = (CompositeActor) getContainer();
-        Enumeration allactors = container.deepGetEntities();
-        while(allactors.hasMoreElements()) {
-            Actor nextactor = (Actor)allactors.nextElement();
-            if(DEBUG) {
-                System.out.println("Postfire:"+((NamedObj)nextactor).getName());
-            }
-            nextactor.postfire();
-        }
-    }
-
-    /** Update paramters.
+    /** Update given paramter. If the parameter does not exist, 
+     *  throws an exception.
+     *  @param param The parameter.
+     *  @exception IllegalActionException If the parameter does not exist.
      */
     public void updateParameter(Parameter param)
             throws IllegalActionException {
@@ -333,32 +337,56 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
-    private void _initParameters() {
-        try {
-            _defaultsolverclass=
-                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
-            _paramDefaultODESolver = new CTParameter(
-                this, "DefaultODESolver", new StringToken(_defaultsolverclass));
-            _breakpointsolverclass=
-                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver";
-            _paramBreakpointODESolver = new CTParameter(
-                this, "BreakpointODESolver",
-                new StringToken(_breakpointsolverclass));
-        } catch (IllegalActionException e) {
-            //Should never happens. The parameters are always compatible.
-            throw new InternalErrorException("Parameter creation error.");
-        } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,"Parameter name duplication.");
+    /** Call postfire() on all actors. For a correct CT simulation,
+     *  the state of an actor can only change at this stage of an
+     *  iteration.
+     *  @exception IllegalActionException If any of the actors 
+     *      throws it.
+     */
+    public void updateStates() throws IllegalActionException {
+        CompositeActor container = (CompositeActor) getContainer();
+        Enumeration allactors = container.deepGetEntities();
+        while(allactors.hasMoreElements()) {
+            Actor nextactor = (Actor)allactors.nextElement();
+            if(DEBUG) {
+                System.out.println("Postfire:"+((NamedObj)nextactor).getName());
+            }
+            nextactor.postfire();
         }
-
     }
 
-    /** _initialize the simulation.
-     *  This is the real intialize method. The initalize method do some
-     *  checking and call this method. Derivede class may call this method
-     *  directly.
+    /** Wrapup the simulation. Show the statistics if needed. The statistics
+     *  includes the number of step simulated, the number of funciton
+     *  evaluations (firing all actors in the state transition schedule),
+     *  and the number of failed steps (due to error control).
+     *  
+     *  @exception IllegalActionException Never thrown.
+     *  
+     */
+    public void wrapup() throws IllegalActionException{
+        if(STAT) {
+            System.out.println("**************STATISTICS***************");
+            System.out.println("Total # of STEPS "+NSTEP);
+            System.out.println("Total # of Function Evaluation "+NFUNC);
+            System.out.println("Total # of Failed Steps "+NFAIL);
+        }
+        super.wrapup();
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** Set the current time to the start time and the suggested
+     *  next step
+     *  size to the initial step size. The start time is
+     *  set as a breakpoint in the breakpoint table.
+     *  It invoke the initialize() method for all the Actors in the
+     *  system. The ODE solver are instanciated, and the current solver
+     *  is set to be the breakpoint solver. _initialize the simulation.
+     *  This is the real intialize method. This method does not 
+     *  check the container and the scheduler, so the 
+     *  caller should check.
+     *  @exception IllegalActionException If thrown by director actors.
      */
     protected void _initialize() throws IllegalActionException{
         if(STAT) {
@@ -402,16 +430,25 @@ public class CTMultiSolverDirector extends CTDirector {
         super.initialize();
     }
 
-    /** Return the default solver.
-     */
-    public ODESolver _getDefaultSolver() {
-        return _defaultSolver;
-    }
-
-    /** Return the break point solver.
-     */
-    public ODESolver _getBreakpointSolver() {
-        return _breakpointSolver;
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private methods                      ////
+    private void _initParameters() {
+        try {
+            _defaultsolverclass=
+                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
+            _paramDefaultODESolver = new CTParameter(
+                this, "DefaultODESolver", new StringToken(_defaultsolverclass));
+            _breakpointsolverclass=
+                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver";
+            _paramBreakpointODESolver = new CTParameter(
+                this, "BreakpointODESolver",
+                new StringToken(_breakpointsolverclass));
+        } catch (IllegalActionException e) {
+            //Should never happens. The parameters are always compatible.
+            throw new InternalErrorException("Parameter creation error.");
+        } catch (NameDuplicationException ex) {
+            throw new InvalidStateException(this,"Parameter name duplication.");
+        }
     }
 
 

@@ -406,7 +406,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  can not be served as the current ODE solver then an
      *  exception should be thrown.
      *  @param solver The solver to be set.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception  IllegalActionException Never thrown in this base class.
+     *     It may be thrown by the direved classes if the solver is not
+     *     appropriate.
      */
     public void setCurrentODESolver(ODESolver solver)
             throws IllegalActionException {

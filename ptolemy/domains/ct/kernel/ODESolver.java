@@ -37,10 +37,10 @@ import ptolemy.actor.*;
 Abstract base class for ODE solvers. The key method for the class is 
 proceedOneStep(), which executes the integration method for one successful
 step. This method does not consider any breakpoint affect. In general,
-proceedOneStep() will first resolver the integrators' new states,
+proceedOneStep() will first resolve the integrators' new states,
 then perform error control. If the step is not successful, then the step 
 size will be reduced and try again. How the states are resolved and
-how the errors are controlled are method dependant.  Derived class
+how the errors are controlled are method dependent.  Derived classes
 may implement these methods according to individual ODE solving methods.
 CTDirectors can switch their solver at each iteration
 of simulation seamlessly. 
@@ -48,7 +48,7 @@ of simulation seamlessly.
 The behavior of the integrators also changes
 when changing ODE solver, so this class provides the some methods
 for the integrators too, including the fire() method, and the error
-contol related methods. Even for one integration method, the integrator's
+control related methods. Even for one integration method, the integrator's
 fire() method may depends on the round of fires.  Round counter is a counter
 for the number of fire() rounds in one iteration to help the actors that
 may behaves differently under different round. The round can be get by
@@ -56,15 +56,15 @@ the getRound() method. IncrRound method will increase the counter by one,
 and resetRound() will always reset the counter to 0.
 <P>
 Conceptually, ODE solvers do not maintain simulation parameters,
-but they get these parameters from the director. So a set of parameters
-are shared by all the switchable solvers.
+they get these parameters from the director. So the same set of parameters
+are shared by all the solvers in a simulation.
 @author Jie Liu
 @version $Id$
 */
 public abstract class ODESolver extends NamedObj {
 
-    public static final boolean VERBOSE = false;
-    public static final boolean DEBUG = false;
+    public static  boolean VERBOSE = false;
+    public static  boolean DEBUG = false;
 
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
@@ -103,7 +103,7 @@ public abstract class ODESolver extends NamedObj {
     /** Abstract method, which should return true if the local error
      *  in the last step is tolerable.
      *  This is the AND of all the error control actor's response.
-     *  @return true if the local error in the last step is tolerable.
+     *  @return True if the local error in the last step is tolerable.
      */
     public abstract boolean errorTolerable();
 
@@ -161,9 +161,10 @@ public abstract class ODESolver extends NamedObj {
     /** Solver the ODE for one successful step. In this default 
      *  implementation, the method will try to resolve the states
      *  of the system for the given step size. If it is not succeeded,
-     *  the the step will be restarted by startOverLastStep() method.
+     *  the integration step will be restarted after calling 
+     *  startOverLastStep() method.
      *  Different solver may interprete "success" and implement
-     *  it differently. 
+     *  startOverLastStep() differently. 
      *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
@@ -185,7 +186,7 @@ public abstract class ODESolver extends NamedObj {
         _round = 0;
     }
 
-    /** Abstract method for resolveing the next step size if the current
+    /** Abstract method for resolving the next step size if the current
      *  step is a success.
      *  Different solver may implement it differently.
      *
@@ -202,8 +203,8 @@ public abstract class ODESolver extends NamedObj {
 
     /** Abstract method for restarting the last integration step with a
      *  smaller step size.
-     *  The typical operations incolved in this method are reset
-     *  the currentTime and halve the currentStepSize of the director.
+     *  The typical operations incolved in this method are resetting
+     *  the currentTime and halving the currentStepSize of the director.
      */
     public abstract void startOverLastStep();
 
@@ -211,7 +212,7 @@ public abstract class ODESolver extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Make this solver to be the solver of a CTDirector. This method
+    /** Make this solver to be the solver of the given Director. This method
      *  should not be called directly. Call the _instantiateODESolver()
      *  or the setCurrentODESolver()
      *  method of the director instead.
