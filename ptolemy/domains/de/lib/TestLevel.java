@@ -38,8 +38,17 @@ import java.util.Enumeration;
 /**
 Detect threshold crossings if the crossingsOnly parameter is TRUE. Otherwise,
 it simply compares the input agains the "threshold".
-If crossingsOnly is TRUE, then .....
-FIXME: copy from the manual
+<p>
+If crossingsOnly is TRUE, then: (1) a TRUE is sent to "output" when
+the "input" particle exceeds or equals the "threshold" value, having been
+previously smaller; (2) a FALSE is sent when the "input" particle is smaller
+than "threshold", having been previously larger. Otherwise, no output is
+produced.
+<p>
+If crossingsOnly is FALSE, then a TRUE is sent to "output" whenever any
+"input" particle greater than or equal to "threshold" is received, and a
+FALSE is sent otherwise.
+
 
 @author Lukito Muliadi
 @version $Id$

@@ -62,7 +62,9 @@ JSRCS = \
 	DEClock.java \
 	DEDelay.java \
 	DEFIFOQueue.java \
+	DEFIRfilter.java \
 	DEFullAdder.java \
+	DEGain.java \
 	DEHistogram.java \
 	DELogicAnalyzer.java \
 	DEORGate.java \
