@@ -60,10 +60,10 @@ lastTime and rcvrTime flags. ODFReceiver sets these flags in a manner
 similar to TimedQueueReceiver. The key difference between ODFReceiver and
 TimedQueueReceiver is that get() and put() block as described above.
 <P>
-This class assumes that valid time stamps have non-negative values. A
-time stamp value of -1.0 is reserved to indicate the termination of a
-receiver. A time stamp value of -5.0 is reserved to indicate that a
-receiver has not begun to participate in a model's execution.
+This class assumes that valid time stamps have non-negative values. In
+other words, simulation time starts at 0.0 or later. At the conclusion 
+of a simulation run the receiver time is set to INACTIVE. Prior to the
+beginning of a simulation run, the reciever time is set to NOTSTARTED.
 
 
 @author John S. Davis II
@@ -99,29 +99,27 @@ public class ODFReceiver extends TimedQueueReceiver
      *  return the token. If the rcvrTime is a non-unique minimum then
      *  determine if this receiver has the highest priority of all
      *  receivers that share the non-unique minimum rcvrTime and if
-     *  so, return the token. Otherwise return false. If at any point
-     *  during this method this receiver is scheduled for termination,
-     *  then throw a TerminateProcessException to cease execution of
-     *  the actor that contains this receiver. IMPORTANT: This method
-     *  is designed to be called after hasToken() has been called.
-     *  Verify that this method is safe to call by calling hasToken()
-     *  first.
+     *  so, return the token. Otherwise throw a NoTokenException. If 
+     *  at any point during this method this receiver is scheduled for 
+     *  termination, then throw a TerminateProcessException to cease 
+     *  execution of the actor that contains this receiver. IMPORTANT: 
+     *  This method is designed to be called after hasToken() has been 
+     *  called. Verify that this method is safe to call by calling 
+     *  hasToken() first.
      * @return Token The oldest token on this queue if this queue
      *  has the minimum rcvrTime of all receivers contained by the
      *  actor that contains this receiver.
      * @exception NoTokenException If this method is called while
      *  hasToken() returns false.
      */
-    public Token get() {
-	synchronized(this) {
-	    if( hasToken() ) {
-		Token token = super.get();
-		notifyAll();
-		return token;
-	    } else {
-		throw new NoTokenException(getContainer(), "No tokens "
-			+ "available in the ODF receiver");
-	    }
+    public synchronized Token get() throws NoTokenException {
+	if( hasToken() ) {
+	    Token token = super.get(); 
+	    notifyAll(); 
+	    return token;
+	} else {
+	    throw new NoTokenException(getContainer(), "No tokens " 
+		    + "available in the ODF receiver");
 	}
     }
 
@@ -143,7 +141,6 @@ public class ODFReceiver extends TimedQueueReceiver
      */
     public boolean hasToken() {
 	Workspace workspace = getContainer().workspace();
-	// ODFThread thread = getThread();
 	TimeKeeper timeKeeper = getReceivingTimeKeeper();
         ODFDirector director = (ODFDirector)
 	        ((Actor)getContainer().getContainer()).getDirector();
@@ -158,23 +155,24 @@ public class ODFReceiver extends TimedQueueReceiver
     }
      */
 
-    /** Do a blocking write on the queue. Set the time stamp to the
-     *  lastTime of this receiver. If the time stamp of the token is
-     *  greater than the completionTime of this receiver, then set the
-     *  time stamp to -1.0 and the token to null. If the queue is full,
-     *  then inform the director that this receiver is blocking on a
-     *  write and wait until room becomes available. When room becomes
-     *  available, put the token and time stamp in the queue and inform
-     *  the director that the block no longer exists. If at any point
-     *  during this method this receiver is scheduled for termination,
-     *  then throw a TerminateProcessException which will cease activity
-     *  for the actor that contains this receiver.
+    /** Do a blocking write on the queue. Set the time stamp to be the
+     *  current time of the sending actor. If the time stamp of the 
+     *  token is greater than the completionTime of this receiver, then 
+     *  set the time stamp to -1.0 and the token to null. If the queue 
+     *  is full, then inform the director that this receiver is blocking 
+     *  on a write and wait until room becomes available. When room 
+     *  becomes available, put the token and time stamp in the queue and 
+     *  inform the director that the block no longer exists. If at any 
+     *  point during this method this receiver is scheduled for 
+     *  termination, then throw a TerminateProcessException which will 
+     *  cease activity for the actor that contains this receiver.
      * @param token The token to put on the queue.
      */
     public void put(Token token) {
 	TimeKeeper timeKeeper = getSendingTimeKeeper();
 	double time = timeKeeper.getCurrentTime(); 
-	if( time != -1.0 ) {
+	if( time != INACTIVE ) {
+	    // if( time != -1.0 ) {
             time += timeKeeper.getDelayTime();
 	}
 	put( token, time );
@@ -213,8 +211,10 @@ public class ODFReceiver extends TimedQueueReceiver
 
         synchronized(this) {
             if( time > getCompletionTime() &&
-                    getCompletionTime() != -5.0 && !_terminate ) {
-	        time = -1.0;
+                    getCompletionTime() != NOTSTARTED && !_terminate ) {
+		// getCompletionTime() != -5.0 && !_terminate ) {
+	        time = INACTIVE;
+	        // time = -1.0;
 	    }
 
             if( super.hasRoom() && !_terminate ) {
@@ -246,7 +246,9 @@ public class ODFReceiver extends TimedQueueReceiver
         }
     }
 
-    /** Schedule this receiver to terminate.
+    /** Schedule this receiver to terminate. After this method is 
+     *  called, a TerminateProcessException will be thrown during
+     *  the next call to get() or put(...) of this class.
      */
     public synchronized void requestFinish() {
         _terminate = true;
@@ -260,7 +262,10 @@ public class ODFReceiver extends TimedQueueReceiver
         ;
     }
 
-    /** Reset local flags.
+    /** Reset local flags. The local flag of this receiver indicates
+     *  whether this receiver is scheduled for termination. Resetting
+     *  the termination flag will make sure that this receiver is not
+     *  scheduled for termination.
      */
     public void reset() {
 	_terminate = false;
@@ -274,7 +279,8 @@ public class ODFReceiver extends TimedQueueReceiver
     private synchronized boolean _hasToken(Workspace workspace,
 	    ODFDirector director, TimeKeeper timeKeeper ) {
 	// ODFDirector director, ODFThread thread ) {
-        if( timeKeeper.getNextTime() == -1.0 ) {
+        if( timeKeeper.getNextTime() == INACTIVE ) {
+	    // if( timeKeeper.getNextTime() == -1.0 ) {
             requestFinish();
         }
 	if( getRcvrTime() > timeKeeper.getNextTime() && !_terminate ) {
@@ -315,7 +321,7 @@ public class ODFReceiver extends TimedQueueReceiver
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private boolean _terminate = false;
+    private boolean _terminate = false; 
 
 }
 
