@@ -29,6 +29,7 @@ package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
+import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
 //// IntegerToken
@@ -101,12 +102,14 @@ public class IntToken extends ScalarToken {
         return new IntToken(result);
     }
 
-    // Return a reference to a Complex. The real part of the Complex
-    // is the value in the token, the imaginary part is set to 0.
-    // FIXME: finish after the Complex class is moved to this package.
-
-    //    public Complex complexValue() {
-    //    }
+    /** Return the value of this token as a Complex. The real part
+     *  of the Complex is the value of this token, the imaginary part
+     *  is set to 0.
+     *  @return A Complex
+     */
+    public Complex complexValue() {
+	return new Complex((double)_value);
+    }
 
     /** Used to convert Token types further down the type hierarchy to
      *  the type of this Token. No types below IntToken in lossless

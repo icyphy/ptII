@@ -1,4 +1,4 @@
-/* A token that contains a long integer number.
+/* A token that contains a long integer.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,7 @@ import ptolemy.graph.CPO;
 //////////////////////////////////////////////////////////////////////////
 //// LongToken
 /**
- * A token that contains an long integer number.
+ * A token that contains an long integer.
  *
  * @author Neil Smyth, Yuhong Xiong
  * @version $Id$
