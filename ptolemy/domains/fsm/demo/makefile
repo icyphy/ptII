@@ -30,7 +30,7 @@
 
 ME = 		ptolemy/domains/fsm/demo
 
-DIRS = ABP #test
+DIRS = ABP Hysteresis #test
 
 # Root of ptII directory
 ROOT =		../../../..
