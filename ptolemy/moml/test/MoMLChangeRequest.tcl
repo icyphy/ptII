@@ -576,6 +576,8 @@ test MoMLChangeRequest-5.1 {getDeferredToParent} {
 } {1 1}
 
 
+# Save the original MoMLParser Error Handler
+set originalParserErrorHandler [$parser getErrorHandler]
 ######################################################################
 ####
 # Procedure used to test setReportErrorsToHandler
@@ -668,3 +670,7 @@ Could not find 'ptolemy/actor/lib/XXX.xml' or 'ptolemy/actor/lib/XXX.moml' using
 Caused by:
  com.microstar.xml.XmlException: -- no protocol: ptolemy/actor/lib/XXX.xml
 -- XML file not found relative to cl}}
+
+
+# Restore the original MoMLParser Error Handler
+$parser setErrorHandler $originalParserErrorHandler
