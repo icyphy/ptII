@@ -40,7 +40,7 @@ the same String object.  However, a String object in Java is immutable,
 so there is no risk when two tokens refer to the same string that
 one of the strings will be changed.
 
-@author Edward A. Lee
+@author Edward A. Lee, Neil Smyth
 @version $Id$
 */
 public class StringToken extends ObjectToken {
@@ -112,14 +112,20 @@ public class StringToken extends ObjectToken {
         }
     }
 
-  
+   /**  Get the value of the String currently contained in this token.
+    *   @return The value currently contained.
+    */
+    public String getValue() {
+        return _value;
+    }
+
 
     /** Set the value of the token to be a reference to the specified string.
      *  If the argument is null, then the value is set to an empty string
      *  rather than null.
      *  @exceptions IllegalActionException Argument is not a String.
      */	
-    public void setStringValue(String value) 
+    public void setValue(String value) 
             throws IllegalActionException {
         if (value != null) {
             if (!(value instanceof String)) {
@@ -135,6 +141,7 @@ public class StringToken extends ObjectToken {
 
     /** Return the string description of the object.  If there is no such
      *  object, then return a description of the token.
+     *  @return The String contained in this token.
      */	
     public String toString() {
         return (String)_value;

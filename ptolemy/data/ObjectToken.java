@@ -64,10 +64,18 @@ public class ObjectToken extends Token {
     ////                         public methods                           ////
 
     /** Return the value of the token, a reference to an object.
-     */	
+     	FIXME: this method should only be in leaf classes
     public Object getValue() {
         return _value;
     }
+    */
+
+ /** Return the value of the token, a reference to an object.
+     	FIXME: this method should only be in leaf classes */
+    public Object getObject() {
+        return _value;
+    }
+    
 
     /** Set the value of the token to be a reference to the specified object.
      *  @exceptions IllegalActionException Argument is not of the appropriate
