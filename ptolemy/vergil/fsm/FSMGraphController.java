@@ -69,6 +69,8 @@ import ptolemy.vergil.kernel.PortDialogFactory;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.FigureAction.SourceType;
+import ptolemy.vergil.fsm.modal.ModalModel;
+import ptolemy.vergil.fsm.modal.ModalTransitionController;
 
 import javax.swing.Action;
 import javax.swing.JMenu;
@@ -160,6 +162,7 @@ public class FSMGraphController extends FSMViewerGraphController {
                 AttributeController.FULL);
 	_stateController = new StateController(this,
                 AttributeController.FULL);
+	_modalTransitionController = new ModalTransitionController(this);
 	_transitionController = new TransitionController(this);
     }
 
