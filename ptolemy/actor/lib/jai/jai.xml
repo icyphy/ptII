@@ -167,6 +167,20 @@
 	</entity>		
 	<entity name="JAIMagnitude" class="ptolemy.actor.lib.jai.JAIMagnitude">
 	</entity>	
+	<entity name="JAIMedianFilter" class="ptolemy.actor.lib.jai.JAIMedianFilter">
+	  <property name="shape">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="Plus" value="Plus"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Separable Square" value="Separable Square"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Square" value="Square"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="X" value="X"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	</entity>
 	<entity name="JAIPhase" class="ptolemy.actor.lib.jai.JAIPhase">
 	</entity>	
 	<entity name="JAIPolarToComplex" class="ptolemy.actor.lib.jai.JAIPolarToComplex">

@@ -65,6 +65,7 @@ JSRCS = JAIAffineTransform.java \
 	JAIJPEGWriter.java \
 	JAILog.java \
 	JAIMagnitude.java \
+	JAIMedianFilter.java \
 	JAIPhase.java \
 	JAIPolarToComplex.java \
 	JAIPNMWriter.java \
