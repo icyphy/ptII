@@ -17,7 +17,8 @@
 	2. If HA has a global variable as both input and output, it should be regarded as
 	   output only.
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
 
 <!-- index every node via attribute _id -->
 <xsl:key name="nid" match="*" use="@_id"/>

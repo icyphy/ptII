@@ -10,7 +10,8 @@
 	to be integrated, they are regarded as local parameters.
 
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
 
     <xsl:output doctype-system="HSIF.dtd"/>
     <xsl:output method="xml" indent="yes"/>

@@ -123,8 +123,8 @@ public class HSIFEffigyFactory extends EffigyFactory {
             try {
                 _inCreateEffigy = true;
 
-                //URL temporaryMoMLFileURL = new URL("SwimmingPool.xml");
-                String temporaryOutputName = "SwimmingPool.xml";
+                //URL temporaryMoMLFileURL = new URL("temporary.xml");
+                String temporaryOutputName = "temporary.xml";
                 // FIXME: HSIFToMoML does NOT work.
                 _HSIFToMoML(input, temporaryOutputName);
 
@@ -143,11 +143,11 @@ public class HSIFEffigyFactory extends EffigyFactory {
 
     // Read in the file named by input, transform it and generate output.
     private static void _HSIFToMoML(URL input, String output) throws Exception {
-        XSLTUtilities.transform(input.toString(), "xsl/GlobalVariablePreprocessor.xsl", "outputDocument_g");
-        XSLTUtilities.transform("outputDocument_g", "xsl/SlimPreprocessor.xsl", "outputDocument_sg");
-        XSLTUtilities.transform("outputDocument_sg", "xsl/LocalVariablePreprocessor.xsl", "outputDocument_l");
-        XSLTUtilities.transform("outputDocument_l", "xsl/SlimPreprocessor.xsl", "outputDocument_sl");
-        XSLTUtilities.transform("outputDocument_sl", "xsl/HSIF.xsl", output);
+        XSLTUtilities.transform("xsl/GlobalVariablePreprocessor.xsl", input.toString(), "outputDocument_g");
+        XSLTUtilities.transform("xsl/SlimPreprocessor.xsl", "outputDocument_g", "outputDocument_sg");
+        XSLTUtilities.transform("xsl/LocalVariablePreprocessor.xsl", "outputDocument_sg", "outputDocument_l");
+        XSLTUtilities.transform("xsl/SlimPreprocessor.xsl", "outputDocument_l", "outputDocument_sl");
+        XSLTUtilities.transform("xsl/HSIF.xsl", "outputDocument_sl", output);
     }
 
     // Return true if the input file is a HSIF file.

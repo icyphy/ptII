@@ -12,7 +12,8 @@
 
     Future work: 1. Export to HSIF
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
 
 <!-- DOCTYPE element includes public ID and system ID -->
 <xsl:output doctype-system="http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"
