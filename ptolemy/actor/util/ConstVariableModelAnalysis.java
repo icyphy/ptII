@@ -136,9 +136,9 @@ public class ConstVariableModelAnalysis {
 
         _collectNotConstantVariables(model, _variableToChangeContext);
   
-        //       System.out.println("Analyzing constants");
+        System.out.println("Analyzing constants");
         _analyzeAllVariables(model);
-        //      System.out.println("Done analyzing constants");
+        System.out.println("Done analyzing constants");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -349,19 +349,8 @@ public class ConstVariableModelAnalysis {
                 // Perform the test.
                 boolean isNotConstant = false;
                 NamedObj changeContext = null;
-            
-                List list = 
-                    variable.attributeList(ChangeContextDeclaration.class);
-                for(Iterator declarations = list.iterator();
-                    declarations.hasNext();) {
-                    ChangeContextDeclaration declaration =
-                        (ChangeContextDeclaration)declarations.next();
-                    if(declaration.getChangeContext() != null) {
-                        changeContext = declaration.getChangeContext();
-                        isNotConstant = true;
-                    }
-                }
-             
+                         
+                // If the 
                 if (_variableToChangeContext.keySet().contains(variable)) {
                     isNotConstant = true;
                     changeContext = (NamedObj)
