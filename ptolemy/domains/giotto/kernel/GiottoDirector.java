@@ -50,6 +50,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -59,6 +60,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoDirector
@@ -148,7 +150,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public Parameter synchronizeToRealTime;
 
-
+    /** The resolution in comparing time.
+     *  The default value is 1e-10, of type DoubleToken.
+     */
+    public Parameter timeResolution;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -156,6 +162,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  the current file (if there is one) and open the new one.
      *  If the specified attribute is <i>period</i> or
      *  <i>synchronizeToRealTime</i>, then cache the new values.
+     *  If the specified attribute is <i>timeResolution</i>, 
+     *  then cache the new value.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>filename</i> and the file cannot be opened.
@@ -164,6 +172,14 @@ public class GiottoDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         if (attribute == period) {
             _periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        } else if (attribute == timeResolution) {
+            double value = ((DoubleToken)timeResolution.getToken()).
+                doubleValue();
+            if (value < 0.0) {
+                throw new IllegalActionException(this,
+                        "Cannot set a negative time resolution.");
+            }
+            setTimeResolution(value);
         } else if (attribute == synchronizeToRealTime) {
             _synchronizeToRealTime =
                 ((BooleanToken)synchronizeToRealTime.getToken())
@@ -189,7 +205,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
             // whatever, the currentTime should be updated by the
             // director of upper container.
-            setCurrentTime ((((CompositeActor) getContainer()).getExecutiveDirector()).getCurrentTime());
+            setCurrentTime ((((CompositeActor) getContainer()).
+                getExecutiveDirector()).getCurrentTime());
             _debug("Set current time as: " + getCurrentTime());
         }
 
@@ -200,11 +217,16 @@ public class GiottoDirector extends StaticSchedulingDirector {
         }
 
 
-        Director upperDirector = ((CompositeActor) getContainer()).getExecutiveDirector();
+        Director upperDirector = 
+            ((CompositeActor) getContainer()).getExecutiveDirector();
+        
+        // FIXME: The following code is really bad because it
+        // causes dependencies to CT domain and DE domain. 
 
         if (upperDirector instanceof CTDirector) {
             // If embedded inside a CT model
-            if (Math.abs(getCurrentTime() - _expectedNextIterationTime) < ((CTDirector) upperDirector).getTimeResolution()) {
+            if (Math.abs(getCurrentTime() - _expectedNextIterationTime) 
+                < ((CTDirector) upperDirector).getTimeResolution()) {
                 if (_debugging) {
                     _debug("*** Prefire returned true.");
                 }
@@ -219,6 +241,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
             // This screws up in the face of simultaneous
             // events... It's better without.
+            // FIXME: simultaneous events can happen when
+            // a Giotto model is embedded inside a DE model.
+            // In particular, a pure event and a token event
+            // may happen at the same time.
+            
             // _expectedNextIterationTime = getCurrentTime();
 
             if (getCurrentTime() < _expectedNextIterationTime) {
@@ -227,9 +254,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 }
                 return false;
             }
-            if (_debugging) {
-                _debug("*** Prefire returned true.");
-            }
+
             // if the outside time is beyond the formerly set
             // _expectedNextIterationTime, and if it is the start
             // of a new run,
@@ -242,6 +267,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
                             getCurrentTime());
                 }
                 _expectedNextIterationTime = getCurrentTime();
+            }
+
+            if (_debugging) {
+                _debug("*** Prefire returned true.");
             }
             return true;
         }
@@ -451,6 +480,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 
         _expectedNextIterationTime += _unitTimeIncrement;
+        _expectedNextIterationTime = Utilities.round(
+            _expectedNextIterationTime, getTimeResolution());
 
         if (_debugging) {
             _debug("next Iteration time" + _expectedNextIterationTime);
@@ -625,6 +656,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
             period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
             iterations = new Parameter(this, "iterations", new IntToken(0));
 
+            timeResolution = new Parameter(this, "timeResolution",
+                    new DoubleToken(getTimeResolution()));
+            timeResolution.setTypeEquals(BaseType.DOUBLE);
 
             synchronizeToRealTime = new Parameter(this,
                     "synchronizeToRealTime",
