@@ -533,7 +533,21 @@ public class DoubleMatrixMath {
         }
     }
 
-
+    /** Return a new matrix that is constructed from the argument after
+     *  performing modulo operation by the second argument to every element.
+     *  @param matrix A matrix of doubles.
+     *  @param z The double number to divide.
+     *  @return A new matrix of doubles.
+     */
+    public static final double[][] modulo(double[][] matrix, double z) {
+        double[][] returnValue = new double[_rows(matrix)][_columns(matrix)];
+        for (int i = 0; i < _rows(matrix); i++) {
+            for (int j = 0; j < _columns(matrix); j++) {
+                returnValue[i][j] = matrix[i][j]%z;
+            }
+        }
+        return returnValue;
+    }
 
     /** Return a new matrix that is constructed by multiplying the matrix
      *  by a scaleFactor.

@@ -499,7 +499,20 @@ test ParseTreeEvaluator-21.1 {Test Matrix Scalar Subtraction} {
 
 ####################################################################
 
-test ParseTreeEvaluator-22.1 {Test Matrix Scalar Division} {
+test ParseTreeEvaluator-22.2 {Test Matrix Scalar Modulo} {
+    list [theTest {[2,3]%4}] \
+	 [theTest {[5,4]%1.5}] \
+	 [theTest {[2,3]%2L}] \
+	 [theTest {[2L,3L]%2}] \
+	 [theTest {[2L,3L]%3L}] \
+	 [theTest {[2.5,1.7]%2}] \
+	 [theTest {[2.5,1.7]%1.3}]
+} {{[2, 3]} {[0.5, 1.0]} {[0L, 1L]} {[0L, 1L]} {[2L, 0L]} {[0.5, 1.7]} {[1.2, 0.4]}}
+
+
+####################################################################
+
+test ParseTreeEvaluator-22.3 {Test Matrix Scalar Division} {
     list [theTest {[1,2]/1}] \
          [theTest {[1,2]/1.0}] \
          [theTest {[1.0,2.0]/j}] \

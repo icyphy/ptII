@@ -509,7 +509,6 @@ public class LongMatrixMath {
         return returnValue;
     }
 
-
     /** Return a new matrix that is constructed by multiplying the matrix
      *  by a scaleFactor.
      */

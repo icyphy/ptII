@@ -416,7 +416,7 @@ public abstract class ScalarToken extends Token
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("divideReverse",
-                                this, leftArgument));
+			this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
             return ((ScalarToken)leftArgument)._doDivide(this);
@@ -425,7 +425,7 @@ public abstract class ScalarToken extends Token
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("divideReverse",
-                            this, leftArgument));
+		    this, leftArgument));
         }
     }
 

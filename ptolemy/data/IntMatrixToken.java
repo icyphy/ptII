@@ -488,6 +488,7 @@ public class IntMatrixToken extends MatrixToken {
         return new IntMatrixToken(result);
     }
 
+
     /** Return a reference to the internal 2-D matrix of ints that represents
      *  this Token. Because no copying is done, the contents must NOT be
      *  modified to preserve the immutability of Token.
@@ -525,6 +526,23 @@ public class IntMatrixToken extends MatrixToken {
         return BooleanToken.getInstance(
                 IntegerMatrixMath.within(_value,
                         convertedArgument._getInternalIntMatrix(), 0));
+    }
+
+     /** Return a new token whose elements are the remainders of
+     *  the elements of this token when divided by the argument.
+     *  It is guaranteed by the caller that the type of the argument 
+     *  is the same as the type of each element of this class.
+     *  @param rightArgument The token that performs modulo on this token.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+ 
+    protected MatrixToken _moduloElement(Token rightArgument)
+            throws IllegalActionException {
+        int scalar = ((IntToken)rightArgument).intValue();
+        int[][] result = IntegerMatrixMath.modulo(_value, scalar);
+        return new IntMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of this token

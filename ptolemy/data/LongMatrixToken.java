@@ -481,6 +481,23 @@ public class LongMatrixToken extends MatrixToken {
                         convertedArgument._getInternalLongMatrix(), 0));
     }
 
+    /** Return a new token whose elements are the remainders of
+     *  the elements of this token when divided by the argument.
+     *  It is guaranteed by the caller that the type of the argument 
+     *  is the same as the type of each element of this class.
+     *  @param rightArgument The token that performs modulo on this token.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+
+    protected MatrixToken _moduloElement(Token rightArgument)
+            throws IllegalActionException {
+        long scalar = ((LongToken)rightArgument).longValue();
+        long[][] result = LongMatrixMath.modulo(_value, scalar);
+        return new LongMatrixToken(result);
+    }
+
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  It is assumed
      *  that the type of the argument is LongMatrixToken.
