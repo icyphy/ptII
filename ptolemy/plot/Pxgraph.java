@@ -319,7 +319,7 @@ scatter plots.
 <dd>Similar to <code>-p</code> but marks each pixel with a large dot.
 
 <dt><code>-print</code>
-<dd>Bring up the print dialog immeadiately upon startup.  Unfortunately,
+<dd>Bring up the print dialog immediately upon startup.  Unfortunately,
 there is no way to automatically print in JDK1.1, the user must hit
 the <code>Ok</code> button.  See also the <code>-o<code> option.
 
