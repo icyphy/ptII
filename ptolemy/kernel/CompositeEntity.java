@@ -91,7 +91,8 @@ import ptolemy.kernel.util.Workspace;
    to throw an exception if its argument is a port that is not of the
    appropriate subclass.
    <p>
-   Since contained entities implement the {@link Instantiable} interface,
+   Since contained entities implement the
+   {@link ptolemy.kernel.util.Instantiable} interface,
    some may be class definitions.  If an entity is a class definition,
    then it is not included in the lists returned by
    {@link #entityList()}, {@link #entityList(Class)},

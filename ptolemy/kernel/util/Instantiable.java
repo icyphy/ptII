@@ -44,7 +44,8 @@ import java.util.List;
    An object that implements this interface can be in one of two states.
    Either it is a class definition ({@link #isClassDefinition()} returns true)
    or it is not.  Only objects that are class definitions can be instantiated.
-   Instantiation is done via the {@link #instantiate()} method. If an object
+   Instantiation is done via the {@link #instantiate(NamedObj, String)}
+   method. If an object
    is instantiated from this object, then the new object is called the "child"
    and this object is called the "parent." An instance of Instantiable can have
    at most one parent (returned by the {@link #getParent()} method), but it
