@@ -47,9 +47,14 @@ run tests when there is no graphical display present.
 
 public class FilterOutGraphicalClasses implements MoMLFilter {
         
-    /** If the attributeValue is "ptolemy.vergil.icon.AttributeValueIcon",
-     *  then return "ptolemy.kernel.util.Attribute", otherwise
-     *  return the original value of the attributeValue.
+    /** If the attributeValue is "ptolemy.vergil.icon.ValueIcon",
+     *  or "ptolemy.vergile.basic.NodeControllerFactory"
+     *  then return "ptolemy.kernel.util.Attribute"; if the attributeValue
+     *  is "ptolemy.vergil.icon.AttributeValueIcon" or
+     *  "ptolemy.vergil.icon.BoxedValueIcon" then return null, which
+     *  will cause the MoMLParser to skip the rest of the element;
+     *  otherwise return the original value of the attributeValue.
+     *  
      *  @param container  The container for this attribute, ignored
      *  in this method.
      *  @param attributeName The name of the attribute, ignored
@@ -67,17 +72,21 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
         //System.out.println("filterAttributeValue: " + container + "\t"
         //        +  attributeName + "\t" + attributeValue);
 
+	// FIXME: This should be a better data structure, like a
+	// hash table.
         if (attributeValue == null) {
             return null;
         } else if (attributeValue
                 .equals("ptolemy.vergil.icon.ValueIcon")
-                || attributeValue
-                .equals("ptolemy.vergil.basic.NodeControllerFactory")
-                || attributeValue
+		|| attributeValue
+		.equals("ptolemy.vergil.basic.NodeControllerFactory")) {
+            return "ptolemy.kernel.util.Attribute";
+	} else if (
+                attributeValue
                 .equals("ptolemy.vergil.icon.AttributeValueIcon")
                 || attributeValue
                 .equals("ptolemy.vergil.icon.BoxedValueIcon")) {
-            return "ptolemy.kernel.util.Attribute";
+	    return null;
         }
         return attributeValue;
     } 

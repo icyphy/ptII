@@ -44,7 +44,12 @@ It can be used to
 */
 public interface MoMLFilter {
     /** Given the container, attribute name and attribute value,
-     *  return a new attribute value.     
+     *  return a new attribute value.
+     *  Usually, the attribute value returned is the same as
+     *  the attribute value passed in.  However, it is possible to
+     *  return a different attribute value, which results in renaming
+     *  the attribute; or it is possible to return null, which will
+     *  cause MoMLParser.attribute() to skip the rest of the current element.
      *  @param container  The container for this attribute, ignored
      *  in this method.
      *  @param attributeName The name of the attribute, ignored
