@@ -27,8 +27,9 @@
 
   <entity name="Waveform" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" value="0"></property>
-        <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]"></property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1, -1]"></property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1]"></property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[1, -1]"></property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true"></property>
         <port name="output"></port>
         <port name="trigger"></port>
   </entity>

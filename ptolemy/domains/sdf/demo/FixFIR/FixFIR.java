@@ -179,17 +179,13 @@ public class FixFIR extends SDFApplet implements QueryListener {
             _mult = new MultiplyDivide(_transform, "Multiply");
 
             // Multiply the incoming stream with alternating
-            // 1, -1. Because Pulse does not repeat itself yet,
-            // we make use of the knowledge that only 8 tokens
-            // gt out of the FIR filter. Therefore, it is sufficient
-            // alternate 16 times.
-
-            // FIXME: HACK because Pulse is not repeating itself.
+            // 1, -1. 
             _waveform = new Pulse(_transform, "Waveform");
-            int values[][] = {{1,-1,1,-1,1,-1,1,-1,1,-1,1,-1,1,-1,1,-1}};
-            int indexes[][] = {{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}};
+            int values[][] = {{1,-1}};
+            int indexes[][] = {{0,1}};
             _waveform.indexes.setToken(new IntMatrixToken(indexes));
             _waveform.values.setToken(new IntMatrixToken(values));
+            _waveform.repeat.setToken(new BooleanToken(true));
             
             // Perform an FFT
             _fft = new FFT(_transform, "FFT");
