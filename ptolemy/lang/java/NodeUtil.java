@@ -104,18 +104,18 @@ public final class NodeUtil implements JavaStaticSemanticConstants {
      *  @return The declaration associated with the type of the AST TypedNode.
      *  Return null if we cannot resolve the desired declaration.
      */
-     public static ClassDecl typedDeclToClassDecl(TypedDecl typedDecl) {
-         if (typedDecl == null) {
-             return null;
-         }
-         TypeNode type = ((TypedDecl)typedDecl).getType();
-         if (!(type instanceof TypeNameNode)) {
-             return null;
-         }
-         JavaDecl declaration = JavaDecl.getDecl((TreeNode)type);
-         if (!(declaration instanceof ClassDecl)) {
-             return null;
-         }
-         return (ClassDecl)declaration;
-     }
+    public static ClassDecl typedDeclToClassDecl(TypedDecl typedDecl) {
+        if (typedDecl == null) {
+            return null;
+        }
+        TypeNode type = ((TypedDecl)typedDecl).getType();
+        if (!(type instanceof TypeNameNode)) {
+            return null;
+        }
+        JavaDecl declaration = JavaDecl.getDecl((TreeNode)type);
+        if (!(declaration instanceof ClassDecl)) {
+            return null;
+        }
+        return (ClassDecl)declaration;
+    }
 }
