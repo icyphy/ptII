@@ -37,12 +37,6 @@
     </rendition>
   </entity>
 
-  <entity name="MaxIndex" class="ptolemy.actor.lib.MaxIndex">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-      <configure>generic.transformer</configure>
-    </rendition>
-  </entity>
-
   <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
@@ -77,6 +71,22 @@
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
+    <property name="function">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="acos" value="&quot;acos&quot;"
+	              class="ptolemy.data.expr.Parameter"/>
+            <property name="asin" value="&quot;asin&quot;"
+	              class="ptolemy.data.expr.Parameter"/>
+            <property name="atan" value="&quot;atan&quot;"
+	              class="ptolemy.data.expr.Parameter"/>
+            <property name="cos" value="&quot;cos&quot;"
+	              class="ptolemy.data.expr.Parameter"/>
+            <property name="sin" value="&quot;sin&quot;"
+	              class="ptolemy.data.expr.Parameter"/>
+            <property name="tan" value="&quot;tan&quot;"
+	              class="ptolemy.data.expr.Parameter"/>
+        </property>
+     </property>
   </entity>
 
       </group>
