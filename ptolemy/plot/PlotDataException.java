@@ -1,9 +1,5 @@
 /* A labeled box for signal plots.
 
-@Author: Edward A. Lee
-
-@Version: $Id$
-
 @Copyright (c) 1997 The Regents of the University of California.
 All rights reserved.
 
@@ -34,6 +30,9 @@ package plot;
 /** 
  * Exception thrown by plot classes if there are format
  * problems with the data to be plotted.
+ *
+ * @author: Christopher Hylands
+ * @version: $Id$
  */
 class PlotDataException extends Throwable {
 
