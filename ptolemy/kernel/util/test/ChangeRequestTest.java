@@ -48,7 +48,8 @@ Test for ChangeRequest.
 
 @author  Edward A. Lee
 @version $Id$
-@see ptolemy.kernel.event.ChangeRequest
+@see ptolemy.kernel.util.ChangeRequest
+
 */
 public class ChangeRequestTest {
 
