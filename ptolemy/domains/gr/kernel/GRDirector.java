@@ -30,19 +30,28 @@
 
 package ptolemy.domains.gr.kernel;
 
-import ptolemy.graph.*;
-import ptolemy.actor.*;
-import ptolemy.actor.sched.*;
-import ptolemy.actor.util.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
+import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.gr.lib.*;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.*;
 
-import javax.media.j3d.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRDirector

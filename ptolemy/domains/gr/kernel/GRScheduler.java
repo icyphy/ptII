@@ -30,15 +30,22 @@
 
 package ptolemy.domains.gr.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.actor.sched.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
+import ptolemy.actor.sched.Firing;
+import ptolemy.actor.sched.NotSchedulableException;
+import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.graph.DirectedGraph;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
-import ptolemy.data.expr.*;
-import ptolemy.data.*;
-import ptolemy.graph.*;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /////////////////////////////////////////////////////////////////////
 //// GRScheduler

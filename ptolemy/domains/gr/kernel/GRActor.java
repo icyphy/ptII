@@ -28,11 +28,12 @@
 
 package ptolemy.domains.gr.kernel;
 
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
 
-import javax.media.j3d.*;
+import javax.media.j3d.Node;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRActor

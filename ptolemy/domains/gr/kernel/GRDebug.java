@@ -30,8 +30,7 @@
 
 package ptolemy.domains.gr.kernel;
 
-import java.util.*;
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 /**
 @author C. Fong
