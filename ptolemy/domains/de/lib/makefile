@@ -49,36 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	DEABRO.java \
-	DEABROalt.java \
-	DEANDGate.java \
-	DEBus.java \
-	DEClock.java \
-	DEDelay.java \
-	DEFIFOQueue.java \
-	DEFIRfilter.java \
-	DEFullAdder.java \
-	DEGain.java \
-	DEHistogram.java \
-	DEInterruptibleServer.java \
-	DELogicAnalyzer.java \
-	DENot.java \
-	DEORGate.java \
-	DEPassGate.java \
-	DEPlot.java \
-	DEPoisson.java \
-	DEProcessor.java \
-	DEPseudoPlot.java \
-	DERamp.java \
-	DERegister.java \
-	DESampler.java \
-	DEServer.java \
-	DEServerAlt.java \
-	DEStatistics.java \
-	DETestLevel.java \
-	DEWaitingTime.java \
-	DEWaveForm.java \
-	DEXORGate.java
+	DEWaitingTime.java
 
 EXTRA_SRCS =	$(JSRCS)
 
