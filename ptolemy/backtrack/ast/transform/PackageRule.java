@@ -140,15 +140,16 @@ public class PackageRule extends TransformRule {
         }
         
         private void _handleName(Name node) {
-            if (node.getParent() != null &&
-                    !(node.getParent() instanceof Name)) {
+            if (node.getParent() != null) {
                 String id = node.toString();
                 boolean convert = false;
                 Type type = Type.getType(node);
+                Type owner = Type.getOwner(node);
 
-                if (type != null &&
+                if (type != null && owner == null &&
                         _crossAnalysisTypes.contains(type.getName()) &&
-                        _crossAnalysisNames.contains(id))
+                        _crossAnalysisNames.contains(id) &&
+                        type.getName().length() == id.length())
                     convert = true;
                 else if (node.getParent() instanceof ImportDeclaration &&
                         _crossAnalysisNames.contains(id))
