@@ -47,25 +47,14 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	codeDoc
+OPTIONAL_FILES =
 
 # Sub directories to run make in.
 DIRS =
 
 ALLJSRCS = 	*.java
 
-all: codeDoc/tree.htm
-
-codeDoc/tree.htm: ../*.java
-	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
-	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
-	@for x in codeDoc/*.htm; do \
-		echo "Fixing paths in $$x"; \
-		sed -e 's|<a href="java|<a href="$(JAVAHTMLDIR)/java|g' \
-		-e 's|<img src="images/|<img src="$(JAVAHTMLDIR)/images/|g' \
-			$$x > $$x.bak; \
-		mv $$x.bak $$x; \
-	done
+all:
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
