@@ -43,7 +43,7 @@ package ptolemy.math;
    <p>This class only represents fractions with a determined value,
    so fractions with a zero in the denominator are not allowed (including 0/0).
 
-   @author Stephen Neuendorffer
+   @author Stephen Neuendorffer, Adam Cataldo
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (neuendor)
@@ -195,6 +195,16 @@ public class Fraction extends Object {
         return f;
     }
 
+    /** Convert the fraction to a double.
+     *  @return The double value.
+     */
+    public double toDouble() {
+        double numerator, denominator;
+        numerator = (double)_num;
+        denominator = (double)_den;
+        return numerator / denominator;
+    }
+    
     /** Convert the fraction to a readable string.
      */
     public String toString() {
