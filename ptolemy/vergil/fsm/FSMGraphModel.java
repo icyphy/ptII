@@ -199,6 +199,19 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
  	    Arc link = (Arc)links.next();
             Relation relation = link.getRelation();
             if (relation == null) continue;
+            // Check that the relation hasn't been removed.
+
+            // If we do not do this, then redo will thrown an exception
+            // if we open ct/demo/BouncingBall/BouncingBall.xml, look
+            // inside the Ball Model composite actor,
+            // delete the stop actor and then do undo and then redo.
+
+            if (relation.getContainer() == null) {
+                link.setHead(null);
+                link.setTail(null);
+                links.remove();
+                continue;
+            }
             boolean headOK = GraphUtilities.isContainedNode(link.getHead(),
                     getRoot(), this);
             boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
