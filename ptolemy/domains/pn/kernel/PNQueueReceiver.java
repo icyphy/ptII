@@ -202,6 +202,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  receiver. If a process is indeed blocked, then unblock the
      *  process, and inform the director of the same.
      *  Otherwise return.
+     *  @param branch The Branch managin the execution of this method. 
      *  @return The oldest Token read from the queue
      */
     public Token get(Branch branch) {
@@ -252,6 +253,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Return true, since a channel in the Kahn process networks
      *  model of computation is of infinite capacity and always has room.
+     *  @param The number of tokens, which is ignored in this method.
      *  @return True.
      */
     public boolean hasRoom(int tokens) {
@@ -268,6 +270,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Return true, since a call to the get() method of the receiver will
      *  always return a token if the call to get() ever returns.
+     *  @param The number of tokens, which is ignored in this method.
      *  @return True.
      */
     public boolean hasToken(int tokens) {
@@ -420,6 +423,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  Check whether any process is blocked
      *  on a read from this receiver. If a process is indeed blocked, then
      *  unblock the process, and inform the director of the same.
+     *  @param branch The Branch managing execution of this method.
      *  @param token The token to be put in the receiver.
      */
     public void put(Token token, Branch branch) {

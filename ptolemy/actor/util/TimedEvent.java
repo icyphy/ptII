@@ -71,7 +71,7 @@ public class TimedEvent {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Display timeStamp and contents */
+    /** Display timeStamp and contents. */
     public String toString() {
     	return "timeStamp: " + timeStamp + ", contents: " + contents;
     }

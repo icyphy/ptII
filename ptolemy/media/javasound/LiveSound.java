@@ -359,7 +359,7 @@ public class LiveSound {
      *  parameter is 1 (for mono audio).
      *
      *  @return The number of audio channels.
-     *
+     *  @see #setChannels(int)
      */
     public static int getChannels() {
         return _channels;
@@ -753,6 +753,7 @@ public class LiveSound {
      *
      *  @exception IOException If the specified number of channels is
      *   not supported by the audio hardware or by Java.
+     *  @see #getChannels()
      */
     public static void setChannels(int channels) throws IOException {
         _channels = channels;

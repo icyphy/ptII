@@ -110,6 +110,10 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  Create a director parameter "initialQueueCapacity" with the default
      *  value 1. This sets the initial capacities of the FIFO queues in all
      *  the receivers created in the PN domain.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public TimedPNDirector()
             throws IllegalActionException, NameDuplicationException {
@@ -124,6 +128,10 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  value 1. This sets the initial capacities of the queues in all
      *  the receivers created in the PN domain.
      *  @param workspace The workspace of this object.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public TimedPNDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
