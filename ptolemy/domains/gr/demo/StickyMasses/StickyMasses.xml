@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StickyMasses" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-beta">
     </property>
     <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
@@ -12,7 +12,7 @@
     </property>
     <property name="velocity2" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[753, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
     </property>
@@ -20,8 +20,9 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This version of the CT Sticky Masses simulation
-uses the GR domain to render the results</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This version of the CT Sticky Masses model
+uses the GR domain to render the results as
+a three-dimensional animation.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -32,10 +33,10 @@ uses the GR domain to render the results</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 20.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 280.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {158, 239, 819, 459}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 277, 968, 466}, maximized = false}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -52,7 +53,7 @@ uses the GR domain to render the results</text></svg></configure>
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -74,14 +75,37 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 240.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 285.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{376.5, 175.0}">
     </property>
-    <entity name="viewer" class="ptolemy.actor.TypedCompositeActor">
+    <property name="13:0:0:annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 5.0]">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a hybrid system, which mixes continuous-time modeling
+with finite state machines. In this example, two point masses on springs
+oscillate. However, they may collide, in which case, they stick together,
+and oscillate together. The stickiness decays, and they eventually come
+apart again. This is an example of a modal model, where there are two modes,
+"together" and "separate". Each mode is modeled by a state in an FSM, and
+each state refines to a continuous-time model of the dynamics in that mode.</text>
+           </svg>
+           </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+    </property>
+    <entity name="Viewer" class="ptolemy.actor.TypedCompositeActor">
         <property name="GR0" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -106,7 +130,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[30, 10]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 240.0]">
         </property>
         <property name="sphereradius" class="ptolemy.data.expr.Parameter" value=".2">
         </property>
@@ -1529,28 +1553,29 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {431, 336, 505, 347}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {355, 4, 663, 300}, maximized = false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[497, 299]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[655, 245]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 115.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 175.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
+<title>Position vs. Time</title>
+<xLabel>Time (sec)</xLabel>
+<yLabel>Position</yLabel>
 <xRange min="0.0" max="100.0"/>
 <yRange min="-0.12156969194624583" max="2.818468232732702"/>
+<noGrid/>
 </plot>?>
         </configure>
     </entity>
-    <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 170.0">
+    <entity name="StickyMassesModel" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 240.0]">
         </property>
         <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -1595,33 +1620,56 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
             <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 50.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 363, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {282, 362, 727, 400}, maximized = false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[512, 284]">
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Sampler is used to provide periodic
+data to the 3-D animation subsystem.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 165.0]">
+            </property>
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{256.0, 142.0}">
         </property>
         <port name="bluePosition" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 230.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 165.0]">
             </property>
         </port>
         <port name="redPosition" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 155.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 90.0]">
             </property>
         </port>
         <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 185.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 120.0]">
             </property>
         </entity>
         <entity name="Sticky Mass model" class="ptolemy.domains.fsm.modal.ModalModel">
             <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 185.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 120.0]">
             </property>
             <port name="V1" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="output"/>
@@ -1716,7 +1764,7 @@ model (double click on that transition to see its actions).</text></svg></config
                     <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 10.0">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 228, 815, 568}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 101, 815, 566}, maximized = false}">
                 </property>
                 <port name="V1" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
@@ -2362,17 +2410,17 @@ stickiness.</text></svg></configure>
         <link port="Sticky Mass model.P2" relation="relation4"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="330.0, 155.0">
+        <vertex name="vertex1" value="[330.0, 210.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="340.0, 220.0">
+        <vertex name="vertex1" value="[340.0, 275.0]">
         </vertex>
     </relation>
-    <link port="viewer.displacement for red bob" relation="relation2"/>
-    <link port="viewer.displacement for blue bob" relation="relation3"/>
+    <link port="Viewer.displacement for red bob" relation="relation2"/>
+    <link port="Viewer.displacement for blue bob" relation="relation3"/>
     <link port="TimedPlotter.input" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation3"/>
-    <link port="typed composite actor.bluePosition" relation="relation2"/>
-    <link port="typed composite actor.redPosition" relation="relation3"/>
+    <link port="StickyMassesModel.bluePosition" relation="relation2"/>
+    <link port="StickyMassesModel.redPosition" relation="relation3"/>
 </entity>
