@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="properties5" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, -2, 815, 524}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {65, -2, 815, 526}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 408]">
     </property>
@@ -57,64 +57,27 @@ in this case, so it makes it to the receiver.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 285.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 204.0}">
+    </property>
     <entity name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=Infinity, dummy=string}">
-        </property>
-        <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
-        </property>
-        <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 50.0">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
-        </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 175.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-        </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
         <doc>Create a set of pulses</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 165.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="100">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="50">
@@ -122,16 +85,6 @@ in this case, so it makes it to the receiver.</text></svg></configure>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 270.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 260.0">
@@ -165,53 +118,23 @@ in this case, so it makes it to the receiver.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 210.0">
         </property>
-        <port name="data" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.kernel.util.Attribute">
-            </property>
-        </port>
-        <port name="properties" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.kernel.util.Attribute">
-            </property>
-        </port>
         <port name="output" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="$outputChannelName">
-            </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{dummy=&quot;string&quot;, range=600}">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{dummy = &quot;string&quot;, range = 600}">
             </property>
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3, 4, 5, 6, 7, 8, 9, 10}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 280.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{dummy=&quot;string&quot;, range=250.0}, {dummy=&quot;string&quot;, range=300.0}, {dummy=&quot;string&quot;, range=350.0}, {dummy=&quot;string&quot;, range=400.0}, {dummy=&quot;string&quot;, range=450.0}, {dummy=&quot;string&quot;, range=500.0}, {dummy=&quot;string&quot;, range=550.0}, {dummy=&quot;string&quot;, range=600.0}}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 75.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;string&quot;">
@@ -225,40 +148,12 @@ in this case, so it makes it to the receiver.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 315.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="WirelessToWired" class="ptolemy.domains.wireless.lib.WirelessToWired">
         <property name="inputChannelName" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 215.0">
         </property>
-        <port name="properties" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.kernel.util.Attribute">
-            </property>
-        </port>
-        <port name="input" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
-            <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="$inputChannelName">
-            </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="data" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.kernel.util.Attribute">
-            </property>
-        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="75.0, 165.0">
@@ -266,17 +161,17 @@ in this case, so it makes it to the receiver.</text></svg></configure>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Ramp.output" relation="relation5"/>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation8"/>
     <link port="Ramp.trigger" relation="relation3"/>
     <link port="Clock.output" relation="relation3"/>
     <link port="Ramp2.output" relation="relation4"/>
@@ -284,12 +179,12 @@ in this case, so it makes it to the receiver.</text></svg></configure>
     <link port="RecordAssembler.output" relation="relation6"/>
     <link port="RecordAssembler.range" relation="relation4"/>
     <link port="RecordAssembler.dummy" relation="relation7"/>
-    <link port="WiredToWireless.data" relation="relation5"/>
+    <link port="WiredToWireless.payload" relation="relation8"/>
     <link port="WiredToWireless.properties" relation="relation6"/>
-    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation5"/>
     <link port="NonStrictTest2.input" relation="relation"/>
     <link port="Const.output" relation="relation7"/>
     <link port="Const.trigger" relation="relation3"/>
     <link port="WirelessToWired.properties" relation="relation"/>
-    <link port="WirelessToWired.data" relation="relation2"/>
+    <link port="WirelessToWired.payload" relation="relation5"/>
 </entity>

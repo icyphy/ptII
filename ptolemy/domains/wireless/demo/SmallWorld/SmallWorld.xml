@@ -1156,7 +1156,7 @@ parameter.</text></svg></configure>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="HistogramPlotter.input" relation="relation2"/>
-    <link port="WirelessToWired.data" relation="relation2"/>
+    <link port="WirelessToWired.payload" relation="relation2"/>
     <link port="Average.input" relation="relation2"/>
     <link port="Average.output" relation="relation"/>
     <link port="AverageNumberOfHops.input" relation="relation"/>
