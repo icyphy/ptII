@@ -568,7 +568,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 	}
 
 	///////////////////////////////////////////////////////////////
-	////                       public methods                  ////
+	////                       public inner methods            ////
 
 	/** Return this TypedIOPort.
 	 *  @return A TypedIOPort.
@@ -644,7 +644,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
 
         ///////////////////////////////////////////////////////////////
-        ////                       private variable                ////
+        ////                       private inner variable          ////
 
         private TypedIOPort _port = null;
     }
