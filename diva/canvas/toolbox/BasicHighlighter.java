@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 
 import diva.canvas.DamageRegion;
@@ -57,9 +58,13 @@ public class BasicHighlighter extends FigureDecorator {
      */
     private float _halo;
 
-    /* The highlight paint
+    /* The highlight paint, or null if none.
      */
     private Paint _paint;
+
+    /* The highlight stroke, or null if none.
+     */
+    private Stroke _stroke;
 
     /** Create a new highlighter with a default paint and "halo"
      */
@@ -82,6 +87,17 @@ public class BasicHighlighter extends FigureDecorator {
         this._paint = paint;
         this._halo = halo;
         this._composite = composite;
+    }
+
+    /** Create a new highlighter with the given paint, "halo,"
+     *  compositing operation, and stroke.  This highlighter
+     *  draws an outline only and does not fill it.
+     */
+    public BasicHighlighter (Paint paint, float halo, Composite composite, Stroke stroke) {
+        this._paint = paint;
+        this._halo = halo;
+        this._composite = composite;
+        this._stroke = stroke;
     }
 
     /** Get the composite.
@@ -116,6 +132,12 @@ public class BasicHighlighter extends FigureDecorator {
         return _paint;
     }
 
+    /** Get the stroke.
+     */
+    public Stroke getStroke() {
+        return _stroke;
+    }
+
     /** Return false. This method always returns false, as it
      * is meaningless (and dangerous!) to be able to hit a highlight.
      */
@@ -128,7 +150,7 @@ public class BasicHighlighter extends FigureDecorator {
      * as this one.
      */
     public FigureDecorator newInstance (Figure f) {
-        return new BasicHighlighter(_paint, _halo, _composite);
+        return new BasicHighlighter(_paint, _halo, _composite, _stroke);
     }
 
     /** Paint the figure. This method first paints the highlight over
@@ -150,7 +172,12 @@ public class BasicHighlighter extends FigureDecorator {
         double w = bounds.getWidth() + 2 * _halo;
         double h = bounds.getHeight() + 2 * _halo;
 
-        g.fill(new Rectangle2D.Double(x,y,w,h));
+        if (_stroke == null) {
+            g.fill(new Rectangle2D.Double(x,y,w,h));
+        } else {
+            g.setStroke(_stroke);
+            g.draw(new Rectangle2D.Double(x,y,w,h));
+        }
 
         // Draw the child
         getChild().paint(g);
