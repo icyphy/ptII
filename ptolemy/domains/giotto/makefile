@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/giotto
 
-DIRS =		kernel demo doc
+DIRS =		kernel demo doc test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
