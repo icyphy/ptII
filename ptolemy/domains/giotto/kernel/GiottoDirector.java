@@ -57,10 +57,13 @@ import java.util.List;
 //// GiottoDirector
 /**
 
-FIXME: document this.
-
-@see ptolemy.domains.kernel.GiottoReceiver
-@see ptolemy.domains.kernel.GiottoScheduler
+This class implements a director for the Giotto model of computation
+without Giotto modes. ptolemy.domains.giotto.kernel.GiottoScheduler
+generates schedules according to the Giotto semantics.
+@see ptolemy.domains.giotto.kernel.GiottoReceiver implements
+the data flow between actors using double-buffering.
+@see ptolemy.domains.giotto.kernel.GiottoActorComparator implements
+a simple Comparator on actors comparing Giotto frequencies.
 
 @author  Christoph Meyer Kirsch and Edward A. Lee
 @version $Id$
@@ -323,6 +326,12 @@ public class GiottoDirector extends StaticSchedulingDirector {
         // addDebugListener(new StreamListener());
     }
 
+    /** Iterate actors according to the schedule.
+     *
+     * @param schedule of all actors represented as a tree.
+     * @see ptolemy.domains.giotto.kernel.GiottoScheduler
+     * @return true iff all actors postfire method returned true.
+     */
     private boolean _fire(Enumeration schedule)
             throws IllegalActionException {
 
@@ -460,6 +469,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	return postfire;
     }
 
+    /** Set period of this director.
+     *
+     * @param period
+     */
     private void _setPeriod(double period) {
 	_period = period;
     }
