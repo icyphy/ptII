@@ -1,6 +1,6 @@
 # Test CurrentTime.
 #
-# @Author: Chrisotpher Hylands
+# @Author: Christopher Hylands
 #
 # @Version: $Id$
 #
