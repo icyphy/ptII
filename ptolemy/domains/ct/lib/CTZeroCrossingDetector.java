@@ -164,7 +164,7 @@ public class CTZeroCrossingDetector extends CTActor
         if (Math.abs(_thisTrg) < _errorTolerance) {
             if (_enabled) {
                 double tnow = dir.getCurrentTime(); 
-                dir.setFireEndTime(tnow);
+                //dir.setFireEndTime(tnow);
                 _eventNow = true;
                 if(DEBUG) {
                     System.out.println("set FireEndTime:" + tnow);
