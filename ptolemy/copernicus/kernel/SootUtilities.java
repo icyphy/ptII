@@ -610,6 +610,18 @@ public class SootUtilities {
     public static void createAndSetFieldFromLocal(JimpleBody body,
             Local local, SootClass theClass, Type type,
             String name) {
+        createAndSetFieldFromLocal(body, local, theClass, 
+                type, name, (Unit)body.getUnits().getLast());
+    }
+    
+    /** Create a new instance field with the given name and type and
+     *  add it to the given class.  Add statements to the given body
+     *  after the given insertion point to initialize the field from
+     *  the given local.
+     */
+    public static void createAndSetFieldFromLocal(JimpleBody body,
+            Local local, SootClass theClass, Type type,
+            String name, Unit insertPoint) {
         Chain units = body.getUnits();
         Local thisLocal = body.getThisLocal();
 
@@ -620,8 +632,11 @@ public class SootUtilities {
             castLocal = Jimple.v().newLocal("local_" + name, type);
             body.getLocals().add(castLocal);
             // Cast the local to the type of the field.
-            units.add(Jimple.v().newAssignStmt(castLocal,
-                    Jimple.v().newCastExpr(local, type)));
+            units.insertAfter(
+                    Jimple.v().newAssignStmt(castLocal,
+                            Jimple.v().newCastExpr(local, type)),
+                    insertPoint);
+            insertPoint = (Unit)body.getUnits().getSuccOf(insertPoint);
         }
 
         // Create the new field if necessary
@@ -635,9 +650,11 @@ public class SootUtilities {
         }
 
         // Set the field.
-        units.add(Jimple.v().newAssignStmt(
-                Jimple.v().newInstanceFieldRef(thisLocal, field),
-                castLocal));
+        units.insertAfter(
+                Jimple.v().newAssignStmt(
+                        Jimple.v().newInstanceFieldRef(thisLocal, field),
+                        castLocal),
+                insertPoint);
     }
 
     /** Create statements that correspond to a for loop and return them.
@@ -932,6 +949,21 @@ public class SootUtilities {
             theClass = theClass.getSuperclass();
         } 
         return false;
+    }
+
+    /** Return true if type2 is a subtype of type1.
+     */
+    public static boolean isSubtypeOf(Type type1, 
+            Type type2) {
+        if(type1 instanceof RefType && type2 instanceof RefType) {
+            SootClass class1 = ((RefType)type1).getSootClass();
+            SootClass class2 = ((RefType)type2).getSootClass();
+            return derivesFrom(class1, class2);
+        } else if(type1 instanceof Type && type2 instanceof RefType) {
+            Type elementType1 = ((ArrayType)type1).baseType;
+            Type elementType2 = ((ArrayType)type2).baseType;
+            return isSubtypeOf(elementType1, elementType2);
+        } else return type1.equals(type2);  // numeric types.
     }
 
     /** Merge the given class with its super class.  All of the
