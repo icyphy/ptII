@@ -92,7 +92,7 @@ The port and the channel together define the BoundaryReceiver with which to
 rendezvous. The BranchController, that controls this branch,
 is assumed to be contained by the container of the port.
 <p>
-@author  Neil Smyth
+@author  Neil Smyth, John S. Davis II
 @version $Id$
 */
 
@@ -112,18 +112,20 @@ public abstract class Branch {
      *  @exception IllegalActionException If the actor that contains
      *   the port is not of type CSPActor.
      */
-    public Branch(boolean guard, IOPort port, int branchID)
+    public Branch(boolean guard, int branchID, BranchController cntlr)
             throws IllegalActionException {
+        super();
+        /*
         Nameable tmp = port.getContainer();
         if (!(tmp instanceof MultiBranchActor)) {
             throw new IllegalActionException(port,
 		    "A conditional branch can only be created" +
 		    "with a port contained by MultiBranchActor");
         }
+        */
         _branchID = branchID;
         _guard = guard;
-        _controller =
-	    ((MultiBranchActor)tmp).getBranchController();
+        _controller = cntlr;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -149,26 +151,16 @@ public abstract class Branch {
      *  branch when performing a CIF or CDO.
      *  @return The controller that manages conditional rendezvous for
      *  this branch.
-     */
     public BranchController getController() {
         return _controller;
     }
+     */
 
     /** Return the BoundaryReceiver this branch is trying to rendezvous with.
      *  @return The BoundaryReceiver this branch is trying to rendezvous with.
      */
     public BoundaryReceiver getReceiver() {
         return _receiver;
-    }
-
-    /** Return the token contained by this branch. For a ConditionalSend
-     *  it is set upon creation, and set to null after the rendezvous.
-     *  For a ConditionalReceive it is set after the rendezvous has
-     *  occurred, and is null before that.
-     *  @return The token contained by this branch.
-     */
-    public Token getToken() {
-        return _token;
     }
 
     /** Boolean indicating if this branch is still alive. If it is false, it
@@ -178,12 +170,27 @@ public abstract class Branch {
      *  continue trying to rendezvous.
      *  @return True if this branch is still alive.
      */
-    public boolean isAlive() {
+    public boolean isStillAlive() {
         return _alive;
     }
 
+    /** 
+     */
+    public abstract void run(); 
+
+    /** 
+     */
+    public boolean isBranchCommitted() {
+    	return true;
+    }
+
+    /** 
+     */
+    public void registerRcvrBlock() {
+    }
+
     ///////////////////////////////////////////////////////////////////
-    ////                      package friendly methods                  ////
+    ////                    package friendly methods               ////
 
     /** Set a flag indicating this branch should fail.
      *  @param value Boolean indicating whether this branch is still alive.
@@ -192,42 +199,16 @@ public abstract class Branch {
         _alive = value;
     }
 
-    /** Set the BoundaryReceiver this branch is trying to rendezvous with.
-     *  This method should only be called from derived classes.
-     *  @param rec The BoundaryReceiver this branch is trying to rendezvous with.
-     */
-    void setReceiver(BoundaryReceiver rec) {
-        _receiver = rec;
-    }
-
-    /** Set the token contained by this branch. For a ConditionalSend
-     *  it is set upon creation, and set to null after the rendezvous.
-     *  For a ConditionalReceive it is set after the rendezvous has
-     *  occurred, and is null before that.
-     *  @param token The token to be contained by this branch.
-     */
-    void setToken(Token token) {
-        _token = token;
-    }
-
-    ///////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Called by subclasses to wait. Register with the containing actor
-     *  that a conditional branch has blocked and then wait to be notified.
-     *  Wrap the wait() call (on the receiver associated with this branch)
-     *  between checks on the state of the receiver. After awaking from
-     *  waiting, register with the containing actor that this conditional
-     *  branch is no longer blocked.
-     * @exception InterruptedException If this method is interrupted
-     *  while waiting.
+    /** Set the BoundaryReceiver this branch is trying to rendezvous with.
+     *  This method should only be called from derived classes.
+     *  @param rec The BoundaryReceiver this branch is trying to 
+     *   rendezvous with.
      */
-    protected void _registerBlockAndWait() throws InterruptedException {
-        // FIXME!!!
-        // getController()._branchBlocked();
-        getReceiver().checkFlagsAndWait();
-        // getController()._branchUnblocked();
-        // FIXME!!!
+    protected void setReceiver(BoundaryReceiver rec) {
+        _receiver = rec;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -235,6 +216,8 @@ public abstract class Branch {
 
     // The guard for this guarded communication statement.
     protected boolean _guard;
+    
+    protected boolean _branchStopRequest = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -255,6 +238,4 @@ public abstract class Branch {
     // The receiver this thread is trying to rendezvous with. It is immutable.
     private BoundaryReceiver _receiver;
 
-    // The Token transferred in a rendezvous.
-    private Token _token;
 }

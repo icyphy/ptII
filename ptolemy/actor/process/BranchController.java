@@ -76,10 +76,6 @@ import java.util.List;
    <p>
 @author Neil Smyth, John S. Davis II
 @version $Id$
-@see Branch
-@see BranchActor
-@see ConditionalReceive
-@see ConditionalSend
 */
 
 public class BranchController {
@@ -88,7 +84,7 @@ public class BranchController {
         be an actor.
         @param container The parent actor that contains this object.
     */
-    public BranchController(MultiBranchActor container) {
+    public BranchController(CompositeActor container) {
         _parentActor = container;
     }
 
@@ -113,7 +109,6 @@ public class BranchController {
      *  @param branches The set of conditional branches involved.
      *  @return The ID of the successful branch, or -1 if none of the
      *   branches were enabled.
-     */
     public int chooseBranch(Branch[] branches) {
         try {
             synchronized(_internalLock) {
@@ -149,10 +144,9 @@ public class BranchController {
                     return _successfulBranch; // will be -1
                 } else if (num == 1) {
                     // FIXME!!!
-                    // Call optimize method here
-                    /*
+                    // Call optimize method here; should I
                     // Only one guard was true, so perform simple rendezvous.
-                    if (onlyBranch instanceof ConditionalSend) {
+                    if (onlyBranch.isWriteBranch()) {
                         Token t = onlyBranch.getToken();
                         onlyBranch.getReceiver().put(t);
                         return onlyBranch.getID();
@@ -162,7 +156,6 @@ public class BranchController {
                         onlyBranch.setToken(tmp);
                         return onlyBranch.getID();
                     }
-                    */
                 } else {
                     // Have a proper conditional communication.
                     // Start the threads for each branch.
@@ -239,15 +232,22 @@ public class BranchController {
         _threadList = null;
         return _successfulBranch;
     }
+     */
 
     /** Return the Actor that creates the branch and owns this
      *  controller when performing a CIF or CDO.
      *  @return The CSPActor that created this branch.
      */
-    public MultiBranchActor getParent() {
+    public CompositeActor getParent() {
         return _parentActor;
     }
 
+    /**
+     */
+    public void setBranches(Branch[] branches) {
+    	_branches = branches;
+    }
+    
     /** Terminate abruptly any threads created by this actor. Note that
      *  this method does not allow the threads to terminate gracefully.
      */
@@ -269,6 +269,15 @@ public class BranchController {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /**
+     */
+    protected boolean _isDeadlocked() {
+        if( _branchesBlocked == _branchesStarted ) {
+            return true;
+        } 
+        return false;
+    }
+    
     /** Called by ConditionalSend and ConditionalReceive to check if
      *  the calling branch is the first branch to be ready to rendezvous.
      *  If it is, it sets a private variable to its branch ID so that
@@ -279,7 +288,7 @@ public class BranchController {
      *  @return True if the calling branch is the first branch to try
      *   to rendezvous, otherwise false.
      */
-    protected boolean _isBranchFirst(int branchNumber) {
+    protected boolean _canBranchContinue(int branchNumber) {
         synchronized(_internalLock) {
             if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
                 // store branchNumber
@@ -295,67 +304,21 @@ public class BranchController {
      *  or CDO currently being executed) are blocked, register this 
      *  actor as being blocked.
      */
-    protected void _readBranchBlocked(boolean externalReadBlock) {
-        synchronized(_internalLock) {
-            if( externalReadBlock ) {
-            	_extReadBranchesBlocked++;
-	    } else {
-            	_intReadBranchesBlocked++;
-            }
-            if (_intReadBranchesBlocked + _extReadBranchesBlocked +
-          	    _writeBranchesBlocked == _branchesStarted) {
-                // Note: acquiring a second lock, need to be careful.
-                if( _extReadBranchesBlocked > 0 ) {
-                    _getDirector()._actorReadBlocked(false);
-		} else if( _writeBranchesBlocked == _branchesStarted ) {
-                    _getDirector()._actorWriteBlocked();
-		} else {
-                    _getDirector()._actorReadBlocked(true);
-                }
-		// _getDirector()._actorBlocked();
-                _blocked = true;
-            }
-        }
-    }
-
-    /** Increase the count of branches that are blocked trying to do
-     *  a rendezvous write. If all the enabled branches (for the CIF 
-     *  or CDO currently being executed) are blocked, register this 
-     *  actor as being blocked.
-     */
-    protected void _writeBranchBlocked() {
-        synchronized(_internalLock) {
-            _writeBranchesBlocked++;
-            if (_intReadBranchesBlocked + _extReadBranchesBlocked +
-            	     _writeBranchesBlocked == _branchesStarted) {
-                // Note: acquiring a second lock, need to be careful.
-                if( _extReadBranchesBlocked > 0 ) {
-                    _getDirector()._actorReadBlocked(false);
-		} else if( _writeBranchesBlocked == _branchesStarted ) {
-                    _getDirector()._actorWriteBlocked();
-		} else {
-                    _getDirector()._actorReadBlocked(true);
-                }
-		// _getDirector()._actorBlocked();
-                _blocked = true;
-            }
-        }
-    }
-
-    /** Increase the count of branches that are blocked trying to rendezvous.
-     *  If all the enabled branches (for the CIF or CDO currently
-     *  being executed) are blocked, register this actor as being blocked.
     protected void _branchBlocked() {
         synchronized(_internalLock) {
-            _branchesBlocked++;
-            if (_branchesBlocked == _branchesStarted) {
+            if ( _isDeadlocked() ) {
                 // Note: acquiring a second lock, need to be careful.
-                _getDirector()._actorBlocked();
+                if( !_hasReadBlock() ) {
+                    _getDirector()._actorWriteBlocked();
+                } else if( _hasInternalBlock() ) {
+                    _getDirector()._actorReadBlocked(true);
+                } else {
+                    _getDirector()._actorReadBlocked(false);
+                }
                 _blocked = true;
             }
         }
     }
-     */
 
     /** Registers the calling branch as failed. It reduces the count
      *  of active branches, and if all the active branches have
@@ -401,79 +364,45 @@ public class BranchController {
         }
     }
 
-    /** Decrease the count of branches that are blocked.
-     *  If the actor was previously registered as being blocked, register
-     *  this actor with the director as no longer being blocked.
-    protected void _branchUnblocked() {
-        synchronized(_internalLock) {
- 	    if (_blocked) {
-	        if (_branchesBlocked != _branchesStarted) {
-                    throw new InternalErrorException(
-			    ((Nameable)getParent()).getName() +
-                            ": blocked when not all enabled branches are " +
-                            "blocked.");
-		}
-                // Note: acquiring a second lock, need to be careful.
-                _getDirector()._actorUnblocked();
-                _blocked = false;
-            }
-            _branchesBlocked--;
-        }
-    }
-     */
-
     /** Decrease the count of branches that are read blocked.
      *  If the actor was previously registered as being blocked, 
      *  register this actor with the director as no longer being 
      *  blocked.
      */
-    protected void _readBranchUnblocked(boolean externalReadBlock) {
+    protected void _branchUnblocked() {
         synchronized(_internalLock) {
  	    if (_blocked) {
-	        if (_intReadBranchesBlocked + _extReadBranchesBlocked +
-                	 _writeBranchesBlocked != _branchesStarted) {
+            	if ( !_isDeadlocked() ) {
                     throw new InternalErrorException(
 			    ((Nameable)getParent()).getName() +
                             ": blocked when not all enabled branches are " +
                             "blocked.");
 		}
-                // Note: acquiring a second lock, need to be careful.
-                _getDirector()._actorReadUnBlocked(!externalReadBlock );
-		// _getDirector()._actorUnblocked();
+                if( !_hasReadBlock() ) {
+                    _getDirector()._actorWriteUnBlocked();
+                } else if( _hasInternalBlock() ) {
+                    _getDirector()._actorReadUnBlocked(true);
+                } else {
+                    _getDirector()._actorReadUnBlocked(false);
+                }
                 _blocked = false;
             }
-	    if( externalReadBlock ) {
-            	_extReadBranchesBlocked--;
-	    } else {
-            	_intReadBranchesBlocked--;
-            }
+            _branchesBlocked--;
         }
     }
  
-    /** Decrease the count of branches that are write blocked.
-     *  If the actor was previously registered as being blocked, 
-     *  register this actor with the director as no longer being 
-     *  blocked.
+    /**
      */
-    protected void _writeBranchUnblocked() {
-        synchronized(_internalLock) {
- 	    if (_blocked) {
-	        if (_intReadBranchesBlocked + _extReadBranchesBlocked +
-                	_writeBranchesBlocked != _branchesStarted) {
-                    throw new InternalErrorException(
-			    ((Nameable)getParent()).getName() +
-                            ": blocked when not all enabled branches are " +
-                            "blocked.");
-		}
-                // Note: acquiring a second lock, need to be careful.
-                _getDirector()._actorWriteUnBlocked();
-		// _getDirector()._actorUnblocked();
-                _blocked = false;
-            }
-            _writeBranchesBlocked--;
-        }
+    protected boolean _hasInternalBlock() {
+    	return true;
     }
-
+    
+    /**
+     */
+    protected boolean _hasReadBlock() {
+    	return true;
+    }
+    
     /** Release the status of the calling branch as the first branch
      *  to be ready to rendezvous. This method is only called when both
      *  sides of a communication at a receiver are conditional. In
@@ -526,10 +455,7 @@ public class BranchController {
         synchronized(_internalLock) {
             _blocked = false;
             _branchesActive = 0;
-	    // _branchesBlocked = 0;
-            _intReadBranchesBlocked = 0;
-            _extReadBranchesBlocked = 0;
-            _writeBranchesBlocked = 0;
+	    _branchesBlocked = 0;
             _branchesStarted = 0;
             _branchTrying = -1;
             _successfulBranch = -1;
@@ -550,15 +476,7 @@ public class BranchController {
 
     // Contains the number of conditional branches that are blocked
     // trying to rendezvous.
-    // private int _branchesBlocked = 0;
-
-    // Contains the number of conditional read branches that are 
-    // blocked trying to rendezvous.
-    private int _intReadBranchesBlocked = 0;
-
-    // Contains the number of conditional read branches that are 
-    // blocked trying to rendezvous.
-    private int _extReadBranchesBlocked = 0;
+    private int _branchesBlocked = 0;
 
     // Contains the number of conditional write branches that are 
     // blocked trying to rendezvous.
@@ -579,7 +497,7 @@ public class BranchController {
     private Object _internalLock = new Object();
 
     // Point to the actor who owns this controller object.
-    private MultiBranchActor _parentActor;
+    private CompositeActor _parentActor;
 
     // Contains the ID of the branch that successfully rendezvoused.
     private int _successfulBranch = -1;
@@ -588,4 +506,6 @@ public class BranchController {
     // Need to keep a list of them in case the execution of the model is
     // terminated abruptly.
     private List _threadList = null;
+    
+    private Branch[] _branches;
 }

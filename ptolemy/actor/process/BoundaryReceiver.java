@@ -32,6 +32,8 @@ composite actor boundaries.
 
 package ptolemy.actor.process;
 
+import ptolemy.data.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// BoundaryReceiver
@@ -50,6 +52,18 @@ public interface BoundaryReceiver extends ProcessReceiver {
 
     /** 
      */
-    public void checkFlagsAndWait(); 
+    public boolean isConsumerReceiver(); 
+
+    /** 
+     */
+    public boolean isProducerReceiver(); 
+
+    /** 
+     */
+    public Token get(Branch controllingBranch); 
+
+    /** 
+     */
+    public void put(Token token, Branch controllingBranch); 
 
 }
