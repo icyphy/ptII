@@ -281,7 +281,8 @@ public class DDEReceiver extends TimedQueueReceiver
 	// FIXME: Recursive call to put() breaks the
 	// sychronization hierarchy.
         synchronized(this) {
-	    System.out.println(name+": inside synchronized section of DDEReceiver.");
+	    System.out.println(name + 
+                    ": inside synchronized section of DDEReceiver.");
             if( time > getCompletionTime() &&
                     getCompletionTime() != NOTSTARTED && !_terminate ) {
 	        time = INACTIVE;
@@ -470,7 +471,8 @@ public class DDEReceiver extends TimedQueueReceiver
 		// FIXME: The following else-if is wrong!
 		// We need next rcvr time not next time keeper time.
 	    } else if ( timeKeeper.getNextTime() == IGNORE ) {
-                System.out.println("Inside of DDEReceiver._hasToken() with IGNORE");
+                System.out.println("Inside of DDEReceiver._hasToken() " +
+                            "with IGNORE");
 		super.get();
 		// FIXME: Should we call clearIgnoredTokens() here???
 		return _hasToken(workspace, director, timeKeeper, _hideNullTokens);
