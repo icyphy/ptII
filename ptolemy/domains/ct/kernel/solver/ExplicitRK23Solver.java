@@ -35,7 +35,6 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
 import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.ct.kernel.CTDynamicActor;
 import ptolemy.domains.ct.kernel.CTSchedule;
 import ptolemy.domains.ct.kernel.CTScheduler;
 import ptolemy.domains.ct.kernel.ODESolver;
