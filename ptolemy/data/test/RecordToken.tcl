@@ -216,7 +216,7 @@ test RecordToken-6.0 {Test labelSet} {
 ####
 # 
 test RecordToken-6.1 {Test labelSet} {
-   iterToObjects [[$r2 labelSet] iterator]
+   lsort [iterToObjects [[$r2 labelSet] iterator]]
 } {name value}
 
 ######################################################################
