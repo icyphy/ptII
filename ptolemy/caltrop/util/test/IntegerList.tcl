@@ -46,26 +46,43 @@ if {[string compare test [info procs test]] == 1} then {
 test IntegerList-1.1 {Construct an IntegerList} {
     set context [java::field ptolemy.caltrop.PtolemyPlatform _theContext]
     set list [java::new {ptolemy.caltrop.util.IntegerList caltrop.interpreter.Context int int} $context 2 8]
-    $list toString} {[2, 3, 4, 5, 6, 7, 8]}
+    $list toString
+} {[2, 3, 4, 5, 6, 7, 8]}
 
 test IntegerList-1.2 {Construct a zero-length IntegerList} {
     set context [java::field ptolemy.caltrop.PtolemyPlatform _theContext]
-    set list [java::new {ptolemy.caltrop.util.IntegerList caltrop.interpreter.Context int int} $context 2 1]
-    $list toString} {[]}
+    set list [java::new {ptolemy.caltrop.util.IntegerList \
+	    caltrop.interpreter.Context int int} $context 2 1]
+    $list toString
+} {[]}
 
 test IntegerList-1.3 {Length of an IntegerList} {
     set context [java::field ptolemy.caltrop.PtolemyPlatform _theContext]
-    set list [java::new {ptolemy.caltrop.util.IntegerList caltrop.interpreter.Context int int} $context 2 8]
-    $list size} {7}
+    set list [java::new {ptolemy.caltrop.util.IntegerList \
+	    caltrop.interpreter.Context int int} $context 2 8]
+    $list size
+} {7}
 
 test IntegerList-1.4 {Length of a zero-length IntegerList} {
     set context [java::field ptolemy.caltrop.PtolemyPlatform _theContext]
-    set list [java::new {ptolemy.caltrop.util.IntegerList caltrop.interpreter.Context int int} $context 2 1]
-    $list size} {0}
+    set list [java::new {ptolemy.caltrop.util.IntegerList \
+	    caltrop.interpreter.Context int int} $context 2 1]
+    $list size
+} {0}
 
 test IntegerList-1.5 {Access an IntegerList} {
     set context [java::field ptolemy.caltrop.PtolemyPlatform _theContext]
-    set list [java::new {ptolemy.caltrop.util.IntegerList caltrop.interpreter.Context int int} $context 2 8]
+    set list [java::new {ptolemy.caltrop.util.IntegerList \
+	    caltrop.interpreter.Context int int} $context 2 8]
     set n [$list {get int} 3]
-    $n toString} {5}
+    $n toString
+} {5}
+
+test IntegerList-1.6 {Access an IntegerList with an out of bounds} {
+    set context [java::field ptolemy.caltrop.PtolemyPlatform _theContext]
+    set list [java::new {ptolemy.caltrop.util.IntegerList \
+	    caltrop.interpreter.Context int int} $context 2 8]
+    catch {$list {get int} 7} errMsg
+    list $errMsg
+} {{java.lang.IndexOutOfBoundsException: 2 + 7 is greater than 8}}
 
