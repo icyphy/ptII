@@ -446,10 +446,17 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		> src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/test/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/test/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/test/makefile
+	# Fix up ptolemy/makefile
+	sed -e 's/\$$(PTCALTROP_DIR)//' \
+	    -e 's/\$$(PTCOPERNICUS_DIR)//' \
+		< src_jar/hyvisual$(VERSION)/ptolemy/makefile \
+		> src_jar/hyvisual$(VERSION)/ptolemy/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/ptolemy/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/ptolemy/makefile
 	# Fix up makefile
 	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|thales" \
 		src_jar/hyvisual$(VERSION)/makefile | \
-		sed 's/\$(PTJNI_DIR)//' \
+		sed 's/\$$(PTJNI_DIR)//' \
 		> src_jar/hyvisual$(VERSION)/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/makefile \
