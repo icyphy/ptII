@@ -45,7 +45,7 @@
 
 <p>
   <a name="167754"> </a>In this chapter, we describe how to graphically construct models using Vergil, a graphical user interface (GUI) for Ptolemy II. Figure <img src="images/usingVergil8.gif" height="429" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#167754">2.1</a> shows a simple Ptolemy II model in Vergil, showing the graph editor, one of several editors available in Vergil. Keep in mind as you read this document that graphical entry of models is only one of several possible entry mechanisms available in Ptolemy II. Moreover, only some of the execution engines (called <i>domains</i>) are described here. A major emphasis of Ptolemy II is to provide a framework for the construction of modeling and design tools, so the specific modeling and design tools described here should be viewed as representative of our efforts.
+<a href="#167754">2.1</a> shows a simple Ptolemy II model in Vergil, showing the graph editor, one of several editors available in Vergil. Keep in mind as you read this document that graphical entry of models is only one of several possible entry mechanisms available in Ptolemy II. Moreover, only some of the execution engines (called <i>domains</i>) are described here. A major emphasis of Ptolemy II is to provide a framework for the construction of modeling and design tools, so the specific modeling and design tools described here should be viewed as representative of our efforts.
 </p>
 
 
@@ -66,8 +66,8 @@
 
 <p>
   <a name="165846"> </a>First start Vergil. From the command line, enter "vergil", or select Vergil or Ptolemy II in the Start menu, or click on a Web Start link on a web page supporting the web edition. You should see an initial welcome window that looks like the one in figure <img src="images/usingVergil33.gif" height="412" width="936" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#165846">2.2</a>. Feel free to explore the links in this window. The "Quick tour" link takes you to the page shown in figure <img src="images/usingVergil71.gif" height="823" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#165846">2.3</a>.
+<a href="#165846">2.2</a>. Feel free to explore the links in this window. The "Quick tour" link takes you to the page shown in figure <img src="images/usingVergil71.gif" height="823" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="#165846">2.3</a>.
 </p>
 
 
@@ -77,12 +77,12 @@
 
 
 <p>
-  <a name="175696"> </a>The very first example on the quick tour page is the model shown in figure <a href="usingVergil.html#167754">2.1</a>, which creates a sinusoidal signal, multiplies it by a sinusoidal carrier, and adds noise. You can execute this model in either of two ways. First, you can select Run Window in the View menu, and then click on Go. The result is shown in figure <img src="images/usingVergila.gif" usemap="#usingVergila_gif" height="730" width="937" align="center" border="0" hspace="0" vspace="0">
+  <a name="175696"> </a>The very first example on the quick tour page is the model shown in figure <a href="#167754">2.1</a>, which creates a sinusoidal signal, multiplies it by a sinusoidal carrier, and adds noise. You can execute this model in either of two ways. First, you can select Run Window in the View menu, and then click on Go. The result is shown in figure <img src="images/usingVergila.gif" usemap="#usingVergila_gif" height="730" width="937" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergila_gif">
 
-<area href="usingVergil.html#167754" shape=rect coords="1,699,934,728">
+<area href="#167754" shape=rect coords="1,699,934,728">
 </map>
-<a href="usingVergil.html#175696">2.4</a>. The upper plot shows the spectrum of the time-domain signal shown in the lower plot. Note the four peaks, which indicate the modulated sinusoid. In the run window you can adjust the frequencies of the signal and the carrier as well as the amount of noise. These can also be adjusted in the block diagram in figure <a href="usingVergil.html#167754">2.1</a> by double clicking on the bulleted parameters near the upper right of the window.
+<a href="#175696">2.4</a>. The upper plot shows the spectrum of the time-domain signal shown in the lower plot. Note the four peaks, which indicate the modulated sinusoid. In the run window you can adjust the frequencies of the signal and the carrier as well as the amount of noise. These can also be adjusted in the block diagram in figure <a href="#167754">2.1</a> by double clicking on the bulleted parameters near the upper right of the window.
 </p>
 
 
@@ -92,13 +92,13 @@
 
 
 <p>
-  <a name="175730"> </a>You can study the way the model is constructed in figure <a href="usingVergil.html#167754">2.1</a>. Note the Expression actor in the middle, whose icon indicates the expression being calculated: "signal*carrier + noise</font>". The identifiers in this expression, signal</font>, carrier</font>, and noise refer to the input ports by name. The names of these ports are shown in the diagram. The Expression actor is a very flexible actor in the Ptolemy II actor library. It can have any number of input ports, with arbitrary names, and uses a rich and expressive expression language to specify the value of the output as a function of the inputs (and parameters of the containing model, if desired).
+  <a name="175730"> </a>You can study the way the model is constructed in figure <a href="#167754">2.1</a>. Note the Expression actor in the middle, whose icon indicates the expression being calculated: "signal*carrier + noise</font>". The identifiers in this expression, signal</font>, carrier</font>, and noise refer to the input ports by name. The names of these ports are shown in the diagram. The Expression actor is a very flexible actor in the Ptolemy II actor library. It can have any number of input ports, with arbitrary names, and uses a rich and expressive expression language to specify the value of the output as a function of the inputs (and parameters of the containing model, if desired).
 </p>
 
 
 <p>
-  <a name="175749"> </a>Three of the actors in figure <a href="usingVergil.html#167754">2.1</a> are <i>composite actors</i>, which means that their implementation is itself given as a block diagram. Composite actors are indicated visually by the red outline. You can look inside to reveal the implementation, as shown in figure <img src="images/usingVergil3.gif" height="930" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#175749">2.5</a>, which shows the implementation of the Signal Source in figure <a href="usingVergil.html#167754">2.1</a>. It is evident from the block diagram how a sinusoidal signal is generated.
+  <a name="175749"> </a>Three of the actors in figure <a href="#167754">2.1</a> are <i>composite actors</i>, which means that their implementation is itself given as a block diagram. Composite actors are indicated visually by the red outline. You can look inside to reveal the implementation, as shown in figure <img src="images/usingVergil3.gif" height="930" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="#175749">2.5</a>, which shows the implementation of the Signal Source in figure <a href="#167754">2.1</a>. It is evident from the block diagram how a sinusoidal signal is generated.
 </p>
 
 
@@ -107,11 +107,11 @@
 </h4>
 
 
-<a name="175978"> </a>A key principle of the Ptolemy II system is that the model of computation that defines the meaning of a block diagram is not built-in, but is rather specified by the <i>director</i> component that is included in the model. The box labeled "SDF Director" in figures <a href="usingVergil.html#167754">2.1</a> and <a href="usingVergil.html#175749">2.5</a> specifies that these block diagrams have <i>synchronous dataflow</i> semantics, which is explained further below. The second example in the quick tour of figure <a href="usingVergil.html#165846">2.3</a>, by contrast, has continuous-time semantics (the one labeled "Continuous-Time Modeling"). The example is the well-known <i>Lorenz attractor</i>, a non-linear feedback system that exhibits chaotic behavior.<br>
+<a name="175978"> </a>A key principle of the Ptolemy II system is that the model of computation that defines the meaning of a block diagram is not built-in, but is rather specified by the <i>director</i> component that is included in the model. The box labeled "SDF Director" in figures <a href="#167754">2.1</a> and <a href="#175749">2.5</a> specifies that these block diagrams have <i>synchronous dataflow</i> semantics, which is explained further below. The second example in the quick tour of figure <a href="#165846">2.3</a>, by contrast, has continuous-time semantics (the one labeled "Continuous-Time Modeling"). The example is the well-known <i>Lorenz attractor</i>, a non-linear feedback system that exhibits chaotic behavior.<br>
 
 
 <a name="175992"> </a>The Lorenz attractor model, shown in figure <img src="images/usingVergil4.gif" height="629" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#167754">2.1</a>, is a block diagram representation of a set of nonlinear ordinary differential equations. The blocks with integration signs in their icons are integrators. At any given time <i>t</i>, their output is given by<br>
+<a href="#167754">2.1</a>, is a block diagram representation of a set of nonlinear ordinary differential equations. The blocks with integration signs in their icons are integrators. At any given time <i>t</i>, their output is given by<br>
 
 <div align="center">
 <a name="175849"> </a>(1) <img src="images/usingVergil6.gif" height="63" width="144" border="0" hspace="0" vspace="0">
@@ -132,10 +132,10 @@
 
 
 <p>
-  <a name="175874"> </a>Let the output of the top integrator in figure <a href="usingVergil.html#167754">2.1</a> be <img src="images/usingVergil13.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+  <a name="175874"> </a>Let the output of the top integrator in figure <a href="#167754">2.1</a> be <img src="images/usingVergil13.gif" height="21" width="16" border="0" hspace="0" vspace="0">
 , the output of the middle integrator be <img src="images/usingVergil15.gif" height="21" width="16" border="0" hspace="0" vspace="0">
 , and the output of the bottom integrator be <img src="images/usingVergil16.gif" height="21" width="16" border="0" hspace="0" vspace="0">
-. Then the equations described by figure <a href="usingVergil.html#167754">2.1</a> are
+. Then the equations described by figure <a href="#167754">2.1</a> are
 </p>
 
 <div align="center">
@@ -162,15 +162,15 @@
   <a name="175908"> </a>The Continuous-Time (CT) Solver, shown at the upper right, manages a simulation of the model. It contains a sophisticated ODE solver, and to use it effectively, you will need to understand some of its parameters. The parameters are accessed by double clicking on solver box, which results in the dialog shown in figure <img src="images/usingVergil30.gif" usemap="#usingVergil30_gif" height="456" width="937" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil30_gif">
 
-<area href="usingVergil.html#167754" shape=rect coords="0,421,929,450">
+<area href="#167754" shape=rect coords="0,421,929,450">
 </map>
-<a href="usingVergil.html#175908">2.7</a>. The simplest of these parameters are the <i>startTime</i> and the <i>stopTime</i>, which are self-explanatory. They define the region of the time line over which a simulation will execute.
+<a href="#175908">2.7</a>. The simplest of these parameters are the <i>startTime</i> and the <i>stopTime</i>, which are self-explanatory. They define the region of the time line over which a simulation will execute.
 </p>
 
 
 <p>
   <a name="175922"> </a>To execute the model, you can click on the run button in the toolbar (with a red triangle icon), or you can open the Run Window in the View menu. In the former case, the model executes, and the results are plotted in their own window, as shown in figure <img src="images/usingVergil32.gif" height="546" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#175922">2.8</a>. What is plotted is <img src="images/usingVergil34.gif" height="21" width="33" border="0" hspace="0" vspace="0">
+<a href="#175922">2.8</a>. What is plotted is <img src="images/usingVergil34.gif" height="21" width="33" border="0" hspace="0" vspace="0">
  vs. <img src="images/usingVergil35.gif" height="21" width="33" border="0" hspace="0" vspace="0">
  for values of <i>t</i> in between <i>startTime</i> and <i>stopTime</i>.
 </p>
@@ -188,14 +188,14 @@
 
 <p>
   <a name="169824"> </a>Create a new model by selecting File-&gt;New-&gt;Graph Editor in the welcome window. You should see something like the window shown in figure <img src="images/usingVergil2.gif" height="421" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#169824">2.9</a>. Ignoring the menus and toolbar for a moment, on the left is a palette of objects that can be dragged onto the page on the right. To begin with, the page on the right is blank. Open the <i>actor library</i> in the palette, and go into the <i>sources</i> library. Find the <i>Const</i> actor under <i>generic sources</i> and drag an instance over onto the blank page. Then go into the <i>sinks </i>library (<i>generic sinks</i> sublibrary) and drag a <i>Display</i> actor onto the page. Each of these actors can be dragged around on the page. However, we would like to connect one to the other. To do this, drag a connection from the output port on the right of the <i>Const </i>actor to the input port of the <i>Display</i> actor. Lastly, open the <i>director library</i> and drag an <i>SDF Director</i> onto the page. The director gives a meaning (semantics) to the graph, but for now we don't have to be concerned about exactly what that is.
+<a href="#169824">2.9</a>. Ignoring the menus and toolbar for a moment, on the left is a palette of objects that can be dragged onto the page on the right. To begin with, the page on the right is blank. Open the <i>actor library</i> in the palette, and go into the <i>sources</i> library. Find the <i>Const</i> actor under <i>generic sources</i> and drag an instance over onto the blank page. Then go into the <i>sinks </i>library (<i>generic sinks</i> sublibrary) and drag a <i>Display</i> actor onto the page. Each of these actors can be dragged around on the page. However, we would like to connect one to the other. To do this, drag a connection from the output port on the right of the <i>Const </i>actor to the input port of the <i>Display</i> actor. Lastly, open the <i>director library</i> and drag an <i>SDF Director</i> onto the page. The director gives a meaning (semantics) to the graph, but for now we don't have to be concerned about exactly what that is.
 </p>
 
 
 <p>
   <a name="165895"> </a>Now you should have something that looks like figure <img src="images/usingVergil5.gif" height="608" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#165895">2.10</a>. The <i>Const</i> actor is going to create our string, and the <i>Display</i> actor is going to print it out for us. We need to take care of one small detail to make it look like figure <a href="usingVergil.html#165895">2.10</a>: we need to tell the <i>Const</i> actor that we want the string "Hello World". To do this we need to edit one of the parameters of the <i>Const</i>. To do this, either double click on the <i>Const</i> actor icon, or right click on the <i>Const</i> actor icon and select "Configure". You should see the dialog box in figure <img src="images/usingVergil14.gif" height="374" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#165895">2.11</a>. Enter the string "Hello World" for the value parameter and click the Commit button. Be sure to include the double quotes, so that the expression is interpreted as a string.
+<a href="#165895">2.10</a>. The <i>Const</i> actor is going to create our string, and the <i>Display</i> actor is going to print it out for us. We need to take care of one small detail to make it look like figure <a href="#165895">2.10</a>: we need to tell the <i>Const</i> actor that we want the string "Hello World". To do this we need to edit one of the parameters of the <i>Const</i>. To do this, either double click on the <i>Const</i> actor icon, or right click on the <i>Const</i> actor icon and select "Configure". You should see the dialog box in figure <img src="images/usingVergil14.gif" height="374" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="#165895">2.11</a>. Enter the string "Hello World" for the value parameter and click the Commit button. Be sure to include the double quotes, so that the expression is interpreted as a string.
 </p>
 
 
@@ -211,7 +211,7 @@
 
 <p>
   <a name="166518"> </a>To run the example, go to the View menu and select the Run Window. If you click the "Go" button, you will see a large number of strings in the display at the right. To stop the execution, click the "Stop" button. To see only one string, change the <i>iterations</i> parameter of the SDF Director to 1, which can be done in the run window, or in the graph editor in the same way you edited the parameter of the <i>Const</i> actor before. The run window is shown in figure <img src="images/usingVergil20.gif" height="239" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#166518">2.12</a>.
+<a href="#166518">2.12</a>.
 </p>
 
 
@@ -227,10 +227,10 @@
   <a name="169954"> </a>First create a model in a new graph editor that includes an <i>SDFDirector</i>, a <i>Ramp</i> actor (found in the <i>sources</i>) library, a <i>Display </i>actor, and a <i>SequencePlotter</i> actor, found in the <i>sinks</i> library, as shown in figure <img src="images/usingVergil31.gif" usemap="#usingVergil31_gif" height="169" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil31_gif">
 
-<area href="usingVergil.html#169954" shape=rect coords="3,136,597,162">
+<area href="#169954" shape=rect coords="3,136,597,162">
 </map>
-<a href="usingVergil.html#169954">2.13</a>. Suppose we wish to route the output of the <i>Ramp</i> to both the <i>Display</i> and the <i>SequencePlotter</i>. If we simply attempt to make the connections, we get the exception shown in figure <img src="images/usingVergil40.gif" height="201" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#169954">2.13</a>. Don't panic! Exceptions are normal and common. The key line in this exception report is the last one, which says
+<a href="#169954">2.13</a>. Suppose we wish to route the output of the <i>Ramp</i> to both the <i>Display</i> and the <i>SequencePlotter</i>. If we simply attempt to make the connections, we get the exception shown in figure <img src="images/usingVergil40.gif" height="201" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="#169954">2.13</a>. Don't panic! Exceptions are normal and common. The key line in this exception report is the last one, which says
 </p>
 
 <pre>
@@ -258,7 +258,7 @@ Object names: .&lt;Unnamed Object&gt;.Ramp.output and .&lt;Unnamed <a name="1699
 
 <p>
   <a name="169983"> </a>So how do we get the output of the <i>Ramp</i> to the other two actors? We need an explicit <i>relation</i> in the diagram. A relation is represented in the diagram by a black diamond, as shown in figure <img src="images/usingVergil56.gif" height="257" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#169983">2.15</a>. It can be created by either control-clicking on the background or by clicking on the button in the toolbar with the black diamond on it.
+<a href="#169983">2.15</a>. It can be created by either control-clicking on the background or by clicking on the button in the toolbar with the black diamond on it.
 </p>
 
 <dl>
@@ -266,7 +266,7 @@ Object names: .&lt;Unnamed Object&gt;.Ramp.output and .&lt;Unnamed <a name="1699
 </dl>
 
 <p>
-  <a name="170023"> </a>In the model shown in figure <a href="usingVergil.html#169983">2.15</a>, the relation is used to broadcast the output from a single port to a number of places. The single port still has only one connection to it, a connection to a relation. Relations can also be used to control the routing of wires in the diagram. However, as of the 3.0 release of Ptolemy II, a connection can only have a single relation on it, so the degree to which routing can be controlled is limited.
+  <a name="170023"> </a>In the model shown in figure <a href="#169983">2.15</a>, the relation is used to broadcast the output from a single port to a number of places. The single port still has only one connection to it, a connection to a relation. Relations can also be used to control the routing of wires in the diagram. However, as of the 3.0 release of Ptolemy II, a connection can only have a single relation on it, so the degree to which routing can be controlled is limited.
 </p>
 
 
@@ -281,7 +281,7 @@ Object names: .&lt;Unnamed Object&gt;.Ramp.output and .&lt;Unnamed <a name="1699
 
 
 <p>
-  <a name="167804"> </a>In the example of figure <a href="usingVergil.html#165895">2.10</a>, the <i>Const</i> actor creates a sequence of values on its output port. The values are encapsulated as <i>tokens</i>, and sent to the <i>Display</i> actor, which consumes them and displays them in the run window.
+  <a name="167804"> </a>In the example of figure <a href="#165895">2.10</a>, the <i>Const</i> actor creates a sequence of values on its output port. The values are encapsulated as <i>tokens</i>, and sent to the <i>Display</i> actor, which consumes them and displays them in the run window.
 </p>
 
 
@@ -297,23 +297,23 @@ Object names: .&lt;Unnamed Object&gt;.Ramp.output and .&lt;Unnamed <a name="1699
 
 <p>
   <a name="168209"> </a>To explore data types a bit further, try creating the model in figure<img src="images/usingVergil11.gif" height="241" width="600" align="center" border="0" hspace="0" vspace="0">
- <a href="usingVergil.html#168209">2.16</a>. The <i>Ramp</i> actor is listed under <i>sources</i>, <i>sequence sources</i>, and the <i>AddSubtract</i> actor is listed under <i>math</i>. Set the <i>value</i> parameter of the constant to be 0 and the <i>iterations</i> parameter of the director to 5. Running the model should result in 5 numbers between 0 and 4, as shown in the figure. These are the values produced by the <i>Ramp</i>, which are having the value of the <i>Const</i> actor subtracted from them. Experiment with changing the value of the <i>Const</i> actor and see how it changes the 5 numbers at the output.
+ <a href="#168209">2.16</a>. The <i>Ramp</i> actor is listed under <i>sources</i>, <i>sequence sources</i>, and the <i>AddSubtract</i> actor is listed under <i>math</i>. Set the <i>value</i> parameter of the constant to be 0 and the <i>iterations</i> parameter of the director to 5. Running the model should result in 5 numbers between 0 and 4, as shown in the figure. These are the values produced by the <i>Ramp</i>, which are having the value of the <i>Const</i> actor subtracted from them. Experiment with changing the value of the <i>Const</i> actor and see how it changes the 5 numbers at the output.
 </p>
 
 
 <p>
   <a name="168231"> </a>Now for the real test: change the value of the <i>Const</i> actor back to "Hello World". When you execute the model, you should see an exception window, as shown in figure <img src="images/usingVergil55.gif" height="265" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168231">2.17</a>. Do not worry; exceptions are a normal part of constructing (and debugging) models. In this case, the exception window is telling you that you have tried to subtract a string value from an integer value, which doesn't make much sense at all (following Java, adding strings <i>is</i> allowed). This is an example of a type error.
+<a href="#168231">2.17</a>. Do not worry; exceptions are a normal part of constructing (and debugging) models. In this case, the exception window is telling you that you have tried to subtract a string value from an integer value, which doesn't make much sense at all (following Java, adding strings <i>is</i> allowed). This is an example of a type error.
 </p>
 
 
 <p>
-  <a name="168136"> </a>Exceptions can be a very useful debugging tool, particularly if you are developing your own components in Java. To illustrate how to use them, click on the Display Stack Trace button in the exception window of figure <a href="usingVergil.html#168231">2.17</a>. You should see the stack trace shown in figure <img src="images/usingVergil17.gif" usemap="#usingVergil17_gif" height="354" width="600" align="center" border="0" hspace="0" vspace="0">
+  <a name="168136"> </a>Exceptions can be a very useful debugging tool, particularly if you are developing your own components in Java. To illustrate how to use them, click on the Display Stack Trace button in the exception window of figure <a href="#168231">2.17</a>. You should see the stack trace shown in figure <img src="images/usingVergil17.gif" usemap="#usingVergil17_gif" height="354" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil17_gif">
 
-<area href="usingVergil.html#168231" shape=rect coords="3,322,597,348">
+<area href="#168231" shape=rect coords="3,322,597,348">
 </map>
-<a href="usingVergil.html#168136">2.18</a>. This window displays the execution sequence that resulted in the exception. For example, the line
+<a href="#168136">2.18</a>. This window displays the execution sequence that resulted in the exception. For example, the line
 </p>
 
 <pre>
@@ -332,7 +332,7 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 <p>
   <a name="168116"> </a>Let's try a small change to the model to get something that does not trigger an exception. Disconnect the <i>Const</i> from the lower port of the <i>AddSubtract</i> actor and connect it instead to the upper port, as shown in figure <img src="images/usingVergil23.gif" height="245" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168116">2.19</a>. You can do this by selecting the connection and deleting it (using the delete key), then adding a new connection, or by selecting it and dragging one of its endpoints to the new location. Notice that the upper port is an unfilled triangle; this indicates that it is a <i>multiport</i>, meaning that you can make more than one connection to it. Now when you run the model you should see strings like "0HelloWorld", as shown in the figure.
+<a href="#168116">2.19</a>. You can do this by selecting the connection and deleting it (using the delete key), then adding a new connection, or by selecting it and dragging one of its endpoints to the new location. Notice that the upper port is an unfilled triangle; this indicates that it is a <i>multiport</i>, meaning that you can make more than one connection to it. Now when you run the model you should see strings like "0HelloWorld", as shown in the figure.
 </p>
 
 
@@ -368,8 +368,8 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 <p>
   <a name="170457"> </a>First open a new graph editor and drag in a <i>Typed Composite Actor</i> from the <i>utilities</i> library. This actor is going to add noise to our measurements. First, using the context menu (obtained by right clicking over the composite actor), select "Customize Name", and give the composite a better name, like "Channel", as shown in figure <img src="images/usingVergil57.gif" height="245" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170457">2.20</a>. Then, using the context menu again, select "Look Inside" on the actor. You should get a blank graph editor, as shown in figure <img src="images/usingVergil61.gif" height="324" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170457">2.21</a>. The original graph editor is still open. To see it, move the new graph editor window by dragging the title bar of the window.
+<a href="#170457">2.20</a>. Then, using the context menu again, select "Look Inside" on the actor. You should get a blank graph editor, as shown in figure <img src="images/usingVergil61.gif" height="324" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="#170457">2.21</a>. The original graph editor is still open. To see it, move the new graph editor window by dragging the title bar of the window.
 </p>
 
 
@@ -380,20 +380,20 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 <p>
   <a name="166651"> </a>First we have to add some ports to the composite actor. There are several ways to do this, but clicking on the port buttons in the toolbar is probably the easiest. You can explore the ports in the toolbar by lingering with the mouse over each button in the toolbar. A tool tip pops up that explains the button. The buttons are summarized in figure <img src="images/usingVergil59.gif" height="217" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#166651">2.22</a>. Create an input port and an output port and rename them <i>input</i> and <i>output </i>right by clicking on the ports and selecting "Customize Name". Note that, as shown in figure <img src="images/usingVergil63.gif" height="217" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#166651">2.23</a>, you can also right click on the background of the composite actor and select <i>Configure Ports</i> to change whether a port is an input, an output, or a multiport. The resulting dialog also allows you to set the type of the port, although much of the time you will not need to do this, since the type inference mechanism in Ptolemy II will figure it out from the connections.
+<a href="#166651">2.22</a>. Create an input port and an output port and rename them <i>input</i> and <i>output </i>right by clicking on the ports and selecting "Customize Name". Note that, as shown in figure <img src="images/usingVergil63.gif" height="217" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="#166651">2.23</a>, you can also right click on the background of the composite actor and select <i>Configure Ports</i> to change whether a port is an input, an output, or a multiport. The resulting dialog also allows you to set the type of the port, although much of the time you will not need to do this, since the type inference mechanism in Ptolemy II will figure it out from the connections.
 </p>
 
 
 <p>
   <a name="168725"> </a>Then using these ports, create the diagram shown in figure <img src="images/usingVergil65.gif" height="174" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168725">2.24</a><a href="#166915"><sup>1</sup></a>. The <i>Gaussian</i> actor creates values from a Gaussian distributed random variable, and is found in the <i>random</i> library. Now if you close this editor and return to the previous one, you should be able to easily create the model shown in figure <img src="images/usingVergil26.gif" height="164" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168725">2.25</a>. The <i>Sinewave</i> actor is listed under <i>sources</i>, and the <i>SequencePlotter</i> actor is found in <i>sinks</i>. Notice that the <i>Sinewave</i> actor is also a hierarchical model, as suggested by its red outline (try looking inside). If you execute this model (you will probably want to set the iterations to something reasonable, like 100), you should see something like figure <img src="images/usingVergil29.gif" usemap="#usingVergil29_gif" height="302" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="#168725">2.24</a><a href="#166915"><sup>1</sup></a>. The <i>Gaussian</i> actor creates values from a Gaussian distributed random variable, and is found in the <i>random</i> library. Now if you close this editor and return to the previous one, you should be able to easily create the model shown in figure <img src="images/usingVergil26.gif" height="164" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="#168725">2.25</a>. The <i>Sinewave</i> actor is listed under <i>sources</i>, and the <i>SequencePlotter</i> actor is found in <i>sinks</i>. Notice that the <i>Sinewave</i> actor is also a hierarchical model, as suggested by its red outline (try looking inside). If you execute this model (you will probably want to set the iterations to something reasonable, like 100), you should see something like figure <img src="images/usingVergil29.gif" usemap="#usingVergil29_gif" height="302" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil29_gif">
 
-<area href="usingVergil.html#168725" shape=rect coords="3,269,597,296">
+<area href="#168725" shape=rect coords="3,269,597,296">
 </map>
-<a href="usingVergil.html#168725">2.26</a>.
+<a href="#168725">2.26</a>.
 </p>
 
 
@@ -402,7 +402,7 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 </h4>
 
 
-<a name="170465"> </a>In the above example, we never needed to define the types of any ports. The types were inferred from the connections. Indeed, this is usually the case in Ptolemy II, but occasionally, you will need to set the types of the ports. Notice in figure <a href="usingVergil.html#166651">2.23</a> that there is a position in the dialog box that configures ports for specifying the type. Thus, to specify that a port has type <i>boolean</i>, you could enter <i>boolean </i>into the dialog box. There are other commonly used types: <i>complex</i>, <i>double</i>, <i>fixedpoint</i>, <i>general</i>, <i>int</i>, <i>long</i>, <i>matrix</i>, <i>object</i>, <i>scalar</i>, <i>string</i>, and <i>unknown</i>. Let's take a more complicated case. How would you specify that the type of a port is a double matrix? Easy:<br>
+<a name="170465"> </a>In the above example, we never needed to define the types of any ports. The types were inferred from the connections. Indeed, this is usually the case in Ptolemy II, but occasionally, you will need to set the types of the ports. Notice in figure <a href="#166651">2.23</a> that there is a position in the dialog box that configures ports for specifying the type. Thus, to specify that a port has type <i>boolean</i>, you could enter <i>boolean </i>into the dialog box. There are other commonly used types: <i>complex</i>, <i>double</i>, <i>fixedpoint</i>, <i>general</i>, <i>int</i>, <i>long</i>, <i>matrix</i>, <i>object</i>, <i>scalar</i>, <i>string</i>, and <i>unknown</i>. Let's take a more complicated case. How would you specify that the type of a port is a double matrix? Easy:<br>
 
 <pre>
 <a name="170539"> </a>
@@ -431,23 +431,23 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 </h3>
 
 
-<a name="168830"> </a>In this section, we will enhance the model in figure <a href="usingVergil.html#168725">2.25</a> in a number of ways.<br>
+<a name="168830"> </a>In this section, we will enhance the model in figure <a href="#168725">2.25</a> in a number of ways.<br>
 
 
 <p>
-  <a name="168893"> </a>First, notice from figure <a href="usingVergil.html#168725">2.26</a> that the noise overwhelms the sinusoid, making it barely visible. A useful channel model would have a parameter that sets the level of the noise. Look inside the channel model, and add a parameter by dragging one in from the <i>utilities</i> library, as shown in figure <img src="images/usingVergil69.gif" height="580" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168893">2.27</a>. Right click on the parameter to change its name to "noisePower". (In order to be able to use this parameter in expressions, the name cannot have any spaces in it.) Also, right click or double click on the parameter to change its default value to 0.1.
+  <a name="168893"> </a>First, notice from figure <a href="#168725">2.26</a> that the noise overwhelms the sinusoid, making it barely visible. A useful channel model would have a parameter that sets the level of the noise. Look inside the channel model, and add a parameter by dragging one in from the <i>utilities</i> library, as shown in figure <img src="images/usingVergil69.gif" height="580" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="#168893">2.27</a>. Right click on the parameter to change its name to "noisePower". (In order to be able to use this parameter in expressions, the name cannot have any spaces in it.) Also, right click or double click on the parameter to change its default value to 0.1.
 </p>
 
 
 <p>
   <a name="168902"> </a>Now we can use this parameter. First, let's use it to set the amount of noise. The <i>Gaussian</i> actor has a parameter called <i>standardDeviation</i>. In this case, the power of the noise is equal to the variance of the Gaussian, not the standard deviation. If you recall from basic statistics, the standard deviation is equal to the square root of the variance. Change the <i>standardDeviation </i>parameter of the <i>Gaussian</i> actor so its value is "sqrt(noisePower)", as shown in figure <img src="images/usingVergil36.gif" height="165" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168902">2.28</a>. This is an expression that references the <i>noisePower</i> parameter. We will explain the expression language in the <a href="../../expressions.htm">next chapter</a>. But first, let check our improved model. Return to the top-level model, and edit the parameters of the <i>Channel</i> actor (by either double clicking or right clicking and selecting "Configure"). Change the noise power from the default 0.1 to 0.01. Run the model. You should now get a relatively clean sinusoid like that shown in figure <img src="images/usingVergil67.gif" usemap="#usingVergil67_gif" height="302" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="#168902">2.28</a>. This is an expression that references the <i>noisePower</i> parameter. We will explain the expression language in the <a href="../../expressions.htm">next chapter</a>. But first, let check our improved model. Return to the top-level model, and edit the parameters of the <i>Channel</i> actor (by either double clicking or right clicking and selecting "Configure"). Change the noise power from the default 0.1 to 0.01. Run the model. You should now get a relatively clean sinusoid like that shown in figure <img src="images/usingVergil67.gif" usemap="#usingVergil67_gif" height="302" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil67_gif">
 
-<area href="usingVergil.html#168725" shape=rect coords="3,269,597,296">
+<area href="#168725" shape=rect coords="3,269,597,296">
 </map>
-<a href="usingVergil.html#168902">2.29</a>.
+<a href="#168902">2.29</a>.
 </p>
 
 
@@ -472,7 +472,7 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 <p>
   <a name="170131"> </a>In addition, it is possible to pan over a model. Consider the window shown in figure <img src="images/usingVergil58.gif" height="674" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170131">2.31</a>. Here, we have zoomed in so that icons are larger than the default. The <i>pan window</i> at the lower left shows the entire model, with a red box showing the visible portion of the model. By clicking and dragging in the pan window, it is easy to navigate around the entire model. Clicking on the "Zoom fit" button in the toolbar results in the editor area showing the entire model, just as the pan window does.
+<a href="#170131">2.31</a>. Here, we have zoomed in so that icons are larger than the default. The <i>pan window</i> at the lower left shows the entire model, with a red box showing the visible portion of the model. By clicking and dragging in the pan window, it is easy to navigate around the entire model. Clicking on the "Zoom fit" button in the toolbar results in the editor area showing the entire model, just as the pan window does.
 </p>
 
 
@@ -511,12 +511,12 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 <p>
   <a name="176791"> </a>One such actor is a spectral estimation actor. figure <img src="images/usingVergil38.gif" height="195" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#176791">2.32</a> shows a system that computes the spectrum of the same noisy sine wave that we constructed in figure <a href="usingVergil.html#168725">2.25</a>. The <i>Spectrum</i> actor has a single parameter, which gives the <i>order</i> of the FFT used to calculate the spectrum. Figure <img src="images/usingVergil42.gif" usemap="#usingVergil42_gif" height="328" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="#176791">2.32</a> shows a system that computes the spectrum of the same noisy sine wave that we constructed in figure <a href="#168725">2.25</a>. The <i>Spectrum</i> actor has a single parameter, which gives the <i>order</i> of the FFT used to calculate the spectrum. Figure <img src="images/usingVergil42.gif" usemap="#usingVergil42_gif" height="328" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil42_gif">
 
-<area href="usingVergil.html#176791" shape=rect coords="3,296,597,322">
+<area href="#176791" shape=rect coords="3,296,597,322">
 </map>
-<a href="usingVergil.html#176791">2.33</a> shows the output of the model with <i>order</i> set to 8 and the number of <i>iterations</i> set to 1. <b>Note that there are 256 output samples output from the </b></font><i>Spectrum</i><b> actor</b></font>. This is because the <i>Spectrum</i> actor requires 2^8, or 256 input samples to fire, and produces 2^8, or 256 output samples when it fires. Thus, one iteration of the model produces 256 samples. The <i>Spectrum</i> actor makes this a <i>multirate</i> model, because the firing rates of the actors are not all identical.
+<a href="#176791">2.33</a> shows the output of the model with <i>order</i> set to 8 and the number of <i>iterations</i> set to 1. <b>Note that there are 256 output samples output from the </b></font><i>Spectrum</i><b> actor</b></font>. This is because the <i>Spectrum</i> actor requires 2^8, or 256 input samples to fire, and produces 2^8, or 256 output samples when it fires. Thus, one iteration of the model produces 256 samples. The <i>Spectrum</i> actor makes this a <i>multirate</i> model, because the firing rates of the actors are not all identical.
 </p>
 
 
@@ -527,7 +527,7 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 <p>
   <a name="170224"> </a>A second subtlety with SDF models is that if there is a feedback loop, as in figure <img src="images/usingVergil62.gif" height="183" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170224">2.34</a>, then the loop must have at least one instance of the <i>SampleDelay</i> actor in it (found in the <i>flow control</i> library). Without this actor, the loop will deadlock. The <i>SampleDelay</i> actor produces initial tokens on its output, before the model begins firing. The initial tokens produced are given by a the <i>initialOutputs</i> parameter, which specifies an array of tokens. These initial tokens enable downstream actors and break the circular dependencies that would result otherwise from a feedback loop.
+<a href="#170224">2.34</a>, then the loop must have at least one instance of the <i>SampleDelay</i> actor in it (found in the <i>flow control</i> library). Without this actor, the loop will deadlock. The <i>SampleDelay</i> actor produces initial tokens on its output, before the model begins firing. The initial tokens produced are given by a the <i>initialOutputs</i> parameter, which specifies an array of tokens. These initial tokens enable downstream actors and break the circular dependencies that would result otherwise from a feedback loop.
 </p>
 
 
@@ -551,12 +551,12 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 <p>
   <a name="170593"> </a>Consider the DE model shown in figure <img src="images/usingVergil64.gif" height="378" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170593">2.35</a>. This model includes a <i>PoissonClock</i> actor, a <i>CurrentTime</i> actor, and a <i>WallClockTime</i> actor, all found in the <i>sources</i> library. The <i>PoissonClock</i> actor generates a sequence of events with random times, where the time between events is exponentially distributed. Such an event sequence is known as a Poisson process. The value of the events produced by the <i>PoissonClock</i> actor is a constant, but the value of that constant is ignored in this model. Instead, these events trigger the <i>CurrentTime</i> and <i>WallClockTime</i> actors. The <i>CurrentTime</i> actor outputs an event with the same time stamp as the input, but whose value is the current model time (equal to the time stamp of the input). The <i>WallClockTime</i> actor an event with the same time stamp as the input, but whose value is the current real time, in seconds since initialization of the model.
+<a href="#170593">2.35</a>. This model includes a <i>PoissonClock</i> actor, a <i>CurrentTime</i> actor, and a <i>WallClockTime</i> actor, all found in the <i>sources</i> library. The <i>PoissonClock</i> actor generates a sequence of events with random times, where the time between events is exponentially distributed. Such an event sequence is known as a Poisson process. The value of the events produced by the <i>PoissonClock</i> actor is a constant, but the value of that constant is ignored in this model. Instead, these events trigger the <i>CurrentTime</i> and <i>WallClockTime</i> actors. The <i>CurrentTime</i> actor outputs an event with the same time stamp as the input, but whose value is the current model time (equal to the time stamp of the input). The <i>WallClockTime</i> actor an event with the same time stamp as the input, but whose value is the current real time, in seconds since initialization of the model.
 </p>
 
 
 <p>
-  <a name="170654"> </a>The plot in figure <a href="usingVergil.html#170593">2.35</a> shows an execution. Note that model time has advanced approximately 10 seconds, but real time has advanced almost not at all. In this model, model time advances much more rapidly than real time. If you build this model, and set the <i>synchronizeToRealTime</i> parameter of the director to true, then you will find that the two plots coincide almost perfectly.
+  <a name="170654"> </a>The plot in figure <a href="#170593">2.35</a> shows an execution. Note that model time has advanced approximately 10 seconds, but real time has advanced almost not at all. In this model, model time advances much more rapidly than real time. If you build this model, and set the <i>synchronizeToRealTime</i> parameter of the director to true, then you will find that the two plots coincide almost perfectly.
 </p>
 
 
@@ -567,7 +567,7 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 <p>
   <a name="170730"> </a>Consider the model shown in figure <img src="images/usingVergil66.gif" height="365" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170730">2.36</a>, which produces a histogram of the interarrival times of events from the <i>PoissonClock</i> actor. In this model, we calculate the difference between the current event time and the previous event time, resulting in the plot that is shown in the figure. The <i>Previous </i>actor is a <i>zero-delay</i> actor, meaning that it produces an output with the same time stamp as the input (except on the first firing, where in this case it produces no output). Thus, when the <i>PoissonClock </i>actor produces an output, there will be two simultaneous events, one at the input to the <i>plus</i> port of the <i>AddSubtract</i> actor, and one at the input of the <i>Previous</i> actor. Should the director fire the <i>AddSubtract </i>actor or the <i>Previous</i> actor? Either seems OK if it is to respect chronological order, but it seems intuitive that the <i>Previous</i> actor should be fired first.
+<a href="#170730">2.36</a>, which produces a histogram of the interarrival times of events from the <i>PoissonClock</i> actor. In this model, we calculate the difference between the current event time and the previous event time, resulting in the plot that is shown in the figure. The <i>Previous </i>actor is a <i>zero-delay</i> actor, meaning that it produces an output with the same time stamp as the input (except on the first firing, where in this case it produces no output). Thus, when the <i>PoissonClock </i>actor produces an output, there will be two simultaneous events, one at the input to the <i>plus</i> port of the <i>AddSubtract</i> actor, and one at the input of the <i>Previous</i> actor. Should the director fire the <i>AddSubtract </i>actor or the <i>Previous</i> actor? Either seems OK if it is to respect chronological order, but it seems intuitive that the <i>Previous</i> actor should be fired first.
 </p>
 
 
@@ -577,7 +577,7 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 
 <p>
-  <a name="170953"> </a>How does the director deliver on the intuition that the <i>Previous</i> actor should be fired first? Before executing the model, the DE director constructs a <i>topological sort</i> of the model. A topological sort is simply a list of the actors in data-precedence order. For the model in figure <a href="usingVergil.html#170730">2.36</a>, there is only one allowable topological sort:
+  <a name="170953"> </a>How does the director deliver on the intuition that the <i>Previous</i> actor should be fired first? Before executing the model, the DE director constructs a <i>topological sort</i> of the model. A topological sort is simply a list of the actors in data-precedence order. For the model in figure <a href="#170730">2.36</a>, there is only one allowable topological sort:
 </p>
 
 
@@ -594,7 +594,7 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 <p>
   <a name="170882"> </a>There remains one key subtlety. If the model has a directed loop, then a topological sort is not possible. In the DE domain, every feedback loop is required to have at least one actor in it that introduces a time delay, such as the <i>TimedDelay</i> actor, which can be found in the <i>domain specific</i> library under <i>discrete-event</i> (this library is shown on the left in figure <img src="images/usingVergil68.gif" height="777" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#170882">2.37</a>). Consider for example the model shown in figure <a href="usingVergil.html#170882">2.37</a>. That model has a <i>Clock</i> actor, which is set to produce events every 1.0 time units. Those events trigger the <i>Ramp</i> actor, which produces outputs that start at 0 and increase by 1 on each firing. In this model, the output of the <i>Ramp</i> goes into an <i>AddSubtract</i> actor, which subtracts from the <i>Ramp</i> output its own prior output delayed by one time unit. The result is shown in the plot in the figure.
+<a href="#170882">2.37</a>). Consider for example the model shown in figure <a href="#170882">2.37</a>. That model has a <i>Clock</i> actor, which is set to produce events every 1.0 time units. Those events trigger the <i>Ramp</i> actor, which produces outputs that start at 0 and increase by 1 on each firing. In this model, the output of the <i>Ramp</i> goes into an <i>AddSubtract</i> actor, which subtracts from the <i>Ramp</i> output its own prior output delayed by one time unit. The result is shown in the plot in the figure.
 </p>
 
 
@@ -608,7 +608,7 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 </h4>
 
 
-<a name="171090"> </a>The continuous-time domain (CT) is another relatively mature domain with semantics considerably different from either DE or SDF. In CT, the signals sent along connections between actors are usually continuous-time signals. A CT example is described above in section <a href="usingVergil.html#175805">2.2.3</a>.<br>
+<a name="171090"> </a>The continuous-time domain (CT) is another relatively mature domain with semantics considerably different from either DE or SDF. In CT, the signals sent along connections between actors are usually continuous-time signals. A CT example is described above in section <a href="#175805">2.2.3</a>.<br>
 
 
 <p>
@@ -622,7 +622,7 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 
 <p>
-  <a name="176103"> </a>Hybrid systems are models that combine continuous dynamics with discrete mode changes. They are created in Ptolemy II by creating a <i>modal model</i>, found in the <i>utilities</i> library. We start by examining a pre-built modal model, and conclude by illustrating how to construct one. Modal models can be constructed with other domains besides CT, but this section will concentrate on CT. Feel free to examine other examples of modal models given in the quick tour, figure <a href="usingVergil.html#165846">2.3</a>.
+  <a name="176103"> </a>Hybrid systems are models that combine continuous dynamics with discrete mode changes. They are created in Ptolemy II by creating a <i>modal model</i>, found in the <i>utilities</i> library. We start by examining a pre-built modal model, and conclude by illustrating how to construct one. Modal models can be constructed with other domains besides CT, but this section will concentrate on CT. Feel free to examine other examples of modal models given in the quick tour, figure <a href="#165846">2.3</a>.
 </p>
 
 
@@ -631,29 +631,29 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 </h4>
 
 
-<a name="176111"> </a>Consider the bouncing ball example, which can be found under "Hybrid Systems" in figure <a href="usingVergil.html#165846">2.3</a>. The top-level contents of this model is shown in figure <img src="images/usingVergil50.gif" height="465" width="934" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#176111">2.38</a>. It contains only two actors, a <i>Ball Model</i> and a <i>TimedPlotter</i>. The <i>Ball Model </i>is an instance of the <i>modal model</i> found in the <i>utilities</i> library, but renamed. If you execute the model, you should see a plot like that in the figure. The continuous dynamics correspond to the times when the ball is in the air, and the discrete events correspond to the times when the ball hits the surface and bounces.<br>
+<a name="176111"> </a>Consider the bouncing ball example, which can be found under "Hybrid Systems" in figure <a href="#165846">2.3</a>. The top-level contents of this model is shown in figure <img src="images/usingVergil50.gif" height="465" width="934" align="center" border="0" hspace="0" vspace="0">
+<a href="#176111">2.38</a>. It contains only two actors, a <i>Ball Model</i> and a <i>TimedPlotter</i>. The <i>Ball Model </i>is an instance of the <i>modal model</i> found in the <i>utilities</i> library, but renamed. If you execute the model, you should see a plot like that in the figure. The continuous dynamics correspond to the times when the ball is in the air, and the discrete events correspond to the times when the ball hits the surface and bounces.<br>
 
 
 <p>
   <a name="176143"> </a>If you look inside the <i>Ball Model</i>, you will see something like figure <img src="images/usingVergil37.gif" usemap="#usingVergil37_gif" height="550" width="937" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil37_gif">
 
-<area href="usingVergil.html#176111" shape=rect coords="4,509,926,544">
+<area href="#176111" shape=rect coords="4,509,926,544">
 </map>
-<a href="usingVergil.html#176143">2.39</a>. Figure <a href="usingVergil.html#176143">2.39</a> shows a state-machine editor, which has a slightly different toolbar and a significantly different library at the left. The circles in figure <a href="usingVergil.html#176143">2.39</a> are states, and the arcs between circles are <i>transitions </i>between states. A modal model is one that has <i>modes</i>, which represent regimes of operation. Each mode in a modal model is represented by a state in a finite-state machine.
+<a href="#176143">2.39</a>. Figure <a href="#176143">2.39</a> shows a state-machine editor, which has a slightly different toolbar and a significantly different library at the left. The circles in figure <a href="#176143">2.39</a> are states, and the arcs between circles are <i>transitions </i>between states. A modal model is one that has <i>modes</i>, which represent regimes of operation. Each mode in a modal model is represented by a state in a finite-state machine.
 </p>
 
 
 <p>
-  <a name="176154"> </a>The state machine in figure <a href="usingVergil.html#176143">2.39</a> has three states, named <i>init</i>, <i>free</i>, and <i>stop</i>. The <i>init</i> state is the initial state, which is set as shown in figure <img src="images/usingVergil39.gif" height="513" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#176154">2.40</a>. The <i>free</i> state represents the mode of operation where the ball is in free fall, and the <i>stop</i> state represents the mode where the ball has stopped bouncing.
+  <a name="176154"> </a>The state machine in figure <a href="#176143">2.39</a> has three states, named <i>init</i>, <i>free</i>, and <i>stop</i>. The <i>init</i> state is the initial state, which is set as shown in figure <img src="images/usingVergil39.gif" height="513" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="#176154">2.40</a>. The <i>free</i> state represents the mode of operation where the ball is in free fall, and the <i>stop</i> state represents the mode where the ball has stopped bouncing.
 </p>
 
 
 <p>
   <a name="176166"> </a>At any time during the execution of the model, the modal model is in one of these three states. When the model begins executing, it is in the <i>init</i> state. During the time a modal model is in a state, the behavior of the modal model is specified by the <i>refinement</i> of the state. The refinement can be examined by looking inside the state. As shown in figure <img src="images/usingVergil41.gif" height="248" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#176166">2.41</a>, the <i>init</i> state has no refinement. 
+<a href="#176166">2.41</a>, the <i>init</i> state has no refinement. 
 </p>
 
 
@@ -673,18 +673,18 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17618
 
 <p>
   <a name="176202"> </a>If you look inside the <i>free</i> state, you will see the refinement shown in figure <img src="images/usingVergil43.gif" height="300" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#176202">2.42</a>. This model represents the laws of gravity, which state that an object of any mass will have an acceleration of roughly <img src="images/usingVergil45.gif" height="18" width="26" border="0" hspace="0" vspace="0">
+<a href="#176202">2.42</a>. This model represents the laws of gravity, which state that an object of any mass will have an acceleration of roughly <img src="images/usingVergil45.gif" height="18" width="26" border="0" hspace="0" vspace="0">
  meters/second2 (roughly). The acceleration is integrated to get the velocity. which is, in turn, integrated to get the vertical position.
 </p>
 
 
 <p>
-  <a name="176211"> </a>In figure <a href="usingVergil.html#176202">2.42</a>, a <i>ZeroCrossingDetector</i> actor is used to detect when the vertical position of the ball is zero. This results in production of an event on the (discrete) output <i>bump</i>. Examining figure <a href="usingVergil.html#176143">2.39</a>, you can see that this event triggers a state transition back to the same <i>free</i> state, but where the <i>initialVelocity</i> parameter is changed to reverse the sign and attenuate it by the <i>elasticity</i>. This results in the ball bouncing, and losing energy, as shown by the plot in figure <a href="usingVergil.html#176111">2.38</a>.
+  <a name="176211"> </a>In figure <a href="#176202">2.42</a>, a <i>ZeroCrossingDetector</i> actor is used to detect when the vertical position of the ball is zero. This results in production of an event on the (discrete) output <i>bump</i>. Examining figure <a href="#176143">2.39</a>, you can see that this event triggers a state transition back to the same <i>free</i> state, but where the <i>initialVelocity</i> parameter is changed to reverse the sign and attenuate it by the <i>elasticity</i>. This results in the ball bouncing, and losing energy, as shown by the plot in figure <a href="#176111">2.38</a>.
 </p>
 
 
 <p>
-  <a name="176221"> </a>As you can see from figure <a href="usingVergil.html#176143">2.39</a>, when the position and velocity of the ball drop below a specified threshold, the state machine transitions to the state <i>stop</i>, which has no refinement. This results in the model producing no further output.
+  <a name="176221"> </a>As you can see from figure <a href="#176143">2.39</a>, when the position and velocity of the ball drop below a specified threshold, the state machine transitions to the state <i>stop</i>, which has no refinement. This results in the model producing no further output.
 </p>
 
 
@@ -694,8 +694,8 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17618
 
 
 <p>
-  <a name="176229"> </a>The bouncing ball model of figures <a href="usingVergil.html#176111">2.38</a> and <a href="usingVergil.html#176143">2.39</a> illustrates an interesting property of hybrid system modeling. The <i>stop</i> state, it turns out, is essential. Without it, the time between bounces keeps decreasing, as does the magnitude of each bounce. At some point, these numbers get smaller than the representable precision, and large errors start to occur. If you remove the <i>stop</i> state from the FSM, and re-run the model, you get the result shown in figure <img src="images/usingVergil47.gif" height="372" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#176229">2.43</a>. The ball, in effect, falls through the surface on which it is bouncing and then goes into a free-fall in the space below.
+  <a name="176229"> </a>The bouncing ball model of figures <a href="#176111">2.38</a> and <a href="#176143">2.39</a> illustrates an interesting property of hybrid system modeling. The <i>stop</i> state, it turns out, is essential. Without it, the time between bounces keeps decreasing, as does the magnitude of each bounce. At some point, these numbers get smaller than the representable precision, and large errors start to occur. If you remove the <i>stop</i> state from the FSM, and re-run the model, you get the result shown in figure <img src="images/usingVergil47.gif" height="372" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="#176229">2.43</a>. The ball, in effect, falls through the surface on which it is bouncing and then goes into a free-fall in the space below.
 </p>
 
 
@@ -720,13 +720,13 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17618
 
 
 <p>
-  <a name="176245"> </a>A modal model is a component in a larger continuous-time (or other kind of) model. You can create a modal model by dragging one in from the <i>utilities</i> library. By default, it has no ports. To make it useful, you will need to add ports. The mechanism for doing that is identical to adding ports to a composite model, and is explained in section <a href="usingVergil.html#170461">2.4.2</a>. Figure <a href="usingVergil.html#176111">2.38</a> shows a top-level continuous-time model with a single modal model that has been renamed <i>Ball Model</i>. Three output ports have been added to that modal model, but only the top one is used. It gives the vertical distance of the ball from the surface on which it bounces.
+  <a name="176245"> </a>A modal model is a component in a larger continuous-time (or other kind of) model. You can create a modal model by dragging one in from the <i>utilities</i> library. By default, it has no ports. To make it useful, you will need to add ports. The mechanism for doing that is identical to adding ports to a composite model, and is explained in section <a href="#170461">2.4.2</a>. Figure <a href="#176111">2.38</a> shows a top-level continuous-time model with a single modal model that has been renamed <i>Ball Model</i>. Three output ports have been added to that modal model, but only the top one is used. It gives the vertical distance of the ball from the surface on which it bounces.
 </p>
 
 
 <p>
   <a name="176252"> </a>If you create a new modal model by dragging it in from the <i>utilities</i> library, create an output port and name it <i>output</i>, and then look inside, you will get an FSM editor like that shown in figure <img src="images/usingVergil49.gif" height="575" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#176252">2.44</a>. Note that the output port is (regrettably) located at the upper left, and is only partially visible. The annotation text suggests delete once you no longer need it. You may want to move the port to a more reasonable location (where it is visible).
+<a href="#176252">2.44</a>. Note that the output port is (regrettably) located at the upper left, and is only partially visible. The annotation text suggests delete once you no longer need it. You may want to move the port to a more reasonable location (where it is visible).
 </p>
 
 
@@ -736,7 +736,7 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17618
 
 
 <p>
-  <a name="176273"> </a>To create a finite-state machine like that in figure <a href="usingVergil.html#176143">2.39</a>, drag in states (white circles), or click on the state icon in the toolbar. You can rename these states by right clicking on them and selecting "Customize Name". Choose names that are pertinent to your application. In figure <a href="usingVergil.html#176143">2.39</a>, there is an <i>init</i> state for initialization, a <i>free</i> state for when the ball is in the air, and a <i>stop</i> state for when the ball is no longer bouncing. You must specify the initial state of the FSM by right clicking on the background of the FSM Editor, selecting "Edit Parameters", and specifying an initial state name, as shown in figure <a href="usingVergil.html#176154">2.40</a>. In that figure, the initial state is named <i>init</i>.
+  <a name="176273"> </a>To create a finite-state machine like that in figure <a href="#176143">2.39</a>, drag in states (white circles), or click on the state icon in the toolbar. You can rename these states by right clicking on them and selecting "Customize Name". Choose names that are pertinent to your application. In figure <a href="#176143">2.39</a>, there is an <i>init</i> state for initialization, a <i>free</i> state for when the ball is in the air, and a <i>stop</i> state for when the ball is no longer bouncing. You must specify the initial state of the FSM by right clicking on the background of the FSM Editor, selecting "Edit Parameters", and specifying an initial state name, as shown in figure <a href="#176154">2.40</a>. In that figure, the initial state is named <i>init</i>.
 </p>
 
 
@@ -749,9 +749,9 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17618
   <a name="176282"> </a>To create transitions, you must hold the control button on the keyboard while clicking and dragging from one state to the next (a transition can also go back to the same state). The handles on the transition can be used to customize its curvature and orientation. Double clicking on the transition (or right clicking and selecting "Configure") allows you to configure the transition. The dialog for the transition from <i>init</i> to <i>free </i>is shown in figure <img src="images/usingVergil52.gif" usemap="#usingVergil52_gif" height="207" width="598" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil52_gif">
 
-<area href="usingVergil.html#176143" shape=rect coords="3,182,593,204">
+<area href="#176143" shape=rect coords="3,182,593,204">
 </map>
-<a href="usingVergil.html#176282">2.45</a>. In that dialog, we see the following:
+<a href="#176282">2.45</a>. In that dialog, we see the following:
 </p>
 
 
@@ -788,7 +788,7 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17630
 
 <p>
   <a name="176312"> </a>Both states and transitions can have <i>refinements. </i>To create a refinement, right click on the state or transition, and select "Add Refinement." You will see a dialog like that in figure <img src="images/usingVergil54.gif" height="295" width="598" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#176312">2.46</a>. As shown in the figure, you will be offered the alternatives of a "Default Refinement" or a "State Machine Refinement." The first of these provides a block diagram model as the refinement. The second provides another finite state machine as the refinement. In the former case (the default), a blank refinement model will open, as shown in the figure. As before, the output port will appear in an inconvenient location. You will almost certainly want to move it to a more convenient location. You will have to create a director in the refinement. The modal model will not operate without a director in the refinement.
+<a href="#176312">2.46</a>. As shown in the figure, you will be offered the alternatives of a "Default Refinement" or a "State Machine Refinement." The first of these provides a block diagram model as the refinement. The second provides another finite state machine as the refinement. In the former case (the default), a blank refinement model will open, as shown in the figure. As before, the output port will appear in an inconvenient location. You will almost certainly want to move it to a more convenient location. You will have to create a director in the refinement. The modal model will not operate without a director in the refinement.
 </p>
 
 
@@ -798,7 +798,7 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17630
 
 
 <p>
-  <a name="176336"> </a>Once you have created a refinement, you can look inside a state or transition. For the bouncing ball example, the refinement of the <i>free</i> state is shown in figure <a href="usingVergil.html#176202">2.42</a>. This model exhibits certain key properties of refinements:
+  <a name="176336"> </a>Once you have created a refinement, you can look inside a state or transition. For the bouncing ball example, the refinement of the <i>free</i> state is shown in figure <a href="#176202">2.42</a>. This model exhibits certain key properties of refinements:
 </p>
 
 
@@ -838,27 +838,27 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17630
 </h3>
 
 
-<a name="166744"> </a>Several of the plots shown above have flaws that can be fixed using the features of the plotter. For instance, the plot shown in figure <a href="usingVergil.html#176791">2.33</a> has the default (uninformative) title, the axes are not labeled, and the horizontal axis ranges from 0 to 255<a href="#166823"><sup>2</sup></a>, because in one iteration, the <i>Spectrum</i> actor produces 256 output tokens. These outputs represent frequency bins that range between <img src="images/usingVergil44.gif" height="18" width="19" border="0" hspace="0" vspace="0">
+<a name="166744"> </a>Several of the plots shown above have flaws that can be fixed using the features of the plotter. For instance, the plot shown in figure <a href="#176791">2.33</a> has the default (uninformative) title, the axes are not labeled, and the horizontal axis ranges from 0 to 255<a href="#166823"><sup>2</sup></a>, because in one iteration, the <i>Spectrum</i> actor produces 256 output tokens. These outputs represent frequency bins that range between <img src="images/usingVergil44.gif" height="18" width="19" border="0" hspace="0" vspace="0">
  and <img src="images/usingVergil46.gif" height="18" width="12" border="0" hspace="0" vspace="0">
  radians per second.<br>
 
 
 <p>
   <a name="171948"> </a>The <i>SequencePlotter</i> actor has some pertinent parameters, shown in figure <img src="images/usingVergil48.gif" height="140" width="598" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#171948">2.47</a>.
+<a href="#171948">2.47</a>.
 <br>
  The <i>xInit</i> parameter specifies the value to use on the horizontal axis for the first token. The <i>xUnit</i> parameter specifies the value to increment this by for each subsequent token. Setting these to "-PI" and "PI/128" respectively results in the plot shown in figure <img src="images/usingVergil51.gif" height="261" width="598" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#171948">2.48</a>.
+<a href="#171948">2.48</a>.
 </p>
 
 
 <p>
   <a name="171960"> </a>This plot is better, but still missing useful information. To control more precisely the visual appearance of the plot, click on the second button from the right in the row of buttons at the top right of the plot. This button brings up a format control window. It is shown in figure <img src="images/usingVergil53.gif" height="248" width="594" align="center" border="0" hspace="0" vspace="0">
 
-<a href="usingVergil.html#171960">2.49</a>,
+<a href="#171960">2.49</a>,
 <br>
  filled in with values that result in the plot shown in figure <img src="images/usingVergil70.gif" height="282" width="599" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#171960">2.50</a>.
+<a href="#171960">2.50</a>.
 <br> Most of these are self-explanatory, but the following pointers may be useful:
 </p>
 
