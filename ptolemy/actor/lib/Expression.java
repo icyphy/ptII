@@ -24,8 +24,8 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+   @ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @AcceptedRating Green (neuendor@eecs.berkeley.edu)
  */
 
 package ptolemy.actor.lib;
@@ -67,7 +67,7 @@ import java.util.LinkedList;
 /**
    On each firing, evaluate an expression that may include references
    to the inputs, current time, and a count of the firing.  The ports are
-   referenced by the variables that have the same name as the port.
+   referenced by the identifiers that have the same name as the port.
    To use this class, instantiate it, then add ports (instances of TypedIOPort).
    In vergil, you can add ports by right clicking on the icon and selecting
    "Configure Ports".  In MoML you can add ports by just including ports
@@ -80,42 +80,47 @@ import java.util.LinkedList;
    &lt;/port&gt;
    &lt;/entity&gt;
    </pre>
-   <p>
-   The type is polymorphic, with the only constraint that the
-   types of the inputs must all be less than (in the type order)
-   the type of the output.  What this means (loosely) is that
-   the types of the input tokens can be converted losslessly into
-   tokens with the type of the output.
-   <p>
-   The <i>expression</i> parameter specifies an expression that can
-   refer to the inputs by name.  By default, the expression
-   is empty, and attempting
-   to execute the actor without setting it triggers an exception.
-   <p>
-   The expression language understood by this actor is the same as
-   <a href="../../../../expressions.htm">that used to set any parameter value</a>,
-   with the exception that
-   the expressions evaluated by this actor can refer to the values
-   of inputs, and to the current
-   time by the variable name "time", and to the current iteration count
-   by the variable named "iteration."
-   <p>
-   This actor can be used instead of many of the arithmetic actors,
-   such as AddSubtract, MultiplyDivide, and TrigFunction.  However, those actors
-   will be usually be more efficient, and sometimes more convenient to use.
-   <p>
-   NOTE: There are a number of limitations in the current implementation.
-   First, the type constraints on the ports are the default, that input
-   ports must have type that be losslessly converted to the type of the
-   output.  The type constraints have nothing to do with the expression.
-   This is a severe limitation, but removing it depends on certain
-   extensions to the Ptolemy II type system which are in progress.
-   Second, multiports are not supported. Also, if name duplications occur,
-   for example if a parameter and a port have the same name, then
-   the results are unpredictable.  They will depend on the order
-   in which things are defined, which may not be the same in the
-   constructor as in the clone method.  This class attempts to
-   detect name duplications and throw an exception.
+
+   <p> The type is polymorphic, with the only constraint that the
+   types of the inputs must all be less than (in the type order) the
+   type of the output.  What this means (loosely) is that the types of
+   the input tokens can be converted losslessly into tokens with the
+   type of the output.  If this is not the case, then the types of the
+   output ports must be set manually.
+  
+   <p> The <i>expression</i> parameter specifies an expression that
+   can refer to the inputs by name.  By default, the expression is
+   empty, and attempting to execute the actor without setting it
+   triggers an exception.
+   
+   <p> The expression language understood by this actor is the same as
+   <a href="../../../../expressions.htm">that used to set any
+   parameter value</a>, with the exception that the expressions
+   evaluated by this actor can refer to the values of inputs, and to
+   the current time by the identifier name "time", and to the current
+   iteration count by the identifier named "iteration."
+  
+   <p> This actor can be used instead of many of the arithmetic actors,
+   such as AddSubtract, MultiplyDivide, and TrigFunction.  However,
+   those actors will be usually be more efficient, and sometimes more
+   convenient to use.
+   
+   <p> This actor requires its all of its inputs to be present.  If
+   inputs are not all present, then an exception will be thrown.
+
+   <p> NOTE: There are a number of limitations in the current
+   implementation.  First, the type constraints on the ports are the
+   default, that input ports must have a type that can be losslessly
+   converted to the type of the output.  The type constraints have
+   nothing to do with the expression.  This is a severe limitation,
+   but removing it depends on certain extensions to the Ptolemy II
+   type system which are in progress.  Second, multiports are not
+   supported. Also, if name duplications occur, for example if a
+   parameter and a port have the same name, then the results are
+   unpredictable.  They will depend on the order in which things are
+   defined, which may not be the same in the constructor as in the
+   clone method.  This class attempts to detect name duplications and
+   throw an exception.
 
    @author Xiaojun Liu, Edward A. Lee, Steve Neuendorffer
    @version $Id$
@@ -148,9 +153,7 @@ public class Expression extends TypedAtomicActor {
     /** The output port. */
     public TypedIOPort output;
 
-    /** The parameter that is evaluated to produce the output.
-     *  Typically, this parameter evaluates an expression involving
-     *  the inputs.
+    /** The expression that is evaluated to produce the output.
      */
     public StringAttribute expression;
 
@@ -180,11 +183,11 @@ public class Expression extends TypedAtomicActor {
             throws CloneNotSupportedException {
         Expression newObject = (Expression)super.clone(workspace);
         newObject._iterationCount = 1;
-        newObject._tokenMap = null;
         newObject._parseTree = null;
         newObject._parseTreeEvaluator = null;
         newObject._scope = null;
         newObject._setOutputTypeConstraint();
+        newObject._tokenMap = null;
         return newObject;
     }
 
@@ -211,7 +214,12 @@ public class Expression extends TypedAtomicActor {
         }
         Token result;
         try {
+            // Note: this code parallels code in the OutputTypeFunction class
+            // below.
             if (_parseTree == null) {
+                // Note that the parser is NOT retained, since in most
+                // cases the expression doesn't change, and the parser
+                // requires a large amount of memory.
                 PtParser parser = new PtParser();
                 _parseTree = parser.generateParseTree(
                         expression.getExpression());
@@ -254,6 +262,24 @@ public class Expression extends TypedAtomicActor {
         // This actor never requests termination.
         return true;
     }
+    
+    /** Prefire this actor.  Return false if an input port has no
+     *  data, otherwise return true.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        Iterator inputPorts = inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort port = (IOPort)(inputPorts.next());
+            // FIXME: Handle multiports
+            if (port.getWidth() > 0) {
+                if (!port.hasToken(0)) {
+                    return false;
+                }
+            }
+        }
+        return super.prefire();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
@@ -262,7 +288,7 @@ public class Expression extends TypedAtomicActor {
     // this actor, and return it.  If there is no such
     // variable, then return null.
     private Variable _findVariable(String name) {
-        NamedObj container = (NamedObj)Expression.this;
+        NamedObj container = (NamedObj)this;
         while (container != null) {
             Variable result = _searchIn(container, name);
             if (result != null) {
@@ -379,7 +405,12 @@ public class Expression extends TypedAtomicActor {
          */
         public Object getValue() {
             try {
+                // Note: This code is similar to the token evaluation
+                // code above.
                 if (_parseTree == null) {
+                    // Note that the parser is NOT retained, since in most
+                    // cases the expression doesn't change, and the parser
+                    // requires a large amount of memory.
                     PtParser parser = new PtParser();
                     _parseTree = parser.generateParseTree(
                             expression.getExpression());
@@ -497,8 +528,8 @@ public class Expression extends TypedAtomicActor {
     ////                         private variables                 ////
 
     private int _iterationCount = 1;
-    private ParseTreeEvaluator _parseTreeEvaluator = null;
     private ASTPtRootNode _parseTree = null;
-    private VariableScope _scope = new VariableScope();
+    private ParseTreeEvaluator _parseTreeEvaluator = null;
+    private VariableScope _scope = null;
     private Map _tokenMap;
 }
