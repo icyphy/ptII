@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This script was automatically generated using Zero G's InstallAnywhere 5.0.7 Enterprise, Build 1680
      STATUS: Fully Functional LICENSED Edition
-     DATE:   Fri May 09 08:06:15 PDT 2003 -->
+     DATE:   Mon May 12 23:41:00 PDT 2003 -->
 <InstallAnywhere_Deployment_Project increments="4652">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
@@ -10,7 +10,7 @@
 		<scriptID>12,42,11,90,88,55,55,51,52,53,56,75,82,69,70,88</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,88,80,44,32,53,46,49,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,52,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,85,83,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,-16,3,117,64,112,80,112,114,103,83,98,113,97,113,81,49,67,90,65,74,77,72,68,64,69,66,69,48,63,87,5,2,3,1,-91,109,5,0,0,0</authorizationID>
+		<authorizationID>1,0,0,-16,35,69,16,-64,80,112,114,103,83,98,113,97,113,81,49,67,90,65,74,77,72,68,64,69,66,69,48,63,87,5,2,13,14,-96,96,5,0,0,0</authorizationID>
 	</essentialScriptInfo>
 	<installationObjects uniqueObjects="280">
 		<object class="com.zerog.ia.installer.Installer" objectID="a3d1e30197df">
@@ -166,7 +166,7 @@ it will search for ones in this list]]></string>
 								</object>
 							</method>
 							<method name="addElement">
-								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="20f4738aa090">
+								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="32756ebea08f">
 									<property name="propertyValue">
 										<string><![CDATA[ptolemy.actor.gui.jnlp.FullApplication]]></string>
 									</property>
@@ -356,7 +356,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[doc.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>10185</long>
+								<long>10190</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -384,7 +384,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[demo.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>166630</long>
+								<long>170224</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -440,7 +440,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[demo.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>25695</long>
+								<long>25730</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -636,7 +636,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[demo.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>44919</long>
+								<long>46605</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -776,7 +776,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[docConfig.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>242947</long>
+								<long>243049</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -832,7 +832,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[vergil.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>369826</long>
+								<long>369741</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -1000,7 +1000,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[ptsupport.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>1667357</long>
+								<long>1671652</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -1336,7 +1336,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[demo.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>8962</long>
+								<long>8964</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -1392,7 +1392,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[doc.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>4388</long>
+								<long>4367</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -1700,7 +1700,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[comm.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>9484</long>
+								<long>9554</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -1756,7 +1756,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[jni.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>245773</long>
+								<long>245811</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -2372,7 +2372,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[Fri May 09 08:06:15 PDT 2003]]></string>
+						<string><![CDATA[Mon May 12 23:41:00 PDT 2003]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -2392,7 +2392,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.unix.novm]]></string>
-						<string><![CDATA[false]]></string>
+						<string><![CDATA[true]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.cdrom]]></string>
@@ -2408,7 +2408,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
-						<string><![CDATA[Fri May 09 08:06:15 PDT 2003]]></string>
+						<string><![CDATA[Mon May 12 23:33:04 PDT 2003]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>
@@ -2432,7 +2432,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.linux.novm]]></string>
-						<string><![CDATA[false]]></string>
+						<string><![CDATA[true]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.platform.macosx.authentication.gui]]></string>
@@ -2460,7 +2460,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.macosx.novm]]></string>
-						<string><![CDATA[false]]></string>
+						<string><![CDATA[true]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.output.cdrom]]></string>
@@ -3174,7 +3174,7 @@ it will search for ones in this list]]></string>
 																</object>
 															</method>
 															<method name="addElement">
-																<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="20f47467a0be">
+																<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="32756f90a0be">
 																	<property name="propertyValue">
 																		<string><![CDATA[ptolemy.actor.gui.BrowserLauncher]]></string>
 																	</property>
@@ -3308,7 +3308,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[design]]></string>
 													</property>
 													<property name="removeRecursively">
-														<boolean>false</boolean>
+														<boolean>true</boolean>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -4963,7 +4963,7 @@ it will search for ones in this list]]></string>
 																		</object>
 																	</method>
 																	<method name="addElement">
-																		<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="20f47498a0e2">
+																		<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="32756fcba0e2">
 																			<property name="propertyValue">
 																				<string><![CDATA[ptolemy.actor.gui.jnlp.HyVisualApplication]]></string>
 																			</property>
@@ -5927,7 +5927,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="20f474b7a0f6">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="32756fe9a0f6">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.plot.plotml.EditablePlotMLApplication]]></string>
 															</property>
@@ -6135,7 +6135,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="20f474c0a0ff">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="32756ffea0fd">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.plot.plotml.HistogramMLApplication]]></string>
 															</property>
@@ -6426,7 +6426,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="20f474d4a107">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="32757011a106">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.actor.gui.jnlp.PtinyApplication]]></string>
 															</property>
@@ -6564,7 +6564,7 @@ and any path to a file to read from that file]]></string>
 					<property name="description">
 						<string><![CDATA[This option installs only the common domains: CT, DE, FSM, PN and SDF.
 The actor and user documentation is not included.
-This option will consume roughly 7.8Mb (48Mb if the Java Runtime Environment is installed), and is recommended only for users with limited disk space.]]></string>
+This option will consume roughly 7.8Mb (48Mb if the Java Runtime Environment is installed).]]></string>
 					</property>
 					<property name="imageName">
 						<string><![CDATA[minimalIcon.png]]></string>
