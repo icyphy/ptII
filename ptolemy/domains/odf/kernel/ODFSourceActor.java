@@ -1,4 +1,5 @@
-/* An ODFActor that can send out tokens without being provoked by other actors.
+/* An ODFActor that can send out tokens without being provoked by 
+other actors.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -46,7 +47,7 @@ to the current time of the actor plus the specified delay.
 
 
 @author John S. Davis II
-@version @(#)ODFSourceActor.java	1.2	11/16/98
+@version $Id$
 */
 
 public class ODFSourceActor extends ODFActor {
@@ -92,7 +93,6 @@ public class ODFSourceActor extends ODFActor {
         
         _reinvokeInPort.link( _reinvokeRelation );
         _reinvokeOutPort.link( _reinvokeRelation );
-        // System.out.println("Finished linking source actor");
     }
  
     
@@ -112,7 +112,6 @@ public class ODFSourceActor extends ODFActor {
                       + "are prohibited.");
 	}
         Token token = new Token();
-	// System.out.println(getName()+": reinvokedAfterDelay() with delay = "+delay);
         _reinvokeOutPort.send( 0, token, delay );
     }
     
