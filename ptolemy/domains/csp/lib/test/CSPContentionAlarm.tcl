@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test CSPContentionAlarm-2.1 {Check that alarm "rings" at proper time} {
+test CSPContentionAlarm-2.1 {Check that port names are correct} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
@@ -58,6 +58,7 @@ test CSPContentionAlarm-2.1 {Check that alarm "rings" at proper time} {
     $topLevel setDirector $dir
     set cntrllr [java::new ptolemy.domains.csp.lib.CSPController $topLevel "cntrllr"] 
     set proc [java::new ptolemy.domains.csp.lib.CSPProcessor $topLevel "proc"] 
+    set mem [java::new ptolemy.domains.csp.lib.CSPMemory $topLevel "mem"] 
     set alarm [java::new ptolemy.domains.csp.lib.CSPContentionAlarm $topLevel "alarm"] 
 
     set reqOut [$cntrllr getPort "requestOut"]
@@ -72,13 +73,60 @@ test CSPContentionAlarm-2.1 {Check that alarm "rings" at proper time} {
     set pReqOut [$proc getPort "requestOut"]
     set pReqIn [$proc getPort "requestIn"]
 
+    set pMemOut [$proc getPort "memoryOut"]
+    set pMemIn [$proc getPort "memoryIn"]
+
+    set memOut [$mem getPort "output"]
+    set memIn [$mem getPort "input"]
+
     set rel1 [$topLevel connect $reqOut $pReqIn "rel1"]
     set rel2 [$topLevel connect $reqIn $pReqOut "rel2"]
     set rel3 [$topLevel connect $conOut $alarmIn "rel3"]
     set rel4 [$topLevel connect $conIn $alarmOut "rel4"]
+    set rel5 [$topLevel connect $memIn $pMemOut "rel5"]
+    set rel6 [$topLevel connect $memOut $pMemIn "rel6"]
+    
+    list [expr {$reqOut != [java::null]}] [expr {$reqIn != [java::null]}] [expr {$conOut != [java::null]}] [expr {$conIn != [java::null]}] [expr {$alarmOut != [java::null]}] [expr {$alarmIn != [java::null]}] [expr {$pReqOut != [java::null]}] [expr {$pReqIn != [java::null]}] [expr {$pMemOut != [java::null]}] [expr {$pMemIn != [java::null]}] [expr {$memOut != [java::null]}] [expr {$memIn != [java::null]}]  [expr {$rel1 != [java::null]}] [expr {$rel2 != [java::null]}] [expr {$rel3 != [java::null]}] [expr {$rel4 != [java::null]}] [expr {$rel5 != [java::null]}]  [expr {$rel6 != [java::null]}]                       
+} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}
+
+######################################################################
+####
+#
+test CSPContentionAlarm-2.2 {Does alarm work right?} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
+    $topLevel setDirector $dir
+    set cntrllr [java::new ptolemy.domains.csp.lib.CSPController $topLevel "cntrllr"] 
+    set proc [java::new ptolemy.domains.csp.lib.CSPProcessor $topLevel "proc"] 
+    set mem [java::new ptolemy.domains.csp.lib.CSPMemory $topLevel "mem"] 
+    set alarm [java::new ptolemy.domains.csp.lib.CSPContentionAlarm $topLevel "alarm"] 
+
+    set reqOut [$cntrllr getPort "requestOut"]
+    set reqIn [$cntrllr getPort "requestIn"]
+
+    set conOut [$cntrllr getPort "contendOut"]
+    set conIn [$cntrllr getPort "contendIn"]
+
+    set alarmOut [$alarm getPort "output"]
+    set alarmIn [$alarm getPort "input"]
+
+    set pReqOut [$proc getPort "requestOut"]
+    set pReqIn [$proc getPort "requestIn"]
+
+    set pMemOut [$proc getPort "memoryOut"]
+    set pMemIn [$proc getPort "memoryIn"]
+
+    set memOut [$mem getPort "output"]
+    set memIn [$mem getPort "input"]
+
+    set rel1 [$topLevel connect $reqOut $pReqIn "rel1"]
+    set rel2 [$topLevel connect $reqIn $pReqOut "rel2"]
+    set rel3 [$topLevel connect $conOut $alarmIn "rel3"]
+    set rel4 [$topLevel connect $conIn $alarmOut "rel4"]
+    set rel5 [$topLevel connect $memIn $pMemOut "rel5"]
+    set rel6 [$topLevel connect $memOut $pMemIn "rel6"]
     
     $manager run
-
-    list "5.0" 
-} {5.0}
-
+} {}
