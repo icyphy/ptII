@@ -117,20 +117,6 @@ public class MatrixViewer extends Sink implements Placeable {
             }
         }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new parameters.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has an
-     *   attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        MatrixViewer newobj = (MatrixViewer)super.clone(ws);
-        newobj.width = (Parameter)newobj.getAttribute("width");
-        newobj.height = (Parameter)newobj.getAttribute("height");
-        return newobj;
-    }
-
     /** Consume a token from the <i>input</i> port when present and
      *  converted the content of the token into a table when it is of
      *  type Matrix. If not token is available, do nothing. The table

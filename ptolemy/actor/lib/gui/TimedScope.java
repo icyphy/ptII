@@ -115,20 +115,6 @@ public class TimedScope extends TimedPlotter {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then updates the ports and parameters.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has an
-     *   attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        TimedScope newobj = (TimedScope)super.clone(ws);
-        newobj.width = (Parameter)newobj.getAttribute("width");
-        newobj.persistence = (Parameter)newobj.getAttribute("persistence");
-        return newobj;
-    }
-
     /** Configure the plotter using the current parameter values.
      *  @exception IllegalActionException If the parent class throws it.
      */

@@ -79,19 +79,6 @@ public class TimedPlotter extends Plotter implements TimedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then updates the ports and parameters.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has an
-     *   attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        TimedPlotter newobj = (TimedPlotter)super.clone(ws);
-        newobj.input = (TypedIOPort)newobj.getPort("input");
-        return newobj;
-    }
-
     /** Read at most one input from each channel and plot it as a
      *  function of time.
      *  This is done in postfire to ensure that data has settled.

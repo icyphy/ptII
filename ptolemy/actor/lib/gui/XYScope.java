@@ -110,19 +110,6 @@ public class XYScope extends XYPlotter {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then updates the ports and parameters.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has an
-     *   attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        XYScope newobj = (XYScope)super.clone(ws);
-        newobj.persistence = (Parameter)newobj.getAttribute("persistence");
-        return newobj;
-    }
-
     /** Configure the plotter using the current parameter values.
      *  @exception IllegalActionException If the parent class throws it.
      */

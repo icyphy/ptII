@@ -140,24 +140,6 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
         }
     }
 
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets up the ports and parameters.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has an
-     *   attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        MatrixVisualizer newobj = (MatrixVisualizer)super.clone(ws);
-        newobj.input = (TypedIOPort)newobj.getPort("input");
-        newobj.xMax = (Parameter)newobj.getAttribute("xMax");
-        newobj.xMin = (Parameter)newobj.getAttribute("xMin");
-        newobj.yMax = (Parameter)newobj.getAttribute("yMax");
-        newobj.yMin = (Parameter)newobj.getAttribute("yMin");
-        return newobj;
-    }
-
 //     /** Configure the object with data from the specified input source
 //      *  (a URL) and/or textual data, assumed to be in PlotML format.
 //      *  If this is called before the plotter has been created

@@ -93,20 +93,6 @@ public class XYPlotter extends Plotter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then updates the ports and parameters.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has an
-     *   attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        XYPlotter newobj = (XYPlotter)super.clone(workspace);
-        newobj.inputX = (TypedIOPort)newobj.getPort("inputX");
-        newobj.inputY = (TypedIOPort)newobj.getPort("inputY");
-        return newobj;
-    }
-
     /** Read at most one token from each channel of each input port
      *  and plot it.
      *  This is done in postfire to ensure that data has settled.

@@ -116,21 +116,6 @@ public class SequencePlotter extends Plotter implements SequenceActor {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets up the ports and parameters.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has an
-     *   attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        SequencePlotter newobj = (SequencePlotter)super.clone(ws);
-        newobj.input = (TypedIOPort)newobj.getPort("input");
-        newobj.xInit = (Parameter)newobj.getAttribute("xInit");
-        newobj.xUnit = (Parameter)newobj.getAttribute("xUnit");
-        return newobj;
-    }
-
     /** Reset the x axis counter, and call the base class.
      *  Also, clear the datasets that this actor will use.
      *  @exception IllegalActionException If the parent class throws it.

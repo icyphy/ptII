@@ -134,10 +134,6 @@ public class Plotter extends TypedAtomicActor
         Plotter newobj = (Plotter)super.clone(ws);
         newobj.plot = null;
         newobj._frame = null;
-        newobj.fillOnWrapup
-            = (Parameter)newobj.getAttribute("fillOnWrapup");
-        newobj.startingDataset
-            = (Parameter)newobj.getAttribute("startingDataset");
         return newobj;
     }
 

@@ -146,21 +146,6 @@ public class SketchedSource extends Source
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SketchedSource newobj = (SketchedSource)super.clone(workspace);
-        newobj.length = (Parameter)newobj.getAttribute("length");
-        newobj.period = (Parameter)newobj.getAttribute("period");
-        newobj.dataset = (Parameter)newobj.getAttribute("dataset");
-        return newobj;
-    }
-
     /** Produce one data sample from the sketched signal on the output
      *  port.
      *  @exception IllegalActionException If there is no director, or

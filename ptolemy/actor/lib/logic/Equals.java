@@ -101,22 +101,6 @@ public class Equals extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        Equals newobj = (Equals)super.clone(ws);
-        newobj.lowerPort = (TypedIOPort)newobj.getPort("lowerPort");
-        newobj.upperPort = (TypedIOPort)newobj.getPort("upperPort");
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        return newobj;
-    }
-
     /** If there is a token in both the <i>upperPort</i> and <i>lowerPort</i>
      *  ports, compare their equality and return the resulting
      *  BooleanToken in the <i>output</i> port.  If one or more of the input
