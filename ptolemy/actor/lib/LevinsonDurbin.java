@@ -115,9 +115,9 @@ J. Makhoul, "Linear Prediction: A Tutorial Review",
 S. M. Kay, <i>Modern Spectral Estimation: Theory & Application</i>,
 Prentice-Hall, Englewood Cliffs, NJ, 1988.
 
-@see Autocorrelation
-@see VariableFIR
-@see VariableLattice
+@see ptolemy.domains.sdf.lib.Autocorrelation
+@see ptolemy.domains.sdf.lib.VariableFIR
+@see ptolemy.domains.sdf.lib.VariableLattice
 @see ptolemy.math.SignalProcessing
 
 @author Edward A. Lee
