@@ -53,6 +53,10 @@ version of the original signal.  </text></svg></configure>
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
@@ -99,19 +103,27 @@ version of the original signal.  </text></svg></configure>
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
     <entity name="GradientAdaptiveLattice" class="ptolemy.actor.lib.GradientAdaptiveLattice">
-        <property name="reflectionCoefficients" class="ptolemy.data.expr.Parameter" value="{0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}">
+        <property name="reflectionCoefficients" class="ptolemy.data.expr.Parameter" value="{0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}">
         </property>
         <property name="timeConstant" class="ptolemy.data.expr.Parameter" value="15">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 65.0">
         </property>
         <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
@@ -126,13 +138,17 @@ version of the original signal.  </text></svg></configure>
         </port>
     </entity>
     <entity name="VariableRecursiveLattice" class="ptolemy.domains.sdf.lib.VariableRecursiveLattice">
-        <property name="reflectionCoefficients" class="ptolemy.data.expr.Parameter" value="{0.7344360538116, 0.5316902711922, 0.0179006775592, -0.1587960789765, -0.0868957664484, -0.0178849170847, -0.0069393660905, -0.0057340933499, -0.0041905188037, -0.0656922617642, -0.1696562559072, 0.244947303476, -0.6505618651209, 0.6564881004566, -0.0663090073005}">
+        <property name="reflectionCoefficients" class="ptolemy.data.expr.Parameter" value="{0.7344360538116, 0.5316902711922, 0.0179006775592, -0.1587960789765, -0.0868957664484, -0.0178849170847, -0.0069393660905, -0.0057340933499, -0.0041905188037, -0.0656922617642, -0.1696562559072, 0.244947303476, -0.6505618651209, 0.6564881004566, -0.0663090073005, 0.1351639517741, -0.0191081940979, 0.0295404748463, -0.0375121511902, 0.0462556897154, -0.0644296950263, 0.1363546972414, 0.2972316036376, -0.0692772384434, 0.0127642124744, 0.2468397613652, -0.2702488406065}">
         </property>
         <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 175.0">
         </property>
         <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
@@ -157,6 +173,10 @@ version of the original signal.  </text></svg></configure>
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -176,6 +196,10 @@ version of the original signal.  </text></svg></configure>
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -183,18 +207,17 @@ version of the original signal.  </text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+    <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
-        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 40}">
+        <property name="mean" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{2, 0}">
+        <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value=".3">
         </property>
-        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
+        <doc>Create a sequence of gaussian random variables</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 155.0">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
@@ -263,5 +286,5 @@ version of the original signal.  </text></svg></configure>
     <link port="MultiplyDivide.output" relation="relation10"/>
     <link port="AbsoluteValue.input" relation="relation8"/>
     <link port="AbsoluteValue.output" relation="relation5"/>
-    <link port="Pulse.output" relation="relation3"/>
+    <link port="Gaussian.output" relation="relation3"/>
 </entity>

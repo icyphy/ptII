@@ -48,7 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	SynthesizedVoice.xml
+	SynthesizedVoice.xml \
+	OriginalVoice.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
