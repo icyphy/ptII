@@ -197,7 +197,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
             for (Iterator methods = entityClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-                System.out.println("method = " + method);
+                if(debug) System.out.println("method = " + method);
 
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
@@ -241,7 +241,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
                 TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
                         body, _phaseName + ".tie", unsafeLocalSet,
-                        true);
+                        false);
 
                 UnreachableCodeEliminator.v().transform(
                         body, _phaseName + ".uce", "");
@@ -294,8 +294,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
         while (doneSomething && count < 20) {
             doneSomething = false;
             count++;
-            System.out.println("inlining token methods in " + entityClass + " iteration " +
-                    count + " depth = " + depth);
+            
             if (debug) {
                 System.err.println("inlining token methods in " + entityClass + " iteration " +
                         count + " depth = " + depth);
@@ -345,7 +344,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 // of the analysis.  And prevent typing errors.
                 TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
                         body, _phaseName + ".tie", unsafeLocalSet,
-                        true);
+                        false);
 
                 UnreachableCodeEliminator.v().transform(
                         body, _phaseName + ".uce", "");
@@ -498,12 +497,14 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     Object arg = args.next();
                     if (arg instanceof Local) {
                         Local argLocal = (Local)arg;
-                        System.out.println("argtype = " + argLocal.getType());
+                        if(debug) System.out.println("argtype = " + argLocal.getType());
                         isInlineableTokenMethod = _isInlineableTokenType(
                                 argLocal, typeAnalysis, unsafeLocalSet,
                                 depth, debug);
-                        System.out.println("isInlineableTokenMethod = " +
-                                isInlineableTokenMethod);
+                        if(debug) {
+                            System.out.println("isInlineableTokenMethod = " +
+                                    isInlineableTokenMethod);
+                        }
                     }
                 }
             }
@@ -685,8 +686,6 @@ public class TokenToNativeTransformer extends SceneTransformer {
         while (doneSomething && count < 20) {
             doneSomething = false;
             count++;
-            System.out.println("inlining type methods in " + entityClass + " iteration " +
-                    count + " depth = " + depth);
             if (debug) {
                 System.err.println("inlining type methods in " + entityClass + " iteration " +
                         count + " depth = " + depth);
@@ -870,7 +869,6 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
         boolean doneSomething = false;
 
-        System.out.println("Creating Replacement token fields in " + entityClass + " with depth " + depth);
         if (debug) {
             System.err.println("Creating Replacement token fields in " + entityClass + " with depth " + depth);
         }
@@ -974,7 +972,6 @@ public class TokenToNativeTransformer extends SceneTransformer {
     public void replaceTokenFields(SootClass entityClass, int depth, Set unsafeLocalSet, boolean debug) {
 
         boolean doneSomething = false;
-        System.out.println("Replacing token fields in " + entityClass + " with depth " + depth);
         if (debug) {
             System.err.println("Replacing token fields in " + entityClass + " with depth " + depth);
         }

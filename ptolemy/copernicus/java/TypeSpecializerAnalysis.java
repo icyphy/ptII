@@ -95,7 +95,7 @@ public class TypeSpecializerAnalysis {
      *  the typing algorithm.
      */
     public TypeSpecializerAnalysis(SootClass theClass, Set unsafeLocals) {
-        System.out.println("Starting type specialization");
+        // System.out.println("Starting type specialization");
         _unsafeLocals = unsafeLocals;
 
         _solver = new InequalitySolver(TypeLattice.lattice());
@@ -133,7 +133,7 @@ public class TypeSpecializerAnalysis {
                 throw new RuntimeException("Error in type resolution");
             }
         }
-        System.out.println("Done");
+        //        System.out.println("Done");
     }
 
     /** Specialize all token types that appear in the given list of
@@ -144,7 +144,7 @@ public class TypeSpecializerAnalysis {
      */
     public TypeSpecializerAnalysis(List list, Set unsafeLocals) {
         //  _debug = true;
-        System.out.println("Starting type specialization list");
+        //        System.out.println("Starting type specialization list");
         _unsafeLocals = unsafeLocals;
 
         _solver = new InequalitySolver(TypeLattice.lattice());
@@ -186,7 +186,7 @@ public class TypeSpecializerAnalysis {
                 throw new RuntimeException("Error in type resolution");
             }
         }
-        System.out.println("Done");
+        //        System.out.println("Done");
     }
 
     public Type getSpecializedSootType(Local local) {

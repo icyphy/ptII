@@ -106,11 +106,11 @@ public class InvocationBinder extends SceneTransformer
                         SootMethod container = (SootMethod)methodsList.removeFirst();
 
                         if (!container.isConcrete()) {
-                            System.out.println("skipping " + container + ": not concrete");
+                            //  System.out.println("skipping " + container + ": not concrete");
                             continue;
                         }
                         if (graph.getSitesOf(container).size() == 0) {
-                            System.out.println("skipping " + container + ": not called");
+                            //  System.out.println("skipping " + container + ": not called");
 
                             continue;
                         }
@@ -131,8 +131,8 @@ public class InvocationBinder extends SceneTransformer
 
                                 if (ie instanceof StaticInvokeExpr ||
                                         ie instanceof SpecialInvokeExpr) {
-                                    System.out.println("skipping " + container + ":" +
-                                            s + ": not virtual");
+                                    // System.out.println("skipping " + container + ":" +
+                                    //         s + ": not virtual");
 
                                     continue;
                                 }

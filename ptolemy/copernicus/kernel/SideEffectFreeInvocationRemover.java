@@ -157,7 +157,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
                      i.hasNext() && removable;) {
 
                     SootMethod targetMethod = (SootMethod)i.next();
-                    System.out.println("Checking Target = " + targetMethod);
+                    // System.out.println("Checking Target = " + targetMethod);
                     if (analysis.hasSideEffects(targetMethod)) {
                         removable = false;
                     }
@@ -166,7 +166,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
                 if (removable) {
                     // Otherwise we've found an invocation we can remove.
                     // Remove it.
-                    System.out.println("SEFIR: removing " + unit);
+                    //    System.out.println("SEFIR: removing " + unit);
                     body.getUnits().remove(unit);
                 }
             }
