@@ -68,7 +68,9 @@ public class StreamChangeListener implements ChangeListener {
      */
     public void changeExecuted(ChangeRequest change) {
         String description = "";
-        if (change != null) description = change.getDescription();
+        if (change != null) {
+            description = change.getDescription();
+        }
         _output.println("StreamChangeRequest.changeExecuted(): "
                 + description
                 + " succeeded");
@@ -80,7 +82,9 @@ public class StreamChangeListener implements ChangeListener {
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
         String description = "";
-        if (change != null) description = change.getDescription();
+        if (change != null) {
+            description = change.getDescription();
+        }
         _output.println("StreamChangeRequest.changeFailed(): "
                 + description
                 + " failed: "
