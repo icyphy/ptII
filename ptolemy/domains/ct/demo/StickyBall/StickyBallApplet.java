@@ -272,7 +272,8 @@ public class StickyBallApplet extends CTApplet {
             ctDecE1.output.setTypeEquals(DoubleToken.class);
             // The expression is:
             // (K1*Y1 + K2*Y2 - K1*P1 - K2*P1)/(M1+M2)
-            ctDecE1.expression.setExpression("(1.0*1.0 + 2.0*2.0 - (1.0+2.0)*P1)/2.0");
+            ctDecE1.expression.setExpression(
+                    "(1.0*1.0 + 2.0*2.0 - (1.0+2.0)*P1)/2.0");
             Expression ctDecE2 = new Expression(ctDec, "E2");
             TypedIOPort ctDecE2P1 = (TypedIOPort)ctDecE2.newPort("P1");
             ctDecE2P1.setInput(true);
@@ -280,7 +281,8 @@ public class StickyBallApplet extends CTApplet {
             ctDecE2.output.setTypeEquals(DoubleToken.class);
             // The expression is:
             // (K1*Y1 - K2*Y2 - K1*P1 + K2*P1)
-            ctDecE2.expression.setExpression("1.0*1.0 - 2.0*2.0 - (1.0-2.0)*P1");
+            ctDecE2.expression.setExpression(
+                    "1.0*1.0 - 2.0*2.0 - (1.0-2.0)*P1");
 
             // Sticky force
             TypedIOPort ctDecOSTI = (TypedIOPort)ctDec.newPort("STI");
