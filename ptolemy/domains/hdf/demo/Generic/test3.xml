@@ -1,0 +1,1620 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="test3" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 748}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 637]">
+    </property>
+    <property name="inflowRate1" class="ptolemy.data.expr.Parameter" value="3">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 30.0">
+        </property>
+    </property>
+    <property name="inflowRate2" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 55.0">
+        </property>
+    </property>
+    <property name="outflowRate" class="ptolemy.data.expr.Parameter" value="8">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 75.0">
+        </property>
+    </property>
+    <property name="initial1" class="ptolemy.data.expr.Parameter" value="50">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="595.0, 55.0">
+        </property>
+    </property>
+    <property name="initial2" class="ptolemy.data.expr.Parameter" value="50">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="625.0, 80.0">
+        </property>
+    </property>
+    <property name="threshold1" class="ptolemy.data.expr.Parameter" value="30">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="600.0, 115.0">
+        </property>
+    </property>
+    <property name="threshold2" class="ptolemy.data.expr.Parameter" value="30">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="610.0, 145.0">
+        </property>
+    </property>
+    <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="Scheduler2" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="scheduleCacheSize" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 60.0">
+        </property>
+    </property>
+    <property name="initialLength" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 35.0">
+        </property>
+    </property>
+    <property name="inputRate" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 130.0">
+        </property>
+    </property>
+    <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                </property>
+                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                </property>
+                <property name="style2" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        </property>
+        <property name="_Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 275.0">
+        </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <port name="inflow" class="ptolemy.vergil.fsm.modal.ModalPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="5">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="Level1" class="ptolemy.vergil.fsm.modal.ModalPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="5">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="outflow" class="ptolemy.vergil.fsm.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="5">
+            </property>
+        </port>
+        <port name="Level2" class="ptolemy.vergil.fsm.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="5">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state">
+            </property>
+            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+            </property>
+            <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
+create refinements for the states.  Create transitions
+by holding the control key and dragging from one state
+to another. Then delete this annotation.</text>
+</svg></configure>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 5.0">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+            </property>
+            <port name="inflow" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 215.0">
+                </property>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <port name="Level1" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 110.0">
+                </property>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <port name="outflow" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location">
+                </property>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <port name="Level2" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 65.0">
+                </property>
+                <property name="tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
+                </property>
+                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 145.0">
+                </property>
+                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+            </entity>
+            <entity name="state2" class="ptolemy.domains.fsm.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state2">
+                </property>
+                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 150.0">
+                </property>
+                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+            </entity>
+            <entity name="state3" class="ptolemy.domains.fsm.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state3">
+                </property>
+                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 170.0">
+                </property>
+                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                </property>
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state2.initLevel1 =initial1; state2.initLevel2 = initial2">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.07530059338527084">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Level2 &lt;= threshold1">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                </property>
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state3.initLevel1 = Level1; state3.initLevel2 = Level2">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.10144362919984352">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Level1 &lt;= threshold1">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                </property>
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state2.initLevel1 = Level1; state2.initLevel2 = Level2">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.039558909820902">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+            </relation>
+            <link port="state.outgoingPort" relation="relation"/>
+            <link port="state2.incomingPort" relation="relation"/>
+            <link port="state2.incomingPort" relation="relation3"/>
+            <link port="state2.outgoingPort" relation="relation2"/>
+            <link port="state3.incomingPort" relation="relation2"/>
+            <link port="state3.outgoingPort" relation="relation3"/>
+        </entity>
+        <entity name="state" class="ptolemy.vergil.fsm.modal.Refinement">
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 45.0">
+                </property>
+            </property>
+            <port name="inflow" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 150.0">
+                </property>
+                <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <port name="Level1" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 150.0">
+                </property>
+                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <property name="_tokenInitProduction" class="ptolemy.data.expr.NotEditableParameter" value="0">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <port name="outflow" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 240.0">
+                </property>
+                <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <port name="Level2" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 240.0">
+                </property>
+                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <property name="_tokenInitProduction" class="ptolemy.data.expr.NotEditableParameter" value="0">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="initialLength">
+                </property>
+                <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 150.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="initialLength">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 150.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
+                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="initialLength">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 240.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="initialLength">
+                </property>
+                <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 240.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="initial1">
+                </property>
+                <doc>Create a constant sequence</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 150.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
+            <entity name="Const2" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="initial2">
+                </property>
+                <doc>Create a constant sequence</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 240.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <link port="inflow" relation="relation"/>
+            <link port="Level1" relation="relation5"/>
+            <link port="outflow" relation="relation4"/>
+            <link port="Level2" relation="relation8"/>
+            <link port="ArrayToSequence.input" relation="relation2"/>
+            <link port="ArrayToSequence.output" relation="relation7"/>
+            <link port="SequenceToArray.input" relation="relation"/>
+            <link port="SequenceToArray.output" relation="relation2"/>
+            <link port="SequenceToArray2.input" relation="relation4"/>
+            <link port="SequenceToArray2.output" relation="relation3"/>
+            <link port="ArrayToSequence2.input" relation="relation3"/>
+            <link port="ArrayToSequence2.output" relation="relation6"/>
+            <link port="Const.output" relation="relation5"/>
+            <link port="Const.trigger" relation="relation7"/>
+            <link port="Const2.output" relation="relation8"/>
+            <link port="Const2.trigger" relation="relation6"/>
+        </entity>
+        <entity name="state2" class="ptolemy.vergil.fsm.modal.Refinement">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 128, 815, 511}}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="initLevel1" class="ptolemy.data.expr.Parameter" value="22">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 30.0">
+                </property>
+            </property>
+            <property name="initLevel2" class="ptolemy.data.expr.Parameter" value="78">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 60.0">
+                </property>
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 40.0">
+                </property>
+            </property>
+            <port name="inflow" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 130.0">
+                </property>
+                <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <port name="Level1" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 140.0">
+                </property>
+                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <property name="_tokenInitProduction" class="ptolemy.data.expr.NotEditableParameter" value="0">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <port name="outflow" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 195.0">
+                </property>
+                <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <port name="Level2" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 210.0">
+                </property>
+                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <property name="_tokenInitProduction" class="ptolemy.data.expr.NotEditableParameter" value="0">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+                <property name="init" class="ptolemy.data.expr.Parameter" value="initLevel1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 140.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="reset" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
+            <entity name="Accumulator2" class="ptolemy.actor.lib.Accumulator">
+                <property name="init" class="ptolemy.data.expr.Parameter" value="initLevel2">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 210.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="reset" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
+            <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="inflowRate1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 130.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="inflowRate1">
+                </property>
+                <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 130.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
+                    </property>
+                </port>
+            </entity>
+            <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="outflowRate - inflowRate2">
+                </property>
+                <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 190.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
+                    </property>
+                </port>
+            </entity>
+            <entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
+                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="outflowRate - inflowRate2">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 190.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <link port="inflow" relation="relation2"/>
+            <link port="Level1" relation="relation4"/>
+            <link port="outflow" relation="relation7"/>
+            <link port="Level2" relation="relation6"/>
+            <link port="Accumulator.input" relation="relation3"/>
+            <link port="Accumulator.output" relation="relation4"/>
+            <link port="Accumulator2.input" relation="relation8"/>
+            <link port="Accumulator2.output" relation="relation6"/>
+            <link port="SequenceToArray.input" relation="relation2"/>
+            <link port="SequenceToArray.output" relation="relation"/>
+            <link port="ArrayToSequence.input" relation="relation"/>
+            <link port="ArrayToSequence.output" relation="relation3"/>
+            <link port="ArrayToSequence2.input" relation="relation5"/>
+            <link port="ArrayToSequence2.output" relation="relation8"/>
+            <link port="SequenceToArray2.input" relation="relation7"/>
+            <link port="SequenceToArray2.output" relation="relation5"/>
+        </entity>
+        <entity name="state3" class="ptolemy.vergil.fsm.modal.Refinement">
+            <property name="initLevel1" class="ptolemy.data.expr.Parameter" value="72">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, -75.0">
+                </property>
+            </property>
+            <property name="initLevel2" class="ptolemy.data.expr.Parameter" value="28">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, -50.0">
+                </property>
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, -65.0">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 128, 815, 511}}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <port name="inflow" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-65.0, 105.0">
+                </property>
+                <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <port name="Level1" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 30.0">
+                </property>
+                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <property name="_tokenInitProduction" class="ptolemy.data.expr.NotEditableParameter" value="0">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <port name="outflow" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-60.0, 30.0">
+                </property>
+                <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <port name="Level2" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 115.0">
+                </property>
+                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <property name="_tokenInitProduction" class="ptolemy.data.expr.NotEditableParameter" value="0">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </port>
+            <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="outflowRate - inflowRate1">
+                </property>
+                <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 30.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="5">
+                    </property>
+                </port>
+            </entity>
+            <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="outflowRate - inflowRate1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 30.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="5">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
+                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="inflowRate2">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 105.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="5">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </port>
+            </entity>
+            <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+                <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="inflowRate2">
+                </property>
+                <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 105.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="input"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                    <property name="output"/>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="5">
+                    </property>
+                </port>
+            </entity>
+            <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+                <property name="init" class="ptolemy.data.expr.Parameter" value="initLevel1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 40.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="reset" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
+            <entity name="Accumulator2" class="ptolemy.actor.lib.Accumulator">
+                <property name="init" class="ptolemy.data.expr.Parameter" value="initLevel2">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 115.0">
+                </property>
+                <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="reset" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="5">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
+            </relation>
+            <link port="inflow" relation="relation5"/>
+            <link port="Level1" relation="relation3"/>
+            <link port="outflow" relation="relation"/>
+            <link port="Level2" relation="relation8"/>
+            <link port="ArrayToSequence.input" relation="relation2"/>
+            <link port="ArrayToSequence.output" relation="relation7"/>
+            <link port="SequenceToArray.input" relation="relation"/>
+            <link port="SequenceToArray.output" relation="relation2"/>
+            <link port="SequenceToArray2.input" relation="relation5"/>
+            <link port="SequenceToArray2.output" relation="relation4"/>
+            <link port="ArrayToSequence2.input" relation="relation4"/>
+            <link port="ArrayToSequence2.output" relation="relation6"/>
+            <link port="Accumulator.input" relation="relation7"/>
+            <link port="Accumulator.output" relation="relation3"/>
+            <link port="Accumulator2.input" relation="relation6"/>
+            <link port="Accumulator2.output" relation="relation8"/>
+        </entity>
+        <relation name="inflowRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="Level1Relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="outflowRelation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="Level2Relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="inflow" relation="inflowRelation"/>
+        <link port="Level1" relation="Level1Relation"/>
+        <link port="outflow" relation="outflowRelation"/>
+        <link port="Level2" relation="Level2Relation"/>
+        <link port="_Controller.inflow" relation="inflowRelation"/>
+        <link port="_Controller.Level1" relation="Level1Relation"/>
+        <link port="_Controller.outflow" relation="outflowRelation"/>
+        <link port="_Controller.Level2" relation="Level2Relation"/>
+        <link port="state.inflow" relation="inflowRelation"/>
+        <link port="state.Level1" relation="Level1Relation"/>
+        <link port="state.outflow" relation="outflowRelation"/>
+        <link port="state.Level2" relation="Level2Relation"/>
+        <link port="state2.inflow" relation="inflowRelation"/>
+        <link port="state2.Level1" relation="Level1Relation"/>
+        <link port="state2.outflow" relation="outflowRelation"/>
+        <link port="state2.Level2" relation="Level2Relation"/>
+        <link port="state3.inflow" relation="inflowRelation"/>
+        <link port="state3.Level1" relation="Level1Relation"/>
+        <link port="state3.outflow" relation="outflowRelation"/>
+        <link port="state3.Level2" relation="Level2Relation"/>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[544, 522]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 265.0">
+        </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="10">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="215.0"/>
+<yRange min="22.0" max="78.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 235.0">
+        </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="10">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 305.0">
+        </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="10">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="inputRate">
+        </property>
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 235.0">
+        </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="5">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="inputRate">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 235.0">
+        </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="5">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="inputRate">
+        </property>
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 305.0">
+        </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="5">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+    </entity>
+    <entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="inputRate">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 305.0">
+        </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="5">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="10">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="10">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="10">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="5">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="10">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="5">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="10">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="10">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <link port="modal model.inflow" relation="relation4"/>
+    <link port="modal model.Level1" relation="relation2"/>
+    <link port="modal model.outflow" relation="relation8"/>
+    <link port="modal model.Level2" relation="relation5"/>
+    <link port="SequencePlotter.input" relation="relation2"/>
+    <link port="SequencePlotter.input" relation="relation5"/>
+    <link port="Const.output" relation="relation6"/>
+    <link port="Const2.output" relation="relation3"/>
+    <link port="ArrayToSequence.input" relation="relation"/>
+    <link port="ArrayToSequence.output" relation="relation4"/>
+    <link port="SequenceToArray.input" relation="relation6"/>
+    <link port="SequenceToArray.output" relation="relation"/>
+    <link port="ArrayToSequence2.input" relation="relation7"/>
+    <link port="ArrayToSequence2.output" relation="relation8"/>
+    <link port="SequenceToArray2.input" relation="relation3"/>
+    <link port="SequenceToArray2.output" relation="relation7"/>
+</entity>
