@@ -92,11 +92,11 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 165.0">
-        </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 165.0">
         </property>
         <port name="position" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
@@ -276,7 +276,7 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 60.0">
                 </property>
             </property>
-            <property name="efficiencyFunction" class="ptolemy.data.expr.Parameter" value="present">
+            <property name="efficiencyFunction" class="ptolemy.data.expr.Parameter" value="function(x) 1.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -291,6 +291,23 @@ to another. Then delete this annotation.</text>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 75.0">
+                </property>
+            </property>
+            <property name="mass" class="ptolemy.data.expr.Parameter" value="1.0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 100.0">
                 </property>
             </property>
             <port name="position" class="ptolemy.vergil.fsm.modal.RefinementPort">
@@ -365,8 +382,8 @@ to another. Then delete this annotation.</text>
                     <property name="multiport"/>
                 </port>
             </entity>
-            <entity name="Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="f(rpm)*throttle">
+            <entity name="compute Acceleration" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="f(rpm)*throttle*mass">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -431,10 +448,10 @@ to another. Then delete this annotation.</text>
             <link port="Integrator2.input" relation="relation6"/>
             <link port="Integrator2.output" relation="relation2"/>
             <link port="Const.output" relation="relation3"/>
-            <link port="Expression.output" relation="relation4"/>
-            <link port="Expression.f" relation="relation3"/>
-            <link port="Expression.throttle" relation="relation5"/>
-            <link port="Expression.rpm" relation="relation"/>
+            <link port="compute Acceleration.output" relation="relation4"/>
+            <link port="compute Acceleration.f" relation="relation3"/>
+            <link port="compute Acceleration.throttle" relation="relation5"/>
+            <link port="compute Acceleration.rpm" relation="relation"/>
             <link port="Expression2.output" relation="relation"/>
             <link port="Expression2.input" relation="relation6"/>
         </entity>
