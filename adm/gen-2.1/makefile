@@ -449,15 +449,17 @@ remote1distjavadocs:
 # math first, then kernel, then data, then actor, then alphabetical
 # If you edit JSALLDIRS, then you should probably add the directory to
 # $PTII/doc/makefile in two places so that we automatically generate docs.
-# Tests in actor/lib use DE, so actor/lib should be after de/lib
-# Tests in actor/lib/auto use vergil and moml
-# de/test should be run after sdf
-# dt/kernel should be run after sdf
-# fsm/kernel should be run after moml
-# vergil should be run after vergil/toolbox
-# We include the following directories so that they will appear in the
-# code coverage stats even though they are graphical: gui actor/gui
-#
+# * Tests in actor/lib use DE, so actor/lib should be after de/lib
+# * Tests in actor/lib/auto use vergil and moml
+# * de/test should be run after sdf
+# * dt/kernel should be run after sdf
+# * fsm/kernel should be run after moml
+# * vergil should be run after vergil/toolbox
+# * We include the following directories so that they will appear in the
+# * code coverage stats even though they are graphical: gui actor/gui
+# * auto tests should be run after actor/gui so that MoMLSimpleApplication
+#   is present
+# 
 # Don't run
 #	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/huffman
 # it hangs
@@ -469,9 +471,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/data \
 	$(REMOTE1PTIIDIST)/ptolemy/data/expr \
 	$(REMOTE1PTIIDIST)/ptolemy/data/type \
-	$(REMOTE1PTIIDIST)/ptolemy/data/unit \
 	$(REMOTE1PTIIDIST)/ptolemy/actor \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gui \
+	$(REMOTE1PTIIDIST)/ptolemy/data/unit \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/process \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/sched \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/util \
@@ -532,7 +534,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces/util \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
-	$(REMOTE1PTIIDIST)/ptolemy/actor/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/configs
 
 
