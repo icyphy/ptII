@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Green (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.logic;
@@ -201,6 +201,7 @@ public class LogicFunction extends Transformer {
                 result = old.multiply(in);
                 break;
             case _OR:
+                // By DeMorgan's Law:
                 BooleanToken negatedResult =
                     (BooleanToken)((old.not()).multiply(in.not()));
                 result = negatedResult.not();
