@@ -108,8 +108,13 @@ public class PNDirector extends CompositeProcessDirector {
      *  Create a director parameter "initialQueueCapacity" with the default
      *  value 1. This sets the initial capacities of the queues in all
      *  the receivers created in the PN domain.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
-    public PNDirector() throws IllegalActionException, NameDuplicationException {
+    public PNDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -121,6 +126,10 @@ public class PNDirector extends CompositeProcessDirector {
      *  value 1. This sets the initial capacities of the queues in all
      *  the receivers created in the PN domain.
      *  @param workspace The workspace of this object.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public PNDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -170,6 +179,7 @@ public class PNDirector extends CompositeProcessDirector {
     /** Add a process state change listener to this director. The listener
      *  will be notified of each change to the state of a process.
      *  @param listener The PNProcessListener to add.
+     *  @see #removeProcessListener(PNProcessListener);
      */
     public void addProcessListener(PNProcessListener listener) {
         _processListeners.add(listener);
@@ -290,20 +300,22 @@ public class PNDirector extends CompositeProcessDirector {
      *  If the listener is not attached to this director, do nothing.
      *
      *  @param listener The PNProcessListener to be removed.
+     *  @see #addProcessListener(PNProcessListener);
      */
     public void removeProcessListener(PNProcessListener listener) {
         _processListeners.remove(listener);
     }
 
-    /** (non-Javadoc)
+    /** Return an array of suggested ModalModel directors  to use with
+     *  PNDirector. The default director is MultirateFSMDirector, the
+     *  alternative director is FSMDirector.
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
-        String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
-        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
-        return defaultSuggestions;
+        return new String [] {
+            "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
+            "ptolemy.domains.fsm.kernel.FSMDirector"};
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -452,6 +464,7 @@ public class PNDirector extends CompositeProcessDirector {
     /** Decrease by 1 the count of processes blocked on a read and inform all
      *  the process listeners that the relevant process has resumed its
      *  execution.
+     *  @param receiver The receiver that is unblocked.
      */
     protected synchronized void _actorUnBlocked(PNQueueReceiver receiver) {
         if (receiver.isReadBlocked()) {
@@ -477,7 +490,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  Otherwise set the capacity to 1. Unblock the process blocked on
      *  this receiver. Notify the thread corresponding to the blocked
      *  process and return true.
-     *  <pP
+     *  <p>
      *  If derived classes introduce new forms of deadlocks, they should
      *  override this method to introduce mechanisms of handling those
      *  deadlocks. This method is called from the fire() method of the director
