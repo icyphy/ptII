@@ -54,3 +54,13 @@ if {![info exist PTII]} {
 if {[string compare test [info procs test]] == 1} then {
     source [file join $PTII util testsuite testDefs.tcl]
 } {}
+
+if {[info procs enumToObjects] == "" } then {
+    source [file join $PTII util testsuite enums.tcl]
+}
+
+if {[string compare deModel [info procs sdfModel]] != 0} \
+        then {
+    source [file join $PTII util testsuite models.tcl]
+} {}
+

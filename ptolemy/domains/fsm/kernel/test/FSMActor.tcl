@@ -66,11 +66,12 @@ test FSMActor-2.1 {test getDirector} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set dir [java::new ptolemy.actor.Director $e0 dir]
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
-    set re1 [expr {[$fsm getDirector] == $dir}]
+    set re0 [expr {[$fsm getDirector] == $dir}]
+    set re1 [expr {[$fsm getExecutiveDirector] == $dir}]
     $fsm setContainer [java::null]
     set re2 [expr {[$fsm getDirector] == [java::null]}]
-    list $re1 $re2
-} {1 1}
+    list $re0 $re1 $re2
+} {1 1 1}
 
 test FSMActor-2.2 {test getManager} {
     set mag [java::new ptolemy.actor.Manager]

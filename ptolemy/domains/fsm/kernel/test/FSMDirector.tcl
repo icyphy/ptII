@@ -37,15 +37,277 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-if {[info procs enumToObjects] == "" } then {
-     source enums.tcl
-}
-
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
 ######################################################################
 ####
 #
-test FSMDirector-2.1 {} {
-} {}
+test FSMDirector-1.1 {test constructors} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set dir1 [java::new ptolemy.domains.fsm.kernel.FSMDirector]
+    set dir2 [java::new ptolemy.domains.fsm.kernel.FSMDirector $w]
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    set dir3 [java::new ptolemy.domains.fsm.kernel.FSMDirector $e0 dir]
+    list [$dir1 getFullName] [[java::field $dir1 controllerName] getFullName] \
+            [$dir2 getFullName] \
+            [[java::field $dir2 controllerName] getFullName] \
+            [$dir3 getFullName] \
+            [[java::field $dir3 controllerName] getFullName]
+} {. ..controllerName . ..controllerName ..dir ..dir.controllerName}
+
+######################################################################
+####
+#
+test FSMDirector-2.1 {test setting controller} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e0 dir]
+    set v0 [java::field $dir controllerName]
+    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
+    set tok [java::new ptolemy.data.StringToken fsm]
+    $v0 setToken $tok
+    set re0 [expr {[$dir getController] == $fsm}]
+    $fsm setContainer [java::null]
+    catch {$dir getController} msg0
+    $fsm setContainer $e0
+    $fsm getContainer
+    set tok [java::new ptolemy.data.StringToken foo]
+    $v0 setToken $tok
+    catch {$dir getController} msg1
+    list $re0 $msg0 $msg1
+} {1 {ptolemy.kernel.util.IllegalActionException: ..dir:
+No controller found with name fsm} {ptolemy.kernel.util.IllegalActionException: ..dir:
+No controller found with name foo}}
+
+######################################################################
+####
+#
+test FSMDirector-3.1 {test getNextIterationTime} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    set dir [java::new ptolemy.actor.Director $e0 dir]
+    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
+    set fsmDir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 fsmDir]
+    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
+    set tok [java::new ptolemy.data.StringToken fsm]
+    [java::field $fsmDir controllerName] setToken $tok
+    set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
+    set tok [java::new ptolemy.data.StringToken s0]
+    [java::field $fsm initialStateName] setToken $tok
+    set tok [java::new ptolemy.data.StringToken e2]
+    [java::field $s0 refinementName] setToken $tok
+    set e2 [java::new ptolemy.actor.TypedCompositeActor $e1 e2]
+    set dir1 [java::new ptolemy.actor.Director $e2 dir1]
+    $dir preinitialize
+    $dir1 setCurrentTime 3.0
+    $fsmDir setCurrentTime 2.0
+    set re0 [$fsmDir getNextIterationTime]
+    $e2 setDirector [java::null]
+    set re1 [$fsmDir getNextIterationTime]
+    list $re0 $re1
+} {3.0 2.0}
+
+######################################################################
+####
+#
+test FSMDirector-4.1 {test action methods} {
+    set e0 [deModel 3.5]
+    set clk [java::new ptolemy.actor.lib.Clock $e0 clk]
+    set src [java::new ptolemy.actor.lib.Ramp $e0 src]
+    set r0 [java::new ptolemy.actor.TypedIORelation $e0 r0]
+    [java::field [java::cast ptolemy.actor.lib.Source $clk] output] link $r0
+    [java::field [java::cast ptolemy.actor.lib.Source $src] trigger] link $r0
+    set tok [java::new {ptolemy.data.IntToken int} 3]
+    [java::field $src step] setToken $tok
+    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
+    set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 dir]
+    set e2 [java::new ptolemy.actor.lib.Const $e1 e2]
+    set tok [java::new {ptolemy.data.IntToken int} 6]
+    [java::field $e2 value] setToken $tok
+    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
+    set tok [java::new ptolemy.data.StringToken fsm]
+    [java::field $dir controllerName] setToken $tok
+    set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
+    $p0 setInput true
+    set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
+    [java::field [java::cast ptolemy.actor.lib.Source $src] output] link $r1
+    $p0 link $r1
+    set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
+    $p1 setInput true
+    set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
+    $p2 setOutput true
+    $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+    set r2 [java::new ptolemy.actor.TypedIORelation $e1 r2]
+    $p0 link $r2
+    $p1 link $r2
+    [java::field [java::cast ptolemy.actor.lib.Source $e2] output] link $r2
+    set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
+    $p3 setOutput true
+    $p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+    set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
+    $p2 link $r3
+    $p3 link $r3
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    set r4 [java::new ptolemy.actor.TypedIORelation $e0 r4]
+    $p3 link $r4
+    [java::field [java::cast ptolemy.actor.lib.Sink $rec] input] link $r4
+
+    set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
+    set s1 [java::new ptolemy.domains.fsm.kernel.State $fsm s1]
+    set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
+    set t1 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t1]
+    set t2 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t2]
+    [java::field $s0 outgoingPort] link $t0
+    [java::field $s1 incomingPort] link $t0
+    [java::field $s1 outgoingPort] link $t1
+    [java::field $s0 incomingPort] link $t1
+    [java::field $s0 outgoingPort] link $t2
+    [java::field $s1 incomingPort] link $t2
+    set tok [java::new ptolemy.data.StringToken s0]
+    [java::field $fsm initialStateName] setToken $tok
+    set tok [java::new ptolemy.data.StringToken e2]
+    [java::field $s0 refinementName] setToken $tok
+    [java::field $s1 refinementName] setToken $tok
+    $t0 setGuardExpression "p1_V > 5"
+    $t1 setPreemptive true
+    $t1 setGuardExpression "p1_V > 0"
+    $t2 setPreemptive true
+    $t2 setGuardExpression "p1_V > 5"
+    set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
+    set tok [java::new ptolemy.data.StringToken p2]
+    [java::field $act0 portName] setToken $tok
+    set tok [java::new ptolemy.data.StringToken 1]
+    [java::field $act0 expression] setToken $tok
+    set act1 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t1 act1]
+    set tok [java::new ptolemy.data.StringToken p2]
+    [java::field $act1 portName] setToken $tok
+    set tok [java::new ptolemy.data.StringToken p1_V]
+    [java::field $act1 expression] setToken $tok
+    set act2 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t2 act2]
+    set tok [java::new ptolemy.data.StringToken p2]
+    [java::field $act2 portName] setToken $tok
+    set tok [java::new ptolemy.data.StringToken 0]
+    [java::field $act2 expression] setToken $tok
+
+    [$e0 getManager] execute
+    listToStrings [$rec getHistory 0]
+} {1 3 0 9}
+
+######################################################################
+####
+#
+test FSMDirector-5.1 {test fireAt} {
+    set e0 [deModel 3.0]
+    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
+    set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 dir]
+    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
+    set tok [java::new ptolemy.data.StringToken fsm]
+    [java::field $dir controllerName] setToken $tok
+    set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
+    $p2 setOutput true
+    $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+    set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
+    $p3 setOutput true
+    $p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+    set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
+    $p2 link $r3
+    $p3 link $r3
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    set r4 [java::new ptolemy.actor.TypedIORelation $e0 r4]
+    $p3 link $r4
+    [java::field [java::cast ptolemy.actor.lib.Sink $rec] input] link $r4
+
+    set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
+    set s1 [java::new ptolemy.domains.fsm.kernel.State $fsm s1]
+    set tok [java::new ptolemy.data.StringToken s0]
+    [java::field $fsm initialStateName] setToken $tok
+    set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
+    [java::field $s0 outgoingPort] link $t0
+    [java::field $s1 incomingPort] link $t0
+    $t0 setGuardExpression "true"
+    set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
+    set tok [java::new ptolemy.data.StringToken p2]
+    [java::field $act0 portName] setToken $tok
+    set tok [java::new ptolemy.data.StringToken -1000]
+    [java::field $act0 expression] setToken $tok
+
+    set mag [$e0 getManager]
+    $mag initialize
+    $dir fireAt $fsm 1.111
+    $mag iterate
+    $mag wrapup
+    list [listToObjects [$rec getTimeHistory]] \
+            [listToStrings [$rec getHistory 0]]
+} {1.111 -1000}
+
+######################################################################
+####
+#
+test FSMDirector-6.1 {test transferInputs} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    set d0 [java::new ptolemy.actor.Director $e0 d0]
+    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
+    set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 dir]
+    set e2 [java::new ptolemy.actor.TypedAtomicActor $e1 e2]
+    set e3 [java::new ptolemy.actor.TypedAtomicActor $e1 e3]
+    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
+    set tok [java::new ptolemy.data.StringToken fsm]
+    [java::field $dir controllerName] setToken $tok
+    set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
+    $p0 setInput true
+    set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
+    set e4 [java::new ptolemy.actor.TypedAtomicActor $e0 e4]
+    set p00 [java::new ptolemy.actor.TypedIOPort $e4 p00]
+    $p00 setOutput true
+    $p00 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+    $p0 link $r1
+    $p00 link $r1
+    set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
+    $p1 setInput true
+    set p2 [java::new ptolemy.actor.TypedIOPort $e2 p2]
+    $p2 setInput true
+    set p3 [java::new ptolemy.actor.TypedIOPort $e3 p3]
+    $p3 setInput true
+    set r2 [java::new ptolemy.actor.TypedIORelation $e1 r2]
+    $p0 link $r2
+    $p1 link $r2
+    $p2 link $r2
+    $p3 link $r2
+
+    set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
+    set s1 [java::new ptolemy.domains.fsm.kernel.State $fsm s1]
+    set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
+    set t1 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t1]
+    [java::field $s0 outgoingPort] link $t0
+    [java::field $s1 incomingPort] link $t0
+    [java::field $s1 outgoingPort] link $t1
+    [java::field $s0 incomingPort] link $t1
+    set tok [java::new ptolemy.data.StringToken s0]
+    [java::field $fsm initialStateName] setToken $tok
+    set tok [java::new ptolemy.data.StringToken e2]
+    [java::field $s0 refinementName] setToken $tok
+    set tok [java::new ptolemy.data.StringToken e3]
+    [java::field $s1 refinementName] setToken $tok
+    $t0 setGuardExpression "p1_V > 5"
+    $t1 setPreemptive true
+    $t1 setGuardExpression "p1_V > 5"
+
+    $d0 preinitialize
+    $d0 initialize
+    set tok [java::new {ptolemy.data.IntToken int} 6]
+    $p00 broadcast $tok
+    $e1 prefire
+    $e1 fire
+    set re0 [[$p2 get 0] toString]
+    set re1 [$p3 hasToken 0]
+    $e1 postfire
+    $p00 broadcast $tok
+    $e1 prefire
+    $e1 fire
+    set re2 [$p2 hasToken 0]
+    set re3 [[$p3 get 0] toString]
+    $e1 postfire
+    set re4 [[$fsm currentState] getFullName]
+    $d0 terminate
+    list $re0 $re1 $re2 $re3 $re4
+} {6 0 0 6 ..e1.fsm.s0}
+
