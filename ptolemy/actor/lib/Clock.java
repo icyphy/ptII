@@ -152,6 +152,7 @@ public class Clock extends TimedSource {
 
     /** If the argument is the offsets parameter, check that the array
      *  is nondecreasing and has the right dimension.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the offsets array is not
      *   nondecreasing and nonnegative, or it is not a row vector.
      */
