@@ -38,9 +38,11 @@
 # ptolemy/moml/test/MoMLWriterTiming.tcl
 #
 proc removeGraphicalClasses {parser} {
-    puts "If you get a 'X connection to xxx:11.0 broken' message, then"
-    puts {see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java}
-    puts {Or run java -verbose -classpath "$PTII/lib/ptjacl.jar:$PTII/lib/diva.jar:$PTII" tcl.lang.Shell xxx.tcl}
+    puts {    If you get a 'X connection to xxx:11.0 broken' message, then}
+    puts {    see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java}
+    puts {    Or, under Solaris, run java -verbose -classpath }
+    puts {           ${PTII}/lib/ptjacl.jar:${PTII}/lib/diva.jar:${PTII}}
+    puts {           tcl.lang.Shell xxx.tcl}
 
 
     set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
