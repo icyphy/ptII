@@ -29,6 +29,7 @@ package ptolemy.domains.pn.lib;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.mutation.*;
+import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
@@ -73,13 +74,12 @@ public class PNSieve extends AtomicActor {
 		if (islargestprime) {
 		    //System.out.println("Making mutations");
 		    // yes - make the mutation for it 
-		    Mutation m = makeMutation(((IntToken)data).intValue());
+		    TopologyChangeRequest m = makeMutation(((IntToken)data).intValue());
 		    PNDirector director = (PNDirector)getDirector();
 		    // Queue the new mutation
-		    director.queueMutation(m);
+		    director.queueTopologyChangeRequest(m);
 		    //System.out.println("Queued mutation");
 		    islargestprime = false;
-		    
 		} 
 		else {
 		    _output.broadcast(data);
@@ -102,29 +102,24 @@ public class PNSieve extends AtomicActor {
 
     /** Create and return a new mutation object that adds a new sieve.
      */
-    private Mutation makeMutation(final int value) {
-        Mutation m = new Mutation() {
-            // remember this
-            PNSieve newSieve = null;
-            Relation newRelation = null;
-            Relation relation = null;
-            IOPort input = null;
-            IOPort output = null;
-            IOPort outport = null;
+    private TopologyChangeRequest makeMutation(final int value) {
+        TopologyChangeRequest request = new TopologyChangeRequest(this) {
             
-            // Create the mutation
-            public void perform() {
+            public void constructEventQueue() {
+                //System.out.println("TopologyRequest event q being constructed!");
+
+                // remember this
+                PNSieve newSieve = null;
+                Relation newRelation = null;
+                Relation relation = null;
+                IOPort input = null;
+                IOPort output = null;
+                IOPort outport = null;
+
+                CompositeActor container =  (CompositeActor)getContainer();
                 try {
-		    //System.out.println("In perform");
-                    CompositeActor container = (CompositeActor)PNSieve.this.getContainer();
-		    //System.out.println(Integer.toString(value));
-		    //System.out.println("proceeding");
                     newSieve = new PNSieve(container, Integer.toString(value) + "_sieve");
-		    //System.out.println("Created new seive");
                     newSieve.setParam("prime", Integer.toString(value));
-                    //System.out.println("Created new seive and set param");
-                    //Disconnecting the plotter and attaching it to the output
-                    //of the new Sieve
                     Enumeration relations = _output.linkedRelations();
 		    if (relations.hasMoreElements()) {
 			relation = (Relation)relations.nextElement();
@@ -138,32 +133,28 @@ public class PNSieve extends AtomicActor {
 		    input = (IOPort)newSieve.getPort("input");
 		    //_output = new PNOutPort(PNSieve.this, "output");
 		    newRelation = container.connect(input, _output, value+"_queue");
-		    //}
-                } catch (NameDuplicationException e) {
-                    System.err.println("Exception: " + e.toString());
-                    //This should never be thrown
-                }  catch (IllegalActionException e) {
-                    //This should never be thrown
-                    System.err.println("Exception: " + e.toString());
+		 
+                
+                } catch (NameDuplicationException ex) {
+                    throw new InvalidStateException("Cannot create " +
+                            "new sieve.");
+                } catch (IllegalActionException ex) {
+                    throw new InvalidStateException("Cannot create " +
+                            "new sieve.");
                 }
+            
+                queueEntityAddedEvent(container, newSieve);
+                if (relation !=null) {
+                    queuePortUnlinkedEvent(relation, _output);
+                    queuePortLinkedEvent(relation, outport);
+                }
+                //FIXME: This cast should not be required. Mention it to johnr
+                queueRelationAddedEvent(container, (ComponentRelation)newRelation);
+                queuePortLinkedEvent(newRelation, _output);
+                queuePortLinkedEvent(newRelation, input);
             }
-            // Inform a listener about the mutation
-            public void update(MutationListener listener) {
-                CompositeActor container = (CompositeActor)PNSieve.this.getContainer();
-		if (relation != null) {
-		    listener.unlink(relation, _output);
-		    listener.addEntity(container, newSieve);
-		    listener.link(relation, outport);
-		    listener.addRelation(container, newRelation);
-		}
-		listener.link(newRelation, input);
-		listener.link(newRelation, _output);
-		listener.done();
-		//}
-	    }
         };
-
-        return m;
+        return request;
     }
 
     ///////////////////////////////////////////////////////////////////
