@@ -46,6 +46,7 @@ EXTRA_SRCS = $(JSRCS) \
 	BarGraph.html \
 	Binary.html \
 	Butterfly.html \
+	FourierSeries.html \
 	Live.html \
 	Marks.html \
 	Sinusoids.html \
