@@ -48,16 +48,17 @@ test NoTokenException-1.0 {Constructor that takes String arg} {
     $ex getMessage
 } {Detail Message}
 
-test NoRoomException-2.1 {Constructor that takes a Nameable and a String} {
-    set ex [java::new ptolemy.actor.NoRoomException \
+test NoTokenException-2.1 {Constructor that takes a Nameable and a String} {
+    set ex [java::new ptolemy.actor.NoTokenException \
 	    [java::null] "Detail Message"]
     $ex getMessage
-} {: Detail Message}
+} {Detail Message}
 
-test NoRoomException-2.2 {Constructor that takes a Nameable and a String} {
+test NoTokenException-2.2 {Constructor that takes a Nameable and a String} {
     set n [java::new ptolemy.kernel.util.NamedObj "My NMamedObj"]
-    set ex [java::new ptolemy.actor.NoRoomException \
+    set ex [java::new ptolemy.actor.NoTokenException \
 	    $n \
 	     "Detail Message"]
     $ex getMessage
-} {.My NMamedObj: Detail Message}
+} {.My NMamedObj:
+Detail Message}

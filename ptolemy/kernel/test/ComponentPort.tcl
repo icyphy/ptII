@@ -405,13 +405,15 @@ test ComponentPort-7.0 {transparent ports in a loop} {
     $p2 link $rout
     catch {$p1 deepConnectedPorts} msg
     list $msg
-} {{ptolemy.kernel.util.InvalidStateException: ..A.P2, ..A.P1: loop in topology!}}
+} {{ptolemy.kernel.util.InvalidStateException: ..A.P2, ..A.P1:
+loop in topology!}}
 
 test ComponentPort-7.1 { deepInsidePorts in a loop} {
     # Use configuration in 7.0
     catch {$p1 deepInsidePorts} msg
     list $msg
-} {{ptolemy.kernel.util.InvalidStateException: ..A.P2, ..A.P1: loop in topology!}}
+} {{ptolemy.kernel.util.InvalidStateException: ..A.P2, ..A.P1:
+loop in topology!}}
 
 test ComponentPort-7.2 {transaprent ports in another loop} {
     set w [java::new ptolemy.kernel.CompositeEntity]
@@ -431,7 +433,7 @@ test ComponentPort-7.2 {transaprent ports in another loop} {
     $p3 link $rb_a
     catch {$p3 deepConnectedPorts} msg
     list $msg
-} {{ptolemy.kernel.util.InvalidStateException: ..A.P2, ..A.P1, ..B.P3:\
+} {{ptolemy.kernel.util.InvalidStateException: ..A.P2, ..A.P1, ..B.P3:
 loop in topology!}}
 
 test ComponentPort-7.3 { deepInsidePorts in another loop} {

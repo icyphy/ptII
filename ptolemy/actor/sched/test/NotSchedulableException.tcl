@@ -62,7 +62,8 @@ test NotSchedulableException-2.2 {Constructor that takes a Nameable and a String
 	    $n \
 	     "Detail Message"]
     $ex getMessage
-} {.My NMamedObj: Detail Message}
+} {.My NMamedObj:
+Detail Message}
 
 test NotSchedulableException-3.1 {Constructor that takes 2 Nameables and a String} {
     set n1 [java::new ptolemy.kernel.util.NamedObj N1]
@@ -70,7 +71,8 @@ test NotSchedulableException-3.1 {Constructor that takes 2 Nameables and a Strin
     set ex [java::new ptolemy.actor.sched.NotSchedulableException \
 	   $n1 $n2 "Detail Message"]
     $ex getMessage
-} {.N1 and .N2: Detail Message}
+} {.N1 and .N2:
+Detail Message}
 
 test NotSchedulableException-4.1 {Constructor that takes an Enumeration and a String} {
     set n1 [java::new ptolemy.kernel.util.NamedObj N1]
@@ -83,4 +85,5 @@ test NotSchedulableException-4.1 {Constructor that takes an Enumeration and a St
 	   [$namedList elements] "Detail Message"]
 
     $ex getMessage
-} {.N1, .N2: Detail Message}
+} {.N1, .N2:
+Detail Message}

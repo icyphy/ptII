@@ -52,7 +52,7 @@ test NoRoomException-2.1 {Constructor that takes a Nameable and a String} {
     set ex [java::new ptolemy.actor.NoRoomException \
 	    [java::null] "Detail Message"]
     $ex getMessage
-} {: Detail Message}
+} {Detail Message}
 
 test NoRoomException-2.2 {Constructor that takes a Nameable and a String} {
     set n [java::new ptolemy.kernel.util.NamedObj "My NMamedObj"]
@@ -60,4 +60,5 @@ test NoRoomException-2.2 {Constructor that takes a Nameable and a String} {
 	    $n \
 	     "Detail Message"]
     $ex getMessage
-} {.My NMamedObj: Detail Message}
+} {.My NMamedObj:
+Detail Message}

@@ -107,8 +107,7 @@ test PrioritizedTimedQueue-4.2 {Check exception message for full queue} {
     set cap [$tqr getCapacity]
     catch {$tqr put $t3 10.0} msg
     list $cap $msg
-} {2 {ptolemy.actor.NoRoomException: : Queue is at capacity. Cannot insert token.}}
-
+} {2 {ptolemy.actor.NoRoomException: Queue is at capacity. Cannot insert token.}}
 ######################################################################
 ####
 # Continued from above

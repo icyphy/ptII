@@ -838,7 +838,8 @@ test SDFScheduler-10.1 {input Broadcast Multirate Scheduling tests} {
     $scheduler setValid false
     catch {[$scheduler schedule]} e1
     list $e1
-} {{ptolemy.actor.sched.NotSchedulableException: .Toplevel.Ramp1.output and .Toplevel.Ramp2.output: Output ports drive the same relation. This is not legal in SDF.}}
+} {{ptolemy.actor.sched.NotSchedulableException: .Toplevel.Ramp1.output and .Toplevel.Ramp2.output:
+Output ports drive the same relation. This is not legal in SDF.}}
 
 test SDFScheduler-10.11 {output Broadcast Multirate Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]

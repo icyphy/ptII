@@ -474,7 +474,8 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
     catch {$p2 get 0} msg2
     list [$p2 getWidth] $msg1 $msg2
 } {1 {ptolemy.kernel.util.IllegalActionException: ..E1.P1:
-hasRoom: channel index is out of range.} {ptolemy.actor.NoTokenException: ..E2.P2: Attempt to get data from an empty mailbox.}}
+hasRoom: channel index is out of range.} {ptolemy.actor.NoTokenException: ..E2.P2:
+Attempt to get data from an empty mailbox.}}
 
 test IOPort-9.4 {Check loopback send} {
     set e0 [java::new ptolemy.actor.CompositeActor]
