@@ -58,18 +58,20 @@ import java.util.Enumeration;
  *  as the global event queue. This is an efficient algorithm
  *  with O(1) time complexity in both enqueue and dequeue operations.
  *  <p>
- *  Sorting in the CalendarQueue class is done with respect to sort-keys,
- *  which are implemented by the DEEventTag class. DEEventTag consists of a
- *  time stamp (double) and a depth (long). The time stamp
- *  indicates the time when the event occurs, and the depth
+ *  Sorting in the CalendarQueue class is done according to the order
+ *  defined by the DEEvent class, which implements the java.lang.Comparable
+ *  interface. A DE event has a time stamp (double), a microstep (integer)
+ *  and a depth (integer). The time stamp
+ *  indicates the time when the event occurs, the microstep indicates the
+ *  phase of execution at a fixed time, and the depth
  *  indicates the relative priority of events with the same time stamp
  *  (simultaneous events).  The depth is determined by topologically
- *  sorting the ports according to data dependencies over which there
+ *  sorting the actors according to data dependencies over which there
  *  is no time delay.
  *  <p>
  *  Ports in the DE domain may be instances of DEIOPort. The DEIOPort class
  *  should be used whenever an actor introduces time delays between the
- *  inputs and the outputs. When an ordinary IOPort is used, the scheduler
+ *  inputs and the outputs. When an ordinary IOPort is used, the director
  *  assumes, for the purpose of calculating priorities, that the delay
  *  across the actor is zero. On the other hand, when DEIOPort is used,
  *  the delay across the actor can be declared to be non-zero by calling
@@ -79,7 +81,7 @@ import java.util.Enumeration;
  *  When a token is put into a DEReceiver, that receiver enqueues the
  *  event by calling the _enqueueEvent() method of this director.
  *  This director sorts all such events in a global event queue
- *  (a priority queue) implemented as an instance of the CalendarQueue class.
+ *  (a priority queue).
  *  <p>
  *  Directed loops with no delay actors are not permitted; they would make it
  *  impossible to assign priorities.  Such a loop can be broken by inserting
@@ -89,14 +91,14 @@ import java.util.Enumeration;
  *  <p>
  *  At the beginning of the fire() method, this director dequeues
  *  a subset of the oldest events (the ones with smallest time
- *  stamp) from the global event queue, and puts those events into
- *  their corresponding receivers. The subset is chosen so that
- *  the events dequeued are all destined for the same actor, which
- *  becomes the one to be fired.
- *  If there are oldest events destined for multiple actors, then
- *  the choice of the actor to fire is determined by the topological depth
- *  of the input ports of the actors.  Specifically, the actor containing
- *  a port with the smallest topological depth will be fired first.
+ *  stamp, microstep, and depth) from the global event queue,
+ *  and puts those events into
+ *  their corresponding receivers. The actor(s) to which these
+ *  events are destined are the ones to be fired.  The depth of
+ *  an event is the depth of the actor to which it is destined.
+ *  The depth of an actor is its position in a topological sort of the graph.
+ *  The microstep is usually zero, but is incremented when a pure event
+ *  is queued with time stamp equal to the current time.
  *  <p>
  *  The actor that is fired must consume tokens from
  *  its input port(s), and will usually produce new events on its output
@@ -281,46 +283,20 @@ public class DEDirector extends Director {
             } while (refire);
 
             // Check whether the next time stamp is equal to current time.
-            DEEventTag nextKey = null;
             try {
-                nextKey = _eventQueue.getNextTag();
+                DEEvent next = _eventQueue.get();
+                // If the next event is in the future, proceed to postfire().
+                if (next.timeStamp() > getCurrentTime()) break;
+                else if (next.timeStamp() < getCurrentTime()) {
+                    throw new InternalErrorException(
+                        "fire(): the next event has smaller time stamp than" +
+                        " the current time!");
+                }
             } catch (IllegalActionException e) {
                 // The queue is empty. Proceed to postfire().
                 break;
             }
-            if (nextKey.timeStamp() > getCurrentTime()) {
-                // if the next event is in the future then proceed
-                // to postfire().
-                break;
-            } else if (nextKey.timeStamp() < getCurrentTime()) {
-                throw new InternalErrorException(
-                        "fire(): the next event has smaller time stamp than" +
-                        " the current time!");
-            }
         }
-    }
-
-    /** Schedule a firing of the given actor at the current time, but with
-     *  lowest possible priority. This means that all other pending events
-     *  at the current time (except those generated by other calls to this
-     *  method) will be processed first.  This is used by actors that
-     *  wish to schedule a refiring at the current time, but only after
-     *  all other actors have been given a chance to provide events to
-     *  their inputs.  In effect, this gives a way to bypass the normal
-     *  mechanism.  
-     *  <p>
-     *  This method should be used with caution, as its semantics are a bit
-     *  subtle. Note for example that when the actor actually fires, it may
-     *  produce events with priorities higher than the event that triggered
-     *  the firing.  It is implemented by queueing a pure event with a depth
-     *  of Long.MAX_VALUE.
-     *  @param actor The actor scheduled to be fired.
-     *  @exception IllegalActionException If the operation is not
-     *    permissible (e.g. the given time is in the past).
-     */
-    public void fireAfterIteration(Actor actor)
-            throws IllegalActionException {
-        _enqueueEvent(actor, getCurrentTime(), Long.MAX_VALUE);
     }
 
     /** Schedule an actor to be fired at the specified time.
@@ -368,9 +344,10 @@ public class DEDirector extends Director {
      */
     public double getNextIterationTime() {
         try {
-            DEEventTag sortkey = _eventQueue.getNextTag();
-            return sortkey.timeStamp();
+            DEEvent next = _eventQueue.get();
+            return next.timeStamp();
         } catch (IllegalActionException e) {
+            // The queue is empty.
             return getStopTime();
         }
     }
@@ -481,7 +458,7 @@ public class DEDirector extends Director {
         _deadActors = null;
         _currentTime = 0.0;
         _noMoreActorsToFire = false;
-        _pendingEvents = new LinkedList();
+        _microstep = 0;
 
         // Haven't seen any events yet, so...
         _startTime = Double.MAX_VALUE;
@@ -489,6 +466,7 @@ public class DEDirector extends Director {
         // Call the parent preinitialize method to create the receivers.
         super.preinitialize();
         _computeDepth();
+        _sortValid = true;
     }
 
     /** Unregister a debug listener.  If the specified listener has not
@@ -548,38 +526,49 @@ public class DEDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Put a "pure event" into the event queue with the specified time stamp
-     *  and depth. The depth is used to prioritize events that have equal
-     *  time stamps.  A smaller depth corresponds to a higher priority.
-     *  A "pure event" is one where no token is transferred.  The event
-     *  is associated with a destination actor.  That actor will be fired
-     *  when the time stamp of the event is the oldest in the system.
+    /** Put a pure event into the event queue with the specified time stamp
+     *  and depth. A "pure event" is one with no token, used to request
+     *  a firing of the specified actor.
      *  Note that the actor may have no new data at its input ports
      *  when it is fired.
+     *  The depth is used to prioritize events that have equal
+     *  time stamps.  A smaller depth corresponds to a higher priority.
+     *  The microstep for the queued event is equal to the current
+     *  microstep (determined by the last dequeue, or zero if there has
+     *  been none), unless the time is equal to the current time.
+     *  If it is, then the event is queued with the current microstep
+     *  plus one.
      *
      *  @param actor The destination actor.
      *  @param time The time stamp of the "pure event".
      *  @param depth The depth.
-     *  @exception IllegalActionException If the time is in the past.
+     *  @exception IllegalActionException If the time  argument is in the past.
      */
-    protected void _enqueueEvent(Actor actor, double time, long depth)
+    protected void _enqueueEvent(Actor actor, double time, int depth)
             throws IllegalActionException {
 
-        // Check for events in the past.
-        if (_startTime != Double.MAX_VALUE && time < getCurrentTime()) {
-            throw new IllegalActionException((Entity)actor,
-                    "Attempt to schedule a firing in the past.");
+        int microstep = _microstep;
+        if (_startTime != Double.MAX_VALUE) {
+            // At least one firing has occurred, so current time has
+            // some meaning.
+            if (time == getCurrentTime()) {
+                microstep++;
+            } else if ( time < getCurrentTime()) {
+                throw new IllegalActionException((Entity)actor,
+                "Attempt to queue an event in the past.");
+            }
         }
-        DEEventTag key = new DEEventTag(time, depth);
-        DEEvent event = new DEEvent(actor, key);
-        _eventQueue.put(event);
+        _eventQueue.put(new DEEvent(actor, time, microstep, depth));
     }
 
     /** Put an event into the event queue with the specified destination
-     *  receiver, transferred token, time stamp and depth. The depth
+     *  receiver, token, time stamp and depth. The depth
      *  is used to prioritize
      *  events that have equal time stamps.  A smaller depth corresponds
-     *  to a higher priority.
+     *  to a higher priority.  The microstep is always equal to zero,
+     *  unless the time argument is equal to the current time, in which
+     *  case, the microstep is equal to the current microstep (determined
+     *  by the last dequeue, or zero if there has been none).
      *
      *  @param receiver The destination receiver.
      *  @param token The token destined for that receiver.
@@ -588,16 +577,21 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException If the delay is negative.
      */
     protected void _enqueueEvent(DEReceiver receiver, Token token,
-            double time, long depth) throws IllegalActionException {
+            double time, int depth) throws IllegalActionException {
 
-        Nameable destination = receiver.getContainer();
-        if (time < getCurrentTime()) {
-            throw new IllegalActionException(destination,
-                    "Attempt to send a token with a time stamp in the past.");
+        int microstep = 0;
+        if (_startTime != Double.MAX_VALUE) {
+            // At least one firing has occurred, so current time has
+            // some meaning.
+            if (time == getCurrentTime()) {
+                microstep = _microstep;
+            } else if ( time < getCurrentTime()) {
+                Nameable destination = receiver.getContainer();
+                throw new IllegalActionException(destination,
+                "Attempt to queue an event in the past.");
+            }
         }
-        DEEventTag key = new DEEventTag(time, depth);
-        DEEvent event = new DEEvent(receiver, token, key);
-        _eventQueue.put(event);
+        _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));
     }
 
     /** Override the default Director implementation, because in DE
@@ -613,13 +607,9 @@ public class DEDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Dequeue the next event from the event queue, advance time to its
+    // Dequeue the events from the event queue that have the smallest
+    // time stamp and depth. Advance the model time to their
     // time stamp, and mark the destination actor for firing.
-    // If there are multiple events on the queue with the same time
-    // stamp that are destined for the same actor, dequeue all of them,
-    // making them available in the input ports of the destination actor.
-    // The firing actor will be repeated until all of these tokens are
-    // consumed.
     // If the time stamp is greater than the stop time then return null.
     // If there are no events on the event queue, and _stopWhenQueueIsEmpty
     // flag is true (which is set to true by default) then return null,
@@ -630,47 +620,23 @@ public class DEDirector extends Director {
     //
     private Actor _getActorToFire() {
         Actor actorToFire = null;
-        DEEvent currentEvent = null;
-        double currentTime = getCurrentTime();
-        long currentDepth = 0;
+        DEEvent currentEvent = null, nextEvent = null;
+        int currentDepth = 0;
 
-        // Get any events that have previously been dequeued and cached
-        // (their tag was the same as the previous firing).
-        while (_pendingEvents.size() > 0) {
-            currentEvent = (DEEvent)_pendingEvents.remove(0);
-            actorToFire = currentEvent.getDestinationActor();
-            if (_deadActors != null && _deadActors.contains(actorToFire)) {
-                _debug("Skipping actor: ", ((Entity)actorToFire).getFullName());
-                actorToFire = null;
-                continue;
-            }
-            currentTime = currentEvent.getEventTag().timeStamp();
-            currentDepth = currentEvent.getEventTag().receiverDepth();
-            // NOTE: No need to set current time, because it is the
-            // same as during the previous firing.
-            break;
-        }
-
-        // Keep taking events out until there are no more simultaneous
-        // events or until the queue is empty. One event may get put back
-        // into the queue (the first one with a future tag).  Others
-        // may be put on the pending list (if their tag is identical to
-        // that of the currentEvent).
+        // Keep taking events out until there are no more event with the same
+        // tag or until the queue is empty.
         while (true) {
             // Get the next event off the event queue.
             if (_stopWhenQueueIsEmpty) {
                 try {
-                    currentEvent = (DEEvent)_eventQueue.take();
+                    nextEvent = (DEEvent)_eventQueue.get();
                 } catch (IllegalActionException ex) {
                     // Nothing more to read from queue.
                     break;
                 }
             } else {
-                // In this case, effectively, we want to do a blocking
-                // take(). So, keep invoking take() until an exception
-                // is not thrown.
+                // In this case we want to do a blocking read of the queue.
                 while (_eventQueue.isEmpty()) {
-                    // Queue is empty.
                     _debug("Queue is empty. Waiting for input events.");
                     synchronized(_eventQueue) {
                         try {
@@ -681,16 +647,22 @@ public class DEDirector extends Director {
                     }
                 }
                 try {
-                    currentEvent = (DEEvent)_eventQueue.take();
+                    nextEvent = (DEEvent)_eventQueue.get();
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException(ex.toString());
                 }
             }
 
             if (actorToFire == null) {
-                // No previously seen event at this time stamp, so
-                // always accept the event.
-                actorToFire = currentEvent.getDestinationActor();
+                // No previously seen event at this tag, so
+                // always accept the event.  Consume it from the queue.
+                try {
+                    _eventQueue.take();
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(ex.toString());
+                }
+                currentEvent = nextEvent;
+                actorToFire = currentEvent.actor();
 
                 if (_deadActors != null && _deadActors.contains(actorToFire)) {
                     // This actor has requested that it not be fired again.
@@ -700,24 +672,26 @@ public class DEDirector extends Director {
                     continue;
                 }
 
-                currentTime = currentEvent.getEventTag().timeStamp();
-                currentDepth = currentEvent.getEventTag().receiverDepth();
+                double currentTime = currentEvent.timeStamp();
                 // Advance current time.
+                _debug("******* Setting current time to: " + currentTime);
                 try {
                     setCurrentTime(currentTime);
                 } catch (IllegalActionException ex) {
                     // Thrown if time moves backwards.
                     throw new InternalErrorException(ex.toString());
                 }
-                _debug("******* Setting current time to: " + currentTime);
 
                 // Note: The following comparison is true
-                // only during the first iteration, before the start time
+                // only during the first firing, before the start time
                 // is initialized to the smallest time stamp in the
                 // event queue.
                 if (currentTime < _startTime) {
                     _startTime = currentTime;
                 }
+
+                currentDepth = currentEvent.depth();
+                _microstep = currentEvent.microstep();
 
                 if (currentTime > getStopTime()) {
                     _debug("Current time has passed the stop time.");
@@ -726,47 +700,39 @@ public class DEDirector extends Director {
 
                 // Transfer the event to the receiver and keep track
                 // of which receiver is filled.
-                DEReceiver rec = currentEvent.getDestinationReceiver();
+                DEReceiver rec = currentEvent.receiver();
+
                 // If rec is null, then it's a 'pure event', and there's
                 // no need to put event into receiver.
                 if (rec != null) {
                     // Transfer the event to the receiver.
-                    rec._triggerEvent(currentEvent.getTransferredToken());
+                    rec._triggerEvent(currentEvent.token());
                 }
             } else {
-                // Already seen an event at the current time;
-                // check whether the new event has tag equal to the previous
-                // one. Then check whether it's for the same actor.
-                double eventTime = currentEvent.getEventTag().timeStamp();
-                long eventDepth = currentEvent.getEventTag().receiverDepth();
-                if (eventTime < currentTime) {
-                    throw new InternalErrorException("Event that was "+
-                            "dequeued later has smaller time stamp!");
-                }
-                // Check whether the event occurred at current time.
-                if (eventTime > currentTime || eventDepth > currentDepth) {
-                    // The event has a later time stamp or depth,
-                    // so we put it back
-                    _eventQueue.put(currentEvent);
-                    break;
-                } else {
-                    // The event has the same time stamp and depth as the first
-                    // event seen.
+                // Already seen an event.
+                // Check whether the next event has equal tag.
+                // If so, the destination actor should
+                // be the same, but check anyway.
+                if (nextEvent.isSimultaneousWith(currentEvent) &&
+                        nextEvent.actor() == currentEvent.actor()) {
+                    // Consume the event from the queue.
+                    try {
+                        _eventQueue.take();
+                    } catch (IllegalActionException ex) {
+                        throw new InternalErrorException(ex.toString());
+                    }
 
                     // Transfer the event into the receiver.
-                    DEReceiver rec = currentEvent.getDestinationReceiver();
+                    DEReceiver rec = nextEvent.receiver();
                     // If rec is null, then it's a 'pure event' and
                     // there's no need to put event into receiver.
                     if (rec != null) {
                         // Transfer the event to the receiver.
-                        rec._triggerEvent(
-                                currentEvent.getTransferredToken());
+                        rec._triggerEvent(nextEvent.token());
                     }
-                    // If the event is not for the same actor, add it to
-                    // the pending list.
-                    if (currentEvent.getDestinationActor() != actorToFire) {
-                        _pendingEvents.add(currentEvent);
-                    }
+                } else {
+                    // Next event has a future tag or different destination.
+                    break;
                 }
             }
         }
@@ -867,7 +833,7 @@ public class DEDirector extends Director {
     private void _computeDepth() throws IllegalActionException {
         DirectedAcyclicGraph dag = _constructDirectedGraph();
         Object[] sort = (Object[]) dag.topologicalSort();
-        _debug("####### Result of topological sort (highest to lowest):");
+        _debug("####### Result of topological sort (highest depth to lowest):");
 	for(int i = sort.length-1; i >= 0; i--) {
             Actor actor = (Actor)sort[i];
             _debug(((Nameable)actor).getFullName());
@@ -895,23 +861,15 @@ public class DEDirector extends Director {
 
     // Request that the container of this director be refired in the future.
     // This method is used when the director is embedded inside an opaque
-    // composite actor (i.e. a wormhole in Ptolemy 0.x terminology).
+    // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
     private void _requestFiring() throws IllegalActionException {
-        DEEventTag sortkey = null;
-        try {
-            sortkey = _eventQueue.getNextTag();
-        } catch (IllegalActionException e) {
-            throw new IllegalActionException(
-                    "Request to refire composite actor, "
-                    + "but the event queue is empty.");
-        }
-        double nextRefire = sortkey.timeStamp();
+        DEEvent nextEvent = null;
+        nextEvent = _eventQueue.get();
 
-        // Enqueue a refire for the container of this director.
+        _debug("Request refiring of opaque composite actor.");
+       // Enqueue a refire for the container of this director.
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
-                (Actor)getContainer(), nextRefire);
-
-        _debug("DEDirector requests refiring at " + nextRefire);
+                (Actor)getContainer(), nextEvent.timeStamp());
     }
 
     // Return true if this director is embedded inside an opaque composite
@@ -926,8 +884,8 @@ public class DEDirector extends Director {
     // The queue used for sorting events.
     private DEEventQueue _eventQueue;
 
-    // List of dequeued events waiting to be processed.
-    private LinkedList _pendingEvents;
+    // The current microstep.
+    private int _microstep = 0;
 
     // Set to true when it's time to end the execution.
     private boolean _noMoreActorsToFire = false;

@@ -34,7 +34,8 @@ import ptolemy.kernel.*;
 import ptolemy.data.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
-import collections.LinkedList;
+
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEReceiver
@@ -91,7 +92,7 @@ public class DEReceiver implements Receiver {
             throw new NoTokenException(getContainer(),
                     "No more tokens in the DE receiver.");
         }
-        return (Token)_tokens.take();
+        return (Token)_tokens.removeFirst();
     }
 
     /** Return the IOPort containing this receiver.
@@ -201,7 +202,7 @@ public class DEReceiver implements Receiver {
     /** Get the depth of this receiver as set by _setDepth().
      *  @return depth The depth of this receiver.
      */
-    protected long _getDepth() {
+    protected int _getDepth() {
         return _depth;
     }
 
@@ -211,7 +212,7 @@ public class DEReceiver implements Receiver {
      *  higher priority. Only DEDirector should call this method.
      *  @param depth The depth of this receiver.
      */
-    protected void _setDepth(long depth) {
+    protected void _setDepth(int depth) {
         _depth = depth;
     }
 
@@ -222,7 +223,7 @@ public class DEReceiver implements Receiver {
      *  @param token The token to make available to get().
      */
     protected void _triggerEvent(Token token) {
-        _tokens.insertLast(token);
+        _tokens.add(token);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -235,7 +236,7 @@ public class DEReceiver implements Receiver {
     private IOPort _container = null;
 
     // The topological depth associated with this receiver.
-    private long _depth = 0;
+    private int _depth = 0;
 
     // The director where this DEReceiver should register the
     // events being put in it. If this receiver is an inside receiver of
@@ -247,7 +248,7 @@ public class DEReceiver implements Receiver {
     private DEDirector _director;
     private long _directorVersion = -1;
 
-    // List for storing tokens.  Access with clear(), insertLast(),
+    // List for storing tokens.  Access with clear(), add(),
     // and take().
     private LinkedList _tokens = new LinkedList();
 }

@@ -54,7 +54,6 @@ JSRCS = \
 	DEDirector.java \
 	DEEvent.java \
 	DEEventQueue.java \
-	DEEventTag.java \
 	DEIOPort.java \
 	DEReceiver.java \
 	DEThreadActor.java

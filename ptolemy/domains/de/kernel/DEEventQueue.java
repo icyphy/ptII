@@ -69,13 +69,12 @@ public interface DEEventQueue {
      */
     public void clear();
 
-    /** Return the DEEventTag associated with the earliest event in this
+    /** Return the event associated with the earliest tag in this
      *  event queue. Note that the event is not dequeued.
-     *  @return Return the DEEventTag associated with the earliest event
-     *    in this queue.
+     *  @return Return the earliest event.
      *  @exception IllegalActionException If the queue is empty.
      */
-    public DEEventTag getNextTag() throws IllegalActionException;
+    public DEEvent get() throws IllegalActionException;
 
     /** Return true if this event queue is empty.
      *  @return True if this queue is empty, false otherwise.

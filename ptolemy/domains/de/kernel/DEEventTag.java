@@ -24,52 +24,97 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
 
+import java.lang.Comparable;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEEventTag
 /** Events in the Ptolemy II DE domain are associated with tags. The tags
  *  define an ordering relation between events. This class implements the
- *  tag associated with each event. A DE event tag is an aggregation of
- *  time stamp and receiver depth.
- *  <p>
- *  A class that implements the DEEventQueue interface implements how tags
- *  are compared with each other and thus performs the sorting of events.
+ *  tag associated with each event. It has a time stamp, a microstep,
+ *  and a receiver depth.  These are compared in order by the compareTo()
+ *  method.
  *
- *  @author Lukito Muliadi
+ *  @author Lukito Muliadi, Edward A. Lee
  *  @version $Id$
  *  @see DECQEventQueue
  */
-public class DEEventTag {
+public class DEEventTag implements Comparable {
 
-    /** Construct a DEEventTag object with the given time stamp and receiver
-     *  depth. Time stamp is a double quantity indicating the time when
-     *  the event takes place. Receiver depth is a long quantity
-     *  indicating the 'topological' depth of the IOport containing the
-     *  receiver of the event. Receiver depths are useful for scheduling
-     *  simultaneous events.
+    /** Construct a DEEventTag object with the given time stamp, microstep,
+     *  and receiver depth. The time stamp is a double quantity indicating
+     *  the time at which the event takes place. The microstep is an
+     *  integer indicating phase of execution within a fixed time.
+     *  The receiver depth is an integer
+     *  indicating the topological depth of the IOport containing the
+     *  receiver of the event (larger depth implies lower priority when
+     *  processing events). Microsteps and receiver depths are used
+     *  to process simultaneous events in a deterministic way.
      *
      * @param timeStamp The time when the event occurs.
+     * @param microstep The phase of execution within a fixed time.
      * @param receiverDepth The topological depth of the destination receiver.
      *
      */
-    public DEEventTag(double timeStamp, long receiverDepth) {
+    public DEEventTag(double timeStamp, int microstep, int receiverDepth) {
         _timeStamp = timeStamp;
+        _microstep = microstep;
         _receiverDepth = receiverDepth;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Compare this tag with the specified tag for order.
+     *  Return a negative integer, zero, or a positive integer if this
+     *  tag is less than, equal to, or greater than the specified object.
+     *  The time stamp is checked first.  If the two time stamps are
+     *  identical, then the microstep is checked.  If those are identical,
+     *  then the receiver depth is checked.
+     *  The argument has to be an instance of DEEventTag or a
+     *  ClassCastException will be thrown.
+     *
+     * @param tag The tag to compare against.
+     * @exception ClassCastException If the argument is not an instance
+     *  of DEEventTag
+     */
+     public final int compareTo(Object tag) {
+
+         DEEventTag castTag = (DEEventTag) tag;
+
+         if ( _timeStamp < tag._timeStamp)  {
+             return -1;
+         } else if ( _timeStamp > tag._timeStamp) {
+             return 1;
+         } else if ( _microstep < tag._microstep) {
+             return -1;
+         } else if ( _microstep > tag._microstep) {
+             return 1;
+         } else if ( _receiverDepth < tag._receiverDepth) {
+             return -1;
+         } else if ( _receiverDepth > tag._receiverDepth) {
+             return 1;
+         } else {
+             return 0;
+         }
+     }
+
+    /** Return the microstep field of this sort key.
+     *  @return The microstep field.
+     */
+    public final int microstep() {
+        return _microstep;
+    }
+
     /** Return the receiver depth field of this sort key.
      *  @return The receiver depth field.
      */
-    public final long receiverDepth() {
+    public final int receiverDepth() {
         return _receiverDepth;
     }
 
@@ -91,10 +136,12 @@ public class DEEventTag {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The microstep.
+    private int _microstep;
 
-    // _timeStamp The time stamp of the event.
+    // The depth of the destination receiver.
+    private int _receiverDepth;
+
+    // The time stamp of the event.
     private double _timeStamp;
-    // _receiverDepth The depth of the destination receiver.
-    private long _receiverDepth;
-
 }
