@@ -35,7 +35,7 @@
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
     source testDefs.tcl
-} {}
+}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
