@@ -1,0 +1,84 @@
+#! /bin/sh
+# Version: $Id$
+#
+# This script can be used to fix many sccs managed files at once.
+# Before running this script, you must:
+# 1. Create a doit function that does the editing you want 
+# 2. Set up the files variable so it contains a list of the files
+# 3. Set up a grep statement that will identify files you want to change
+# 4. Adjust the log message for the sccs delget command
+# Then try out fix-files with the -p option, which only prints, but  
+# does not actually make the change
+# Usage: fix-files [-p] [-d]
+
+printonly=no
+
+while getopts pd-- opt
+do
+	case $opt in
+		d) 	set -x;;
+		p) 	printonly=yes;;
+	   \?)	echo "$0: Usage: $0 [-p] [-x] [filenames . . .]"
+			echo " -p  Print only"
+			echo " -d  debug"
+			exit 3;;
+	esac
+done
+shift `expr $OPTIND - 1`
+
+doit() {
+    
+	sed -e 's/[ 	]*$//g'  < $file > /tmp/fix-files.tmp
+	diff $file /tmp/fix-files.tmp
+}
+
+EGREPMATCH="[ 	]+$"
+LOGMESSAGE="Removed trailing spaces"
+
+SCCS=/usr/ccs/bin/sccs
+topdir=`pwd`
+files=$@
+for fullfile in $files
+do
+	cd $topdir
+	echo "Now processing: $fullfile"
+        egrep -e  "$EGREPMATCH" $fullfile
+	retval=$?
+	if [ $retval = 0 ]; then
+		# There was a difference, so we might want to check this sucker out
+		file=`basename $fullfile`
+		dirname=`dirname $fullfile`
+		cd $dirname
+
+		if [ "$printonly" = "no" ]; then
+			$SCCS edit $file
+			#co -q -l $file
+			retval=$?
+		else
+			$SCCS info | awk '{print $1}' | grep "$file"
+			#rlog -R -L $file
+			retval=$?
+			if [ $retval = 1 ]; then
+				echo "	Would be checked out. "
+			else
+				echo "	Some sort of rlog problem. "
+			fi
+			doit
+			retval=0
+		fi
+		if [ "$printonly" = "no" ]; then
+			if [ $retval != 0 ]; then
+				echo "	Could not check out $1. Skipping"
+				continue
+			else
+				doit
+				cp /tmp/fix-files.tmp  $file
+				$SCCS delget -y"$LOGMESSAGE" $file
+				/users/ptdesign/adm/bin/sccsadmin $file
+    				#grep Copyright $file
+			fi
+		fi	
+	else
+	   echo "	No difference, so no checkout"
+	fi
+done
