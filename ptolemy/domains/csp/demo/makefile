@@ -43,8 +43,10 @@ include $(CONFIG)
 
 CLASSPATH = ../../../..
 
-TCL_SRCS =
+JAVA_HOME_ENV = /usr/tools/pure/jdk1.1.6
+QUANTIFY_JAVA_HOME_ENV = /usr/tools/pure/quantify-4.2-solaris2
 
+PTPACKAGE_DIR = ptolemy/domains/csp/demo
 
 JSRCS = \
 	BasicDemo.java \
@@ -70,7 +72,8 @@ JGRAPHICAL_TESTS = \
 	BasicDemo.tcl
 
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
+EXTRA_SRCS =	index.html $(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
+		#$(JSIMPLE_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -78,7 +81,8 @@ MISC_FILES =	doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	diningapplet.jar
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -100,6 +104,72 @@ Exponential: $(EXTRA_SRCS) jclass Exponential.tcl
 	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) Exponential.tcl
 
 docs: javadocs
+
+
+# Classfiles used by the DiningApplet demo
+DINING_CLASSFILES = \
+	ptolemy/actor/Actor.class \
+	ptolemy/actor/AtomicActor.class \
+	ptolemy/actor/CompositeActor.class \
+	ptolemy/actor/Director.class \
+	ptolemy/actor/Executable.class \
+	ptolemy/actor/IOPort.class \
+	ptolemy/actor/IORelation.class \
+	ptolemy/actor/Manager.class \
+	ptolemy/actor/process/ProcessDirector.class \
+	ptolemy/data/DoubleToken.class \
+	ptolemy/data/ScalarToken.class \
+	ptolemy/data/Token.class \
+	ptolemy/data/expr/Parameter.class \
+	ptolemy/data/expr/ParameterListener.class \
+	ptolemy/domains/csp/demo/Coordinate.class \
+	ptolemy/domains/csp/demo/PhilosopherListener.class \
+	'ptolemy/domains/csp/demo/TablePanel$$ChopstickCoords.class' \
+	'ptolemy/domains/csp/demo/TabelPanel$$PhilosopherCoords.class' \
+	ptolemy/domains/csp/demo/TablePanel.class \
+	ptolemy/domains/csp/kernel/CSPActor.class \
+	ptolemy/domains/csp/kernel/CSPDirector.class \
+	ptolemy/domains/csp/kernel/CSPReceiver.class \
+	ptolemy/domains/csp/kernel/ConditionalBranch.class \
+	ptolemy/domains/csp/kernel/ConditionalReceive.class \
+	ptolemy/domains/csp/kernel/ConditionalSend.class \
+	ptolemy/domains/csp/lib/CSPChopstick.class \
+	ptolemy/domains/csp/lib/CSPPhilosopher.class \
+	ptolemy/kernel/ComponentEntity.class \
+	ptolemy/kernel/ComponentPort.class \
+	ptolemy/kernel/ComponentRelation.class \
+	ptolemy/kernel/CompositeEntity.class \
+	ptolemy/kernel/Entity.class \
+	ptolemy/kernel/Port.class \
+	ptolemy/kernel/Relation.class \
+	ptolemy/kernel/util/Attribute.class \
+	'ptolemy/kernel/util/CrossRefList$$CrossRef.class' \
+	'ptolemy/kernel/util/CrossRefList$$CrossRefEnumeration.class' \
+	ptolemy/kernel/util/CrossRefList.class \
+	ptolemy/kernel/util/IllegalActionException.class \
+	ptolemy/kernel/util/InternalErrorException.class \
+	ptolemy/kernel/util/InvalidStateException.class \
+	ptolemy/kernel/util/KernelException.class \
+	ptolemy/kernel/util/NameDuplicationException.class \
+	ptolemy/kernel/util/Nameable.class \
+	ptolemy/kernel/util/NamedList.class \
+	ptolemy/kernel/util/NamedObj.class \
+	ptolemy/kernel/util/NoSuchItemException.class \
+	ptolemy/kernel/util/PtolemyThread.class \
+	'ptolemy/kernel/util/Workspace$$ReadDepth.class' \
+	ptolemy/kernel/util/Workspace.class \
+	
+
+# 'make clean' removes everything in KRUFT
+KRUFT = diningapplet.jar
+
+# Jar file consisting of classes used by an applet.  Basically,
+# everything but Message and Pxgraph.
+diningapplet.jar: $(JSRCS) $(JCLASS)
+	(cd $(CLASSPATH); \
+		$(JAR) cf \
+		$(PTPACKAGE_DIR)/diningapplet.jar \
+		$(DINING_CLASSFILES))
 
 depend:
 	@echo "no dependencies in this directory"
