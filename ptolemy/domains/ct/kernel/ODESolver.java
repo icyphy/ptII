@@ -224,9 +224,9 @@ public abstract class ODESolver extends NamedObj {
     public abstract double integratorPredictedStepSize(
             CTBaseIntegrator integrator);
 
-    /** Return true if all integrators agree that the current iteration has 
+    /** Return true if all integrators agree that the current integration has 
      *  converged to a fixed point. 
-     *  @return True if the current iteration has converged to a fixed point.
+     *  @return True if the current integration has converged to a fixed point.
      */
     public boolean isConverged() {
         return _isConverged;
@@ -254,6 +254,7 @@ public abstract class ODESolver extends NamedObj {
     ////                         protected methods                 ////
 
     /** Get the current schedule. 
+     *  @return The current schedule.
      *  @throws IllegalActionException If this solver is not contained by
      *  a director, or the director does not have a scheduler.
      */

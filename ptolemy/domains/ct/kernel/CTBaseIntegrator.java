@@ -257,6 +257,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
     /** Return the tentative state.
      *  @return the tentative state.
+     *  @see #setTentativeState
      */
     public double getTentativeState() {
         return _tentativeState;
