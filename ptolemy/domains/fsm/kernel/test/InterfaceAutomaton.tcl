@@ -250,7 +250,7 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="" class="ptolemy.kernel.util.StringAttribute" value="c;">
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="c;">
         </property>
     </relation>
     <link port="s0.outgoingPort" relation="t0"/>

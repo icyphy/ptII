@@ -109,7 +109,6 @@ public class InterfaceAutomatonTransition extends Transition {
 
         super(container, name);
         label = new StringAttribute(this, "label");
-	label.setExpression("");
         outputActions.setVisibility(Settable.NONE);
         setActions.setVisibility(Settable.NONE);  
         preemptive.setVisibility(Settable.NONE);
@@ -142,8 +141,6 @@ public class InterfaceAutomatonTransition extends Transition {
         super.attributeChanged(attribute);
         if (attribute == label) {
 	    String labelString = label.getExpression();
-            // The default label is the null string.
-            if (labelString.equals("")) return;
 	    String name = labelString.substring(0, labelString.length()-1);
             if (labelString.endsWith("?")) {
 	        setGuardExpression(name + "_isPresent");
@@ -163,11 +160,16 @@ public class InterfaceAutomatonTransition extends Transition {
         }
     }
 
-    /** Return the label of this transition.
+    /** Return the label of this transition. If the label has not been set,
+     *  return an empty string.
      *  @return The label of this transition.
      */
     public String getLabel() {
-        return label.getExpression();
+        String labelStr = label.getExpression();
+        if (labelStr == null) {
+            labelStr = "";
+        }
+        return labelStr;
     }
 
     /** Return the transition type. The transition type is one of
