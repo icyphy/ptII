@@ -369,7 +369,6 @@ public class DiningApplet extends Applet
         public void actionPerformed(ActionEvent evt) {
             try {
                 _manager.finish();
-                _manager.wrapup();
                 simulationThread = null;
                 init();
                 repaint();
