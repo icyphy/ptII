@@ -448,14 +448,15 @@ public class Schedule extends ScheduleElement {
                     if (_currentNode == null) {
                         // Throw runtime exception.
                         throw new InternalErrorException(
-                                "Encountered a schedule leaf node that is " +
-                                "not an instance of Firing.");
+                                "Encountered a schedule leaf node that is"
+                                + "not an instance of Firing.");
 		    }
 		} else {
 		    // Throw runtime exception.
 		    throw new InternalErrorException(
-                            "Encountered a ScheduleElement that is not an instance " +
-                            "of Schedule or Firing.");
+                            "Encountered a ScheduleElement that "
+                            + "is not an instance "
+                            + "of Schedule or Firing.");
 		}
 		_advance = false;
 		_lastHasNext = true;
