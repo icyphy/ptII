@@ -173,6 +173,10 @@ ptolemy -jdb .../my.xml
 <dd> for "quiet" - it is not really a debug option, but eliminates the echo of
 the command line constructed by ptinvoke to start java.
 
+ <br>Note: Don't use <CODE>-q</CODE> with <CODE>-jdb</CODE> within
+Emacs.  If you do, then the Emacs GUD mode will not be able to get the
+classpath.
+
 <dt> <CODE>-profiler</CODE>
 <dd> has the java profiler startup options canned (these could be passed using
 JAVAFLAGS, but then you have to remember and set/type them every time). Very
@@ -192,22 +196,40 @@ shared memory attach)
  <p>The documentation of changes is in the gud-jdb-use-classpath and
 gud-jdb-classpath (and other gud-jdb-xxx) variables. The new method of
 finding java source files through the classpath of the JVM is automatically
-enabled so no special setup is needed.  Just start your vergil from an Emacs
-shell like:
+enabled so no special setup is needed.  
+
+ <p>There are two primary ways to use the Emacs interface to debug
+Ptolemy: 
+<ol>
+<li> Use the -debug flag so that java starts up Ptolemy II and synchronizes
+with Emacs
+
+<li> Use the -jdb flag so that jdb starts up Ptolemy II.  
+
+</ol>
+
+<h3>-debug</h3>
+
+Just start your vergil from an Emacs shell like:
 
 <pre>
 vergil -debug &
 </pre>
 
+You should see a message:
+<pre>
+Listening for transport dt_shmem at address: javadebug
+</pre>
+and the vergil window should come up.
 
-and then when you'd like to debug (e.g set breakpoints or catch exceptions),
+ <p>when you'd like to debug (e.g set breakpoints or catch exceptions),
 start jdb from Emacs by:
 
 <pre>
 M-x jdb
 </pre>
 
-followed by:
+Then type
 
 <pre>
 jdb -attach javadebug
@@ -215,19 +237,60 @@ jdb -attach javadebug
 
 
 if you're on windows (on Unix "javadebug" would be replaced by the JVM debug
-server socket port number). To start vergil or ptolemy (or other) with jdb
-instead of java, enter
+server socket port number). 
+
+ <p>You should get a buffer named *gud-...*  with the Initializing jdb...
+message. After that switch to any Emacs buffer holding a source and go to a
+function that will be used during a run (e.g. Manager.run()).  On a source
+line, press C-x SPACE.  In the *gud-...* buffer, a breakpoint command is
+automatically entered for you  (this is GUD at work).
+
+ <p>Now run the model... When the breakpoint is hit the source file
+(Manager.java) will be positioned at the breakpoint with a "=>" at the
+beginning of the line where the stop occurred.  Now you can use C-c C-n
+(for "next" or "step-over") or C-c C-s (for "step" or "step-into") and a
+bunch of other short-cuts (like call stack browsing up/down)...  An the "=>"
+follows your steps and brings up source files as needed (GUD again...:).
+
+ <p>Most of the standard
+gud-style commands are supported (check out the "GUD" menu in the *gud-..*
+
+
+<h3>-jdb</h3>
+
+The difference between <CODE>-debug</CODE> and <CODE>-jdb</CODE> is
+that 
+<CODE>-jdb</CODE> can be used to debug initialization code that would
+have already been run by the time the application comes up.
+
+ <p>You can start ptolemy -jdb from a bash shell within Emacs, but
+that doesn't get you into GUD mode. 
+
+ <p>To start vergil or ptolemy (or other) with jdb instead of java, enter
+start jdb from Emacs by:
 
 <pre>
-ptolemy -jdb ...
+M-x jdb
 </pre>
 
-instead.
+and then type:
 
-If you then switch to a java source (that is in the classpath and/or
-sourcepath) and do C-x SPC, a breakpoint will be set... Most of the standard
-gud-style commands are supported (check out the "GUD" menu in the *gud-..*
-buffer)
+<pre>
+bash -C ptolemy -jdb ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml"
+</pre>
+
+ <p>Don't use the -q flag here because that will prevent GUD from getting the
+classpath (it finds it in the command line echo provided by ptinvoke. If you
+used a manual way of starting jdb (instead of ptinvoke), you would normally
+have to provide a -classpath argument which is what GUD is looking for).
+
+ <p>The windows version of Emacs is not cygwin-aware and it uses its own win32
+api to start any subprocess and this looks for an ".exe" (or .bat)... This
+is why we have to insert "bash -C" (which is an exe in the path) to make
+sure that the ptolemy link will be caught and processed...
+
+ <p>If you then switch to a java source (that is in the classpath and/or
+sourcepath) and do C-x SPC, a breakpoint will be set.  
 
 
 <h2><a name="debuggerExample">Debugger Example</a></h2>
