@@ -351,3 +351,36 @@ test TimeKeeper-6.3 {Check resortList} {
 
     list $val
 } {1}
+
+######################################################################
+####
+#
+test TimeKeeper-7.1 {Check sendOutNullTokens} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set act1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act1"] 
+    set act2 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act2"] 
+
+    $topLevel setDirector $dir
+
+    set outPort [java::new ptolemy.actor.TypedIOPort $act1 "output" false true]
+    set inPort [java::new ptolemy.actor.TypedIOPort $act2 "input" true false]
+    set rel [$topLevel connect $outPort $inPort "rel"]
+
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $act1]
+    $inPort createReceivers
+
+    set rcvrs [$inPort getReceivers]
+    set rcvr [java::cast ptolemy.domains.dde.kernel.TimedQueueReceiver [$rcvrs get {0 0}]]
+
+    $rcvr setCapacity 1
+
+    set hasRoom [$rcvr hasRoom]
+    $keeper sendOutNullTokens
+    set noRoom [$rcvr hasRoom]
+
+    set val [$rcvr getRcvrTime]
+    
+    list $val $hasRoom $noRoom
+} {0.0 1 0}
