@@ -9,6 +9,8 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -20,13 +22,29 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[598, 441]">
     </property>
-    <entity name="IterateOverArray" class="ptolemy.actor.hoc.IterateOverArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 150.0">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0}, {1}, {2}, {3}, {4}}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 150.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="IterateOverArray2" class="ptolemy.actor.hoc.IterateOverArray">
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 240.0">
         </property>
         <port name="output" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="413.078125, 125.390625">
-            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
             <property name="input"/>
@@ -43,7 +61,7 @@
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 155.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 240.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -69,21 +87,8 @@
         <link port="Ramp.trigger" relation="insideRelation2"/>
         <link port="Ramp.step" relation="insideRelation3"/>
     </entity>
-    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0}, {1}, {2}, {3}, {4}}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 150.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="IterateOverArray.output" relation="relation3"/>
-    <link port="NonStrictTest.input" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="IterateOverArray2.output" relation="relation"/>
 </entity>

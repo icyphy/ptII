@@ -9,6 +9,8 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -20,59 +22,6 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[598, 441]">
     </property>
-    <entity name="IterateOverArray" class="ptolemy.actor.hoc.IterateOverArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 155.0">
-        </property>
-        <port name="output" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="453.078125, 125.390625">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 280.0">
-            </property>
-        </port>
-        <port name="step" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 120.0">
-            </property>
-        </port>
-        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
-            </property>
-            <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 205.9921875">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <relation name="insideRelation1" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="insideRelation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="insideRelation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="output" relation="insideRelation1"/>
-        <link port="trigger" relation="insideRelation2"/>
-        <link port="step" relation="insideRelation3"/>
-        <link port="Ramp.output" relation="insideRelation1"/>
-        <link port="Ramp.trigger" relation="insideRelation2"/>
-        <link port="Ramp.step" relation="insideRelation3"/>
-    </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0, 0, 1, 3}, {6, 10, 15, 21}, {28, 36, 45, 55}, {66, 78, 91, 105}, {120, 136, 153, 171}}">
         </property>
@@ -80,7 +29,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 155.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 190.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -112,38 +61,78 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 180.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="4">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </port>
         <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="IterateOverArray2" class="ptolemy.actor.hoc.IterateOverArray">
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 190.0">
+        </property>
+        <port name="output" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="step" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+            <property name="input"/>
+        </port>
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+            </property>
+            <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 255.0">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <relation name="insideRelation1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="insideRelation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="insideRelation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="output" relation="insideRelation1"/>
+        <link port="trigger" relation="insideRelation2"/>
+        <link port="step" relation="insideRelation3"/>
+        <link port="Ramp.output" relation="insideRelation1"/>
+        <link port="Ramp.trigger" relation="insideRelation2"/>
+        <link port="Ramp.step" relation="insideRelation3"/>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="IterateOverArray.output" relation="relation3"/>
-    <link port="IterateOverArray.step" relation="relation2"/>
-    <link port="NonStrictTest.input" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="SequenceToArray.input" relation="relation"/>
-    <link port="SequenceToArray.output" relation="relation2"/>
+    <link port="SequenceToArray.output" relation="relation4"/>
+    <link port="IterateOverArray2.output" relation="relation2"/>
+    <link port="IterateOverArray2.step" relation="relation4"/>
 </entity>

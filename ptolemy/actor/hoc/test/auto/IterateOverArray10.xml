@@ -43,78 +43,6 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="IterateOverArray2" class="ptolemy.actor.hoc.IterateOverArray">
-        <doc>Iterate a contained actor over input arrays</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 215.0">
-        </property>
-        <property name="function" class="ptolemy.data.expr.Parameter" value="equals">
-            <property name="_stringMode" class="ptolemy.kernel.util.Attribute">
-            </property>
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="equals" class="ptolemy.kernel.util.StringAttribute" value="equals">
-                </property>
-                <property name="startsWith" class="ptolemy.kernel.util.StringAttribute" value="startsWith">
-                </property>
-                <property name="endsWith" class="ptolemy.kernel.util.StringAttribute" value="endsWith">
-                </property>
-                <property name="contains" class="ptolemy.kernel.util.StringAttribute" value="contains">
-                </property>
-            </property>
-        </property>
-        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="firstString" class="ptolemy.actor.hoc.IterateOverArray$IteratePortParameter" value="aaaaaaaaaaaaaaaaaaaa">
-            <property name="_stringMode" class="ptolemy.kernel.util.Attribute">
-            </property>
-        </property>
-        <property name="secondString" class="ptolemy.actor.hoc.IterateOverArray$IteratePortParameter" value="aaa">
-            <property name="_stringMode" class="ptolemy.kernel.util.Attribute">
-            </property>
-        </property>
-        <port name="firstString" class="ptolemy.actor.hoc.IterateOverArray$IterateParameterPort">
-            <property name="input"/>
-        </port>
-        <port name="secondString" class="ptolemy.actor.hoc.IterateOverArray$IterateParameterPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
-            <property name="output"/>
-        </port>
-        <entity name="StringCompare" class="ptolemy.actor.lib.string.StringCompare">
-            <property name="function" class="ptolemy.data.expr.Parameter" value="$function">
-            </property>
-            <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="ignoreCase">
-            </property>
-            <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="$firstString">
-            </property>
-            <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="$secondString">
-            </property>
-            <doc>Output a comparison function of two strings</doc>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 225.0">
-            </property>
-            <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-            </port>
-            <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="output" relation="relation"/>
-        <link port="StringCompare.output" relation="relation"/>
-    </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="10">
         </property>
@@ -143,16 +71,74 @@
             <property name="input"/>
         </port>
     </entity>
+    <entity name="IterateOverArray" class="ptolemy.actor.hoc.IterateOverArray">
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 220.0">
+        </property>
+        <port name="firstString" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+            <property name="input"/>
+        </port>
+        <port name="secondString" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+            <property name="output"/>
+        </port>
+        <entity name="StringCompare" class="ptolemy.actor.lib.string.StringCompare">
+            <property name="function" class="ptolemy.data.expr.Parameter" value="equals">
+            </property>
+            <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+            </property>
+            <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="aaa">
+            </property>
+            <doc>Output a comparison function of two strings</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 280.0">
+            </property>
+            <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+            </port>
+            <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <relation name="insideRelation1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="insideRelation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="insideRelation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="firstString" relation="insideRelation1"/>
+        <link port="secondString" relation="insideRelation2"/>
+        <link port="output" relation="insideRelation3"/>
+        <link port="StringCompare.firstString" relation="insideRelation1"/>
+        <link port="StringCompare.secondString" relation="insideRelation2"/>
+        <link port="StringCompare.output" relation="insideRelation3"/>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="Ramp.output" relation="relation2"/>
-    <link port="IterateOverArray2.firstString" relation="relation"/>
-    <link port="IterateOverArray2.output" relation="relation4"/>
     <link port="SequenceToArray.input" relation="relation2"/>
-    <link port="SequenceToArray.output" relation="relation"/>
-    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="SequenceToArray.output" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="IterateOverArray.firstString" relation="relation3"/>
+    <link port="IterateOverArray.output" relation="relation"/>
 </entity>

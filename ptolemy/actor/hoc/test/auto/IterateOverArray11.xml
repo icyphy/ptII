@@ -9,6 +9,8 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -41,55 +43,6 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="IterateOverArray" class="ptolemy.actor.hoc.IterateOverArray">
-        <doc>Iterate a contained actor over input arrays</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 155.0">
-        </property>
-        <property name="expression" class="ptolemy.data.expr.StringParameter" value="in*in">
-            <property name="_stringMode" class="ptolemy.kernel.util.Attribute">
-            </property>
-        </property>
-        <port name="output" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-        </port>
-        <port name="in" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
-            <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-            </property>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-        <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.StringParameter" value="$expression">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 150.0">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="in" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-        </entity>
-        <relation name="insideRelation1" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="output" relation="insideRelation1"/>
-        <link port="in" relation="relation"/>
-        <link port="Expression2.output" relation="insideRelation1"/>
-        <link port="Expression2.in" relation="relation"/>
-    </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="10">
         </property>
@@ -118,16 +71,67 @@
             <property name="input"/>
         </port>
     </entity>
+    <entity name="IterateOverArray2" class="ptolemy.actor.hoc.IterateOverArray">
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 155.0">
+        </property>
+        <port name="output" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 120.0">
+            </property>
+        </port>
+        <port name="in" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 200.0">
+            </property>
+        </port>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in*in">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="293.578125, 205.9921875">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="in" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <relation name="insideRelation1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="output" relation="insideRelation1"/>
+        <link port="in" relation="relation"/>
+        <link port="Expression.output" relation="insideRelation1"/>
+        <link port="Expression.in" relation="relation"/>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="Ramp.output" relation="relation"/>
-    <link port="IterateOverArray.output" relation="relation4"/>
-    <link port="IterateOverArray.in" relation="relation2"/>
     <link port="SequenceToArray.input" relation="relation"/>
-    <link port="SequenceToArray.output" relation="relation2"/>
-    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="SequenceToArray.output" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="IterateOverArray2.output" relation="relation2"/>
+    <link port="IterateOverArray2.in" relation="relation3"/>
 </entity>

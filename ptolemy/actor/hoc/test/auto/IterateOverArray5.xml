@@ -9,6 +9,8 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -46,45 +48,15 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 140.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </port>
         <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
-    </entity>
-    <entity name="IterateOverArray" class="ptolemy.actor.hoc.IterateOverArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 145.0">
-        </property>
-        <port name="output" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="453.078125, 125.390625">
-            </property>
-        </port>
-        <port name="input" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 200.0">
-            </property>
-        </port>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="output" relation="relation"/>
-        <link port="input" relation="relation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, {10, 11, 12, 13, 14, 15, 16, 17, 18, 19}, {20, 21, 22, 23, 24, 25, 26, 27, 28, 29}, {30, 31, 32, 33, 34, 35, 36, 37, 38, 39}, {40, 41, 42, 43, 44, 45, 46, 47, 48, 49}}">
@@ -99,16 +71,47 @@
             <property name="input"/>
         </port>
     </entity>
+    <entity name="IterateOverArray2" class="ptolemy.actor.hoc.IterateOverArray">
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 180.0">
+        </property>
+        <port name="in" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 93.33333587646484">
+            </property>
+        </port>
+        <port name="out" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 200.0">
+            </property>
+        </port>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="in" relation="relation"/>
+        <link port="out" relation="relation"/>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="SequenceToArray.input" relation="relation"/>
-    <link port="SequenceToArray.output" relation="relation2"/>
-    <link port="IterateOverArray.output" relation="relation3"/>
-    <link port="IterateOverArray.input" relation="relation2"/>
-    <link port="NonStrictTest.input" relation="relation3"/>
+    <link port="SequenceToArray.output" relation="relation4"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="IterateOverArray2.in" relation="relation4"/>
+    <link port="IterateOverArray2.out" relation="relation2"/>
 </entity>

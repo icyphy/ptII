@@ -44,11 +44,8 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -325,8 +322,6 @@ public class IterateOverArray extends TypedCompositeActor {
                     while (entityPorts.hasNext()) {
                         Port insidePort = (Port)entityPorts.next();
 
-                        // Skip ports associated with PortParameters.
-                        if (insidePort instanceof ParameterPort) continue;
                         String name = insidePort.getName();
 
                         // If there isn't already a port with this name,
@@ -667,32 +662,6 @@ public class IterateOverArray extends TypedCompositeActor {
                 }
             }
         }
-        // If we have a parameter port, then add constraints relating the
-        // type to that of the associated parameter.  But only do this
-        // if the port belongs to me and is connected on the outside.
-        if (sourcePort.getContainer().equals(this)
-                && sourcePort instanceof IterateParameterPort
-                && sourcePort.sourcePortList().size() > 0) {
-
-            Type sourcePortType = sourcePort.getType();
-            if (!(sourcePortType instanceof ArrayType)) {
-                throw new InternalErrorException(
-                "Source port was expected to be an array type: "
-                + sourcePort.getFullName()
-                + ", but it had type: "
-                + sourcePortType);
-            }
-
-            PortParameter parameter
-                    = ((IterateParameterPort)sourcePort).getParameter();
-            if (parameter != null) {
-                InequalityTerm elementTerm
-                        = ((ArrayType)sourcePortType).getElementTypeTerm();
-                Inequality ineq
-                        = new Inequality(elementTerm, parameter.getTypeTerm());
-                result.add(ineq);
-            }
-        }
         return result;
     }
 
@@ -747,15 +716,6 @@ public class IterateOverArray extends TypedCompositeActor {
             _postfireReturns = true;
             while (actors.hasNext() && !_stopRequested) {
 
-                // Initialize all instances of IteratePortParameter.
-                Iterator parameters = container.attributeList(
-                        IteratePortParameter.class).iterator();
-                while (parameters.hasNext()) {
-                    IteratePortParameter parameter
-                            = (IteratePortParameter)parameters.next();
-                    parameter.setFirstCurrentValue();
-                }
-
                 Actor actor = (Actor)actors.next();
                 int result = Actor.COMPLETED;
                 int iterationCount = 0;
@@ -789,17 +749,6 @@ public class IterateOverArray extends TypedCompositeActor {
                             }
                         }
                     }
-                    // Step all instances of IteratePortParameter.
-                    parameters = container.attributeList(
-                            IteratePortParameter.class).iterator();
-                    while (parameters.hasNext()) {
-                        IteratePortParameter parameter
-                                = (IteratePortParameter)parameters.next();
-                        if (parameter.stepCurrentValue()) {
-                            outOfData = false;
-                        }
-                    }
-
                     if (outOfData) {
                         if (_debugging) {
                             _debug("No more input data for: "
@@ -947,94 +896,6 @@ public class IterateOverArray extends TypedCompositeActor {
 
         // Indicator that at least one actor returned false in postfire.
         private boolean _postfireReturns = true;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// IterateParameterPort
-
-    /** This specialized subclass of ParameterPort creates as its associated
-     *  port the specialized Iterate ParameterPort in order to establish the
-     *  appropriate type constraints.
-     */
-    private static class IterateParameterPort extends ParameterPort {
-
-        /** Construct a port with the given name contained by the specified
-         *  entity.
-         *  @param container The container.
-         *  @param name The name of the parameter.
-         *  @exception IllegalActionException If the parameter is not of an
-         *   acceptable class for the container.
-         *  @exception NameDuplicationException If the name coincides with
-         *   a parameter already in the container.
-         */
-        public IterateParameterPort(ComponentEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-        }
-
-        /** Override the base class to convert the token to the element
-         *  type rather than to the type of the port. Note that normally
-         *  a parameter port is not connected on the inside, so this won't
-         *  have any destinations.  Nonetheless, just in case it is, we
-         *  handle it properly.
-         *  @param channelIndex The index of the channel, from 0 to width-1
-         *  @param token The token to send
-         *  @exception NoRoomException If there is no room in the receiver.
-         *  @exception IllegalActionException Not thrown in this base class.
-         */
-        public void sendInside(int channelIndex, Token token)
-                throws IllegalActionException, NoRoomException {
-            Receiver[][] farReceivers;
-            if (_debugging) {
-                _debug("send inside to channel " + channelIndex + ": "
-                        + token);
-            }
-            try {
-                try {
-                    _workspace.getReadAccess();
-                    ArrayType type = (ArrayType)getType();
-                    int compare = TypeLattice.compare(token.getType(),
-                            type.getElementType());
-                    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                        throw new IllegalActionException(
-                                "Run-time type checking failed. Token type: "
-                                + token.getType().toString() + ", port: "
-                                + getFullName() + ", port type: "
-                                + getType().toString());
-                    }
-
-                    // Note that the getRemoteReceivers() method doesn't throw
-                    // any non-runtime exception.
-                    farReceivers = deepGetReceivers();
-                    if (farReceivers == null ||
-                            farReceivers[channelIndex] == null) return;
-                } finally {
-                    _workspace.doneReading();
-                }
-                for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                    TypedIOPort port =
-                        (TypedIOPort)farReceivers[channelIndex][j]
-                        .getContainer();
-                    Token newToken = port.convert(token);
-                    farReceivers[channelIndex][j].put(newToken);
-                }
-            } catch (ArrayIndexOutOfBoundsException ex) {
-                // NOTE: This may occur if the channel index is out of range.
-                // This is allowed, just do nothing.
-            }
-        }
-
-        /** Set the type constraints between the protected member _parameter
-         *  and this port.  This is a protected method so that subclasses
-         *  can define different type constraints.  It is assured that when
-         *  this is called, _parameter is non-null.  However, use caution,
-         *  since this method may be called during construction of this
-         *  port, and hence the port may not be fully constructed.
-         */
-        protected void _setTypeConstraints() {
-            // The parameter should be the element type of the port,
-            // but we can't set that up here, so we do nothing.
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1195,155 +1056,5 @@ public class IterateOverArray extends TypedCompositeActor {
 
         // The associated port, if there is one.
         private Port _associatedPort = null;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// IteratePortParameter
-
-    /** This specialized subclass of PortParameter creates as its associated
-     *  port the specialized Iterate ParameterPort in order to establish the
-     *  appropriate type constraints.
-     */
-    public static class IteratePortParameter extends PortParameter {
-
-        // NOTE: This class has to be static because otherwise the
-        // constructor has an extra argument (the first argument,
-        // actually) that is an instance of the enclosing class.
-        // The MoML parser cannot know what the instance of the
-        // enclosing class is, so it would not be able to instantiate
-        // these ports.
-
-        /** Construct a parameter with the given name contained by the specified
-         *  entity. The container argument must not be null, or a
-         *  NullPointerException will be thrown.  This parameter will create
-         *  an associated port in the same container.
-         *  @param container The container.
-         *  @param name The name of the parameter.
-         *  @exception IllegalActionException If the parameter is not of an
-         *   acceptable class for the container.
-         *  @exception NameDuplicationException If the name coincides with
-         *   a parameter already in the container.
-         */
-        public IteratePortParameter(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-        }
-
-        /** Set the current value of this parameter to the first element
-         *  of the specified ArrayToken and notify the container
-         *  and value listeners. This does not change the persistent value
-         *  (returned by getExpression()), but does change the current value
-         *  (returned by getToken()). If the specified token is an empty
-         *  array, then do nothing.
-         *  <p>
-         *  If the type of this variable has been set with
-         *  setTypeEquals(), then convert the specified token into that
-         *  type, if possible, or throw an exception, if not.  If
-         *  setTypeAtMost() has been called, then verify that its type
-         *  constraint is satisfied, and if not, throw an exception.
-         *  Note that you can call this with a null argument regardless
-         *  of type constraints, unless there are other variables that
-         *  depend on its value.
-         *  @param token The new token to be stored in this variable.
-         *  @exception IllegalActionException If the token type is not
-         *   ArrayToken, or if you are attempting
-         *   to set to null a variable that has value dependents, or if the
-         *   container rejects the change.
-         */
-        public void setCurrentValue(ptolemy.data.Token token)
-                throws IllegalActionException {
-            if (_debugging) {
-                _debug("setCurrentValue: " + token);
-            }
-            if (!(token instanceof ArrayToken)) {
-                throw new IllegalActionException(this,
-                "Expected an array token but got: " + token);
-            }
-            _array = (ArrayToken)token;
-            if (_array.length() == 0) {
-                // Empty input array. Nothing to do.
-                return;
-            }
-            Token firstValue = _array.getElement(0);
-            _setTokenAndNotify(firstValue);
-            _count = 1;
-            setUnknown(false);
-        }
-
-        /** Set the current value to the first element of the most
-         *  recently received array. If there is no array or it is
-         *  empty, then leave the value unchanged.
-         *  @return True if a value is set.
-         *  @exception IllegalActionException If the token type is not
-         *   compatible with constraints, or if you are attempting
-         *   to set to null a variable that has value dependents, or if the
-         *   container rejects the change.
-         */
-        public boolean setFirstCurrentValue()
-                throws IllegalActionException {
-            _count = 0;
-            return stepCurrentValue();
-        }
-
-        /** Step to the next element of the most recently received array,
-         *  making that element the current value. If there are no more
-         *  available elements, then leave the value unchanged.
-         *  @return True if a value is set.
-         *  @exception IllegalActionException If the token type is not
-         *   compatible with constraints, or if you are attempting
-         *   to set to null a variable that has value dependents, or if the
-         *   container rejects the change.
-         */
-        public boolean stepCurrentValue()
-                throws IllegalActionException {
-            if (_array != null && _array.length() > _count) {
-                Token nextValue = _array.getElement(_count);
-                _count++;
-                if (_debugging) {
-                    _debug("currentValue: " + nextValue);
-                }
-                _setTokenAndNotify(nextValue);
-                setUnknown(false);
-                return true;
-            }
-            return false;
-        }
-
-        /** If the specified container is of type TypedActor, then
-         *  create an associated instance of IterateParameterPort and
-         *  set the protected variable _port equal to that port.
-         *
-         *  @param container The container for the port.
-         *  @param name The name for the port.
-         *  @exception IllegalActionException If the port cannot be
-         *   contained by specified container.
-         *  @exception NameDuplicationException If a name collision occurs.
-         */
-        protected void _createParameterPort(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            if (container instanceof TypedActor) {
-                // If we get to here, we know the container is a
-                // ComponentEntity, so the cast is safe.
-                _port = new IterateParameterPort((ComponentEntity)container,
-                        name);
-
-                // NOTE: The following two statements are not
-                // necessary, since the port will discover this
-                // parameter when it's setContainer() method is
-                // called.  Moreover, doing this again is not a good
-                // idea, since the setTypeSameAs() method will just
-                // add an extra (redundant) set of constraints.  This
-                // will cause the clone tests to fail, since cloning
-                // does not produce the extra set of constraints.
-                // _port._parameter = this;
-                // _port.setTypeSameAs(this);
-            }
-        }
-
-        // The most recently received array token.
-        private ArrayToken _array = null;
-
-        // The count into the array of the next token to read.
-        private int _count = 0;
     }
 }
