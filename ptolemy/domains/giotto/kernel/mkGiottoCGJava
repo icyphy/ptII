@@ -120,7 +120,15 @@ EOF1
 done
 
 # Create the driver
-drivers1=`egrep "^driver" $giottoFile | awk '{print substr($2, 1, length($2) - length("driver"))"inputdriver"}'`
+drivers1=`egrep "^driver" $giottoFile | 
+    awk '{ if ($2 ~ /\(/) {
+            split($2, f, "(")
+            print substr(f[1], 1, length(f[1]) - length("driver"))"inputdriver"
+           } else {
+            print substr($2, 1, length($2) - length("driver"))"inputdriver"
+           }
+
+    }'`
 drivers2=`egrep ":=" $giottoFile | awk '{print substr($4, 1, length($4)-1)}'`
 
 # Handle sensors like "    real_port  positionX   uses GetPosX;"
@@ -166,3 +174,117 @@ public class $driver implements DriverInterface, Serializable {
 EOF2
 done
 
+# Create the port files
+ports=`egrep 'uses|:=' $giottoFile | awk '{print $1}' | sort | uniq`
+for port in $ports
+do
+  portFileName=$basename/$port.java
+
+  echo "$portFileName"
+  cat > $portFileName <<EOF1
+/* Port for $port in $basename giotto model.
+*/
+
+package $basename;
+
+import giotto.functionality.interfaces.PortVariable;
+
+import java.io.Serializable;
+
+/**
+$port in $basename giotto model.
+<p>Created by $PTII/ptolemy/domains/gr/kernel/mkGiottoCGJava.
+@author $USERNAME
+@version $Id$
+@since `date`
+*/
+public class $port implements PortVariable, Serializable {
+
+    public void copyValueFrom(PortVariable source) {
+        //_value = ((real_port)source).getFloatValue();
+    }
+
+    //private float _value;
+
+}
+EOF1
+
+
+
+  portFileName=$basename/copy_$port.java
+
+  echo "$portFileName"
+  cat > $portFileName <<EOF5
+/* copy_$port
+*/
+
+package $basename;
+
+import giotto.functionality.code.copy_int_port;
+import giotto.functionality.interfaces.DriverInterface;
+import giotto.functionality.table.Parameter;
+
+import java.io.Serializable;
+
+/**
+copy_$port
+<p>Created by $PTII/ptolemy/domains/gr/kernel/mkGiottoCGJava.
+@author $USERNAME
+@version $Id$
+@since `date`
+*/
+public class copy_$port extends copy_int_port implements DriverInterface, Serializable {
+
+    /**
+     * @see giotto.functionality.interfaces.DriverInterface#run(Parameter)
+     */
+    public void run(Parameter parameter) {
+        System.out.println("copy_$port_port " + parameter);  
+        super.run(parameter);
+    }
+}
+EOF5
+done
+
+
+# Create the condition files
+conditions=`egrep "^[	]*if " $giottoFile | awk '{split($2, f ,"("); print f[1]}' | sort | uniq` 
+for condition in $conditions
+do
+  conditionFileName=$basename/$condition.java
+
+  echo "$conditionFileName"
+  cat > $conditionFileName <<EOF6
+/* $condition
+*/
+
+package $basename;
+
+import giotto.functionality.code.BaseCondition;
+import giotto.functionality.interfaces.ConditionInterface;
+import giotto.functionality.table.Parameter;
+
+import java.io.Serializable;
+
+/**
+$condition
+<p>Created by $PTII/ptolemy/domains/gr/kernel/mkGiottoCGJava.
+@author $USERNAME
+@version $Id$
+@since `date`
+*/
+public class $condition extends BaseCondition implements ConditionInterface, Serializable {
+
+    /**
+     * @see giotto.functionality.interfaces.ConditionInterface#run(Parameter)
+     */
+    public boolean run(Parameter parameter) {
+        System.out.println("condition $condition " + parameter);  
+        if (super.run(parameter)) {
+            return true;
+        }
+        return false;
+    }
+}
+EOF6
+done
