@@ -369,7 +369,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                 }
             }
             if(finished && active) {
-                throw new InvalidStateException("Graph is cyclic.");
+                throw new InvalidStateException(
+		    "DirectedAcyclicGraph.topologicalSort: Graph is cyclic.");
             }
         }
         return result;
@@ -418,7 +419,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         _computeTransitiveClosure();
         if ( !isAcyclic()) {
             throw new InvalidStateException("DirectedAcyclicGraph._check: " +
-                    "Cycle in CPO.");
+                    "Graph is cyclic.");
         }
 
         // find bottom
