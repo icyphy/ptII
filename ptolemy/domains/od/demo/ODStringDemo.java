@@ -66,7 +66,7 @@ public class ODStringDemo {
         topLevelActor.setName("universe");
         Manager manager = new Manager(workSpc, "manager");
         ODDirector director = new ODDirector(workSpc, "director");
-        director.setCompletionTime(40.0);
+        director.setCompletionTime(5500);
         topLevelActor.setManager( manager );
         topLevelActor.setDirector( director );
         
@@ -95,19 +95,16 @@ public class ODStringDemo {
         System.out.println();
         System.out.println();
         System.out.println();
-        System.out.println("\t");
-        
-        /*
-        System.out.println();
-        System.out.println();
-        System.out.println("\t");
-        */
         
         // int width = input.getWidth();
         // System.out.println("Width of input port is " + width);
         
         // Start simulation
-        manager.startRun();
+        manager.run();
+        
+        System.out.println();
+        System.out.println();
+        System.out.println();
         
     }
     
