@@ -37,9 +37,11 @@ import ptolemy.actor.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.*;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -366,7 +368,22 @@ public class DEDirector extends Director {
     public double getNextIterationTime() {
         try {
             DEEvent next = _eventQueue.get();
-            return next.timeStamp();
+            double nextTime = next.timeStamp();
+            // The next event on the queue may have the current time.
+            // May need to look deeper in the queue.
+            // Save items to reinsert into queue.
+            LinkedList eventsToPutBack = new LinkedList();
+            while (nextTime <= getCurrentTime()) {
+                eventsToPutBack.add(_eventQueue.take());
+                next = _eventQueue.get();
+                nextTime = next.timeStamp();
+            }
+            // Put back events that need to be put back.
+            Iterator events = eventsToPutBack.iterator();
+            while (events.hasNext()) {
+                _eventQueue.put((DEEvent)events.next());
+            }
+            return nextTime;
         } catch (IllegalActionException e) {
             // The queue is empty.
             return getStopTime();
