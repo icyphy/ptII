@@ -541,7 +541,7 @@ public class StringUtilities {
      *  String.replaceAll() method in jdk1.4, this method is extremely
      *  slow.
      *  @param string The string to edit.
-     *  @param old The string to replace.
+     *  @param pattern The string to replace.
      *  @param replacement The string to replace it with.
      *  @return A new string with the specified replacements.
      */
@@ -739,7 +739,7 @@ public class StringUtilities {
 
     /** Return a string that contains a description of how to use this
      *  class.
-     *  @param commnandTemplate  A string naming the command and the
+     *  @param commandTemplate  A string naming the command and the
      *  format of the arguments, for example
      *  "moml [options] [file . . .]"
      *  @param commandOptions A 2xN array of Strings that list command-line
