@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -160,6 +160,7 @@ public class VariableLattice extends Lattice {
 
         newObject.newCoefficients.setTypeSameAs(
                 newObject.reflectionCoefficients);
+        // FIXME: Is this needed?  If so, shouldn't it be in the base class?
         newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
