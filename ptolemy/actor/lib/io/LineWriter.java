@@ -197,6 +197,8 @@ public class LineWriter extends Sink {
                 // will be no loss of data.
                 if (file.exists() && !appendValue && confirmOverwriteValue) {
                     // Query for overwrite.
+                    // FIXME: This should be called in the event thread!
+                    // There is a chance of deadlock since it is not.
                     if (!MessageHandler.yesNoQuestion(
                             "OK to overwrite " + file + "?")) {
                         throw new IllegalActionException(this,

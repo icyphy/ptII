@@ -167,6 +167,8 @@ public class JAIBMPWriter extends Sink {
             .booleanValue();
         if (_file.exists()) {
             if (_confirmOverwriteValue) {
+                // FIXME: This should be called in the event thread!
+                // There is a chance of deadlock if not.
                 if (!MessageHandler.yesNoQuestion(
                         "OK to overwrite " + _file + "?")) {
                     throw new IllegalActionException(this,
