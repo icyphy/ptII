@@ -247,11 +247,11 @@ public class MoMLApplication {
                 Object args[] = new Object[1];
                 args[0] = workspace;
                 NamedObj newModel = (NamedObj)constructor.newInstance(args);
-		
+
                 // If there is a configuration, then create an effigy
                 // for the class, and enter it in the directory.
                 if (_config != null) {
-                    
+
                     // Create an effigy for the model.
                     PtolemyEffigy effigy
                             = new PtolemyEffigy(_config.workspace());
@@ -289,7 +289,7 @@ public class MoMLApplication {
                     // defer to it to read the model.  Otherwise,
                     // assume the file is an XML file.
                     if (_config != null) {
-                        ModelDirectory directory = 
+                        ModelDirectory directory =
                                 (ModelDirectory)_config.getEntity("directory");
                         if (directory == null) {
                             throw new InternalErrorException(
@@ -356,7 +356,7 @@ public class MoMLApplication {
             String value = (String)values.next();
 
             boolean match = false;
-            ModelDirectory directory = 
+            ModelDirectory directory =
 		(ModelDirectory)_config.getEntity("directory");
             if (directory == null) {
                 throw new InternalErrorException("No model directory!");
