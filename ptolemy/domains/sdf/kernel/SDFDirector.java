@@ -119,7 +119,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @exception It may be thrown in derived classes if the
      *      director is not compatible with the specified container.
      */
-    public SDFDirector(CompositeActor container, String name)
+    public SDFDirector(TypedCompositeActor container, String name)
             throws IllegalActionException {
         super(container, name);
         _init();
@@ -154,7 +154,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  container.
      */
     public void fire() throws IllegalActionException {
-        CompositeActor container = ((CompositeActor)getContainer());
+        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
 
         if (container == null) {
             throw new InvalidStateException("SDFDirector " + getName() +
