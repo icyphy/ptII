@@ -81,6 +81,24 @@ public class ExtendedMath {
         return (Math.exp(x) + Math.exp(-x))/2;
     }
 
+    /** Implement Euclid's method for finding the Greatest Common Divisor
+     * (GCD) of
+     *  two numbers.  If the numbers are negative, then we compute the
+     *  GCD of their absolute values.
+     */
+    public static int gcd(int u, int v) {
+        int t;
+        if (u < 0) u = -u;
+        if (v < 0) v = -v;
+        while (u > 0) {
+            if (u < v)
+                { t = u; u = v; v = t; }
+            else
+                { u = u % v; }
+        }
+        return v;
+    }
+
     /** Return the base-10 logarithm of the argument. */
     public static final double log10(final double x) {
         return Math.log(x) * _ONEOVERLN10;

@@ -134,25 +134,6 @@ public class Fraction extends Object {
             return false;
     }
 
-    /** Implement Euclid's method for finding the Greatest Common Divisor
-     * (GCD) of
-     *  two numbers.  If the numbers are negative, then we compute the
-     *  GCD of their absolute values.
-     */
-    //FIXME: should this go someplace better?
-    public static int gcd(int u, int v) {
-        int t;
-        if (u < 0) u = -u;
-        if (v < 0) v = -v;
-        while (u > 0) {
-            if (u < v)
-                { t = u; u = v; v = t; }
-            else
-                { u = u % v; }
-        }
-        return v;
-    }
-
     /** Return the denominator of this fraction.
      */
     public int getDenominator() {
@@ -184,7 +165,7 @@ public class Fraction extends Object {
      */
     //FIXME: should this go someplace better?
     public static int lcm(int u, int v) {
-        int gcd = gcd(u, v);
+        int gcd = ExtendedMath.gcd(u, v);
         int result = u * v / gcd;
         return result;
     }
@@ -230,7 +211,7 @@ public class Fraction extends Object {
      *  fraction is put in standard form (denominator greater than zero).
      */
     protected void _simplify() {
-        int factor = gcd(_num, _den);
+        int factor = ExtendedMath.gcd(_num, _den);
         _num = _num / factor;
         _den = _den / factor;
         // Standardize the sign
