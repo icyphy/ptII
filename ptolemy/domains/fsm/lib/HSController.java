@@ -41,7 +41,7 @@ import ptolemy.domains.fsm.kernel.util.VariableList;
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.ct.kernel.*;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMController

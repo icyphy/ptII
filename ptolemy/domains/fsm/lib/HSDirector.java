@@ -40,8 +40,8 @@ import ptolemy.actor.*;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.ct.kernel.*;
 
-import collections.LinkedList;
-import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMDirector
@@ -151,9 +151,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         // elaborate
         if (refine != null) {
             refine.postfire();
-            Enumeration outports = refine.outputPorts();
-            while(outports.hasMoreElements()) {
-                IOPort p = (IOPort)outports.nextElement();
+            Iterator outports = refine.outputPortList().iterator();
+            while(outports.hasNext()) {
+                IOPort p = (IOPort)outports.next();
                 transferOutputs(p);
             }
         }
@@ -162,6 +162,5 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
     /** @serial True if this is the first time through postfire(). */
     private boolean _first = true;
-
 
 }
