@@ -26,8 +26,8 @@ public class NewAudio implements Runnable {
 
     public NewAudio(byte[] byteBuffer, AudioFormat af) throws IOException {
         this(new ByteArrayInputStream(byteBuffer), af, byteBuffer.length);
-    }  
- 
+    }
+
     public NewAudio(InputStream is, AudioFormat af) throws IOException {
         this(is, af, AudioStream.UNKNOWN_LENGTH);
     }
@@ -45,11 +45,11 @@ public class NewAudio implements Runnable {
     }
 
     public NewAudio(String fileOrURLName, boolean isFile) throws MalformedURLException , IOException {
-        if (isFile) 
+        if (isFile)
             _loadAsFile(fileOrURLName);
         else _loadAsURL(fileOrURLName);
     }
-     
+
     public AudioStream getStream() {
         return _stream;
     }
@@ -79,7 +79,7 @@ public class NewAudio implements Runnable {
         }
         File file = new File( filename );
         try {
-            if (AudioSystem.write(_stream, file, fileType, -1) == null) 
+            if (AudioSystem.write(_stream, file, fileType, -1) == null)
                 System.out.println("Could not save as " + fileType);
             else System.out.println("File saved.");
         } catch (IOException ioe) {
@@ -91,17 +91,17 @@ public class NewAudio implements Runnable {
         _looping = true;
         startPlayback();
     }
-  
+
     public void openPlayback() {
         OutputChannel channel = null;
         if (_stream == null) {
             System.out.println("AudioStream is null, cannot start playback");
             return;
         }
-        if (_mixer == null) 
-            _mixer = AudioSystem.getMixer(null);        
+        if (_mixer == null)
+            _mixer = AudioSystem.getMixer(null);
         try {
-            channel = _mixer.getOutputChannel(_stream.getFormat(), 16384);					
+            channel = _mixer.getOutputChannel(_stream.getFormat(), 16384);
         } catch (AudioUnavailableException e2) {
             System.err.println("AudioUnavailableException: " + e2);
             return;
@@ -115,7 +115,7 @@ public class NewAudio implements Runnable {
         if ( _pushThread != null ) {
             System.out.println("Playback thread is not null, cannot start playback : " + _pushThread);
             return;
-        } 
+        }
         if ( _current == null ) {
             System.out.println("InputStream not set, cannot start playback");
             return;
@@ -123,9 +123,9 @@ public class NewAudio implements Runnable {
         if ( _target == null ) {
             System.out.println("OutputChannel not set, cannot start playback");
             return;
-        } 
+        }
         _stopping = false;
-        _stopped = false; 
+        _stopped = false;
         _soundBuffer = new ByteArrayOutputStream();
         _pushThread = new Thread(this);
         _pushThread.start();
@@ -136,7 +136,7 @@ public class NewAudio implements Runnable {
             _target.flush();
             _target.resume();
         }
-    
+
         if ( _pushThread == null ) {
             System.out.println("Playback thread is null, cannot stop playback");
             return;
@@ -153,7 +153,7 @@ public class NewAudio implements Runnable {
         _soundBuffer = new ByteArrayOutputStream();
         _looping = false;
     }
-  
+
     public void pausePlayback() {
         if( _target == null ) {
             System.out.println("OutputChannel not set, cannot pause");
@@ -169,9 +169,9 @@ public class NewAudio implements Runnable {
     }
 
     public void resumePlayback() {
-        if( _target == null ) 
+        if( _target == null )
             startPlayback();
-        else if( _target.isPaused() ) 
+        else if( _target.isPaused() )
             _target.resume();
     }
 
@@ -179,10 +179,10 @@ public class NewAudio implements Runnable {
         byte[] dataArray = new byte[_target.getBufferSize()/2];
         byte[] soundByte;
         int bytesRead, bytesRemaining;
-        while(_stopping == false) {         
-            try {						
+        while(_stopping == false) {
+            try {
                 bytesRead = _current.read(dataArray);
-                if (bytesRead == -1) 
+                if (bytesRead == -1)
                     if (!_looping) {
                         _target.write(null, 0, 0);
                         break;
@@ -206,7 +206,7 @@ public class NewAudio implements Runnable {
         }
         _stopped = true;
     }
-  
+
 
     public String toString() {
         return "Ptolemy Audio\n"
@@ -225,16 +225,16 @@ public class NewAudio implements Runnable {
         _byteBuffer = null;
         _doubleBuffer = null;
     }
-                
+
     public static final boolean IS_FILE = true;
     public static final boolean IS_URL = false;
 
 
     /* PRIVATE METHODS */
-       
-    private void _loadAsFile(String filename ) throws IOException {        
+
+    private void _loadAsFile(String filename ) throws IOException {
         FileInputStream infile = new FileInputStream(filename);
-        if (infile == null) 
+        if (infile == null)
             throw new IOException ("Cannot open file: " + filename);
         else _loadAsStream(infile);
     }
@@ -242,14 +242,14 @@ public class NewAudio implements Runnable {
     private void _loadAsURL(String urlname ) throws MalformedURLException, IOException {
         URL theurl = new URL(urlname);
         InputStream urlstream = theurl.openStream();
-        if (urlstream == null) 
+        if (urlstream == null)
             throw new IOException("Cannot open URL: " + urlname);
         else _loadAsStream(urlstream);
     }
 
     private void _loadAsStream(InputStream is) throws IOException {
         FileStream fs = AudioSystem.getFileStream(is);
-        if (fs == null)        
+        if (fs == null)
             throw new IOException("Unable to obtain audio data from file");
         AudioStream as = AudioSystem.getAudioStream( fs );
         if (as == null)
@@ -258,7 +258,7 @@ public class NewAudio implements Runnable {
     }
 
     private void _loadAsStream(AudioStream as) throws IOException {
-        if (as == null) 
+        if (as == null)
             throw new IOException("Can't load empty audio stream");
         AudioStream asold = as;
         if ((as.getFormat().getEncoding() == AudioFormat.Encoding.ULAW) ||
@@ -271,9 +271,9 @@ public class NewAudio implements Runnable {
                     af.getFrameSizeInBits() * 2,
                     af.getFrameRate())
                     , asold);
-        } 
-        if (as == null) 
-            throw new IOException("Could not convert audio stream to linear format");        
+        }
+        if (as == null)
+            throw new IOException("Could not convert audio stream to linear format");
         _stream = as;
         _byteBuffer = null;
         _doubleBuffer = null;
@@ -322,7 +322,7 @@ public class NewAudio implements Runnable {
             for (j = 0; j < bitratio; j += 1)
                 if (af.getEncoding() == AudioFormat.Encoding.PCM_SIGNED_BIG_ENDIAN)
                     _byteBuffer[bitratio * i + j] = (byte) ((bits << (8 * j)) >> (8 * (bitratio - 1)));
-                else  _byteBuffer[bitratio * (i + 1) - j - 1] 
+                else  _byteBuffer[bitratio * (i + 1) - j - 1]
                           = (byte) ((bits << (8 * j)) >> (8 * (bitratio - 1)));
         }
     }
@@ -330,12 +330,12 @@ public class NewAudio implements Runnable {
     private static byte[] _reverse(byte[] b, AudioFormat af) {
         byte[] br = new byte[b.length];
         int bytesPerSample = af.getSampleSizeInBits() / 8;
-        for (int i = 0; i < (b.length / bytesPerSample); i += 1) 
+        for (int i = 0; i < (b.length / bytesPerSample); i += 1)
             for (int j = 0; j < bytesPerSample ; j += 1)
                 br[i * bytesPerSample + (bytesPerSample - j - 1)] = b[i * bytesPerSample + j];
         return br;
     }
-    
+
     /* PRIVATE FIELDS */
 
     private Mixer _mixer = null;
