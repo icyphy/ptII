@@ -147,6 +147,23 @@ public class ArrayType extends StructuredType {
 	return _elementType.isInstantiable();
     }
 
+    /** Return true if the specified type is a substitution instance of this
+     *  type. For the argument to be a substitution instance, this type must
+     *  be a variable, and the argument must be a type that can be obtained
+     *  by replacing the BaseType.NAT component of the declared type by
+     *  another type.
+     *  @parameter type A Type.
+     *  @return True is the argument is a substitution instance of this type.
+     */
+    public boolean isSubstitutionInstance(Type type) {
+	if (isConstant() || ( !(type instanceof ArrayType))) {
+	    return false;
+	}
+
+	Type argElemType = ((ArrayType)type).getElementType();
+	return _declaredElementType.isSubstitutionInstance(argElemType);
+    }
+
     /** Set the user of this ArrayType. The user can only be set once,
      *  otherwise an exception will be thrown.
      *  @param Object The user.
@@ -214,27 +231,21 @@ public class ArrayType extends StructuredType {
 	}
     }
 
-    /** Update this Type to the specified ArrayType. This Type must not
-     *  be a constant, otherwise an exception will be thrown. 
-     *  The specified type must have the same structure as this type.
+    /** Update this Type to the specified ArrayType. 
+     *  The specified type must be a substitution instance of this type.
      *  This method will only update the component whose declared type is
      *  BaseType.NAT, and leave the constant part of this type intact.
      *  This method does not check for circular usage, the caller should
      *  perform this check.
      *  @param st A StructuredType.
-     *  @exception IllegalActionException If this Type is a constant, or
-     *   the specified type has a different structure.
+     *  @exception IllegalActionException If the specified type is not a
+     *   substitution instance of this type.
      */
     public void updateType(StructuredType newType)
 	    throws IllegalActionException {
-	if (isConstant()) {
+	if ( !this.isSubstitutionInstance(newType)) {
 	    throw new IllegalActionException("ArrayType.updateType: " +
-		"Cannot update a constant type.");
-	}
-
-	if ( !(newType instanceof ArrayType)) {
-	    throw new IllegalActionException("ArrayType.updateType: " +
-		"The specified type is not an ArrayType.");
+		"The argument is not a substitution instance of this type.");
 	}
 
 	Type newElemType = ((ArrayType)newType).getElementType();
@@ -458,18 +469,15 @@ public class ArrayType extends StructuredType {
 	    return isInstantiable();
 	}
 
-    	/** Set the element type if it is settable.
-         *  @param e A Type.
-         *  @exception IllegalActionException If the element type is
-	 *   not settable.
+    	/** Set the element type to the specified type.
+         *  @param e a Type.
+         *  @exception IllegalActionException If setting the element type to
+	 *   to the specified one would result in circular type structure;
+	 *   or the specified type is not a substitution instance of the
+	 *   element type.
      	 */
     	public void setValue(Object e)
              throws IllegalActionException {
-	    if (!isSettable()) {
-	    	throw new IllegalActionException("ElementTypeTerm.setValue:" +
-		" The element type cannot be changed.");
-	    }
-
 	    // check for circular type containment
 	    if (e instanceof StructuredType) {
 		if (_arrayType._deepIsUser(e)) {
@@ -479,28 +487,28 @@ public class ArrayType extends StructuredType {
 		}
 	    }
 
+	    if ( !_declaredElementType.isSubstitutionInstance((Type)e)) {
+	        // The LUB of the _elementType and another type is General,
+		// this is a type conflict.
+
+		// FIXME Should throw TypeConflictException
+		// LinkedList conflict = new LinkedList();
+		// conflict.add(_arrayType);
+		// throw new TypeConflictException(conflict.elements(),
+		//    "Type conflict occurs when updating array element "
+		//    + "type. Old type: " + _elementType.toString() +
+		//    + "; New type: " + e.toString());
+
+	    	throw new IllegalActionException("ElementTypeTerm.setValue:" +
+		    " The new type is not a substitution instance of the " +
+		    "element type. element type: " +
+		    _declaredElementType.toString() + "new type: " +
+		    e.toString());
+	    }
 
 	    if (_declaredElementType == BaseType.NAT) {
 		_elementType = (Type)e;
 	    } else {
-		if ( !(e instanceof StructuredType)) {
-		    // The LUB of the _elementType and another type is General,
-		    // this is a type conflict.
-
-		    // FIXME Should throw TypeConflictException
-		    // LinkedList conflict = new LinkedList();
-		    // conflict.add(_arrayType);
-		    // throw new TypeConflictException(conflict.elements(),
-		    //    "Type conflict occurs when updating array element "
-		    //    + "type. Old type: " + _elementType.toString() +
-		    //    + "; New type: " + e.toString());
-
-		    throw new IllegalActionException("Type conflict occurs " +
-			" when updating array element type. Old type: " +
-			_elementType.toString() + "; New type: " +
-		  	e.toString());
-
-		}
 	        ((StructuredType)_elementType).updateType((StructuredType)e);
 	    }
 	}

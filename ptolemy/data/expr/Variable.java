@@ -702,15 +702,6 @@ public class Variable extends Attribute implements Typeable {
             return;
         }
 
-	// It seems unnecessary to restrict the type to be instantiable,
-	// and we want to allow variable types, which are not instantiable.
-	// so comment out this part for now.
-        // if (!type.isInstantiable()) {
-        //     throw new IllegalActionException(this, "setTypeEquals(): "
-        //             + "the argument " + type
-        //             + " is not an instantiable type in the type lattice.");
-        //  }
-
         // Create an instance of the declared type, to be used to invoke
         // the convert() method.
         if (_token != null) {
@@ -1070,7 +1061,7 @@ public class Variable extends Attribute implements Typeable {
         } else {
             // Argument is not null
             Type tokenType = newToken.getType();
-            if (_declaredType != BaseType.NAT) {
+            if (_declaredType.isConstant()) {
                 // Type has been set by setTypeEquals().
                 // Check whether new token is instance of this type.
                 if (!_declaredType.isEqualTo(newToken.getType())) {
@@ -1091,8 +1082,16 @@ public class Variable extends Attribute implements Typeable {
                     }
                 }
             } else {
-                // Change the type to the new token type.
-                _varType = tokenType;
+		// _declaredType is a variable.
+		if (_declaredType.isSubstitutionInstance(tokenType)) {
+		    _varType = tokenType;
+		} else {
+                        throw new IllegalActionException(this,
+                        "Cannot store a token of type "
+                        + tokenType.toString()
+                        + ", which is incompatible with type "
+                        + _varType.toString());
+		}
             }
             // New token is now assured of meeting _declaredType constraint,
             // if there is one, and to match _varType (to be an instance
@@ -1347,22 +1346,27 @@ public class Variable extends Attribute implements Typeable {
         }
 
         /** Set the type of this variable.
-         *  @exception IllegalActionException If the type is set to a
-	 *   constant through setTypeEquals().
+         *  @exception IllegalActionException If this type is not settable,
+	 *   or the argument is not a substitution instance of this type.
          */
         public void setValue(Object e) throws IllegalActionException {
-	    if (isSettable()) {
-		if (_declaredType == BaseType.NAT) {
-		    _varType = (Type)e;
-		} else {
-		    // _declaredType is a StructuredType
-		    ((StructuredType)_varType).updateType((StructuredType)e);
-		}
-		return;
+	    if ( !isSettable()) {
+	    	throw new IllegalActionException("TypeTerm.setValue: This " +
+		    "type is not settable.");
 	    }
 
-	    throw new IllegalActionException("TypeTerm.setValue: Cannot set "
-                    + "the value of a type constant.");
+	    if ( !_declaredType.isSubstitutionInstance((Type)e)) {
+	    	throw new IllegalActionException("TypeTerm.setValue: The " +
+		    "argument is not a substitution instance of the type " +
+		    "of this variable.");
+	    }
+
+	    if (_declaredType == BaseType.NAT) {
+		_varType = (Type)e;
+	    } else {
+		// _declaredType is a StructuredType
+		((StructuredType)_varType).updateType((StructuredType)e);
+	    }
         }
 
         /** Override the base class to give a description of the variable

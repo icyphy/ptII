@@ -94,7 +94,7 @@ public class BaseType implements Type {
      *  @return True if this Type is not NAT; false otherwise.
      */
     public boolean isConstant() {
-	return this != BaseType.NAT;
+	return this != NAT;
     }
 
     /** Determine if the argument represents the same BaseType as this
@@ -129,6 +129,14 @@ public class BaseType implements Type {
 	}
 
 	return true;
+    }
+
+    /** Return true if the argument is a substitution instance of this type.
+     *  @param type A Type.
+     *  @return True if this type is NAT; false otherwise.
+     */
+    public boolean isSubstitutionInstance(Type type) {
+	return this==NAT;
     }
 
     /** Return the string representation of this type.

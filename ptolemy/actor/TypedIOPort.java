@@ -636,30 +636,29 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
 
         /** Set the type of this port.
-         *  @exception IllegalActionException If the type is set to a
-	 *   constant through setTypeEquals().
+	 *  @parameter e A Type.
+         *  @exception IllegalActionException If the argument is not a
+	 *   substitution instance of the type of this port.
          */
         public void setValue(Object e) throws IllegalActionException {
-	    if (isSettable()) {
-
-		Type oldType = _resolvedType;
-
-		if (_declaredType == BaseType.NAT) {
-		    _resolvedType = (Type)e;
-		} else {
-		    // _declaredType is a StructuredType
-		    ((StructuredType)_resolvedType).updateType(
-				(StructuredType)e);
-		}
-
-		if (!oldType.isEqualTo((Type)e)) {
-		    _notifyTypeListener(oldType, _resolvedType);
-		}
-		return;
+	    if ( !_declaredType.isSubstitutionInstance((Type)e)) {
+		// FIXME: should throw TypeConflictException.
+	        throw new IllegalActionException("TypeTerm.setValue: The " +
+                    "argument is not a substitution instance of the type of " +
+		    "this port.");
 	    }
 
-	    throw new IllegalActionException("TypeTerm.setValue: Cannot set "
-                    + "the value of a type constant.");
+	    Type oldType = _resolvedType;
+	    if (_declaredType == BaseType.NAT) {
+		_resolvedType = (Type)e;
+	    } else {
+		// _declaredType is a StructuredType
+		((StructuredType)_resolvedType).updateType((StructuredType)e);
+	    }
+
+	    if (!oldType.isEqualTo((Type)e)) {
+		_notifyTypeListener(oldType, _resolvedType);
+	    }
         }
 
         /** Override the base class to give a description of the port
