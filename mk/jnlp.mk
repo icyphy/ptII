@@ -40,22 +40,29 @@ DOC_CODEDOC_JAR = \
 	doc/codeDoc.jar
 #DOC_CODEDOC_JAR =
 
-# If a jar file is checked in to cvs, and we sign it, then
+# We put the signed jar files in a separate subdirectory
+# for two reasons
+# 1) If a jar file is checked in to cvs, and we sign it, then
 # cvs update will think that we need to update it.
 # So, we copy the jar files to a different directory and then sign
 # them.
+#
+# 2) If we run applets with jar files that have been signed, then the
+# user gets a confusing message asking if they want to run the signed
+# applets.  Since the Ptolemy II applets do not require signed jar
+# files, this is unnecessary
+
 SIGNED_DIR =		signed
 
 # NATIVE_SIGNED_LIB_JARS is a separate vaiable so that we can
 # include it in ALL_JNLP_JARS
-NATIVE_SIGNED_LIB_JARS = $(SIGNED_DIR)/lib/matlabWindows.jar 
+NATIVE_SIGNED_LIB_JARS = lib/matlabWindows.jar 
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
-			$(SIGNED_DIR)/lib/diva.jar \
-			$(SIGNED_DIR)/lib/jasminclasses.jar \
-			$(SIGNED_DIR)/lib/matlab.jar \
-			$(SIGNED_DIR)/lib/ptjacl.jar \
-			$(SIGNED_DIR)/lib/sootclasses.jar
+			lib/diva.jar \
+			lib/jasminclasses.jar \
+			lib/matlab.jar \
+			lib/sootclasses.jar
 
 # Web Start can load jars either eagerly or lazily.
 # This makefile variable gets passed to $PTII/bin/mkjnlp and determines
@@ -63,12 +70,12 @@ SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 # work, the jars you want to load eagerly need to be at the front of the
 # list.  In general, large jars such as diva.jar and ptsupport.jar
 # should be loaded eagerly.
-NUMBER_OF_JARS_TO_LOAD_EAGERLY = 8
+NUMBER_OF_JARS_TO_LOAD_EAGERLY = 10
 
 # Jar files that will appear in all Ptolemy II JNLP files.
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
-	$(SIGNED_DIR)/lib/diva.jar \
+	lib/diva.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar \
@@ -131,8 +138,8 @@ PTINY_SANDBOX_JNLP_JARS = \
 # Full
 #
 COPERNICUS_JARS = \
-	$(SIGNED_DIR)/lib/jasminclasses.jar \
-	$(SIGNED_DIR)/lib/sootclasses.jar \
+	lib/jasminclasses.jar \
+	lib/sootclasses.jar \
 	ptolemy/copernicus/copernicus.jar
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
@@ -156,9 +163,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
 	ptolemy/matlab/demo/demo.jar \
-	$(SIGNED_DIR)/lib/matlab.jar \
-	$(SIGNED_DIR)/lib/ptjacl.jar \
-	ptolemy/actor/gui/ptjacl/ptjacl.jar
+	lib/matlab.jar
 
 FULL_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/FullApplication.jar
@@ -200,9 +205,9 @@ JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp
 jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) $(JNLPS) jnlp_sign
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
 jnlp_clean: 
-	rm -f $(JNLPS)
+	rm -f $(JNLPS) $(SIGNED_DIR)
 jnlp_distclean: jnlp_clean
-	rm -f  $(ALL_JNLP_JARS)
+	rm -f  $(ALL_JNLP_JARS) 
 
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
@@ -242,6 +247,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(KEYSTORE)
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
 		$(DSP_MAIN_JAR) \
 		$(DSP_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
@@ -251,10 +257,12 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(KEYSTORE)
 	@echo "# $(DSP_MAIN_JAR) contains the main class"
 	"$(JAR)" -uf $(DSP_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(DSP_MAIN_JAR)`; \
+	cp -p $(DSP_MAIN_JAR) `dirname$(SIGNED_DIR)/$(DSP_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
-		$(DSP_MAIN_JAR) $(KEYALIAS)
+		$(SIGNED_DIR)/$(DSP_MAIN_JAR) $(KEYALIAS)
 
 # Web Start: Ptiny version of Vergil - No sources or build env.
 vergilPtiny.jnlp: vergilPtiny.jnlp.in $(KEYSTORE)
@@ -265,6 +273,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(KEYSTORE)
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
 		$(PTINY_MAIN_JAR) \
 		$(PTINY_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
@@ -274,10 +283,12 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(KEYSTORE)
 	@echo "# $(PTINY_MAIN_JAR) contains the main class"
 	"$(JAR)" -uf $(PTINY_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
+	cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
-		$(PTINY_MAIN_JAR) $(KEYALIAS)
+		$(SIGNED_DIR)/$(PTINY_MAIN_JAR) $(KEYALIAS)
 
 
 # Web Start: Ptiny version of Vergil - No sources or build env., in a sandbox
@@ -289,6 +300,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(KEYSTORE)
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
 		$(PTINY_SANDBOX_MAIN_JAR) \
 		$(PTINY_SANDBOX_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
@@ -298,10 +310,12 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(KEYSTORE)
 	@echo "# $(PTINY_SANDBOX_MAIN_JAR) contains the main class"
 	"$(JAR)" -uf $(PTINY_SANDBOX_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_SANDBOX_MAIN_JAR)`; \
+	cp -p $(PTINY_SANDBOX_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
-		$(PTINY_SANDBOX_MAIN_JAR) $(KEYALIAS)
+		$(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR) $(KEYALIAS)
 
 
 # Web Start: Full Runtime version of Vergil - No sources or build env.
@@ -313,6 +327,7 @@ vergil.jnlp: vergil.jnlp.in $(KEYSTORE)
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
 		$(FULL_MAIN_JAR) \
 		$(FULL_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
@@ -322,63 +337,30 @@ vergil.jnlp: vergil.jnlp.in $(KEYSTORE)
 	@echo "# $(FULL_MAIN_JAR) contains the main class"
 	"$(JAR)" -uf $(FULL_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(FULL_MAIN_JAR)`; \
+	cp -p $(FULL_MAIN_JAR) `dirname $(SIGNED_DIR)/$(FULL_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
-		$(FULL_MAIN_JAR) $(KEYALIAS)
+		$(SIGNED_DIR)/$(FULL_MAIN_JAR) $(KEYALIAS)
 
 
-jnlp_sign: $(JNLPS) $(KEYSTORE) $(SIGNED_LIB_JARS)
+# We first copy the jars, then sign them so as to avoid
+# problems with cvs and applets.
+jnlp_sign: $(JNLPS) $(KEYSTORE)
 	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
-		echo "# Signing '$$x'."; \
+		if [ ! -f $(SIGNED_DIR)/$$x ]; then \
+			echo "#  Copying $$x to $(SIGNED_DIR)/"; \
+			mkdir -p $(SIGNED_DIR)/`dirname $$x`; \
+			cp -p $$x `dirname $(SIGNED_DIR)/$$x`; \
+		fi; \
+		echo "# Signing $(SIGNED_DIR)/$$x"; \
 		"$(PTJAVA_DIR)/bin/jarsigner" \
 			-keystore $(KEYSTORE) \
 			$(STOREPASSWORD) \
-			$$x $(KEYALIAS); \
+			$(SIGNED_DIR)/$$x $(KEYALIAS); \
 	done;
-
-
-# Jar files that we copy befor signing so as to avoid problems with cvs
-# Each of the jar files below should be listed in $(SIGNED_LIB_JARS)
-$(SIGNED_DIR)/lib/diva.jar: lib/diva.jar
-		if [ ! -d $(SIGNED_DIR)/lib ]; then \
-			mkdir -p $(SIGNED_DIR)/lib; \
-		fi
-		cp $< $@
-
-$(SIGNED_DIR)/lib/jasminclasses.jar: lib/jasminclasses.jar
-		if [ ! -d $(SIGNED_DIR)/lib ]; then \
-			mkdir -p $(SIGNED_DIR)/lib; \
-		fi
-		cp $< $@
-
-$(SIGNED_DIR)/lib/matlab.jar: lib/matlab.jar
-		if [ ! -d $(SIGNED_DIR)/lib ]; then \
-			mkdir -p $(SIGNED_DIR)/lib; \
-		fi
-		cp $< $@
-
-$(SIGNED_DIR)/lib/matlabWindows.jar: lib/matlabWindows.jar
-		if [ ! -d $(SIGNED_DIR)/lib ]; then \
-			mkdir -p $(SIGNED_DIR)/lib; \
-		fi
-		cp $< $@
-
-$(SIGNED_DIR)/lib/ptjacl.jar: lib/ptjacl.jar
-		if [ ! -d $(SIGNED_DIR)/lib ]; then \
-			mkdir -p $(SIGNED_DIR)/lib; \
-		fi
-		cp $< $@
-
-$(SIGNED_DIR)/lib/sootclasses.jar: lib/sootclasses.jar
-		if [ ! -d $(SIGNED_DIR)/lib ]; then \
-			mkdir -p $(SIGNED_DIR)/lib; \
-		fi
-		cp $< $@
-
-
-
 
 sign_jar: 
 	"$(PTJAVA_DIR)/bin/jarsigner" \
