@@ -227,7 +227,7 @@ test SDFScheduler-5.3 {Scheduling tests} {
     _initialize $toplevel
     _getSchedule $scheduler
 
-} {{Ramp Ramp Dist Consumer1 Consumer2}}
+} {{Ramp Ramp Dist Consumer2 Consumer1}}
 
 ######################################################################
 ####
@@ -628,7 +628,7 @@ test SDFScheduler-8.11 {output Multiport, Multirate Scheduling tests} {
      _initialize $toplevel
     set sched1 [_getSchedule $scheduler]
     list $sched1
-} {{{Ramp Consumer1 Consumer2}}}
+} {{{Ramp Consumer2 Consumer1}}}
 
 test SDFScheduler-8.12 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
@@ -641,7 +641,7 @@ test SDFScheduler-8.12 {output Multiport, Multirate Scheduling tests} {
     set sched2 [_getSchedule $s5]
     setTokenProductionRate [java::field $a1 output] 1
     list $sched1
-} {{{Ramp Consumer1 Consumer1 Consumer2 Consumer2}}}
+} {{{Ramp Consumer2 Consumer2 Consumer1 Consumer1}}}
 
 test SDFScheduler-8.13 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
@@ -654,7 +654,7 @@ test SDFScheduler-8.13 {output Multiport, Multirate Scheduling tests} {
     set sched2 [_getSchedule $s5]
     setTokenConsumptionRate [java::field $a2 input] 1
     list $sched1
-} {{{Ramp Ramp Consumer1 Consumer2 Consumer2}}}
+} {{{Ramp Ramp Consumer2 Consumer2 Consumer1}}}
 
 test SDFScheduler-8.14 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
@@ -669,7 +669,7 @@ test SDFScheduler-8.14 {output Multiport, Multirate Scheduling tests} {
     setTokenProductionRate [java::field $a1 output] 1
     setTokenConsumptionRate [java::field $a2 input] 1
     list $sched1
-} {{{Ramp Consumer1 Consumer2 Consumer2}}}
+} {{{Ramp Consumer2 Consumer2 Consumer1}}}
 
 test SDFScheduler-8.15 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
@@ -686,7 +686,7 @@ test SDFScheduler-8.15 {output Multiport, Multirate Scheduling tests} {
     setTokenConsumptionRate [java::field $a2 input] 1
     setTokenConsumptionRate [java::field $a3 input] 1
     list $sched1
-} {{{Ramp Consumer1 Consumer2}}}
+} {{{Ramp Consumer2 Consumer1}}}
 
 test SDFScheduler-8.16 {output Multiport with no connections} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
@@ -843,7 +843,7 @@ test SDFScheduler-9.11 {Output Multirate and Hierarchy Scheduling tests} {
     set sched1 [_getSchedule $scheduler]
     set sched2 [_getSchedule $s5]
     list $sched1 $sched2
-} {{{Cont Consumer1 Consumer2}} Ramp}
+} {{{Cont Consumer2 Consumer1}} Ramp}
 
 test SDFScheduler-9.12 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
@@ -856,7 +856,7 @@ test SDFScheduler-9.12 {output Multiport, Multirate Scheduling tests} {
     set sched2 [_getSchedule $s5]
     setTokenProductionRate [java::field $Ramp output] 1
     list $sched1 $sched2
-} {{{Cont Consumer1 Consumer1 Consumer2 Consumer2}} Ramp}
+} {{{Cont Consumer2 Consumer2 Consumer1 Consumer1}} Ramp}
 
 test SDFScheduler-9.13 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
@@ -869,7 +869,7 @@ test SDFScheduler-9.13 {output Multiport, Multirate Scheduling tests} {
     set sched2 [_getSchedule $s5]
     setTokenConsumptionRate [java::field $Consumer1 input] 1
     list $sched1 $sched2
-} {{{Cont Cont Consumer1 Consumer2 Consumer2}} Ramp}
+} {{{Cont Cont Consumer2 Consumer2 Consumer1}} Ramp}
 
 test SDFScheduler-9.14 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
@@ -884,7 +884,7 @@ test SDFScheduler-9.14 {output Multiport, Multirate Scheduling tests} {
     setTokenProductionRate [java::field $Ramp output] 1
     setTokenConsumptionRate [java::field $Consumer1 input] 1
     list $sched1 $sched2
-} {{{Cont Consumer1 Consumer2 Consumer2}} Ramp}
+} {{{Cont Consumer2 Consumer2 Consumer1}} Ramp}
 
 test SDFScheduler-9.15 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
@@ -901,7 +901,7 @@ test SDFScheduler-9.15 {output Multiport, Multirate Scheduling tests} {
     setTokenConsumptionRate [java::field $Consumer1 input] 1
     setTokenConsumptionRate [java::field $Consumer2 input] 1
     list $sched1 $sched2
-} {{{Cont Consumer1 Consumer2}} Ramp}
+} {{{Cont Consumer2 Consumer1}} Ramp}
 
 ######################################################################
 ####
@@ -950,7 +950,7 @@ test SDFScheduler-10.11 {output Broadcast Multirate Scheduling tests} {
      _initialize $toplevel
     set sched1 [_getSchedule $scheduler]
     list $sched1
-} {{{Ramp Consumer1 Consumer2}}}
+} {{{Ramp Consumer2 Consumer1}}}
 
 test SDFScheduler-10.12 {output Broadcast Multirate Scheduling tests} {
     # uses previous setup.
@@ -963,7 +963,7 @@ test SDFScheduler-10.12 {output Broadcast Multirate Scheduling tests} {
     set sched2 [_getSchedule $s5]
     setTokenProductionRate [java::field $a1 output] 1
     list $sched1
-} {{{Ramp Consumer1 Consumer1 Consumer2 Consumer2}}}
+} {{{Ramp Consumer2 Consumer2 Consumer1 Consumer1}}}
 
 test SDFScheduler-10.13 {output Broadcast Multirate Scheduling tests} {
     # uses previous setup.
@@ -976,7 +976,7 @@ test SDFScheduler-10.13 {output Broadcast Multirate Scheduling tests} {
     set sched2 [_getSchedule $s5]
     setTokenConsumptionRate [java::field $a2 input] 1
     list $sched1
-} {{{Ramp Ramp Consumer1 Consumer2 Consumer2}}}
+} {{{Ramp Ramp Consumer2 Consumer2 Consumer1}}}
 
 test SDFScheduler-10.14 {output Broadcast Multirate Scheduling tests} {
     # uses previous setup.
@@ -991,7 +991,7 @@ test SDFScheduler-10.14 {output Broadcast Multirate Scheduling tests} {
     setTokenProductionRate [java::field $a1 output] 1
     setTokenConsumptionRate [java::field $a2 input] 1
     list $sched1
-} {{{Ramp Consumer1 Consumer2 Consumer2}}}
+} {{{Ramp Consumer2 Consumer2 Consumer1}}}
 
 test SDFScheduler-10.15 {output Broadcast Multirate Scheduling tests} {
     # uses previous setup.
@@ -1008,7 +1008,7 @@ test SDFScheduler-10.15 {output Broadcast Multirate Scheduling tests} {
     setTokenConsumptionRate [java::field $a2 input] 1
     setTokenConsumptionRate [java::field $a3 input] 1
     list $sched1
-} {{{Ramp Consumer1 Consumer2}}}
+} {{{Ramp Consumer2 Consumer1}}}
 
 
 ######################################################################
@@ -1213,7 +1213,7 @@ test SDFScheduler-12.11 {Output Multirate and hierarch Scheduling tests} {
      _initialize $toplevel
     set sched1 [_getSchedule $scheduler]
     list $sched1
-} {{{Ramp Consumer1 Consumer2}}}
+} {{{Ramp Consumer2 Consumer1}}}
 
 test SDFScheduler-12.12 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
@@ -1224,7 +1224,7 @@ test SDFScheduler-12.12 {output Multiport, Multirate Scheduling tests} {
     set sched1 [_getSchedule $scheduler]
     setTokenProductionRate [java::field $a1 output] 1
     list $sched1
-} {{{Ramp Consumer1 Consumer1 Consumer2 Consumer2}}}
+} {{{Ramp Consumer2 Consumer2 Consumer1 Consumer1}}}
 
 test SDFScheduler-12.13 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
@@ -1235,7 +1235,7 @@ test SDFScheduler-12.13 {output Multiport, Multirate Scheduling tests} {
     set sched1 [_getSchedule $scheduler]
     setTokenConsumptionRate [java::field $a2 input] 1
     list $sched1
-} {{{Ramp Ramp Consumer1 Consumer2 Consumer2}}}
+} {{{Ramp Ramp Consumer2 Consumer2 Consumer1}}}
 
 test SDFScheduler-12.14 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
@@ -1248,7 +1248,7 @@ test SDFScheduler-12.14 {output Multiport, Multirate Scheduling tests} {
     setTokenProductionRate [java::field $a1 output] 1
     setTokenConsumptionRate [java::field $a2 input] 1
     list $sched1
-} {{{Ramp Consumer1 Consumer2 Consumer2}}}
+} {{{Ramp Consumer2 Consumer2 Consumer1}}}
 
 test SDFScheduler-12.15 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
@@ -1263,7 +1263,7 @@ test SDFScheduler-12.15 {output Multiport, Multirate Scheduling tests} {
     setTokenConsumptionRate [java::field $a2 input] 1
     setTokenConsumptionRate [java::field $a3 input] 1
     list $sched1
-} {{{Ramp Consumer1 Consumer2}}}
+} {{{Ramp Consumer2 Consumer1}}}
 
 ######################################################################
 ####
