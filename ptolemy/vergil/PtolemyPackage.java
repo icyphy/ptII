@@ -221,7 +221,7 @@ public class PtolemyPackage implements Module {
 
 	action = new AbstractAction("Automatic Layout") {
             public void actionPerformed(ActionEvent e) {
-		VergilDocument d = (VergilDocument)
+		PtolemyDocument d = (PtolemyDocument)
 		    _application.getCurrentDocument();
 		JGraph jg = (JGraph) _application.getView(d);
 		_redoLayout(jg);

@@ -86,17 +86,16 @@ public class PtolemyDocument extends AbstractDocument
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Close the document. This method doesn't do anything, as
-     * the model doesn't change.
+    /** Close the document. In this class, do nothing.
      */
     public void close() throws Exception {
         // Do nothing
     }
 
-    /** Construct a view on this document.
+    /** Construct a view on this document.  In this class, return a 
      */
     public JComponent createView() {
-	VisualNotation notation = getVisualNotation();
+	VisualNotation notation = _getVisualNotation(getModel());
 	GraphPane pane = notation.createView(this);
 
 	JGraph jgraph = new JGraph(pane);
@@ -109,6 +108,10 @@ public class PtolemyDocument extends AbstractDocument
                 KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
         jgraph.setRequestFocusEnabled(true);
+	// remove all the current subviews.
+	//	_subViews.clear();
+	// add the new view.
+	//_subViews.
 	return jgraph;
     }
 
@@ -119,25 +122,10 @@ public class PtolemyDocument extends AbstractDocument
 	return _model;
     }
 
-    /** Return a visual notation that can create a view on this document.
-     * In this class, we search the toplevel entity in the model for a
-     * Ptolemy notation attribute and return the first one found.
-     */
-    public VisualNotation getVisualNotation() {
-	List notationList = _model.attributeList(VisualNotation.class);
-	Iterator notations = notationList.iterator();
-	VisualNotation notation = null;
-        if(notations.hasNext()) {
-	    notation = (VisualNotation) notations.next();
-	} else {
-	    notation = new PtolemyNotation();
-	}
-	return notation;
-    }
-
     /** Open the document from its current file.
      *
-     * @exception Exception If there is no file, or if the I/O operation failed.
+     * @exception Exception If there is no file, 
+     * or if the I/O operation failed.
      */
     public void open() throws Exception {
         if (getFile() == null) {
@@ -287,4 +275,20 @@ public class PtolemyDocument extends AbstractDocument
 
     // The document's model.
     private CompositeEntity _model;
+
+    // Return a visual notation that can create a view on this document.
+    // In this class, we search the toplevel entity in the model for a
+    // Ptolemy notation attribute and return the first one found.
+    //
+    private VisualNotation _getVisualNotation(CompositeEntity model) {
+	List notationList = model.attributeList(VisualNotation.class);
+	Iterator notations = notationList.iterator();
+	VisualNotation notation = null;
+        if(notations.hasNext()) {
+	    notation = (VisualNotation) notations.next();
+	} else {
+	    notation = new PtolemyNotation();
+	}
+	return notation;
+    }
 }
