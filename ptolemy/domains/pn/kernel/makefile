@@ -40,15 +40,16 @@ include $(CONFIG)
 
 DIRS = 		demo #test doc
 
-# Used to build zip files
-JPACKAGE = 	pt.domains.pn.kernel
-JPACKAGE_DIR = 	pt/domains/pn/kernel
-JVERSION =	1.0
-JDIST =		$(JPACKAGE)$(JVERSION)
-JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
-JARFILE = 	$(JPACKAGE).jar
-
 CLASSPATH = ../../../..
+
+# Used to build zip files
+TYPACKAGE = 	pt.domains.pn.kernel
+TYPACKAGE_ROOTDIR = $(CLASSPATH)
+TYPACKAGE_DIR = pt/domains/pn/kernel
+TYVERSION =	1.0
+TYDIST =	$(TYPACKAGE)$(TYVERSION)
+TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
+JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	PNExecutive.java \
