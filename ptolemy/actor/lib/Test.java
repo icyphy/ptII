@@ -237,8 +237,6 @@ public class Test extends NonStrictTest {
                         "Test fails in iteration " + _numberOfInputTokensSeen
                         + ".\n"
                         + "Value was: " + token
-                        + "(" + _verboseString(token.toString()) + ")"
-
                         + ". Should have been: "+ reference[i]);
             }
 
@@ -247,7 +245,6 @@ public class Test extends NonStrictTest {
                         "Test fails in iteration " + _numberOfInputTokensSeen
                         + ".\n"
                         + "Value was: " + token
-                        + "(" + _verboseString(token.toString()) + ")"
                         + ". Should have been: "+ reference[i]);
             }
         }
