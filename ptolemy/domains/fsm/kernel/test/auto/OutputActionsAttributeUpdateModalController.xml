@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="OutputActionsAttributeUpdateModalController" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1">
@@ -30,13 +30,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{140, 55}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 62, 755, 452}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 62, 755, 468}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[540, 334]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[540, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{270.0, 167.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{270.0, 175.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test checks whether the output actions of a transition &#10;updates both the local and remote receivers of ModalContorller &#10;correctly.">
@@ -137,7 +137,9 @@
         <link port="_Controller.output" relation="outputRelation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 2.0, 2.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 185.0]">
         </property>
