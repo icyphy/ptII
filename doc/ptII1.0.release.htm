@@ -106,8 +106,11 @@ There are quite a few limitations.
 <li>Dynamic dataflow
 </menu>
 
-<h3>Code Generation Bugs</h3>
+<h3><a name="CodeGenerationBugs">Code Generation Bugs</a></h3>
 <dl>
+
+<dt> Under JDK1.2.2 you may see <CODE>java.lang.OutOfMemoryError</CODE>
+<dd> The workaround is to upgrade to JDK1.3
 
 <dt> The name CG_Main is hardwired in.
 sdf.codegen.SDFCodeGenerator uses "CG_Main".
