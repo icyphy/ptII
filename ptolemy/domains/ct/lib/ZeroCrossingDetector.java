@@ -36,7 +36,7 @@ import ptolemy.actor.*;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// CTZeroCrossingDetector
+//// ZeroCrossingDetector
 /**
 This is an event detector that monitors the signal coming in from the
 "trigger" input. If the trigger is zero, then output the token from
@@ -48,7 +48,7 @@ zero crossing is defined.
 @author Jie Liu
 @version $Id$
 */
-public class CTZeroCrossingDetector extends CTActor
+public class ZeroCrossingDetector extends CTActor
     implements  CTStepSizeControlActor, CTEventGenerator {
 
     /** Construct an actor in the specified container with the specified
@@ -66,7 +66,7 @@ public class CTZeroCrossingDetector extends CTActor
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
      */
-    public CTZeroCrossingDetector(TypedCompositeActor container, String name)
+    public ZeroCrossingDetector(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input");
