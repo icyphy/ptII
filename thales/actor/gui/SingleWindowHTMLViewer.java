@@ -1,9 +1,27 @@
 /*
- * Created on 01 sept. 2003
- *
- * @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
- * @AcceptedRating
- */
+Copyright (c) 2003 THALES.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the
+above copyright notice and the following two paragraphs appear in all
+copies of this software.
+
+IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+@ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+@AcceptedRating
+*/
 package thales.actor.gui;
 
 import java.awt.BorderLayout;
@@ -43,33 +61,17 @@ import thales.vergil.SingleWindowApplication;
 import thales.vergil.navigable.NavigableActorGraphFrame;
 import thales.vergil.navigable.NavigationPTree;
 
+//////////////////////////////////////////////////////////////////////////
+//// SingleWindowHTMLViewer
 /**
- * <p>Titre : SingleWindowHTMLViewer</p>
- * <p>Description : Main application Frame. Contains all the
- * panels, menus and needed widget for the whole Design Environment</p>
-Copyright (c) 2003 THALES.
-All rights reserved.
+Main application Frame. Contains all the
+panels, menus and needed widget for the whole Design Environment.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
-
-IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
-OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * <p>Société : Thales Research and technology</p>
- * @author Jérôme Blanc
- * 01 sept. 2003
- */
+Société : Thales Research and technology</p>
+@author Jérôme Blanc, Société : Thales Research and technology, 01 sept. 2003
+@version $Id$
+@since Ptolemy II 3.1
+*/
 public class SingleWindowHTMLViewer
     extends HTMLViewer
     implements ChangeListener {
