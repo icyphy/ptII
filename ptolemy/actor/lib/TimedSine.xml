@@ -11,7 +11,7 @@
     </property>
     <property name="magnitude" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="10.0">
+    <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
