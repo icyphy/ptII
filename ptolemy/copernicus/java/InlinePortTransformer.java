@@ -251,49 +251,49 @@ public class InlinePortTransformer extends SceneTransformer {
             if (!stmt.containsInvokeExpr()) {
                 continue;
             }
-                ValueBox box = stmt.getInvokeExprBox();
-                Value value = stmt.getInvokeExpr();
-                if (value instanceof InstanceInvokeExpr) {
-                    InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+            ValueBox box = stmt.getInvokeExprBox();
+            Value value = stmt.getInvokeExpr();
+            if (value instanceof InstanceInvokeExpr) {
+                InstanceInvokeExpr r = (InstanceInvokeExpr)value;
 
-                    if (r.getBase().getType() instanceof RefType) {
-                        RefType type = (RefType)r.getBase().getType();
+                if (r.getBase().getType() instanceof RefType) {
+                    RefType type = (RefType)r.getBase().getType();
 
-                        // Inline calls to connections changed.
-                        if (r.getMethod().equals(PtolemyUtilities.connectionsChangedMethod)) {
-                            // If we are calling connections changed on one of the classes
-                            // we are generating code for, then inline it.
-                            if (type.getSootClass().isApplicationClass()) {
-                                SootMethod inlinee = null;
-                                if (r instanceof VirtualInvokeExpr) {
-                                    // Now inline the resulting call.
-                                    List methodList =
-                                        Scene.v().getActiveHierarchy().resolveAbstractDispatch(
-                                                type.getSootClass(), PtolemyUtilities.connectionsChangedMethod);
-                                    if (methodList.size() == 1) {
-                                        // Inline the method.
-                                        inlinee = (SootMethod)methodList.get(0);
-                                    } else {
-                                        String string = "Can't inline " + stmt +
-                                            " in method " + method + "\n";
-                                        for (int i = 0; i < methodList.size(); i++) {
-                                            string += "target = " + methodList.get(i) + "\n";
-                                        }
-                                        System.out.println(string);
+                    // Inline calls to connections changed.
+                    if (r.getMethod().equals(PtolemyUtilities.connectionsChangedMethod)) {
+                        // If we are calling connections changed on one of the classes
+                        // we are generating code for, then inline it.
+                        if (type.getSootClass().isApplicationClass()) {
+                            SootMethod inlinee = null;
+                            if (r instanceof VirtualInvokeExpr) {
+                                // Now inline the resulting call.
+                                List methodList =
+                                    Scene.v().getActiveHierarchy().resolveAbstractDispatch(
+                                            type.getSootClass(), PtolemyUtilities.connectionsChangedMethod);
+                                if (methodList.size() == 1) {
+                                    // Inline the method.
+                                    inlinee = (SootMethod)methodList.get(0);
+                                } else {
+                                    String string = "Can't inline " + stmt +
+                                        " in method " + method + "\n";
+                                    for (int i = 0; i < methodList.size(); i++) {
+                                        string += "target = " + methodList.get(i) + "\n";
                                     }
-                                } else if (r instanceof SpecialInvokeExpr) {
-                                    inlinee = Scene.v().getActiveHierarchy().resolveSpecialDispatch(
-                                            (SpecialInvokeExpr)r, method);
+                                    System.out.println(string);
                                 }
-                                if (!inlinee.getDeclaringClass().isApplicationClass()) {
-                                    inlinee.getDeclaringClass().setLibraryClass();
-                                }
-                                inlinee.retrieveActiveBody();
-                                if (debug) System.out.println("Inlining method call: " + r);
-                                SiteInliner.inlineSite(inlinee, stmt, method);
+                            } else if (r instanceof SpecialInvokeExpr) {
+                                inlinee = Scene.v().getActiveHierarchy().resolveSpecialDispatch(
+                                        (SpecialInvokeExpr)r, method);
+                            }
+                            if (!inlinee.getDeclaringClass().isApplicationClass()) {
+                                inlinee.getDeclaringClass().setLibraryClass();
+                            }
+                            inlinee.retrieveActiveBody();
+                            if (debug) System.out.println("Inlining method call: " + r);
+                            SiteInliner.inlineSite(inlinee, stmt, method);
 
-                                doneSomething = true;
-                            } else {
+                            doneSomething = true;
+                        } else {
                                 // FIXME: this is a bit of a hack, but
                                 // for right now it seems to work.
                                 // How many things that aren't
@@ -301,160 +301,160 @@ public class InlinePortTransformer extends SceneTransformer {
                                 // code for do we really care about here?
                                 // Can we do this without having to create
                                 // a class for the port too????
-                                body.getUnits().remove(stmt);
-                                doneSomething = true;
-                            }
+                            body.getUnits().remove(stmt);
+                            doneSomething = true;
                         }
+                    }
 
-                        // Statically evaluate constant arguments.
-                        Value argValues[] = new Value[r.getArgCount()];
-                        int constantArgCount = 0;
-                        for (Iterator args = r.getArgs().iterator();
-                             args.hasNext();) {
-                            Value arg = (Value)args.next();
-                            //System.out.println("arg = " + arg);
-                            if (Evaluator.isValueConstantValued(arg)) {
-                                argValues[constantArgCount++] = Evaluator.getConstantValueOf(arg);
+                    // Statically evaluate constant arguments.
+                    Value argValues[] = new Value[r.getArgCount()];
+                    int constantArgCount = 0;
+                    for (Iterator args = r.getArgs().iterator();
+                         args.hasNext();) {
+                        Value arg = (Value)args.next();
+                        //System.out.println("arg = " + arg);
+                        if (Evaluator.isValueConstantValued(arg)) {
+                            argValues[constantArgCount++] = Evaluator.getConstantValueOf(arg);
                                 // System.out.println("argument = " + argValues[argCount-1]);
-                            } else {
-                                break;
-                            }
+                        } else {
+                            break;
                         }
-                        boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
+                    }
+                    boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
 
-                        if (SootUtilities.derivesFrom(type.getSootClass(),
-                                PtolemyUtilities.componentPortClass)) {
-                            // If we are invoking a method on a port
-                            // class, then attempt to get the constant
-                            // value of the port.
-                            TypedIOPort port = (TypedIOPort)
-                                getPortValue(method, (Local)r.getBase(),
-                                        stmt, localDefs, localUses);
-                            //     System.out.println("reference to port = " + port);
+                    if (SootUtilities.derivesFrom(type.getSootClass(),
+                            PtolemyUtilities.componentPortClass)) {
+                        // If we are invoking a method on a port
+                        // class, then attempt to get the constant
+                        // value of the port.
+                        TypedIOPort port = (TypedIOPort)
+                            getPortValue(method, (Local)r.getBase(),
+                                    stmt, localDefs, localUses);
+                        //     System.out.println("reference to port = " + port);
 
-                            if (port == null) {
-                                continue;
-                            }
+                        if (port == null) {
+                            continue;
+                        }
 
-                            if (port instanceof Typeable) {
-                                PtolemyUtilities.inlineTypeableMethods(body,
-                                        stmt, box, r, (Typeable)port);
+                        if (port instanceof Typeable) {
+                            PtolemyUtilities.inlineTypeableMethods(body,
+                                    stmt, box, r, (Typeable)port);
 
-                            }
+                        }
 
 
-                            // Inline namedObj methods on the attribute.
-                            if (r.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.getFullNameMethod.getSubSignature())) {
-                                box.setValue(StringConstant.v(
-                                        port.getFullName()));
-                            }
-                            if (r.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.getNameMethod.getSubSignature())) {
-                                box.setValue(StringConstant.v(
-                                        port.getName()));
-                            }
+                        // Inline namedObj methods on the attribute.
+                        if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.getFullNameMethod.getSubSignature())) {
+                            box.setValue(StringConstant.v(
+                                    port.getFullName()));
+                        }
+                        if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.getNameMethod.getSubSignature())) {
+                            box.setValue(StringConstant.v(
+                                    port.getName()));
+                        }
 
-                            String methodName = r.getMethod().getName();
-                            if (port.getWidth() == 0 &&
-                                    (methodName.equals("hasToken") ||
-                                            methodName.equals("hasRoom") ||
-                                            methodName.equals("get") ||
-                                            methodName.equals("put"))) {
+                        String methodName = r.getMethod().getName();
+                        if (port.getWidth() == 0 &&
+                                (methodName.equals("hasToken") ||
+                                        methodName.equals("hasRoom") ||
+                                        methodName.equals("get") ||
+                                        methodName.equals("put"))) {
                                 // NOTE: broadcast is legal on a zero
                                 // width port.
 
                                 // If we try to get on a port with
                                 // zero width, then throw a runtime
                                 // exception.
-                                Local local = SootUtilities.createRuntimeException(body, stmt,
-                                        methodName + "() called on a port with zero width: " +
-                                        port.getFullName() + "!");
-                                body.getUnits().insertBefore(Jimple.v().newThrowStmt(local),
-                                        stmt);
-                                if (stmt instanceof DefinitionStmt) {
-                                    // be sure we replace with the
-                                    // right return type.
-                                    if (methodName.equals("hasToken") ||
-                                            methodName.equals("hasRoom")) {
-                                        box.setValue(IntConstant.v(0));
-                                    } else {
-                                        box.setValue(NullConstant.v());
-                                    }
+                            Local local = SootUtilities.createRuntimeException(body, stmt,
+                                    methodName + "() called on a port with zero width: " +
+                                    port.getFullName() + "!");
+                            body.getUnits().insertBefore(Jimple.v().newThrowStmt(local),
+                                    stmt);
+                            if (stmt instanceof DefinitionStmt) {
+                                // be sure we replace with the
+                                // right return type.
+                                if (methodName.equals("hasToken") ||
+                                        methodName.equals("hasRoom")) {
+                                    box.setValue(IntConstant.v(0));
                                 } else {
-                                    body.getUnits().remove(stmt);
+                                    box.setValue(NullConstant.v());
                                 }
-                                continue;
+                            } else {
+                                body.getUnits().remove(stmt);
                             }
+                            continue;
+                        }
 
-                            if (r.getMethod().getName().equals("isInput")) {
+                        if (r.getMethod().getName().equals("isInput")) {
                                 // return true.
-                                if (port.isInput()) {
-                                    box.setValue(IntConstant.v(1));
-                                } else {
-                                    box.setValue(IntConstant.v(0));
-                                }
-                            } else if (r.getMethod().getName().equals("isOutput")) {
+                            if (port.isInput()) {
+                                box.setValue(IntConstant.v(1));
+                            } else {
+                                box.setValue(IntConstant.v(0));
+                            }
+                        } else if (r.getMethod().getName().equals("isOutput")) {
                                 // return true.
-                                if (port.isOutput()) {
-                                    box.setValue(IntConstant.v(1));
-                                } else {
-                                    box.setValue(IntConstant.v(0));
-                                }
-                            } else if (r.getMethod().getName().equals("isMultiport")) {
+                            if (port.isOutput()) {
+                                box.setValue(IntConstant.v(1));
+                            } else {
+                                box.setValue(IntConstant.v(0));
+                            }
+                        } else if (r.getMethod().getName().equals("isMultiport")) {
                                 // return true.
-                                if (port.isMultiport()) {
-                                    box.setValue(IntConstant.v(1));
-                                } else {
-                                    box.setValue(IntConstant.v(0));
-                                }
-                            } else if (r.getMethod().getName().equals("getWidth")) {
+                            if (port.isMultiport()) {
+                                box.setValue(IntConstant.v(1));
+                            } else {
+                                box.setValue(IntConstant.v(0));
+                            }
+                        } else if (r.getMethod().getName().equals("getWidth")) {
                                 // Reflect and invoke the same method on our port
-                                Object object = SootUtilities.reflectAndInvokeMethod(
-                                        port, r.getMethod(), argValues);
+                            Object object = SootUtilities.reflectAndInvokeMethod(
+                                    port, r.getMethod(), argValues);
                                 // System.out.println("method result  = " + constant);
-                                Constant constant =
-                                    SootUtilities.convertArgumentToConstantValue(object);
+                            Constant constant =
+                                SootUtilities.convertArgumentToConstantValue(object);
 
                                 // replace the method invocation.
-                                box.setValue(constant);
-                            } else if (r.getMethod().getName().equals("hasToken")) {
+                            box.setValue(constant);
+                        } else if (r.getMethod().getName().equals("hasToken")) {
                                 // return true.
-                                box.setValue(IntConstant.v(1));
-                            } else if (r.getMethod().getName().equals("hasRoom")) {
+                            box.setValue(IntConstant.v(1));
+                        } else if (r.getMethod().getName().equals("hasRoom")) {
                                 // return true.
-                                box.setValue(IntConstant.v(1));
-                            } else if (r.getMethod().getName().equals("get")) {
+                            box.setValue(IntConstant.v(1));
+                        } else if (r.getMethod().getName().equals("get")) {
                                 // Could be get that takes a channel and returns a token,
                                 // or get that takes a channel and a count and returns
                                 // an array of tokens.
                                 // In either case, replace the get with circular array ref.
-                                inliner.inlineGet(body, stmt, box, r, port);
+                            inliner.inlineGet(body, stmt, box, r, port);
 
 
-                            } else if (r.getMethod().getName().equals("send")) {
+                        } else if (r.getMethod().getName().equals("send")) {
                                 // Could be send that takes a channel and returns a token,
                                 // or send that takes a channel and an array of tokens.
                                 // In either case, replace the send with circular array ref.
 
-                                inliner.inlineSend(body, stmt, r, port);
+                            inliner.inlineSend(body, stmt, r, port);
 
-                            } else if (r.getMethod().getName().equals("broadcast")) {
+                        } else if (r.getMethod().getName().equals("broadcast")) {
                                 // Broadcasting on a port of zero width does
                                 // nothing.
-                                if (port.getWidth() == 0) {
-                                    body.getUnits().remove(stmt);
-                                } else {
-                                    // Could be broadcast that takes a
-                                    // token, or broadcast that takes an
-                                    // array of tokens.  In either case,
-                                    // replace the broadcast with circular
-                                    // array ref.
-                                    inliner.inlineBroadcast(body, stmt, r, port);
-                                }
+                            if (port.getWidth() == 0) {
+                                body.getUnits().remove(stmt);
+                            } else {
+                                // Could be broadcast that takes a
+                                // token, or broadcast that takes an
+                                // array of tokens.  In either case,
+                                // replace the broadcast with circular
+                                // array ref.
+                                inliner.inlineBroadcast(body, stmt, r, port);
                             }
                         }
                     }
+                }
             }
         }
         return doneSomething;
@@ -480,49 +480,49 @@ public class InlinePortTransformer extends SceneTransformer {
             if (!stmt.containsInvokeExpr()) {
                 continue;
             }
-                ValueBox box = stmt.getInvokeExprBox();
-                Value value = stmt.getInvokeExpr();
-                if (value instanceof InstanceInvokeExpr) {
-                    InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+            ValueBox box = stmt.getInvokeExprBox();
+            Value value = stmt.getInvokeExpr();
+            if (value instanceof InstanceInvokeExpr) {
+                InstanceInvokeExpr r = (InstanceInvokeExpr)value;
 
-                    if (r.getBase().getType() instanceof RefType) {
-                        RefType type = (RefType)r.getBase().getType();
+                if (r.getBase().getType() instanceof RefType) {
+                    RefType type = (RefType)r.getBase().getType();
 
-                        // Inline calls to connections changed.
-                        if (r.getMethod().equals(PtolemyUtilities.connectionsChangedMethod)) {
-                            // If we are calling connections changed on one of the classes
-                            // we are generating code for, then inline it.
-                            if (type.getSootClass().isApplicationClass()) {
-                                SootMethod inlinee = null;
-                                if (r instanceof VirtualInvokeExpr) {
-                                    // Now inline the resulting call.
-                                    List methodList =
-                                        Scene.v().getActiveHierarchy().resolveAbstractDispatch(
-                                                type.getSootClass(), PtolemyUtilities.connectionsChangedMethod);
-                                    if (methodList.size() == 1) {
-                                        // Inline the method.
-                                        inlinee = (SootMethod)methodList.get(0);
-                                    } else {
-                                        String string = "Can't inline " + stmt +
-                                            " in method " + method + "\n";
-                                        for (int i = 0; i < methodList.size(); i++) {
-                                            string += "target = " + methodList.get(i) + "\n";
-                                        }
-                                        System.out.println(string);
+                    // Inline calls to connections changed.
+                    if (r.getMethod().equals(PtolemyUtilities.connectionsChangedMethod)) {
+                        // If we are calling connections changed on one of the classes
+                        // we are generating code for, then inline it.
+                        if (type.getSootClass().isApplicationClass()) {
+                            SootMethod inlinee = null;
+                            if (r instanceof VirtualInvokeExpr) {
+                                // Now inline the resulting call.
+                                List methodList =
+                                    Scene.v().getActiveHierarchy().resolveAbstractDispatch(
+                                            type.getSootClass(), PtolemyUtilities.connectionsChangedMethod);
+                                if (methodList.size() == 1) {
+                                    // Inline the method.
+                                    inlinee = (SootMethod)methodList.get(0);
+                                } else {
+                                    String string = "Can't inline " + stmt +
+                                        " in method " + method + "\n";
+                                    for (int i = 0; i < methodList.size(); i++) {
+                                        string += "target = " + methodList.get(i) + "\n";
                                     }
-                                } else if (r instanceof SpecialInvokeExpr) {
-                                    inlinee = Scene.v().getActiveHierarchy().resolveSpecialDispatch(
-                                            (SpecialInvokeExpr)r, method);
+                                    System.out.println(string);
                                 }
-                                if (!inlinee.getDeclaringClass().isApplicationClass()) {
-                                    inlinee.getDeclaringClass().setLibraryClass();
-                                }
-                                inlinee.retrieveActiveBody();
-                                if (debug) System.out.println("Inlining method call: " + r);
-                                SiteInliner.inlineSite(inlinee, stmt, method);
+                            } else if (r instanceof SpecialInvokeExpr) {
+                                inlinee = Scene.v().getActiveHierarchy().resolveSpecialDispatch(
+                                        (SpecialInvokeExpr)r, method);
+                            }
+                            if (!inlinee.getDeclaringClass().isApplicationClass()) {
+                                inlinee.getDeclaringClass().setLibraryClass();
+                            }
+                            inlinee.retrieveActiveBody();
+                            if (debug) System.out.println("Inlining method call: " + r);
+                            SiteInliner.inlineSite(inlinee, stmt, method);
 
-                                doneSomething = true;
-                            } else {
+                            doneSomething = true;
+                        } else {
                                 // FIXME: this is a bit of a hack, but
                                 // for right now it seems to work.
                                 // How many things that aren't
@@ -530,145 +530,145 @@ public class InlinePortTransformer extends SceneTransformer {
                                 // code for do we really care about here?
                                 // Can we do this without having to create
                                 // a class for the port too????
-                                body.getUnits().remove(stmt);
-                                doneSomething = true;
-                            }
+                            body.getUnits().remove(stmt);
+                            doneSomething = true;
                         }
+                    }
 
-                        // Statically evaluate constant arguments.
-                        Value argValues[] = new Value[r.getArgCount()];
-                        int constantArgCount = 0;
-                        for (Iterator args = r.getArgs().iterator();
-                             args.hasNext();) {
-                            Value arg = (Value)args.next();
-                            //System.out.println("arg = " + arg);
-                            if (Evaluator.isValueConstantValued(arg)) {
-                                argValues[constantArgCount++] = Evaluator.getConstantValueOf(arg);
+                    // Statically evaluate constant arguments.
+                    Value argValues[] = new Value[r.getArgCount()];
+                    int constantArgCount = 0;
+                    for (Iterator args = r.getArgs().iterator();
+                         args.hasNext();) {
+                        Value arg = (Value)args.next();
+                        //System.out.println("arg = " + arg);
+                        if (Evaluator.isValueConstantValued(arg)) {
+                            argValues[constantArgCount++] = Evaluator.getConstantValueOf(arg);
                                 // System.out.println("argument = " + argValues[argCount-1]);
-                            } else {
-                                break;
-                            }
+                        } else {
+                            break;
                         }
-                        boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
+                    }
+                    boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
 
-                        if (SootUtilities.derivesFrom(type.getSootClass(),
-                                PtolemyUtilities.componentPortClass)) {
-                            // If we are invoking a method on a port
-                            // class, then attempt to get the constant
-                            // value of the port.
-                            TypedIOPort port = (TypedIOPort)
-                                getPortValue(method, (Local)r.getBase(),
-                                        stmt, localDefs, localUses);
-                            //     System.out.println("reference to port = " + port);
+                    if (SootUtilities.derivesFrom(type.getSootClass(),
+                            PtolemyUtilities.componentPortClass)) {
+                        // If we are invoking a method on a port
+                        // class, then attempt to get the constant
+                        // value of the port.
+                        TypedIOPort port = (TypedIOPort)
+                            getPortValue(method, (Local)r.getBase(),
+                                    stmt, localDefs, localUses);
+                        //     System.out.println("reference to port = " + port);
 
-                            if (port == null) {
-                                continue;
-                            }
+                        if (port == null) {
+                            continue;
+                        }
 
-                            if (port instanceof Typeable) {
-                                PtolemyUtilities.inlineTypeableMethods(body,
-                                        stmt, box, r, (Typeable)port);
+                        if (port instanceof Typeable) {
+                            PtolemyUtilities.inlineTypeableMethods(body,
+                                    stmt, box, r, (Typeable)port);
 
-                            }
+                        }
 
 
-                            // Inline namedObj methods on the attribute.
-                            if (r.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.getFullNameMethod.getSubSignature())) {
-                                box.setValue(StringConstant.v(
-                                        port.getFullName()));
-                            }
-                            if (r.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.getNameMethod.getSubSignature())) {
-                                box.setValue(StringConstant.v(
-                                        port.getName()));
-                            }
+                        // Inline namedObj methods on the attribute.
+                        if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.getFullNameMethod.getSubSignature())) {
+                            box.setValue(StringConstant.v(
+                                    port.getFullName()));
+                        }
+                        if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.getNameMethod.getSubSignature())) {
+                            box.setValue(StringConstant.v(
+                                    port.getName()));
+                        }
 
-                            String methodName = r.getMethod().getName();
-                          //   if (port.getWidth() == 0 &&
-//                                     (methodName.equals("hasToken") ||
-//                                             methodName.equals("hasRoom") ||
-//                                             methodName.equals("get") ||
-//                                             methodName.equals("put"))) {
-//                                 // NOTE: broadcast is legal on a zero
-//                                 // width port.
+                        String methodName = r.getMethod().getName();
+                        //   if (port.getWidth() == 0 &&
+                        //                                     (methodName.equals("hasToken") ||
+                        //                                             methodName.equals("hasRoom") ||
+                        //                                             methodName.equals("get") ||
+                        //                                             methodName.equals("put"))) {
+                        //                                 // NOTE: broadcast is legal on a zero
+                        //                                 // width port.
 
-//                                 // If we try to get on a port with
-//                                 // zero width, then throw a runtime
-//                                 // exception.
-//                                 Local local = SootUtilities.createRuntimeException(body, stmt,
-//                                         methodName + "() called on a port with zero width: " +
-//                                         port.getFullName() + "!");
-//                                 body.getUnits().insertBefore(Jimple.v().newThrowStmt(local),
-//                                         stmt);
-//                                 if (stmt instanceof DefinitionStmt) {
-//                                     // be sure we replace with the
-//                                     // right return type.
-//                                     if (methodName.equals("hasToken") ||
-//                                             methodName.equals("hasRoom")) {
-//                                         box.setValue(IntConstant.v(0));
-//                                     } else {
-//                                         box.setValue(NullConstant.v());
-//                                     }
-//                                 } else {
-//                                     body.getUnits().remove(stmt);
-//                                 }
-//                                 continue;
-//                             }
+                        //                                 // If we try to get on a port with
+                        //                                 // zero width, then throw a runtime
+                        //                                 // exception.
+                        //                                 Local local = SootUtilities.createRuntimeException(body, stmt,
+                        //                                         methodName + "() called on a port with zero width: " +
+                        //                                         port.getFullName() + "!");
+                        //                                 body.getUnits().insertBefore(Jimple.v().newThrowStmt(local),
+                        //                                         stmt);
+                        //                                 if (stmt instanceof DefinitionStmt) {
+                        //                                     // be sure we replace with the
+                        //                                     // right return type.
+                        //                                     if (methodName.equals("hasToken") ||
+                        //                                             methodName.equals("hasRoom")) {
+                        //                                         box.setValue(IntConstant.v(0));
+                        //                                     } else {
+                        //                                         box.setValue(NullConstant.v());
+                        //                                     }
+                        //                                 } else {
+                        //                                     body.getUnits().remove(stmt);
+                        //                                 }
+                        //                                 continue;
+                        //                             }
 
-                            if (r.getMethod().getName().equals("isInput")) {
+                        if (r.getMethod().getName().equals("isInput")) {
                                 // return true.
-                                if (port.isInput()) {
-                                    box.setValue(IntConstant.v(1));
-                                } else {
-                                    box.setValue(IntConstant.v(0));
-                                }
-                            } else if (r.getMethod().getName().equals("isOutput")) {
+                            if (port.isInput()) {
+                                box.setValue(IntConstant.v(1));
+                            } else {
+                                box.setValue(IntConstant.v(0));
+                            }
+                        } else if (r.getMethod().getName().equals("isOutput")) {
                                 // return true.
-                                if (port.isOutput()) {
-                                    box.setValue(IntConstant.v(1));
-                                } else {
-                                    box.setValue(IntConstant.v(0));
-                                }
-                            } else if (r.getMethod().getName().equals("isMultiport")) {
+                            if (port.isOutput()) {
+                                box.setValue(IntConstant.v(1));
+                            } else {
+                                box.setValue(IntConstant.v(0));
+                            }
+                        } else if (r.getMethod().getName().equals("isMultiport")) {
                                 // return true.
-                                if (port.isMultiport()) {
-                                    box.setValue(IntConstant.v(1));
-                                } else {
-                                    box.setValue(IntConstant.v(0));
-                                }
-                            } else if (r.getMethod().getName().equals("getWidth")) {
+                            if (port.isMultiport()) {
+                                box.setValue(IntConstant.v(1));
+                            } else {
+                                box.setValue(IntConstant.v(0));
+                            }
+                        } else if (r.getMethod().getName().equals("getWidth")) {
                                 // Reflect and invoke the same method on our port
-                                Object object = SootUtilities.reflectAndInvokeMethod(
-                                        port, r.getMethod(), argValues);
+                            Object object = SootUtilities.reflectAndInvokeMethod(
+                                    port, r.getMethod(), argValues);
                                 // System.out.println("method result  = " + constant);
-                                Constant constant =
-                                    SootUtilities.convertArgumentToConstantValue(object);
+                            Constant constant =
+                                SootUtilities.convertArgumentToConstantValue(object);
 
                                 // replace the method invocation.
-                                box.setValue(constant);
-                            } else if (r.getMethod().getName().equals("hasToken")) {
+                            box.setValue(constant);
+                        } else if (r.getMethod().getName().equals("hasToken")) {
                                 // return true.
-                                box.setValue(IntConstant.v(1));
-                            } else if (r.getMethod().getName().equals("hasRoom")) {
+                            box.setValue(IntConstant.v(1));
+                        } else if (r.getMethod().getName().equals("hasRoom")) {
                                 // return true.
-                                box.setValue(IntConstant.v(1));
-                            } else if (r.getMethod().getName().equals("getInside")) {
+                            box.setValue(IntConstant.v(1));
+                        } else if (r.getMethod().getName().equals("getInside")) {
                                 // Could be get that takes a channel and returns a token,
                                 // or get that takes a channel and a count and returns
                                 // an array of tokens.
                                 // In either case, replace the get with circular array ref.
-                                inliner.inlineGetInside(body, stmt, box, r, port);
+                            inliner.inlineGetInside(body, stmt, box, r, port);
 
-                            } else if (r.getMethod().getName().equals("sendInside")) {
+                        } else if (r.getMethod().getName().equals("sendInside")) {
                                 // Could be send that takes a channel and returns a token,
                                 // or send that takes a channel and an array of tokens.
                                 // In either case, replace the send with circular array ref.
 
-                                inliner.inlineSendInside(body, stmt, r, port);
+                            inliner.inlineSendInside(body, stmt, r, port);
 
-                            }
                         }
+                    }
 
                 }
             }

@@ -157,17 +157,17 @@ public class InlineTokenTransformer extends SceneTransformer {
                     if (!stmt.containsInvokeExpr()) {
                         continue;
                     }
-                        ValueBox box = stmt.getInvokeExprBox();
-                        Value value = box.getValue();
-                        if (value instanceof InstanceInvokeExpr) {
-                            InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                           if (_debug) System.out.println("invoking = " + r.getMethod());
+                    ValueBox box = stmt.getInvokeExprBox();
+                    Value value = box.getValue();
+                    if (value instanceof InstanceInvokeExpr) {
+                        InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                        if (_debug) System.out.println("invoking = " + r.getMethod());
 
-                            // Skip initializers.
-                            if (r.getMethod().getName().equals("<init>")) {
-                                continue;
-                            }
-                            doneSomething |= _replaceTokenInvocation(actor, body, stmt, box, r);
+                        // Skip initializers.
+                        if (r.getMethod().getName().equals("<init>")) {
+                            continue;
+                        }
+                        doneSomething |= _replaceTokenInvocation(actor, body, stmt, box, r);
 
                     }
                 }
@@ -210,7 +210,7 @@ public class InlineTokenTransformer extends SceneTransformer {
             }
 
             if (SootUtilities.derivesFrom(type.getSootClass(),
-                        PtolemyUtilities.tokenClass)) {
+                    PtolemyUtilities.tokenClass)) {
 
                 // if we are invoking a method on a token class, then
                 // attempt to get the constant value of the token.
@@ -237,7 +237,7 @@ public class InlineTokenTransformer extends SceneTransformer {
                     } else if (returnType instanceof RefType) {
                         SootClass returnClass = ((RefType)returnType).getSootClass();
                         if (SootUtilities.derivesFrom(returnClass,
-                                    PtolemyUtilities.tokenClass)) {
+                                PtolemyUtilities.tokenClass)) {
                             if (_debug) System.out.println("handling as token type");
                             Local local = PtolemyUtilities.buildConstantTokenLocal(body,
                                     unit, (Token)object, "token");

@@ -132,7 +132,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         if (model.getDirector() instanceof SDFDirector) {
             _inlineSDFDirector(model, modelClass, phaseName, options);
         } else if (model.getDirector() instanceof HSDirector ||
-                  model.getDirector() instanceof FSMDirector) {
+                model.getDirector() instanceof FSMDirector) {
             _inlineHSDirector(model, modelClass, phaseName, options);
         } else if (model.getDirector() instanceof GiottoDirector) {
             _inlineGiottoDirector(model, modelClass, phaseName, options);
@@ -199,9 +199,9 @@ public class InlineDirectorTransformer extends SceneTransformer {
         System.out.println("Inlining director for " + model.getFullName());
         Type actorType = RefType.v(PtolemyUtilities.actorClass);
 
-//         SootField postfireReturnsField = new SootField("_postfireReturns",
-//                 BooleanType.v(), Modifier.PRIVATE);
-//         modelClass.addField(postfireReturnsField);
+        //         SootField postfireReturnsField = new SootField("_postfireReturns",
+        //                 BooleanType.v(), Modifier.PRIVATE);
+        //         modelClass.addField(postfireReturnsField);
 
         // First, write out Giotto Code for the model.
         String directory = Options.getString(options, "outDir");
@@ -639,32 +639,32 @@ public class InlineDirectorTransformer extends SceneTransformer {
             Local prefireReturnsLocal = Jimple.v().newLocal("preReturns", BooleanType.v());
             body.getLocals().add(prefireReturnsLocal);
 
-//             // Prefire the controller.
-//             Local actorLocal = Jimple.v().newLocal("actor", actorType);
-//             body.getLocals().add(actorLocal);
-//             String fieldName = ModelTransformer.getFieldNameForEntity(
-//                     controller, model);
-//             SootField field = modelClass.getFieldByName(fieldName);
-//             String className =
-//                 ModelTransformer.getInstanceClassName(controller, options);
-//             SootClass theClass = Scene.v().loadClassAndSupport(className);
-//             SootMethod actorPrefireMethod =
-//                 SootUtilities.searchForMethodByName(
-//                         theClass, "prefire");
+            //             // Prefire the controller.
+            //             Local actorLocal = Jimple.v().newLocal("actor", actorType);
+            //             body.getLocals().add(actorLocal);
+            //             String fieldName = ModelTransformer.getFieldNameForEntity(
+            //                     controller, model);
+            //             SootField field = modelClass.getFieldByName(fieldName);
+            //             String className =
+            //                 ModelTransformer.getInstanceClassName(controller, options);
+            //             SootClass theClass = Scene.v().loadClassAndSupport(className);
+            //             SootMethod actorPrefireMethod =
+            //                 SootUtilities.searchForMethodByName(
+            //                         theClass, "prefire");
 
-//             units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-//                     Jimple.v().newInstanceFieldRef(thisLocal, field)),
-//                     insertPoint);
-//             units.insertBefore(Jimple.v().newAssignStmt(prefireReturnsLocal,
-//                               Jimple.v().newVirtualInvokeExpr(actorLocal,
-//                                       actorPrefireMethod)),
-//                     insertPoint);
+            //             units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
+            //                     Jimple.v().newInstanceFieldRef(thisLocal, field)),
+            //                     insertPoint);
+            //             units.insertBefore(Jimple.v().newAssignStmt(prefireReturnsLocal,
+            //                               Jimple.v().newVirtualInvokeExpr(actorLocal,
+            //                                       actorPrefireMethod)),
+            //                     insertPoint);
 
             units.insertBefore(
                     Jimple.v().newAssignStmt(prefireReturnsLocal,
                             IntConstant.v(0)),
                     insertPoint);
-           units.insertBefore(Jimple.v().newReturnStmt(prefireReturnsLocal),
+            units.insertBefore(Jimple.v().newReturnStmt(prefireReturnsLocal),
                     insertPoint);
 
             LocalSplitter.v().transform(body, phaseName + ".lns");
@@ -690,7 +690,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             // Transfer Inputs from input ports.
             for (Iterator ports = model.inputPortList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate = 1;
 
@@ -771,38 +771,38 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 SootClass emulatorClass = Scene.v().loadClassAndSupport("platform.emachine.Emulator");
                 SootMethod theRunMethod = emulatorClass.getMethodByName("runAndWait");
                 String fileName = directory + "/out.ecd";
-                 units.insertBefore(
-                         Jimple.v().newInvokeStmt(
-                                 Jimple.v().newStaticInvokeExpr(theRunMethod,
-                                         StringConstant.v(fileName))),
-                         insertPoint);
+                units.insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newStaticInvokeExpr(theRunMethod,
+                                        StringConstant.v(fileName))),
+                        insertPoint);
 
-//                 Local actorLocal = Jimple.v().newLocal("actor", actorType);
-//                 body.getLocals().add(actorLocal);
-//                 String fieldName = ModelTransformer.getFieldNameForEntity(
-//                         controller, model);
-//                 SootField field = modelClass.getFieldByName(fieldName);
-//                 String className =
-//                     ModelTransformer.getInstanceClassName(controller, options);
-//                 SootClass theClass = Scene.v().loadClassAndSupport(className);
-//                 SootMethod actorFireMethod =
-//                     SootUtilities.searchForMethodByName(
-//                             theClass, "fire");
+                //                 Local actorLocal = Jimple.v().newLocal("actor", actorType);
+                //                 body.getLocals().add(actorLocal);
+                //                 String fieldName = ModelTransformer.getFieldNameForEntity(
+                //                         controller, model);
+                //                 SootField field = modelClass.getFieldByName(fieldName);
+                //                 String className =
+                //                     ModelTransformer.getInstanceClassName(controller, options);
+                //                 SootClass theClass = Scene.v().loadClassAndSupport(className);
+                //                 SootMethod actorFireMethod =
+                //                     SootUtilities.searchForMethodByName(
+                //                             theClass, "fire");
 
-//                 units.insertBefore(
-//                         Jimple.v().newAssignStmt(actorLocal,
-//                                 Jimple.v().newInstanceFieldRef(thisLocal, field)),
-//                         insertPoint);
-//                 units.insertBefore(
-//                         Jimple.v().newInvokeStmt(
-//                                 Jimple.v().newVirtualInvokeExpr(actorLocal,
-//                                         actorFireMethod)),
-//                         insertPoint);
+                //                 units.insertBefore(
+                //                         Jimple.v().newAssignStmt(actorLocal,
+                //                                 Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                //                         insertPoint);
+                //                 units.insertBefore(
+                //                         Jimple.v().newInvokeStmt(
+                //                                 Jimple.v().newVirtualInvokeExpr(actorLocal,
+                //                                         actorFireMethod)),
+                //                         insertPoint);
             }
 
             // Transfer outputs from output ports
             for (Iterator ports = model.outputPortList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;
                 try {
@@ -905,28 +905,28 @@ public class InlineDirectorTransformer extends SceneTransformer {
             body.getLocals().add(postfireReturnsLocal);
 
             // Postfire the controller.
-//             Local actorLocal = Jimple.v().newLocal("actor", actorType);
-//             body.getLocals().add(actorLocal);
-//             String fieldName = ModelTransformer.getFieldNameForEntity(
-//                     controller, model);
-//             SootField field = modelClass.getFieldByName(fieldName);
-//             String className =
-//                 ModelTransformer.getInstanceClassName(controller, options);
-//             SootClass theClass = Scene.v().loadClassAndSupport(className);
-//             SootMethod actorPostfireMethod =
-//                 SootUtilities.searchForMethodByName(
-//                         theClass, "postfire");
+            //             Local actorLocal = Jimple.v().newLocal("actor", actorType);
+            //             body.getLocals().add(actorLocal);
+            //             String fieldName = ModelTransformer.getFieldNameForEntity(
+            //                     controller, model);
+            //             SootField field = modelClass.getFieldByName(fieldName);
+            //             String className =
+            //                 ModelTransformer.getInstanceClassName(controller, options);
+            //             SootClass theClass = Scene.v().loadClassAndSupport(className);
+            //             SootMethod actorPostfireMethod =
+            //                 SootUtilities.searchForMethodByName(
+            //                         theClass, "postfire");
 
-//             units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-//                     Jimple.v().newInstanceFieldRef(thisLocal, field)),
-//                     insertPoint);
-//             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-//                               Jimple.v().newVirtualInvokeExpr(actorLocal,
-//                                       actorPostfireMethod)),
-//                     insertPoint);
+            //             units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
+            //                     Jimple.v().newInstanceFieldRef(thisLocal, field)),
+            //                     insertPoint);
+            //             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
+            //                               Jimple.v().newVirtualInvokeExpr(actorLocal,
+            //                                       actorPostfireMethod)),
+            //                     insertPoint);
             units.insertBefore(
                     Jimple.v().newAssignStmt(postfireReturnsLocal,
-                          IntConstant.v(0)),
+                            IntConstant.v(0)),
                     insertPoint);
 
             units.insertBefore(Jimple.v().newReturnStmt(postfireReturnsLocal),
@@ -991,9 +991,9 @@ public class InlineDirectorTransformer extends SceneTransformer {
         System.out.println("Inlining director for " + model.getFullName());
         Type actorType = RefType.v(PtolemyUtilities.actorClass);
 
-//         SootField postfireReturnsField = new SootField("_postfireReturns",
-//                 BooleanType.v(), Modifier.PRIVATE);
-//         modelClass.addField(postfireReturnsField);
+        //         SootField postfireReturnsField = new SootField("_postfireReturns",
+        //                 BooleanType.v(), Modifier.PRIVATE);
+        //         modelClass.addField(postfireReturnsField);
 
         // Inline the director
         {
@@ -1100,8 +1100,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     Jimple.v().newInstanceFieldRef(thisLocal, field)),
                     insertPoint);
             units.insertBefore(Jimple.v().newAssignStmt(prefireReturnsLocal,
-                              Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                      actorPrefireMethod)),
+                    Jimple.v().newVirtualInvokeExpr(actorLocal,
+                            actorPrefireMethod)),
                     insertPoint);
 
             units.insertBefore(Jimple.v().newReturnStmt(prefireReturnsLocal),
@@ -1130,7 +1130,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             // Transfer Inputs from input ports.
             for (Iterator ports = model.inputPortList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate = 1;
 
@@ -1232,7 +1232,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             // Transfer outputs from output ports
             for (Iterator ports = model.outputPortList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;
                 try {
@@ -1351,8 +1351,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     Jimple.v().newInstanceFieldRef(thisLocal, field)),
                     insertPoint);
             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                              Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                      actorPostfireMethod)),
+                    Jimple.v().newVirtualInvokeExpr(actorLocal,
+                            actorPostfireMethod)),
                     insertPoint);
 
             units.insertBefore(Jimple.v().newReturnStmt(postfireReturnsLocal),
@@ -1429,11 +1429,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             // Initialize the postfire flag.
             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                       IntConstant.v(1)),
+                    IntConstant.v(1)),
                     insertPoint);
             units.insertBefore(Jimple.v().newAssignStmt(
-                              Jimple.v().newInstanceFieldRef(thisLocal, postfireReturnsField),
-                              postfireReturnsLocal),
+                    Jimple.v().newInstanceFieldRef(thisLocal, postfireReturnsField),
+                    postfireReturnsLocal),
                     insertPoint);
 
             for (Iterator entities = model.deepEntityList().iterator();
@@ -1461,7 +1461,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         insertPoint);
             }
             //            units.insertBefore(Jimple.v().newReturnVoidStmt(),
-                    //                   insertPoint);
+            //                   insertPoint);
         }
 
         {
@@ -1513,7 +1513,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             Local prefireReturnsLocal = Jimple.v().newLocal("preReturns", BooleanType.v());
             body.getLocals().add(prefireReturnsLocal);
             units.insertBefore(Jimple.v().newAssignStmt(prefireReturnsLocal,
-                              IntConstant.v(1)),
+                    IntConstant.v(1)),
                     insertPoint);
             units.insertBefore(Jimple.v().newReturnStmt(prefireReturnsLocal),
                     insertPoint);
@@ -1547,7 +1547,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             // Transfer Inputs from input ports.
             for (Iterator ports = model.inputPortList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;
                 try {
@@ -1633,8 +1633,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
             body.getLocals().add(localPostfireReturnsLocal);
 
             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                              Jimple.v().newInstanceFieldRef(thisLocal,
-                                      postfireReturnsField)),
+                    Jimple.v().newInstanceFieldRef(thisLocal,
+                            postfireReturnsField)),
                     insertPoint);
 
             // Execute the schedule
@@ -1682,21 +1682,21 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 if (firingCount < threshold) {
                     for (int i = 0; i < firingCount; i++) {
                         units.insertBefore(Jimple.v().newInvokeStmt(
-                                          Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                  actorPrefireMethod)),
+                                Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                        actorPrefireMethod)),
                                 insertPoint);
                         units.insertBefore(Jimple.v().newInvokeStmt(
-                                          Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                  actorFireMethod)),
+                                Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                        actorFireMethod)),
                                 insertPoint);
                         units.insertBefore(Jimple.v().newAssignStmt(
-                                          localPostfireReturnsLocal,
-                                          Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                  actorPostfireMethod)),
+                                localPostfireReturnsLocal,
+                                Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                        actorPostfireMethod)),
                                 insertPoint);
                         units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                          Jimple.v().newAndExpr(postfireReturnsLocal,
-                                                  localPostfireReturnsLocal)),
+                                Jimple.v().newAndExpr(postfireReturnsLocal,
+                                        localPostfireReturnsLocal)),
                                 insertPoint);
 
 
@@ -1712,18 +1712,18 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     // The list of body instructions.
                     List bodyList = new LinkedList();
                     bodyList.add(Jimple.v().newInvokeStmt(
-                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                 actorPrefireMethod)));
+                            Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                    actorPrefireMethod)));
                     bodyList.add(Jimple.v().newInvokeStmt(
-                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                 actorFireMethod)));
+                            Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                    actorFireMethod)));
                     bodyList.add(Jimple.v().newAssignStmt(
-                                         localPostfireReturnsLocal,
-                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                 actorPostfireMethod)));
+                            localPostfireReturnsLocal,
+                            Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                    actorPostfireMethod)));
                     bodyList.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                         Jimple.v().newAndExpr(postfireReturnsLocal,
-                                                 localPostfireReturnsLocal)));
+                            Jimple.v().newAndExpr(postfireReturnsLocal,
+                                    localPostfireReturnsLocal)));
                     // Increment the index.
                     bodyList.add(
                             Jimple.v().newAssignStmt(
@@ -1748,7 +1748,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             // Transfer outputs from output ports
             for (Iterator ports = model.outputPortList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;
                 try {
@@ -1831,9 +1831,9 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             // Return.
             units.insertBefore(Jimple.v().newAssignStmt(
-                              Jimple.v().newInstanceFieldRef(thisLocal,
-                                      postfireReturnsField),
-                              postfireReturnsLocal),
+                    Jimple.v().newInstanceFieldRef(thisLocal,
+                            postfireReturnsField),
+                    postfireReturnsLocal),
                     insertPoint);
             //       units.insertBefore(Jimple.v().newReturnVoidStmt(),
             //              insertPoint);
@@ -1856,8 +1856,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 Jimple.v().newLocal("postfireReturns", BooleanType.v());
             body.getLocals().add(postfireReturnsLocal);
             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                              Jimple.v().newInstanceFieldRef(thisLocal,
-                                      postfireReturnsField)),
+                    Jimple.v().newInstanceFieldRef(thisLocal,
+                            postfireReturnsField)),
                     insertPoint);
             units.insertBefore(Jimple.v().newReturnStmt(postfireReturnsLocal),
                     insertPoint);
