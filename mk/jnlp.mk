@@ -123,7 +123,6 @@ COPERNICUS_JARS = \
 FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
 	ptolemy/domains/experimentalDomains.jar \
-	ptolemy/codegen/codegen.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
 	ptolemy/domains/gr/demo/demo.jar \
