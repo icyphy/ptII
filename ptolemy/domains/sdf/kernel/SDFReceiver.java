@@ -57,7 +57,7 @@ than simply removed. By default, the history capacity is zero.
 @version $Id$
 @see ptolemy.actor.util.FIFOQueue
 */
-public final class SDFReceiver extends AbstractReceiver {
+public class SDFReceiver extends AbstractReceiver {
 
     /** Construct an empty receiver with no container.
      */
