@@ -279,7 +279,7 @@ public class GeneratorTableau extends Tableau {
                             if (!directory.canWrite()) {
                                 throw
 				    new IllegalActionException(model,
-							       "Can't write: " 
+							       "Can't write: "
 							       + directoryName
 							       );
                             }
@@ -503,7 +503,7 @@ public class GeneratorTableau extends Tableau {
 	File makefileDirectoryFile = new File(makefileDirectory);
 	if (!makefileDirectoryFile.isDirectory()) {
 	    IllegalArgumentException illegalArgument =
-		new IllegalArgumentException("'" + makefileDirectory 
+		new IllegalArgumentException("'" + makefileDirectory
 					   + "' is not a directory. "
 					   + "This directory should contain "
 					   + "the makefile used for code "

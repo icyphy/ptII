@@ -70,7 +70,7 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 
         // Create parameters, and populate them with style hints to
         // use a checkbox on screen.
-	
+
 	// Start of code generators.
 	// sootShallow first, then alphabetical.
 	sootShallow = new Parameter(this, "sootShallow",
@@ -167,7 +167,7 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 	// the common prefix
 	String packageNameString = "";
 	try {
-	    String canonicalPtIIDirectory = 
+	    String canonicalPtIIDirectory =
 		(new File(ptIIDirectory)).getCanonicalPath();
 	    String canonicalDefaultDirectory =
 		(new File(defaultDirectory)).getCanonicalPath();
@@ -177,7 +177,7 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 		    .substring(canonicalPtIIDirectory.length());
 		packageNameString = (packagePath
 				     .replace('/','.')).replace('\\','.');
-		if (packageNameString.indexOf('.') == 0 
+		if (packageNameString.indexOf('.') == 0
 		    && packageNameString.length() >= 2) {
 		    // Strip off the leading . in the package.
 		    packageNameString = packageNameString.substring(1);
