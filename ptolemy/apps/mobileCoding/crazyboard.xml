@@ -16,7 +16,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, -5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="507.3197916666667, 77.3142857142857">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -33,7 +33,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, -50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="511.2729166666667, 96.05714285714285">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -50,7 +50,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.8197916666667, 114.8">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -67,7 +67,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="490.8197916666667, 133.54285714285714">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -84,7 +84,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.8197916666667, 152.28571428571428">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -101,7 +101,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, -50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="514.7729166666667, 171.0285714285714">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -118,7 +118,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, -10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="496.8197916666667, 189.77142857142854">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -135,7 +135,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 20.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="495.8041666666667, 208.51428571428568">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -152,7 +152,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, -50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="530.2729166666667, 227.2571428571428">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -169,7 +169,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 0.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="500.8197916666667, 245.99999999999994">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -186,7 +186,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, -45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="488.3197916666667, 264.7428571428571">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -203,7 +203,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, -30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="522.3197916666667, 283.4857142857142">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -220,7 +220,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 20.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="507.3197916666667, 302.22857142857134">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -237,7 +237,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, -25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="501.3432291666667, 320.9714285714285">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -254,7 +254,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="490.8197916666667, 339.7142857142856">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -271,7 +271,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, -30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="525.7729166666667, 358.45714285714274">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -288,7 +288,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, -75.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="507.3197916666667, 377.1999999999999">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -296,7 +296,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="40.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1e5">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -308,7 +308,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-45.0, -40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 55.0">
         </property>
     </property>
     <property name="initial_x_position" class="ptolemy.data.expr.Parameter" value="6.1">
@@ -323,7 +323,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, -70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="489.1322916666667, 414.68571428571414">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -340,14 +340,18 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, -30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="528.8197916666667, 433.4285714285713">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={206, 323, 927, 601}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 41, 927, 608}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[712, 492]">
+    </property>
+    <property name="nameServerInit" class="ptolemy.data.expr.Parameter" value="&quot;-ORBInitialHost 128.32.39.145 -ORBInitialPort 1050&quot;">
+    </property>
+    <property name="localizationIP" class="ptolemy.data.expr.Parameter" value="&quot;128.32.38.74&quot;">
     </property>
     <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReader">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
@@ -378,7 +382,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-35.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 175.0">
         </property>
         <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -395,7 +399,7 @@
         </port>
     </entity>
     <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramWriter">
-        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
+        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="localizationIP">
         </property>
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="2001">
         </property>
@@ -411,7 +415,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 45.0">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -431,46 +435,32 @@
     <entity name="MobileModel" class="ptolemy.actor.MobileModel">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="{85ub, 0ub, 0ub}">
         </property>
-        <property name="director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
-            </property>
-            <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-            <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 60.0">
+        <property name="director" class="ptolemy.actor.Director">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 320.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 205.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="356.0, 250.8671875">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 255.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="298.7734375, 85.4921875">
             </property>
         </port>
         <port name="modelString" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="492.0, 93.33333460489908">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="279.4609375, 165.63281186421713">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="485.078125, 205.390625">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="293.078125, 245.390625">
             </property>
         </port>
     </entity>
     <entity name="PushConsumer" class="ptolemy.actor.corba.PushConsumer">
-        <property name="ORBInit" class="ptolemy.data.expr.Parameter" value="&quot;-ORBInitialPort 1050&quot;">
+        <property name="ORBInit" class="ptolemy.data.expr.Parameter" value="nameServerInit">
         </property>
         <property name="ConsumerName" class="ptolemy.data.expr.Parameter" value="&quot;modelReceiver&quot;">
         </property>
@@ -478,7 +468,7 @@
         </property>
         <property name="defaultToken" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-45.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 335.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
