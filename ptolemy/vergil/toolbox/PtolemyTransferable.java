@@ -77,6 +77,7 @@ public class PtolemyTransferable implements Transferable {
      */
     public boolean isDataFlavorSupported(DataFlavor flavor) {
 	int i;
+	System.out.println("requested dataflavor = " + flavor);
 	for(i = 0; i < _flavors.length; i++)
 	    if(_flavors[i].equals(flavor)) return true;
 	return false;
@@ -98,6 +99,7 @@ public class PtolemyTransferable implements Transferable {
      */
     public Object getTransferData(DataFlavor flavor)
 	throws UnsupportedFlavorException, IOException {
+	System.out.println("requested dataflavor = " + flavor);
 	if (flavor.equals(DataFlavor.plainTextFlavor)) {
 	    return new ByteArrayInputStream(_getMoML().
 					    getBytes("Unicode"));
@@ -121,14 +123,17 @@ public class PtolemyTransferable implements Transferable {
 		       "ptolemy.kernel.util.NamedObj", "Named Object");
 
     // Return a string with a moml description of all the objects in the list.
-    public String _getMoML() {
-        StringBuffer buffer = new StringBuffer();
+    public String _getMoML() throws IOException {
+        StringWriter buffer = new StringWriter();
+	buffer.write("<group>");
         Iterator elements = 
             Collections.unmodifiableList(_objectList).iterator();
         while(elements.hasNext()) {
             NamedObj element = (NamedObj) elements.next();
-            buffer.append(element.exportMoML());
+	    // first level to avoid obnoxiousness with toplevel translations.
+	    element.exportMoML(buffer, 1);
         }
+	buffer.write("</group>");
         return buffer.toString();
     }
     
