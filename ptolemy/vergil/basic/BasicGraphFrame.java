@@ -151,7 +151,7 @@ import diva.util.java2d.ShapeUtilities;
    the hierarchy of a ptolemy model as a diva graph.  Cut, copy and
    paste operations are supported using MoML.
 
-   @author  Steve Neuendorffer, Edward A. Lee
+   @author  Steve Neuendorffer, Edward A. Lee, Contributor: Chad Berkeley (Kepler)
    @version $Id$
    @since Ptolemy II 2.0
    @Pt.ProposedRating Red (neuendor)
@@ -1005,8 +1005,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             // uniqueName() method of the container, to ensure that they
             // do not collide with objects already in the container.
             moml.append("<group name=\"auto\">\n");
-            moml.append((String)
-                    transferable.getTransferData(DataFlavor.stringFlavor));
+
+            // Pasted items no longer line up on top of each other.
+            moml.append(offsetPastedMomlLocation((String)
+                                transferable.getTransferData(
+                                        DataFlavor.stringFlavor), 10, 10));
+
             moml.append("</group>\n");
 
             MoMLChangeRequest change =
@@ -2290,5 +2294,54 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         public void actionPerformed(ActionEvent e) {
             zoom(1.0/1.25);
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /**
+     * Offset the moml object by xOffset and yOffset.  This makes it
+     * so pasted items do not appear directly on top of the copied
+     * source in vergil.
+     * @param moml the moml to change
+     * @param xOffset the number of x pixels to move the pasted object
+     * @param yOffset the number of y pixels to move the pasted object
+     * @return moml with the location modified by xOffset and yOffset
+     */
+    private String offsetPastedMomlLocation(String moml,
+            int xOffset, int yOffset) {
+      // Go through the moml and look for the _location property
+      // when it is found, acquire the value in [x,y] form
+      // add xOffset onto x and yOffset onto y and replace the value
+      int index = 0;
+      while (true) {
+        index = moml.indexOf("<property name=\"_location\"", index + 1);
+        if(index == -1) {
+            //look for all _locations, and break when there are no more
+            break;
+        }
+
+        int valStartIndex = moml.indexOf("value=\"", index);
+        int valEndIndex = moml.indexOf("\"", valStartIndex + 8);
+        String position = moml.substring(valStartIndex + 8, valEndIndex - 1);
+        // Get the int representation of the numbers
+        float xpos = new Float(
+                position.substring(0,
+                        position.indexOf(",")).trim()).floatValue();
+        float ypos = new Float(
+                position.substring(
+                        position.indexOf(",") + 1,
+                        position.length()).trim()).floatValue();
+        xpos += xOffset;
+        ypos += yOffset;
+        // Now put the values back in the string
+        String newValueString = "value=\"{" + xpos + ", " + ypos + "}\"";
+        String firstPart = moml.substring(0, valStartIndex);
+        String lastPart = moml.substring(valEndIndex + 1, moml.length());
+        // Cut out the old value and put in the new one
+        firstPart += newValueString;
+        moml = firstPart + lastPart;
+      }
+      return moml;
     }
 }
