@@ -1744,10 +1744,12 @@ echo "${ECHO_T}no" >&6
 fi
 
     if test "$PTJAVA_DIR/bin/java" = "$JAVA"; then
-	echo "$as_me:$LINENO: result:   You have the right java in your path,
-    $PTJAVA_DIR/bin/java = \"$JAVA\"" >&5
-echo "${ECHO_T}  You have the right java in your path,
-    $PTJAVA_DIR/bin/java = \"$JAVA\"" >&6
+	echo "$as_me:$LINENO: result:     You have the right java in your path,
+    \"$PTJAVA_DIR/bin/java\"
+      = \"$JAVA\"" >&5
+echo "${ECHO_T}    You have the right java in your path,
+    \"$PTJAVA_DIR/bin/java\"
+      = \"$JAVA\"" >&6
     else
 	{ echo "$as_me:$LINENO: WARNING: '$PTJAVA_DIR/bin/java' is not
     the same as '$JAVA'.
@@ -1824,10 +1826,7 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-    if test -x "$JAVAC"; then
-	echo "$as_me:$LINENO: result: $JAVAC" >&5
-echo "${ECHO_T}$JAVAC" >&6
-    else
+    if test ! -x "$JAVAC"; then
 	{ echo "$as_me:$LINENO: WARNING: Failed to find the 'javac' command in your path.
         This is not necessarily a problem, since
 	'$PTJAVA_DIR/bin/javac' was found, but if you have problems,
@@ -1838,10 +1837,12 @@ echo "$as_me: WARNING: Failed to find the 'javac' command in your path.
 	then you may want to adjust your path" >&2;}
     fi
     if test "$PTJAVA_DIR/bin/javac" = "$JAVAC"; then
-        echo "$as_me:$LINENO: result:   You have the right javac in your path,
-	 \"$PTJAVA_DIR/bin/javac\" = \"$JAVAC\"" >&5
-echo "${ECHO_T}  You have the right javac in your path,
-	 \"$PTJAVA_DIR/bin/javac\" = \"$JAVAC\"" >&6
+        echo "$as_me:$LINENO: result:     You have the right javac in your path,
+    \"$PTJAVA_DIR/bin/javac\"
+     = \"$JAVAC\"" >&5
+echo "${ECHO_T}    You have the right javac in your path,
+    \"$PTJAVA_DIR/bin/javac\"
+     = \"$JAVAC\"" >&6
     else
         { echo "$as_me:$LINENO: WARNING: '$PTJAVA_DIR/bin/javac' is not
 	 the same as '$JAVAC'.
@@ -1963,6 +1964,8 @@ case "$JVERSION" in
 		# If we call the jdk1.4 javadoc without -breakiterator,
 		# then we get lots of warnings
 		JDOCBREAKITERATOR=-breakiterator
+		echo "$as_me:$LINENO: result: ok, you are running 1.4 or later" >&5
+echo "${ECHO_T}ok, you are running 1.4 or later" >&6
         ;;
 	*) echo "$as_me:$LINENO: result: ok, you are running $JVERSION" >&5
 echo "${ECHO_T}ok, you are running $JVERSION" >&6
