@@ -43,20 +43,20 @@ import ptolemy.domains.sdf.kernel.*;
 @version $Id$
 */
 
-public class ImageUnpartition extends SDFAtomicActor {
+public final class ImageUnpartition extends SDFAtomicActor {
     public ImageUnpartition(CompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
         super(container,name);
     
-	new Parameter(this, "X Image Size", new IntToken("176"));
-        new Parameter(this, "Y Image Size", new IntToken("144"));
-        new Parameter(this, "X Partition Size", new IntToken("4"));
-        new Parameter(this, "Y Partition Size", new IntToken("2"));
+	new Parameter(this, "XFramesize", new IntToken("176"));
+        new Parameter(this, "YFramesize", new IntToken("144"));
+        new Parameter(this, "XPartitionSize", new IntToken("4"));
+        new Parameter(this, "YPartitionSize", new IntToken("2"));
  
-        IOPort inputport = (IOPort) newPort("partitions");
+        IOPort inputport = (IOPort) newPort("partition");
         inputport.setInput(true);
-        setTokenConsumptionRate(inputport, 176*144/4/2);
+        setTokenConsumptionRate(inputport, 1);
 
         IOPort outputport = (IOPort) newPort("image");
         outputport.setOutput(true);
@@ -65,38 +65,52 @@ public class ImageUnpartition extends SDFAtomicActor {
 
     public void initialize() throws IllegalActionException {
 	Parameter p;
-	p = (Parameter) getAttribute("X Image Size");
-        ximagesize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("Y Image Size");
-        yimagesize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("X Partition Size");
+	p = (Parameter) getAttribute("XFramesize");
+        xframesize = ((IntToken)p.getToken()).intValue();
+        p = (Parameter) getAttribute("YFramesize");
+        yframesize = ((IntToken)p.getToken()).intValue();
+        p = (Parameter) getAttribute("XPartitionSize");
         xpartsize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("Y Partition Size");
+        p = (Parameter) getAttribute("YPartitionSize");
         ypartsize = ((IntToken)p.getToken()).intValue();
- 
+
+        partition = ((IOPort) getPort("partition"));
+        image = ((IOPort) getPort("image"));
+        frame = new int[yframesize * xframesize];
+
     }
 
     public void fire() throws IllegalActionException {
-        int frame[][] = new int[ximagesize][yimagesize];
         int i, j;
 	int x, y;
-		
-	for(j = 0; j < yimagesize; j += ypartsize)
-            for(i = 0; i < ximagesize; i += ypartsize) {
-		IntMatrixToken message = 
-		    (IntMatrixToken)((IOPort) getPort("partitions")).get(0);
-		int part[][] = message.intMatrix();
-		for(y = 0; y < ypartsize; y++)
-		    for(x = 0; x < xpartsize; x++)
-		        frame[j + y][i + x] = part[y][x];
+        int a;
+
+        ObjectToken message = 
+            (ObjectToken)partition.get(0);
+        partitions = (int[][]) message.getValue();
+
+	for(j = 0, a = 0; j < yframesize; j += ypartsize)
+            for(i = 0; i < xframesize; i += xpartsize, a++) {
+                part = partitions[a];
+                for(y = 0; y < ypartsize; y++)
+                    System.arraycopy(part, y * xpartsize, 
+                            frame, (j + y) * xframesize + i, xpartsize);
 	    }
-	IntMatrixToken omessage = new IntMatrixToken(frame);
-	((IOPort) getPort("image")).send(0, omessage);
+	
+        IntMatrixToken omessage = new IntMatrixToken(frame, 144, 176);
+	image.send(0, omessage);
 	
     }
-    int ximagesize;
-    int yimagesize;
-    int xpartsize;
-    int ypartsize;
+
+    IntMatrixToken message;
+    IOPort partition;
+    IOPort image;
+    private int partitions[][];
+    private int part[];
+    private int frame[];
+    private int xframesize;
+    private int yframesize;
+    private int xpartsize;
+    private int ypartsize;
 
 }

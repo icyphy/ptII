@@ -46,7 +46,7 @@ import java.awt.image.*;
 @version $Id$
 */
 
-public class ImageDisplay extends SDFAtomicActor {
+public final class ImageDisplay extends SDFAtomicActor {
     public ImageDisplay(CompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
@@ -57,46 +57,70 @@ public class ImageDisplay extends SDFAtomicActor {
     }
 
     public void initialize() throws IllegalActionException {
-        _frame = new _InputFrame("ImageDisplay");
+        _frame = null;
+        _port_image = (IOPort) getPort("image");
+        _oldxsize = 0;
+        _oldysize = 0;
     }
 
     public void wrapup() throws IllegalActionException {
-        _frame.setVisible(false);
+        //      _frame.setVisible(false);
+        _frame.dispose();
     }
 
     public void fire() throws IllegalActionException {
         IntMatrixToken message = (IntMatrixToken)
-            ((IOPort) getPort("image")).get(0);
+            _port_image.get(0);
         int frame[][] = message.intMatrix();
         int xsize = message.getColumnCount();
         int ysize = message.getRowCount();
-        System.out.println("xsize = "+xsize);
-         System.out.println("ysize = "+ysize);
+
+        if((_oldxsize != xsize) || (_oldysize != ysize)) {
+            _oldxsize = xsize;
+            _oldysize = ysize;
+            _RGBbuffer = new int[xsize*ysize];
+            _imagesource = new MemoryImageSource(xsize, ysize, _RGBbuffer, 0, xsize);
+            _imagesource.setAnimated(true);
+            if(_frame != null) {
+                _frame.dispose();
+            }
+            _frame = new _InputFrame("ImageDisplay", xsize, ysize);            
+            _image = _frame._panel.createImage(_imagesource);
+
+            System.out.println("new buffer");
+        }     
+
+        //        System.out.println("xsize = "+xsize);
+        // System.out.println("ysize = "+ysize);
        
-        // conver the B/W image to a packed RGB image
-        int RGBbuffer[] = new int[xsize*ysize];
+        // convert the B/W image to a packed RGB image
         int i, j, index = 0;
         for(j = 0; j < ysize; j++) {
             for(i = 0; i < xsize; i++, index++) 
-                  RGBbuffer[index] = (255 << 24) |
-                    (frame[j][i] << 16) | (frame[j][i] << 8) | (frame[j][i]);
+                _RGBbuffer[index] = (255 << 24) |
+                    ((frame[j][i] & 255) << 16) | 
+                    ((frame[j][i] & 255) << 8) | 
+                    (frame[j][i] & 255);
              }  
-System.out.println("copied");   
-        Image img = _frame._panel.createImage(
-                new MemoryImageSource(xsize, ysize, RGBbuffer, 0, xsize));
-        _frame._panel.BLTImage(img);
-        System.out.println("image drawn");
+
+        //        Image img = _frame._panel.createImage(
+         //       new MemoryImageSource(xsize, ysize, _RGBbuffer, 0, xsize));
+        //        if(s == null) 
+        
+        _imagesource.newPixels();
+        _frame._panel.BLTImage(_image);
+        
+        //      System.out.println("image drawn");
     }
 
     private class _InputFrame extends Frame {
-        public _InputFrame(String title) {
+        public _InputFrame(String title, int xsize, int ysize) {
             super(title);
             this.setLayout(new BorderLayout(15, 15));
-            this.setSize(176,144);
-            _panel = new _VideoPanel(176, 144);
+            _panel = new _VideoPanel(xsize, ysize);
             this.setVisible(true);
             add("Center",_panel);
-
+            this.pack();
 
         }
         private _VideoPanel _panel;        
@@ -107,25 +131,36 @@ System.out.println("copied");
         public _VideoPanel(int width, int height) {
             super(); 
             _buffer = createImage(width, height);
+            this.setSize(width, height);
+            this.validate();
+            
         }
         
         public void paint(Graphics graphics) {
+            if(_buffer == null) return;
             graphics.drawImage(_buffer, 0, 0, null);
         }
 
-    public void update(Graphics g) {
-        paint(g);
-    }
+        public void update(Graphics g) {
+            paint(g);
+        }
 
         public void BLTImage(Image im) {
             _buffer = im;
             prepareImage(im,null);
             Graphics g = getGraphics();
             paint(g);
+            g.dispose();
+
         }
         
         private Image _buffer;
     }
     private _InputFrame _frame;
+    private IOPort _port_image;
+    private int _oldxsize, _oldysize;
+    private Image _image;
+    private MemoryImageSource _imagesource;
+    private int _RGBbuffer[] = null;
 
 }

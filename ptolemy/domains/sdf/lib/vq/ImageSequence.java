@@ -43,7 +43,7 @@ import ptolemy.domains.sdf.kernel.*;
 @version $Id$
 */
 
-public class ImageSequence extends SDFAtomicActor {
+public final class ImageSequence extends SDFAtomicActor {
     public ImageSequence(CompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
@@ -58,7 +58,7 @@ public class ImageSequence extends SDFAtomicActor {
         new Parameter(this, "XImageSize", new IntToken("176"));
         new Parameter(this, "YImageSize", new IntToken("144"));
         new Parameter(this, "Start Frame", new IntToken("0"));
-        new Parameter(this, "End Frame", new IntToken("2"));
+        new Parameter(this, "End Frame", new IntToken("30"));
     }
 
     public void initialize() throws IllegalActionException {
@@ -76,19 +76,18 @@ public class ImageSequence extends SDFAtomicActor {
         ysize = ((IntToken)p.getToken()).intValue();
  
         numframes = endframe-startframe+1;
-        frames = new byte[numframes][ysize][xsize];
+        frames = new byte[numframes][ysize*xsize];
+        frame = new int[ysize*xsize];
         try {
             for(framenumber = 0; 
                 framenumber < numframes; 
                 framenumber++) {
-                System.out.println("loading file "+framenumber);
+ 
                 byte arr[] = fileroot.getBytes();
                 int i = framenumber + startframe;
                 String tfilename = new String(fileroot);
                 int loc = tfilename.lastIndexOf('*');
                 while(loc >= 0) {
-                    System.out.println("loc="+loc);
-                    System.out.println("name = "+fileroot);
                     arr[loc] = (byte)('0' + i % 10);
                     i = i / 10;
                     tfilename = new String(arr);
@@ -106,11 +105,11 @@ public class ImageSequence extends SDFAtomicActor {
                 source = new FileInputStream(sourcefile);
   
                 int j;
-                for(j = ysize - 1; j >= 0; j--) { 
-                        if(source.read(frames[framenumber][j],0,xsize)!=xsize)
+                //              for(j = ysize - 1; j >= 0; j--) { 
+                        if(source.read(frames[framenumber],0,ysize*xsize)!=ysize*xsize)
                             throw new IllegalActionException("Error reading " +
                                     "Image file!");
-                    }
+                        //  }
             }
         }
         catch (Exception e) {
@@ -126,32 +125,42 @@ public class ImageSequence extends SDFAtomicActor {
             }
         }
         framenumber = 0;    
+        port_image = (IOPort) getPort("image");
     }
 
     public void fire() throws IllegalActionException {
-        int frame[][] = new int[ysize][xsize];
-        int i, j;
-        System.out.println("Frame = "+framenumber);
-        System.out.println("xsize = "+xsize);
-        System.out.println("ysize = "+ysize);
-        for(j = 0; j < ysize; j++)
-            for(i = 0; i < xsize; i++) {
-                frame[j][i] = (int) frames[framenumber][j][i];
-            }
-        System.out.println("creating token");
-        IntMatrixToken message = new IntMatrixToken(frame);
-        ((IOPort) getPort("image")).send(0, message);
+        int i, j, n, m;
+        workspace().setReadOnly(true);
+       
+        System.out.println("frame " + framenumber);
+        // This is necessary to convert from bytes to ints
+        // and to flip the image
+        for(i = ysize - 1, n = 0; i >= 0; i--) {
+            m = i * xsize;
+            for(j = 0; j < xsize; j++, n++, m++)
+                frame[n] = frames[framenumber][m];
+        }
+
+        IntMatrixToken message = new IntMatrixToken(frame, ysize, xsize);
+        port_image.send(0, message);
 
         framenumber++; 
         if(framenumber >= numframes) framenumber = 0;
     }
+
+    public void wrapup() throws IllegalActionException {
+        workspace().setReadOnly(false);
+    }
+
     String filetemplate;
-    byte frames[][][];
+    byte frames[][];
     int xsize;
     int ysize;
+    int frame[];
     int startframe;
     int endframe;
     int numframes;
     int framenumber;
+    IOPort port_image;
 
 }

@@ -32,13 +32,11 @@
 # Root of the Java directory
 ROOT =		../../../../..
 
-ME =		ptolemy/domains/sdf/lib
+ME =		ptolemy/domains/sdf/lib/vq
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-JFLAGS =
 
 DIRS = 		#doc
 
@@ -54,6 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 CLASSPATH = ../../../../..
 
 JSRCS = \
+	HTVQEncode.java \
 	ImageDisplay.java \
 	ImagePartition.java \
 	ImageSequence.java \

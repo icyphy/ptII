@@ -55,30 +55,38 @@ public class VQEncode extends SDFAtomicActor {
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
 
-        Parameter p = new Parameter(this, "Codebook", new StringToken("VQcodebook.dat"));
-        new Parameter(this, "X Dimension", new IntToken("4"));
-        new Parameter(this, "Y Dimension", new IntToken("2"));
+        Parameter p = new Parameter(this, "Codebook", 
+                new StringToken("/users/neuendor/htvq/usc_hvq_s5.dat"));
+	new Parameter(this, "XFramesize", new IntToken("176"));
+        new Parameter(this, "YFramesize", new IntToken("144"));
+        new Parameter(this, "XPartitionSize", new IntToken("4"));
+        new Parameter(this, "YPartitionSize", new IntToken("2"));
     }
 
 
     public void fire() throws IllegalActionException {
-        IntMatrixToken t = (IntMatrixToken) ((IOPort) getPort("imagepart")).get(0);
-        if(t.getColumnCount() != xsize) 
-            throw new IllegalActionException("Input column count does not " +
-                    "match parameter X Dimension!");
-        if(t.getRowCount() != ysize) 
-            throw new IllegalActionException("Input row count does not " +
-                    "match parameter Y Dimension!");
+        ObjectToken t = (ObjectToken) ((IOPort) getPort("imagepart")).get(0);
 
-        int a[][] = t.intMatrix();
+        _partitions = (int[][]) t.getValue();
+        int numpartitions = 
+            _xframesize * _yframesize / _xpartsize / _ypartsize;
 
-        int i,nn=0;
-        long nnd = 1000000,td;
-        for(i = 0; i < 256; i++)
-                if((td = _distortion(a, codebook[i], xsize, ysize)) < nnd)
-                        {nnd = td; nn = i;}
-        
-        IntToken ot = new IntToken(nn);
+        int j;
+        for(j = 0; j < numpartitions; j++) {
+            _part = _partitions[j];
+
+            int i,nn=0;
+            long nnd = 1000000,td;
+            for(i = 0; i < 256; i++) {
+                td = _distortion(_part, _codebook[2][i], 
+                        _xpartsize * _ypartsize);
+                if(td < nnd)
+                    {nnd = td; nn = i;}
+            }
+            _codewords[j] = nn;
+            //          System.out.println(nn);
+        }
+        ObjectToken ot = new ObjectToken(_codewords);
         ((IOPort) getPort("index")).send(0,ot);
 
     }
@@ -86,14 +94,22 @@ public class VQEncode extends SDFAtomicActor {
     public void initialize() throws IllegalActionException {
         File sourcefile = null;
         FileInputStream source = null;
+        
+        Parameter p; 
+	p = (Parameter) getAttribute("XFramesize");
+        _xframesize = ((IntToken)p.getToken()).intValue();
+        p = (Parameter) getAttribute("YFramesize");
+        _yframesize = ((IntToken)p.getToken()).intValue();
+        p = (Parameter) getAttribute("XPartitionSize");
+        _xpartsize = ((IntToken)p.getToken()).intValue();
+        p = (Parameter) getAttribute("YPartitionSize");
+        _ypartsize = ((IntToken)p.getToken()).intValue();
 
-        Parameter p = (Parameter) getAttribute("Codebook");
+        _codewords = 
+            new int[_yframesize * _xframesize / _ypartsize / _xpartsize];
+
+        p = (Parameter) getAttribute("Codebook");
         String filename = ((StringToken)p.getToken()).stringValue();
-        Parameter px = (Parameter) getAttribute("XDimension");
-        xsize = ((IntToken)px.getToken()).intValue();
-        Parameter py = (Parameter) getAttribute("YDimension");
-        ysize = ((IntToken)py.getToken()).intValue();
-
         try {
             sourcefile = new File(filename);
             if(!sourcefile.exists() || !sourcefile.isFile())
@@ -103,14 +119,22 @@ public class VQEncode extends SDFAtomicActor {
                 throw new IllegalActionException("Codebook file " +
                         filename + " is unreadable!");
             source = new FileInputStream(sourcefile);
-        
-            int i,j;
-            for(i=0; i<256; i++) {
-                codebook[i] = new byte[ysize][xsize];
-                for(j=0; j<ysize; j++)
-                    if(source.read(codebook[i][j])!=xsize)
+
+            byte temp[];
+            int i, j, y, x, size = 1;
+            for(i=0; i<3; i++) {
+                size = size * 2;
+                temp = new byte[size];
+                for(j=0; j<256; j++) {
+                    _codebook[i][j] = new int[size];
+                    if(source.read(temp)!=size)
                         throw new IllegalActionException("Error reading " +
                                 "codebook file!");
+                    for(x = 0; x < size; x++)
+                        _codebook[i][j][x] = temp[x];
+                }
+                // skip over the lookup tables.
+                source.skip(65536);
             }
         }
         catch (Exception e) {
@@ -127,20 +151,25 @@ public class VQEncode extends SDFAtomicActor {
         }
     }
     
-    long _distortion(int a[][],byte b[][], int xsize, int ysize) {
-        long c,d=0;
-        int i,j;
-        for(i=0;i<xsize;i++)
-        for(j=0;j<ysize;j++)
+    long _distortion(int a[], int b[], int len) {
+        long c,d = 0;
+        int i;
+        for(i = 0;i<len;i++)
         {
-                c=(a[j][i]-b[j][i]);
-                d+=c*c;
+                c = ((a[i] & 255) - (b[i] & 255));
+                d += c * c;
         }
         return d;
     }
-    private byte codebook[][][] = new byte[256][][];
-    private int xsize;
-    private int ysize;
+
+    private int _codebook[][][] = new int[6][256][];
+    private int _codewords[];
+    private int _partitions[][];
+    private int _part[];
+    private int _xframesize;
+    private int _yframesize;
+    private int _xpartsize;
+    private int _ypartsize;
 }
 
 
