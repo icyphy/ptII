@@ -216,7 +216,15 @@ public class Director extends NamedObj implements Executable {
      *  it returns 0. The derived class should override this method
      *  and return the current time.
      */
+    // FIXME: complete this.
     public double getCurrentTime() {
+        return 0.0;
+    }
+
+    /** Get the next iteration time.
+     */
+    // FIXME: complete this.
+    public double getNextIterationTime() {
         return 0.0;
     }
 
@@ -254,8 +262,7 @@ public class Director extends NamedObj implements Executable {
      *  write protected, false otherwise.
      *   
      */
-    // FIXME: should this be 'package friendly' ?
-    public boolean needWriteAccess() {
+    public final boolean needWriteAccess() {
         if (_writeAccessPreference()) {
             return true;
         }
@@ -352,6 +359,15 @@ public class Director extends NamedObj implements Executable {
         _pendingMutations.insertLast(mutation);
     }
 
+    /** Schedule to be refired after a specified delay with respect to the
+     *  current time.
+     */
+    // FIXME: complete this.
+    public void fireAfterDelay(Actor actor, double delay) {
+        // do nothing.
+    }
+
+
     /** Remove a mutation listener that does not want to be informed
      *  of any future mutations by this director. This does not do anything
      *  if the listener is not listed with this director.
@@ -361,6 +377,15 @@ public class Director extends NamedObj implements Executable {
     public void removeMutationListener(MutationListener listener) {
         _mutationListeners.removeOneOf(listener);
     }
+
+    /** Set the current time.
+     *  Do nothing in this base class implementation.
+     */
+    // FIXME: complete this.
+    public void setCurrentTime(double time) {
+        
+    }
+
 
     /** Recursively terminate all of our actors.   Domains may need to 
      *  override this to properly deal with any threads they've created.
