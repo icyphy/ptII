@@ -76,6 +76,8 @@ OPTIONAL_FILES =	codeDoc uml
 
 ALLJSRCS = 		collections \
 			ptolemy.plot \
+			ptolemy.plot.plotml \
+			ptolemy.plot.compat \
 			ptolemy.kernel \
 			ptolemy.kernel.event \
 			ptolemy.kernel.util \
@@ -122,6 +124,8 @@ docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
 codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/plot/*.java \
+			../ptolemy/plot/compat/*.java \
+			../ptolemy/plot/plotml/*.java \
 			../ptolemy/kernel/*.java \
 			../ptolemy/kernel/event/*.java \
 			../ptolemy/kernel/util/*.java \
