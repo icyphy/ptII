@@ -501,19 +501,6 @@ public class DEDirector extends Director {
         return true;
     }
 
-    /** If the topological sort is not valid, then compute it.
-     *  @return True.
-     *  @exception IllegalActionException If the graph has a zero
-     *   delay loop.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (!_sortValid) {
-            _computeDepth();
-            _sortValid = true;
-        }
-        return super.prefire();
-    }
-
     /** Set current time to zero, invoke the preinitialize() methods of
      *  all actors deeply contained by the container, and calculate
      *  priorities for simultaneous events.
@@ -550,8 +537,6 @@ public class DEDirector extends Director {
 
         // Call the parent preinitialize method to create the receivers.
         super.preinitialize();
-        _computeDepth();
-        _sortValid = true;
     }
 
     /** Unregister a debug listener.  If the specified listener has not
@@ -998,19 +983,22 @@ public class DEDirector extends Director {
             _actorToDepth.put(actor, new Integer(i));
 	}
         if (_debugging) _debug("## End of topological sort.");
+        // the sort is now valid.
+        _sortValid = true;
     }
 
     // Return the depth of the actor. Throws IllegalActionException
     // if the actor is not in the table.
     private int _getDepth(Actor actor) throws IllegalActionException {
-        if (_actorToDepth != null ) {
-            Integer depth = (Integer)_actorToDepth.get(actor);
-            if (depth != null) {
-                return depth.intValue();
-            }
+        if (!_sortValid) {
+            _computeDepth();
         }
-        throw new IllegalActionException (this,
-                "Request the depth of an actor which is not sorted");
+        Integer depth = (Integer)_actorToDepth.get(actor);
+        if (depth != null) {
+            return depth.intValue();
+        }
+        throw new IllegalActionException("Attempt to get depth of actor " +
+                "that was not sorted.");
     }
 
     // initialize parameters. Set all parameters to their default
