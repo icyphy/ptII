@@ -61,6 +61,7 @@ TCL_SRCS = \
 # Shell scripts that should be made executable
 SCRIPTS = \
 	cgstats \
+	chkeol \
 	chkextra \
 	chkjava \
 	deprecated \
