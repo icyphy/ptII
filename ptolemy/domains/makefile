@@ -44,7 +44,7 @@ EXPERIMENTAL_DOMAINS =
 #   Java 3D was found
 # The tm domain uses java.util.Timer, so it requires JDK 1.3
 DOMAINS =	ci csp ct dde de fsm hde pn sdf dt giotto petrinet \
-		$(PTPSDF_DIR) rtp \
+		$(PTPSDF_DIR) \
 		sr tm $(PTJAVA3D_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
