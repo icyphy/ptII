@@ -249,13 +249,12 @@ public class CSPDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Increase the count of blocked processes and check for deadlock.
+    /** Increase the count of blocked processes and check if the actors
+     *  are deadlocked or stopped.
      */
     protected synchronized void _actorBlocked() {
         _actorsBlocked++;
-        if (_isDeadlocked()) {
-	    notifyAll();
-	}
+	notifyAll();
     }
 
     /** Called by a CSPActor when it wants to delay. When the
@@ -282,9 +281,7 @@ public class CSPDirector extends ProcessDirector {
 	    // Enter the actor and the time to wake it up into the
 	    // LinkedList of delayed actors.
 	    _registerDelayedActor( (getCurrentTime() + delta), actor);
-	    if (_isDeadlocked()) {
-	        notifyAll();
-	    }
+	    notifyAll();
 	    return;
 	}
     }
@@ -395,7 +392,7 @@ public class CSPDirector extends ProcessDirector {
                     done = true;
                 }
             }
-        } else {
+        } else if( _actorsBlocked == _getActiveActorsCount() ) {
             // Real deadlock.
             return false;
         }
