@@ -29,7 +29,8 @@ import ptolemy.graph.Graph;
 //////////////////////////////////////////////////////////////////////////
 //// Analysis
 /** A base class for analyses on graphs. To faciliate demand-driven
-and incremental recomputation of analyses, analysis results are cached
+and incremental recomputation (e.g., see [1]) of analyses, analysis results 
+are cached
 internally (see {@link #_cachedResult()}), and are recomputed only
 when the graph has changed since the last request (via {@link #result()})
 for the analysis result. The internally-cached result (<em>cached result</em>)
@@ -37,6 +38,9 @@ of an analysis is directly accessible only by derived classes; however,
 its status can be queried with the {@link #obsolete()} method to determine
 if a subsequent invocation of {@link #result()} will trigger recomputation
 of the analysis.
+<p>
+[1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis, 
+University of Wisconsin at Madison, August 1993.
 
 @author Shuvra S. Bhattacharyya and Mingyung Ko
 @version $Id$
@@ -159,12 +163,17 @@ public class Analysis {
     }
 
     /** Return the result (cached value) of the analysis on the associated 
-     *  graph. The cached value is updated (recomputed) if the graph
-     *  has changed since the last time the cached value was computed.
+     *  graph. The cached value is updated, through recomputation of
+     *  the analysis (using {@link #_compute()}), if the graph
+     *  has changed since the last time {@link #result()} was invoked.
+     *  Otherwise, the cache value is simply returned (in <em>O</em>(1) time).
      *
      *  @return The result of the analysis.
      */
     public final Object result() {
+        // Finality of this method is required to ensure analysis computation
+        // only happens when the graph changes, as specified in the
+        // contract of the method comment.
         if (obsolete()) {
             _cachedResult = _compute();
             registerComputation();
