@@ -39,6 +39,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Panel;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -111,8 +112,7 @@ public class Query extends JPanel {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // Left Justify.
-        _entryPanel.setAlignmentX(0.0f);
+        _entryPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Add a message panel into which a message can be placed using
         // setMessage().
@@ -135,8 +135,7 @@ public class Query extends JPanel {
 
         _messageArea.setBackground(null);
 
-        // Left Justify.
-        _messageArea.setAlignmentX(0.0f);
+        _messageArea.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         _messageScrollPane = new JScrollPane(_messageArea);
 	_messageScrollPane.setVerticalScrollBarPolicy(
@@ -145,16 +144,21 @@ public class Query extends JPanel {
         _messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
         _messageScrollPane.getViewport().setBackground(null);
 
+        // Useful for debugging:
+        //_messageScrollPane.setBorder(
+        //                    BorderFactory.createLineBorder(Color.pink));
+
         add(_messageScrollPane);
 
         // Add a spacer.
-        add(Box.createRigidArea(new Dimension(0,10)));
+        add(Box.createRigidArea(new Dimension(0, 10)));
 
         _entryScrollPane = new JScrollPane(_entryPanel);
         // Get rid of the border.
         _entryScrollPane.setBorder(BorderFactory.createEmptyBorder());
         _entryScrollPane.getViewport().setBackground(null);
         _entryScrollPane.setBackground(null);
+        _entryScrollPane.setAlignmentY(Component.CENTER_ALIGNMENT);
         add(_entryScrollPane);
 
         // Setting the background to null allegedly means it inherits the
@@ -585,27 +589,32 @@ public class Query extends JPanel {
      *
      *  @return The maximum desired size.
      */
-     public Dimension getMaximumSize() {
-         // If you change this, be sure to try applets that have both
-         // horizontal and vertical layout.
-         Dimension preferred = super.getPreferredSize();
-         preferred.width = Short.MAX_VALUE;
-         return preferred;
+    public Dimension getMaximumSize() {
+        // Unfortunately, if we don't have a message, then we end up with
+        // an empty space that is difficult to control the size of, which
+        // requires us to set the maximum size to be the same as
+        // the preferred size
+
+        // If you change this, be sure to try applets that have both
+        // horizontal and vertical layout.
+        Dimension preferred = getPreferredSize();
+        preferred.width = Short.MAX_VALUE;
+        return preferred;
      }
 
-    /** Get the preferred width to be used for entry boxes created
-     *  in using addLine().  The preferred width is set using
-     *  setTextWidth.
-     *  @return The preferred width.
+    /** Get the preferred width in characters to be used for entry
+     *  boxes created in using addLine().  The preferred width is set
+     *  using setTextWidth().
+     *  @return The preferred width of an entry box in characters.
      */
     public int getTextWidth() {
         return _width;
     }
 
-    /** Get the preferred height to be used for entry boxes created
+    /** Get the preferred number of lines to be used for entry boxes created
      *  in using addText().  The preferred height is set using
      *  setTextHeight().
-     *  @return The preferred height.
+     *  @return The preferred height in lines.
      */
     public int getTextHeight() {
         return _height;
@@ -1112,21 +1121,23 @@ public class Query extends JPanel {
         _labels.put(name, label);
         _previous.put(name, getStringValue(name));
 
+        Dimension preferredSize = _entryPanel.getPreferredSize();
         // Add some slop to the width to take in to account
         // the width of the vertical scrollbar.
-        Dimension preferredSize = _entryPanel.getPreferredSize();
         preferredSize.width += 25;
 
-        if (_entries.size() < 10) { 
-            // If we have less than 10 entries, set the preferred height
-            // to be the number of entries * the text height.
+        // Applets seem to need this, see CT/SigmaDelta
+        _widgetsHeight += widget.getPreferredSize().height + 10;
+        preferredSize.height = _widgetsHeight;
 
-            // Be sure to check an applet such as GR/Pendulum that has
-            // a single parameter after modifying this.
-            preferredSize.height = _entries.size() * getTextHeight() * 4;
-        } else {
-            preferredSize.height = 10 * getTextHeight();
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        if (preferredSize.height > tk.getScreenSize().height) {
+            // Fudge factor to keep this window smaller than the screen
+            // height.  CGSUnitBase and the Code Generator are good tests.
+            preferredSize.height = (int) (tk.getScreenSize().height * 0.75);
+            _entryScrollPane.setPreferredSize(preferredSize);
         }
+
         _entryScrollPane.setPreferredSize(preferredSize);
         // Call revalidate for the scrollbar.
         _entryPanel.revalidate();
@@ -1199,7 +1210,7 @@ public class Query extends JPanel {
     // A scroll pane that contains the _entryPanel.
     private JScrollPane _entryScrollPane;
 
-    // The height of the text boxes.
+    // The number of lines in a text box.
     private int _height = DEFAULT_ENTRY_HEIGHT;
 
     // The hashtable of labels in the query.
@@ -1220,7 +1231,10 @@ public class Query extends JPanel {
     // The hashtable of previous values, indexed by entry name.
     private Map _previous = new HashMap();
 
-    // The width of the text boxes.
+    // The sum of the height of the widgets added using _addPair
+    private int _widgetsHeight;
+
+    // The number of horizontal characters in a text box.
     private int _width = DEFAULT_ENTRY_WIDTH;
 
     ///////////////////////////////////////////////////////////////////
