@@ -76,6 +76,7 @@ JSRCS = \
 	SampleSDFExecutive.java \
 	Scheduler.java \
 	SDFPort.java \
+	SDFRamp.java \
 	SDFStar.java \
 	Star.java \
 	StatusArray.java \
