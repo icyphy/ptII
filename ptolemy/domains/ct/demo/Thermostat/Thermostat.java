@@ -143,6 +143,7 @@ public void init() {
         act0.variableName.setExpression("\"Integrator.initialState\"");
         ResetRefinement act1 =
             new ResetRefinement(ctrlTr1, "act1");
+
         Transition ctrlTr2 = new Transition(ctrl, "ctrlTr2");
         ctrlDec.outgoingPort.link(ctrlTr2);
         ctrlInc.incomingPort.link(ctrlTr2);
@@ -154,6 +155,7 @@ public void init() {
         act2.variableName.setExpression("\"Integrator.initialState\"");
         ResetRefinement act3 =
             new ResetRefinement(ctrlTr2, "act3");
+
         IOPort ctrlIn = new TypedIOPort(ctrl, "output");
         ctrlIn.setInput(true);
         IOPort ctrlSt = new TypedIOPort(ctrl, "state");
