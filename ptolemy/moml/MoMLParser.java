@@ -719,7 +719,7 @@ public class MoMLParser extends HandlerBase {
                 _namespaces.push(_namespace);
                 // If the container is cloned from something, break
                 // the link, since now the object has changed.
-                _current.deferMoMLDefinitionTo(null);
+                _current.setDeferMoMLDefinitionTo(null);
                 Class newClass = Class.forName(className, true, _classLoader);
                 _current = _createInstance(newClass, arguments);
                 _namespace = DEFAULT_NAMESPACE;
@@ -821,7 +821,7 @@ public class MoMLParser extends HandlerBase {
                         + _current);
                 // If the container is cloned from something, break
                 // the link, since now the object has changed.
-                _current.deferMoMLDefinitionTo(null);
+                _current.setDeferMoMLDefinitionTo(null);
 
                 CompositeEntity context = (CompositeEntity)_current;
 
@@ -965,7 +965,7 @@ public class MoMLParser extends HandlerBase {
                     port = (Port)_createInstance(newClass, arguments);
                     // If the container is cloned from something, break
                     // the link, since now the object has changed.
-                    _current.deferMoMLDefinitionTo(null);
+                    _current.setDeferMoMLDefinitionTo(null);
                 }
                 _containers.push(_current);
                 _namespaces.push(_namespace);
@@ -1121,7 +1121,7 @@ public class MoMLParser extends HandlerBase {
                     _namespaces.push(_namespace);
                     // If the container is cloned from something, break
                     // the link, since now the object has changed.
-                    _current.deferMoMLDefinitionTo(null);
+                    _current.setDeferMoMLDefinitionTo(null);
                     _current = relation;
                     _namespace = DEFAULT_NAMESPACE;
                 }
@@ -1153,7 +1153,7 @@ public class MoMLParser extends HandlerBase {
                         + _current);
                 // If the container is cloned from something, break
                 // the link, since now the object has changed.
-                _current.deferMoMLDefinitionTo(null);
+                _current.setDeferMoMLDefinitionTo(null);
 
                 CompositeEntity context = (CompositeEntity)_current;
 
@@ -1359,7 +1359,7 @@ public class MoMLParser extends HandlerBase {
                 Object[] arguments = new Object[2];
                 // If the container is cloned from something, break
                 // the link, since now the object has changed.
-                _current.deferMoMLDefinitionTo(null);
+                _current.setDeferMoMLDefinitionTo(null);
                 arguments[0] = _current;
                 arguments[1] = entityName;
                 return _createInstance(newClass, arguments);
@@ -1383,7 +1383,7 @@ public class MoMLParser extends HandlerBase {
 
             // Clone it.
             ComponentEntity newEntity = (ComponentEntity)reference.clone();
-            newEntity.deferMoMLDefinitionTo(reference);
+            newEntity.setDeferMoMLDefinitionTo(reference);
 
             // Set the name of the clone.
             // NOTE: The container is null, so there will be no
@@ -1452,7 +1452,7 @@ public class MoMLParser extends HandlerBase {
         // the link, since now the object has changed.
         NamedObj container = (NamedObj)toDelete.getContainer();
         if (container != null) {
-            container.deferMoMLDefinitionTo(null);
+            container.setDeferMoMLDefinitionTo(null);
         }
 
         toDelete.setContainer(null);
