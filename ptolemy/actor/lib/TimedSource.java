@@ -143,7 +143,9 @@ public class TimedSource extends Source implements TimedActor {
             if (director == null) {
                 throw new IllegalActionException(this, "No director!");
             }
-            director.fireAt(this, time);
+            //changed by yang.
+            //director.fireAt(this, time);
+            director.fireAt(this, director.getCurrentTime() + time);
             _executing = true;
         }
     }
