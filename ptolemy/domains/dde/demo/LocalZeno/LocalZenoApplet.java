@@ -179,44 +179,44 @@ public class LocalZenoApplet extends DDEApplet {
 	Edge e;
 
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n1);
-	impl.setEdgeTail(e, n2);
-	
-	e = impl.createEdge(null);
+	impl.setEdgeTail(e, n1);
 	impl.setEdgeHead(e, n2);
-	impl.setEdgeTail(e, n3);
-
-	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n3);
-	impl.setEdgeTail(e, n4);
 	
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n4);
-	impl.setEdgeTail(e, n5);
-
-	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n4);
 	impl.setEdgeTail(e, n2);
+	impl.setEdgeHead(e, n3);
+
+	e = impl.createEdge(null);
+	impl.setEdgeTail(e, n4);
+	impl.setEdgeHead(e, n2);
+
+	e = impl.createEdge(null);
+	impl.setEdgeTail(e, n3);
+	impl.setEdgeHead(e, n4);
 	
 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n1);
-	impl.setEdgeTail(e, n6);
-
+	impl.setEdgeTail(e, n3);
+	impl.setEdgeHead(e, n5);
+	
 	e = impl.createEdge(null);
+	impl.setEdgeTail(e, n1);
 	impl.setEdgeHead(e, n6);
+
+	e = impl.createEdge(null);
 	impl.setEdgeTail(e, n7);
-
-	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n7);
-	impl.setEdgeTail(e, n8);
-
-	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n7);
-	impl.setEdgeTail(e, n9);
-
-	e = impl.createEdge(null);
 	impl.setEdgeHead(e, n8);
+
+	e = impl.createEdge(null);
 	impl.setEdgeTail(e, n6);
+	impl.setEdgeHead(e, n7);
+
+	e = impl.createEdge(null);
+	impl.setEdgeTail(e, n7);
+	impl.setEdgeHead(e, n9);
+
+	e = impl.createEdge(null);
+	impl.setEdgeTail(e, n8);
+	impl.setEdgeHead(e, n6);
 	
         return graph;
     }
@@ -264,13 +264,10 @@ public class LocalZenoApplet extends DDEApplet {
 	    _fBack1.setDelay(4.5);
 	    _fBack2.setDelay(4.5);
 
-	    // Set up ports, relation
-	    TypedIOPort clockOut = (TypedIOPort)_clock.getPort("output");
-	    clockOut.setMultiport(true);
-
-	    // Set up connections
-	    _toplevel.connect( _clock.output, _join1.input );
-	    _toplevel.connect( _clock.output, _join2.input );
+	    // Set up ports, relations and connections
+            Relation clkRelation = 
+            	    _toplevel.connect( _clock.output, _join1.input );
+            _join2.input.link( clkRelation );
 
 	    _toplevel.connect( _join1.output, _fork1.input );
 	    _toplevel.connect( _fork1.output1, _rcvr1.input );
