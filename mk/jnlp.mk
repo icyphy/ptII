@@ -56,12 +56,14 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/ptolemy.jar
 
+FULL_MAIN_JAR = \
+	ptolemy/vergil/vergil.jar
+
 FULL_JNLP_JARS = \
+	$(FULL_MAIN_JAR) \
 	$(CORE_JNLP_JARS) \
 	$(FULL_ONLY_JNLP_JARS)
 
-FULL_MAIN_JAR = \
-	ptolemy/vergil/vergil.jar
 
 #######
 # Ptiny
@@ -74,14 +76,16 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/de/demo/demo.jar \
 	ptolemy/moml/demo/demo.jar \
-	ptolemy/ptsupport.jar
-
-PTINY_JNLP_JARS = \
-	$(CORE_JNLP_JARS) \
-	$(PTINY_ONLY_JNLP_JARS)
 
 PTINY_MAIN_JAR = \
 	ptolemy/ptsupport.jar
+
+PTINY_JNLP_JARS = \
+	$(PTINY_MAIN_JAR) \
+	$(CORE_JNLP_JARS) \
+	$(PTINY_ONLY_JNLP_JARS)
+
+
 
 #######
 # DSP
