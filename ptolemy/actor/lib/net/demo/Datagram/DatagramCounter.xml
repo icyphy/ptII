@@ -11,6 +11,8 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -63,16 +65,22 @@ firing them in that order.
         <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 240.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    </property>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 210, 508, 348}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="binWidth" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 230.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -83,15 +91,15 @@ firing them in that order.
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>HistogramPlotter</title>
-<xRange min="1.0" max="3.5"/>
-<yRange min="0.0" max="900.0"/>
+<xRange min="1.0" max="1.5"/>
+<yRange min="0.0" max="1000.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="1.0" offset="0.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 230.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -106,16 +114,6 @@ firing them in that order.
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
         </property>
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4003">
-        </property>
-        <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="for_Ptolemy_parser" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
-                </property>
-                <property name="raw_integers_little_endian" class="ptolemy.kernel.util.StringAttribute" value="raw_integers_little_endian">
-                </property>
-                <property name="raw_low_bytes_of_integers" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
-                </property>
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 220.0">
         </property>
@@ -149,17 +147,7 @@ firing them in that order.
         </property>
         <property name="defaultReturnSocketNumber" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="defaultOutput" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="for_Ptolemy_parser" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
-                </property>
-                <property name="raw_integers_little_endian" class="ptolemy.kernel.util.StringAttribute" value="raw_integers_little_endian">
-                </property>
-                <property name="raw_low_bytes_of_integers" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
-                </property>
-            </property>
+        <property name="defaultOutput" class="ptolemy.data.expr.Parameter" value="{0ub}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 220.0">
         </property>
@@ -171,8 +159,6 @@ firing them in that order.
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
-            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -182,12 +168,12 @@ firing them in that order.
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="{0ub}">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="step" class="ptolemy.data.expr.Parameter" value="{1ub}">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 230.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -197,13 +183,13 @@ firing them in that order.
             <property name="multiport"/>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="HistogramPlotter.input" relation="relation"/>
     <link port="ArrayLength.input" relation="relation3"/>

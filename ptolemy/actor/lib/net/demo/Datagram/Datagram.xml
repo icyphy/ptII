@@ -51,6 +51,8 @@ and Ptolemy models with each other!</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 25.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 12, 1032, 744}}">
+    </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="N + &quot; bytes received from partner at IP = \&quot;&quot; + address + &quot;\&quot;&quot;">
         </property>
@@ -149,7 +151,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </property>
         <property name="defaultReturnSocketNumber" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="defaultOutput" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="defaultOutput" class="ptolemy.data.expr.Parameter" value="{0ub}">
         </property>
         <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -219,6 +221,8 @@ and Ptolemy models with each other!</text></svg></configure>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={366, 273, 292, 222}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 520.0">
         </property>
@@ -399,17 +403,17 @@ and Ptolemy models with each other!</text></svg></configure>
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="155.0, 460.0">
+        <vertex name="vertex1" value="155.0, 460.0">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="305.0, 300.0">
+        <vertex name="vertex1" value="305.0, 300.0">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="275.0, 540.0">
+        <vertex name="vertex1" value="275.0, 540.0">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">

@@ -4,7 +4,7 @@
 <entity name="DatagramNetworkedCopyPaste" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 667]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -23,7 +23,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 35.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -43,7 +43,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, -5.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -64,7 +64,7 @@ model on your computer.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 325.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 340.0">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -192,7 +192,11 @@ Have fun!</text></svg></configure>
             <doc>The number of milliseconds that code generation will run for. Defaults to 600000, which is 10 minutes.</doc>
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}}">
+    </property>
     <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <property name="initialValue" class="ptolemy.data.expr.Parameter">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 115.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
@@ -217,7 +221,7 @@ Have fun!</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 50.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -239,26 +243,6 @@ Have fun!</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="IntArrayToString" class="ptolemy.actor.lib.conversions.IntArrayToString">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 105.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="StringToIntArray" class="ptolemy.actor.lib.conversions.StringToIntArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="525.2449035644531, 125.0010871887207">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -266,7 +250,9 @@ Have fun!</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 345.0">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={366, 273, 292, 222}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 360.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -278,7 +264,7 @@ Have fun!</text></svg></configure>
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 50.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -324,17 +310,7 @@ Have fun!</text></svg></configure>
         </property>
         <property name="defaultReturnSocketNumber" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="defaultOutput" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="for_Ptolemy_parser" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
-                </property>
-                <property name="raw_integers_little_endian" class="ptolemy.kernel.util.StringAttribute" value="raw_integers_little_endian">
-                </property>
-                <property name="raw_low_bytes_of_integers" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
-                </property>
-            </property>
+        <property name="defaultOutput" class="ptolemy.data.expr.Parameter" value="{0ub}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 95.0">
         </property>
@@ -346,8 +322,6 @@ Have fun!</text></svg></configure>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
-            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -361,17 +335,7 @@ Have fun!</text></svg></configure>
         </property>
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4003">
         </property>
-        <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="for_Ptolemy_parser" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
-                </property>
-                <property name="raw_integers_little_endian" class="ptolemy.kernel.util.StringAttribute" value="raw_integers_little_endian">
-                </property>
-                <property name="raw_low_bytes_of_integers" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="655.0, 60.0">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -383,23 +347,39 @@ Have fun!</text></svg></configure>
         </port>
         <port name="data" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
-            </property>
         </port>
         <port name="triggerOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
+    <entity name="UnsignedByteArrayToString" class="ptolemy.actor.lib.conversions.UnsignedByteArrayToString">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 105.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringToUnsignedByteArray" class="ptolemy.actor.lib.conversions.StringToUnsignedByteArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 125.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="495.0, 125.0">
+        <vertex name="vertex1" value="495.0, 125.0">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="230.0, 280.0">
+        <vertex name="vertex1" value="265.0, 295.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -410,11 +390,13 @@ Have fun!</text></svg></configure>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Sampler.input" relation="relation5"/>
     <link port="Sampler.output" relation="relation9"/>
@@ -423,10 +405,6 @@ Have fun!</text></svg></configure>
     <link port="partner's IP address.trigger" relation="relation"/>
     <link port="TimedDelay.input" relation="relation11"/>
     <link port="TimedDelay.output" relation="relation4"/>
-    <link port="IntArrayToString.input" relation="relation12"/>
-    <link port="IntArrayToString.output" relation="relation5"/>
-    <link port="StringToIntArray.input" relation="relation10"/>
-    <link port="StringToIntArray.output" relation="relation14"/>
     <link port="Display.input" relation="relation11"/>
     <link port="Display.input" relation="relation10"/>
     <link port="Display.input" relation="relation6"/>
@@ -437,7 +415,11 @@ Have fun!</text></svg></configure>
     <link port="KeystrokeSensor.controlC" relation="relation11"/>
     <link port="KeystrokeSensor.controlV" relation="relation3"/>
     <link port="DatagramReader.returnAddress" relation="relation6"/>
-    <link port="DatagramReader.output" relation="relation12"/>
+    <link port="DatagramReader.output" relation="relation2"/>
     <link port="DatagramWriter.remoteAddress" relation="relation13"/>
-    <link port="DatagramWriter.data" relation="relation14"/>
+    <link port="DatagramWriter.data" relation="relation7"/>
+    <link port="UnsignedByteArrayToString.input" relation="relation2"/>
+    <link port="UnsignedByteArrayToString.output" relation="relation5"/>
+    <link port="StringToUnsignedByteArray.input" relation="relation10"/>
+    <link port="StringToUnsignedByteArray.output" relation="relation7"/>
 </entity>

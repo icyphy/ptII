@@ -97,44 +97,9 @@ socket number from which the datagram originated.
 <p>The data portion of the packet is broadcast at the <i>output</i> port.
 The type of the output is always an array of bytes.
 
-<p>If <i>encoding</i> equals "for_Ptolemy_parser", then the bytes
-received are first made into a string using the platform's default
-character encoding.  Then this string is parsed by the Ptolemy parser.
-The parser is capable of throwing an exception if the data has been
-garbled or truncated or is incorrectly formed for the parser.  A
-variety of output data types are possible, and may vary from packet
-to packet.  This is because this setting permits the Ptolemy parser
-to determine the type as it parses.
-
-<p>If <i>encoding</i> equals "raw_integers_little_endian", then the bytes
-received are packed into integers, 4 bytes to each integer.  As the
-name implies, the low byte of each integer receives a byte whose
-index in the received byte array is a multiple of 4.  The most significant
-byte of this same integer receives a byte whose address in the received
-array was 3 more than the low byte.  If the number of bytes received
-was not a multiple 4, then the excess is discarded.  The type of the
-output in this case is an array of integers.
-
-<p>If <i>encoding</i> equals "raw_low_bytes_of_integers", everything is
-the same as above except that only one byte is placed into each integer.
-No attention is placed on what goes into the other 24 bits, so they may
-be 1s or 0s.  Since only one byte is put into each integer, no excess
-bytes are discarded.  This is the robust setting, capable of handling
-any datagram that may arrive.  As above, The type of the
-output is an array of integers.
-
 <p>The return address and socket number are broadcast as String and int
 respectively.  These tell where the received datagram originated from.
 
-<p>FIXME: Factor out the encoding capability so all actors can use it
-and so the I/O actors can share it rather than each having to separately
-implement it.  Ideally, there would be more encoding options than
-provided here.  Actors to factor out encoding functionality might be
-named Encode and Decode, or Pack and Unpack, or simply Repack.  These
-will be sort of like the conversion actors, but they will be bit-preserving
-rather than value-preserving (as are most of the existing converters).
-
-<p>
 <p>The actor's behavior under less simple scenarios is governed by
 parameters of this actor.  Additional packet(s) can arrive while the
 director is getting around to calling fire().  Conversely, the
@@ -236,11 +201,7 @@ public class DatagramReader extends TypedAtomicActor {
         returnSocketNumber.setOutput(true);
 
         output = new TypedIOPort(this, "output");
-	// Type setting here of <i>output</i> is in concert with
-	// setting later in the constructor of <i>encoding</i>.
-        output.setTypeEquals(new ArrayType(BaseType.INT));
-        //        output.setTypeEquals(BaseType.GENERAL);
-
+        output.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
         output.setOutput(true);
 
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -276,9 +237,9 @@ public class DatagramReader extends TypedAtomicActor {
         defaultReturnSocketNumber.setExpression("0");
 
         defaultOutput = new Parameter(this, "defaultOutput");
-        //defaultOutput.setTypeEquals(BaseType.GENERAL);
-        defaultOutput.setExpression("0");
-
+        defaultOutput.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        defaultOutput.setExpression("{0ub}");
+        
         // Repeat has not been implemented.  However, I'd place it
         // here so that it would show up in Vergil below
         // <i>defaultOutput</i>.  It works in tandem with the above
@@ -296,19 +257,6 @@ public class DatagramReader extends TypedAtomicActor {
         //
         //repeat = new Parameter(this, "repeat", new BooleanToken(false));
         //repeat.setTypeEquals(BaseType.BOOLEAN);
-
-        // <i>encoding</i> is a 'ChoiceStyle' i.e. drop-menu-choose parameter.
-
-        //    encoding = new StringAttribute(this, "encoding");
-        // Type setting here of <i>encoding</i> is in concert with
-        // setting earlier in this constructor of <i>output</i>.
-        //  encoding.setExpression("for_Ptolemy_parser");
-        // The above setExpression() call causes a call to the
-        // attributeChanged() method here in this same actor!
-        // The actor uses this to set the related cached values
-        // <i>_decodeWithPtolemyParser</i> etc. to be congruent
-        // with the setting of <i>encoding</i>.
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -439,26 +387,6 @@ public class DatagramReader extends TypedAtomicActor {
      */
     public Parameter defaultOutput;
 
-    /** Encoding to expect of received datagrams.  This is a
-     *  string-valued attribute that defaults to "for_Ptolemy_parser".
-     *  This is a ChoiceStyle (i.e. drop-menu-select) parameter.
-     *  {@link ptolemy.actor.gui.style.ChoiceStyle}
-     *  The three options currently implemented are: "for_Ptolemy_parser",
-     *  "raw_low_bytes_of_integers", and "raw_integers_little_endian".
-     *  The first option allows reconstruction of any data type upon
-     *  reception.  The "for_Ptolemy_parser" setting is designed to be
-     *  used in partnership with a similarly configured DatagramWriter.
-     *  The other two options are for receiving
-     *  general data in raw form.  These formats are also convenient for
-     *  receiving arrays of bytes and integers respectively.  The former
-     *  are not received explicitly as bytes since the Byte type is
-     *  still under development in Ptolemy.  Conversion in this actor
-     *  between bytes and integers simply ignores the 24 high order bits
-     *  of the integer.  For example, 511, 255, and -1 are treated as
-     *  the same value under the "raw_low_bytes_of_integers" setting.
-     */
-    //   public StringAttribute encoding;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -477,92 +405,7 @@ public class DatagramReader extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-
-        // Conditionally track calls to this method.
-        // Don't track _evalVar because it gets called every time
-        // a datagram is parsed with the Ptolemy parser.
-        if (attribute != _evalVar) {
-            if (_debugging) _debug("AtCh"
-                    //System.out.println("AtCh"
-                    + attribute.toString().substring(28));
-        }
-
-        // Cache parameters into private variables:
-
-        // This is a 'ChoiceStyle' i.e. drop-menu-choose parameter.
-        // See also ../io.xml for other half of this mechanism.
-        /*    if (attribute == encoding) {
-            //System.out.println("---" + encoding.getExpression() + "---");
-            //System.out.println("--" + _encoding + "--");
-            //System.out.println("-" + _encoding.equals("abc") + "-");
-            if (!_encoding.equals(encoding.getExpression())) {
-                _encoding = encoding.getExpression();
-                if (_encoding.equals("for_Ptolemy_parser")) {
-                    _decodeWithPtolemyParser = true;
-                    _decodeToIntegerArray = false;
-                } else if (_encoding.equals("raw_low_bytes_of_integers")) {
-                    _decodeWithPtolemyParser = false;
-                    _decodeToIntegerArray = true;
-                    _decodedBytesPerInteger = 1;
-                } else if (_encoding.equals("raw_integers_little_endian")) {
-                    _decodeWithPtolemyParser = false;
-                    _decodeToIntegerArray = true;
-                    _decodedBytesPerInteger = 4;
-                } else {
-                    throw new IllegalActionException(this,
-                            "Unrecognized encoding choice " + _encoding);
-                }
-
-                // This code is falsed out (like commented out).  To have
-                // it really work, that is set the type of the <i>output</i>
-                // port if and only if the <i>encoding</i> parameter is
-                // actually changed, some things would need to be fixed.
-                // The "configure" dialog currently implements "cancel"
-                // via a reapplication of stored values, thus reverting
-                // the change.  However, my actor would have already
-                // overwritten and lost user settings in such a process.
-                // Having fixed this, the next step would be to use
-                // MoMLChangeRequest(originator, context, "<....>") in
-                // place of setTypeEquals() whose changes do not stick.
-                // Finally, to make this safe during the constructor
-                // call, maybe an _inConstructor variable would serve
-                // to avoid overwriting user settings.
-                if (false) {
-
-
-                    // I have acted on this parameter only if the requested
-                    // new value of the parameter differs from what is already
-                    // in use.  This caveat improves usability by avoiding
-                    // unnecessary undoing of the user's "configure ports"
-                    // setting of the <i>output</i> by the code below.
-                    //
-                    // Set type of <i>output</i>
-                    if (_decodeWithPtolemyParser) {
-                        // Set <i>output</i> to GENERAL so that output can
-                        // handle whatever type comes out of the parser.
-                        //if (true) System.out.println("->GENERAL");
-                        output.setTypeEquals(BaseType.GENERAL);
-                    } else if (_decodeToIntegerArray) {
-                        // Set <i>output</i> to {INT} to exactly match the
-                        // form in which the raw data will be output.
-                        // (To wit, as an array of integers, each holding
-                        // one 8-bit byte of data and 24 unused bits.)
-                        //if (true) System.out.println("->ArrayType(INT)");
-                        output.setTypeEquals(new ArrayType(BaseType.INT));
-                        // Aha!  Found this in data/type/ArrayType.java by
-                        // double grep-ing ptolemy/data/*.java!
-                    } else {
-                        // No other cases implemented yet.
-                    }
-
-                }
-
-            } // Close if (_encoding != encoding)
-
-            // In the case of default outputs, synchronize in ensure
-            // atomic copy from the parameter to the private variable.
-
-              } else */if (attribute == defaultReturnAddress) {
+        if (attribute == defaultReturnAddress) {
             synchronized(_syncDefaultOutputs) {
                 _defaultReturnAddress = ((StringToken)
                         defaultReturnAddress.getToken()).stringValue();
@@ -576,18 +419,9 @@ public class DatagramReader extends TypedAtomicActor {
 
         } else if (attribute == defaultOutput) {
             synchronized(_syncDefaultOutputs) {
-                _defaultOutputToken = defaultOutput.getToken();
-                // _defaultOutputToken==null when user enters blank parameter!
-                if (false) System.out.println(_defaultOutputToken==null);
-                // This private variable is named _defaultOutputToken
-                // instead of _defaultOutput because it is being
-                // kept in token form (allowing any type).
-                // Typically, private copies of parameters are in
-                // value form.  Thus the atypical name to clue the
-                // reader in to the atypical content.
+                _defaultOutputToken = 
+                    output.getType().convert(defaultOutput.getToken());
             }
-
-
             // In the case of <i>blockAwaitingDatagram</i> or <i>overwrite</i>,
             // notify potentially waiting fire() or thread respectively
             // that it might no longer need to wait.  Each will recheck its
@@ -636,6 +470,7 @@ public class DatagramReader extends TypedAtomicActor {
             // caused an exception to be thrown.  (Or, was it that
             // socket so recently closed had not fully released
             // that socket number!)
+            // Note: This synchronized block breaks codegen.
             synchronized(this) {
                 if (_socket != null) {
                     // Verify presence & health of the thread.
@@ -676,14 +511,16 @@ public class DatagramReader extends TypedAtomicActor {
                     }
                 }
             } // Sync(this)
-
-            // In the case of <i>actorBufferLength</i>, simply cache the parameter.
-            // The thread used this value to set the size of a buffer prior
-            // to the socket.receive() call.  The thread only resizes a buffer
-            // when it is about to call receive on it and this parameter has
-            // changed from the value last used for that specific buffer.
-            // Synchronization ensures that the thread's test for a change in
-            // this value and its use of the value access the same thing.
+          
+            // In the case of <i>actorBufferLength</i>, simply cache
+            // the parameter.  The thread used this value to set the
+            // size of a buffer prior to the socket.receive() call.
+            // The thread only resizes a buffer when it is about to
+            // call receive on it and this parameter has changed from
+            // the value last used for that specific buffer.
+            // Synchronization ensures that the thread's test for a
+            // change in this value and its use of the value access
+            // the same thing.
 
         } else if (attribute == actorBufferLength) {
             synchronized(_syncBufferLength) {
@@ -691,12 +528,12 @@ public class DatagramReader extends TypedAtomicActor {
                         (actorBufferLength.getToken())).intValue();
             }
 
-
-            // Just increment a flag here, so that before the next receive() call
-            // the new buffer size will be set.  Setting buffer here did not
-            // work because the calls to set the size and get the existing
-            // size both block if the socket is being received on.
-            // This flag is set to 1 in [pre]initialize().
+            // Just increment a flag here, so that before the next
+            // receive() call the new buffer size will be set.
+            // Setting buffer here did not work because the calls to
+            // set the size and get the existing size both block if
+            // the socket is being received on.  This flag is set to 1
+            // in initialize().
         } else if (attribute == platformBufferLength && _socket != null) {
             synchronized(_syncBufferLength) {
                 _ChangeRequestedToPlatformBufferLength++;
@@ -705,14 +542,6 @@ public class DatagramReader extends TypedAtomicActor {
         } else {
             super.attributeChanged(attribute);
         }
-
-        if (attribute != _evalVar) {
-            if (_debugging) _debug(this + "attributeChanged() done");
-            if (_debugging) _debug("---"
-                    //System.out.println("---"
-                    + attribute.toString().substring(28));
-        }
-
     }
 
     /** Broadcast a received datagram, or block awaiting one, or
@@ -741,8 +570,8 @@ public class DatagramReader extends TypedAtomicActor {
         // to ensure that the thread does mess with it while it is in use
         // here.
         synchronized(_syncFireAndThread) {
-            int bytesAvailable = 0; // Compiler requires it to be initialized.
-            byte[] dataBytes = new byte[0];  // Compiler requires init.
+            int bytesAvailable = 0; 
+            byte[] dataBytes = new byte[0];
 
             // If requested, block awaiting a packet (useful in SDF).
             // Actually <u>while</u> requested, not if, in case the
@@ -763,6 +592,7 @@ public class DatagramReader extends TypedAtomicActor {
                 } catch (InterruptedException ex) {
                     System.out.println(this + "!!fire()'s wait interrupted!!");
                     throw new RuntimeException("!-!");
+                    // This finally block breaks Jode.
                 } finally {
                     if (_stopFire) {
                         _stopFire = false;
@@ -791,84 +621,9 @@ public class DatagramReader extends TypedAtomicActor {
             if (!useDefaultOutput) {
                 Token[] dataTokens = new Token[bytesAvailable];
                 for (int j = 0; j < bytesAvailable; j++) {
-                    dataTokens[j] = new IntToken(UnsignedByteToken
-                            .unsignedConvert(dataBytes[j]));
+                    dataTokens[j] = new UnsignedByteToken(dataBytes[j]) ;
                 }
                 _outputToken = new ArrayToken(dataTokens);
-                  
-                /*    if (_decodeWithPtolemyParser) {
-                    // Make the data into a string.
-                    String dataStr = new String(dataBytes, 0, bytesAvailable);
-                    // Parse this data string to a Ptolemy II data object
-                    _evalVar.setExpression(dataStr);
-                    // Stack dump calling getToken() in line below
-                    // may indicate type of data received does not
-                    // match type of <i>output</i> port.
-                    // Please configure port to match type being sent.
-                    _outputToken = _evalVar.getToken();
-                    if (_outputToken == null) {
-                        // FIXME - Consider doing this only in the
-                        // case where bytesAvailable == 0 vs all cases
-                        // which lead to _outputToken == null.
-                        if (_debugging) _debug(
-                                "Broadcast blank 'new Token()'");
-                        _outputToken = new Token();
-                        // This simplest of tokens is of type 'general'.
-                        // It prints on the display actor as 'present'.
-                    } else {
-                        if (_debugging) _debug(
-                                "Broadcast non-null parsed token");
-                    }
-                } else if (_decodeToIntegerArray) {
-                    int xs = bytesAvailable%_decodedBytesPerInteger;
-                    if (xs != 0) {
-                        if (_debugging) _debug(xs+" bytes will be discarded");
-                    }
-                    if (bytesAvailable/_decodedBytesPerInteger > 0) {
-                        // Make an array of tokens.
-                        Token[] dataTokens = new Token[
-                                bytesAvailable/_decodedBytesPerInteger];
-                        // Fill each token with N bytes, low byte first.
-                        if (_decodedBytesPerInteger == 1) {
-                            for (int j = 0; j < bytesAvailable; j++) {
-                                dataTokens[j] = new IntToken(dataBytes[j]);
-                            }
-                        } else if (_decodedBytesPerInteger == 4) {
-                            for (int j = 0; j < bytesAvailable/4; j++) {
-                                if (false) System.out.println(
-                                        dataBytes[4*j] + ".." +
-                                        dataBytes[4*j+1] + ".." +
-                                        dataBytes[4*j+2] + ".." +
-                                        dataBytes[4*j+3]);
-                                dataTokens[j] = new IntToken(
-                                        (255 & dataBytes[4*j]) |
-                                        (255 & dataBytes[4*j+1])<<8 |
-                                        (255 & dataBytes[4*j+2])<<16 |
-                                        (255 & dataBytes[4*j+3])<<24);
-                            }
-                        } else {
-                            // No other cases of (N) implemented.
-                        }
-                        // Assemble these into an array-token of tokens
-                        if (_debugging) _debug(
-                                "Broadcast non-zero length {int}");
-                        _outputToken = new ArrayToken(dataTokens);
-                    } else {
-                        // Special case of zero length array:
-                        // FIXME - test Yuhong's work
-                        if (_debugging) _debug(
-                                "Broadcast zero length {int}");
-                        _outputToken = new ArrayToken(BaseType.INT);
-                        // WORKS! (in 20Jan tree).  Comment out for 14Dec tree.
-                    }
-                } else {
-                    // No other cases implemented yet.
-                    if (true) System.out.println(
-                            "Broadcast token not being set");
-                    throw new IllegalActionException(this,
-                            "Unrecognized encoding selection " + _encoding);
-                      }
-                 */
             }
             _syncFireAndThread.notifyAll();
         } // sync
@@ -907,22 +662,6 @@ public class DatagramReader extends TypedAtomicActor {
 
     }
 
-    ///** Prefire.
-    // *  NOT IN USE.  Was for experimenting with stopFire().
-    // */
-    //public boolean prefire() {
-    //    System.out.println(" - Prefire in called - ");
-    //    synchronized(this) {
-    //        try {
-    //            wait(1000);
-    //        } catch (InterruptedException ex) {
-    //            System.out.println("interrupted exception!");
-    //        }
-    //    }
-    //    System.out.println(" - Prefire completes - ");
-    //    return true;
-    //}
-
     /** Initialize this actor, including the creation of an evaluation
      *  variable for the Ptolemy parser, a DatagramSocket for
      *  receiving datagrams, and a SocketReadingThread for blocking in
@@ -935,24 +674,10 @@ public class DatagramReader extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        if (_debugging) _debug(this + "[pre]initialize has begun");
+        if (_debugging) _debug(this + "initialize has begun");
 
-        // This is a key fix!  Programs in DE (such as 1plusFxC.xml)
-        // Used to only run the first time after opening the XML!
-        // This is because private variables retain their values from
-        // run to run of a model.
+        // Reset private variables
         _packetsAlreadyAwaitingFire = 0;
-
-        Variable var = (Variable)getAttribute("_evalVar");
-        if (var == null) {
-            try {
-                var = new Variable(this, "_evalVar");
-            } catch (NameDuplicationException ex) {
-                throw new IllegalActionException(
-                        "Name '_evalVar' is already in use");
-            }
-        }
-        _evalVar = var;
 
         int portNumber = ((IntToken)(localSocketNumber.getToken())).intValue();
         if (portNumber < 0 || portNumber > 65535) {
@@ -960,21 +685,21 @@ public class DatagramReader extends TypedAtomicActor {
                     + " is outside the required 0..65535 range");
         }
         if (_debugging) _debug(this + "portNumber = " + portNumber);
+
         // Allocate a new socket.
         try {
-            if (false&&_debugging) {
+            if (_debugging) {
                 _debug("Trying to create a new socket on port " + portNumber);
             }
             _socket = new DatagramSocket(portNumber);
-            if (false&&_debugging) {
+            if (_debugging) {
                 _debug("Socket created successfully!");
             }
         }
         catch (SocketException ex) {
-            // This is unmistakably clear, actor's individual name
-            // and says cannot bind because already in use!
-            throw new IllegalActionException(this,
-                    " Failed to create a new socket: " + ex);
+            throw new IllegalActionException(this, ex,
+                    " Failed to create a new socket on port " + portNumber);
+                  
         }
 
         // Set flag so that thread will [Set and] get platform's buffer length.
@@ -985,7 +710,7 @@ public class DatagramReader extends TypedAtomicActor {
         _socketReadingThread.start();
         if (_debugging) _debug("Thread created & started.");
 
-        if (_debugging) _debug("[pre]initialize ends");
+        if (_debugging) _debug("initialize ends");
         if (_debugging) _debug("------------------");
 
     }
@@ -998,6 +723,7 @@ public class DatagramReader extends TypedAtomicActor {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
+        // FIXME: Is this necessary?  
         if (container != getContainer()) {
             wrapup();
         }
@@ -1016,14 +742,14 @@ public class DatagramReader extends TypedAtomicActor {
      *  anyway.  Thus, when pausing or stopping execution, it will on
      *  rare occasion be necessary to press 'pause' or 'stop' a second
      *  time.
-
+     * 
      *  I tried to clean this up, so that one, and exactly one,
      *  stopFire() call would suffice.  These experiments and some
      *  thought about them are discussed below.  However, the bottom
      *  line is that any approach which stopped fire() in each case
      *  where it ought to be stopped, also stopped it in some
      *  additional cases where it ought not be stopped.
-
+     *
      *  This is a very interesting predicament!  One could say the
      *  problem in an incompatibility of system-level types.  The type
      *  provided to the actor collectively by the Manager,
@@ -1040,12 +766,12 @@ public class DatagramReader extends TypedAtomicActor {
      *  designs self modify or type-check themselves to maintain
      *  consistency as changes are made?  I am intrigued by the
      *  possibilities!
-
-     * I did a bit of nosing around and discovered how stopFire() gets
-     * called.  The Manager initiates the call on the CompositeActor.
-     * It then calls stopFire() on the Director.  The Director fans
-     * out the call to every actor below it.
-
+     *
+     *  I did a bit of nosing around and discovered how stopFire()
+     *  gets called.  The Manager initiates the call on the
+     *  CompositeActor.  * It then calls stopFire() on the Director.
+     *  The Director fans * out the call to every actor below it.
+     *
      *  The director/manager insists on calling fire() after every
      *  call of prefire().  Even when it has issued a stopFire()
      *  during prefire(), it persists, executing the very fire() it is
@@ -1056,7 +782,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  calls.  By the time a user can click the mouse a second time,
      *  fire() will have blocked if it is going to do so.  It can then
      *  be stopped as expected.
-
+     *
      *  FIXME: There exists a circumstance where stopFire() could fail
      *  to stop the fire() method, and the fire() method could block
      *  indefinitely.  This occurs if stopFire() is called after
@@ -1072,7 +798,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  case it ought to be ignored).  What is needed is a flag which
      *  is set when stopFire() is called, and cleared before the
      *  director commits to calling fire().
-
+     *
      *  Perhaps prefire() could serve to clear the flag!  This assumes
      *  that, upon resuming execution, prefire() is repeated before
      *  fire() is reentered.-[Tested; assumption holds.]  It also
@@ -1087,11 +813,10 @@ public class DatagramReader extends TypedAtomicActor {
      *  fire().-[Tested; assumption does not hold.  I caused
      *  stopFire() to be called during prefire().  The director
      *  went ahead and called fire() anyway!]
-
+     *
      *  If the director/manager need to be fixed anyway, perhaps the
      *  stopFire paradigm ought to be rearchitected to incorporate a
      *  flag.  (Does it already and I just don't know about it?)
-
      */
     public void stopFire() {
         if (_debugging) _debug("stopFire() is called");
@@ -1127,16 +852,6 @@ public class DatagramReader extends TypedAtomicActor {
 
         if (_debugging) _debug("WRAPUP IS CALLED");
 
-        //System.err.println("wrapup() has been called in " + this);
-        //e.printStackTrace();
-        // FIXME cxh's java checker recommends
-        // KernelException.stackTraceToString(ex)
-        // instead of printStackTrace() above.  Try it.
-        //throw new RuntimeException("Manager: " + e.getMessage());
-
-        //throw new IllegalActionException(this,
-        //"has had its wrapup() method called.");
-
         // FIXME - Look into whether I ought to make it null first
         // and then interrupt it (having made a copy of the pointer
         // to it).  Examples all do it the latter way.  Why?
@@ -1156,7 +871,6 @@ public class DatagramReader extends TypedAtomicActor {
             if (_debugging) _debug("Socket null at wrapup!?");
             //throw new IllegalActionException("Socket null at wrapup!?");
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1178,12 +892,6 @@ public class DatagramReader extends TypedAtomicActor {
     private int _defaultReturnSocketNumber;
     private Token _defaultOutputToken;
 
-    // Cached copy of <i>encoding</i> parameter and its derived quantities:
-    private String _encoding = new String("");
-//    private boolean _decodeWithPtolemyParser;
-//    private boolean _decodeToIntegerArray;
-//    private int _decodedBytesPerInteger;
-
     // Packet buffer info.  Allocated lengths need to be kept track of
     // separately because the .getLength() method returns the length
     // of the contained data, not the (typically longer) length
@@ -1201,9 +909,6 @@ public class DatagramReader extends TypedAtomicActor {
     // System resources allocated: DatagramSocket and Thread to read it.
     private DatagramSocket _socket;
     private SocketReadingThread _socketReadingThread;
-
-    // Evaluation variable for the Ptolemy parser.
-    private Variable _evalVar;
 
     // Most recent non-default values output from the
     // <i>returnAddress</i>, <i>returnSocketNumber</i>, and
@@ -1266,8 +971,8 @@ public class DatagramReader extends TypedAtomicActor {
                             // in AttributeChanged() being called again.
                             // This is why the flag is set to -1 above.
                             // Doing so avoids an infinite sequence of calls.
-                            platformBufferLength.setToken(new IntToken(
-                                    _socket.getReceiveBufferSize()));
+ //                            platformBufferLength.setToken(new IntToken(
+//                                     _socket.getReceiveBufferSize()));
                         } catch (SocketException ex) {
                             System.out.println("Socket Ex." + ex.toString());
                             //throw new IllegalActionException(this, sex.toString());
@@ -1325,6 +1030,7 @@ public class DatagramReader extends TypedAtomicActor {
                         // attributeChanged() is done changing the
                         // <i>localSocketNumber</i>
                         synchronized(_syncSocket) {
+                            //   System.out.println("foo");
                         }
                     } catch (NullPointerException ex) {
                         if (_debugging) _debug("--!!--" + (_socket == null));
@@ -1415,7 +1121,6 @@ public class DatagramReader extends TypedAtomicActor {
                         _packetsAlreadyAwaitingFire++;
                     }
                 }
-
                 if (fireAtWillBeCalled) {
                     try {
                         getDirector().fireAtCurrentTime(
