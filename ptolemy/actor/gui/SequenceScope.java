@@ -48,9 +48,9 @@ on this instance.  Each channel is plotted as a separate data set.
 The horizontal axis represents the count of the iterations, modulo
 the <i>width</i> parameter, scaled by the <i>xUnit</i> parameter.
 The <i>width</i> parameter must is an integer that gives the width
-of the plot in number of samples. It defaults to 100.
+of the plot in number of samples. It defaults to 10.
 If the <i>persistence</i> parameter is positive, then it specifies
-the number of points that are remembered. It also defaults to 100.
+the number of points that are remembered. It also defaults to 10.
 Any points older than these are erased and forgotten.
 The horizontal increment between samples is given by the
 <i>xUnit</i> parameter. Its default value is 1.0. The horizontal value
@@ -75,9 +75,9 @@ public class SequenceScope extends SequencePlotter {
         super(container, name);
 
         // set the parameters
-        width = new Parameter(this, "width", new IntToken(100));
+        width = new Parameter(this, "width", new IntToken(10));
         width.setTypeEquals(BaseType.INT);
-        persistence = new Parameter(this, "persistence", new IntToken(100));
+        persistence = new Parameter(this, "persistence", new IntToken(10));
         persistence.setTypeEquals(BaseType.INT);
     }
 
@@ -136,6 +136,10 @@ public class SequenceScope extends SequencePlotter {
         plot.setWrap(true);
         int persValue = ((IntToken)persistence.getToken()).intValue();
         plot.setPointsPersistence(persValue);
+        // Override the default so that there are not gaps in the lines.
+        if (plot.getMarksStyle().equals("none")) {
+            plot.setMarksStyle("pixels");
+        }
         plot.repaint();
     }
 
