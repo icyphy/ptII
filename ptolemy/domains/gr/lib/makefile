@@ -61,6 +61,7 @@ PTCLASSALLJARS =
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	Box2D.java \
 	Box3D.java \
 	CircularSweep3D.java \
 	Cone3D.java \
@@ -70,6 +71,7 @@ JSRCS = \
 	GRShape2D.java \
 	GRTransform.java \
 	GRTransform2D.java \
+	FigureInteractor.java \
 	IconViewScreen3D.java \
 	Image2D.java \
 	KeyInput3D.java \
@@ -104,6 +106,7 @@ MISC_FILES = 	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	quicktime \
 	'KeyInput3D$$_React.class' \
 	'MouseInput3D$$_React.class' \
 	'KeyInput3D$$1.class' \
