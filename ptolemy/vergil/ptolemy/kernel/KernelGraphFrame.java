@@ -46,6 +46,8 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.gui.CancelException;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.KernelException;
@@ -97,7 +99,7 @@ public class KernelGraphFrame extends GraphFrame {
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
             new JMenuItem("Listen to Director", KeyEvent.VK_L),
-            new JMenuItem("Animate", KeyEvent.VK_A),
+            new JMenuItem("Animate Execution", KeyEvent.VK_A),
             new JMenuItem("Stop Animating", KeyEvent.VK_S),
         };
         // NOTE: This has to be initialized here rather than
@@ -151,8 +153,15 @@ public class KernelGraphFrame extends GraphFrame {
 
     private EditorGraphController _controller;
 
+    // The delay time specified that last time animation was set.
+    private long _lastDelayTime = 0;
+
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
+
+    // NOTE: The following class is very similar to the inner class
+    // in FSMGraphFrame.  Is there some way to merge these?
+    // There seem to be enough differences that this may be hard.
 
     /** Listener for debug menu commands. */
     public class DebugMenuListener implements ActionListener {
@@ -182,36 +191,61 @@ public class KernelGraphFrame extends GraphFrame {
                     if (!success) {
                         MessageHandler.error("No director to listen to!");
                     }
-                } else if (actionCommand.equals("Animate")
-                        && _listeningTo == null) {
+                } else if (actionCommand.equals("Animate Execution")) {
                     // To support animation, add a listener to the
                     // first director found above in the hierarchy.
-                    // NOTE: This doesn't properly support
+                    // NOTE: This doesn't properly support all
                     // hierarchy.  Insides of transparent composite
                     // actors do not get animated if they are classes
                     // rather than instances.
-                    // FIXME: Dialog to ask for a delay time.
-                    // Then PtolemyGraphController needs a method to
-                    // accept that time. It will need to sleep in
-                    // the event() method.
                     NamedObj model = getModel();
                     if (model instanceof Actor) {
-                        Director director = ((Actor)model).getDirector();
-                        while (director == null && model instanceof Actor) {
-                            model = (NamedObj)model.getContainer();
-                            if (model instanceof Actor) {
-                                director = ((Actor)model).getDirector();
+                        // Dialog to ask for a delay time.
+                        Query query = new Query();
+                        query.addLine("delay",
+                                "Time (in ms) to hold highlight",
+                                Long.toString(_lastDelayTime));
+                        ComponentDialog dialog = new ComponentDialog(
+                                KernelGraphFrame.this,
+                                "Delay for Animation",
+                                query);
+                        if (dialog.buttonPressed().equals("OK")) {
+                            try {
+                                _lastDelayTime = Long.parseLong(
+                                        query.stringValue("delay"));
+                                _controller.setAnimationDelay(_lastDelayTime);
+                                Director director
+                                        = ((Actor)model).getDirector();
+                                while (director == null
+                                        && model instanceof Actor) {
+                                    model = (NamedObj)model.getContainer();
+                                    if (model instanceof Actor) {
+                                        director = ((Actor)model).getDirector();
+                                    }
+                                }
+                                if (director != null
+                                        && _listeningTo != director) {
+                                    if (_listeningTo != null) {
+                                        _listeningTo.removeDebugListener(
+                                                _controller);
+                                    }
+                                    director.addDebugListener(_controller);
+                                    _listeningTo = director;
+                                }
+                            } catch (NumberFormatException ex) {
+                                MessageHandler.error(
+                                        "Invalid time, which is required "
+                                        + "to be an integer: " + ex.toString());
                             }
-                        }
-                        if (director != null) {
-                            director.addDebugListener(_controller);
-                            _listeningTo = director;
                         } else {
                             MessageHandler.error(
-                                    "Cannot find the director. Probably this "
+                                    "Cannot find the director. Possibly this "
                                     + "is because this is a class, not an "
                                     + "instance.");
                         }
+                    } else {
+                        MessageHandler.error(
+                               "Model is not an actor. Cannot animate.");
                     }
                 } else if (actionCommand.equals("Stop Animating")) {
                     if (_listeningTo != null) {

@@ -44,6 +44,8 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.gui.CancelException;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
@@ -93,7 +95,7 @@ public class FSMGraphFrame extends GraphFrame {
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
             new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
-            new JMenuItem("Animate", KeyEvent.VK_A),
+            new JMenuItem("Animate States", KeyEvent.VK_A),
             new JMenuItem("Stop Animating", KeyEvent.VK_S),
         };
         // NOTE: This has to be initialized here rather than
@@ -157,6 +159,12 @@ public class FSMGraphFrame extends GraphFrame {
     protected JMenu _debugMenu;
 
     ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
+
+    // The delay time specified that last time animation was set.
+    private long _lastDelayTime = 0;
+
+    ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
 
     /** Listener for debug menu commands. */
@@ -176,11 +184,36 @@ public class FSMGraphFrame extends GraphFrame {
                             new DebugListenerTableau(textEffigy,
                             textEffigy.uniqueName("debugListener"));
                     tableau.setDebuggable(getModel());
-                } else if (actionCommand.equals("Animate")
-                        && _listeningTo == null) {
-                    // To support animation.
-                    _listeningTo = getModel();
-                    _listeningTo.addDebugListener(_controller);
+                } else if (actionCommand.equals("Animate States")) {
+                    // Dialog to ask for a delay time.
+                    Query query = new Query();
+                    query.addLine("delay",
+                            "Time (in ms) to hold highlight",
+                            Long.toString(_lastDelayTime));
+                    ComponentDialog dialog = new ComponentDialog(
+                            FSMGraphFrame.this,
+                            "Delay for Animation",
+                            query);
+                    if (dialog.buttonPressed().equals("OK")) {
+                        try {
+                            _lastDelayTime = Long.parseLong(
+                                    query.stringValue("delay"));
+                            _controller.setAnimationDelay(_lastDelayTime);
+                            NamedObj model = getModel();
+                            if (model != null && _listeningTo != model) {
+                                if (_listeningTo != null) {
+                                    _listeningTo.removeDebugListener(
+                                            _controller);
+                                }
+                                _listeningTo = model;
+                                _listeningTo.addDebugListener(_controller);
+                            }
+                        } catch (NumberFormatException ex) {
+                            MessageHandler.error(
+                                    "Invalid time, which is required "
+                                    + "to be an integer: " + ex.toString());
+                        }
+                    }
                 } else if (actionCommand.equals("Stop Animating")
                         && _listeningTo != null) {
                     _listeningTo.removeDebugListener(_controller);

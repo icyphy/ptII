@@ -98,6 +98,12 @@ public class FSMViewerController extends PtolemyGraphController {
                             }
                             _animationRenderer.renderSelected(figure);
                             _animated = figure;
+                            long animationDelay = getAnimationDelay();
+                            if (animationDelay > 0) {
+                                try {
+                                    Thread.sleep(animationDelay);
+                                } catch (InterruptedException ex) {}
+                            }
                         }
                     }
                 }

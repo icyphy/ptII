@@ -112,6 +112,16 @@ public abstract class PtolemyGraphController extends AbstractGraphController
     public void event(DebugEvent event) {
     }
 
+    /** Get the time delay for animation.  After highlighting,
+     *  derived classes are expected to sleep for the specified amount
+     *  of time, in milliseconds.
+     *  @see setAnimationDelay.
+     *  @return The animation delay set by setAnimationDelay().
+     */
+    public long getAnimationDelay() {
+        return _animationDelay;
+    }
+
     /** Return the configuration that has been specified by setConfiguration(),
      *  or null if none.
      *  @return The configuration.
@@ -166,6 +176,16 @@ public abstract class PtolemyGraphController extends AbstractGraphController
      *  @param state The debug event.
      */
     public void message(String message) {
+    }
+
+    /** Set the time delay for animation.  After highlighting,
+     *  derived classes are expected to sleep for the specified amount
+     *  of time, in milliseconds.  If this method is not called, or
+     *  is called with argument 0, then no delay is introduced.
+     *  @param time Time to sleep, in milliseconds.
+     */
+    public void setAnimationDelay(long time) {
+        _animationDelay = time;
     }
 
     /** Set the configuration.  This is used by some of the controllers
@@ -248,6 +268,9 @@ public abstract class PtolemyGraphController extends AbstractGraphController
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
+
+    /** The time to sleep upon animation. */
+    private long _animationDelay = 0l;
 
     // The configuration.
     private Configuration _configuration;

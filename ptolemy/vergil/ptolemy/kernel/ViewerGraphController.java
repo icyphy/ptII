@@ -120,6 +120,12 @@ public class ViewerGraphController extends PtolemyGraphController {
                                 || type == FiringEvent.BEFORE_FIRE) {
                             _animationRenderer.renderSelected(figure);
                             _animated = figure;
+                            long animationDelay = getAnimationDelay();
+                            if (animationDelay > 0) {
+                                try {
+                                    Thread.sleep(animationDelay);
+                                } catch (InterruptedException ex) {}
+                            }
                         } else if (type == FiringEvent.AFTER_ITERATE
                                 || type == FiringEvent.AFTER_POSTFIRE) {
                             if (_animated != null) {
