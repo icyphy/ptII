@@ -1370,9 +1370,14 @@ void cvtCodeBlockExpr( src, src_len, pDst)
     } else if ( isStrnSpace( src, src_len) ) {
 	; /* just drop it */
     } else {
-	strcpy(dst,"\" << ("); dst += strlen(dst);
+	// FIXME: Java breaks C++ generation
+	//strcpy(dst,"\" << ("); dst += strlen(dst);
+	//strncpy( dst, src, src_len); dst += src_len;
+	//strcpy(dst,") << \""); dst += strlen(dst);
+	
+	strcpy(dst,"\" + "); dst += strlen(dst);
 	strncpy( dst, src, src_len); dst += src_len;
-	strcpy(dst,") << \""); dst += strlen(dst);
+	strcpy(dst," + \""); dst += strlen(dst);
     }
     *pDst = dst;
 }
@@ -1554,7 +1559,7 @@ void convertConstCharToString( src_in)
 {
     char *p = src_in;
     printf("convertConstChar: %s\n", src_in);
-    p = strstr(p, "const char");
+    p = strstr(p, "const char *");
 
     while(p != NULL) {
         *p++ = 'S'; // c
@@ -1567,6 +1572,7 @@ void convertConstCharToString( src_in)
         *p++ = ' '; // h
         *p++ = ' '; // a
         *p++ = ' '; // r
+        *p++ = ' '; // *
         p = strstr(p, "const char");
     }
     printf("convertConstChar2: %s\n", src_in);
