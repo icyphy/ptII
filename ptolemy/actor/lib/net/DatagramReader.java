@@ -383,7 +383,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  Caution #1 - The platform treats setReceiveBufferSize() as a
      *  suggestion only.  It supposedly reports the actual buffer size
      *  granted in subsequent calls to getReceiveBufferSize().  However,
-     *  myy experiments with this showed it granting buffers as large as
+     *  my experiments with this showed it granting buffers as large as
      *  2 gigabytes, with no apparent limit except the maximum representable
      *  integer value.  Thus, I suggest taking this with a grain of salt.
      *  Caution #2 - the get/setReceiveBufferSize() calls block when
@@ -577,7 +577,7 @@ public class DatagramReader extends TypedAtomicActor {
         } else if (attribute == defaultOutput) {
              synchronized(_syncDefaultOutputs) {
                 _defaultOutputToken = defaultOutput.getToken();
-                // _defaultOutputToken==null when eser enters blank parameter!
+                // _defaultOutputToken==null when user enters blank parameter!
                 if (false) System.out.println(_defaultOutputToken==null);
                 // This private variable is named _defaultOutputToken
                 // instead of _defaultOutput because it is being
@@ -1258,7 +1258,7 @@ public class DatagramReader extends TypedAtomicActor {
                                     _socket.getReceiveBufferSize()));
                         } catch (SocketException ex) {
                             System.out.println("Socket Ex." + ex.toString());
-                            //throw new IllegalActionException(this,sex.toString());
+                            //throw new IllegalActionException(this, sex.toString());
                         } catch (IllegalActionException ex) {
                             System.out.println("getToken or setToken failed"
                                     + "on platformBufferSize" + ex.toString());
