@@ -286,7 +286,7 @@ public class PlotBox extends Applet {
         _lry = drawRect.height-labelheight-_bottomPadding-3; 
         int height = _lry-_uly;
         _yscale = height/(_yMax - _yMin);
-        __yscale = height/(__yMax - __yMin);
+        __ytickscale = height/(__yMax - __yMin);
 
         ///////////////////// vertical axis
 
@@ -365,7 +365,7 @@ public class PlotBox extends Applet {
         _lrx = drawRect.width-legendwidth-_rightPadding;
         int width = _lrx-_ulx;
         _xscale = width/(_xMax - _xMin);
-        __xscale = width/(__xMax - __xMin);
+        __xtickscale = width/(__xMax - __xMin);
         
         // White background for the plotting rectangle
         graphics.setColor(Color.white);
@@ -385,7 +385,7 @@ public class PlotBox extends Applet {
             for (double ypos=yStart; ypos <= __yMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
-                int yCoord1 = _lry - (int)((ypos-__yMin)*__yscale);
+                int yCoord1 = _lry - (int)((ypos-__yMin)*__ytickscale);
                 // The lowest label is shifted up slightly to avoid
                 // colliding with x labels.
                 int offset = 0;
@@ -419,7 +419,7 @@ public class PlotBox extends Applet {
                 String label = (String) nl.nextElement();
                 double ypos = ((Double)(nt.nextElement())).doubleValue();
                 if (ypos > _yMax || ypos < _yMin) continue;
-                int yCoord1 = _lry - (int)((ypos-_yMin)*__yscale);
+                int yCoord1 = _lry - (int)((ypos-_yMin)*__ytickscale);
                 int offset = 0;
                 if (ypos < _lry - labelheight) offset = halflabelheight;
                 graphics.drawLine(_ulx,yCoord1,xCoord1,yCoord1);
@@ -461,7 +461,7 @@ public class PlotBox extends Applet {
             for (double xpos=xStart; xpos <= __xMax; xpos += xStep) {
                 String __xlabel = Double.toString(Math.floor(xpos*1000.0+0.5)
 						 * 0.001);
-                xCoord1 = _ulx + (int)((xpos-__xMin)*__xscale);
+                xCoord1 = _ulx + (int)((xpos-__xMin)*__xtickscale);
                 graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
                 graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
@@ -481,7 +481,7 @@ public class PlotBox extends Applet {
                 String label = (String) nl.nextElement();
                 double xpos = ((Double)(nt.nextElement())).doubleValue();
                 if (xpos > _xMax || xpos < _xMin) continue;
-                xCoord1 = _ulx + (int)((xpos-__xMin)*__xscale);
+                xCoord1 = _ulx + (int)((xpos-__xMin)*__xtickscale);
                 graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
                 graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
@@ -1257,7 +1257,7 @@ public class PlotBox extends Applet {
     private int __yExp, __xExp;
 
     // Scaling used in making tick marks
-    private double __yscale, __xscale;
+    private double __ytickscale, __xtickscale;
 
     private Font __labelfont, __superscriptfont, __titlefont;
     
