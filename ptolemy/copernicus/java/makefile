@@ -62,7 +62,6 @@ JSRCS = \
 	InlineTokenTransformer.java \
 	Main.java \
 	ModelTransformer.java \
-	NamedObjConstructorAnalysis.java \
 	TokenInstanceofEliminator.java \
 	TokenToNativeTransformer.java \
 	TokenTypeAnalysis.java \
@@ -70,6 +69,8 @@ JSRCS = \
 	TypeTag.java \
 	UnreachableMethodRemover.java \
 	ValueTag.java	
+
+#	NamedObjConstructorAnalysis.java
 
 EXTRA_SRCS =	$(JSRCS)
 
