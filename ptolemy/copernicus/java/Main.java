@@ -98,12 +98,6 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.watchDog", WatchDogTimer.v(),
                 "time:" + _watchDogTimer);
 
-        // Sanitize names of objects in the model.
-        // We change the names to all be valid java identifiers
-        // so that we can
-        //      pack.add(new Transform("wjtp.ns",
-        //         NameSanitizer.v(toplevel)));
-
         // Create a class for the composite actor of the model, and
         // additional classes for all actors (both composite and
         // atomic) used by the model.
@@ -119,13 +113,13 @@ public class Main extends KernelMain {
 
         // Add a command line interface (i.e. Main)
        addTransform(pack, "wjtp.clt",
-                        CommandLineTransformer.v(toplevel),
+               CommandLineTransformer.v(toplevel),
                "targetPackage:" + _targetPackage);
-
+       
        
        addTransform(pack, "wjtp.ta1",
                new TransformerAdapter(TypeAssigner.v()));
-       _addStandardOptimizations(pack, 1);
+       addStandardOptimizations(pack, 1);
        
        
        if(_snapshots) {
@@ -153,7 +147,7 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.cie1",
                new TransformerAdapter(
                        CastAndInstanceofEliminator.v()));
-        _addStandardOptimizations(pack, 2);
+       addStandardOptimizations(pack, 2);
        
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
@@ -173,7 +167,7 @@ public class Main extends KernelMain {
                new TransformerAdapter(LocalSplitter.v()));
        addTransform(pack, "wjtp.lns",
                new TransformerAdapter(LocalNameStandardizer.v()));
-       _addStandardOptimizations(pack, 3);
+       addStandardOptimizations(pack, 3);
        
        addTransform(pack, "wjtp.ls3",
                new TransformerAdapter(LocalSplitter.v()));
@@ -306,7 +300,7 @@ public class Main extends KernelMain {
                new TransformerAdapter(
                        CastAndInstanceofEliminator.v()));
        
-       _addStandardOptimizations(pack, 6);
+       addStandardOptimizations(pack, 6);
        
        // Remove Unreachable methods.  This happens BEFORE
        // NamedObjElimination so that we don't have to pick between
@@ -354,7 +348,7 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.doe3",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v()));
-       _addStandardOptimizations(pack, 7);
+       addStandardOptimizations(pack, 7);
        
        if(_snapshots) {
            addTransform(pack, "wjtp.snapshot4jimple", JimpleWriter.v(),
@@ -382,7 +376,7 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.doe4",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v()));
-       _addStandardOptimizations(pack, 8);
+       addStandardOptimizations(pack, 8);
 
        addTransform(pack, "wjtp.smr2",
                SideEffectFreeInvocationRemover.v());
@@ -405,7 +399,7 @@ public class Main extends KernelMain {
                UnreachableMethodRemover.v());
        addTransform(pack, "wjtp.ufr2",
                UnusedFieldRemover.v());
-       _addStandardOptimizations(pack, 9);
+       addStandardOptimizations(pack, 9);
        addTransform(pack, "wjtp.umr5", 
                UnreachableMethodRemover.v());
        /* */   
@@ -551,25 +545,6 @@ public class Main extends KernelMain {
         return sootArgs;
     }
 
-    /** Add transforms corresponding to the standard soot optimizations
-     *  to the given pack.
-     */
-    private static void _addStandardOptimizations(Pack pack, int time) {
-        List standardList = new LinkedList();
-        standardList.add(CommonSubexpressionEliminator.v());
-        standardList.add(CopyPropagator.v());
-        standardList.add(ConstantPropagatorAndFolder.v());
-        standardList.add(ConditionalBranchFolder.v());
-        standardList.add(DeadAssignmentEliminator.v());
-        standardList.add(UnreachableCodeEliminator.v());
-        standardList.add(UnconditionalBranchFolder.v());
-        standardList.add(UnreachableCodeEliminator.v());
-        standardList.add(UnconditionalBranchFolder.v());
-        standardList.add(UnusedLocalEliminator.v());
-        addTransform(pack, "wjtp.StandardOptimizations" + time,
-                new TransformerAdapter(standardList));
-    }
-   
     private static boolean _snapshots = false;
     private static String _generatorAttributeFileName = "unsetParameter";
     private static String _watchDogTimer = "unsetParameter";

@@ -49,12 +49,22 @@ import soot.SceneTransformer;
 import soot.SootClass;
 import soot.Transform;
 import soot.Transformer;
+import soot.jimple.toolkits.scalar.CommonSubexpressionEliminator;
+import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
+import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
+import soot.jimple.toolkits.scalar.CopyPropagator;
+import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.jimple.toolkits.scalar.UnconditionalBranchFolder;
+import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
+import soot.jimple.toolkits.typing.TypeAssigner;
+import soot.toolkits.scalar.LocalSplitter;
+import soot.toolkits.scalar.UnusedLocalEliminator;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import com.microstar.xml.XmlException;
 
@@ -412,6 +422,26 @@ public class KernelMain {
         return _toplevel;
     }
 
+
+    /** Add transforms corresponding to the standard soot optimizations
+     *  to the given pack.
+     */
+    public static void addStandardOptimizations(Pack pack, int time) {
+        List standardList = new LinkedList();
+        standardList.add(CommonSubexpressionEliminator.v());
+        standardList.add(CopyPropagator.v());
+        standardList.add(ConstantPropagatorAndFolder.v());
+        standardList.add(ConditionalBranchFolder.v());
+        standardList.add(DeadAssignmentEliminator.v());
+        standardList.add(UnreachableCodeEliminator.v());
+        standardList.add(UnconditionalBranchFolder.v());
+        standardList.add(UnreachableCodeEliminator.v());
+        standardList.add(UnconditionalBranchFolder.v());
+        standardList.add(UnusedLocalEliminator.v());
+        addTransform(pack, "wjtp.StandardOptimizations" + time,
+                new TransformerAdapter(standardList));
+    }
+   
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

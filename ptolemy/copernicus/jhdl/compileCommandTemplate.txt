@@ -8,31 +8,9 @@
 "@java@" @jvmSize@
  -classpath "@classPath@"
  "@javaPtIIProperty@"
- ptolemy.copernicus.jhdl.Main "@modelPath@" -d "@ptIIUserDirectory@"
- -p wjtp.watchDog time:@watchDogTimeout@
- -p wjtp.at targetPackage:@targetPackage@
- -p wjtp.mt targetPackage:@targetPackage@
- -p wjtp.idt targetPackage:@targetPackage@
- -p wjtp.fot targetPackage:@targetPackage@
- -p wjtp.ffat targetPackage:@targetPackage@
- -p wjtp.ffet targetPackage:@targetPackage@
- -p wjtp.ffpt targetPackage:@targetPackage@
- -p wjtp.iat targetPackage:@targetPackage@
- -p wjtp.ipt targetPackage:@targetPackage@
- -p wjtp.itt targetPackage:@targetPackage@
- -p wjtp.ttn targetPackage:@targetPackage@
- -p wjtp.ts targetPackage:@targetPackage@
- -p wjtp.noe targetPackage:@targetPackage@
- -p wjtp.nee targetPackage:@targetPackage@
- -p wjtp.ee obfuscate,targetPackage:@targetPackage@
- -p wjtp.snapshot1 "outDir:@ptIIUserDirectory@/@targetPath@/jimple1"
- -p wjtp.snapshot2 "outDir:@ptIIUserDirectory@/@targetPath@/jimple2"
- -p wjtp.snapshot3 "outDir:@ptIIUserDirectory@/@targetPath@/jimple3"
- -p wjtp.snapshot4 "outDir:@ptIIUserDirectory@/@targetPath@/jimple4"
- -p wjtp.snapshot5 "outDir:@ptIIUserDirectory@/@targetPath@/jimple5"
- -p wjtp.finalSnapshot "outDir:@ptIIUserDirectory@/@targetPath@,targetPackage:@targetPackage@"
- -p wjtp.iee enabled
- -p wjtp.makefileWriter 
- "_generatorAttributeFileName:@_generatorAttributeFileName@,targetPackage:@targetPackage@,outDir:@ptIIUserDirectory@/@targetPath@,templateDirectory:ptolemy/copernicus/java"
- -p wjtp.circuit "outDir:@ptIIUserDirectory@/@targetPath@,targetPackage:@targetPackage@"
+ ptolemy.copernicus.jhdl.Main "@modelPath@"
+ -watchDogTimer "@watchDogTimeout@"
+ -outputDirectory "@ptIIUserDirectory@/@targetPath@"
+ -targetPackage "@targetPackage@"
+ -sootArgs
  @compileOptions@

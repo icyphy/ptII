@@ -643,7 +643,7 @@ public class Copernicus {
             Attribute attribute = _generatorAttribute.getAttribute(name);
             if (attribute instanceof Settable) {
                 match = true;
-                ((Settable)attribute).setExpression(value);
+                ((Settable)attribute).setExpression("\"" + value + "\"");
                 if (attribute instanceof Variable) {
                     // Force evaluation so that listeners
                     // are notified.

@@ -84,7 +84,8 @@ java -classpath $PTII ptolemy.copernicus.kernel.Copernicus -help
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class GeneratorAttribute extends SingletonAttribute implements ChangeListener{
+public class GeneratorAttribute extends SingletonAttribute 
+    implements ChangeListener {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a

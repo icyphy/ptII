@@ -90,14 +90,8 @@ public class Main extends KernelMain {
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
         // -p wjtp.watchDog time:30000
-        addTransform(pack,"wjtp.watchDog",
-                     WatchDogTimer.v(),"time:"+_watchDogTimer);
-
-        // Sanitize names of objects in the model.
-        // We change the names to all be valid java identifiers
-        // so that we can
-        //      Scene.v().getPack("wjtp").add(new Transform("wjtp.ns",
-        //         NameSanitizer.v(_toplevel)));
+        addTransform(pack, "wjtp.watchDog", WatchDogTimer.v(),
+                "time:" + _watchDogTimer);
 
         // Create a class for the composite actor of the model, and for
         // all actors referenced by the model.
@@ -118,12 +112,18 @@ public class Main extends KernelMain {
        
        addTransform(pack, "wjtp.ta1",
                new TransformerAdapter(TypeAssigner.v()));
-       _addStandardOptimizations(pack,1);
+       addStandardOptimizations(pack,1);
 
-       addTransform(pack,"wjtp.snapshot1",
-                    JimpleWriter.v(), "outDir:"+_outputDirectory+
-                    "/jimple1");
+       if(_snapshots) {
+           addTransform(pack,"wjtp.snapshot1",
+                   JimpleWriter.v(), "outDir:" + _outputDirectory +
+                   "/jimple1");
+       }
 
+       addTransform(pack, "wjtp.ib1", InvocationBinder.v());
+       
+       addTransform(pack, "wjtp.ls7",
+                        new TransformerAdapter(LocalSplitter.v()));
        addTransform(pack, "wjtp.ffet",
                         FieldsForEntitiesTransformer.v(_toplevel),
                "targetPackage:" + _targetPackage);
@@ -132,6 +132,10 @@ public class Main extends KernelMain {
         // depends on the types of fields
        addTransform(pack, "wjtp.ta2",
                     new TransformerAdapter(TypeAssigner.v()));
+       addTransform(pack, "wjtp.cie1",
+               new TransformerAdapter(
+                       CastAndInstanceofEliminator.v()));
+       addStandardOptimizations(pack, 2);
 
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
@@ -146,9 +150,13 @@ public class Main extends KernelMain {
                     FieldsForPortsTransformer.v(_toplevel),
                     "targetPackage:" + _targetPackage);
 
-       //_addStandardOptimizations(Scene.v().getPack("wjtp"));
-
        addTransform(pack, "wjtp.ls2",
+               new TransformerAdapter(LocalSplitter.v()));
+       addTransform(pack, "wjtp.lns",
+               new TransformerAdapter(LocalNameStandardizer.v()));
+       addStandardOptimizations(pack, 3);
+       
+       addTransform(pack, "wjtp.ls3",
                new TransformerAdapter(LocalSplitter.v()));
        addTransform(pack, "wjtp.ta3",
                new TransformerAdapter(TypeAssigner.v()));
@@ -186,33 +194,31 @@ public class Main extends KernelMain {
         // polymorphic actors.  After this step, no
         // uninstantiable types should remain.
        addTransform(pack, "wjtp.tie",
-                    new TransformerAdapter(
-                                           TokenInstanceofEliminator.v()));
-       addTransform(pack, "wjtp.ta1",
+                    new TransformerAdapter(TokenInstanceofEliminator.v()));
+       addTransform(pack, "wjtp.ta4",
                new TransformerAdapter(TypeAssigner.v()));
        addTransform(pack, "wjtp.cp1",
                new TransformerAdapter(CopyPropagator.v()));
 
        
-       //_addStandardOptimizations(Scene.v().getPack("wjtp"));
+       if(_snapshots) {
+           addTransform(pack, "wjtp.snapshot2", ClassWriter.v(),
+                   "outDir:" + _outputDirectory + "/jimple2");
+           addTransform(pack, "wjtp.snapshot2jimple", JimpleWriter.v(),
+                   "outDir:" + _outputDirectory + "/jimple2");
+       }
 
-       addTransform(pack, "wjtp.snapshot4", ClassWriter.v(),
-                    "outDir:" + _outputDirectory + "/jimple4");
-       addTransform(pack, "wjtp.finalSnapshotJimple",
-                    JimpleWriter.v(),
-                    "outDir:" + _outputDirectory);
-       
-       addTransform(pack, "wjtp.ta1",
+       addTransform(pack, "wjtp.ta5",
                new TransformerAdapter(TypeAssigner.v()));
        addTransform(pack, "wjtp.nee",
                NamedObjEqualityEliminator.v(_toplevel),
                "targetPackage:" + _targetPackage);
 
         // Remove casts and instanceof Checks.
-       addTransform(pack, "wjtp.cie1",
+       addTransform(pack, "wjtp.cie2",
                new TransformerAdapter(
                                       CastAndInstanceofEliminator.v()));
-       _addStandardOptimizations(pack, 2);
+       addStandardOptimizations(pack, 4);
 
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
@@ -220,7 +226,7 @@ public class Main extends KernelMain {
         // We do this before port transformation, since it
         // often allows us to statically determine the channels
         // of port reads and writes.
-       addTransform(pack, "wjtp.itt1",
+       addTransform(pack, "wjtp.itt2",
                InlineTokenTransformer.v(_toplevel),
                "targetPackage:" + _targetPackage);
        addTransform(pack, "wjtp.ipt",
@@ -228,17 +234,19 @@ public class Main extends KernelMain {
                "targetPackage:" + _targetPackage);
 
 
-       _addStandardOptimizations(pack, 3);
+       addStandardOptimizations(pack, 5);
 
         // Unroll loops with constant loop bounds.
 //          Scene.v().getPack("jtp").add(
 //                  new Transform("jtp.clu",
 //                          ConstantLoopUnroller.v()));
+       addTransform(pack, "wjtp.finalSnapshotJimple",
+                    JimpleWriter.v(),
+                    "outDir:" + _outputDirectory);
+       
        addTransform(pack, "wjtp.circuit",
                     ptolemy.copernicus.jhdl.CircuitTransformer.v(_toplevel),
                     "JHDL");
-       addTransform(pack, "wjtp.snapshot4jimple", JimpleWriter.v(),
-                    "outDir:" + _outputDirectory + "/jimple4");
        
 
     }
@@ -258,38 +266,81 @@ public class Main extends KernelMain {
         // Create instance classes for the actors.
         main.initialize(toplevel);
 
+        // Parse any copernicus args.
+        String[] sootArgs = _parseArgs(args);
+ 
         // Add Transforms to the Scene.
         main.addTransforms();
 
         // Generate Code
-        main.generateCode(args);
-    }
-    /** Add transforms corresponding to the standard soot optimizations
-     *  to the given pack.
-     */
-    private void _addStandardOptimizations(Pack pack, int time) {
-        addTransform(pack,"jop.cse" + time,
-                new TransformerAdapter(CommonSubexpressionEliminator.v()));
-        addTransform(pack,"jop.cp" + time,
-                new TransformerAdapter(CopyPropagator.v()));
-        addTransform(pack,"jop.cpf" + time,
-                new TransformerAdapter(ConstantPropagatorAndFolder.v()));
-        addTransform(pack,"jop.cbf" + time,
-                new TransformerAdapter(ConditionalBranchFolder.v()));
-        addTransform(pack,"jop.dae" + time,
-                new TransformerAdapter(DeadAssignmentEliminator.v()));
-        addTransform(pack,"jop.uce1" + time,
-                new TransformerAdapter(UnreachableCodeEliminator.v()));
-        addTransform(pack,"jop.ubf1" + time,
-                new TransformerAdapter(UnconditionalBranchFolder.v()));
-        addTransform(pack,"jop.uce2" + time,
-                new TransformerAdapter(UnreachableCodeEliminator.v()));
-        addTransform(pack,"jop.ubf2" + time,
-                new TransformerAdapter(UnconditionalBranchFolder.v()));
-        addTransform(pack,"jop.ule" + time,
-                new TransformerAdapter(UnusedLocalEliminator.v()));
+        main.generateCode(sootArgs);
     }
 
+    /** Parse any Copernicus arguments.
+     */ 
+    protected static String[] _parseArgs(String args[]) {
+        // Ignore the first argument.
+        for(int i = 1; i < args.length; i++) {
+            if(args[i].equals("-snapshots")) {
+                _snapshots = true;
+            } if(args[i].equals("-targetPackage")) {
+                i++;
+                if(i < args.length) {
+                    _targetPackage = args[i];
+                } else {
+                    throw new RuntimeException(
+                            "Expected argument to -targetPackage");
+                }
+//             } else if(args[i].equals("-templateDirectory")) {
+//                 i++;
+//                 if(i < args.length) {
+//                     _templateDirectory = args[i];
+//                 } else {
+//                     throw new RuntimeException(
+//                             "Expected argument to -templateDirectory");
+//                 }
+            } else if(args[i].equals("-watchDogTimer")) {
+                i++;
+                if(i < args.length) {
+                    _watchDogTimer = args[i];
+                } else {
+                    throw new RuntimeException(
+                            "Expected argument to -watchDogTimer");
+                }
+            } else if(args[i].equals("-outputDirectory")) {
+                i++;
+                if(i < args.length) {
+                    _outputDirectory = args[i];
+                } else {
+                    throw new RuntimeException(
+                            "Expected argument to -outputDirectory");
+                }
+        //     } else if(args[i].equals("-generatorAttributeFileName")) {
+//                 i++;
+//                 if(i < args.length) {
+//                     _generatorAttributeFileName = args[i];
+//                 } else {
+//                     throw new RuntimeException(
+//                            "Expected argument to -generatorAttributeFileName");
+//                 }
+            } else if(args[i].equals("-sootArgs")) {
+                String[] sootArgs = new String[args.length - i];
+                i++;
+                sootArgs[0] = args[0];
+                for(int j = 1; j < sootArgs.length; j++) {
+                    sootArgs[j] = args[i++];
+                }
+                return sootArgs;
+            }
+        }   
+        
+        // Default args to soot, if no -sootArgs is found.
+        String[] sootArgs = new String[1];
+        sootArgs[0] = args[0];
+        return sootArgs;
+    }
+
+    private static boolean _snapshots = false;
     private static String _watchDogTimer = "unsetParameter";
     private static String _targetPackage = "unsetParameter";
     private static String _outputDirectory = "unsetParameter";
