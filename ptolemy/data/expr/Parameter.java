@@ -230,7 +230,8 @@ public class Parameter extends Attribute implements ParameterListener {
 
         try {
 	    workspace().getReadAccess();
-	    // if an expression was placed in this parameter but has not
+	    ParameterEvent event = null;
+            // if an expression was placed in this parameter but has not
 	    // yet been evaluated, do it now
 	    if (_needsEvaluation) {
 		_needsEvaluation = false;
@@ -239,6 +240,10 @@ public class Parameter extends Attribute implements ParameterListener {
 		}
 		_parseTree = _parser.generateParseTree(
 			_currentExpression, getScope());
+                int id = ParameterEvent.SET_FROM_EXPRESSION;
+                event = new ParameterEvent(id, this);
+            } else {
+                event = new ParameterEvent(ParameterEvent.UPDATED, this);
             }
 	    if ( _parseTree == null){
 		// ERROR: should not get here.
@@ -255,7 +260,7 @@ public class Parameter extends Attribute implements ParameterListener {
 	    } else {
 		_checkType(_token);
 	    }
-	    _notifyListeners();
+            _notifyListeners(event);
         } finally {
 	    _dependencyLoop = false;
 	    workspace().doneReading();
@@ -344,6 +349,28 @@ public class Parameter extends Attribute implements ParameterListener {
      */
     public Class getType() {
         return _paramType;
+    } 
+    
+    /** A Parameter which the expression in this Parameter references 
+     *  has changed. Here we just call evaluate() to obtain the new 
+     *  Token to be stored in this Parameter.
+     *  @param event The ParameterEvent containing the information
+     *    about why the referenced Parameter changed.
+     */
+    public void parameterChanged(ParameterEvent event) {
+         evaluate();
+    }
+
+    /** A Parameter which the expression stored in this Parameter 
+     *  has been removed. Check if the current expression is still 
+     *  valid by recreating and evaluating the parse tree. 
+     *  @param event The ParameterEvent containing information
+     *    about the removed Parameter.
+     */
+    public void parameterRemoved(ParameterEvent event) {
+         setExpression(_currentExpression);
+         evaluate();
+         return;
     }
 
     /** Unregister a ParameterListener of this Parameter.
@@ -443,7 +470,8 @@ public class Parameter extends Attribute implements ParameterListener {
         } else {
             _checkType(_token);
         }
-        _notifyListeners();
+        int id = ParameterEvent.SET_FROM_TOKEN;
+        _notifyListeners(new ParameterEvent(id, this));
     }
 
     /** Set the types of Tokens that this parameter can contain.
@@ -551,14 +579,14 @@ public class Parameter extends Attribute implements ParameterListener {
    /*  Notify any ParameterListeners that have registered an
     *  interest/dependency in this parameter.
     */
-    private void _notifyListeners() {
+    private void _notifyListeners(ParameterEvent event) {
         if (_listeners == null) {
             // No listeners to notify.
             return;
         }
         Enumeration list = _listeners.elements();
         while (list.hasMoreElements()) {
-            ((ParameterListener)list.nextElement()).evaluate();
+            ((ParameterListener)list.nextElement()).parameterChanged(event);
         }
     }
 
