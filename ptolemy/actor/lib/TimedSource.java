@@ -47,11 +47,10 @@ import ptolemy.kernel.util.NameDuplicationException;
    For some sequence-based domains, such as SDF, actors of this type
    probably do not make sense because current time is not incremented.
    This actor has a parameter, <i>stopTime</i>, that optionally controls
-   the duration for which the actor is fired.  If this number is
-   <i>t</i> &gt; 0.0, then when current time reaches <i>t</i>,
-   postfire() returns false. This indicates
+   the duration for which the actor is fired. When current time reaches 
+   the stopTime, postfire() returns false. This indicates
    to the director that this actor should not be invoked again.
-   The default value of <i>stopTime</i> is 0.0, which results in postfire
+   The default value of stopTime is <i>Infinity</i>, which results in postfire
    always returning true.  In other words, this makes the lifetime
    infinite. Derived classes must call super.postfire() for this mechanism to
    work.
