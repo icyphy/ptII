@@ -64,6 +64,11 @@ For a model called Foo, we generate Foo/makefile, Foo/Foo.xml,
 Foo/Foo.htm Foo/FooVergil.htm in the directory named by the
 outDir parameter.
 
+<p>Potential future enhancements
+<menu>
+<li> Optionally copy the necessary jar files to the target directory.
+<li> Pull out the top level annotation and add the text to the web page.
+</menu>
 @author Christopher Hylands
 @version $Id$
 */
