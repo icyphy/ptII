@@ -145,10 +145,17 @@ public class SearchPath extends Vector {
         int end;
         do {
           end = paths.indexOf(File.pathSeparator, begin);
+          String path = null;
           if (end == -1) {
-             _addPath(paths.substring(begin));
+             path = paths.substring(begin);
+             if (path.length() > 0) {                          
+                 _addPath(path);
+              }
           } else {
-             _addPath(paths.substring(begin, end));
+             path = paths.substring(begin, end);          
+             if (path.length() > 0) {
+                _addPath(path);
+             }
              begin = end + 1;
           }
         } while (end > -1);

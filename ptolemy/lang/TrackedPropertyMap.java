@@ -43,29 +43,47 @@ import java.util.HashSet;
  *  @author Jeff Tsay
  */
 public class TrackedPropertyMap extends PropertyMap {
+    /** Create a new TrackedPropertyMap. */
     public TrackedPropertyMap() {
         super();
     }
-
+    
+    
+    /** Add the visitor with the argument class object to the set of visitors
+     *  that have visited this object.
+     */
     public boolean addVisitor(Class c) {
         return _visitedBySet.add(c);
     }
 
+    /** Clear all traces of visitation from any visitor. */
     public void clearVisitors() {
         _visitedBySet.clear();
     }
 
+    /** Remove the visitor with the argument class object from the set of 
+     *  visitors that have visited this object.
+     */
     public boolean removeVisitor(Class c) {
         return _visitedBySet.remove(c);
     }
 
-    public boolean wasVisitedBy(Class c) {
+    /** Return true iff this object was visited by a visitor with the
+     *  argument class object.
+     */
+    public boolean wasVisitedBy(Class c) {    
         return _visitedBySet.contains(c);
     }
 
+    /** Return an iterator over the class objects of the visitors that have
+     *  visited this object.
+     */    
     public Iterator visitorIterator() {
         return _visitedBySet.iterator();
     }
 
-    protected HashSet _visitedBySet = new HashSet();
+    /** A set of classs objects of the visitors that have visited this 
+     *  object. The initial capacity is set to 1 to conserve memory.
+     */
+    protected HashSet _visitedBySet = new HashSet(1);
 }

@@ -69,10 +69,10 @@ public class TNLManip {
      *  of the return values from each visitation. Each member of the list
      *  should be a child list.
      */
-    public static final List traverseList(IVisitor v, TreeNode parent,
+    public static final ArrayList traverseList(IVisitor v, TreeNode parent,
      LinkedList args, List childList) {
        Object retval;
-       LinkedList retList = new LinkedList();
+       ArrayList retList = new ArrayList(childList.size());
 
        Iterator itr = childList.iterator();
 
@@ -85,15 +85,15 @@ public class TNLManip {
             retval = node.accept(v, args);
 
             if (retval == null) {
-               retList.addLast(NullValue.instance);
+               retList.add(NullValue.instance);
             } else {
-               retList.addLast(retval);
+               retList.add(retval);
             }
 
          } else if (obj instanceof List) {
             retval = traverseList(v, null, args, (List) obj);
 
-            retList.addLast(retval);
+            retList.add(retval);
          } else {
             throw new RuntimeException("unknown object in list : " + obj.getClass());
          }

@@ -154,5 +154,9 @@ public class PropertyMap implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                  ////
 
-    protected HashMap _propertyMap = new HashMap();
+    /** A map from properties (instances of Integer) to values 
+     *  (instances of Objects). The initial capacity is set to 2 to
+     *  conserve memory. 
+     */
+    protected HashMap _propertyMap = new HashMap(2); 
 }
