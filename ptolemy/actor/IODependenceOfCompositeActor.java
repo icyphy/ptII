@@ -31,6 +31,7 @@ composite actor containing the input-output dependence information.
 
 package ptolemy.actor;
 
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -153,9 +154,12 @@ public class IODependenceOfCompositeActor extends IODependence {
                     ioDependence = 
                         new IODependenceOfCompositeActor((Entity) embeddedActor, 
                             "_IODependence");
-                } else {
+                } else if (embeddedActor instanceof FSMActor) {
                     // Deal with ModalModel
                     // FIXME: two different entities: FSMActor, State.
+                    ioDependence = 
+                        new IODependenceOfFSMActor((Entity) embeddedActor, 
+                            "_IODependence");
                     return;
                 }
             }
