@@ -55,7 +55,7 @@ Decrypt an unsigned byte array using a symmetric algorithm.
 description of symmetric vs. asymmetric algorithms.
 
 <p>This actor reads an unsigned byte array at the <i>input</i> port,
-dencrypts the data using the data from the <i>key</i> port and then
+decrypts the data using the data from the <i>key</i> port and then
 writes the unsigned byte array results to the <i>output</i> port.
 
 <p>The <i>key</i> should be the same for both the SymmetricEncryption

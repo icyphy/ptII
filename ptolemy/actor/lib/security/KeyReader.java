@@ -144,7 +144,7 @@ public class KeyReader extends KeyStoreActor {
      *  be true as well.
      *  <br>Private keys are usually associated with a certificate, so
      *  verifying the certificate is a good idea.
-     *  <br>Secret keys do not usually have a certficate, so if the
+     *  <br>Secret keys do not usually have a certificate, so if the
      *  key is a secret key, then usually <i>verifyCertificate</i>
      *  is set to false.
      */
