@@ -19,7 +19,7 @@
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
           <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity">
-              <input source="../configs/annotation.xml"/>
+              <input source="ptolemy/configs/annotation.xml"/>
               <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
             </entity>
           </configure>
@@ -31,6 +31,7 @@
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
           <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+              <input source="ptolemy/configs/annotation.xml"/>
               <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
             </entity>
           </configure>
@@ -79,7 +80,7 @@
       <configure>
         <?moml
           <group>
-            <input source="../configs/annotation.xml"/>
+            <input source="ptolemy/configs/annotation.xml"/>
     <!-- Blank composite actor. -->
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/>
     <entity name="continuous time composite actor" class="ptolemy.domains.ct.kernel.CTCompositeActor"/>
@@ -87,7 +88,7 @@
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
           <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity">
-              <input source="../configs/annotation.xml"/>
+              <input source="ptolemy/configs/annotation.xml"/>
               <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
             </entity>
           </configure>
@@ -97,7 +98,7 @@
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
           <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity">
-              <input source="../configs/annotation.xml"/>
+              <input source="ptolemy/configs/annotation.xml"/>
               <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
             </entity>
           </configure>
