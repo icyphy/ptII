@@ -104,7 +104,7 @@ deadlock that caused the changes to be carried out.
 @version $Id$
 @see ptolemy.actor.Director
 */
-public class CSPDirector extends ProcessDirector {
+public class CSPDirector extends CompositeProcessDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -156,7 +156,7 @@ public class CSPDirector extends ProcessDirector {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         CSPDirector newobj = (CSPDirector)super.clone(ws);
-        newobj._actorsBlocked = 0;
+        // newobj._actorsBlocked = 0;
         /*
         newobj._extReadBlockCount= 0;
         newobj._writeBlockCount= 0;
@@ -170,7 +170,7 @@ public class CSPDirector extends ProcessDirector {
      * @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
-	_actorsBlocked = 0;
+	// _actorsBlocked = 0;
         /*
 	_intReadBlockCount = 0;
 	_extReadBlockCount = 0;
@@ -261,8 +261,9 @@ public class CSPDirector extends ProcessDirector {
             _intReadBlockCount++;
         }
         */
-        _actorsBlocked++;
-	notifyAll();
+        // _actorsBlocked++;
+	// notifyAll();
+        super._actorBlocked(rcvr);
     }
  
     /** Increase the count of blocked processes and check for deadlock.
@@ -334,7 +335,8 @@ public class CSPDirector extends ProcessDirector {
             _writeBlockCount--;
         }
         */
-        _actorsBlocked--;
+        // _actorsBlocked--;
+        super._actorUnBlocked(rcvr);
     }
 
     /** An actor has unblocked, decrease the count of blocked actors.
@@ -357,34 +359,6 @@ public class CSPDirector extends ProcessDirector {
     }
      */
 
-    /** Determine if all of the threads containing actors controlled
-     *  by this director have stopped due to a call of stopFire() or
-     *  because they are blocked or delayed.
-     * @return True if all active threads containing actors controlled
-     *  by this thread have stopped; otherwise return false.
-    protected synchronized boolean _areActorsStopped() {
-	long threadsStopped = _getStoppedProcessesCount();
-	long actorsActive = _getActiveActorsCount();
-
-	// All threads are stopped due to stopFire()
-	if( threadsStopped != 0 && threadsStopped >= actorsActive ) {
-	    return true;
-	}
-
-	// Some threads are stopped due to stopFire() while others
-	// are blocked waiting to read or write data.
-        // if( threadsStopped + _actorsBlocked + _actorsDelayed
-	if( threadsStopped + _actorsBlocked
-        	+ _actorsDelayed >= actorsActive ) {
-	    if( threadsStopped != 0 ) {
-	        return true;
-	    }
-	}
-
-	return false;
-    }
-     */
-
     /** Returns true if all active processes are either blocked or
      *  delayed, false otherwise.
      */
@@ -395,7 +369,8 @@ public class CSPDirector extends ProcessDirector {
             return true;
         }
         */
-        if( _getActiveActorsCount() == _actorsBlocked + _actorsDelayed ) {
+        // if( _getActiveActorsCount() == _actorsBlocked + _actorsDelayed ) {
+        if( _getActiveActorsCount() == _getBlockedActorsCount() + _actorsDelayed ) {
             return true;
         }
         return false;
@@ -430,7 +405,7 @@ public class CSPDirector extends ProcessDirector {
      *  end of executing the model.
      *  @return False if real deadlock occurred, true otherwise.
      */
-    protected synchronized boolean _resolveDeadlock() {
+    protected synchronized boolean _resolveInternalDeadlock() {
         if (_actorsDelayed > 0) {
             // Time deadlock.
             double nextTime = _getNextTime();
@@ -452,8 +427,10 @@ public class CSPDirector extends ProcessDirector {
                     done = true;
                 }
             }
-        } else if( _actorsBlocked == _getActiveActorsCount() ) {
+        // } else if( _actorsBlocked == _getActiveActorsCount() ) {
+        } else if( _getBlockedActorsCount() == _getActiveActorsCount() ) {
             // Real deadlock.
+            System.out.println("REAL DEADLOCK");
             return false;
         }
         // Return true for topology changes and time deadlock.
@@ -512,7 +489,7 @@ public class CSPDirector extends ProcessDirector {
     // private int _writeBlockCount = 0;
 
     // Count of the number of processes blocked trying to rendezvous.
-    private int _actorsBlocked = 0;
+    // private int _actorsBlocked = 0;
 
     // Count of the number of processes delayed until time
     // sufficiently advances.
