@@ -59,7 +59,7 @@ public abstract class ColtRandomSource extends RandomSource implements ChangeLis
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** This method creates the parameter object if it does not yet exist, 
+    /** This method creates the parameter object if it does not yet exist,
      *  and sets it in the container, or simply gets it from the container
      *  and adds it to the high level RNG actor.
      */
@@ -71,13 +71,13 @@ public abstract class ColtRandomSource extends RandomSource implements ChangeLis
 
 	if(randomElementClass == null)
 	{
-		randomElementClass = new Parameter(container, "Random Number Generator", 
+		randomElementClass = new Parameter(container, "Random Number Generator",
 				new StringToken(randomElementClassNames[index]));
 
 		ChoiceStyle s = new ChoiceStyle(randomElementClass, "s");
 		for(int i = 0; i < randomElementClassNames.length; i++)
 		{
-			Parameter a = 
+			Parameter a =
 				new Parameter(s, "s"+i, new StringToken(randomElementClassNames[i]));
 		}
 	}
@@ -203,7 +203,7 @@ public abstract class ColtRandomSource extends RandomSource implements ChangeLis
     /** randomElementClassNames.
      *  This is the list of available RandomElement classes.
      */
-    protected String [] randomElementClassNames = 
+    protected String [] randomElementClassNames =
     {
 	"DRand",
 	"MersenneTwister (MT19937)",
@@ -216,7 +216,7 @@ public abstract class ColtRandomSource extends RandomSource implements ChangeLis
     ////                         private variables                 ////
 
     /** index.
-     *  This int is the index of the currently used randomElement in the 
+     *  This int is the index of the currently used randomElement in the
      *  randomElementClassNames array.
      */
     private static int index = 0;
