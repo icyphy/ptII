@@ -82,7 +82,7 @@ public class TrackedPropertyMap extends PropertyMap {
         return _visitedBySet.iterator();
     }
 
-    /** A set of classs objects of the visitors that have visited this
+    /** A set of class objects of the visitors that have visited this
      *  object. The initial capacity is set to 1 to conserve memory.
      */
     protected HashSet _visitedBySet = new HashSet(1);
