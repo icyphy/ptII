@@ -66,10 +66,7 @@ JSRCS = \
 	IntervalDFG.java \
 	MapList.java \
 	BDFGToJHDLCircuit.java \
-	BinaryMuxNode.java \
-	SootBlockVisitor.java \
-	SootBlockAST.java \
-	DefaultSootBlockVisitor.java
+	BinaryMuxNode.java
 
 
 OTHER_FILES_TO_BE_JARED = \
