@@ -374,11 +374,20 @@ public class Token implements Serializable {
                 + this.getClass().getName() + ".");
     }
 
-    /** Returns a token representing the result of multiplying this
-     *  token by itself (on the right) the number of times given by
-     *  the argument.  If the argument is zero, then the result is
-     *  defined to be the result of applying the one() method to this
-     *  token.  The token type returned by this method is the same as
+    /** Return a new token computed as follows:
+     *  <ul>
+     *  <li> For positive <i>times</i> arguments, the result represents
+     *  the product of this token multiplied by itself the number of
+     *  times given by the argument.
+     *  <li> For negative <i>times</i> arguments, the result
+     *  represents the multiplicative inverse of the product of this
+     *  token multiplied by itself the number of times given by the
+     *  absolute value of the argument.  
+     *  <br> More succinctly: one().divide(pow(-times))
+     *  <li> If the argument is zero, then the result is defined to be
+     *  the result of applying the one() method to this token.
+     *  <ul>
+     *  The token type returned by this method is the same as
      *  the type of this token.  Note that the method is different
      *  from java.lang.Math.pow(), since it returns an integer given
      *  an integer token type, and is also well defined for matrix
@@ -386,7 +395,9 @@ public class Token implements Serializable {
      *  @param times The number of times to multiply.
      *  @return The power.
      *  @exception IllegalActionException If the token is not
-     *  compatible for this operation, or the given argument is negative.
+     *  compatible for this operation.  Specifically, if the Token
+     *  type does not support division (for example matrices) then
+     *  using a negative <i>times</i> argument may throw an exception.
      */
     public ptolemy.data.Token pow(int times)
             throws IllegalActionException {
@@ -394,9 +405,11 @@ public class Token implements Serializable {
             // anything to the zero is one.
             return one();
         } else if(times < 0) {
-            throw new IllegalActionException(
-                    "Only positive integral power numbers (e.g. 10^3) " +
-                    "are allowed.");
+            ptolemy.data.Token result = this;
+            for( int k = times; k < -1; k++ ) {
+                result = result.multiply(this);
+            }
+            return one().divide(result);
         } else {
             ptolemy.data.Token result = this;
             for( int k = 0; k < times - 1; k++ ) {
