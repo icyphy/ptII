@@ -255,10 +255,10 @@ public class ComplexToken extends ScalarToken {
      *  <p>If A and B are the values of the tokens, and if
      *  the following is true:
      *  <pre>
-     *  abs(A-B) < epsilon 
+     *  abs(A-B) < epsilon
      *  </pre>
      *  then A and B are considered close.
-     * 
+     *
      *  @see ptolemy.math.Complex#epsilon
      *  @see #isEqualTo
      *  @param token The token to test closeness of this token with.
@@ -279,10 +279,10 @@ public class ComplexToken extends ScalarToken {
      *  <p>If A and B are the values of the tokens, and if the following
      *  is true:
      *  <pre>
-     *  abs(A-B) < epsilon 
+     *  abs(A-B) < epsilon
      *  </pre>
      *  then A and B are considered close.
-     * 
+     *
      *  @see #isEqualTo
      *  @param token The token to test closeness of this token with.
      *  @param epsilon The value that we use to determine whether two
@@ -358,7 +358,7 @@ public class ComplexToken extends ScalarToken {
      *  relationship among complex numbers. So this method always throws
      *  an exception.
      *  @param arg A ScalarToken.
-     *  @return A BooleanToken 
+     *  @return A BooleanToken
      *  @exception IllegalActionException Always thrown.
      */
     public BooleanToken isLessThan(ScalarToken arg)

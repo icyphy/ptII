@@ -143,7 +143,7 @@ public class Token implements Serializable {
                 + dividend.getClass().getName() + " divided by "
                 + this.getClass().getName() + ".");
     }
-    
+
     /** Return the type of this token.
      *  @return BaseType.GENERAL
      */

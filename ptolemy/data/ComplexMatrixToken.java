@@ -294,10 +294,10 @@ public class ComplexMatrixToken extends MatrixToken {
      *  <p>If A and B are the values of the tokens, and if
      *  the following is true:
      *  <pre>
-     *  abs(A-B) < epsilon 
+     *  abs(A-B) < epsilon
      *  </pre>
      *  then A and B are considered close.
-     * 
+     *
      *  @see ptolemy.math.Complex#epsilon
      *  @see #isEqualTo
      *  @param token The token to test closeness of this token with.
@@ -324,10 +324,10 @@ public class ComplexMatrixToken extends MatrixToken {
      *  <p>If A and B are the values of elements of the tokens, and if
      *  the following is true:
      *  <pre>
-     *  abs(A-B) < epsilon 
+     *  abs(A-B) < epsilon
      *  </pre>
      *  then A and B are considered close.
-     * 
+     *
      *  @see #isEqualTo
      *  @param token The token to test closeness of this token with.
      *  @param epsilon The value that we use to determine whether two
