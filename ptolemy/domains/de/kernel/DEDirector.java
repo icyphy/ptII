@@ -124,10 +124,18 @@ import java.util.Iterator;
  *  execution when there are no more events, call
  *  stopWhenQueueIsEmpty() with argument <code>false</code>.
  *  <p>
- *  The DE director has a single parameter, "stopTime".  The stop
+ *  The DE director has a parameter, "stopTime".  The stop
  *  time can be set using that parameter, or by directly calling
  *  setStopTime().  If the stop time is not explicitly set, then it
- *  defaults to Double.MAX_VALUE, resulting in a model that never stops.
+ *  defaults to Double.MAX_VALUE, resulting in a model that stops
+ *  only when the model time reaches that (rather large) number.
+ *  <p>
+ *  If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
+ *  then the director not process events until the real time elapsed
+ *  since the model started matches the time stamp of the event.
+ *  This ensures that the director does not get ahead of real time,
+ *  but, of course, it does not ensure that the director keeps up with
+ *  real time.
  *  <p>
  *  This director tolerates changes to the model during execution.
  *  The change should be queued with the director or manager using
@@ -189,7 +197,7 @@ public class DEDirector extends Director {
     ////                         parameters                        ////
 
     /** The stop time of the model.  This parameter must contain a
-     *  DoubleToken.  Its value defaults to Double.MaxValue.
+     *  DoubleToken.  Its value defaults to Double.MAX_VALUE.
      */
     public Parameter stopTime;
 
@@ -198,6 +206,12 @@ public class DEDirector extends Director {
      *  Its value defaults to true.
      */
     public Parameter stopWhenQueueIsEmpty;
+
+    /** If this parameter is true, then do not process events until the
+     *  elapsed real time matches the time stamp of the events.
+     *  Its value defaults to false.
+     */
+    public Parameter synchronizeToRealTime;
 
     /** Whether the calender queue adjust its bin number at run time.
      *  If this parameter is true, the calender queue will adapt
@@ -245,6 +259,10 @@ public class DEDirector extends Director {
             _stopWhenQueueIsEmpty =
                 ((BooleanToken)stopWhenQueueIsEmpty.getToken()).booleanValue();
         }
+        if (attr == synchronizeToRealTime) {
+            _synchronizeToRealTime =
+                ((BooleanToken)synchronizeToRealTime.getToken()).booleanValue();
+        }
     }
 
     /** Clone the director into the specified workspace. This calls the
@@ -262,6 +280,8 @@ public class DEDirector extends Director {
             (Parameter)newobj.getAttribute("stopTime");
         newobj.stopWhenQueueIsEmpty = 
             (Parameter)newobj.getAttribute("stopWhenQueueIsEmpty");
+        newobj.synchronizeToRealTime = 
+            (Parameter)newobj.getAttribute("synchronizeToRealTime");
         newobj.isCQAdaptive =
             (Parameter)newobj.getAttribute("isCQAdaptive");
         newobj.minBinCount = 
@@ -291,6 +311,8 @@ public class DEDirector extends Director {
 
     /** Advance current time to the next event in the event queue,
      *  and fire one or more actors that have events at that time.
+     *  If <i>synchronizeToRealTime</i> is true, then before firing,
+     *  wait until real time matches or exceeds the time stamp of the event.
      *  Each actor is iterated repeatedly (prefire(), fire(), postfire()),
      *  until either it has no more input tokens at the current time, or
      *  its prefire() method returns false. If there are no events in the
@@ -307,6 +329,10 @@ public class DEDirector extends Director {
         boolean _timeHasNotAdvanced = true;
         while (true) {
             Actor actorToFire = _dequeueEvents();
+            if (_debugging) {
+                _debug("Found actor to fire: "
+                + ((NamedObj)actorToFire).getFullName());
+            }
             if (actorToFire == null) {
                 // There is nothing more to do.
                 if (_debugging) _debug("No more events on the event queue.");
@@ -460,11 +486,14 @@ public class DEDirector extends Director {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
+        // Uncomment to have a debug listener.
+        // addDebugListener(new StreamListener());
         super.initialize();
         // Request a firing to the outer director if the queue is not empty.
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
             _requestFiring();
         }
+        _realStartTime = System.currentTimeMillis();
         //if (_debugging) _debug(getContainer().description());
     }
 
@@ -748,7 +777,10 @@ public class DEDirector extends Director {
     // which will have the effect of stopping the simulation.
     // If _stopWhenQueueIsEmpty is false and the queue is empty, then
     // stall the current thread by calling wait() on the _eventQueue
-    // until there are events available.
+    // until there are events available.  If _synchronizeToRealTime
+    // is true, then this method may suspend the calling thread using
+    // Object.wait(long) to let elapsed real time catch up with the
+    // current event.
     //
     private Actor _dequeueEvents() {
         Actor actorToFire = null;
@@ -767,7 +799,9 @@ public class DEDirector extends Director {
                     break;
                 }
             } else {
-                // In this case we want to do a blocking read of the queue.
+                // In this case we want to do a blocking read of the queue,
+                // unless we have already found an actor to fire.
+                if (actorToFire != null && _eventQueue.isEmpty()) break;
                 _stopRequested = false;
                 while (_eventQueue.isEmpty() && !_stopRequested) {
                     if (_debugging) {
@@ -810,6 +844,38 @@ public class DEDirector extends Director {
                 }
 
                 double currentTime = currentEvent.timeStamp();
+
+                // If necessary, let elapsed real time catch up with
+                // the event time.
+                if (_synchronizeToRealTime) {
+                    long elapsedTime = System.currentTimeMillis()
+                             - _realStartTime;
+                    // NOTE: We assume that the elapsed time can be
+                    // safely cast to a double.  This means that
+                    // the DE domain has an upper limit on running
+                    // time of Double.MAX_VALUE milliseconds, which
+                    // is probably longer than the sun is going to last
+                    // (and maybe even longer than Sun Microsystems).
+                    double elapsedTimeInSeconds = ((double)elapsedTime)/1000.0;
+                    if (currentTime > elapsedTimeInSeconds) {
+                        long timeToWait = (long)((currentTime -
+                                 elapsedTimeInSeconds)*1000.0);
+                        if (timeToWait > 0) {
+                            if (_debugging) {
+                                _debug("Waiting for real time to pass: "
+                                        + timeToWait);
+                            }
+                            synchronized(_eventQueue) {
+                                try {
+                                    _eventQueue.wait(timeToWait);
+                                } catch (InterruptedException ex) {
+                                    // Continue executing.
+                                }
+                            }
+                        }
+                    }
+                }
+
                 // Advance current time.
                 if (_debugging) _debug("******* Setting current time to: ",
                         Double.toString(currentTime));
@@ -1026,6 +1092,10 @@ public class DEDirector extends Director {
 	    stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty",
                     new BooleanToken(true));
             stopWhenQueueIsEmpty.setTypeEquals(BaseType.BOOLEAN);
+
+	    synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime",
+                    new BooleanToken(false));
+            synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
            
 	    isCQAdaptive = new Parameter(this, "isCQAdaptive",
                     new BooleanToken(true));
@@ -1076,6 +1146,9 @@ public class DEDirector extends Director {
     // Set to true when it's time to end the execution.
     private boolean _noMoreActorsToFire = false;
 
+    // The real time at which the model begins executing.
+    private long _realStartTime = 0;
+
     // The time of the earliest event seen in the current simulation.
     private double _startTime = Double.MAX_VALUE;
 
@@ -1089,6 +1162,10 @@ public class DEDirector extends Director {
     // to wait on the queue while some other threads might enqueue events in
     // it.
     private boolean _stopWhenQueueIsEmpty = true;
+
+    // Specify whether the director should wait for elapsed real time to
+    // catch up with model time.
+    private boolean _synchronizeToRealTime;
 
     // The set of actors that have returned false in their postfire() methods.
     // Events destined for these actors are discarded and the actors are
