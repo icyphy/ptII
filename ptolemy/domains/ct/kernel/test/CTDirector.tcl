@@ -92,7 +92,7 @@ test CTDirector-2.1 {Get default values} {
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 Infinity 0.1 1e-10 1e-06}
+} {.System.DIR.CT_Runge_Kutta_4_5_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 Infinity 0.1 1e-10 1e-06}
 
 
 ######################################################################
@@ -177,8 +177,7 @@ test CTDirector-2.2a {set Parameters} {
     #Note: Use above set up.
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute ODESolver]]
-    set token [java::new ptolemy.data.StringToken \
-	    ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
+    set token [java::new ptolemy.data.StringToken ExplicitRK23Solver]
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
@@ -241,7 +240,7 @@ test CTDirector-2.2a {set Parameters} {
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Backward_Euler_Solver 0.5 10.0 10.0 0.5 0.4 10 0.3 0.2 10.5 100.0 0.3 1e-11 0.1}
+} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.5 10.0 10.0 0.5 0.4 10 0.3 0.2 10.5 100.0 0.3 1e-11 0.1}
 
 
 test CTDirector-2.3 {sets and gets} {

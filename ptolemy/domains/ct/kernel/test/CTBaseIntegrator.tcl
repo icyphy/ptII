@@ -176,12 +176,27 @@ test CTBaseIntegrator-4.9 {rebalance: interpolation and extrapolation} {
 ######################################################################
 #### test auxVariables
 #
-test CTBaseIntegrator-5.1 {test auxVariables} {
+test CTBaseIntegrator-5.1 {test auxVariables with RK45 solver} {
+    $integ prefire
+    arrayToStrings [$integ getAuxVariables]
+} {0.0 0.0 0.0 0.0 0.0 0.0 0.0}
+
+test CTBaseIntegrator-5.2 {set auxVariables with RK45 solver} {
+    $integ setAuxVariables 1 1.0
+    arrayToStrings [$integ getAuxVariables]
+} {0.0 1.0 0.0 0.0 0.0 0.0 0.0}
+
+test CTBaseIntegrator-5.3 {test auxVariables with RK23 solver} {
+    set solver [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute ODESolver]]
+    set token [java::new ptolemy.data.StringToken ExplicitRK23Solver]
+    $solver setToken $token
     $integ prefire
     arrayToStrings [$integ getAuxVariables]
 } {0.0 0.0 0.0 0.0}
 
-test CTBaseIntegrator-5.2 {set auxVariables} {
+test CTBaseIntegrator-5.4 {set auxVariables with RK23 solver} {
+    $solver setToken $token
     $integ setAuxVariables 1 1.0
     arrayToStrings [$integ getAuxVariables]
 } {0.0 1.0 0.0 0.0}
