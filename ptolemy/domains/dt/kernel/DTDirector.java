@@ -185,8 +185,9 @@ public class DTDirector extends SDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to reinitialize the state if the
-     *  <i>period</i> parameter is changed.    <change doc>
+    /** React to a change in an attribute. For this director the only
+     *  relevant attribute is the <i>period</i> parameter.  
+     *
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -203,6 +204,7 @@ public class DTDirector extends SDFDirector {
      *  base class and then copies the parameter of this director.  The new
      *  actor will have the same parameter values as the old.
      *  The period parameter is explicitly cloned in this method.
+     *
      *  @param workspace The workspace for the new object.
      *  @return A new object.
      *  @exception CloneNotSupportedException If one of the attributes

@@ -112,14 +112,15 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     ////                         public methods                    ////
 
     /** Calculate the constant time increment for this receiver. This method
-     *  should only be invoked after the preinitialize() stage of the director.
-     *  Prior to that, certain information about the SDF dataflow graph
-     *  topology is not yet available.
+     *  should only be invoked by the DT Director. 
      *
      *  @exception IllegalActionException If there is an error in
      *  getting attribute information from the ports.
      */
     public void calculateDeltaTime() throws IllegalActionException {
+    // This method should only be called after the preinitialize() stage.
+    // Prior to that, certain information about the SDF graph topology is 
+    // not yet accessible
         int repeats;
         double periodValue;
         boolean isCompositeContainer = !((ComponentEntity) _to).isAtomic();
