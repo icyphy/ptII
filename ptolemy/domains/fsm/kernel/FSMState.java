@@ -326,7 +326,7 @@ public class FSMState extends ComponentEntity {
         return trans;
     }
 
-    /** Add all of the ports of this state's refining actor to the
+    /** Add all of the output ports of this state's refining actor to the
      *  scope. Here, the scope refers to the scope of variables 
      *  which can be used as part of a guard expression or action
      *  of a state transition.
@@ -344,16 +344,14 @@ public class FSMState extends ComponentEntity {
                         LOCAL_INPUT_STATUS_VAR_LIST);
                 _localValueVars = new VariableList(this,
                         LOCAL_INPUT_VALUE_VAR_LIST);
-		/* Add the ports of this state's refining actor to
+		/* Add the output ports of this state's refining actor to
 		 * the scope.
 		 */
                 _localStatusVars.createVariables(_refinement.outputPorts());
-		_localStatusVars.createVariables(_refinement.inputPorts());
-		/* Add the ports of this state's refining actor to
+		/* Add the output ports of this state's refining actor to
 		 * the scope.
 		 */
                 _localValueVars.createVariables(_refinement.outputPorts());
-		_localValueVars.createVariables(_refinement.inputPorts());
             } else {
                 _localStatusVars = null;
                 _localValueVars = null;
