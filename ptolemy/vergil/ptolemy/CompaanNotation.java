@@ -37,7 +37,9 @@ import ptolemy.actor.*;
 
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
+import ptolemy.actor.gui.Documentation;
 import ptolemy.kernel.util.Attribute;
+
 
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
@@ -286,12 +288,25 @@ public class CompaanNotation extends Attribute implements VisualNotation {
             // adorn the connector
             // connector.setLabelFigure(new LabelFigure("100.0"));
             // connector.setStrokePaint(Color.blue);
+            // connector.setToolTipText("Hello");
+            // connector.setLineWidth(10);
 
             Link link = (Link)n;
             Relation relation = link.getRelation();
 
+            // Set the tooltip for this connector
+            Documentation doc = 
+                (Documentation)relation.getAttribute("_doc_");
+            String message = doc.getValue();
+            connector.setToolTipText(message);
+            if ( message.endsWith("broadcast") ) {
+                connector.setLineWidth(5);
+            }
+            
             Variable communicationVariable = 
                 (Variable)relation.getAttribute("communication");
+
+            // Set the color for this connector
             Color relationColor = _performance.getRelationColor( 
                     communicationVariable );
             connector.setStrokePaint(relationColor);
