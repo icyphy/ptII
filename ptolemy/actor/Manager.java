@@ -58,7 +58,7 @@ domains may spawn additional threads of their own.
 @author Steve Neuendorffer, Mudit Goel, Edward A. Lee, Lukito Muliadi
 @version: $Id$
 */
-public class Manager extends NamedObj implements Runnable {
+public class Manager extends NamedObj {
 
     /** Construct a manager in the default workspace with an empty string
      *  as its name. The manager is added to the list of objects in
@@ -108,8 +108,8 @@ public class Manager extends NamedObj implements Runnable {
 
 
     /** Start an execution that will run for an unspecified number of 
-     *  iterations.   This will normally be terminated by calling abort, 
-     *  finish, or returning false in a postfire method.
+     *  iterations.   This will normally be terminated by calling wrapup, 
+     *  terminate, or returning false in a postfire method.
      */
     public void go() {
         go(-1);
@@ -118,15 +118,13 @@ public class Manager extends NamedObj implements Runnable {
     /** Start an execution that will run for no more than a specified
      *  number of iterations.   The execution may be terminated early 
      *  by calling abort, finish, or returning false in a postfire method.
+     *  This method starts a new ManagerExecutionThread which will call
+     *  back to this object in 'blockingGo'.
      */
      public synchronized void go(int iterations) {
-         // Is it really necessary to block on the whole workspace, or can 
-         // we just synchronize on this object??
 
          if(_isRunning) return;
          
-         _isRunning = true;
-         _isPaused = false;
          _iterations = iterations;
          // If the previous run hasn't totally finished yet, then be sure 
          // it is good and dead before continuing.
@@ -141,7 +139,7 @@ public class Manager extends NamedObj implements Runnable {
              }
              _runningthread = null;
          }
-         _runningthread = new Thread(this);
+         _runningthread = new ManagerExecutionThread(this,iterations);
          _runningthread.start();
 
      }
@@ -196,7 +194,7 @@ public class Manager extends NamedObj implements Runnable {
     /** If not paused, then pause the simulation.
      */
     public synchronized void pause() {
-        _isPaused = true;
+        if(_isRunning) _isPaused = true;
     }
     
     public void registerExecutionListener(ExecutionListener el) {
@@ -276,20 +274,35 @@ public class Manager extends NamedObj implements Runnable {
     /** If paused, resume the currently paused simulation.
      */
     public synchronized void resume() {
-        _isPaused = false;
-        _runningthread.notify();
+        if(_isRunning && _isPaused) {
+            _isPaused = false;
+            if(_runningthread != null)
+                _runningthread.notify();
+        }
     }
  
-    /** This is the thread that is started to actually perform the execution.
+    public void blockingGo() {
+        blockingGo(-1);
+    }
+
+    /** This is the method that is called to actually perform the execution.
      *  It begins by calling initialize on its container, which is the
      *  toplevel composite actor.   It then continually calls iterate based on
      *  the variables _isRunning, _isPaused, and _iterations.  It finally 
      *  calls wrapup on its container to clean up after the execution.
+     *  This method may be called directly to provide 'batch mode' execution,
+     *  or it may be called by ManagerExecutionThread.
      */
-    public void run() {
+    public void blockingGo(int iterations) {
         CompositeActor container = ((CompositeActor)getContainer());
         int count = 0;
-        int iterations = 0;
+
+        // ensure that we only have one execution running.
+        synchronized(this) {
+            if(_isRunning) return;
+            _isRunning = true;
+            _isPaused = false;
+        }
 
         ExecutionEvent event = new ExecutionEvent(this);
         Enumeration listeners = _ExecutionListeners.elements();
@@ -301,7 +314,6 @@ public class Manager extends NamedObj implements Runnable {
 
         try {
             try {
-                iterations = _iterations;
                 container.initialize();
                 
                 while (_isRunning && 
@@ -377,15 +389,18 @@ public class Manager extends NamedObj implements Runnable {
      *  further operations.
      */
     public void terminate() {
-        _runningthread.stop();
-        try {
-            _runningthread.join();
+        if(_runningthread != null) { 
+            _runningthread.stop();
+            try {
+                _runningthread.join();
+            }
+            catch (InterruptedException e) {
+                // This will usually get thrown, since we are
+                // forcibly terminating
+                // the thread.   We just ignore it.
+            }
+            _runningthread = null;
         }
-        catch (InterruptedException e) {
-            // This will usually get thrown, since we are forcibly terminating
-            // the thread.   We just ignore it.
-        }
-        _runningthread = null;
         CompositeActor container = ((CompositeActor)getContainer());
         container.terminate();
         ExecutionEvent event = new ExecutionEvent(this);
@@ -394,6 +409,8 @@ public class Manager extends NamedObj implements Runnable {
             ExecutionListener l = (ExecutionListener) listeners.nextElement();
             l.executionTerminated(event);
         }
+        _isRunning = false;
+        _isPaused = false;
     }
       
     /** Stop any currently executing simulation and cleanup nicely.
@@ -401,7 +418,8 @@ public class Manager extends NamedObj implements Runnable {
     public synchronized void wrapup() {
         _isRunning = false;
         _isPaused = false;
-        _runningthread.notify();
+        if(_runningthread != null)
+            _runningthread.notify();
     }
  
     ///////////////////////////////////////////////////////////////////
