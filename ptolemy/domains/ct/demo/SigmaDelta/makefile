@@ -79,8 +79,15 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-demo: $(PTCLASSJAR)
-	CLASSPATH="$(CLASSPATH)" appletviewer SigmaDelta.htm
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) appletviewer SigmaDelta.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" SigmaDelta.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" SigmaDelta.xml
 
 depend:
 	@echo "no dependencies in this directory"

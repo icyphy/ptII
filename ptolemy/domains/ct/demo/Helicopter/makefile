@@ -84,8 +84,15 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-demo: $(PTCLASSJAR)
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer Helicopter.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Helicopter.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Helicopter.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

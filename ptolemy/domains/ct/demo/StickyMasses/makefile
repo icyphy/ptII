@@ -73,8 +73,15 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-demo: $(PTCLASSJAR)
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer StickyMasses.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" StickyMasses.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" StickyMasses.xml
 
 depend:
 	@echo "no dependencies in this directory"

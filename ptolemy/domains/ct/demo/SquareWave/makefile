@@ -70,8 +70,16 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-demo: $(PTCLASSJAR)
-	CLASSPATH="$(CLASSPATH)" appletviewer SquareWave.htm
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) appletviewer SquareWave.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" SquareWave.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" SquareWave.xml
+
 depend:
 	@echo "no dependencies in this directory"
 
