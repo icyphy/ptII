@@ -1,6 +1,8 @@
+
 /* An actor that produces a copy of the  input at the output each time
    the trigger input receives an event.In the hde domain, the output is
    statically dependent on the value of the previous trigger token.
+   This version is compatible with the HDE domains.
 
  Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
@@ -88,7 +90,7 @@ public class StateSampler extends DETransformer {
      *   actor with this name.
      */
     public StateSampler(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
@@ -97,13 +99,13 @@ public class StateSampler extends DETransformer {
         trigger.setTypeEquals(BaseType.GENERAL);
 
         _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<polyline points=\"-30,10 2,10 2,0\"/>\n"
-                + "<polyline points=\"-30,-10 -20,-10 -20,0 -10,0 10,-7\"/>\n"
-                + "<polyline points=\"10,0 30,0\"/>\n"
-                + "</svg>\n");
+                    "<rect x=\"-30\" y=\"-20\" "
+                    + "width=\"60\" height=\"40\" "
+                    + "style=\"fill:white\"/>\n"
+                    + "<polyline points=\"-30,10 2,10 2,0\"/>\n"
+                    + "<polyline points=\"-30,-10 -20,-10 -20,0 -10,0 10,-7\"/>\n"
+                    + "<polyline points=\"10,0 30,0\"/>\n"
+                    + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,7 +128,7 @@ public class StateSampler extends DETransformer {
      *   has an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+        throws CloneNotSupportedException {
         StateSampler newObject = (StateSampler)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         _lastInputs = null;
@@ -149,6 +151,7 @@ public class StateSampler extends DETransformer {
             if (_lastInputs == null || _lastInputs.length != widthOfInputs) {
                 _lastInputs = new Token[widthOfInputs];
             }
+            //In the DE domain this is a while loop
             for (int i = 0; i < n; i++) {
                 if (input.hasToken(i)) {
                     _lastInputs[i] = input.get(i);
