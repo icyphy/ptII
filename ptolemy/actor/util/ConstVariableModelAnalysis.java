@@ -145,8 +145,7 @@ public class ConstVariableModelAnalysis {
      *  recomputing all of the information from scratch.
      *  @param declaration The given dependency declaration.
      */
-    public void addDependencyDeclaration(DependencyDeclaration declaration)
-            throws IllegalActionException {
+    public void addDependencyDeclaration(DependencyDeclaration declaration) {
         _addDependencyDeclaration(declaration);
         _analyzeAllVariables();
     }
@@ -154,7 +153,8 @@ public class ConstVariableModelAnalysis {
     /** Return the analysis that is active for the given object.
      *  @param object The given object.
      *  @return The active analysis for the given object.
-     *  @exception If an exception occurs during analysis.
+     *  @exception IllegalActionException If an exception occurs during 
+     *  analysis.
      */
     public static ConstVariableModelAnalysis getAnalysis(NamedObj object)
             throws IllegalActionException {
@@ -257,6 +257,7 @@ public class ConstVariableModelAnalysis {
     /** Return true if the given variable is not reconfigured in the
      *  model.  The variable is assumed to be contained by the model
      *  this analysis was created with.
+     *  @param variable The given variable.
      *  @return True If the given variable is not reconfigured in the model.
      */
     public boolean isConstant(Variable variable) {
@@ -265,6 +266,7 @@ public class ConstVariableModelAnalysis {
 
     /** Return true if the variable has been analyzed by this analysis
      *  and it depends on no other parameters.
+     *  @param variable The given variable.
      *  @return True If the variable has been analyzed by this analysis
      *  and it depends on no other parameters
      */

@@ -260,6 +260,8 @@ public class DFUtilities {
      *  @param port The port.
      *  @param name Name of the variable.
      *  @param value The value.
+     *  @exception IllegalActionException If a new parameter can not be
+     *  created for the give port.
      */
     public static void setExpressionIfNotDefined(Port port, String name,
             String value) throws IllegalActionException {
@@ -290,6 +292,8 @@ public class DFUtilities {
      *  @param port The port.
      *  @param name Name of the variable.
      *  @param value The value.
+     *  @exception IllegalActionException If a new parameter can not be 
+     *  created for the given port, or the given value is not an acceptable.
      */
     public static void setIfNotDefined(Port port, String name, int value)
             throws IllegalActionException {
@@ -321,7 +325,8 @@ public class DFUtilities {
      *  @param container The container.
      *  @param name Name of the variable.
      *  @param value The value.
-     *  @exception If the variable exists and its value cannot be set.
+     *  @exception IllegalActionException If the variable exists and 
+     *  its value cannot be set.
      */
     public static void setOrCreate(NamedObj container, String name, int value)
             throws IllegalActionException {
@@ -337,7 +342,8 @@ public class DFUtilities {
      *  @param container The container.
      *  @param name Name of the variable.
      *  @param expression The expression.
-     *  @exception If the variable exists and its value cannot be set.
+     *  @exception IllegalActionException If the variable exists and 
+     *  its value cannot be set.
      */
     public static void setOrCreate(NamedObj container, String name,
             String expression) throws IllegalActionException {
@@ -431,6 +437,8 @@ public class DFUtilities {
      *  the given port should be displayed in the user interface.
      *  @param port The port.
      *  @param flag The flag.
+     *  @exception IllegalActionException If a new parameter can not be 
+     *  created for the given port, or the given flag is not an acceptable.
      */
     public static void showRate(Port port, boolean flag)
             throws IllegalActionException {
