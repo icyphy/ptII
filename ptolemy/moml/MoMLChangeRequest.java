@@ -168,10 +168,16 @@ public class MoMLChangeRequest extends ChangeRequest {
      */
     protected void _execute() throws Exception {
         _parser.reset();
-        if (_context != null) {
-            _parser.setContext(_context);
+        try {
+            _parser._propagating = _propagating;
+            
+            if (_context != null) {
+                _parser.setContext(_context);
+            }
+            _parser.parse(_base, getDescription());
+        } finally {
+            _parser._propagating = false;
         }
-	_parser.parse(_base, getDescription());
 
         // Apply the same change to any object that defers its MoML
         // definition to the context in which we just applied the change.
@@ -181,22 +187,31 @@ public class MoMLChangeRequest extends ChangeRequest {
         }
         List othersList = context.deferredMoMLDefinitionFrom();
         if (othersList != null) {
-            try {
-                // Let the parser know that we are propagating
-                // changes, so that it does not need to record them
-                // using MoMLAttribute.
-                _parser._propagating = true;
-                Iterator others = othersList.iterator();
-                while (others.hasNext()) {
-                    NamedObj other = (NamedObj)others.next();
-                    if (other != null) {
-                        _parser.reset();
-                        _parser.setContext(other);
-                        _parser.parse(_base, getDescription());
-                    }
+
+
+            Iterator others = othersList.iterator();
+            while (others.hasNext()) {
+                NamedObj other = (NamedObj)others.next();
+                if (other != null) {
+                    // Make the request by queueing a new change request.
+                    // This needs to be done because we have no assurance
+                    // that just because this change request is being
+                    // executed now that the propogated one is safe to
+                    // execute.
+                    // FIXME: undo is going to be very difficult to
+                    // handle here.
+                    MoMLChangeRequest newChange = new MoMLChangeRequest(
+                            getOriginator(),
+                            _parser,
+                            other,              // context
+                            getDescription(),   // MoML code
+                            _base);
+                    // Let the parser know that we are propagating
+                    // changes, so that it does not need to record them
+                    // using MoMLAttribute.
+                    newChange._propagating = true;
+                    other.requestChange(newChange);
                 }
-            } finally {
-                _parser._propagating = false;
             }
         }
     }
@@ -212,6 +227,9 @@ public class MoMLChangeRequest extends ChangeRequest {
 
     // The parser given in the constructor.
     private MoMLParser _parser;
+
+    // Indicator of whether this request is the result of a propagating change.
+    private boolean _propagating = false;
 
     // A generic parser to use if no parser is specified.
     private static MoMLParser _staticParser = new MoMLParser();

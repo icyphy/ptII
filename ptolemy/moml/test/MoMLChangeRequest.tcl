@@ -271,7 +271,7 @@ test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
 #----------------------------------------------------------------------
 #----------------------------------------------------------------------
 
-# Test propogation of changes from a class to instances.
+# Test propagation of changes from a class to instances.
 
 set baseModel {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -300,7 +300,7 @@ test MoMLChangeRequest-2.1 {Setup} {
 </model>
 }
 
-test MoMLChangeRequest-2.1 {Setup} {
+test MoMLChangeRequest-2.2 {Test propagation} {
     set gen [$toplevel getEntity "gen"]
     # NOTE: Have to give the context as "gen" for the changes to
     # propogate to its clones.
@@ -318,6 +318,83 @@ test MoMLChangeRequest-2.1 {Setup} {
     } ports {
     } entities {
         {ptolemy.kernel.ComponentEntity {.top.gen.new} attributes {
+        } ports {
+        }}
+    } relations {
+    }}
+    {ptolemy.kernel.CompositeEntity {.top.der} attributes {
+    } ports {
+    } entities {
+        {ptolemy.kernel.ComponentEntity {.top.der.new} attributes {
+        } ports {
+        }}
+    } relations {
+    }}
+} relations {
+}}
+
+#----------------------------------------------------------------------
+#----------------------------------------------------------------------
+#----------------------------------------------------------------------
+
+# Test propagation of changes from a class to class to instances.
+
+set baseModel {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+   <class name="gen" extends="ptolemy.kernel.CompositeEntity">
+   </class>
+   <class name="intClass" extends=".top.gen"/>
+   <entity name="der" class=".top.intClass"/>
+</model>
+}
+
+test MoMLChangeRequest-3.1 {Setup} {
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.kernel.CompositeEntity \
+            [$parser parse $baseModel]]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="gen" extends="ptolemy.kernel.CompositeEntity">
+    </class>
+    <class name="intClass" extends=".top.gen">
+    </class>
+    <entity name="der" class=".top.intClass">
+    </entity>
+</model>
+}
+
+test MoMLChangeRequest-3.2 {Test propagation} {
+    set gen [$toplevel getEntity "gen"]
+    # NOTE: Have to give the context as "gen" for the changes to
+    # propogate to its clones.
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $gen {
+        <entity name="new" class="ptolemy.kernel.ComponentEntity"/>
+    }]
+    # NOTE: Request is filled immediately in the toplevel context.
+    $toplevel requestChange $change
+    # NOTE: exportMoML won't give a full description.
+    $toplevel description
+} {ptolemy.kernel.CompositeEntity {.top} attributes {
+} ports {
+} entities {
+    {ptolemy.kernel.CompositeEntity {.top.gen} attributes {
+    } ports {
+    } entities {
+        {ptolemy.kernel.ComponentEntity {.top.gen.new} attributes {
+        } ports {
+        }}
+    } relations {
+    }}
+    {ptolemy.kernel.CompositeEntity {.top.intClass} attributes {
+    } ports {
+    } entities {
+        {ptolemy.kernel.ComponentEntity {.top.intClass.new} attributes {
         } ports {
         }}
     } relations {
