@@ -282,7 +282,7 @@ $(GENLOGDIR):
 OTHERMAKE = /usr/ccs/bin/make
 
 # Remote location of Ptolemy II tree for testing
-REMOTE1HOME = /vol/tycho/tycho2/ptII
+REMOTE1HOME = /vol/tycho/tycho1/ptII
 REMOTE1PTIIDIST = $(REMOTE1HOME)/ptII$(VERSION)
 
 # Host to run on
