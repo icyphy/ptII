@@ -292,7 +292,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 && !contentType.startsWith("text/plain") ) {
             throw new IllegalActionException(this,
                     "Could not parse '"
-                    + directoryOrURL
+                    + directoryOrURL.stringValue()
                     + "'; it is not \"text/html\", "
                     + "or \"text/plain\", it is: "
                     + urlConnection.getContentType());
@@ -307,7 +307,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
             // will rewrite them for us.
             throw new IllegalActionException(this,
                     "Could not parse '"
-                    + directoryOrURL
+                    + directoryOrURL.stringValue()
                     + "'; it needs to end with '/'");
 
         }
