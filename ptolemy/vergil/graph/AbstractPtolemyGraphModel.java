@@ -175,7 +175,7 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      * Instead, they are handled in the base class since they can be easily
      * propagated at a finer level of granularity than is possible here.
      */
-    protected class GraphChangeListener implements ChangeListener {
+    public class GraphChangeListener implements ChangeListener {
 
         /** Notify the listener that a change has been successfully executed.
 	 *  If the originator of this change is not this graph model, then 
