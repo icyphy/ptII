@@ -331,6 +331,7 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.vergil.fsm \
 			ptolemy.vergil.fsm.ia \
 			ptolemy.vergil.kernel \
+			ptolemy.vergil.kernel.attributes \
 			ptolemy.vergil.toolbox \
 			ptolemy.vergil.tree \
 			util.testsuite
