@@ -61,7 +61,7 @@ import java.util.Set;
 
 
 /////////////////////////////////////////////////////////////////
-//// CommandLineTemplace
+//// CommandLineTemplate
 /**
 This class is similar to CompositeActorApplication, except that it
 does not parse command line elements.   It is used as
