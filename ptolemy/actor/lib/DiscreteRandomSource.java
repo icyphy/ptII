@@ -1,6 +1,6 @@
 /* An actor that produces tokens with a given probability mass function.
 
- Copyright (c) 1998-2000 The Regents of the University of California.
+ Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -117,19 +117,22 @@ public class DiscreteRandomSource extends RandomSource {
             throws IllegalActionException {
         if (attribute == pmf) {
            try {
-               DoubleMatrixToken pmfMatrixToken = (DoubleMatrixToken) pmf.getToken();
+               DoubleMatrixToken pmfMatrixToken =
+                   (DoubleMatrixToken) pmf.getToken();
                double[][] temp = pmfMatrixToken.doubleMatrix();
                // get first (and only) row of the matrix
                _pmfDoubleArray = temp[0];
 
            } catch (ClassCastException cce) {
-               throw new IllegalActionException("pmf parameter is not a double matrix");
+               throw new IllegalActionException(
+                       "pmf parameter is not a double matrix");
            }
         } else if (attribute == values) {
            try {
                _valuesMatrixToken = (MatrixToken) values.getToken();
            } catch (ClassCastException cce) {
-               throw new IllegalActionException("values parameter is not a matrix");
+               throw new IllegalActionException(
+                       "values parameter is not a matrix");
            }
 
         } else {
@@ -150,7 +153,8 @@ public class DiscreteRandomSource extends RandomSource {
        if (attribute == values) {
 
            // set the output type to be the type of the element at values[0][0]
-           Token value = ((MatrixToken) values.getToken()).getElementAsToken(0, 0);
+           Token value =
+               ((MatrixToken) values.getToken()).getElementAsToken(0, 0);
 
            output.setTypeEquals(value.getType());
 
