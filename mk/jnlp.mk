@@ -125,16 +125,17 @@ DSP_JNLP_JARS =	\
 #    sdf.lib.BitsToInt
 #    sdf.lib.IntToBits
 #
+# The full version of Vergil should not include any of the jar files below
+# because the hsif conversion does not work here
 HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	doc/design/hyvisual.jar \
-	doc/codeDocHyVisual.jar \
 	ptolemy/hsif/hsif.jar \
 	ptolemy/hsif/demo/demo.jar \
+	doc/codeDocHyVisual.jar \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
-	ptolemy/domains/sdf/kernel/kernel.jar \
-
+	ptolemy/domains/sdf/kernel/kernel.jar
 
 HYBRID_SYSTEMS_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/HyVisualApplication.jar
@@ -203,9 +204,6 @@ COPERNICUS_JARS = \
 
 EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
-PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
-		lib/ptjacl.jar
-
 # Do not include PTJACL for size reasons
 #PTJACL_JARS =
 #	lib/ptjacl.jar \
@@ -246,11 +244,14 @@ FULL_ONLY_JNLP_JARS = \
 FULL_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/FullApplication.jar
 
+# FULL_JNLP_JARS does not include HYBRID_SYSTEMS_ONLY_JNLP_JARS because
+# the hsif conversion will not work in the full version and many of
+# the Hyvisual jars are duplicates of what is in the full version.
+
 FULL_JNLP_JARS = \
 	$(FULL_MAIN_JAR) \
 	$(CORE_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS) \
-	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(FULL_ONLY_JNLP_JARS)
 
@@ -258,6 +259,8 @@ FULL_JNLP_JARS = \
 
 # All the JNLP Jar files except the application jars,
 # hopefully without duplicates so that  we don't sign jars twice.
+# Include HYBRID_SYSTEMS_ONLY_JNLP_JARS here so that we update
+# the signed/ directory with the Hyvisual jar files.
 ALL_NON_APPLICATION_JNLP_JARS = \
 	$(NATIVE_SIGNED_LIB_JARS) \
 	$(CORE_JNLP_JARS) \
