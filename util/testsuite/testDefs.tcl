@@ -369,6 +369,20 @@ if {"[info command java::cast]" == ""} {
     }
 }
 
+############################################################################
+#### jdkPrintArray
+# Print a java array.  Used by ptolemy/math/test/ArrayMath.tcl and
+# other places
+proc jdkPrintArray {javaArrayObj} {
+    set result {}
+    for {set i 0} {$i < [$javaArrayObj length]} {incr i} {
+	lappend result [[$javaArrayObj get $i] toString]
+    }
+    return $result
+}
+
+############################################################################
+#### jdkStackTrace
 # Print the most recent Java stack trace
 # Here's an example:
 # Create a String
