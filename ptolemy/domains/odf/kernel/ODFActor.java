@@ -39,24 +39,24 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ODFActor
-/** 
-The base class for ODF actors. ODFActors are intended to execute as 
+/**
+The base class for ODF actors. ODFActors are intended to execute as
 autonomous processes that maintain a distributed notion of time. In
 an ODF model, each actor is controlled by a unique ODFThread. Each
 ODFThread maintains its actor's local notion of time. Local time
 information is dependent on the time stamps associated with tokens
 that are consumed by an actor. More precisely, an actor's local
-notion of time is equivalent to the maximum time stamp of all tokens 
-that the actor has consumed. Constraints on the consumption of tokens 
-are described in the documentation for ODFThread. Note that consumed 
+notion of time is equivalent to the maximum time stamp of all tokens
+that the actor has consumed. Constraints on the consumption of tokens
+are described in the documentation for ODFThread. Note that consumed
 tokens may include NullTokens. A NullToken is a subclass of Token
 that is communicated solely for the purpose of advancing the local
 notion of time of the actor that receives the NullToken.
 <P>
-The ODF model of computation supports typed, polymorphic actors and 
-does not require this base class for implementation. Nevertheless, 
-this class provides useful syntactic conveniences for developing ODF 
-models. 
+The ODF model of computation supports typed, polymorphic actors and
+does not require this base class for implementation. Nevertheless,
+this class provides useful syntactic conveniences for developing ODF
+models.
 
 @author John S. Davis II
 @version $Id$
@@ -70,7 +70,7 @@ public class ODFActor extends AtomicActor {
     public ODFActor() {
         super();
     }
-    
+
     /** Construct an ODFActor with the specified workspace and no name.
      * @param workspace The workspace for this ODFActor.
      */
@@ -86,14 +86,14 @@ public class ODFActor extends AtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
- 
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return the current time of this actor. The current time is
      *  equal to the time stamp associated with the token most recently
-     *  consumed by one of the receivers contained by this ODFActor. 
+     *  consumed by one of the receivers contained by this ODFActor.
      *  If the current thread accessing this method is not an instance
      *  of ODFThread, then return the cached current time valu.
      * @return The current time of this ODFActor.
@@ -106,18 +106,18 @@ public class ODFActor extends AtomicActor {
 	}
 	return _currentTime;
     }
-    
+
     /** Return a non-NullToken from the receiver that has the minimum,
      *  nonegative rcvrTime of all receivers contained by this actor.
-     *  If there exists a set of multiple receivers that share a common 
-     *  minimum rcvrTime, then return the token contained by the highest 
+     *  If there exists a set of multiple receivers that share a common
+     *  minimum rcvrTime, then return the token contained by the highest
      *  priority receiver within this set. If this actor contains no
      *  receivers then return null.
-     * @return Return a non-NullToken that has the minimum, nonnegative 
+     * @return Return a non-NullToken that has the minimum, nonnegative
      *  rcvrTime of all receivers contained by this actor.
      */
     public Token getNextToken() {
-        Token token = _getNextInput(); 
+        Token token = _getNextInput();
         if( token instanceof NullToken ) {
 	    System.out.println(getName()+": got a NullToken "
                     + "from _getNextInput()");
@@ -125,7 +125,7 @@ public class ODFActor extends AtomicActor {
 	}
         return token;
     }
-    
+
     /** Prepare to cease iterations of this actor. Notify actors which
      *  are connected downstream of this actor's cessation. Return false
      *  to indicate that future execution can not occur.
@@ -139,19 +139,19 @@ public class ODFActor extends AtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
-    
+
     /** Return a token from the receiver that has the minimum rcvrTime
-     *  of all receivers contained by this actor. The returned token 
-     *  will have the lowest time stamp of all pending tokens for this 
-     *  actor. If there exists a set of multiple receivers that share 
-     *  a common minimum rcvrTime, then return the token contained by 
-     *  the highest priority receiver within this set. If this actor 
+     *  of all receivers contained by this actor. The returned token
+     *  will have the lowest time stamp of all pending tokens for this
+     *  actor. If there exists a set of multiple receivers that share
+     *  a common minimum rcvrTime, then return the token contained by
+     *  the highest priority receiver within this set. If this actor
      *  contains no receivers then return null.
      * @return The token with the smallest time stamp of all tokens
-     *  contained by this actor. If multiple tokens share the smallest 
-     *  time stamp this token will come from the highest priority 
-     *  receiver that has the minimum rcvrTime. If all receivers have 
-     *  expired then throw a TerminateProcessException. 
+     *  contained by this actor. If multiple tokens share the smallest
+     *  time stamp this token will come from the highest priority
+     *  receiver that has the minimum rcvrTime. If all receivers have
+     *  expired then throw a TerminateProcessException.
      * @see ptolemy.domains.odf.kernel.TimedQueueReceiver
      * @see ptolemy.domains.odf.kernel.ODFReceiver
      * @see ptolemy.domains.odf.kernel.ODFThread
@@ -179,7 +179,7 @@ public class ODFActor extends AtomicActor {
     ////                        private variables                  ////
 
     // The currentTime of this actor is equivalent to the minimum
-    // positive rcvrTime of each input receiver. 
+    // positive rcvrTime of each input receiver.
     private double _currentTime = 0.0;
 
 }

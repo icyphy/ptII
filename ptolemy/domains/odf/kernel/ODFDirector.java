@@ -1,5 +1,5 @@
 /* An ODFDirector governs the execution of actors operating according
-to the Ordered Dataflow model of computation. 
+to the Ordered Dataflow model of computation.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -21,7 +21,7 @@ to the Ordered Dataflow model of computation.
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -38,36 +38,36 @@ import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ODFDirector 
-/** 
+//// ODFDirector
+/**
 An ODFDirector governs the execution of actors operating according
 to the Ordered Dataflow (ODF) model of computation (MoC). The actors
 which a given ODFDirector "governs" are those which are contained
-by the container of the director. The Ordered Dataflow MoC incorporates 
-a distributed notion of time into a dataflow style communication semantic. 
-Much of the functionality of the ODFDirector is consistent with the Process 
-Networks director PNDirector. In particular, the mechanism for dealing 
-with blocking due to empty or full queues is functionally identical for 
+by the container of the director. The Ordered Dataflow MoC incorporates
+a distributed notion of time into a dataflow style communication semantic.
+Much of the functionality of the ODFDirector is consistent with the Process
+Networks director PNDirector. In particular, the mechanism for dealing
+with blocking due to empty or full queues is functionally identical for
 the ODFDirector and PNDirector.
 <P>
 The ODF domain's use of time serves as the point of divergence in
 the respective designs of the ODF and PN directors. In a network of
 actors governed by an ODFDirector each actor has a local notion of
 time. Several features of the ODFDirector are intended to facilitate
-these local notions of time. 
+these local notions of time.
 <P>
-All ODF models have a completion time. The completion time is a preset time 
-after which all execution ceases. The completion time for an ODFDirector is 
-specified via setCompletionTime() and this information is passed to the 
+All ODF models have a completion time. The completion time is a preset time
+after which all execution ceases. The completion time for an ODFDirector is
+specified via setCompletionTime() and this information is passed to the
 receivers of all actors that the ODFDirector governs via newReceiver().
 <P>
 Deadlock due to feedback loops is dealt with via NullTokens. When an
 actor in an ODF model receivers a NullToken, it may advance its local
 time value even though it does not consume the NullToken.
 <P>
-The ODF model of computation assumes that valid time stamps have non-negative 
-values. A time stamp value of -1.0 is reserved to indicate the termination of 
-a receiver. A time stamp value of -5.0 is reserved to indicate that a 
+The ODF model of computation assumes that valid time stamps have non-negative
+values. A time stamp value of -1.0 is reserved to indicate the termination of
+a receiver. A time stamp value of -5.0 is reserved to indicate that a
 receiver has not begun to participate in a model's execution.
 
 
@@ -79,7 +79,7 @@ receiver has not begun to participate in a model's execution.
 public class ODFDirector extends ProcessDirector {
 
     /** Construct a ODFDirector in the default workspace with an empty string
-     *  as its name. The director is added to the list of objects in the 
+     *  as its name. The director is added to the list of objects in the
      *  workspace. Increment the version number of the workspace.
      */
     public ODFDirector() {
@@ -108,7 +108,7 @@ public class ODFDirector extends ProcessDirector {
     public ODFDirector(Workspace workspace, String name) {
         super(workspace, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -118,7 +118,7 @@ public class ODFDirector extends ProcessDirector {
         _readBlocks++;
 	notifyAll();
     }
-    
+
     /** Increment the count of actors blocked on a write.
      */
     synchronized void addWriteBlock() {
@@ -127,14 +127,14 @@ public class ODFDirector extends ProcessDirector {
     }
 
     /** Execute all deeply contained actors that are governed by this
-     *  ODFDirector. Check for deadlocks when they occur, and where possible, 
+     *  ODFDirector. Check for deadlocks when they occur, and where possible,
      *  resolve them.
      * @exception IllegalActionException If any called method of the
      *  container or one of the deeply contained actors throws it.
      */
     public void fire() throws IllegalActionException {
         Workspace wkSpace = workspace();
-        
+
         synchronized( this ) {
 	    while( !_checkForDeadlock() ) {
 	        wkSpace.wait(this);
@@ -142,7 +142,7 @@ public class ODFDirector extends ProcessDirector {
 	    _notdone = !_handleDeadlock();
         }
     }
-    
+
     /** Return true if one of the actors governed by this director
      *  has a pending mutation; return false otherwise.
      * @return True if a pending mutation exists; return false otherwise.
@@ -150,13 +150,13 @@ public class ODFDirector extends ProcessDirector {
     public boolean hasMutation() {
         return false;
     }
-    
+
     /** Return a new receiver of a type compatible with this director.
-     *  If the completion time of this director has been explicitly set 
-     *  to a particular value then set the completion time of the receiver 
+     *  If the completion time of this director has been explicitly set
+     *  to a particular value then set the completion time of the receiver
      *  to this same value; otherwise set the completion time to -5.0
      *  which indicates that the receivers should ignore the completion
-     *  time. 
+     *  time.
      *  @return A new ODFReceiver.
      */
     public Receiver newReceiver() {
@@ -164,7 +164,7 @@ public class ODFDirector extends ProcessDirector {
 	rcvr.setCompletionTime( _completionTime );
         return rcvr;
     }
-    
+
     /** Return true if the actors governed by this director can continue
      *  execution; return false otherwise. Continuation of execution is
      *  dependent upon whether the system is deadlocked in a manner that
@@ -176,7 +176,7 @@ public class ODFDirector extends ProcessDirector {
     public boolean postfire() throws IllegalActionException {
 	return _notdone;
     }
-    
+
     /** Decrement the count of actors blocked on a read.
      */
     public synchronized void removeReadBlock() {
@@ -184,7 +184,7 @@ public class ODFDirector extends ProcessDirector {
             _readBlocks--;
         }
     }
-    
+
     /** Decrement the count of actors blocked on a write.
      */
     public synchronized void removeWriteBlock() {
@@ -192,20 +192,20 @@ public class ODFDirector extends ProcessDirector {
             _writeBlocks--;
         }
     }
-    
+
     /** Set the completion time of all actors governed by this
      *  director. If this method is not called then the governed
-     *  actors will act as if there is no completion time. 
+     *  actors will act as if there is no completion time.
      * @param time The specified completion time.
      *  FIXME: What if this value is negative?
      */
     public void setCompletionTime(double time) {
         _completionTime = time;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
-    
+
     /** Check to see if the actors governed by this director are
      *  deadlocked. Return true in the affirmative and false
      *  otherwise.
@@ -218,17 +218,17 @@ public class ODFDirector extends ProcessDirector {
         }
         return false;
     }
-    
-    /** 
+
+    /**
      */
-    protected ProcessThread _getProcessThread(Actor actor, 
+    protected ProcessThread _getProcessThread(Actor actor,
 	    ProcessDirector director) {
 	return new ODFThread(actor, director);
     }
 
     /** Resolve any deadlocks of the actors governed by this director.
      *  Return true if the deadlock has successfully been resolved;
-     *  return false otherwise. 
+     *  return false otherwise.
      *  <P>
      *  Currently this method assumes that all queues have infinite
      *  capacity and hence that deadlocks based on writes can not
@@ -240,8 +240,8 @@ public class ODFDirector extends ProcessDirector {
         // Currently assume only real deadlocks.
         return true;
     }
-    
-    /** 
+
+    /**
      */
     protected void _performMutations() {
         ;

@@ -1,4 +1,4 @@
-/* An ODFActor that can send out tokens without being provoked by 
+/* An ODFActor that can send out tokens without being provoked by
 other actors.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
@@ -38,10 +38,10 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ODFSourceActor
-/** 
-An ODFActor that can produce and send out tokens by self invocation without 
-requiring provokation by other actors. To invoke activity which may involve 
-the future production of tokens, the reinvokeAfterDelay(int delay) method 
+/**
+An ODFActor that can produce and send out tokens by self invocation without
+requiring provokation by other actors. To invoke activity which may involve
+the future production of tokens, the reinvokeAfterDelay(int delay) method
 is used. This method causes invokation of activity to occur at time equal
 to the current time of the actor plus the specified delay.
 
@@ -52,14 +52,14 @@ to the current time of the actor plus the specified delay.
 
 public class ODFSourceActor extends ODFActor {
 
-    /** Construct an ODFSourceActor in the default workspace with an 
+    /** Construct an ODFSourceActor in the default workspace with an
      *  empty string as its name. Increment the version number of the
      *  workspace. The object is added to the workspace directory.
      */
     public ODFSourceActor() {
         super();
     }
-    
+
     /** Construct an ODFSourceActor in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -86,26 +86,26 @@ public class ODFSourceActor extends ODFActor {
     public ODFSourceActor(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _reinvokeInPort = new ODFIOPort( this, "reinvokeIn", true, false );
         _reinvokeOutPort = new ODFIOPort( this, "reinvokeOut", false, true );
         _reinvokeRelation = new IORelation( container, name + "_innerRel" );
-        
+
         _reinvokeInPort.link( _reinvokeRelation );
         _reinvokeOutPort.link( _reinvokeRelation );
     }
- 
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Invoke this actor after the specified delay. The actor is
-     *  invoked at time equal to the current time of the actor plus 
+     *  invoked at time equal to the current time of the actor plus
      *  the specified delay.
      * @param delay The delay from this actor's current time.
      * @exception IllegalActionException If the delay is negative.
-     */        
-    public void reinvokeAfterDelay(double delay) 
+     */
+    public void reinvokeAfterDelay(double delay)
             throws IllegalActionException {
 	if( delay < 0 ) {
 	      throw new IllegalActionException( this, "Negative delays "
@@ -114,10 +114,10 @@ public class ODFSourceActor extends ODFActor {
         Token token = new Token();
         _reinvokeOutPort.send( 0, token, delay );
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
-    
+
     public ODFIOPort _reinvokeInPort;
     public ODFIOPort _reinvokeOutPort;
     private IORelation _reinvokeRelation;
