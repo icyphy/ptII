@@ -55,7 +55,7 @@ ptolemy.data.expr.UtilityFunctions are searched for a given function.
 FIXME: need to add in ComplexToken when it is written.
 <p>
 @author Neil Smyth
-@version $Id$
+@version @(#)ASTPtFunctionNode.java	1.21 09/22/98
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token
