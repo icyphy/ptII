@@ -91,16 +91,6 @@ public class AbsoluteValue extends Transformer {
         return newObject;
     }
 
-    /** Return the following type constraints: If the input type is Complex,
-     *  the output type is no less than Double, otherwise, the output type
-     *  is no less than the input; The output type is no greater than Scalar.
-     *  @return A list of inequalities.
-     */
-    public List typeConstraintList() {
-        // type constraints are stored in the output port.
-        return output.typeConstraintList();
-    }
-
     /** Compute the absolute value of the input.  If there is no input, then
      *  produce no output.
      *  @exception IllegalActionException If there is no director.
@@ -110,6 +100,16 @@ public class AbsoluteValue extends Transformer {
             ScalarToken in = (ScalarToken)input.get(0);
             output.send(0, in.absolute());
         }
+    }
+
+    /** Return the following type constraints: If the input type is Complex,
+     *  the output type is no less than Double, otherwise, the output type
+     *  is no less than the input; The output type is no greater than Scalar.
+     *  @return A list of inequalities.
+     */
+    public List typeConstraintList() {
+        // type constraints are stored in the output port.
+        return output.typeConstraintList();
     }
 
     ///////////////////////////////////////////////////////////////////
