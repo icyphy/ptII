@@ -32,7 +32,7 @@ package ptolemy.copernicus.java;
 import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.kernel.util.IllegalActionException;
-
+import ptolemy.kernel.util.NameDuplicationException;
 
 import soot.*;
 import soot.jimple.*;
@@ -107,8 +107,12 @@ public class Main extends KernelMain {
 
     /** Read in a MoML model, generate java files
      *  @exception IllegalActionException If the model cannot be parsed.
+     *  @exception NameDuplicationException If the name of the
+     *  model cannot be changed to a Java identifier String.
      */ 
-   public static void main(String[] args) throws IllegalActionException {
+   public static void main(String[] args)
+	throws IllegalActionException, NameDuplicationException {
+
 	Main main = new Main(args);
 
 	// Parse the model, initialize it and create instance classes

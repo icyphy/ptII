@@ -40,6 +40,7 @@ import soot.Transform;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLParser;
 
 import com.microstar.xml.XmlException;
@@ -60,7 +61,9 @@ public class Main extends KernelMain {
 	super(args[0]);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+	throws IllegalActionException, NameDuplicationException {
+
 	Main main = new Main(args);
 
 	// Parse the model, initialize it and create instance classes
@@ -149,7 +152,7 @@ public class KernelMain {
      *  @exception IllegalActionException If the model cannot be parsed.
      */
     public void initialize()
-            throws IllegalActionException {
+            throws IllegalActionException, NameDuplicationException {
 
 	// initialize() is a separate method so that we can read
 	// in the model and then get its name so that we can 
@@ -175,6 +178,9 @@ public class KernelMain {
                             + "': " + exceptionTwo);
 	    }
         }
+
+	// Make the name follow Java class naming conventions.
+	_toplevel.setName(mangle(_toplevel.getName()));
 
         // Temporary hack because cloning doesn't properly clone
         // type constraints.
@@ -234,12 +240,47 @@ public class KernelMain {
      *  <a href="http://www.sable.mcgill.ca/soot/tutorial/usage">http://www.sable.mcgill.ca/soot/tutorial/usage</a>
      *
      *  @exception IllegalActionException If the model cannot be parsed.
+     *  @exception NameDuplicationException If the name of the
+     *  model cannot be changed to a Java identifier String.
      */
-    public static void main(String[] args) throws IllegalActionException {
+    public static void main(String[] args)
+	throws IllegalActionException, NameDuplicationException {
 	KernelMain kernelMain = new KernelMain(args[0]);
 	kernelMain.initialize();
 	kernelMain.addTransforms();
 	kernelMain.generateCode(args);
+    }
+
+    /** Mangle a String so that it can be used as a Java identifier.
+     *  Section 3.8 of the Java language spec says:
+     *  <blockquote>
+     *  "An identifier is an unlimited-length sequence of Java letters
+     *  and Java digits, the first of which must be a Java letter. An
+     *  identifier cannot have the same spelling (Unicode character
+     *  sequence) as a keyword (3.9), boolean literal (3.10.3), or
+     *  the null literal (3.10.7).  "
+     *  </blockquote>
+     *  Java characters are A-Z, a-z, $ and _.
+     *  <p> Characters that are not permitted in a Java identifier are changed
+     *  to an underscores. 
+     *  This method does not check that the returned string is a 
+     *  keyword or literal.
+     *  @param name A string with spaces and other characters that
+     *  cannot be in a Java name.
+     *  @returns A String that follows the Java identifier rules
+     *  with the same length as the initial input String.
+     */
+    public static String mangle(String name) {
+	char [] nameArray = name.toCharArray();
+	if (!Character.isJavaIdentifierStart(nameArray[0])) {
+	    nameArray[0] = '_';
+	} 
+	for(int i = 1; i < nameArray.length; i++) {
+	    if (!Character.isJavaIdentifierPart(nameArray[i])) {
+		nameArray[i] = '_';
+	    }
+	}
+	return new String(nameArray);
     }
 
     /** Return the model that we are generating code for.
