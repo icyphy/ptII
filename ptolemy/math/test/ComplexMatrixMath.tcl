@@ -53,6 +53,7 @@ set c2 [java::new ptolemy.math.Complex 3.0 -4.0]
 set c3 [java::new ptolemy.math.Complex -4.9 -6.0]
 set c4 [java::new ptolemy.math.Complex -7.0 8.0]
 set c5 [java::new ptolemy.math.Complex -0.25 0.4]
+set c6 [java::new ptolemy.math.Complex -1.0 0.0]
 
 # Complex array of length 0
 set ca0 [java::new {ptolemy.math.Complex[]} 0]
@@ -63,6 +64,9 @@ set m3 [java::new {ptolemy.math.Complex[][]} 3 [list [list $c1 $c2 $c3] \
                                        [list $c2 $c1 $c5]]]
 
 # Complex matrices
+set m22 [java::new {ptolemy.math.Complex[][]} 2 [list [list $c3 $c1] \
+                                       [list $c5 $c4]]]
+
 set m23 [java::new {ptolemy.math.Complex[][]} 2 [list [list $c3 $c1 $c2] \
                                        [list $c5 $c4 $c2]]]
 
@@ -73,6 +77,10 @@ set m23_0 [java::new {ptolemy.math.Complex[][]} 2 [list [list $c0 $c0 $c0] \
 set m32 [java::new {ptolemy.math.Complex[][]} 3 [list [list $c3 $c1] \
                                        [list $c5 $c4] \
                                        [list $c2 $c5]]]
+
+set m33 [java::new {ptolemy.math.Complex[][]} 3 [list [list $c3 $c1 $c4] \
+                                       [list $c5 $c4 $c3] \
+                                       [list $c2 $c5 $c1]]]
 
 
 
@@ -274,3 +282,13 @@ test ComplexMatrixMath-5.1.2 {realParts} {
     regsub -all {,} $s {} stmp
     epsilonDiff $stmp {{{-4.9 1.0 3.0} {-0.25 -7.0 3.0}}}
 } {}
+
+####################################################################
+test ComplexMatrixMath-5.1.3 {inverse} {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+	    inverse $m22]
+    set s [java::call ptolemy.math.ComplexMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{-0.08054623357401358 + 0.09878325227792009i -0.012816950866797521 - 0.023549260257783887i} {0.0028290022510533727 - 0.004897469784379781i -0.061218731725691374 - 0.06985561701254343i}}}
+} {}
+
