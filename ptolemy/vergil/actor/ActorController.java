@@ -119,11 +119,15 @@ public class ActorController extends AttributeController {
             _menuFactory.addMenuItemFactory(_portDialogFactory);
         }
 
-	if (_configuration != null) {
+	if (_configuration != null && !_addedLookInsideAction ) {
 	    // NOTE: This requires that the configuration be non null, or it
 	    // will report an error.
 	    _menuFactory.addMenuItemFactory(
 		    new MenuActionFactory(new LookInsideAction()));
+	    _addedLookInsideAction = true;
+            _addedLookInsideAction = true;
+	} else {
+	  _addedLookInsideAction = false;
 	}
 
         _menuFactory.addMenuItemFactory(
@@ -162,6 +166,15 @@ public class ActorController extends AttributeController {
         if (_portDialogFactory != null) {
             _portDialogFactory.setConfiguration(configuration);
         }
+	if (_configuration != null && !_addedLookInsideAction ) {
+	    // NOTE: The following requires that the configuration be
+	    // non-null, or it will report an error.
+
+	    // "Look Inside"
+	    _menuFactory.addMenuItemFactory(
+ 	      new MenuActionFactory(new LookInsideAction()));
+	    _addedLookInsideAction = true;
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
