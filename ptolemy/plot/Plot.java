@@ -219,7 +219,7 @@ public class Plot extends PlotBox {
         // The value of the second argument is corrupted the second
         // time that samplePlot() calls this.  The print statement
         // in samplePlot() shows that the value is correct before the call.
-        System.out.println("x value in addPoint: " + x);
+        // System.out.println("x value in addPoint: " + x);
 
         if (_xlog) {
             if (x <= 0.0) {
@@ -513,7 +513,7 @@ public class Plot extends PlotBox {
             // below is corrupted the second
             // time that this method is called.  The print statement below
             // shows that the value is correct before the call.
-            System.out.println("x value: " + xvalue);
+            // System.out.println("x value: " + xvalue);
 
             addPoint(0, xvalue,
                     5 * Math.cos(Math.PI * i/20), !first);
