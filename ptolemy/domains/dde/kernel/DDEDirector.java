@@ -199,23 +199,6 @@ public class DDEDirector extends ProcessDirector {
 	}
     }
 
-    /** Execute all deeply contained actors that are governed by
-     *  this DDEDirector. Check for deadlocks when they occur, and
-     *  where possible, resolve them.
-     * @exception IllegalActionException If any called method of
-     *  the container or one of the deeply contained actors throws
-     *  it.
-     */
-    public void fire() throws IllegalActionException {
-        Workspace wkSpace = workspace();
-        synchronized( this ) {
-	    while( !_isDeadlocked() ) {
-	        wkSpace.wait(this);
-	    }
-	    _notdone = !_handleDeadlock();
-        }
-    }
-
     /** Schedule an actor to be fired at the specified time.
      *  If the thread that calls this method is an instance
      *  of DDEThread, then the specified actor must be
@@ -296,7 +279,7 @@ public class DDEDirector extends ProcessDirector {
         _writeBlocks = 0;
         _pendingMutations = false;
         _writeBlockedQs = new LinkedList();
-    }
+   }
 
     /** Return a new receiver of a type compatible with this
      *  director. If the completion time of this director has
@@ -391,6 +374,32 @@ public class DDEDirector extends ProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Determine if all of the threads containing actors controlled
+     *  by this director have stopped due to a call of stopFire() or
+     *  because they are blocked on a read or write.
+     * @return True if all active threads containing actors controlled
+     *  by this thread have stopped; otherwise return false.
+     */
+    protected synchronized boolean _areAllThreadsStopped() {
+	long threadsStopped = _getStoppedProcessesCount();
+	long actorsActive = _getActiveActorsCount();
+
+	// All threads are stopped due to stopFire()
+	if( threadsStopped != 0 && threadsStopped >= actorsActive ) {
+	    return true; 
+	} 
+
+	// Some threads are stopped due to stopFire() while others
+	// are blocked waiting to read or write data.
+	if( threadsStopped + _readBlocks + _writeBlocks >= actorsActive ) {
+	    if( threadsStopped != 0 ) {
+	        return true; 
+	    }
+	}
+
+	return false;
+    }
 
     /** Return a new ProcessThread of a type compatible with this
      *  director.
