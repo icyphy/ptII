@@ -41,16 +41,16 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ChainedTransition
+PTPACKAGE = 	ChainedTransitions
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	ChainedTransition.xml \
-	ChainedTransition.htm \
-	ChainedTransitionVergil.htm
+	ChainedTransitions.xml \
+	ChainedTransitions.htm \
+	ChainedTransitionsVergil.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -75,16 +75,16 @@ install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_vergil_applet demo_ptolemy demo_vergil
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer ChainedTransition.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer ChainedTransitions.htm
 
 demo_vergil_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer ChainedTransitionVergil.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer ChainedTransitionsVergil.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" ChainedTransition.xml
+	"$(PTII)/bin/ptolemy" ChainedTransitions.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" ChainedTransition.xml
+	"$(PTII)/bin/vergil" ChainedTransitions.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
