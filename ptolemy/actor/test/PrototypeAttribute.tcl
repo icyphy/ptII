@@ -92,4 +92,4 @@ test PrototypeAttribute-2.1 {set types} {
     set rt1 [[$p1 getType] toString]
 
     list $rt1
-} {doubleMatrix}
+} {{[double]}}
