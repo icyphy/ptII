@@ -83,7 +83,7 @@ test TypedIOPort-1.3 {Attempt to set erroneous container} {
     set p1 [java::new ptolemy.actor.TypedIOPort]
     catch {$p1 setContainer $e1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object names: <Unnamed Object> and <Unnamed Object>:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object> and .<Unnamed Object>:
 TypedIOPort can only be contained by objects implementing the TypedActor interface.}}
 
 

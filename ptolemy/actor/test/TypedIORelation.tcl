@@ -70,8 +70,8 @@ test TypedIORelation-1.1 {Construct Relations} {
     list [$r0 getFullName] [$r1 getFullName] [$r2 getFullName] \
 	    $msg1 \
 	    $msg2
-} {. . ..R1 {ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object>.E1.P1 and <Unnamed Object>:
-Link crosses levels of the hierarchy} {ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object>.E1.P1 and <Unnamed Object>:
+} {. . ..R1 {ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object>.E1.P1 and .<Unnamed Object>:
+Link crosses levels of the hierarchy} {ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object>.E1.P1 and .<Unnamed Object>:
 Link crosses levels of the hierarchy}}
 
 test TypedIORelation-1.2 {Attempt to set erroneous container} {
@@ -82,7 +82,7 @@ test TypedIORelation-1.2 {Attempt to set erroneous container} {
     set r1 [java::new ptolemy.actor.TypedIORelation]
     catch {$r1 setContainer $e1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object names: <Unnamed Object> and <Unnamed Object>:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object> and .<Unnamed Object>:
 TypedIORelation can only be contained by TypedCompositeActor.}}
 
 
@@ -92,5 +92,5 @@ test TypedIORelation-3.0 {Test _checkPort} {
     catch {$r0 checkPort $p3 } msg
 
     list [$r0 getFullName] $msg
-} {. {ptolemy.kernel.util.IllegalActionException: Object names: <Unnamed Object> and <Unnamed Object>:
+} {. {ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object> and .<Unnamed Object>:
 TypedIORelation can only link to a TypedIOPort.}}

@@ -94,7 +94,7 @@ test IOPort-2.3 {Attempt to set erroneous container} {
     set p1 [java::new ptolemy.actor.IOPort]
     catch {$p1 setContainer $e1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object names: <Unnamed Object> and <Unnamed Object>:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object> and .<Unnamed Object>:
 IOPort can only be contained by objects implementing the Actor interface.}}
 
 ######################################################################
