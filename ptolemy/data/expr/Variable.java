@@ -1151,6 +1151,12 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    }
         } else {
 	    if (_declaredType.isCompatible(newToken)) {
+	        if (_declaredType instanceof StructuredType) {
+	            // set the resolved type to be the same as the declared
+		    // type so the convert() method will convert the newToken
+		    // to the declared type.
+		    ((StructuredType)_declaredType).initialize(BaseType.ANY);
+		}
 		newToken = _declaredType.convert(newToken);
 	    } else {
                 throw new IllegalActionException(this, "Variable._setToken: " +
