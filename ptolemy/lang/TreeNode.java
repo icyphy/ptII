@@ -349,7 +349,8 @@ public abstract class TreeNode extends TrackedPropertyMap
         Class visitorClass = visitor.getClass();
 
         try {
-            method = visitorClass.getMethod(_visitMethodName, _visitParamTypes);
+            method = visitorClass.getMethod(_visitMethodName,
+                    _visitParamTypes);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e.toString());
         }
@@ -359,8 +360,8 @@ public abstract class TreeNode extends TrackedPropertyMap
         try {
             return method.invoke(visitor, _visitArgs);
         } catch (IllegalAccessException iae) {
-            throw new RuntimeException("Illegal access exception invoking method "
-                    + _visitMethodName);
+            throw new RuntimeException("Illegal access exception " +
+                    "invoking method " + _visitMethodName);
         } catch (InvocationTargetException ite) {
             throw new RuntimeException(
                     "Invocation target exception invoking method "

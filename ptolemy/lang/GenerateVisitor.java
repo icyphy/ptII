@@ -63,7 +63,8 @@ below is a brief summary.
    <li> vheader: visitor header
    <li> nheader: nodes
    <li> iheader: interface that contains node IDS.
-   <li> NamedNode I ITreeNode m NameNode getName m m void setName NameNode name m
+   <li> NamedNode I ITreeNode m NameNode getName m m void setName
+        NameNode name m
 	<br>generate interface NamedNode.java, derived from ITreeNode.
 	it has method getName, returning NameNode.
 	method definition is enclosed by "m" on both sides.
