@@ -60,6 +60,7 @@ JSRCS = \
 	ArrayToSequence.java \
 	Autocorrelation.java \
 	BitsToInt.java \
+	Chop.java \
 	Delay.java \
 	DelayLine.java \
         DotProduct.java \

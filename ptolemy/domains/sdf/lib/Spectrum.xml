@@ -19,7 +19,8 @@ The number of inputs required to produce any
 output is 2^order, and the number of outputs
 produced will be 2^order.  The output represents
 frequencies from -pi to pi radians per second,
-centered at zero frequency.</text>
+centered at zero frequency. For random inputs,
+the output is a periodogram spectral estimate.</text>
            </svg>
            </configure>
         </property>
