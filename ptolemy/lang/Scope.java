@@ -40,7 +40,7 @@ import java.util.ListIterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// Scope
-/** An scope for declarations, which may be contained in another
+/** A scope for declarations, which may be contained in another
 scope.  Scopes are used to implement scoping for declarations.
 
 <p>
@@ -294,9 +294,17 @@ public class Scope {
 
     /** Return a String representation of this Scope.  If the
      *  recursive argument is true, then append string representations
-     *  of parent scopes as well.
+     *  of parent scopes as well. Given a hierarchical chain s1, s2, ..., sN of
+     *  scopes, with each ith entry being a parent of the (i+1)st entry,
+     *  the format of the recursive string representation of sN's scope
+     *  is:
+     *  [sN]
+     *  [sN-1]
+     *  ...
+     *  [s1]
+     *  The format of the "non-recursive" string representation is [sN].
      *  @param recursive True if parent scopes are also traversed.
-     *  @return a possibly recursive String representation of this Scope.
+     *  @return an optionally recursive String representation of this Scope.
      */
     public String toString(boolean recursive) {
         ListIterator declIterator = _declList.listIterator();
