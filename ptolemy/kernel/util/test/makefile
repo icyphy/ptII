@@ -48,6 +48,7 @@ TCL_SRCS = \
 JSRCS = \
 	ChangeRequestTest.java \
 	PtestWorkspace.java \
+	StreamValueListener.java \
 	TestDE.java \
 	TestDebugEvent.java \
 	TestNullNamedObj.java \
@@ -64,12 +65,14 @@ JSIMPLE_TESTS = \
 	InternalErrorException.tcl \
 	InvalidStateException.tcl \
 	KernelException.tcl \
+	KernelRuntimeException.tcl \
 	NameDuplicationException.tcl \
 	NamedList.tcl \
 	NamedObj.tcl \
 	NoSuchItemException.tcl \
 	PtolemyThread.tcl \
 	SingletonConfigurableAttribute.tcl \
+	StringAttribute.tcl \
 	StringUtilities.tcl \
 	TransientSingletonConfigurableAttribute.tcl \
 	VersionAttribute.tcl \
