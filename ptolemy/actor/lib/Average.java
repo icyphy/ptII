@@ -107,7 +107,7 @@ public class Average extends Transformer {
      */
     public void fire() throws IllegalActionException {
         _latestSum = _sum;
-        _latestCount = _count + 1;
+        _latestCount = _count;
 
         // Check whether to reset.
         for (int i = 0; i < reset.getWidth(); i++) {
@@ -117,13 +117,14 @@ public class Average extends Transformer {
                 if (r.booleanValue()) {
                     // Being reset at this firing.
                     _latestSum = null;
-                    _latestCount = 1;
+                    _latestCount = 0;
                 }
             }
         }
 
         if (input.hasToken(0)) {
             Token in = input.get(0);
+            _latestCount++;
 
             if (_latestSum == null) {
                 _latestSum = in;
