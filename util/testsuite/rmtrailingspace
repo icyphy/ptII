@@ -31,33 +31,45 @@
 # 						COPYRIGHTENDKEY
 
 
-# This script can be used to fix many sccs managed files at once.
+# This script can be used to fix many cvs managed files at once.
 # Before running this script, you must:
 # 1. Create a doit function that does the editing you want
 # 2. Set up the files variable so it contains a list of the files
 # 3. Set up a grep statement that will identify files you want to change
-# 4. Adjust the log message for the sccs delget command
-# Then try out fix-files with the -p option, which only prints, but
-# does not actually make the change
+# 4. Adjust the log message for the cvs commit  command
+# Then try out fix-files with the -n option, which only prints, but
+# does not actually make the change.
+#
 # Usage: rmtrailinspace [-n] [-d]
 
 printonly=no
 
-while getopts nd-- opt
-do
-	case $opt in
-		d) 	set -x;;
-		n) 	printonly=yes;;
-	   \?)	echo "$0: Usage: $0 [-p] [-x] [filenames . . .]"
-			echo " -n  Print only, don't modify files"
-			echo " -d  debug"
-			exit 3;;
-	esac
-done
-shift `expr $OPTIND - 1`
+# We don't use getopt here because it is not included in the basic
+# cygwin bash download (12/01)
 
-TMPFILE=/tmp/rmtrailingspace.tmp.$$
+if [ "$1" = "-h" ]; then
+    echo "$0: Usage: $0 [-d] [-n] [filenames . . .]"
+    echo " -d  debug"
+    echo " -n  Print only, don't modify files"
+    exit 3
+fi
 
+if [ "$1" = "-n" ]; then
+    printonly=yes
+    shift
+fi
+if [ "$1" = "-d" ]; then
+    set -x
+    shift
+fi
+
+# Handle -d -n
+if [ "$1" = "-n" ]; then
+    printonly=yes
+    shift
+fi
+
+# doit is a shell function
 doit() {
 	sed -e 's/[ 	]*$//g'  < $file > $TMPFILE
 	diff $file $TMPFILE
