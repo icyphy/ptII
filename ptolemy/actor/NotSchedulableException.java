@@ -100,5 +100,5 @@ public class NotSchedulableException extends InvalidStateException {
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
-    private Enumeration _actors= null;
+    private Enumeration _actors = null;
 }

@@ -184,7 +184,7 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
     public boolean isSettable() {
 	try {
 	    workspace().getReadAccess();
-	    return _declaredType==null;
+	    return _declaredType == null;
 	} finally {
 	    workspace().doneReading();
 	}
@@ -311,7 +311,7 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 	    workspace().getWriteAccess();
 	    _declaredType = c;
 
-	    // also set the resolved type,  If _declaredType==null, i.e.,
+	    // also set the resolved type,  If _declaredType == null, i.e.,
 	    // undeclared, the type resolution algorithm will reset the
 	    // _resolvedType.
 	    _resolvedType = _declaredType;
