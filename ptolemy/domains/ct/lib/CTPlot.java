@@ -97,13 +97,15 @@ public class  CTPlot extends CTActor {
     /** Clear the plot window.
      *  @exception IllegalActionException Not thrown in this class.
      */
-    public void intialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
 
         // Call clear with 'true' argument, so it'll reset the legend...
         _plot.clear(false);
-
-	for (int i = 0; i < input.getWidth(); i++) {
-	  _plot.addLegend(i, "Data " + i);
+        int width = input.getWidth();
+        _firstPoint = new boolean[width];
+	for (int i = 0; i < width; i++) {
+            _plot.addLegend(i, "Data " + i);
+            _firstPoint[i] = true;
 	}
 
         // Initialization of the frame X-range is deferred until the fire()
@@ -112,7 +114,6 @@ public class  CTPlot extends CTActor {
         _rangeInitialized = false;
         _yMin = -1;
         _yMax = 1;
-        _firstPoint = true;
     }
 
     /** Add new input data to the plot.
@@ -163,9 +164,9 @@ public class  CTPlot extends CTActor {
                                 ", CurrentTime = " + curTime +
                                 ", CurrentValue = " + curValue + ".");
                     }
-                    if(_firstPoint) {
+                    if(_firstPoint[i]) {
                         _plot.addPoint(i, curTime, curValue, false);
-                        _firstPoint = false;
+                        _firstPoint[i] = false;
                     } else {
                         _plot.addPoint(i, curTime, curValue, true);
                     }
@@ -223,6 +224,5 @@ public class  CTPlot extends CTActor {
 
     private boolean _rangeInitialized = false;
 
-    private boolean _firstPoint = true;
-
+    private boolean[] _firstPoint;
 }
