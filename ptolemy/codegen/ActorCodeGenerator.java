@@ -488,11 +488,16 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
             NameNode oldPackageNameNode = (NameNode) unitNode.getPkg();
 
-            // change the package
-            NameNode newPackageNameNode =
-                (NameNode) StaticResolution.makeNameNode(_outputPackageName);
+	    try {
+		// change the package
+		NameNode newPackageNameNode =
+		    (NameNode) StaticResolution.makeNameNode(_outputPackageName);
+		unitNode.setPkg(newPackageNameNode);
+	    } catch (ClassCastException classCast) {
+		System.err.println("_movePackage(): _outputPackageName = '" + _outputPackageName + "'");
+		throw (ClassCastException)classCast.fillInStackTrace();
+	    }
 
-            unitNode.setPkg(newPackageNameNode);
 
             // add the old package to the list of import on demands
             List importList = unitNode.getImports();
