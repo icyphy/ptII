@@ -1927,7 +1927,7 @@ if test ! -d "$PTII/ptolemy/domains/giotto"; then
     AC_MSG_RESULT([$PTII/ptolemy/domains/giotto is not present,
 	so we need not find the Giotto SDK.])
     GIOTTO_DIR='${PTII}/vendors/giotto'
-    GIOTTO_CLASSES='${GIOTTO_DIR}/giotto.jar'
+    GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
 else
     AC_MSG_CHECKING([for giotto directory])
     AC_ARG_WITH(tini, [  --with-giotto=DIR       use GiottoSDF from DIR,
@@ -1937,24 +1937,29 @@ else
 
     if test -d "$GIOTTO_DIR"; then
     	AC_MSG_RESULT([$GIOTTO_DIR])
-      	AC_MSG_CHECKING([for \$GIOTTO_DIR/giotto.jar])
-	if test -f "$GIOTTO_DIR/giotto.jar"; then
-	   AC_MSG_RESULT([$GIOTTO_DIR/giotto.jar])
-	   GIOTTO_CLASSES='${GIOTTO_DIR}/giotto.jar'
+      	AC_MSG_CHECKING([for \$GIOTTO_DIR/gdk.jar])
+	if test -f "$GIOTTO_DIR/gdk.jar"; then
+	   AC_MSG_RESULT([$GIOTTO_DIR/gdk.jar])
+	   GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
 	else
 	   GIOTTO_CLASSES=no
         fi
 	AC_MSG_RESULT([$GIOTTO_CLASSES])
     fi
     if test "$GIOTTO_CLASSES" = "no"; then
-        AC_MSG_WARN([Failed to find giotto/giotto.jar
+        AC_MSG_WARN([Failed to find giotto/gdk.jar
     perhaps Giotto is not installed?
     You need not download Giotto unless you plan on generating code for 
     Giotto models.
-    The Giotto SDK can be downloaded from http://www.eecs.berkeley.edu/~fresco/giotto])
+    The Giotto SDK can be
+    downloaded from http://www-cad.eecs.berkeley.edu/~giotto/
+    Copy gdk.jar to $PTII/vendors/giotto, for example:
+        mkdir -p $PTII/vendors/giotto
+        cp C:/Program\ Files/Giotto*/gdk.jar $PTII/vendors/giotto/
+    ])
 	# Note that we don't substitute in the ${PTII} or $(GIOTTO_DIR) here
 	GIOTTO_DIR='${PTII}/vendors/giotto'
-   	GIOTTO_CLASSES='${GIOTTO_DIR}/giotto.jar'
+   	GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
     else
 	# Set to giotto and used in
 	# $PTII/ptolemy/copernicus/java/ if giotto was found
@@ -2343,7 +2348,7 @@ AC_SUBST(TINI_CLASSES)
 # Directory that contains the Tini installation
 AC_SUBST(TINI_DIR)
 
-# giotto/giotto.jar file used by GiottoSDK
+# giotto/gdk.jar file used by GiottoSDK
 AC_SUBST(GIOTTO_CLASSES)
 
 # Directory that contains the GiottoSDK installation
