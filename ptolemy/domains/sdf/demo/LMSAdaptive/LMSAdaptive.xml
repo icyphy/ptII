@@ -8,7 +8,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[577, 262]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -16,11 +16,11 @@
     </property>
     <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.3">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {102, 154, 819, 459}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {102, 154, 792, 371}, maximized = false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{302.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{288.5, 131.0}">
     </property>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -117,7 +117,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="114.0, 259.0">
+        <vertex name="vertex1" value="[130.0, 245.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

@@ -2,15 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MaximumEntropySpectrum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 435]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[764, 369]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
@@ -49,7 +47,7 @@ by three different techniques.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 10.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 3, 1024, 551}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {3, 5, 979, 478}, maximized = false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -68,7 +66,7 @@ by three different techniques.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 355.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 335.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -117,6 +115,10 @@ efficient code generation and optimization.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 90.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{382.0, 184.5}">
+    </property>
     <entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
         <property name="order" class="ptolemy.data.expr.Parameter" value="ARorder">
         </property>
@@ -150,13 +152,13 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
     <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
+        <doc>This composite actor calculates the spectrum of the input.</doc>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <property name="order" class="ptolemy.data.expr.Parameter" value="log2numInputs">
         </property>
-        <doc>This composite actor calculates the spectrum of the input.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="303.0, 104.0">
         </property>
     </entity>
@@ -174,22 +176,21 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
     <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
+        <doc>This composite actor generates a sine wave.</doc>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
         </property>
-        <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 105.0">
         </property>
     </entity>
     <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
+        <doc>This composite actor generates a sine wave.</doc>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="540.0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -206,26 +207,22 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
       </svg>
     </configure>
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
             </property>
             <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
         </property>
-        <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 165.0">
         </property>
     </entity>
     <entity name="Sinewave3" class="ptolemy.actor.lib.Sinewave">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
+        <doc>This composite actor generates a sine wave.</doc>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
         <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="2000.0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -242,15 +239,12 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
       </svg>
     </configure>
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
             </property>
             <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
         </property>
-        <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="54.0, 225.0">
         </property>
     </entity>
@@ -296,11 +290,11 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
     <entity name="SmoothedPeriodogram" class="ptolemy.domains.sdf.lib.SmoothedPeriodogram">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
+        <doc>This composite actor calculates the spectrum of the input.</doc>
         <property name="numberOfInputs" class="ptolemy.data.expr.Parameter" value="2^log2numInputs">
         </property>
         <property name="numberOfLags" class="ptolemy.data.expr.Parameter" value="64">
         </property>
-        <doc>This composite actor calculates the spectrum of the input.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="303.0, 174.0">
         </property>
     </entity>
