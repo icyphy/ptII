@@ -55,6 +55,7 @@ port.  The element that is extracted is determined by the
 <i>N</i>, where <i>N</i> is the length of the input array, or
 an exception will be thrown by the fire() method.
 
+@see ArrayElementI
 @see LookupTable
 @see RecordDisassembler
 @author Edward A. Lee, Elaine Cheong
