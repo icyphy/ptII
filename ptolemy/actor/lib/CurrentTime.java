@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxhl@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -74,27 +74,29 @@ public class CurrentTime extends TimedSource {
      */
     public void fire() throws IllegalActionException {
     
-	// The only domain in which [the] two versions of getCurrentTime
-	// are different is in DT... getCurrentTime() on the director
-	// returns the "start of iteration" time, whereas getCurrentTime()
-	// on the channel returns the time of the current sample.
-	// I think the getCurrentTime() actor should probably be calling
-	// it on the channel...
+        // For domain polymorphism getCurrentTime(channel_number) has
+        // to be called before get(channel_number)
 
-	// BTW - Take a look at gui/TimedSource.java as well
+	// Interestingly, this method is very different from how
+	// actor.gui.TimedPlotter does some thing very similar.
+
+	// Edward wrote:
+	// "The only domain in which [the] two versions of getCurrentTime
+        // are different is in DT... getCurrentTime() on the director
+        // returns the "start of iteration" time, whereas getCurrentTime()
+        // on the channel returns the time of the current sample.
+        // I think the getCurrentTime() actor should probably be calling
+        // it on the channel..."
 
         double currentTime;
-        int width = trigger.getWidth();
-        for (int i = width - 1; i >= 0; i--) {
-            if (trigger.hasToken(i)) {
-		// For domain polymorphism getCurrentTime(channel_number) has
-		// to be called before get(channel_number)
-                currentTime = trigger.getCurrentTime(i);
-		// FIXME: do we need to consume a token here?
-                Token currentToken = trigger.get(i);
-		output.send(0, new DoubleToken(currentTime));
-            }
+        if (trigger.getWidth() > 0) {
+            currentTime = trigger.getCurrentTime(0);
+        } else {
+            Director director = getDirector();
+            currentTime = director.getCurrentTime();
         }
         super.fire();
+        output.send(0, new DoubleToken(currentTime));
+        
     }
 }
