@@ -84,13 +84,19 @@ public class DDEIOPort extends TypedIOPort {
      * @param name The name of the port.
      * @exception IllegalActionException If the port is not of an
      *  acceptable class for the container, or if the container
-     *  does not implement the Actor interface.
+     *  does not implement the Actor interface, or if the container
+     *  is not atomic.  
      * @exception NameDuplicationException If the name coincides
      *  with a port already in the container.
      */
     public DDEIOPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        if ( !container.isAtomic() ) {
+            throw new IllegalActionException(container, this,
+                    "A DDEIOPort can not be contained by a " +
+                    "composite actor.");
+        }
     }
 
     /** Construct a DDEIOPort with a container and the specified
@@ -103,8 +109,9 @@ public class DDEIOPort extends TypedIOPort {
      * @param isinput True if this is to be an input port.
      * @param isoutput True if this is to be an output port.
      * @exception IllegalActionException If the port is not of an
-     *  acceptable class for the container, or if the container does
-     *  not implement the Actor interface.
+     * acceptable class for the container, or if the container does
+     * not implement the Actor interface.  , or if the container is
+     * not atomic.
      * @exception NameDuplicationException If the name coincides with
      *  a port already in the container.
      */
@@ -112,8 +119,6 @@ public class DDEIOPort extends TypedIOPort {
             boolean isinput, boolean isoutput)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, isinput, isoutput);
-        // FIXME: Why is this necessary?  Why doesn't the two arg
-        // constructor do the same check?
         if ( !container.isAtomic() ) {
             throw new IllegalActionException(container, this,
                     "A DDEIOPort can not be contained by a " +
