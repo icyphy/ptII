@@ -28,14 +28,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.caltrop.ddi;
 
+//////////////////////////////////////////////////////////////////////////
+//// DDIException
 /**
- * A general-purpose exception used in the <tt>ddi</tt> package, used to indicate an error during domain dependent
- * interpretation.
- *
- * @author Christopher Chang <cbc@eecs.berkeley.edu>
- * @version $Id$
- * @since Ptolemy II 3.1
- */
+A general-purpose exception used in the <tt>ddi</tt> package, used to
+indicate an error during domain dependent interpretation.
+
+@author Christopher Chang <cbc@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
+*/
 public class DDIException extends RuntimeException {
 
     /**

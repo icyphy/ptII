@@ -33,6 +33,13 @@ import caltrop.interpreter.ast.Actor;
 import caltrop.interpreter.environment.Environment;
 import ptolemy.caltrop.actors.CalInterpreter;
 
+//////////////////////////////////////////////////////////////////////////
+//// CSPFactory
+/**
+@author Christopher Chang <cbc@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
+*/
 public class CSPFactory implements DDIFactory {
     public DDI create(CalInterpreter ptActor, Actor actor, Context context, Environment env) {
         return new CSP(ptActor, actor, context, env);

@@ -30,12 +30,13 @@ package ptolemy.caltrop.ddi;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+//////////////////////////////////////////////////////////////////////////
+//// AbstractDDI
 /**
- * @author Christopher Chang <cbc@eecs.berkeley.edu>
- * @version $Id$
- * @since Ptolemy II 3.1
- */
-
+@author Christopher Chang <cbc@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
+*/
 public abstract class AbstractDDI implements DDI {
     public int iterate(int i) throws IllegalActionException {
         return 0;

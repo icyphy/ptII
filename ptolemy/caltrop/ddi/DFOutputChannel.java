@@ -35,22 +35,24 @@ import ptolemy.caltrop.CalIOException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
+//////////////////////////////////////////////////////////////////////////
+//// DFOutputChannel
 /**
- * @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
- * @version $Id$
- * @since Ptolemy II 3.1
- */
+@author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
+*/
 class DFOutputChannel implements OutputChannel {
 
     public void put(Object a) {
         try {
             port.send(channel, (Token)a);
-        } catch (IllegalActionException e) {
-            throw new CalIOException("Could not send token.", e);
-        } catch (NoRoomException e) {
-            throw new CalIOException("No room for sending token.", e);
-        } catch (ClassCastException e) {
-            throw new CalIOException("Token not of valid token type.", e);
+        } catch (IllegalActionException ex) {
+            throw new CalIOException("Could not send token.", ex);
+        } catch (NoRoomException ex) {
+            throw new CalIOException("No room for sending token.", ex);
+        } catch (ClassCastException ex) {
+            throw new CalIOException("Token not of valid token type.", ex);
         }
     }
 

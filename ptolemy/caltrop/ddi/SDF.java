@@ -57,39 +57,47 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+//////////////////////////////////////////////////////////////////////////
+//// SDFJava
 /**
- * A plugin for the SDF domain. In SDF, a CAL actor is valid if:
- * <p>
- * 1. The rates of each action are statically computable, and these rates are the same for each action.<p>
- * 2. There is at least one unguarded action.<p>
- *
- * This plugin also adds attributes containing rate information to the ports of the actor.
- *
- * @author Christopher Chang <cbc@eecs.berkeley.edu>
- * @version $Id$
- * @since Ptolemy II 3.1
- */
+A plugin for the SDF domain. In SDF, a CAL actor is valid if:
+<p>
+<ol>
+<li> The rates of each action are statically computable, and these rates are the same for each action.
+<li> There is at least one unguarded action.
+</ol>
+
+This plugin also adds attributes containing rate information to the
+ports of the actor.
+
+@author Christopher Chang <cbc@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
+*/
 public class SDF extends AbstractDDI implements DDI {
 
     /**
      * Create an <tt>SDF</tt>
-     * @param ptActor The instance of {@link ptolemy.actor.Actor ptolemy.actor.Actor} that the plugin will be associated
-     * with.
+     * @param ptActor The instance of {@link ptolemy.actor.Actor
+     * ptolemy.actor.Actor} that the plugin will be associated with.
      * @param actor The abstract syntax tree of the CAL source.
      * @param context The context that the plugin will use.
      * @param env The environment that the plugin will use.
      */
-    public SDF(CalInterpreter ptActor, Actor actor, Context context, Environment env) {
+    public SDF(CalInterpreter ptActor, Actor actor, Context context,
+            Environment env) {
         _ptActor = ptActor;
         _actor = actor;
         _context = context;
         _env = env;
         _eval = new ExprEvaluator(_context,  _env);
         _actionRates = new ActionRateSignature[_actor.getActions().length];
-        _initializerRates = new ActionRateSignature[_actor.getInitializers().length];
+        _initializerRates =
+            new ActionRateSignature[_actor.getInitializers().length];
         _inputPorts = createPortMap(_actor.getInputPorts(), true);
         _outputPorts = createPortMap(_actor.getOutputPorts(), false);
-        _actorInterpreter = new DataflowActorInterpreter(_actor, _context, _env, _inputPorts, _outputPorts);
+        _actorInterpreter = new DataflowActorInterpreter(_actor, _context,
+                _env, _inputPorts, _outputPorts);
     }
 
     private Map createPortMap(PortDecl [] ports, boolean isInput) {
@@ -98,9 +106,11 @@ public class SDF extends AbstractDDI implements DDI {
             String name = ports[i].getName();
             TypedIOPort port = (TypedIOPort) _ptActor.getPort(name);
             if (isInput) {
-                portMap.put(name, new SingleInputPort(name, new DFInputChannel(port, 0)));
+                portMap.put(name, new SingleInputPort(name,
+                        new DFInputChannel(port, 0)));
             } else {
-                portMap.put(name, new SingleOutputPort(name, new DFOutputChannel(port, 0)));
+                portMap.put(name, new SingleOutputPort(name,
+                        new DFOutputChannel(port, 0)));
             }
         }
         return portMap;
@@ -119,23 +129,28 @@ public class SDF extends AbstractDDI implements DDI {
 
     /**
      * In SDF, an actor is legal if:
-     * <p>
-     * 1. The rates of each action are statically computable, and these rates are the same for each action.<p>
-     * 2. There is at least one unguarded action.<p>
-     * 3. The rates and guards of the initializers are statically computable.
-     * @return True if the actor associated with this <tt>DDI</tt> is a legal SDF actor.
+     * <ol>
+     * <li> The rates of each action are statically computable, and
+     * these rates are the same for each action.
+     * <li> There is at least one unguarded action.
+     * <li> The rates and guards of the initializers are statically computable.
+     * </ol>
+     * @return True if the actor associated with this <tt>DDI</tt> is
+     * a legal SDF actor.
      */
     public boolean isLegalActor() {
-        if (atLeastOneUnguardedAction() && checkActionRates() && checkInitializers())
+        if (atLeastOneUnguardedAction()
+                && checkActionRates() && checkInitializers())
             return true;
         return false;
     }
 
     /**
-     * Setup the actor associated with this <tt>DDI</tt>. Assumes that {@link #isLegalActor() isLegalActor()} is
-     * called first.
+     * Setup the actor associated with this <tt>DDI</tt>. Assumes that
+     * {@link #isLegalActor() isLegalActor()} is called first.
      * <p>
-     * Setup involves attaching attributes with token consumption/production rates to the input and output ports of
+     * Setup involves attaching attributes with token
+     * consumption/production rates to the input and output ports of
      * the actor associated with this <tt>DDI</tt>.
      */
     public void setupActor() {

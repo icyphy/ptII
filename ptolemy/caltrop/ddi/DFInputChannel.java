@@ -36,18 +36,16 @@ import ptolemy.kernel.util.IllegalActionException;
 import java.util.ArrayList;
 import java.util.List;
 
+//////////////////////////////////////////////////////////////////////////
+//// DFInputChannel
 /**
- * @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
- * @version $Id$
- * @since Ptolemy II 3.1
- */
+@author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
+*/
 class DFInputChannel implements InputChannel {
 
-    //
-    //  InputChannel
-    //
-
-    public Object get(int n) {
+   public Object get(int n) {
         int m = n - buffer.size() + 1;
         if (m <= 0)
             return buffer.get(n);
@@ -77,13 +75,12 @@ class DFInputChannel implements InputChannel {
                 return port.hasToken(channel, m);
             else
                 return n == 0;
-        } catch (IllegalActionException e) {
-            throw new CalIOException("Could not test for presence of tokens. (" + e.getMessage() + ")", e);
+        } catch (IllegalActionException ex) {
+        throw new CalIOException("Could not test for presence of tokens.",
+            ex);
         }
     }
 
-
-    //
 
     public DFInputChannel(TypedIOPort port, int channel) {
         this.port = port;

@@ -59,14 +59,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+//////////////////////////////////////////////////////////////////////////
+//// CSP
 /**
- * @author Christopher Chang <cbc@eecs.berkeley.edu>
- * @version $Id$
- * @since Ptolemy II 3.1
- */
+@author Christopher Chang <cbc@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
+*/
 public class CSP extends AbstractDDI implements DDI {
 
-    public CSP(CalInterpreter ptActor, Actor actor, Context context, Environment env) {
+    public CSP(CalInterpreter ptActor, Actor actor,
+            Context context, Environment env) {
         _ptActor = ptActor;
         _actor = actor;
         _context = context;
@@ -96,7 +99,9 @@ public class CSP extends AbstractDDI implements DDI {
     }
 
     public void fire() throws IllegalActionException {
-        // assume repeat expressions are statically computable, and no multiport support (always assume channel 0) FIXME
+        // assume repeat expressions are statically computable,
+        // and no multiport support (always assume channel 0) FIXME
+
         Action [] actions = _actor.getActions();
         Map inputProfile;
         Map dataSoFar = new HashMap();
@@ -109,9 +114,9 @@ public class CSP extends AbstractDDI implements DDI {
                 break;
             readSafeTokens(inputProfile, dataSoFar);
         }
-        if (actions.length == 0)
+        if (actions.length == 0) {
             return;
-        else if (actions.length == 1) {
+        } else if (actions.length == 1) {
             inputProfile = computeRemainingTokens(actions, dataSoFar);
             mergeData(dataSoFar, new CSPTokenReader(inputProfile, _ioPorts, _cbc).getAll());
             fireAction(actions[0], dataSoFar);
@@ -125,6 +130,7 @@ public class CSP extends AbstractDDI implements DDI {
             }
         }
     }
+
     private void _evaluateBody(Statement [] body, Environment env) {
         StmtEvaluator eval = new StmtEvaluator(_context, env);
         for (int i = 0; i < body.length; i++) {
@@ -144,7 +150,8 @@ public class CSP extends AbstractDDI implements DDI {
         return env;
     }
 
-    private Environment _bindInputPatternVars(InputPattern[] inputPatterns, Map inputData, Environment env) {
+    private Environment _bindInputPatternVars(InputPattern[] inputPatterns,
+            Map inputData, Environment env) {
         for (int i = 0; i < inputPatterns.length; i++) {
             InputPattern inputPattern = inputPatterns[i];
             ChannelID chID = new ChannelID(inputPattern.getPortname(), 0);
@@ -162,7 +169,8 @@ public class CSP extends AbstractDDI implements DDI {
                 for (int j = 0; j < l.length; j++) {
                     l[j] = new ArrayList();
                 }
-                int repeatVal = _context.intValue(new ExprEvaluator(_context, env).evaluate(repeatExpr));
+                int repeatVal =_context.intValue(new ExprEvaluator(_context,
+                        env).evaluate(repeatExpr));
                 for (int j = 0; j < repeatVal; j++) {
                     for (int k = 0; k < vars.length; k++) {
                         l[k].add(data.get(j*vars.length + k));
@@ -208,7 +216,8 @@ public class CSP extends AbstractDDI implements DDI {
         return ports;
     }
 
-    private Map _computeOutputData(OutputExpression [] outputExprs, Environment env) {
+    private Map _computeOutputData(OutputExpression [] outputExprs,
+            Environment env) {
         // FIXME no multi.
         Map data = new HashMap();
         ExprEvaluator eval = new ExprEvaluator(_context, env);
@@ -251,25 +260,30 @@ public class CSP extends AbstractDDI implements DDI {
             for (int i = 0; i < inputPatterns.length; i++) {
                 InputPattern inputPattern = inputPatterns[i];
                 numNeeded = numTokensNeeded(inputPattern);
-                List data = (List) dataSoFar.get(new ChannelID(inputPattern.getPortname(), 0));
+                List data = (List) dataSoFar.get(
+                        new ChannelID(inputPattern.getPortname(), 0));
                 if (data != null) {
                     numNeeded = numNeeded - data.size();
                 }
                 if (numNeeded > 0)
-                    inputProfile.put(new ChannelID(inputPattern.getPortname(), 0), new Integer(numNeeded));
+                    inputProfile.put(new ChannelID(inputPattern.getPortname(),
+                            0), new Integer(numNeeded));
             }
             return inputProfile;
         }
 
         InputPattern [] inputPatterns = actions[0].getInputPatterns();
         if (inputPatterns.length == 0)
-            return inputProfile; // if the first action has no input patterns, then the "intersection" will be empty.
+            // if the first action has no input patterns,
+            // then the "intersection" will be empty.
+            return inputProfile; 
 
         for (int i = 0; i < inputPatterns.length; i++) {
             InputPattern inputPattern = inputPatterns[i];
             numNeeded = numTokensNeeded(inputPattern);
             for (int j = 1; j < actions.length; j++) {
-                InputPattern ip = getInputPattern(inputPattern.getPortname(), actions[j]);
+                InputPattern ip = getInputPattern(inputPattern.getPortname(),
+                        actions[j]);
                 if (ip == null) {
                     numNeeded = 0;
                     break;
