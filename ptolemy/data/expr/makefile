@@ -79,7 +79,7 @@ MISC_FILES =	# doc test
 # javadoc generates html for file in $(OPTIONAL_JSRCS)
 # PtParser.java must be at the top.
 OPTIONAL_JSRCS = \
-	PtParser.java \  
+	PtParser.java \
 	ASCII_CharStream.java \
 	JJTPtParserState.java \
 	Node.java \
