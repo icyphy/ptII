@@ -342,7 +342,7 @@ public class TimedPNDirector extends BasePNDirector {
     /** Determine if all of the threads containing actors controlled
      *  by this director have stopped due to a call of stopFire() or are
      *  blocked.
-     *  @returns True if all active threads containing actors controlled
+     *  @return True if all active threads containing actors controlled
      *  by this thread have stopped or are blocked; otherwise return false.
      */
     protected synchronized boolean _areAllThreadsStopped() {
