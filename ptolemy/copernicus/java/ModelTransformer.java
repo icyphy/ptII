@@ -1566,6 +1566,8 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                     //       System.out.println("class without workspace = " +
                     //         deferredClass);
                 }
+            } catch (InternalErrorException ex) {
+                throw ex;
             } catch (Exception ex) {
                 System.out.println("Exception occurred during parsing:\n"
                         + ex);
