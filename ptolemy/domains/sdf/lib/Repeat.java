@@ -42,16 +42,15 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
-
-
-
 //////////////////////////////////////////////////////////////////////////
 //// Repeat
 /**
-An actor that repeats each input token the specified number of times
-(<i>numberOfTimes</i>) on the output. Note that this is a sample rate
-change, and hence affects the number of invocations of downstream actors.
+An actor that repeats a block of input tokens the specified number of times
+on the output.  On each firing, it reads <i>blockSize</i> tokens
+and repeats each block <i>numberOfTimes</i> times
+on the output. Note that this causes a sample rate increase by
+a factor of <i>numberOfTimes</i>,
+and hence affects the number of invocations of downstream actors.
 
 @author Shankar Rao
 @version $Id$
@@ -87,12 +86,12 @@ public class Repeat extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port. This class imposes no type constraints on the
+    /** The input port. This actor imposes no type constraints on the
      *  type of the input.
      */
     public SDFIOPort input;
 
-    /** The output port. This class requires that the output port be the same
+    /** The output port. This actor requires that the output port be the same
      *  type as the input.
      */
     public SDFIOPort output;
@@ -127,9 +126,9 @@ public class Repeat extends SDFAtomicActor {
      *  times on the output. For example, if <i>blockSize</i> = 3 and
      *  <i>numberOfTimes</i> = 2, then on the following input:<br>
      *  <pre>  1 2 3 4 5 6</pre><br>
-     *  this method will send the following output:<br>
+     *  two invocations of this method will send the following output:<br>
      *  <pre>  1 2 3 1 2 3 4 5 6 4 5 6</pre><br>
-     *  @exception IllegalActionException If there is no director
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
 	int nt = ((IntToken)numberOfTimes.getToken()).intValue();
