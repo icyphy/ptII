@@ -130,12 +130,13 @@ public class Workspace implements Nameable, Serializable {
             throws IllegalActionException {
         if (item.workspace() != this) {
             throw new IllegalActionException(this, item,
-                    "Cannot add an item to the directory of a workspace that it " +
-                    "is not in.");
+                    "Cannot add an item to the directory of a workspace " +
+                    "that it is not in.");
         }
         if (item.getContainer() != null) {
             throw new IllegalActionException(this, item,
-                    "Cannot add an object with a container to a workspace directory.");
+                    "Cannot add an object with a container to a workspace " +
+                    "directory.");
         }
         if (_directory.firstIndexOf(item) >= 0) {
             throw new IllegalActionException(this, item,
