@@ -108,7 +108,7 @@ public class TimeKeeper {
      *  consumed by one of the receivers managed by this TimeKeeper.
      * @return The current time of this TimeKeeper.
      */
-    public synchronized double getCurrentTime() {
+    public double getCurrentTime() {
         return _currentTime;
     }
 
@@ -353,16 +353,22 @@ public class TimeKeeper {
      *  other receivers.
      */
     public synchronized void resortRcvrList() {
+	String calleeName = ((Nameable)_actor).getName();
+	new FooBar( calleeName, "TimeKeeper.resortRcvrList()", "SYNCHRONIZED_START" );
 	int listSize = _rcvrTimeList.size();
 	LinkedList oldRcvrTimeList = _rcvrTimeList;
 	_rcvrTimeList = new LinkedList();
 	RcvrTimeTriple triple;
 	TimedQueueReceiver rcvr;
+	new FooBar( calleeName, "TimeKeeper.resortRcvrList()", "BEGIN_LIST_SORT" );
 	for( int i = 0; i < listSize; i++ ) {
 	    triple = (RcvrTimeTriple)oldRcvrTimeList.at(i);
 	    rcvr = triple.getReceiver();
+	    new FooBar( calleeName, "TimeKeeper.resortRcvrList()", "BEGIN_UPDATE" );
 	    updateRcvrList(rcvr);
+	    new FooBar( calleeName, "TimeKeeper.resortRcvrList()", "END_UPDATE" );
 	}
+	new FooBar( calleeName, "TimeKeeper.resortRcvrList()", "END" );
     }
 
     /** Cause the actor managed by this time keeper to send a NullToken
@@ -370,44 +376,30 @@ public class TimeKeeper {
      *  equal to the current time of this time keeper. Associate a time i
      *  stamp with each NullToken that is equal to the current time of
      *  this thread.
+     * FIXME: Should this be synchronized???
      */
     public synchronized void sendOutNullTokens() {
+	String calleeName = 
+		((Nameable)_actor).getName();
+	new FooBar( calleeName, "TimeKeeper.sendOutNullTokens()", 
+		"SYNCHRONIZED_START");
 	Enumeration ports = _actor.outputPorts();
         double time = getCurrentTime();
-	String name = ((NamedObj)_actor).getName();
-	if( name.equals("fBack") ) {
-	    System.out.println(name+": Entered TimeKeeper.sendOutNullTokens().");
-	}
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
 	    Receiver rcvrs[][] =
 		    (Receiver[][])port.getRemoteReceivers();
-	if( name.equals("fBack") ) {
-	    System.out.println(name+": getRemoteReceivers() called."
-		    + "  rcvrs.length = " + rcvrs.length
-			       + "  rcvrs[0].length = " + rcvrs[0].length );
-	}
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
-	if( name.equals("fBack") ) {
-	    System.out.println(name+": Inside TimeKeeper.sendOutNullTokens() "
-		    + " i = " + i + "  j = " + j);
-	}
                     if( time >
 			    ((DDEReceiver)rcvrs[i][j]).getLastTime() ) {
                         ((DDEReceiver)rcvrs[i][j]).put(
                                 new NullToken(), time );
 		    }
-	if( name.equals("fBack") ) {
-	    System.out.println(name+": Inside TimeKeeper.sendOutNullTokens() AGAIN "
-		    + " i = " + i + "  j = " + j);
-	}
 		}
             }
-	if( name.equals("fBack") ) {
-	    System.out.println(name+": Leaving TimeKeeper.sendOutNullTokens().");
-	}
         }
+	new FooBar( calleeName, "TimeKeeper.sendOutNullTokens()", "SYNCHRONIZED_END");
     }
 
     /** Set the current time of this TimeKeeper. If the specified
@@ -462,6 +454,7 @@ public class TimeKeeper {
         // Now set the priorities of each port's receiver, set
 	// the receiving time keeper and initialize the rcvrList.
         //
+	String name = ((Nameable)_actor).getName();
         int cnt = 0;
         int currentPriority = 0;
         while( cnt < listOfPorts.size() ) {
@@ -474,6 +467,8 @@ public class TimeKeeper {
 		    //
 		    // Is the following necessary??
 		    //
+		    System.out.println(name+":\tInitial RcvrTime = " 
+                            + ((DDEReceiver)rcvrs[i][j]).getRcvrTime() );
 		    updateRcvrList( (DDEReceiver)rcvrs[i][j] );
 
                     currentPriority++;
@@ -552,12 +547,16 @@ public class TimeKeeper {
      *  TimedQueueReceiver.
      */
     public synchronized void updateRcvrList(TimedQueueReceiver tqr) {
-	double time = tqr.getRcvrTime();
-	int priority = tqr.getPriority();
-	RcvrTimeTriple triple =
+	String calleeName = ((Nameable)_actor).getName();
+	new FooBar( calleeName, "TimeKeeper.updateRcvrList()", "START" );
+	double time = tqr.getRcvrTime(); 
+	int priority = tqr.getPriority(); 
+	RcvrTimeTriple triple = 
 	        new RcvrTimeTriple(tqr, time, priority);
+	new FooBar( calleeName, "TimeKeeper.updateRcvrList()", "AFTER_TRIPLE" );
 	_removeRcvrTriple( triple );
 	_addRcvrTriple( triple );
+	new FooBar( calleeName, "TimeKeeper.updateRcvrList()", "END" );
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -581,10 +580,25 @@ public class TimeKeeper {
 	    RcvrTimeTriple testTriple = (RcvrTimeTriple)_rcvrTimeList.at(i);
 	    TimedQueueReceiver testRcvr = testTriple.getReceiver();
             double time = testTriple.getTime();
-            String testPort = testRcvr.getContainer().getName();
-            String testString = "null";
-            System.out.println("\t"+name+"'s Receiver "+i+
-	            " has a time of " +time+" and string: "+testString);
+	    Token token = null;
+	    /*
+	    try{
+		TimedQueueReceiver.Event event = 
+		    (TimedQueueReceiver.Event)testRcvr._queue.get(0);
+	        token = event.getToken();
+	    } catch( java.util.NoSuchElementException e ) {
+	    }
+	    */
+	    String msg = "\t"+name+"'s Receiver "+i+
+		    " has a time of " +time+" and ";
+	    if( token instanceof NullToken ) {
+		msg += "contains a NullToken";
+	    } else if( token != null ) {
+		msg += "contains a RealToken";
+	    } else {
+		msg += "contains no token";
+	    }
+	    System.out.println(msg);
         }
         System.out.println("***End of printRcvrList()\n");
     }
@@ -614,21 +628,24 @@ public class TimeKeeper {
      *  in the argument.
      */
     private void _addRcvrTriple(RcvrTimeTriple newTriple) {
-        boolean notAddedYet = true;
+	String calleeName = ((Nameable)_actor).getName();
         if( _rcvrTimeList.size() == 0 ) {
             _rcvrTimeList.insertAt( 0, newTriple );
             return;
         }
 
+        boolean notAddedYet = true;
 	// Add INACTIVE receivers
 	if( newTriple.getTime() == TimedQueueReceiver.INACTIVE ) {
+	    new FooBar( calleeName, "TimeKeeper._addRcvrTriple()", "ADD_INACTIVE" );
 	    _rcvrTimeList.insertLast(newTriple);
 	    return;
 	}
 
 	// Add IGNORE receivers
 	else if( newTriple.getTime() == TimedQueueReceiver.IGNORE ) {
-	    int cnt = 0;
+	    new FooBar( calleeName, "TimeKeeper._addRcvrTriple()", "ADD_IGNORE" );
+	    int cnt = 0; 
 	    while( cnt < _rcvrTimeList.size() && notAddedYet ) {
 		RcvrTimeTriple triple =
 		        (RcvrTimeTriple)_rcvrTimeList.at(cnt);
@@ -648,7 +665,8 @@ public class TimeKeeper {
 
 	// Add regular receivers
 	else {
-	    int cnt = 0;
+	    new FooBar( calleeName, "TimeKeeper._addRcvrTripe()", "ADD_REGULAR" );
+	    int cnt = 0; 
 	    while( cnt < _rcvrTimeList.size() && notAddedYet ) {
 		RcvrTimeTriple triple =
 		        (RcvrTimeTriple)_rcvrTimeList.at(cnt);
@@ -677,6 +695,8 @@ public class TimeKeeper {
     /** Remove the specified RcvrTimeTriple from the list of triples.
      */
     private void _removeRcvrTriple(RcvrTimeTriple triple) {
+	String calleeName = ((Nameable)_actor).getName();
+	new FooBar( calleeName, "TimeKeeper._removeRcvrTriple()", "START" );
 
         TimedQueueReceiver rcvrToBeRemoved = triple.getReceiver();
 
@@ -687,13 +707,16 @@ public class TimeKeeper {
 
 	    if( rcvrToBeRemoved == nextRcvr ) {
 	        _rcvrTimeList.removeAt( cnt );
-		cnt = _rcvrTimeList.size();
+		new FooBar( calleeName, "TimeKeeper._removeRcvrTriple()", "END" );
+		return;
+		// cnt = _rcvrTimeList.size();
 	    }
 	}
+	new FooBar( calleeName, "TimeKeeper._removeRcvrTriple()", "END" );
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                        private variables                  ////
 
     // The actor that is managed by this time keeper.
     private Actor _actor;
@@ -729,17 +752,16 @@ public class TimeKeeper {
     // of an DDEActor have simultaneous events, the priority of the
     // RcvrTimeTriples are used to determine order.
 
-    public class RcvrTimeTriple extends NamedObj {
+    public class RcvrTimeTriple {
 
-        // Construct a RcvrTimeTriple with a TimeQueueReceiver,
-	// a rcvr time and a priority. The rcvr time must be
-	// greater than or equal to any previous rcvr times
-	// associated with the TimedQueueReceiver.
-        public RcvrTimeTriple(TimedQueueReceiver rcvr,
+        // Construct a RcvrTimeTriple with a TimeQueueReceiver, 
+	// a rcvr time and a priority. The rcvr time must be 
+	// greater than or equal to any previous rcvr times 
+	// associated with the TimedQueueReceiver. 
+        public RcvrTimeTriple(TimedQueueReceiver rcvr, 
 		double rcvrTime, int priority ) {
-            super();
-            _rcvr = rcvr;
-	    _priority = priority;
+            _rcvr = rcvr; 
+	    _priority = priority; 
 	    _rcvrTime = rcvrTime;
 	    if( !(rcvr instanceof TimedQueueReceiver) ) {
 	        throw new IllegalArgumentException(
