@@ -834,7 +834,19 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     protected void _setDirector(Director director)
             throws IllegalActionException, NameDuplicationException {
+
+        Director oldDirector = getDirector();
+        if (oldDirector != null) {
+            oldDirector.invalidateSchedule();
+            oldDirector.invalidateResolvedTypes();
+        }
+
         _director = director;
+
+        if (director != null) {
+            director.invalidateSchedule();
+            director.invalidateResolvedTypes();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
