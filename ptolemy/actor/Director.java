@@ -407,6 +407,7 @@ public class Director extends NamedObj implements Executable {
      *  If the container is not an instance of TypedCompositeActor,
      *  do nothing.
      *  This method is write-synchronized on the workspace.
+     *  FIXME: pending review.
      */
     public void resolveTypes() {
 	try {
