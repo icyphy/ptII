@@ -120,7 +120,7 @@ public class RequiredFileGenerator {
     /** Appends the list of C files corresponding to user classes to a
      * given StringBuffer and returns the list of C files corresponding to
      * library files. This is used by the MakeFileGenerator.
-     * @param code The Stringbuffer to which the C filenames of user
+     * @param code The StringBuffer to which the C filenames of user
      * classes are to be added.
      * @return The list of C filesnames of required library files.
      */
