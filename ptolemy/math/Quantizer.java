@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (kienhuis@eecs.berkeley.edu)
+@ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
 @AcceptedRating Red (kienhuis@eecs.berkeley.edu)
 */
 
@@ -143,36 +143,12 @@ public class Quantizer {
         // a value of which we drop the fraction part. The integer remaining
         // will be represented by the BigInteger.
 
-//         double resolution = 0;
-//         int number = precision.getFractionBitLength();
-//         double tmp;
-//         resolution = Math.pow(2, -(number+1));
-//         tmp = 1/(Math.pow(2, number) + 1.0 / Math.pow(2, number));
-//         if ( x >= 0 ) {
-//             resolution = 0;
-//         } else {
-//             resolution = tmp;
-//         }
-
-//         BigDecimal multiplier;
-//         if ( x >= 0 ) {
-//             multiplier = new BigDecimal( x + resolution );
-//         } else {
-//             multiplier = new BigDecimal( x - resolution );
-//         }
-//         BigDecimal kl =
-//             _twoRaisedTo[
-//                   precision.getFractionBitLength()].multiply( multiplier );
-
         int number = precision.getFractionBitLength();
-        // double resolution = Math.pow(2, -(number+1)) - 
-        //       Math.pow(2, -(number+2));
         double resolution = 0;
         int i = 0;
 
         BigDecimal multiplier;
         if ( x >= 0 ) {
-
             // When  positive number, add a small
             // number bringing the number closer
             // to the x = y line.
@@ -199,7 +175,7 @@ public class Quantizer {
         FixPoint fxp = new FixPoint( precision, fxvalue );
 
         if ( overflow ) {
-            //fxp.setError( OVERFLOW );
+            fxp.setError( OVERFLOW );
         }
         return fxp;
     }

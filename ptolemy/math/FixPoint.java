@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (kienhuis@eecs.berkeley.edu)
+@ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
 @AcceptedRating Red (kienhuis@eecs.berkeley.edu)
 */
 
@@ -114,11 +114,11 @@ used to represents a value.
 
 <p>
 
-The Fixpoint uses three innerclasses. It uses the <i>Fixvalue</i>
-innerclass to keep the BigInteger value and the state of the value
-together. The <i>Error</i> innerclass is used to get a type safe
+The Fixpoint uses three inner classes. It uses the <i>Fixvalue</i>
+inner-class to keep the BigInteger value and the state of the value
+together. The <i>Error</i> inner-class is used to get a type safe
 enumerations of the state a <i>Fixpoint</i> resides. The Quantize
-innerclass is used to get a type safe enumeration of the different
+inner-class is used to get a type safe enumeration of the different
 modes of rounding.
 
 @author Bart Kienhuis
@@ -304,9 +304,6 @@ public final class FixPoint implements Cloneable, Serializable {
         int num = fractionPart.fixvalue.bitLength();
         int delta = _precision.getFractionBitLength() - num;
         String ln = _value.getIntegerBits(_precision).toString();
-        //System.err.println(" Num: " + num);
-        //System.err.println(" REAL: " + _precision.getFractionBitLength());
-        //System.err.println(" Delta: " + delta);
         if (_precision.getFractionBitLength() > 0) {
             ln +=  ".";
             // Append the zeros
@@ -330,7 +327,7 @@ public final class FixPoint implements Cloneable, Serializable {
    /**  Return a new Fixpoint number scaled to the give precision. To
      *  fit the new precision, a rounding error can occur. In that
      *  case the value of the Fixpoint is determined, depending on the
-     *  quanitzation mode selected.
+     *  quantization mode selected.
      *
      *  <ul>
      *  <li> mode = 0, <b>Saturate</b>: The fix point value is set,
@@ -522,10 +519,8 @@ public final class FixPoint implements Cloneable, Serializable {
 
 	// Return the Fixvalue cast to the new precision
         if (sign >= 0) {
-            //System.out.println(" -- RETURN a positive Fixvalue -- ");
             return new Fixvalue(total, fractionResult.getError());
         } else {
-            //System.out.println(" -- RETURN a negative Fixvalue -- ");
             return new Fixvalue(total.negate(), fractionResult.getError());
         }
     }

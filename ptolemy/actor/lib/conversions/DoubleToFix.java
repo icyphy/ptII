@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (kienhuis@eecs.berkeley.edu)
+@ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
 @AcceptedRating Red (kienhuis@eecs.berkeley.edu) */
 
 package ptolemy.actor.lib.conversions;

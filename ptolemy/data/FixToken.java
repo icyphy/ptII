@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (kienhuis@eecs.berkeley.edu)
+@ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
 @AcceptedRating Red (kienhuis@eecs.berkeley.edu)
 
 */
@@ -295,8 +295,8 @@ public class FixToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, arg);
         if (typeInfo == CPO.INCOMPARABLE) {
             throw new IllegalActionException("FixToken.isLessThan: The type" +
-                    " of the argument token is incomparable with the type of " +
-                    "this token. argType: " + arg.getType());
+                    " of the argument token is incomparable with the type" +
+                    " of this token. argType: " + arg.getType());
 	}
 
 	if (typeInfo == CPO.LOWER) {
@@ -449,8 +449,8 @@ public class FixToken extends ScalarToken {
 	int compare = TypeLattice.compare(this, leftArg);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the specified "
-                    + "token " + leftArg.getClass().getName() + " is not lower "
-                    + "than " + getClass().getName());
+                    + "token " + leftArg.getClass().getName() + " is not "
+                    + "lower than " + getClass().getName());
         }
 
         FixToken tem = (FixToken)this.convert(leftArg);

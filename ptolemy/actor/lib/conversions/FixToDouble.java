@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (kienhuis@eecs.berkeley.edu)
+@ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
 @AcceptedRating Red (kienhuis@eecs.berkeley.edu) */
 
 package ptolemy.actor.lib.conversions;
@@ -39,10 +39,12 @@ import ptolemy.math.Precision;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixToDouble
-/** Read a FixToken and converts it to a DoubleToken. Before doing so,
+/** 
+
+Read a FixToken and converts it to a DoubleToken. Before doing so,
 scale the FixToken to the give precision. To fit the new precision, a
 rounding error may occur. In that case the value of the FixToken is
-determined, depending on the quanitzation mode selected. The following
+determined, depending on the quantization mode selected. The following
 quantization modes are supported in case an overflow occurs.
 
 <ul>
