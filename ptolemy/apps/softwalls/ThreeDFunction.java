@@ -1,4 +1,4 @@
-/* 
+/* Read from a file and create a function of three variables. 
 
  Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
@@ -30,9 +30,11 @@
 package ptolemy.apps.softwalls;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 import java.util.NoSuchElementException;
@@ -48,14 +50,49 @@ function along a lattice of gridpoints.  The begining of the file also
 specifes the index value at each gridpoint, which in turn specifies the
 subset of R^3 for which the dataset is defined.
 
-@author Adam Cataldo
+@author Adam Cataldo, Christopher X. Brooks
 @version $Id$
 @since Ptolemy II 2.0.1
 */
-public class ThreeDFunction {
+public class ThreeDFunction implements Serializable {
     /** 
-     *  Constructs the functional representation of the 3D dataset.
+     *  Constructs the functional representation of the 3D dataset by
+     *  reading a file.
+     *
+     *  <p>The human readable data file has the following format:
+     *
+     *  <p>The first line is the integer dimension of the state space, which is
+     *  should be 3, but is currently ignored
      *  
+     *  <p>The second line consists of three doubles that define the
+     *  x grid information.  The first field is the lower bound, the second
+     *  is the step size, the third is the upper bound
+     *
+     *  <p>The third line consists of three doubles that define the y
+     *  grid information.  The format is the same as the x grid
+     *  information.
+     *
+     *  <p>The fourth line consists of three doubles that define the
+     *  theta grid information. The format is the same as the x grid
+     *  information.
+     *
+     *  <p> The fifth and successive lines consist of the array.
+     *  Each line is one double.  See the code for the format.
+
+     *  <p>The human readable datasets are often on the order of 10mb
+     *  in size.  In an effort to reduce the size of the data set,
+     *  before opening the human readable dataset, this method first
+     *  looks for a file with the same name that ends in ".cache" and
+     *  opens the .cache file if it exists and is newer than the human
+     *  readable file.  The .cache file consists of a Java serialized
+     *  version of the human readable file.
+     *
+     *  <p>If the .cache file does not exist, the human readable file
+     *  is read and if the directory is writable, a cache file is created. 
+     *
+     *  See <a href="http://java.sun.com/docs/books/tutorial/essential/io/serialization.html">Object Serialization</a>
+     *  in the Java tutorial.
+     *
      *  @param fileName name of file storing the dataset.
      *  @exception IllegalActionException If any exception is
      *     is generated during file I/O.
@@ -64,6 +101,27 @@ public class ThreeDFunction {
         int xPoints, yPoints, thetaPoints;
         double xSpan, ySpan, thetaSpan;
         double dimension;
+
+        File humanReadableFile = new File(fileName);
+        File cacheFile = new File(fileName + ".cache");
+        boolean useCache = false;
+        if (cacheFile.exists()) {
+            if (!humanReadableFile.exists()) {
+                useCache = true;
+            } else {
+                long humanReadableLastModified =
+                    humanReadableFile.lastModified();
+                if (humanReadableLastModified == 0L) {
+                    // Problem getting the last modified date from the
+                    // human readable file
+                    useCache = true;
+                }
+                if (cacheFile.lastModified() > humanReadableLastModified) {
+                    // Cache file was modified after human readable file
+                    useCache = true;
+                }
+            }
+        } 
 
         BufferedReader in = null;
             
@@ -239,19 +297,19 @@ public class ThreeDFunction {
     ////                      private variables                    ////
 
     /* Lower bound for each dimension */
-    double _xLowerBound,  _yLowerBound, _thetaLowerBound;
+    private double _xLowerBound,  _yLowerBound, _thetaLowerBound;
 
     /* Step size for each dimension */
-    double _xStepSize, _yStepSize, _thetaStepSize;
+    private double _xStepSize, _yStepSize, _thetaStepSize;
 
     /* Upper bound for each dimension */
-    double _xUpperBound, _yUpperBound, _thetaUpperBound;
+    private double _xUpperBound, _yUpperBound, _thetaUpperBound;
 
     /* The matrix of values on the gridpoint */
     double[][][] _values;
 
     /* The StringTokenizer being used to read the next double */
-    StringTokenizer _tokenizer = new StringTokenizer("");
+    private StringTokenizer _tokenizer = new StringTokenizer("");
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
