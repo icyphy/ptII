@@ -73,7 +73,8 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        //System.out.println("resolveClass for " + node.getProperty(IDENT_KEY));
+        if (StaticResolution.traceLoading) 
+            System.out.println("resolveClass for " + node.getProperty(IDENT_KEY));
 
         _pkgDecl = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
@@ -335,7 +336,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         // now that we have anonymous classes, we should visit the body
         TreeNode block = node.getBody();
 
-        if (block != AbsentTreeNode.instance) {
+        if ((block != null) && (block != AbsentTreeNode.instance)) {
 
             LinkedList childArgs = new LinkedList();
             childArgs.addLast(NullTypeNode.instance); // enclosing class decl

@@ -136,7 +136,8 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
         return loadedAST;
     }
 
-    /** Parse the file with the given canonical classname, doing no static
+    /** Using reflection, parse the file with the given canonical classname, 
+     *  doing no static
      *  resolution whatsoever. If a source file with the same canonical
      *  classname has already been parsed, return the previous node.
      */
@@ -181,7 +182,9 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 
     /** A Map containing values of CompileUnitNodes that have been parsed,
      *  including nodes that have undergone later stages of static resolution,
-     *  indexed by the canonical filename of the source file.
+     *  indexed by the canonical filename of the source file. All loaded 
+     *  CompileUnitNodes are included here, regardless of what loading
+     *  mode was used (shallow, deep, or full).
      */
     public static final Map allParsedMap = new HashMap();
 }

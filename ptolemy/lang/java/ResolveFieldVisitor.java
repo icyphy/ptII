@@ -38,13 +38,16 @@ import java.util.List;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
-/** A visitor that does field and method resolution.
+/** A visitor that does field and method resolution. Additionally,
+ASTs that were previously loaded in shallow mode, but whose deep
+versions are need, are loaded on demand (based on field/method/constructor
+references.
 <p>
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
 and Army Research Office.
 
-@author Jeff Tsay
+@author Jeff Tsay, Shuvra S. Bhattacharyya 
 @version $Id$
  */
 public class ResolveFieldVisitor extends ReplacementJavaVisitor
@@ -62,8 +65,10 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        //System.out.println("resolve field on " +
-        //        node.getDefinedProperty(IDENT_KEY));
+        if (StaticResolution.debugLoading) {
+            System.out.println("ResolveFieldVisitor.visitCompileUnitNode: "
+                    + ASTReflect.getFullyQualifiedName(node));
+        }
 
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
@@ -340,6 +345,13 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
                     typeName.getName().getIdent());
         } else {
             ClassDecl typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) typeName);
+
+            if (StaticResolution.traceLoading) {
+                System.out.println("ResolveFieldVisitor.visitAllocateNode with type "
+                        + "name: " + typeName.getName().getIdent());
+            }
+
+            ASTReflect.ensureDeepLoading(typeDecl.getSource());
 
             if ((typeDecl.getModifiers() & ABSTRACT_MOD) != 0) {
                 throw new RuntimeException("cannot allocate abstract " +

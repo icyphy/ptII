@@ -184,6 +184,12 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameNode name = node.getName();
         String varName = name.getIdent();
 
+        if (StaticResolution.debugLoading) {
+            System.out.println("ResolveNameVisitor.visitParameterNode: "
+                    + "varName = " + varName + ".\nThe parameter's AST follows.\n"
+                    + node.toString());
+        }
+
         Decl other = scope.lookup(varName, CG_FORMAL | CG_LOCALVAR);
 
         if (other != null) {
@@ -354,7 +360,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameNode name = node.getName();
 
         
-        if (StaticResolution.traceLoading) {
+        if (StaticResolution.debugLoading) {
             System.out.println("Calling resolveAName from " + 
                     "ResolveNameVisitor.visitObjectNode(" + 
                     name.getIdent() + ")");

@@ -153,71 +153,87 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
         ClassDecl ocl;
 
-        if (isInner) {
-            ocl = null;
-        } else {
-            // lookup in package
-            ocl = (ClassDecl) _pkgScope.lookupLocal(className);
+        if (StaticResolution.debugLoading) {
+            System.out.println("ResolvePackageVisitor._visitUserTypeDeclNode pkg scope:");
+            System.out.println(_pkgScope.toString());  
         }
 
-        if ((ocl != null) &&
-                ((ocl.getSource() == null) ||
-                        (ocl.getSource() == AbsentTreeNode.instance))) {
+  
+        if (JavaDecl.getDecl((TreeNode)node) == null) {
+
+            if (isInner) {
+                ocl = null;
+            } else {
+                // lookup in package
+                ocl = (ClassDecl) _pkgScope.lookupLocal(className);
+            }
+
+        if (StaticResolution.debugLoading) { 
+            System.out.println("_visitUserTypeDeclNode: The package's source follows.");
+            if (ocl == null) System.out.println("class decl does not exist yet"); 
+            else if (ocl.getSource() == null) System.out.println("null source"); 
+            else System.out.println(ocl.getSource().toString()); 
+        }
+    
+        if ((ocl != null) && ((ocl.getSource() == null) ||
+                (ocl.getSource() == AbsentTreeNode.instance) ||
+                (ocl.getSource() == node))) {
             // Assume this is the definition of 'ocl'
             ocl.setSource(node);
             ocl.setModifiers(node.getModifiers());
-
+    
             // fix category if this is an interface
             if (!isClass) {
-		//System.out.println(
-		//  "ResolvePackageVisitor:_visitUserTypeDeclNode: " +
-		//  "setting to CG_INTERFACE " + className);
                 ocl.category = CG_INTERFACE;
             }
-
+    
         } else {
-            int modifiers = node.getModifiers();
-            JavaDecl encDecl;
-            // boolean topLevel = !isInner || (modifiers & Modifier.STATIC_MOD);
-
-            //if (topLevel) {
-
-            // Set the enclosing declaration
-            if (!isInner) {
-                // For a top-level class, it's the package declaration
-                encDecl = _pkgDecl;
-            } else {
-                // For an inner class, it's the enclosing class declaration
-                Object encDeclObject = args.get(2);
-
-                // CHECKME
-                if (encDeclObject == NullValue.instance) {
-                    encDecl = null;
+                int modifiers = node.getModifiers();
+                JavaDecl encDecl;
+                // boolean topLevel = !isInner || (modifiers & Modifier.STATIC_MOD);
+    
+                //if (topLevel) {
+    
+                // Set the enclosing declaration
+                if (!isInner) {
+                    // For a top-level class, it's the package declaration
+                    encDecl = _pkgDecl;
                 } else {
-                    encDecl = (JavaDecl) encDeclObject; // enclosing decl
+                    // For an inner class, it's the enclosing class declaration
+                    Object encDeclObject = args.get(2);
+    
+                    // CHECKME
+                    if (encDeclObject == NullValue.instance) {
+                        encDecl = null;
+                    } else {
+                        encDecl = (JavaDecl) encDeclObject; // enclosing decl
+                    }
                 }
+    
+                if (StaticResolution.traceLoading) 
+                    System.out.println("ResolvePackageVisitor: creating new " +
+	                        "class decl for " + className);
+    
+                ClassDecl cl = new ClassDecl(className,
+                        isClass ? CG_CLASS : CG_INTERFACE,
+                        new TypeNameNode(node.getName()), node.getModifiers(), node, encDecl);
+    
+                if (ocl != null)  { // Redefinition in same package.
+                    throw new RuntimeException("ResolvePackageVisitor: " +
+                            "User type name " + className +
+                            " conflicts with " + ocl.getName() +
+                            " in same package");
+                }
+    
+                // add to the package scope if it's an top-level class
+                if (!isInner) {
+                    _pkgScope.add(cl);
+                }
+    
+                ocl = cl;
             }
-
-            //System.out.println("ResolvePackageVisitor: creating new " +
-	    //			     "class decl for " + className);
-            ClassDecl cl = new ClassDecl(className,
-                    isClass ? CG_CLASS : CG_INTERFACE,
-                    new TypeNameNode(node.getName()), node.getModifiers(), node, encDecl);
-
-            if (ocl != null)  { // Redefinition in same package.
-                throw new RuntimeException("ResolvePackageVisitor: " +
-                        "User type name " + className +
-                        " conflicts with " + ocl.getName() +
-                        " in same package");
-            }
-
-            // add to the package scope if it's an top-level class
-            if (!isInner) {
-                _pkgScope.add(cl);
-            }
-
-            ocl = cl;
-        }
+        } // if the class declaration node was not previously created 
+        else ocl = (ClassDecl)JavaDecl.getDecl((TreeNode)node); 
 
         Scope scope = new Scope(encScope);
         node.setProperty(SCOPE_KEY, scope);
