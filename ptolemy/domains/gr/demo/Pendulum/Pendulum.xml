@@ -10,18 +10,22 @@
         <property name="_location" class="ptolemy.moml.Location" value="525.0, 43.0">
         </property>
     </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 667]">
+    </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="590.0, 522.0">
+        <property name="_location" class="ptolemy.moml.Location" value="521.0, 105.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">
-           This model shows a simple pendulum system to illustrate
-           the graphics and ODE capabilities of Ptolemy II."</text>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a simple pendulum
+system to illustrate the graphics and
+ODE capabilities of Ptolemy II."</text>
            </svg>
            </configure>
         </property>
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[79, -6]">
     </property>
     <entity name="Sphere0" class="ptolemy.domains.gr.lib.Sphere3D">
         <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.5, 0.5, 0.0]">
@@ -87,7 +91,7 @@
         </property>
         <property name="show axes" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="480.0, 135.0">
+        <property name="_location" class="ptolemy.moml.Location" value="492.0, 332.0">
         </property>
         <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
