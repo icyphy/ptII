@@ -56,7 +56,7 @@ public class PNInterleave extends AtomicActor{
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _input = new IOPort(this, "input", true, false);
-        _input.makeMultiport(true);
+        _input.setMultiport(true);
         _output = new IOPort(this, "output", false, true);
     }
 

@@ -51,9 +51,9 @@ public class PNAlternate extends AtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _input = new IOPort(this, "input", true, false);
-	_input.makeMultiport(false);
+	_input.setMultiport(false);
         _output = new IOPort(this, "output", false, true);
-        _output.makeMultiport(true);
+        _output.setMultiport(true);
     }
     
 
