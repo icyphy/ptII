@@ -30,6 +30,7 @@ setDirector throws NameDuplicationException
 fire: call transferOutputs on local, not executive director.
 preinitialize: validate attributes of this composite and
     the attributes of its ports.
+setDirector invalidatesSchedule of executiveDirector.
 */
 
 package ptolemy.actor;
@@ -1007,6 +1008,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
         if (director != null) {
             director.invalidateSchedule();
             director.invalidateResolvedTypes();
+        } else {
+            // When deleting, the executive director also needs to be
+            // notified that its schedule must be recomputed.
+            Director executiveDirector = getExecutiveDirector();
+            if(executiveDirector != null) {
+                executiveDirector.invalidateSchedule();
+            }
         }
     }
 
