@@ -31,7 +31,8 @@
 
 ME =		ptolemy/domains
 
-# Domains, in alphabetical order
+# Domains, in alphabetical order.  If you change this, change
+# PTCLASSALLJARS below
 # FIXME: Temporarily
 # DIRS =		csp ct dde de fsm pn sdf
 DIRS =		ct de fsm sdf
@@ -49,13 +50,19 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
+# If you change this, change DIRS above
+#PTCLASSALLJARS = \
+#		csp/csp.jar \
+#		ct/ct.jar \
+#		dde/dde.jar \
+#		de/de.jar \
+#		fsm/fsm.jar \
+#		pn/pn.jar \
+#		sdf/sdf.jar
 PTCLASSALLJARS = \
-		csp/csp.jar \
 		ct/ct.jar \
-		dde/dde.jar \
 		fsm/fsm.jar \
 		de/de.jar \
-		pn/pn.jar \
 		sdf/sdf.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
