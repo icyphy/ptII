@@ -26,7 +26,7 @@ COPYRIGHTENDKEY
 
 */
 
-package ptolemy.backtrack.ast;
+package ptolemy.backtrack.util;
 
 import java.io.File;
 import java.io.FileFilter;

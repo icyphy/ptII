@@ -64,7 +64,6 @@ import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.ast.ASTClassNotFoundException;
 import ptolemy.backtrack.ast.Type;
 import ptolemy.backtrack.ast.TypeAnalyzerState;
-import ptolemy.backtrack.ast.UnknownASTException;
 import ptolemy.backtrack.util.FieldRecord;
 
 //////////////////////////////////////////////////////////////////////////
@@ -121,13 +120,14 @@ public class AssignmentTransformer
             return; // Some unknown situation.
         
         Type owner = Type.getOwner(leftHand);
+        Class ownerClass;
         boolean isStatic;
         if (owner == null)  // Not a field.
             return;
         else {
             try {
-                Class c = owner.toClass(state.getClassLoader());
-                Field field = c.getDeclaredField(name.getIdentifier());
+                ownerClass = owner.toClass(state.getClassLoader());
+                Field field = ownerClass.getDeclaredField(name.getIdentifier());
                 int modifiers = field.getModifiers();
                 if (!java.lang.reflect.Modifier.isPrivate(modifiers))
                     return; // Not handling non-private fields.
@@ -136,7 +136,8 @@ public class AssignmentTransformer
             } catch (ClassNotFoundException e) {
                 throw new ASTClassNotFoundException(owner.getName());
             } catch (NoSuchFieldException e) {
-                throw new UnknownASTException();
+                // The field is not defined in this class.
+                return;
             }
         }
         if (isStatic && !HANDLE_STATIC_FIELDS)
@@ -147,8 +148,7 @@ public class AssignmentTransformer
         if (newObject != null)
             invocation.setExpression(newObject);
         SimpleName newName = 
-            ast.newSimpleName(_getAssignMethodName(name.getIdentifier(), 
-                    indices.size()));
+            ast.newSimpleName(_getAssignMethodName(name.getIdentifier()));
         invocation.setName(newName);
         Expression newRightHand = 
             (Expression)ASTNode.copySubtree(ast, rightHand);
@@ -190,7 +190,7 @@ public class AssignmentTransformer
             String fieldName, Type fieldType, int indices, boolean isStatic, 
             ClassLoader loader) {
         
-        String methodName = _getAssignMethodName(fieldName, indices);
+        String methodName = _getAssignMethodName(fieldName);
         if (_isMethodDuplicated(currentClass, methodName, fieldType, 
                 indices, isStatic, loader))
             throw new ASTDuplicatedMethodException(currentClass.getName(), 
@@ -205,8 +205,7 @@ public class AssignmentTransformer
                 throw new ASTClassNotFoundException(fieldType);
             }
         
-        SimpleName name = 
-            ast.newSimpleName(_getAssignMethodName(fieldName, indices));
+        SimpleName name = ast.newSimpleName(methodName);
         method.setName(name);
         
         org.eclipse.jdt.core.dom.Type type = 
@@ -241,7 +240,7 @@ public class AssignmentTransformer
         Block body = _createAssignmentBlock(ast, fieldName, indices);
         method.setBody(body);
         
-        int modifiers = Modifier.PRIVATE;
+        int modifiers = Modifier.PRIVATE | Modifier.FINAL;
         if (isStatic)
             modifiers |= Modifier.STATIC;
         method.setModifiers(modifiers);
@@ -371,10 +370,8 @@ public class AssignmentTransformer
         return indicesList;
     }
     
-    private String _getAssignMethodName(String fieldName, int indices) {
-        return ASSIGN_PREFIX +
-                fieldName +
-                (indices == 0 ? "" : "$" + indices);
+    private String _getAssignMethodName(String fieldName) {
+        return ASSIGN_PREFIX + fieldName;
     }
     
     private String _getRecordName(String fieldName, int indices) {
@@ -386,7 +383,8 @@ public class AssignmentTransformer
     private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
             TypeAnalyzerState state) {
         Class currentClass = state.getCurrentClass();
-        List newDeclarations = new LinkedList();
+        List newMethods = new LinkedList();
+        List newFields = new LinkedList();
         Iterator bodyIter = bodyDeclarations.iterator();
         while (bodyIter.hasNext()) {
             Object nextDeclaration = bodyIter.next();
@@ -417,17 +415,18 @@ public class AssignmentTransformer
                             int indices = 
                                 ((Integer)indicesIter.next()).intValue();
                             
-                            newDeclarations.add(_createAssignMethod(currentClass, 
+                            newMethods.add(_createAssignMethod(currentClass, 
                                     ast, fieldName, type, indices, isStatic, 
                                     state.getClassLoader()));
-                            newDeclarations.add(_createFieldRecord(currentClass, 
+                            newFields.add(_createFieldRecord(currentClass, 
                                     ast, fieldName, indices, isStatic));
                         }
                     }
                 }
             }
         }
-        bodyDeclarations.addAll(newDeclarations);
+        bodyDeclarations.addAll(newMethods);
+        bodyDeclarations.addAll(newFields);
         
         AST ast = node.getAST();
         VariableDeclarationFragment fragment = 

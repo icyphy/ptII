@@ -95,6 +95,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
 import ptolemy.backtrack.ast.transform.AssignmentHandler;
 import ptolemy.backtrack.ast.transform.ClassHandler;
+import ptolemy.backtrack.util.PathFinder;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeAnalyzer
@@ -1005,7 +1006,7 @@ public class TypeAnalyzer extends ASTVisitor {
     protected TypeAndOwner _getFieldTypeAndOwner(Class c, String name) {
         // Try to resolve special field "length" of arrays.
         if (c.isArray() && name.equals("length"))
-            return new TypeAndOwner(Type.createType(c.getName()), Type.INT);
+            return new TypeAndOwner(Type.INT, Type.createType(c.getName()));
 
         // Find the field with reflection.
         Field field;
@@ -1018,8 +1019,8 @@ public class TypeAnalyzer extends ASTVisitor {
 
             try {
                 field = topClass.getDeclaredField(name);
-                return new TypeAndOwner(Type.createType(topClass.getName()),
-                        Type.createType(field.getType().getName()));
+                return new TypeAndOwner(Type.createType(field.getType().getName()),
+                        Type.createType(topClass.getName()));
             } catch (NoSuchFieldException e1) {
             }
 

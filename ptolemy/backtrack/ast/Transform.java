@@ -37,6 +37,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import ptolemy.backtrack.ast.transform.AssignmentRule;
 import ptolemy.backtrack.ast.transform.TransformRule;
+import ptolemy.backtrack.util.PathFinder;
 
 //////////////////////////////////////////////////////////////////////////
 //// Transform
