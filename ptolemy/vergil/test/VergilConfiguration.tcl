@@ -66,6 +66,10 @@ proc expandConfiguration {configuration} {
     # filters were already added.
     $parser setMoMLFilters [java::null]
 
+    # Add backward compatibility filters
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
     # Filter out graphical classes while inside MoMLParser
     # See ptII/util/testsuite/removeGraphicalClasses.tcl
     removeGraphicalClasses $parser
