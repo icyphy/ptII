@@ -43,7 +43,6 @@ import ptolemy.moml.*;
 
 import diva.gui.*;
 import diva.gui.toolbox.*;
-import diva.graph.CompositeGraphController;
 import diva.graph.EdgeController;
 import diva.graph.GraphController;
 import diva.graph.GraphPane;
