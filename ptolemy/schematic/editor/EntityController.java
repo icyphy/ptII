@@ -77,6 +77,8 @@ public class EntityController extends NodeController {
 	super(controller);
 	setNodeRenderer(new EntityRenderer());
 	setPortController(new EntityPortController(controller));
+	NodeInteractor interactor = (NodeInteractor)getNodeInteractor();
+	_menuCreator = new MenuCreator(interactor);
     }
     
     public NodeController getPortController() {
@@ -168,7 +170,41 @@ public class EntityController extends NodeController {
 	}
     }  
 
+    /** An interactor that creates context-sensitive menus.
+     */
+    // FIXME this could be commonalized with a factory.
+    protected class MenuCreator extends AbstractInteractor {
+	public MenuCreator(CompositeInteractor interactor) {
+	    interactor.addInteractor(this);
+	    setMouseFilter(new MouseFilter(3));
+	}
+
+       	public void mousePressed(LayerEvent e) {
+	    Figure source = e.getFigureSource();
+	    Node sourcenode = (Node) source.getUserObject();
+	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
+	    JPopupMenu menu = 
+		new EntityContextMenu(object);
+	    menu.show(getController().getGraphPane().getCanvas(),
+		      e.getX(), e.getY());
+	}
+    }
+    
+    /**
+     * This is a base class for popup menus used to manipulate various
+     * PTMLObjects within the editor.  It contains an entry for parameter
+     * editing that opens a dialog box in a new frame for 
+     * editing the parameters
+     * of an object.  
+     */
+    public class EntityContextMenu extends BasicContextMenu {
+        public EntityContextMenu(NamedObj target) {
+            super(target);
+        }
+    }
+
     EntityPortController _portController;
+    MenuCreator _menuCreator;
 }
 
 

@@ -566,7 +566,8 @@ public class GraphEditor extends AbstractApplication {
 
             MoMLParser parser = new MoMLParser();
             _entityLibrary =
-                (CompositeEntity) parser.parse(entitylibURL, entitylibURL.openStream());
+                (CompositeEntity) parser.parse(entitylibURL,
+					       entitylibURL.openStream());
 
             //            _entityLibrary = 
             //   PTMLObjectFactory.parseEntityLibrary(entitylibURL, 

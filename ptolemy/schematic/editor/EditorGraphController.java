@@ -119,10 +119,6 @@ public class EditorGraphController extends GraphController {
             InputEvent.BUTTON1_MASK,
             InputEvent.SHIFT_MASK);
 
-    /** The filter for context sensitive menus
-     */
-    private MouseFilter _menuFilter = new MouseFilter (3);
-
     /**
      * Create a new basic controller with default 
      * terminal and edge interactors.
@@ -203,118 +199,7 @@ public class EditorGraphController extends GraphController {
 
 	ef.route();
     }
-
-    /** Add an edge to this graph editor and render it
-     * from the given tail node to an autonomous site at the
-     * given location. The "end" flag is either HEAD_END
-     * or TAIL_END, from diva.canvas.connector.ConnectorEvent.
-     
-    public void addEdge(Edge edge, Node node, int end, double x, double y) {
-        Figure nf = (Figure) node.getVisualObject();
-        FigureLayer layer = getGraphPane().getForegroundLayer();
-        Site headSite, tailSite;
-
-        if (end == ConnectorEvent.TAIL_END) {
-            tailSite = getConnectorTarget().getTailSite(nf, x, y);
-            headSite = new AutonomousSite(layer, x, y);
-            getGraphImpl().setEdgeTail(edge, node);
-        } else {
-            tailSite = new AutonomousSite(layer, x, y);
-            headSite = getConnectorTarget().getHeadSite(nf, x, y);
-            getGraphImpl().setEdgeHead(edge, node);
-        }
-
-        Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
-        ef.setInteractor(getEdgeInteractor());
-
-        // Add to the view
-        ef.setUserObject(edge);
-        edge.setVisualObject(ef);
-        layer.add(ef);
-
-	ef.route();
-
-    }
-
-    /** Add a node to this graph editor and render it
-     * at the given location.
-     
-    public void addNode(Node node, double x, double y) {
-        // Create a figure for it
-        drawNode(node, x, y);
-
-        // Add to the graph
-        getGraphImpl().addNode(node, getGraph());
-    }
-    
-    /** Draw an edge.
-     
-    public void drawEdge(Edge edge) {
-        Node tail = edge.getTail();
-        Node head = edge.getHead();
-        FigureLayer layer = getGraphPane().getForegroundLayer();
-        Figure tf = (Figure) tail.getVisualObject();
-        Figure hf = (Figure) head.getVisualObject();
-
-        // Get a tail site
-        Rectangle2D bounds = tf.getBounds();
-        Site tailSite = getConnectorTarget().getTailSite(tf,
-                bounds.getCenterX(), bounds.getCenterY());
-
-        // Get a head site
-        bounds = hf.getBounds();
-        Site headSite = getConnectorTarget().getHeadSite(hf,
-                bounds.getCenterX(), bounds.getCenterY());
-
-        // Create the figure
-        Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
-        edge.setVisualObject(ef);
-        ef.setUserObject(edge);
-        ef.setInteractor(getEdgeInteractor());
-        layer.add(ef);
-        ef.route();
-    }
-
-    /** Draw a node at the given location.
-     
-    public void drawNode(Node n, double x, double y) {
-	// Create a figure for it
-        Figure nf = getNodeRenderer().render(n);
-        nf.setInteractor(getNodeInteractor());
-	getGraphPane().getForegroundLayer().add(nf);
-
-        
-        if(n instanceof CompositeNode) {
-	    Iterator nodes = ((CompositeNode) n).nodes();
-	    while(nodes.hasNext()) {
-		Node node = (Node) nodes.next();
-		Figure nodeFigure = getNodeRenderer().render(node);
-		nodeFigure.setInteractor(getNodeInteractor());
-
-                // Assume that CompositeNode -> CompositeFigure
-		((CompositeFigure)nf).add(nodeFigure);
-
-                CanvasUtilities.translateTo(nodeFigure, 20, 0);
-
-                nodeFigure.setUserObject(node);
-		node.setVisualObject(nodeFigure);
-	    }
-           }
-               
-
-        CanvasUtilities.translateTo(nf, x, y);
- 
-        // Add to the view and model
-        nf.setUserObject(n);
-        n.setVisualObject(nf);
-	}
-
-    /**
-     * Return the graph being viewed.
-     */
-    //    public Graph getGraph() {
-    //    return _graph;
-    //}
+    */
 
     public NodeController getEntityController() {
 	return _entityController;
@@ -357,15 +242,12 @@ public class EditorGraphController extends GraphController {
 	_connectedVertexCreator = new ConnectedVertexCreator();
         _connectedVertexCreator.setMouseFilter(_shiftFilter);
         getNodeInteractor().addInteractor(_connectedVertexCreator);
-        *//*
-        // MenuCreator 
+        */
+        // MenuCreator 	
         _menuCreator = new MenuCreator();
-        _menuCreator.setMouseFilter(_menuFilter);
-        // For menus on objects
-        getNodeInteractor().addInteractor(_menuCreator);   
-        // For menus on the schematic.
-        pane.getBackgroundEventLayer().addInteractor(_menuCreator);
-          */
+	_menuCreator.setMouseFilter(new MouseFilter(3));
+	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
+         
     }
 
     /**
@@ -436,13 +318,13 @@ public class EditorGraphController extends GraphController {
         _graph = g;
     }
     */
-
+    
     public void setEntityController(NodeController controller) {
 	_entityController = (EntityController)controller;
     }
 
     ///////////////////////////////////////////////////////////////
-    //// TerminalCreator
+    //// PortCreator
 
     /** An inner class that places a terminal at the clicked-on point
      * on the screen, if control-clicked with mouse button 1. This
@@ -506,35 +388,6 @@ public class EditorGraphController extends GraphController {
     }
 
     ///////////////////////////////////////////////////////////////
-    //// EdgeDropper
-
-    /** An inner class that handles interactive changes to connectivity.
-     */  /*   
-    protected class EdgeDropper extends ConnectorAdapter {
-        //
-        // Called when a connector end is dropped--attach or
-        // detach the edge as appropriate.        
-        public void connectorDropped(ConnectorEvent evt) {
-            Connector c = evt.getConnector();
-            Figure f = evt.getTarget();
-            Edge e = (Edge)c.getUserObject();
-            Node n = (f == null) ? null : (Node)f.getUserObject();
-	    GraphImpl impl = getGraphImpl();
-            switch (evt.getEnd()) {
-            case ConnectorEvent.HEAD_END:
-                impl.setEdgeHead(e, n);
-                break;
-            case ConnectorEvent.TAIL_END:
-                impl.setEdgeTail(e, n);
-                break;
-            default:
-                throw new IllegalStateException(
-                        "Cannot handle both ends of an edge being dragged.");
-            }
-        }
-    }
-	 */
-    ///////////////////////////////////////////////////////////////
     //// LinkCreator
 
     /** An interactor that interactively drags edges from one terminal
@@ -565,7 +418,8 @@ public class EditorGraphController extends GraphController {
 	    // Add it to the selection so it gets a manipulator, and
 	    // make events go to the grab-handle under the mouse
 	    Figure ef = (Figure) edge.getVisualObject();
-	    getSelectionModel().addSelection(ef);	    ConnectorManipulator cm = 
+	    getSelectionModel().addSelection(ef);	
+	    ConnectorManipulator cm = 
 		(ConnectorManipulator) ef.getParent();
 	    GrabHandle gh = cm.getHeadHandle();
 	    layer.grabPointer(e, gh);
@@ -626,69 +480,18 @@ public class EditorGraphController extends GraphController {
      */
     protected class MenuCreator extends AbstractInteractor {
 	public void mousePressed(LayerEvent e) {
+	    System.out.println("Menu Creator");
 	    Figure source = e.getFigureSource();
-	    if(source == null) {
-		Graph graph = getGraph();
-		NamedObj object = (NamedObj) graph.getSemanticObject();
-		JPopupMenu menu = 
-		    new ObjectContextMenu(object);
-		menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
-	    }
-	    else {
-		Node sourcenode = (Node) source.getUserObject();
-		NamedObj object = (NamedObj) sourcenode.getSemanticObject();
-		JPopupMenu menu = 
-		    new ObjectContextMenu(object);
-		menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
-	    }
+	    Graph graph = getGraph();
+	    CompositeEntity object = 
+		(CompositeEntity) graph.getSemanticObject();
+	    JPopupMenu menu = 
+		new SchematicContextMenu(object);
+	    menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
 	}
     }
-    
-    /**
-     * This is a base class for popup menus used to manipulate various
-     * PTMLObjects within the editor.  It contains an entry for parameter
-     * editing that opens a dialog box in a new frame for 
-     * editing the parameters
-     * of an object.  
-     */
-    public class ObjectContextMenu extends JPopupMenu {
-	protected NamedObj _target;
-	
-        public ObjectContextMenu(NamedObj target) {
-            super(target.getName());
-            _target = target;
-            
-            Action action;
-            action = new AbstractAction ("Get Parameters") {
-                public void actionPerformed(ActionEvent e) {
-                    // Create a dialog and attach the dialog values 
-                    // to the parameters of the object                    
-                    NamedObj object = (NamedObj) getValue("target");
-                    System.out.println(object);
-                    JFrame frame = new JFrame("Parameters for " + object.getName());
-                    JPanel pane = (JPanel) frame.getContentPane();
-                    Query query;
-                    try {
-                        query = new ParameterQuery(object);
-                    } catch (IllegalActionException ex) {
-                        ex.printStackTrace();
-                        throw new RuntimeException(ex.getMessage());
-                    }
-		    
-                    pane.add(query);
-                    frame.setVisible(true);
-                    frame.pack();
-                }
-            };
-            action.putValue("target", target);
-            action.putValue("tooltip", "Get Parameters");
-            JMenuItem item = add(action);
-            item.setToolTipText("Get Parameters");
-            action.putValue("menuItem", item);
-        }
-    }
-    
-    public class SchematicContextMenu extends ObjectContextMenu {
+        
+    public class SchematicContextMenu extends BasicContextMenu {
 	public SchematicContextMenu(CompositeEntity target) {
 	    super(target);
 	    
@@ -705,7 +508,7 @@ public class EditorGraphController extends GraphController {
                     JPanel pane = (JPanel) frame.getContentPane();
 		    Query query;
 		    try {
-			query = new ParameterQuery(director);
+			query = new ParameterConfigurer(director);
 		    } catch (Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException(ex.getMessage());
@@ -728,6 +531,33 @@ public class EditorGraphController extends GraphController {
 	public RelationController(GraphController controller) {
 	    super(controller);
 	    setNodeRenderer(new RelationRenderer());
+	    NodeInteractor interactor = (NodeInteractor)getNodeInteractor();
+	    new MenuCreator(interactor);
+	}
+
+	/** An interactor that creates context-sensitive menus.
+	 */
+	protected class MenuCreator extends AbstractInteractor {
+	    public MenuCreator(CompositeInteractor interactor) {
+		interactor.addInteractor(this);
+		setMouseFilter(new MouseFilter(3));
+	    }
+	    
+	    public void mousePressed(LayerEvent e) {
+		Figure source = e.getFigureSource();
+		Node sourcenode = (Node) source.getUserObject();
+		NamedObj object = (NamedObj) sourcenode.getSemanticObject();
+		JPopupMenu menu = 
+		    new RelationContextMenu(object);
+		menu.show(getController().getGraphPane().getCanvas(),
+			  e.getX(), e.getY());
+	    }
+	}
+    }
+
+    public class RelationContextMenu extends BasicContextMenu {
+	public RelationContextMenu(NamedObj target) {
+	    super(target);
 	}
     }
 
@@ -770,6 +600,30 @@ public class EditorGraphController extends GraphController {
 	    
 	    //    MouseFilter handleFilter = new MouseFilter(1, 0, 0);
 	    //manipulator.setHandleFilter(handleFilter);
+
+	    // FIXME links should have context menus as well
+	    //	    EdgeInteractor interactor = 
+	    //(EdgeInteractor)getEdgeInteractor();
+	    //new MenuCreator(interactor);
+	}
+
+	/** An interactor that creates context-sensitive menus.
+	 */
+	protected class MenuCreator extends AbstractInteractor {
+	    public MenuCreator(CompositeInteractor interactor) {
+		interactor.addInteractor(this);
+		setMouseFilter(new MouseFilter(3));
+	    }
+	    
+	    public void mousePressed(LayerEvent e) {
+		Figure source = e.getFigureSource();
+	        Edge sourcenode = (Edge) source.getUserObject();
+		NamedObj object = (NamedObj) sourcenode.getSemanticObject();
+		JPopupMenu menu = 
+		    new RelationContextMenu(object);
+		menu.show(getController().getGraphPane().getCanvas(),
+			  e.getX(), e.getY());
+	    }
 	}
     }
 

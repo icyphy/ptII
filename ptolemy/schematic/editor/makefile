@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	BasicContextMenu.java \
 	EditorDropTarget.java \
 	EditorGraphController.java \
 	EditorGraphImpl.java \
@@ -55,7 +56,6 @@ JSRCS = \
 	EntityPortController.java \
 	GraphDocument.java \
 	GraphEditor.java \
-	ParameterQuery.java \
 	PortController.java \
 	SchematicPalette.java
 
