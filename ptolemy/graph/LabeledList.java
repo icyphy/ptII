@@ -275,7 +275,7 @@ public class LabeledList implements List {
         return Collections.unmodifiableList(_elements).listIterator(index);
     }
 
-    /* Remove an element from the list.
+    /** Remove an element from the list.
      * Elements that have higher-valued
      * labels than this element will have their labels reduced in value
      * by one. All other element labels will remain unchanged.
@@ -298,7 +298,7 @@ public class LabeledList implements List {
         return true;
     }
 
-    /* Remove and return an element with a specified label from the list.
+    /** Remove and return an element with a specified label from the list.
      * Elements that have higher-valued
      * labels than this element will have their labels reduced in value
      * by one. All other element labels will remain unchanged.
@@ -315,21 +315,21 @@ public class LabeledList implements List {
         return removed;
     }
 
-    /*  Unsupported method of the list interface.
+    /**  Unsupported method of the list interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean removeAll(Collection c) {
         throw new UnsupportedOperationException();
     }
 
-    /*  Unsupported method of the list interface.
+    /**  Unsupported method of the list interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean retainAll(Collection c) {
         throw new UnsupportedOperationException();
     }
 
-    /*  Unsupported method of the list interface.
+    /**  Unsupported method of the list interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public Object set(int index, Object element)  {
@@ -343,7 +343,7 @@ public class LabeledList implements List {
         return _elements.size();
     }
 
-    /*  Unsupported method of the list interface.
+    /**  Unsupported method of the list interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public List subList(int fromIndex, int toIndex) {
