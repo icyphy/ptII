@@ -202,6 +202,13 @@ public class CommandLineTransformer extends SceneTransformer {
                     insertPoint);
         }
 
+        // unroll places where the list of models is used.
+        LinkedList modelList = new LinkedList();
+        modelList.add(modelField);
+        SootField modelsField = mainClass.getFieldByName("_models");
+        SootUtilities.unrollIteratorInstances(mainClass,
+                modelsField, modelList);
+ 
         // Find calls to Manager.startRun() and replace it with 
         // iteration code.
         // Note: It would be nice if we could inline the manager 
@@ -212,6 +219,8 @@ public class CommandLineTransformer extends SceneTransformer {
             Scene.v().getSootClass("ptolemy.actor.Manager");
         SootMethod managerStartRunMethod =
             managerClass.getMethodByName("startRun");
+        SootMethod mainStartRunMethod =
+            mainClass.getMethodByName("startRun");
         for(Iterator methods = mainClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
@@ -226,7 +235,7 @@ public class CommandLineTransformer extends SceneTransformer {
                     if(box.getValue() instanceof InstanceInvokeExpr) {
                         InstanceInvokeExpr expr = 
                             (InstanceInvokeExpr)box.getValue();
-                        if(expr.getMethod().equals(managerStartRunMethod)) {
+                        if(expr.getMethod().equals(mainStartRunMethod)) {
                             // Replace the start run method call
                             // with code to iterate the model.
                             // First create a local that refers to the model.
@@ -257,14 +266,7 @@ public class CommandLineTransformer extends SceneTransformer {
                 }
             }
         }
-
-        // unroll places where the list of models is used.
-        LinkedList modelList = new LinkedList();
-        modelList.add(modelField);
-        SootField modelsField = mainClass.getFieldByName("_models");
-        SootUtilities.unrollIteratorInstances(mainClass,
-                modelsField, modelList);
-        
+       
         // inline calls to the startRun and stopRun method.
         SootMethod startRunMethod = mainClass.getMethodByName("startRun");
         SootUtilities.inlineCallsToMethod(startRunMethod, mainClass);
@@ -345,7 +347,7 @@ public class CommandLineTransformer extends SceneTransformer {
             System.out.println("method = " + method.toString());
             SootMethod method2 = Scene.v().getMethod(method.toString());
         }
-
+        Scene.v().setActiveHierarchy(new Hierarchy());
     }
 
     /** Default value for the iterations command line parameter
@@ -370,6 +372,7 @@ public class CommandLineTransformer extends SceneTransformer {
      */
     private void _insertIterateCalls(Body body, Unit unit,
             SootClass modelClass, Local modelLocal, Map options) {
+        System.out.println("modelClass = " + modelClass);
         Chain units = body.getUnits();
         
         int iterationLimit = Options.getInt(options, "iterations");

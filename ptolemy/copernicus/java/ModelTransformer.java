@@ -121,14 +121,14 @@ public class ModelTransformer extends SceneTransformer {
      */
     public static String getFieldNameForEntity(Entity entity, 
             NamedObj context) {
-        return SootUtilities.sanitizeName(entity.getName(context));
+        return StringUtilities.sanitizeName(entity.getName(context));
     }
 
     /** Return the name of the field that is created for the
      *  given entity.
      */
     public static String getFieldNameForPort(Port port, NamedObj context) {
-        return SootUtilities.sanitizeName(port.getName(context));
+        return StringUtilities.sanitizeName(port.getName(context));
     }
 
     /** Return the name of the field that is created for the
@@ -136,7 +136,7 @@ public class ModelTransformer extends SceneTransformer {
      */
     public static String getFieldNameForAttribute(Attribute attribute,
             NamedObj context) {
-        return SootUtilities.sanitizeName(attribute.getName(context));
+        return StringUtilities.sanitizeName(attribute.getName(context));
     }
 
     /** Return the name of the field that is created for the
@@ -144,7 +144,7 @@ public class ModelTransformer extends SceneTransformer {
      */
     public static String getFieldNameForRelation(Relation relation, 
             NamedObj context) {
-        return SootUtilities.sanitizeName(relation.getName(context));
+        return StringUtilities.sanitizeName(relation.getName(context));
     }
 
     /** Return the model class created during the most recent
@@ -162,7 +162,7 @@ public class ModelTransformer extends SceneTransformer {
         // spaces, and append leading characters because entity names
         // can start with numbers.
         return Options.getString(options, "targetPackage")
-            + ".CGModel" + SootUtilities.sanitizeName(model.getName());
+            + ".CGModel" + StringUtilities.sanitizeName(model.getName());
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -207,6 +207,8 @@ public class ModelTransformer extends SceneTransformer {
         LocalSplitter.v().transform(body, phaseName + ".lns");
         LocalNameStandardizer.v().transform(body, phaseName + ".lns");
 
+        // Since we've added classes and methods, update the hierarchy
+        Scene.v().setActiveHierarchy(new Hierarchy());
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -42,6 +42,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringUtilities;
 
 import soot.Hierarchy;
 import soot.IntType;
@@ -385,7 +386,7 @@ public class ActorTransformer extends SceneTransformer {
         // spaces, and append leading characters because entity names
         // can start with numbers.
         return Options.getString(options, "targetPackage")
-            + ".CG" + SootUtilities.sanitizeName(entity.getName());
+            + ".CG" + StringUtilities.sanitizeName(entity.getName());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -511,6 +512,10 @@ public class ActorTransformer extends SceneTransformer {
                         // FIXME: What if more than one method could be called?
                         SiteInliner.inlineSite(r.getMethod(), stmt, method);
                     }
+
+                    
+                    // Inline other NamedObj methods here, too..
+                    
                 }
             }
         }

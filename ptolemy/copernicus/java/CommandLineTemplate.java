@@ -169,14 +169,14 @@ public class CommandLineTemplate {
 
         // Iterate through the model, looking for something that is Placeable.
         boolean hasPlaceable = false;
-        Iterator atomicEntities = model.allAtomicEntityList().iterator();
+        /* Iterator atomicEntities = model.allAtomicEntityList().iterator();
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
             if(object instanceof Placeable) {
                 hasPlaceable = true;
                 break;
             }
-        }
+           }
 
         if (hasPlaceable) {
             // The model has an entity that is Placeable, so create a frame.
@@ -211,6 +211,7 @@ public class CommandLineTemplate {
                 System.out.println("startRun: " + ex);
             }
         }
+         */
 
         Manager manager = model.getManager();
         try {
@@ -274,7 +275,4 @@ public class CommandLineTemplate {
     // Exists to mirror CompositeActorApplication.
     private boolean _expectingClass = false;
 
-    // The previous state of the manager, to avoid reporting it if it hasn't
-    // changed.
-    private Manager.State _previousState;
 }

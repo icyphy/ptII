@@ -103,9 +103,9 @@ public class InlinePortTransformer extends SceneTransformer {
      */
     public static String getBufferFieldName(TypedIORelation relation, 
             int channel, ptolemy.data.type.Type type) {
-        return "_" + SootUtilities.sanitizeName(relation.getName())
+        return "_" + StringUtilities.sanitizeName(relation.getName())
             + "_" + channel
-            + "_" + SootUtilities.sanitizeName(type.toString());           
+            + "_" + StringUtilities.sanitizeName(type.toString());           
     }
 
     public String getDefaultOptions() {
@@ -357,17 +357,21 @@ public class InlinePortTransformer extends SceneTransformer {
                                     (methodName.equals("hasToken") ||
                                             methodName.equals("hasRoom") ||
                                             methodName.equals("get") ||
-                                            methodName.equals("put") ||
-                                            methodName.equals("broadcast"))) {
-                                // If we try to get on a port with zero width, then 
-                                // throw a runtime exception.
+                                            methodName.equals("put"))) {
+                                // NOTE: broadcast is legal on a zero
+                                // width port.
+
+                                // If we try to get on a port with
+                                // zero width, then throw a runtime
+                                // exception.
                                 Local local = SootUtilities.createRuntimeException(body, stmt, 
                                         methodName + "() called on a port with zero width: " + 
                                         port.getFullName() + "!");
                                 body.getUnits().insertBefore(Jimple.v().newThrowStmt(local),
                                         stmt);
                                 if(stmt instanceof DefinitionStmt) {
-                                    // be sure we replace with the right return type.
+                                    // be sure we replace with the
+                                    // right return type.
                                     if(methodName.equals("hasToken") ||
                                             methodName.equals("hasRoom")) {
                                         box.setValue(IntConstant.v(0));
@@ -434,12 +438,20 @@ public class InlinePortTransformer extends SceneTransformer {
                                         portToIndexArrayField, portToTypeNameToBufferField);
 
                             } else if(r.getMethod().getName().equals("broadcast")) {
-                                // Could be broadcast that takes a token,
-                                // or broadcast that takes an array of tokens.          
-                                // In either case, replace the broadcast with circular array ref.
-                                _inlineBroadcast(body, stmt, r, port, 
-                                        portToIndexArrayField, portToTypeNameToBufferField);
-                                
+                                // Broadcasting on a port of zero width does 
+                                // nothing.
+                                if(port.getWidth() == 0) {
+                                    body.getUnits().remove(stmt);
+                                } else {
+                                    // Could be broadcast that takes a
+                                    // token, or broadcast that takes an
+                                    // array of tokens.  In either case,
+                                    // replace the broadcast with circular
+                                    // array ref.
+                                    _inlineBroadcast(body, stmt, r, port, 
+                                            portToIndexArrayField, 
+                                            portToTypeNameToBufferField);
+                                }                                
                             }
                         }
                     }
@@ -637,7 +649,7 @@ public class InlinePortTransformer extends SceneTransformer {
         // Create a field that refers to all the channels of that port.
         SootField bufferField =
             new SootField("_portbuffer_" + port.getName() + "_" +
-                    SootUtilities.sanitizeName(type.toString()),
+                    StringUtilities.sanitizeName(type.toString()),
                     ArrayType.v(tokenType, 2), Modifier.PUBLIC);
         entityClass.addField(bufferField);
         

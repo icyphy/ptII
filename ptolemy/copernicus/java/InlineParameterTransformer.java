@@ -579,7 +579,8 @@ public class InlineParameterTransformer extends SceneTransformer {
 
                 if(debug) System.out.println("creating field for " + settable);
 
-                String fieldName = SootUtilities.sanitizeName(attribute.getName(context));
+                String fieldName = 
+                    StringUtilities.sanitizeName(attribute.getName(context));
                 SootField field;
                 // Create a field to contain the value of the attribute.
                 if(settable instanceof Variable) {

@@ -53,6 +53,7 @@ JSRCS = \
 	CommandLineTransformer.java \
 	ConstantLoopUnroller.java \
 	DeadObjectEliminator.java \
+	ExceptionEliminator.java \
 	FieldsForAttributesTransformer.java \
 	FieldsForPortsTransformer.java \
 	FieldOptimizationTransformer.java \

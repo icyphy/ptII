@@ -120,14 +120,14 @@ public class Main extends KernelMain {
         // Create a class for the composite actor of the model
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
                 ModelTransformer.v(_toplevel)));
-        
-        // Add a command line interface (i.e. Main)
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
-                CommandLineTransformer.v(_toplevel)));
-        
+
         // Inline the director into the composite actor.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.idt",
                 InlineDirectorTransformer.v(_toplevel)));
+                
+        // Add a command line interface (i.e. Main)
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
+                CommandLineTransformer.v(_toplevel)));
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot1",
                 ClassWriter.v()));
@@ -286,8 +286,10 @@ public class Main extends KernelMain {
 
       
         // Remove references to named objects.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ee",
+                  ExceptionEliminator.v(_toplevel)));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.noe",
-                NamedObjEliminator.v(_toplevel)));
+                  NamedObjEliminator.v(_toplevel)));
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot6",
                 ClassWriter.v()));
