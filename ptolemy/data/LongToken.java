@@ -153,6 +153,55 @@ public class LongToken extends ScalarToken {
 		"type: " + token.getClass().getName() + " to a LongToken");
     }
 
+    /** Return a new Token whose value is the value of this token
+     *  divided by the value of the argument token.
+     *  Type resolution also occurs here, with the returned Token type
+     *  chosen to achieve a lossless conversion. If two integers are divided,
+     *  the result will be an integer which is the quotient.
+     *  @param divisor The token to divide this Token by
+     *  @exception IllegalActionException If the passed token is
+     *  not of a type that can be divide this Tokens value by in a
+     *  lossless fashion.
+     *  @return A new Token containing the result.
+     */
+    public Token divide(Token divisor)
+	    throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(this, divisor);
+        try {
+            if (typeInfo == CPO.LOWER) {
+                return divisor.divideReverse(this);
+            } else if (divisor instanceof LongToken) {
+		return new LongToken(_value / ((LongToken)divisor).longValue());
+            } else if (typeInfo == CPO.HIGHER) {
+                LongToken tmp = (LongToken)this.convert(divisor);
+		return new LongToken(_value / (tmp.longValue()));
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
+            String str = "divide method not supported between"
+            	+ this.getClass().getName() + " and "
+            	+ divisor.getClass().getName();
+            throw new IllegalActionException(str + ": " + ex.getMessage());
+        }
+    }
+
+    /** Return a new Token whose value is the value of the argument token
+     *  divided by the value of this token. Type resolution
+     *  also occurs here, with the returned Token type chosen to achieve
+     *  a lossless conversion.
+     *  @param dividend The token to be divided by the value of this Token.
+     *  @exception IllegalActionException If the passed token
+     *   is not of a type that can be divided by this Tokens value in
+     *   a lossless fashion.
+     *  @return A new Token containing the result.
+     */
+    public Token divideReverse(Token dividend)
+	    throws IllegalActionException {
+        LongToken tmp = (LongToken)this.convert(dividend);
+	return new LongToken(tmp.longValue() / _value);
+    }
+
     /** Test the values of this Token and the argument Token for equality.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
