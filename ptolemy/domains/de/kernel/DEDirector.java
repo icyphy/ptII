@@ -413,18 +413,12 @@ public class DEDirector extends Director implements TimedDirector {
                                 "at the current tag.");
                     }
                 }
-                _microstep = 0;
                 // Nothing more needs to be done in the current iteration.
                 // Simply return.
                 return;
             }
 
             // -- If the actor to be fired is not null.
-
-            if (_debugging) {
-                _debug("DE director fires at " + getModelTime()
-                        + "  with microstep as " + _microstep);
-            }
 
             // If the actor to be fired is the container of this director,
             // the next event to be processed is in an inside receiver of
@@ -438,6 +432,11 @@ public class DEDirector extends Director implements TimedDirector {
             // TESTIT.
             if (actorToFire == getContainer()) {
                 return;
+            }
+
+            if (_debugging) {
+                _debug("DE director fires at " + getModelTime()
+                        + "  with microstep as " + _microstep);
             }
 
             // Keep firing the actor to be fired until there are no more input
@@ -528,19 +527,7 @@ public class DEDirector extends Director implements TimedDirector {
                 }
             } while (refire); // close the do{...}while() loop
 
-            // A similar version of the following block of code also appears
-            // in the _getNextActorToFire() method.
-            // However, their purposes are different.
-
-            // In the _getNextActorToFire() method, the code only applies
-            // on an embedded DE director, which prevents that director from
-            // reacting to future events
-            // (with tags bigger than the current tag).
-            // For a top-level DE director, there is no such constraint because
-            // the top-level director is responsible to advance simulation by
-            // increasing the model tag.
-
-            // In this method, this code enforces that a firing of a
+            // The following code enforces that a firing of a
             // DE director only handles events with the same tag.
             // If the earliest event in the event queue is in the future,
             // this code terminates the current iteration.
@@ -548,9 +535,19 @@ public class DEDirector extends Director implements TimedDirector {
             synchronized(_eventQueue) {
                 if (!_eventQueue.isEmpty()) {
                     DEEvent next = _eventQueue.get();
-                    if ((next.timeStamp().compareTo(getModelTime()) > 0)
-                            || next.microstep() > _microstep) {
-                        // If the next event is in the future,
+                    if ((next.timeStamp().compareTo(getModelTime()) > 0)) {
+                        // If the next event is in the future time,
+                        // jump out of the big while loop and
+                        // proceed to postfire().
+                        // NOTE: we reset the microstep to 0 because it is 
+                        // the contract that if the event queue has some events
+                        // at a time point, the first event must have the 
+                        // microstep as 0. See the 
+                        // _enqueueEvent(Actor actor, Time time) method.
+                        _microstep = 0;
+                        break;
+                    } else if (next.microstep() > _microstep) {
+                        // If the next event is has a bigger microstep,
                         // jump out of the big while loop and
                         // proceed to postfire().
                         break;
@@ -1192,7 +1189,8 @@ public class DEDirector extends Director implements TimedDirector {
         if (_debugging) {
             _debug("enqueue a trigger event for ",
                     ((NamedObj)actor).getName(),
-                    "time = " + getModelTime()+ " microstep = " + _microstep
+                    " time = " + getModelTime()
+                    + " microstep = " + _microstep
                     + " depth = " + depth);
         }
 
@@ -1629,30 +1627,52 @@ public class DEDirector extends Director implements TimedDirector {
                     // TESTIT
                     break;
                 } else {
+                    // For an embedded DE director, the following code prevents 
+                    // the director from reacting to future events with bigger 
+                    // time values in their tags. 
+                    
+                    // For a top-level DE director, there is no such constraint
+                    // because the top-level director is responsible to advance
+                    // simulation by increasing the model tag.
+
                     nextEvent = (DEEvent)_eventQueue.get();
                     // An embedded director should process events
                     // that only happen at the current tag.
                     // If the event is in the past, that is an error.
-                    if (nextEvent.timeStamp().compareTo(getModelTime()) < 0) {
-                        //missed an event
-                        nextEvent = null;
+                    if (nextEvent.timeStamp().compareTo(getModelTime()) < 0
+                            ||
+                            (nextEvent.timeStamp().equals(getModelTime())
+                                    && (nextEvent.microstep() < _microstep))) {
+                        // missed an event
                         throw new IllegalActionException(
                                 "Fire: Missed an event: the next event tag "
-                                + nextEvent.timeStamp() + " . "
+                                + nextEvent.timeStamp() + " :: "
                                 + nextEvent.microstep()
                                 + " is earlier than the current model tag "
-                                + getModelTime() + " . "
+                                + getModelTime() + " :: "
                                 + _microstep + " !");
                     }
-                    // If the event is in the future, it is ignored
+                    // If the event is in the future time, it is ignored
                     // and will be processed later.
-                    // However, if the microstep gets incremented, that is okay.
+                    
+                    // Note that it is fine for the new event to have a bigger 
+                    // microstep. This indicates that the embedded director is
+                    // going to advance microstep.
+                    // Note that conceptually, the outside and inside DE models
+                    // share the same microstep and the current design and 
+                    // implementation assures that. However, the embedded DE 
+                    // director does ask for the microstep of the upper level 
+                    // DE director. They keep their own count of their 
+                    // microsteps. The reason for this is to avoid the 
+                    // difficulties caused by passing information across modal 
+                    // model layers.
+                    
                     if ((nextEvent.timeStamp().compareTo(getModelTime()) > 0)) {
-                        //reset the next event
+                        // reset the next event
                         nextEvent = null;
                         // jump out of the loop: LOOPLABEL::GetNextEvent
                         break;
-                    }
+                    } 
                 }
             } else {
                 // If the director is at the top level
