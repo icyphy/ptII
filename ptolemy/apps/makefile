@@ -32,13 +32,13 @@
 ME =		ptolemy/apps
 
 # Alphabetical, please:
+# $PTII/configure looks for various packages and sets variables
+# in $PTII/mk/ptII.mk if these packages are found, otherwise
+# the variables are empty
+#
 # PTKVM_DIR is set to kvm by configure if the kvm runtime was found
-#
-# $PTII/configure looks for the Java Communications API and sets
-# PTLEGO_DIR in $PTII/mk/ptII.mk to lego if the commapi was found.
-#  Otherwise, PTLEGO_DIR is empty
-#
-# PTWABA_DIR is set to waba by configure if waba was found
+# PTLEGO_DIR is set to lego if the commapi was found.
+# PTWABA_DIR is set to waba if waba was found
 #
 DIRS =		 agilent $(PTKVM_DIR) $(PTLEGO_DIR) $(PTWABA_DIR)
 
