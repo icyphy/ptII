@@ -219,7 +219,7 @@ public class AttributeValueIcon extends XMLIcon {
                 return truncated;
             }
         }
-        return null;
+        return " ";
     }
 
     ///////////////////////////////////////////////////////////////////
