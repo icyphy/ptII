@@ -65,7 +65,7 @@ public class PNImageSource extends AtomicActor {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-	String filename =((StringToken)_filename.getToken()).stringValue();
+	String filename = ((StringToken)_filename.getToken()).stringValue();
         if (_file != null && !filename.equals("")) {
             try {
                 //_file = new BufferedReader(new FileReader(filename));
@@ -114,7 +114,7 @@ public class PNImageSource extends AtomicActor {
                 if (datastr.nextToken() == StreamTokenizer.TT_NUMBER) {
                     datarow = (int)datastr.nval;
                 }
-                //System.out.println("Rows ="+datarow+" and col = "+datacol);
+                //System.out.println("Rows = "+datarow+" and col = "+datacol);
                 int[][] image = new int[datarow][datacol];
                 datastr = new StreamTokenizer(_file);
                 for (int i = 0; i < datarow; i++) {
@@ -125,7 +125,7 @@ public class PNImageSource extends AtomicActor {
                     }
                 }
 
-                //System.out.println("i = "+i+" j ="+j);
+                //System.out.println("i = " + i + " j = "+j);
                 IntMatrixToken dataToken = new IntMatrixToken(image);
                 _output.broadcast(dataToken);
                 try {
