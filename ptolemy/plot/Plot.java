@@ -121,6 +121,14 @@ import java.util.*;
  * </pre>
  * Here, <i>string</i> is a label that will appear in the legend.
  * It is not necessary to enclose the string in quotation marks.
+ * If the following directive occurs:
+ * <pre>
+ * ReuseDataSets: on
+ * </pre>
+ * Then datasets with the same name will be merged.  This makes it
+ * easier to combine multiple datafiles that contain the same datasets
+ * into one file.  By default, this capability is turned off, so
+ * datasets with the same name are not merged. 
  * The data itself is given by a sequence of commands with one of the
  * following forms:
  * <pre>
@@ -1366,8 +1374,31 @@ public class Plot extends PlotBox {
                 }
                 _pxgraphBlankLineMode = false;
                 return true;
+            } else if (lcLine.startsWith("reusedatasets:")) {
+                if (lcLine.indexOf("off", 16) >= 0) {
+                    _reusedatasets = false;
+                } else {
+                    _reusedatasets = true;
+                }
+                return true;
             } else if (lcLine.startsWith("dataset:")
                     || (_pxgraphBlankLineMode && lcLine.length() == 0)) {
+                if (_reusedatasets && lcLine.length() > 0) {
+                    String tlegend = (line.substring(8)).trim();
+                    _currentdataset = -1;
+                    int i;
+                    for ( i = 0; i <= _maxdataset; i++) {
+                        if (getLegend(i).compareTo(tlegend) == 0) {
+                            _currentdataset = i;
+                        }
+                    }
+                    if (_currentdataset != -1) {
+                        return true;
+                    } else {
+                        _currentdataset = _maxdataset;
+                    }
+                }
+
                 // new data set
                 // If we have not yet seen a non-pxgraph file directive,
                 // and the line is blank, then this is a new data set.
@@ -1388,6 +1419,7 @@ public class Plot extends PlotBox {
                     addLegend(_currentdataset, legend);
                     _pxgraphBlankLineMode = false;
                 }
+                _maxdataset = _currentdataset;
                 return true;
             } else if (lcLine.startsWith("lines:")) {
                 if (lcLine.indexOf("off",6) >= 0) {
@@ -1769,6 +1801,12 @@ public class Plot extends PlotBox {
     // Optimization to prevent attempting to plot data if we have not yet
     // called drawPlot.  
     private boolean _calledDrawPlot = false;
+
+    // The highest data set used.
+    protected int _maxdataset = -1;
+
+    // True if we saw 'reusedatasets: on' in the file.
+    private boolean _reusedatasets = false;
 
     private boolean _firstinset = true; // Is this the first datapoint in a set
     private int _filecount = 0;         // Number of files read in.
