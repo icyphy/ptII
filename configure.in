@@ -2470,19 +2470,24 @@ if test -z "$TOSROOT" ; then
     AC_MSG_RESULT([The TOSROOT environment variable is not present,
 	so we need not set up for TinyOS.])
 
-   # Nothing to exclude
-   # ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/nc/"
+    # Nothing to exclude
+    # ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/nc/"
 
 else
-    AC_MSG_RESULT([The TOSROOT is found, so we willset up for TinyOS.])
-    # Use changequote to protect the square brackets in sed
+    if test ! -d "$TOSROOT"; then
+        AC_MSG_WARN([TOSROOT is set to $TOSROOT,
+     but there is no directory by that name, so we will not set up for PtinyOS])
+    else 
+        AC_MSG_RESULT([TOSROOT = $TOSROOT, so we will set up for TinyOS.])
+        # Use changequote to protect the square brackets in sed
 changequote(<<, >>)dnl
-    TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+        TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
 changequote([, ])dnl
 
-   # Add TOSROOT to the classpath
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$TOSROOT\"/>"
+        # Add TOSROOT to the classpath
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        <classpathentry kind=\"lib\" path=\"$TOSROOT_NO_CYGDRIVE\"/>"
+    fi
 fi 
 
 
