@@ -50,16 +50,16 @@ and Army Research Office.
 @author Jeff Tsay
 @version $Id$
  */
-public class ScopeIteratorator implements Iterator {
+public class ScopeIteratoratorator implements Iterator {
 
-    public ScopeIteratorator() {
+    public ScopeIteratoratorator() {
         _nextScope = null;
         _declIter = null;
         _name = null;
         _mask = 0;
     }
 
-    public ScopeIteratorator(Scope nextEnviron, ListIterator declIter, String name,
+    public ScopeIteratoratorator(Scope nextScope, ListIterator declIter, String name,
             int mask) {
         _nextScope = nextScope;
         _declIter = declIter;
@@ -71,7 +71,7 @@ public class ScopeIteratorator implements Iterator {
     ////                         public methods                    ////
 
     public boolean hasNext() {
-        //System.out.println("ScopeIteratorator : hasNext for " + _name);
+        //System.out.println("ScopeIteratoratorator : hasNext for " + _name);
 
         try {
             nextDecl();
@@ -79,11 +79,11 @@ public class ScopeIteratorator implements Iterator {
             // Rewind to valid Decl.
             _declIter.previous();
         } catch (NoSuchElementException e) {
-            //System.out.println("ScopeIteratorator : hasNext for " + _name +
+            //System.out.println("ScopeIteratoratorator : hasNext for " + _name +
             // " = false");
             return false;
         }
-        //System.out.println("ScopeIteratorator : hasNext for " + _name +
+        //System.out.println("ScopeIteratoratorator : hasNext for " + _name +
         // " = true");
         return true;
     }
@@ -97,7 +97,7 @@ public class ScopeIteratorator implements Iterator {
     public Decl nextDecl() {
 
         if (_declIter == null) {
-            throw new NoSuchElementException("No elements in ScopeIteratorator.");
+            throw new NoSuchElementException("No elements in ScopeIteratoratorator.");
         }
 
         do {
@@ -106,21 +106,21 @@ public class ScopeIteratorator implements Iterator {
                 Decl decl = (Decl) _declIter.next();
 
                 if (decl.matches(_name, _mask)) {
-                    //System.out.println("ScopeIteratorator : found match " +
+                    //System.out.println("ScopeIteratoratorator : found match " +
                     //" for " +  _name);
                     return decl;
                 }
             }
 
             if (_nextScope == null) {
-                //System.out.println("ScopeIteratorator : no more elements " +
+                //System.out.println("ScopeIteratoratorator : no more elements " +
                 //  "looking for " + _name);
 
                 throw new NoSuchElementException(
-                        "No more elements in ScopeIteratorator.");
+                        "No more elements in ScopeIteratoratorator.");
             }
 
-            //System.out.println("ScopeIteratorator : going to next " +
+            //System.out.println("ScopeIteratoratorator : going to next " +
             // "environment looking for " + _name);
 
             _declIter = _nextScope.allProperDecls();
@@ -144,7 +144,7 @@ public class ScopeIteratorator implements Iterator {
      */
     public boolean moreThanOne() {
 
-        //System.out.println("ScopeIteratorator: moreThanOne for " + _name);
+        //System.out.println("ScopeIteratoratorator: moreThanOne for " + _name);
         if (_declIter == null) {
             // empty list
             return false;
@@ -177,7 +177,7 @@ public class ScopeIteratorator implements Iterator {
             }
 
             if (matches >= 2) {
-                //System.out.println("ScopeIteratorator: moreThanOne = true" +
+                //System.out.println("ScopeIteratoratorator: moreThanOne = true" +
                 //        " for " + _name);
                 return true;
             }
@@ -187,11 +187,11 @@ public class ScopeIteratorator implements Iterator {
                 return false;
             }
 
-            ScopeIteratorator nextScopeIterator =
+            ScopeIteratoratorator nextScopeIterator =
                 _nextScope.lookupFirst(_name, _mask);
 
-            while (nextScopeIteratorator.hasNext()) {
-                Decl nextMatch = nextScopeIteratorator.nextDecl();
+            while (nextScopeIteratoratorator.hasNext()) {
+                Decl nextMatch = nextScopeIteratoratorator.nextDecl();
 
                 // make sure we don't have a reference to the last found match
                 if (lastMatch != nextMatch) {
@@ -207,7 +207,7 @@ public class ScopeIteratorator implements Iterator {
             // no matches
 
             if (_nextScope == null) {
-                //System.out.println("ScopeIteratorator: moreThanOne = " +
+                //System.out.println("ScopeIteratoratorator: moreThanOne = " +
                 // false for " +  _name);
                 return false;
             }
@@ -217,7 +217,7 @@ public class ScopeIteratorator implements Iterator {
             _declIter = _nextScope.allProperDecls();
             _nextScope = _nextScope.parent();
 
-            // try again on this modified ScopeIteratorator
+            // try again on this modified ScopeIteratoratorator
             return moreThanOne();
         }
     }
@@ -228,7 +228,7 @@ public class ScopeIteratorator implements Iterator {
      */
     public void remove() {
         // Can't do this!!!
-        throw new RuntimeException("remove() not supported on ScopeIteratorator");
+        throw new RuntimeException("remove() not supported on ScopeIteratoratorator");
     }
 
     ///////////////////////////////////////////////////////////////////
