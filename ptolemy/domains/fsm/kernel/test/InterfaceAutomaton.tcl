@@ -260,7 +260,7 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+        <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
         </property>
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
