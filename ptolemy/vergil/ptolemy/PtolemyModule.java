@@ -120,6 +120,23 @@ public class PtolemyModule implements Module {
     public PtolemyModule(VergilApplication application) {
 	_application = application;
 	Action action;
+	// First add the the generic actions.
+
+	action = new FigureAction("Look Inside") {
+	    public void actionPerformed(ActionEvent e) {
+		// Figure out what entity.
+		super.actionPerformed(e);		
+		NamedObj object = getTarget();
+		if(!(object instanceof CompositeEntity)) return;
+		CompositeEntity entity = (CompositeEntity)object;
+		Application app = getApplication();
+		PtolemyDocument doc = new PtolemyDocument(app);
+		doc.setModel(entity);
+		app.addDocument(doc);
+		app.displayDocument(doc);
+		app.setCurrentDocument(doc);}
+	};
+	_application.addAction(action);
 
         // Create the Devel menu
         JMenu menuDevel = new JMenu("Ptolemy II");
@@ -153,19 +170,11 @@ public class PtolemyModule implements Module {
                     // FIXME there is alot of code in here that is similar
                     // to code in MoMLApplet and MoMLApplication.  I think
                     // this should all be in ModelPane.
-                    // FIXME set the Director.  This is a hack, but it's the
-                    // Simplest hack.
-                    if(toplevel.getDirector() == null) {
-                        ptolemy.domains.sdf.kernel.SDFDirector director =
-                            new ptolemy.domains.sdf.kernel.SDFDirector(
-                                    toplevel.workspace());
-                        //		    _entityLibrary.getEntity(
-                        //	(String)_directorComboBox.getSelectedItem());
-                        toplevel.setDirector(director);
-                        director.iterations.setExpression("25");
-                    }
-
+                    
                     // Create a manager.
+		    // Attaching these listeners is a nasty business...
+		    // All Managers are not created equal, since some have
+		    // listeners attached.
                     Manager manager = toplevel.getManager();
                     if(manager == null) {
                         manager =
@@ -241,6 +250,7 @@ public class PtolemyModule implements Module {
 	pane.add(tb);
 	
 	String dflt = "";
+	// Creating the renderers this way is rather nasty..
 	NodeRenderer renderer = new PortController.PortRenderer();
 	Figure figure = renderer.render(null);
 	Icon icon = 
@@ -253,6 +263,11 @@ public class PtolemyModule implements Module {
 	icon = new FigureIcon(figure, 20, 20);
 	GUIUtilities.addToolBarButton(tb, new newRelationAction(), 
 				      "New Relation", icon);
+
+	//figure = EditorIcon._createDefaultBackgroundFigure();
+	//icon = new FigureIcon(figure, 20, 20);
+	//GUIUtilities.addToolBarButton(tb, new newCompositeAction(), 
+	//			      "New Composite", icon);
 
 	_directorModel = new DefaultComboBoxModel();
 	try {
