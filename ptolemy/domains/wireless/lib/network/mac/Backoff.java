@@ -75,13 +75,13 @@ public class Backoff extends MACActorBase {
         super(container, name);
 
         // Create and configure the ports.
-        channelStatus = new TypedIOPort(this, "channelStatus", true, false);
-        fromProtocol = new TypedIOPort(this, "fromProtocol", true, false);
-        toProtocol = new TypedIOPort(this, "toProtocol", false, true);
+        fromDataPump = new TypedIOPort(this, "fromDataPump", true, false);
+        getBackoff = new TypedIOPort(this, "getBackoff", true, false);
+        BKDone = new TypedIOPort(this, "BKDone", false, true);
 
-        channelStatus.setTypeEquals(BaseType.GENERAL);
-        fromProtocol.setTypeEquals(BaseType.GENERAL);
-        toProtocol.setTypeEquals(BaseType.GENERAL);
+        fromDataPump.setTypeEquals(BaseType.GENERAL);
+        getBackoff.setTypeEquals(BaseType.GENERAL);
+        BKDone.setTypeEquals(BaseType.GENERAL);
 
         seed = new Parameter(this, "seed", new LongToken(0));
         seed.setTypeEquals(BaseType.LONG);
@@ -93,18 +93,18 @@ public class Backoff extends MACActorBase {
     /** The input port for channel status message.
      *  This has undeclared type.
      */
-    public TypedIOPort channelStatus;
+    public TypedIOPort fromDataPump;
 
 
     /** The input port for backoff message from the Protocol control block.
      */
-    public TypedIOPort fromProtocol;
+    public TypedIOPort getBackoff;
 
 
     /** The output port that produces messages that
      *  indicate the backoff is done.
      */
-    public TypedIOPort toProtocol;
+    public TypedIOPort BKDone;
 
     /** The seed that controls the random number generation.
      *  A seed of zero is interpreted to mean that no seed is specified,
@@ -149,10 +149,10 @@ public class Backoff extends MACActorBase {
         // if a timer is processed, should not consume the message token
         // kind = -1 means no timer event.
         if (kind == -1) {
-            if (fromProtocol.hasToken(0)) {
-                _inputMessage = (RecordToken) fromProtocol.get(0);
-            } else if (channelStatus.hasToken(0)) {
-                _inputMessage = (RecordToken) channelStatus.get(0);
+            if (getBackoff.hasToken(0)) {
+                _inputMessage = (RecordToken) getBackoff.get(0);
+            } else if (fromDataPump.hasToken(0)) {
+                _inputMessage = (RecordToken) fromDataPump.get(0);
             }
             if (_inputMessage != null) {
                 _messageType = ((IntToken)
@@ -260,7 +260,7 @@ public class Backoff extends MACActorBase {
 
     private void _backoffDone(int cnt) throws IllegalActionException {
         Token[] value = {new IntToken(BkDone), new IntToken(_cnt)};
-        toProtocol.send(0, new RecordToken(BackoffDoneMsgFields, value));
+        BKDone.send(0, new RecordToken(BackoffDoneMsgFields, value));
         mBkIP=false;
         _state = No_Backoff;
     }

@@ -83,23 +83,23 @@ public class DataPump extends MACActorBase {
         super(container, name);
 
         // Create and configure the ports.
-        fromProtocolTx = new TypedIOPort(this, "fromProtocolTx", true, false);
-        fromProtocolRx = new TypedIOPort(this, "fromProtocolRx", true, false);
-        fromCs = new TypedIOPort(this, "fromCs", true, false);
-        fromPhysical = new TypedIOPort(this, "fromPhysical", true, false);
-        toProtocolTx = new TypedIOPort(this, "toProtocolTx", false, true);
-        toProtocolRx = new TypedIOPort(this, "toProtocolRx", false, true);
-        forwardCs = new TypedIOPort(this, "forwardCs", false, true);
-        toPhysical = new TypedIOPort(this, "toPhysical", false, true);
+        TXTXRequest = new TypedIOPort(this, "TXTXRequest", true, false);
+        RXTXRequest = new TypedIOPort(this, "RXTXRequest", true, false);
+        fromReception = new TypedIOPort(this, "fromReception", true, false);
+        PHYLayerConfirm = new TypedIOPort(this, "PHYLayerConfirm", true, false);
+        TXTXConfirm = new TypedIOPort(this, "TXTXConfirm", false, true);
+        RXTXConfirm = new TypedIOPort(this, "RXTXConfirm", false, true);
+        toBackoff = new TypedIOPort(this, "toBackoff", false, true);
+        toPHYLayer = new TypedIOPort(this, "toPHYLayer", false, true);
 
-        fromProtocolTx.setTypeEquals(BaseType.GENERAL);
-        fromProtocolRx.setTypeEquals(BaseType.GENERAL);
-        fromCs.setTypeEquals(BaseType.GENERAL);
-        fromPhysical.setTypeEquals(BaseType.GENERAL);
-        toProtocolTx.setTypeEquals(BaseType.GENERAL);
-        toProtocolRx.setTypeEquals(BaseType.GENERAL);
-        forwardCs.setTypeEquals(BaseType.GENERAL);
-        toPhysical.setTypeEquals(BaseType.GENERAL);
+        TXTXRequest.setTypeEquals(BaseType.GENERAL);
+        RXTXRequest.setTypeEquals(BaseType.GENERAL);
+        fromReception.setTypeEquals(BaseType.GENERAL);
+        PHYLayerConfirm.setTypeEquals(BaseType.GENERAL);
+        TXTXConfirm.setTypeEquals(BaseType.GENERAL);
+        RXTXConfirm.setTypeEquals(BaseType.GENERAL);
+        toBackoff.setTypeEquals(BaseType.GENERAL);
+        toPHYLayer.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,45 +108,45 @@ public class DataPump extends MACActorBase {
     /** The input port for transmission request from the Protocol_Control
      *  Tx_Coordination block.
      */
-    public TypedIOPort fromProtocolTx;
+    public TypedIOPort TXTXRequest;
 
     /** The input port for transmission request from the Protocol_Control
      *  Rx_Coordination block.
      */
-    public TypedIOPort fromProtocolRx;
+    public TypedIOPort RXTXRequest;
 
 
     /** The input port for the channel status massage from the
      *  reception block.
      */
-    public TypedIOPort fromCs;
+    public TypedIOPort fromReception;
 
     /** The input port for transmission conformation from the physical
      *  layer, including transmission start confirmation, transmitting
      *  data confirmation and transmission end confirmation.
      */
-    public TypedIOPort fromPhysical;
+    public TypedIOPort PHYLayerConfirm;
 
     /** The output port for transmission confirmation to the Protocol_Control
      *  Tx_Coordination block.
      */
-    public TypedIOPort toProtocolTx;
+    public TypedIOPort TXTXConfirm;
 
     /** The output port for transmission confirmation to the Protocol_Control
      *  Rx_Coordination block.
      */
-    public TypedIOPort toProtocolRx;
+    public TypedIOPort RXTXConfirm;
 
     /** The output port that send transmission request to the physical
      *  layer, including transmission start request, transmitting
      *  data request and transmission end request.
      */
-    public TypedIOPort toPhysical;
+    public TypedIOPort toPHYLayer;
 
     /** The output port sending the the channel status to the
      *  Backoff block.
      */
-    public TypedIOPort forwardCs;
+    public TypedIOPort toBackoff;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -173,16 +173,16 @@ public class DataPump extends MACActorBase {
         super.fire();
 
         Director director = getDirector();
-        if (fromProtocolTx.hasToken(0)) {
-            _inputMessage = (RecordToken) fromProtocolTx.get(0);
+        if (TXTXRequest.hasToken(0)) {
+            _inputMessage = (RecordToken) TXTXRequest.get(0);
             _source = FromProtocolTx;
-        } else if (fromProtocolRx.hasToken(0)) {
-            _inputMessage = (RecordToken) fromProtocolRx.get(0);
+        } else if (RXTXRequest.hasToken(0)) {
+            _inputMessage = (RecordToken) RXTXRequest.get(0);
             _source = FromProtocolRx;
-        } else if (fromCs.hasToken(0)) {
-            _inputMessage = (RecordToken) fromCs.get(0);
-        } else if (fromPhysical.hasToken(0)) {
-            _inputMessage = (RecordToken) fromPhysical.get(0);
+        } else if (fromReception.hasToken(0)) {
+            _inputMessage = (RecordToken) fromReception.get(0);
+        } else if (PHYLayerConfirm.hasToken(0)) {
+            _inputMessage = (RecordToken) PHYLayerConfirm.get(0);
         }
         if (_inputMessage != null) {
             _messageType = ((IntToken)
@@ -205,7 +205,7 @@ public class DataPump extends MACActorBase {
                     Token[] value = {new IntToken(TxStart),
                                      new IntToken(length),
                                      new IntToken(rate)};
-                    toPhysical.send(0, new RecordToken(TxStartMsgFields, value));
+                    toPHYLayer.send(0, new RecordToken(TxStartMsgFields, value));
                     _state = Wait_TxStart;
 
                     break;
@@ -251,7 +251,7 @@ public class DataPump extends MACActorBase {
 
                     RecordToken mergeToPdu = new RecordToken(labels, values);
                     RecordToken newPdu = RecordToken.merge(mergeToPdu, _pdu);
-                    toPhysical.send(0, newPdu);
+                    toPHYLayer.send(0, newPdu);
                     _state = Wait_TxEnd;
 
                 }
@@ -262,9 +262,9 @@ public class DataPump extends MACActorBase {
                     Token[] value = {new IntToken(TxConfirm)};
                     RecordToken confirm = new RecordToken(TxConfirmMsgFields, value);
                     if (_source == FromProtocolTx)
-                        toProtocolTx.send(0, confirm);
+                        TXTXConfirm.send(0, confirm);
                     else
-                        toProtocolRx.send(0, confirm);
+                        RXTXConfirm.send(0, confirm);
                     _state = Tx_Idle;
                 }
                 break;
@@ -294,7 +294,7 @@ public class DataPump extends MACActorBase {
         // send idle/busy event to the backoff block
         Token[] value = {new IntToken(kind)};
         RecordToken t = new RecordToken(CSMsgFields, value);
-        forwardCs.send(0, t);
+        toBackoff.send(0, t);
     }
 
     /**   private void _getMsgType() throws IllegalActionException {
