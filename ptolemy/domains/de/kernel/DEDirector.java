@@ -600,6 +600,8 @@ public class DEDirector extends Director {
      *   input port.
      */
     // FIXME: Maybe this can be removed and update current time differently...
+    // lukito: Remove this FIXME, because I think this is the correct approach
+    // and moreover, it works.. 
     public void transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
@@ -692,6 +694,8 @@ public class DEDirector extends Director {
             double time, long depth) throws IllegalActionException {
 
         // FIXME: Should this check that the depth is not negative?
+        // lukito: Not necessary actually, since it is non-negative by
+        // construction. See _computeDepth() method.
         if (time < _currentTime) {
             throw new IllegalActionException(getContainer(),
                     "Attempt to queue a token with a past time stamp = " +
@@ -744,6 +748,9 @@ public class DEDirector extends Director {
     // e.g. The earliest time in the global event queue is greater than
     // the stop time.
     // FIXME: This is a hack :(
+    // lukito: It is a flag that is set to true when the model should stop
+    // executing. e.g. The earliest event in the global event queue is
+    // greater than the stop time.
     protected boolean _shouldPostfireReturnFalse = false;
 
     // The time of the earliest event seen in the current simulation.
@@ -778,6 +785,8 @@ public class DEDirector extends Director {
     // which will have the effect of stopping the simulation.
 
     // FIXME: This should return the actor, not use a private variable.
+    // lukito: Good idea! Also, maybe change the method name to
+    // _obtainActorToFire or _getActorToFire
     private boolean _prepareActorToFire() {
         // During prefire, new actor will be chosen to fire
 	// therefore, initialize _actorToFire field to null.
@@ -786,6 +795,8 @@ public class DEDirector extends Director {
 	// Initialize the _filledReceivers field.
 	_filledReceivers.clear();
         // FIXME: This is just temporary, to see if it works.
+        // lukito: That's a bogus FIXME, probably got there when I was
+        // debugging something
 
         DEEvent currentEvent = null;
         // Keep taking events out until there are no more simultaneous
@@ -841,7 +852,15 @@ public class DEDirector extends Director {
                 // FIXME: The following line should happen only during the
                 // first prefire(), because subsequent enqueue is
                 // restricted to be ahead of _currentTime.
+
+                // lukito: Note: The following statement should be executed
+                // only during the first iteration before the start time
+                // is initialized to the smallest time stamp in the
+                // event queue.
+                
                 // FIXME: debug structure here...
+                // lukito: Left over fixme's... :( Just remove it...
+                
                 if (_currentTime < _startTime) {
                     if (_startTimeInitialized) {
                         throw new InternalErrorException("DEDirector "+
@@ -859,7 +878,10 @@ public class DEDirector extends Director {
                     // Note that, if this director is embedded then
                     // he doesn't determine the stopping condition, rather
                     // outer director should do that...
+
                     // FIXME: might be wrong approach
+                    // lukito: Hmm....
+
                     _shouldPostfireReturnFalse = true;
                     if (DEBUG) {
                         System.out.println("Stopping time is met " +
@@ -915,6 +937,11 @@ public class DEDirector extends Director {
                         // one if so.  That's still not quite right though
                         // because the event in the receiver may be an
                         // old one...
+
+                        // lukito: Remove this FIXME because an actor will,
+                        // by default, be fired multiple times until
+                        // it consumes all its input events.
+                
                         DEReceiver rec = currentEvent.getDestinationReceiver();
                         // if rec is null, then it's a 'pure event' and
                         // there's no need to put event into receiver.
@@ -1064,13 +1091,19 @@ public class DEDirector extends Director {
 	for(int i=sort.length-1; i >= 0; i--) {
             IOPort p = (IOPort)sort[i];
             // FIXME: Debugging topological sort
+            // lukito: Just remove this
             if (DEBUG) {
                 System.out.println(p.description(FULLNAME) + ":" + i);
             }
             // FIXME: End debugging
+            // lukito: Just remove this...
             // set the fine levels of all DEReceiver instances in IOPort p
             // to be i
             // FIXME: should I use deepGetReceivers() here ?
+            // lukito: No, becauese deepGetReceivers() assumes that the
+            // IOPort is transparent. According to the doc., this method
+            // should be used for transparent composite actor.
+            
             Receiver[][] r;
 	    try {
                 r = p.getReceivers();
@@ -1078,6 +1111,10 @@ public class DEDirector extends Director {
                 // do nothing
                 // FIXME: Replace with InternalErrorException and a more
                 // meaningful message.
+                // suggestion: 
+                // throw new InternalErrorException("Error while performing "
+                //        + "the topological sort computation");
+                
                 throw new InternalErrorException("Bug in DEDirector."+
                         "computeDepth() (3)");
             }
@@ -1138,6 +1175,7 @@ public class DEDirector extends Director {
     private LinkedList _filledReceivers = new LinkedList();
 
     // FIXME: debug variables
+    // lukito: Not really anymore....
     private boolean _startTimeInitialized = false;
 
 }
