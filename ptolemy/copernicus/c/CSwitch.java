@@ -909,7 +909,6 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
     /** Generate code for a special invoke expression.
      *  @param v The expression.
-     *  @return The code.
      */
     public void caseSpecialInvokeExpr(SpecialInvokeExpr v) {
         // Presently, we consider one case: a call to a method
