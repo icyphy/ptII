@@ -1,4 +1,4 @@
-/* 
+/* Transform Java source programs to support backtracking.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.ast;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -42,29 +43,61 @@ import ptolemy.backtrack.util.PathFinder;
 //////////////////////////////////////////////////////////////////////////
 //// Transform
 /**
- *  
+ *  A tool to transform Java source programs to support backtracking. This
+ *  transformation is done by first analyzing the Java programs, and then
+ *  refactoring the program based on the information collected in the
+ *  analysis phase.
  * 
  *  @author Thomas Feng
  *  @version $Id$
  *  @since Ptolemy II 4.1
  *  @Pt.ProposedRating Red (tfeng)
+ *  @Pt.AcceptedRating Red (tfeng)
  */
 public class Transform {
     
-    /**
+    /** Transform a set of files into backtracking-enabled. The set of
+     *  files is given by a set of strings as their names or the names of
+     *  the directories that contain them. If 
+     * 
      *  @param args
      */
     public static void main(String[] args) throws Exception {
+        boolean outputResult = false;
+        
         if (args.length == 0)
-            System.err.println("USAGE: java ptolemy.backtrack.ast.Transform [.java files...]");
+            System.err.println("USAGE: java ptolemy.backtrack.ast.Transform " +
+                    "[.java files... | directories...]");
         else {
             String[] paths = PathFinder.getPtClassPaths();
-            Writer writer = new OutputStreamWriter(System.out);
+            Writer writer = outputResult ? new OutputStreamWriter(System.out) : null;
             for (int i=0; i<args.length; i++) {
-                String fileName = args[i];
-                transform(fileName, writer, paths);
+                String pathOrFile = args[i];
+                File[] files = PathFinder.getJavaFiles(pathOrFile, true);
+                for (int j = 0; j < files.length; j++) {
+                    String fileName = files[j].getPath();
+                    System.err.print("Transforming \"" + fileName + "\"...");
+                    
+                    if (fileName.endsWith(".java")) {
+                        String classFileName = 
+                            fileName.substring(0, fileName.length() - 5) + ".class";
+                        if (new File(classFileName).exists())
+                            System.err.println();
+                        else {
+                            System.err.println(" SKIP");
+                            continue;
+                        }
+                    } else
+                        continue;
+                    
+                    System.err.flush();
+                    transform(files[j].getPath(), writer, paths);
+                    if (outputResult)
+                        writer.flush();
+                }
             }
-            writer.close();
+            if (outputResult)
+                writer.close();
         }
     }
     

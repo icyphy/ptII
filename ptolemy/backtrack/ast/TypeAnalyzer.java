@@ -55,6 +55,7 @@ import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.BooleanLiteral;
+import org.eclipse.jdt.core.dom.BreakStatement;
 import org.eclipse.jdt.core.dom.CastExpression;
 import org.eclipse.jdt.core.dom.CharacterLiteral;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
@@ -68,6 +69,7 @@ import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.InfixExpression;
 import org.eclipse.jdt.core.dom.InstanceofExpression;
+import org.eclipse.jdt.core.dom.LabeledStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Name;
@@ -95,6 +97,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
 import ptolemy.backtrack.ast.transform.AssignmentHandler;
 import ptolemy.backtrack.ast.transform.ClassHandler;
+import ptolemy.backtrack.ast.transform.HandlerList;
 import ptolemy.backtrack.util.PathFinder;
 
 //////////////////////////////////////////////////////////////////////////
@@ -599,14 +602,20 @@ public class TypeAnalyzer extends ASTVisitor {
         if (parent instanceof BodyDeclaration ||
                 parent instanceof QualifiedName)
             return;
-        else if (parent instanceof VariableDeclaration &&
-                ((VariableDeclaration)parent).getName() == node)
+        else if (parent instanceof BreakStatement &&
+                ((BreakStatement)parent).getLabel() == node)
             return;
         else if (parent instanceof ClassInstanceCreation &&
                 ((ClassInstanceCreation)parent).getExpression() != null &&
                 ((ClassInstanceCreation)parent).getName() == node)
             owner = 
                 Type.getType(((ClassInstanceCreation)parent).getExpression());
+        else if (parent instanceof FieldAccess &&
+                ((FieldAccess)parent).getName() == node)
+            return;
+        else if (parent instanceof LabeledStatement &&
+                ((LabeledStatement)parent).getLabel() == node)
+            return;
         else if (parent instanceof MethodInvocation &&
                 ((MethodInvocation)parent).getName() == node)
             return;
@@ -615,6 +624,9 @@ public class TypeAnalyzer extends ASTVisitor {
             return;
         else if (parent instanceof SuperFieldAccess &&
                 ((SuperFieldAccess)parent).getName() == node)
+            return;
+        else if (parent instanceof VariableDeclaration &&
+                ((VariableDeclaration)parent).getName() == node)
             return;
 
         String name = node.getIdentifier();
@@ -625,15 +637,6 @@ public class TypeAnalyzer extends ASTVisitor {
         }
         Type.setOwner(node, typeAndOwner._getOwner());
         Type.setType(node, typeAndOwner._getType());
-    }
-
-    /** Visit a simple type node and set its type to be the same as the
-     *  type associated with its name.
-     *
-     *  @param node The node to be visited.
-     */
-    public void endVisit(SimpleType node) {
-        Type.propagateType(node, node.getName());
     }
 
     /** Visit a single variable declaration and set its type to be the
@@ -952,6 +955,20 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return Always <tt>false</tt>.
      */
     public boolean visit(PackageDeclaration node) {
+        // Do not visit children.
+        return false;
+    }
+    
+    /** Visit a simple type node and set its type to be the same as the
+     *  type associated with its name.
+     *
+     *  @param node The node to be visited.
+     */
+    public boolean visit(SimpleType node) {
+        Class c = _lookupClass(node.getName().toString());
+        Type type = Type.createType(c.getName());
+        Type.setType(node, type);
+        
         // Do not visit children.
         return false;
     }
@@ -1435,6 +1452,9 @@ public class TypeAnalyzer extends ASTVisitor {
      *   <tt>null</tt> is returned.
      */
     private TypeAndOwner _resolveName(String name, Type lastType) {
+        if (name.equals("ODESolver")) {
+            int i = 0;
+        }
         // Not in a class yet.
         if (_state.getCurrentClass() == null)
             return null;

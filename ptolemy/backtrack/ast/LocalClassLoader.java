@@ -721,10 +721,10 @@ public class LocalClassLoader extends URLClassLoader {
     /** The cache of all the loaded classes. Keys are class names while
      *  values are {@link Class} objects.
      */
-    private static Hashtable _loadedClasses = new Hashtable();
+    private Hashtable _loadedClasses = new Hashtable();
 
     /** The table of enclosing classes of anonymous classes met during
      *  AST analysis.
      */
-    private static Hashtable _enclosingClasses = new Hashtable();
+    private Hashtable _enclosingClasses = new Hashtable();
 }
