@@ -73,7 +73,8 @@ public class PNRamp extends AtomicActor {
             IntToken data = new IntToken(_seed);
 	    _output.broadcast(data);
             Director dir = getDirector();
-            //dir.fireAt(this, dir.getCurrentTime() + _delay);
+            //FIXME:::
+            dir.fireAt(this, dir.getCurrentTime() + 1);
 	    _seed++;
 	    //System.out.println("Ramp printed "+_seed);
         }
