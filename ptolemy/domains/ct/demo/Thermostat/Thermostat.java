@@ -193,7 +193,7 @@ public void init() {
         ctIncD.input.link(ctIncR1);
         ctIncGFi.link(ctIncR1);
         ctIncSt.link(ctIncR1);
-        CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector(
+        CTEmbeddedDirector ctIncDir = new CTEmbeddedDirector(
                 ctInc, "CTIncDir");
         ctIncDir.addDebugListener(new StreamListener());
 
@@ -241,7 +241,7 @@ public void init() {
         ctDecD.input.link(ctDecR1);
         ctDecGFi.link(ctDecR1);
         ctDecSt.link(ctDecR1);
-        CTEmbeddedNRDirector ctDecDir = new CTEmbeddedNRDirector(
+        CTEmbeddedDirector ctDecDir = new CTEmbeddedDirector(
                 ctDec, "CTDecDir");
         ctDecDir.addDebugListener(new StreamListener());
 

@@ -247,7 +247,7 @@ public class StickyBallApplet extends CTApplet {
             ctIncD.input.link(ctIncTr);
             ctInc.connect(ctIncD.output, ctIncTouched);
 
-            CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector(
+            CTEmbeddedDirector ctIncDir = new CTEmbeddedDirector(
                     ctInc, "CTIncDir");
             //ctIncDir.addDebugListener(new StreamListener());
             //System.out.println("Building the dynamics of two balls "
@@ -312,7 +312,7 @@ public class StickyBallApplet extends CTApplet {
             ctDecOP1.link(ctDecR2);
             ctDecOP2.link(ctDecR2);
             ctDec.connect(ctDecOF, ctDecE2.output);
-            CTEmbeddedNRDirector ctDecDir = new CTEmbeddedNRDirector(
+            CTEmbeddedDirector ctDecDir = new CTEmbeddedDirector(
                     ctDec, "CTDecDir");
             //ctDecDir.addDebugListener(new StreamListener());
 

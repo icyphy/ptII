@@ -39,7 +39,7 @@ import ptolemy.actor.*;
 /**
 Composite actor in the CT domain. This class is derived from CompositeActor
 and implements the CTStepSizeControlActor interface. If the director of
-this composite actor is an instance of CTEmbeddedDirector, then the
+this composite actor is an instance of CTTransparentDirector, then the
 CTStepSizeControlActor calls will be delegated to its local director.
 Otherwise, it returns default values.
 <P>
@@ -102,37 +102,37 @@ public class CTCompositeActor extends TypedCompositeActor
     ////                         public methods                    ////
 
     /** This method is delegated to the local director if the local
-     *  director is an instance of CTEmbeddedDirector. Otherwise,
+     *  director is an instance of CTTransparentDirector. Otherwise,
      *  return true.
      */
     public boolean isThisStepSuccessful() {
         Director dir = getDirector();
-        if((dir != null) && (dir instanceof CTEmbeddedDirector)) {
-            return ((CTEmbeddedDirector)dir).isThisStepSuccessful();
+        if((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).isThisStepSuccessful();
         }
         return true;
     }
 
     /** This method is delegated to the local director if the local
-     *  director is an instance of CTEmbeddedDirector. Otherwise,
+     *  director is an instance of CTTransparentDirector. Otherwise,
      *  return java.long.Double.MAX_VALUE.
      */
     public double predictedStepSize() {
         Director dir = getDirector();
-        if((dir != null) && (dir instanceof CTEmbeddedDirector)) {
-            return ((CTEmbeddedDirector)dir).predictedStepSize();
+        if((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).predictedStepSize();
         }
         return java.lang.Double.MAX_VALUE;
     }
 
     /** This method is delegated to the local director if the local
-     *  director is an instance of CTEmbeddedDirector. Otherwise,
+     *  director is an instance of CTTransparentDirector. Otherwise,
      *  return the current step size of the executive director.
      */
     public double refinedStepSize() {
         Director dir = getDirector();
-        if((dir != null) && (dir instanceof CTEmbeddedDirector)) {
-            return ((CTEmbeddedDirector)dir).refinedStepSize();
+        if((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).refinedStepSize();
         }
         return ((CTDirector)getExecutiveDirector()).getCurrentStepSize();
     }

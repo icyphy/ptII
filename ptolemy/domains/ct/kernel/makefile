@@ -61,7 +61,6 @@ JSRCS = \
 	CTDirector.java \
 	CTDynamicActor.java \
 	CTEmbeddedDirector.java \
-	CTEmbeddedNRDirector.java \
 	CTEventGenerator.java \
 	CTEventInterpreter.java \
 	CTMixedSignalDirector.java \
@@ -71,6 +70,7 @@ JSRCS = \
 	CTSingleSolverDirector.java \
 	CTStatefulActor.java \
 	CTStepSizeControlActor.java \
+	CTTransparentDirector.java \
 	NumericalNonconvergeException.java \
 	ODESolver.java
 

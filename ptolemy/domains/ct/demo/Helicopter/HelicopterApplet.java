@@ -523,8 +523,8 @@ public class HelicopterApplet extends CTApplet {
             int code)
             throws NameDuplicationException, IllegalActionException {
         CTCompositeActor sub = new CTCompositeActor(container, "dummy");
-        CTEmbeddedNRDirector subdir =
-            new CTEmbeddedNRDirector(sub, "CTInnerDirector");
+        CTEmbeddedDirector subdir =
+            new CTEmbeddedDirector(sub, "CTInnerDirector");
 
         TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
         subinPx.setInput(true);
