@@ -131,7 +131,7 @@ to reverse the changes.
 */
 public class IterateOverArray extends TypedCompositeActor
         implements DropListener {
-    
+
     /** Create an actor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -155,10 +155,10 @@ public class IterateOverArray extends TypedCompositeActor
         super(container, name);
         getMoMLInfo().className = "ptolemy.actor.hoc.IterateOverArray";
         new IterateDirector(this, uniqueName("IterateDirector"));
-        
+
         _iterationCount = new Variable(this, "iterationCount", new IntToken(0));
         _iterationCount.setTypeEquals(BaseType.INT);
-        
+
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-30\" y=\"-20\" "
                 + "width=\"60\" height=\"40\" "
@@ -170,7 +170,7 @@ public class IterateOverArray extends TypedCompositeActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-        
+
     /** React to the dropping of an object onto this object by
      *  adjusting the ports and parameters to match the contained
      *  entity, if necessary. This is called when a user interface
@@ -194,7 +194,7 @@ public class IterateOverArray extends TypedCompositeActor
         // was created in this object, which happened when first reading
         // a MoML file containing this actor.  This would result in
         // collisions on the ports created here.
-        
+
         // This needs to be a MoMLChangeRequest so that undo works.
         // Use the container as a context so that redraw occurs after
         // the change request is executed.
@@ -212,14 +212,14 @@ public class IterateOverArray extends TypedCompositeActor
                 // NOTE: We defer the construction of the MoML change request
                 // to here because only at this point can we be sure that the
                 // drop change request has completed.
-                
+
                 synchronized(this) {
-                    
+
                     StringBuffer command = new StringBuffer("<group>\n");
                     command.append("<entity name=\"");
                     command.append(getName(context));
                     command.append("\">\n");
-                    
+
                     // Entity most recently added.
                     ComponentEntity entity = null;
 
@@ -244,7 +244,7 @@ public class IterateOverArray extends TypedCompositeActor
                         // Nothing to do.
                         return;
                     }
-                    
+
                     // Add commands to delete parameters that are associated
                     // with a deleted entity.
                     Iterator attributes = attributeList(Parameter.class).iterator();
@@ -271,7 +271,7 @@ public class IterateOverArray extends TypedCompositeActor
                             }
                         }
                     }
-                    
+
                     // Add commands to add parameters as needed.
                     // We do only parameters, not all Settables because only
                     // parameters can propogate the values down the hierarchy.
@@ -303,7 +303,7 @@ public class IterateOverArray extends TypedCompositeActor
                                         attribute.getExpression()));
                             }
                             command.append("\">");
-                            
+
                             // Replicate contained attributes, which may be
                             // styles.
                             Iterator containedAttributes
@@ -321,7 +321,7 @@ public class IterateOverArray extends TypedCompositeActor
                                 command.append("<property name=\"_stringMode\" "
                                 + "class=\"ptolemy.kernel.util.Attribute\"/>");
                             }
-                            
+
                             // If the original Parameter has hardwired
                             // choices, then we should create a choice attribute here.
                             String[] choices = attribute.getChoices();
@@ -389,11 +389,11 @@ public class IterateOverArray extends TypedCompositeActor
                     Iterator entityPorts = entity.portList().iterator();
                     while (entityPorts.hasNext()) {
                         Port insidePort = (Port)entityPorts.next();
-                        
+
                         // Skip ports associated with PortParameters.
                         if (insidePort instanceof ParameterPort) continue;
                         String name = insidePort.getName();
-                        
+
                         // If there isn't already a port with this name,
                         // the MoML parser will create one.
                         // Do not specify a class so that the MoMLParser
@@ -408,7 +408,7 @@ public class IterateOverArray extends TypedCompositeActor
                             command.append("<property name=\"multiport\" value=\"");
                             command.append(castPort.isMultiport());
                             command.append("\"/>");
-                            
+
                             command.append("<property name=\"input\" value=\"");
                             command.append(castPort.isInput());
                             command.append("\"/>");
@@ -418,7 +418,7 @@ public class IterateOverArray extends TypedCompositeActor
                             command.append("\"/>");
                         }
                         command.append("</port>\n");
-                                                  
+
                         // Set up inside connections. Note that if the outside
                         // port was preserved from before, then it will have
                         // lost its inside links when the inside relation was
@@ -433,7 +433,7 @@ public class IterateOverArray extends TypedCompositeActor
                             command.append("<relation name=\"");
                             command.append(relationName);
                             command.append("\"/>\n");
-                        
+
                             command.append("<link port=\"");
                             command.append(name);
                             command.append("\" relation=\"");
@@ -447,23 +447,23 @@ public class IterateOverArray extends TypedCompositeActor
                             command.append("\"/>\n");
                         }
                     }
-                    
+
                     command.append("</entity>\n</group>\n");
                     // The MoML command is the description of the change request.
                     setDescription(command.toString());
-                    
+
                     // Uncomment the following to see the (rather complicated)
                     // MoML command that is issued.
                     // System.out.println(command.toString());
-                                        
+
                     super._execute();
                 }
             }
         };
         // Do this so that a single undo reverses the entire operation.
         request.setMergeWithPreviousUndo(true);
-        
-        requestChange(request);        
+
+        requestChange(request);
     }
 
     /** Override the base class to return a specialized port and to
@@ -495,18 +495,18 @@ public class IterateOverArray extends TypedCompositeActor
             workspace().doneWriting();
         }
     }
-    
+
     /** Set type constraints, create Receivers and invoke the
      *  preinitialize() method of its local director.
      *  @exception IllegalActionException If there is no director, or if
      *   the director's preinitialize() method throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        
+
         // NOTE: It would have been nice to do this in _addPort, but
         // this doesn't work because _addPort() is called in the constructor
         // of the port, and the port is not fully constructed!
-        
+
         // FIXME: This doesn't support mutations because this
         // is only done in preinitialize().
         Iterator ports = portList().iterator();
@@ -533,7 +533,7 @@ public class IterateOverArray extends TypedCompositeActor
     protected List _checkTypesFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
         List result = new LinkedList();
-        
+
         boolean isUndeclared = sourcePort.getTypeTerm().isSettable();
         if (!isUndeclared) {
             // sourcePort has a declared type.
@@ -548,7 +548,7 @@ public class IterateOverArray extends TypedCompositeActor
                     // both source/destination ports are declared,
                     // check type
                     Type destDeclared = destinationPort.getType();
-                    
+
                     int compare;
                     // If the source port belongs to me, then we want to
                     // compare its array element type to the type of the
@@ -585,7 +585,7 @@ public class IterateOverArray extends TypedCompositeActor
     protected void _removePort(Port port) {
         super._removePort(port);
         // FIXME: Will undo work for this?  Should this be done as a change request?
-        
+
         // The cast is safe because all my ports are instances of IOPort.
         Iterator relations = ((IOPort)port).insideRelationList().iterator();
         while(relations.hasNext()) {
@@ -596,7 +596,7 @@ public class IterateOverArray extends TypedCompositeActor
                 throw new InternalErrorException(ex);
             }
         }
-        
+
         Iterator entities = entityList().iterator();
         while(entities.hasNext()) {
             Entity insideEntity = (Entity)entities.next();
@@ -608,7 +608,7 @@ public class IterateOverArray extends TypedCompositeActor
                     throw new InternalErrorException(ex);
                 }
             }
-        }      
+        }
     }
 
     /** Return the type constraints on all connections starting from the
@@ -626,7 +626,7 @@ public class IterateOverArray extends TypedCompositeActor
     protected List _typeConstraintsFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
         List result = new LinkedList();
-        
+
         boolean srcUndeclared = sourcePort.getTypeTerm().isSettable();
         Iterator destinationPorts = destinationPortList.iterator();
         while (destinationPorts.hasNext()) {
@@ -684,7 +684,7 @@ public class IterateOverArray extends TypedCompositeActor
         if (sourcePort.getContainer().equals(this)
                 && sourcePort instanceof IterateParameterPort
                 && sourcePort.sourcePortList().size() > 0) {
-                    
+
             Type sourcePortType = sourcePort.getType();
             if (!(sourcePortType instanceof ArrayType)) {
                 throw new InternalErrorException(
@@ -693,7 +693,7 @@ public class IterateOverArray extends TypedCompositeActor
                 + ", but it had type: "
                 + sourcePortType);
             }
-                                
+
             PortParameter parameter
                     = ((IterateParameterPort)sourcePort).getParameter();
             if (parameter != null) {
@@ -709,7 +709,7 @@ public class IterateOverArray extends TypedCompositeActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Variable that reflects the current iteration count on the
     // inside.
     private Variable _iterationCount;
@@ -719,7 +719,7 @@ public class IterateOverArray extends TypedCompositeActor
 
     ///////////////////////////////////////////////////////////////////
     //// IterateDirector
-    
+
     /** This is a specialized director that fires contained actors
      *  in the order in which they appear in the actor list repeatedly
      *  until either there is no more input data for the actor or
@@ -757,7 +757,7 @@ public class IterateOverArray extends TypedCompositeActor
                     .deepEntityList().iterator();
             _postfireReturns = true;
             while (actors.hasNext() && !_stopRequested) {
-                
+
                 // Initialize all instances of IteratePortParameter.
                 Iterator parameters = attributeList(
                         IteratePortParameter.class).iterator();
@@ -853,7 +853,7 @@ public class IterateOverArray extends TypedCompositeActor
                 director.fireAtCurrentTime(actor);
             }
         }
-        
+
         /** Return a new instance of QueueReceiver.
          *  @return A new instance of QueueReceiver.
          *  @see QueueReceiver
@@ -949,23 +949,23 @@ public class IterateOverArray extends TypedCompositeActor
             }
             return result;
         }
-        
+
         //////////////////////////////////////////////////////////////
         ////                   private variables                  ////
-        
+
         // Indicator that at least one actor returned false in postfire.
         private boolean _postfireReturns = true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// IterateParameterPort
-    
+
     /** This specialized subclass of ParameterPort creates as its associated
      *  port the specialized Iterate ParameterPort in order to establish the
      *  appropriate type constraints.
      */
     private static class IterateParameterPort extends ParameterPort {
-        
+
         /** Construct a port with the given name contained by the specified
          *  entity.
          *  @param container The container.
@@ -1035,24 +1035,24 @@ public class IterateOverArray extends TypedCompositeActor
          *  can define different type constraints.  It is assured that when
          *  this is called, _parameter is non-null.  However, use caution,
          *  since this method may be called during construction of this
-         *  port, and hence the port may not be fully constructed. 
+         *  port, and hence the port may not be fully constructed.
          */
         protected void _setTypeConstraints() {
             // The parameter should be the element type of the port,
             // but we can't set that up here, so we do nothing.
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// IteratePort
-    
+
     /** This is a specialized port for handling type conversions between
      *  the array types of the ports of the enclosing IterateOverArray
      *  actor and the scalar types (or arrays with one less dimension)
      *  of the actor that are contained.
      */
     public static class IteratePort extends TypedIOPort {
-        
+
         // NOTE: This class has to be static because otherwise the
         // constructor has an extra argument (the first argument,
         // actually) that is an instance of the enclosing class.
@@ -1077,7 +1077,7 @@ public class IterateOverArray extends TypedCompositeActor
             // constructor and class have to be public.
             // setPersistent(false);
         }
-        
+
         /** Specify an associated inside port.  Once this is specified,
          *  then any changes made to this port (its name, whether it
          *  is an input or output, and whether it is a multiport) are
@@ -1086,7 +1086,7 @@ public class IterateOverArray extends TypedCompositeActor
         public void associatePort(Port port) {
             _associatedPort = port;
         }
-        
+
         /** Override the base class to convert the token to the element
          *  type rather than to the type of the port.
          *  @param token The token to convert.
@@ -1155,7 +1155,7 @@ public class IterateOverArray extends TypedCompositeActor
                 // This is allowed, just do nothing.
             }
         }
-        
+
         /** Override the base class to also set the associated port,
          *  if there is one.
          */
@@ -1200,16 +1200,16 @@ public class IterateOverArray extends TypedCompositeActor
         // The associated port, if there is one.
         private Port _associatedPort = null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// IteratePortParameter
-    
+
     /** This specialized subclass of PortParameter creates as its associated
      *  port the specialized Iterate ParameterPort in order to establish the
      *  appropriate type constraints.
      */
     public static class IteratePortParameter extends PortParameter {
-        
+
         // NOTE: This class has to be static because otherwise the
         // constructor has an extra argument (the first argument,
         // actually) that is an instance of the enclosing class.
@@ -1232,7 +1232,7 @@ public class IterateOverArray extends TypedCompositeActor
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
-                
+
         /** Set the current value of this parameter to the first element
          *  of the specified ArrayToken and notify the container
          *  and value listeners. This does not change the persistent value
@@ -1273,7 +1273,7 @@ public class IterateOverArray extends TypedCompositeActor
             _count = 1;
             setUnknown(false);
         }
-        
+
         /** Set the current value to the first element of the most
          *  recently received array. If there is no array or it is
          *  empty, then leave the value unchanged.
@@ -1288,7 +1288,7 @@ public class IterateOverArray extends TypedCompositeActor
             _count = 0;
             return stepCurrentValue();
         }
-        
+
         /** Step to the next element of the most recently received array,
          *  making that element the current value. If there are no more
          *  available elements, then leave the value unchanged.
@@ -1312,7 +1312,7 @@ public class IterateOverArray extends TypedCompositeActor
             }
             return false;
         }
-        
+
         /** If the specified container is of type TypedActor, then create an
          *  associated instance of IterateParameterPort and set the protected variable
          *  _port equal to that port.
@@ -1339,10 +1339,10 @@ public class IterateOverArray extends TypedCompositeActor
                 // _port.setTypeSameAs(this);
             }
         }
-        
+
         // The most recently received array token.
         private ArrayToken _array = null;
-        
+
         // The count into the array of the next token to read.
         private int _count = 0;
     }
