@@ -1968,8 +1968,13 @@ nil)
 	 ;;
 	 ;; FIXME: Java ID's are UNICODE strings, this matches ASCII
 	 ;; ID's only.
+         ;; The "," in the last square-bracket expression is necessary
+         ;; because of Sun's total disrespect for backwards compatibility
+         ;; in reported line numbers from jdb - starting in 1.4.0 they
+         ;; introduced a comma at the thousands position (unbelievably
+         ;; ingenous!)
 	 "\\(\[[0-9]+\] \\)*\\([a-zA-Z0-9.$_]+\\)\\.[a-zA-Z0-9$_<>(),]+ \
-\\(([a-zA-Z0-9.$_]+:\\|line=\\)\\([0-9]+\\)"
+\\(([a-zA-Z0-9.$_]+:\\|line=\\)\\([0-9,]+\\)"
 	 gud-marker-acc)
 
       ;; A good marker is one that:
@@ -1997,9 +2002,13 @@ nil)
 	      (setq gud-last-frame
 		    (cons file-found
 			  (string-to-int
-			   (substring gud-marker-acc
+			   (let 
+                               ((numstr (substring gud-marker-acc
 				      (match-beginning 4)
-				      (match-end 4)))))
+				      (match-end 4))))
+                             (if (string-match "," numstr)
+                                 (replace-match "" nil nil numstr)
+                               numstr)))))
 	    (message "Could not find source file.")))
 
       ;; Set the accumulator to the remaining text.
