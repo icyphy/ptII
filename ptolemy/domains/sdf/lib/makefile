@@ -65,7 +65,6 @@ JSRCS = \
         DotProduct.java \
 	DownSample.java \
 	FIR.java \
-	FIRDouble.java \
 	FFT.java \
 	IFFT.java \
 	IntToBits.java\
