@@ -211,7 +211,7 @@ public class PortConfigurer extends Query implements QueryListener {
                                 "<property name=\"_type\" "
                                 + "class = \"ptolemy.actor.TypeAttribute\" "
                                 + "value = \""
-                                + type
+                                + StringUtilities.escapeForXML(type)
                                 + "\"/>");
                     }
                     moml.append("</port>");
