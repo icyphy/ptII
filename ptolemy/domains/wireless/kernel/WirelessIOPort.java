@@ -40,6 +40,8 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -81,7 +83,8 @@ a receiver may be out of range of a transmitter).
 @version $Id$
 */
 
-public class WirelessIOPort extends TypedIOPort {
+public class WirelessIOPort 
+        extends TypedIOPort implements ChangeListener {
 
     /** Construct a port with the specified container and name
      *  that is neither an input nor an output.  The specified container
@@ -127,6 +130,12 @@ public class WirelessIOPort extends TypedIOPort {
         insideChannel.setExpression("");
         
         insideTransmitProperties = new Parameter(this, "insideTransmitProperties");
+        
+        // Since the channel parameters affect connectivity, we should
+        // treat changes to their values as changes to the topology.
+        // To do that, we listen for changes and increment the version
+        // number of the workspace.
+        outsideChannel.addChangeListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -225,6 +234,24 @@ public class WirelessIOPort extends TypedIOPort {
         } else {
             super.broadcastClear();
         }
+    }
+    
+    /** Increment the workspace version. This is because we are listening
+     *  for changes in channel identifiers, and these need to be treated
+     *  as if they were topology changes. Normally, changing a parameter
+     *  value does not increment the workspace version.
+     *  @param change The change that executed.
+     */
+    public void changeExecuted(ChangeRequest change) {
+        workspace().incrVersion();
+    }
+
+    /** Do nothing.  No need to increment the workspace version since the
+     *  change failed.
+     *  @param change The change that failed.
+     *  @param exception The exception that was thrown.
+     */
+    public void changeFailed(ChangeRequest change, Exception exception) {
     }
     
     /** Override the base class to create a single receiver if
@@ -764,9 +791,6 @@ public class WirelessIOPort extends TypedIOPort {
             return false;
         }
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

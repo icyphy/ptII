@@ -115,6 +115,12 @@ public class WirelessChannel extends TypedAtomicActor {
     public List listeningInputPorts() throws IllegalActionException {
         try {
             workspace().getReadAccess();
+            // NOTE: This caching relies on the fact that WirelessIOPort
+            // will increment the workspace version number if any
+            // paramter identifying the channel changes.
+            if (workspace().getVersion() == _listeningInputPortsVersion) {
+                return _listeningInputPorts;
+            }
             List result = new LinkedList();
             CompositeEntity container = (CompositeEntity)getContainer();
             Iterator entities = container.entityList().iterator();
@@ -135,6 +141,8 @@ public class WirelessChannel extends TypedAtomicActor {
                     }
                 }
             }
+            _listeningInputPorts = result;
+            _listeningInputPortsVersion = workspace().getVersion();
             return result;
         } finally {
             workspace().doneReading();
@@ -154,6 +162,12 @@ public class WirelessChannel extends TypedAtomicActor {
     public List listeningOutputPorts() throws IllegalActionException {
         try {
             workspace().getReadAccess();
+            // NOTE: This caching relies on the fact that WirelessIOPort
+            // will increment the workspace version number if any
+            // paramter identifying the channel changes.
+            if (workspace().getVersion() == _listeningOutputPortsVersion) {
+                return _listeningOutputPorts;
+            }
             List result = new LinkedList();
             CompositeEntity container = (CompositeEntity)getContainer();
             Iterator ports = container.portList().iterator();
@@ -169,6 +183,50 @@ public class WirelessChannel extends TypedAtomicActor {
                     }
                 }
             }
+            _listeningOutputPorts = result;
+            _listeningOutputPortsVersion = workspace().getVersion();
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Return a list of input ports that can potentially send data
+     *  to this channel.  This includes input ports contained by
+     *  the container of this channel that
+     *  have their <i>insideChannel</i> parameter set to the name
+     *  of this channel. This method gets read access on the workspace.
+     *  @return The list of output ports of class WirelessIOPort
+     *   using this channel.
+     *  @exception IllegalActionException If a port is encountered
+     *   whose <i>insideChannel</i> parameter cannot be evaluated.
+     */
+    public List sendingInputPorts() throws IllegalActionException {
+        try {
+            workspace().getReadAccess();
+            // NOTE: This caching relies on the fact that WirelessIOPort
+            // will increment the workspace version number if any
+            // paramter identifying the channel changes.
+            if (workspace().getVersion() == _sendingInputPortsVersion) {
+                return _sendingInputPorts;
+            }
+            List result = new LinkedList();
+            CompositeEntity container = (CompositeEntity)getContainer();
+            Iterator ports = container.portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                if (port instanceof WirelessIOPort) {
+                    WirelessIOPort castPort = (WirelessIOPort)port;
+                    if (castPort.isInput()) {
+                        String channelName = castPort.insideChannel.stringValue();
+                        if (channelName.equals(getName())) {
+                            result.add(port);
+                        }
+                    }
+                }
+            }
+            _sendingInputPorts = result;
+            _sendingInputPortsVersion = workspace().getVersion();
             return result;
         } finally {
             workspace().doneReading();
@@ -188,6 +246,12 @@ public class WirelessChannel extends TypedAtomicActor {
     public List sendingOutputPorts() throws IllegalActionException {
         try {
             workspace().getReadAccess();
+            // NOTE: This caching relies on the fact that WirelessIOPort
+            // will increment the workspace version number if any
+            // paramter identifying the channel changes.
+            if (workspace().getVersion() == _sendingOutputPortsVersion) {
+                return _sendingOutputPorts;
+            }
             List result = new LinkedList();
             CompositeEntity container = (CompositeEntity)getContainer();
             Iterator entities = container.entityList().iterator();
@@ -208,40 +272,8 @@ public class WirelessChannel extends TypedAtomicActor {
                     }
                 }
             }
-            return result;
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Return a list of input ports that can potentially send data
-     *  to this channel.  This includes input ports contained by
-     *  the container of this channel that
-     *  have their <i>insideChannel</i> parameter set to the name
-     *  of this channel. This method gets read access on the workspace.
-     *  @return The list of output ports of class WirelessIOPort
-     *   using this channel.
-     *  @exception IllegalActionException If a port is encountered
-     *   whose <i>insideChannel</i> parameter cannot be evaluated.
-     */
-    public List sendingInputPorts() throws IllegalActionException {
-        try {
-            workspace().getReadAccess();
-            List result = new LinkedList();
-            CompositeEntity container = (CompositeEntity)getContainer();
-            Iterator ports = container.portList().iterator();
-            while (ports.hasNext()) {
-                Port port = (Port)ports.next();
-                if (port instanceof WirelessIOPort) {
-                    WirelessIOPort castPort = (WirelessIOPort)port;
-                    if (castPort.isInput()) {
-                        String channelName = castPort.insideChannel.stringValue();
-                        if (channelName.equals(getName())) {
-                            result.add(port);
-                        }
-                    }
-                }
-            }
+            _sendingOutputPorts = result;
+            _sendingOutputPortsVersion = workspace().getVersion();
             return result;
         } finally {
             workspace().doneReading();
@@ -489,6 +521,16 @@ public class WirelessChannel extends TypedAtomicActor {
         
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    // Caches of port lists.
+    private List _listeningInputPorts;
+    private long _listeningInputPortsVersion = -1L;
+    private List _listeningOutputPorts;
+    private long _listeningOutputPortsVersion = -1L;
+    private List _sendingInputPorts;
+    private long _sendingInputPortsVersion = -1L;
+    private List _sendingOutputPorts;
+    private long _sendingOutputPortsVersion = -1L;
 
     // Name of the location attribute.
     private static final String LOCATION_ATTRIBUTE_NAME = "_location";
