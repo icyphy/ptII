@@ -30,25 +30,23 @@
 
 package ptolemy.actor.gui;
 
-// FIXME: Trim these
 // Ptolemy imports.
-import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.util.*;
-import ptolemy.data.expr.Parameter;
 
 // Java imports.
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.print.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Enumeration;
-import java.util.Map;
 import java.net.URL;
-import javax.swing.*;
+import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLDocument;
@@ -103,6 +101,9 @@ public class HTMLViewer extends TableauFrame
             report("");
         } else if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
             URL newUrl = event.getURL();
+// FIXME:
+System.out.println("***** hyperlink to: " + newUrl);
+
             if (event instanceof HTMLFrameHyperlinkEvent) {
                 // For some bizarre reason, when a link is within a frame,
                 // it needs to be handled differently than if its not in

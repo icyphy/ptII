@@ -137,6 +137,7 @@ public class Configuration extends CompositeEntity {
                         "No effigy factories in the configuration!");
             }
             effigy = factory.createEffigy(directory, base, in);
+
             if (effigy == null) {
                 MessageHandler.error("Unsupported file type: "
                         + in.toExternalForm());

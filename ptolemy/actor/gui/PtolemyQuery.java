@@ -277,8 +277,6 @@ public class PtolemyQuery extends Query
             // completely clear that it releases resources when windows
             // are closed.  It would be better if this listener were
             // a weak reference.
-// FIXME:
-System.out.println("---- adding listener");
             request.addChangeListener(this);
 	    if(_handler != null) {
 		_handler.requestChange(request);
