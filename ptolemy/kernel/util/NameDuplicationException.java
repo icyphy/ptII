@@ -36,16 +36,42 @@ objects with identical names in the same container object.
 @version $Id$
 */
 public class NameDuplicationException extends GraphException {
-    /** 
-     */	
+    /** Constructs an Exception with no detail message */  
     public NameDuplicationException() {
         super();
     }
 
-    /** 
-     * @param message The detailed message.
-     */	
-    public NameDuplicationException(String message) {
-        super(message);
+    /** Constructs an Exception with a detail message */  
+    public NameDuplicationException(String detail) {
+        super(detail);
+    }
+
+    /** Constructs an Exception with a detail message that is only the
+     * name of the namedobj argument.
+     */  
+    public NameDuplicationException(NamedObj namedobj) {
+        super(namedobj);
+    }
+
+    /** Constructs an Exception with a detail message that includes the
+     * name of the namedobj argument.
+     */  
+    public NameDuplicationException(NamedObj namedobj, String detail) {
+        super(namedobj, detail);
+    }
+
+    /** Constructs an Exception with a detail message that consists of
+     * only the names of the namedobj1 and namedobj2 arguments.
+     */  
+    public NameDuplicationException(NamedObj namedobj1, NamedObj namedobj2)  {
+        super(namedobj1, namedobj2);
+    }
+
+    /** Constructs an Exception with a detail message that includes the
+     * names of the namedobj1 and namedobj2 arguments.
+     */  
+    public NameDuplicationException(NamedObj namedobj1, NamedObj namedobj2,
+            String detail) {
+        super(namedobj1, namedobj2, detail);
     }
 }
