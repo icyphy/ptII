@@ -295,6 +295,10 @@ public class Transition extends ComponentRelation {
         if (attribute == guardExpression) {
             String expr = guardExpression.getExpression();
             _guard.setExpression(expr);
+            // Invalid a relation list for the transition.
+            _relationList.destroy();
+            // Reconstruct the relation list.
+            _parseTreeEvaluator.setEvaluationMode(true);
         }
         if (attribute == triggerExpression) {
             String expr = triggerExpression.getExpression();
@@ -791,6 +795,7 @@ public class Transition extends ComponentRelation {
     // List of the relation expressions of a gurad expression
     private RelationList _relationList;
 
+    // The parse tree evaluator for the transition.
     private ParseTreeEvaluatorForGuardExpression _parseTreeEvaluator;
 
 }

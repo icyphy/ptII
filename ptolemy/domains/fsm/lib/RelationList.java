@@ -40,12 +40,28 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// RelationList
 /** A RelationList contains a list of relations of a guard expression.
-It provide facilities to access the former and current information of
-each relations of a guard expression. The information includes type
-and difference information. (See ParseTreeEvaluatorForGuardExpression
-for detailed explanation of type and difference.)
-
-This class is designed to be used with ParseTreeEvaluatorForGuardExpression.
+ It provide facilities to access the former and current information of
+ each relation of a guard expression. The information includes type
+ and difference information. (See ParseTreeEvaluatorForGuardExpression
+ for detailed explanation of type and difference.)
+ <p>
+ This class is designed to be used with ParseTreeEvaluatorForGuardExpression.
+ The common usage would be like:
+ <p>
+         // Construct a relation list for the transition.
+ <p>
+         _relationList = new RelationList(this, "relationList");
+ <p>
+         // Associate the relation list with the
+ <p>
+         // ParseTreeEvaluatorForGuardExpression
+ <p>
+         _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList);
+ <p>
+         // Register the guard expression with the above parse tree evaluator
+ <p>
+         _guard.setParseTreeEvaluator( (ParseTreeEvaluator) _parseTreeEvaluator);
+ <p>
 
 @author Haiyang Zheng
 @version $Id$
@@ -62,10 +78,10 @@ public class RelationList extends Attribute {
      *  and version counts. If the name argument is null, then the
      *  name is set to the empty string.
      *  Increment the version of the workspace.
-     *  @param transition The transition.
-     *  @param name The name of this action.
-     *  @exception IllegalActionException If the action is not of an
-     *   acceptable class for the container, or if the name contains
+     *  @param transition The transition container.
+     *  @param name The name of this relation list.
+     *  @exception IllegalActionException If the relation list is not
+     *   of an acceptable class for the container, or if the name contains
      *   a period.
      *  @exception NameDuplicationException If the transition already
      *   has an attribute with the name.
@@ -88,7 +104,6 @@ public class RelationList extends Attribute {
     public void addRelation(int type, double difference) {
         //System.out.println("Adding " + type + " " + difference);
         _relationList.add(new RelationNode(type, difference));
-        _relationNumber++;
     }
 
     /** Clear the relation list by resetting each relation node.
@@ -109,9 +124,15 @@ public class RelationList extends Attribute {
         }
     }
 
+    /** Destroy the relation list by deleting all its elements.
+     */
+    public void destroy() {
+        _relationList.clear();
+    }
+
     /** Return the former difference of the relation which has the maximum
      *  current difference.
-     *  @return formerMaximumDistance The former distance of a relation.
+     *  @return The former distance of a relation.
      */
     public double getFormerMaximumDistance() {
         return ((RelationNode) _relationList.get(_maximumDifferenceIndex)).getFormerDifference();
@@ -126,9 +147,8 @@ public class RelationList extends Attribute {
         while (relations.hasNext() && !result) {
             result = result || ((RelationNode)relations.next()).hasEvent();
         }
-
-        if (result) {
-            //System.out.println("Detected event!");
+        if (result && _debugging) {
+            _debug("Detected event!");
         }
         return result;
     }
@@ -169,15 +189,14 @@ public class RelationList extends Attribute {
         return _maximumDifferenceIndex;
     }
 
-    /** Update the according relation in the relation list with the given
-     *  type and difference information.
+    /** Update the relation in the relation list referred by the relation index
+     *  argument with the given type and difference information.
+     *  @parameter relationIndex The position of the relation in the relation list.
      *  @parameter type The current type of the relation.
      *  @parameter difference The current difference of the relation.
      */
     public void setRelation(int relationIndex, int type, double difference) {
-        int index = relationIndex - relationIndex/_relationNumber*_relationNumber;
-        //System.out.println("Setting " + index + " " + type + " " + difference);
-        RelationNode relationNode = (RelationNode) _relationList.get(index);
+        RelationNode relationNode = (RelationNode) _relationList.get(relationIndex);
         relationNode.setValue(type);
         relationNode.setDifference(difference);
     }
@@ -189,8 +208,6 @@ public class RelationList extends Attribute {
     private int _maximumDifferenceIndex;
     // The relation list.
     private LinkedList _relationList;
-    // The total number of relations contained by a guard expression.
-    private int _relationNumber;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -255,12 +272,11 @@ public class RelationList extends Attribute {
         /** Return true, if the relation node has its type changed, and if the
          *  relation node is an equility or inequility relation, and if the
          *  current type is equal/inequal or the current type changes from
-         *  less_than to bigger_than or bigger_than to less_than.
+         *  less_than to bigger_than or bigger_than to less_than. This is used
+         *  to detect whether a continuous variable cross a level.
          *  @return True If event has been detected.
          */
         public boolean hasEvent(){
-            //System.out.println("former type " + _formerType
-            //                   + " current type " + _currentType);
             if (typeChanged()) {
                 return (_currentType == 3) || ( _formerType * _currentType == 20);
             }
@@ -280,7 +296,8 @@ public class RelationList extends Attribute {
          *  valid.
          */
         public boolean typeChanged(){
-            return (_formerType != _currentType) && (_formerType != 0);
+            //System.out.println("former type " + _formerType + " current type " + _currentType);
+            return (_formerType != 0) && (_formerType != _currentType);
         }
 
         ///////////////////////////////////////////////////////////////

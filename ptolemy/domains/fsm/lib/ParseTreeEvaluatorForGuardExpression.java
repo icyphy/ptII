@@ -117,6 +117,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         }
         _relationList = relationList;
         _relationIndex = 0;
+        _relationNumber = 0;
         _absentDiscreteVariables = new LinkedList();
         _variableCollector = new ParseTreeFreeVariableCollector();
     }
@@ -169,11 +170,15 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
             if (_construction) {
                 _relationList.addRelation(0, 0.0);
+                _relationNumber ++;
             }
 
             // Only increment the relation index but do not update
             // the relation node.
             _relationIndex ++;
+            if (_relationIndex >= _relationNumber) {
+                _relationIndex -= _relationNumber;
+            }
 
             return;
         }
@@ -206,11 +211,15 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         if (_construction) {
             _relationList.addRelation(_relationType, _difference);
+            _relationNumber ++;
         } else {
             _relationList.setRelation(_relationIndex, _relationType, _difference);
         }
 
         _relationIndex ++;
+        if (_relationIndex >= _relationNumber) {
+            _relationIndex -= _relationNumber;
+        }
     }
 
     /** Visit the logical node. This visitor does not use short-circuit
@@ -302,8 +311,12 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
                 if (_construction) {
                     _relationList.addRelation(0, 0.0);
+                    _relationNumber ++;
                 }
                 _relationIndex++;
+                if (_relationIndex >= _relationNumber) {
+                    _relationIndex -= _relationNumber;
+                }
                 return;
             }
         }
@@ -386,11 +399,15 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         if (_construction) {
             _relationList.addRelation(_relationType, _difference);
+            _relationNumber ++;
         } else {
             _relationList.setRelation(_relationIndex, _relationType, _difference);
         }
 
         _relationIndex++;
+        if (_relationIndex >= _relationNumber) {
+            _relationIndex -= _relationNumber;
+        }
         return;
     }
 
@@ -405,6 +422,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     // the list to store the relation nodes and leaf nodes with boolean tokens
     // inside a guard expression
     private RelationList _relationList;
+    // the total number of relations
+    private int _relationNumber;
     // the relation types have 5 integer values with meaning:
     // 1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.
     private int _relationType;
