@@ -56,10 +56,11 @@ incremented for each input channel scanned. If an input channel has a
 token, it is copied to the corresponding output channel.<p>
 
 Note: The width of a single relation (e.g. connected to an input port)
-may be controlled by adding a <em>width</em> parameter with an IntToken value
+may be controlled by adding a <em>width</em> parameter with an IntToken
+value
 representing the desired relation width<p>
 
-@author Zoltan Kemenczy
+@author Zoltan Kemenczy, Research in Motion Limited
 @version $Id$
 @see ptolemy.actor.IORelation
 */
@@ -149,18 +150,22 @@ public class BusAssembler extends TypedAtomicActor {
 
     /** Recalculate the output relation width. */
     private void _recalculateOutputWidth() throws IllegalActionException {
-        TypedIORelation outputRelation = (TypedIORelation)
-            output.linkedRelationList().get(0);
+        List outputRelations = output.linkedRelationList();
         _outputWidth = 0;
+        if (outputRelations.isEmpty()) {
+            return;
+        }
+        TypedIORelation outputRelation =
+            (TypedIORelation)outputRelations.get(0);
         Iterator inputPorts = inputPortList().iterator();
         while (inputPorts.hasNext()) {
             TypedIOPort port = (TypedIOPort)inputPorts.next();
-            _outputWidth += port.getWidth(); // includes all linked relations
+            _outputWidth += port.getWidth(); // includes all linked
+relations
         }
-        if (outputRelation != null)
-            outputRelation.setWidth(_outputWidth);
+        outputRelation.setWidth(_outputWidth);
         // TODO: figure out how to obey if the output relation width is
-        // set (isWidthFixed() would return a reliable true...)
+        // set (if isWidthFixed() would return a reliable true...)
     }
 
     ///////////////////////////////////////////////////////////////////
