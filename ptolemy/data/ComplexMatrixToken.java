@@ -115,7 +115,6 @@ public class ComplexMatrixToken extends MatrixToken {
      *   not of a type that can be added to this token.
      */
     public Token add(Token token) throws IllegalActionException {
-
         int compare = TypeLattice.compare(this, token);
         if (compare == CPO.INCOMPARABLE) {
             String msg = "add method not supported between " +
@@ -228,6 +227,45 @@ public class ComplexMatrixToken extends MatrixToken {
                 "ComplexMatrixToken.");
     }
 
+    /** Return the number of columns in the matrix.
+     *  @return The number of columns in the matrix.
+     */
+    public int getColumnCount() {
+        return _columnCount;
+    }
+
+    /** Return the element of the matrix at the specified
+     *  row and column in a ComplexToken.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return A ComplexToken containing the matrix element.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the range of the matrix.
+     */
+    public Token getElementAsToken(final int row, final int column)
+            throws ArrayIndexOutOfBoundsException {
+        return new ComplexToken(_value[row][column]);
+    }
+
+    /** Return the element of the contained matrix at the specified
+     *  row and column.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return The Complex at the specified matrix entry.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the range of the matrix.
+     */
+    public Complex getElementAt(final int row, final int column) {
+        return _value[row][column];
+    }
+
+    /** Return the number of rows in the matrix.
+     *  @return The number of rows in the matrix.
+     */
+    public int getRowCount() {
+        return _rowCount;
+    }
+
     /** Return the type of this token.
      *  @return BaseType.COMPLEX_MATRIX
      */
@@ -269,45 +307,6 @@ public class ComplexMatrixToken extends MatrixToken {
                     ComplexMatrixMath.arePartsWithin(_value,
                             tem._getInternalComplexMatrix(), 0.0));
         }
-    }
-
-    /** Return the element of the matrix at the specified
-     *  row and column in a ComplexToken.
-     *  @param row The row index of the desired element.
-     *  @param column The column index of the desired element.
-     *  @return A ComplexToken containing the matrix element.
-     *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the range of the matrix.
-     */
-    public Token getElementAsToken(final int row, final int column)
-            throws ArrayIndexOutOfBoundsException {
-        return new ComplexToken(_value[row][column]);
-    }
-
-    /** Return the element of the contained matrix at the specified
-     *  row and column.
-     *  @param row The row index of the desired element.
-     *  @param column The column index of the desired element.
-     *  @return The Complex at the specified matrix entry.
-     *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the range of the matrix.
-     */
-    public Complex getElementAt(final int row, final int column) {
-        return _value[row][column];
-    }
-
-    /** Return the number of columns in the matrix.
-     *  @return The number of columns in the matrix.
-     */
-    public int getColumnCount() {
-        return _columnCount;
-    }
-
-    /** Return the number of rows in the matrix.
-     *  @return The number of rows in the matrix.
-     */
-    public int getRowCount() {
-        return _rowCount;
     }
 
     /** Return a new token whose value is the product of this token
@@ -402,6 +401,30 @@ public class ComplexMatrixToken extends MatrixToken {
         }
     }
 
+    /** Return a new Token representing the left multiplicative
+     *  identity. The returned token contains an identity matrix
+     *  whose dimensions are the same as the number of rows of
+     *  the matrix contained in this token.
+     *  @return A new ComplexMatrixToken containing the left multiplicative
+     *   identity.
+     */
+    public Token one() {
+        return new ComplexMatrixToken(
+                ComplexMatrixMath.identity(_rowCount), DO_NOT_COPY);
+    }
+
+    /** Return a new Token representing the right multiplicative
+     *  identity. The returned token contains an identity matrix
+     *  whose dimensions are the same as the number of columns of
+     *  the matrix contained in this token.
+     *  @return A new ComplexMatrixToken containing the right
+     *   multiplicative identity.
+     */
+    public Token oneRight() {
+        return new ComplexMatrixToken(
+                ComplexMatrixMath.identity(_columnCount), DO_NOT_COPY);
+    }
+
     /** Return a new Token whose value is the value of the argument Token
      *  subtracted from the value of this Token. The type of the specified token
      *  must be such that either it can be converted to the type
@@ -473,31 +496,6 @@ public class ComplexMatrixToken extends MatrixToken {
             new ComplexMatrixToken(
 	                     ComplexMatrixMath.negative(_value), DO_NOT_COPY);
         return negativeToken.add(token);
-    }
-
-
-    /** Return a new Token representing the left multiplicative
-     *  identity. The returned token contains an identity matrix
-     *  whose dimensions are the same as the number of rows of
-     *  the matrix contained in this token.
-     *  @return A new ComplexMatrixToken containing the left multiplicative
-     *   identity.
-     */
-    public Token one() {
-        return new ComplexMatrixToken(
-                ComplexMatrixMath.identity(_rowCount), DO_NOT_COPY);
-    }
-
-    /** Return a new Token representing the right multiplicative
-     *  identity. The returned token contains an identity matrix
-     *  whose dimensions are the same as the number of columns of
-     *  the matrix contained in this token.
-     *  @return A new ComplexMatrixToken containing the right
-     *   multiplicative identity.
-     */
-    public Token oneRight() {
-        return new ComplexMatrixToken(
-                ComplexMatrixMath.identity(_columnCount), DO_NOT_COPY);
     }
 
     /** Return a new Token representing the additive identity.
