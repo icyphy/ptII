@@ -168,8 +168,9 @@ public class VideoCamera extends Source implements ControllerListener {
         //             try {
         //                 wait();
         //             } catch (InterruptedException ex) {
-        //                 throw new IllegalActionException(this,
-        //                 "Interrupted while waiting for the first video frame.");
+        //                 throw new IllegalActionException(this, ex,
+        //                 "Interrupted while waiting for the "
+        //                 + "first video frame.");
         //             }
         //         }
         //_imageNew = JamesCodec.getFrame();
@@ -368,12 +369,12 @@ public class VideoCamera extends Source implements ControllerListener {
         }
 
         // We'll advertize as supporting all video formats.
-        protected Format supportedIns[] = new Format [] {
+        protected Format _supportedIns[] = new Format [] {
             new YUVFormat()
                 };
 
         // We'll advertize as supporting all video formats.
-        protected Format supportedOuts[] = new Format [] {
+        protected Format _supportedOuts[] = new Format [] {
             new YUVFormat()
                 //new VideoFormat(null)
                 };
@@ -397,12 +398,12 @@ public class VideoCamera extends Source implements ControllerListener {
         }
 
         public Format [] getSupportedInputFormats() {
-            return supportedIns;
+            return _supportedIns;
         }
 
         public Format [] getSupportedOutputFormats(Format in) {
             if (in == null)
-                return supportedOuts;
+                return _supportedOuts;
             else {
                 // If an input format is given, we use that input format
                 // as the output since we are not modifying the bit stream

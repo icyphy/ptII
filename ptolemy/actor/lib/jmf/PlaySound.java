@@ -152,8 +152,8 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
                 throw new IllegalActionException(this,
                         "Cannot open file: " + ex.toString());
             } catch (MediaException ex) {
-                throw new IllegalActionException(this,
-                        "Exception thrown by media framework: " + ex.toString());
+                throw new IllegalActionException(this, ex
+                        "Exception thrown by media framework");
             }
         } else if (attribute == percentGain && _gainControl != null) {
             _gainControl.setLevel(0.01f * percentGain.getCurrentValue());

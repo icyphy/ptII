@@ -24,6 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 package ptolemy.actor.lib.jmf;
 
@@ -44,13 +46,12 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// ColorFinder
 /**
-   An actor that searches for a color in a Buffer.
+An actor that searches for a color in a Buffer.
 
-   @author Paul Yang, David Lee, James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
+@author Paul Yang, David Lee, James Yeh
+@version $Id$
+@since Ptolemy II 3.0
  */
-
 public class ColorFinder extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
@@ -148,17 +149,17 @@ public class ColorFinder extends TypedAtomicActor {
                         int vComp = _getVComponent(x, y);
 
                         int compInClass =
-                            yClass[yComp] & uClass[uComp] & vClass[vComp];
+                            _yClass[yComp] & _uClass[uComp] & _vClass[vComp];
                         if (compInClass == 1) {
-                            sumX += x;
-                            sumY += y;
-                            inCount += 1;
+                            _sumX += x;
+                            _sumY += y;
+                            _inCount += 1;
                         }
                     }
                 }
-                if (inCount > 0) {
-                    double xLocation = (double) sumX/inCount;
-                    double yLocation = (double) (frameHeight - sumY/inCount);
+                if (_inCount > 0) {
+                    double xLocation = (double) _sumX/_inCount;
+                    double yLocation = (double) (frameHeight - _sumY/_inCount);
                     outputX.send(0, new DoubleToken(xLocation));
                     outputY.send(0, new DoubleToken(yLocation));
                     if (_debugging) {
@@ -166,9 +167,9 @@ public class ColorFinder extends TypedAtomicActor {
                                 + "and " + (int)yLocation);
                     }
                 }
-                inCount = 0;
-                sumX = 0;
-                sumY = 0;
+                _inCount = 0;
+                _sumX = 0;
+                _sumY = 0;
             }
         }
     }
@@ -186,18 +187,18 @@ public class ColorFinder extends TypedAtomicActor {
         _vLow = ((IntToken)vLowValue.getToken()).intValue();
         _vHigh = ((IntToken)vHighValue.getToken()).intValue();
 
-        for (int i = 0; i < histSize; i += 1) {
+        for (int i = 0; i < _histSize; i += 1) {
             if (i > _yLow && i < _yHigh) {
-                yClass[i] = 1; }
+                _yClass[i] = 1; }
             else {
-                yClass[i] = 0; }
+                _yClass[i] = 0; }
             if (i > _uLow && i < _uHigh) {
-                uClass[i] = 1; }
+                _uClass[i] = 1; }
             else {
-                uClass[i] = 0; }
+                _uClass[i] = 0; }
             if (i > _vLow && i < _vHigh) {
-                vClass[i] = 1; }
-            else { vClass[i] = 0; }
+                _vClass[i] = 1; }
+            else { _vClass[i] = 0; }
         }
     }
 
@@ -253,12 +254,11 @@ public class ColorFinder extends TypedAtomicActor {
     private byte[] UArray = new byte[frameWidth/2 * frameHeight/2];
     private byte[] VArray = new byte[frameWidth/2 * frameHeight/2];
 
-    //FIXME the histSize should be static and private I think
-    //FIXME the inCount, sumX, and sumY should be private
-    public int histSize = 256;
-    public int inCount = 0;
-    public int sumX = 0;
-    public int sumY = 0;
+    private int _histSize = 256;
+    private int _inCount = 0;
+
+    private int _sumX = 0;
+    private int _sumY = 0;
 
     private int _yLow;
     private int _yHigh;
@@ -267,10 +267,9 @@ public class ColorFinder extends TypedAtomicActor {
     private int _vLow;
     private int _vHigh;
 
-    //FIXME these should be private as well.
-    int[] yClass = new int[histSize];
-    int[] uClass = new int[histSize];
-    int[] vClass = new int[histSize];
+    private int[] _yClass = new int[_histSize];
+    private int[] _uClass = new int[_histSize];
+    private int[] _vClass = new int[_histSize];
 
 }
 
