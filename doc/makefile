@@ -148,13 +148,19 @@ COPERNICUSPACKAGES = \
 			$(JHDLPACKAGE) \
 			ptolemy.copernicus.shallow
 
-PTINYPACKAGES = \
+# Packages used by Hybrid Systems
+HYBRIDSYSTEMSPACKAGES = \
 			ptolemy.actor.lib \
 			ptolemy.actor.lib.conversions \
 			ptolemy.actor.lib.gui \
 			ptolemy.actor.lib.io \
 			ptolemy.actor.lib.logic \
 			ptolemy.domains.ct.lib \
+			ptolemy.domains.fsm.lib
+
+# Packages used by Ptiny.  
+PTINYPACKAGES = \
+			$(HYBRIDSYSTEMSPACKAGES) \
 			ptolemy.domains.de.lib \
 			ptolemy.domains.sdf.lib \
 			ptolemy.domains.sdf.lib.vq
@@ -379,6 +385,13 @@ codeDocPtiny/tree.html:
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
 	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
+
+
+codeDocHybridSystems/tree.html:
+	if [ ! -d codeDocHybridSystems ]; then mkdir -p codeDocPtiny; fi
+	@echo "If this fails because of memory problems, try"
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(HYBRIDSYSTEMSPACKAGES) )
 
 
 # We don't include common.mk since we don't use the compiler here
