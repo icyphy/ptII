@@ -119,11 +119,15 @@ if [ "$windows" = "yes" ]; then
     WINPTII=`(cd $PTII; cmd /c chdir) | tr -d '\r'`
     $JAVAHOME/bin/java -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip $javastartupclass ${1+"$@"}
 elif [ "$PTARCH" = "alpha4" ]; then
-    CLASSPATH=$PTII
+    CLASSPATH=$PTIIo
     export CLASSPATH
     java $javastartupclass ${1+"$@"}
 else
-    CLASSPATH=$PTII
+    if [ -f $PTII/ptolemy/plot/plotapplication.jar ]; then
+	CLASSPATH="${PTII}/ptolemy/plot/plotapplication.jar:$(PTII)"
+    else
+	CLASSPATH=$PTII
+    fi	
     export CLASSPATH
-    $JAVAHOME/bin/java $javastartupclass ${1+"$@"}
+    $JAVAHOME/bin/java -verbose:class $javastartupclass ${1+"$@"}
 fi
