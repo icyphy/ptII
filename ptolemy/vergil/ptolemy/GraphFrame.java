@@ -783,8 +783,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	    NamedObj target = getTarget();
 	    String className = target.getClass().getName();
 	    try {
-		System.out.println(className);
-		Effigy effigy = (Effigy)getTableau().getContainer();
+                Effigy effigy = (Effigy)getTableau().getContainer();
 		DocumentationViewerTableau viewer =
 		    new DocumentationViewerTableau(effigy,
                             effigy.uniqueName("tableau"));
