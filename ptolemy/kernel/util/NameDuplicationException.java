@@ -76,14 +76,14 @@ public class NameDuplicationException extends KernelException {
             Nameable wouldBeContainee, String moreInfo) {
         if (_getFullName(container).equals("")) {
             _setMessage("Attempt to insert object named \"" +
-                    _getName(wouldBeContainee) +
+                    KernelException._getName(wouldBeContainee) +
                     "\" into a container that already contains" +
                     " an object with that name." +
                     (moreInfo == null ? "" : (" " + moreInfo))
                     );
         } else {
             _setMessage("Attempt to insert object named \"" +
-                    _getName(wouldBeContainee) +
+                    KernelException._getName(wouldBeContainee) +
                     "\" into container named \"" +
                     _getFullName(container) +
                     "\", which already contains an object with that name." +

@@ -76,6 +76,9 @@ public class KernelException extends Exception {
 
     /** Constructs an Exception with a no specific detail message */
     public KernelException() {
+        // Note: this nullary exception is required.  If it is
+        // not present, then the subclasses of this class will not
+        // compile.
         this(null, null, null, null);
     }
 
@@ -107,46 +110,8 @@ public class KernelException extends Exception {
      */
     public KernelException(Nameable object1, Nameable object2,
             Throwable cause, String detail) {
-        String object1String = _getFullName(object1);
-        String object2String = _getFullName(object2);
-        String prefix;
-        if (!object1String.equals("")) {
-            if (!object2String.equals("")) {
-                prefix = object1String + " and " + object2String;
-            } else {
-                prefix = object1String;
-            }
-        } else {
-            prefix = object2String;
-        }
         _cause = cause;
-        // Using 'boolean ? if true : if false' is usually frowned
-        // upon, but in this case, the alternatives are a very large
-        // and complex if/else tree or else the creation of a bunch
-        // of temporary strings with a smaller if/else tree.
-        _setMessage(
-                // Do we print the prefix?
-                ((prefix.equals("")) ?
-                        "" : prefix)
-
-                // Do we add a \n?
-                + ((!prefix.equals("")
-                        && detail != null && !detail.equals("")) ?
-                        ":\n" : "")
-
-                // Do we print the detail?
-                + ((detail == null || detail.equals("")) ?
-                        "" : detail)
-
-                // Do we add a \n?
-                + (((!prefix.equals("")
-                        || (detail != null && !detail.equals("")))
-                        && _cause != null) ?
-                        "\n" : "")
-
-                // Do we print the _cause?
-                + ((_cause == null) ?
-                        "" : ("Caused by:\n " + _cause)));
+        _setMessage(_generateMessage(object1, object2, _cause, detail));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -228,14 +193,110 @@ public class KernelException extends Exception {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         package friendly methods          ////
+
+    /** Generate a properly formatted detail message.
+     *  If one or more of the parameters are null, then the detail message is
+     *  adjusted accordingly.
+     *
+     *  <p>This method is package friendly so that both KernelException
+     *  and KernelRuntimeException and any classes derived from those
+     *  classes can use it.  KernelRuntimeException must extend
+     *  RuntimeException so that the java compiler will allow methods
+     *  that throw KernelRuntimeException to not declare that they
+     *  throw it, and KernelException cannot extend RuntimeException
+     *  for the same reason.
+     *
+     *  @param object1 The first object.
+     *  @param object2 The second object.
+     *  @param cause The cause of this exception.
+     *  @param detail The message.
+     *  @return A properly formatted message
+     */
+    static String _generateMessage(Nameable object1, Nameable object2,
+            Throwable cause, String detail) {
+        String object1String = _getFullName(object1);
+        String object2String = _getFullName(object2);
+        String prefix;
+        if (!object1String.equals("")) {
+            if (!object2String.equals("")) {
+                prefix = object1String + " and " + object2String;
+            } else {
+                prefix = object1String;
+            }
+        } else {
+            prefix = object2String;
+        }
+        return _generateMessage(prefix, cause, detail);
+    }
+
+    /** Generate a properly formatted detail message.
+     *  If one or more of the parameters are null, then the detail message is
+     *  adjusted accordingly.
+     *
+     *  <p>This method is package friendly so that both KernelException
+     *  and KernelRuntimeException and any classes derived from those
+     *  classes can use it.  KernelRuntimeException must extend
+     *  RuntimeException so that the java compiler will allow methods
+     *  that throw KernelRuntimeException to not declare that they
+     *  throw it, and KernelException cannot extend RuntimeException
+     *  for the same reason.
+     *
+     *  @param prefix The prefix string at the start of the message
+     *  that usually contains the names of the objects involved.
+     *  @param cause The cause of this exception.
+     *  @param detail The message.
+     *  @return A properly formatted message
+     */
+    static String _generateMessage(String prefix,
+            Throwable cause, String detail) {
+        // We need this method to support the constructors
+        // in InvalidStateException that take Enumerations and Lists.
+
+        // Using 'boolean ? if true : if false' is usually frowned
+        // upon, but in this case, the alternatives are a very large
+        // and complex if/else tree or else the creation of a bunch
+        // of temporary strings with a smaller if/else tree.
+        return
+                // Do we print the prefix?
+                ((prefix.equals("")) ?
+                        "" : prefix)
+
+                // Do we add a \n?
+                + ((!prefix.equals("")
+                        && detail != null && !detail.equals("")) ?
+                        ":\n" : "")
+
+                // Do we print the detail?
+                + ((detail == null || detail.equals("")) ?
+                        "" : detail)
+
+                // Do we add a \n?
+                + (((!prefix.equals("")
+                        || (detail != null && !detail.equals("")))
+                        && cause != null) ?
+                        "\n" : "")
+
+                // Do we print the cause?
+                + ((cause == null) ?
+                        "" : ("Caused by:\n " + cause));
+    }
 
     /** Get the name of a Nameable object.
      *  If the argument is a null reference, return an empty string.
+     *
+     *  <p>This method is package friendly so that both KernelException
+     *  and KernelRuntimeException and any classes derived from those
+     *  classes can use it.  KernelRuntimeException must extend
+     *  RuntimeException so that the java compiler will allow methods
+     *  that throw KernelRuntimeException to not declare that they
+     *  throw it, and KernelException cannot extend RuntimeException
+     *  for the same reason.
+     *
      *  @param object An object with a name.
      *  @return The name of the argument.
      */
-    protected String _getName(Nameable object) {
+    static String _getName(Nameable object) {
         if (object == null) {
             return "";
         } else {
@@ -251,10 +312,19 @@ public class KernelException extends Exception {
     /** Get the name of a Nameable object.  This method attempts to use
      *  getFullName(), if it is defined, and resorts to getName() if it is
      *  not.  If the argument is a null reference, return an empty string.
+     *
+     *  <p>This method is package friendly so that both KernelException
+     *  and KernelRuntimeException and any classes derived from those
+     *  classes can use it.  KernelRuntimeException must extend
+     *  RuntimeException so that the java compiler will allow methods
+     *  that throw KernelRuntimeException to not declare that they
+     *  throw it, and KernelException cannot extend RuntimeException
+     *  for the same reason.
+     *
      *  @param object An object with a full name.
      *  @return The full name of the argument.
      */
-    protected String _getFullName(Nameable object) {
+    static String _getFullName(Nameable object) {
         if (object == null) {
             return "";
         } else {
@@ -268,6 +338,9 @@ public class KernelException extends Exception {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** Sets the error message to the specified string.
      *  @param message The message.
      */
@@ -280,11 +353,11 @@ public class KernelException extends Exception {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     // The detail message
-    private String _message ;
+    protected String _message ;
 
     // The cause of this exception.
-    private Throwable _cause;
+    protected Throwable _cause;
 }

@@ -56,8 +56,10 @@ exception chaining.
 
 <p>JDK1.4 supports exception chaining.  We are implement them
 ourselves here so that we can use JVMs earlier than JDK1.4.
+See the {@link #KernelException KernelException} documentation
+for differences between our exception chaining implementation and
+the JDK1.4 implementation.
 
-@see KernelException
 @author Edward A. Lee, Christopher Hylands
 @version $Id$ */
 public class KernelRuntimeException extends RuntimeException {
@@ -65,9 +67,16 @@ public class KernelRuntimeException extends RuntimeException {
     // NOTE: This class has much duplicated code with KernelException,
     // but because it needs to extend java.lang.RuntimeException,
     // so that methods that throw this exception not need to declare
-    // that they throw this exception. There seemed to
-    // be no way to avoid this.  Should there be an interface defined
-    // for the commonality?
+    // that they throw this exception.  As a workaround,
+    // we use package friendly methods defined in KernelException.
+
+    /** Constructs an Exception with a no specific detail message */
+    public KernelRuntimeException() {
+        // Note: this nullary exception is required.  If it is
+        // not present, then the subclasses of this class will not
+        // compile.
+        this(null, null, null, null);
+    }
 
     /** Constructs an Exception with only a detail message.
      *  @param detail The message.
@@ -94,109 +103,16 @@ public class KernelRuntimeException extends RuntimeException {
      *  or more of the parameters are null, then the detail message is
      *  adjusted accordingly.
      *
-     *  @param obj1 The first object.
-     *  @param obj2 The second object.
+     *  @param object1 The first object.
+     *  @param object2 The second object.
      *  @param cause The cause of this exception.
      *  @param detail The message.
      */
-    public KernelRuntimeException(Nameable obj1, Nameable obj2,
+    public KernelRuntimeException(Nameable object1, Nameable object2,
             Throwable cause, String detail) {
-        String obj1string = _getFullName(obj1);
-        String obj2string = _getFullName(obj2);
-        String prefix;
-        if (!obj1string.equals("")) {
-            if (!obj2string.equals("")) {
-                prefix = obj1string + " and " + obj2string;
-            } else {
-                prefix = obj1string;
-            }
-        } else {
-            prefix = obj2string;
-        }
-        _setMessage(prefix);
-	_cause = cause;
-        if (_cause != null) {
-	    if (detail == null) {
-		detail = "Caused by " + _cause;
-	    } else {
-		detail = detail + "Caused by " + _cause;
-
-	    }
-	}
-        if (detail != null) {
-            if (!detail.equals("")) {
-                if (!prefix.equals("")) {
-                    _setMessage(prefix + ": " + detail);
-                } else {
-                    _setMessage(detail);
-                }
-            }
-        }
-    }
-
-    /** Construct an exception with a detail message that includes the
-     *  names of an enumeration of nameable object plus the argument string.
-     *  @param objects The enumeration of Nameable objects
-     *  @param detail The message.
-     */
-    public KernelRuntimeException(Enumeration objects, String detail) {
-	this(objects, null, detail);
-    }
-
-    /** Construct an exception with a detail message that includes the
-     *  names of an enumeration of nameable object, the detail message
-     *  of the cause plus the argument string.  If one or more of the
-     *  parameters are null, then the detail message is adjusted
-     *  accordingly.
-
-     *  @param objects The enumeration of Nameable objects
-     *  @param cause The cause of this exception.
-     *  @param detail The message.
-     */
-    public KernelRuntimeException(Enumeration objects,
-				  Throwable cause, String detail) {
-        String prefix = "";
-        String name;
-        while(objects.hasMoreElements()) {
-            Object obj = objects.nextElement();
-            if (obj instanceof Nameable) {
-                name = _getFullName((Nameable)obj);
-            } else {
-                name = "<Object of class " +
-                    (obj.getClass()).getName() + ">";
-            }
-            prefix += name + ", ";
-        }
-        prefix = prefix.substring(0, prefix.length()-2);
-        prefix += ": ";
-        _setMessage(prefix);
-	_cause = cause;
-        if (_cause != null) {
-	    if (detail == null) {
-		detail = "Caused by " + _cause;
-	    } else {
-		detail = detail + "Caused by " + _cause;
-
-	    }
-	}
-        if (detail != null) {
-            if (!detail.equals("")) {
-                if (!prefix.equals("")) {
-                    _setMessage(prefix + detail);
-                } else {
-                    _setMessage(detail);
-                }
-            }
-        }
-    }
-
-    /** Constructs an exception with a detail message that includes the
-     *  names of a list of nameable objects plus the argument string.
-     *  @param objects The enumeration of Nameable objects
-     *  @param detail The message.
-     */
-    public KernelRuntimeException(List objects, String detail) {
-        this(Collections.enumeration(objects), detail);
+        _cause = cause;
+        _setMessage(KernelException._generateMessage(object1, object2,
+                _cause, detail));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -210,7 +126,9 @@ public class KernelRuntimeException extends RuntimeException {
         return _cause;
     }
 
-    /** Get the detail message. */
+    /** Get the detail message.
+     *  @return The error message.
+     */
     public String getMessage() {
         return _message;
     }
@@ -226,6 +144,11 @@ public class KernelRuntimeException extends RuntimeException {
         // documentation states that it is not necessary to overwrite
         // printStream, but this is only the case when we have a JDK1.4
         // JVM.
+
+        // We could try to factor out the printStackTrace() methods
+        // and call package friendly methods in KernelException,
+        // but these methods are so short, why bother.
+
         super.printStackTrace();
         if (_cause != null) {
             System.err.print("Caused by: ");
@@ -263,58 +186,23 @@ public class KernelRuntimeException extends RuntimeException {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Get the name of a Nameable object.
-     *  If the argument is a null reference, return an empty string.
-     *  @param obj An object with a name.
-     *  @return The name of the argument.
-     */
-    protected String _getName(Nameable obj) {
-        String name;
-        if (obj == null) {
-            return "";
-        } else {
-            name = obj.getName();
-            if (name.equals("")) {
-                name = "<Unnamed Object>";
-            }
-        }
-        return name;
-    }
-
-    /** Get the name of a Nameable object.  This method attempts to use
-     *  getFullName(), if it is defined, and resorts to getName() if it is
-     *  not.  If the argument is a null reference, return an empty string.
-     *  @param obj An object with a full name.
-     *  @return The full name of the argument.
-     */
-    protected String _getFullName(Nameable obj) {
-        String name;
-        if (obj == null) {
-            return "";
-        } else {
-            try {
-                name = obj.getFullName();
-            } catch (KernelRuntimeException ex) {
-                name = obj.getName();
-            }
-        }
-        return name;
-    }
-
     /** Sets the error message to the specified string.
      *  @param message The message.
      */
     protected void _setMessage(String message) {
-        _message = message;
+        if (message == null) {
+            _message = "";
+        } else {
+            _message = message;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
-    /** @serial The detail message. */
-    private String _message ;
+    /** The detail message. */
+    protected String _message ;
 
     // The cause of this exception.
-    private Throwable _cause;
-
+    protected Throwable _cause;
 }

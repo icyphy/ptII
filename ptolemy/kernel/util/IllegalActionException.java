@@ -55,52 +55,52 @@ public class IllegalActionException extends KernelException {
 
     /** Constructs an Exception with a detail message that is only the
      *  name of the argument.
-     *  @param obj The object.
+     *  @param object The object.
      */
-    public IllegalActionException(Nameable obj) {
-        this(null, obj, null, null);
+    public IllegalActionException(Nameable object) {
+        this(null, object, null, null);
     }
 
     /** Constructs an Exception with a detail message that includes the
      *  name of the first argument.
-     *  @param obj The object.
+     *  @param object The object.
      *  @param detail The message.
      */
-    public IllegalActionException(Nameable obj, String detail) {
-        this(obj, null, null, detail);
+    public IllegalActionException(Nameable object, String detail) {
+        this(object, null, null, detail);
     }
 
     /** Constructs an Exception with a detail message that consists of
-     *  only the names of the obj1 and obj2 arguments.
-     *  @param obj1 The first object.
-     *  @param obj2 The second object.
+     *  only the names of the object1 and object2 arguments.
+     *  @param object1 The first objectect.
+     *  @param object2 The second object.
      */
-    public IllegalActionException(Nameable obj1, Nameable obj2)  {
-        this(obj1, obj2, null, null);
+    public IllegalActionException(Nameable object1, Nameable object2)  {
+        this(object1, object2, null, null);
     }
 
     /** Constructs an Exception with a detail message that includes the
-     * names of the obj1 and obj2 arguments.
-     *  @param obj1 The first object.
-     *  @param obj2 The second object.
+     * names of the object1 and object2 arguments.
+     *  @param object1 The first object.
+     *  @param object2 The second object.
      *  @param detail The message.
      */
-    public IllegalActionException(Nameable obj1, Nameable obj2,
+    public IllegalActionException(Nameable object1, Nameable object2,
             String detail) {
-        this(obj1, obj2, null, detail);
+        this(object1, object2, null, detail);
     }
 
     /** Constructs an Exception with a cause and a detail message that
-     *  includes the names of the obj1 and obj2 arguments.
+     *  includes the names of the object1 and object2 arguments.
      *
-     *  @param obj1 The first object.
-     *  @param obj2 The second object.
+     *  @param object1 The first object.
+     *  @param object2 The second object.
      *  @param cause The cause of this exception, or null if the cause
-     *  is not known or nonexistant.
+     *  is not known or nonexistent.
      *  @param detail The message.
      */
-    public IllegalActionException(Nameable obj1, Nameable obj2,
+    public IllegalActionException(Nameable object1, Nameable object2,
             Throwable cause, String detail) {
-        super(obj1, obj2, cause, detail);
+        super(object1, object2, cause, detail);
     }
 }

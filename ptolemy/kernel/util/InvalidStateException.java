@@ -94,7 +94,37 @@ public class InvalidStateException extends KernelRuntimeException {
      *  @param detail The message.
      */
     public InvalidStateException(Enumeration objects, String detail) {
-	super(objects, detail);
+        this(objects, null, detail);
+    }
+
+    /** Construct an exception with a detail message that includes the
+     *  names of an enumeration of nameable object, the detail message
+     *  of the cause plus the argument string.  If one or more of the
+     *  parameters are null, then the detail message is adjusted
+     *  accordingly.
+     *
+     *  @deprecated This method is weird
+     *  @param objects The enumeration of Nameable objects
+     *  @param cause The cause of this exception.
+     *  @param detail The message.
+     */
+    public InvalidStateException(Enumeration objects,
+				  Throwable cause, String detail) {
+        String prefix = "";
+        String name;
+        while(objects.hasMoreElements()) {
+            Object obj = objects.nextElement();
+            if (obj instanceof Nameable) {
+                name = KernelException._getFullName((Nameable)obj);
+            } else {
+                name = "<Object of class " +
+                    (obj.getClass()).getName() + ">";
+            }
+            prefix += name + ", ";
+        }
+        prefix = prefix.substring(0, prefix.length()-2);
+	_cause = cause;
+        _setMessage(KernelException._generateMessage(prefix, _cause, detail));
     }
 
     /** Constructs an exception with a detail message that includes the
@@ -103,6 +133,6 @@ public class InvalidStateException extends KernelRuntimeException {
      *  @param detail The message.
      */
     public InvalidStateException(List objects, String detail) {
-        super(objects, detail);
+        this(Collections.enumeration(objects), null, detail);
     }
 }

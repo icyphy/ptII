@@ -289,7 +289,8 @@ test Workspace-7.1 {Test isReadOnly, setReadOnly} {
     set n3 [java::new ptolemy.kernel.util.NamedObj $w N3]
     list $readOnly1 $readOnly2 $errMsg $readOnly3 \
 	    [enumToFullNames [$w directory]]
-} {0 1 {ptolemy.kernel.util.InvalidStateException: W: Trying to relinquish write access on a write-protected workspace.} 0 {.N1 .null .N2 .N3}}
+} {0 1 {ptolemy.kernel.util.InvalidStateException: W:
+Trying to relinquish write access on a write-protected workspace.} 0 {.N1 .null .N2 .N3}}
 
 ######################################################################
 #### The following assumptions are made for this test to work. 
