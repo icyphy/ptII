@@ -73,25 +73,29 @@ public class StringToken extends AbstractConvertibleToken {
             _toString = "\"" + _value + "\"";
         } else {
             if (_value.indexOf("\\\"") == -1) {
+                // Note that using backslashes in regexs results in
+                // onset of psychosis.  If you change this, be sure
+                // to test your changes.
                 _toString = "\""
-                    + StringUtilities.substitute(_value, "\"", "\\\"") + "\"";
+                    + StringUtilities.substitute(_value, "\\\"", "\\\\\"")
+                    + "\"";
             } else {
                 // The string already has a \" in it.
 
                 // 1. Substitute a special word for every instance of \"
                 String backslashed =
                     StringUtilities.substitute(_value,
-                            "\\\"", "MaGiCBakSlash");
+                            "\\\\\"", "MaGiCBakSlash");
 
                 // 2. Substitute \" for every remaining "
                 String backslashed2 =
-                    StringUtilities.substitute(backslashed, "\"", "\\\"");
+                    StringUtilities.substitute(backslashed, "\"", "\\\\\"");
 
                 // 3. Add the leading and trailing " and substitute
                 //    \" for every instance of the special word
                 _toString = "\"" +
                     StringUtilities.substitute(backslashed2,
-                            "MaGiCBakSlash", "\\\"") + "\"";
+                            "MaGiCBakSlash", "\\\\\"") + "\"";
             }
         }
     }
