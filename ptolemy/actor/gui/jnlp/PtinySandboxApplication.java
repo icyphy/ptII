@@ -30,6 +30,11 @@
 
 package ptolemy.actor.gui.jnlp;
 
+import ptolemy.vergil.VergilApplication;
+import ptolemy.gui.MessageHandler;
+
+import javax.swing.SwingUtilities;
+
 //////////////////////////////////////////////////////////////////////////
 //// PtinySandboxApplication
 /** A wrapper class that calls ptolemy.actor.gui.MoMLApplication for
@@ -51,7 +56,21 @@ we create these wrapper classes that call the appropriate main class.
 @since Ptolemy II 2.0
 */
 public class PtinySandboxApplication {
-    public static void main(String [] args) {
-        ptolemy.actor.gui.MoMLApplication.main(args);
+    public static void main(final String [] args) {
+
+	// Invoke in the event thread so that we don't have problems
+	// rendering HTML.
+	// Note that this makes Web Start a little slower to come up,
+	// but it avoids the problems in rendering that HyVisual 2.2-beta had.
+	SwingUtilities.invokeLater(new Runnable() {
+		public void run() {
+		    try {
+			ptolemy.vergil.VergilApplication.main(args);
+		    } catch (Exception ex) {
+			MessageHandler.error("Command failed", ex);
+			System.exit(0);
+		    }
+		}
+	    });
     }
 }

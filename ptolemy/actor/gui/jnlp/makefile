@@ -105,7 +105,7 @@ HyVisualApplication.jar: HyVisualApplication.class
 	mkdir $(PTJAR_TMPDIR)
 	# Copy any class files from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
+	-cp $^ 'HyVisualApplication$$1.class' $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
