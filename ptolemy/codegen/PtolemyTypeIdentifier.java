@@ -665,14 +665,14 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         ARRAY_TOKEN_TYPE = ARRAY_TOKEN_DECL.getDefType();
 
         CompileUnitNode intArrayTokenUnit =
-            StaticResolution.loadClassName("ptolemy.codegen.IntArrayToken", 1);
+            StaticResolution.loadClassName("ptolemy.codegen.data.IntArrayToken", 1);
         INT_ARRAY_TOKEN_DECL =
             (ClassDecl) StaticResolution.findDecl(intArrayTokenUnit,
                     "IntArrayToken", CG_CLASS);
         INT_ARRAY_TOKEN_TYPE = INT_ARRAY_TOKEN_DECL.getDefType();
 
         CompileUnitNode doubleArrayTokenUnit =
-            StaticResolution.loadClassName("ptolemy.codegen.DoubleArrayToken",
+            StaticResolution.loadClassName("ptolemy.codegen.data.DoubleArrayToken",
                     1);
         DOUBLE_ARRAY_TOKEN_DECL =
             (ClassDecl) StaticResolution.findDecl(doubleArrayTokenUnit,
