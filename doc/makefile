@@ -40,7 +40,8 @@ include $(CONFIG)
 
 EXTRA_SRCS = \
 	index.html \
-	javalinks.html
+	javalinks.html \
+	tyjava.html
 
 MISC_FILES =	usersGuides #codeDoc #internals
 
