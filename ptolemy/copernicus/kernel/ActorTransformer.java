@@ -95,7 +95,7 @@ public class ActorTransformer extends SceneTransformer {
      */
     protected void internalTransform(String phaseName, Map options) {
 	System.out.println("ActorTransformer.internalTransform("
-			   + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         if(!Options.getBoolean(options, "deep")) {
             return;
@@ -140,30 +140,30 @@ public class ActorTransformer extends SceneTransformer {
             newClass.setApplicationClass();
 
             /*
-            // create a class for the entity instance.
-            EntitySootClass entityInstanceClass =
-                new EntitySootClass(entityClass, newClassName,
-                        Modifier.PUBLIC);
-            Scene.v().addClass(entityInstanceClass);
-            entityInstanceClass.setApplicationClass();
+              // create a class for the entity instance.
+              EntitySootClass entityInstanceClass =
+              new EntitySootClass(entityClass, newClassName,
+              Modifier.PUBLIC);
+              Scene.v().addClass(entityInstanceClass);
+              entityInstanceClass.setApplicationClass();
 
-            // populate the method to initialize this instance.
-            SootMethod initMethod = entityInstanceClass.getInitMethod();
-            JimpleBody body = Jimple.v().newBody(initMethod);
-            // Add this and read the parameters into locals
-            body.insertIdentityStmts();
-            initMethod.setActiveBody(body);
-            Chain units = body.getUnits();
-            Local thisLocal = body.getThisLocal();
+              // populate the method to initialize this instance.
+              SootMethod initMethod = entityInstanceClass.getInitMethod();
+              JimpleBody body = Jimple.v().newBody(initMethod);
+              // Add this and read the parameters into locals
+              body.insertIdentityStmts();
+              initMethod.setActiveBody(body);
+              Chain units = body.getUnits();
+              Local thisLocal = body.getThisLocal();
 
-            // insert code to initialize the settable
-            // parameters of this instance
-            // FIXME don't assume that the parameter has already been
-            // created.
-            initializeParameters(body, entity, entity, thisLocal);
+              // insert code to initialize the settable
+              // parameters of this instance
+              // FIXME don't assume that the parameter has already been
+              // created.
+              initializeParameters(body, entity, entity, thisLocal);
 
-            // return void
-            units.add(Jimple.v().newReturnVoidStmt());
+              // return void
+              units.add(Jimple.v().newReturnVoidStmt());
             */
         }
 
@@ -175,8 +175,8 @@ public class ActorTransformer extends SceneTransformer {
             SootClass theClass = (SootClass)classes.next();
             SootClass superClass = theClass.getSuperclass();
             while(superClass != objectClass &&
-                  superClass != actorClass &&
-                  superClass != compositeActorClass) {
+                    superClass != actorClass &&
+                    superClass != compositeActorClass) {
                 superClass.setLibraryClass();
                 SootUtilities.foldClass(theClass);
                 superClass = theClass.getSuperclass();

@@ -197,12 +197,12 @@ public class SootUtilities {
 	//		   + newClassName + ")");
         // Create the new Class
         SootClass newClass = new SootClass(newClassName,
-                    Modifier.PUBLIC);
+                Modifier.PUBLIC);
 	try {
 	    Scene.v().addClass(newClass);
         } catch (RuntimeException runtime) {
 	    throw new RuntimeException("Perhaps you are calling the same "
-				       + "transform twice?: " + runtime);
+                    + "transform twice?: " + runtime);
 	}
         // Set the Superclass.
         newClass.setSuperclass(oldClass.getSuperclass());
@@ -346,7 +346,7 @@ public class SootUtilities {
                                     oldClass.getName())) {
                                 SootClass changeClass =
                                     _getInnerClassCopy(oldClass,
-                                        refClass, newClass);
+                                            refClass, newClass);
                                 r.setCastType(RefType.v(changeClass));
                             }
                         }
@@ -383,7 +383,7 @@ public class SootUtilities {
                                     r.getMethod().getSubSignature()));
                         }
                     } else if(value instanceof NewExpr) {
-                    // Fix up the object creations.
+                        // Fix up the object creations.
                         NewExpr r = (NewExpr)value;
                         if(r.getBaseType().getSootClass() == oldClass) {
                             r.setBaseType(RefType.v(newClass));

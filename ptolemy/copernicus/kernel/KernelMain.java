@@ -160,7 +160,7 @@ public class KernelMain {
      *  @exception IllegalActionException if the model cannot be parsed.
      */
     protected void _initialize()
-	throws IllegalActionException {
+            throws IllegalActionException {
 
         // Call the MOML parser on the test file to generate a Ptolemy II
         // model.
@@ -169,7 +169,7 @@ public class KernelMain {
 	    // First, try it as a top level model
 	    String source = "<entity name=\"ToplevelModel\""
 	        + "class=\"" + _momlClassName + "\"/>\n";
-	     _toplevel = (CompositeActor)parser.parse(source);
+            _toplevel = (CompositeActor)parser.parse(source);
 
         } catch (Exception exception) {
 	    try {
@@ -178,8 +178,8 @@ public class KernelMain {
 	    } catch (Exception exception2) {
 		throw new
 		    IllegalActionException("Failed to parse '"
-					   + _momlClassName
-					   + "': " + exception);
+                            + _momlClassName
+                            + "': " + exception);
 	    }
         }
 
@@ -188,14 +188,14 @@ public class KernelMain {
         CompositeActor modelClass = null;
 	try {
 	    modelClass = (CompositeActor)
-            parser._searchForClass(_momlClassName,
-				   _toplevel.getMoMLInfo().source);
+                parser._searchForClass(_momlClassName,
+                        _toplevel.getMoMLInfo().source);
 	} catch (XmlException xml) {
-		throw new
-		    IllegalActionException("Failed to find class '"
-					   + _momlClassName + "' in '"
-					   + _toplevel.getMoMLInfo().source
-					   + "': " + xml);
+            throw new
+                IllegalActionException("Failed to find class '"
+                        + _momlClassName + "' in '"
+                        + _toplevel.getMoMLInfo().source
+                        + "': " + xml);
 	}
 
         if(modelClass != null) {
@@ -211,7 +211,7 @@ public class KernelMain {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Could not initialize "
-				       + "composite actor: " + e);
+                    + "composite actor: " + e);
         }
 
         // A Hack to ignore the class we specify on the command
