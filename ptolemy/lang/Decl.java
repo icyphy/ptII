@@ -93,6 +93,9 @@ public class Decl extends TrackedPropertyMap {
         return matches(d.getName(), d.category);
     }
 
+    /** Return the name of this Decl. */
+    public final String getName() { return _name; }
+
     /** Return true if at least some of the bits in the mask are set
      *  in the category argument and the name argument matches the name of
      *  this Decl, or the name argument is ANY_NAME or the name of
@@ -111,9 +114,6 @@ public class Decl extends TrackedPropertyMap {
 	}
         return false;
     }
-
-    /** Return the name of this Decl. */
-    public final String getName() { return _name; }
 
     /** Set the name of this Decl. */
     public final void setName(String name) { _name = name; }
