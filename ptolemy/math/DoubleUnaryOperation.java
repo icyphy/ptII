@@ -35,6 +35,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
+
 /** A operation taking one argument of type double, and producing a value of
 type double. This interface attempts to mimic a first-class function of
 a single variable.

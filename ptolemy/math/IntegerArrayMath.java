@@ -31,7 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
-import java.lang.Integer;              /* Needed by javadoc */
 
 //////////////////////////////////////////////////////////////////////////
 //// IntegerArrayMath

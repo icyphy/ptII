@@ -31,7 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
-import  java.io.Serializable;
+import java.io.Serializable;
 
 /** This class provides a complex data type and a library of functions that
 operate on and return complex numbers.  An instance of the class is

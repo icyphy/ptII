@@ -34,6 +34,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
+
 /**
 @author Jeff Tsay
 @version $Id$

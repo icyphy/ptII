@@ -35,6 +35,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
+
 /** A operation taking two operands of type float, and producing a value of
 type float. This interface attempts to mimic a first-class function of two
 variables.

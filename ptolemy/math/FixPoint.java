@@ -32,9 +32,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.math;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
+import java.math.BigInteger;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixPoint

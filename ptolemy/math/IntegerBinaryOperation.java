@@ -32,6 +32,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
+
 /** A operation taking two operands of type int, and producing a value of
 type int. This interface attempts to mimic a first-class function of two
 variables.

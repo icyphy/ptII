@@ -35,7 +35,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
-import java.lang.Double;              /* Needed by javadoc */
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleArrayMath

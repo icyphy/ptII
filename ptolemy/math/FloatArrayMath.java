@@ -31,7 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
-import java.lang.Float;              /* Needed by javadoc */
 
 //////////////////////////////////////////////////////////////////////////
 //// FloatArrayMath
