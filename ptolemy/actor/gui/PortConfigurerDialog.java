@@ -228,9 +228,9 @@ public class PortConfigurerDialog
         }
 
         /** Add a port
-         *  The new port gets added with a name of <NewPort>. It is assumed that
-         *  the user will change this to the real name at some point.
-         */
+        *  The new port gets added with a name of <NewPort>. It is assumed that
+        *  the user will change this to the real name at some point.
+        */
         public void addNewPort() {
             Object portInfo[] = new Object[getColumnCount() + 1];
             portInfo[COL_NAME] = "";
@@ -238,7 +238,7 @@ public class PortConfigurerDialog
             portInfo[COL_OUTPUT] = Boolean.FALSE;
             portInfo[COL_MULTIPORT] = Boolean.FALSE;
             portInfo[COL_TYPE] = "general";
-            portInfo[COL_DIRECTION] = "WEST";
+            portInfo[COL_DIRECTION] = "";
             portInfo[COL_UNITS] = "";
             portInfo[COL_ACTUAL_PORT] = null;
             _ports.add(portInfo);
@@ -695,6 +695,26 @@ public class PortConfigurerDialog
                     updates[updateNum] = true;
                 }
                 updates[PortTableModel.COL_NAME] = false;
+                if (((String) (portInfo[PortTableModel.COL_DIRECTION]))
+                    .equals("")) {
+                    String _direction;
+                    if (((Boolean) (portInfo[PortTableModel.COL_INPUT]))
+                        .booleanValue()
+                        && !((Boolean) (portInfo[PortTableModel.COL_OUTPUT]))
+                            .booleanValue()) {
+                        _direction = "WEST";
+                    } else if (
+                        ((Boolean) (portInfo[PortTableModel.COL_OUTPUT]))
+                            .booleanValue()
+                            && !((Boolean) (portInfo[PortTableModel.COL_INPUT]))
+                                .booleanValue()) {
+                        _direction = "EAST";
+                    } else { // multiport
+                        _direction = "WEST";
+                    }
+                    portInfo[PortTableModel.COL_DIRECTION] = _direction;
+                    _portTableModel.fireTableDataChanged();
+                }
                 moml.append(
                     _createMoMLUpdate(
                         updates,
