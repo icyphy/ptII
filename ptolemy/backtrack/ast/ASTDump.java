@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -42,14 +42,15 @@ import org.eclipse.jdt.internal.core.dom.rewrite.GenericVisitor;
 //////////////////////////////////////////////////////////////////////////
 //// ASTDump
 /**
- *  This class is an Eclipse AST (Abstract Syntax Tree) visitor that
- *  traverses an AST and output its structure.
- *
- *  @author Thomas Feng
- *  @version $Id$
- *  @since Ptolemy II 4.1
- *  @Pt.ProposedRating Red (tfeng)
- */
+   An Eclipse AST (Abstract Syntax Tree) visitor that traverses an AST and
+   outputs its structure.
+ 
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class ASTDump extends GenericVisitor {
 
     /** Construct an AST dump with a {@link StringBuffer} where the
@@ -78,10 +79,11 @@ public class ASTDump extends GenericVisitor {
      */
     public static void main(String[] args) throws Exception {
         if (args.length == 0)
-            System.err.println("USAGE: java ptolemy.backtrack.ast.ASTDump [.java files...]");
+            System.err.println("USAGE: java ptolemy.backtrack.ast.ASTDump" +
+                    " [.java files...]");
         else {
             Writer writer = new OutputStreamWriter(System.out);
-            for (int i=0; i<args.length; i++) {
+            for (int i = 0; i < args.length; i++) {
                 String fileName = args[i];
                 CompilationUnit root = ASTBuilder.parse(fileName);
                 ASTDump dump = new ASTDump(writer);
@@ -89,6 +91,16 @@ public class ASTDump extends GenericVisitor {
             }
             writer.close();
         }
+    }
+
+    /** End the visiting of a node (and all its children), and decrease
+     *  the indent amount.
+     *
+     *  @param node The node that have been visited.
+     */
+    protected void endVisitNode(ASTNode node) {
+        _decreaseIndent();
+        super.endVisitNode(node);
     }
 
     /** Visit a node in the AST and output it. If the node is an {@link
@@ -126,14 +138,10 @@ public class ASTDump extends GenericVisitor {
         return super.visitNode(node);
     }
 
-    /** End the visiting of a node (and all its children), and decrease
-     *  the indent amount.
-     *
-     *  @param node The node that have been visited.
+    /** Decrease the current indentation by a unit (four spaces).
      */
-    protected void endVisitNode(ASTNode node) {
-        _decreaseIndent();
-        super.endVisitNode(node);
+    private void _decreaseIndent() {
+        _indent.setLength(_indent.length() - 4);
     }
 
     /** Get the simple name (the last part of its full name, without any
@@ -152,12 +160,18 @@ public class ASTDump extends GenericVisitor {
             return fullName.substring(pos + 1);
     }
 
+    /** Increase the current indentation by a unit (four spaces).
+     */
+    private void _increaseIndent() {
+        _indent.append("    ");
+    }
+
     /** Output a message. If a {@link StringBuffer} is used, the output
      *  is appended to the buffer; if a {@link Writer} is provided, the
      *  output is written to the writer.
      *
      *  @param message The message to be output.
-     *  @exception ASTIORuntimeException Thrown when a writer is provided and
+     *  @exception ASTIORuntimeException If a writer is provided but
      *   IO exception occurs when trying to write to the writer.
      */
     private void _output(String message) throws ASTIORuntimeException {
@@ -176,7 +190,7 @@ public class ASTDump extends GenericVisitor {
      *  output is written to the writer.
      *
      *  @param message The message to be output.
-     *  @exception ASTIORuntimeException Thrown when a writer is provided and
+     *  @exception ASTIORuntimeException If a writer is provided but
      *   IO exception occurs when trying to write to the writer.
      */
     private void _output(StringBuffer message) throws ASTIORuntimeException {
@@ -188,18 +202,6 @@ public class ASTDump extends GenericVisitor {
             } catch (IOException e) {
                 throw new ASTIORuntimeException(e);
             }
-    }
-
-    /** Increase the current indentation by a unit (four spaces).
-     */
-    private void _increaseIndent() {
-        _indent.append("    ");
-    }
-
-    /** Decrease the current indentation by a unit (four spaces).
-     */
-    private void _decreaseIndent() {
-        _indent.setLength(_indent.length() - 4);
     }
 
     /** The current indentation, a string of spaces.
