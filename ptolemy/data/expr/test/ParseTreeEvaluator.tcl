@@ -517,7 +517,7 @@ test ParseTreeEvaluator-23.5 {Test various function calls} {
 #  } {} {We don't have this method}
 
 
-test ParseTreeEvaluator-23.6.5 {Test various function calls} {
+test ParseTreeEvaluator-23.6.5 {Test various function calls: createArray} {
     # FIXME: what about UnsignedByteArray and FixMatrixToken
     list \
 	[theTest {createArray([true,false;true,true])}] \
@@ -526,6 +526,31 @@ test ParseTreeEvaluator-23.6.5 {Test various function calls} {
 	[theTest {createArray([1.0,2.0;3.0,4.0])}] \
 	[theTest {createArray([1.0 + 0i, 2.0 + 1i; 3.0 - 1i, 4.0 + 4i])}]
 } {{{true, false, true, true}} {{1, 2, 3, 4}} {{1L, 2L, 3L, 4L}} {{1.0, 2.0, 3.0, 4.0}} {{1.0 + 0.0i, 2.0 + 1.0i, 3.0 - 1.0i, 4.0 + 4.0i}}}
+
+
+test ParseTreeEvaluator-23.6.6.1 {Test various function calls: createMatrix} {
+    # FIXME: what about UnsignedByteArray and FixMatrixToken
+    list "[theTest {createMatrix({true,false,true,true,false,false}, 2, 3)}]\n \
+	[theTest {createMatrix({1,2,3,4,5,6}, 2, 3)}]\n \
+	[theTest {createMatrix({1L,2L,3L,4L,5L,6L}, 2, 3)}]\n \
+	[theTest {createMatrix({1.0,2.0,3.0,4.0,5.0,6.0}, 2, 3)}]\n \
+	[theTest {createMatrix({1.0 + 0i, 2.0 + 1i, 3.0 - 1i, 4.0 + 4i, 5.0 - 5i, 6.0 - 6.0i}, 2, 3)}]\n \
+	[theTest {createMatrix({1ub,2,3.5,4,5,6}, 2, 3)}]"
+
+} {{[true, false, true; true, false, false]
+  [1, 2, 3; 4, 5, 6]
+  [1L, 2L, 3L; 4L, 5L, 6L]
+  [1.0, 2.0, 3.0; 4.0, 5.0, 6.0]
+  [1.0 + 0.0i, 2.0 + 1.0i, 3.0 - 1.0i; 4.0 + 4.0i, 5.0 - 5.0i, 6.0 - 6.0i]
+  [1.0, 2.0, 3.5; 4.0, 5.0, 6.0]}}
+
+test ParseTreeEvaluator-23.6.6.2 {Test various function calls: createMatrix with an array that is not big enough} {
+    catch {theTest {createMatrix({1L,2L,3L,4L}, 2, 3)}} errMsg
+    list $errMsg	
+} {{ptolemy.kernel.util.IllegalActionException: Error invoking function public static ptolemy.data.MatrixToken ptolemy.data.MatrixToken.createMatrix(ptolemy.data.Token[],int,int) throws ptolemy.kernel.util.IllegalActionException
+
+Because:
+LongMatrixToken: The specified array is not of the correct length}}
 
 test ParseTreeEvaluator-23.7 {Test various function calls} {
     list [theTest {exp(1+i)}] \
