@@ -179,21 +179,16 @@ public final class HTVQEncode extends SDFAtomicActor {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
-    public Object clone(Workspace ws) {
-        try {
-            HTVQEncode newobj = (HTVQEncode)(super.clone(ws));
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.output = (SDFIOPort)newobj.getPort("output");
-            newobj.codeBook = (Parameter)newobj.getAttribute("codeBook");
-            newobj.blockCount = (Parameter)newobj.getAttribute("blockCount");
-            newobj.blockWidth = (Parameter)newobj.getAttribute("blockWidth");
-            newobj.blockHeight = (Parameter)newobj.getAttribute("blockHeight");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        HTVQEncode newobj = (HTVQEncode)(super.clone(ws));
+        newobj.input = (SDFIOPort)newobj.getPort("input");
+        newobj.output = (SDFIOPort)newobj.getPort("output");
+        newobj.codeBook = (Parameter)newobj.getAttribute("codeBook");
+        newobj.blockCount = (Parameter)newobj.getAttribute("blockCount");
+        newobj.blockWidth = (Parameter)newobj.getAttribute("blockWidth");
+        newobj.blockHeight = (Parameter)newobj.getAttribute("blockHeight");
+        return newobj;
     }
 
     /**
