@@ -48,6 +48,7 @@ endif
 set path = ( \
 	$PTII/bin \
 	$javapath \
+	$PTII/vendors/sun/JavaScope/bin \
 	/usr/X11/bin \
 	/usr/openwin/bin \
 	/usr/local/bin \
