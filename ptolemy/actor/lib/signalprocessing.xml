@@ -7,39 +7,15 @@
       <group>
   <doc>Signal processing actors</doc>
 
-<entity name="Autocorrelation" class="ptolemy.domains.sdf.lib.Autocorrelation">
-   <doc>Autocorrelation estimator</doc>
-</entity>
-  <entity name="DB" class="ptolemy.actor.lib.DB">
-  </entity>
-<entity name="DelayLine" class="ptolemy.domains.sdf.lib.DelayLine"/>
-<entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample"/>
-<entity name="FFT" class="ptolemy.domains.sdf.lib.FFT"/>
-<entity name="IFFT" class="ptolemy.domains.sdf.lib.IFFT"/>
-<entity name="FIR" class="ptolemy.domains.sdf.lib.FIR"/>
-<entity name="IIR" class="ptolemy.actor.lib.IIR"/>
-<entity name="Lattice" class="ptolemy.actor.lib.Lattice"/>
-<entity name="LevinsonDurbin" class="ptolemy.actor.lib.LevinsonDurbin"/>
-<entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder"/>
-<entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive"/>
-<entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum"/>
-<entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine"/>
-<entity name="RecursiveLattice" class="ptolemy.actor.lib.RecursiveLattice"/>
-<entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
-<entity name="SmoothedSpectrum" class="ptolemy.domains.sdf.lib.SmoothedSpectrum"/>
-<entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum"/>
-<entity name="PhaseUnwrap" class="ptolemy.actor.lib.PhaseUnwrap"/>
-<entity name="PowerEstimate" class="ptolemy.actor.lib.PowerEstimate"/>
-<entity name="UpSample" class="ptolemy.domains.sdf.lib.UpSample"/>
-<entity name="VariableFIR" class="ptolemy.domains.sdf.lib.VariableFIR"/>
-<entity name="VariableLattice" class="ptolemy.domains.sdf.lib.VariableLattice"/>
-<entity name="VariableRecursiveLattice" class="ptolemy.domains.sdf.lib.VariableRecursiveLattice"/>
-
-        <!-- NOTE: javasound actors only work under jdk1.3. -->
         <!-- use ptolemy/ instead of ../ here so that we look in the jar-->
+        <!-- NOTE: javasound actors only work under jdk1.3. -->
         <input source="ptolemy/actor/lib/javasound/javasound.xml"/>
+        <input source="ptolemy/actor/lib/communications.xml"/>
+        <input source="ptolemy/actor/lib/filtering.xml"/>
 	<!-- NOTE: This next one is labeled as image processing."-->
         <input source="ptolemy/domains/sdf/lib/vq/sdfvqentities.xml"/>
+        <input source="ptolemy/actor/lib/spectrum.xml"/>
+        <input source="ptolemy/actor/lib/statistical.xml"/>
 
       </group>
     ?>
