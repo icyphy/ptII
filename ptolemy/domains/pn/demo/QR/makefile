@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Continuous Time domain demos
+# Makefile for Ptolemy II Process Networks QR Demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	QRcompileApplet.java \
+	QRCompileApplet.java \
 	StreamToMatrix.java \
 	SourceMatrix.java \
 	ArrayIndex.java \
@@ -52,7 +52,7 @@ JSRCS = \
 	ND_86.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
-	QRcompileApplet.html \
+	QRCompileApplet.htm \
 	QRvr.gif \
 	dg.gif \
 	qr.xml
@@ -77,18 +77,18 @@ install: all
 PTAUXJAR = QRcompile.jar
 
 demo: QRcompile.jar
-	CLASSPATH=$(CLASSPATH) appletviewer QRcompileApplet.html
+	CLASSPATH=$(CLASSPATH) appletviewer QRCompileApplet.html
 
 show: QRcompile.class
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.pn.demo.QR.QRcompileApplet.html
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.pn.demo.QR.QRCompileApplet.html
 
 docs: javadocs
 
 # 'make clean' removes everything in KRUFT
-KRUFT = QRcompile.jar
+KRUFT = QRCompile.jar
 
-# Jar file for the QRplane Applet
-QRcompile.jar: $(JSRCS) $(JCLASS) makefile
+# Jar file for the Applet
+QRCompile.jar: $(JSRCS) $(JCLASS) makefile
 	(cd $(ROOT); \
 		$(JAR) cf \
 		$(ME)/$@ \
