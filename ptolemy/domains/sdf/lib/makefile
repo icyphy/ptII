@@ -49,8 +49,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		conversion/conversion.jar \
-		logic/logic.jar \
 		vq/vq.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
