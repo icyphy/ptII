@@ -1520,6 +1520,22 @@ public class SootUtilities {
         return returned;
     }
 
+    /** Replace the invoke expression in the given statement in the
+     * given body with the given value.  If the statement is an invoke
+     * statement (without a return value) and the value is not an
+     * invoke expression, then blindly replacing the invoke expression
+     * is incorrect.  This method deals with this corner case by
+     * removing the statement from the given body.
+     */
+    public static void replaceInvokeExpr(
+            JimpleBody body, Stmt stmt, Value value) {
+        if (stmt instanceof InvokeStmt && !(value instanceof InvokeExpr)) {
+            body.getUnits().remove(stmt);
+        } else {
+            stmt.getInvokeExprBox().setValue(value);
+        }
+    }
+
     /** Get the method with the given name in the given class
      *  (or one of its super classes).
      */

@@ -42,8 +42,7 @@ import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
 
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.copernicus.kernel.*;
 
 import soot.ArrayType;
 import soot.Body;
@@ -224,6 +223,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 createReplacementTokenFields(entityClass, depth,
                         unsafeLocalSet, debug);
             }
+
             // Replace the locals and fields of the given depth.
             for (Iterator classes =
                      Scene.v().getApplicationClasses().iterator();
@@ -233,6 +233,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 replaceTokenFields(entityClass, depth,
                         unsafeLocalSet, debug);
             }
+
             for (Iterator classes = classList.iterator();
                  classes.hasNext();) {
                 SootClass entityClass = (SootClass)classes.next();
@@ -252,7 +253,9 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                             body, _phaseName + ".lns");
                 }
             }
-            
+ 
+            //           updateTokenTypes(classList, depth, unsafeLocalSet, debug);
+           
             depth--;
         }
     }
@@ -311,9 +314,9 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 TypeAssigner.v().transform(
                         body, _phaseName + ".ta");
 
-         //        TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
-//                         body, _phaseName + ".tie", unsafeLocalSet,
-//                         false);
+                TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
+                        body, _phaseName + ".tie", unsafeLocalSet,
+                        false);
 
                 UnreachableCodeEliminator.v().transform(
                         body, _phaseName + ".uce");
@@ -343,6 +346,11 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                         body, _phaseName + ".ule");
                 LocalSplitter.v().transform(
                         body, _phaseName + ".ls");
+                TypeAssigner.v().transform(
+                        body, _phaseName + ".ta");
+                TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
+                        body, _phaseName + ".cie", 
+                        Collections.EMPTY_SET, debug);
             }
         }
 
@@ -451,6 +459,11 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                         body, _phaseName + ".ule");
                 LocalSplitter.v().transform(
                         body, _phaseName + ".ls");
+                TypeAssigner.v().transform(
+                        body, _phaseName + ".ta");
+                TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
+                        body, _phaseName + ".cie", 
+                        Collections.EMPTY_SET, debug);
             }
 
             // InvokeGraph invokeGraph = ClassHierarchyAnalysis.newInvokeGraph();

@@ -122,6 +122,9 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
 
                     Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
+                  //   if(debug) System.out.println("checking cast in " + unit);
+//                     if(debug) System.out.println("op = " + op);
+//                     if(debug) System.out.println("opType = " + opType);
                     replaceCast(box, hierarchy,
                             castType, op, opType, debug);
 
@@ -279,7 +282,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
         }
         SootClass checkClass = ((RefType)checkRef).getSootClass();
         SootClass opClass = ((RefType)opRef).getSootClass();
-        if (debug) System.out.println("checkClass = " + checkClass);
+        if (debug) System.out.println("castClass = " + checkClass);
         if (debug) System.out.println("opClass = " + opClass);
         if (checkClass.isInterface()) {
             if (opClass.isInterface()) {
@@ -317,9 +320,9 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     box.setValue(op);
                 } else if (!hierarchy.isClassSuperclassOfIncluding(
                         opClass, checkClass)) {
-                                // Then we know the instanceof will be false,
-                                // because no subclass of opClass can suddenly
-                                // become a subclass of checkClass.
+                    // Then we know the instanceof will be false,
+                    // because no subclass of opClass can suddenly
+                    // become a subclass of checkClass.
                     //if (debug) System.out.println("Replacing " +
                     //        box.getValue() + " with false.");
                     //                    box.setValue(IntConstant.v(0));

@@ -327,8 +327,10 @@ public class TypeSpecializerAnalysis {
             throw new RuntimeException(
                     "attempt to inline unhandled typeLattice method: " + unit);
         }
-        // System.out.println("type1 = " + type1);
-        // System.out.println("type2 = " + type2);
+        System.out.println("specializer");
+        System.out.println("type1 = " + type1);
+        System.out.println("type2 = " + type2);
+        System.out.println("result = " + TypeLattice.compare(type1, type2));
         // Only inline if both are concrete types.
         if(type1.isInstantiable() && type2.isInstantiable()) {
             box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
@@ -737,7 +739,7 @@ public class TypeSpecializerAnalysis {
             return (InequalityTerm)objectToInequalityTerm.get(
                     ((ArrayRef)value).getBase());
         } else if (value instanceof CastExpr) {
-            CastExpr castExpr = (CastExpr)value;
+            /* CastExpr castExpr = (CastExpr)value;
             Type type = castExpr.getType();
             RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
             if (tokenType != null) {
@@ -756,7 +758,9 @@ public class TypeSpecializerAnalysis {
             } else {
                 // Otherwise there is nothing to be done.
                 return null;
-            }
+               }*/
+            return null; // Since this is not aware of flow, casts can
+                         // have no information.
         } else if (value instanceof NewExpr) {
             NewExpr newExpr = (NewExpr)value;
             RefType type = newExpr.getBaseType();

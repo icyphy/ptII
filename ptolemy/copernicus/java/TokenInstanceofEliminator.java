@@ -42,6 +42,7 @@ import ptolemy.data.type.BaseType;
 import soot.Body;
 import soot.BodyTransformer;
 import soot.HasPhaseOptions;
+import soot.Hierarchy;
 import soot.Local;
 import soot.PhaseOptions;
 import soot.Scene;
@@ -49,6 +50,7 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
+import soot.jimple.CastExpr;
 import soot.jimple.InstanceOfExpr;
 import soot.jimple.JimpleBody;
 import soot.toolkits.graph.CompleteUnitGraph;
@@ -66,7 +68,8 @@ Ptolemy token types.
 @since Ptolemy II 2.0
 */
 
-public class TokenInstanceofEliminator extends BodyTransformer implements HasPhaseOptions {
+public class TokenInstanceofEliminator extends BodyTransformer 
+    implements HasPhaseOptions {
     private static TokenInstanceofEliminator instance =
     new TokenInstanceofEliminator();
     private TokenInstanceofEliminator() {}
@@ -112,7 +115,52 @@ public class TokenInstanceofEliminator extends BodyTransformer implements HasPha
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
 
-                if (value instanceof InstanceOfExpr) {
+                if (value instanceof CastExpr) {
+                    // If the cast is to the same type as the
+                    // operand already is, then replace with
+                    // simple assignment.
+                    CastExpr expr = (CastExpr)value;
+                    Type castType = expr.getCastType();
+                    Value op = expr.getOp();
+                    if (!PtolemyUtilities.isTokenType(op.getType())) {
+                        continue;
+                    }
+
+                    // Use the token type inference to get the actual
+                    // type of the argument.
+                    ptolemy.data.type.Type type =
+                        tokenTypes.getTypeOfBefore((Local)op, unit);
+
+                    // Don't try to replace non-instantiable types, since they
+                    // might be more refined later.
+                    // General, is unfortuantely, considered instantiable.
+                    if(type.equals(BaseType.UNKNOWN) || //!type.isInstantiable() ||
+                            type.equals(BaseType.GENERAL)) {
+                        System.out.println("uninstantiable instanceof = " + type);
+                        continue;
+                    }
+
+                    Type opType =
+                        PtolemyUtilities.getSootTypeForTokenType(type);
+
+                    //                     // Skip locals that are unsafe.
+                    //                     if (castType.equals(opType) &&
+                    //                             !unsafeLocalSet.contains(op)) {
+                    //                         box.setValue(op);
+                    //                     }
+                    if (unsafeLocalSet.contains(op)) {
+                        continue;
+                    }
+
+                    Hierarchy hierarchy = Scene.v().getActiveHierarchy();
+
+                    if(debug) System.out.println("checking cast in " + unit);
+                    if(debug) System.out.println("op = " + op);
+                    if(debug) System.out.println("opType = " + opType);
+                    CastAndInstanceofEliminator.replaceCast(box, hierarchy,
+                            castType, op, opType, debug);
+                    
+                } else if (value instanceof InstanceOfExpr) {
                     // If the operand of the expression is
                     // declared to be of a type that implies
                     // the instanceof is true, then replace

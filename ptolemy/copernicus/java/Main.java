@@ -358,11 +358,12 @@ public class Main extends KernelMain {
                    "outDir:" + _outputDirectory + "/jimple4");
            addTransform(pack, "wjtp.lur4",
                    LibraryUsageReporter.v(),
-                   "outFile:" + _outputDirectory + "/jimple4/jarClassList.txt");
+                   "outFile:" + _outputDirectory + 
+                   "/jimple4/jarClassList.txt");
        }
        
        addTransform(pack, "wjtp.ttn",
-               TokenToNativeTransformer.v(toplevel));//, "debug:true level:1");
+               TokenToNativeTransformer.v(toplevel),"debug:true");//, "debug:true level:1");
        
        addStandardOptimizations(pack, 4);
               
@@ -380,7 +381,7 @@ public class Main extends KernelMain {
                         new TransformerAdapter(
                                 DeadObjectEliminator.v()));
        addStandardOptimizations(pack, 8);
-
+       
        addTransform(pack, "wjtp.smr2",
                SideEffectFreeInvocationRemover.v());
 
@@ -419,24 +420,24 @@ public class Main extends KernelMain {
     public void addTransforms() {
         super.addTransforms();
         addStandardTransforms(_toplevel);
- 
+        
         Pack pack = PackManager.v().getPack("wjtp");
- 
-       // Convert to grimp.
+        
+        // Convert to grimp.
         addTransform(pack, "wjtp.gt",
                 GrimpTransformer.v());
-       // This snapshot should be last...
-       addTransform(pack, "wjtp.finalSnapshotJimple",
+        // This snapshot should be last...
+        addTransform(pack, "wjtp.finalSnapshotJimple",
                JimpleWriter.v(),
-               "outDir:" + _outputDirectory);
-       addTransform(pack, "wjtp.finalSnapshot", 
-               ClassWriter.v(),
-               "outDir:" + _outputDirectory);
-
+                "outDir:" + _outputDirectory);
+        addTransform(pack, "wjtp.finalSnapshot", 
+                ClassWriter.v(),
+                "outDir:" + _outputDirectory);
+        
         // And write C!
         //      pack.add(
         //                 new Transform("wjtp.finalSnapshot", CWriter.v());
-
+        
         // Generate the makefile files in outDir
         addTransform(pack, "wjtp.makefileWriter",
                 MakefileWriter.v(_toplevel),
@@ -444,8 +445,8 @@ public class Main extends KernelMain {
                 " targetPackage:" + _targetPackage + 
                 " templateDirectory:" + _templateDirectory +
                 " outDir:" + _outputDirectory);
-              
-
+        
+        
         addTransform(pack, "wjtp.watchDogCancel",
                 WatchDogTimer.v(), "cancel:true");
     }

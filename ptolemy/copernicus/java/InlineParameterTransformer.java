@@ -71,6 +71,7 @@ import soot.jimple.DefinitionStmt;
 import soot.jimple.FieldRef;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.InstanceInvokeExpr;
+import soot.jimple.InvokeStmt;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.NewExpr;
@@ -425,8 +426,11 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                     throw new RuntimeException(
                                             "No tokenField found for attribute " + attribute);
                                 }
-                             
-                                box.setValue(Jimple.v().newInstanceFieldRef(containerLocal,tokenField));
+                                if(stmt instanceof InvokeStmt) {
+                                    body.getUnits().remove(stmt);
+                                } else {
+                                    box.setValue(Jimple.v().newInstanceFieldRef(containerLocal,tokenField));
+                                }
                                 doneSomething = true;
                             } else if (r.getMethod().getName().equals("setToken")) {
                                 if (debug) System.out.println("Replacing setToken on Variable");

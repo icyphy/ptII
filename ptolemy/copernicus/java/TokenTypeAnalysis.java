@@ -178,6 +178,9 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
             throw new RuntimeException(
                     "attempt to inline unhandled typeLattice method: " + unit);
         }
+        System.out.println("type1 = " + type1);
+        System.out.println("type2 = " + type2);
+        System.out.println("result = " + TypeLattice.compare(type1, type2));
         box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
     }
 
