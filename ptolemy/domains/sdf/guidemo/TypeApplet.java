@@ -340,7 +340,7 @@ public class TypeApplet extends SDFApplet {
         // Configure the view
         TraceView traceView = tracePane.getTraceView();
 //        traceView.setTimeScale(0.5);
-        traceView.setTimeScale(30);
+        traceView.setTimeScale(25);
 //        traceView.setTimeScale(_query.doubleValue("timescale"));
 
         traceView.setLayout(10,10,400,20,20);
