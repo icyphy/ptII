@@ -260,11 +260,13 @@ public class JTextAreaExec extends JPanel {
 			
 		    // Set up a Thread to read in any error messages
 		    _StreamReaderThread errorGobbler = new 
-			_StreamReaderThread(_process.getErrorStream(), "ERROR", this); 
+			_StreamReaderThread(_process.getErrorStream(),
+					    "ERROR", this); 
 
 		    // Set up a Thread to read in any output messages
 		    _StreamReaderThread outputGobbler = new 
-			_StreamReaderThread(_process.getInputStream(), "OUTPUT", this); 
+			_StreamReaderThread(_process.getInputStream(),
+					    "OUTPUT", this); 
 
 		    // Start up the Threads
 		    errorGobbler.start(); 
@@ -345,6 +347,7 @@ public class JTextAreaExec extends JPanel {
                 public void finished() {
 		    _enableStartButton();
                     _cancelButton.setEnabled(false);
+		    _updateProgressBar(0);
                     _statusBar.setText(get().toString());
                 }
             };
@@ -391,7 +394,7 @@ public class JTextAreaExec extends JPanel {
 		new BufferedReader(inputStreamReader); 
 	    String line = null; 
 	    while ( (line = bufferedReader.readLine()) != null) 
-		_jTextAreaExec.appendJTextArea(_streamType + ">" + line); 
+		_jTextAreaExec.appendJTextArea(/*_streamType + ">" +*/ line); 
 	    } catch (IOException ioe) { 
 		_jTextAreaExec.appendJTextArea("IOException: " + ioe);
 	    }
