@@ -154,17 +154,17 @@ public class StickyMassesApplet extends CTApplet {
             // ctrlTr1.setInitEntry(true);
             // HSInit hsinit1 = new HSInit(ctrlTr1, "P1", "P1");
             SetRefinementVariable hsinit1 =
-                    new SetRefinementVariable(ctrlTr1, "act1");
+                new SetRefinementVariable(ctrlTr1, "act1");
             hsinit1.variableName.setExpression("P1.initialState");
             hsinit1.expression.setExpression("P1_V");
             // HSInit hsinit4 = new HSInit(ctrlTr1, "V1", "(V1*1.0+V2*1.0)/2.0");
             SetRefinementVariable hsinit4 =
-                    new SetRefinementVariable(ctrlTr1, "act4");
+                new SetRefinementVariable(ctrlTr1, "act4");
             hsinit4.variableName.setExpression("V1.initialState");
             hsinit4.expression.setExpression("(V1_V*1.0+V2_V*1.0)/2.0");
             // HSInit hsinit0 = new HSInit(ctrlTr1, "STI", "10.0");
             SetRefinementVariable hsinit0 =
-                    new SetRefinementVariable(ctrlTr1, "act0");
+                new SetRefinementVariable(ctrlTr1, "act0");
             hsinit0.variableName.setExpression("STI.initialState");
             hsinit0.expression.setExpression("10.0");
             ResetRefinement reset1 = new ResetRefinement(ctrlTr1, "reset1");
@@ -176,22 +176,22 @@ public class StickyMassesApplet extends CTApplet {
             //ctrlTr2.setInitEntry(true);
             // HSInit hsinit2 = new HSInit(ctrlTr2, "P1", "P1");
             SetRefinementVariable hsinit2 =
-                    new SetRefinementVariable(ctrlTr2, "act2");
+                new SetRefinementVariable(ctrlTr2, "act2");
             hsinit2.variableName.setExpression("P1.initialState");
             hsinit2.expression.setExpression("P1_V");
             // HSInit hsinit3 = new HSInit(ctrlTr2, "P2", "P1");
             SetRefinementVariable hsinit3 =
-                    new SetRefinementVariable(ctrlTr2, "act3");
+                new SetRefinementVariable(ctrlTr2, "act3");
             hsinit3.variableName.setExpression("P2.initialState");
             hsinit3.expression.setExpression("P1_V");
             // HSInit hsinit5 = new HSInit(ctrlTr2, "V1", "V1");
             SetRefinementVariable hsinit5 =
-                    new SetRefinementVariable(ctrlTr2, "act5");
+                new SetRefinementVariable(ctrlTr2, "act5");
             hsinit5.variableName.setExpression("V1.initialState");
             hsinit5.expression.setExpression("V1_V");
             // HSInit hsinit6 = new HSInit(ctrlTr2, "V2", "V1");
             SetRefinementVariable hsinit6 =
-                    new SetRefinementVariable(ctrlTr2, "act6");
+                new SetRefinementVariable(ctrlTr2, "act6");
             hsinit6.variableName.setExpression("V2.initialState");
             hsinit6.expression.setExpression("V1_V");
             ResetRefinement reset2 = new ResetRefinement(ctrlTr2, "reset2");

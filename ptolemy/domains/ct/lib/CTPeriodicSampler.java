@@ -92,22 +92,22 @@ public class CTPeriodicSampler extends Transformer
     public Parameter samplePeriod;
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+            ////                         public methods                         ////
 
-    /** Update the parameter if it has been changed.
-     *  The new parameter will be used only after this method is called.
-     *  @exception IllegalActionException If the sampling rate set is
-     *  less than or equal to 0.
-     */
-    public void attributeChanged(Attribute att) throws IllegalActionException{
-        double p = ((DoubleToken)samplePeriod.getToken()).doubleValue();
-        if(p <= 0) {
-            throw new IllegalActionException(this,
-                    " Sample period must be greater than 0.");
-        } else {
-            _samplePeriod = p;
-        }
-    }
+            /** Update the parameter if it has been changed.
+             *  The new parameter will be used only after this method is called.
+             *  @exception IllegalActionException If the sampling rate set is
+             *  less than or equal to 0.
+             */
+            public void attributeChanged(Attribute att) throws IllegalActionException{
+                double p = ((DoubleToken)samplePeriod.getToken()).doubleValue();
+                if(p <= 0) {
+                    throw new IllegalActionException(this,
+                            " Sample period must be greater than 0.");
+                } else {
+                    _samplePeriod = p;
+                }
+            }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the ports.
@@ -116,7 +116,7 @@ public class CTPeriodicSampler extends Transformer
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-     public Object clone(Workspace workspace)
+    public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         CTPeriodicSampler newObject = (CTPeriodicSampler)super.clone(workspace);
         newObject.input.setMultiport(true);
@@ -195,21 +195,21 @@ public class CTPeriodicSampler extends Transformer
      *  @exception IllegalActionException If parameter update throws it.
      */
     /*
-    public boolean prefire() throws IllegalActionException {
-        CTDirector dir = (CTDirector) getDirector();
-        boolean hasjump = false;
-        while (_nextSamplingTime <
-                (dir.getCurrentTime()-dir.getTimeResolution())) {
-            hasjump = true;
-            _nextSamplingTime += _samplePeriod;
-        }
-        if(hasjump) {
-            dir.fireAt(this, _nextSamplingTime);
-        }
-        _debug(getFullName() + ": next sampling time = "
-                + _nextSamplingTime);
-        return true;
-        }*/
+      public boolean prefire() throws IllegalActionException {
+      CTDirector dir = (CTDirector) getDirector();
+      boolean hasjump = false;
+      while (_nextSamplingTime <
+      (dir.getCurrentTime()-dir.getTimeResolution())) {
+      hasjump = true;
+      _nextSamplingTime += _samplePeriod;
+      }
+      if(hasjump) {
+      dir.fireAt(this, _nextSamplingTime);
+      }
+      _debug(getFullName() + ": next sampling time = "
+      + _nextSamplingTime);
+      return true;
+      }*/
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////

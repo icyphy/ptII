@@ -66,11 +66,11 @@ In the "decelaration" mode, it outputs 0.
 
 public class SimpleModalController extends CTCompositeActor {
 
-     /** Construct the composite actor, the director, and all
-      *  the actors contained.
-      */
+    /** Construct the composite actor, the director, and all
+     *  the actors contained.
+     */
     public SimpleModalController(TypedCompositeActor container, String name)
-             throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // create ports.

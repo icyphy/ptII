@@ -330,7 +330,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _state = _tentativeState;
         _derivative = _tentativeDerivative;
         if(_debugging) _debug(getName(), " state: " + _state +
-                              " derivative: " + _derivative);
+                " derivative: " + _derivative);
         if (getHistoryCapacity() > 0) {
             _history.pushEntry(_tentativeState, _tentativeDerivative);
         }
@@ -555,7 +555,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
                 }
                 _entries.addFirst(entry);
                 _stepsize =
-                   ((CTDirector)_container.getDirector()).getCurrentStepSize();
+                    ((CTDirector)_container.getDirector()).getCurrentStepSize();
             } else {
                 throw new IllegalActionException(getContainer(),
                         "The history capacity is less than or equal to 0.");

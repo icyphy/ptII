@@ -340,7 +340,7 @@ public class DDEDirector extends CompositeProcessDirector {
      *   otherwise return false.
      */
     protected synchronized boolean _resolveInternalDeadlock()
-	 throws IllegalActionException {
+            throws IllegalActionException {
 	if( _writeBlockedQs.size() > 0 ) {
 	    _incrementLowestCapacityPort();
 	    return true;
@@ -386,8 +386,8 @@ public class DDEDirector extends CompositeProcessDirector {
     protected synchronized void _actorBlocked(LinkedList rcvrs) {
 	Iterator rcvrIterator = rcvrs.iterator();
 	while( rcvrIterator.hasNext() ) {
-	   DDEReceiver rcvr = (DDEReceiver)rcvrIterator.next();
-	   _actorBlocked(rcvr);
+            DDEReceiver rcvr = (DDEReceiver)rcvrIterator.next();
+            _actorBlocked(rcvr);
 	}
 	notifyAll();
     }

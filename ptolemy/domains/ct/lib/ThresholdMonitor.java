@@ -111,7 +111,7 @@ public class ThresholdMonitor extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /** Update the parameter if they have been changed.
+    /** Update the parameter if they have been changed.
      *  The new parameter will be used only after this method is called.
      *  @exception IllegalActionException If there is no token in the
      *  parameter.

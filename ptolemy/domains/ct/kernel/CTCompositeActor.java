@@ -56,7 +56,7 @@ includes CT inside CT or CT inside FSM inside CT.
 @see CTTransparentDirector
 */
 public class CTCompositeActor extends TypedCompositeActor
-        implements CTStepSizeControlActor {
+    implements CTStepSizeControlActor {
 
     /** Construct a CTCompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace

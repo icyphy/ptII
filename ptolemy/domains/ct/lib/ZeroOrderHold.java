@@ -89,7 +89,7 @@ public class ZeroOrderHold extends Transformer
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-     public Object clone(Workspace workspace)
+    public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         ZeroOrderHold newObject = (ZeroOrderHold)super.clone(workspace);
         // newObject.input.setTypeEquals(BaseType.DOUBLE);

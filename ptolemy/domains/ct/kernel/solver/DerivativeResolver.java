@@ -81,7 +81,7 @@ public class DerivativeResolver extends ODESolver {
      *  Increment the version number of the workspace.
      */
     public DerivativeResolver() {
-       this(null);
+        this(null);
     }
 
     /** Construct a solver in the given workspace with the name

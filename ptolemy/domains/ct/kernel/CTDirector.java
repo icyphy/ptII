@@ -555,7 +555,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         Nameable container = getContainer();
         if (!(container instanceof CompositeActor)) {
             throw new IllegalActionException(this,
-            "Has no CompositeActor container.");
+                    "Has no CompositeActor container.");
         }
         CompositeActor ca = (CompositeActor)container;
         if (ca.getContainer() != null) {

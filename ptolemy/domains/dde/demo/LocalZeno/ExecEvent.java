@@ -94,11 +94,11 @@ public class ExecEvent implements DebugEvent {
     }
 
     public static ExecEventType BLOCKED =
-	new ExecEventType("blocked");
+    new ExecEventType("blocked");
     public static ExecEventType ACCESSING =
-	new ExecEventType("accessing");
+    new ExecEventType("accessing");
     public static ExecEventType WAITING =
-	new ExecEventType("waiting");
+    new ExecEventType("waiting");
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                 /////

@@ -187,13 +187,13 @@ public class CarInformationPublisher extends TypedAtomicActor
             } while (oldEntry != null);
         } catch (RemoteException re) {
 	    throw new IllegalActionException(this, "Cannot write into " +
-		"JavaSpace. " + re.getMessage());
+                    "JavaSpace. " + re.getMessage());
 	} catch (TransactionException te) {
 	    throw new IllegalActionException(this, "Cannot write into " +
-		"JavaSpace. " + te.getMessage());
+                    "JavaSpace. " + te.getMessage());
 	} catch (InterruptedException ie) {
             throw new IllegalActionException(this, "Cannot write into " +
-		"JavaSpace. " + ie.getMessage());
+                    "JavaSpace. " + ie.getMessage());
         } catch (net.jini.core.entry.UnusableEntryException ue) {
             throw new IllegalActionException(this, "Unusable Entry " +
                     ue.getMessage());
@@ -258,13 +258,13 @@ public class CarInformationPublisher extends TypedAtomicActor
             }
 	} catch (RemoteException re) {
 	    throw new IllegalActionException(this, "Cannot write into " +
-		"JavaSpace. " + re.getMessage());
+                    "JavaSpace. " + re.getMessage());
 	} catch (TransactionException te) {
 	    throw new IllegalActionException(this, "Cannot write into " +
-		"JavaSpace. " + te.getMessage());
+                    "JavaSpace. " + te.getMessage());
 	} catch (InterruptedException ie) {
             throw new IllegalActionException(this, "Cannot write into " +
-		"JavaSpace. " + ie.getMessage());
+                    "JavaSpace. " + ie.getMessage());
         } catch (net.jini.core.entry.UnusableEntryException ue) {
             throw new IllegalActionException(this, "Unusable Entry " +
                     ue.getMessage());

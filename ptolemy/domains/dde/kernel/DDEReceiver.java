@@ -678,4 +678,4 @@ public class DDEReceiver extends PrioritizedTimedQueue
     private BoundaryDetector _boundaryDetector;
     private Branch _otherBranch = null;
 
-}
+    }

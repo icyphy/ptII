@@ -118,7 +118,7 @@ public class ZeroCrossingDetector extends Transformer
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-     public Object clone(Workspace workspace)
+    public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         ZeroCrossingDetector newObject = (ZeroCrossingDetector)super.clone(workspace);
         newObject.trigger.setMultiport(false);

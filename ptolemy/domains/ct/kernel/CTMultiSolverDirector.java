@@ -306,7 +306,7 @@ public class CTMultiSolverDirector extends CTDirector {
         return true;
     }
 
-   /** Return true always, indicating that the system is always ready
+    /** Return true always, indicating that the system is always ready
      *  for one iteration. The schedule
      *  is recomputed if there is any mutation.
      *
