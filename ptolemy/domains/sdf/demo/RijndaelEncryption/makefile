@@ -47,11 +47,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
 	RijndaelEncryption.xml \
 	sbox.txt
 
 EXTRA_SRCS = \
+	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
 	RijndaelEncryption.htm
 
