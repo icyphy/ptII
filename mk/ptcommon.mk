@@ -82,9 +82,8 @@
 # JFLAGS	Flags to pass to javac.
 # JAVADOC	The 'javadoc' program
 # JDOCFLAGS	Flags to pass to javadoc.
-# PTCLASSZIP		Zip file of classes to be produced.
 # PTCLASSJAR	Jar file of classes to be produced.
-# JDIST		The name and version of the tar.gz and zip files of the sources
+# JDIST		The name and version of the tar.gz and jar files of the sources
 # JTESTHTML	Test html file for a java class.
 # JTCLSH	TclBlend Tcl/Java interface shell.
 #
@@ -303,14 +302,6 @@ jtest: $(JTESTHTML) $(JCLASS)
 
 htest-netscape: $(JTESTHTML) $(JCLASS)
 	CLASSPATH="$(CLASSPATH)" netscape $(TESTHTML)
-
-# Create a zip file of the .class files
-# We cd up one level so that the zip file has the proper package name
-# We remove the file in case it is a symbolic link
-tyzip: $(PTCLASSZIP)
-$(PTCLASSZIP): $(JSRCS) $(JCLASS)
-	(cd $(CLASSPATH); rm -f $(ME)/$@; \
-		 $(JAR) -c0Mf $(ME)/$@ $(ME)/*.class)
 
 # Build the jar file
 jars: $(PTCLASSJAR) $(PTAUXJAR) subjars $(PTCLASSALLJAR) $(PTAUXALLJAR)
@@ -609,7 +600,7 @@ checkjunk:
 
 CRUD=*.o *.so core *~ *.bak ,* LOG* *.class \
 	config.cache config.log config.status manifest.tmp \
-	$(JCLASS) $(PTPACKAGE).zip $(PTCLASSJAR) $(PTAUXJAR) \
+	$(JCLASS) $(PTCLASSJAR) $(PTAUXJAR) \
 	$(PTCLASSALLJAR) $(PTAUXALLJAR) \
 	$(PTDISTS) $(PTCLASSJAR) $(KRUFT)
 
