@@ -80,6 +80,18 @@ public class LongArrayMath {
         return returnValue;
     }
 
+
+    /** Return a new array that is a copy of the array argument.
+     *  @param matrix An array of ints.
+     *  @return A new array of ints.
+     */
+    public static final long[] allocCopy(final long[] array) {
+        int elements = array.length;
+        long[] newArray = new long[elements];
+        System.arraycopy(array, 0, newArray, 0, elements);
+        return newArray;
+    }
+
     /** Return a new array that is the result of appending array2 to the end
      *  of array1. This method simply calls
      *  append(array1, 0, array1.length, array2, 0, array2.length)

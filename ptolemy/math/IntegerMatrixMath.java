@@ -957,15 +957,17 @@ public class IntegerMatrixMath {
         return returnValue;
     }
 
-    /** Return true if the elements of the two matrices differ by no more
-     *  than the specified distance. If <i>distance</i> is negative, return false.
+    /** Return true if the elements of the two matrices differ by no
+     *  more than the specified distance. If <i>distance</i> is
+     *  negative, return false.
      *  @param matrix1 The first matrix.
      *  @param matrix2 The second matrix.
      *  @param distance The distance to use for comparison.
      *  @return True if the elements of the two matrices are within the
      *   specified distance.
-     *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-     *          This is a run-time exception, so it need not be declared explicitly.
+     *  @exception IllegalArgumentException If the matrices do not
+     *  have the same dimension.  This is a run-time exception, so it
+     *  need not be declared explicitly.
      */
     public static final boolean within(final int[][] matrix1,
             final int[][] matrix2, int distance) {
@@ -993,8 +995,9 @@ public class IntegerMatrixMath {
      *  @param errorMatrix The distance to use for comparison.
      *  @return True if the elements of the two matrices are within the
      *   specified distance.
-     *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-     *          This is a run-time exception, so it need not be declared explicitly.
+     *  @exception IllegalArgumentException If the matrices do not
+     *  have the same dimension.  This is a run-time exception, so it
+     *  need not be declared explicitly.
      */
     public static final boolean within(final int[][] matrix1,
             final int[][] matrix2, final int[][] errorMatrix) {

@@ -58,7 +58,7 @@ public class DoubleArrayMath {
     /** Return a new array that is the formed by adding z to each element
      *  of the input array.
      */
-    public static final double[] add(final double[] array, final double z) {
+    public static final double[] add(double[] array, final double z) {
         int length = array.length;
         double[] returnValue = new double[length];
         for (int i = 0; i < length; i++) {
@@ -81,6 +81,18 @@ public class DoubleArrayMath {
             returnValue[i] = array1[i] + array2[i];
         }
         return returnValue;
+    }
+
+
+    /** Return a new array that is a copy of the array argument.
+     *  @param matrix An array of ints.
+     *  @return A new array of ints.
+     */
+    public static final double[] allocCopy(final double[] array) {
+        int elements = array.length;
+        double[] newArray = new double[elements];
+        System.arraycopy(array, 0, newArray, 0, elements);
+        return newArray;
     }
 
     /** Return a new array that is the result of appending array2 to the end
@@ -294,7 +306,17 @@ public class DoubleArrayMath {
         return returnValue;
     }
 
-
+    /** Return a new array that is the formed by the modulo of each element
+     *  of the input array and z (array[i] % z).
+     */
+    public static final double[] modulo(double[] array, double z) {
+        int length = array.length;
+        double[] returnValue = new double[length];
+        for (int i = 0; i < length; i++) {
+            returnValue[i] = array[i] % z;
+        }
+        return returnValue;
+    }
 
     /** Return a new array that is the element-by-element multiplication of
      *  the two input arrays.
