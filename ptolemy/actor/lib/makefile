@@ -99,6 +99,7 @@ JSRCS = \
 	RecordDisassembler.java \
 	Recorder.java \
 	SequenceActor.java \
+	Sequencer.java \
 	SequenceSource.java \
 	Scale.java \
 	Sink.java \
