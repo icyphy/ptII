@@ -146,7 +146,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
      */
     public static final DataFlavor namedObjFlavor =
     new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
-            "ptolemy.kernel.util.NamedObj", "Named Object");
+            ";class=ptolemy.kernel.util.NamedObj", "Named Object");
 
     // Return a string with a moml description of all the objects in the list.
     public String _getMoML() throws IOException {
