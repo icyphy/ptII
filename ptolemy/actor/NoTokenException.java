@@ -58,7 +58,7 @@ public class NoTokenException extends RuntimeException {
      *  @param obj The originating object.
      *  @param message The message.
      */
-    public NoTokenException(Nameable obj, String detail) {
+    public NoTokenException(Nameable obj, String message) {
         String name;
         if (obj == null) {
             name = new String("");;
@@ -69,7 +69,7 @@ public class NoTokenException extends RuntimeException {
                 name = obj.getName();
             }
         }
-        _setMessage(name + ":\n" + detail);
+        _setMessage(name + ":\n" + message);
     }
 
     ///////////////////////////////////////////////////////////////////
