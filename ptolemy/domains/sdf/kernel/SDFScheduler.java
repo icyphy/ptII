@@ -580,18 +580,19 @@ public class SDFScheduler extends Scheduler {
                             "does not appear in the firings LLMap");
                 }
 
-                /*                    else if(!presentFiring.equals(desiredFiring))
-                                      throw new NotSchedulableException("No solution " +
-                                      "exists for the balance equations.\n" +
-                                      "Graph is not" +
-                                      "consistent under the SDF domain");
-                                      }
-                                      catch (NoSuchElementException e) {
-                                      throw new InternalErrorException("SDFScheduler: " +
-                                      "connectedActor " +
-                                      ((ComponentEntity) connectedActor).getName() +
-                                      "does not appear in the firings LLMap");
-                                      }
+                /*
+                  else if(!presentFiring.equals(desiredFiring))
+                  throw new NotSchedulableException("No solution " +
+                  "exists for the balance equations.\n" +
+                  "Graph is not" +
+                  "consistent under the SDF domain");
+                  }
+                  catch (NoSuchElementException e) {
+                  throw new InternalErrorException("SDFScheduler: " +
+                  "connectedActor " +
+                  ((ComponentEntity) connectedActor).getName() +
+                  "does not appear in the firings LLMap");
+                  }
                 */
 
                 _debug("New Firing: ");
