@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// CollisionDetector
 
 /** 
-This actor models a network component that detectes whether there is 
+This actor models a network component that detects whether there is 
 collision for messages received. Each message has a duration time 
 and a power density level. If the power density of the message is
 above a threshold defined by the <i>powerDendityThreshold<i> parameter,
@@ -58,7 +58,7 @@ When receives a message, this actor caches it in a hashtable with the
 key to be the time that the message completes, and ask the director to fire
 it again at that time to output the message. A message may be corrupted
 if during the duration of the transmission some other message is received 
-and the signal to interference ratio is below the ratio threshold specefied by
+and the signal to interference ratio is below the ratio threshold specified by
 the <i>signalToInterferenceRatio<i> parameter. In this case, it claims 
 that a collision is detected and the message is marked as corrupted.
 If a message is corrupted, it is send to the <i>corrupted<i> output port 
