@@ -153,8 +153,11 @@ BASECLASSFILES = \
 		$(ME)/CmdLineArgException.class \
 		$(ME)/EPSGraphics.class \
 		$(ME)/Histogram.class \
+		'$(ME)/Histogram$$1.class' \
 		$(ME)/HistogramApplet.class \
 		$(ME)/Plot.class \
+		'$(ME)/Plot$$1.class' \
+		'$(ME)/Plot$$2.class' \
 		$(ME)/PlotBox.class \
 		$(ME)/PlotDataException.class \
 		$(ME)/PlotPoint.class \
