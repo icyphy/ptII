@@ -89,7 +89,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
     }
 
     /** Return the type of the arguments, or null if type inference
-     *  has not occured yet.
+     *  has not occurred yet.
      */
     public Type[] getArgumentTypes() {
         return _argTypes;

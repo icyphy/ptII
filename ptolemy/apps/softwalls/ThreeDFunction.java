@@ -214,7 +214,7 @@ public class ThreeDFunction {
             double[][] second = split[1];
 
             /** Determine the dimension along which the division
-             * occured, and do linear interpolation along this
+             * occurred, and do linear interpolation along this
              * dimension.
              */
             double firstX, secondX, firstY, secondY, firstTheta, secondTheta;
