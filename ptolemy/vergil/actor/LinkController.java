@@ -185,13 +185,15 @@ public class LinkController extends BasicEdgeController {
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             ManhattanConnector c = new ManhattanConnector(tailSite, headSite);
-            c.setLineWidth((float)2.0);
+            Link link = (Link)edge;
+            if (link.getHead() != null && link.getTail() != null) {
+                c.setLineWidth((float)2.0);
+            }
             c.setUserObject(edge);
             // The default bend radius of 50 is too large...
             // parallel curves look bad.
             c.setBendRadius(20);
-
-            Link link = (Link)edge;
+            
             Relation relation = link.getRelation();
             if (relation != null) {
                 c.setToolTipText(relation.getName());
@@ -224,6 +226,16 @@ public class LinkController extends BasicEdgeController {
             default:
                 throw new IllegalStateException(
                         "Cannot handle both ends of an edge being dragged.");
+            }
+            
+            // Set the width correctly, so we know whether or not it
+            // is connected.  Note that this happens *after* the model
+            // is modified.
+            Link link = (Link)edge;
+            if (link.getHead() != null && link.getTail() != null) {
+                ((ManhattanConnector)c).setLineWidth((float)2.0);
+            } else {
+                ((ManhattanConnector)c).setLineWidth((float)1.0);
             }
         }
     }
