@@ -64,6 +64,7 @@ public class Icon extends XMLElement {
         entitytype = new EntityType();
         addChildElement(entitytype);
         description = new XMLElement("description");
+        ports = (HashedMap) new HashedMap();
         setName("");
     }
 
@@ -81,6 +82,7 @@ public class Icon extends XMLElement {
         entitytype = new EntityType();
         description = new XMLElement("description");
         addChildElement(entitytype);
+        ports = (HashedMap) new HashedMap();
         if(!hasAttribute("name")) setName("");
     }
    
@@ -99,6 +101,7 @@ public class Icon extends XMLElement {
         entitytype = et;
         description = new XMLElement("description");
         addChildElement(entitytype);
+        ports = (HashedMap) new HashedMap();
         if(!hasAttribute("name")) setName("");
     }
 
@@ -126,11 +129,35 @@ public class Icon extends XMLElement {
     }
 
     /** 
+     * Add a new port to the icon. The port name must be unique within this
+     * icon.
+     *  
+     * @throw IllegalActionException if a port with the same name as 
+     * the new port is already contained in this Icon. 
+     */
+    public void addPort (SchematicPort port) throws IllegalActionException {
+        String name = port.getName();
+        if(containsPort(name)) 
+            throw new IllegalActionException("Port with name " + name + 
+                    " already exists.");
+        ports.putAt(name, port);
+        addChildElement(port);
+    }
+
+    /** 
      * Test if this icon contains a graphic in the
      * given format.
      */
     public boolean containsGraphic (String format) {
         return graphics.includesKey(format);
+    }
+
+    /** 
+     * Test if this icon contains a port with the
+     * given name.
+     */
+    public boolean containsPort (String name) {
+        return ports.includesKey(name);
     }
 
     /** 
@@ -149,6 +176,23 @@ public class Icon extends XMLElement {
         catch (NoSuchElementException e) {
             throw new IllegalActionException("Icon does not contain a " +
                     "graphic of format " + format);
+        }
+    }
+
+    /** 
+     * Return the port contained in this object with the given name.
+     * 
+     * @throw IllegalActionException if no port exists with the given name.
+     */
+    public SchematicPort getPort(String name) 
+    throws IllegalActionException {
+        try {            
+            SchematicPort s = (SchematicPort) ports.at(name);
+            return s;
+        }
+        catch (NoSuchElementException e) {
+            throw new IllegalActionException("Icon does not contain a " +
+                    "port with name " + name);
         }
     }
 
@@ -180,7 +224,16 @@ public class Icon extends XMLElement {
      * @return Enumeration of String.
      */
     public Enumeration graphicFormats() {
-        return graphics.elements();
+        return graphics.keys();
+    }
+
+    /**
+     * Return an enumeration over the ports in this object.
+     *
+     * @return an enumeration of SchematicPorts
+     */
+    public Enumeration ports() {
+        return ports.elements();
     }
 
     /** 
@@ -196,6 +249,22 @@ public class Icon extends XMLElement {
         catch (NoSuchElementException e) {
             throw new IllegalActionException("Icon does not contain a " +
                     "graphic of format " + format);
+        }
+    }
+
+    /** 
+     * Remove a port from the icon. Throw an exception if
+     * a port with this name is not contained in the Icon.
+     */
+    public void removePort (String name) throws IllegalActionException {
+        try {
+            SchematicPort e = (SchematicPort) ports.at(name);
+            ports.removeAt(name);
+            removeChildElement(e);
+        }
+        catch (NoSuchElementException e) {
+            throw new IllegalActionException("Icon does not contain a " +
+                    "port with name " + name);
         }
     }
 
@@ -216,6 +285,7 @@ public class Icon extends XMLElement {
     XMLElement description;
     EntityType entitytype;
     HashedMap graphics;
+    HashedMap ports;
 
 }
 

@@ -31,7 +31,9 @@
 package ptolemy.schematic;
 
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
 import collections.HashedMap;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// SchematicEntity
@@ -48,6 +50,7 @@ public class SchematicEntity extends SchematicElement {
     public SchematicEntity () {
         super("entity");
         entitytype = new EntityType();
+        ports = (HashedMap) new HashedMap();
         addChildElement(entitytype);
     }
 
@@ -61,6 +64,7 @@ public class SchematicEntity extends SchematicElement {
     public SchematicEntity (HashedMap attributes) {
         super("entity", attributes);
         entitytype = new EntityType();
+        ports = (HashedMap) new HashedMap();
         addChildElement(entitytype);
     }
 
@@ -74,6 +78,31 @@ public class SchematicEntity extends SchematicElement {
     public SchematicEntity (HashedMap attributes, EntityType et) {
         super("entity", attributes);
         setEntityType(et);
+        ports = (HashedMap) new HashedMap();
+    }
+
+    /** 
+     * Add a new port to the icon. The port name must be unique within this
+     * entity.
+     *  
+     * @throw IllegalActionException if a port with the same name as 
+     * the new port is already contained in this SchematicEntity. 
+     */
+    public void addPort (SchematicPort port) throws IllegalActionException {
+        String name = port.getName();
+        if(containsPort(name)) 
+            throw new IllegalActionException("Port with name " + name + 
+                    " already exists.");
+        ports.putAt(name, port);
+        addChildElement(port);
+    }
+
+    /** 
+     * Test if this entity contains a port with the
+     * given name.
+     */
+    public boolean containsPort (String name) {
+        return ports.includesKey(name);
     }
 
     /**
@@ -84,6 +113,48 @@ public class SchematicEntity extends SchematicElement {
      */
     public EntityType getEntityType () {
         return entitytype;
+    }
+    
+    /** 
+     * Return the port contained in this object with the given name.
+     * 
+     * @throw IllegalActionException if no port exists with the given name.
+     */
+    public SchematicPort getPort(String name) 
+    throws IllegalActionException {
+        try {            
+            SchematicPort s = (SchematicPort) ports.at(name);
+            return s;
+        }
+        catch (NoSuchElementException e) {
+            throw new IllegalActionException("SchematicEntity does not " +
+                    "contain a port with name " + name);
+        }
+    }
+
+    /**
+     * Return an enumeration over the ports in this object.
+     *
+     * @return an enumeration of SchematicPorts
+     */
+    public Enumeration ports() {
+        return ports.elements();
+    }
+
+    /** 
+     * Remove a port from the entity. Throw an exception if
+     * a port with this name is not contained in the entity.
+     */
+    public void removePort (String name) throws IllegalActionException {
+        try {
+            SchematicPort e = (SchematicPort) ports.at(name);
+            ports.removeAt(name);
+            removeChildElement(e);
+        }
+        catch (NoSuchElementException e) {
+            throw new IllegalActionException("Entity does not contain a " +
+                    "port with name " + name);
+        }
     }
 
     /**
@@ -99,6 +170,7 @@ public class SchematicEntity extends SchematicElement {
     }
 
     EntityType entitytype;
+    HashedMap ports;
 }
 
 
