@@ -564,7 +564,7 @@ Many of the implementation classes themselves rely on yet
  kind of underlying UdatableCollection, so the Incr classes
  do not actually perform the underlying updates (they rely on
  UpdatableCollections supplied within constructors), they
- just arrange to do it with a minumum of actual copying.
+ just arrange to do it with a minimum of actual copying.
  They normally update in a `lazy' fashion,
  making copies only when necessary. However, when you are using
  a received Immutable Collection as the basis for a very extensive set of
