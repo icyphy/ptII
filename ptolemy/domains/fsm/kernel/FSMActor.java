@@ -260,7 +260,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *   transition enabled.
      */
     public void fire() throws IllegalActionException {
-        //System.out.println("FSM actor fire.");
         _setInputVariables();
         List trList = _currentState.outgoingPort.linkedRelationList();
         _chooseTransition(trList);
@@ -342,7 +341,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
-        //System.out.println("FSM actor initialize.");
         reset();
     }
 
@@ -500,7 +498,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @exception IllegalActionException If any action throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        //System.out.println("FSMAcotr postfire.");
         _commitLastChosenTransition();
         return !_reachedFinalState && !_stopRequested;
     }
@@ -510,7 +507,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
-        //System.out.println("FSMActor prefire.");
         _lastChosenTransition = null;
         return true;
     }
@@ -525,7 +521,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *   state with name specified by the <i>initialStateName</i> attribute.
      */
     public void preinitialize() throws IllegalActionException {
-        //System.out.println("FSM actor preinitialize.");
         _stopRequested = false;
         _reachedFinalState = false;
         _createReceivers();
@@ -1035,7 +1030,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
         CompositeActor container = (CompositeActor)getContainer();
         Director director = container.getDirector();
-        //System.out.println("director name = " + director.getFullName());
         if (director instanceof HDFFSMDirector) {
             _firingsSoFar = ((HDFFSMDirector)director).getFiringsSoFar();
             _firingsPerScheduleIteration = 
@@ -1106,8 +1100,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     //shadowVariables[channel][1].setToken(token);
                     _hdfArray[index] = token;
                     if (_debug_info) {
-                    System.out.println("hdfArray index = " + index + 
-                       " value = " + _hdfArray[index].toString());
+                        System.out.println("hdfArray index = " + index + 
+                            " value = " + _hdfArray[index].toString());
                     }
                     index ++;
                 }
