@@ -54,6 +54,7 @@ public class ConcreteScalarToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+
     /** Return the type of this token.
      *  @return BaseType.SCALAR.
      */
@@ -74,6 +75,38 @@ public class ConcreteScalarToken extends ScalarToken {
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("add", this, rightArgument));
+    }
+
+    /** Throw an exception.
+     */
+    public ScalarToken _bitwiseAnd(ScalarToken rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("and", this, rightArgument));
+    }
+
+    /** Throw an exception.
+     */
+    public ScalarToken _bitwiseNot()
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("not", this, null));
+    }
+
+    /** Throw an exception.
+     */
+    public ScalarToken _bitwiseOr(ScalarToken rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("or", this, rightArgument));
+    }
+
+    /** Throw an exception.
+     */
+    public ScalarToken _bitwiseXor(ScalarToken rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("xor", this, rightArgument));
     }
 
     /** Throw an exception.
