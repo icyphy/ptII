@@ -134,19 +134,23 @@ public class EditorIcon extends Attribute implements NotPersistent {
         // NOTE: backward compatibility problem...
         // Old style annotations now have labels...
         if(container.getAttribute("_hideName") == null) {
-            if(container.getAttribute("_centerName") == null) {
-                LabelFigure label = new LabelFigure(container.getName(),
-                        _labelFont, 1.0, SwingConstants.SOUTH_WEST);
-                // Shift the label slightly right so it doesn't
-                // collide with ports.
-                label.translateTo(backBounds.getX() + 5, backBounds.getY());
-                ((CompositeFigure)figure).add(label);
-            } else {
-                LabelFigure label = new LabelFigure(container.getName(),
-                        _labelFont, 1.0, SwingConstants.CENTER);
-                label.translateTo(backBounds.getCenterX(),
-                        backBounds.getCenterY());
-                ((CompositeFigure)figure).add(label);
+            String name = container.getName();
+            // Do not add a label figure if the name is null.
+            if (name != null && !name.equals("")) {
+                if(container.getAttribute("_centerName") == null) {
+                    LabelFigure label = new LabelFigure(name,
+                            _labelFont, 1.0, SwingConstants.SOUTH_WEST);
+                    // Shift the label slightly right so it doesn't
+                    // collide with ports.
+                    label.translateTo(backBounds.getX() + 5, backBounds.getY());
+                    ((CompositeFigure)figure).add(label);
+                } else {
+                    LabelFigure label = new LabelFigure(name,
+                            _labelFont, 1.0, SwingConstants.CENTER);
+                    label.translateTo(backBounds.getCenterX(),
+                            backBounds.getCenterY());
+                    ((CompositeFigure)figure).add(label);
+                }
             }
         }
 	return figure;
