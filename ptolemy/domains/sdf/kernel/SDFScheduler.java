@@ -390,8 +390,9 @@ public class SDFScheduler extends Scheduler {
     private int _countUnfulfilledInputs(Actor a,
             LinkedList actorList, Map waitingTokens)
             throws IllegalActionException {
-	if (_debugging) _debug("counting unfufilled inputs for " +
-                ((Entity) a).getFullName());
+	if (_debugging)
+            _debug("counting unfulfilled inputs for " +
+                    ((Entity) a).getFullName());
         Enumeration ainputPorts = a.inputPorts();
 
 	int inputCount = 0;
