@@ -110,11 +110,11 @@ public class ComplexToReal extends TypedAtomicActor {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-    
-    }  
+
+    }
 
     /** Consume the inputs and produce the outputs of the ComplexToReal actor.
-     *  
+     *
      *  realPart = real part of the complex token.
      *  imagPart = imaginary part of the complex token.
      *
@@ -122,12 +122,12 @@ public class ComplexToReal extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
 
-        ComplexToken complex = (ComplexToken) (input.get(0));    
+        ComplexToken complex = (ComplexToken) (input.get(0));
         Complex comp = complex.complexValue();
 
         DoubleToken realPart = new DoubleToken (comp.real);
         DoubleToken imagPart = new DoubleToken (comp.imag);
-       
+
         realOutput.broadcast(realPart);
         imagOutput.broadcast(imagPart);
     }
