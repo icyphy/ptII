@@ -31,6 +31,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.gui.TextEditor;
+import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -50,8 +52,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.BadLocationException;
+
 import java.awt.Color;
 import java.awt.Container;
+import java.io.IOException;
+import java.io.Writer;
 
 //////////////////////////////////////////////////////////////////////////
 //// Display
@@ -94,6 +99,9 @@ public class Display extends Sink implements Placeable {
 
         title = new StringAttribute(this, "title");
         title.setExpression("");
+
+        _windowProperties = new WindowPropertiesAttribute(
+                this, "_windowProperties");
 
 	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-15\" "
@@ -143,7 +151,9 @@ public class Display extends Sink implements Placeable {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == rowsDisplayed) {
+        if (attribute == _windowProperties && _frame != null) {
+            _windowProperties.setProperties(_frame);
+        } else if (attribute == rowsDisplayed) {
             int numRows = ((IntToken)rowsDisplayed.getToken()).intValue();
             if (numRows <= 0) {
                 throw new IllegalActionException(this,
@@ -203,9 +213,11 @@ public class Display extends Sink implements Placeable {
         */
     }
 
-    /** Set the background */
+    /** Get the background color.
+     *  @return The background color of the text area.
+     */
     public Color getBackground() {
-	return _scrollPane.getBackground();
+	return textArea.getBackground();
     }
 
     /** Specify the container in which the data should be displayed.
@@ -222,46 +234,48 @@ public class Display extends Sink implements Placeable {
     public void place(Container container) {
         _container = container;
         if (_container == null) {
-            // place the text area in its own frame.
-            // FIXME: This probably needs to be a PtolemyFrame, when one
-            // exists, so that the close button is dealt with, etc.
-            JFrame _frame = new JFrame(getFullName());
-            textArea = new JTextArea();
-            _scrollPane = new JScrollPane(textArea);
-            _frame.getContentPane().add(_scrollPane);
+            // Place the text area in its own frame.
+            _frame = new TextEditor(getFullName());
+            textArea = _frame.text;
+	    // Defer making this visible until after size has been set.
         } else {
             textArea = new JTextArea();
-            _scrollPane = new JScrollPane(textArea);
-            _container.add(_scrollPane);
-            textArea.setBackground(Color.white);
-            try {
-                int numRows =
-                    ((IntToken)rowsDisplayed.getToken()).intValue();
-                textArea.setRows(numRows);
-                int numColumns =
-                    ((IntToken)columnsDisplayed.getToken()).intValue();
-                textArea.setColumns(numColumns);
-		// Note that in an applet, you may see problems where
-		// the text area is obscured by the horizontal scroll
-		// bar.  The solution is to make the applet wider
-		// or specify a smaller number of columns to display.
-		// The ct CarTracking demo will exhibit this bug
-		// if the applet is too narrow.
-            } catch (IllegalActionException ex) {
-                // Ignore, and use default number of rows.
-            }
+            JScrollPane scrollPane = new JScrollPane(textArea);
             // java.awt.Component.setBackground(color) says that
             // if the color "parameter is null then this component
             // will inherit the  background color of its parent."
-            //plot.setBackground(_container.getBackground());
-            // _scrollPane.setBackground(_container.getBackground());
-            _scrollPane.setBackground(null);
-            _scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-            _scrollPane.setViewportBorder(new LineBorder(Color.black));
+            scrollPane.setBackground(null);
+            scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+            scrollPane.setViewportBorder(new LineBorder(Color.black));
+
+            _container.add(scrollPane);
+            textArea.setBackground(Color.white);
+            String titleSpec = title.getExpression();
+            if (!titleSpec.trim().equals("")) {
+                scrollPane.setBorder(
+                        BorderFactory.createTitledBorder(titleSpec));
+            }
         }
-        String titleSpec = title.getExpression();
-        if (!titleSpec.trim().equals("")) {
-            _scrollPane.setBorder(BorderFactory.createTitledBorder(titleSpec));
+        try {
+            int numRows =
+                    ((IntToken)rowsDisplayed.getToken()).intValue();
+            textArea.setRows(numRows);
+            int numColumns =
+                    ((IntToken)columnsDisplayed.getToken()).intValue();
+            textArea.setColumns(numColumns);
+            // Note that in an applet, you may see problems where
+            // the text area is obscured by the horizontal scroll
+            // bar.  The solution is to make the applet wider
+            // or specify a smaller number of columns to display.
+            // The ct CarTracking demo will exhibit this bug
+            // if the applet is too narrow.
+        } catch (IllegalActionException ex) {
+            // Ignore, and use default number of rows.
+        }
+        if (_container == null) {
+            _windowProperties.setProperties(_frame);
+            _frame.pack();
+	    _frame.setVisible(true);
         }
         // Make sure the text is not editable.
         textArea.setEditable(false);
@@ -310,7 +324,9 @@ public class Display extends Sink implements Placeable {
 
     /** Set the background */
     public void setBackground(Color background) {
-	_scrollPane.setBackground(background);
+        if (_frame != null) {
+            _frame.setBackground(background);
+        }
     }
 
     /** Override the base class to remove the display from its graphical
@@ -328,9 +344,24 @@ public class Display extends Sink implements Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected members                   ////
+    ////                         protected methods                 ////
 
-    protected JScrollPane _scrollPane;
+    /** Write a MoML description of the contents of this object. This
+     *  overrides the base class to make sure that the current frame
+     *  properties, if there is a frame, are recorded.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If an I/O error occurs.
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+        // Make sure that the current position of the frame, if any,
+        // is up to date.
+        if (_frame != null) {
+            _windowProperties.recordProperties(_frame);
+        }
+        super._exportMoMLContents(output, depth);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -359,8 +390,12 @@ public class Display extends Sink implements Placeable {
     private Container _container;
 
     // The frame into which to put the text widget, if any.
-    private JFrame _frame;
+    private TextEditor _frame;
 
     // Flag indicating that the place() method has been called at least once.
     private boolean _placeCalled = false;
+
+    /** A specification for the window properties of the frame.
+     */
+    private WindowPropertiesAttribute _windowProperties;
 }

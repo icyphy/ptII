@@ -34,6 +34,7 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -107,6 +108,9 @@ public class Plotter extends TypedAtomicActor
                 new IntToken(0));
         startingDataset.setTypeEquals(BaseType.INT);
 
+        _windowProperties = new WindowPropertiesAttribute(
+                this, "_windowProperties");
+
 	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-20\" "
                 + "width=\"40\" height=\"40\" "
@@ -160,7 +164,9 @@ public class Plotter extends TypedAtomicActor
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == legend) {
+        if (attribute == _windowProperties && _frame != null) {
+            _windowProperties.setProperties(_frame);
+        } else if (attribute == legend) {
             if (plot != null) {
                 plot.clearLegends();
                 String value = legend.getExpression();
@@ -340,6 +346,7 @@ public class Plotter extends TypedAtomicActor
             plot.setTitle(getName());
             plot.setButtons(true);
             _frame = new PlotFrame(getFullName(), plot);
+            _windowProperties.setProperties(_frame);
 	    _frame.setVisible(true);
         } else {
             if (_container instanceof Plot) {
@@ -444,6 +451,11 @@ public class Plotter extends TypedAtomicActor
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
+        // Make sure that the current position of the frame, if any,
+        // is up to date.
+        if (_frame != null) {
+            _windowProperties.recordProperties(_frame);
+        }
         super._exportMoMLContents(output, depth);
         // NOTE: Cannot include xml spec in the header because processing
         // instructions cannot be nested in XML (lame, isn't it?).
@@ -496,6 +508,10 @@ public class Plotter extends TypedAtomicActor
 
     /** Container into which this plot should be placed */
     protected Container _container;
+
+    /** A specification for the window properties of the frame.
+     */
+    protected WindowPropertiesAttribute _windowProperties;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
