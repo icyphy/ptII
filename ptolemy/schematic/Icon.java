@@ -282,6 +282,32 @@ public class Icon extends XMLElement {
         setAttribute("name", name);
     }
 
+    /**
+     * Take an arbitrary XMLElement and figure out what type it is, then
+     * figure out what semantic meaning that has within this XMLElement.
+     * This is primarily used by the parser to keep the semantic structures
+     * within an XMLElement consistant with the childElements.
+     */
+    void applySemanticsToChild(XMLElement e) {
+        if(e instanceof SchematicPort) {
+            // if it's a Port, then just add it to the list of ports.
+            ports.putAt(
+                    ((SchematicPort) e).getName(), e);
+        } else if(e.getElementType().equals("graphic")) {
+            // if it's a Graphic, then just add it to the list of graphics.
+            graphics.putAt(
+                    e.getAttribute("format"), e);
+        } else if(e instanceof EntityType) {
+            // if an entitytype, remove the old one and install the new one.
+            removeChildElement(entitytype);
+            entitytype = (EntityType) e;
+        } else if(e.getElementType().equals("description")) {
+            // if a description, remove the old one and install the new one.
+            removeChildElement(description);
+            description = e;
+        }
+    }
+
     XMLElement description;
     EntityType entitytype;
     HashedMap graphics;
