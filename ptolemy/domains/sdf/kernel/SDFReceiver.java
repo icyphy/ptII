@@ -325,7 +325,8 @@ public class SDFReceiver extends AbstractReceiver {
         try {
             _queue.setCapacity(capacity);
         } catch (IllegalActionException ex) {
-            throw new IllegalActionException(getContainer(), ex.getMessage());
+            throw new IllegalActionException(getContainer(), ex,
+                    "Failed to set capacity to " + capacity);
         }
     }
 
@@ -349,7 +350,8 @@ public class SDFReceiver extends AbstractReceiver {
         try {
             _queue.setHistoryCapacity(capacity);
         } catch (IllegalActionException ex) {
-            throw new IllegalActionException(getContainer(), ex.getMessage());
+            throw new IllegalActionException(getContainer(), ex,
+                    "Failed to set history capacity to " + capacity);
         }
     }
 

@@ -292,7 +292,8 @@ public class ConversionUtilities {
                         "type not found: " + tokenClass);
             }
         } catch(ClassNotFoundException ex) {
-            throw new IllegalActionException(null, ex, ex.getMessage());
+            throw new IllegalActionException(null, ex, 
+                    "Could not find Class '" + tokenClass + "'");
         }
     }
 
@@ -488,7 +489,8 @@ public class ConversionUtilities {
                 return type.getTokenClass();
             }
         } catch(ClassNotFoundException ex) {
-            throw new IllegalActionException(null, ex, ex.getMessage());
+            throw new IllegalActionException(null, ex,
+                    "Could not find Type '" + type + "'");
         }
     }
 }
