@@ -165,12 +165,12 @@ public class DTReceiver extends SDFReceiver implements Receiver {
             periodValue = localDirector.getPeriod();
             if (_toPort.isOutput()) {
                 repeats = localDirector._getRepetitions(_from);
-                _periodDivider = repeats * _outrate;
-                _deltaTime = periodValue / _periodDivider;
+                _tokenFlowRate = repeats * _outrate;
+                _deltaTime = periodValue / _tokenFlowRate;
             } else {
                 repeats = localDirector._getRepetitions(_to);
-                _periodDivider = repeats * _inrate;
-            	_deltaTime = periodValue / _periodDivider;
+                _tokenFlowRate = repeats * _inrate;
+            	_deltaTime = periodValue / _tokenFlowRate;
 
             }
         }
@@ -271,7 +271,11 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
 
     /** Return the time interval between tokens for
-     *  this receiver.
+     *  this receiver. Delta time is defined as 
+     *  "period / (token flow rate)"; where period
+     *  is the director's <i>period</i> parameter
+     *  and token flow rate is the number of tokens
+     *  flowing through this receiver per iteration
      *
      *  @return The time interval between tokens
      */
@@ -280,6 +284,8 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     }
 
     /** Return the port that feeds this Receiver
+     *  The port returned by this method is precalculated
+     *  during the determineEnds() method call.
      *
      *  @return The port that feeds this receiver.
      */
@@ -288,11 +294,16 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     }
 
     /** Return the token flow rate for this receiver
+     *  In DT, the token flow rate has the value
+     *  "rate * repetitions"; where 'rate' is the 
+     *  port rate and 'repetitions' is the firing 
+     *  count of the actor that contains this 
+     *  receiver.
      *
      *  @return The token flow rate of this receiver
      */
     public int getTokenFlowRate() {
-        return _periodDivider;
+        return _tokenFlowRate;
     }
 
 
@@ -368,7 +379,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         _from = null;
         _to   = null;
         _localTime = 0.0;
-        _periodDivider = 0;
+        _tokenFlowRate = 0;
         _deltaTime = 0.0;
         overrideHasToken = false;
         debug = new DTDebug(false);
@@ -406,7 +417,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     private int _outrate;
 
     // The dividing factor to the discrete time period
-    private int _periodDivider;
+    private int _tokenFlowRate;
 
     // The actor containing this receiver
     private Actor _to;

@@ -562,6 +562,7 @@ public class DTDirector extends SDFDirector {
      *  are any) to see whether they have enough tokens. Always return
      *  true in order to allow firing or pseudo-firing. Pseudo-firing is
      *  needed when DT is interacting hierarchically with DE.
+     *
      *  @exception IllegalActionException If the parent class throws
      *  it.
      *  @return True.
