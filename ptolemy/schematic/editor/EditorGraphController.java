@@ -316,6 +316,7 @@ public class EditorGraphController extends GraphController {
 		template = entitylibrary.findEntityTemplate("SDF.SaveImage");
 	    } catch (Exception ex) {
 		System.out.println(ex.getMessage());
+                ex.printStackTrace();
 	    }
 	    //End Hack
 

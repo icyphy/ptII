@@ -48,14 +48,17 @@ import diva.gui.toolbox.*;
 //////////////////////////////////////////////////////////////////////////
 //// SchematicPalette
 /**
- * A palette of entities for the ptolemy schematic editor.
+ * A palette of entities for the ptolemy schematic editor.  When nodes are 
+ * dragged in this palette, instead of moving the entity, a swing drag and
+ * drop action is started, which can drop the entity on another canvas 
+ * with an appropriate drop target.
  *
- * @author Steve Neuendorffer
+ * @author Steve Neuendorffer, Michael Shilman
  * @version $Id$
  */
 public class SchematicPalette extends JGraph {
     /**
-     * Construct a new JCanvasPalette with a default empty graph
+     * Construct a new SchematicPalette with a default empty graph
      */
     public SchematicPalette() {
         super();
@@ -71,7 +74,7 @@ public class SchematicPalette extends JGraph {
     }
 
     public Node getDraggedNode() {
-	return _draggedNode;
+        return _draggedNode;
     }
     
     /**
@@ -83,8 +86,8 @@ public class SchematicPalette extends JGraph {
         final EditorDragGestureListener dgl = new EditorDragGestureListener();
 	dgl.setPalette(this);
 
-	new DragRecognizer(_controller, DragSource.getDefaultDragSource(),
-			   //DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+	//new DragRecognizer(_controller, DragSource.getDefaultDragSource(),
+	DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
                 c, DnDConstants.ACTION_COPY_OR_MOVE,
 		(DragGestureListener) dgl);
     }
@@ -102,14 +105,15 @@ public class SchematicPalette extends JGraph {
 	    SelectionModel sm = getSelectionModel();	    
 	    NodeInteractor ni = new NodeInteractor(this, sm);
 	    DragInteractor di = new NodeDnDInteractor(this, palette);
-	    //	    di.addLayerListener(new DragRecognizerListener(this, 
-	    //DragSource.getDefaultDragSource(), palette, 
-	    //DnDConstants.ACTION_COPY_OR_MOVE,
-	    //(DragGestureListener) dgl));
+
 	    ni.setDragInteractor(di);
 	    setNodeInteractor(ni);
 
-	    NodeRenderer nr = new EditorNodeRenderer();
+            // let all the mouse events fall through to the canvas, so the
+            // drag recognizer can get them.
+            ni.setConsuming(false);
+	    di.setConsuming(false);
+            NodeRenderer nr = new EditorNodeRenderer();
 	    setNodeRenderer(nr);
 	}
 
@@ -149,7 +153,8 @@ public class SchematicPalette extends JGraph {
 	    GraphPane pane = getGraphPane();    
       	}
 	
-
+        // FIXME there is probably a better way to do this, rather than 
+        // using a drag interactor that doesn't do any dragging.
 	public class NodeDnDInteractor extends DragInteractor {
 	    /** The controller that this interactor is a part of
 	     */
@@ -168,10 +173,20 @@ public class SchematicPalette extends JGraph {
 		_palette = palette;
 	    }
 	    
-	    /** Drag all selected nodes and move any attached edges
-	     */
-	    public void translate (LayerEvent e, double x, double y) {
-	    }
+            public void mousePressed (LayerEvent layerEvent) {
+                System.out.println("mouse pressed");
+                Figure draggedFigure = layerEvent.getFigureSource();
+                _palette.setDraggedNode((Node)draggedFigure.getUserObject());
+            }
+
+            public void mouseReleased (LayerEvent layerEvent) {
+                System.out.println("mouse released");
+                _palette.setDraggedNode(null);
+            }
+
+            public void translate(LayerEvent e, double x, double y) {
+                // This drag interactor doesn't actually drag.
+            }
 	}
     }
 
@@ -242,8 +257,12 @@ public class SchematicPalette extends JGraph {
 		//initial cursor, transferable, dsource listener 
 		e.startDrag(DragSource.DefaultCopyNoDrop, 
 				transferable, dsl);
+
+                // reset the dragged node, so we can't drag again.
+                _palette.setDraggedNode(null);
 	    } catch (InvalidDnDOperationException idoe) {
 		System.err.println( idoe );
+                idoe.printStackTrace();
 	    }
 	}
 	public void setPalette(SchematicPalette palette) {

@@ -272,6 +272,7 @@ public class GraphEditor extends AbstractApplication {
             p3.addNode(node, 60, 140);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
 
         s.addShade("Test2", openIcon, p2, "open group -- disabled!");
