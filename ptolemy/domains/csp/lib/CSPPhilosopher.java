@@ -31,7 +31,7 @@
 package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
-import ptolemy.domains.csp.demo.*;
+import ptolemy.domains.csp.demo.DiningPhilosophers.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.kernel.util.IllegalActionException;
