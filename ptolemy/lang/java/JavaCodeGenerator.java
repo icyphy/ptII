@@ -326,13 +326,20 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_CONSTRUCTORCALL));
 
-        LinkedList bodyStrList =
-            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_BODY);
+	if (node.childReturnValueAt(node.CHILD_INDEX_BODY) 
+	    == NullValue.instance) {
+	    // If we got here via reflection, then we won't have a body
+	    // to work with.
+	    retList.addLast("}");
+	} else {
+	    LinkedList bodyStrList =
+		    (LinkedList)node.childReturnValueAt(node.CHILD_INDEX_BODY);
 
-        if (bodyStrList.size() > 1) {
-            // get rid of the first '{' and '\n' of the block node string
-            bodyStrList.removeFirst();
-            retList.addLast(bodyStrList);
+	    if (bodyStrList.size() > 1) {
+		// get rid of the first '{' and '\n' of the block node string
+		bodyStrList.removeFirst();
+		retList.addLast(bodyStrList);
+	    }
         }
 
         retList.addLast("\n");
