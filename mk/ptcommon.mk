@@ -329,7 +329,8 @@ htest-netscape: $(JTESTHTML) $(JCLASS)
 
 # Build the jar file
 # OTHER_FILES_TO_BE_JARED is used in ptolemy/vergil/lib/makefile
-jars: $(PTCLASSJAR) $(PTAUXJAR) subjars $(PTCLASSALLJAR) $(PTAUXALLJAR)
+jars: $(PTCLASSJAR) $(PTAUXJAR) subjars $(PTCLASSALLJAR) $(PTAUXALLJAR) \
+		$(OTHER_FILES_TO_BE_JARED)
 $(PTCLASSJAR): $(JSRCS) $(JCLASS)
 	(cd $(ROOT); rm -f $(ME)/$@; \
 		"$(JAR)" cf $(ME)/$@ \
@@ -356,7 +357,7 @@ subjars:
 PTJAR_TMPDIR =  ptjar_tmpdir
 
 alljars: $(PTCLASSALLJAR)
-$(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS)
+$(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy any class files from this directory
@@ -376,7 +377,7 @@ $(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS)
 # Occasionally, we need to build a second jar file that includes
 # a subset of all of the subjars included in PTCLASSALLJAR above.
 # ptolemy/ptsupport.jar is an example
-$(PTAUXALLJAR): $(PTAUXALLJARS)
+$(PTAUXALLJAR): $(PTAUXALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	# Building Auxiliary jar file
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
