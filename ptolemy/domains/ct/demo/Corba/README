@@ -38,24 +38,31 @@ in NonlinearClient.java and NonlinearClientApplication.java,
 respectively.
 
 To execute the model in the applet, please follow these steps:
+
 1. Compile the files, (which is probably done.)
-2. Select a port for the name service, say 1050
-3. Start the java transient name server by:
+	make
+
+2. You can either run
+	make demo
+   which will run the steps below for you, follow the steps below by hand
+
+3. Select a port for the name service, say 1050
+4. Start the java transient name server by:
    
-   prompt> tnameserv -ORBInitialPort 1050
+   prompt> tnameserv -ORBInitialPort 1050 &
    
    Note: tnameserv is part of JDK.
    	 If the command line arguments are not provided, 
    	 the default ORBInitialPort is 900.
-4. Possibly from another window, start the model server by:
 
-   prompt> java -cp d:/ptII ptolemy.domains.ct.demo.Corba.ModelServer \
-	-ORBInitialPort 1050
+5. Start the model server by:
 
-   where "d:/ptII" is replaced by the location of your Ptolemy II installation.
-   
-5. Possibly from a third window, start the client model 
-   using appletviewer:
+   prompt> java -cp $PTII ptolemy.domains.ct.demo.Corba.ModelServer \
+	-ORBInitialPort 1050 &
+
+   where "$PTII" is replaced by the location of your Ptolemy II installation.
+
+6. Start the client model using appletviewer:
    
    prompt> appletviewer SimpleCorbaDemo.htm
    
@@ -66,7 +73,7 @@ To execute the model in the applet, please follow these steps:
    other than the one machine is from. So all the above programs
    should be running on the same machine.
    
-To execute the model in application:
+To execute the model in an application:
 1. Compile all the files on all the machines that are involved.
 2. Select a port for the name service, say 1050
 3. Start the transient name server from some machine, say 
@@ -77,14 +84,14 @@ To execute the model in application:
 4. Possibly from another machine, say bennett.eecs.berkeley.edu
    start the model server. (Don't forget the CLASSPATH)
    
-   bennett> setenv CLASSPATH=/users/ptII
+   bennett> setenv CLASSPATH=$PTII
    bennett> java ptolemy.domains.ct.demo.Corba.ModelServer -ORBInitialHost 
    denon.eecs.berkeley.edu -ORBInitialPort 1050
    
 5. Possibly from a third machine, say lie.eecs.berkeley.edu 
-   (a NT box) start the client:
+   (a NT box running bash) start the client:
    
-   lie> setenv CLASSPATH=/users/ptII
+   lie> CLASSPATH=$PTII
    lie> java ptolemy.domains.ct.demo.Corba.NonlinearClient -ORBInitialHost 
    denon.eecs.berkeley.edu -ORBInitialPort 1050
    
