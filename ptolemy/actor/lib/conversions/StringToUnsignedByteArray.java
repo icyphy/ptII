@@ -55,7 +55,7 @@ Convert a string to an array of unsigned byte.  The conversion is performed
 using the default character set, returned by the system property
 "file.encoding".
 
-@author Winthrop Williams, Steve Neuendorffe
+@author Winthrop Williams, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 2.0
 */
