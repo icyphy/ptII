@@ -368,10 +368,12 @@ public class Plot extends PlotBox {
         dataset %= 10;
         if (_pointsPersistence > 0) {
             // To allow erasing to work by just redrawing the points.
-            graphics.setXORMode(Color.red);
+            graphics.setXORMode(Color.white);
         }
         if (usecolor) {
             graphics.setColor(colors[dataset]);
+        } else {
+            graphics.setColor(Color.black);
         }
         // If the point is not out of range, draw it.
         boolean pointinside = ypos <= lry && ypos >= uly && xpos <= lrx && xpos >= ulx;
