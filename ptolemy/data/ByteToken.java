@@ -65,18 +65,26 @@ public class ByteToken extends ScalarToken {
         _value = 0;
     }
 
-    /** Construct a ByteToken with the specified byte value.
+    /** Construct a ByteToken with the specified byte value.  The
+     *  ByteToken constructed represents a value in the range 0
+     *  through 255.  However, the byte passed in as the argument to
+     *  this method represents a value in java in the range -128 to
+     *  127.  Due to the difference between these definitions, this
+     *  method effectively adds 256 if the argument is negative,
+     *  resulting in a positive value for the ByteToken.
      */
     public ByteToken(byte value) {
         _value = value;
     }
 
-    /** Construct a ByteToken from the specified integer.  This takes
-     * the low 8 bits and discards the rest.  Having this form (which
-     * takes an integer) in addition to the one above (which takes a
-     * byte) avoids us having to cast to byte when calling
-     * constructors such as those called from within the one() and
-     * zero() methods.
+    /** Construct a ByteToken with the specified integer value.  The
+     *  ByteToken constructed represents a value in the range 0
+     *  through 255.  However, the integer passed in as the argument
+     *  to this method represents a value in java in the range -2^31
+     *  to (2^31)-1.  This method's cast to (byte) keeps only the low
+     *  order 8 bits of the integer.  This effectively adds or
+     *  subtracts a multiple of 256 to/from the argument.  The
+     *  resulting ByteToken falls in the range 0 through 255.
      */
     public ByteToken(int value) {
         _value = (byte)value;
