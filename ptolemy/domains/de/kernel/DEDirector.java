@@ -43,6 +43,7 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
@@ -306,8 +307,6 @@ public class DEDirector extends Director {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (_debugging) _debug("Updating DEDirector parameter",
-                attribute.getName());
         if (attribute == stopWhenQueueIsEmpty) {
             _stopWhenQueueIsEmpty =
                 ((BooleanToken)stopWhenQueueIsEmpty.getToken()).booleanValue();
@@ -345,10 +344,6 @@ public class DEDirector extends Director {
                 _noMoreActorsToFire = true;
                 return;
             }
-            if (_debugging) {
-                _debug("Found actor to fire: "
-                        + ((NamedObj)actorToFire).getFullName());
-            }
             // It is possible that the next event to be processed is on
             // an inside receiver of an output port of an opaque composite
             // actor containing this director.  In this case, we simply
@@ -362,32 +357,58 @@ public class DEDirector extends Director {
             boolean refire;
             do {
                 refire = false;
+                // NOTE: There are enough tests here against the
+                // _debugging variable that it makes sense to split
+                // into two duplicate versions.
                 if (_debugging) {
-                    _debug("Iterating actor",
-                            ((Nameable)actorToFire).getName(),
-                            "at time ", Double.toString(getCurrentTime()));
+                    // Debugging. Report everything.
+                    if (((Nameable)actorToFire).getContainer() == null) {
+                        _debug("Actor has no container. Disabling actor.");
+                        _disableActor(actorToFire);
+                        break;
+                    }
+                    _debug(new FiringEvent(this, actorToFire, 
+                            FiringEvent.BEFORE_PREFIRE));
+                    if (!actorToFire.prefire()) {
+                        _debug("*** Prefire returned false.");
+                        break;
+                    }
+                    _debug(new FiringEvent(this, actorToFire, 
+                            FiringEvent.AFTER_PREFIRE));
+                    _debug(new FiringEvent(this, actorToFire, 
+                            FiringEvent.BEFORE_FIRE));
+                    actorToFire.fire();
+                    _debug(new FiringEvent(this, actorToFire, 
+                            FiringEvent.AFTER_FIRE));
+                    _debug(new FiringEvent(this, actorToFire, 
+                            FiringEvent.BEFORE_POSTFIRE));
+                    if (!actorToFire.postfire()) {
+                        _debug("*** Postfire returned false:",
+                        ((Nameable)actorToFire).getName());
+                        // Actor requests that it not be fired again.
+                        _disableActor(actorToFire);
+                    }
+                    _debug(new FiringEvent(this, actorToFire, 
+                            FiringEvent.AFTER_POSTFIRE));
+                } else {
+                    // Not debugging.
+                    if (((Nameable)actorToFire).getContainer() == null) {
+                        _disableActor(actorToFire);
+                        break;
+                    }
+                    if (!actorToFire.prefire()) {
+                        break;
+                    }
+                    actorToFire.fire();
+                    if (!actorToFire.postfire()) {
+                        // Actor requests that it not be fired again.
+                        _disableActor(actorToFire);
+                        //break;
+                    }
                 }
-                if (((Nameable)actorToFire).getContainer() == null) {
-                    if (_debugging) _debug(
-                            "Actor has no container. Disabling actor.");
-                    _disableActor(actorToFire);
-                    break;
-                }
-                if (!actorToFire.prefire()) {
-                    if (_debugging) _debug("Prefire returned false.");
-                    break;
-                }
-                actorToFire.fire();
-                if (!actorToFire.postfire()) {
-                    if (_debugging) _debug("Postfire returned false:",
-                            ((Nameable)actorToFire).getName());
-                    // Actor requests that it not be fired again.
-                    _disableActor(actorToFire);
-                    //break;
-                }
+
                 // Check the input ports of the actor see whether there
                 // is additional input data available.
-
                 Iterator inputPorts = actorToFire.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     IOPort port = (IOPort)inputPorts.next();
@@ -931,8 +952,6 @@ public class DEDirector extends Director {
                 }
 
                 // Advance current time.
-                if (_debugging) _debug("******* Setting current time to: ",
-                        Double.toString(currentTime));
                 try {
                     setCurrentTime(currentTime);
                 } catch (IllegalActionException ex) {
