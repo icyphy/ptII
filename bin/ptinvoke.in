@@ -115,7 +115,7 @@ if [ "$windows" = "yes" ]; then
     PTII_CYGDRIVE=`echo "$PTII_DIR" | sed 's@^\([a-zA-Z]\):@/cygdrive/\1@' | sed 's@\\\\@//@'`
     
     # It would be nice to check if the PTII_CYGDRIVE was already in the PATH.
-    PATH="${PTII_CYGDRIVE};$PATH"
+    PATH="${PTII_CYGDRIVE}:$PATH"
     export PATH
     base=`/usr/bin/basename "$0"`
 else
