@@ -638,9 +638,55 @@ of the GUI, such as the plot format window.
 the <code><i>xxx</i>Model.htm</code> file.
 <li>The applet code generator should grab the top level text
 annotations from the MoML file and use them as comments.
+</ul>
+The following models may require that a jar file be copied
+and the generated html file be modified to refer to that jar file
+<ul>
 <li>If the model is a FSM modal Model, then diva.jar
 is not included automatically.
+<li>If the model is a DT modal, then sdf.jar 
+is not included automatically.  This problem only
+occurs in html files generated outside the Ptolemy II tree
+or the .class files are not present.
+<li>Generating applets for hierarchical models may fail
+if the the domain(s) underneath the top level domain is(are)
+different from the top level domain and html file is generated
+outside the Ptolemy II tree or the .class files are not present.
+<br>The solution is to copy the appropriate jar files and
+add them to the html file.  
+<br>Rather than copying multiple jar files, another solution is to use
+a jar file that contains all standard domains:
+(<code>ptolemy/domains/domains.jar</code>) or all
+the experimental domains
+(<code>ptolemy/domains/experimentalDomains.jar</code>).
+
 </ul>
+
+<p>For example, if dt.jar is necessary and dt.jar requires
+sdf.jar, and the html file
+was created in <code>cg/Eye</code>, then copy over the sdf.jar with
+<pre>
+mkdir cg/Eye/ptolemy/domains/sdf
+cp $PTII/ptolemy/domains/sdf/sdf.jar cg/Eye/ptolemy/domains/sdf
+</pre>
+Then edit <code>cg/Eye/Eye.htm</code>
+and everywhere <code>dt.jar</code> is referred to, add <code>sdf.jar</code>,
+
+<pre>
+ VALUE = "ptolemy/ptsupport.jar,ptolemy/domains/dt/dt.jar" &gt; \
+</pre>
+to
+<pre>
+ VALUE = "ptolemy/ptsupport.jar,ptolemy/domains/dt/dt.jar,ptolemy/domains/sdf/sdf.jar" &gt; \
+</pre>
+and make the following change in two locations:
+<pre>
+ archive = "ptolemy/ptsupport.jar,ptolemy/domains/dt/dt.jar" \
+</pre>
+to
+<pre>
+ archive = "ptolemy/ptsupport.jar,ptolemy/domains/dt/dt.jar,ptolemy/domains/sdf/sdf.jar" \
+</pre>
 
 <h2><a name="interpreted">Interpreted Code Generation</a></h2>
 The interpreted code generator is really not a code generator.
