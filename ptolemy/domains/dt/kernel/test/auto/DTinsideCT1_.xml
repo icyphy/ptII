@@ -146,18 +146,6 @@
         <link port="CurrentTime0.trigger" relation="relation2"/>
         <link port="Clock0.output" relation="relation2"/>
     </entity>
-    <entity name="Display1" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="479.99998474121094, 105.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -171,12 +159,16 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Display5" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+    <entity name="Discard0" class="ptolemy.actor.lib.Discard">
+        <property name="_location" class="ptolemy.moml.Location" value="441.0, 64.0">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="479.99998474121094, 225.0">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Discard1" class="ptolemy.actor.lib.Discard">
+        <property name="_location" class="ptolemy.moml.Location" value="484.0, 195.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -187,11 +179,11 @@
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="240.0, 225.0">
         </vertex>
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="typed composite actor1.port4" relation="relation3"/>
-    <link port="Display1.input" relation="relation3"/>
-    <link port="CurrentTime4.output" relation="relation6"/>
+    <link port="CurrentTime4.output" relation="relation2"/>
     <link port="CurrentTime4.trigger" relation="relation3"/>
-    <link port="Display5.input" relation="relation6"/>
+    <link port="Discard0.input" relation="relation3"/>
+    <link port="Discard1.input" relation="relation2"/>
 </entity>
