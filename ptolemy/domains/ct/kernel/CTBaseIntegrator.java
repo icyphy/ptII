@@ -426,8 +426,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
         if ((_auxVariables == null) || (_auxVariables.length < n)) {
             _auxVariables = new double[n];
         }
-        if (getHistoryCapacity() != solver.getHistoryCapacityRequirement()) {
-            setHistoryCapacity(solver.getHistoryCapacityRequirement());
+        if (getHistoryCapacity() != solver.getAmountOfHistoryInformation()) {
+            setHistoryCapacity(solver.getAmountOfHistoryInformation());
         }
         if (getValidHistoryCount() >= 2) {
             _history.rebalance(dir.getCurrentStepSize());
