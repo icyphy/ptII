@@ -562,7 +562,7 @@ public class Director extends NamedObj implements Executable {
         boolean trans = false; 
         Receiver[][] insiderecs = port.deepGetReceivers();
         for (int i = 0; i < port.getWidth(); i++) {
-            if (port.hasToken(i)) {
+	    while (port.hasToken(i)) {
                 try {
                     Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
@@ -608,7 +608,7 @@ public class Director extends NamedObj implements Executable {
             for (int i = 0; i < insiderecs.length; i++) {
                 if (insiderecs[i] != null) {
                     for (int j = 0; j < insiderecs[i].length; j++) {
-                        if (insiderecs[i][j].hasToken()) {
+			while (insiderecs[i][j].hasToken()) {
                             try {
                                 Token t = insiderecs[i][j].get();
                                 port.send(i, t);
