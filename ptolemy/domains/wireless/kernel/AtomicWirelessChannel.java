@@ -699,6 +699,9 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      */
     protected boolean _receiversInRangeCacheValid = false;
 
+    /** The PropertyTransformers that have been registered
+     *  @see #registerPropertyTransformer(WirelessIOPort, PropertyTransformer)
+     */  
     protected HashMap _portPropertyTransformer;
 
     //protected boolean _portPropertyTransformerInitialized = false;
