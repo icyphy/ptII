@@ -261,8 +261,8 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                             + "follows.\n" + edge);
                 }
 
-                String denominator = "gcd(" + producedExpression + ", "
-                        + consumedExpression + ")";
+                String denominator = PSDFGraphs.gcdExpression(
+                        producedExpression, consumedExpression);
                 String firstIterations = "(" + consumedExpression + ") / (" 
                         + denominator + ")";
                 String secondIterations = "(" + producedExpression + ") / ("
