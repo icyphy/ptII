@@ -64,7 +64,7 @@ import java.applet.Applet;
  * The following command defines the number of data sets to be plotted.
  * <pre>
  * NumSets: <i>positiveInteger</i>
- * <pre>
+ * </pre>
  * If data is provided for more data sets than this number, those
  * data are ignored.  Each dataset can be optionally identified with
  * color (see the base class) or with unique marks.  The style of
@@ -87,7 +87,7 @@ import java.applet.Applet;
  * To specify data to be plotted, start a data set with the following command:
  * <pre>
  * DataSet: <i>string</i>
- * <pre>
+ * </pre>
  * Here, <i>string</i> is a label that will appear in the legend.
  * It is not necessary to enclose the string in quotation marks.
  * The data itself is given by a sequence of commands with one of the
