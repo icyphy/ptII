@@ -46,6 +46,7 @@ CLASSPATH = ../../..
 JSRCS = \
 	SDFPort.java \
 	SDFRamp.java \
+	SDFPlot.java \
 	SDFPrint.java\
 	SDFStar.java \
 	Sample.java \
