@@ -51,11 +51,11 @@ Derived classes may impose further constraints by overriding setContainer().
 
 @author Yuhong Xiong
 @version $Id$
-@see ptolemy.actors.TypedIOPort
-@see ptolemy.actors.TypedIORelation
-@see ptolemy.actors.TypedActor
+@see ptolemy.actor.TypedIOPort
+@see ptolemy.actor.TypedIORelation
+@see ptolemy.actor.TypedActor
 @see ptolemy.kernel.ComponentEntity
-@see ptolemy.actors.CompositeActor
+@see ptolemy.actor.CompositeActor
 */
 public class TypedCompositeActor extends CompositeActor implements TypedActor {
 

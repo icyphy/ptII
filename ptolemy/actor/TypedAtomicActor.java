@@ -55,9 +55,9 @@ of this method, which should be suitable for most of the derived classes.
 
 @author Yuhong Xiong
 @version $Id$
-@see ptolemy.actors.AtomicActor
-@see ptolemy.actors.TypedCompositeActor
-@see ptolemy.actors.TypedIOPort
+@see ptolemy.actor.AtomicActor
+@see ptolemy.actor.TypedCompositeActor
+@see ptolemy.actor.TypedIOPort
 */
 public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
