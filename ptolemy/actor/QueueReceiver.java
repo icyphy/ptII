@@ -78,6 +78,12 @@ public class QueueReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear this receiver of any contained tokens.
+      */
+     public void clear() {
+         _queue.clear();
+     }
+
     /** List the tokens in the receiver, beginning with the oldest.
      *  @return An enumeration of tokens.
      */
