@@ -60,9 +60,9 @@ public class ThreeDFunction {
     /** ThreeDFunction
      *
      *  Constructs the functional representation of the 3D dataset.
-     *  
+     *
      *  @param fileName name of file storing the dataset.
-     *  @exception IllegalActionException if any exception is 
+     *  @exception IllegalActionException if any exception is
      *     is generated during file i/o.
      */
     public ThreeDFunction(String fileName) throws IllegalActionException {
@@ -71,9 +71,9 @@ public class ThreeDFunction {
 	double dimension;
 
 	try {
-	    BufferedReader in = 
+	    BufferedReader in =
 		new BufferedReader(new FileReader(fileName));
-	    
+
             /** Read the dimension of the state space and ignore it,
              * since we know it's value is 3.
              */
@@ -170,12 +170,12 @@ public class ThreeDFunction {
              * is the x index of the nearest gridpoint less than x,
              * and x1Index is the x index of the nearest gridpoint
              * greater than x.
-             */ 
+             */
             x0Index = (int)((x - _xLowerBound) / _xStepSize);
             x1Index = x0Index + 1;
             y0Index = (int)((y - _yLowerBound) / _yStepSize);
             y1Index = y0Index + 1;
-            theta0Index = 
+            theta0Index =
                 (int)((theta - _thetaLowerBound) / _thetaStepSize);
 
             /** theta1Index will be 0 if the nearest gridpoint greater
@@ -204,7 +204,7 @@ public class ThreeDFunction {
              */
             xDis = (x - _xLowerBound) / _xStepSize - x0Index;
             yDis = (y - _yLowerBound) / _yStepSize - y0Index;
-            thetaDis = 
+            thetaDis =
                 (theta - _thetaLowerBound) / _thetaStepSize - theta0Index;
 
             /** Through a for loop, compute the value.  At each step
@@ -215,7 +215,7 @@ public class ThreeDFunction {
             for (int i = 0; i <= 1; i = i + 1) {
                 for (int j = 0; j <= 1; j = j + 1) {
                     for (int k = 0; k <= 1; k = k + 1) {
-                        if (i == 0) { 
+                        if (i == 0) {
                             xWeight = 1 - xDis;
                             xIndex = x0Index;
                         }
@@ -223,7 +223,7 @@ public class ThreeDFunction {
                             xWeight = xDis;
                             xIndex = x1Index;
                         }
-                        if (j == 0) { 
+                        if (j == 0) {
                             yWeight = 1 - yDis;
                             yIndex = y0Index;
                         }
@@ -231,7 +231,7 @@ public class ThreeDFunction {
                             yWeight = yDis;
                             yIndex = y1Index;
                         }
-                        if (k == 0) { 
+                        if (k == 0) {
                             thetaWeight = 1 - thetaDis;
                             thetaIndex = theta0Index;
                         }
@@ -240,7 +240,7 @@ public class ThreeDFunction {
                             thetaIndex = theta1Index;
                         }
                         point =_values[xIndex][yIndex][thetaIndex];
-                        value = 
+                        value =
                             value + point * xWeight * yWeight * thetaWeight;
                     }
                 }
@@ -256,13 +256,13 @@ public class ThreeDFunction {
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
-    
+
     /* Lower bound for each dimension */
-    double _xLowerBound,  _yLowerBound, _thetaLowerBound;	
+    double _xLowerBound,  _yLowerBound, _thetaLowerBound;
 
     /* Step size for each dimension */
     double _xStepSize, _yStepSize, _thetaStepSize;
-	
+
     /* Upper bound for each dimension */
     double _xUpperBound, _yUpperBound, _thetaUpperBound;
 
@@ -279,7 +279,7 @@ public class ThreeDFunction {
      *
      *  Takes in an angular value and returns the equivalant value in
      *  the range [0, 2*Pi).
-     *  
+     *
      *  @param angle radian value of the angle as any real number
      *  @return double in range [0, 2*Pi].
      */
@@ -293,34 +293,34 @@ public class ThreeDFunction {
         }
         return angle;
     }
-       
+
     /** _inRange
      *
      *  Returns true if the input is in the range stored by the array.
      *  That is, it returns true if x in [_xLowerBound, _xUpperBound),
      *  y in [_yLowerBound, _yUpperBound), and theta in Reals.
-     *  
+     *
      *  The upper bounds are excluded to make the interpolation
      *  routine simpler.
      *
      *  @param x double storing x value
      *  @param y double storing y value
-     *  @return boolean 
+     *  @return boolean
      */
     private boolean _inRange(double x, double y) {
         boolean xOK, yOK;
-            
+
         /* xOK is true if x is in the allowable range. */
         xOK = ((x >= _xLowerBound) && (x < _xUpperBound));
         yOK = ((y >= _yLowerBound) && (y < _yUpperBound));
 
         return (xOK && yOK);
     }
-    
+
     /** _readDouble
      *
      *  If a line has no data, it tries to return the next line.
-     *  If no next line exists, it returns null, 
+     *  If no next line exists, it returns null,
      *
      *  @param reader BufferedReader storing the file of interest
      *  @exception IOException if reader throws an IOException

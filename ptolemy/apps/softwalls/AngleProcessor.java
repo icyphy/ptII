@@ -79,9 +79,9 @@ public class AngleProcessor extends TypedAtomicActor {
         // Create and configure ports and parameters
         inputAngle = new TypedIOPort(this, "inputAngle", true, false);
         outputAngle = new TypedIOPort(this, "outputAngle", false, true);
-        minAngle = new PortParameter(this, 
+        minAngle = new PortParameter(this,
                 "minAngle", new DoubleToken(0.0));
-        maxAngle = new PortParameter(this, 
+        maxAngle = new PortParameter(this,
                 "maxAngle", new DoubleToken(2 * Math.PI));
         inputAngle.setTypeEquals(BaseType.DOUBLE);
         outputAngle.setTypeEquals(BaseType.DOUBLE);
@@ -110,22 +110,22 @@ public class AngleProcessor extends TypedAtomicActor {
      *  thrown from reading the parameters.
      *  @param attribute The attribute that has changed.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         try {
             if (attribute == minAngle) {
-                _minAngle = 
+                _minAngle =
                     ((DoubleToken)(minAngle.getToken())).doubleValue();
             }
             else if (attribute == maxAngle) {
-                _maxAngle = 
+                _maxAngle =
                     ((DoubleToken)(maxAngle.getToken())).doubleValue();
             }
         }
         catch (IllegalActionException e) {
             throw new IllegalActionException(getContainer(),
                     e.getCause(), e.getMessage());
-        }                    
+        }
     }
 
     /** Overrides the base class to initialize the minAngle and
@@ -153,16 +153,16 @@ public class AngleProcessor extends TypedAtomicActor {
         try {
             double angle;
             double range;
- 
+
             angle = ((DoubleToken)(inputAngle.get(0))).doubleValue();
-            
+
             minAngle.update();
             maxAngle.update();
             _minAngle = ((DoubleToken)(minAngle.getToken())).doubleValue();
             _maxAngle = ((DoubleToken)(maxAngle.getToken())).doubleValue();
 
             if (_minAngle >= _maxAngle) {
-                throw new IllegalActionException(getContainer(), 
+                throw new IllegalActionException(getContainer(),
                         "minAngle >= maxAngle");
             }
 
@@ -178,7 +178,7 @@ public class AngleProcessor extends TypedAtomicActor {
             outputAngle.send(0, new DoubleToken(angle));
         }
         catch (IllegalActionException e) {
-            throw new IllegalActionException(getContainer(), 
+            throw new IllegalActionException(getContainer(),
                     e.getCause(), e.getMessage());
         }
         catch (NoTokenException e) {
@@ -201,14 +201,14 @@ public class AngleProcessor extends TypedAtomicActor {
             }
         }
         catch (IllegalActionException e) {
-            throw new IllegalActionException(getContainer(), 
+            throw new IllegalActionException(getContainer(),
                     e.getCause(), e.getMessage());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
-    
+
     private double _minAngle, _maxAngle;
 }
 
