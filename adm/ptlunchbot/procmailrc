@@ -1,0 +1,6 @@
+PTLUNCHBOTFOLDER=/users/ptII/adm/ptlunchbot
+:0
+* ^Subject: .*ptlunchbot
+| ${FORMAIL} -X From: -X Date: >>${PTLUNCHBOTFOLDER}
+
+
