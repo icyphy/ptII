@@ -199,8 +199,6 @@ the point of this test is to smoke test TMCompositeFacade.</text></svg></configu
         <link port="Test.input" relation="relation2"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.0078125">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">

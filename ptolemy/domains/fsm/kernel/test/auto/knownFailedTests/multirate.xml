@@ -27,8 +27,6 @@
         </property>
     </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
@@ -73,8 +71,6 @@
         </port>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="366.5, 204.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -86,8 +82,6 @@
         </port>
     </entity>
     <entity name="1:CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="366.5, 384.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">

@@ -396,8 +396,6 @@ in range it takes 26seconds for it to process.</text></svg></configure>
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">

@@ -287,8 +287,6 @@ power is shown on the plot.</text></svg></configure>
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
@@ -562,8 +560,6 @@ power is shown on the plot.</text></svg></configure>
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">

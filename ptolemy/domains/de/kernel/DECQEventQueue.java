@@ -140,6 +140,10 @@ public class DECQEventQueue implements DEEventQueue {
     public void removeDebugListener(DebugListener listener) {
         _cQueue.removeDebugListener(listener);
     }
+    
+    public double size() {
+        return _cQueue.size();
+    }
 
     /** Dequeue the earliest event in this event queue.
      *  This method is synchronized since there

@@ -164,8 +164,6 @@ order.</text></svg></configure>
         </property>
     </property>
     <entity name="Poisson Bus Arrivals" class="ptolemy.actor.lib.PoissonClock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="poissonBusArrivalRate">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
@@ -176,8 +174,6 @@ order.</text></svg></configure>
         </property>
     </entity>
     <entity name="Passenger Arrivals" class="ptolemy.actor.lib.PoissonClock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="passengerArrivalRate">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
@@ -249,8 +245,6 @@ order.</text></svg></configure>
         </configure>
     </entity>
     <entity name="Regular Bus Arrivals" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="regularBusArrivalRate">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">

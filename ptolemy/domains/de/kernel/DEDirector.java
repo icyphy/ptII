@@ -34,7 +34,6 @@ package ptolemy.domains.de.kernel;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -345,21 +344,42 @@ public class DEDirector extends Director {
      */
     public void fire() throws IllegalActionException {
 
+        // NOTE: This fire method does not call super.fire().
+        
         if (_debugging) {
             _debug("DE director firing!");
         }
 
         while (true) {
+            // Find the next actor to be fired.
+            // FIXME: change the method name: evnet? actor?
             Actor actorToFire = _dequeueEvents();
+            
+            // Check whether the actor to fired is null.
+            // If the actor is null,
             if (actorToFire == null) {
-                // There is nothing more to do.
-                if (_debugging) _debug("No more events on the event queue.");
-                // FIXME: changed by liuxj, to be reviewed
-                if (_isTopLevel()) {
+                // NOTE: when could this happen?
+                if (!_isTopLevel()) {
+                    // Case 1:
+                    // If this director belongs to an embedded model,
+                    // the director may be invoked by an update of the 
+                    // parameter port of the model. Therefore, no 
+                    // actors belonging to the model need to fire.
+                    if (_debugging) 
+                        _debug("No actor to be fired at this time.");
+                } else { 
+                    // Case 2: 
+                    // If this director is an executive director at
+                    // the top level, a null actor means that there are 
+                    // no events in the event queue.
+                    if (_debugging) 
+                        _debug("No more events on the event queue.");
                     _noMoreActorsToFire = true;
                 }
                 return;
             }
+            
+            // If the actor to fire is not null.
             // It is possible that the next event to be processed is on
             // an inside receiver of an output port of an opaque composite
             // actor containing this director.  In this case, we simply
@@ -368,8 +388,10 @@ public class DEDirector extends Director {
             if (actorToFire == getContainer()) {
                 return;
             }
+            
             // Repeatedly fire the actor until there are no more input
-            // tokens available, or until prefire() return false.
+            // tokens available in the input ports of this actor, 
+            // or until its prefire() method returns false.
             boolean refire;
             do {
                 refire = false;
@@ -378,6 +400,8 @@ public class DEDirector extends Director {
                 // into two duplicate versions.
                 if (_debugging) {
                     // Debugging. Report everything.
+                    // FIXME: this may not be true any more. Suppose 
+                    // the top level contains external outputs.
                     if (((Nameable)actorToFire).getContainer() == null) {
                         _debug("Actor has no container. Disabling actor.");
                         _disableActor(actorToFire);
@@ -408,6 +432,8 @@ public class DEDirector extends Director {
                                    FiringEvent.AFTER_POSTFIRE));
                 } else {
                     // Not debugging.
+                    // FIXME: this may not be true any more. Suppose 
+                    // the top level contains external outputs.
                     if (((Nameable)actorToFire).getContainer() == null) {
                         _disableActor(actorToFire);
                         break;
@@ -423,8 +449,9 @@ public class DEDirector extends Director {
                     }
                 }
 
-                // FIXME: The following is the actual part that DE director handles
-                // multiple events. Think about what it means in the SR semantics.
+                // NOTE: The following part is where that DE director handles
+                // multiple events with the same time tag. 
+                // Think about what it means in the SR semantics.
 
                 // Check the input ports of the actor see whether there
                 // is additional input data available.
@@ -434,21 +461,25 @@ public class DEDirector extends Director {
                     for (int i = 0; i < port.getWidth(); i++) {
                         if (port.hasToken(i)) {
                             refire = true;
-                            break;
+                            break; // the for loop
                         }
                     }
-                    if (refire == true) break;
+                    if (refire == true) break; // the while loop
                 }
-            } while (refire);
+            } while (refire); // close the do{...}while() loop
 
+            // FIXME: the following code is not necessary because it is
+            // covered in the _dequeueEvents() method.
             // Check whether the next time stamp is equal to current time.
+            // NOTE: The following code does two things:
+            // 1. Remove duplicate pure tokens.
+            // 2. Put the tokens belonging to the same actor into its receiver  
             synchronized(_eventQueue) {
                 if (!_eventQueue.isEmpty()) {
                     DEEvent next = _eventQueue.get();
-                    // If the next event is in the future,
-                    // proceed to postfire().
-
                     if (next.timeStamp() > getCurrentTime()) {
+                        // If the next event is in the future,
+                        // proceed to postfire().
                         break;
                     } else if (next.timeStamp() != Double.NEGATIVE_INFINITY
                             && next.timeStamp() < getCurrentTime()) {
@@ -463,6 +494,10 @@ public class DEDirector extends Director {
                 }
             }
         }
+
+        if (_debugging) {
+            _debug("DE director fired!");
+        }
     }
 
     /** Schedule an actor to be fired at the specified absolute time.
@@ -476,23 +511,35 @@ public class DEDirector extends Director {
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
+
         if (_eventQueue == null) {
             throw new IllegalActionException(this,
                     "Calling fireAt() before preinitialize().");
         }
-        synchronized(_eventQueue) {
-            // NOTE: This does not check whether the actor is in the
-            // composite actor containing this
-            // director. I.e. the specified actor is under this director
-            // responsibility. This error would be fairly hard to make,
-            // so we don't check for it here.
 
-            // Set the depth equal to the depth of the actor.
-            // put a pure event into the local event queue
+        // We want to keep the event queues at all levels in hierarchy
+        // as short as possible. 
+
+        // For the fireAt and fireAtRelativeTime methods. When a new
+        // pure event is created, whether a refiring is necessary has
+        // to be decided. If the event queue is empty, or the events 
+        // (either pure events or token events) in the queue have later
+        // time tags, refiring is necessary.
+
+        boolean needToRequestRefiring = false;
+        if (_eventQueue.size() == 0) {
+            needToRequestRefiring = true;
+        } else {
+            DEEvent firstEvent = _eventQueue.get();
+            double firstEventTime = firstEvent.timeStamp();
+            if (firstEventTime > time) {
+                needToRequestRefiring = true;
+            }
+        }
+        
+        synchronized(_eventQueue) {
             _enqueueEvent(actor, time);
-            if (_isEmbedded()) {
-                // put a pure event into the local event queue of upper
-                // level in hierarchy
+            if (_isEmbedded() && needToRequestRefiring) {
                 _requestFiring();
             }
             _eventQueue.notifyAll();
@@ -531,9 +578,11 @@ public class DEDirector extends Director {
             // director. I.e. the specified actor is under this director
             // responsibility. This error would be fairly hard to make,
             // so we don't check for it here.
-
+            
             // "As soon as possible" is encoded in this class by the time
             // Double.NEGATIVE_INFINITY.
+            // FIXME: I do not think this is a good design. If multi-threaded
+            // simulation is necessary, DDE domain is a better choice. 
             _enqueueEvent(actor, Double.NEGATIVE_INFINITY);
             super.fireAtCurrentTime(actor);
             _eventQueue.notifyAll();
@@ -547,24 +596,7 @@ public class DEDirector extends Director {
      */
     public void fireAtRelativeTime(Actor actor, double time)
             throws IllegalActionException {
-        if (_eventQueue == null) {
-            throw new IllegalActionException(this,
-                    "Calling fireAtRelativeTime() before preinitialize().");
-        }
-        synchronized(_eventQueue) {
-            // NOTE: This does not check whether the actor is in the
-            // composite actor containing this
-            // director. I.e. the specified actor is under this director
-            // responsibility. This error would be fairly hard to make,
-            // so we don't check for it here.
-
-            // Set the depth equal to the depth of the actor.
-            _enqueueEvent(actor, time + getCurrentTime());
-            if (_isEmbedded()) {
-                _requestFiring();
-            }
-            _eventQueue.notifyAll();
-        }
+          fireAt(actor, time + getCurrentTime());
     }
 
     /** Return the event queue.
@@ -582,58 +614,62 @@ public class DEDirector extends Director {
      *  @return The next larger time on the event queue.
      */
     public double getNextIterationTime() {
-        // It seems like the current design of the DECQEventQueue, and
-        // the use the calendar queue in general, cannot support this
-        // method very efficiently. To get the next iteration time, the
-        // director has to dequeue all events at the current time, find
-        // the first event in the next iteration,
-        // and put all event just been dequeued back to queue.
-        // <P>
-        // An alternative design is to have a hierarchical queue. The
-        // top level of the queue sorts entries (a groups of DEEvents)
-        // only by their time stamp.
-        // Each entry at this level is another priority queue, which
-        // sort (simultaneous) events further according to their microsteps
-        // and depth. Then the next iteration time is simply the time stamp
-        // of the next entry in the top queue.
-        // However, since this method is called only when CT is side DE.
-        // It is unclear how the change may effect normal DE execution.
-        // So we will keep the current design unless there's prove that
-        // the new design can improve (or at least does not ruin) the
-        // performance under regular uses.
-        if (_eventQueue.isEmpty()) {
-            return getStopTime();
-        } else {
-            DEEvent next = _eventQueue.get();
-            double nextTime = next.timeStamp();
-            // The next event on the queue may have the current time.
-            // May need to look deeper in the queue.
-            // Save items to reinsert into queue.
-            LinkedList eventsToPutBack = new LinkedList();
-            while (nextTime <= getCurrentTime()) {
-                if (_debugging) _debug("Temporarily remove event.");
-                // take() is safe, since the queue is not empty.
-                eventsToPutBack.add(_eventQueue.take());
-                if (!_eventQueue.isEmpty()) {
-                    next = _eventQueue.get();
-                    nextTime = next.timeStamp();
-                } else {
-                    nextTime = getStopTime();
-                    break;
-                }
-            }
-            // Put back events that need to be put back.
-            Iterator events = eventsToPutBack.iterator();
-            while (events.hasNext()) {
-                if (_debugging) _debug("Put dequeued current event back.");
-                try {
-                    _eventQueue.put((DEEvent)events.next());
-                } catch (IllegalActionException ex) {
-                    throw new InternalErrorException(this, ex, null);
-                }
-            }
-            return nextTime;
-        }
+        // FIXME: the following code can be simplified as:
+        return _eventQueue.get().timeStamp();
+
+//        // It seems like the current design of the DECQEventQueue, and
+//        // the use the calendar queue in general, cannot support this
+//        // method very efficiently. To get the next iteration time, the
+//        // director has to dequeue all events at the current time, find
+//        // the first event in the next iteration,
+//        // and put all event just been dequeued back to queue.
+//        // <P>
+//        // An alternative design is to have a hierarchical queue. The
+//        // top level of the queue sorts entries (a groups of DEEvents)
+//        // only by their time stamp.
+//        // Each entry at this level is another priority queue, which
+//        // sort (simultaneous) events further according to their microsteps
+//        // and depth. Then the next iteration time is simply the time stamp
+//        // of the next entry in the top queue.
+//        // However, since this method is called only when CT is side DE.
+//        // It is unclear how the change may effect normal DE execution.
+//        // So we will keep the current design unless there's prove that
+//        // the new design can improve (or at least does not ruin) the
+//        // performance under regular uses.
+//        if (_eventQueue.isEmpty()) {
+//            // FIXME: the event queue contains the stop time as an event.
+//            return getStopTime();
+//        } else {
+//            DEEvent next = _eventQueue.get();
+//            double nextTime = next.timeStamp();
+//            // The next event on the queue may have the current time.
+//            // May need to look deeper in the queue.
+//            // Save items to reinsert into queue.
+//            LinkedList eventsToPutBack = new LinkedList();
+//            while (nextTime <= getCurrentTime()) {
+//                if (_debugging) _debug("Temporarily remove event.");
+//                // take() is safe, since the queue is not empty.
+//                eventsToPutBack.add(_eventQueue.take());
+//                if (!_eventQueue.isEmpty()) {
+//                    next = _eventQueue.get();
+//                    nextTime = next.timeStamp();
+//                } else {
+//                    nextTime = getStopTime();
+//                    break;
+//                }
+//            }
+//            // Put back events that need to be put back.
+//            Iterator events = eventsToPutBack.iterator();
+//            while (events.hasNext()) {
+//                if (_debugging) _debug("Put dequeued current event back.");
+//                try {
+//                    _eventQueue.put((DEEvent)events.next());
+//                } catch (IllegalActionException ex) {
+//                    throw new InternalErrorException(this, ex, null);
+//                }
+//            }
+//            return nextTime;
+//        }
     }
 
     /** Return the system time at which the model begins executing.
@@ -696,7 +732,12 @@ public class DEDirector extends Director {
         super.initialize();
         _exceedStopTime = false;
         _realStartTime = System.currentTimeMillis();
-        fireAt((Actor)getContainer(), getStopTime());
+        // Request a firing to the outer director if the queue is not empty.
+        if (_isEmbedded() && !_eventQueue.isEmpty()) {
+            if (_debugging) _debug("DE director requests refiring" +
+                    " because of nonempty event queue.");
+            _requestFiring();
+        }
     }
 
     /** Indicate that the topological depth of the ports in the model may
@@ -733,21 +774,27 @@ public class DEDirector extends Director {
         // stop when event queue is empty
         boolean stop = ((BooleanToken)stopWhenQueueIsEmpty.getToken())
             .booleanValue();
-        // if no more actors will be fired (i.e. event queue is empty) 
+        // If no more actors will be fired (i.e. event queue is empty) 
         // and either of the following conditions satisfy:
         // 1. stop when event queue is empty
         // 2. current time equals the stop time
+        // then stop the model.
+        // If more actors will be fired, but the current time exceeds 
+        // the stop time, stop the model.
         if (_noMoreActorsToFire && (stop || 
             getCurrentTime() == getStopTime())) {
             _exceedStopTime = true;
             return false;
-        } else if (getCurrentTime() > getStopTime()) {
+        } else if (_exceedStopTime) {
             // If the current time is bigger than the stop time, 
             // stop the model execution.
             return false;
         } else if (_isEmbedded() && !_eventQueue.isEmpty()) {
             // if the event queue is not empty and the container is an
-            // embedded model, ask the upper director to refire the container.
+            // embedded model, ask the upper level director in the 
+            // hierarchy to refire the container. 
+            // This design allows the upper level director to keep a
+            // relatively short event queue. 
             _requestFiring();
         }
 //        System.out.println(getContainer().getName() +
@@ -774,7 +821,7 @@ public class DEDirector extends Director {
         }
         
         // A top-level DE director is always ready to fire.
-        if (!_isEmbedded()) {
+        if (_isTopLevel()) {
             return true;
         }
 
@@ -804,7 +851,7 @@ public class DEDirector extends Director {
         
         if (outsideCurrentTime > nextEventTime) {
             throw new IllegalActionException(this,
-                    "Missed a firing at "
+                    "Prefire method: Missed a firing at "
                     + nextEventTime + "."
                     + " The outside time is already " +
                     + outsideCurrentTime + ".");
@@ -878,7 +925,6 @@ public class DEDirector extends Director {
         _disabledActors = null;
         _noMoreActorsToFire = false;
         _microstep = 0;
-
         // Call the parent preinitialize method to create the receivers.
         super.preinitialize();
     }
@@ -960,6 +1006,19 @@ public class DEDirector extends Director {
         return anyWereTransferred;
     }
 
+    /** Invoke the wrapup method of the super class. Reset the private
+     *  state variables.
+     *  @exception IllegalActionException If the wrapup() method of
+     *   one of the associated actors throws it.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        _eventQueue.clear();
+        _disabledActors = null;
+        _noMoreActorsToFire = false;
+        _microstep = 0;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1002,24 +1061,32 @@ public class DEDirector extends Director {
             if (!_isTopLevel()) {
                 // If the directory is in an embedded model
                 if (_eventQueue.isEmpty()) {
-                    // FIXME: under which condition, will this hapen?
+                    // NOTE: when could this happen?
+                    // If this director belongs to an embedded model,
+                    // the director may be invoked by an update of the 
+                    // parameter port of the model. Therefore, no 
+                    // actors belonging to the model need to fire.
+                    // jump out of the loop: LOOPLABEL::GetNextEvent
                     break;
                 } else {
                     nextEvent = (DEEvent)_eventQueue.get();
-                    // An embedded director should process an event 
-                    // that only happens at the current time.
+                    // An embedded director should process events 
+                    // that only happen at the current time.
                     // If the event is in the past, that is an error.
-                    if (nextEvent.timeStamp() < getCurrentTime()) {
+                    if (nextEvent.timeStamp() != Double.NEGATIVE_INFINITY &&
+                        nextEvent.timeStamp() < getCurrentTime()) {
                         //missed an event
-                        throw new InternalErrorException("Missed an" +
-                            " event " + nextEvent.timeStamp() 
-                            + " at time " + getCurrentTime() + "!");
+                        throw new InternalErrorException(
+                            "Fire: Missed an event: the next event time "
+                            + nextEvent.timeStamp() + " is earlier than the"
+                            + " current time " + getCurrentTime() + " !");
                     }
                     // If the event is in the future, it is ignored
                     // and will be processed later.
                     if (nextEvent.timeStamp() > getCurrentTime()) {
                         //reset the next event
                         nextEvent = null;
+                        // jump out of the loop: LOOPLABEL::GetNextEvent
                         break;
                     }
                 }
@@ -1072,7 +1139,7 @@ public class DEDirector extends Director {
                             }
                         }
                     } // Close synchronized block
-                }
+                }// Close the blocking read while loop
                 
                 // To reach this point, either the event queue is not empty,
                 // or the _stopRequested is true. 
@@ -1088,8 +1155,8 @@ public class DEDirector extends Director {
 
             // When this point is reached, the nextEvent can not be null.
             if (nextEvent == null) {
-                throw new InternalErrorException("The event to be handled " +
-                    "can not be null!");
+                throw new InternalErrorException("The event to be handled"
+                    + " can not be null!");
             }
             
             // If the actorToFire is null, find the actor associated with
@@ -1099,7 +1166,6 @@ public class DEDirector extends Director {
                 // If the actorToFire is not set yet, 
                 // find the actor associated with the next event,
                 // and update the current time with the event time.
-
                 double currentTime;
                 // If not synchronized to the real time.
                 if (!_synchronizeToRealTime) {
@@ -1110,24 +1176,25 @@ public class DEDirector extends Director {
                     synchronized(_eventQueue) {
                         while (true) {
                             currentEvent = (DEEvent)_eventQueue.get();
-
                             currentTime = currentEvent.timeStamp();
-
                             long elapsedTime = System.currentTimeMillis()
                                 - _realStartTime;
                             // NOTE: We assume that the elapsed time can be
                             // safely cast to a double.  This means that
                             // the DE domain has an upper limit on running
-                            // time of Double.MAX_VALUE milliseconds, which
-                            // is probably longer than the sun is going to last
-                            // (and maybe even longer than Sun Microsystems).
+                            // time of Double.MAX_VALUE milliseconds. 
+                            // NOTE: When synchronized to real time, time
+                            // resolution is millisecond, which is different
+                            // from the assumption that the smallest
+                            // time interval between any two events is the
+                            // minimum double value.
                             double elapsedTimeInSeconds =
                                 ((double)elapsedTime)/1000.0;
                             if (currentTime <= elapsedTimeInSeconds) {
                                 break;
                             }
-                            long timeToWait = (long)((currentTime -
-                                                             elapsedTimeInSeconds)*1000.0);
+                            long timeToWait = (long)((currentTime 
+                                - elapsedTimeInSeconds)*1000.0);
                             if (timeToWait > 0) {
                                 if (_debugging) {
                                     _debug("Waiting for real time to pass: "
@@ -1153,6 +1220,8 @@ public class DEDirector extends Director {
                     currentTime = currentEvent.timeStamp();
                     actorToFire = currentEvent.actor();
 
+                    // FIXME: is the special NEGATIVE_INFINITY time
+                    // necessary?
                     // Deal with a fireAtCurrentTime event.
                     if (currentTime == Double.NEGATIVE_INFINITY) {
                         currentTime = getCurrentTime();
@@ -1161,7 +1230,7 @@ public class DEDirector extends Director {
                     // FIXME: The _enqueEvent method might be trained to
                     // be smart about which events to be discarded.
                     // Two things can be possibly done:
-                    // 1. No duplicate events.
+                    // 1. No duplicate pure events.
                     // 2. No events to disabled actors.
                     if (_disabledActors != null &&
                             _disabledActors.contains(actorToFire)) {
@@ -1174,7 +1243,7 @@ public class DEDirector extends Director {
                         continue;
                     }
 
-                    // Advance current time.
+                    // Advance current time to event time.
                     try {
                         setCurrentTime(currentTime);
                     } catch (IllegalActionException ex) {
@@ -1197,26 +1266,26 @@ public class DEDirector extends Director {
                 // of which receiver is filled.
                 DEReceiver receiver = currentEvent.receiver();
 
-                // If receiver is null, then it's a 'pure event', and there's
-                // no need to put event into receiver.
+                // If receiver is null, then it's a 'pure event', 
+                // and there's no need to put event into receiver.
                 if (receiver != null) {
                     // Transfer the event to the receiver.
-                    if (_debugging) _debug(getName(),
-                            "put trigger event to",
+                    if (_debugging) 
+                        _debug(getName(), " puts trigger event to",
                             receiver.getContainer().getFullName());
                     receiver._triggerEvent(currentEvent.token());
                 }
             } else {
                 // Already seen an event.
-                // Check whether the next event has equal tag.
+                // Check whether the next event has the same time tag.
                 // If so, the destination actor should
                 // be the same, but check anyway.
                 // FIXME: this will never be true for non-strict actors...
                 if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY ||
-                            nextEvent.isSimultaneousWith(currentEvent)) &&
-                        nextEvent.actor() == currentEvent.actor()) {
-                    // Consume the event from the queue.
+                     nextEvent.isSimultaneousWith(currentEvent)) 
+                     && nextEvent.actor() == currentEvent.actor()) {
 
+                    // Consume the event from the queue.
                     _eventQueue.take();
 
                     // Transfer the event into the receiver.
@@ -1274,7 +1343,11 @@ public class DEDirector extends Director {
     protected void _enqueueEvent(Actor actor, double time)
             throws IllegalActionException {
 
-        if (_eventQueue == null) return;
+        if (_eventQueue == null || 
+            (_disabledActors != null && _disabledActors.contains(actor))) 
+            return;
+        
+        // Adjust the microdept
         int microstep = 0;
         if (time == getCurrentTime()) {
             microstep = _microstep + 1;
@@ -1285,11 +1358,13 @@ public class DEDirector extends Director {
                     + " Current time is " + getCurrentTime()
                     + " while event time is " + time);
         }
+        // Get the depth of the actor
         int depth = _getDepth(actor);
-        if (_debugging) _debug("enqueue a pure event: ",
-                ((NamedObj)actor).getName(),
+        if (_debugging) 
+            _debug("enqueue a pure event: ", ((NamedObj)actor).getName(),
                 "time = " + time + " microstep = " + microstep + " depth = "
                 + depth);
+        // Register the pure event.
         _eventQueue.put(new DEEvent(actor, time, microstep, depth));
     }
 
@@ -1311,9 +1386,12 @@ public class DEDirector extends Director {
     protected void _enqueueEvent(DEReceiver receiver, Token token,
             double time) throws IllegalActionException {
 
-        if (_eventQueue == null) return;
-        int microstep = 0;
+        Actor actor = (Actor) receiver.getContainer().getContainer();
+        if (_eventQueue == null || 
+            (_disabledActors != null && _disabledActors.contains(actor))) 
+            return;
 
+        int microstep = 0;
         if (time == getCurrentTime()) {
             microstep = _microstep;
         } else if (time != Double.NEGATIVE_INFINITY &&
@@ -1351,7 +1429,10 @@ public class DEDirector extends Director {
     protected void _enqueueEvent(DEReceiver receiver, Token token)
             throws IllegalActionException {
 
-        if (_eventQueue == null) return;
+        Actor actor = (Actor) receiver.getContainer().getContainer();
+        if (_eventQueue == null || 
+            (_disabledActors != null && _disabledActors.contains(actor))) 
+            return;
 
         Actor destination = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destination);
@@ -1396,7 +1477,6 @@ public class DEDirector extends Director {
     protected void _requestFiring() throws IllegalActionException {
         DEEvent nextEvent = null;
         nextEvent = _eventQueue.get();
-
         if (_debugging) _debug("Request refiring of opaque composite actor.");
         // Enqueue a refire for the container of this director.
         CompositeActor container = (CompositeActor)getContainer();
@@ -1618,7 +1698,7 @@ public class DEDirector extends Director {
     private void _initParameters() {
         try {
             startTime = new Parameter(this, "startTime");
-            startTime.setExpression("-1*MaxDouble");
+            startTime.setExpression("0.0");
             startTime.setTypeEquals(BaseType.DOUBLE);
 
             stopTime = new Parameter(this, "stopTime");

@@ -92,8 +92,6 @@
             </port>
         </entity>
         <entity name="CurrentTime8" class="ptolemy.actor.lib.CurrentTime">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="197.0, 225.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -105,8 +103,6 @@
             </port>
         </entity>
         <entity name="CurrentTime9" class="ptolemy.actor.lib.CurrentTime">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 272.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">

@@ -128,8 +128,6 @@ to produce a countering electrostatic force.</text></svg></configure>
             </property>
         </port>
         <entity name="Current Time" class="ptolemy.actor.lib.CurrentTime">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="63.0, 344.0">
             </property>
         </entity>
@@ -361,8 +359,6 @@ to produce a countering electrostatic force.</text></svg></configure>
         </property>
     </entity>
     <entity name="DigitalClock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">

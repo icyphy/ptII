@@ -6139,8 +6139,6 @@
         <link port="state_3.state3_output2" relation="relation1"/>
     </entity>
     <entity name="Current time" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="99.0, 215.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">

@@ -28,10 +28,13 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.lib;
 
+import java.util.HashMap;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -76,7 +79,7 @@ import ptolemy.kernel.util.Workspace;
    @version $Id$
    @since Ptolemy II 1.0
    @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (cxh)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public class TimedDelay extends DETransformer {
 
@@ -93,7 +96,7 @@ public class TimedDelay extends DETransformer {
         super(container, name);
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
-
+        
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" "
                 + "width=\"60\" height=\"20\" "
@@ -125,6 +128,8 @@ public class TimedDelay extends DETransformer {
                 throw new IllegalActionException(this,
                         "Cannot have negative delay: "
                         + ((DoubleToken)(delay.getToken())));
+            } else {
+                _delay = ((DoubleToken)delay.getToken()).doubleValue();
             }
         } else {
             super.attributeChanged(attribute);
@@ -155,6 +160,29 @@ public class TimedDelay extends DETransformer {
         } else {
             _currentInput = null;
         }
+        double currentTime = getDirector().getCurrentTime();
+        _eventToBeRemoved = null;
+        if (_delayedEvents.size() > 0) {
+            Double timeDouble = new Double(currentTime);
+            _eventToBeRemoved = (DEEvent)_delayedEvents.get(timeDouble);
+            if (_eventToBeRemoved != null) {
+                output.send(0, _eventToBeRemoved.token());
+            }
+        }
+        if (_delay == 0) {
+            output.send(0, _currentInput);
+        }
+    }
+
+    /** Initialize the states of this actor.
+     *
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _delay = ((DoubleToken)delay.getToken()).doubleValue();
+        _eventToBeRemoved = null;
+        _delayedEvents = new HashMap();
     }
 
     /** Produce token that was read in the fire() method, if there
@@ -164,9 +192,16 @@ public class TimedDelay extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_currentInput != null) {
-            output.send(0, _currentInput,
-                    ((DoubleToken)delay.getToken()).doubleValue());
+        double currentTime = getDirector().getCurrentTime();
+        if (_delayedEvents.size() > 0 && 
+            _eventToBeRemoved != null) {
+            _delayedEvents.remove(new Double(currentTime));
+        }
+        if (_currentInput != null && _delay > 0) {
+            Double timeDouble = new Double(_delay + currentTime);
+            _delayedEvents.put(timeDouble, 
+                new DEEvent(this, _currentInput, _delay + currentTime));
+            getDirector().fireAt(this, _delay + currentTime);
         }
         return super.postfire();
     }
@@ -184,5 +219,13 @@ public class TimedDelay extends DETransformer {
     ////                         private variables                 ////
 
     // Current input.
+    // FIXME: this private variable is not necessary.
     private Token _currentInput;
+    
+    // A new DEFIFOEventQueue may be constructed for this purpose.
+    private DEEvent _eventToBeRemoved;
+    private HashMap _delayedEvents;
+    
+    // delay value;
+    private double _delay;
 }

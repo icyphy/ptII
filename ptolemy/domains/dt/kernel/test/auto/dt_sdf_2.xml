@@ -107,8 +107,6 @@
         <link port="OnePort2.output" relation="relation4"/>
     </entity>
     <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="342.0, 160.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -132,8 +130,6 @@
         </port>
     </entity>
     <entity name="CurrentTime5" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="218.0, 236.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">

@@ -17,8 +17,6 @@
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
     </property>
     <entity name="Clock" class="ptolemy.domains.dde.demo.LocalZeno.ListenClock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{5.0, 10.0, 15.0}">
@@ -172,8 +170,6 @@
         </port>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 30.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -185,8 +181,6 @@
         </port>
     </entity>
     <entity name="1:CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 315.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">

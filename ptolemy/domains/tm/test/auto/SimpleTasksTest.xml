@@ -59,8 +59,6 @@ preemptive parameter to true or false.
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 80, 819, 570}}">
     </property>
     <entity name="Clock: period = 1" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
@@ -79,8 +77,6 @@ preemptive parameter to true or false.
         </port>
     </entity>
     <entity name="Clock: period = 4" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
@@ -147,8 +143,6 @@ preemptive parameter to true or false.
         </port>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 140.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -160,8 +154,6 @@ preemptive parameter to true or false.
         </port>
     </entity>
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 70.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -173,8 +165,6 @@ preemptive parameter to true or false.
         </port>
     </entity>
     <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 265.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -186,8 +176,6 @@ preemptive parameter to true or false.
         </port>
     </entity>
     <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 205.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">

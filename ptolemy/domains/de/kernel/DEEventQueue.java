@@ -82,6 +82,7 @@ public interface DEEventQueue extends Debuggable {
      */
     public void put(DEEvent event) throws IllegalActionException;
 
+    public double size();
     /** Dequeue the earliest event in this event queue.
      *  @return The DEEvent object associated with the earliest event in
      *    the queue.

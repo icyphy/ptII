@@ -567,8 +567,6 @@ and then adds noise to it.</text></svg></configure>
         <link port="noisy.phase" relation="phaseRelation"/>
     </entity>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="averageEventInterval">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
@@ -579,8 +577,6 @@ and then adds noise to it.</text></svg></configure>
         </property>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0/sampleRate">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">

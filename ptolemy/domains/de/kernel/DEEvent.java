@@ -110,6 +110,16 @@ public final class DEEvent implements Comparable {
         _microstep = microstep;
         _receiverDepth = depth;
     }
+    
+    // This is a test constructure for the de.lib.TimedDelay actor.
+    public DEEvent(Actor actor, Token token, double timeStamp) {
+        _token = token;
+        _actor = actor;
+        _ioPort = null;
+        _timeStamp = timeStamp;
+        _microstep = 0;
+        _receiverDepth = 0;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

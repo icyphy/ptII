@@ -397,8 +397,6 @@ GraphicalLocator)</text></svg></configure>
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
@@ -432,8 +430,6 @@ GraphicalLocator)</text></svg></configure>
             </port>
         </entity>
         <entity name="Clock2" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
