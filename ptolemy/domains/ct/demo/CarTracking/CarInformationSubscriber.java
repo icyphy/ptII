@@ -158,9 +158,9 @@ public class CarInformationSubscriber extends TypedAtomicActor
      *  @exception IllegalActionException If the space cannot be found.
      */
     public void preinitialize() throws IllegalActionException {
-        _entryName = ((StringToken)entryName.getToken()).toString();
+        _entryName = ((StringToken)entryName.getToken()).stringValue();
         _space = SpaceFinder.getSpace(
-                ((StringToken)jspaceName.getToken()).toString());
+                ((StringToken)jspaceName.getToken()).stringValue());
 
         // export this object so that the space can call back
         try {

@@ -196,9 +196,9 @@ public class CarInformationPublisher extends TypedAtomicActor
      */
     public void preinitialize() throws IllegalActionException {
 	super.preinitialize();
-	String name = ((StringToken)jspaceName.getToken()).toString();
+	String name = ((StringToken)jspaceName.getToken()).stringValue();
 	_space = SpaceFinder.getSpace(name);
-        String entryname = ((StringToken)entryName.getToken()).toString();
+        String entryname = ((StringToken)entryName.getToken()).stringValue();
         TokenEntry tokenTemplate = new TokenEntry(name, null, null);
         try {
             TokenEntry oldEntry;
@@ -235,7 +235,7 @@ public class CarInformationPublisher extends TypedAtomicActor
      */
     public boolean postfire() throws IllegalActionException {
 	try {
-	    String name = ((StringToken)entryName.getToken()).toString();
+	    String name = ((StringToken)entryName.getToken()).stringValue();
             if(Math.abs(getDirector().getCurrentTime()-_nextSamplingTime)
                     < ((CTDirector)getDirector()).getTimeResolution()){
                 _nextSamplingTime += 
