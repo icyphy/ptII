@@ -63,8 +63,8 @@ public interface CTEventGenerateActor {
      */
     public boolean hasMissedEvent();
 
-    /** Suggest a new refined step size if the there is an event in the
-     *  last step. If no event is detected in the last step, returns
+    /** Suggest a new refined step size if  there is an event missed in the
+     *  last step. If no event is missed in the last step, returns
      *  the currentStepSize.
      *  @return The refined step size for locating the missed event.
      */
