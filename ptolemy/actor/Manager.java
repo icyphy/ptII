@@ -148,10 +148,12 @@ public class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    // NOTE: The following names of states should fit into the sentence:
+    // "The model is ... "
+
     /** Indicator that the model may be corrupted.
      */
-    public final State CORRUPTED = new State(
-            "Model terminated and may be corrupted");
+    public final State CORRUPTED = new State("corrupted");
 
     /** Indicator that there is no currently active execution.
      */
