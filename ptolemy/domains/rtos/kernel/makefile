@@ -49,6 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	RTOSActor.java \
 	RTOSDirector.java \
 	RTOSEvent.java \
 	RTOSEventComparator.java \

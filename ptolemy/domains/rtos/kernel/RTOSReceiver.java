@@ -249,23 +249,8 @@ public class RTOSReceiver extends AbstractReceiver {
                 priorityValue = ((IntToken)priority.getToken()).
                     intValue();
             }
-            Parameter executionTime = 
-                (Parameter)port.getAttribute("executionTime");
-            if (executionTime == null) {
-                executionTime = (Parameter)((NamedObj)port.getContainer()).
-                    getAttribute("executionTime");
-            }
-            
-            double processingTime = 
-                ((DoubleToken)getDirector().defaultTaskExecutionTime.
-                        getToken()).doubleValue();
-            if (executionTime != null) {
-                processingTime = ((DoubleToken)executionTime.getToken()).
-                    doubleValue();
-            }
-           
             getDirector()._enqueueEvent(new RTOSEvent(this, token, 
-                    priorityValue, processingTime));
+                    priorityValue, -1.0));
 
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());

@@ -261,6 +261,20 @@ public class RTOSDirector extends Director {
                         " from processing time of event",
                         event.toString());
                 event.timeProgress(_outsideTime - getCurrentTime());
+                // Finish the tasks if it ends at this time.
+                // We do it here to ensure that it is done before
+                // the transfer input from composite actors.
+                if (Math.abs(event.processingTime()) < 1e-10) {
+                    if(_debugging) _debug(getName(),
+                            "finish processing ", event.toString());
+                    _eventQueue.take();
+                    Actor actor = event.actor();
+                    actor.fire();
+                    // Should handle dead actors.
+                    if (!actor.postfire()) {
+                        _disableActor(actor);
+                    }
+                }
             }
         }
         if (!_isEmbedded() && _synchronizeToRealTime) {
@@ -336,6 +350,8 @@ public class RTOSDirector extends Director {
         // First look at the pure event queue.
         _nextIterationTime = ((DoubleToken)stopTime.getToken()).
                 doubleValue();
+        
+        // Then look at pure events.
         while (!_pureEventQueue.isEmpty()) {
             DEEvent pureEvent = (DEEvent)_pureEventQueue.get();
             double timeStamp = pureEvent.timeStamp();
@@ -363,56 +379,121 @@ public class RTOSDirector extends Director {
             }
         }
         // Then we process RTOS events. Fire one actor at a time.
-        if (!_eventQueue.isEmpty()) {
-            boolean queueEmpty = false;
-            RTOSEvent event = (RTOSEvent)_eventQueue.get();
-            while (event.processingTime() < 1e-10) {
-                // It's time to finish processing this event. So do it.
+        //if (!_eventQueue.isEmpty()) {
+            
+            
+        //    RTOSEvent event = (RTOSEvent)_eventQueue.get();
+            /*
+              // Notice that if event.processingTime() < 0, then the 
+              // event has not been processed yet.
+              while (Math.abs(event.processingTime()) < 1e-10) {
+              // It's time to finish processing this event. So do it.
                 if(_debugging) _debug(getName(),
-                        "put trigger event to",
-                        ((NamedObj)event.actor()).getName());
+                        "finish processing ", event.toString());
                 _eventQueue.take();
-                event.receiver()._triggerEvent(event.token());
-                // FIXME: Need to put all the tokens at the same time?
                 Actor actor = event.actor();
-                if (actor.prefire()) {
-                    actor.fire();
-                    actor.postfire();
+                actor.fire();
+                // Should handle dead actors.
+                if (!actor.postfire()) {
+                    _disableActor(actor);
                 }
                 if (!_eventQueue.isEmpty()) {
                     event = (RTOSEvent)_eventQueue.get();
                 } else {
-                    queueEmpty = true;
                     break;
                 }
-            }
-            if (!queueEmpty) {
-                if(_debugging) _debug("The first event in the queue is ",
-                        event.toString());
-                if (!event.hasStarted()) {
-                    // Start a new task.
-                    // Now the bahavior depend on whether the execution is
-                    // preemptive.
-                    if (_debugging) _debug("processing event:",
-                            event.toString());
-                    if (!_preemptive) {
-                        event = (RTOSEvent)_eventQueue.take();
-                        event.startProcessing();
-                        // Set it priority to -1 so it won't be preemtped.
-                    event.setPriority(0);
-                    _eventQueue.put(event);
+            */
+        // Now we process events that are newly triggered.
+        RTOSEvent event = null;
+        while (!_eventQueue.isEmpty()) {
+            event = (RTOSEvent)_eventQueue.get();
+            
+            if(_debugging) _debug("The first event in the queue is ",
+                    event.toString());
+            // Notice that the first event in the queue
+            // either has processing time > 0 or hasn't started.
+            if (!event.hasStarted()) {
+                if(_debugging) _debug(getName(),
+                        "put trigger event ",  event.toString(), " into " 
+                        + ((NamedObj)event.actor()).getName() 
+                        + " and processing");
+                event.receiver()._triggerEvent(event.token());
+                Actor actor = event.actor();
+                if(actor == getContainer() || !actor.prefire()) {
+                    // Remove the event and look at the next event.
+                    _eventQueue.take();
+                    event = null;
+                    // Return to the while loop.
+                } else {
+                    // Determine the processing time.
+                    double processingTime = ((DoubleToken)
+                            defaultTaskExecutionTime.getToken()).doubleValue();
+                    if (actor instanceof RTOSActor) {
+                        processingTime = ((RTOSActor)actor).
+                            getExecutionTime();
                     } else {
-                        event.startProcessing();
+                        // Use the executionTime parameter from the port
+                        // or the actor.
+                        Parameter executionTime = (Parameter)
+                            ((IOPort)event.receiver().getContainer()).
+                            getAttribute("executionTime");
+                        if (executionTime == null) {
+                            executionTime = (Parameter)((NamedObj)actor).
+                                getAttribute("executionTime");
+                        }
+                        if (executionTime != null) {
+                            processingTime = ((DoubleToken)executionTime.
+                                    getToken()).doubleValue();
+                        }
                     }
-                    if (_debugging) _debug("Start processing ", 
-                            event.toString());
+                    if (processingTime == 0.0) {
+                        if(_debugging) _debug(getName(), event.toString(),
+                                " has processing time 0, so processed.");
+                        // This event  can be processed immediately.
+                        _eventQueue.take();
+                        actor.fire();
+                        if (!actor.postfire()) {
+                            _disableActor(actor);
+                        }
+                    } else {
+                        // Really start a task with non-zero processing
+                        // time.
+                        event.setProcessingTime(processingTime);
+                        if(_debugging) _debug("Set processing time ",
+                                event.toString());
+                        // Start a new task.
+                        // Now the bahavior depend on whether the 
+                        // execution is preemptive.
+                        if (!_preemptive) {
+                            event = (RTOSEvent)_eventQueue.take();
+                            event.startProcessing();
+                                // Set it priority to o so it won't 
+                                // be preemtped.
+                            event.setPriority(0);
+                            _eventQueue.put(event);
+                        } else {
+                            event.startProcessing();
+                        }
+                        if (_debugging) _debug("Start processing ", 
+                                event.toString());
+                        // Start one real time task a time.
+                        break;
+                    }
                 }
-                // Check the finish processing time.
-                double finishTime = getCurrentTime() + 
-                    event.processingTime();
-                if ( finishTime < _nextIterationTime) {
-                    _nextIterationTime = finishTime;
-                }
+            } else {
+                break;
+            }
+        }
+        // The event may be null, when the prefire() of the actor 
+        // returns false for the last event in the queue.
+        // The event may have processing time < 0, in which case
+        // it is an event at the output boundary.
+        if (event != null && event.processingTime() > 0) {
+            // Check the finish processing time.
+            double finishTime = getCurrentTime() + 
+                event.processingTime();
+            if ( finishTime < _nextIterationTime) {
+                _nextIterationTime = finishTime;
             }
         }
         if(_isEmbedded()) {
@@ -510,6 +591,11 @@ public class RTOSDirector extends Director {
      */
     protected void _enqueueEvent(RTOSEvent event) {
         if (_eventQueue == null) return;
+        if (event.actor() == getContainer()) {
+            // This is an event at the output boundary, so give it
+            // the highest priority.
+            event.setPriority(0);
+        }
         if(_debugging) _debug("enqueue event: to",
                 event.toString());
         _eventQueue.put(event);

@@ -203,6 +203,13 @@ public final class RTOSEvent implements Comparable {
         _processingTime = _processingTime - time;
     }
     
+    /** Set the processing time of the event. Notice that we don't
+     *  compare the argument with the previouly set processing time.
+     */
+    public final void setProcessingTime(double time) {
+        _processingTime = time;
+    }
+
     /** Return the time needed to finish processing this event.
      *  @return The time needed to finish processing this event.
      */
