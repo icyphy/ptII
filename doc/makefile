@@ -125,7 +125,7 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.lang.java.tree \
 			ptolemy.codegen \
 			ptolemy.codegen.saveasjava \
-			ptolemy.sdf.codegen \
+			ptolemy.domains.sdf.codegen \
 			ptolemy.math \
 			ptolemy.media \
 			ptolemy.moml \
