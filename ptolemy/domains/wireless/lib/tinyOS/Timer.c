@@ -3,7 +3,7 @@ Timer component. But it illustrates the similiar structure for our experiments n
 
 
 Authors: 
-Version $$
+Version $Id$
 */
 
 #include "Timer.h"

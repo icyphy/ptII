@@ -2,7 +2,7 @@
 
 
 Authors: 
-Version $$
+Version $Id$
 */
 
 void Timer_StdControl_init();

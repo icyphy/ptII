@@ -3,7 +3,7 @@ Ledc component. But it illustrates the similiar structure for our experiments no
 
 
 Authors: 
-Version $$
+Version $Id$
 */
 
 #include "Ledc.h"
