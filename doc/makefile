@@ -43,8 +43,7 @@ DIRS =		 internals #usersGuides
 
 EXTRA_SRCS = \
 	index.html \
-	javalinks.html \
-	tyjava.html
+	javalinks.html
 
 MISC_FILES =	$(DIRS)
 
