@@ -83,7 +83,7 @@ demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer Type.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy Type.xml
+	"$(PTII)/bin/ptolemy" Type.xml
 
 demo_vergil:
 	"$(PTII)/bin/vergil" Type.xml
