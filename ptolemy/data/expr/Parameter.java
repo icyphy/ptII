@@ -25,6 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
+@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
 */
 

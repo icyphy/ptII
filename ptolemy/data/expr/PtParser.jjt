@@ -35,6 +35,7 @@ PARSER_BEGIN(PtParser)
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
+@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
 Created : May 1998
 
