@@ -97,8 +97,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
 <title>Position</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
-<xRange min="0.0" max="3.9607897673874106"/>
-<yRange min="9.767841445975874E-6" max="10.0"/>
+<xRange min="0.0" max="26.264020509825656"/>
+<yRange min="9.027550412032514E-8" max="10.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -526,9 +526,9 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="8.9613969736306E-5">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="2.0797731163611E-5">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="11.4550678007206">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.3184938024781">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
