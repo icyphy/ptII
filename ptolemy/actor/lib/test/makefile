@@ -61,6 +61,7 @@ JSIMPLE_TESTS = \
 	Expression.tcl \
 	Gaussian.tcl \
 	Interpolator.tcl \
+	MathFunction.tcl \
 	Maximum.tcl \
 	Minimum.tcl \
 	MultiplyDivide.tcl \
