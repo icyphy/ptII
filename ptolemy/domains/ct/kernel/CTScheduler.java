@@ -106,7 +106,7 @@ public class CTScheduler extends Scheduler{
             setName(_staticname);
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(
-                "Internal error when setName to a CTScheduler");
+                    "Internal error when setName to a CTScheduler");
         }
     }
 
@@ -121,7 +121,7 @@ public class CTScheduler extends Scheduler{
             setName(_staticname);
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(
-                "Internal error when setName to a CTScheduler");
+                    "Internal error when setName to a CTScheduler");
         }
     }
 
@@ -214,8 +214,8 @@ public class CTScheduler extends Scheduler{
             res += "    dynamicActorSchedule {\n";
             list = dynamicActorSchedule();
             while(list.hasMoreElements()) {
-            res += "\t" +
-                ((NamedObj)list.nextElement()).getFullName() + "\n";
+                res += "\t" +
+                    ((NamedObj)list.nextElement()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    stateTransitionSchedule {\n";
@@ -381,7 +381,7 @@ public class CTScheduler extends Scheduler{
      *  @exception NotSchedulableException If the system is not schedulable.
      */
     public Enumeration outputSchedule()
-        throws NotSchedulableException, IllegalActionException  {
+            throws NotSchedulableException, IllegalActionException  {
         try {
 	    workspace().getReadAccess();
             if(!isValid()) {
@@ -415,7 +415,7 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-   /** Return an enumeration of stateful actors.
+    /** Return an enumeration of stateful actors.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
@@ -554,25 +554,25 @@ public class CTScheduler extends Scheduler{
      *  @param The specified actor. If the actor is null, returns null.
      *  @return The enumerations of predecessors,  unordered.
      */
-     protected Enumeration _predecessors(Actor actor) {
-         if(actor == null) {
-             return null;
-         }
-         LinkedList pre = new LinkedList();
-         Enumeration inports = actor.inputPorts();
-         while(inports.hasMoreElements()) {
-             IOPort inp = (IOPort) inports.nextElement();
-             Enumeration outports = inp.deepConnectedOutPorts();
-             while(outports.hasMoreElements()) {
-                 IOPort outp = (IOPort) outports.nextElement();
-                 ComponentEntity act = (ComponentEntity)outp.getContainer();
-                 if(!pre.includes(act)) {
-                     pre.insertLast(act);
-                 }
-             }
-         }
-         return pre.elements();
-     }
+    protected Enumeration _predecessors(Actor actor) {
+        if(actor == null) {
+            return null;
+        }
+        LinkedList pre = new LinkedList();
+        Enumeration inports = actor.inputPorts();
+        while(inports.hasMoreElements()) {
+            IOPort inp = (IOPort) inports.nextElement();
+            Enumeration outports = inp.deepConnectedOutPorts();
+            while(outports.hasMoreElements()) {
+                IOPort outp = (IOPort) outports.nextElement();
+                ComponentEntity act = (ComponentEntity)outp.getContainer();
+                if(!pre.includes(act)) {
+                    pre.insertLast(act);
+                }
+            }
+        }
+        return pre.elements();
+    }
 
     /** return an Enumeration of the detail schedules. The first
      *  element in the Enumeration is the states schedule, then
@@ -688,25 +688,25 @@ public class CTScheduler extends Scheduler{
      *  @param The specified actor. If the actor is null, returns null.
      *  @return The enumerations of predecessors.
      */
-     protected Enumeration _successors(Actor actor) {
-         if(actor == null) {
-             return null;
-         }
-         LinkedList post = new LinkedList();
-         Enumeration outports = actor.outputPorts();
-         while(outports.hasMoreElements()) {
-             IOPort outp = (IOPort) outports.nextElement();
-             Enumeration inports = outp.deepConnectedInPorts();
-             while(inports.hasMoreElements()) {
-                 IOPort inp = (IOPort)inports.nextElement();
-                 ComponentEntity act = (ComponentEntity)inp.getContainer();
-                 if(!post.includes(act)) {
-                     post.insertLast(act);
-                 }
-             }
-         }
-         return post.elements();
-     }
+    protected Enumeration _successors(Actor actor) {
+        if(actor == null) {
+            return null;
+        }
+        LinkedList post = new LinkedList();
+        Enumeration outports = actor.outputPorts();
+        while(outports.hasMoreElements()) {
+            IOPort outp = (IOPort) outports.nextElement();
+            Enumeration inports = outp.deepConnectedInPorts();
+            while(inports.hasMoreElements()) {
+                IOPort inp = (IOPort)inports.nextElement();
+                ComponentEntity act = (ComponentEntity)inp.getContainer();
+                if(!post.includes(act)) {
+                    post.insertLast(act);
+                }
+            }
+        }
+        return post.elements();
+    }
 
     /** Convert the given actors to a directed acyclic graph.
      *  CTDynamicActors are treated as sinks.

@@ -157,7 +157,7 @@ public abstract class ODESolver extends NamedObj {
      *  @return The suggested next step by the given integrator.
      */
     public abstract double integratorPredictedStepSize(
-        CTBaseIntegrator integrator);
+            CTBaseIntegrator integrator);
 
     /** Reset the round counter to 0.
      */

@@ -48,7 +48,7 @@ Note: This class is still under development.
 @version $Id$
 */
 public class CTCompositeActor extends TypedCompositeActor
-        implements CTStepSizeControlActor {
+    implements CTStepSizeControlActor {
     /** Construct a CTCompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
      *  directory.

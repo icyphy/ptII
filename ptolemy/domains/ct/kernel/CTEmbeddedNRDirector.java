@@ -49,7 +49,7 @@ if possible.
 @version $Id$
 */
 public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
-        implements CTEmbeddedDirector{
+    implements CTEmbeddedDirector{
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -106,13 +106,13 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         }
         if (ca.getExecutiveDirector() == null) {
             throw new IllegalActionException(this,
-            "Can not be top-level director.");
+                    "Can not be top-level director.");
         }
         CTScheduler sch = (CTScheduler)getScheduler();
         if (sch == null) {
             _debug("Director does not have a scheduler.");
             throw new IllegalActionException( this,
-            "does not have a scheduler.");
+                    "does not have a scheduler.");
         }
         sch.setValid(false);
         _first = true;
@@ -138,7 +138,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         }
 
         _debug(getFullName() + " current time after" +
-                    " solver.resolveStates() is " + getCurrentTime());
+                " solver.resolveStates() is " + getCurrentTime());
         //setCurrentTime(getIterEndTime());
         produceOutput();
     }
@@ -232,7 +232,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
             CTScheduler scheduler = (CTScheduler)getScheduler();
             if (scheduler == null) {
                 throw new IllegalActionException (this,
-                "does not have a Scheuler.");
+                        "does not have a Scheuler.");
             }
             scheduler.schedule();
             setScheduleValid(true);
@@ -244,12 +244,12 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         double nextIterTime = exe.getNextIterationTime();
         _debug("Next Iter Time =" + nextIterTime);
         /**
-        if(_outsideTime < getCurrentTime()-timeAcc) {
-            throw new IllegalActionException(exe, this,
-                    " time collapse. The outside time is " +
-                    _outsideTime + ", but the local time is " +
-                    getCurrentTime());
-        }
+           if(_outsideTime < getCurrentTime()-timeAcc) {
+           throw new IllegalActionException(exe, this,
+           " time collapse. The outside time is " +
+           _outsideTime + ", but the local time is " +
+           getCurrentTime());
+           }
         */
 
         // if break point now, change solver.

@@ -76,7 +76,7 @@ the fire end time and the first detected event time.
 @version $Id$
 */
 public class CTMixedSignalDirector extends CTMultiSolverDirector
-        implements CTEmbeddedDirector {
+    implements CTEmbeddedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -185,7 +185,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         double timeAcc = getTimeResolution();
         if (_isEventPhase()) {
             _debug(this.getFullName() +
-                        "In event phase execution.");
+                    "In event phase execution.");
             _eventPhaseExecution();
             _setEventPhase(false);
             exe.fireAt(ca, exe.getCurrentTime());
@@ -204,7 +204,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             setCurrentStepSize(getSuggestedNextStepSize());
             _processBreakpoints();
             _debug("Resolved stepsize: "+getCurrentStepSize() +
-                                   " One iteration from " + getCurrentTime());
+                    " One iteration from " + getCurrentTime());
             _fireOneIteration();
             if (_stopByEvent()) {
                 _debug( this.getFullName() + " stop by event.");
@@ -253,7 +253,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         if (sch == null) {
             _debug("Director does not have a scheduler.");
             throw new IllegalActionException( this,
-            "does not have a scheduler.");
+                    "does not have a scheduler.");
         }
         sch.setValid(false);
         _first = true;
@@ -489,7 +489,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         try {
             _runAheadLength = 1.0;
             RunAheadLength = new Parameter(this,
-                "RunAheadLength", new DoubleToken(_runAheadLength));
+                    "RunAheadLength", new DoubleToken(_runAheadLength));
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
@@ -525,8 +525,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
     protected void _setIterationEndTime(double time ) {
         if(time < getCurrentTime()) {
             throw new InvalidStateException(this,
-                " Fire end time" + time + " is less than" +
-                " the current time." + getCurrentTime());
+                    " Fire end time" + time + " is less than" +
+                    " the current time." + getCurrentTime());
         }
         _iterationEndTime = time;
     }
@@ -547,7 +547,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
                     // break point in the past or at now.
                     breakPoints.removeFirst();
                 } else if(Math.abs(bp-tnow) < getTimeResolution() &&
-                          bp < getIterationEndTime()){
+                        bp < getIterationEndTime()){
                     // break point now!
                     return true;
                 } else {

@@ -201,12 +201,12 @@ public class CTSingleSolverDirector extends CTDirector {
         }
         if (ca.getContainer() != null) {
             throw new IllegalActionException(this,
-            " can only serve as the top level director.");
+                    " can only serve as the top level director.");
         }
         CTScheduler sch = (CTScheduler)getScheduler();
         if (sch == null) {
             throw new IllegalActionException( this,
-            "does not have a scheduler.");
+                    "does not have a scheduler.");
         }
         sch.setValid(false);
         _initialize();
@@ -231,7 +231,7 @@ public class CTSingleSolverDirector extends CTDirector {
         }
         if(getStopTime() < getCurrentTime()) {
             throw new InvalidStateException(this,
-            " stop time is less than the current time.");
+                    " stop time is less than the current time.");
         }
         return true;
     }
@@ -254,7 +254,7 @@ public class CTSingleSolverDirector extends CTDirector {
             CTScheduler scheduler = (CTScheduler)getScheduler();
             if (scheduler == null) {
                 throw new IllegalActionException (this,
-                "does not have a Scheuler.");
+                        "does not have a Scheuler.");
             }
             scheduler.schedule();
             setScheduleValid(true);
@@ -353,7 +353,7 @@ public class CTSingleSolverDirector extends CTDirector {
             Actor a = (Actor) actors.nextElement();
             ready = ready && a.prefire();
             _debug("Prefire "+((Nameable)a).getName() +
-                        " returns" + ready);
+                    " returns" + ready);
         }
         return ready;
     }
@@ -397,8 +397,8 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     protected void _fireOneIteration() throws IllegalActionException {
         _debug(this.getFullName() +"Fire one iteration from " +
-                    getCurrentTime() + " step size" +
-                    getCurrentStepSize());
+                getCurrentTime() + " step size" +
+                getCurrentStepSize());
         ODESolver solver = getCurrentODESolver();
         while (true) {
             while (_prefireSystem()) {
@@ -409,8 +409,8 @@ public class CTSingleSolverDirector extends CTDirector {
                         setCurrentTime(getIterationBeginTime());
                         setCurrentStepSize(_refinedStepWRTState());
                         _debug("execute the system from "+
-                                    getCurrentTime() +" step size" +
-                                    getCurrentStepSize());
+                                getCurrentTime() +" step size" +
+                                getCurrentStepSize());
                         if(STAT) {
                             NFAIL++;
                         }
@@ -455,9 +455,9 @@ public class CTSingleSolverDirector extends CTDirector {
         _debug("updating parameters");
         // Instantiate ODE solver
         //if(_defaultSolver == null) {
-            _debug("instantiating ODE solver "+_solverclass);
-            _defaultSolver = _instantiateODESolver(_solverclass);
-            //}
+        _debug("instantiating ODE solver "+_solverclass);
+        _defaultSolver = _instantiateODESolver(_solverclass);
+        //}
         // set time
         _debug(this.getFullName() +
                 "_init get State Time " + getStartTime());
@@ -482,7 +482,7 @@ public class CTSingleSolverDirector extends CTDirector {
             _solverclass=
                 "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
             ODESolver = new Parameter(
-                this, "ODESolver", new StringToken(_solverclass));
+                    this, "ODESolver", new StringToken(_solverclass));
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
@@ -569,7 +569,7 @@ public class CTSingleSolverDirector extends CTDirector {
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.nextElement();
             _debug(((Nameable)a).getName() + "refine..."
-                        + a.refinedStepSize());
+                    + a.refinedStepSize());
             refinedstep = Math.min(refinedstep, a.refinedStepSize());
         }
         return refinedstep;

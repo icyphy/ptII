@@ -94,7 +94,7 @@ multistep methods.
 @see CTDirector
 */
 public class CTBaseIntegrator extends CTActor
-        implements CTStepSizeControlActor, CTDynamicActor, CTStatefulActor {
+    implements CTStepSizeControlActor, CTDynamicActor, CTStatefulActor {
     /** Construct an integrator in the default workspace with an
      *  empty string name.
      *  A integrator has one single input port and one single
@@ -118,7 +118,7 @@ public class CTBaseIntegrator extends CTActor
         output.setTypeEquals(DoubleToken.class);
         _initState = 0.0;
         InitialState = new Parameter(this, "InitialState",
-            new DoubleToken(_initState));
+                new DoubleToken(_initState));
     }
 
     /** Construct an integrator in the specified workspace with an empty
@@ -145,7 +145,7 @@ public class CTBaseIntegrator extends CTActor
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
         InitialState = new Parameter(this, "InitialState",
-            new DoubleToken(_initState));
+                new DoubleToken(_initState));
     }
 
     /** Construct an integrator, with a name, a input port, a output port
@@ -173,7 +173,7 @@ public class CTBaseIntegrator extends CTActor
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
         InitialState = new Parameter(this, "InitialState",
-            new DoubleToken(_initState));
+                new DoubleToken(_initState));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -223,7 +223,7 @@ public class CTBaseIntegrator extends CTActor
     public double[] getHistory(int index) throws IllegalActionException {
         if( index != 0) {
             throw new IllegalActionException(this,
-                " history request out of range.");
+                    " history request out of range.");
         }
         return _history;
     }
@@ -407,9 +407,9 @@ public class CTBaseIntegrator extends CTActor
      *  be the final state due to the event detection.
      *  @param value The value to be set.
      */
-     public final void setTentativeState(double value) {
-         _tentativeState = value;
-     }
+    public final void setTentativeState(double value) {
+        _tentativeState = value;
+    }
 
     /** Set the tentative derivative dx/dt. Tentative derivative
      *  is the derivative of the state that
@@ -418,8 +418,8 @@ public class CTBaseIntegrator extends CTActor
      *  @param value The value to be set.
      */
     public final void setTentativeDerivative(double value) {
-         _tentativeDerivative = value;
-     }
+        _tentativeDerivative = value;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                        public variables                   ////
