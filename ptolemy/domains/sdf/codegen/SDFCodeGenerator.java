@@ -86,10 +86,12 @@ public class SDFCodeGenerator extends CompositeActorApplication
         // creating subdirectories as needed. 
         // This must be done before the Java compiler classes are loaded so 
         // that they can find the output package.                  
+        // (this is a nasty hack)        
         new File(_packageDirectoryName).mkdirs();
         
         // write a dummy CG_Main.java file to the output package directory so
         // that a ClassDecl stub is placed in the package environment for it
+        // (this is a nasty hack)
         try {
           new File(_packageDirectoryName + "CG_Main.java").createNewFile();
         } catch (IOException ioe) {
@@ -102,7 +104,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
         _compositeActor = (TypedCompositeActor) _models.get(0);        
         
         try {
-          // initialize the model to ensure type resolution and scheduling are done
+          // initialize the model to ensure type resolution and scheduling 
+          // are done
           _compositeActor.getManager().initialize();
         } catch (Exception e) {
           ApplicationUtility.error("could not initialize composite actor");         
@@ -119,7 +122,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
         TypedAtomicActor lastActor = null;
         
         // gather information about the actor
-        // disjointAppearances is not actually used, but it may be in the future.
+        // disjointAppearances is not actually used, but it may be in the 
+        // future.
         
         while (schedule.hasMoreElements()) {
         
@@ -127,7 +131,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
                                     
             // see if this is the first appearance of this actor                                    
             if (_actorSet.add(actor)) { 
-               SDFActorCodeGeneratorInfo actorInfo = new SDFActorCodeGeneratorInfo();                       
+               SDFActorCodeGeneratorInfo actorInfo = 
+                new SDFActorCodeGeneratorInfo();                       
                
                actorInfo.actor = actor;                       
                actorInfo.disjointAppearances = 1;                                             
@@ -151,6 +156,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
             }
             lastActor = actor;
         }           
+        
+        // now drive the 3 passes of transformation
         
         Iterator actorItr = _actorSet.iterator();
         
@@ -249,7 +256,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
            int dataTypeDims = TypeUtility.arrayDimension(dataTypeNode);
            
            AllocateArrayNode allocateArrayNode = new AllocateArrayNode(
-            dataBaseTypeNode, dimExprList, dataTypeDims, AbsentTreeNode.instance);
+            dataBaseTypeNode, dimExprList, dataTypeDims, 
+            AbsentTreeNode.instance);
             
            FieldDeclNode fieldDeclNode = new FieldDeclNode(
             PUBLIC_MOD | STATIC_MOD | FINAL_MOD, typeNode,
@@ -264,7 +272,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
          new LinkedList(), memberList, 
          (TypeNameNode) StaticResolution.OBJECT_TYPE.clone());
          
-        // bring in imports for Complex and FixPoint (remove unnecessary ones later)
+        // bring in imports for Complex and FixPoint 
+        // (remove unnecessary ones later)
         LinkedList importList = new LinkedList();
         
         importList.add(new ImportNode((NameNode)
@@ -283,7 +292,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
     }
     
     /** Generate the main() method of the main class. */
-    protected MethodDeclNode _generateMainMethod() throws IllegalActionException {
+    protected MethodDeclNode _generateMainMethod() 
+         throws IllegalActionException {
         // a map of actors to the ObjectNodes that represent the actors
         HashMap actorToVariableMap = new HashMap();
         
@@ -439,14 +449,13 @@ public class SDFCodeGenerator extends CompositeActorApplication
            }
         }
 
-        int iterations = ((IntToken) _director.iterations.getToken()).intValue();
+        int iterations = 
+         ((IntToken) _director.iterations.getToken()).intValue();
         
         if (iterations == 1) {
           // just add all the iteration statements to the list of all statements
           stmtList.addAll(iterationStmtList);            
-        } else {
-        
-                                                          
+        } else {                                                                  
           if (iterations == 0) {          
              // iterate forever             
              stmtList.addLast(new LoopNode(new BlockNode(iterationStmtList), 
@@ -547,7 +556,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
                   TypedIOPort outputPort = null;
                   
                   while (connectedPortItr.hasNext() && (outputPort == null)) {
-                     TypedIOPort connectedPort = (TypedIOPort) connectedPortItr.next();
+                     TypedIOPort connectedPort = 
+                      (TypedIOPort) connectedPortItr.next();
                                        
                      // search only output ports
                      if (connectedPort.isOutput()) {
@@ -560,12 +570,14 @@ public class SDFCodeGenerator extends CompositeActorApplication
                         int ch = 0;
                         do {
                                                       
-                           Receiver[] remoteReceivers = remoteReceiversArray[ch];  
+                           Receiver[] remoteReceivers = 
+                            remoteReceiversArray[ch];  
                            
                            int i = 0;
                            
                            // search all receivers in the same receiver group
-                           while ((i < remoteReceivers.length) && (outputPort == null)) {
+                           while ((i < remoteReceivers.length) && 
+                                  (outputPort == null)) {
                            
                               Receiver remoteReceiver = remoteReceivers[i];
                               
@@ -581,9 +593,10 @@ public class SDFCodeGenerator extends CompositeActorApplication
                   }
                   
                   if (outputPort == null) {
-                     throw new InternalError("could not find output port associated " +
-                      "with channel " + channel + " for port " + port.getName() +
-                      " of actor " + actor + '.');
+                     throw new InternalError(
+                      "could not find output port associated " +
+                      "with channel " + channel + " for port " + 
+                      port.getName() + " of actor " + actor + '.');
                   }
                                      
                   BufferInfo bufferInfo = 
@@ -615,6 +628,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
         } // while (portItr.hasNext()) ...                                     
     }
          
+    /** Create instances of BufferInfo for each output port of the argument
+     *  actor, and put them in the actor to buffer info map.
+     */     
     protected void _makeBufferInfo(TypedAtomicActor actor, 
          SDFActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
         
@@ -634,7 +650,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
               bufferInfo.width = port.getWidth();
                  
               // set length of buffer = 
-              // init token production + number of firings * token production rate                 
+              // init token production + 
+              // number of firings * token production rate                 
               // (a worst case length)
                 
               int productionRate;
@@ -681,6 +698,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
            _expectingOutputDirectory = true;
         } else if (arg.equals("-outpkg")) {
            _expectingOutputPackage = true;
+        } else if (arg.equals("-version")) {
+           System.out.println("Version 1.0, Build $Id$");           
+           System.exit(0);                       
         } else {
            if (_expectingOutputDirectory) {
               _outputDirectoryName = new File(arg).getCanonicalPath();              
@@ -694,8 +714,34 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }    
         return true;
     }
+
+    /** Return a string summarizing the command-line arguments.
+     *  @return A usage string.
+     */
+    protected String _usage() {
+        String result = "Usage: " + "SDFCodeGenerator [options]" + "\n\n"
+            + "Options that take values:\n";
+
+        int i;
+        for(i = 0; i < _commandOptions.length; i++) {
+            result += " " + _commandOptions[i][0] +
+                " " + _commandOptions[i][1] + "\n";
+        }
+        result += " -outdir <output directory>\n";
+        result += " -outpkg <output package>\n";
+        
+        result += "\nBoolean flags:\n";
+        for(i = 0; i < _commandFlags.length; i++) {
+            result += " " + _commandFlags[i];
+        }
+        return result;
+    }
                            
-    /** The TypedCompositeActor containing the system for which to generate code. */        
+                           
+                           
+    /** The TypedCompositeActor containing the system for which to generate 
+     *  code. 
+     */        
     protected TypedCompositeActor _compositeActor = null;       
 
     /** The director for the SDF system. */
@@ -725,14 +771,14 @@ public class SDFCodeGenerator extends CompositeActorApplication
     protected int labelNum = 0;    
     
     /** The canonical pathname of the directory in which to place the
-     *  output package.
+     *  output package, not including the last file separator character.
      */
-    protected String _outputDirectoryName;
+    protected String _outputDirectoryName; // no initializer here
 
     /** The name of the qualified package in which to put the generated 
      *  code. 
      */        
-    protected String _outputPackageName;
+    protected String _outputPackageName; // no initializer here
     
     /** The canonical pathname of the output package, including the last 
      *  file separator character.
