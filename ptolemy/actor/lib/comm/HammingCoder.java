@@ -51,26 +51,26 @@ parameter <i>codeBlockSize</i>. During each firing, the actor consumes
 The rate of the code is <i>k/n</i>.
 <p>
 For a Hamming code, <i>k</i> and <i>n</i> must satisfiy the following:
-<i>n</i> = 2<sup>m</sup> - 1
-<i>k</i> = 2<sup>m</sup> - 1 - m;
+<i>n</i> = 2<i><sup>m</sup></i> - 1
+<i>k</i> = 2<sup><i>m</i></sup> - 1 - <i>m</i>;
 where <i>m</i> is any positive integer. Note <i>m</i> = <i>n</i> - <i>k</i>.
 It is called the order of the Hamming code. The lowest order is <i>m</i> = 2,
 and (<i>n</i>, <i>k</i>) = (3, 1).
 <p>
 The generator matrix G is defined as:
-G<sub>k*n</sub> = [I<sub>k</sub> | P<sub>k*(n-k)</sub> ]
+G<i><sub>k*n</sub></i> = [I<i><sub>k</sub></i> | P<i><sub>k*(n-k)</sub></i> ]
 where P is called the parity matrix.
 The subscript of a matrix indicates its dimension.
 <p>
 The parity check matrix H is defined as:
-H<sub>(n-k)*n</sub> = [P<sup>T</sup> | I<sub>n-k</sub> ]
-Each column of H must be one of the non-zero <i>n</i> = 2<sup>m</sup> - 1
+H<sub><i>(n-k)*n</i></sub> = [P<sup>T</sup> | I<sub><i>n-k</i></sub> ]
+Each column of H must be one of the non-zero <i>n</i> = 2<sup><i>m</i></sup> - 1
 combinations of <i>m</i> bits.
 <p>
 To generate a Hamming code, the <i>k</i> information bits is considered
 as a row vector <i><u>X</u></i>. Its Hamming code is 
 <i><u>Y</u><i> = <i><u>X</u></i> * G.
-Hence <i><u>Y</u><i> is a row vector of length <i>n</i>. The result is
+Hence <i><u>Y</u></i> is a row vector of length <i>n</i>. The result is
 then sent to the output port in sequence.
 <p>
 For more information on Hamming codes, see Proakis, Digital

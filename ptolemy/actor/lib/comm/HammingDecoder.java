@@ -54,7 +54,7 @@ during each firing and consider them as a row vector <i><u>X</u></i>. Its
 Hamming code is <i><u>Y</u></i> = <i><u>X</u></i> * G.
 <p>
 If there is no error in <i><u>Y</u></i>,
-<i><u>Y</u></i> * H<sup>T</sup> should be a zero vector of length <i>n-k</i>.
+<i><u>Y</u></i> * H<sup>T</sup> should be a zero vector of length <i>n - k</i>.
 Otherwise <i><u>S</u></i> =  <i><u>Y</u></i> * H<sup>T</sup> is called the
 syndrome. Let <i><u>S</u></i> be the i-th column of H. The HammingDecoder
 declares there is an error at the i-th element of <i><u>Y</i></u>.

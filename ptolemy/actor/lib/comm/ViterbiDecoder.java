@@ -64,7 +64,7 @@ If it the parameter <i>softDecoding</i> is set to be false, the input
 port will accept boolean tokens and compute the Hamming distance. 
 If the parameter <i>softDecoding</i> is set to be true, the input port
 will accept double tokens and compute the Euclidean distance. 
-The parameter <i>amplitude<i> should be a double array of length 2.
+The parameter <i>amplitude</i> should be a double array of length 2.
 The first element specifies the amplitude of "true" input. The second
 element specifies the amplitude of "false" input.
 <p>
