@@ -129,6 +129,7 @@ public class StreamToMatrix extends Transformer {
         output.broadcast(new DoubleMatrixToken(image));
     }
 
+
     /** Initialize the row and column number.
      *  @exception IllegalActionException If the parent class throws it.
      */
