@@ -50,6 +50,12 @@ public interface MoMLFilter {
      *  return a different attribute value, which results in renaming
      *  the attribute; or it is possible to return null, which will
      *  cause MoMLParser.attribute() to skip the rest of the current element.
+     *  
+     *  <p>If this method is going to return a different attribute name, then 
+     *  it should call MoMLParser.setModified(true) which indicates
+     *  that the model was modified so that the user can optionally
+     *  save the modified model.
+     *
      *  @param container  The container for this attribute, ignored
      *  in this method.
      *  @param attributeName The name of the attribute, ignored
@@ -63,6 +69,12 @@ public interface MoMLFilter {
 
     /** Given the elementName, perform any filter operations
      *  that are appropriate for the MOMLParser.endElement() method.
+     *
+     *  <p>If this method is going to return a different attribute name, then 
+     *  it should call MoMLParser.setModified(true) which indicates
+     *  that the model was modified so that the user can optionally
+     *  save the modified model.
+     *
      *  @param container  The container for this attribute.
      *  in this method.
      *  @param elementName The element type name.

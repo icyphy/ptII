@@ -91,6 +91,7 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
         if (attributeValue == null) {
             return null;
         } else if (_graphicalClasses.containsKey(attributeValue)) {
+	    MoMLParser.setModified(true);
             return (String) _graphicalClasses.get(attributeValue);
         }
         return attributeValue;

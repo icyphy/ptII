@@ -559,6 +559,15 @@ public class MoMLParser extends HandlerBase {
         return _toplevel;
     }
 
+    /** Return the value set by setModified(), or false if setModified()
+     *  has yet not been called. 
+     *  @see #setModified(boolean)
+     *  @return True if the data has been modified.
+     */
+    public static boolean isModified() {
+        return _modified;
+    }
+
     /** Parse the MoML file at the given URL, which may be a file
      *  on the local file system, using the specified base
      *  to expand any relative references within the MoML file.
@@ -736,6 +745,7 @@ public class MoMLParser extends HandlerBase {
         _current = null;
         _docNesting = 0;
         _externalEntities = new Stack();
+	_modified = false;
         _namespace = DEFAULT_NAMESPACE;
         _namespaces = new Stack();
         _skipRendition = false;
@@ -802,6 +812,18 @@ public class MoMLParser extends HandlerBase {
      */
     public void setMoMLFilters(List filterList) {
         _filterList = filterList;
+    }
+
+    /** Record whether the parsing of the moml modified the data.
+     *  If a MoMLFilter modifies the model by returning a different
+     *  value, then the MoMLFilter should call this method with a true
+     *  argument.
+     *  @param modified True if the data was modified while parsing.
+     *  @see #isModified()
+     *  @see MoMLFilter
+     */	
+    public static void setModified(boolean modified) {
+	_modified = modified;
     }
 
     /** Set the top-level entity.  This can be used to associate this
@@ -2720,6 +2742,9 @@ public class MoMLParser extends HandlerBase {
 
     // List of top-level entities imported via import element.
     private List _imports;
+
+    // Set to true if a MoMLFilter modified the model.
+    private static boolean _modified = false;
 
     // The current namespace.
     private String _namespace = DEFAULT_NAMESPACE;

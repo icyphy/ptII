@@ -113,6 +113,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		//       + containerName + "." + attributeValue + ", "
 		//       +  containerName + "." + newPort + ") "
 		//       + newPort);
+		MoMLParser.setModified(true);
 		return newPort;
             } else if (_currentlyProcessingActorWithPropertyClassChanges) {
                 if (_propertyMap.containsKey(attributeValue)) {
@@ -228,6 +229,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 
 		    String temporaryNewClass = _newClass;
 		    _newClass = null;
+		    MoMLParser.setModified(true);
 		    return temporaryNewClass;
 		} else if ( (_currentlyProcessingActorWithPortNameChanges
 			     || _currentlyProcessingActorWithPropertyClassChanges
@@ -277,6 +279,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 
 		//_debug("filterAttributeValue: return2 "
 		//       + newPort);
+		MoMLParser.setModified(true);
 		return newPort;
 	}
 	return attributeValue;
@@ -316,6 +319,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		//_debug("filterEndElement: container.getAttribute(_icon)"
 		//       + container.getAttribute("_icon"));
 		NamedObj icon = _parser.parse(_iconMoML);
+		MoMLParser.setModified(true);
 		//MoMLChangeRequest request = new MoMLChangeRequest(
 		// this, container, _iconMoML);
 		// Indicate that the change is non-persistent, so that

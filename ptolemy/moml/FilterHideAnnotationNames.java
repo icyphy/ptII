@@ -139,6 +139,7 @@ public class FilterHideAnnotationNames implements MoMLFilter {
 
 	    //_debug("filterEndElement: added " + hideName + "\n"
             //     + hideName.exportMoML());
+	    MoMLParser.setModified(true);
 	}
 	return elementName;
     }
