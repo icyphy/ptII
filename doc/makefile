@@ -67,7 +67,7 @@ EXTRA_SRCS = \
 	troubleshooting.htm
 
 # The files in design and img are not under CVS because they are binaries.
-MISC_FILES =	$(DIRS) design img
+MISC_FILES =	$(DIRS) design img tutorial
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
