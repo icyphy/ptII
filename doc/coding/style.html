@@ -110,14 +110,14 @@ the object definition.
 Do not hesitate to use long names.
 
  <P>Method and variable names that are <CODE>protected</CODE>
-or <CODE>private</CODE>
+or <CODE>private</CODE> are preceded by
 a leading underscore "<CODE>_</CODE>".
 (i.e. <CODE>_protectedMethod()</CODE>, <CODE>_privateMethod()</CODE>.
 
  <P>Method names should have internal capitalization and start with
 a lower case letter (i.e. <CODE>aPublicMethod()</CODE>).
 
- <P>If possible, variables should not use internal capitalization,
+ <P>If possible, variables should not use internal capitalization
 unless the name is long.  This makes it easier to distinguish between
 methods and variables.  However, avoiding capitalization in variable
 names is up to the implementer.
@@ -163,7 +163,7 @@ throw MyException(this, "The list already contains an element named `" +
 
 
 Notice that the body always starts with "If", not "Thrown if", or
-anything else.  Just look at the Javadoc output to see why this is.
+anything else.  Just look at the Javadoc output to see why this occurs.
 
 In the case of an interface or base class that does not throw the
 exception, use the following:
@@ -238,7 +238,7 @@ institution.
 
 <li> A copylefted program or portion of a program is used verbatim.
 This will place the entire Ptolemy II program under the Gnu public license,
-and therefore should be done only with good reason.  However, we are
+and therefore should be done only with good reason.  We are
 not averse to doing this.  If you include copylefted code,
 <em>be sure to identify every line of code that is borrowed in this
 way</em>.  This will allow us (or someone else) to later rewrite this

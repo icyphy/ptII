@@ -216,7 +216,7 @@ green requires a test suite that is substantial enough to give
 the reviewers confidence that the code really does what it says it
 does.
 
-<p> In general, code that relies on other code that is not itself reen
+<p> In general, code that relies on other code that is not itself green
 should be taken green only with appropriate noting of the dependency
 and the need to fix it. For example, if package A uses package B and B
 is still Red, then make B at least Yellow before making A Green. The
@@ -254,7 +254,7 @@ change at each level cannot be met, then take the package back to a
 lower level. This is an action that is acceptable and in some cases
 probably inevitable -- but it is a very strong signal that the changes
 need to be evaluated very carefully, since the package has reached its
-current level by a careful (hopefully!) review process.
+current level by a hopefully careful review process.
 
 <p>
 This section outlines the changes allowed by each rating level. If a
@@ -263,9 +263,9 @@ dropped back a level.  The first step in doing so is to stop and
 consider if it really <i>is</i> required. This is not a simple yes-no
 question, as it depends on an analysis of the impact of the changes
 and probable benefits. In <i>Code Complete</i>, Steve McConnell
-suggest a "change committee" be established -- doing so may be a
-little heavy for a small team, but the spirit is the same: have
-someone else (other than the proposer) evaluate the change to see if
+suggests a "change committee" be established -- doing so may be a
+little heavy for a small team, but the spirit is the same, have
+someone else (other than the proposer) and evaluate the change to see if
 it really is worth it. If it is, great -- do it.  At least you will
 know it's worth the pain!
 
@@ -298,8 +298,8 @@ of some of the classes in the package -- are things that "should" have
 been detected in the design review before the package went yellow, and
 thus require a re-review.  (If this can't be done immediately, take
 the package back to red.)  In any case, major changes to a yellow
-package are to be considered with some care -- since the package has
-already been reviewed, then you need good reason to make very
+package are to be considered with some care. Since the package has
+already been reviewed you need good reason to make very
 substantial changes.
 
 <p>
@@ -321,7 +321,7 @@ package.
 Changes to the implementation of green packages are normal and
 expected, provided that the semantics behind the interface do not
 change. If they do, then take care to ensure that code that depends on
-this package will not break, or are updated.
+this package will not break or are updated.
 
 <p>
 <dt><b>Blue</b>
@@ -406,7 +406,7 @@ already considered "done." In this situation, there is little point in
 going back and starting from red -- instead, the reviewers must judge
 whether a single code review or final review is sufficient for a green
 or blue rating.  The key points to remember are <i>confidence</i> and
-<I>commitment</I>: whatever rating you are giving the package, you
+<I>commitment</I>. Whatever rating you are giving the package, you
 need to have the same confidence in and commitment to it as if it had
 gone through the entire process.
 
