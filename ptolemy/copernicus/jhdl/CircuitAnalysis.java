@@ -312,9 +312,11 @@ public class CircuitAnalysis {
 	    } catch (IllegalActionException e) {
 		System.err.println(e);
 	    }
+	    /*
   	    System.out.println("//Dataflow graph for block "+
   			       block.getIndexInMethod()+"\n"+
   			       PtDirectedGraphToDotty.convert(dataFlowGraph));
+	    */
 
 	    SuperBlock sb=new SuperBlock(block, dataFlowGraph);
 	    blockToSuperBlockMap.put(block, sb);

@@ -38,6 +38,8 @@ import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 
+import soot.Body;
+import soot.SootMethod;
 import soot.toolkits.graph.BriefBlockGraph;
 import soot.toolkits.graph.Block;
 
@@ -54,10 +56,35 @@ import soot.toolkits.graph.Block;
 
 public class BlockControlFlowGraph extends DirectedGraph {
 
-    BlockControlFlowGraph(BriefBlockGraph bbgraph) {
-	super();
-	_bbgraph = bbgraph;
+    BlockControlFlowGraph(SootMethod method) {
+	this(method.retrieveActiveBody());
+    }
+
+    BlockControlFlowGraph(Body body) {
+	super();	
+
+	_bbgraph = new BriefBlockGraph(body);
 	_createGraph();
+    }
+
+    public DirectedGraph createDataFlowGraph() {
+	// 1. Create dataflow graph of each basic block
+	// 2. Determine hierarchical super block boundaries
+	// 3. Determine signal multiplexing
+	// 4. Combine dataflow graphs
+
+	// Create dataflow of each basic block
+	List blockList = _bbgraph.getBlocks();
+	for (int blockNum=0;blockNum<blockList.size();blockNum++) {
+	    Block block=(Block)blockList.get(blockNum);
+	    BlockDataFlowGraph dataFlowGraph=null;
+	    try {
+		dataFlowGraph = new BlockDataFlowGraph(block);
+	    } catch(IllegalActionException e) {
+		System.err.println(e);
+	    }
+	}
+	return null;
     }
 
     /**
@@ -113,12 +140,10 @@ public class BlockControlFlowGraph extends DirectedGraph {
 	}
 	soot.SootMethod testMethod = testClass.getMethodByName(methodname);
 	soot.Body body = testMethod.retrieveActiveBody();
-	soot.toolkits.graph.CompleteUnitGraph unitGraph = 
-	    new soot.toolkits.graph.CompleteUnitGraph(body);
 	
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
 	ptolemy.copernicus.jhdl.util.BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
-	BlockControlFlowGraph bcfg = new BlockControlFlowGraph(bbgraph);
+	BlockControlFlowGraph bcfg = new BlockControlFlowGraph(body);
     }
 
     protected BriefBlockGraph _bbgraph;

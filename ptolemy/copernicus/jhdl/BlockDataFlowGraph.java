@@ -29,12 +29,9 @@
 
 package ptolemy.copernicus.jhdl;
 
-import soot.SootMethod;
 import soot.SootField;
-import soot.SootClass;
 import soot.Value;
 import soot.Local;
-import soot.Body;
 
 import soot.jimple.AssignStmt;
 import soot.jimple.InvokeStmt;
@@ -81,6 +78,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.ArrayList;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Node;
@@ -97,7 +95,8 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// BlockDataFlowGraph
 /**
- * This class will take a Soot block and create a DirectedGraph.
+ * This class will take a Soot block and create a ptolemy 
+ * DirectedGraph.
  *
 
 @author Mike Wirthlin and Matthew Koecher
@@ -161,6 +160,36 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	return _requiredNodeSet;
     }
 
+
+    public Node[] getInputNodes() {
+	ArrayList nodes = new ArrayList();
+	// iterate over all nodes in the graph
+	for (Iterator i = nodes().iterator(); i.hasNext();) {
+	    Node node = (Node) i.next();
+	    // if node has no input edges, it is considered an input Node
+	    if (inputEdgeCount(node) == 0)
+		nodes.add(node);
+	}
+	return (Node[]) nodes.toArray();
+    }
+
+    public Node[] getOutputNodes() {
+	ArrayList nodes = new ArrayList();
+	// iterate over all nodes in the graph
+	for (Iterator i = nodes().iterator(); i.hasNext();) {
+	    Node node = (Node) i.next();
+	    // if node has no input edges, it is considered an input Node
+	    if (outputEdgeCount(node) == 0)
+		nodes.add(node);
+	}
+	return (Node[]) nodes.toArray();
+    }
+
+    /** Combine input dataflow graph *after* current dataflow
+     * graph. Connect appropriate edges (i.e. variables)
+     **/
+    public void combineSerial(BlockDataFlowGraph block) {
+    }
 
     /**
      * This method will evaluate AssignStmt statements and add
@@ -363,7 +392,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	if (args.length > 1)
 	    methodname = args[1];
 	
-	SootClass testClass = 
+	soot.SootClass testClass = 
 	    ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
 	if (testClass == null) {
 	    System.err.println("Class "+classname+" not found");
@@ -374,8 +403,8 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	    System.err.println("Method "+methodname+" not found");
 	    System.exit(1);
 	}
-	SootMethod testMethod = testClass.getMethodByName(methodname);
-	Body body = testMethod.retrieveActiveBody();
+	soot.SootMethod testMethod = testClass.getMethodByName(methodname);
+	soot.Body body = testMethod.retrieveActiveBody();
 	CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 	
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
