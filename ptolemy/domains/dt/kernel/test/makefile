@@ -46,6 +46,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	FakePlotter.java \	
 	OnePort.java \
 	TwoPort.java \
 	TimedDisplay.java
