@@ -48,14 +48,7 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 proc testJNI {modelbase} {
-    # Remove the jni directory that might contain code from a previous
-    # run.
-    file delete -force jni
-
-    # Create the shared library that has the code we want
-    puts "Running 'make shared'"
-    puts "[exec make shared SHAREDBASE=$modelbase]"
-
+    puts "Running $modelbase"
     # Read in the model
     set parser [java::new ptolemy.moml.MoMLParser]
 
@@ -78,13 +71,39 @@ proc testJNI {modelbase} {
 
 }
 
-test meaningOfLife-1.2 {} {
-    testJNI testDeux
-} {}
-exit
+
 ######################################################################
 ####
 #
+
+test meaningOfLife-1.4 {Run a model that uses both testDeux and testTrois} {
+    testJNI testQuatre
+} {}
+exit
+# Remove the jni directory that might contain code from a previous
+# run.
+file delete -force jni
+
+
 test meaningOfLife-1.1 {Run a simple JNI model} {
+    # Create the shared library that has the code we want
+    puts "Running 'make shared'"
+    puts "[exec make shared SHAREDBASE=meaningOfLife]"
     testJNI meaningOfLife
 } {}
+
+test meaningOfLife-1.2 {A native function that takes an int and a float } {
+    # Create the shared library that has the code we want
+    puts "Running 'make shared'"
+    puts "[exec make shared SHAREDBASE=testDeux]"
+    testJNI testDeux
+} {}
+
+test meaningOfLife-1.3 {A native function that takes arrays of longs} {
+    # Create the shared library that has the code we want
+    puts "Running 'make shared'"
+    puts "[exec make shared SHAREDBASE=testTrois]"
+    testJNI testTrois
+} {}
+
+

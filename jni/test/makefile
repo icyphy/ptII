@@ -39,7 +39,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -86,7 +86,7 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 AUXCLASSPATH = $(CLASSPATHSEPARATOR).
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	PATH="`pwd`:`pwd`/jni/jnitestDeux:$(PATH)" $(JTCLSH) alljtests.tcl
+	PATH="`pwd`:`pwd`/jni/jnimeaningOfLife:`pwd`/jni/jnitestDeux:`pwd`/jni/jnitestTrois:$(PATH)" $(JTCLSH) alljtests.tcl
 
 shared:
 	gcc -shared -o $(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX) \

@@ -75,9 +75,11 @@ ready to be run.
 <p>Note that under Windows, your path needs to include the directory
 named by the libraryDirectory Parameter.
 
+
 @author Vincent Arnould (vincent.arnould@thalesgroup.com), Contributor: Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.2
+@see JNIUtilities
 */
 public class GenericJNIActor extends TypedAtomicActor {
     /** Construct an entity in the default workspace with an empty string
@@ -121,7 +123,7 @@ public class GenericJNIActor extends TypedAtomicActor {
 
 	// FIXME: Should libraryDirectory be a FileAttribute?
         libraryDirectory = new Parameter(this, "libraryDirectory",
-                (Token) new StringToken("jni" + File.separator + "lib"));
+                (Token) new StringToken("jni/lib"));
         nativeFunction = new Parameter(this, "nativeFunction",
                 (Token) new StringToken("unknownFunction"));
         nativeLibrary = new Parameter(this, "nativeLibrary",
@@ -432,7 +434,7 @@ public class GenericJNIActor extends TypedAtomicActor {
         try {
             ClassLoader cl = new URLClassLoader(tab);
             _class = cl.loadClass(className);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
 	    throw new IllegalActionException(this, ex, 
 					     "Could not load JNI C class '"
 					     + className + "' relative to "
@@ -466,7 +468,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                 + File.separator
                 + "jni"
                 + File.separator
-                + "jnimeaningOfLife"
+                + "jnitestDeux"
                 + File.pathSeparator
 
                 + System.getProperty("java.library.path"));
