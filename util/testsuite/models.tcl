@@ -48,4 +48,10 @@ proc sdfModel {{iters 1}} {
 
     return $e0
 }
-    
+
+# Get a parameter by name, properly cast to Parameter.
+#
+proc getParameter {namedobj paramname} {
+    set p [$namedobj getAttribute $paramname]
+    return [java::cast ptolemy.data.expr.Parameter $p]
+}
