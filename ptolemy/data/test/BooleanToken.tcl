@@ -88,7 +88,9 @@ test BooleanToken-3.0 {Create an non-empty instance and add it to Strings} {
     set token3 [java::new ptolemy.data.StringToken "....." ]
 
     set token4 [$token1 add $token2]
-    set token5 [$token4 add $token3]
+    set token5 [$token2 add $token3]
+    
+    set token6 [$token4 add $token5]
 
-    list [$token5 toString]
-} {{ptolemy.data.StringToken(value is true.....)}}
+    list [$token6 toString]
+} {{ptolemy.data.StringToken(value is truetrue.....)}}

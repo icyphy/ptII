@@ -91,10 +91,9 @@ public class StringToken extends Token {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "add method not supported between";
-            str = str + this.getClass().getName() + " and ";
-            str = str + token.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            throw new IllegalActionException("StringToken: add method not " +
+                    "supported between " + getClass().getName() + " and " +
+                    token.getClass().getName() + ": " + ex.getMessage());
         }
     }
 

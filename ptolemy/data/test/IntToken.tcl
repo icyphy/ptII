@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test IntToken-2.1 {Create an empty instance} {
+test IntToken-1.0 {Create an empty instance} {
     set p [java::new ptolemy.data.IntToken]
     $p toString
 } {ptolemy.data.IntToken(0)}
@@ -58,51 +58,60 @@ test IntToken-2.1 {Create an empty instance} {
 ######################################################################
 ####
 # 
-test IntToken-2.2 {Create an empty instance and query its value as int} {
-    set p [java::new ptolemy.data.IntToken]
-    $p intValue
-} {0}
+test IntToken-1.1 {Create a non-empty instance from an int} {
+    set p [java::new {ptolemy.data.IntToken int} 5]
+    $p toString
+} {ptolemy.data.IntToken(5)}
 
 ######################################################################
 ####
 # 
-test IntToken-2.3 {Create a non-empty instance and query its value as int} {
-    set p [java::new {ptolemy.data.IntToken int} 12]
-    $p intValue
-} {12}
+test IntToken-1.0 {Create a non-empty instance from an String} {
+    set p [java::new {ptolemy.data.IntToken String} "7"]
+    $p toString
+} {ptolemy.data.IntToken(7)}
 
 ######################################################################
 ####
 # 
-test IntToken-3.1 {Create an non-empty instance and read it as double} {
+test IntToken-2.0 {Create a non-empty instance and query its value as an int} {
+    set p [java::new {ptolemy.data.IntToken int} 3]
+    set res1 [$p intValue]
+    set res2 [$p getValue]
+    list $res1 $res2
+} {3 3}
+
+######################################################################
+####
+# 
+test IntToken-2.1 {Create a non-empty instance and query its value as a double} {
     set p [java::new {ptolemy.data.IntToken int} 12]
-    list [$p doubleValue]
+    $p doubleValue
 } {12.0}
 
 ######################################################################
 ####
 # 
-test IntToken-3.2 {Create an non-empty instance and read it as long} {
+test IntToken-2.2 {Create a non-empty instance and query its value as a long} {
     set p [java::new {ptolemy.data.IntToken int} 12]
-    list [$p longValue]
+    $p longValue
 } {12}
 
+######################################################################
+####
+# 
+test IntToken-2.3 {Create a non-empty instance and query its value as a string} {
+    set p [java::new {ptolemy.data.IntToken int} 12]
+    $p stringValue
+} {12}
 
 ######################################################################
 ####
 # 
-# test IntToken-4.1 {Create an empty instance and clone} {
-#     set p [java::new ptolemy.data.IntToken]
-#     set q [$p clone]
-#     list [$q intValue]
-# } {0}
-
+#test IntToken-2.4 {Create a non-empty instance and query its value as a complex#} {
+#    set p [java::new {ptolemy.data.IntToken int} 12]
+#    $p complexValue
+#} {12}
 ######################################################################
 ####
 # 
-# test IntToken-4.2 {Create a non empty instance and clone} {
-#     set p [java::new {ptolemy.data.IntToken int} 10]
-#     set q [$p clone]
-#     list [$p intValue] [$q intValue]
-# } {10 10}
-
