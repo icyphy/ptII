@@ -266,7 +266,8 @@ public class Prototype extends NamedObj implements Instantiable {
      *  classes with setContainer() methods are responsible for overriding this
      *  and calling setContainer().
      *  @see #setClassDefinition(boolean)
-     *  @param container The container for the instance.
+     *  @param container The container for the instance, or null
+     *   to instantiate it at the top level.
      *  @param name The name for the clone.
      *  @return A new instance that is a clone of this prototype
      *   with adjusted deferral relationships.

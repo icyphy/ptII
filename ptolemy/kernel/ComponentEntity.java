@@ -148,7 +148,8 @@ public class ComponentEntity extends Entity {
      *  This method overrides the base class to use setContainer() to
      *  specify the container.
      *  @see #setClassDefinition(boolean)
-     *  @param container The container for the instance.
+     *  @param container The container for the instance, or null
+     *   to instantiate it at the top level.
      *  @param name The name for the clone.
      *  @return A new instance that is a clone of this prototype
      *   with adjusted deferral relationships.
@@ -163,7 +164,7 @@ public class ComponentEntity extends Entity {
     public Instantiable instantiate(NamedObj container, String name)
             throws CloneNotSupportedException,
             IllegalActionException, NameDuplicationException {
-        if (!(container instanceof CompositeEntity)) {
+        if (container != null && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
                     "Cannot instantiate into a container that is not an "
                     + "instance of CompositeEntity: "

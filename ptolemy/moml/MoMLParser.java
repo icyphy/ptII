@@ -3087,21 +3087,24 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // when this is propagated. Note that we need to
             // include all heritage objects, irrespective of whether
             // they are locally changed.
-            List heritageList = container.getHeritageList();
-            Iterator heritage = heritageList.iterator();
-            while (heritage.hasNext()) {
-                CompositeEntity inherited = (CompositeEntity)heritage.next();
-                if (inherited.getEntity(entityName) != null) {
-                    throw new IllegalActionException(container,
-                    "Cannot create entity because a subclass or instance "
-                    + "contains an entity with the same name: "
-                    + inherited.getEntity(entityName).getFullName());
+            // If the container is null, then we can't possibly get
+            // a name collision.
+            List heritageList = null;
+            if (container != null) {
+                heritageList = container.getHeritageList();
+                Iterator heritage = heritageList.iterator();
+                while (heritage.hasNext()) {
+                    CompositeEntity inherited = (CompositeEntity)heritage.next();
+                    if (inherited.getEntity(entityName) != null) {
+                        throw new IllegalActionException(container,
+                        "Cannot create entity because a subclass or instance "
+                        + "contains an entity with the same name: "
+                        + inherited.getEntity(entityName).getFullName());
+                    }
                 }
             }
 
             // Instantiate it.
-            // FIXME: Note that if container is null, this will fail.
-            // This means that a top level cannot be an instance of a class.
             ComponentEntity newEntity = (ComponentEntity)reference.instantiate(
                     container, entityName);
             
@@ -3130,20 +3133,22 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             newEntity.setClassName(className);
             
             // Propagate to instances and derived classes.
-            heritage = heritageList.iterator();
-            while (heritage.hasNext()) {
-                CompositeEntity inherited = (CompositeEntity)heritage.next();
-                ComponentEntity propagatedEntity
-                        = (ComponentEntity)reference.instantiate(
-                        inherited, entityName);
-                _markContentsInherited(propagatedEntity);
-                propagatedEntity.setInherited(true);
-                propagatedEntity.setClassName(className);
-                URIAttribute propagatedURI
-                        = (URIAttribute)propagatedEntity.getAttribute(
-                        "_uri", URIAttribute.class);
-                if (propagatedURI != null) {
-                    propagatedURI.setContainer(null);
+            if (container != null) {
+                Iterator heritage = heritageList.iterator();
+                while (heritage.hasNext()) {
+                    CompositeEntity inherited = (CompositeEntity)heritage.next();
+                    ComponentEntity propagatedEntity
+                            = (ComponentEntity)reference.instantiate(
+                            inherited, entityName);
+                    _markContentsInherited(propagatedEntity);
+                    propagatedEntity.setInherited(true);
+                    propagatedEntity.setClassName(className);
+                    URIAttribute propagatedURI
+                            = (URIAttribute)propagatedEntity.getAttribute(
+                            "_uri", URIAttribute.class);
+                    if (propagatedURI != null) {
+                        propagatedURI.setContainer(null);
+                    }
                 }
             }
 
