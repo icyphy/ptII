@@ -121,7 +121,7 @@ public class ApplicationUtility {
     public static boolean enableWarnings = true;
 
     /** If true, enable trace messages. */
-    public static boolean enableTrace  = true;
+    public static boolean enableTrace  = false;
 
     /** If true, throw an exception when error() is called. */
     public static boolean exceptionOnError = true;
