@@ -68,6 +68,7 @@ JSRCS = \
 	MultiplyDivide.java \
 	Poisson.java \
 	Pulse.java \
+	Quantizer.java \
 	Ramp.java \
 	RandomSource.java \
 	Recorder.java \
