@@ -186,8 +186,9 @@ public class DEReceiver implements Receiver {
         } catch (IllegalActionException e) {
             // Can't happen.
             e.printStackTrace();
-            throw new InternalErrorException("enqueueEvent with delay "+
-                    "argument = 0 shouldn't throw an exception." +
+            throw new InternalErrorException("Calling Director." + 
+                    "_enqueueEvent() with time "+
+                    "argument = currentTime shouldn't throw an exception." +
                     " : " + e.getMessage());
         }
 
@@ -208,7 +209,9 @@ public class DEReceiver implements Receiver {
      */
     public void put(Token token, double delay)
             throws NoRoomException, IllegalActionException {
-        getDirector().enqueueEvent(this, token, delay, _depth);
+
+        DEDirector dir = getDirector();
+        dir._enqueueEvent(this, token, dir.getCurrentTime() + delay, _depth);
     }
 
     /** Set the container.

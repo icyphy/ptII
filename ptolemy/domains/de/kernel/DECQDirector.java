@@ -51,7 +51,7 @@ import java.util.Enumeration;
  *  <p>
  *  Input ports in a DE simulation are given instances of DEReceiver.
  *  When a token is put into a DEReceiver, that receiver enqueues the
- *  event by calling the enqueueEvent() method of this director.
+ *  event by calling the _enqueueEvent() method of this director.
  *  This director sorts all such events in a global event queue
  *  (a priority queue) implemented as an instance of the CalendarQueue class.
  *  <p>
@@ -150,81 +150,7 @@ public class DECQDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Put a "pure event" into the event queue with the specified delay and
-     *  depth. The time stamp of the event is the current time plus the
-     *  delay.  The depth is used to prioritize events that have equal
-     *  time stamps.  A smaller depth corresponds to a higher priority.
-     *  A "pure event" is one where no token is transfered.  The event
-     *  is associated with a destination actor.  That actor will be fired
-     *  when the time stamp of the event is the oldest in the system.
-     *  Note that the actor may have no new data at its input ports
-     *  when it is fired.
-     *
-     *  @param actor The destination actor.
-     *  @param delay The delay, relative to current time.
-     *  @param depth The depth.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    public void enqueueEvent(Actor actor, double delay, long depth)
-            throws IllegalActionException {
 
-        // FIXME: Should this check that the depth is not negative?
-        // This check is done only done after the start time is initialized.
-        if (_startTimeInitialized) {
-            if (delay < 0.0) throw new IllegalActionException(getContainer(),
-                    "Attempt to queue a token with a past time stamp " +
-                    "after start time is fixed.");
-        }
-
-        // FIXME: Provide a mechanism for listening for events.
-        if (DEBUG) {
-            System.out.print(getFullName() + ":");
-            System.out.println("Enqueue event for actor: " +
-                               ((Entity)actor).description(FULLNAME)+
-                               " at time " + (_currentTime + delay) +
-                               " .");
-        }
-
-
-        DESortKey key = new DESortKey(_currentTime + delay, depth);
-        DEEvent event = new DEEvent(actor, key);
-        _cQueue.put(key, event);
-    }
-
-    /** Put a token into the event queue with the specified destination
-     *  receiver, delay and depth. The time stamp of the token is the
-     *  current time plus the delay.  The depth is used to prioritize
-     *  events that have equal time stamps.  A smaller depth corresponds
-     *  to a higher priority.
-     *
-     *  @param receiver The destination receiver.
-     *  @param token The token destined for that receiver.
-     *  @param delay The delay, relative to current time.
-     *  @param depth The depth.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    public void enqueueEvent(DEReceiver receiver, Token token,
-            double delay, long depth) throws IllegalActionException {
-
-        // FIXME: Should this check that the depth is not negative?
-        if (delay < 0.0) throw new IllegalActionException(getContainer(),
-        "Attempt to queue a token with a past time stamp.");
-
-        // FIXME: Provide a mechanism for listening for events.
-
-        DESortKey key = new DESortKey(_currentTime + delay, depth);
-        DEEvent event = new DEEvent(receiver, token, key);
-        if (DEBUG) {
-            System.out.print(getFullName()+":");
-            System.out.println("Enqueue event for port: " +
-                    receiver.getContainer().description(FULLNAME)+
-                    " on actor: " + ((Entity)event.actor).description(FULLNAME) +
-                    " at time " + (_currentTime + delay) +
-                    " .");
-        }
-
-        _cQueue.put(key, event);
-    }
 
     /** Fire the one actor identified by the prefire() method as ready to fire.
      *  If there are multiple simultaneous events destined to this actor,
@@ -424,6 +350,90 @@ public class DECQDirector extends DEDirector {
 
 
     }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** Put a "pure event" into the event queue with the specified time stamp
+     *  and depth. The depth is used to prioritize events that have equal
+     *  time stamps.  A smaller depth corresponds to a higher priority.
+     *  A "pure event" is one where no token is transfered.  The event
+     *  is associated with a destination actor.  That actor will be fired
+     *  when the time stamp of the event is the oldest in the system.
+     *  Note that the actor may have no new data at its input ports
+     *  when it is fired.
+     *
+     *  @param actor The destination actor.
+     *  @param time The time stamp of the "pure event".
+     *  @param depth The depth.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    protected void _enqueueEvent(Actor actor, double time, long depth)
+            throws IllegalActionException {
+
+        // FIXME: Should this check that the depth is not negative?
+        // This check is done only done after the start time is initialized.
+        if (_startTimeInitialized) {
+            if (time < _currentTime) {
+                throw new IllegalActionException(getContainer(),
+                        "Attempt to queue a token with a past time stamp " +
+                        "after start time is fixed.");
+            }
+        }
+
+        // FIXME: Provide a mechanism for listening for events.
+        if (DEBUG) {
+            System.out.print(getFullName() + ":");
+            System.out.println("Enqueue event for actor: " +
+                               ((Entity)actor).description(FULLNAME)+
+                               " at time " + time +
+                               " .");
+        }
+
+
+        DESortKey key = new DESortKey(time, depth);
+        DEEvent event = new DEEvent(actor, key);
+        _cQueue.put(key, event);
+    }
+
+    /** Put an event into the event queue with the specified destination
+     *  receiver, transferred token, time stamp and depth. The depth 
+     *  is used to prioritize
+     *  events that have equal time stamps.  A smaller depth corresponds
+     *  to a higher priority.
+     *
+     *  @param receiver The destination receiver.
+     *  @param token The token destined for that receiver.
+     *  @param time The time stamp of the event.
+     *  @param depth The depth.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    protected void _enqueueEvent(DEReceiver receiver, Token token,
+            double time, long depth) throws IllegalActionException {
+
+        // FIXME: Should this check that the depth is not negative?
+        if (time < _currentTime) { 
+            throw new IllegalActionException(getContainer(),
+                    "Attempt to queue a token with a past time stamp.");
+        }
+
+        // FIXME: Provide a mechanism for listening for events.
+
+        DESortKey key = new DESortKey(time, depth);
+        DEEvent event = new DEEvent(receiver, token, key);
+        if (DEBUG) {
+            System.out.print(getFullName()+":");
+            System.out.println("Enqueue event for port: " +
+                    receiver.getContainer().description(FULLNAME)+
+                    " on actor: " + 
+                    ((Entity)event.actor).description(FULLNAME) +
+                    " at time " + time +
+                    " .");
+        }
+
+        _cQueue.put(key, event);
+    }
+
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////

@@ -87,41 +87,6 @@ public abstract class DEDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Put a "pure event" into the event queue with the specified delay and
-     *  depth. The time stamp of the event is the current time plus the
-     *  delay.  The depth is used to prioritize events that have equal
-     *  time stamps.  A smaller depth corresponds to a higher priority.
-     *  A "pure event" is one where no token is transfered.  The event
-     *  is associated with a destination actor.  That actor will be fired
-     *  when the time stamp of the event is the oldest in the system.
-     *  Note that the actor may have no new data at its input ports
-     *  when it is fired.
-     *
-     *  @param actor The destination actor.
-     *  @param delay The delay, relative to current time.
-     *  @param depth The depth.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    public abstract void enqueueEvent(Actor actor, double delay, long depth)
-	 throws IllegalActionException;
-
-    /** Put a token into the event queue with the specified destination
-     *  receiver, delay and depth. The time stamp of the token is the
-     *  current time plus the delay.  The depth is used to prioritize
-     *  events that have equal time stamps.  A smaller depth corresponds
-     *  to a higher priority.
-     *
-     *  @param receiver The destination receiver.
-     *  @param token The token destined for that receiver.
-     *  @param delay The delay, relative to current time.
-     *  @param depth The depth.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    public abstract void enqueueEvent(DEReceiver receiver,
-	    Token token,
-	    double delay,
-	    long depth)
-	 throws IllegalActionException;
 
     /** Fire the one actor identified by the prefire() method as ready to fire.
      *  If there are multiple simultaneous events destined to this actor,
@@ -140,16 +105,26 @@ public abstract class DEDirector extends Director {
       super.fire();
     }
 
-    /** Schedule an actor to be fired after the specified delay.
+    /** Schedule an actor to be fired after the specified delay. If the delay
+     *  argument is equal to zero, then the actor will be refired after all
+     *  actors enabled at current time are fired.
      *
      *  @param actor The scheduled actor to fire.
      *  @param delay The scheduled time to fire.
      *  @exception IllegalActionException If the delay is negative.
      */
-    public void fireAfterDelay(Actor actor, double delay)
+    public void fireAfterDelay(Actor actor, double delay) 
             throws IllegalActionException {
-        // Check if the actor is in the composite actor containing this
-        // director. FIXME.
+        // FIXME: Check if the actor is in the composite actor containing this
+        // director. I.e. the specified actor is under this director
+        // responsibility. This could however be an expensive operation. So,
+        // leave it out for now, and see if this will turn out to be an issue.
+
+        // Check the special case, when the delay is equal to zero
+        if (delay == 0) {
+            this._enqueueEvent(actor, getCurrentTime(), Long.MAX_VALUE);
+            return;
+        }
 
         // If this actor has input ports, then the depth is set to be
         // one higher than the max depth of the input ports.
@@ -166,7 +141,7 @@ public abstract class DEDirector extends Director {
                 maxdepth = rr._depth;
             }
         }
-        this.enqueueEvent(actor, delay, maxdepth+1);
+        this._enqueueEvent(actor, getCurrentTime() + delay, maxdepth+1);
     }
     
     /** Schedule an actor to be fired at the specified time.
@@ -292,6 +267,43 @@ public abstract class DEDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Put a "pure event" into the event queue with the specified delay and
+     *  the time stamp of the event. 
+     *  The depth is used to prioritize events that have equal
+     *  time stamps.  A smaller depth corresponds to a higher priority.
+     *  A "pure event" is one where no token is transfered.  The event
+     *  is associated with a destination actor.  That actor will be fired
+     *  when the time stamp of the event is the oldest in the system.
+     *  Note that the actor may have no new data at its input ports
+     *  when it is fired.
+     *
+     *  @param actor The destination actor.
+     *  @param time The time stamp of the "pure event".
+     *  @param depth The depth.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    protected abstract void _enqueueEvent(Actor actor, 
+            double time, 
+            long depth)
+	 throws IllegalActionException;
+
+    /** Put a token into the event queue with the specified destination
+     *  receiver, delay and time stamp. The depth is used to prioritize
+     *  events that have equal time stamps.  A smaller depth corresponds
+     *  to a higher priority.
+     *
+     *  @param receiver The destination receiver.
+     *  @param token The token destined for that receiver.
+     *  @param time The time stamp of the event.
+     *  @param depth The depth.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    protected abstract void _enqueueEvent(DEReceiver receiver,
+	    Token token,
+	    double time,
+	    long depth)
+	 throws IllegalActionException;
 
     /** Override the default Director implementation, because in DE
      *  domain, we don't need write access inside an iteration.
