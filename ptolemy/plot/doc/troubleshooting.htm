@@ -15,6 +15,79 @@ Other sources of information:
 
 Below is a list of common Ptplot problems.
 
+<h2><a name="spaces">AccessControlException caused by spaces in path name</a></h2>
+Under Java 1.4.0_01, applets that have spaces in the path name may
+fail if the applet tries to download a data file.  
+For example, the <a href="../demo/Marks.htm">Marks demo</a> 
+tries to access a data file
+
+For example,
+<code>file:///C:/tmp/ptplot/ptolemy/plot/demo/Marks.htm</code>
+works fine
+
+But doing
+<pre>
+cd c:/tmp
+mv ptplot pt\ plot
+</pre>
+
+and then going to
+<code>file:///C:/tmp/pt plot/ptolemy/plot/demo/Marks.htm</code>
+
+results in
+<pre>
+java.security.AccessControlException: access denied (java.io.FilePermission C:\tmp\ptplot 52\ptolemy\plot\demo\plotmlSample.txt read)
+	at java.security.AccessControlContext.checkPermission(AccessControlContext.java:270)
+	at java.security.AccessController.checkPermission(AccessController.java:401)
+	at java.lang.SecurityManager.checkPermission(SecurityManager.java:542)
+	at java.lang.SecurityManager.checkRead(SecurityManager.java:887)
+	at java.io.File.isDirectory(File.java:698)
+	at sun.net.www.protocol.file.FileURLConnection.connect(FileURLConnection.java:65)
+	at sun.net.www.protocol.file.FileURLConnection.getInputStream(FileURLConnection.java:148)
+	at java.net.URL.openStream(URL.java:955)
+	at ptolemy.plot.PlotApplet.init(PlotApplet.java:133)
+	at sun.applet.AppletPanel.run(AppletPanel.java:341)
+	at java.lang.Thread.run(Thread.java:536)
+</pre>
+This is a known bug, see:
+<a href="http://developer.java.sun.com/developer/bugParade/bugs/4697178.html">http://developer.java.sun.com/developer/bugParade/bugs/4697178.html</a>
+
+which says:
+<blockquote>
+<br>CUSTOMER WORKAROUND :
+<br>A couple of workarounds found:
+<p>o Don't package the files into a JAR. Problem does not
+appear to occur when just .class files are available.
+
+<p>o Change directory of installed applet to one without
+spaces in the name.
+
+<p>o Access the HTML file using an HTTP URL. Problem only
+occurs when file is accessed via a file URL.
+
+<p>o Use policytool to modify the java security file, giving
+permission to the file being read (was suggested by another
+user here with the problem; did not confirm myself).
+
+<p>xxxxx@xxxxx 2002-06-11
+<br>This is due to the special charactor for space. When we add the permission for
+the file to read, we still use "%20" instead of the real " " for the path,
+which cause the applet don't have the permission to read the file.
+
+<br>Solution: In src/share/classes/sun/applet/AppletClassLoader.java
+ 
+call ParseUtil.decode(path) method before add the permission.
+</blockquote>
+
+<p>Unfortunately, this bug means that if we ship a prebuilt version of ptplot
+or Ptolemy II and the user tries to access the applets from the local
+partition, then there will be errors.
+
+<p>The only applets that fail are applets that are on a local file system, 
+accessed with file://, that have spaces in the path and the applet
+needs to access a data file that is local.
+
+
 
 <H2><A NAME="Problems Starting Ptplot">Problems starting ptplot or
 running applets</A></H2>

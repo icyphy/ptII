@@ -345,19 +345,23 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "that directory names with spaces do not work very well" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo " because of limitations in the InstallShield tool." >> \
+	echo " because of limitations Java 1.4.0" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "This TARfile (ptplot${PTVERSION}.tar.gz), will unpack into" >> \
+	echo "If you are building from a tar or zip file, then note that" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "the file ptplot${PTVERSION}.tar.gz or" >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "ptplot${PTVERSION}.zip, will unpack into a directory" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "called ptplot${PTVERSION}, and the configure-make-make install" \
 		>> $(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "process will not install any files outside of this " >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "ptplot5.1p2 directory." >> \
+	echo "ptplot${PTVERSION} directory." >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "So if you unpack the TARfile into /usr/local, after " >> \
+	echo "So, if you unpack the TAR file into /usr/local, after " >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "installing you will have /usr/local/ptplot${PTVERSION}," >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
@@ -374,7 +378,11 @@ fixtmpdist:
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "To build under Solaris:" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "set the PTII variable to this directory " >> \
+	echo "Set the PTII variable to this directory: " >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "PTII=`pwd` " >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Then configure and make:" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "./configure" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
@@ -384,9 +392,9 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	@echo "JShield needs the ico file to be in the top level directory"
-	cp $(PTTMPME)/doc/img/ptplot.ico \
-		$(PTTMPDIR)/$(PTDIST)
+	#@echo "JShield needs the ico file to be in the top level directory"
+	#cp $(PTTMPME)/doc/img/ptplot.ico \
+	#	$(PTTMPDIR)/$(PTDIST)
 	@echo "Copy over xml stuff"
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/com
 	cp -r "$(PTII)/com/microstar" "$(PTII)/com/makefile" \
@@ -455,6 +463,9 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	@echo "Copy over gui stuff"
 	cp -r "$(PTII)/ptolemy/gui" $(PTTMPDIR)/$(PTDIST)/ptolemy
+	# Get rid of CVS directories in com and gui
+	-(cd $(PTTMPDIR)/$(PTDIST); \
+		find . \( -name CVS -o -name "META-INF" -o -name "#*" -o -name ptplotlocales \) -print -exec rm -rf {} \; )
 	#
 	# Setting up top level doc directory
 	#
