@@ -312,7 +312,8 @@ public class SoundPlayback {
      *  to the sound file specified in the constructor.
      *  <p>
      *  The samples should be in the range 
-     *  (-2^(bits_per_sample/2), 2^(bits_per_sample/2)).
+     *  (-2^(bits_per_sample/2), 2^(bits_per_sample/2)). Sample
+     *  that are outside this range will be hard-clipped.
      *  @param putSamplesArray A two dimensional array containing
      *  the samples to play or write to a file. The first index
      *  represents the channel number (0 for first channel, 1 for
@@ -596,6 +597,7 @@ public class SoundPlayback {
 	// Could use above line, but hopefully, code below will
 	// be faster.
 	double maxSample;
+	double maxDoubleValuedSample;
 	if (bytesPerSample == 2) {
 	    maxSample = 32768;
 	} else if (bytesPerSample == 1) {
@@ -608,6 +610,7 @@ public class SoundPlayback {
 	    // Should not happen.
 	    maxSample = 0;
 	}
+	maxDoubleValuedSample = (maxSample - 2)/maxSample;
 	byte[] byteArray =
 	    new byte[lengthInSamples * bytesPerSample * channels];
 	byte[] b = new byte[bytesPerSample];
@@ -617,10 +620,12 @@ public class SoundPlayback {
 	    // For each channel,
 	    for (int currChannel = 0; currChannel < channels; currChannel++) {
 		// Perform clipping, if necessary.
-		if (doubleArray[currChannel][currSamp] >= 1) {
-		    l = (int)maxSample - 1;
-		} else if (doubleArray[currChannel][currSamp] <= -1) {
-		    l = (int)(-maxSample) + 1;
+		if (doubleArray[currChannel][currSamp] >= 
+		    maxDoubleValuedSample) {
+		    l = (int)maxSample - 2;
+		} else if (doubleArray[currChannel][currSamp] <= 
+			   -maxDoubleValuedSample) {
+		    l = (int)(-maxSample) + 2;
 		} else {
 		    // signed integer representation of current sample of the
 		    // current channel.
