@@ -476,7 +476,8 @@ public class DTDirector extends SDFDirector {
      */
     public void invalidateSchedule() {
     //  -invalidateSchedule-
-        _reset();
+        // FIXME: _reset is removed. Is this right?
+        // _reset();
         super.invalidateSchedule();
     }
 
