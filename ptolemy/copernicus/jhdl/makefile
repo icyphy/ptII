@@ -46,6 +46,8 @@ DIRS =		demo
 
 # Keep this list alphabetized.
 JSRCS = \
+	CircuitAnalysis.java \
+	CircuitTransformer.java \
 	JHDLTransformer.java \
 	Main.java
 
