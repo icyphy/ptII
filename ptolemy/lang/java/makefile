@@ -174,12 +174,6 @@ clean_skeleton:
 		rm -f $(ROOT)/$$x/*.skel; \
 	done
 
-# Read in the JDK rt.jar file and generate zero length .java files.
-generate_zero_length_stubs:
-	-mkdir stubs;
-	cd stubs; CLASSPATH=$(CLASSPATH)/.. \
-		 $(JAVA) ptolemy.lang.java.GenerateZeroLengthStubs
-
 depend:
 	@echo "no dependencies in this directory"
 
@@ -300,7 +294,7 @@ generate_codegen:
 		echo "Warning $(JAVASRC_SKELETON_DIR) does not exist"; \
 	fi
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)" \
-	$(JAVA) -verbose:class  ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	$(JAVA) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom \
 	-iterations 50 \
 	-outdir $(ROOT) -outpkg cg.OrthogonalCom
@@ -310,6 +304,16 @@ compile_codegen:
 run_codegen: 	
 	(cd $(ROOT)/cg/OrthogonalCom; \
 		$(JAVA) -classpath ../.. cg.OrthogonalCom.CG_Main)
+
+# Read in the JDK rt.jar file and generate zero length .java files.
+generate_zero_length_stubs:
+	-mkdir stubs;
+	cd stubs; CLASSPATH=$(CLASSPATH)/.. \
+		 $(JAVA) ptolemy.lang.java.GenerateZeroLengthStubs
+
+# Run using zero length .java files
+codegen_stubs:
+	$(MAKE) JAVASRC_SKELETON_DIR=stubs codegen
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
