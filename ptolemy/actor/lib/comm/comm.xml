@@ -6,12 +6,12 @@
     <?moml
       <group>
 
+<entity name="DeScrambler" class="ptolemy.actor.lib.comm.DeScrambler"/>
 <entity name="HadamardCode" class="ptolemy.actor.lib.comm.HadamardCode"/>
-<entity name="Hadamard2" class="ptolemy.actor.lib.comm.Hadamard2"/>
 <entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder"/>
 <entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive"/>
 <entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine"/>
-<entity name="PNcode" class="ptolemy.actor.lib.comm.PNcode"/>
+<entity name="Scrambler" class="ptolemy.actor.lib.comm.Scrambler"/>
      </group>
     ?>
   </configure>

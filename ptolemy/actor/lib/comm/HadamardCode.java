@@ -30,6 +30,7 @@
 
 package ptolemy.actor.lib.comm;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -41,15 +42,20 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// HadamardCode
 /**
-This actor produces a Hadamard codeword. The parameter <i>index</i> 
-specifies the code index, which is the row index in the Hadamard matrix. 
-The parameter <i>log2Length</i> is log base 2 of the codeword length, 
-which equals the dimension of the matrix.
+Produce a Hadamard codeword by selecting a row from a Hadamard matrix.
+Log base 2 of the matrix dimension is given by the <i>log2Length</i>
+parameter, which should be a non-negative integer smaller than 32.
+The row index is given by the <i>index</i> parameter or by the associated
+the<i>index</i> port, which should be a non-negative integer smaller
+than the matrix dimension.
 <p>
-Note: it is required that <i>log2Length</i> be a strictly positive integer 
-smaller than 32. The <i>index</i> should be a non-negtive integer smaller 
-than the matrix dimension. Otherwise, an exception will be thrown. 
-
+A Hadamard matrix is defined in the following way:
+H<sub>1</sub> = {{1, 1}, {1, -1}}
+H<sub>n+1</sub> = {{H<sub>n</sub>, H<sub>n</sub>},
+{H<sub>n</sub>, -H<sub>n</sub>}}
+where n is a positive integer. Therefore, H<sub>n</sub> is a 2<sup>n</sup>*
+2<sup>n</sup> square matrix. The codeword length is also 2<sup>n</sup>.
+<p>
 @author Edward A. Lee and Rachel Zhou
 @version $Id$
 */
@@ -69,7 +75,7 @@ public class HadamardCode extends Source {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        index = new Parameter(this, "index");
+        index = new PortParameter(this, "index");
         index.setTypeEquals(BaseType.INT);
         index.setExpression("0");
 
@@ -88,7 +94,7 @@ public class HadamardCode extends Source {
      *  are orthogonal.  This is an int with default 0. It should
      *  not exceed length-1, where length = 2^log2Length.
      */
-    public Parameter index;
+    public PortParameter index;
 
     /** Log base 2 of the length of the code.  This is an integer with
      *  default 5.  It is required to be greater than 0.
@@ -137,16 +143,18 @@ public class HadamardCode extends Source {
         }
     }
 
-    /** Read at most one input token from each channel of the trigger
-     *  input and discard it.  If the trigger input is not connected,
-     *  then this method does nothing.  Derived classes should be
-     *  sure to call super.fire(), or to consume the trigger input
-     *  tokens themselves, so that they aren't left unconsumed.
+    /** Read from the associated <i>index</i> port if there is any
+     *  input and compute matirx dimension from <i>log2Length</i>.
+     *  Call _calculateRow to calculate the Hadamard row and send the
+     *  row elements to the output port in sequence. If it reaches the
+     *  end of the row, the next iteration will restart from the
+     *  beginning of the row.
      *  @exception IllegalActionException If <i>index</i> is out of range.
      */
     public void fire() throws IllegalActionException {
         super.fire();
         if (_rowValueInvalid) {
+            index.update();
             int log2LengthValue = ((IntToken)log2Length.getToken()).intValue();
             int indexValue = ((IntToken)index.getToken()).intValue();
             // Power of two calculated using a shift.
@@ -181,16 +189,16 @@ public class HadamardCode extends Source {
         _index = 0;
     }
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Calculate Hardmard row given by the Hadamard matrix dimension 
-     *  and the row index. The method computes iteratively by degrading 
-     *  the matrix dimension into half. The smallest Hadamard matrix is
-     *  a 2*2 matrix, defined as [1,1;1,-1].   
-     *  @param matrixDimension the Hadamard matrix dimension
-     *  @param index the row index
-     *  @return the desired hadamard row     
+    /** Calculate Hardmard row given by the Hadamard matrix dimension
+     *  and the row index. The method computes iteratively by degrading
+     *  the matrix dimension into half, until it reaches H<sub>1</sub>.
+     *  @param matrixDimension Hadamard matrix dimension.
+     *  @param index Row index.
+     *  @return Desired Hadamard row.
      */
     private int[] _calculateRow(int matrixDimension, int index) {
         // NOTE: Don't need to check the arguments for validity
@@ -199,7 +207,7 @@ public class HadamardCode extends Source {
         // index is in range.
 
         // NOTE: use <= in case a bug somewhere results in this
-        // dropping to one or zero.  Shouldn't happen.  In theory,
+        // dropping to one or zero.  Shouldn't happen. In theory,
         // == is sufficient. However, such a bug would lead to
         // an infinite recursion and stack overflow, which is a
         // particularly nasty error.
@@ -219,7 +227,7 @@ public class HadamardCode extends Source {
             int[] halfRow = _calculateRow(halfDimension, indexIntoHalfMatrix);
             System.arraycopy(halfRow, 0, result, 0, halfDimension);
             if (index >= halfDimension) {
-                for(int i=0; i<halfDimension; i++) {
+                for(int i = 0; i < halfDimension; i++) {
                     result[halfDimension+i] = -halfRow[i];
                 }
             } else {
@@ -230,20 +238,21 @@ public class HadamardCode extends Source {
         }
     }
 
-    ////////////////////////////////////////////////////////////
-    ////               private variable                    ////
 
-    //index of the element in the hadamard row.
+    ////////////////////////////////////////////////////////////
+    ////               private variable                     ////
+
+    // Index of the element in the Hadamard row.
     private int _index;
-    
-    //the hadamard row computed from _calculateRow
+
+    // Hadamard row computed from _calculateRow.
     private int[] _row;
-    
-    //By definition, rows of the 2*2 Hadamard matrix 
+
+    // Rows of H<sub>1</sub>.
     private static int[] _row0 = {1, 1};
     private static int[] _row1 = {1, -1};
-    
-    //A flag indicating that the private variable _row is invalid
+
+    // A flag indicating that the private variable _row is invalid.
     private transient boolean _rowValueInvalid = true;
 
     // Since this actor always sends one of two tokens, we statically
