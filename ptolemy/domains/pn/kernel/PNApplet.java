@@ -36,6 +36,8 @@ import java.awt.event.*;
 
 import ptolemy.actor.*;
 import ptolemy.actor.util.PtolemyApplet;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNApplet
@@ -51,6 +53,26 @@ public class PNApplet extends PtolemyApplet {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
+
+    /** Describe the applet parameters.
+     *  @return An array describing the applet parameters.
+     */
+    public String[][] getParameterInfo() {
+        String basepinfo[][] = super.getParameterInfo();
+        String[][] pinfo = new String[basepinfo.length + 2][];
+        for (int i = 0; i < basepinfo.length; i++) {
+            pinfo[i] = basepinfo[i];
+        }
+        String newinfo[][] = {
+            {"initial_queue_capacity", "", "Capacity of the queues in PN"},
+            {"defaultcapacity", "1", "default capacity of queues"}
+
+        };
+        pinfo[basepinfo.length] = newinfo[0];
+        pinfo[basepinfo.length+1] = newinfo[1];
+        return pinfo;
+    }
+
     /** Initialize the applet.  After invoking the base class init() method,
      *  Create a "Go" button. This method
      *  creates a manager, top-level composite actor, and director for
@@ -59,32 +81,134 @@ public class PNApplet extends PtolemyApplet {
      */
     public void init() {
         super.init();
+        
+        // Process the initial queue size parameter.
+        int capacity = 1;
         try {
+            String iterspec = getParameter("initial_queue_capacity");
+            if (iterspec != null) {
+                capacity = (Integer.decode(iterspec)).intValue();
+                _queuesizegiven = true;
+            }
+        } catch (Exception ex) {
+            report("Warning: queue capacity parameter failed: ", ex);
+        }
 
+        try {
             _manager = new Manager();
             _toplevel = new CompositeActor();
-            _toplevel.setName("ComSystem");
-            _director = new BasePNDirector();
-            _toplevel.setDirector(_director);
+            _toplevel.setName("topLevel");
             _toplevel.setManager(_manager);
+            _director = new BasePNDirector();
+            Parameter param =
+                (Parameter)_director.getAttribute("Initial_queue_capacity");
+            param.setToken(new IntToken(capacity));
+            _toplevel.setDirector(_director);
+            //_toplevel.setManager(_manager);
 
-            // Add a control panel in the main panel.
-            // Initialization
-            //_goButton = new Button("Go");
-            //Panel controlPanel = new Panel();
-            //add("North",_goButton);
-            //controlPanel.add(_goButton);
-            //_goButton.addActionListener(new GoButtonListener());
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }
     }
 
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** In addition to creating the buttons provided by the base class,
+     *  if the number of iterations has not been specified, then create
+     *  a dialog box for that number to be entered.  The panel containing
+     *  the buttons and the entry box is returned.
+     *  @param numbuttons The number of buttons to create.
+     */
+    protected Panel _createRunControls(int numbuttons) {
+        Panel panel = super._createRunControls(numbuttons);
+        if (!_queuesizegiven) {
+            // To keep the label and entry box together, put them
+            // in a new panel.
+            Panel queuepanel = new Panel();
+            queuepanel.add(new Label("Initial capacity of FIFO channels:"));
+            
+            // Process the defaultiterations parameter.
+            String defqueuespec = getParameter("defaultcapacity");
+            if (defqueuespec == null) {
+                defqueuespec = "1";
+            }
+
+            _queuesizebox = new TextField(defqueuespec, 10);
+            _queuesizebox.addActionListener(new QueueSizeBoxListener());
+            queuepanel.add(_queuesizebox);
+            panel.add(queuepanel);
+        }
+        return panel;
+    }
+
+
+    /** Get the initial capacity of the channels from the entry box, 
+     *  if there is one, or from the director, if not.
+     */
+    protected int _getQueueSize() {
+        int result = 1;
+        if(_director != null) {
+            Parameter param =
+                    (Parameter)_director.getAttribute(
+                            "Initial_queue_capacity");
+            result = ((IntToken)(param.getToken())).intValue();
+        }
+        if(_queuesizebox != null) {
+            try {
+                result = (new Integer(_queuesizebox.getText())).intValue();
+            } catch (NumberFormatException ex) {
+                report("Error in the queue capacity format:\n", ex);
+            }
+        }
+        return result;
+    }
+
+
+    /** Get the initial queue capacity from the entry box, if there is one,
+     *  and then execute the system.
+     */
+    protected void _go() {
+        try {
+            int queuesize = _getQueueSize();
+            Parameter param =
+                    (Parameter)_director.getAttribute(
+                            "Initial_queue_capacity");
+
+            param.setToken(new IntToken(queuesize));
+        } catch (Exception ex) {
+            report("Unable to get the queuesize for the queue:\n", ex);
+        }
+        super._go();
+    }
+
+    /** Pause the simulation */
+    protected void _pause() {
+        if (!_isSimulationRunning) {
+            System.out.println("Simulation not running.. cannot pause..");
+            return;
+        }
+        try {
+            _director.pause();
+        } catch (Exception ex) {
+            report("Unable to pause the simulation:\n", ex);
+        }
+        return;
+    }
+
+    /** Resume the simulation */
+    protected void _resume() {
+        if (!_isSimulationRunning) {
+            System.out.println("Simulation not running.. cannot resume..");
+            return;
+        }
+        _director.resume();
+        return;
+    }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected variables                    ////
-
-    /** The manager, created in the init() method. */
-    protected Manager _manager;
 
     /** The top-level composite actor, created in the init() method. */
     protected CompositeActor _toplevel;
@@ -93,21 +217,62 @@ public class PNApplet extends PtolemyApplet {
      *  init() method. */
     protected BasePNDirector _director;
 
+    /** True if the initial queue capacity has been given via an applet
+     *  parameter.  Note that this is set by the init() method.
+     */
+    protected boolean _queuesizegiven = false;
+    
+    /** The entry box containing the number of iterations, or null if
+     *  there is none.
+     */
+    protected TextField _queuesizebox;
+
+    /** True if the current simulation is running */
+    protected boolean _isSimulationRunning = false;
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
     private Button _goButton;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       inner classes                              ////
 
-    private class GoButtonListener implements ActionListener {
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    ///////////////////////////////////////////////////////////////////
+    //// QueueSizeBoxListener
+
+    /** Listener for the iterations box.  When the applet user hits
+     *  return, the model executes.
+     */
+    class QueueSizeBoxListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            _go();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// PauseListener
+
+
+    public class PauseListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            _manager.startRun();
+            _pause();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// ResumeListener
+
+
+    public class ResumeListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+            _resume();
         }
     }
 }
-
 
 
 
