@@ -254,7 +254,7 @@ public final class ImageSequence extends Source {
         while(remaining > 0) {
             bytesread = s.read(b, len, remaining);
             if(bytesread == -1) throw new IOException(
-                    "Unexpected EOF");
+                    "Unexpected EOF:" + s);
             remaining -= bytesread;
             len += bytesread;
         }
