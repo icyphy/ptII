@@ -257,6 +257,22 @@ public class UtilityFunctions {
         return returnMatrix;
     }
 
+    /** Create an array that contains the specified element
+     *  repeated the specified number of times.
+     *  @param numberOfTimes The number of times to repeat the element.
+     *  @param element The element to repeat.
+     *  @return A new array containing the specified element repeated the
+     *   specified number of times.
+     */
+    public static ArrayToken repeat(IntToken numberOfTimes, Token element) {
+        int length = numberOfTimes.intValue();
+        Token[] result = new Token[length];
+        for(int i = 0; i < length; i++) {
+            result[i] = element;
+        }
+        return new ArrayToken(result);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
