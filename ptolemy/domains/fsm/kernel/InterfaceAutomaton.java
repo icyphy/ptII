@@ -1016,11 +1016,11 @@ public class InterfaceAutomaton extends FSMActor {
         Set thatOutputs = automaton.outputNameSet();
         shared.retainAll(thatOutputs);
 
-        Set shared1 = this.outputNameSet();
+        Set sharedOutputNameSet = this.outputNameSet();
         Set thatInputs = automaton.inputNameSet();
-        shared1.retainAll(thatInputs);
+        sharedOutputNameSet.retainAll(thatInputs);
 
-        shared.addAll(shared1);
+        shared.addAll(sharedOutputNameSet);
 
         // compute input, output, and internal transitions
         _inputNames = this.inputNameSet();
