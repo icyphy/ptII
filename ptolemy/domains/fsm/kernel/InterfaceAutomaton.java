@@ -32,6 +32,7 @@ package ptolemy.domains.fsm.kernel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -576,7 +577,7 @@ public class InterfaceAutomaton extends FSMActor {
         Set set = new HashSet();
         Iterator iterator = inputPortList().iterator();
         while (iterator.hasNext()) {
-            IOPort port = (IOPort)iterator.next();
+            Port port = (Port)iterator.next();
             set.add(port.getName());
         }
         return set;
@@ -655,10 +656,61 @@ public class InterfaceAutomaton extends FSMActor {
         Set set = new HashSet();
         Iterator iterator = outputPortList().iterator();
         while (iterator.hasNext()) {
-            IOPort port = (IOPort)iterator.next();
+            Port port = (Port)iterator.next();
             set.add(port.getName());
         }
         return set;
+    }
+
+    /** Project this automaton into the specified one.
+     *  More specifically, this method converts the input and output
+     *  transitions of this automaton that do not overlap with the specified
+     *  one to internal transitions, and remove the corresponding ports.
+     *  @param automaton The interface automaton to which this automaton will
+     *   be projected.
+     *  @exception IllegalActionException If this or the specified automaton
+     *   is not consistent. For example, missing ports.
+     */
+    public void project(InterfaceAutomaton automaton)
+            throws IllegalActionException {
+        this._check();
+        automaton._check();
+
+        Set nameDifference = inputNameSet();
+        nameDifference.addAll(outputNameSet());
+
+        nameDifference.removeAll(automaton.inputNameSet());
+        nameDifference.removeAll(automaton.outputNameSet());
+
+        // convert transitions to internal
+        Iterator relations = relationList().iterator();
+        while (relations.hasNext()) {
+            InterfaceAutomatonTransition transition =
+                (InterfaceAutomatonTransition)relations.next();
+            String label = transition.getLabel();
+            String name = label.substring(0, label.length()-1);
+            if (nameDifference.contains(name)) {
+                int type = transition.getType();
+                if ((type == InterfaceAutomatonTransition._INPUT_TRANSITION) ||
+                    (type == InterfaceAutomatonTransition._OUTPUT_TRANSITION)) {
+                    transition.label.setExpression(name + ";");
+                }
+            }
+        }
+
+        // remove ports
+        Iterator portNames = nameDifference.iterator();
+        while (portNames.hasNext()) {
+            String portName = (String)portNames.next();
+            Port port = getPort(portName);
+            try {
+                port.setContainer(null);
+            } catch (NameDuplicationException nameDuplication) {
+                // This cannot happen since the name is set to null.
+                throw new InternalErrorException("Cannot set container to "
+                        + "null.");
+            }
+        }
     }
 
     /** Return the reacheable state pairs in the specified alternating
@@ -841,7 +893,7 @@ public class InterfaceAutomaton extends FSMActor {
 
                 // change port or parameter name
                 if (ending.equals("?") || ending.equals("!")) {
-                    TypedIOPort port = (TypedIOPort)getPort(oldLabelName);
+                    Port port = (Port)getPort(oldLabelName);
                     if (port != null) {
                         port.setName(newLabelName);
                     }
@@ -859,7 +911,7 @@ public class InterfaceAutomaton extends FSMActor {
         // ports
         iterator = portList().iterator();
         while (iterator.hasNext()) {
-            TypedIOPort port = (TypedIOPort)iterator.next();
+            Port port = (Port)iterator.next();
             String oldName = port.getName();
             String newName = (String)nameMap.get(oldName);
             if (newName != null) {

@@ -48,8 +48,10 @@ computes the unique maximal alternating simulation relation from the
 sub automaton to the super one, then lists all the state pairs in the relation
 to stdout. The usage is:
 <pre>
-java ptolemy.domains.fsm.kernel.test.AlternatingSimulation <super_automaton.xml> <sub_automaton.xml>
+java ptolemy.domains.fsm.kernel.test.AlternatingSimulation <-reacheable> <super_automaton.xml> <sub_automaton.xml>
 </pre>
+-reacheable indicates to only list the reacheable alternating simulation state
+pairs. This flag is optional.
 
 @author Yuhong Xiong
 @version $Id$
@@ -117,7 +119,8 @@ public class AlternatingSimulation {
     ////                         public methods                    ////
 
     /** Pass the command line arguments to the constructor. The command line
-     *  arguments are two MoML files for InterfaceAutomaton.
+     *  arguments are an optional flag and two MoML files for
+     *  interface automaton.
      *  @param args The command line arguments.
      */
     public static void main (String[] args) {

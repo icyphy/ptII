@@ -150,7 +150,8 @@ public class InterfaceAutomatonTransition extends Transition {
                     } catch (NameDuplicationException exception) {
                         // should not happen
                         throw new InternalErrorException(
-                                "InterfaceAutomatonTransition.attributeChanged:\n"
+                                "InterfaceAutomatonTransition."
+                                + "attributeChanged:\n"
                                 + "Cannot create Parameter for internal "
                                 + "transition:\n"
                                 + exception.getMessage());

@@ -51,6 +51,7 @@ JSRCS = \
         Compose.java \
 	DeadlockStates.java \
         GetInfo.java \
+	Project.java \
 	ZeroOneSource.java
 
 # Non-graphical Java tests written in Tcl
