@@ -218,12 +218,3 @@ public class DEReceiver implements Receiver {
     // List for storing tokens.  Access with clear(), insertFirst(), take().
     private LinkedList _tokens = new LinkedList();
 }
-
-
-
-
-
-
-
-
-

@@ -250,8 +250,9 @@ public class DEIOPort extends IOPort {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // List of ports with lower priority than this one.  I.e., events at
-    // this port should be triggered before those at ports in this list.
+    // List of ports with lower (FIXME: higher ?) priority than this one.  
+    // I.e., events at this port should be triggered before those at ports 
+    // in this list.
     private LinkedList beforeList = new LinkedList();
 
     // List of ports triggered immediately by this input port.
