@@ -44,9 +44,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// HammingCoder
 /**
-Encode the information symbols into Hamming code. 
-Let <i>k</i> denotes parameter <i>uncodeBlockSize</i> and <i>n</i> denotes 
-parameter <i>codeBlockSize</i>. During each firing, the actor consumes 
+Encode the information symbols into Hamming code.
+Let <i>k</i> denotes parameter <i>uncodeBlockSize</i> and <i>n</i> denotes
+parameter <i>codeBlockSize</i>. During each firing, the actor consumes
 <i>k</i> bits and encode them into a block of code with length <i>n</i>.
 The rate of the code is <i>k/n</i>.
 <p>
@@ -68,7 +68,7 @@ Each column of H must be one of the non-zero <i>n</i> = 2<sup><i>m</i></sup> - 1
 combinations of <i>m</i> bits.
 <p>
 To generate a Hamming code, the <i>k</i> information bits is considered
-as a row vector <i><u>X</u></i>. Its Hamming code is 
+as a row vector <i><u>X</u></i>. Its Hamming code is
 <i><u>Y</u></i> = <i><u>X</u></i> * G.
 Hence <i><u>Y</u></i> is a row vector of length <i>n</i>. The result is
 then sent to the output port in sequence.
@@ -115,14 +115,14 @@ public class HammingCoder extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
-    /** Integer defining the uncode block size. It should be a positive 
+
+    /** Integer defining the uncode block size. It should be a positive
      *  integer. Its default value is the integer 4.
      */
     public Parameter uncodeBlockSize;
-    
+
     /** Integer defining the Hamming code block size.
-     *  This parameter should be a non-negative integer. 
+     *  This parameter should be a non-negative integer.
      *  Its default value is the integer 7.
      */
     public Parameter codeBlockSize;
@@ -149,18 +149,19 @@ public class HammingCoder extends Transformer {
             // set the output production rate.
             _outputRate.setToken(new IntToken(_codeSizeValue));
         } else if (attribute == uncodeBlockSize) {
-            _uncodeSizeValue = ((IntToken)uncodeBlockSize.getToken()).intValue();
+            _uncodeSizeValue =
+                ((IntToken)uncodeBlockSize.getToken()).intValue();
             if (_uncodeSizeValue < 1 ) {
                 throw new IllegalActionException(this,
                         "uncodeBlockSize must be non-negative.");
             }
             // Set a flag indicating the private variables
-            // _uncodeSizeValue and/or _codeSizeValue is invalid, 
-            // but do not compute the value until all parameters 
+            // _uncodeSizeValue and/or _codeSizeValue is invalid,
+            // but do not compute the value until all parameters
             // have been set.
             _parameterInvalid = true;
             // Set the input comsumption rate.
-            _inputRate.setToken(new IntToken(_uncodeSizeValue)); 
+            _inputRate.setToken(new IntToken(_uncodeSizeValue));
         } else {
             super.attributeChanged(attribute);
         }
@@ -186,7 +187,7 @@ public class HammingCoder extends Transformer {
             }
             // Generate P.
             _parityMatrix = new int[_uncodeSizeValue][_order];
-            
+
             int flag = 0;
             int index = 0;
             for (int i = 1; i <= _codeSizeValue; i ++) {
@@ -206,12 +207,12 @@ public class HammingCoder extends Transformer {
         // Read from the input; set up output size.
         Token[] inputToken = (Token[])input.get(0, _uncodeSizeValue);
         BooleanToken[] result = new BooleanToken[_codeSizeValue];
-        
+
         // Convert the first "_uncodeSizeValue" tokens to binaries.
         for (int i = 0; i < _uncodeSizeValue; i++) {
             result[i] = (BooleanToken)inputToken[i];
         }
-         
+
         // Compute parities.
         int[] parity = new int[_order];
         // Initialize.
@@ -220,18 +221,18 @@ public class HammingCoder extends Transformer {
         }
         for (int i = 0; i < _uncodeSizeValue; i++) {
             for (int j = 0; j < _order; j++) {
-                parity[j] = parity[j] ^ 
+                parity[j] = parity[j] ^
                     ((result[i].booleanValue() ? 1:0) & _parityMatrix[i][j]);
             }
         }
-        
+
         // Send the parity results to the output.
         for (int i = 0; i < _order; i++) {
             result[i + _uncodeSizeValue] = new BooleanToken((parity[i] == 1));
         }
         output.broadcast(result, result.length);
     }
-    
+
     //////////////////////////////////////////////////////////////
     ////           private variables                          ////
 
@@ -243,10 +244,10 @@ public class HammingCoder extends Transformer {
 
     // Uncode block length.
     private int _uncodeSizeValue;
-    
+
     // Hamming codeword length.
     private int _codeSizeValue;
-    
+
     // Order of the Hamming code.
     private int _order;
 
@@ -256,5 +257,4 @@ public class HammingCoder extends Transformer {
     // A flag indicating that the private variable
     // _inputNumber is invalid.
     private transient boolean _parameterInvalid = true;
-
 }

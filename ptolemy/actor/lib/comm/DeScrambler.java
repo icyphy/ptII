@@ -147,7 +147,7 @@ public class DeScrambler extends Transformer {
         boolean inputTokenValue = inputToken.booleanValue();
         int reg = _latestShiftReg << 1;
         // Put the input in the low-order bit.
-        reg =reg ^ (inputTokenValue ? 1:0);
+        reg = reg ^ (inputTokenValue ? 1:0);
 
         // Find the parity of "masked".
         int masked = mask & reg;
@@ -192,5 +192,5 @@ public class DeScrambler extends Transformer {
 
     // Updated state of the shift register.
     private int _latestShiftReg;
-    
+
 }

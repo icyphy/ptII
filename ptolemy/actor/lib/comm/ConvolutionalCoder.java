@@ -241,7 +241,7 @@ public class ConvolutionalCoder extends Transformer {
         for (int i = 0; i < _inputNumber; i++) {
             reg = reg << 1;
             BooleanToken input = (BooleanToken)inputToken[i];
-                reg = reg | (input.booleanValue() ? 1:0);
+            reg = reg | (input.booleanValue() ? 1:0);
         }
         _latestShiftReg = reg;
 

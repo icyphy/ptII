@@ -54,16 +54,16 @@ parities for the corresponding convolutional encoder.
 The <i>uncodeBlockSize</i> is the input rate of the encoder, and it is
 actually the output rate of the decoder.
 <p>
-The decoder tries to "guess" the most likely input sequence of the 
+The decoder tries to "guess" the most likely input sequence of the
 encoder by searching all possibilities and computing the "distance"
 between the codewords they produce and the received ones. The one
 that makes the minimum distance is the most likely input sequence.
 <p>
 There are 2 choices offered in this actor to compute such "distance".
 If it the parameter <i>softDecoding</i> is set to be false, the input
-port will accept boolean tokens and compute the Hamming distance. 
+port will accept boolean tokens and compute the Hamming distance.
 If the parameter <i>softDecoding</i> is set to be true, the input port
-will accept double tokens and compute the Euclidean distance. 
+will accept double tokens and compute the Euclidean distance.
 The parameter <i>amplitude</i> should be a double array of length 2.
 The first element specifies the amplitude of "true" input. The second
 element specifies the amplitude of "false" input.
@@ -126,7 +126,7 @@ public class ViterbiDecoder extends Transformer {
         softDecoding = new Parameter(this, "softDecoding");
         softDecoding.setExpression("false");
         softDecoding.setTypeEquals(BaseType.BOOLEAN);
-        
+
         amplitude = new Parameter(this, "amplitude");
         amplitude.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         amplitude.setExpression("{1.0, 0.0}");
@@ -172,7 +172,7 @@ public class ViterbiDecoder extends Transformer {
      *  soft decoding.
      */
     public Parameter softDecoding;
-    
+
     /** This parameter should be a double array of length 2. The first
      *  element defines the amplitude of "true" input. The second element
      *  defines the amplitude of "false" input.
@@ -262,16 +262,17 @@ public class ViterbiDecoder extends Transformer {
             ArrayToken ampToken = ((ArrayToken)amplitude.getToken());
             if (ampToken.length() != 2) {
                 throw new IllegalActionException(this,
-                    "Invalid amplitudes for soft decoding!");
+                        "Invalid amplitudes for soft decoding!");
             }
             _trueAmp = ((DoubleToken)ampToken.getElement(0)).doubleValue();
             _falseAmp = ((DoubleToken)ampToken.getElement(1)).doubleValue();
             if (_trueAmp == _falseAmp) {
                 throw new IllegalActionException(this,
-                    "Amplitudes for true input and false input cannot be same!");    
+                        "Amplitudes for true input and false input cannot "
+                        + "be the same!");
             }
         }
-            
+
         if (_inputNumberInvalid) {
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,
@@ -341,17 +342,17 @@ public class ViterbiDecoder extends Transformer {
                 }
             }
         }
-        
+
         if (_depthInvalid) {
             _path = new int[_rowNum][_depth + 1];
             _tempPath = new int[_rowNum][_depth + 1];
             for (int i = 0; i < _rowNum; i ++) {
-                 for (int j = 0; j < _depth; j ++) {
-                     _path[i][j] = 0;
-                     _tempPath[i][j] = 0;
-                 }
+                for (int j = 0; j < _depth; j ++) {
+                    _path[i][j] = 0;
+                    _tempPath[i][j] = 0;
+                }
             }
-            _depthInvalid = false;   
+            _depthInvalid = false;
         }
 
         // Read from the input port.
@@ -371,14 +372,15 @@ public class ViterbiDecoder extends Transformer {
                         y[i] = ((DoubleToken)inputToken[i]).doubleValue();
                     }
                     d = _computeSoftDistance(y, _trueAmp, _falseAmp,
-                        _truthTable[state][colIndex][0], _maskNumber);
+                            _truthTable[state][colIndex][0], _maskNumber);
                 } else {
                     boolean[] y = new boolean[_maskNumber];
                     for (int i = 0; i < _maskNumber; i++) {
                         y[i] = ((BooleanToken)inputToken[i]).booleanValue();
                     }
-                    d = (double)(_computeHardDistance(y, _truthTable[state][colIndex][0],
-                        _maskNumber));
+                    d = (double)(_computeHardDistance(y,
+                            _truthTable[state][colIndex][0],
+                            _maskNumber));
                 }
                 // The previous state for that possibility.
                 int oldState = _truthTable[state][colIndex][1];
@@ -510,7 +512,7 @@ public class ViterbiDecoder extends Transformer {
         }
         return hammingDistance;
     }
-    
+
     /** Compute the Euclidean distance given by the datum received from
      *  the input port and the value in the truthTable.
      *  @param y Array of the double-type numbers received from
@@ -522,8 +524,8 @@ public class ViterbiDecoder extends Transformer {
      *  @param maskNum The length of "y" and "truthValue".
      *  @return The distance.
      */
-    private double _computeSoftDistance( double[] y, double trueAmp,
-        double falseAmp, int truthValue, int maskNum) {
+    private double _computeSoftDistance(double[] y, double trueAmp,
+            double falseAmp, int truthValue, int maskNum) {
         double distance = 0.0;
 
         for (int i = 0; i < maskNum; i ++) {
@@ -538,7 +540,7 @@ public class ViterbiDecoder extends Transformer {
             // Euclidean distance for soft decoding. Here we
             // actually compute the square of the Euclidean distance.
             distance = distance
-                + java.lang.Math.pow(y[i] - truthAmp, 2); 
+                + java.lang.Math.pow(y[i] - truthAmp, 2);
         }
         return distance;
     }
@@ -576,7 +578,7 @@ public class ViterbiDecoder extends Transformer {
 
     // Decoding mode.
     private boolean _mode;
-    
+
     // Amplitudes for soft decoding.
     private double _trueAmp;
     private double _falseAmp;
@@ -600,7 +602,7 @@ public class ViterbiDecoder extends Transformer {
     // A flag indicating that the private variable
     // _inputNumber is invalid.
     private transient boolean _inputNumberInvalid = true;
-    
+
     // A flag indicating that the the private variable
     // _depth is invalid.
     private transient boolean _depthInvalid = true;
