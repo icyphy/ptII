@@ -64,7 +64,6 @@ JSRCS = \
 	IllegalActionException.java \
 	InternalErrorException.java \
 	InvalidStateException.java \
-	LibraryMarkerAttribute.java \
 	Nameable.java \
 	NamedList.java \
 	NamedObj.java \
@@ -74,11 +73,12 @@ JSRCS = \
 	RecorderListener.java \
 	Settable.java \
 	SingletonAttribute.java \
+	SingletonConfigurableAttribute.java \
 	StreamChangeListener.java \
 	StreamListener.java \
 	StringAttribute.java \
 	StringUtilities.java \
-	TransientAttribute.java \
+	TransientSingletonConfigurableAttribute.java \
 	UserSettable.java \
 	ValueListener.java \
 	Workspace.java

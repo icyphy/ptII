@@ -70,9 +70,9 @@ JSIMPLE_TESTS = \
 	NamedObj.tcl \
 	NoSuchItemException.tcl \
 	PtolemyThread.tcl \
-	SingletonAttribute.tcl \
+	SingletonConfigurableAttribute.tcl \
 	StringUtilities.tcl \
-	TransientAttribute.tcl \
+	TransientSingletonConfigurableAttribute.tcl \
 	Workspace.tcl
 
 # Graphical Java tests that use Tcl.

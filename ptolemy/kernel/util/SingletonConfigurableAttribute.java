@@ -1,4 +1,4 @@
-/* An attribute that replaces any previous instance with the same name.
+/* A configurable attribute that replaces any previous instance.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -34,23 +34,28 @@ import java.io.Writer;
 import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
-//// SingletonAttribute
+//// SingletonConfigurableAttribute
 /**
-This class is an attribute that replaces any previously
-existing SingletonAttribute in the container that has the same name.
+This class is a configurable attribute that replaces any previously
+existing SingletonConfigurableAttribute in the container that has the same name.
+An important use of this class is to describe icons for visual rendition.
+The icons are described in an XML schema called SVG, given in the
+body of a configure XML element.  The icon description is named
+"_iconDescription", and placing such a description into any container
+replaces any previous description in the container.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
 
-public class SingletonAttribute extends Attribute {
+public class SingletonConfigurableAttribute extends ConfigurableAttribute {
 
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
      *  workspace directory.
      *  Increment the version number of the workspace.
      */
-    public SingletonAttribute() {
+    public SingletonConfigurableAttribute() {
         super();
     }
 
@@ -62,14 +67,14 @@ public class SingletonAttribute extends Attribute {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the attribute.
      */
-    public SingletonAttribute(Workspace workspace) {
+    public SingletonConfigurableAttribute(Workspace workspace) {
 	super(workspace);
     }
 
     /** Construct an attribute with the given container and name.
      *  If an attribute already exists with the same name as the one
      *  specified here, that is an instance of class 
-     *  SingletonAttribute (or a derived class), then that
+     *  SingletonConfigurableAttribute (or a derived class), then that
      *  attribute is removed before this one is inserted in the container.
      *  @param container The container.
      *  @param name The name of this attribute.
@@ -77,9 +82,9 @@ public class SingletonAttribute extends Attribute {
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   attribute with this name, and the class of that container is not
-     *   SingletonAttribute.
+     *   SingletonConfigurableAttribute.
      */
-    public SingletonAttribute(NamedObj container, String name)
+    public SingletonConfigurableAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException  {
 	super(container, name);
     }
@@ -88,10 +93,10 @@ public class SingletonAttribute extends Attribute {
     ////                         public methods                    ////
 
     /** Remove any previous attribute in the container that has
-     *  class SingletonAttribute and the same name as this
+     *  class SingletonConfigurableAttribute and the same name as this
      *  attribute, and then call the base class method to set the container.
      *  If the container already contains an attribute with the same name
-     *  that is not of class SingletonAttribute, then throw an
+     *  that is not of class SingletonConfigurableAttribute, then throw an
      *  exception and do not make any changes.  Similarly, if the container
      *  is not in the same workspace as this attribute, throw an exception.
      *  If this attribute is already contained by the NamedObj, do nothing.
@@ -116,14 +121,14 @@ public class SingletonAttribute extends Attribute {
      *   the proposed container would result in recursive containment.
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute that is of class
-     *   SingletonAttribute.
+     *   SingletonConfigurableAttribute.
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
         Attribute previous = null;
         if (container != null) {
             previous = container.getAttribute(getName());
-            if (previous instanceof SingletonAttribute) {
+            if (previous instanceof SingletonConfigurableAttribute) {
                 previous.setContainer(null);
             }
         }
@@ -131,13 +136,13 @@ public class SingletonAttribute extends Attribute {
             super.setContainer(container);
         } catch (IllegalActionException ex) {
             // Restore previous.
-            if (previous instanceof SingletonAttribute) {
+            if (previous instanceof SingletonConfigurableAttribute) {
                 previous.setContainer(container);
             }
             throw ex;
         } catch (NameDuplicationException ex) {
             // Restore previous.
-            if (previous instanceof SingletonAttribute) {
+            if (previous instanceof SingletonConfigurableAttribute) {
                 previous.setContainer(container);
             }
             throw ex;

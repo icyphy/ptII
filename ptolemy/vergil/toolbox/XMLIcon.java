@@ -84,8 +84,9 @@ public class XMLIcon extends EditorIcon {
             // FIXME  This listener should set _paintedList to null.
             //        _description.removeValueListener(_updateListener);
         }
-        SingletonAttribute description =
-            (SingletonAttribute)container.getAttribute("iconDescription");
+        SingletonConfigurableAttribute description =
+            (SingletonConfigurableAttribute)container.getAttribute(
+                    "_iconDescription");
         if(_description != description) {
             _description = description;
             try {

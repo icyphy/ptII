@@ -35,7 +35,6 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
-import ptolemy.kernel.util.LibraryMarkerAttribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -52,8 +51,6 @@ import javax.swing.JScrollPane;
 //// TreeTableau
 /**
 This class provides a tree view for ptolemy models.
-
-FIXME: more info.
 
 @author  Steve Neuendorffer and Edward A. Lee
 @version $Id$

@@ -46,7 +46,7 @@
     <!-- FIXME: text editor, plot data tableau, etc. -->
   </entity>
 
-  <!-- Default director library. -->
+  <!-- Default utilities library. -->
   <class name="utilities" extends="ptolemy.moml.EntityLibrary">
     <configure>
       <?moml

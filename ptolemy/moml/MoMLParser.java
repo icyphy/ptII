@@ -1807,8 +1807,7 @@ public class MoMLParser extends HandlerBase {
             input.close();
             // Add a URL attribute to the toplevel to indicate where it was
             // read from.
-            URLAttribute attribute =
-                     new URLAttribute(toplevel, toplevel.uniqueName("url"));
+            URLAttribute attribute = new URLAttribute(toplevel, "_url");
             attribute.setURL(xmlFile);
 
             return toplevel;

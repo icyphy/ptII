@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -48,9 +48,9 @@ element.  For example,
   &lt;configure source="url"&gt;xxx&lt;/configure&gt;
 &lt;/property&gt;
 </pre>
-The value of this property, obtained via the getValue() method,
-will be whatever text is contained by the referenced URL, followed
-by the text "xxx".
+The value of this property, obtained via the value() method,
+will be whatever text is contained by the referenced URL (which
+is optional), followed by the text "xxx".
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -74,7 +74,7 @@ public class ConfigurableAttribute
      *  use the default workspace.
      *  Add the attribute to the workspace directory.
      *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
+     *  @param workspace The workspace that will list the attribute.
      */
     public ConfigurableAttribute(Workspace workspace) {
 	super(workspace);
@@ -98,24 +98,53 @@ public class ConfigurableAttribute
 
     /** Configure the object with data from the specified input source
      *  (a URL) and/or textual data.  The input source, if any, is assumed
-     *  to be textual data as well.
+     *  to contain textual data as well.  Note that the URL is not read
+     *  until the value() method is called.
      *  @param base The base relative to which references within the input
      *   are found, or null if this is not known, or there is none.
      *   This argument is ignored in this method.
      *  @param source The input source, which specifies a URL.
      *  @param text Configuration information given as text.
-     *  @exception Exception If the configuration source cannot be read
-     *   or if the configuration information is incorrect.
+     *  @exception Exception Not thrown in this base class.
      */
     public void configure(URL base, String source, String text)
             throws Exception {
+        _base = base;
         _source = source;
         _text = text;
     }
 
+    /** Return the base specified in the most recent call to the
+     *  configure() method, or null if none.
+     *  @return The base with respect to which the relative references
+     *   in the source file should be interpreted.
+     */
+    public URL getBase() {
+        return _base;
+    }
+
+    /** Return the source specified in the most recent call to the
+     *  configure() method, or null if none.
+     *  @return A URL specifying an external source for configure
+     *   information.
+     */
+    public String getSource() {
+        return _source;
+    }
+
+    /** Return the text specified in the most recent call to the
+     *  configure() method, or null if none.
+     *  @return Text giving configure information.
+     */
+    public String getText() {
+        return _text;
+    }
+
     /** Return the value given by the configure tag.  This is the text
      *  read from the specified URL (if any), followed by the text
-     *  specified in the body of the configure element.
+     *  specified in the body of the configure element.  Note that the
+     *  URL given in the configure() method, if any, is read each time
+     *  this method is called.
      *  @return The value set in the configure tag.
      *  @exception IOException If the URL given in the configure method
      *   (if any) cannot be read.
@@ -123,7 +152,7 @@ public class ConfigurableAttribute
     public String value() throws IOException {
         StringBuffer value = new StringBuffer();
 	// If a source is given, read its data.
-        if (_source != null && !_source.equals("")) {
+        if (_source != null && !_source.trim().equals("")) {
             URL textFile = new URL(_source);
             InputStream stream = textFile.openStream();
             BufferedReader reader = new BufferedReader(
@@ -134,6 +163,8 @@ public class ConfigurableAttribute
                 value.append("\n");
                 line = reader.readLine();
             }
+            reader.close();
+            // NOTE: Do we need to close both?  Java docs don't say.
             stream.close();
         }
         if (_text != null) {
@@ -157,8 +188,12 @@ public class ConfigurableAttribute
             throws IOException {
         super._exportMoMLContents(output, depth);
         String sourceSpec = "";
-	if(_source != null && !_source.equals("")) {
+	if(_source != null && !_source.trim().equals("")) {
             sourceSpec = " source=\"" + _source + "\"";
+            if (_text == null) {
+                output.write(_getIndentPrefix(depth)
+                        + "<configure" + sourceSpec + "/>\n");
+            }
         }
         if (_text != null) {
             output.write(_getIndentPrefix(depth)
@@ -170,6 +205,9 @@ public class ConfigurableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+
+    // The base specified in the configure() method.
+    private URL _base;
 
     // The URL from which configure data is read.
     private String _source;

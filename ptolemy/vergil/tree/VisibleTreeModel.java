@@ -32,7 +32,7 @@ package ptolemy.vergil.tree;
 
 import ptolemy.actor.Director;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.LibraryMarkerAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.gui.MessageHandler;
 import ptolemy.moml.EntityLibrary;
@@ -51,7 +51,7 @@ import javax.swing.tree.TreePath;
 A tree model for the Vergil library panel.  This is a tree model that
 shows entities, ports, relations, and visible attributes.  Attributes
 that are not marked visible are not shown. A composite entity that contains
-an instance of LibraryMarkerAttribute is treated as a sublibrary.
+an attribute with name "_library" is treated as a sublibrary.
 A composite entity without such an attribute is treated as an atomic entity.
 This is designed for use with JTree, which renders the hierarchy.
 
@@ -77,6 +77,7 @@ public class VisibleTreeModel extends EntityTreeModel {
      *  @return A node, or null if there is no such child.
      */
     public Object getChild(Object parent, int index) {
+	if(index > getChildCount(parent)) return null;
         // FIXME: How do we determine whether an attribute is visible?
         // Here, we only show directors.
 	if(!(parent instanceof NamedObj)) return null;
@@ -104,7 +105,6 @@ public class VisibleTreeModel extends EntityTreeModel {
      *  @return The number of children.
      */
     public int getChildCount(Object parent) {
-        // FIXME: Only doing attributes for now.
 	if (!(parent instanceof NamedObj)) return 0;
         NamedObj obj = (NamedObj)parent;
         // FIXME: How do we determine whether an attribute is visible?
@@ -141,10 +141,20 @@ public class VisibleTreeModel extends EntityTreeModel {
         // of the library prematurely.
         if (object instanceof EntityLibrary) return false;
 
-        // If the object is not an instance of NamedObj, then it is certainly
-        // atomic.
+        // If the object is not an instance of NamedObj,
+        // then it is certainly atomic.
 	if (!(object instanceof NamedObj)) return true;
         NamedObj obj = (NamedObj)object;
+
+        // If the object is an instance of CompositeEntity, but does not
+        // contain an attribute named "_library", then treat it as an
+        // atomic entity.
+        if (obj instanceof CompositeEntity) {
+            Attribute marker = obj.getAttribute("_library");
+            if (marker == null) {
+                return true;
+            }
+        }
 
         // FIXME: Only doing attributes for now.
         // FIXME: How do we determine whether an attribute is visible?

@@ -1227,8 +1227,9 @@ public class NamedObj implements Nameable, Debuggable,
      */
     protected void _setDefaultIcon(String description) {
 	try {
-	    TransientAttribute icon
-                = new TransientAttribute(this, "iconDescription");
+	    TransientSingletonConfigurableAttribute icon
+                    = new TransientSingletonConfigurableAttribute(
+                    this, "_iconDescription");
             icon.configure(null, null, description);
 	} catch (Exception ex) {
 	    throw new InternalErrorException(

@@ -41,12 +41,14 @@ import java.io.Writer;
 An attribute that identifies the URL from which the container was read.
 This attribute is not persistent.  That is, it exports no MoML description.
 This makes sense because it should be set by the code that reads the
-container's specification.
+container's specification.  It is also a singleton, meaning that it will
+replace any previous attribute that has the same name and is an
+instance of the base class, SingletonAttribute.
 
 @author Edward A. Lee
 @version $Id$
 */
-public class URLAttribute extends Attribute {
+public class URLAttribute extends SingletonAttribute {
 
     /** Construct an attribute with the given name contained by the specified
      *  container. The container argument must not be null, or a

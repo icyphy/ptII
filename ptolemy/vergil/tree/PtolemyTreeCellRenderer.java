@@ -89,7 +89,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
             if (!(object instanceof EntityLibrary)) {
 		// Only if an object has an icon description is it
 		// rendered in the tree.
-		if(object.getAttribute("iconDescription") != null) {
+		if(object.getAttribute("_iconDescription") != null) {
 		    // FIXME: may want to use another type of icon
 		    // FIXME: this code is the same as in 
 		    // EntityController.

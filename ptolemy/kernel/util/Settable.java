@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -34,7 +34,25 @@ package ptolemy.kernel.util;
 //// Settable
 /**
 This is an interface for attributes that can have their values
-externally set.
+externally set.  An attribute class that implements this interface has to
+be able to have a value set by a string, via the setExpression()
+method.  A string representation is returned by the getExpression()
+method.  These values are called "expressions" for historical
+reasons, although this interface, and all uses of it, regard the
+values merely as strings.
+<p>
+In addition, an attribute class that implements this interface
+needs to maintain a list of listeners that are informed whenever
+the value of the attribute changes.  It should inform those
+listeners whenever setExpression() is called.
+<p>
+Among other uses, this interface marks attributes whose value
+can be set via the value attribute of a MoML property element.
+For example, if class XXX implements Settable, then the following
+is valid MoML:
+<pre>
+  &lt;property name="xxx" class="XXX" value="yyy"/&gt;
+</pre>
 
 @author Edward A. Lee
 @version $Id$
@@ -46,7 +64,10 @@ public interface Settable extends Nameable {
     ////                         public methods                    ////
 
     /** Add a listener to be notified when the value of this settable
-     *  object changes.
+     *  object changes. An implementation of this method should ignore
+     *  the call if the specified listener is already on the list of
+     *  listeners.  In other words, it should not be possible for the
+     *  same listener to be notified twice of a value update.
      *  @param listener The listener to add.
      */
     public void addValueListener(ValueListener listener);
@@ -57,7 +78,7 @@ public interface Settable extends Nameable {
      */
     public String getExpression();
 
-    /** Remove a listener from the list of listeners that is
+    /** Remove a listener from the list of listeners that are
      *  notified when the value of this variable changes.  If no such listener
      *  exists, do nothing.
      *  @param listener The listener to remove.

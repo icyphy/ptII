@@ -276,8 +276,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 			    // by inserting an attribute into both the model
 			    // and the effigy.
 			    URLAttribute url =
-				new URLAttribute(toplevel,
-					     toplevel.uniqueName("url"));
+				    new URLAttribute(toplevel, "_url");
 			    url.setURL(in);
 		    
 			    // This is used by TableauFrame in its

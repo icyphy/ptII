@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (bilung@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -34,7 +34,7 @@ import java.io.Writer;
 import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
-//// TransientAttribute
+//// TransientSingletonConfigurableAttribute
 /**
 This class is a nonpersistent configurable singleton attribute.
 By "nonpersistent" we mean that it does not export MoML.
@@ -47,14 +47,15 @@ in MoML.
 @version $Id$
 */
 
-public class TransientAttribute extends SingletonAttribute {
+public class TransientSingletonConfigurableAttribute
+         extends SingletonConfigurableAttribute {
 
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
      *  workspace directory.
      *  Increment the version number of the workspace.
      */
-    public TransientAttribute() {
+    public TransientSingletonConfigurableAttribute() {
         super();
     }
 
@@ -66,23 +67,24 @@ public class TransientAttribute extends SingletonAttribute {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the attribute.
      */
-    public TransientAttribute(Workspace workspace) {
+    public TransientSingletonConfigurableAttribute(Workspace workspace) {
 	super(workspace);
     }
 
-    /** Construct a library with the given container and name.
+    /** Construct an attribute with the given container and name.
      *  If an attribute already exists with the same name as the one
-     *  specified here, and of class ConfigurableAttribute, then that
+     *  specified here, and of class SingletonConfigurableAttribute, then that
      *  attribute is removed before this one is inserted in the container.
      *  @param container The container.
      *  @param name The name of this attribute.
-     *  @exception IllegalActionException If the entity cannot be contained
+     *  @exception IllegalActionException If the attribute cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   attribute with this name, and the class of that container is not
-     *   ConfigurableAttribute.
+     *   SingletonConfigurableAttribute.
      */
-    public TransientAttribute(NamedObj container, String name)
+    public TransientSingletonConfigurableAttribute(
+            NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException  {
 	super(container, name);
     }
@@ -92,7 +94,6 @@ public class TransientAttribute extends SingletonAttribute {
 
     /** Write a MoML description of this object, which in this case is
      *  empty.  Nothing is written.
-     *  MoML is an XML modeling markup language.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use instead of the current name.

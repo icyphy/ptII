@@ -58,8 +58,9 @@ for its contents, via a call to getEntity(), numEntities(),
 entityList(), or any related method. You can also force evaluation
 of the MoML by calling populate().  When you export MoML for this
 object, the MoML description of the contents is wrapped in a configure
-element.  This object contains an
-attribute of class LibraryMarkerAttribute, to mark it as a library.
+element.  This object contains an attribute with name "_library", which
+marks it as a library.  This is used by the library browser in vergil
+to know to expand the composite entity.
 <p>
 The contents of the library can be entities, ports, relations, or
 attributes.  I.e., it can contain anything contained by a CompositeEntity.
@@ -157,7 +158,7 @@ public class EntityLibrary
             // marker.  This is a bad idea.  This calls getEntity(), which
             // triggers populate() on the library, defeating deferred
             // evaluation.
-            new LibraryMarkerAttribute(this, "_libraryMarker");
+            new Attribute(this, "_library");
         } catch (KernelException ex) {
             throw new InternalErrorException(ex.toString());
         }
@@ -177,7 +178,7 @@ public class EntityLibrary
             // marker.  This is a bad idea.  This calls getEntity(), which
             // triggers populate() on the library, defeating deferred
             // evaluation.
-            new LibraryMarkerAttribute(this, "_libraryMarker");
+            new Attribute(this, "_library");
         } catch (KernelException ex) {
             throw new InternalErrorException(ex.toString());
         }
@@ -198,7 +199,7 @@ public class EntityLibrary
         // marker.  This is a bad idea.  This calls getEntity(), which
         // triggers populate() on the library, defeating deferred
         // evaluation.
-        new LibraryMarkerAttribute(this, "_libraryMarker");
+        new Attribute(this, "_library");
     }
 
     ///////////////////////////////////////////////////////////////////

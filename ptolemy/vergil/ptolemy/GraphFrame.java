@@ -36,6 +36,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
@@ -217,7 +218,12 @@ public abstract class GraphFrame extends PtolemyFrame
         _topLibrary = new CompositeEntity(workspace);
         try {
             _topLibrary.setName("topLibrary");
-        } catch (Exception ex) {}
+            // Put a marker in so that this is recognized as a library.
+            new Attribute(_topLibrary, "_library");
+        } catch (Exception ex) {
+            throw new InternalErrorException(
+                    "Library configuration failed: " + ex);
+        }
         if (false) {
             // The model contains a library.
             // FIXME
