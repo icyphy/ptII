@@ -98,7 +98,7 @@ public class ModelTransformer extends SceneTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ModelTransformer.internalTransform("
-			   + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         SootClass objectClass =
             Scene.v().loadClassAndSupport("java.lang.Object");
@@ -129,9 +129,9 @@ public class ModelTransformer extends SceneTransformer {
         SootClass ioportClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedIOPort");
         Type ioportType = RefType.v(ioportClass);
-         SootMethod portSetTypeMethod =
-             SootUtilities.searchForMethodByName(ioportClass,
-                     "setTypeEquals");
+        SootMethod portSetTypeMethod =
+            SootUtilities.searchForMethodByName(ioportClass,
+                    "setTypeEquals");
 
         SootClass parameterClass =
             Scene.v().loadClassAndSupport("ptolemy.data.expr.Parameter");
@@ -194,7 +194,7 @@ public class ModelTransformer extends SceneTransformer {
                 portLocalMap.put(port, local);
                 _createAndSetFieldFromLocal(modelClass, portType,
                         port.getName(), body, local);
-             }
+            }
 
             // now Attributes.
             Local settableLocal = Jimple.v().newLocal("settable",

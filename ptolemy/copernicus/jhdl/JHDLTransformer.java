@@ -73,7 +73,7 @@ class JHDLTransformer extends SceneTransformer {
         // in the classpath.  We call this here so that
         // we find out sooner rather than later.
         try {
-                 byucc.jhdl.Version.GetFullVersion();
+            byucc.jhdl.Version.GetFullVersion();
         } catch (NoClassDefFoundError error) {
             // To test this, run make JHDL_JAR= demo
             throw new NoClassDefFoundError("byucc.jhdl.Version."
@@ -125,7 +125,7 @@ class JHDLTransformer extends SceneTransformer {
      */
     protected void internalTransform(String phaseName, Map options) {
 	System.out.println("JHDLTransformer.internalTransform("
-			   + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
         // Get a bunch of classes that we will need.
         SootClass namedObjClass = Scene.v().loadClassAndSupport(
                 "ptolemy.kernel.util.NamedObj");
@@ -153,14 +153,14 @@ class JHDLTransformer extends SceneTransformer {
 	    Entity theEntity = (Entity) entities.next();
 	    String entityName = theEntity.getName();
 	    String newClassName = ActorTransformer.getInstanceClassName(theEntity,
-									options);
+                    options);
 	    SootClass theClass = Scene.v().loadClassAndSupport(newClassName);
 
 	    List entityPorts = theEntity.portList();
 
 	    // Currently not modifying super class since it breaks on
 	    // the call to super in the constructor
-//  	    _modifySuperClass(theClass);
+            //  	    _modifySuperClass(theClass);
 
             // Add Wire fields for each port.
             _addWireFields(theClass, entityPorts);
@@ -174,7 +174,7 @@ class JHDLTransformer extends SceneTransformer {
             // Add a clock() method, which in JHDL is the action method.
             _addClockMethod(theClass);
 
-//  	    _modifyClockMethod(theClass, entityPorts);
+            //  	    _modifyClockMethod(theClass, entityPorts);
 
 	}
     }
@@ -230,14 +230,14 @@ class JHDLTransformer extends SceneTransformer {
         // in the static initializer before setting the static field.
         // Create that local variable for each member fo the array.
         Local cellInterfaceLocal =
-                Jimple.v().newLocal("_tempCellInterface",
-                RefType.v(cellInterfaceClass));
+            Jimple.v().newLocal("_tempCellInterface",
+                    RefType.v(cellInterfaceClass));
         body.getLocals().add(cellInterfaceLocal);
 
         // Temporary for the array.
         Local interfaceArrayLocal =
-                Jimple.v().newLocal("_tempCellInterfaceArray",
-                interfaceType);
+            Jimple.v().newLocal("_tempCellInterfaceArray",
+                    interfaceType);
         body.getLocals().add(interfaceArrayLocal);
 
         // Get the factory methods used to create the cell interfaces.
@@ -268,24 +268,24 @@ class JHDLTransformer extends SceneTransformer {
 	    // direction. I will need to handle these cases.
 	    if (port.isInput()) {
 		units.insertBefore(Jimple.v().newAssignStmt(
-         	    cellInterfaceLocal, Jimple.v().newStaticInvokeExpr(
-			inFactoryMethod, StringConstant.v(port.getName()),
-			IntConstant.v(32))),
-				   units.getLast());
+                        cellInterfaceLocal, Jimple.v().newStaticInvokeExpr(
+                                inFactoryMethod, StringConstant.v(port.getName()),
+                                IntConstant.v(32))),
+                        units.getLast());
 	    } else {
 		units.insertBefore(Jimple.v().newAssignStmt(
-         	    cellInterfaceLocal, Jimple.v().newStaticInvokeExpr(
-			outFactoryMethod, StringConstant.v(port.getName()),
-			IntConstant.v(32))),
-				   units.getLast());
+                        cellInterfaceLocal, Jimple.v().newStaticInvokeExpr(
+                                outFactoryMethod, StringConstant.v(port.getName()),
+                                IntConstant.v(32))),
+                        units.getLast());
 	    }
 
 	    // Put the element into the array.
 	    units.insertBefore(Jimple.v().newAssignStmt(
-                        Jimple.v().newArrayRef(interfaceArrayLocal,
-                        IntConstant.v(i)),
-                        cellInterfaceLocal),
-			       units.getLast());
+                    Jimple.v().newArrayRef(interfaceArrayLocal,
+                            IntConstant.v(i)),
+                    cellInterfaceLocal),
+                    units.getLast());
 	    i++;
 	}
 
@@ -302,8 +302,8 @@ class JHDLTransformer extends SceneTransformer {
         // Create a new clock method, which is the JHDL
         // equivalent of prefire(), fire(), postfire().
         SootMethod clockMethod = new SootMethod("clock",
-               new LinkedList(), VoidType.v(),
-               Modifier.PUBLIC);
+                new LinkedList(), VoidType.v(),
+                Modifier.PUBLIC);
         theClass.addMethod(clockMethod);
         JimpleBody body = Jimple.v().newBody(clockMethod);
         clockMethod.setActiveBody(body);
@@ -315,26 +315,26 @@ class JHDLTransformer extends SceneTransformer {
         // Insert a call to prefire().
         // We will later inline this method.
         SootMethod prefireMethod =
-                SootUtilities.searchForMethodByName(theClass, "prefire");
+            SootUtilities.searchForMethodByName(theClass, "prefire");
         Stmt prefireStmt =
-                Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(
-                thisLocal, prefireMethod, new LinkedList()));
+            Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(
+                    thisLocal, prefireMethod, new LinkedList()));
         units.add(prefireStmt);
 
         // Insert a call to fire().
         SootMethod fireMethod =
-                SootUtilities.searchForMethodByName(theClass, "fire");
+            SootUtilities.searchForMethodByName(theClass, "fire");
         Stmt fireStmt =
-                Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(
-                thisLocal, fireMethod, new LinkedList()));
+            Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(
+                    thisLocal, fireMethod, new LinkedList()));
         units.add(fireStmt);
 
         // Insert a call to postfire().
         SootMethod postfireMethod =
-                SootUtilities.searchForMethodByName(theClass, "postfire");
+            SootUtilities.searchForMethodByName(theClass, "postfire");
         Stmt postfireStmt =
-                Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(
-                thisLocal, postfireMethod, new LinkedList()));
+            Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(
+                    thisLocal, postfireMethod, new LinkedList()));
         units.add(postfireStmt);
 
         // Insert a return statement.
@@ -374,49 +374,49 @@ class JHDLTransformer extends SceneTransformer {
      **/
     private void _addConnectCalls(SootClass theClass, List entityPorts) {
 
-      SootClass cellClass = Scene.v().loadClassAndSupport(
-	  "byucc.jhdl.base.Cell");
-      SootMethod connectMethod = cellClass.getMethod(
-	   "byucc.jhdl.base.Wire connect(java.lang.String,byucc.jhdl.base.Wire)");
-      SootClass wireClass = Scene.v().loadClassAndSupport(
-	   "byucc.jhdl.base.Wire");
-      Type wireType = RefType.v(wireClass);
+        SootClass cellClass = Scene.v().loadClassAndSupport(
+                "byucc.jhdl.base.Cell");
+        SootMethod connectMethod = cellClass.getMethod(
+                "byucc.jhdl.base.Wire connect(java.lang.String,byucc.jhdl.base.Wire)");
+        SootClass wireClass = Scene.v().loadClassAndSupport(
+                "byucc.jhdl.base.Wire");
+        Type wireType = RefType.v(wireClass);
 
-      // iterate over all constructors
-      for(Iterator methods = theClass.getMethods().iterator();
-	  methods.hasNext();) {
-	// get constructor
-	SootMethod constructor = (SootMethod)methods.next();
-	// Ignore things that aren't constructors.
-	if(constructor.getName() != "<init>")
-	  continue;
-	// get body & units
-	JimpleBody body = (JimpleBody) constructor.retrieveActiveBody();
-	Chain units = body.getUnits();
+        // iterate over all constructors
+        for(Iterator methods = theClass.getMethods().iterator();
+            methods.hasNext();) {
+            // get constructor
+            SootMethod constructor = (SootMethod)methods.next();
+            // Ignore things that aren't constructors.
+            if(constructor.getName() != "<init>")
+                continue;
+            // get body & units
+            JimpleBody body = (JimpleBody) constructor.retrieveActiveBody();
+            Chain units = body.getUnits();
 
-	// iterate over all ports in constructor
-	for (Iterator ports = entityPorts.iterator();ports.hasNext();) {
-	  TypedIOPort port = (TypedIOPort) ports.next();
-	  SootField wireField = theClass.getField(port.getName(), wireType);
+            // iterate over all ports in constructor
+            for (Iterator ports = entityPorts.iterator();ports.hasNext();) {
+                TypedIOPort port = (TypedIOPort) ports.next();
+                SootField wireField = theClass.getField(port.getName(), wireType);
 
-	  // can I get the local from the field directly?
-	  Local localWire = Jimple.v().newLocal(port.getName(),
-                  wireClass.getType());
-	  body.getLocals().add(localWire);
+                // can I get the local from the field directly?
+                Local localWire = Jimple.v().newLocal(port.getName(),
+                        wireClass.getType());
+                body.getLocals().add(localWire);
 
-	  Stmt s = Jimple.v().newAssignStmt(localWire,
-                  Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                          wireField));
-	  units.insertBefore(s, units.getLast());
+                Stmt s = Jimple.v().newAssignStmt(localWire,
+                        Jimple.v().newInstanceFieldRef(body.getThisLocal(),
+                                wireField));
+                units.insertBefore(s, units.getLast());
 
-	  InvokeExpr invoke =
-              Jimple.v().newStaticInvokeExpr(connectMethod,
-                      StringConstant.v(port.getName()),
-                      localWire);
-	  units.insertBefore(Jimple.v().newInvokeStmt(invoke),
-			     units.getLast());
-	}
-      }
+                InvokeExpr invoke =
+                    Jimple.v().newStaticInvokeExpr(connectMethod,
+                            StringConstant.v(port.getName()),
+                            localWire);
+                units.insertBefore(Jimple.v().newInvokeStmt(invoke),
+                        units.getLast());
+            }
+        }
     }
 
     // Add Wire fields to the JHDL class.
@@ -440,8 +440,8 @@ class JHDLTransformer extends SceneTransformer {
 	for (Iterator ports = portlist.iterator();ports.hasNext();) {
 	    TypedIOPort port = (TypedIOPort) ports.next();
 	    SootField newWire = new SootField(port.getName(),
-					      wireType,
-					      Modifier.PROTECTED);
+                    wireType,
+                    Modifier.PROTECTED);
 	    theClass.addField(newWire);
 
 	}
@@ -449,36 +449,36 @@ class JHDLTransformer extends SceneTransformer {
 	// FIXME: Disable modification of constructor for now. It
 	// breaks the rest of the build
 	/*
-        // Modify the constructor to correct all initializations
-        // of the ports.
-        for(Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
-            SootMethod constructor = (SootMethod)methods.next();
-            // Ignore things that aren't constructors.
-            if(constructor.getName() != "<init>")
-                continue;
-            Body body = constructor.getActiveBody();
-            PatchingChain units = body.getUnits();
-            Iterator unitIterator = units.snapshotIterator();
-            while(unitIterator.hasNext()) {
-                Stmt statement = (Stmt)unitIterator.next();
-                // Remove assignments to something of type TypedIOPort.
-                if (statement instanceof AssignStmt) {
-                    Type leftOpType =
-                        ((AssignStmt)statement).getLeftOp().getType();
-                    if (leftOpType.equals(ioPortType)) {
-                        units.remove(statement);
-                    }
-                    // Remove invocations of methods of TypedIOPort.
-                } else if (statement instanceof InvokeStmt) {
-                    InvokeExpr expr = (InvokeExpr)
-                        ((InvokeStmt)statement).getInvokeExpr();
-                    if (expr instanceof InstanceInvokeExpr) {
-                        units.remove(statement);
-                    }
-                }
+          // Modify the constructor to correct all initializations
+          // of the ports.
+          for(Iterator methods = theClass.getMethods().iterator();
+          methods.hasNext();) {
+          SootMethod constructor = (SootMethod)methods.next();
+          // Ignore things that aren't constructors.
+          if(constructor.getName() != "<init>")
+          continue;
+          Body body = constructor.getActiveBody();
+          PatchingChain units = body.getUnits();
+          Iterator unitIterator = units.snapshotIterator();
+          while(unitIterator.hasNext()) {
+          Stmt statement = (Stmt)unitIterator.next();
+          // Remove assignments to something of type TypedIOPort.
+          if (statement instanceof AssignStmt) {
+          Type leftOpType =
+          ((AssignStmt)statement).getLeftOp().getType();
+          if (leftOpType.equals(ioPortType)) {
+          units.remove(statement);
+          }
+          // Remove invocations of methods of TypedIOPort.
+          } else if (statement instanceof InvokeStmt) {
+          InvokeExpr expr = (InvokeExpr)
+          ((InvokeStmt)statement).getInvokeExpr();
+          if (expr instanceof InstanceInvokeExpr) {
+          units.remove(statement);
+          }
+          }
 
-        }
+          }
 	*/
     }
 
@@ -498,13 +498,13 @@ class JHDLTransformer extends SceneTransformer {
         SootClass wireClass = Scene.v().loadClassAndSupport(
                 "byucc.jhdl.base.Wire");
   	SootMethod getIOPortMethod = IOPortClass.getMethod(
-                    "ptolemy.data.Token get(int)");
+                "ptolemy.data.Token get(int)");
   	SootMethod sendIOPortMethod = TypedIOPortClass.getMethod(
-                    "void send(int, ptolemy.data.Token)");
+                "void send(int, ptolemy.data.Token)");
 	// search for method by name
 
-//    	SootMethod sendIOPortMethod = ioPortClass.getMethod(
-//                      "send(int, ptolemy.data.Token)");
+        //    	SootMethod sendIOPortMethod = ioPortClass.getMethod(
+        //                      "send(int, ptolemy.data.Token)");
 
         Type ioPortType = RefType.v(TypedIOPortClass);
         Body body = clockMethod.getActiveBody();
@@ -520,41 +520,41 @@ class JHDLTransformer extends SceneTransformer {
 		if (expr instanceof InstanceInvokeExpr) {
 		    // See if the invocation is done on a port
 		    Local instance = (Local) ((InstanceInvokeExpr)expr).getBase();
-//  		    System.out.println("statement="+statement+" base="+
-//  				       instance + " type="+instance.getType());
+                    //  		    System.out.println("statement="+statement+" base="+
+                    //  				       instance + " type="+instance.getType());
   		    if (instance.getType().equals(TypedIOPortClass.getType())) {
   			System.out.println("Found an invoke instance on a port"+
-  					   statement);
+                                statement);
   			SootMethod instanceMethod = expr.getMethod();
 			if (instanceMethod.equals(getIOPortMethod)) {
 			    System.out.println("get on "+instance.getName());
 
   			    Local localWire = Jimple.v().newLocal(instance.getName(),
-							   wireClass.getType());
-//  			    SootField wireField = getField(String name,
-//                                               wireClass.getType());
-//     			    Jimple.v().newInstanceFieldRef(localWire,
-//                                               SootField);
+                                    wireClass.getType());
+                            //  			    SootField wireField = getField(String name,
+                            //                                               wireClass.getType());
+                            //     			    Jimple.v().newInstanceFieldRef(localWire,
+                            //                                               SootField);
 
-//  			    instancefieldref
+                            //  			    instancefieldref
 
 			    /*
-			    // create a method invocation to the wire.get()
-			    Jimple.v().new
-			    units.insertBefore(Jimple.v().newAssignStmt(
-				cellInterfaceLocal,
-				Jimple.v().newStaticInvokeExpr(inFactoryMethod,
-			       StringConstant.v(field.getName()),
-			       IntConstant.v(32))),
-					       units.getLast());
+                              // create a method invocation to the wire.get()
+                              Jimple.v().new
+                              units.insertBefore(Jimple.v().newAssignStmt(
+                              cellInterfaceLocal,
+                              Jimple.v().newStaticInvokeExpr(inFactoryMethod,
+                              StringConstant.v(field.getName()),
+                              IntConstant.v(32))),
+                              units.getLast());
 			    */
 			} else if (instanceMethod.equals(sendIOPortMethod)) {
 			    System.out.println("send");
 			}
 		    }
-//  		    for (Iterator ports = portlist.iterator();ports.hasNext();) {
-//  			TypedIOPort port = (TypedIOPort) ports.next();
-//  		    }
+                    //  		    for (Iterator ports = portlist.iterator();ports.hasNext();) {
+                    //  			TypedIOPort port = (TypedIOPort) ports.next();
+                    //  		    }
 		}
 	    }
 	}
@@ -577,14 +577,14 @@ class JHDLTransformer extends SceneTransformer {
         while(unitIterator.hasNext()) {
             Stmt statement = (Stmt)unitIterator.next();
             // Remove assignments to something of type TypedIOPort.
-//  	    System.out.println("***** " + statement + " obj " +
-//  			       statement.getClass());
+            //  	    System.out.println("***** " + statement + " obj " +
+            //  			       statement.getClass());
             if (statement instanceof IdentityStmt) {
 		Value rightOpValue =
   		    ((IdentityStmt)statement).getRightOp();
 		Type rightOpType = rightOpValue.getType();
-//    		System.out.println("******* "+statement+" value = "+
-//      				   rightOpType);
+                //    		System.out.println("******* "+statement+" value = "+
+                //      				   rightOpType);
 
 		// compare type with the arguments type
 		for(Iterator parameters=parameterTypes.iterator();
@@ -592,10 +592,10 @@ class JHDLTransformer extends SceneTransformer {
 
 		    Type parameterType = (Type) parameters.next();
 		    if (parameterType.equals(rightOpType)) {
-//    			System.out.println("*** Removed statement"+statement
-//  					   +" ***");
+                        //    			System.out.println("*** Removed statement"+statement
+                        //  					   +" ***");
 
-		      units.remove(statement);
+                        units.remove(statement);
 		    }
 		}
   	    }
@@ -614,9 +614,9 @@ class JHDLTransformer extends SceneTransformer {
         Type wireType = RefType.v(wireClass);
 
     	parameterTypes.add(nodeType);
-//  	parameterTypes.add(wireType);
-//  	parameterTypes.add(wireType);
-//  	parameterTypes.add(wireType);
+        //  	parameterTypes.add(wireType);
+        //  	parameterTypes.add(wireType);
+        //  	parameterTypes.add(wireType);
 
 	// it doesn't look like I have to add identity statements as
 	// they are added by some following step.
@@ -628,12 +628,12 @@ class JHDLTransformer extends SceneTransformer {
     // Remove all public fields of type TypedIOPort.
     private void _modifySuperClass(SootClass theClass) {
         SootClass logicClass = Scene.v().getSootClass(
-	       "byucc.jhdl.Logic.Logic");
+                "byucc.jhdl.Logic.Logic");
         theClass.setSuperclass(logicClass);
     }
 
     // Remove all public fields of type TypedIOPort.
-   private void _removePortFields(SootClass theClass) {
+    private void _removePortFields(SootClass theClass) {
 
         SootClass ioPortClass = Scene.v().loadClassAndSupport(
                 "ptolemy.actor.TypedIOPort");
@@ -641,7 +641,7 @@ class JHDLTransformer extends SceneTransformer {
 
         int i = 0;
         for(Iterator fields = theClass.getFields().snapshotIterator();
-               fields.hasNext();) {
+            fields.hasNext();) {
 
             SootField field = (SootField)fields.next();
             if(field.getType().equals(RefType.v(ioPortClass))) {

@@ -147,103 +147,103 @@ public class CommandLineTransformer extends SceneTransformer {
                 Options.getString(options, "targetPackage") + ".Main");
         mainClass.setApplicationClass();
         /*
-        {
-            LinkedList mainArgumentTypes = new LinkedList();
-            mainArgumentTypes.add(ArrayType.v(RefType.v("java.lang.String"),
-                    1));
-            SootMethod mainMethod = new SootMethod("main",
-                    mainArgumentTypes, VoidType.v(),
-                    Modifier.PUBLIC | Modifier.STATIC);
-            modelClass.addMethod(mainMethod);
-            JimpleBody body = Jimple.v().newBody(mainMethod);
-            mainMethod.setActiveBody(body);
-            body.insertIdentityStmts();
-            Chain units = body.getUnits();
+          {
+          LinkedList mainArgumentTypes = new LinkedList();
+          mainArgumentTypes.add(ArrayType.v(RefType.v("java.lang.String"),
+          1));
+          SootMethod mainMethod = new SootMethod("main",
+          mainArgumentTypes, VoidType.v(),
+          Modifier.PUBLIC | Modifier.STATIC);
+          modelClass.addMethod(mainMethod);
+          JimpleBody body = Jimple.v().newBody(mainMethod);
+          mainMethod.setActiveBody(body);
+          body.insertIdentityStmts();
+          Chain units = body.getUnits();
 
-            Local modelLocal = Jimple.v().newLocal("model",
-                    RefType.v(modelClass));
-            body.getLocals().add(modelLocal);
+          Local modelLocal = Jimple.v().newLocal("model",
+          RefType.v(modelClass));
+          body.getLocals().add(modelLocal);
 
 
-            // create the model
-            units.add(Jimple.v().newAssignStmt(modelLocal,
-                    Jimple.v().newNewExpr(RefType.v(modelClass))));
+          // create the model
+          units.add(Jimple.v().newAssignStmt(modelLocal,
+          Jimple.v().newNewExpr(RefType.v(modelClass))));
 
-            // the arguments
-            List args = new LinkedList();
+          // the arguments
+          List args = new LinkedList();
 
-            // call the constructor on the object.
-            SootMethod constructor =
-                SootUtilities.getMatchingMethod(modelClass, "<init>", args);
-            units.add(Jimple.v().newInvokeStmt(
-                    Jimple.v().newSpecialInvokeExpr(modelLocal,
-                            constructor, args)));
+          // call the constructor on the object.
+          SootMethod constructor =
+          SootUtilities.getMatchingMethod(modelClass, "<init>", args);
+          units.add(Jimple.v().newInvokeStmt(
+          Jimple.v().newSpecialInvokeExpr(modelLocal,
+          constructor, args)));
 
-            //FIXME make parameter.
-            int iterationLimit = 50;
+          //FIXME make parameter.
+          int iterationLimit = 50;
 
-            Local iterationLocal = null;
-            if(iterationLimit > 1) {
-                iterationLocal = Jimple.v().newLocal("iteration",
-                        IntType.v());
-                body.getLocals().add(iterationLocal);
-                units.add(Jimple.v().newAssignStmt(iterationLocal,
-                        IntConstant.v(0)));
-            }
-            // call preinitialize
-            units.add(Jimple.v().newInvokeStmt(
-                    Jimple.v().newVirtualInvokeExpr(modelLocal,
-                            SootUtilities.searchForMethodByName(modelClass,
-                                    "preinitialize"))));
+          Local iterationLocal = null;
+          if(iterationLimit > 1) {
+          iterationLocal = Jimple.v().newLocal("iteration",
+          IntType.v());
+          body.getLocals().add(iterationLocal);
+          units.add(Jimple.v().newAssignStmt(iterationLocal,
+          IntConstant.v(0)));
+          }
+          // call preinitialize
+          units.add(Jimple.v().newInvokeStmt(
+          Jimple.v().newVirtualInvokeExpr(modelLocal,
+          SootUtilities.searchForMethodByName(modelClass,
+          "preinitialize"))));
 
-            // call initialize on the model
-            units.add(Jimple.v().newInvokeStmt(
-                    Jimple.v().newVirtualInvokeExpr(modelLocal,
-                            SootUtilities.searchForMethodByName(modelClass,
-                                    "initialize"))));
+          // call initialize on the model
+          units.add(Jimple.v().newInvokeStmt(
+          Jimple.v().newVirtualInvokeExpr(modelLocal,
+          SootUtilities.searchForMethodByName(modelClass,
+          "initialize"))));
 
-            // A jump point for the start of the iteration.
-            Stmt iterationStartStmt = Jimple.v().newNopStmt();
-            // A jump point for the end of the iteration.
-            // we don't actually add this until later in the sequence.
-            Stmt iterationEndStmt = Jimple.v().newNopStmt();
+          // A jump point for the start of the iteration.
+          Stmt iterationStartStmt = Jimple.v().newNopStmt();
+          // A jump point for the end of the iteration.
+          // we don't actually add this until later in the sequence.
+          Stmt iterationEndStmt = Jimple.v().newNopStmt();
 
-            units.add(iterationStartStmt);
+          units.add(iterationStartStmt);
 
-            // call fire on the model
-            units.add(Jimple.v().newInvokeStmt(
-                    Jimple.v().newVirtualInvokeExpr(modelLocal,
-                            SootUtilities.searchForMethodByName(modelClass,
-                                    "fire"))));
+          // call fire on the model
+          units.add(Jimple.v().newInvokeStmt(
+          Jimple.v().newVirtualInvokeExpr(modelLocal,
+          SootUtilities.searchForMethodByName(modelClass,
+          "fire"))));
 
-            // If we need to keep track of the number of iterations, then...
-            if(iterationLimit > 1) {
-                // Increment the number of iterations.
-                units.add(Jimple.v().newAssignStmt(iterationLocal,
-                        Jimple.v().newAddExpr(iterationLocal,
-                        IntConstant.v(1))));
-                // If the number of iterations is greater than the limit,
-                // then we're done.
-                units.add(Jimple.v().newIfStmt(
-                        Jimple.v().newGtExpr(iterationLocal,
-                                IntConstant.v(iterationLimit)),
-                        iterationEndStmt));
-            }
-            if(iterationLimit != 1) {
-                units.add(Jimple.v().newGotoStmt(iterationStartStmt));
-            }
+          // If we need to keep track of the number of iterations, then...
+          if(iterationLimit > 1) {
+          // Increment the number of iterations.
+          units.add(Jimple.v().newAssignStmt(iterationLocal,
+          Jimple.v().newAddExpr(iterationLocal,
+          IntConstant.v(1))));
+          // If the number of iterations is greater than the limit,
+          // then we're done.
+          units.add(Jimple.v().newIfStmt(
+          Jimple.v().newGtExpr(iterationLocal,
+          IntConstant.v(iterationLimit)),
+          iterationEndStmt));
+          }
+          if(iterationLimit != 1) {
+          units.add(Jimple.v().newGotoStmt(iterationStartStmt));
+          }
 
-            // add the jump point for the end of the iteration
-            units.add(iterationEndStmt);
+          // add the jump point for the end of the iteration
+          units.add(iterationEndStmt);
 
-            // call wrapup on the model
-            units.add(Jimple.v().newInvokeStmt(
-                    Jimple.v().newVirtualInvokeExpr(modelLocal,
-                            SootUtilities.searchForMethodByName(modelClass,
-                                    "wrapup"))));
-            // Return from the main method.
-            units.add(Jimple.v().newReturnVoidStmt());
-        }*/
+          // call wrapup on the model
+          units.add(Jimple.v().newInvokeStmt(
+          Jimple.v().newVirtualInvokeExpr(modelLocal,
+          SootUtilities.searchForMethodByName(modelClass,
+          "wrapup"))));
+          // Return from the main method.
+          units.add(Jimple.v().newReturnVoidStmt());
+          }*/
 
         // Inline the director
         {
@@ -255,8 +255,8 @@ public class CommandLineTransformer extends SceneTransformer {
                 SootUtilities.searchForMethodByName(actorClass,
                         classMethod.getName());
             modelClass.addMethod(classMethod);
-             JimpleBody body = Jimple.v().newBody(classMethod);
-             //DavaBody body = Dava.v().newBody(classMethod);
+            JimpleBody body = Jimple.v().newBody(classMethod);
+            //DavaBody body = Dava.v().newBody(classMethod);
             classMethod.setActiveBody(body);
             body.insertIdentityStmts();
             Chain units = body.getUnits();
@@ -277,29 +277,29 @@ public class CommandLineTransformer extends SceneTransformer {
                                 actorMethod)));
             }
             /*
-            for(Iterator entities = _model.entityList().iterator();
-                entities.hasNext();) {
-                Entity entity = (Entity)entities.next();
-                for(Iterator ports = entity.portList().iterator();
-                    ports.hasNext();) {
-                    Port port = (Port)ports.hasNext();
-                    if(port instanceof TypedIOPort) {
-                        TypedIOPort typedPort = (TypedIOPort)port;
-                        // set the type of the port.
-                        SootMethod method =
-                            SootUtilities.searchForMethodByName(portClass,
-                                    "setTypeEquals");
-                        Local typeLocal =
-                            // build a constant type.
-                            _buildConstantTypeLocal(body, typedPort.getType());
+              for(Iterator entities = _model.entityList().iterator();
+              entities.hasNext();) {
+              Entity entity = (Entity)entities.next();
+              for(Iterator ports = entity.portList().iterator();
+              ports.hasNext();) {
+              Port port = (Port)ports.hasNext();
+              if(port instanceof TypedIOPort) {
+              TypedIOPort typedPort = (TypedIOPort)port;
+              // set the type of the port.
+              SootMethod method =
+              SootUtilities.searchForMethodByName(portClass,
+              "setTypeEquals");
+              Local typeLocal =
+              // build a constant type.
+              _buildConstantTypeLocal(body, typedPort.getType());
 
-                        units.add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(portLocal,
-                                        method, typeLocal)));
-                    }
-                }
+              units.add(Jimple.v().newInvokeStmt(
+              Jimple.v().newVirtualInvokeExpr(portLocal,
+              method, typeLocal)));
+              }
+              }
 
-                }*/
+              }*/
             units.add(Jimple.v().newReturnVoidStmt());
         }
 
@@ -345,7 +345,7 @@ public class CommandLineTransformer extends SceneTransformer {
                 SootUtilities.searchForMethodByName(actorClass, "fire");
             SootMethod actorPostfireMethod =
                 SootUtilities.searchForMethodByName(actorClass, "postfire");
-               modelClass.addMethod(classMethod);
+            modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
             classMethod.setActiveBody(body);
             body.insertIdentityStmts();
@@ -359,7 +359,7 @@ public class CommandLineTransformer extends SceneTransformer {
             Iterator schedule = null;
             try {
                 schedule =
-                     director.getScheduler().getSchedule().actorIterator();
+                    director.getScheduler().getSchedule().actorIterator();
             } catch (Exception ex) {
                 ex.printStackTrace();
                 throw new RuntimeException();
@@ -425,7 +425,7 @@ public class CommandLineTransformer extends SceneTransformer {
         // The final field for the model.
         SootField modelField =
             new SootField("_CGmodel", RefType.v(compositeActorClass),
-                Modifier.PRIVATE | Modifier.FINAL);
+                    Modifier.PRIVATE | Modifier.FINAL);
         mainClass.addField(modelField);
 
 
@@ -573,7 +573,7 @@ public class CommandLineTransformer extends SceneTransformer {
                         unit = whilePredecessor.getPredOf(unit);
                     }
                 }
-                  System.out.println("collection def = " + unit);
+                System.out.println("collection def = " + unit);
                 System.out.println("field = " + field);
                 DefinitionStmt collectionDefinition = ((DefinitionStmt)unit);
                 if(!(collectionDefinition.getRightOp() instanceof FieldRef) ||
@@ -638,40 +638,40 @@ public class CommandLineTransformer extends SceneTransformer {
                 // This code modified from WhileMatcher.
 
                 /*
-                List successorList = block.getSuccs();
+                  List successorList = block.getSuccs();
 
-                if(successorList.size() == 2) {
-                   Block whileBody, whileSucc;
-                   boolean found = false;
+                  if(successorList.size() == 2) {
+                  Block whileBody, whileSucc;
+                  boolean found = false;
 
-                   whileBody = whileSucc = block;
-                   whileBody = (Block) successorList.get(0);
-                   whileSucc = (Block) successorList.get(1);
+                  whileBody = whileSucc = block;
+                  whileBody = (Block) successorList.get(0);
+                  whileSucc = (Block) successorList.get(1);
 
-                   if ((whileBody.getPreds().size() == 1) &&
-                           (whileBody.getSuccs().size() == 1) &&
-                           (whileBody.getSuccs().get(0) == block))
-                           found = true;
-                   if(!found) {
-                       Block bt;
-                       bt = whileSucc;
-                       whileSucc = whileBody;
-                       whileBody = bt;
+                  if ((whileBody.getPreds().size() == 1) &&
+                  (whileBody.getSuccs().size() == 1) &&
+                  (whileBody.getSuccs().get(0) == block))
+                  found = true;
+                  if(!found) {
+                  Block bt;
+                  bt = whileSucc;
+                  whileSucc = whileBody;
+                  whileBody = bt;
 
-                       if ((whileBody.getPreds().size() == 1) &&
-                               (whileBody.getSuccs().size() == 1) &&
-                               (whileBody.getSuccs().get(0) == block))
-                           found = true;
-                   }
+                  if ((whileBody.getPreds().size() == 1) &&
+                  (whileBody.getSuccs().size() == 1) &&
+                  (whileBody.getSuccs().get(0) == block))
+                  found = true;
+                  }
 
-                   if(found) {
-                       if(con
-                       System.out.println("found while Loop:");
-                       System.out.println("body = " + whileBody);
-                       System.out.println("cond = " + block);
-                       System.out.println("successor = " + whileSucc);
-                   }
-                   }      */
+                  if(found) {
+                  if(con
+                  System.out.println("found while Loop:");
+                  System.out.println("body = " + whileBody);
+                  System.out.println("cond = " + block);
+                  System.out.println("successor = " + whileSucc);
+                  }
+                  }      */
             }
         }
     }
@@ -778,7 +778,7 @@ public class CommandLineTransformer extends SceneTransformer {
                         insertPoint);
                 FieldRef fieldRef =
                     Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                    theField);
+                            theField);
                 units.insertBefore(Jimple.v().newAssignStmt(fieldRef, local),
                         insertPoint);
             }

@@ -89,15 +89,15 @@ public class Main extends KernelMain {
         // When we fold classes, we create extra locals.  These optimizations
         // will remove them.  Unfortunately, -O creates bogus code?
         /*   Scene.v().getPack("jtp").add(new Transform("jtp.cpaf",
-                ConstantPropagatorAndFolder.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.cbf",
-                ConditionalBranchFolder.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.uce",
-                UnreachableCodeEliminator.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.cp",
-                CopyPropagator.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.dae",
-        DeadAssignmentEliminator.v()));*/
+             ConstantPropagatorAndFolder.v()));
+             Scene.v().getPack("jtp").add(new Transform("jtp.cbf",
+             ConditionalBranchFolder.v()));
+             Scene.v().getPack("jtp").add(new Transform("jtp.uce",
+             UnreachableCodeEliminator.v()));
+             Scene.v().getPack("jtp").add(new Transform("jtp.cp",
+             CopyPropagator.v()));
+             Scene.v().getPack("jtp").add(new Transform("jtp.dae",
+             DeadAssignmentEliminator.v()));*/
 
 	_callSootMain(args);
     }
