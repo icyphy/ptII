@@ -34,7 +34,7 @@ package pt.exceptions;
 of an attempt to store objects with identical names in the same container
 object.
 @author John S. Davis, II
-@version @(#)NameDuplicationException.java	$Id$
+@version @(#)NameDuplicationException.java	$Revision$	$Date$
 */
 public class NameDuplicationException extends GraphException {
     /** 
