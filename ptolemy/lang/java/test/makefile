@@ -60,6 +60,7 @@ JSRCS = \
 	IFace.java \
 	InnerClass.java \
 	InnerIFace.java \
+	JavaScope.java \
 	Methods.java \
 	OneFM.java \
 	OneField.java \
@@ -79,7 +80,8 @@ JSIMPLE_TESTS = \
 	ASTReflect.tcl \
 	FindExtraImportsVisitor.tcl \
 	JavaCodeGenerator.tcl \
-	SearchPath.tcl
+	SearchPath.tcl \
+	Yylex.tcl
 
 
 # Graphical Java tests that use Tcl.
