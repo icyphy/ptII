@@ -92,7 +92,6 @@
       <property name="PN" class="ptolemy.domains.pn.kernel.PNDirector"/>
       <property name="DE" class="ptolemy.domains.de.kernel.DEDirector"/>
       <property name="CSP" class="ptolemy.domains.csp.kernel.CSPDirector"/>
-      <property name="DDE" class="ptolemy.domains.dde.kernel.DDEDirector"/>
       <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
          <property name="ODESolver">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
@@ -125,9 +124,6 @@
 	  </property>
          </property>
       </property>
-      <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
-      <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
-
           </group>
         ?>
       </configure>
