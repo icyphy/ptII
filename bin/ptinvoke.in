@@ -54,8 +54,19 @@ PTJACL_JFLAG=@PTJACL_JFLAG@
 # Optional jar file
 jarfile=
 
-# Optional flag passed to java
-javaflag=
+# javaflag contains optional flags passed to java that may be
+# set by this script
+# JAVAFLAGS may be set by the user to pass a user selected flag
+# to java.  For example
+# setenv JAVAFLAGS -Djava.compiler=
+# ptolemy foo.xml
+# will turn off the Just In Time (JIT) compiler, which will
+# result in exception messages with line numbers.
+# To see what sort of options are available, type 'java -h'
+# To see what sort of properties are available, type
+# echo "source $PTII/util/testsuite/jdktools.tcl; jdkProperties; exit" | ptjacl
+#
+javaflag=$JAVAFLAGS
 
 # Keep these alphabetical
 case "`basename $0`" in
@@ -75,14 +86,14 @@ case "`basename $0`" in
 	javastartupclass=tcl.lang.Shell
 	javasourcedir=
 	jarfile=$PTJACL_JAR
-	javaflag=$PTJACL_FLAG
+	javaflag="$PTJACL_FLAG $javaflag"
 	;;
     ptjaclapp)
 	# tcl.lang.PanelShellApp brings up Jacl in a separate window
 	javastartupclass=tcl.lang.PanelShellApp
 	javasourcedir=
 	jarfile=$PTJACL_JAR
-	javaflag=$PTJACL_FLAG
+	javaflag="$PTJACL_FLAG $javaflag"
 	;;
     ptolemy)
 	# Ptolemy II Application
