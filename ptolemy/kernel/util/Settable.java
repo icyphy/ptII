@@ -30,6 +30,7 @@
 
 package ptolemy.kernel.util;
 
+import java.io.Serializable;
 //////////////////////////////////////////////////////////////////////////
 //// Settable
 /**
@@ -164,7 +165,7 @@ public interface Settable extends Nameable {
      *  visibility.  Instances of this class cannot be constructed outside
      *  the enclosing interface because its constructor is private.
      */
-    public static class Visibility {
+    public static class Visibility implements Serializable {
 
         // Private constructor prevents construction outside.
         // This constructor should not be called!
