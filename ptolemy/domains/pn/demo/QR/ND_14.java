@@ -68,7 +68,7 @@ public class ND_14 extends TypedAtomicActor {
      *   actor with this name.
      */
     public ND_14(TypedCompositeActor aContainer, String aName)
-	throws IllegalActionException, NameDuplicationException
+            throws IllegalActionException, NameDuplicationException
         {
             super(aContainer, aName);
             out0 = new TypedIOPort(this,"out0",false,true);
@@ -146,7 +146,7 @@ public class ND_14 extends TypedAtomicActor {
         of function repertoire of the SBF object. It does this binding
         on the basis of the content of the state of the SBF object.
         @exception IllegalActionException Not Thrown.
-     */
+    */
     public void fire() throws IllegalActionException {
 	_value = x_1.retrieve( x_1.atKey(k, j) );
 

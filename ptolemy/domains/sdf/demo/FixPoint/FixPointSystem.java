@@ -76,7 +76,7 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
     public void changed(String name) {
         try {
 	    if ( name == "precision" ) {
-		 _doubleToFix.precision.setToken(new StringToken(_query.stringValue("precision")));
+                _doubleToFix.precision.setToken(new StringToken(_query.stringValue("precision")));
 	    }
             if ( name == "rounding" ) {
                 String option = _query.stringValue("rounding");

@@ -148,7 +148,7 @@ public class HysteresisApplet extends SDFApplet {
 
 
 	    HDFFSMTransition ctrlTrs0Tos0 =
-	    (HDFFSMTransition)ctrl.createTransition(ctrls0, ctrls0);
+                (HDFFSMTransition)ctrl.createTransition(ctrls0, ctrls0);
 	    // Note: TriggerEvent occurs when a token is available on
 	    // the specified input port.
 	    ctrlTrs0Tos0.setTriggerEvent("dataIn$0");
@@ -196,8 +196,8 @@ public class HysteresisApplet extends SDFApplet {
             tempActState0InPort.setInput(true);
             tempActState0InPort.setTypeEquals(BaseType.DOUBLE);
 
-	     TypedIOPort tempActState0OutPort =
-		 (TypedIOPort)tempActState0.newPort("dataOut");
+            TypedIOPort tempActState0OutPort =
+                (TypedIOPort)tempActState0.newPort("dataOut");
             tempActState0OutPort.setOutput(true);
             tempActState0OutPort.setTypeEquals(BaseType.DOUBLE);
 
@@ -240,7 +240,7 @@ public class HysteresisApplet extends SDFApplet {
             tempActState1InPort.setTypeEquals(BaseType.DOUBLE);
 
 	    TypedIOPort tempActState1OutPort =
-	    (TypedIOPort)tempActState1.newPort("dataOut");
+                (TypedIOPort)tempActState1.newPort("dataOut");
             tempActState1OutPort.setOutput(true);
             tempActState1OutPort.setTypeEquals(BaseType.DOUBLE);
 
@@ -251,8 +251,8 @@ public class HysteresisApplet extends SDFApplet {
             tempActState0InPort.link(tempActInRel);
             tempActState1InPort.link(tempActInRel);
 
-	     TypedIORelation tempActOutRel =
-		 (TypedIORelation)tempAct.newRelation("tempActOutRel");
+            TypedIORelation tempActOutRel =
+                (TypedIORelation)tempAct.newRelation("tempActOutRel");
             tempActOutPort.link(tempActInRel);
             tempActState0OutPort.link(tempActInRel);
             tempActState1OutPort.link(tempActInRel);
@@ -279,17 +279,17 @@ public class HysteresisApplet extends SDFApplet {
 	    tempActState1.connect(const1.output, tempActState1OutPort);
 
 	    //////////
-            _toplevel.connect(rampSig.output, sineSig.input);
-	    _toplevel.connect(sineSig.output, add.plus);
-	    _toplevel.connect(noise.output, add.plus);
+                _toplevel.connect(rampSig.output, sineSig.input);
+                _toplevel.connect(sineSig.output, add.plus);
+                _toplevel.connect(noise.output, add.plus);
 
-	    _toplevel.connect(tempActOutPort, hystplotter.input);
+                _toplevel.connect(tempActOutPort, hystplotter.input);
 
-	    TypedIORelation noisyRel =
-		(TypedIORelation)_toplevel.newRelation("noisyRel");
-	    (add.output).link(noisyRel);
-	    (tempActInPort).link(noisyRel);
-	    (hystplotter.input).link(noisyRel);
+                TypedIORelation noisyRel =
+                    (TypedIORelation)_toplevel.newRelation("noisyRel");
+                (add.output).link(noisyRel);
+                (tempActInPort).link(noisyRel);
+                (hystplotter.input).link(noisyRel);
 
         } catch (Exception ex) {
             report("Setup failed:", ex);

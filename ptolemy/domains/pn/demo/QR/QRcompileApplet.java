@@ -57,94 +57,94 @@ An applet that models the compiled QR algorithm.
 public class QRcompileApplet extends PNApplet implements QueryListener {
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+////                         public methods                         ////
 
-    /** Initialize the applet.
-     */
-    public void init() {
-	super.init();
-	try {
+/** Initialize the applet.
+ */
+public void init() {
+    super.init();
+    try {
 
-            setSize(600, 600);
+        setSize(600, 600);
 
-            getContentPane().setLayout(
-                    new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        getContentPane().setLayout(
+                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
-	    _query = new Query();
-            _query.setBackground(getBackground());
-            _query.addQueryListener(this);
-            _query.addLine("K", "Number of QR update iterations", "10");
-            _query.addLine("N", "Number of Antenna's", "6");
+        _query = new Query();
+        _query.setBackground(getBackground());
+        _query.addQueryListener(this);
+        _query.addLine("K", "Number of QR update iterations", "10");
+        _query.addLine("N", "Number of Antenna's", "6");
 
-            getContentPane().add( _query );
+        getContentPane().add( _query );
 
-	    _eventplot = new SequencePlotter(_toplevel, "plot");
-            _eventplot.place(getContentPane());
-            _eventplot.plot.setBackground(getBackground());
-	    _eventplot.plot.setGrid(false);
-	    _eventplot.plot.setTitle("Matrix R");
-	    _eventplot.plot.addLegend(0, "Matrix R");
-	    _eventplot.plot.setXLabel("Position");
-	    _eventplot.plot.setYLabel("R Values");
-	    _eventplot.plot.setXRange(0.0, 21.0);
-	    _eventplot.plot.setYRange(-1.0, 1000.0);
-	    _eventplot.plot.setSize(450,200);
-	    _eventplot.plot.setConnected(false);
-	    _eventplot.plot.setImpulses(true);
-	    _eventplot.plot.setMarksStyle("dots");
-	    _eventplot.fillOnWrapup.setToken(new BooleanToken(false));
-	    // _eventplot.timed.setToken(new BooleanToken(false));
+        _eventplot = new SequencePlotter(_toplevel, "plot");
+        _eventplot.place(getContentPane());
+        _eventplot.plot.setBackground(getBackground());
+        _eventplot.plot.setGrid(false);
+        _eventplot.plot.setTitle("Matrix R");
+        _eventplot.plot.addLegend(0, "Matrix R");
+        _eventplot.plot.setXLabel("Position");
+        _eventplot.plot.setYLabel("R Values");
+        _eventplot.plot.setXRange(0.0, 21.0);
+        _eventplot.plot.setYRange(-1.0, 1000.0);
+        _eventplot.plot.setSize(450,200);
+        _eventplot.plot.setConnected(false);
+        _eventplot.plot.setImpulses(true);
+        _eventplot.plot.setMarksStyle("dots");
+        _eventplot.fillOnWrapup.setToken(new BooleanToken(false));
+        // _eventplot.timed.setToken(new BooleanToken(false));
 
-	    // Construct the Ptolemy kernel topology
-	    _ND_6  = new ND_6(_toplevel,"ND_6");
-	    _ND_66 = new ND_66(_toplevel,"ND_66");
-	    _ND_14 = new ND_14(_toplevel,"ND_14");
-	    _ND_36 = new ND_36(_toplevel,"ND_36");
-	    _ND_86 = new ND_86(_toplevel,"ND_86");
+        // Construct the Ptolemy kernel topology
+        _ND_6  = new ND_6(_toplevel,"ND_6");
+        _ND_66 = new ND_66(_toplevel,"ND_66");
+        _ND_14 = new ND_14(_toplevel,"ND_14");
+        _ND_36 = new ND_36(_toplevel,"ND_36");
+        _ND_86 = new ND_86(_toplevel,"ND_86");
 
-	    _s2m = new StreamToMatrix(_toplevel,"StreamToMatrix");
-            _matrixViewer = new MatrixViewer(_toplevel,"MatrixViewer");
-            _matrixViewer.place(getContentPane());
+        _s2m = new StreamToMatrix(_toplevel,"StreamToMatrix");
+        _matrixViewer = new MatrixViewer(_toplevel,"MatrixViewer");
+        _matrixViewer.place(getContentPane());
 
-            // Connect the network
-	    _toplevel.connect(_ND_6.out0, _ND_36.in1);
-	    _toplevel.connect(_ND_6.out1, _ND_66.in1);
+        // Connect the network
+        _toplevel.connect(_ND_6.out0, _ND_36.in1);
+        _toplevel.connect(_ND_6.out1, _ND_66.in1);
 
-	    _toplevel.connect(_ND_14.out0, _ND_36.in3);
-	    _toplevel.connect(_ND_14.out1, _ND_66.in3);
+        _toplevel.connect(_ND_14.out0, _ND_36.in3);
+        _toplevel.connect(_ND_14.out1, _ND_66.in3);
 
-	    _toplevel.connect(_ND_36.out0, _ND_36.in0);
-	    _toplevel.connect(_ND_36.out1, _ND_86.in0);
-	    _toplevel.connect(_ND_36.out2, _ND_66.in5);
+        _toplevel.connect(_ND_36.out0, _ND_36.in0);
+        _toplevel.connect(_ND_36.out1, _ND_86.in0);
+        _toplevel.connect(_ND_36.out2, _ND_66.in5);
 
-	    _toplevel.connect(_ND_66.out0, _ND_66.in0);
-	    _toplevel.connect(_ND_66.out1, _ND_86.in1);
-	    _toplevel.connect(_ND_66.out2, _ND_36.in2);
-	    _toplevel.connect(_ND_66.out3, _ND_66.in2);
-	    _toplevel.connect(_ND_66.out4, _ND_66.in4);
+        _toplevel.connect(_ND_66.out0, _ND_66.in0);
+        _toplevel.connect(_ND_66.out1, _ND_86.in1);
+        _toplevel.connect(_ND_66.out2, _ND_36.in2);
+        _toplevel.connect(_ND_66.out3, _ND_66.in2);
+        _toplevel.connect(_ND_66.out4, _ND_66.in4);
 
-            // Split the output in two.
-	    Relation t = _toplevel.connect(_ND_86.out0, _eventplot.input);
-	    _s2m.input.link( t );
-	    _toplevel.connect(_s2m.output, _matrixViewer.input);
+        // Split the output in two.
+        Relation t = _toplevel.connect(_ND_86.out0, _eventplot.input);
+        _s2m.input.link( t );
+        _toplevel.connect(_s2m.output, _matrixViewer.input);
 
-            _initCompleted = true;
+        _initCompleted = true;
 
-	    // The 2 argument requests a go and stop button.
-            getContentPane().add(_createRunControls(2));
+        // The 2 argument requests a go and stop button.
+        getContentPane().add(_createRunControls(2));
 
-	} catch (Exception ex) {
-            report("Setup failed:", ex);
-        }
-
-	return;
+    } catch (Exception ex) {
+        report("Setup failed:", ex);
     }
 
-   /** Execute the model. This overrides the base class to read the
-    *  values in the query box first and set parameters.
-    *  @exception IllegalActionException If topology changes on the
-    *   model or parameter changes on the actors throw it.
-    */
+    return;
+}
+
+    /** Execute the model. This overrides the base class to read the
+     *  values in the query box first and set parameters.
+     *  @exception IllegalActionException If topology changes on the
+     *   model or parameter changes on the actors throw it.
+     */
     protected void _go() throws IllegalActionException {
 
         // If an exception occurred during initialization, then we don't

@@ -66,7 +66,7 @@ public class ButterflyApplication extends JFrame {
     /** Create a Butterfly Application
      */
     public ButterflyApplication()
-	throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 	super("Butterfly");
 
         setSize(400, 400);
@@ -100,9 +100,9 @@ public class ButterflyApplication extends JFrame {
 
     /** Create a new window with the Butterfly plot in it and map it
 	to the screen.
-     */
+    */
     public static void main(String arg[])
-	throws IllegalActionException , NameDuplicationException {
+            throws IllegalActionException , NameDuplicationException {
 
         ButterflyApplication butterflyApplication = new ButterflyApplication();
     }

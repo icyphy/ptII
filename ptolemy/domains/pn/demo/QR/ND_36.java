@@ -69,32 +69,32 @@ public class ND_36 extends TypedAtomicActor {
      */
     public ND_36(TypedCompositeActor aContainer, String aName)
             throws IllegalActionException, NameDuplicationException {
-                super(aContainer, aName);
+        super(aContainer, aName);
 
-                in0 = new TypedIOPort(this,"in0",true,false);
-                in1 = new TypedIOPort(this,"in1",true,false);
-                in2 = new TypedIOPort(this,"in2",true,false);
-                in3 = new TypedIOPort(this,"in3",true,false);
+        in0 = new TypedIOPort(this,"in0",true,false);
+        in1 = new TypedIOPort(this,"in1",true,false);
+        in2 = new TypedIOPort(this,"in2",true,false);
+        in3 = new TypedIOPort(this,"in3",true,false);
 
-                out0 = new TypedIOPort(this,"out0",false,true);
-                out1 = new TypedIOPort(this,"out1",false,true);
-                out2 = new TypedIOPort(this,"out2",false,true);
+        out0 = new TypedIOPort(this,"out0",false,true);
+        out1 = new TypedIOPort(this,"out1",false,true);
+        out2 = new TypedIOPort(this,"out2",false,true);
 
 
-                in0.setTypeEquals(BaseType.DOUBLE);
-                in1.setTypeEquals(BaseType.DOUBLE);
-                in2.setTypeEquals(BaseType.DOUBLE);
-                in3.setTypeEquals(BaseType.DOUBLE);
+        in0.setTypeEquals(BaseType.DOUBLE);
+        in1.setTypeEquals(BaseType.DOUBLE);
+        in2.setTypeEquals(BaseType.DOUBLE);
+        in3.setTypeEquals(BaseType.DOUBLE);
 
-                out0.setTypeEquals(BaseType.DOUBLE);
-                out1.setTypeEquals(BaseType.DOUBLE);
-                out2.setTypeEquals(BaseType.DOUBLE);
+        out0.setTypeEquals(BaseType.DOUBLE);
+        out1.setTypeEquals(BaseType.DOUBLE);
+        out2.setTypeEquals(BaseType.DOUBLE);
 
-                // The Type of these Parameter is set by the First
-                // Token placed in the parameters when created
-                parameter_N = new Parameter(this,"N", new IntToken(6));
-                parameter_K = new Parameter(this,"K", new IntToken(10));
-                parameter_d = new Parameter(this,"d", new IntToken(0));
+        // The Type of these Parameter is set by the First
+        // Token placed in the parameters when created
+        parameter_N = new Parameter(this,"N", new IntToken(6));
+        parameter_K = new Parameter(this,"K", new IntToken(10));
+        parameter_d = new Parameter(this,"d", new IntToken(0));
     }
 
     /** Initialize controller and state of the SBF object.
@@ -157,7 +157,7 @@ public class ND_36 extends TypedAtomicActor {
         of function repertoire of the SBF object. It does this binding
         on the basis of the content of the state of the SBF object.
         @exception IllegalActionException Not Thrown.
-     */
+    */
     public void fire() throws IllegalActionException {
 	if  ( k - 2 >= 0 ) { // ED_1_in
 	    _argIn0 = ((DoubleToken) in0.get(0)).doubleValue();
@@ -186,7 +186,7 @@ public class ND_36 extends TypedAtomicActor {
 	Vectorize( _argIn0, _argIn1 );
 
 	if ( _K - k - 1 >= 0 ) { //ED_1
-	   out0.broadcast( new DoubleToken( _argOut0 ) );
+            out0.broadcast( new DoubleToken( _argOut0 ) );
 	}
 
 	if ( -_K + k == 0 ) { //ED_11

@@ -42,7 +42,7 @@ public class ArrayIndex extends TreeMap {
     }
 
     public String atKey(int i_1, int i_2, int i_3, int i_4, int i_5,
-			int i_6 ) {
+            int i_6 ) {
 	String key =  "(" + i_1 + "," + i_2 + "," + i_3 + "," + i_4
 	    + "," + i_5 + "," + i_6  + ")";
 	return key;

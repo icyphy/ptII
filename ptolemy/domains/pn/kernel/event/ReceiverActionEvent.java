@@ -71,7 +71,7 @@ public class ReceiverActionEvent {
     ////                    public methods                   /////
 
     /** Return the actor corresponding to the process that generated the event.
-      */
+     */
     public PNQueueReceiver getReceiver() {
         return _receiver;
     }

@@ -136,7 +136,7 @@ public class FixFIR extends SDFApplet implements QueryListener {
             _fir_quantize.interpolation.setToken(new IntToken(1));
             _fir_quantize.taps.setExpression("quantize( [ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ], 8, 2)");
 
-              // FIR Filter Fixed
+            // FIR Filter Fixed
             _fir_fix = new FIR(_toplevel, "FIR_fix");
             _fir_fix.interpolation.setToken(new IntToken(1));
             _fir_fix.taps.setExpression("fix( [ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ], 6, 2)");

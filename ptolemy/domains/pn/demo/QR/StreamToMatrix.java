@@ -92,12 +92,12 @@ public class StreamToMatrix extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-                if (attribute == dimension) {
-                    _rows = ((IntToken)dimension.getToken()).intValue();
-                    _columns = ((IntToken)dimension.getToken()).intValue();
-                } else {
-                    super.attributeChanged(attribute);
-                }
+        if (attribute == dimension) {
+            _rows = ((IntToken)dimension.getToken()).intValue();
+            _columns = ((IntToken)dimension.getToken()).intValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -109,9 +109,9 @@ public class StreamToMatrix extends Transformer {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-                StreamToMatrix newobj = (StreamToMatrix)super.clone(ws);
-                newobj.dimension = (Parameter)newobj.getAttribute("dimension");
-                return newobj;
+        StreamToMatrix newobj = (StreamToMatrix)super.clone(ws);
+        newobj.dimension = (Parameter)newobj.getAttribute("dimension");
+        return newobj;
     }
 
     /** Reads a stream of DoubleTokens and places these tokens in a

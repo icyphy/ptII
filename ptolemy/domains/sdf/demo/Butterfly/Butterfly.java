@@ -66,8 +66,8 @@ public class Butterfly {
     /** Initialize the demo
      */
     public static void init(TypedCompositeActor toplevel, Container panel,
-			    Dimension size)
-	throws Exception {
+            Dimension size)
+            throws Exception {
 
 	Scale scale1 = new Scale(toplevel,"scale1");
 	scale1.factor.setToken(new DoubleToken(4.0));
@@ -89,18 +89,18 @@ public class Butterfly {
 
 	Expression sin1 = new Expression(toplevel, "sin1");
 	TypedIOPort sin1Input = new TypedIOPort(sin1, "sin1Input",
-						    true, false);
+                true, false);
 	sin1.expression.setExpression("sin(sin1Input)");
 
 	Expression cos1 = new Expression(toplevel, "cos1");
 	TypedIOPort cos1Input = new TypedIOPort(cos1, "cos1Input",
-						    true, false);
+                true, false);
 	cos1.expression.setExpression("cos(cos1Input))");
 
 	// Here, we collapse two actors into one expression actor.
 	Expression cos2 = new Expression(toplevel, "cos2");
 	TypedIOPort cos2Input = new TypedIOPort(cos2, "cos2Input",
-						    true, false);
+                true, false);
 	cos2.expression.setExpression("exp(cos(cos2Input))");
 	cos2.output.setTypeEquals(BaseType.DOUBLE);
 
