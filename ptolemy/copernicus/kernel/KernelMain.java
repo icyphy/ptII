@@ -45,6 +45,7 @@ import ptolemy.moml.MoMLParser;
 
 import com.microstar.xml.XmlException;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -179,8 +180,20 @@ public class KernelMain {
 	    }
         }
 
-	// Make the name follow Java class naming conventions.
-	_toplevel.setName(mangle(_toplevel.getName()));
+	// If the name of the model is the empty string, change it to
+	// the basename of the file.
+	if (_toplevel.getName().length() == 0) {
+	    String baseName = (new File(_momlClassName)).getName();
+	    if (baseName.lastIndexOf('.') != -1) {
+		baseName = baseName.substring(0,
+					      baseName.lastIndexOf('.'));
+	    }
+	    _toplevel.setName(baseName);
+	}
+
+
+	// Make the name follow Java initializer naming conventions.
+	_toplevel.setName(sanitizeName(_toplevel.getName()));
 
         // Temporary hack because cloning doesn't properly clone
         // type constraints.
@@ -251,7 +264,7 @@ public class KernelMain {
 	kernelMain.generateCode(args);
     }
 
-    /** Mangle a String so that it can be used as a Java identifier.
+    /** Sanitize a String so that it can be used as a Java identifier.
      *  Section 3.8 of the Java language spec says:
      *  <blockquote>
      *  "An identifier is an unlimited-length sequence of Java letters
@@ -270,7 +283,7 @@ public class KernelMain {
      *  @returns A String that follows the Java identifier rules
      *  with the same length as the initial input String.
      */
-    public static String mangle(String name) {
+    public static String sanitizeName(String name) {
 	char [] nameArray = name.toCharArray();
 	if (!Character.isJavaIdentifierStart(nameArray[0])) {
 	    nameArray[0] = '_';
