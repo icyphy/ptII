@@ -74,7 +74,7 @@ building, and hence doesn't require the following nightmare.</p>
     </menu>
 
     <p>For help with how to install these in Cygwin, see the <a
-    href="../../../doc/install.htm#cygwin">Ptolemy II Cygwin
+    href="../../../../doc/install.htm#cygwin">Ptolemy II Cygwin
     Instructions</a>. Note that most installations will not have gperf
     on them, at least, so you will likely need to install at least
     that. These instructions assume you have installed TinyOS as
@@ -89,9 +89,9 @@ building, and hence doesn't require the following nightmare.</p>
           <li> avr-insight
           <li> avr-libc
         </ul>
-        Follow the appropriate directions for your operating system:
+        Choose and follow the appropriate directions for your operating system:
         <ul>
-          <li> If you are running Windows 2000/XP, you can either:
+          <li> If you are running Windows XP or Windows 2000, you can either:
             <ul>
               
               <li> Download the <a
@@ -104,7 +104,7 @@ building, and hence doesn't require the following nightmare.</p>
               CVS as a separate step).</b> This will install all of
               the above rpms for you.
 
-              <li> Download the rpms separately from <a
+              <li> Or download the rpms separately from <a
               href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/">here</a>.  More convenient links are included here:
                 <ul>
 <li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avarice-2.0.20030825cvs-1w.cygwin.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avarice-2.0.20030825cvs-1w.cygwin.i386.rpm</a>
@@ -118,12 +118,18 @@ building, and hence doesn't require the following nightmare.</p>
               where you saved the files.
             </ul>
 
-          <li> If you are running Linux (Redhat 9), download the rpm's
+          <li> If you are running Linux (Redhat 9), download the rpms from
           <a
-          href="http://webs.cs.berkeley.edu/tos/dist-1.1.0/tools/linux">here</a>
+          href="http://webs.cs.berkeley.edu/tos/dist-1.1.0/tools/linux">here</a>.  More convenient links are included here:
+            <ul>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avarice-2.0.20030825cvs-1.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avarice-2.0.20030825cvs-1.i386.rpm</a>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-binutils-2.13.2.1-1.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-binutils-2.13.2.1-1.i386.rpm</a>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-gcc-3.3tinyos-1.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-gcc-3.3tinyos-1.i386.rpm</a>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-insight-pre6.0cvs.tinyos-1.3.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-insight-pre6.0cvs.tinyos-1.3.i386.rpm</a>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-libc-20030512cvs-1.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-libc-20030512cvs-1.i386.rpm</a>
+            </ul>
           and install them with <pre>rpm -ivh *.rpm</pre> in the
           directory where you saved the files.
-
         </ul>
 
         (The directions above were modified from the <a href="http://webs.cs.berkeley.edu/tos/download.html">original TinyOS installation directions</a>).
@@ -147,11 +153,11 @@ cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tinyos login
 cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tinyos co tinyos-1.x
         </pre>
 
-        For details, see <a
-        href="http://sourceforge.net/cvs/?group_id=28656"><code>http://sourceforge.net/cvs/?group_id=28656</code></a>. This
-        will create a directory tinyos-1.x.
+        This will create a directory <code>tinyos-1.x</code>.  For more
+        information, see <a
+        href="http://sourceforge.net/cvs/?group_id=28656"><code>http://sourceforge.net/cvs/?group_id=28656</code></a>.
 
-      <li> Set TOSROOT to the location of the TinyOS source tree, and also set TOSDIR. 
+      <li> Set the TOSROOT environment variable to the location of the TinyOS source tree; also set the TOSDIR environment variable.
         <ul>
           <li>Under bash, type: 
             <pre>
@@ -161,7 +167,7 @@ export TOSDIR=$TOSROOT/tos
           <li>Under Windows with Cygwin, you can permanently set
           environment variables from the System control panel. For
           details, see <a
-          href="../../../doc/install.htm#settingptII">Set the value of
+          href="../../../../doc/install.htm#settingptII">Set the value of
           the PTII environment variable</a>. While you are setting
           environment variables in Windows, you may want to set <a
           href="#NC2MOMLLIB_NESC">NC2MOMLLIB_NESC</a>. <li>Under csh
@@ -199,7 +205,7 @@ make
 make install
         </pre>
 
-      <li> <a name="NC2MOMLLIB_NESC">Set another variable</a> that
+      <li> <a name="NC2MOMLLIB_NESC">Set another environment variable</a> (NC2MOMLLIB_NESC) that
       points to the nesc installation.
 
         <ul>
