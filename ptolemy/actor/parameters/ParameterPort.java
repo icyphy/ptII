@@ -35,9 +35,11 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -76,7 +78,10 @@ public class ParameterPort extends TypedIOPort {
         // Notify SDF scheduler that this port consumes one token,
         // despite not being connected on the inside.
         // NOTE: This is a Variable so it is transient.
-        new Variable(this, "tokenConsumptionRate", new IntToken(1));
+        Parameter tokenConsumptionRate =
+            new Parameter(this, "tokenConsumptionRate", new IntToken(1));
+        tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        tokenConsumptionRate.setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////
