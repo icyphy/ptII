@@ -60,12 +60,12 @@ test Add-1.1 {use default value} {
     $e0 setManager $manager
 
     #create ramp
-    set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp 0 1]
-    set rampOut [java::cast ptolemy.actor.TypedIOPort [$ramp getPort Output]]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
+    set rampOut [java::cast ptolemy.actor.TypedIOPort [$ramp getPort output]]
 
     #create const
-    set const [java::new ptolemy.actor.lib.Const $e0 Const 1]
-    set constOut [java::cast ptolemy.actor.TypedIOPort [$const getPort Output]]
+    set const [java::new ptolemy.actor.lib.Const $e0 Const]
+    set constOut [java::cast ptolemy.actor.TypedIOPort [$const getPort output]]
 
 
     #create adder
@@ -100,7 +100,7 @@ test Add-1.1 {use default value} {
     set rtAdderOut [[$adderOut getResolvedType] getName]
     set rtSinkIn [[$sinkIn getResolvedType] getName]
     list $rtRamp $rtConst $rtAdderIn $rtAdderOut $rtSinkIn
-} {ptolemy.data.IntToken ptolemy.data.IntToken ptolemy.data.IntToken ptolemy.data.IntToken ptolemy.data.IntToken}
+} {ptolemy.data.DoubleToken ptolemy.data.IntToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken}
 
 ######################################################################
 ####
@@ -111,9 +111,14 @@ test Add-1.2 {fire the above topology} {
     $adder fire
     $sink fire
 
+    $ramp postfire
+    $const postfire
+    $adder postfire
+    $sink postfire
+
     set t [$sink getToken]
     list [$t toString]
-} {ptolemy.data.IntToken(1)}
+} {ptolemy.data.DoubleToken(1.0)}
 
 ######################################################################
 ####
@@ -126,14 +131,14 @@ test Add-1.3 {fire once more} {
 
     set t [$sink getToken]
     list [$t toString]
-} {ptolemy.data.IntToken(2)}
+} {ptolemy.data.DoubleToken(2.0)}
 
 ######################################################################
 ####
 #
 test Add-2.1 {change Ramp init value type to double} {
     set initVal [java::cast ptolemy.data.expr.Parameter \
-	    [$ramp getAttribute Value]]
+	    [$ramp getAttribute init]]
     set dToken [java::new {ptolemy.data.DoubleToken double} 0.5]
     $initVal setType [$dToken getClass]
     $initVal setToken $dToken
@@ -157,6 +162,10 @@ test Add-2.2 {fire twice} {
     $const fire
     $adder fire
     $sink fire
+    $ramp postfire
+    $const postfire
+    $adder postfire
+    $sink postfire
     set t1 [$sink getToken]
 
     $ramp fire
@@ -188,7 +197,9 @@ test Add-3.1 {Add another source that generates type conflict} {
     $director initialize
     catch {$manager resolveTypes} msg
     list $msg
-} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0}}
+} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following ports:
+  .E0.Adder.Output: ptolemy.data.StringToken
+}}
 
 ######################################################################
 ####
