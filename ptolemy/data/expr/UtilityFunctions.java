@@ -48,7 +48,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.URL;
+<<<<<<< UtilityFunctions.java
 import java.util.*;
+import java.util.Random;
+import java.util.Vector;
+=======
+import java.util.*;
+>>>>>>> 1.77
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,7 +82,7 @@ public class UtilityFunctions {
             throws IllegalActionException {
         return token1.getType().convert(token2);
     }
-    
+
     /** Return a record token that contains the names of all the
      *  constants and their values.
      *  @return A token containing the names of all the constants
@@ -238,7 +244,7 @@ public class UtilityFunctions {
      *  @param string The string to be parsed and evaluated.
      *  @return A string representing an inferred type.
      */
-    public static String inferType(String string) 
+    public static String inferType(String string)
             throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode parseTree = parser.generateParseTree(string);
@@ -267,6 +273,27 @@ public class UtilityFunctions {
         }
         return new RecordToken(names, values);
     }
+
+
+    public ArrayToken iterate(FunctionToken function, int length, Token initValue) {
+            int num = function.getNumberOfArguments();
+            ArrayToken result = null;
+            if (num != 1) {
+                throw new IllegalActionException(
+                            "can not iterate function takes multy arguments.");
+            } else {
+                result.add(initValue);
+                Token iterate = initValue;
+                for (int i = 0; i < length; i++ ) {
+                    LinkedList arglist = new LinkedList();
+                    arglist.add(iterate);
+                    iterate = function.apply(arglist);
+                    result.add(iterate);
+                }
+            }
+            return result;
+        }
+
 
     /** Load a library by first using the default platform dependent
      *  System.loadLibrary() method.  If the library cannot be loaded
@@ -362,6 +389,41 @@ public class UtilityFunctions {
             System.load(libraryPath);
         }
     }
+    //arrayToken can only take the same type...
+    public static ArrayToken map(FunctionToken function, ArrayToken array) {
+        int num = function.getNumberOfArguments();
+        ArrayToken result = null;
+        if (BaseType.SCALAR.isCompatible(array.getElementType())){
+                if (num != 1) {
+                    throw new IllegalActionException(
+                        "function can not be applied to the array token due to invalid signature.");
+                } else{
+                    for (int i = 0; i < array.length(); i++) {
+                        ScalarToken args = (ScalarToken)array.getElement(i);
+                        LinkedList arglist = new LinkedList();
+                        arglist.add(args);
+                        result.add(function.apply(arglist));
+                    }
+                }
+        } else {
+            for (int i = 0; i < array.length(); i++) {
+                ArrayToken args = (ArrayToken)array.getElement(i);
+                LinkedList arglist = new LinkedList();
+                if (args.length() != num) {
+                    throw new IllegalActionException(
+                        "function can not be applied to the array token due to invalid signature.");
+                } else{
+                    for (int j = 1; j< num; j++) {
+                        arglist.add(args.getElement(j));
+                    }
+                    result.add(function.apply(arglist));
+                }
+            }
+        }
+        return result;
+    }
+
+
 
     /** Return the maximum of two unsigned bytes.
      *  @param x An unsigned byte.
@@ -376,7 +438,7 @@ public class UtilityFunctions {
             return y;
         }
     }
-    
+
     /** Return the maximum of the contents of the array.
      *  @param array An array of scalar tokens.
      *  @return The largest element of the array.
@@ -401,7 +463,7 @@ public class UtilityFunctions {
     }
 
     /** Return the (exact) return type of the max function above.
-     *  If the argument is an array type, then return its element type, 
+     *  If the argument is an array type, then return its element type,
      *  otherwise return BaseType.UNKNOWN.
      *  @param type The type of the argument to the corresponding function.
      *  @return The type of the value returned from the corresponding function.
@@ -414,7 +476,7 @@ public class UtilityFunctions {
             return BaseType.UNKNOWN;
         }
     }
-     
+
     /** Return the minimum of two unsigned bytes.
      *  @param x An unsigned byte.
      *  @param y An unsigned byte.
@@ -453,7 +515,7 @@ public class UtilityFunctions {
     }
 
     /** Return the (exact) return type of the min function above.
-     *  If the argument is an array type, then return its element type, 
+     *  If the argument is an array type, then return its element type,
      *  otherwise return BaseType.UNKNOWN.
      *  @param type The type of the argument to the corresponding function.
      *  @return The type of the value returned from the corresponding function.
@@ -466,7 +528,7 @@ public class UtilityFunctions {
             return BaseType.UNKNOWN;
         }
     }
-     
+
     /** FIXME. Placeholder for a function that will return a model.
      */
     public static ObjectToken model(String classname)
@@ -532,7 +594,7 @@ public class UtilityFunctions {
             return BaseType.UNKNOWN;
         }
     }
-     
+
     /** Return a matrix of IID random numbers with value greater than
      *  or equal to 0.0 and less than 1.0.
      *  @param rows The number of rows.
@@ -756,7 +818,7 @@ public class UtilityFunctions {
         }
         return arrayToken;
     }
-    
+
     /** Set a variable with the specified name to have the specified value.
      *  This is done in the global namespace of the expression evaluator,
      *  and will replace any previously defined constants with the specified
@@ -791,7 +853,7 @@ public class UtilityFunctions {
         }
         return result;
     }
-    
+
     /** Return the approximate number of bytes used by current objects
      *  and available for future object allocation.
      *  @return The total number of bytes used by the JVM.
@@ -800,7 +862,7 @@ public class UtilityFunctions {
     public static LongToken totalMemory() {
         return new LongToken(Runtime.getRuntime().totalMemory());
     }
-    
+
     /** Evaluate the given string as an expression in the expression
      *  language.  Instead of returning the resulting value, return a
      *  trace of the evaluation, including such useful information as
@@ -808,7 +870,7 @@ public class UtilityFunctions {
      *  @param string The string to be parsed and evaluated.
      *  @return A string representing an evaluation trace.
      */
-    public static String traceEvaluation(String string) 
+    public static String traceEvaluation(String string)
             throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode parseTree = parser.generateParseTree(string);
