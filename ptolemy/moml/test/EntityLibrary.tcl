@@ -188,7 +188,15 @@ test EntityLibrary-1.5 {deepEntityList with nonexistant file in configure so pop
     $entityLibrary configure [java::null] "file:./EntityLibary.tcl" \
 	    {EntityLibrary Test Configure}
     catch {[$entityLibrary deepEntityList]} errMsg
-    list $errMsg
+    # Under JDK1.4.1, we get a different errMsg
+    # Solaris: The system cannot find the file specified
+    # XP: No such file or directory
+    # So much for write once, run everywhere.
+    regsub {The system cannot find the file specified} $errMsg {No such file or directory} errMsg2
+    # Backslashes too!
+    regsub {\\} $errMsg2 {/} errMsg3
+    list $errMsg3
+
 } {{ptolemy.kernel.util.InvalidStateException: Failed to populate Library
   in .top
 Because:
