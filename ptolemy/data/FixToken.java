@@ -202,12 +202,11 @@ public class FixToken extends ScalarToken {
     }
 
     /** Returns a new Token representing the multiplicative identity
-     *  with a default precision of 1 bit for the integer part and 0
-     *  bits for the fractional part.  
-     *  @return A new Token containing the multiplicative identity.  
+     *  with the same precision as the current FixToken.  
+     *  @return A new Token containing the multiplicative identity.
      */
     public Token one() {
-        return new FixToken( 1.0, "(4.0)");
+        return new FixToken( 1.0, _value.getPrecision().toString() );
     }
 
     /** Return a new FixToken with value equal to the subtraction of this
@@ -243,14 +242,13 @@ public class FixToken extends ScalarToken {
             "," + precision.getIntegerBitLength() + ")";
     }
 
-    /** Returns a new token representing the additive identity with a
-     *  default precision of 1 bit for the integer part and 0 bits for
-     *  the fractional part.  
+    /** Returns a new token representing the additive identity with the
+     *  same precision as the current FixToken.  
      *  @return A new Token containing the additive identity.  
      */
     public Token zero()
     {
-        return new FixToken( 0.0, "(1/1)" );
+        return new FixToken( 0.0, _value.getPrecision().toString() );
     }
 
     /** Set the Rounding mode of the FixPoint number. */
@@ -269,13 +267,34 @@ public class FixToken extends ScalarToken {
     ////                         private variables                 ////
     private FixPoint _value;
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
     public static FixToken fix( double value, int numberOfBits, 
             int integerBits) {
         System.out.println(" Expression Language: received value,value,value");
         return new FixToken( value, numberOfBits, integerBits );
     }
 
+
    public static Token fix(  DoubleMatrixToken values, int numberOfBits, 
+           int integerBits) {
+       System.out.println(" Expression Language: received array of values");
+       System.out.println(" Expression Language: return a Fix matrix ");
+       System.out.println(" Precision: (" + numberOfBits + "/" + 
+               integerBits + ")" );
+       FixPoint [][] fxa = new FixPoint[1][values.getColumnCount()];
+       Precision precision = new Precision( numberOfBits, integerBits );
+       for( int i=0; i<values.getColumnCount(); i++) {
+           fxa[0][i] = Quantizer.round( values.getElementAt(0,i), precision);
+           System.out.println(" Result["+i+"] = " + fxa[0][i].toString() );
+       }
+       return new FixMatrixToken( fxa );
+   }
+    
+
+   public static Token quantize(  DoubleMatrixToken values, int numberOfBits, 
            int integerBits) {
        System.out.println(" Expression Language: received array of values");
        System.out.println(" Expression Language: return a double matrix ");
@@ -289,6 +308,7 @@ public class FixToken extends ScalarToken {
        }
        return new DoubleMatrixToken( fxa );
    }
+
 
     /**
    public static FixToken fix( DoubleMatrixToken values, int numberOfBits, 
