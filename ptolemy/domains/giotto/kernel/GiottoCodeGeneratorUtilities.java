@@ -180,6 +180,8 @@ public class GiottoCodeGeneratorUtilities {
 
     /** Return true if the given actor has at least one connected
      *  input port, which requires it to have an input driver.
+     *  @param actor The actor to test.
+     *  @return True if the given actor has at least on connected input port.
      */
     public static boolean needsInputDriver(Actor actor) {
         boolean retVal = false;
@@ -201,7 +203,10 @@ public class GiottoCodeGeneratorUtilities {
 
     /** Generate code for the actuator.
      *  Usually, there is only one actuator.
+     *  @param model The model.
      *  @return The actuator code.
+     *  @exception IllegalActionException If there is a problem accessing
+     *  the ports.   
      */
     protected static String _actuatorCode(TypedCompositeActor model)
             throws IllegalActionException {
@@ -235,7 +240,10 @@ public class GiottoCodeGeneratorUtilities {
     }
 
     /** Generate code for the driver.
+     *  @param model The model
      *  @return The driver code.
+     *  @exception IllegalActionException If there is a problem accessing
+     *  the ports.   
      */
     protected static String _driverCode(TypedCompositeActor model, Actor actor)
             throws IllegalActionException {
@@ -330,7 +338,10 @@ public class GiottoCodeGeneratorUtilities {
     /** Generate code for the drivers.
      *  The order of ports in model has effect
      *  on the order of driver input parameters
+     *  @param model The model.
      *  @return The drivers code.
+     *  @exception IllegalActionException If there is a problem accessing
+     *  the ports.   
      */
     protected static String _driversCode(TypedCompositeActor model)
             throws IllegalActionException {
@@ -402,7 +413,10 @@ public class GiottoCodeGeneratorUtilities {
 
     /** Generate header code for the file.
      *  Usually, there is only one header.
+     *  @param model The model.
      *  @return The header code.
+     *  @exception IllegalActionException If there is a problem 
+     *  getting the model name.
      */
     protected static String _headerCode(TypedCompositeActor model)
             throws IllegalActionException {
@@ -426,7 +440,10 @@ public class GiottoCodeGeneratorUtilities {
     }
 
     /** Generate code for the modes.
+     *  @param model The model.
      *  @return The modes code.
+     *  @exception IllegalActionException If there is a problem 
+     *  getting the director or accessing the ports.
      */
     protected static String _modeCode(TypedCompositeActor model)
             throws IllegalActionException {
@@ -525,7 +542,10 @@ public class GiottoCodeGeneratorUtilities {
      *  In Giotto, the situation that one port has several inputs
      *  is illegal. From the output ports, it is easy to trace
      *  to get receivers for output delivery.
+     *  @param model The model.   
      *  @return The output code.
+     *  @exception IllegalActionException If there is a problem 
+     *  accessing the ports.
      */
     protected static String _outputCode(TypedCompositeActor model)
             throws IllegalActionException {

@@ -241,30 +241,36 @@ public abstract class ConditionalBranch {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-    ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // The guard for this guarded communication statement.
+
+    /** The guard for this guarded communication statement. */
     protected boolean _guard;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The identification number of this branch (according to its controller)
+
+    /** The identification number of this branch
+     * (according to its controller).
+     */ 
     private int _branchID;
 
-    // Has another branch successfully rendezvoused? If so, then _alive
-    // is set to false. Otherwise, this branch still can potentially
-    // rendezvous. _alive remains true until it is no longer possible
-    // for this branch to successfully rendezvous.
+    /** Has another branch successfully rendezvoused? If so, then _alive
+     *  is set to false. Otherwise, this branch still can potentially
+     * rendezvous. _alive remains true until it is no longer possible
+     * for this branch to successfully rendezvous.
+     */
     private boolean _alive = true;
 
-    // The controller of this thread is trying to perform a conditional
-    // rendezvous for.
+    /** The controller of this thread is trying to perform a conditional
+     *  rendezvous for.
+     */
     private ConditionalBranchController _controller;
 
-    // The receiver this thread is trying to rendezvous with. It is immutable.
+    /** The receiver this thread is trying to rendezvous with.
+     *  It is immutable.
+     */
     private CSPReceiver _receiver;
 
-    // The Token transferred in a rendezvous.
+    /** The Token transferred in a rendezvous. */
     private Token _token;
 }

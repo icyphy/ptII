@@ -202,6 +202,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  even if not right away.  Note that if this were to return
      *  true only if a rendezvous was pending, then polymorphic actors
      *  would busy wait.
+     *  @param tokens Ignored by this method.
      *  @return True.
      */
     public boolean hasRoom(int tokens) {
@@ -226,6 +227,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  even if not right away.  Note that if this were to return
      *  true only if a rendezvous was pending, then polymorphic actors
      *  would busy wait.
+     *  @param tokens Ignored by this method.
      *  @return True.
      */
     public boolean hasToken(int tokens) {
@@ -275,7 +277,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     }
 
     /** This class serves as an example of a ConsumerReceiver and
-     *  hence this method returns true;
+     *  hence this method returns true.
      */
     public boolean isConsumerReceiver() {
         if (isConnectedToBoundary()) {
@@ -312,7 +314,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     }
 
     /** This class serves as an example of a ProducerReceiver and
-     *  hence this method returns true;
+     *  hence this method returns true.
      */
     public boolean isProducerReceiver() {
         if (isOutsideBoundary() || isInsideBoundary()) {
@@ -342,6 +344,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** If this receiver is involved in a branch, then mark the receiver
      *  blocked; otherwise mark the actor blocked.
+     *  @param branch The branch.
      */
     public synchronized void markBlocked(Branch branch) {
         if (branch != null) {
@@ -368,6 +371,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Put a token into the mailbox receiver and specify a null
      *  Branch to control the execution of this method.
+     *  @param token Then token.
      */
     public void put(Token token) {
         put(token, null);
@@ -531,6 +535,10 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         return _otherController;
     }
 
+    /** Return the branch ID of the branch that requested the 
+     *  conditional receive.
+     *  @return The branch ID.
+     */
     protected int getOtherID() {
         return _otherID;
     }

@@ -558,7 +558,10 @@ public class GiottoDirector extends StaticSchedulingDirector
         _unitTimeIncrement = scheduler._getMinTimeStep(_periodValue);
     }
 
-    /** (non-Javadoc)
+    /** Return an array of suggested directors to be used with
+     *  ModalModel. Each director is specified by its full class
+     *  name.  The first director in the array will be the default
+     *  director used by a modal model.
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
