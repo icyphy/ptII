@@ -89,6 +89,8 @@ public class DirectoryListing extends Source implements FilenameFilter {
 
         // FIXME: The file browser doesn't allow me to select a directory.
         directoryOrURL = new FileParameter(this, "directoryOrURL");
+        Attribute noFiles = new Attribute(directoryOrURL, "noFiles");
+        Attribute allowDirectories = new Attribute(directoryOrURL, "allowDirectories");
 
         directoryOrURLPort = new TypedIOPort(this, "directoryOrURL", true, false);
         directoryOrURLPort.setTypeEquals(BaseType.STRING);
