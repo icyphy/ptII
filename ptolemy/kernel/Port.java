@@ -170,7 +170,7 @@ public class Port extends NamedObj {
 
     /** Return true if the given Relation is linked to this port.
      */
-    public isLinked(Relation r) {
+    public boolean isLinked(Relation r) {
         return _relationsList.isLinked(r);
     }
     
