@@ -61,6 +61,7 @@ OTHER_FILES_TO_BE_JARED = \
 	about.htm \
 	copyright.htm \
 	configuration.xml \
+	docs.htm \
 	help.htm \
 	intro.htm \
 	welcomeWindow.xml
