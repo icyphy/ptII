@@ -158,7 +158,7 @@ public class CommitActionsAttribute
                                 destination.sendClear(channel.intValue());
                                 if (_debugging) {
                                     _debug(getFullName() + " port: "
-                                            + detination.getName()
+                                            + destination.getName()
                                             + " channel: "
                                             + channel.intValue() + ", Clear!");
                                 }

@@ -618,6 +618,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                                         + " to "
                                         + (insideReceivers[i][j])
                                         .getContainer().getFullName());
+                            }
                         }
                         transferredToken = true;
                     }

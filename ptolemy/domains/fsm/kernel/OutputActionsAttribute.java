@@ -156,8 +156,8 @@ public class OutputActionsAttribute
                             destination.broadcast(token);
                             if (_debugging) {
                                 _debug(getFullName() + " port: "
-                                       destination.getName()
-                                        + " token: " + token);
+                                       + destination.getName()
+                                       + " token: " + token);
                             }
                         }
                     }
