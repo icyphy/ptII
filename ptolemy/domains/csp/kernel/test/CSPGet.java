@@ -55,7 +55,7 @@ public class CSPGet extends CSPActor {
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-         inputPort = new IOPort(this, "inputPort", true, false);
+         inputPort = new IOPort(this, "input", true, false);
 	 _count = count;
 	 _tokens = new Token[_count];
     }
