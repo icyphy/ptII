@@ -112,7 +112,7 @@ public class PortConfigurerDialog extends ComponentDialog
             // to delete the port.
             if (dialog.buttonPressed().equals("OK")) {
 
-                String portName = query.stringValue("delete");
+                String portName = query.getStringValue("delete");
                 if (portName != null) {
                     Port port = _target.getPort(portName);
 
@@ -228,10 +228,10 @@ public class PortConfigurerDialog extends ComponentDialog
         // If the OK button was pressed, then queue a mutation
         // to create the parameter.
         // A blank property name is interpreted as a cancel.
-        String newName = _query.stringValue("name");
+        String newName = _query.getStringValue("name");
 
         String classMoML = "";
-        String classSpec = _query.stringValue("class");
+        String classSpec = _query.getStringValue("class");
         if (!classSpec.trim().equals("")) {
             classMoML = " class=\"" + classSpec + "\"";
         }
