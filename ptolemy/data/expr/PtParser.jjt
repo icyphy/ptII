@@ -40,67 +40,6 @@ Created : May 1998
 
 */
 
-/** //////////////////////////////////////////////////////////////////////
- *  //// PTParser.jjt
- *  
- * This file implements an expression parser for Ptolemy II using the 
- * JavaCC parser generator. It can handle all the basic arithmetic operators
- * (*, /, +, -,, %), relational operators (<, <=, >, >=, == !=), logical 
- * operators(&&, ||, !), bitwise operators (&, |, ^, ~)  and, using 
- * reflection, all of the funcionality available in the java.lang.Math 
- * package. By editing the ASTFunctionNode file it is also relatively 
- * easy to allow refernces to functions in other math packages as well 
- * as passing strings to Matlab and Tcl to be evaluated.
- *  
- * Functional if is supported via the following sytnax:
- *         (boolean) ? (value1) : (value2)
- * Extensibility is supported by allowing method calls on the Tokens,
- * the syntax is 
- *         (value1).method(comma seperated arguments)
- * 
- * JavaCC by itself simply generates a file ( and support files) that allow an 
- * input to be parsed, it does not return a parse tree. For the purposes of 
- * type checking we require a parse tree, and this is obtained using JJTree, a 
- * preprocesssor for Jacc. 
-
- * JJtree operates by annotating the grammer file to support the generation
- * of the parse tree. Thus the process is
- *
- *            --------                 ------
- *  X.jjt -> | JJTREE | --> X.jj  --> | JACC | --> X.java + support files
- *            --------                 ------
- *
- * The parser can also be parsed a symbol table of parameters on which the 
- * expression to be passed can depend.
- * 
- * Anything between quotes(") is taken to be one string.
- *
- * The expressions recognized follow as close as possible the syntax of Java.
- * In particular the operator precedences implemented here follow exactly 
- * those in Java. Any type conversions that are performed are lossless. If 
- * the user wants lossy conversions, explicit casts will be neccessary.
- * 
- * For a more thorough description of what the Parser is designed to do, 
- * please consult the Ptolemy II design document (or contact nsmyth@eecs)
- *
- * 
- * @author Neil Smyth
- * @version $Id$
- 
- * @see ptolemy.data.expr.ASTPtFunctionNode
- * @see ptolemy.data.expr.ASTPtLeafNode
- * @see ptolemy.data.expr.ASTPtLogicalNode
- * @see ptolemy.data.expr.ASTPtMiscNode
- * @see ptolemy.data.expr.ASTPtProductNodeI
- * @see ptolemy.data.expr.ASTPtRelationalNode
- * @see ptolemy.data.expr.ASTPtRootNode
- * @see ptolemy.data.expr.ASTPtSumNode
- * @see ptolemy.data.expr.ASTPtUnaryNode
- * @see ptolemy.data.Token 
-*/
-
-
-
 package ptolemy.data.expr;
 
 import ptolemy.kernel.*;
@@ -109,6 +48,67 @@ import ptolemy.data.*;
 
 import java.io.*;
 
+//////////////////////////////////////////////////////////////////////
+//// PTParser.jjt
+/** 
+This file implements an expression parser for Ptolemy II using the 
+JavaCC parser generator. It can handle all the basic arithmetic operators
+(*, /, +, -,, %), relational operators (<, <=, >, >=, == !=), logical 
+operators(&&, ||, !), bitwise operators (&, |, ^, ~)  and, using 
+reflection, all of the funcionality available in the java.lang.Math 
+package. 
+<p>
+By editing the ASTFunctionNode file it is also relatively 
+easy to allow refernces to other functions. This provides an easy mechanism to 
+extend the range to the parser e.g. have a tcl(...) function 
+that passes the string to a Tcl interpreter and retuns the result.
+<p>
+Functional if is supported via the following sytnax:
+        (boolean) ? (value1) : (value2)
+<p>
+Extensibility is also supported by allowing method calls on the Tokens,
+the syntax is 
+        (value1).method(comma seperated arguments)
+<p>
+JavaCC by itself simply generates a file (and support files) that allow an 
+input to be parsed, it does not return a parse tree. For the purposes of 
+type checking we require a parse tree, and this is obtained using JJTree, a 
+preprocesssor for JavaCC. 
+<p>
+JJtree operates by annotating the grammer file to support the generation
+of the parse tree. Thus the process is
+<p>
+<center>X.jjt --> JJTREE --> X.jj --> JAVACC --> X.java + support files
+<br>
+</CENTER>
+<p>
+The parser can also be passed a symbol table of ptolemy.data.expr.Parameters 
+which the expression to be parsed can reference.
+<p>
+Anything between quotes(") is taken to be one string.
+<p>
+The expressions recognized follow as close as possible the syntax of Java.
+In particular the operator precedences implemented here follow exactly 
+those in Java. Any type conversions that are performed are lossless. If 
+the user wants lossy conversions, explicit casts will be neccessary.
+<p>
+For a more thorough description of what the Parser is designed to do, 
+please consult the Ptolemy II design document (or contact nsmyth@eecs)
+
+@author Neil Smyth
+@version $Id$
+
+@see ptolemy.data.expr.ASTPtFunctionNode
+@see ptolemy.data.expr.ASTPtLeafNode
+@see ptolemy.data.expr.ASTPtLogicalNode
+@see ptolemy.data.expr.ASTPtMiscNode
+@see ptolemy.data.expr.ASTPtProductNode
+@see ptolemy.data.expr.ASTPtRelationalNode
+@see ptolemy.data.expr.ASTPtRootNode
+@see ptolemy.data.expr.ASTPtSumNode
+@see ptolemy.data.expr.ASTPtUnaryNode
+@see ptolemy.data.Token 
+*/
 public class PtParser {
     /** Stores the parameters to which the input expression can reference
      */
