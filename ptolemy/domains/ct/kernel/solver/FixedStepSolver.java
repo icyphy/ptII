@@ -37,15 +37,15 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// FixedStepSolver
 /**
-   Abstract base class for fixed step size ODE solvers, which provide no
-   error control. It provide base implementation for some methods that
+   Abstract base class for fixed step size ODE solvers, which provides no
+   error control. It provides base implementation for some methods that
    are shared by all fixed-step-size solvers.
 
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public abstract class FixedStepSolver extends ODESolver {
     /** Construct a solver in the default workspace with an empty
@@ -71,7 +71,7 @@ public abstract class FixedStepSolver extends ODESolver {
     ////                         public methods                    ////
 
     /** Fire dynamic actors. Advance the model time to the current model time
-     *  plus the current step size.
+     *  plus the current step size on the first round.
      *  @exception IllegalActionException If thrown in the super class or
      *  the model time can not be set.
      */
@@ -81,10 +81,11 @@ public abstract class FixedStepSolver extends ODESolver {
         // changed via calling _voteForConverged() by that integrator.
         _setConverged(true);
         super.fireDynamicActors();
-        CTDirector dir = (CTDirector)getContainer();
         if (_getRoundCount() == 0) {
             // At the first round, advance the time with the current step size.
-            dir.setModelTime(dir.getModelTime().add(dir.getCurrentStepSize()));
+            CTDirector director = (CTDirector)getContainer();
+            director.setModelTime(
+                    director.getModelTime().add(director.getCurrentStepSize()));
         }
     }
 
@@ -92,7 +93,7 @@ public abstract class FixedStepSolver extends ODESolver {
      *  this solver.
      *  @return 0.
      */
-    public int getHistoryCapacityRequirement() {
+    public int getAmountOfHistoryInformation() {
         return 0;
     }
 
@@ -113,15 +114,14 @@ public abstract class FixedStepSolver extends ODESolver {
         return true;
     }
 
-    /** Return the current step size of the director, since no step
-     *  size control is performed.
+    /** Return the current step size of the director.
      *  @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#predictedStepSize
      *  @param integrator The integrator that want to predict the step size.
      *  @return The current step size of the director.
      */
     public final double integratorPredictedStepSize(
             CTBaseIntegrator integrator) {
-        CTDirector dir = (CTDirector) getContainer();
-        return dir.getCurrentStepSize();
+        CTDirector director = (CTDirector) getContainer();
+        return director.getCurrentStepSize();
     }
 }

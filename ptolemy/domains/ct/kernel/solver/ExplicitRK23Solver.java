@@ -98,7 +98,7 @@ public class ExplicitRK23Solver extends ODESolver {
         try {
             setName(_DEFAULT_NAME);
         } catch (KernelException ex) {
-            throw new InternalErrorException(ex.getMessage());
+            throw new InternalErrorException(ex);
         }
     }
 
@@ -112,13 +112,13 @@ public class ExplicitRK23Solver extends ODESolver {
      */
     public void fireDynamicActors() throws IllegalActionException {
         super.fireDynamicActors();
-        CTDirector dir = (CTDirector)getContainer();
+        CTDirector director = (CTDirector)getContainer();
         // NOTE: why is the current model time changed here?
         // Some state transition actors may be some functions
         // defined on the current time, such as the CurrentTime actor.
-        Time iterationBeginTime = dir.getIterationBeginTime();
-        double currentStepSize = dir.getCurrentStepSize();
-        dir.setModelTime(
+        Time iterationBeginTime = director.getIterationBeginTime();
+        double currentStepSize = director.getCurrentStepSize();
+        director.setModelTime(
                 iterationBeginTime.add(currentStepSize
                         * _timeInc[_getRoundCount()]));
     }
@@ -143,7 +143,7 @@ public class ExplicitRK23Solver extends ODESolver {
      *  by this solver.
      *  @return 0.
      */
-    public final int getHistoryCapacityRequirement() {
+    public final int getAmountOfHistoryInformation() {
         return 0;
     }
 
@@ -163,15 +163,11 @@ public class ExplicitRK23Solver extends ODESolver {
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
+        CTDirector director = (CTDirector)getContainer();
         int r = _getRoundCount();
         double xn =  integrator.getState();
         double outvalue;
-        double h = dir.getCurrentStepSize();
+        double h = director.getCurrentStepSize();
         double[] k = integrator.getAuxVariables();
         switch (r) {
         case 0:
@@ -208,9 +204,9 @@ public class ExplicitRK23Solver extends ODESolver {
      */
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         try {
-            CTDirector dir = (CTDirector)getContainer();
-            double tolerance = dir.getErrorTolerance();
-            double h = dir.getCurrentStepSize();
+            CTDirector director = (CTDirector)getContainer();
+            double tolerance = director.getErrorTolerance();
+            double h = director.getCurrentStepSize();
             double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
             integrator.setTentativeDerivative(f);
             double[] k = integrator.getAuxVariables();
@@ -245,12 +241,12 @@ public class ExplicitRK23Solver extends ODESolver {
      *  @return The next step size suggested by the given integrator.
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
-        CTDirector dir = (CTDirector)getContainer();
+        CTDirector director = (CTDirector)getContainer();
         double error = (integrator.getAuxVariables())[3];
-        double h = dir.getCurrentStepSize();
-        double tolerance = dir.getErrorTolerance();
+        double h = director.getCurrentStepSize();
+        double tolerance = director.getErrorTolerance();
         double newh = 5.0*h;
-        if (error > dir.getValueResolution()) {
+        if (error > director.getValueResolution()) {
             newh = h*
                 Math.max(0.5, 0.8*Math.pow((tolerance/error), 1.0/_order));
         }

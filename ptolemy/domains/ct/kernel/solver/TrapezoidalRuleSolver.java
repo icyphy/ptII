@@ -99,9 +99,9 @@ public class TrapezoidalRuleSolver extends ODESolver {
         super(workspace);
         try {
             setName(_DEFAULT_NAME);
-        } catch (KernelException e) {
+        } catch (KernelException ex) {
             // this should never happen.
-            throw new InternalErrorException(e.getMessage());
+            throw new InternalErrorException(ex);
         }
     }
 
@@ -118,12 +118,12 @@ public class TrapezoidalRuleSolver extends ODESolver {
         // If any integrator does not agree, the final converged status may be
         // changed via calling _voteForConverged() by that integrator.
         _setConverged(true);
-        CTDirector dir = (CTDirector)getContainer();
+        CTDirector director = (CTDirector)getContainer();
         super.fireDynamicActors();
         if (_getRoundCount() == 0) {
             _recalculatingWithTwoSteps = false;
             _firstStep = true;
-            dir.setModelTime(dir.getModelTime().add(dir.getCurrentStepSize()));
+            director.setModelTime(director.getModelTime().add(director.getCurrentStepSize()));
         }
         if (_isConverged()) {
             // Resolved states have converged.
@@ -157,7 +157,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  history information.
      *  @return 0.
      */
-    public int getHistoryCapacityRequirement() {
+    public int getAmountOfHistoryInformation() {
         return 0;
     }
 
@@ -177,12 +177,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        double h = dir.getCurrentStepSize();
+        CTDirector director = (CTDirector)getContainer();
+        double h = director.getCurrentStepSize();
         double tentativeState;
         if (_getRoundCount() == 0) {
             // During the first round, use the current derivative to predict
@@ -202,7 +198,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
                 tentativeState = integrator.getState() + (h*(f1+f2))/2.0;
                 double error =
                     Math.abs(tentativeState-integrator.getTentativeState());
-                if (error < dir.getValueResolution()) {
+                if (error < director.getValueResolution()) {
                     // save resolved states for local truncation error control
                     integrator.setAuxVariables(0, tentativeState);
                     _voteForConverged(true);
@@ -242,8 +238,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  error tolerance.
      */
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
-        CTDirector dir = (CTDirector)getContainer();
-        double tolerance = dir.getErrorTolerance();
+        CTDirector director = (CTDirector)getContainer();
+        double tolerance = director.getErrorTolerance();
         double[] k = integrator.getAuxVariables();
         double localError =
             (1.0/3.0)*Math.abs(integrator.getTentativeState() - k[0]);
@@ -278,10 +274,10 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  @return The suggested next step by the given integrator.
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
-        CTDirector dir = (CTDirector)getContainer();
+        CTDirector director = (CTDirector)getContainer();
         double localError = (integrator.getAuxVariables())[1];
-        double h = dir.getCurrentStepSize();
-        double tolerance = dir.getErrorTolerance();
+        double h = director.getCurrentStepSize();
+        double tolerance = director.getErrorTolerance();
         double newh = h;
         if (localError/tolerance < 0.1) {
             newh =
@@ -299,8 +295,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean resolveStates() throws IllegalActionException {
-        CTDirector dir = (CTDirector)getContainer();
-        if (_getRoundCount() > dir.getMaxIterations()) {
+        CTDirector director = (CTDirector)getContainer();
+        if (_getRoundCount() > director.getMaxIterations()) {
             _resetRoundCount();
             return false;
         }
