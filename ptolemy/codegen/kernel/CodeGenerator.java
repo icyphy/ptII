@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
+import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 
@@ -38,6 +39,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.util.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -120,10 +122,22 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         generateBodyCode(code);
         generateWrapupCode(code);
         
-        // FIXME: Write the code to standard out for now.
-        // The code should be written to a file in the
-        // codeDirectory instead.
-        System.out.println(code.toString());
+        // Write the code to the file specified by codeDirectory.
+        try {
+            // Check if needs to overwrite.
+            if (codeDirectory.asFile().exists()) {
+                if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
+                        + " exists. OK to overwrite?")) {
+                    throw new IllegalActionException(this,
+                            "Please select another file name.");        
+                        }
+            }
+            Writer writer = codeDirectory.openForWriting();
+            writer.write(code.toString());
+            codeDirectory.close();
+        } catch(Exception ex) {
+            throw new IllegalActionException(this, ex.getMessage());
+        }
     }
     
     /** Return a formatted comment containing the
