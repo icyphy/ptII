@@ -342,7 +342,7 @@ nonjsall:
 		    fi ; \
 		done ; \
 	fi
-	@-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
+	-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
 		set $(NONJSALLDIRS); \
 		for x do \
 		    if [ -w $(PTIIHOME)/$$x ] ; then \
@@ -686,7 +686,7 @@ remote1distnonjsall:
 		    fi ; \
 		done ; \
 	fi
-	@-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
+	-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
 		set $(NONJSALLDIRS); \
 		for x do \
 		    if [ -w $$x ] ; then \
