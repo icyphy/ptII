@@ -47,7 +47,7 @@ import java.io.InputStreamReader;
    reporting errors.  For example, a swing application will probably
    want to report errors in a dialog box, using for example
    the derived class GraphicalMessageHandler.
-   @see GraphicalMessageHandler
+   @see ptolemy.gui.GraphicalMessageHandler
 
    @author  Edward A. Lee, Steve Neuendorffer
    @version $Id$
