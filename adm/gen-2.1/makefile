@@ -638,9 +638,10 @@ remote1distjsall_1:
 
 remote1distjsall_2:
 	@echo "copernicus/applet requires that the jar files are present"
+	@echo "FIXME: assuming Solaris with the : classpathseparator here"
 	(cd $(REMOTE1PTIIDIST); \
 	    $(MAKE) $(MFLAGS) $(MAKEVARS) \
-		AUXCLASSPATH="$(CLASSPATHSEPARATOR)$(JSCLASSPATH)" \
+		AUXCLASSPATH=":$(JSCLASSPATH)" \
 		install)
 	(cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet; \
 		$(MAKE) $(MFLAGS) $(MAKEVARS) \
