@@ -28,7 +28,7 @@ package diva.gui.toolbox;
 import diva.canvas.Figure;
 
 /**
- * A factory for popup menus.  Use this class in conjuction with
+ * A factory for popup menus.  Use this class in conjunction with
  * a MenuCreator to implement context sensitive menus.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
