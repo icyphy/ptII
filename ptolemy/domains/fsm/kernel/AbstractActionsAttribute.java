@@ -345,7 +345,6 @@ public abstract class AbstractActionsAttribute extends Action
     private void _updateDestinations() throws IllegalActionException {
         try {
             workspace().getReadAccess();
-            FSMActor fsm = (FSMActor)getContainer().getContainer();
             if (_destinationNames != null) {
                 _destinations = new LinkedList();
                 Iterator destinationNames = _destinationNames.iterator();
