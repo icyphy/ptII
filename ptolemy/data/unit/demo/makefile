@@ -32,7 +32,7 @@ ME =		ptolemy/data/unit/demo
 
 # Keep these alphabetical please.
 DIRS = 		Units \
-		Fermenter
+		StaticUnits
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
