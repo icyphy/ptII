@@ -233,236 +233,235 @@ public class Assertion extends TypedAtomicActor {
                     // tolerance.
 
                     if (inputToken.getType() == BaseType.DOUBLE) {
-
                         double value =
-                            (DoubleToken) inputToken).doubleValue();
+                            ((DoubleToken) inputToken).doubleValue();
 
-                    // calculate the precision specified by the
-                    // error tolerance
+                        // calculate the precision specified by the
+                        // error tolerance
 
-                    // log10(errorTolerance) = logE(errorTolerance)/logE(10)
-                    double precision =
-                        Math.log(_errorTolerance)/Math.log(10);
-                    int preciseBits =
-                        (int) Math.abs(Math.round(precision));
+                        // log10(errorTolerance) = logE(errorTolerance)/logE(10)
+                        double precision =
+                            Math.log(_errorTolerance)/Math.log(10);
+                        int preciseBits =
+                            (int) Math.abs(Math.round(precision));
 
-                    BigDecimal valueBD = new BigDecimal(value);
-                    valueBD = valueBD.setScale(preciseBits,
-                            BigDecimal.ROUND_HALF_UP);
-                    value = valueBD.doubleValue();
-                    inputToken = new DoubleToken(value);
+                        BigDecimal valueBD = new BigDecimal(value);
+                        valueBD = valueBD.setScale(preciseBits,
+                                BigDecimal.ROUND_HALF_UP);
+                        value = valueBD.doubleValue();
+                        inputToken = new DoubleToken(value);
 
-                    if (_debugging) {
-                        _debug("the modified input is "
-                                + ((DoubleToken)inputToken).doubleValue());
+                        if (_debugging) {
+                            _debug("the modified input is "
+                                    + ((DoubleToken)inputToken).doubleValue());
+                        }
                     }
-                }
 
-                // Update the local copy of the input values.
-                _tokenMap.put(port.getName(), inputToken);
+                    // Update the local copy of the input values.
+                    _tokenMap.put(port.getName(), inputToken);
+                }
             }
         }
     }
-}
 
-/** Initialize the actor.
- *  @exception IllegalActionException If the superclass throws it.
- */
-public void initialize() throws IllegalActionException {
-    super.initialize();
-    _tokenMap = new HashMap();
-}
-
-/** Evaluation of the assertion.
- *  @exception IllegalActionException If the assertion fails.
- */
-public boolean postfire() throws IllegalActionException {
-
-    BooleanToken result = (BooleanToken) evaluate();
-
-    if (!result.booleanValue()) {
-        throw new IllegalActionException(this,
-                "Assertion fails! " +
-                assertion.getExpression());
+    /** Initialize the actor.
+     *  @exception IllegalActionException If the parent throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _tokenMap = new HashMap();
     }
 
-    // This actor never requests termination.
-    return true;
-}
+    /** Evaluation of the assertion.
+     *  @exception IllegalActionException If the assertion fails.
+     */
+    public boolean postfire() throws IllegalActionException {
 
-/** Create receivers and validate the attributes contained by this
- *  actor and the ports contained by this actor.  This method overrides
- *  the base class to not throw exceptions if the parameters of this
- *  actor cannot be validated.  This is done because the assertion
- *  depends on the input values, which may not be valid before type
- *  resolution occurs.
- *
- *  @exception IllegalActionException Not thrown in this base class.
- */
-public void preinitialize() throws IllegalActionException {
-    try {
-        super.preinitialize();
-    }
-    catch(Exception ex) {
-    }
-}
+        BooleanToken result = (BooleanToken) evaluate();
 
-///////////////////////////////////////////////////////////////////
-////                         protected methods                 ////
+        if (!result.booleanValue()) {
+            throw new IllegalActionException(this,
+                    "Assertion fails! " +
+                    assertion.getExpression());
+        }
 
-/** Override the base class to create a variable with the same name
- *  as the port.  If the port is an input, then the variable serves
- *  as a repository for received tokens.  If it is an output, then
- *  the variable contains the most recently transmitted token.
- *  @param port The port being added.
- *  @exception IllegalActionException If the port has no name, or
- *   if the variable is rejected for some reason, or if the port
- *   is not a TypedIOPort.
- *  @exception NameDuplicationException If the port name collides with a
- *   name already in the entity.
- */
-protected void _addPort(Port port)
-        throws IllegalActionException, NameDuplicationException {
-    if (!(port instanceof TypedIOPort)) {
-        throw new IllegalActionException(this,
-                "Cannot add an input port that is not a TypedIOPort: "
-                + port.getName());
+        // This actor never requests termination.
+        return true;
     }
-    super._addPort(port);
-    String portName = port.getName();
-    // The new variable goes on the list of attributes, unless it is
-    // already there.
-    Attribute there = getAttribute(portName);
-    if (there == null) {
-        // FIXME: Have to initialize with a token since vergil
-        // evaluates variables at start-up.  This needs to be a double
-        // so that assertions that use java.Math work.
-        Variable variable =
-            new Variable(this, portName, new DoubleToken(1.0));
-    } else if ((there instanceof Parameter)
-            || !(there instanceof Variable)) {
-        throw new IllegalActionException(this, "Port name collides with"
-                + " another attribute name: " + portName);
-    }
-    // NOTE: We assume that if there is already a variable with
-    // this name then that is the variable we are intended to use.
-    // The variable will already be there, for example, if the
-    // actor was created through cloning.
-}
 
-/** Override the base class to remove the variable with the same name
- *  as the port.
- *  @param port The port being removed.
- */
-protected void _removePort(Port port) {
-    super._removePort(port);
-    String portName = port.getName();
-    Attribute attribute = getAttribute(portName);
-    if (attribute instanceof Variable) {
+    /** Create receivers and validate the attributes contained by this
+     *  actor and the ports contained by this actor.  This method overrides
+     *  the base class to not throw exceptions if the parameters of this
+     *  actor cannot be validated.  This is done because the assertion
+     *  depends on the input values, which may not be valid before type
+     *  resolution occurs.
+     *
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void preinitialize() throws IllegalActionException {
         try {
-            attribute.setContainer(null);
-        } catch (KernelException ex) {
-            throw new InternalErrorException(ex.getMessage());
+            super.preinitialize();
+        }
+        catch(Exception ex) {
         }
     }
-}
 
-///////////////////////////////////////////////////////////////////
-////                       private methods                     ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
-// Find the variable with the given name in the scope of
-// this actor, and return it.  If there is no such
-// variable, then return null.
-private Variable _findVariable(String name) {
-    NamedObj container = (NamedObj)Assertion.this;
-    while (container != null) {
-        Variable result = _searchIn(container, name);
-        if (result != null) {
-            return result;
-        } else {
-            container = (NamedObj)container.getContainer();
+    /** Override the base class to create a variable with the same name
+     *  as the port.  If the port is an input, then the variable serves
+     *  as a repository for received tokens.  If it is an output, then
+     *  the variable contains the most recently transmitted token.
+     *  @param port The port being added.
+     *  @exception IllegalActionException If the port has no name, or
+     *   if the variable is rejected for some reason, or if the port
+     *   is not a TypedIOPort.
+     *  @exception NameDuplicationException If the port name collides with a
+     *   name already in the entity.
+     */
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
+        if (!(port instanceof TypedIOPort)) {
+            throw new IllegalActionException(this,
+                    "Cannot add an input port that is not a TypedIOPort: "
+                    + port.getName());
+        }
+        super._addPort(port);
+        String portName = port.getName();
+        // The new variable goes on the list of attributes, unless it is
+        // already there.
+        Attribute there = getAttribute(portName);
+        if (there == null) {
+            // FIXME: Have to initialize with a token since vergil
+            // evaluates variables at start-up.  This needs to be a double
+            // so that assertions that use java.Math work.
+            Variable variable =
+                new Variable(this, portName, new DoubleToken(1.0));
+        } else if ((there instanceof Parameter)
+                || !(there instanceof Variable)) {
+            throw new IllegalActionException(this, "Port name collides with"
+                    + " another attribute name: " + portName);
+        }
+        // NOTE: We assume that if there is already a variable with
+        // this name then that is the variable we are intended to use.
+        // The variable will already be there, for example, if the
+        // actor was created through cloning.
+    }
+
+    /** Override the base class to remove the variable with the same name
+     *  as the port.
+     *  @param port The port being removed.
+     */
+    protected void _removePort(Port port) {
+        super._removePort(port);
+        String portName = port.getName();
+        Attribute attribute = getAttribute(portName);
+        if (attribute instanceof Variable) {
+            try {
+                attribute.setContainer(null);
+            } catch (KernelException ex) {
+                throw new InternalErrorException(ex.getMessage());
+            }
         }
     }
-    return null;
-}
 
-// Search in the container for an attribute with the given name.
-// Search recursively in any instance of ScopeExtender in the
-// container.
-private Variable _searchIn(NamedObj container, String name) {
-    Attribute result = container.getAttribute(name);
-    if (result != null && result instanceof Variable)
-        return (Variable)result;
-    Iterator extenders =
-        container.attributeList(ScopeExtender.class).iterator();
-    while (extenders.hasNext()) {
-        ScopeExtender extender = (ScopeExtender)extenders.next();
-        result = extender.getAttribute(name);
+    ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
+
+    // Find the variable with the given name in the scope of
+    // this actor, and return it.  If there is no such
+    // variable, then return null.
+    private Variable _findVariable(String name) {
+        NamedObj container = (NamedObj)Assertion.this;
+        while (container != null) {
+            Variable result = _searchIn(container, name);
+            if (result != null) {
+                return result;
+            } else {
+                container = (NamedObj)container.getContainer();
+            }
+        }
+        return null;
+    }
+
+    // Search in the container for an attribute with the given name.
+    // Search recursively in any instance of ScopeExtender in the
+    // container.
+    private Variable _searchIn(NamedObj container, String name) {
+        Attribute result = container.getAttribute(name);
         if (result != null && result instanceof Variable)
             return (Variable)result;
-    }
-    return null;
-}
-
-private class VariableScope implements ParserScope {
-
-    /** Look up and return the attribute with the specified name in the
-     *  scope. Return null if such an attribute does not exist.
-     *  @return The attribute with the specified name in the scope.
-     */
-    public Token get(String name) throws IllegalActionException {
-
-        Token token = (Token)_tokenMap.get(name);
-        if(token != null) {
-            return token;
-        }
-
-        Variable result = _findVariable(name);
-        if (result != null) {
-            return result.getToken();
+        Iterator extenders =
+            container.attributeList(ScopeExtender.class).iterator();
+        while (extenders.hasNext()) {
+            ScopeExtender extender = (ScopeExtender)extenders.next();
+            result = extender.getAttribute(name);
+            if (result != null && result instanceof Variable)
+                return (Variable)result;
         }
         return null;
     }
 
-    /** Look up and return the type of the attribute with the
-     *  specified name in the scope. Return null if such an
-     *  attribute does not exist.
-     *  @return The attribute with the specified name in the scope.
-     */
-    public Type getType(String name) throws IllegalActionException {
+    private class VariableScope implements ParserScope {
 
-        // Check the port names.
-        TypedIOPort port = (TypedIOPort)getPort(name);
-        if(port != null) {
-            return port.getType();
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         */
+        public Token get(String name) throws IllegalActionException {
+
+            Token token = (Token)_tokenMap.get(name);
+            if(token != null) {
+                return token;
+            }
+
+            Variable result = _findVariable(name);
+            if (result != null) {
+                return result.getToken();
+            }
+            return null;
         }
 
-        Variable result = _findVariable(name);
-        if(result != null) {
-            return result.getType();
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         */
+        public Type getType(String name) throws IllegalActionException {
+
+            // Check the port names.
+            TypedIOPort port = (TypedIOPort)getPort(name);
+            if(port != null) {
+                return port.getType();
+            }
+
+            Variable result = _findVariable(name);
+            if(result != null) {
+                return result.getType();
+            }
+            return null;
         }
-        return null;
+
+        /** Return the list of attributes within the scope.
+         *  @return The list of attributes within the scope.
+         */
+        public NamedList variableList() {
+            return null;
+        }
     }
 
-    /** Return the list of attributes within the scope.
-     *  @return The list of attributes within the scope.
-     */
-    public NamedList variableList() {
-        return null;
-    }
-}
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-///////////////////////////////////////////////////////////////////
-////                         private variables                 ////
+    // Parameter, the error tolerance, local copy
+    protected double _errorTolerance;
 
-// Parameter, the error tolerance, local copy
-protected double _errorTolerance;
+    // The local copy of the input tokens.
+    private Map _tokenMap;
 
-// The local copy of the input tokens.
-private Map _tokenMap;
-
-private ParseTreeEvaluator _parseTreeEvaluator = null;
-private ASTPtRootNode _parseTree = null;
-private VariableScope _scope = new VariableScope();
+    private ParseTreeEvaluator _parseTreeEvaluator = null;
+    private ASTPtRootNode _parseTree = null;
+    private VariableScope _scope = new VariableScope();
 }
