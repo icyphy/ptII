@@ -98,10 +98,10 @@ number are broadcast as String and int respectively.  These tell where
 the received datagram originated from.  <p>
 
 NOTE: Ideally, there would be more encoding options than
-provided here.  However, I believe the best way to fill out this 
-repertoire is to make a separate encode/decode or pack/repack/unpack 
-actor.  Such an actor would better re-factor this functionality than 
-to duplicate it in each I/O actor (as has been done here with the 
+provided here.  However, I believe the best way to fill out this
+repertoire is to make a separate encode/decode or pack/repack/unpack
+actor.  Such an actor would better re-factor this functionality than
+to duplicate it in each I/O actor (as has been done here with the
 datagram actors).  <p><p>
 
 
@@ -135,8 +135,8 @@ have default outputs as well, but they are not parameter-programmable. <p><p>
 
 NOTE: This actor has a parameter <i>localSocketNumber</i> for the port
 number assigned to its local datagram socket.  Initially, the local
-socket number is set to 4004.  There is no particular reason for choosing 
-this number, except that is noticeable in the code and in Vergil, thus 
+socket number is set to 4004.  There is no particular reason for choosing
+this number, except that is noticeable in the code and in Vergil, thus
 encouraging you to change it to any desired value in the range 0..65535.
 
 Some commonly used port numbers (a.k.a. socket numbers) are shown below:
@@ -248,8 +248,8 @@ public class DatagramReader extends TypedAtomicActor {
         encoding.setExpression("for_Ptolemy_parser");
 	// The above setExpression() call causes a call to the
 	// attributeChanged() method here in this same actor!
-	// The actor uses this to set the related cached values 
-	// <i>_decodeWithPtolemyParser</i> etc. to be congruent 
+	// The actor uses this to set the related cached values
+	// <i>_decodeWithPtolemyParser</i> etc. to be congruent
 	// with the setting of <i>encoding</i>.
 
    }
@@ -279,17 +279,17 @@ public class DatagramReader extends TypedAtomicActor {
     /** Encoding to expect of received datagrams.  This is a
      *  string-valued attribute that defaults to "forPtolemyParser".
      *  This is a 'ChoiceStyle' i.e. drop-menu-select parameter.
-     *  The three options currently implemented are: "for_Ptolemy_parser", 
-     *  "raw_low_bytes_of_integers", and "raw_integers_little_endian".  
+     *  The three options currently implemented are: "for_Ptolemy_parser",
+     *  "raw_low_bytes_of_integers", and "raw_integers_little_endian".
      *  The first option allows reconstruction of any data type upon
-     *  reception.  This is designed to be used with the DatagramSender 
-     *  similarly configured.  The other two options are for receiving 
-     *  general data in raw form.  These formats are also convenient for 
-     *  receiving arrays of bytes and integers respectively.  The former 
-     *  are not received explicitly as bytes since the Byte type is 
-     *  still under development in Ptolemy.  Conversion in this actor 
-     *  between bytes and integers simply ignores the 24 high order bits 
-     *  of the integer.  For example, 511, 255, and -1 are treated as 
+     *  reception.  This is designed to be used with the DatagramSender
+     *  similarly configured.  The other two options are for receiving
+     *  general data in raw form.  These formats are also convenient for
+     *  receiving arrays of bytes and integers respectively.  The former
+     *  are not received explicitly as bytes since the Byte type is
+     *  still under development in Ptolemy.  Conversion in this actor
+     *  between bytes and integers simply ignores the 24 high order bits
+     *  of the integer.  For example, 511, 255, and -1 are treated as
      *  the same value under the "raw_low_bytes_of_integers" setting.
      */
     public StringAttribute encoding;
@@ -363,7 +363,7 @@ public class DatagramReader extends TypedAtomicActor {
      * accessible via the getReceiveBufferSize and
      * setReceiveBufferSize methods of java.net.DatagramSocket.
      * Caution - The set is only a suggestion.  Must call get to see
-     * what you actually got.  
+     * what you actually got.
      */
     public Parameter bufferLength;
 
@@ -421,15 +421,15 @@ public class DatagramReader extends TypedAtomicActor {
 		// it really work, that is set the type of the <i>output</i>
 		// port if and only if the <i>encoding</i> parameter is
 		// actually changed, some things would need to be fixed.
-		// The "configure" dialog currently implements "cancel" 
-		// via a reapplication of stored values, thus reverting 
-		// the change.  However, my actor would have already 
-		// overwritten and lost user settings in such a process.  
-		// Having fixed this, the next step would be to use 
-		// MoMLChangeRequest(originator, context, "<....>") in 
-		// place of setTypeEquals() whose changes do not stick. 
-		// Finally, to make this safe during the constructor 
-		// call, maybe an _inConstructor variable would serve 
+		// The "configure" dialog currently implements "cancel"
+		// via a reapplication of stored values, thus reverting
+		// the change.  However, my actor would have already
+		// overwritten and lost user settings in such a process.
+		// Having fixed this, the next step would be to use
+		// MoMLChangeRequest(originator, context, "<....>") in
+		// place of setTypeEquals() whose changes do not stick.
+		// Finally, to make this safe during the constructor
+		// call, maybe an _inConstructor variable would serve
 		// to avoid overwriting user settings.
 		if (false) {
 
@@ -570,9 +570,9 @@ public class DatagramReader extends TypedAtomicActor {
            } // Sync(this)
 
         // In the case of <i>bufferLength</i>, simply cache the parameter.
-        // The thread used this value to set the size of a buffer prior 
-        // to the socket.receive() call.  The thread only resizes a buffer 
-        // when it is about to call receive on it and this parameter has 
+        // The thread used this value to set the size of a buffer prior
+        // to the socket.receive() call.  The thread only resizes a buffer
+        // when it is about to call receive on it and this parameter has
         // changed from the value last used for that specific buffer.
         // Synchronization ensures that the thread's test for a change in
         // this value and its use of the value access the same thing.
@@ -865,10 +865,10 @@ public class DatagramReader extends TypedAtomicActor {
     }
 
     /** Override the setContainer method to ensure that if the actor
-     *  is deleted while the model is running, then any resources it 
+     *  is deleted while the model is running, then any resources it
      *  has locked are released.
      */
-    public void setContainer(CompositeEntity container) 
+    public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
 	if (container != getContainer()) {
             wrapup();
@@ -934,9 +934,9 @@ public class DatagramReader extends TypedAtomicActor {
         if (_debugging) _debug("stopFire() is called");
         synchronized(_syncFireAndThread) {
             if (_fireIsWaiting) {
-                // stopFire() gets called a lot.  Including each time 
-                // the program is started.  This caveat has proven 
-                // necessary to avoid disrupting one of the first 
+                // stopFire() gets called a lot.  Including each time
+                // the program is started.  This caveat has proven
+                // necessary to avoid disrupting one of the first
                 // few firings.
 		_stopFire = true;
                 _syncFireAndThread.notifyAll();
@@ -957,7 +957,7 @@ public class DatagramReader extends TypedAtomicActor {
         if (_debugging) _debug("WRAPUP IS CALLED");
 
         //System.err.println("wrapup() has been called in " + this);
-        //e.printStackTrace();  
+        //e.printStackTrace();
 	      // FIXME cxh's java checker recommends
 	      // KernelException.stackTraceToString(ex)
 	      // instead of printStackTrace() above.  Try it.

@@ -241,7 +241,7 @@ public class DatagramWriter extends TypedAtomicActor {
                 }
 	    }
 
-	} else if (attribute == defaultRemoteAddress) { 
+	} else if (attribute == defaultRemoteAddress) {
 	    String address =
                     defaultRemoteAddress.getExpression();
 	    try {
@@ -431,10 +431,10 @@ public class DatagramWriter extends TypedAtomicActor {
     }
 
     /** Override the setContainer method to ensure that if the actor
-     *  is deleted while the model is running, then any resources it 
+     *  is deleted while the model is running, then any resources it
      *  has locked are released.
      */
-    public void setContainer(CompositeEntity container) 
+    public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
 	if (container != getContainer()) {
             wrapup();
