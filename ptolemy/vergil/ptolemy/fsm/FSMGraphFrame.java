@@ -104,7 +104,7 @@ public class FSMGraphFrame extends GraphFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                        protected variables                ////
 
     // The controller is protected so that the subclass
     // (InterfaceAutomatonGraphFrame) can set it to a more specific
