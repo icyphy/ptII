@@ -34,6 +34,7 @@ package ptolemy.domains.dde.kernel;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
@@ -237,14 +238,14 @@ public class FBDelay extends DDEActor {
         }
     }
 
-    /** Syntactic sugarg for initializing parameters.
+    /** Syntactic sugar for initializing parameters.
      */
     private void _setVariables() throws IllegalActionException,
     	    NameDuplicationException {
 	input = new TypedIOPort(this, "input", true, false);
 	output = new TypedIOPort(this, "output", false, true);
-	input.setTypeEquals(Token.class);
-	output.setTypeEquals(Token.class);
+	input.setTypeEquals(BaseType.GENERAL);
+	output.setTypeEquals(BaseType.GENERAL);
 
         nullDelay = new
             Parameter(this, "nullDelay", new BooleanToken(true));
