@@ -1,7 +1,0 @@
-#!/bin/sh
-
-rmic -classpath ${PTII}:${PTII}/vendors/sun/jini/jini1_0_1/lib/jini-jspaces.jar ptolemy.domains.ct.demo.CarTracking.CarInformationSubscriber
-
-rmic -classpath ${PTII}:${PTII}/vendors/sun/jini/jini1_0_1/lib/jini-jspaces.jar ptolemy.domains.ct.demo.CarTracking.CTSubscriber
-
-rmic -classpath ${PTII}:${PTII}/vendors/sun/jini/jini1_0_1/lib/jini-jspaces.jar ptolemy.domains.ct.demo.CarTracking.DERealTimeSubscriber
