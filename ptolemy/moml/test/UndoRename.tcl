@@ -509,7 +509,7 @@ test UndoRename-1.6a {Test a vertex rename is updated across MoML} {
         <relation name="r1" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="R1" class="ptolemy.actor.TypedIORelation">
-            <vertex name="soemthing different">
+            <vertex name="soemthing different" value="0.0, 0.0">
             </vertex>
         </relation>
     </entity>

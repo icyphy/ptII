@@ -47,7 +47,7 @@ test Vertex-1.1 {Call workspace constructor, exportMoML and toString } {
     set output [java::new java.io.StringWriter]
     $v1 exportMoML $output 1
     list [$v1 toString] [$output toString]
-} {{(ptolemy.moml.Vertex, Location = null)} {    <vertex name="">
+} {{(ptolemy.moml.Vertex, Location = (0.0, 0.0))} {    <vertex name="" value="0.0, 0.0">
     </vertex>
 }}
 
@@ -79,4 +79,4 @@ test Vertex-3.1 {addLinkedPort, linkedPorts removeLinkedPort} {
     $v1 setLinkedVertex $v1
     list [[$v1 getLinkedVertex] toString] \
 	    [expr {[$v2 getLinkedVertex] == [java::null]}]
-} {{(ptolemy.moml.Vertex, Location = null)} 1}
+} {{(ptolemy.moml.Vertex, Location = (0.0, 0.0))} 1}

@@ -143,7 +143,7 @@ test UndoVertex-1.1b {Test a new vertex addition} {
             </relation>
         </entity>
         <relation name="r" class="ptolemy.actor.TypedIORelation">
-            <vertex name="newV">
+            <vertex name="newV" value="0.0, 0.0">
             </vertex>
         </relation>
     </entity>
@@ -185,7 +185,7 @@ test UndoVertex-1.2a {Test setting the value of a previous vertex
     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
         <entity name="a" class="ptolemy.actor.TypedCompositeActor">
             <relation name="r1" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vv">
+                <vertex name="vv" value="0.0, 0.0">
                 </vertex>
             </relation>
         </entity>

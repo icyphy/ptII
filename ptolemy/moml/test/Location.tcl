@@ -58,7 +58,7 @@ test Location-1.1 {} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="N0" class="ptolemy.kernel.util.NamedObj">
-    <property name="L1" class="ptolemy.kernel.util.Location">
+    <property name="L1" class="ptolemy.kernel.util.Location" value="0.0, 0.0">
     </property>
 </entity>
 }
