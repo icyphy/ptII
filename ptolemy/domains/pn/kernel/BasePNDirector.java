@@ -105,7 +105,7 @@ changes might not be compatible with the current listener mechanism.<p>
 @author Mudit Goel
 @version $Id$
 */
-public class BasePNDirector extends ProcessDirector {
+public class BasePNDirector extends CompositeProcessDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -224,12 +224,12 @@ public class BasePNDirector extends ProcessDirector {
      *  This method is synchronized on the director.
      *  @exception IllegalActionException Not thrown in this base class. Maybe
      *  thrown by derived classes.
-     */
     public void fire() throws IllegalActionException {
+        // super.fire();
 	Workspace workspace = workspace();
 	// Wait while no deadlock is detected.
-        System.out.println("DIRECTOR: START OF FIRE");
-        if( _getActiveActorsCount() == 0 ) {
+        // System.out.println("DIRECTOR: START OF FIRE");
+        if( _getActveActorsCount() == 0 ) {
             synchronized(this) {
                 _notDone = false;
                 return;
@@ -260,6 +260,7 @@ public class BasePNDirector extends ProcessDirector {
         System.out.println("DIRECTOR: END OF FIRE");
         return;
     }
+     */
 
     /** Invoke the initialize() method of ProcessDirector. Also set all the
      *  state variables to the their initial values. The list of process
@@ -410,7 +411,9 @@ public class BasePNDirector extends ProcessDirector {
 	        smallestCapacityQueue.setCapacity(
 			smallestCapacityQueue.getCapacity()*2);
             }
+            // System.out.println("Calling _actorUnBlocked() with smallestCapacityQueue.");
 	    _actorUnBlocked(smallestCapacityQueue);
+            // System.out.println("Finished calling _actorUnBlocked() with smallestCapacityQueue.");
 	    smallestCapacityQueue.setWritePending(false);
             synchronized(smallestCapacityQueue) {
                 smallestCapacityQueue.notifyAll();
@@ -466,6 +469,7 @@ public class BasePNDirector extends ProcessDirector {
 	    notifyAll();
 	}
         */
+        super._actorBlocked(rcvr);
         notifyAll();
     }
 
@@ -482,6 +486,7 @@ public class BasePNDirector extends ProcessDirector {
 	    _writeBlockCount--;
 	    _writeblockedQueues.remove(rcvr);
         }
+        super._actorUnBlocked(rcvr);
 	return;
     }
 
@@ -513,7 +518,7 @@ public class BasePNDirector extends ProcessDirector {
 	_writeBlockCount++;
 	if (_areActorsDeadlocked()) {
 	    notifyAll();
-	}
+}
 	return;
     }
      */
@@ -539,7 +544,8 @@ public class BasePNDirector extends ProcessDirector {
      *  @return true if a real or artificial deadlock is detected.
      */
     protected synchronized boolean _areActorsDeadlocked() {
-	if (_readBlockCount + _writeBlockCount >= _getActiveActorsCount()) {
+	if (_getBlockedActorsCount() >= _getActiveActorsCount()) {
+            // if (_readBlockCount + _writeBlockCount >= _getActiveActorsCount()) {
 	    return true;
 	} else {
 	    return false;
@@ -595,7 +601,7 @@ public class BasePNDirector extends ProcessDirector {
      *  @exception IllegalActionException Not thrown in this base class.
      *  This might be thrown by derived classes.
      */
-    protected boolean _resolveDeadlock() throws IllegalActionException {
+    protected boolean _resolveInternalDeadlock() throws IllegalActionException {
         if (_writeBlockCount == 0 && _readBlockCount > 0 ) {
 	    // There is a real deadlock.
 	    return false;
@@ -614,7 +620,7 @@ public class BasePNDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    //The variables are initialized at declaration, despite having an
+    //The vriables are initialized at declaration, despite having an
     //initialize() method so that the tests can be run.
 
     /** The count of processes blocked on a read from a receiver. */
