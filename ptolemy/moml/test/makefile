@@ -50,6 +50,7 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	FilterOutGraphicalClasses.tcl \
 	EntityLibrary.tcl \
 	Location.tcl \
 	MoMLChangeRequest.tcl \
@@ -65,6 +66,7 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	FilterOutGraphicalClasses.xml \
 	testClass.xml \
 	testClass2.xml \
 	 #$(JGRAPHICAL_TESTS)
