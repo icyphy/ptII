@@ -29,12 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo
-
-DIRS = heli lorenz sigmadelta thermo
+ME =		ptolemy/domains/ct/demo/thermo
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../
 
 CLASSPATH =	$(ROOT)
 
@@ -42,58 +40,43 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-TCL_SRCS = \
-	ExpoBE.tcl \
-	ExpoBERK23.tcl \
-	ExpoFE.tcl \
-	ExpoMix.tcl \
-	ExpoRK23.tcl \
-	RampBE.tcl \
-	RampBERK23.tcl \
-	RampFE.tcl \
-	RampMix.tcl \
-	RampRK23.tcl \
-	RampSample.tcl \
-	RandomRamp.tcl \
-	SigmaDelta.tcl \
-	WaveBE.tcl \
-	WaveFE.tcl \
-	WaveBERK23.tcl
+TCL_SRCS = 
 
 
 JSRCS = \
-	WaveBERK23.java 
+	Thermostat.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	doc
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass demo.jar
+all: jclass Thermostat.jar
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
-PTAUXJAR = demo.jar
+PTAUXJAR = Thermostat.jar
 
-demo: subdemo
+demo: Thermostat.jar
+	CLASSPATH=$(CLASSPATH) appletviewer Thermostat.html
 
 docs: javadocs
 
 # 'make clean' removes everything in KRUFT
-KRUFT = demo.jar
+KRUFT = Thermostat.jar
 
 # Jar file for the Sigma Delta Applet
-demo.jar: $(JSRCS) $(JCLASS) makefile
+Thermostat.jar: $(JSRCS) $(JCLASS) makefile
 	(cd $(ROOT); \
 		$(JAR) cf \
 		$(ME)/$@ \
