@@ -559,6 +559,14 @@ public class PlotBox extends JPanel implements Printable {
         return _usecolor;
     }
 
+    /** Get the point colors.
+     *  @return Array of colors
+     *  @see #setColors(Color[])
+     */
+     public Color[] getColors() {
+        return _colors;
+    }
+
     /** Convert a color name into a Color. Currently, only a very limited
      *  set of color names is supported: black, white, red, green, and blue.
      *  @param name A color name, or null if not found.
@@ -656,6 +664,20 @@ public class PlotBox extends JPanel implements Printable {
         }
     }
 
+    /** Get the current plot rectangle.
+     *  Note that Rectangle returned by this method is calculated
+     *  from the values of {@link _ulx}, {@link _uly}, 
+     *  {@link lrx} and {@link _lry}.  The value passed in by
+     *  setPlotRectangle() is not directly used, thus calling
+     *  getPlotRectangle() may not return the same rectangle that
+     *  was passed in with setPlotRectangle().
+     *  @return Rectangle
+     *  @see #setPlotRectangle(Rectangle)
+     */
+    public Rectangle getPlotRectangle() {
+      return new Rectangle(_ulx, _uly, _lrx-_ulx, _lry-_uly);
+    }
+
     /** Get the preferred size of this component.
      *  This is simply the dimensions specified by setSize(),
      *  if this has been called, or the default width and height
@@ -674,6 +696,20 @@ public class PlotBox extends JPanel implements Printable {
         return _title;
     }
 
+    /** Get the range for X values of the data points registered so far.
+     *  Usually, derived classes handle managing the range by checking
+     *  each new point against the current range.
+     *  @return An array of two doubles where the first element is the
+     *  minimum and the second element is the maximum.
+     *  @see #getXRange()
+     */
+    public synchronized double[] getXAutoRange() {
+      double[] result = new double[2];
+      result[0] = _xBottom;
+      result[1] = _xTop;
+      return result;
+    }
+
     /** Get the label for the X (horizontal) axis, or null if none has
      *  been set.
      *  @return The X label.
@@ -689,9 +725,15 @@ public class PlotBox extends JPanel implements Printable {
         return _xlog;
     }
 
-    /** Get the X range.  The returned value is an array where the first
-     *  element is the minimum and the second element is the maximum.
-     *  return The current X range.
+    /** Get the X range. If {@link setXRange(double, double)} has been
+     *  called, then this method returns the values passed in as
+     *  arguments to setXRange(double, double).  If setXRange(double,
+     *  double) has not been called, then this method returns the
+     *  range of the data to be plotted, which might not be all of the
+     *  data due to zooming.
+     *  @return An array of two doubles where the first element is the
+     *  minimum and the second element is the maximum.
+     *  @see #getXAutoRange()
      */
     public synchronized double[] getXRange() {
         double[] result = new double[2];
@@ -720,6 +762,20 @@ public class PlotBox extends JPanel implements Printable {
         return result;
     }
 
+    /** Get the range for Y values of the data points registered so far.
+     *  Usually, derived classes handle managing the range by checking
+     *  each new point against the range.
+     *  @return An array of two doubles where the first element is the
+     *  minimum and the second element is the maximum.
+     *  @see #getYRange()
+     */
+    public synchronized double[] getYAutoRange() {
+      double[] result = new double[2];
+      result[0] = _yBottom;
+      result[1] = _yTop;
+      return result;
+    }
+
     /** Get the label for the Y (vertical) axis, or null if none has
      *  been set.
      *  @return The Y label.
@@ -735,9 +791,15 @@ public class PlotBox extends JPanel implements Printable {
         return _ylog;
     }
 
-    /** Get the Y range.  The returned value is an array where the first
-     *  element is the minimum and the second element is the maximum.
-     *  return The current Y range.
+    /** Get the Y range. If {@link setYRange(double, double)} has been
+     *  called, then this method returns the values passed in as
+     *  arguments to setYRange(double, double).  If setYRange(double,
+     *  double) has not been called, then this method returns the
+     *  range of the data to be plotted, which might not be all of the
+     *  data due to zooming.
+     *  @return An array of two doubles where the first element is the
+     *  minimum and the second element is the maximum.
+     *  @see #getYAutoRange()
      */
     public synchronized double[] getYRange() {
         double[] result = new double[2];
@@ -1161,6 +1223,16 @@ public class PlotBox extends JPanel implements Printable {
         _usecolor = useColor;
     }
 
+    /** Set the point colors.  Note that the default colors have been
+     *  carefully selected to maximize readability and that it is easy
+     *  to use colors that result in a very ugly plot.
+     *  @param colors Array of colors to use in succession for data sets.
+     *  @see #getColors()
+     */
+    public void setColors(Color[] colors) {
+        _colors = colors;
+    }
+    
     /** Set the file to read when init() is called.
      *  This method is deprecated.  Use read() instead.
      *  @deprecated
@@ -1200,6 +1272,15 @@ public class PlotBox extends JPanel implements Printable {
     public void setLabelFont(String name) {
         _labelFont = Font.decode(name);
         _labelFontMetrics = getFontMetrics(_labelFont);
+    }
+
+    /** Set the plot rectangle inside the axes.  This method
+     *  can be used to create two plots that share the same axes. 
+     *  @param rectangle Rectangle space inside axes.
+     *  @see #getPlotRectangle()
+     */
+    public void setPlotRectangle(Rectangle rectangle) {
+        _specifiedPlotRectangle = rectangle;
     }
 
     /** Set the size of the plot.  This overrides the base class to make
@@ -1576,6 +1657,19 @@ public class PlotBox extends JPanel implements Printable {
             }
         }
 
+        // If user specified a plot rectangle, compute
+        // a working plot rectangle which lies inside the 
+        // drawRect at the user specified coordinates
+        Rectangle workingPlotRectangle = null;
+        if (_specifiedPlotRectangle != null) {
+            workingPlotRectangle = new Rectangle(
+                    Math.max(0, _specifiedPlotRectangle.x),
+                    Math.max(0, _specifiedPlotRectangle.y),
+                    Math.min(drawRect.width, _specifiedPlotRectangle.width),
+                    Math.min(drawRect.height, _specifiedPlotRectangle.height) );
+        }
+  
+
         // Vertical space for title, if appropriate.
         // NOTE: We assume a one-line title.
         int titley = 0;
@@ -1630,9 +1724,17 @@ public class PlotBox extends JPanel implements Printable {
 
         // Compute the space needed around the plot, starting with vertical.
         // NOTE: padding of 5 pixels below title.
-        _uly = titley + 5;
+        if (workingPlotRectangle != null) {
+            _uly = workingPlotRectangle.y;
+        } else {
+            _uly = titley + 5;
+        }
         // NOTE: 3 pixels above bottom labels.
-        _lry = drawRect.height-labelheight-_bottomPadding-3;
+        if (workingPlotRectangle != null) {
+            _lry = workingPlotRectangle.y + workingPlotRectangle.height;
+        } else {
+            _lry = drawRect.height-labelheight-_bottomPadding-3;
+        }
         int height = _lry-_uly;
         _yscale = height/(_yMax - _yMin);
         _ytickscale = height/(_ytickMax - _ytickMin);
@@ -1727,14 +1829,23 @@ public class PlotBox extends JPanel implements Printable {
         }
 
         // Next we do the horizontal spacing.
-        if (_ylabel != null) {
-            _ulx = widesty + _labelFontMetrics.stringWidth("W") + _leftPadding;
+        if (workingPlotRectangle != null) {
+            _ulx = workingPlotRectangle.x;
         } else {
-            _ulx = widesty + _leftPadding;
+            if (_ylabel != null) {
+                _ulx = widesty
+                    + _labelFontMetrics.stringWidth("W") + _leftPadding;
+            } else {
+                _ulx = widesty + _leftPadding;
+            }
         }
         int legendwidth = _drawLegend(graphics,
                 drawRect.width-_rightPadding, _uly);
-        _lrx = drawRect.width-legendwidth-_rightPadding;
+        if (workingPlotRectangle != null) {
+            _lrx = workingPlotRectangle.x + workingPlotRectangle.width;
+        } else {
+            _lrx = drawRect.width-legendwidth-_rightPadding;
+        }
         int width = _lrx-_ulx;
         _xscale = width/(_xMax - _xMin);
 
@@ -2403,6 +2514,11 @@ public class PlotBox extends JPanel implements Printable {
     /** The y value of the lower right corner of
      * the plot rectangle in pixels. */
     protected int _lry = 100;
+
+    /** User specified plot rectangle, null if none specified.
+     *  @see #setPlotRectangle(Rectangle)
+     */
+    protected Rectangle _specifiedPlotRectangle = null;
 
     /** Scaling used for the vertical axis in plotting points.
      *  The units are pixels/unit, where unit is the units of the Y axis.
