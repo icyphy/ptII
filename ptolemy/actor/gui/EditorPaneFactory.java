@@ -45,8 +45,11 @@ import javax.swing.JPanel;
 //// EditorPaneFactory
 /**
 This is an attribute that can create a pane (called a "configuration
-widget") for interactively configuring its container.  This attribute
-is used by an instance of Configurer.
+widget") for interactively configuring its container.  To use this,
+place an instance of this class (or a derived class) inside a Ptolemy II
+object.  When the user double clicks on the icon for that object,
+or selects Configure from the context menu, then a dialog is opened
+containing the pane returned by createEditorPane().
 <p>
 In this base class, the createEditorPane() method creates an
 instance of PtolemyQuery with one entry for each parameter in
