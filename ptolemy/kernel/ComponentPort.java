@@ -50,8 +50,8 @@ The deep versions pass through transparent ports. This is
 done with a simple rule. If a transparent port is encountered from
 inside, then the traversal continues with its outside links. If it
 is encountered from outside, then the traversal continues with its
-inside links.  A ComponentPort is opaque if its container is atomic
-(its isAtomic() method returns true).  Derived classes may use other
+inside links.  A ComponentPort is opaque if its container is opaque.
+(its isOpaque() method returns true).  Derived classes may use other
 strategies to specify whether a port is opaque.
 <p>
 Normally, links to a transparent port from the outside are to
@@ -348,13 +348,13 @@ public class ComponentPort extends Port {
         return _insideLinks.isLinked(relation);
     }
 
-    /** Return true if the container entity is atomic.
-     *  @return True if the container entity is atomic.
+    /** Return true if the container entity is opaque.
+     *  @return True if the container entity is opaque.
      */
     public boolean isOpaque() {
         ComponentEntity ent = (ComponentEntity)getContainer();
         if (ent == null) return true;
-        return ent.isAtomic();
+        return ent.isOpaque();
     }
 
     /** Link this port with a relation.  The only constraints are
