@@ -142,11 +142,13 @@ public class TypedIOPort extends IOPort implements Typeable {
     ////                         public methods                    ////
 
     /** Add a type listener to this port. The listener will
-     *  be notified of all the type changes.
+     *  be notified of all the type changes.  If the listener is already
+     *  listening to this port, then do nothing.
      *  @param listener The TypeListener to add.
      */
     public void addTypeListener(TypeListener listener) {
-        _typeListeners.add(listener);
+        if(!_typeListeners.contains(listener))
+            _typeListeners.add(listener);
     }
 
     /** React to a change in an attribute.  This method is called by
@@ -234,7 +236,8 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param listener The TypeListener to be removed.
      */
     public void removeTypeListener(TypeListener listener) {
-        _typeListeners.remove(listener);
+        if(_typeListeners.contains(listener))
+            _typeListeners.remove(listener);
     }
 
     /** Send a token to the specified channel, checking the type
