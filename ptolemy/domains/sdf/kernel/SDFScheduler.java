@@ -175,6 +175,12 @@ public class SDFScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Get the external port rates.
+     */
+    public Map getExternalRates() {
+        return _externalRates;
+    }
+
     /** Create the schedule.  Return the number of times that the given
      *  entity will fire in a single iteration of the system.
      */
@@ -224,6 +230,22 @@ public class SDFScheduler extends Scheduler {
         } else {
             return _getRateVariableValue(port, "tokenInitProduction", 0);
         }
+    }
+    
+    /** This method simply calls _saveContainerRates(Map externalRates). 
+     *  It is used in HDF when a cached schedule is used instead of 
+     *  computing a new schedule.
+     *  @param externalRates A map from external port to the rate of that
+     *  port.
+     *  @throws NotSchedulableException If an external port is both
+     *  an input and an output, or neither an input or an output, or
+     *  connected on the inside to ports that have different
+     *  tokenInitProduction.
+     *  @throws IllegalActionException If any called method throws it.
+     */
+    public void setContainerRates(Map externalRates)
+        throws NotSchedulableException, IllegalActionException  {
+        _saveContainerRates(externalRates);
     }
 
     /** Get the number of tokens that are produced
@@ -439,6 +461,7 @@ public class SDFScheduler extends Scheduler {
 
         // Set the schedule to be valid.
         setValid(true);
+        _externalRates = externalRates;
         return result;
     }
 
@@ -2124,4 +2147,6 @@ public class SDFScheduler extends Scheduler {
     // actor for which we have not determined the number of times it will
     // fire.
     private Fraction _minusOne = new Fraction(-1);
+    
+    private Map _externalRates = new TreeMap(new NamedObjComparator());
 }
