@@ -201,6 +201,10 @@ public class HTMLViewerTableau extends Tableau {
                     if (anotherURL == null) {
                         throw io;
                     }
+                    // Try to set the title bar?
+                    effigy.uri.setURI(new URI(anotherURL.toString()));
+                    tableau.setTitle(anotherURL.toString());
+
                     ((HTMLViewer)tableau.getFrame()).setPage(anotherURL);
                 }
                 // Don't call show() here.  If show() is called here,
