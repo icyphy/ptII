@@ -30,12 +30,12 @@
 # Variables
 #  If you change the version number, then edit ptII/adm/bin/ptIInightly-mail
 #  and ptolemy/web/nightly/toc.htm on the website
-MAJOR_VERSION = 	1.1
+MAJOR_VERSION = 	2.0
 MINOR_VERSION =		devel
 
 VERSION=	$(MAJOR_VERSION)$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	1_1$(MINOR_VERSION)
+WINDOWS_VERSION =	2.0(MINOR_VERSION)
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
