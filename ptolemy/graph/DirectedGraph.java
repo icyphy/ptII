@@ -185,6 +185,28 @@ public class DirectedGraph extends Graph {
         return nodes.toArray();
     }
 
+    /** Return the nodes that are in cycles. If there are multiple cycles,
+     *  the nodes in all the cycles will be returned.
+     *  The implementation computes the transitive closure of the
+     *  graph, if it is not already computed after the last graph
+     *  change.  So the first call to this method after graph
+     *  change may be slow, but all the subsequent calls return
+     *  in constant time.
+     *  @return an array of Objects representing nodes in cycles.
+     */
+    public Object[] cycleNodes() {
+	_computeTransitiveClosure();
+
+	ArrayList nodes = new ArrayList(_transitiveClosure.length);
+	for (int i = 0; i < _transitiveClosure.length; i++) {
+	    if (_transitiveClosure[i][i]) {
+		nodes.add(_getNodeObject(i));
+	    }
+	}
+
+        return nodes.toArray();
+    }
+
     /** Test if this graph is acyclic (is a DAG).
      *  The implementation computes the transitive closure of the
      *  graph, if it is not already computed after the last change to

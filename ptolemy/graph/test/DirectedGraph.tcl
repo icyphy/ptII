@@ -146,3 +146,70 @@ test DirectedGraph-4.3 { reachableNodes for a set of nodes } {
     set reach [$p {reachableNodes Object[]}  $nodeArray]
     $reach getrange 0
 } {node2 node3 node4 node6}
+
+######################################################################
+####
+# 
+test DirectedGraph-5.1 { cycleNodes } {
+    set p [java::new ptolemy.graph.DirectedGraph]
+    set n1 [java::new {java.lang.String String} node1]
+    set n2 [java::new {java.lang.String String} node2]
+    set n3 [java::new {java.lang.String String} node3]
+    $p add $n1
+    $p add $n2
+    $p add $n3
+    $p addEdge $n1 $n2
+    $p addEdge $n1 $n3
+    
+    set cycle [$p cycleNodes]
+    list [$p isAcyclic] [$cycle getrange 0]
+} {1 {}}
+
+######################################################################
+####
+# 
+test DirectedGraph-5.2 { cycleNodes } {
+    set p [java::new ptolemy.graph.DirectedGraph]
+    set n1 [java::new {java.lang.String String} node1]
+    set n2 [java::new {java.lang.String String} node2]
+    set n3 [java::new {java.lang.String String} node3]
+    $p add $n1
+    $p add $n2
+    $p add $n3
+    $p addEdge $n1 $n2
+    $p addEdge $n2 $n1
+    $p addEdge $n2 $n3
+    
+    set cycle [$p cycleNodes]
+    list [$p isAcyclic] [$cycle getrange 0]
+} {0 {node1 node2}}
+
+######################################################################
+####
+# 
+test DirectedGraph-5.3 { cycleNodes } {
+    set p [java::new ptolemy.graph.DirectedGraph]
+    set n1 [java::new {java.lang.String String} node1]
+    set n2 [java::new {java.lang.String String} node2]
+    set n3 [java::new {java.lang.String String} node3]
+    set n4 [java::new {java.lang.String String} node4]
+    set n5 [java::new {java.lang.String String} node5]
+    set n6 [java::new {java.lang.String String} node6]
+    $p add $n1
+    $p add $n2
+    $p add $n3
+    $p add $n4
+    $p add $n5
+    $p add $n6
+    $p addEdge $n1 $n2
+    $p addEdge $n2 $n3
+    $p addEdge $n3 $n1
+    $p addEdge $n3 $n5
+    $p addEdge $n5 $n4
+    $p addEdge $n4 $n3
+    $p addEdge $n5 $n6
+    
+    set cycle [$p cycleNodes]
+    list [$p isAcyclic] [$cycle getrange 0]
+} {0 {node1 node2 node3 node4 node5}}
+
