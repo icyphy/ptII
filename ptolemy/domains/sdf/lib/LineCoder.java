@@ -140,7 +140,7 @@ public class LineCoder extends SDFAtomicActor {
 
         // FIXME: Handle mutations.
         _wordlength =((IntToken)(wordlength.getToken())).intValue();
-        setTokenConsumptionRate(input,_wordlength);
+        setTokenConsumptionRate(input, _wordlength);
 
         DoubleMatrixToken tabletoken = (DoubleMatrixToken)(table.getToken());
         if (tabletoken.getRowCount() != 1) {
@@ -150,7 +150,7 @@ public class LineCoder extends SDFAtomicActor {
         // FIXME: Check that table is at least 2^wordlength.
         _table = new double[tabletoken.getColumnCount()];
         for (int i = 0; i < _table.length; i++) {
-            _table[i] = tabletoken.getElementAt(0,i);
+            _table[i] = tabletoken.getElementAt(0, i);
         }
     }
 
