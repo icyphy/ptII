@@ -112,31 +112,28 @@ public class IORelation extends ComponentRelation {
             throws InvalidStateException {
         Receiver[][] result = null;
         Enumeration inputs = linkedDestinationPorts(except);
-        if(inputs.hasMoreElements()) {
-            IOPort p = (IOPort) inputs.nextElement();
-            try {
-                Receiver[][] portHolder = p.getReceivers(this);
-                if(portHolder != null && portHolder.length != getWidth()) {
-                    throw new InvalidStateException(this, p,
-                    "width inconsistency");
-                }
-                result = portHolder;
-            } catch (IllegalActionException ex) {
-                // Ignore. Cannot occur since this is linked to p.
-            }
-        }
+        Receiver[][] recvrs = null;
         while(inputs.hasMoreElements()) {
             IOPort p = (IOPort) inputs.nextElement();
-            try {
-                Receiver[][] portHolder = p.getReceivers(this);
-                if(portHolder != null && portHolder.length != getWidth()) {
-                    throw new InvalidStateException(this, p,
-                    "width inconsistency");
+            
+            if(p.isInsideLinked(this)) {
+                // if p is a transparent port and this relation links from
+                // the inside, then get the Receivers outside p.
+                try {
+                    recvrs = p.getRemoteReceivers(this);
+                } catch (IllegalActionException e) {
+                    //Ignored. linkedInside is checked.
                 }
-                result = _cascade(result, portHolder);
-            } catch (IllegalActionException ex) {
-                // Ignore. Cannot occur since this is linked to p.
+            } else {
+                // if p not a transparent port, or this relation is linked
+                // to p from the outside.
+                try {
+                    recvrs = p.getReceivers(this);
+                } catch (IllegalActionException e) {
+                    //Ignored. link is checked
+                }
             }
+            result = _cascade(result, recvrs);
         }
         return result;
     }
@@ -324,22 +321,30 @@ public class IORelation extends ComponentRelation {
      */
     private Receiver[][] _cascade(Receiver[][] array1, Receiver[][] array2)
             throws InvalidStateException {
-        int n = array1.length;
-        if (n != array2.length) {
-            throw new InvalidStateException(this,
-            "IORelation linked to input ports of different width!");
+        if (array1 == null) {
+            return array2;
         }
-        Receiver[][] result = new Receiver[n][];
-        for (int i = 0; i < n; i++) {
-            int m1 = array1[i].length;
-            int m2 = array2[i].length;
-            result[i] = new Receiver[m1+m2];
-            for (int j = 0; j < m1; j++) {
-                result[i][j] = array1[i][j];
-                
-            }
-            for (int j = m1; j < m1+m2; j++) {
-                result[i][j] = array2[i][j-m1];
+        if (array2 == null) {
+            return array1;
+        }
+        int width = getWidth();
+        Receiver[][] result = new Receiver[width][];
+        
+        for (int i = 0; i < width; i++) {
+            if(array1[i] == null) {
+                result[i]= array2[i];
+            } else if(array2[i] == null) {
+                result[i]= array1[i];
+            } else {
+                int m1 = array1[i].length;
+                int m2 = array2[i].length;
+                result[i] = new Receiver[m1+m2];
+                for (int j = 0; j < m1; j++) {
+                    result[i][j] = array1[i][j];
+                }
+                for (int j = m1; j < m1+m2; j++) {
+                    result[i][j] = array2[i][j-m1];
+                }
             }
         }
         return result;
