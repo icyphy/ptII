@@ -167,7 +167,7 @@ public class DoubleMatrixToJAI extends Transformer {
         double newdata[] = new double[width*height];
         _maxValue = 1;
         _minValue = 0;
-        if(_scale) {
+        if (_scale) {
             switch(_dataFormat) {
             case _BYTE:
                 _maxValue = (double)Byte.MAX_VALUE - (double)Byte.MIN_VALUE;

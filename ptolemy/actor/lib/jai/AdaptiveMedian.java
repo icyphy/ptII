@@ -163,7 +163,7 @@ public class AdaptiveMedian extends Transformer {
                         //that the pixel was noised.  After this, the window size
                         //is reset.
                         if ((median > min) && (median < max)) {
-                            if((data[i][j] > min) && (data[i][j] < max)) {
+                            if ((data[i][j] > min) && (data[i][j] < max)) {
                                 outputData[i][j] = data[i][j];
                                 windowSize = 3;
                                 break;
@@ -223,7 +223,7 @@ public class AdaptiveMedian extends Transformer {
         }
         for (int i = 0; i < size*size; i++) {
             for (int j = 0; j < size*size - 1; j++) {
-                if(temp[j] > temp[j+1]) {
+                if (temp[j] > temp[j+1]) {
                     double tempval = temp[j];
                     temp[j] = temp[j+1];
                     temp[j+1] = tempval;

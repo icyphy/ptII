@@ -188,7 +188,7 @@ public class JAIPNGWriter extends Sink {
                 ((BooleanToken)setBackground.getToken()).booleanValue();
         } else if (attribute == background) {
             Token data[] = ((ArrayToken)background.getToken()).arrayValue();
-            for(int i = 0; i < data.length; i++) {
+            for (int i = 0; i < data.length; i++) {
                 _valueArray = new int[data.length];
                 _valueArray[i] = ((IntToken)(data[i])).intValue();
             }
@@ -236,15 +236,15 @@ public class JAIPNGWriter extends Sink {
         }
         PNGEncodeParam parameters =
             PNGEncodeParam.getDefaultEncodeParam(image);
-        if(parameters instanceof PNGEncodeParam.Gray) {
+        if (parameters instanceof PNGEncodeParam.Gray) {
             PNGEncodeParam.Gray parametersGray = new PNGEncodeParam.Gray();
             parametersGray.setBitDepth(_bitDepth);
             parametersGray.setInterlacing(_adam7Interlacing);
-            if(_setGamma) {
+            if (_setGamma) {
                 parametersGray.setGamma((float)_gamma);
             }
-            if(_setBackground) {
-                if(_valueArray.length < 1) {
+            if (_setBackground) {
+                if (_valueArray.length < 1) {
                     throw new IllegalActionException("Need "
                             + "one value to set Transparency");
                 } else {
@@ -259,20 +259,20 @@ public class JAIPNGWriter extends Sink {
             } catch (IOException error) {
                 throw new IllegalActionException("Couldn't encode image");
             }
-        } else if(parameters instanceof PNGEncodeParam.RGB) {
+        } else if (parameters instanceof PNGEncodeParam.RGB) {
             PNGEncodeParam.RGB parametersRGB = new PNGEncodeParam.RGB();
             parametersRGB.setBitDepth(_bitDepth);
             parametersRGB.setInterlacing(_adam7Interlacing);
-            if(_setGamma) {
+            if (_setGamma) {
                 parametersRGB.setGamma((float)_gamma);
             }
-            if(_setBackground) {
-                if(_valueArray.length < 3) {
+            if (_setBackground) {
+                if (_valueArray.length < 3) {
                     throw new IllegalActionException("Need "
                             + "three values to set transparency");
                 } else {
                     int RGBvalues[] = new int[3];
-                    for(int i = 0; i < 3; i++) {
+                    for (int i = 0; i < 3; i++) {
                         RGBvalues[i] = _valueArray[i];
                     }
                     parametersRGB.setBackgroundRGB(RGBvalues);
