@@ -24,7 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (davisj@eecs.berkeley.edu)
+@ProposedRating Yellow (davisj@eecs.berkeley.edu)
+@AcceptedRating Red (davisj@eecs.berkeley.edu)
 
 */
 
@@ -95,7 +96,7 @@ public class ListenSink extends DDESink {
 
     /** Generate an ExecEvent with a state value of 2. Return the
      *  value of the postfire method of this actor's superclass.
-     * @returns True if this actor is enabled to call fire(). Return
+     * @return True if this actor is enabled to call fire(). Return
      *  false otherwise.
      * @throws IllegalActionException if there is an exception
      *  with the thread activity of this method.
@@ -113,7 +114,7 @@ public class ListenSink extends DDESink {
 
     /** Generate an ExecEvent with a state value of 1. Return the
      *  value of the prefire method of this actor's superclass.
-     * @returns True if this actor is enabled to call fire(). Return
+     * @return True if this actor is enabled to call fire(). Return
      *  false otherwise.
      * @throws IllegalActionException if there is an exception
      *  with the thread activity of this method.

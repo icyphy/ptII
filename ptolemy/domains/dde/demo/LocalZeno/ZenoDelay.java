@@ -25,8 +25,8 @@ getDelay() method that approximates a Zeno condition.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (davisj@eecs.berkeley.edu)
 @AcceptedRating Red (davisj@eecs.berkeley.edu)
+@ProposedRating Red (davisj@eecs.berkeley.edu)
 
 */
 

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.dde.demo.LocalZeno;
@@ -145,7 +145,8 @@ public class ListenClock extends Clock {
 	try {
 	    Thread.sleep(100);
 	} catch(InterruptedException e) {
-	    // FIXME
+            throw new InternalErrorException( "Error with "
+            	    + "sleeping thread in prefire");
 	}
 	return super.prefire();
     }
@@ -157,7 +158,8 @@ public class ListenClock extends Clock {
 	try {
 	    Thread.sleep(100);
 	} catch(InterruptedException e) {
-	    // FIXME
+            throw new InternalErrorException( "Error with "
+            	    + "sleeping thread in postfire");
 	}
 	return super.postfire();
     }
