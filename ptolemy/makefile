@@ -34,9 +34,9 @@ ME =		ptolemy
 # Order matters here.  kernel should be first, then actors, then domains
 # so that when we compile in a directory we should have already compiled
 # any classes in other directories that we depend on.
-
-DIRS = kernel plot graph data actor automata gui math media \
-	moml domains vergil #filter
+# Note that data.expr uses moml
+DIRS = kernel plot graph moml data actor automata gui math media \
+	domains vergil
 
 # Root of Ptolemy II directory
 ROOT =		..
