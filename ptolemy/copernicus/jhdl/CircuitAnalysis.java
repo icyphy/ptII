@@ -282,88 +282,6 @@ public class CircuitAnalysis {
 	return mcfg;
     }
 
-    /**
-     * This is the main method of the class. This method will
-     * take a SootMethod and created a new directed graph for
-     * the method of interest.
-     **/
-    protected void _analyze(DirectedGraph graph, SootMethod method) {
-        Body body = method.retrieveActiveBody();
-        CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
-        // this will help us figure out where locals are defined.
-        SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-        SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, 
-							localDefs);
-
-	// Inline methods? (Use Nathan's inliner?)
-	Inliner inliner = getInliner();
-	inliner.inline(body);
-	
-	BriefBlockGraph bbgraph=new BriefBlockGraph(body);
-//  	System.out.println("//BlockGraph for Method:"+ method.getName()+"\n"+
-//  			   BlockGraphToDotty.convert(bbgraph, "bbgraph"));
-	List blockList=bbgraph.getBlocks();
-	BlockDataFlowGraph dataFlowGraph=null;
-	Map blockToSuperBlockMap = new HashMap();
-	
-	// Iterate over all basic blocks provided by Soot
-	for (int blockNum=0; blockNum < blockList.size(); blockNum++){
-	    Block block=(Block)blockList.get(blockNum);
-	    //Set requiredNodeSet = new HashSet();
-	    // Create a dataflow graph for each basic block
-	    try {
-		dataFlowGraph=new BlockDataFlowGraph(block);
-	    } catch (IllegalActionException e) {
-		System.err.println(e);
-	    }
-	    /*
-  	    System.out.println("//Dataflow graph for block "+
-  			       block.getIndexInMethod()+"\n"+
-  			       PtDirectedGraphToDotty.convert(dataFlowGraph));
-	    */
-
-	    SuperBlock sb=new SuperBlock(block, dataFlowGraph);
-	    blockToSuperBlockMap.put(block, sb);
-
-	    for (Iterator i=dataFlowGraph.getRequiredNodeSet().iterator(); 
-		 i.hasNext();){
-		_requiredNodeMap.put(i.next(), sb);
-	    }
-	    
-	} // for (int blockNum=0; blockNum < blockList.size(); blockNum++)
-
-	//Add all dataflow graphs for each block to the main graph
-	graph.addNodeWeights(blockToSuperBlockMap.values());
-
-	//graph.addNodeWeights(blockList);
-
-	//Connect the graph so it has the same structure as bbgraph
-	for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
-	    Block block=(Block)blocks.next();
-	    //Get successors to this block and add an edge to graph for each one
-	    for (Iterator succs=block.getSuccs().iterator(); succs.hasNext();){
-		Block succ=(Block)succs.next();
-		graph.addEdge(blockToSuperBlockMap.get(block),
-			      blockToSuperBlockMap.get(succ));
-		//graph.addEdge(block, succ);
-	    }
-	}
-
-	if (!graph.isAcyclic()){  //Loops not supported yet
-	    _graph=null;
-	    throw new RuntimeException("Loops currently not supported");
-	}
-
-	// Merge control flow nodes (insert muxes)
-	_controlFlowAnalysis(graph);
-
-	//System.out.println(PtDirectedGraphToDotty.convert(graph));	
-
-	// flattening of control flow graph into a single dataflow graph
-	//_extractDataFlow(graph);
-    } 
-    // Method _analyze
-
     protected void _extractDataFlow(DirectedGraph graph){
 	Set keys=_requiredNodeMap.keySet();
 	for (Iterator i=keys.iterator(); i.hasNext(); ){
@@ -374,37 +292,6 @@ public class CircuitAnalysis {
 	}
 	
     }
-    
-    protected void _controlFlowAnalysis(DirectedGraph graph){
-	//Get a topological sort
-
-	Map nodeToLabel = new HashMap();
-	SuperBlock sorted[]=null;
-	
-	try {
-	    Object []temp=graph.attemptTopologicalSort(graph.nodes()).toArray();
-	    sorted=new SuperBlock[temp.length];   
-	    for (int i=0; i < temp.length; i++){
-		sorted[i]=(SuperBlock)((Node)temp[i]).weight();
-	    }
-	} catch (IllegalActionException e){
-	    throw new RuntimeException(e.toString());
-	}
-
-	//sorted[0].addLabel(new Label(), null);
-	
-	for (int i=0; i < sorted.length; i++){
-	    sorted[i].combineLabels(graph);
-	    for (Iterator succs = graph.successors(graph.node(sorted[i])).iterator();
-		 succs.hasNext();){
-		Node succ = (Node)succs.next();
-		
-		sorted[i].propagateLabelsTo((SuperBlock)succ.weight());
-	    }
-	}
-	
-    }
-    
 
     /**
      * This method will add a graph (disconnected?) to the origional
