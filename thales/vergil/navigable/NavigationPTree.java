@@ -23,7 +23,7 @@ import thales.vergil.SingleWindowApplication;
 /**
  * <p>Titre : NavigationPTree</p>
  * <p>Description : A navigation tree to browse a Ptolemy model</p>
-Copyright (c) 2003 THALES.
+Copyright (c) 2003-2004 THALES.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

@@ -4,7 +4,7 @@
 #
 # @Version: makefile,v 1.6 2004/01/08 22:53:56 eal Exp
 #
-# @Copyright (c) 2001-2003 The Regents of the University of California.
+# @Copyright (c) 2001-2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

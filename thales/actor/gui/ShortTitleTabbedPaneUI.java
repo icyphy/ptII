@@ -17,7 +17,7 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 /**
  * <p>Titre : ShortTitleTabbedPaneUI</p>
  * <p>Description : A customized UI for the TabbedPane use to navigate</p>
-Copyright (c) 2003 THALES.
+Copyright (c) 2003-2004 THALES.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

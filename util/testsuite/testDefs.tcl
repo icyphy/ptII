@@ -37,7 +37,7 @@
 # and initially implemented by Mary Ann May-Pumphrey of Sun Microsystems.
 #
 # Copyright (c) 1990-2004 The Regents of the University of California.
-# Copyright (c) 1994 Sun Microsystems, Inc.
+# Copyright (c) 1994-2004 Sun Microsystems, Inc.
 #
 # ========================================================================
 # >>>>>>>>>>>>>>>> INCLUDES MODIFICATIONS FOR [incr Tcl] <<<<<<<<<<<<<<<<<
