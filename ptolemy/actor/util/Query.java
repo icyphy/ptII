@@ -33,8 +33,10 @@
 package ptolemy.actor.util;
 
 import java.awt.*;
-import java.util.Hashtable;
-import java.util.NoSuchElementException;
+import java.awt.event.*;
+import java.util.*;
+
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Query
@@ -55,6 +57,18 @@ public class Query extends Panel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add a listener.  The changed() method of the listener will be
+     *  called when any of the entries is changed.  Note that "line"
+     *  entries only trigger this call when Return is pressed.  Moreover,
+     *  you may wish to interpret such an event to mean more than just
+     *  that this entry has changed.  The user may expect, for example,
+     *  for Return to trigger the execution of a model.
+     */
+    public void addQueryListener(QueryListener listener) {
+        if(_listeners == null) _listeners = new LinkedList();
+        _listeners.insertLast(listener);
+    }
 
     /** Get the current value in the entry with the given name
      *  and return as a boolean.  If the value of the entry is not
@@ -121,6 +135,7 @@ public class Query extends Panel {
     public void line(String name, String label, String defvalue, int width) {
         Label lbl = new Label(label);
         TextField entrybox = new TextField(defvalue, width);
+        entrybox.addActionListener(new LineListener(name));
         _addPair(lbl, entrybox);
         _entries.put(name, entrybox);
     }
@@ -133,6 +148,7 @@ public class Query extends Panel {
     public void onoff(String name, String label, boolean defvalue) {
         Label lbl = new Label(label);
         Checkbox checkbox = new Checkbox();
+        checkbox.addItemListener(new OnOffListener(name));
         checkbox.setState(defvalue);
         _addPair(lbl, checkbox);
         _entries.put(name, checkbox);
@@ -181,13 +197,60 @@ public class Query extends Panel {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** Layout control. */
     protected GridBagLayout _grid;
 
+    /** List of registered listeners. */
+    protected LinkedList _listeners;
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         friendly methods                  ////
+
+    // Notify all registered listeners that something changed.
+    void _notifyListeners(String name) {
+        if(_listeners != null) {
+            Enumeration listeners = _listeners.elements();
+            while(listeners.hasMoreElements()) {
+                QueryListener qlistener =
+                       (QueryListener)(listeners.nextElement());
+                qlistener.changed(name);
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private Hashtable _entries = new Hashtable();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Listener for "line" entries.
+     */
+    class LineListener implements ActionListener {
+        public LineListener(String name) {
+            _name = name;
+        }
+        /** Call all registered QueryListeners. */
+        public void actionPerformed(ActionEvent e) {
+            _notifyListeners(_name);
+        }
+        private String _name;
+    }
+
+    /** Listener for "onoff" entries.
+     */
+    class OnOffListener implements ItemListener {
+        public OnOffListener(String name) {
+            _name = name;
+        }
+
+        /** Call all registered QueryListeners. */
+        public void itemStateChanged(ItemEvent e) {
+            _notifyListeners(_name);
+        }
+        private String _name;
+    }
+
 }

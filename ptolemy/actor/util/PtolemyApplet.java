@@ -123,21 +123,26 @@ public class PtolemyApplet extends Applet {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Create run controls and add them to the specified panel.
-     *  The second argument controls exactly how many controls are
-     *  created.  A "Go" button is always created.  If the second
-     *  argument is greater than zero, then a "Stop" button is also
-     *  created.
+    /** Create run controls in a panel and return that panel.
+     *  The second argument controls exactly how many buttons are
+     *  created.  If its value is greater than zero, then a "Go" button
+     *  created.  If its value is greater than one, then a "Stop" button
+     *  is also created.
+     *  @param numbuttons How many buttons to create.
      */
-    protected void _createRunControls(Panel panel, int extent) {
-        _goButton = new Button("Go");
-        panel.add(_goButton);
-        _goButton.addActionListener(new GoButtonListener());
-        if (extent > 0) {
+    protected Panel _createRunControls(int numbuttons) {
+        Panel panel = new Panel();
+        if (numbuttons > 0) {
+            _goButton = new Button("Go");
+            panel.add(_goButton);
+            _goButton.addActionListener(new GoButtonListener());
+        }
+        if (numbuttons > 1) {
             _stopButton = new Button("Stop");
             panel.add(_stopButton);
             _stopButton.addActionListener(new StopButtonListener());
         }
+        return panel;
     }
 
     /** Execute the system.

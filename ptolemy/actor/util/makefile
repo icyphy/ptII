@@ -65,7 +65,8 @@ JSRCS = \
 	DoubleCQComparator.java \
 	FIFOQueue.java \
 	PtolemyApplet.java \
-	Query.java
+	Query.java \
+	QueryListener.java
 
 EXTRA_SRCS =	$(JSRCS)
 
