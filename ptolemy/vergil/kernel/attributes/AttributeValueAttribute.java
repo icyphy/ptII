@@ -128,6 +128,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
      *  listeners.  In other words, it should not be possible for the
      *  same listener to be notified twice of a value update.
      *  @param listener The listener to add.
+     *  @see #removeValueListener(ValueListener)
      */
     public void addValueListener(ValueListener listener) {
     }
@@ -143,7 +144,9 @@ public class AttributeValueAttribute extends AbstractTextAttribute
 
     /** Get the value of the attribute that has been set by setExpression(),
      *  or null if there is none.
-     *  @return The expression.
+     *  @return The expression.  This base class always returns
+     *  the empty string "".
+     *  @see #setExpression(String)
      */
     public String getExpression() {
         return "";
@@ -155,6 +158,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
      *  user-level visibility. The returned value is one of the static
      *  instances of the Visibility inner class.
      *  @return The visibility of this Settable.
+     *  @see #setVisibility(Settable.Visibility)
      */
     public Settable.Visibility getVisibility() {
         return Settable.NONE;
@@ -164,6 +168,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
      *  notified when the value of this variable changes.  If no such listener
      *  exists, do nothing.
      *  @param listener The listener to remove.
+     *  @see #addValueListener(ValueListener)
      */
     public void removeValueListener(ValueListener listener) {
     }
@@ -172,7 +177,8 @@ public class AttributeValueAttribute extends AbstractTextAttribute
      *  In some implementations, the listeners and the container will
      *  be notified immediately.  However, some implementations may
      *  defer notification until validate() is called.
-     *  @param expression The value of the attribute.
+     *  @param expression The value of the attribute.  In this base
+     *  class, the expression parameter is ignored.
      *  @exception IllegalActionException If the expression is invalid.
      */
     public void setExpression(String expression) throws IllegalActionException {

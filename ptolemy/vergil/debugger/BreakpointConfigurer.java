@@ -247,9 +247,12 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // To add firing events for debugging, you must make changes in 2
-    // places in this file: _firingEventTypeLabels, _firingEventTypes
-    // Labels of FiringEventTypes to show in the dialog box.
+
+    /** Firing event type labels.
+     * To add firing events for debugging, you must make changes in 2
+     * places in this file: _firingEventTypeLabels, _firingEventTypes
+     * Labels of FiringEventTypes to show in the dialog box.
+     */
     protected static String[] _firingEventTypeLabels = {
             
         // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
@@ -262,7 +265,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
         "before iterate", "after iterate"
     };
 
-    // FiringEventTypes that the user can set breakpoints on.
+    /** FiringEventTypes that the user can set breakpoints on. */
     protected static FiringEventType[] _firingEventTypes = {
             
         // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF

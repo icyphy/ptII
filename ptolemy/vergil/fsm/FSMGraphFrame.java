@@ -175,9 +175,12 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // The controller is protected so that the subclass
-    // (InterfaceAutomatonGraphFrame) can set it to a more specific
-    // controller.
+
+    /** The controller.
+     *  The controller is protected so that the subclass
+     * (InterfaceAutomatonGraphFrame) can set it to a more specific
+     * controller.
+     */
     protected FSMGraphController _controller;
 
     /** Debug menu for this frame. */

@@ -77,6 +77,7 @@ public class BreakpointDialogFactory implements MenuItemFactory {
      *  to configure breakpoints for an object.
      *  @param menu The context menu.
      *  @param object The object whose breakpoints are being modified.
+     *  @return The contect menu item.
      */
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
         String name = "Set Breakpoints";
