@@ -31,11 +31,13 @@ package ptolemy.domains.sr.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.sr.lib.NonStrictActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -528,6 +530,26 @@ public class SRDirector extends Director {
                     ((Nameable)actor).getName());
             return actor.postfire();
         }
+        return true;
+    }
+
+    /** Return true if the specified actor is ready to fire.
+     *  @return True if the specified actor is ready to fire.
+     */
+    private boolean _isReadyToFire(Actor actor) {
+        if (actor instanceof NonStrictActor) {
+            return true;
+        }
+
+        // FIXME: Is this list deep enough?
+        Iterator inputPorts = actor.inputPortList().iterator();
+
+        while(inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort)inputPorts.next();
+            // FIXME:
+            //if (!inputPort.isKnown()) return false;
+        }
+
         return true;
     }
 

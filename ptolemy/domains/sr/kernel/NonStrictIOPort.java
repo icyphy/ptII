@@ -31,6 +31,7 @@
 
 package ptolemy.domains.sr.kernel;
 
+import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -150,30 +151,30 @@ public class NonStrictIOPort extends TypedIOPort {
      */
     public boolean isKnown(int channelIndex) throws IllegalActionException {
         try {
-            if isInput() {
+            if (isInput()) {
                 Receiver[][] receivers = getReceivers();
                 if (receivers != null && receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
-                        if (receivers[channelIndex][j].isKnown()) return true;
+                        // FIXME:
+                        //if (receivers[channelIndex][j].isKnown()) return true;
                     }
                 }
             }
-            if isOutput() {
+            if (isOutput()) {
                 Receiver[][] receivers = getRemoteReceivers();
                 if (receivers != null && receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
-                        if (receivers[channelIndex][j].isKnown()) return true;
+                        // FIXME:
+                        //if (receivers[channelIndex][j].isKnown()) return true;
                     }
                 }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(this,
                     "isKnown: channel index is out of range.");
-            }
         }
         return false;
     }
-
 }
 
 
