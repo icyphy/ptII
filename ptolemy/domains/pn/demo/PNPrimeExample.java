@@ -1,4 +1,4 @@
-/* This creates an example implementing Sieve of Erasthenes
+/* This creates an example implementing Sieve of Eratosthenes
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -25,8 +25,10 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.domains.pn.kernel;
+package pt.domains.pn.demo;
 import pt.kernel.*;
+import pt.domains.pn.kernel.*;
+import pt.domains.pn.stars.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
