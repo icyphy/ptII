@@ -60,7 +60,7 @@ import java.util.*;
  * applet parameter is specified.  Thus, the initial configuration can
  * be specified in a separate file rather than in Java code.
  *
- * @author Edward A. Lee
+ * @author Edward A. Lee, Christopher Hylands
  * @version $Id$
  */
 public abstract class PlotLive extends Plot implements Runnable {
@@ -129,7 +129,7 @@ public abstract class PlotLive extends Plot implements Runnable {
      */
     public void run() {
         if (_debug >8 ) System.out.println("PlotLive: run");
-        while ( true /*isActive()*/) {
+        while (true) {
             if (_plotting) {
                 addPoints();
                 Thread.yield();
@@ -142,9 +142,6 @@ public abstract class PlotLive extends Plot implements Runnable {
                 } catch (InterruptedException e) {}
             }
         }
-        // Set to null so that if the applet is restarted the
-        // thread will be restarted.
-//        _plotThread = null;
     }
 
     /**
