@@ -62,18 +62,17 @@ import  java.io.Serializable;
 public class Complex implements Cloneable, Serializable {
 
     /** Construct a Complex equal to zero.
+     *  @deprecated Use Complex.ZERO instead.
      */
     public Complex() {
-        this.real = 0.0;
-        this.imag = 0.0;
+        this(0.0, 0.0);
     }
 
     /** Construct a Complex with a zero imaginary part.
      *  @param  real The real part.
      */
     public Complex(double real) {
-        this.real = real;
-        this.imag = 0.0;
+        this(real, 0.0);
     }
 
     /** Construct a Complex with the specified real and imaginary parts.
@@ -84,6 +83,8 @@ public class Complex implements Cloneable, Serializable {
         this.real = real;
         this.imag = imag;
     }
+
+    
 
     // NOTE: There is no need for a constructor that takes a Complex
     // argument because instances of this class are immutable.  There
@@ -323,7 +324,7 @@ public class Complex implements Cloneable, Serializable {
      *  @return A new complex number.
      */
     public final Complex log() {
-        return  new Complex( Math.log(mag()), angle() );
+        return  new Complex( Math.log(magnitude()), angle() );
     }
 
     /** Return the magnitude or absolute value of this complex number.
@@ -412,7 +413,7 @@ public class Complex implements Cloneable, Serializable {
         //     (rho e^(j theta))^(c + dj)
         // to something of the form ae^jb.
 
-        double lnrho =  Math.log(mag());
+        double lnrho =  Math.log(magnitude());
         double magnitude = Math.exp(lnrho * y);
         double angle =  angle() * y;
         return polarToComplex(magnitude, angle);
@@ -429,7 +430,7 @@ public class Complex implements Cloneable, Serializable {
         //     (rho e^(j theta))^(c + dj)
         // to something of the form ae^jb.
 
-        double lnrho =  Math.log(mag());
+        double lnrho =  Math.log(magnitude());
         double theta =  angle();
         double magnitude = Math.exp((lnrho*y.real) - (theta*y.imag));
         double angle =  (lnrho*y.imag) + (theta*y.real);
@@ -508,7 +509,7 @@ public class Complex implements Cloneable, Serializable {
      *  where <code>z</code> is this complex number.
      */
     public final Complex sqrt() {
-        double magnitude = Math.sqrt(mag());
+        double magnitude = Math.sqrt(magnitude());
         double angle = angle()*0.5;
         return polarToComplex(magnitude, angle);
     }
@@ -567,4 +568,19 @@ public class Complex implements Cloneable, Serializable {
      *  can only be set in the constructor.
      */
     public final double imag;
+
+    /** A Complex number representing zero. Reference this to save 
+     *  memory usage.
+     */
+    public static final Complex ZERO = new Complex(0.0, 0.0);
+
+    /** A Complex number representing one. Reference this to save
+     *  memory usage.
+     */
+    public static final Complex ONE = new Complex(1.0, 0.0); 
+
+    /** A Complex number representing <i>i</i>. Reference this to save
+     *  memory usage.
+     */
+    public static final Complex I = new Complex(0.0, 1.0);
 }

@@ -284,6 +284,10 @@ public class ComplexArrayMath {
         System.arraycopy(array,  halfLengthFloor, retval, 
          newLength - halfLengthCeil, halfLengthCeil); 
         
+        for (int i = halfLengthCeil; i < newLength - halfLengthCeil; i++) {
+            retval[i] = Complex.ZERO;
+        }
+
         return retval;
     }
 
@@ -378,7 +382,7 @@ public class ComplexArrayMath {
      *  @return A new complex number.
      */
     public static final Complex product(Complex[] array) {
-        if (array.length == 0) return new Complex();
+        if (array.length == 0) return Complex.ZERO;
         double real = 1.0;
         double imag = 0.0;
         for (int i = 0; i < array.length; i++) {
@@ -491,7 +495,7 @@ public class ComplexArrayMath {
         }
 
         for (int i = copySize; i < newLength; i++) {
-            retval[i] = new Complex(0.0, 0.0);
+            retval[i] = Complex.ZERO;
         }
 
         return retval;
