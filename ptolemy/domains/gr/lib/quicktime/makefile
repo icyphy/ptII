@@ -55,7 +55,8 @@ JSRCS = \
 	MovieViewScreen3D.java
 
 OTHER_FILES_TO_BE_JARED = \
-	quicktime.xml
+	quicktime.xml \
+	quicktime-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
