@@ -238,7 +238,8 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         IOPort currentPort = (IOPort) super.getContainer();
         Director director = ((Actor) actor).getDirector();
 
-        // FIXME: need to consider different cases for TypedComposositeActor ports
+        // FIXME: need to consider different cases for 
+        // TypedComposositeActor ports
         try {
             director.setCurrentTime(_localTime);
         } catch (Exception e) {

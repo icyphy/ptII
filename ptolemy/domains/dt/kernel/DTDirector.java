@@ -199,6 +199,12 @@ public class DTDirector extends SDFDirector {
      */
     public Parameter period;
     
+    // FIXME: this function is a test only
+    public void fireAt(Actor actor, double time)
+            throws IllegalActionException {
+        setCurrentTime(time);
+    }
+    
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -219,16 +225,6 @@ public class DTDirector extends SDFDirector {
         newobj.period = (Parameter)newobj.getAttribute("period");
         return newobj;
     }
-    
-    public double getCurrentTime() {
-        if (_pseudoTimeEnabled == true) {
-            return _insideDirector.getCurrentTime();
-        } else return super.getCurrentTime();
-    }
-
-
-    private boolean _pseudoTimeEnabled = false;
-    private Director _insideDirector;
     
     
     /** Go through the schedule and iterate every actor with calls to
@@ -273,6 +269,24 @@ public class DTDirector extends SDFDirector {
             	i++;
                 
                 Actor actor = (Actor)allactors.nextElement();
+                
+                boolean isFiringNonDTCompositeActor = false;
+               
+                if (actor instanceof CompositeActor) {
+                    CompositeActor compositeActor = (CompositeActor) actor;
+		            Director  insideDirector = compositeActor.getDirector();
+		            
+		            if ( !(insideDirector instanceof DTDirector)) {
+		                isFiringNonDTCompositeActor = true;
+		                _insideDirector = insideDirector;
+		            }
+		        }
+		        
+		        if (isFiringNonDTCompositeActor) {
+		            _pseudoTimeEnabled = true;
+		        }
+		            
+		            
                 if(!actor.prefire()) {
                     throw new IllegalActionException(this,
                             (ComponentEntity) actor, "Actor " +
@@ -281,32 +295,35 @@ public class DTDirector extends SDFDirector {
 
                 if(_debugging)
                     _debug("Firing " + ((Nameable)actor).getFullName());
-                
-		        if (actor instanceof CompositeActor) {
-		            CompositeActor compositeActor = (CompositeActor) actor;
-		            Director  insideDirector = compositeActor.getDirector();
-		            
-		            if (insideDirector instanceof DTDirector) {
-		                actor.fire();
-		            } else {
-		                _insideDirector = insideDirector;
-   		                _pseudoTimeEnabled = true;
-		                debug.println("before fire");
-		                actor.fire();
-		                debug.println("after fire");
-		                _pseudoTimeEnabled = false;               
-		            }
-		            
-                } else {
-                    actor.fire();
-                }
+               
+                actor.fire();
                 _postfirereturns = actor.postfire();
+                
+                if (isFiringNonDTCompositeActor) {
+		            _pseudoTimeEnabled = false;
+		        }
+		        
             }
         }
         if ((outsideDirector != null) && _shouldDoInternalTransferOutputs) {
             _issueTransferOutputs();
         } 
     }
+
+    /** Return the current time.
+     *  @return the current time
+     */
+    public double getCurrentTime() {
+    // -getCurrentTime-
+        double timeValue;
+        if (_pseudoTimeEnabled == true) {
+            timeValue = _insideDirector.getCurrentTime();
+        } else {
+            timeValue = super.getCurrentTime();
+        }
+        return timeValue;
+    }
+
     
     /** Return the time value of the next iteration.
      *  @return The time of the next iteration.
@@ -556,7 +573,6 @@ public class DTDirector extends SDFDirector {
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
     //  -transferOutputs-
-        debug.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!transferOutputs!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferOutputs: port argument is not " +
@@ -1093,7 +1109,9 @@ public class DTDirector extends SDFDirector {
     
     // display for debugging purposes
     private DTDebug debug;
-    
+
+    private boolean _pseudoTimeEnabled = false;
+    private Director _insideDirector;
     
     private static final double TOLERANCE = 0.0000000001;
     

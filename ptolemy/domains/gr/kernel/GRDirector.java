@@ -123,9 +123,9 @@ public class GRDirector extends StaticSchedulingDirector {
         setCurrentTime(time);
     }
     
-    /** Return the current time.  If the caller i  The GR domain is not
-     *  a timed domain, so this function is quite meaningless.  However, it is
-     *  implemented in order to get timed domains to work inside the GR domain.
+    /** Return the current time.  The GR domain is not a timed domain, so this 
+     * function is quite meaningless.  However, it is implemented in order to 
+     * get timed domains to work inside the GR domain.
      *  @param actor, The actor to be fired.
      */ 
     public double getCurrentTime() {
@@ -133,12 +133,6 @@ public class GRDirector extends StaticSchedulingDirector {
             return _insideDirector.getCurrentTime();
         } else return super.getCurrentTime();
     }
-
-
-    private boolean _pseudoTimeEnabled = false;
-    private Director _insideDirector;
-
-
 
     
     /** Return maximum value for type double. Since the 3D domain is not a timed
@@ -334,9 +328,9 @@ public class GRDirector extends StaticSchedulingDirector {
     //  -postfire-
 
         boolean returnValue = super.postfire();
-        int numiterations = ((IntToken) (iterations.getToken())).intValue();
+        int totalIterations = ((IntToken) (iterations.getToken())).intValue();
         _iteration++;
-        if((numiterations > 0) && (_iteration >= numiterations)) {
+        if((totalIterations > 0) && (_iteration >= totalIterations)) {
             _iteration = 0;
             return false;
         }
@@ -379,7 +373,7 @@ public class GRDirector extends StaticSchedulingDirector {
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
                     /*throw new InternalErrorException(
-                            "SDFDirector.transferInputs: Not enough tokens " +
+                            "GRDirector.transferInputs: Not enough tokens " +
                             ex.getMessage());
                             */
                 }
@@ -861,6 +855,9 @@ public class GRDirector extends StaticSchedulingDirector {
     private GRDebug debug;
     
     private long _lastIterationTime;
+    private boolean _pseudoTimeEnabled = false;
+    private Director _insideDirector;
+
     
     
     private static final double TOLERANCE = 0.0000000001;
