@@ -30,7 +30,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Latch" class="ptolemy.domains.sr.lib.Latch">
+    <entity name="Latch" class="ptolemy.actor.lib.Latch">
         <property name="_location" class="ptolemy.moml.Location" value="391.0, 95.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -40,7 +40,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Latch2" class="ptolemy.domains.sr.lib.Latch">
+    <entity name="Latch2" class="ptolemy.actor.lib.Latch">
         <property name="_location" class="ptolemy.moml.Location" value="426.0, 223.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -50,7 +50,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Latch3" class="ptolemy.domains.sr.lib.Latch">
+    <entity name="Latch3" class="ptolemy.actor.lib.Latch">
         <property name="_location" class="ptolemy.moml.Location" value="455.0, 354.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -60,7 +60,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
+    <entity name="SingleTokenDistributor" class="ptolemy.actor.lib.SingleTokenDistributor">
         <property name="_location" class="ptolemy.moml.Location" value="215.0, 222.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -71,7 +71,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="SequenceTest" class="ptolemy.domains.sr.lib.SequenceTest">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,0,0,3,3,3,6,6,6,9,9,9}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
@@ -83,7 +83,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="SequenceTest2" class="ptolemy.domains.sr.lib.SequenceTest">
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1,1,1,4,4,4,7,7,7,10,10}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
@@ -95,7 +95,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="SequenceTest3" class="ptolemy.domains.sr.lib.SequenceTest">
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2,2,2,5,5,5,8,8,8,11}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
@@ -132,7 +132,7 @@
     <link port="SingleTokenDistributor.output" relation="relation2"/>
     <link port="SingleTokenDistributor.output" relation="relation3"/>
     <link port="SingleTokenDistributor.output" relation="relation7"/>
-    <link port="SequenceTest.input" relation="relation6"/>
-    <link port="SequenceTest2.input" relation="relation5"/>
-    <link port="SequenceTest3.input" relation="relation4"/>
+    <link port="NonStrictTest.input" relation="relation6"/>
+    <link port="NonStrictTest2.input" relation="relation5"/>
+    <link port="NonStrictTest3.input" relation="relation4"/>
 </entity>

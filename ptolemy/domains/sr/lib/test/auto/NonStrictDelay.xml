@@ -62,7 +62,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="SequenceTest" class="ptolemy.domains.sr.lib.SequenceTest">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,1,2}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
@@ -74,7 +74,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="SequenceTest7" class="ptolemy.domains.sr.lib.SequenceTest">
+    <entity name="NonStrictTest7" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,1,2}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
@@ -86,7 +86,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="SequenceTest10" class="ptolemy.domains.sr.lib.SequenceTest">
+    <entity name="NonStrictTest10" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,1,2}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
@@ -115,7 +115,7 @@
     <link port="NonStrictDelay2.output" relation="relation6"/>
     <link port="NonStrictDelay3.input" relation="relation6"/>
     <link port="NonStrictDelay3.output" relation="relation3"/>
-    <link port="SequenceTest.input" relation="relation"/>
-    <link port="SequenceTest7.input" relation="relation2"/>
-    <link port="SequenceTest10.input" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="NonStrictTest7.input" relation="relation2"/>
+    <link port="NonStrictTest10.input" relation="relation3"/>
 </entity>

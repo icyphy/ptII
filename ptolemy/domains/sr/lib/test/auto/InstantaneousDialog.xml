@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="71.0, 47.0">
         </property>
     </property>
-    <entity name="NonStrictClient" class="ptolemy.domains.sr.lib.NonStrictClient">
+    <entity name="InstantaneousDialogGenerator" class="ptolemy.domains.sr.lib.InstantaneousDialogGenerator">
         <property name="_location" class="ptolemy.moml.Location" value="267.0, 224.0">
         </property>
         <port name="dataInput" class="ptolemy.actor.TypedIOPort">
@@ -25,7 +25,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Server" class="ptolemy.domains.sr.lib.Server">
+    <entity name="LookupTable" class="ptolemy.domains.sr.lib.LookupTable">
         <property name="index" class="ptolemy.data.expr.Parameter" value="{1, 2, 4, 8, 16}">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="115.0, 120.0">
@@ -55,10 +55,10 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="NonStrictClient.dataInput" relation="relation2"/>
-    <link port="NonStrictClient.indexOutput" relation="relation"/>
-    <link port="NonStrictClient.dataOutput" relation="relation3"/>
-    <link port="Server.input" relation="relation"/>
-    <link port="Server.output" relation="relation2"/>
+    <link port="InstantaneousDialogGenerator.dataInput" relation="relation2"/>
+    <link port="InstantaneousDialogGenerator.indexOutput" relation="relation"/>
+    <link port="InstantaneousDialogGenerator.dataOutput" relation="relation3"/>
+    <link port="LookupTable.input" relation="relation"/>
+    <link port="LookupTable.output" relation="relation2"/>
     <link port="Test.input" relation="relation3"/>
 </entity>
