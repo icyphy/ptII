@@ -75,7 +75,8 @@ public class LookupTable extends Transformer {
         super(container, name);
 
         // Set parameters.
-        data = new Parameter(this, "data");
+        // FIXME: This should be called data? or something other than index?
+        data = new Parameter(this, "index");
         data.setExpression("{1, 2, 4, 8, 16}");
 
 	// Set type constraints.
