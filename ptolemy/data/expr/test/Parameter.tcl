@@ -416,7 +416,7 @@ The ID p is undefined.}}
 ######################################################################
 ####
 #
-test Parameter-15.0 {Test for a known bug - insert a new parameter does not shadow same-named parameter at higher level} {
+test Parameter-15.0 {Insert a new parameter shadows same-named parameter at higher level} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
     set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
     set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
@@ -686,3 +686,43 @@ The index '10' is out of bounds on the array '{1, 2, 3}'.} {ptolemy.kernel.util.
   in .<Unnamed Object>.e2.p2
 Because:
 The index (4,5) is out of bounds on the matrix '[1, 2; 3, 4]'.}}
+
+
+######################################################################
+#### StringParameter tests.
+
+test Parameter-17.0 {String mode parameters} {
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
+    $p1 setStringMode true
+	$p1 getExpression
+} {}
+
+test Parameter-17.2 {String mode parameters} {
+    $p1 setExpression {a"}
+	$p1 getExpression
+} {a"}
+
+test Parameter-17.3 {String mode parameters} {
+    $p1 setExpression {a\"}
+	$p1 getExpression
+} {a\"}
+
+test Parameter-17.4 {String mode parameters} {
+    $p1 setExpression {a}
+    set p2 [java::new ptolemy.data.expr.Parameter $e1 "p2"]
+    $p2 setStringMode true
+    $p2 setExpression {$p1}
+	$p2 getExpression
+} {$p1}
+
+test Parameter-17.5 {String mode parameters} {
+    set t [$p2 getToken]
+    list [$t toString] [[java::cast ptolemy.data.StringToken $t] stringValue]
+} {{"a"} a}
+
+test Parameter-17.6 {String mode parameters} {
+	$p2 setExpression {a $p1 $(p1) a ${p1} a}
+    set t [$p2 getToken]
+    [java::cast ptolemy.data.StringToken $t] stringValue
+} {a a a a a a}

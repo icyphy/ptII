@@ -313,6 +313,7 @@ public class Variable extends Attribute
         }
         // _typeAtMost is preserved
         newObject._parseTree = null;
+        newObject._parseTreeValid = false;
 
         newObject._constraints = new LinkedList();
         newObject._typeTerm = null;
@@ -679,6 +680,7 @@ public class Variable extends Attribute
         }
         _currentExpression = expr;
         _parseTree = null;
+        _parseTreeValid = false;
         _notifyValueListeners();
     }
 
@@ -753,6 +755,7 @@ public class Variable extends Attribute
         if (_currentExpression != null) {
             _currentExpression = null;
             _parseTree = null;
+            _parseTreeValid = false;
         }
 
         setUnknown(false);
@@ -1143,6 +1146,80 @@ public class Variable extends Attribute
             workspace().doneReading();
         }
     }
+    
+    /** Evaluate the current expression to a token. If this variable
+     *  was last set directly with a token, then do nothing. In other words,
+     *  the expression is evaluated only if the value of the token was most
+     *  recently given by an expression.  The expression is also evaluated
+     *  if any of the variables it refers to have changed since the last
+     *  evaluation.  If the value of this variable
+     *  changes due to this evaluation, then notify all
+     *  value dependents and notify the container (if there is one) by
+     *  calling its attributeChanged() and attributeTypeChanged() methods,
+     *  as appropriate. An exception is thrown
+     *  if the expression is illegal, for example if a parse error occurs
+     *  or if there is a dependency loop.
+     *  <p>
+     *  If evaluation results in a token that is not of the same type
+     *  as the current type of the variable, then the type of the variable
+     *  is changed, unless the new type is incompatible with statically
+     *  specified types (setTypeEquals() and setTypeAtMost()).
+     *  If the type is changed, the attributeTypeChanged() method of
+     *  the container is called.  The container can reject the change
+     *  by throwing an exception.
+     *  <p>
+     *  This method may trigger a model error, which is delegated up
+     *  the container hierarchy until an error handler is found, and
+     *  is ignored if no error handler is found.  A model error occurs
+     *  if the expression cannot be parsed or cannot be evaluated.
+     *  <p>
+     *  Part of this method is read-synchronized on the workspace.
+     *
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated, or if a dependency loop is found.
+     */
+    protected void _evaluate() throws IllegalActionException {
+        if (_currentExpression == null
+                || _currentExpression.trim().equals("")) {
+            _setToken(null);
+            return;
+        }
+        // If _dependencyLoop is true, then this call to evaluate() must
+        // have been triggered by evaluating the expression of this variable,
+        // which means that the expression directly or indirectly refers
+        // to itself.
+        if (_dependencyLoop) {
+            _dependencyLoop = false;
+            throw new IllegalActionException("There is a dependency loop.");
+        }
+        _dependencyLoop = true;
+
+        try {
+            workspace().getReadAccess();
+            if (!_parseTreeValid) {
+                PtParser parser = new PtParser();
+                _parseTree = parser.generateParseTree(_currentExpression);
+                _parseTreeValid = true;
+            }
+            if (_parseTreeEvaluator == null) {
+                _parseTreeEvaluator = new ParseTreeEvaluator();
+            }
+            if (_parserScope == null) {
+                _parserScope = new VariableScope();
+            }
+            Token result = _parseTreeEvaluator.evaluateParseTree(
+                    _parseTree, _parserScope);
+            _setTokenAndNotify(result);
+        } catch (IllegalActionException ex) {
+            _needsEvaluation = true;
+            throw new IllegalActionException(this, ex,
+                    "Error evaluating expression: "
+                    + _currentExpression);
+        } finally {
+            _dependencyLoop = false;
+            workspace().doneReading();
+        }
+    }
 
     /** Notify the value listeners of this variable that this variable
      *  changed.
@@ -1233,198 +1310,8 @@ public class Variable extends Attribute
         }
         return result;
     }
-
-    /*  Set the token value and type of the variable, and notify the
-     *  container that the value (and type, if appropriate) has changed.
-     *  Also notify value dependents that they need to be re-evaluated,
-     *  and notify any listeners that have been registered with
-     *  addValueListener().
-     *  If setTypeEquals() has been called, then attempt to convert
-     *  the specified token into one of the appropriate type, if needed,
-     *  rather than changing the type.
-     *  @param newToken The new value of the variable.
-     *  @exception IllegalActionException If the token type is not
-     *   compatible with specified constraints, or if you are attempting
-     *   to set to null a variable that has value dependents.
-     */
-    protected void _setTokenAndNotify(Token newToken)
-            throws IllegalActionException {
-
-        // Save to restore in case the change is rejected.
-        Token oldToken = _token;
-        Type oldVarType = _varType;
-        if (_varType instanceof StructuredType) {
-            try {
-                oldVarType = (Type)((StructuredType)_varType).clone();
-            } catch (CloneNotSupportedException ex2) {
-                throw new InternalErrorException(
-                        "Variable._setTokenAndNotify: " +
-                        " Cannot clone _varType" +
-                        ex2.getMessage());
-            }
-        }
-        boolean oldNoTokenYet = _noTokenYet;
-        String oldInitialExpression = _initialExpression;
-        Token oldInitialToken = _initialToken;
-
-
-        try {
-            _setToken(newToken);
-            NamedObj container = (NamedObj)getContainer();
-            if (container != null) {
-                if ( !oldVarType.equals(_varType) &&
-                        oldVarType != BaseType.UNKNOWN) {
-                    container.attributeTypeChanged(this);
-                }
-                container.attributeChanged(this);
-            }
-            _notifyValueListeners();
-        } catch (IllegalActionException ex) {
-            // reverse the changes
-            _token = oldToken;
-
-            if (_varType instanceof StructuredType) {
-                ((StructuredType)_varType).updateType(
-                        (StructuredType)oldVarType);
-            } else {
-                _varType = oldVarType;
-            }
-            _noTokenYet = oldNoTokenYet;
-            _initialExpression = oldInitialExpression;
-            _initialToken = oldInitialToken;
-            throw ex;
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Listeners for changes in value. */
-    protected List _valueListeners;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Evaluate the current expression to a token. If this variable
-     *  was last set directly with a token, then do nothing. In other words,
-     *  the expression is evaluated only if the value of the token was most
-     *  recently given by an expression.  The expression is also evaluated
-     *  if any of the variables it refers to have changed since the last
-     *  evaluation.  If the value of this variable
-     *  changes due to this evaluation, then notify all
-     *  value dependents and notify the container (if there is one) by
-     *  calling its attributeChanged() and attributeTypeChanged() methods,
-     *  as appropriate. An exception is thrown
-     *  if the expression is illegal, for example if a parse error occurs
-     *  or if there is a dependency loop.
-     *  <p>
-     *  If evaluation results in a token that is not of the same type
-     *  as the current type of the variable, then the type of the variable
-     *  is changed, unless the new type is incompatible with statically
-     *  specified types (setTypeEquals() and setTypeAtMost()).
-     *  If the type is changed, the attributeTypeChanged() method of
-     *  the container is called.  The container can reject the change
-     *  by throwing an exception.
-     *  <p>
-     *  This method may trigger a model error, which is delegated up
-     *  the container hierarchy until an error handler is found, and
-     *  is ignored if no error handler is found.  A model error occurs
-     *  if the expression cannot be parsed or cannot be evaluated.
-     *  <p>
-     *  Part of this method is read-synchronized on the workspace.
-     *
-     *  @exception IllegalActionException If the expression cannot
-     *   be parsed or cannot be evaluated, or if a dependency loop is found.
-     */
-    private void _evaluate() throws IllegalActionException {
-        if (_currentExpression == null
-                || _currentExpression.trim().equals("")) {
-            _setToken(null);
-            return;
-        }
-        // If _dependencyLoop is true, then this call to evaluate() must
-        // have been triggered by evaluating the expression of this variable,
-        // which means that the expression directly or indirectly refers
-        // to itself.
-        if (_dependencyLoop) {
-            _dependencyLoop = false;
-            throw new IllegalActionException("There is a dependency loop.");
-        }
-        _dependencyLoop = true;
-
-        try {
-            workspace().getReadAccess();
-            if (_parseTree == null) {
-                PtParser parser = new PtParser();
-                _parseTree = parser.generateParseTree(_currentExpression);
-            }
-            if (_parseTreeEvaluator == null) {
-                _parseTreeEvaluator = new ParseTreeEvaluator();
-            }
-            if (_parserScope == null) {
-                _parserScope = new VariableScope();
-            }
-            Token result = _parseTreeEvaluator.evaluateParseTree(
-                    _parseTree, _parserScope);
-            _setTokenAndNotify(result);
-        } catch (IllegalActionException ex) {
-            _needsEvaluation = true;
-            throw new IllegalActionException(this, ex,
-                    "Error evaluating expression: "
-                    + _currentExpression);
-        } finally {
-            _dependencyLoop = false;
-            workspace().doneReading();
-        }
-    }
-
-    private void _invalidateShadowedSettables(NamedObj object)
-            throws IllegalActionException {
-        if (object == null) {
-            // Nothing to do.
-            return;
-        }
-        for (Iterator variables = object.attributeList(
-                Variable.class).iterator();
-             variables.hasNext();) {
-            Variable variable = (Variable)variables.next();
-            if (variable.getName().equals(getName())) {
-                variable.invalidate();
-            }
-        }
-        // Also invalidate the variables inside any
-        // scopeExtendingAttributes.
-        Iterator scopeAttributes = object.attributeList(
-                ScopeExtendingAttribute.class).iterator();
-        while (scopeAttributes.hasNext()) {
-            ScopeExtendingAttribute attribute =
-                (ScopeExtendingAttribute)scopeAttributes.next();
-            Iterator variables = attribute.attributeList(
-                    Variable.class).iterator();
-            while (variables.hasNext()) {
-                Variable variable = (Variable)variables.next();
-                if (variable.getName().equals(getName())) {
-                    variable.invalidate();
-                }
-            }
-        }
-        NamedObj container = (NamedObj)object.getContainer();
-        if (container != null) {
-            _invalidateShadowedSettables(container);
-        }
-    }
-
-    /** Return true if the argument is legal to be added to the scope
-     *  of this variable. In this base class, this method only checks
-     *  that the argument is in the same workspace as this variable.
-     *  @param var The variable to be checked.
-     *  @return True if the argument is legal.
-     */
-    private boolean _isLegalInScope(Variable var) {
-        return (var.workspace() == this.workspace());
-    }
-
-    /*  Set the token value and type of the variable.
+    
+    /** Set the token value and type of the variable.
      *  If the type of the specified token is incompatible with specified
      *  absolute type constraints (i.e. those that can be checked), then
      *  throw an exception.  It is converted to the type given by
@@ -1436,7 +1323,7 @@ public class Variable extends Attribute
      *   compatible with specified constraints, or if you are attempting
      *   to set to null a variable that has value dependents.
      */
-    private void _setToken(Token newToken) throws IllegalActionException {
+    protected void _setToken(Token newToken) throws IllegalActionException {
         if (newToken == null) {
             _token = null;
             _needsEvaluation = false;
@@ -1515,12 +1402,141 @@ public class Variable extends Attribute
         }
     }
 
+    /*  Set the token value and type of the variable, and notify the
+     *  container that the value (and type, if appropriate) has changed.
+     *  Also notify value dependents that they need to be re-evaluated,
+     *  and notify any listeners that have been registered with
+     *  addValueListener().
+     *  If setTypeEquals() has been called, then attempt to convert
+     *  the specified token into one of the appropriate type, if needed,
+     *  rather than changing the type.
+     *  @param newToken The new value of the variable.
+     *  @exception IllegalActionException If the token type is not
+     *   compatible with specified constraints, or if you are attempting
+     *   to set to null a variable that has value dependents.
+     */
+    protected void _setTokenAndNotify(Token newToken)
+            throws IllegalActionException {
+
+        // Save to restore in case the change is rejected.
+        Token oldToken = _token;
+        Type oldVarType = _varType;
+        if (_varType instanceof StructuredType) {
+            try {
+                oldVarType = (Type)((StructuredType)_varType).clone();
+            } catch (CloneNotSupportedException ex2) {
+                throw new InternalErrorException(
+                        "Variable._setTokenAndNotify: " +
+                        " Cannot clone _varType" +
+                        ex2.getMessage());
+            }
+        }
+        boolean oldNoTokenYet = _noTokenYet;
+        String oldInitialExpression = _initialExpression;
+        Token oldInitialToken = _initialToken;
+
+
+        try {
+            _setToken(newToken);
+            NamedObj container = (NamedObj)getContainer();
+            if (container != null) {
+                if ( !oldVarType.equals(_varType) &&
+                        oldVarType != BaseType.UNKNOWN) {
+                    container.attributeTypeChanged(this);
+                }
+                container.attributeChanged(this);
+            }
+            _notifyValueListeners();
+        } catch (IllegalActionException ex) {
+            // reverse the changes
+            _token = oldToken;
+
+            if (_varType instanceof StructuredType) {
+                ((StructuredType)_varType).updateType(
+                        (StructuredType)oldVarType);
+            } else {
+                _varType = oldVarType;
+            }
+            _noTokenYet = oldNoTokenYet;
+            _initialExpression = oldInitialExpression;
+            _initialToken = oldInitialToken;
+            throw ex;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Stores the expression used to set this variable. It is null if
+     *  the variable was set from a token.
+     */
+    protected String _currentExpression = null;
+    
+    /** Flags that the expression needs to be evaluated when the value of this
+     *  variable is queried.
+     */
+    protected boolean _needsEvaluation = false;
+    
+    /** The instance of VariableScope. */
+    protected ParserScope _parserScope = null;
+    
+    /** Indicator that the parse tree is valid. */
+    protected boolean _parseTreeValid = false;
+    
+    /** Listeners for changes in value. */
+    protected List _valueListeners;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private void _invalidateShadowedSettables(NamedObj object)
+            throws IllegalActionException {
+        if (object == null) {
+            // Nothing to do.
+            return;
+        }
+        for (Iterator variables = object.attributeList(
+                Variable.class).iterator();
+             variables.hasNext();) {
+            Variable variable = (Variable)variables.next();
+            if (variable.getName().equals(getName())) {
+                variable.invalidate();
+            }
+        }
+        // Also invalidate the variables inside any
+        // scopeExtendingAttributes.
+        Iterator scopeAttributes = object.attributeList(
+                ScopeExtendingAttribute.class).iterator();
+        while (scopeAttributes.hasNext()) {
+            ScopeExtendingAttribute attribute =
+                (ScopeExtendingAttribute)scopeAttributes.next();
+            Iterator variables = attribute.attributeList(
+                    Variable.class).iterator();
+            while (variables.hasNext()) {
+                Variable variable = (Variable)variables.next();
+                if (variable.getName().equals(getName())) {
+                    variable.invalidate();
+                }
+            }
+        }
+        NamedObj container = (NamedObj)object.getContainer();
+        if (container != null) {
+            _invalidateShadowedSettables(container);
+        }
+    }
+
+    /** Return true if the argument is legal to be added to the scope
+     *  of this variable. In this base class, this method only checks
+     *  that the argument is in the same workspace as this variable.
+     *  @param var The variable to be checked.
+     *  @return True if the argument is legal.
+     */
+    private boolean _isLegalInScope(Variable var) {
+        return (var.workspace() == this.workspace());
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // Stores the expression used to set this variable. It is null if
-    // the variable was set from a token.
-    private String _currentExpression = null;
 
     // Used to check for dependency loops among variables.
     private transient boolean _dependencyLoop = false;
@@ -1535,10 +1551,6 @@ public class Variable extends Attribute
 
     // Indicates whether this variable has been flagged as unknown.
     private boolean _isTokenUnknown = false;
-
-    // Flags that the expression needs to be evaluated when the value of this
-    // variable is queried.
-    private boolean _needsEvaluation = false;
 
     // Flags whether the variable has not yet contained a token.
     private boolean _noTokenYet = true;
@@ -1557,13 +1569,6 @@ public class Variable extends Attribute
     // Stores the Class object which represents the type of this variable.
     private Type _varType = BaseType.UNKNOWN;
 
-    // The instance of VariableScope.
-    private ParserScope _parserScope = null;
-
-    // If the variable was last set from an expression, this stores
-    // the parse tree for that expression.
-    private ASTPtRootNode _parseTree;
-
     // the parse tree evaluator used by this variable.
     private ParseTreeEvaluator _parseTreeEvaluator;
 
@@ -1579,6 +1584,10 @@ public class Variable extends Attribute
     // The type set by setTypeEquals(). If _declaredType is not
     // BaseType.UNKNOWN, the type of this Variable is fixed to that type.
     private Type _declaredType = BaseType.UNKNOWN;
+    
+    // If the variable was last set from an expression, this stores
+    //  the parse tree for that expression.
+    private ASTPtRootNode _parseTree;
 
     // If setTypeAtMost() has been called, then the type bound is stored here.
     private Type _typeAtMost = BaseType.UNKNOWN;
@@ -1709,7 +1718,8 @@ public class Variable extends Attribute
         }
     }
 
-    private class VariableScope extends ModelScope {
+    /** Scope implementation with local caching. */
+    protected class VariableScope extends ModelScope {
 
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
