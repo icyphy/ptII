@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating  (johnr@eecs.berkeley.edu)
+@AcceptedRating 
 */
 
 package ptolemy.kernel.util;
