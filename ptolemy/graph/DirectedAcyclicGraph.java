@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+@ProposedRating Green (yuhong@eecs.berkeley.edu)
+@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
 
 */
 
@@ -112,7 +112,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     public void add(Object o) {
         super.add(o);
 
-        _modified = true;
+        _invalidate();
     }
 
     /** Add a directed edge to connect two nodes. That is, make the first
@@ -136,7 +136,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         }
 
         super.addEdge(o1, o2);
-        _modified = true;
+        _invalidate();
     }
 
     /** Return the bottom element of this CPO.
@@ -406,10 +406,16 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     //   |
     // _upSetShared
 
+    // set the flag indicating the graph is modified so some data structures
+    // are invalid.
+    private void _invalidate() {
+	_invalid = true;
+    }
+
     // compute transitive closure.  Throws InvalidStateException if detects
     // cycles.  Find bottom and top elements.
     private void _validate() {
-        if ( !_modified) {
+        if ( !_invalid) {
             _closure = _transitiveClosure;
             return;
         }
@@ -450,7 +456,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         _closure = _transitiveClosure;
         _tranClosureTranspose = null;
 
-        _modified = false;
+        _invalid = false;
     }
 
     // compute the transposition of transitive closure and point _closure
@@ -715,7 +721,9 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private boolean _modified = true;
+    // flag indicating that the graph is modified so some data structures
+    // are invalid.
+    private boolean _invalid = true;
 
     // _closure = _transitiveClosure for lub, upSet, leastElement;
     // _closure = _tranClosureTranspose for the dual operations: glb,
