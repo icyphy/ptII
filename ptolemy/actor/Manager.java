@@ -241,6 +241,10 @@ public class Manager extends NamedObj implements Runnable {
 		TypeTerm term = (TypeTerm)abs.nextElement();
 		TypedIOPort port = term.getPort();
 		Class type = port.getResolvedType();
+		if (type.isInterface()) {
+		    throw new TypeConflictException(port, "port resolved " +
+			"to an abstract type.");
+		}
 		int mod = type.getModifiers();
 		if (Modifier.isAbstract(mod) && !type.equals(top)) {
 		    throw new TypeConflictException(port, "port resolved " +
