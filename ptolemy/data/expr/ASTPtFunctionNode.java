@@ -68,9 +68,14 @@ when the tree is evaluated, the call to eval() with both create
 and evaluate the parse tree for the expression argument to obtain
 the Token to be stored in this node.
 <p>
-FIXME: add note about function argument types and the return type.
+The arguments to a function and its return types can be either
+Java primitive types (double, boolean, etc.), String types,
+or Token types. In the case of Token types, polymorphism is supported.
+That is, one can define a function foo(IntToken) and
+a different function foo(DoubleToken), and the correct function
+will be invoked.
 <p>
-@author Neil Smyth
+@author Neil Smyth and Edward A. Lee
 @version $Id$
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
@@ -80,8 +85,16 @@ FIXME: add note about function argument types and the return type.
 */
 public class ASTPtFunctionNode extends ASTPtRootNode {
 
-    protected String _funcName;
-    protected boolean _isArrayRef;
+    public ASTPtFunctionNode(int id) {
+        super(id);
+    }
+
+    public ASTPtFunctionNode(PtParser p, int id) {
+        super(p, id);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public void jjtClose() {
         super.jjtClose();
@@ -90,6 +103,17 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             _isConstant = false;
         }
     }
+
+    public static Node jjtCreate(int id) {
+        return new ASTPtFunctionNode(id);
+    }
+
+    public static Node jjtCreate(PtParser p, int id) {
+        return new ASTPtFunctionNode(p, id);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     protected ptolemy.data.Token _resolveNode()
             throws IllegalActionException {
@@ -160,11 +184,13 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 
 	// Do not have a recursive invocation of the parser.
 	Class[] argTypes = new Class[args];
+	Class[] argTokenTypes = new Class[args];
 	Object[] argValues = new Object[args];
 	// Note: Java makes a distinction between the class objects
 	// for double & Double...
 	for (int i = 0; i < args; i++) {
 	    ptolemy.data.Token child = _childTokens[i];
+            argTokenTypes[i] = child.getClass();
 	    if (child instanceof DoubleToken) {
 		argValues[i] = new Double(((DoubleToken)child).doubleValue());
 		argTypes[i] = Double.TYPE;
@@ -191,9 +217,6 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 		argValues[i] = child;
 		argTypes[i] = argValues[i].getClass();;
 	    }
-	    // FIXME: what is the TYPE that needs to be filled
-	    // in the argValues[]. Current it is from the
-	    // child.
 	}
 	// Now have the arguments converted, look through all the
 	// classes registered with the parser for the appropriate function.
@@ -210,7 +233,25 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 		result = method.invoke(nextClass, argValues);
 		foundMethod = true;
 	    } catch (NoSuchMethodException ex) {
-		// Do nothing, we haven't found the correct function
+		// We haven't found the correct function.
+                // Try matching on the token classes.
+                try {
+                    Method method = _polymorphicGetMethod(
+                            nextClass, _funcName, argTokenTypes);
+                    if (method != null) {
+                        result = method.invoke(nextClass, _childTokens);
+                        foundMethod = true;
+                    }
+                } catch (InvocationTargetException exception) {
+                    // get the exception produced by the invoked function
+                    exception.getTargetException().printStackTrace();
+                    throw new IllegalActionException(
+                        "Error invoking function " + _funcName + "\n" +
+                        exception.getTargetException().getMessage());
+	         } catch (Exception exception)  {
+		     throw new IllegalActionException(exception.getMessage());
+                 }
+
 	    } catch (InvocationTargetException ex) {
 		// get the exception produced by the invoked function
                 ex.getTargetException().printStackTrace();
@@ -218,7 +259,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                         "Error invoking function " + _funcName + "\n" +
                         ex.getTargetException().getMessage());
 	    } catch (Exception ex)  {
-		new IllegalActionException(ex.getMessage());
+		throw new IllegalActionException(ex.getMessage());
 	    }
 
 	    if (foundMethod) {
@@ -260,26 +301,50 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 + "( " + sb + " ).");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected String _funcName;
+    protected boolean _isArrayRef;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     // Return the variable being referenced when this node represents array
     // or matrix reference.
     private Variable _referredVar() {
 	return ((ASTPtLeafNode)jjtGetChild(0))._var;
     }
 
-    public ASTPtFunctionNode(int id) {
-        super(id);
-    }
-
-    public ASTPtFunctionNode(PtParser p, int id) {
-        super(p, id);
-    }
-
-    public static Node jjtCreate(int id) {
-        return new ASTPtFunctionNode(id);
-    }
-
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtFunctionNode(p, id);
+    // Regrettably, the getMethod() method in the java Class does not
+    // support polymorphism.  In particular, it does not recognize a method
+    // if the class you supply for an argument type is actually derived
+    // from the class in the method signature.  So we have to reimplement
+    // this here.  This method returns the first method that it finds that
+    // has the specified name and can be invoked with the specified
+    // argument types.  It is arguable that it should return the most
+    // specific method that it finds, but it turns out that this is difficult
+    // to define.  So it simply returns the first match.
+    // It returns null if there is no match.
+    private Method _polymorphicGetMethod(
+            Class library, String methodName, Class[] argTypes) {
+        // NOTE: The Java docs do not explain the difference between
+        // getMethods() and getDeclaredMethods(), so I'm guessing here...
+        Method[] methods = library.getDeclaredMethods();
+        for (int i = 0; i < methods.length; i++) {
+            if (methods[i].getName().equals(methodName)) {
+                Class[] arguments = methods[i].getParameterTypes();
+                if (arguments.length != argTypes.length) continue;
+                boolean match = true;
+                for (int j = 0; j < arguments.length; j++) {
+                    match = match && arguments[j].isAssignableFrom(argTypes[j]);
+                }
+                if (match) {
+                    return methods[i];
+                }
+            }
+        }
+        return null;
     }
 }
 
