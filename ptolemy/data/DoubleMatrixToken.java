@@ -33,6 +33,7 @@ package ptolemy.data;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
+import ptolemy.math.MatrixMath;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.BaseType;
 
@@ -57,7 +58,7 @@ public class DoubleMatrixToken extends MatrixToken {
 	_rowCount = 1;
 	_columnCount = 1;
 	_value = new double[1][1];
-	_value[0][0] = 0.0;
+	// _value[0][0] is initially set to 0.0
     }
 
     /** Construct a DoubleMatrixToken with the specified 2-D array.
@@ -67,15 +68,10 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @exception NullPointerException If the specified array
      *   is null.
      */
-    public DoubleMatrixToken(double[][] value) {
+    public DoubleMatrixToken(final double[][] value) {
 	_rowCount = value.length;
 	_columnCount = value[0].length;
-	_value = new double[_rowCount][_columnCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		_value[i][j] = value[i][j];
-	    }
-	}
+        _value = MatrixMath.allocCopy(value);
     }
 
     // FIXME: finish this method after array is added to the
@@ -106,7 +102,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *   not of a type that can be added to this token in a lossless
      *   fashion.
      */
-    public Token add(Token t)
+    public final Token add(Token t)
 	    throws IllegalActionException {
 
 	int compare = TypeLattice.compare(this, t);
@@ -123,12 +119,7 @@ public class DoubleMatrixToken extends MatrixToken {
 
 	    if (t instanceof ScalarToken) {
 		double scalar = ((ScalarToken)t).doubleValue();
-		result = new double[_rowCount][_columnCount];
-		for (int i = 0; i < _rowCount; i++) {
-		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] = scalar + _value[i][j];
-		    }
-		}
+                result = MatrixMath.add(_value, scalar);
 	    } else {
 		// the specified token is not a scalar.
 		DoubleMatrixToken tem = (DoubleMatrixToken)this.convert(t);
@@ -138,12 +129,7 @@ public class DoubleMatrixToken extends MatrixToken {
                             "matrices with different dimension.");
 	    	}
 
-		result = tem.doubleMatrix();
-		for (int i = 0; i < _rowCount; i++) {
-		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] += _value[i][j];
-		    }
-		}
+                result = MatrixMath.add(tem.doubleMatrix(), _value);
 	    }
 	    return new DoubleMatrixToken(result);
 	}
@@ -157,7 +143,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the type of the specified
      *   token is not lower than DoubleMatrixToken.
      */
-    public Token addReverse(Token t)
+    public final Token addReverse(Token t)
 	    throws IllegalActionException {
 	int compare = TypeLattice.compare(this, t);
 	if (! (compare == CPO.HIGHER)) {
@@ -172,7 +158,7 @@ public class DoubleMatrixToken extends MatrixToken {
     /** Return the content of this token as a 2-D Complex array.
      *  @return A 2-D Complex matrix
      */
-    public Complex[][] complexMatrix() {
+    public final Complex[][] complexMatrix() {
 	Complex[][] array = new Complex[_rowCount][_columnCount];
 	for (int i = 0; i < _rowCount; i++) {
 	    for (int j = 0; j < _columnCount; j++) {
@@ -195,7 +181,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the conversion cannot
      *   be carried out in a lossless fashion.
      */
-    public static Token convert(Token token)
+    public static final Token convert(Token token)
 	    throws IllegalActionException {
 
 	int compare = TypeLattice.compare(new DoubleMatrixToken(), token);
@@ -239,20 +225,14 @@ public class DoubleMatrixToken extends MatrixToken {
      *  modify it.
      *  @return A 2-D double array.
      */
-    public double[][] doubleMatrix() {
-	double[][] array = new double[_rowCount][_columnCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-	 	array[i][j] = _value[i][j];
-	    }
-	}
-	return array;
+    public final double[][] doubleMatrix() {
+	return MatrixMath.allocCopy(_value);
     }
 
     /** Return the type of this token.
      *  @return BaseType.DOUBLE_MATRIX
      */
-    public Type getType() {
+    public final Type getType() {
 	return BaseType.DOUBLE_MATRIX;
     }
 
@@ -267,7 +247,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the specified token is
      *   not a matrix token; or lossless conversion is not possible.
      */
-    public BooleanToken isEqualTo(Token t)
+    public final BooleanToken isEqualTo(Token t)
 	    throws IllegalActionException {
 	int compare = TypeLattice.compare(this, t);
 	if ( !(t instanceof MatrixToken) ||
@@ -309,7 +289,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *   row or column number is outside the corresponding range
      *   of the index of the contained array.
      */
-    public Token getElementAsToken(int row, int column)
+    public final Token getElementAsToken(final int row, final int column)
             throws ArrayIndexOutOfBoundsException {
 	return new DoubleToken(_value[row][column]);
     }
@@ -323,22 +303,91 @@ public class DoubleMatrixToken extends MatrixToken {
      *   row or column number is outside the corresponding range
      *   of the index of the contained array.
      */
-    public double getElementAt(int row, int column) {
+    public final double getElementAt(final int row, final int column) {
         return _value[row][column];
     }
 
     /** Return the number of columns in the matrix.
      *  @return An integer.
      */
-    public int getColumnCount() {
+    public final int getColumnCount() {
 	return _columnCount;
     }
 
     /** Return the number of rows in the matrix.
      *  @return An integer.
      */
-    public int getRowCount() {
+    public final int getRowCount() {
 	return _rowCount;
+    }
+
+    /** Return a new token whose value is the product of this token
+     *  and the argument. The type of the specified token
+     *  must be such that either it can be converted to the type
+     *  of this token, or the type of this token can be converted
+     *  to the type of the specified token, without loss of
+     *  information. The type of the returned token is one of the
+     *  above two types that allows lossless conversion from the other.
+     *  If the specified token is a matrix, its number of rows should
+     *  be the same as this token's number of columns.
+     *  @param t The token to add to this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the specified token is
+     *   not of a type that can be added to this token in a lossless
+     *   fashion.
+     */
+    public final Token multiply(Token t)
+	    throws IllegalActionException {
+
+	int compare = TypeLattice.compare(this, t);
+	if (compare == CPO.INCOMPARABLE) {
+	    String msg = "multiply method not supported between " +
+                this.getClass().getName() + " and " +
+                t.getClass().getName();
+	    throw new IllegalActionException(msg);
+	} else if (compare == CPO.LOWER) {
+	    return t.multiplyReverse(this);
+	} else {
+	    // type of the specified token <= DoubleMatrixToken
+	    double[][] result = null;
+
+	    if (t instanceof ScalarToken) {
+		double scalar = ((ScalarToken)t).doubleValue();
+                result = MatrixMath.multiply(_value, scalar);
+	    } else {
+		// the specified token is not a scalar.
+		DoubleMatrixToken tem = (DoubleMatrixToken)this.convert(t);
+	    	if (tem.getRowCount() != _columnCount) {
+
+                    throw new IllegalActionException("Cannot multiply " +
+                     "matrix with " + _columnCount + " columns by a matrix with " +
+                     tem.getRowCount() + " rows.");
+	    	}
+
+                result = MatrixMath.multiply(tem.doubleMatrix(), _value);
+	    }
+	    return new DoubleMatrixToken(result);
+	}
+    }
+
+    /** Return a new token whose value is the product of this token
+     *  and the argument. The type of the specified token must
+     *  be lower than DoubleMatrixToken.
+     *  @param t The token to add this Token to.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the type of the specified
+     *   token is not lower than DoubleMatrixToken.
+     */
+    public final Token multiplyReverse(Token t)
+	    throws IllegalActionException {
+	int compare = TypeLattice.compare(this, t);
+	if (! (compare == CPO.HIGHER)) {
+	    throw new IllegalActionException("The type of the specified "
+                    + "token " + t.getClass().getName() + " is not lower than "
+                    + getClass().getName());
+	}
+	// multiply is commutative on double matrix.
+	return multiply(t);
     }
 
     /** Return a new Token representing the left multiplicative
@@ -347,14 +396,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *  the matrix contained in this token.
      *  @return A new Token containing the left multiplicative identity.
      */
-    public Token one() {
-	double[][] result = new double[_rowCount][_rowCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _rowCount; j++) {
-		result[i][j] = 0.0;
-	    }
-	    result[i][i] = 1.0;
-	}
+    public final Token one() {
+        double[][] result = MatrixMath.identity(_rowCount);
 	return new DoubleMatrixToken(result);
     }
 
@@ -364,14 +407,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *  the matrix contained in this token.
      *  @return A new Token containing the right multiplicative identity.
      */
-    public Token oneRight() {
-	double[][] result = new double[_columnCount][_columnCount];
-	for (int i = 0; i < _columnCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		result[i][j] = 0.0;
-	    }
-	    result[i][i] = 1.0;
-	}
+    public final Token oneRight() {
+        double[][] result = MatrixMath.identity(_columnCount);
 	return new DoubleMatrixToken(result);
     }
 
@@ -381,19 +418,17 @@ public class DoubleMatrixToken extends MatrixToken {
      *  matrix contained in this token.
      *  @return A new Token containing the additive identity.
      */
-    public Token zero() {
+    public final Token zero() {
 	double[][] result = new double[_rowCount][_columnCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		result[i][j] = 0.0;
-	    }
-	}
+
+        // we assume Java has initialized the contents of result to 0.0
+
 	return new DoubleMatrixToken(result);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private double[][] _value = null;
-    private int _rowCount = 0;
-    private int _columnCount = 0;
+    private final double[][] _value;
+    private final int _rowCount;
+    private final int _columnCount;
 }
