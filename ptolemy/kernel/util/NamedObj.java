@@ -405,7 +405,7 @@ public class NamedObj implements
             // It may have been cloned from a class.
             newObject._isInherited = false;
 
-            if(workspace == null) {
+            if (workspace == null) {
                 newObject._workspace = _DEFAULT_WORKSPACE;
             } else {
                 newObject._workspace = workspace;
@@ -1188,7 +1188,7 @@ public class NamedObj implements
             synchronized(_changeLock) {
                 if (_changeListeners != null) {
                     ListIterator listeners = _changeListeners.listIterator();
-                    while(listeners.hasNext()) {
+                    while (listeners.hasNext()) {
                         WeakReference reference = (WeakReference)listeners.next();
                         if (reference.get() == listener) {
                             listeners.remove();
@@ -1614,7 +1614,7 @@ public class NamedObj implements
                 // VersionAttribute has a final field
                 if ( !Modifier.isFinal(fields[i].getModifiers())) {
                     Object object = fields[i].get(this);
-                    if(object instanceof Attribute) {
+                    if (object instanceof Attribute) {
                         String name = ((NamedObj) object).getName(this);
                         fields[i].set(newObject,
                                 newObject.getAttribute(name));

@@ -372,7 +372,7 @@ public class Location extends SingletonAttribute
         // Copy location array into member array _location.
         // Just referencing _location to location isn't enough, we need
         // to maintain a local copy of the double array.
-        for(int i = 0; i < location.length; i++) {
+        for (int i = 0; i < location.length; i++) {
             _location[i] = location[i];
         }
 
