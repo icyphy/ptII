@@ -50,6 +50,7 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	Documentation.tcl \
 	EntityLibrary.tcl \
 	LibraryAttribute.tcl \
 	Location.tcl \
