@@ -104,11 +104,11 @@ public class StringCompare extends TypedAtomicActor {
 
         // Ports
         firstString = new PortParameter(this, "firstString");
-        firstString.setToken(new StringToken(""));
+        firstString.setExpression("");
         firstString.setStringMode(true);
 
         secondString = new PortParameter(this, "secondString");
-        secondString.setToken(new StringToken(""));
+        secondString.setExpression("");
         secondString.setStringMode(true);
 
         output = new TypedIOPort(this, "output");

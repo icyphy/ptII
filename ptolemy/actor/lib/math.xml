@@ -42,22 +42,6 @@
   </entity>
 
   <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
-    <property name="function">
-        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-            <property name="exp" value="exp"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="log" value="log"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="modulo" value="modulo"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="sign" value="sign"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="square" value="square"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="sqrt" value="sqrt"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-        </property>
-     </property>
     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
         <property name="attributeName" value="function"/>
     </property>
@@ -85,22 +69,6 @@
   </entity>
 
   <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
-    <property name="function">
-        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-            <property name="acos" value="acos"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="asin" value="asin"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="atan" value="atan"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="cos" value="cos"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="sin" value="sin"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="tan" value="tan"
-	              class="ptolemy.kernel.util.StringAttribute"/>
-        </property>
-    </property>
     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
         <property name="attributeName" value="function"/>
     </property>

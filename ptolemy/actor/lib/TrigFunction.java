@@ -32,13 +32,13 @@ package ptolemy.actor.lib;
 
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/math.xml.
@@ -118,8 +118,15 @@ public class TrigFunction extends Transformer {
         super(container, name);
 
         // parameters
-        function = new StringAttribute(this, "function");
+        function = new StringParameter(this, "function");
         function.setExpression("sin");
+        function.addChoice("acos");
+        function.addChoice("asin");
+        function.addChoice("atan");
+        function.addChoice("cos");
+        function.addChoice("sin");
+        function.addChoice("tan");        
+
         _function = _SIN;
 
         input.setTypeEquals(BaseType.DOUBLE);
@@ -138,7 +145,7 @@ public class TrigFunction extends Transformer {
     /** The function to compute.  This is a string-valued attribute
      *  that defaults to "sin".
      */
-    public StringAttribute function;
+    public StringParameter function;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -151,7 +158,7 @@ public class TrigFunction extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {
-            String functionName = function.getExpression();
+            String functionName = function.stringValue();
             if (functionName.equals("acos")) {
                 _function = _ACOS;
             } else if (functionName.equals("asin")) {

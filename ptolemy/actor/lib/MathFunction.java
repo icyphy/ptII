@@ -34,13 +34,13 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/math.xml.
@@ -100,8 +100,14 @@ public class MathFunction extends TypedAtomicActor {
         super(container, name);
 
         // Parameters
-        function = new StringAttribute(this, "function");
+        function = new StringParameter(this, "function");
         function.setExpression("exp");
+        function.addChoice("exp");
+        function.addChoice("log");
+        function.addChoice("modulo");
+        function.addChoice("sign");
+        function.addChoice("square");
+        function.addChoice("sqrt");
         _function = _EXP;
 
         // Ports
@@ -128,7 +134,7 @@ public class MathFunction extends TypedAtomicActor {
     /** The function to compute.  This is a string-valued attribute
      *  that defaults to "exp".
      */
-    public StringAttribute function;
+    public StringParameter function;
 
     /** The port for the first operand.
      *  The port has type BaseType.DOUBLE
@@ -158,7 +164,7 @@ public class MathFunction extends TypedAtomicActor {
             throws  IllegalActionException {
         try {
             if (attribute == function) {
-                String functionName = function.getExpression();
+                String functionName = function.stringValue();
                 if (functionName.equals("exp")) {
                     _function = _EXP;
                     if (secondOperand != null) {
