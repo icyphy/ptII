@@ -44,6 +44,7 @@ import ptolemy.moml.Locatable;
 import ptolemy.vergil.*;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
+import ptolemy.vergil.icon.*;
 
 import diva.canvas.*;
 import diva.canvas.connector.*;
@@ -166,6 +167,9 @@ public class PtolemyModule implements Module {
 	GUIUtilities.addToolBarButton(tb, action,
 				      "New External Port", icon);
 
+	action = new editIconAction();
+	_application.addAction(action);
+
 	renderer = new RelationController.RelationRenderer();
 	figure = renderer.render(null);
 	icon = new FigureIcon(figure, 25, 25, 1, true);
@@ -276,6 +280,38 @@ public class PtolemyModule implements Module {
     
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
+
+    public class editIconAction extends FigureAction {
+	public editIconAction() {
+	    super("Edit Icon");
+	}
+
+	public void actionPerformed(ActionEvent e) {
+	    // Figure out what entity.
+	    super.actionPerformed(e);		
+	    NamedObj object = getTarget();
+	    System.out.println("object = " + object);
+	    if(!(object instanceof Entity)) return;
+	    Entity entity = (Entity) object;
+	    XMLIcon icon = null;
+	    List iconList = entity.attributeList(XMLIcon.class);
+	    if(iconList.size() == 0) {
+		try {
+		    icon = new XMLIcon(entity, entity.uniqueName("icon"));
+		} catch (Exception ex) {
+		    throw new InternalErrorException("duplicated name, but " + 
+						     "there were no other icons.");
+		}
+	    } else if(iconList.size() == 1) {
+		icon = (XMLIcon)iconList.get(0);
+	    } else {
+		throw new InternalErrorException("entity " + entity + 
+				 "contains more than one icon");
+	    }
+
+	    new IconEditor(new ApplicationContext("Icon editor"), icon);
+	}
+    }
 
     private class executeSystemAction extends AbstractAction {
 	public executeSystemAction() {
