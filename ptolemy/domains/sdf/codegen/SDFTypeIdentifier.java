@@ -113,7 +113,7 @@ public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
 
     static {
 
-        CompileUnitNode sdfAtomicActorUnit = StaticResolution.load(
+        CompileUnitNode sdfAtomicActorUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource(
                         "ptolemy.domains.sdf.kernel.SDFAtomicActor", true), 1);
 
@@ -122,7 +122,7 @@ public class SDFTypeIdentifier extends PtolemyTypeIdentifier {
 
         SDF_ATOMIC_ACTOR_TYPE = SDF_ATOMIC_ACTOR_DECL.getDefType();
 
-        CompileUnitNode sdfIOPortUnit = StaticResolution.load(
+        CompileUnitNode sdfIOPortUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.domains.sdf.kernel.SDFIOPort", true), 1);
 
         SDF_IO_PORT_DECL = (ClassDecl) StaticResolution.findDecl(
