@@ -54,11 +54,9 @@ JSRCS = \
 	Simple.java
 
 # Non-graphical Java tests written in Tcl
-# FIXME: Simple.tcl fails if the order of the following two tests is
-# reversed.
 JSIMPLE_TESTS = \
-	Simple.tcl \
 	Object.tcl \
+	Simple.tcl \
     ramp.tcl
 
 # Graphical Java tests that use Tcl.
@@ -122,7 +120,7 @@ Simple:
 	@echo "Translating the class file to C ..."
 	CLASSPATH="$(CLASSPATH)" \
 		$(JAVA) -Dj2c_lib=\j2c_lib ptolemy.copernicus.c.JavaToC \
-		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" -singleClass Simple
+		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" -v -singleClass Simple
 	@echo "Compiling the generated C with 'gcc -c'..."
 	gcc -c -I../runtime Simple.c
 	@echo "Compilation finished."
