@@ -302,7 +302,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             registerFunctionClass("java.lang.Long");
             registerFunctionClass("java.lang.String");
             registerFunctionClass("ptolemy.data.MatrixToken");
-			registerFunctionClass("ptolemy.data.RecordToken");
+            registerFunctionClass("ptolemy.data.RecordToken");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
             registerFunctionClass("ptolemy.data.expr.FixPointFunctions");
             registerFunctionClass("ptolemy.math.Complex");

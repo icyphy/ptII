@@ -3,8 +3,8 @@
 /* Input file to JJTree and JavaCC to generate Ptolemy II Parser */
 
 options {
-LOOKAHEAD=1;                                                                      
-STATIC = false;                           
+LOOKAHEAD=1;                                                                   
+STATIC = false;                          
 }
 
 PARSER_BEGIN(PtParser)
@@ -314,19 +314,20 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
             registerFunctionClass("java.lang.Long");
             registerFunctionClass("java.lang.String");
             registerFunctionClass("ptolemy.data.MatrixToken");
+            registerFunctionClass("ptolemy.data.RecordToken");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
             registerFunctionClass("ptolemy.data.expr.FixPointFunctions");
             registerFunctionClass("ptolemy.math.Complex");
             registerFunctionClass("ptolemy.math.ExtendedMath");
-	    registerFunctionClass("ptolemy.math.IntegerMatrixMath");
-	    registerFunctionClass("ptolemy.math.DoubleMatrixMath");
-	    registerFunctionClass("ptolemy.math.ComplexMatrixMath");
-	    registerFunctionClass("ptolemy.math.LongMatrixMath");
-	    registerFunctionClass("ptolemy.math.IntegerArrayMath");
-	    registerFunctionClass("ptolemy.math.DoubleArrayStat");
-	    registerFunctionClass("ptolemy.math.ComplexArrayMath");
-	    registerFunctionClass("ptolemy.math.LongArrayMath");
-	    registerFunctionClass("ptolemy.math.SignalProcessing");
+            registerFunctionClass("ptolemy.math.IntegerMatrixMath");
+            registerFunctionClass("ptolemy.math.DoubleMatrixMath");
+            registerFunctionClass("ptolemy.math.ComplexMatrixMath");
+            registerFunctionClass("ptolemy.math.LongMatrixMath");
+            registerFunctionClass("ptolemy.math.IntegerArrayMath");
+            registerFunctionClass("ptolemy.math.DoubleArrayStat");
+            registerFunctionClass("ptolemy.math.ComplexArrayMath");
+            registerFunctionClass("ptolemy.math.LongArrayMath");
+            registerFunctionClass("ptolemy.math.SignalProcessing");
             registerFunctionClass("ptolemy.math.FixPoint");
         }
     }
