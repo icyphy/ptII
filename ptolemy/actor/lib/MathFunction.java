@@ -60,7 +60,7 @@ This is the default function for this actor
 If the argument is NaN, then the result is NaN.
 <li> <b>log</b>: The natural logarithm function.
 If the argument is NaN, then the result is NaN.
-<li> <b>remainder</b>: The remainder after division.
+<li> <b>modulo</b>: The modulo after division.
 If the second operand is zero, then the result is NaN.
 <li> <b>sign</b>: If the argument is greater than 0, return 1.0, if
 it is less than 0, return -1.0, otherwise return 0.0.
@@ -71,9 +71,9 @@ If the argument is NaN, then the result is NaN.
 </ul>
 <p>
 NOTE: Some functions like exp, log, square, and sqrt act on a single
-operand only.  Other functions like remainder act on two operands.
+operand only.  Other functions like modulo act on two operands.
 The actor acquires a second input when the function is changed to
-remainder, and loses the input when the function is changed back.
+modulo, and loses the input when the function is changed back.
 
 @author C. Fong
 @version $Id$
@@ -160,8 +160,8 @@ public class MathFunction extends TypedAtomicActor {
                     if (secondOperand != null) {
                         secondOperand.setContainer(null);
                     }
-                } else if (functionName.equals("remainder")) {
-                    _function = _REMAINDER;
+                } else if (functionName.equals("modulo")) {
+                    _function = _MODULO;
                     _createSecondPort();
                 } else if (functionName.equals("sign")) {
                     _function = _SIGN;
@@ -199,7 +199,7 @@ public class MathFunction extends TypedAtomicActor {
         if (firstOperand.hasToken(0)) {
             double input1 = ((DoubleToken) firstOperand.get(0)).doubleValue();
             double input2 = 1.0;
-            if (_function == _REMAINDER) {
+            if (_function == _MODULO) {
                 if (secondOperand.hasToken(0)) {
                     input2 =
                         ((DoubleToken) secondOperand.get(0)).doubleValue();
@@ -236,7 +236,7 @@ public class MathFunction extends TypedAtomicActor {
         }
 
         if (firstOperand.hasToken(0, count)) {
-            if (_function == _REMAINDER) {
+            if (_function == _MODULO) {
                 if (secondOperand.hasToken(0, count)) {
                     inArray1 = firstOperand.get(0, count);
                     inArray2 = secondOperand.get(0, count);
@@ -273,7 +273,7 @@ public class MathFunction extends TypedAtomicActor {
     ////                         private methods                   ////
 
 
-    /** Create the second port needed by remainder function
+    /** Create the second port needed by modulo function
      */
     private void _createSecondPort()
             throws NameDuplicationException, IllegalActionException {
@@ -301,7 +301,7 @@ public class MathFunction extends TypedAtomicActor {
         case _LOG:
             result = Math.log(input1);
             break;
-        case _REMAINDER:
+        case _MODULO:
             result = input1 % input2;
             break;
         case _SIGN:
@@ -340,7 +340,7 @@ public class MathFunction extends TypedAtomicActor {
     // Constants used for more efficient execution.
     private static final int _EXP = 0;
     private static final int _LOG = 1;
-    private static final int _REMAINDER = 2;
+    private static final int _MODULO = 2;
     private static final int _SIGN = 3;
     private static final int _SQUARE = 4;
     private static final int _SQRT = 5;
