@@ -687,7 +687,18 @@ public class DEDirector extends Director {
         _exceedStopTime = false;
         // use the protected variable directly, since time can go backward.
         // This is the only place in DE where time can go backward.
-        _currentTime = getStartTime();
+        
+        // Note: If it is embedded, it should get the current time from its
+        // executive director. Modified by yang.
+        if (_isEmbedded()) {
+            Nameable container = getContainer();
+            if (container instanceof Actor) {
+                _currentTime = ((Actor)container).
+                            getExecutiveDirector().getCurrentTime();
+            }
+        } else {
+            _currentTime = getStartTime();
+        }
         _realStartTime = System.currentTimeMillis();
         // We cannot call super.initialize() since it will set current time
         // back to 0.0
