@@ -1,5 +1,5 @@
 /* An instance of FunctionDependencyOfModalModel describes the function
-   dependency information of a modal model.
+   dependency information between the outputs and intputs of a modal model.
 
    Copyright (c) 2004 The Regents of the University of California.
    All rights reserved.
@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.MessageHandler;
@@ -40,7 +41,12 @@ import ptolemy.util.MessageHandler;
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfModalModel
 /** An instance of FunctionDependencyOfModalModel describes the function
-    dependency information of a modal model.
+    dependency information between the outputs and inputs of a modal model.
+    
+    FIXME: two design choices can be chosen here. 1. dynamic configuration.
+    2. conservation approximation.
+    
+    FIXME: FSMAtomicActor need a better design.
 
     @see ptolemy.actor.util.FunctionDependencyOfCompositeActor
     @author Haiyang Zheng
@@ -53,17 +59,17 @@ public class FunctionDependencyOfModalModel
     extends FunctionDependencyOfCompositeActor {
 
     /** Construct a FunctionDependency in the given actor.
-     *  @param actor The associated actor.
+     *  @param compositeActor The associated actor.
      */
-    public FunctionDependencyOfModalModel(Actor actor) {
-        super(actor);
+    public FunctionDependencyOfModalModel(CompositeActor compositeActor) {
+        super(compositeActor);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
     /** Get a list of refinements of the current state for function
-     *  dependency calculation.
+     *  dependency calculation. 
      *  @return A list of refinements associated with the current state.
      */
     protected List _getEntities() {
