@@ -21,7 +21,8 @@
 
 	    <!-- GR depends on the 3D graphics package of Java being present-->             <input source="ptolemy/domains/gr/gr.xml"/>
 	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>	   
-	    <!-- Don't include rtp, we are not shipping it -->
+	    <!-- We usually do not ship rtp, but leave it in for testing -->
+	    <input source="ptolemy/domains/rtp/lib/rtpentities.xml"/>
 	    <input source="ptolemy/domains/sr/lib/srentities.xml"/>
 	    <input source="ptolemy/domains/tm/lib/tmentities.xml"/>
             <input source="ptolemy/domains/hde/lib/hdeentities.xml"/>
