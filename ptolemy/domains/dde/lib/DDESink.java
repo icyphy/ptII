@@ -1,4 +1,4 @@
-/* DDESink is used as a test class for consuming tokens.
+/* DDESink is simple DDE actor that consumes real tokens.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -41,9 +41,12 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// DDESink
 /**
-DDESink is used as a test class for consuming tokens. This class has a
-single typed output multiport. Use this class to test DDEReceiver and
-DDEThread.
+DDESink is simple DDE actor that consumes real tokens. This actor
+has a parameter named 'numTokens' that specifies the number of
+real tokens that this actor will consume. If numTokens is set to
+a negative value, then this actor will continue to consume tokens
+as long as they are available. If numTokens is set to a non-negative
+value 'k', then this actor will consume k tokens.
 
 @author John S. Davis II
 @version $Id$
