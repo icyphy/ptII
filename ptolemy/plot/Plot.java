@@ -698,28 +698,6 @@ public class Plot extends PlotBox {
         _sweepsPersistence = persistence;
     }
 
-    /** Specify whether the X axis is drawn with a logarithmic scale.
-     *  @param xlog If true, logarithmic axis is used.
-     */
-    public void setXLog(boolean xlog) {
-        if ( xlog != _xlog) {
-	    boolean oldXLog = _xlog;
-            super.setXLog(xlog);
-	    _reprocessDataAfterLogChange(oldXLog, xlog, _ylog, _ylog);
-        }
-    }
-    /** Specify whether the Y axis is drawn with a logarithmic scale.
-     *  @param ylog If true, logarithmic axis is used.
-     */
-    public void setYLog(boolean ylog) {
-        if ( ylog != _ylog) {
-	    boolean oldYLog = _ylog;
-	    super.setYLog(ylog);
-	    _reprocessDataAfterLogChange(_xlog, _xlog, oldYLog, ylog);
-	}
-    }
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1764,51 +1742,6 @@ public class Plot extends PlotBox {
             return _connected;
         } else {
             return fmt.connected;
-        }
-    }
-
-    // setXLog or setYLog were called, so we reprocess the data.
-    private void _reprocessDataAfterLogChange(
-            boolean oldXLog, boolean newXLog,
-            boolean oldYLog, boolean newYLog) {
-	Vector oldPoints = _points;
-	super.clear(false);
-	clear(false);
-	double x, y, yLowEB, yHighEB;
-	for (int dataset = 0; dataset < oldPoints.size(); dataset++) {
-	    Vector pts = (Vector)oldPoints.elementAt(dataset);
-	    _currentdataset = dataset;
-	    for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
-		PlotPoint pt = (PlotPoint)pts.elementAt(pointnum);
-		 
-		if (oldXLog != newXLog && ! newXLog) {
-		    // setXLog(false) was called.
-		    x = Math.exp(pt.x /_LOG10SCALE);
-		} else {
-		    x = pt.x;
-		}
-
-		if (oldYLog != newYLog && ! newYLog) {
-		    // setYLog(false) was called.
-		    y = Math.exp(pt.y /_LOG10SCALE);
-		    yLowEB = Math.exp(pt.yLowEB /_LOG10SCALE);
-		    yHighEB = Math.exp(pt.yHighEB /_LOG10SCALE);
-		} else {
-		    y = pt.y;
-		    yLowEB = pt.yLowEB;
-		    yHighEB = pt.yHighEB;
-		}
-
-		// The addPoint methods check _xlog and _ylog and
-		// take the log of the data as necessary.
-		if (pt.errorBar) {
-		    addPointWithErrorBars(_currentdataset,
-					  x, y, yLowEB, yHighEB,
-					  pt.connected);
-		} else {
-		    addPoint(_currentdataset, x, y, pt.connected);
-		}
-	    }
         }
     }
 
