@@ -157,7 +157,8 @@ $(OPTIONAL_JSRCS): PtParser.java MatrixParser.java
 # Uncomment this to work on the parser.
 PtParser.java: PtParser.jj
 	@echo "This command runs JavaCC, which can be downloaded from"
-	@echo "http://www.sun.com/suntest"
+	@echo "http://www.webgain.com/download/javacc/details.html"
+	@echo "See $PTII/doc/install.htm for details."
 	@echo "You only need install JavaCC if you modify PtParser.jjt"
 	@echo "PtParser.java is derived from PtParser.jj, which is in turn"
 	@echo "derived from PtParser.jjt"
@@ -167,7 +168,9 @@ PtParser.java: PtParser.jj
 
 PtParser.jj: PtParser.jjt
 	@echo "This command runs JJTree, which is part of JavaCC"
-	@echo "JavaCC can be downloaded from http://www.sun.com/suntest"
+	@echo "JavaCC can be downloaded from"
+	@echo "http://www.webgain.com/download/javacc/details.html"
+	@echo "See $PTII/doc/install.htm for details."
 	@echo "You only need install JavaCC if you modify PtParser.jjt"
 	@echo "PtParser.java is derived from PtParser.jj, which is in turn"
 	@echo "derived from PtParser.jjt"
@@ -177,7 +180,8 @@ PtParser.jj: PtParser.jjt
 
 MatrixParser.java: MatrixParser.jj
 	@echo "This command runs JavaCC, which can be downloaded from"
-	@echo "http://www.sun.com/suntest"
+	@echo "http://www.webgain.com/download/javacc/details.html"
+	@echo "See $PTII/doc/install.htm for details."
 	@echo "You only need install JavaCC if you modify MatrixParser.jjt"
 	@echo "MatrixParser.java is derived from MatrixParser.jj, which is in turn"
 	@echo "derived from MatrixParser.jjt"
@@ -187,7 +191,9 @@ MatrixParser.java: MatrixParser.jj
 
 MatrixParser.jj: MatrixParser.jjt
 	@echo "This command runs JJTree, which is part of JavaCC"
-	@echo "JavaCC can be downloaded from http://www.sun.com/suntest"
+	@echo "JavaCC can be downloaded from"
+	@echo "http://www.webgain.com/download/javacc/details.html"
+	@echo "See $PTII/doc/install.htm for details."
 	@echo "You only need install JavaCC if you modify MatrixParser.jjt"
 	@echo "MatrixParser.java is derived from MatrixParser.jj, which is in turn"
 	@echo "derived from MatrixParser.jjt"
