@@ -929,6 +929,12 @@ $(INSTALLSHIELD_PTINY):
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/ptolemy.jar \
 		$(INSTALLSHIELD_APP)/ptolemy/configs/ \
 		$@/ptolemy
+	 # Big hack here.  We need to include intro.htm in app, so
+	 # we move it back
+	 -mkdir	$(INSTALLSHIELD_APP)/ptolemy/configs/
+	 -mv $@/ptolemy/configs/intro.htm $(INSTALLSHIELD_APP)/ptolemy/configs/
+	 # We then rename introPtiny.htm so as to get doc/demoPtiny.htm
+	 # instead of doc/demo.htm
 	 -mv $@/ptolemy/configs/introPtiny.htm $@/ptolemy/configs/intro.htm 
 	 -mv $@/ptolemy/configs/vergilConfigurationPtiny.xml \
 		$@/ptolemy/configs/vergilConfiguration.xml
@@ -941,12 +947,16 @@ $(INSTALLSHIELD_PTINY):
 	   mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/lib/$${domain}entities.xml \
 		$@/ptolemy/domains/$$domain/lib; \
 	 done
+	 # Empty directory created by the for loop above.
+	 rmdir $@/ptolemy/domains/pn/lib
 	# FIXME: we should find this in the jar file?
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/sdf/lib/*Spectrum*.xml \
 		$@/ptolemy/domains/sdf/lib 
 	 -mkdir -p $@/doc/codeDoc
-	 -cp -r $(PTIIHOME)/doc/codeDocPtiny/* \
-		 $@/doc/codeDoc
+	 #-cp -r $(PTIIHOME)/doc/codeDoc/* \
+	 #	 $@/doc/codeDoc
+	 #-cp -r $(PTIIHOME)/doc/codeDocPtiny/* \
+	 #	 $@/doc/codeDoc
 	 # Set up for a few javasound
 	 -mkdir -p $@/ptolemy/actor/lib/javasound/demo
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/javasound.xml \
@@ -1017,7 +1027,7 @@ $(INSTALLSHIELD_DOC):
 $(INSTALLSHIELD_EXPERIMENTAL):
 	@echo "#"
 	@echo "# Building $@"
-	 mkdir -p $@/ptolemy
+	 mkdir -p $@/ptolemy/domains
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/dde $@/ptolemy/domains
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/dt $@/ptolemy/domains
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/giotto $@/ptolemy/domains
