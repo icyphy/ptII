@@ -28,6 +28,11 @@ Berkeley, CA 94706</property>
         <property array="True" length="0" name="additionalClassPaths" type="string"/>
         <property array="True" length="0" name="systemProperties" type="string"/>
         <property name="beanId">bean2</property>
+        <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
+            <property name="showConsole">False</property>
+            <property name="launcherUIDisplayTime">0</property>
+            <property name="fileName">PtolemyIIUninstaller.exe</property>
+        </extendedProperty>
     </uninstallerLauncher>
     <uninstallerJVMResolution>
         <property name="JVMId">jvm</property>
@@ -161,7 +166,7 @@ Berkeley, CA 94706</property>
                     <property name="replaceJVMResponse">unspecified</property>
                 </action>
                 <action class="com.installshield.product.actions.Launcher" id="bean3">
-                    <displayName>Launcher</displayName>
+                    <displayName>Vergil Launcher</displayName>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
                         <property name="showConsole">True</property>
@@ -171,15 +176,17 @@ Berkeley, CA 94706</property>
                     <property name="title">Launching Vergil</property>
                     <property name="mainClass">ptolemy.vergil.VergilApplication</property>
                     <property name="mainClassArguments"/>
-                    <property array="True" length="1" name="classPath" type="string">
-                        <arrayItem>c:\users\cxh\ptII</arrayItem>
+                    <property array="True" length="3" name="classPath" type="string">
+                        <arrayItem>./ptolemy/vergil/vergil.jar</arrayItem>
+                        <arrayItem>./ptolemy/ptolemy.jar</arrayItem>
+                        <arrayItem>./lib/diva.jar</arrayItem>
                     </property>
                     <property array="True" length="0" name="systemProperties" type="string"/>
-                    <property name="javaArguments">-verbose:class</property>
+                    <property name="javaArguments"/>
                     <property name="JVMId">jvm</property>
                 </action>
                 <action class="com.installshield.product.actions.DesktopIcon" id="bean4">
-                    <displayName>Ptolemy II</displayName>
+                    <displayName>Vergil Icon</displayName>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32DesktopIconExtra">
                         <property name="iconFile">doc\img\ptIIplanet.ico</property>
@@ -187,7 +194,7 @@ Berkeley, CA 94706</property>
                         <property name="iconFileType">1</property>
                         <property name="folderContext">$AllUsersPrograms$</property>
                     </extendedProperty>
-                    <property name="folder">$P(productBean1.displayName) $P(productBean1.productNumber)</property>
+                    <property name="folder">Ptolemy/$P(productBean1.displayName) $P(productBean1.productNumber)</property>
                     <property name="name">Vergil</property>
                     <property name="target">vergil.exe</property>
                     <property name="args"/>
@@ -206,7 +213,7 @@ Berkeley, CA 94706</property>
                         <property name="iconFileType">1</property>
                         <property name="folderContext">$AllUsersPrograms$</property>
                     </extendedProperty>
-                    <property name="folder">$P(productBean1.displayName) $P(productBean1.productNumber)</property>
+                    <property name="folder">Ptolemy/$P(productBean1.displayName) $P(productBean1.productNumber)</property>
                     <property name="name">Documentation</property>
                     <property name="target">doc/index.htm</property>
                     <property name="args"/>
@@ -228,14 +235,14 @@ Berkeley, CA 94706</property>
                     <property name="mainClass">ptolemy.plot.plotml.EditablePlotMLApplication</property>
                     <property name="mainClassArguments"/>
                     <property array="True" length="1" name="classPath" type="string">
-                        <arrayItem>c:\users\cxh\ptII</arrayItem>
+                        <arrayItem>./ptolemy/plot/plotapplication.jar</arrayItem>
                     </property>
                     <property array="True" length="0" name="systemProperties" type="string"/>
                     <property name="javaArguments">-verbose:class</property>
                     <property name="JVMId">jvm</property>
                 </action>
                 <action class="com.installshield.product.actions.DesktopIcon" id="bean7">
-                    <displayName>Ptplot</displayName>
+                    <displayName>Ptplot Icon</displayName>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32DesktopIconExtra">
                         <property name="iconFile">ptolemy\plot\doc\img\ptplot.ico</property>
@@ -243,7 +250,7 @@ Berkeley, CA 94706</property>
                         <property name="iconFileType">1</property>
                         <property name="folderContext">$UserPrograms$</property>
                     </extendedProperty>
-                    <property name="folder">$P(productBean1.displayName) $P(productNumber)</property>
+                    <property name="folder">Ptolemy/$P(productBean1.displayName) $P(productNumber)</property>
                     <property name="name">Ptplot</property>
                     <property name="target"/>
                     <property name="args"/>
