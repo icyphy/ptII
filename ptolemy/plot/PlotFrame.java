@@ -291,7 +291,7 @@ public class PlotFrame extends Frame {
 
         // Accept the defaults... But if you want to change them,
         // do something like this...
-        // Properties newprops= new Properties();
+        // Properties newprops = new Properties();
         // newprops.put("awt.print.destination", "file");
         // newprops.put("awt.print.fileName", _outputFile);
         // PrintJob printjob = getToolkit().getPrintJob(this,
