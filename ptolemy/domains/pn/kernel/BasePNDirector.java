@@ -229,6 +229,12 @@ public class BasePNDirector extends ProcessDirector {
 	Workspace workspace = workspace();
 	// Wait while no deadlock is detected.
         System.out.println("DIRECTOR: START OF FIRE");
+        if( _getActiveActorsCount() == 0 ) {
+            synchronized(this) {
+                _notDone = false;
+                return;
+            }
+        }
         while( _readBlockCount != _getActiveActorsCount() ) {
         	// && !_areActorsStopped() ) {
 	    //In this case, wait until a real deadlock occurs.

@@ -188,6 +188,10 @@ public class PNDirector extends BasePNDirector {
     public void fire() throws IllegalActionException {
         Workspace worksp = workspace();
         synchronized (this) { //Reset this as mutations must be done by now
+            if( _getActiveActorsCount() == 0 ) {
+                _notDone = false;
+                return;
+            }
             _mutationBlockCount = 0;
             _mutationsRequested = false;
             //Loop until a deadlock other than an artificial deadlock is

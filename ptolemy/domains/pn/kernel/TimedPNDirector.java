@@ -208,6 +208,10 @@ public class TimedPNDirector extends BasePNDirector {
         boolean timedmut;
         Workspace worksp = workspace();
         synchronized (this) {
+            if( _getActiveActorsCount() == 0 ) {
+                _notDone = false;
+                return;
+            }
             _mutationBlockCount = 0;
             _mutationsRequested = false;
             //Loop until a real deadlock is detected.
