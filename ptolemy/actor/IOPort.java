@@ -675,14 +675,12 @@ public class IOPort extends ComponentPort {
      *  parameter <i>channelIndex</i> specifies the channel and
      *  the parameter <i>vectorLength</i> specifies the number of
      *  valid tokens to get in the returned array. The length of
-     *  the returned array can be greater than the specified vector
-     *  length, in which case, only the first <i>vectorLength</i>
-     *  elements are guaranteed to be valid.
+     *  the returned array will be equal to <i>vectorLength</i>.
      *  <p>
      *  If the channel has a group with more than one receiver (something
      *  that is possible if this is a transparent port), then this method
-     *  calls get() on all receivers, but returns only the first non-null
-     *  token returned by these calls.
+     *  calls get() on all receivers, but returns only the result from
+     *  the first in the group.
      *  Normally this method is not used on transparent ports.
      *  If there are not enough tokens to fill the array, then throw
      *  an exception.
@@ -731,6 +729,12 @@ public class IOPort extends ComponentPort {
         if (retArray == null) {
             throw new NoTokenException(this, "get: No token array " +
                     "to return.");
+        }
+        int index = 1;
+        while (index < localReceivers[channelIndex].length) {
+            // Read and discard data from other channels in the group.
+            localReceivers[channelIndex][index].getArray(vectorLength);
+        	index++;
         }
         if (_debugging) {
             _debug("get vector from channel " + channelIndex
