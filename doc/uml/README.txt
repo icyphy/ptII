@@ -51,7 +51,8 @@ The easiest way to update the Visio files is to:
       delete
    3. In Frame, select Edit->Paste Special and then select Metafile
    4. If you resize, try to keep the aspect ratio the same so that
-      the letters do not get squashed
+      the letters do not get squashed.  The best way to do this is
+      to select Graphics -> Scale
    
 
 
