@@ -36,7 +36,7 @@ DIRS = 		BouncingBall CarTracking ComparedClocks \
 		Helicopter LevelCrossingDetector \
 		Lorenz SigmaDelta SquareWave \
 		SampledClocks StickyMasses Switch \
-		Thermostat Corba #$(PTJSPACES_DIR)
+		Transmission Thermostat Corba #$(PTJSPACES_DIR)
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -66,6 +66,7 @@ PTCLASSALLJARS = \
 	SquareWave/SquareWave.jar \
 	StickyMasses/StickyMasses.jar \
 	Switch/Switch.jar \
+	Transmission/Transmission.jar \
 	Thermostat/Thermostat.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
