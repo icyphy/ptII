@@ -30,9 +30,11 @@
 
 package ptolemy.kernel.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,7 +44,7 @@ import java.util.List;
 A collection of utilities for manipulating strings.
 
 @see ptolemy.gui.GUIStringUtilities
-@author Steve Neuendorffer
+@author Steve Neuendorffer, Christopher Hylands
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -77,6 +79,127 @@ public class StringUtilities {
         string = substitute(string, ">", "&gt;");
         string = substitute(string, "\n", "&#10;");
         return string;
+    }
+
+    /** Get the specified property from the environment. An empty string
+     *  is returned if the argument environment variable does not exist,
+     *  though if certain properties are not defined, then we
+     *  make various attempts to determine them and then set them.
+     *  See the javadoc page for java.util.System.getProperties() for
+     *  a list of system properties.  
+     *  <p>The following properties are handled specially
+     *  <dl>
+     *  <dt> "ptolemy.ptII.dir"
+     *  <dd> vergil usually sets the ptolemy.ptII.dir property to the
+     *  value of $PTII.  However, if we are running under Web Start,
+     *  then this property might not be set, in which case we look
+     *  for "ptolemy/kernel/util/NamedObj.class" and set the
+     *  property accordingly.
+     *  <dt> "ptolemy.ptII.dirAsURL"
+     *  <dd> Return $PTII as a URL.  For example, if $PTII was c:\ptII,
+     *  then return file:/c:/ptII/.
+     *  </dl>
+     *  @param propertyName The name of property.
+     *  @return A String containing the string value of the property.
+     */ 
+    public static String getProperty(String propertyName) {
+	// NOTE: getProperty() will probably fail in applets, which
+	// is why this is in a try block.
+	String property = null;
+	try {
+	    property = System.getProperty(propertyName);
+        } catch (SecurityException security) {
+	    if (!propertyName.equals("ptolemy.ptII.dir")) {
+		throw new InternalErrorException(null, security,
+						 "Could not find '"
+						 + propertyName
+						 + "' System property");
+	    }
+	}
+	if (property != null) {
+	    return property;
+	}
+	if (propertyName.equals("ptolemy.ptII.dirAsURL")) {
+            // Return $PTII as a URL.  For example, if $PTII was c:\ptII,
+            // then return file:/c:/ptII/
+            File ptIIAsFile = new File(getProperty("ptolemy.ptII.dir"));
+            
+            try {
+                URL ptIIAsURL = ptIIAsFile.toURL();
+                return ptIIAsURL.toString();
+            } catch (java.net.MalformedURLException malformed) {
+                throw new InternalErrorException(null, malformed,
+                        "While trying to find '" + propertyName 
+                        + "', could not convert '"
+                        + ptIIAsFile + "' to a URL");
+            }
+        }
+
+	if (propertyName.equals("ptolemy.ptII.dir")) {
+
+	    String namedObjPath = "ptolemy/kernel/util/NamedObj.class";
+	    String home = null;
+	    // PTII variable was not set
+	    URL namedObjURL =
+		Thread.currentThread().getContextClassLoader()
+		.getResource(namedObjPath);
+							
+	    if (namedObjURL != null) {
+		String namedObjFileName = namedObjURL.getFile().toString();
+		// FIXME: How do we get from a URL to a pathname?
+		if (namedObjFileName.startsWith("file:")) {
+		    // We get rid of either file:/ or file:\
+		    namedObjFileName = namedObjFileName.substring(6);
+		}
+		String abnormalHome = namedObjFileName.substring(0,
+						  namedObjFileName.length()
+						  - namedObjPath.length());
+
+		// abnormalHome will have values like: "/C:/ptII/"
+		// which cause no end of trouble, so we construct a File
+		// and call toString().
+
+		home = (new File(abnormalHome)).toString();
+
+		// If we are running under Web Start, then strip off
+		// the trailing "!"
+		if (home.endsWith("!")) {
+		    home =
+			home.substring(0, home.length() - 1);
+		}
+
+		// Web Start
+		String ptsupportJarName = File.separator + "DMptolemy"
+		    + File.separator + "RMptsupport.jar";
+		if (home.endsWith(ptsupportJarName)) {
+		    home =
+			home.substring(0, home.length()
+				       - ptsupportJarName.length());
+		}
+
+		ptsupportJarName = File.separator + "ptolemy" 
+		    + File.separator + "ptsupport.jar";
+		if (home.endsWith(ptsupportJarName)) {
+		    home =
+			home.substring(0, home.length()
+				       - ptsupportJarName.length());
+		}
+	    }
+
+	    if (home == null) {
+		throw new InternalErrorException(null, null,
+ 		    "Could not find "
+		    + "'ptolemy.ptII.dir'"
+		    + " property.  Also tried loading '"
+		    + namedObjPath + "' as a resource and working from that. "
+		    + "Vergil should be "
+	            + "invoked with -Dptolemy.ptII.dir"
+		    + "=\"$PTII\"");
+	    }
+	    System.setProperty("ptolemy.ptII.dir", home);
+	    return home;
+        }
+	return property;
     }
 
     /** Sanitize a String so that it can be used as a Java identifier.
