@@ -50,6 +50,9 @@ PTCLASSJAR =
 JSRCS =
 
 # These files go into PTCLASSALLJAR
+# ptIIplanet.gif should be in ../../doc/img, but Web Start
+#  has problems pulling in the gif if the gif is in a different jar
+#  so we include it in this jar
 OTHER_FILES_TO_BE_JARED = \
 	annotation.xml \
 	fsmLibrary.xml \
@@ -59,6 +62,7 @@ OTHER_FILES_TO_BE_JARED = \
 	runConfiguration.xml \
 	runPanelConfiguration.xml \
 	runWelcomeWindow.xml \
+	ptIIplanet.gif \
 	vergilConfiguration.xml \
 	vergilConfigurationDSP.xml \
 	vergilConfigurationPtiny.xml \
