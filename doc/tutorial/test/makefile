@@ -70,8 +70,15 @@ tests:: $(EXTRA_SRCS) #jclass test_java test_jsimple
 		  $(JAVAC) -classpath ../.. TutorialApplet.java)
 	(cd ..; cp TutorialApplet2.java TutorialApplet.java; \
 		  $(JAVAC) -classpath ../.. TutorialApplet.java)
+	(cd ..; cp TutorialApplet3.java TutorialApplet.java; \
+		  $(JAVAC) -classpath ../.. TutorialApplet.java)
 	(cd ..; cp TutorialApplet4.java TutorialApplet.java; \
 		  $(JAVAC) -classpath ../.. TutorialApplet.java)
+	(cd ..; cp TutorialApplet5.java TutorialApplet.java; \
+		  $(JAVAC) -classpath ../.. TutorialApplet.java)
+	(cd ..; cp TutorialApplet6.java TutorialApplet.java; \
+		  $(JAVAC) -classpath ../.. TutorialApplet.java)
+
 depend:
 	@echo "no dependencies in this directory"
 
