@@ -40,7 +40,7 @@ An Entity is a vertex in a flat graph. It incorporates the notion of graph
 connections and disconnections. Relation is the equivalent of a graph edge.
 Entities and Relations are linked together via Ports.
 @author John S. Davis II
-@version @(#)Entity.java	1.7	11/20/97
+@version $Id$
 @see Port
 @see Relation
 */
