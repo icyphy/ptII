@@ -37,9 +37,12 @@ import ptolemy.data.*;
 
 import java.util.Iterator;
 
-import java.util.Enumeration;
+import java.util.List;
 import java.util.Hashtable;
-import collections.LinkedList;
+import java.util.LinkedList;
+import java.util.Collections;
+
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// IOPort
@@ -251,10 +254,10 @@ public class IOPort extends ComponentPort {
         boolean output = isOutput();
 
         if (input) {
-            Enumeration outsideRelations = linkedRelations();
-            while (outsideRelations.hasMoreElements()) {
+            Iterator outsideRelations = linkedRelationList().iterator();
+            while (outsideRelations.hasNext()) {
                 IORelation relation =
-                    (IORelation) outsideRelations.nextElement();
+                    (IORelation) outsideRelations.next();
                 int width = relation.getWidth();
 
                 Receiver[][] result = new Receiver[width][1];
@@ -268,9 +271,9 @@ public class IOPort extends ComponentPort {
             }
         }
         if (output) {
-            Enumeration insideRelations = insideRelations();
-            while (insideRelations.hasMoreElements()) {
-                IORelation relation = (IORelation)insideRelations.nextElement();
+            Iterator insideRelations = insideRelationList().iterator();
+            while (insideRelations.hasNext()) {
+                IORelation relation = (IORelation)insideRelations.next();
                 int width = relation.getWidth();
 
                 Receiver[][] result = new Receiver[width][1];
@@ -289,15 +292,28 @@ public class IOPort extends ComponentPort {
     }
 
     /** Deeply enumerate the input ports connected to this port on the
-     *  outside.  This method calls deepConnectedPorts() of the super
-     *  class to get all the deeply connected ports and returns only the
-     *  input ports among them.
-     *  It is read-synchronized on the workspace.
+     *  outside.  This method is deprecated and calls 
+     *  deepConnectedInPortList(). It is read-synchronized on the 
+     *  workspace.
      *
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
+     *  @deprecated Use deepConnectedInPortList() instead.
      *  @return An enumeration of input IOPort objects.
      */
     public Enumeration deepConnectedInPorts() {
+        return Collections.enumeration( deepConnectedInPortList() );
+    }
+
+    /** Deeply enumerate the input ports connected to this port on the
+     *  outside and return a list of these ports.  This method calls 
+     *  deepConnectedPortList() of the super class to get all the deeply 
+     *  connected ports and returns only the input ports among them.
+     *  It is read-synchronized on the workspace.
+     *
+     *  @see ptolemy.kernel.ComponentPort#deepConnectedPortList
+     *  @return A list of input IOPort objects.
+     */
+    public List deepConnectedInPortList() {
 	try {
 	    _workspace.getReadAccess();
 	    LinkedList result = new LinkedList();
@@ -306,25 +322,38 @@ public class IOPort extends ComponentPort {
             while(ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
 		if (port.isInput()) {
-		    result.insertLast(port);
+		    result.addLast(port);
 		}
 	    }
-	    return result.elements();
+	    return result;
 	} finally {
 	    _workspace.doneReading();
 	}
     }
 
     /** Deeply enumerate the output ports connected to this port on the
-     *  outside.  This method calls deepConnectedPorts() of the super
-     *  class to get all the deeply connected ports and returns only the
-     *  output ports among them.
+     *  outside.  This method is deprecated and calls 
+     *  deepConnectedOutPortList(). 
      *  It is read-synchronized on the workspace.
+     *
+     *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
+     *  @deprecated Use deepConnectedInPortList() instead.
+     *  @return An enumeration of output IOPort objects.
+     */
+    public Enumeration deepConnectedOutPorts() {
+        return Collections.enumeration( deepConnectedOutPortList() );
+    }
+
+    /** Deeply enumerate the output ports connected to this port on the
+     *  outside and a return a list of these ports.  This method calls 
+     *  deepConnectedPortList() of the super *  class to get all the 
+     *  deeply connected ports and returns only the output ports among 
+     *  them. It is read-synchronized on the workspace.
      *
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
      *  @return An enumeration of output IOPort objects.
      */
-    public Enumeration deepConnectedOutPorts() {
+    public List deepConnectedOutPortList() {
 	try {
 	    _workspace.getReadAccess();
 	    LinkedList result = new LinkedList();
@@ -333,10 +362,10 @@ public class IOPort extends ComponentPort {
 	    while (ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
 		if (port.isOutput()) {
-		    result.insertLast(port);
+		    result.addLast(port);
 		}
 	    }
-	    return result.elements();
+	    return result;
 	} finally {
 	    _workspace.doneReading();
 	}
@@ -367,9 +396,9 @@ public class IOPort extends ComponentPort {
             // Cache is invalid.  Update it.
             _insideReceivers = new Receiver[width][0];
             int index = 0;
-            Enumeration insideRels = insideRelations();
-            while (insideRels.hasMoreElements()) {
-                IORelation r = (IORelation) insideRels.nextElement();
+            Iterator insideRels = insideRelationList().iterator();
+            while (insideRels.hasNext()) {
+                IORelation r = (IORelation) insideRels.next();
                 Receiver[][] rr = r.deepReceivers(this);
                 if (rr != null) {
                     int size = java.lang.Math.min(rr.length, width-index);
@@ -466,9 +495,9 @@ public class IOPort extends ComponentPort {
 
             // Have to compute the _inside_ width.
             int width = 0;
-            Enumeration relations = insideRelations();
-            while(relations.hasMoreElements()) {
-                IORelation r = (IORelation) relations.nextElement();
+            Iterator relations = insideRelationList().iterator();
+            while(relations.hasNext()) {
+                IORelation r = (IORelation) relations.next();
                 width += r.getWidth();
             }
 
@@ -477,9 +506,9 @@ public class IOPort extends ComponentPort {
             // Cache not valid.  Reconstruct it.
             _localInsideReceivers = new Receiver[width][0];
             int index = 0;
-            relations = insideRelations();
-            while (relations.hasMoreElements()) {
-                IORelation r = (IORelation) relations.nextElement();
+            relations = insideRelationList().iterator();
+            while (relations.hasNext()) {
+                IORelation r = (IORelation) relations.next();
                 Receiver[][] rr = getReceivers(r);
                 if (rr != null) {
                     for (int i = 0; i < rr.length; i++) {
@@ -550,9 +579,9 @@ public class IOPort extends ComponentPort {
 
                 _localReceivers = new Receiver[width][0];
                 int index = 0;
-                Enumeration relations = linkedRelations();
-                while (relations.hasMoreElements()) {
-                    IORelation r = (IORelation) relations.nextElement();
+                Iterator relations = linkedRelationList().iterator();
+                while (relations.hasNext()) {
+                    IORelation r = (IORelation) relations.next();
                     Receiver[][] rr = getReceivers(r);
                     if (rr != null) {
                         for (int i = 0; i < rr.length; i++) {
@@ -636,10 +665,10 @@ public class IOPort extends ComponentPort {
                 int insideWidth = insideReceivers.length;
                 int index = 0;
                 result = new Receiver[width][];
-                Enumeration outsideRels = linkedRelations();
-                while(outsideRels.hasMoreElements()) {
-                    IORelation r = (IORelation) outsideRels.nextElement();
-                    if(r == relation) {
+                Iterator outsideRels = linkedRelationList().iterator();
+                while(outsideRels.hasNext()) {
+                    IORelation outsideRel = (IORelation) outsideRels.next();
+                    if(outsideRel == relation) {
                         result = new Receiver[width][];
                         int rstSize =
                             java.lang.Math.min(width, insideWidth-index);
@@ -648,7 +677,7 @@ public class IOPort extends ComponentPort {
                         }
                         break;
                     } else {
-                        index += r.getWidth();
+                        index += outsideRel.getWidth();
                         if(index > insideWidth) break;
                     }
                 }
@@ -692,13 +721,13 @@ public class IOPort extends ComponentPort {
             }
             // If not an opaque port or Cache is not valid.  Reconstruct it.
             Receiver[][] farReceivers = new Receiver[width][0];
-            Enumeration relations = linkedRelations();
+            Iterator relations = linkedRelationList().iterator();
             int index = 0;
             boolean foundremoteinput = false;
-            while(relations.hasMoreElements()) {
-                IORelation r = (IORelation) relations.nextElement();
+            while(relations.hasNext()) {
+                IORelation relation = (IORelation) relations.next();
                 Receiver[][] rr;
-                rr = r.deepReceivers(this);
+                rr = relation.deepReceivers(this);
                 if (rr != null) {
                     for(int i = 0; i < rr.length; i++) {
                         farReceivers[index] = rr[i];
@@ -708,7 +737,7 @@ public class IOPort extends ComponentPort {
                 } else {
                     // create a number of null entries in farReceivers
                     // corresponding to the width of relation r
-                    index += r.getWidth();
+                    index += relation.getWidth();
                 }
             }
             if (!foundremoteinput) {
@@ -765,11 +794,11 @@ public class IOPort extends ComponentPort {
                 return _EMPTY_RECEIVER_ARRAY;
             }
             Receiver[][] result = new Receiver[width][];
-            Enumeration insideRels = insideRelations();
+            Iterator insideRels = insideRelationList().iterator();
             int index = 0;
-            while(insideRels.hasMoreElements()) {
-                IORelation r = (IORelation) insideRels.nextElement();
-                if(r == relation) {
+            while(insideRels.hasNext()) {
+                IORelation insideRel = (IORelation) insideRels.next();
+                if(insideRel == relation) {
                     int size = java.lang.Math.min
                         (width, outsideReceivers.length-index);
                     //NOTE: if size = 0, the for loop is skipped.
@@ -778,7 +807,7 @@ public class IOPort extends ComponentPort {
                     }
                     break;
                 }
-                index += r.getWidth();
+                index += insideRel.getWidth();
             }
             return result;
         } finally {
@@ -799,10 +828,10 @@ public class IOPort extends ComponentPort {
             if(_widthVersion != version) {
                 _widthVersion = version;
                 int sum = 0;
-                Enumeration relations = linkedRelations();
-                while(relations.hasMoreElements()) {
-                    IORelation r = (IORelation) relations.nextElement();
-                    sum += r.getWidth();
+                Iterator relations = linkedRelationList().iterator();
+                while(relations.hasNext()) {
+                    IORelation relation = (IORelation) relations.next();
+                    sum += relation.getWidth();
                 }
                 _width = sum;
             }
@@ -1284,15 +1313,16 @@ public class IOPort extends ComponentPort {
      */
     protected int _getInsideWidth(IORelation except) {
         int result = 0;
-        Enumeration relations = insideRelations();
-        while (relations.hasMoreElements()) {
-            IORelation rel = (IORelation)relations.nextElement();
-            if (rel != except) {
-                if (!rel.isWidthFixed()) {
+        Iterator relations = insideRelationList().iterator();
+        while (relations.hasNext()) {
+            IORelation relation = (IORelation)relations.next();
+            if (relation != except) {
+                if (!relation.isWidthFixed()) {
                     throw new InvalidStateException(this,
-                            "Width of inside relations cannot be determined.");
+                            "Width of inside relations cannot "
+                            + "be determined.");
                 }
-                result += rel.getWidth();
+                result += relation.getWidth();
             }
         }
         return result;
@@ -1339,10 +1369,11 @@ public class IOPort extends ComponentPort {
                             "Attempt to link a bus relation " +
                             "to a single port.");
                 }
-                Enumeration relations = linkedRelations();
-                while (relations.hasMoreElements()) {
-                    IORelation r = (IORelation)relations.nextElement();
-                    if (!r.isWidthFixed()) {
+                Iterator relations = linkedRelationList().iterator();
+                while (relations.hasNext()) {
+                    IORelation theRelation = 
+                            (IORelation)relations.next();
+                    if (!theRelation.isWidthFixed()) {
                         throw new IllegalActionException(this, rel,
                                 "Attempt to link a second bus relation " +
                                 "with unspecified width to the outside " +
