@@ -120,6 +120,13 @@ public class SRReceiver extends AbstractReceiver
         }
         _token = null;
         _known = true;
+
+        // Ivan Jeukens: Signal the SR director to increment the
+        // _currentNumberOfKnownReceivers variable. Clearing a
+        // SRReceiver in the unknown state means changing its state to
+        // known. Without that, you can get a nondeterministic
+        // behavior.
+        _director.receiverChanged(this);
     }
 
     /** Get the contained Token without modifying or removing it.  If there
