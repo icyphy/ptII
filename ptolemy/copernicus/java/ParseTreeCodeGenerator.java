@@ -125,6 +125,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
+        _debug(node);
+
         _generateAllChildren(node);
 
         Local local = _getChildTokensLocal(node);
@@ -147,6 +149,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
+        _debug(node);
+
         _generateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
@@ -214,6 +218,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
+        _debug(node);
+
         // Method calls are generally not cached...  They are repeated
         // every time the tree is evaluated.
 
@@ -976,6 +982,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
+        _debug(node);
+
         // Note that we take care to have short-circuit evaluation here.
         _generateChild(node, 0);
 
@@ -1046,12 +1054,16 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
+        _debug(node);
+
         throw new IllegalActionException("Cannot generate code" +
                 " for function definitions!");
     }
 
     public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
+        _debug(node);
+
         if (node.isConstant() && node.isEvaluated()) {
             Stmt insertPoint = Jimple.v().newNopStmt();
             _units.insertBefore(insertPoint, _insertPoint);
@@ -1066,6 +1078,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
+        _debug(node);
+
         int numChildren = node.jjtGetNumChildren();
 
         // Note that we take care to have short-circuit evaluation here.
@@ -1146,6 +1160,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
+        _debug(node);
+
         _generateAllChildren(node);
 
         Local resultLocal = Jimple.v().newLocal("tokenResult",
@@ -1172,6 +1188,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
+        _debug(node);
+
         // Method calls are generally not cached...  They are repeated
         // every time the tree is evaluated.
 
@@ -1416,6 +1434,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
+        _debug(node);
 
         _generateAllChildren(node);
         int numChildren = node.jjtGetNumChildren();
@@ -1525,6 +1544,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
+        _debug(node);
+
         _generateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
@@ -1574,6 +1595,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
+        _debug(node);
+
         _generateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
@@ -1685,6 +1708,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
+        _debug(node);
+
         _generateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
@@ -1748,6 +1773,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
     public void visitSumNode(ASTPtSumNode node)
             throws IllegalActionException {
+        _debug(node);
+
         _generateAllChildren(node);
 
         Local tokenLocal = Jimple.v().newLocal("token",
@@ -1794,6 +1821,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
+        _debug(node);
+
         _generateAllChildren(node);
         _assert(node.jjtGetNumChildren() == 1, node,
                 "Unary node must have exactly one child!");
@@ -1886,6 +1915,14 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         }
     }
 
+    /** Print a debugging message.
+     */
+    protected void _debug(ASTPtRootNode node) {
+        if(false) {
+            System.out.println("Visiting node of type " + node.getClass());
+        }
+    }
+
     /** Loop through all of the children of this node,
      *  visiting each one of them, which will cause their token
      *  value to be determined.
@@ -1909,6 +1946,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     protected Local _getLocalForName(String name)
             throws IllegalActionException {
+        System.out.println("getting local for name = " + name);
         if (_scope != null) {
             Local local = _scope.getLocal(name);
             if (local != null) {
