@@ -50,7 +50,12 @@ import java.util.List;
  *  is an intermediate pass. It requires that static resolution has been
  *  performed beforehand. It sets the C_NAME_KEY property of
  *  MethodDeclNodes, ClassDeclNodes, and ConstructorDeclNodes to the 
- *  respective unique names that are assigned to them. 
+ *  respective unique names that are assigned to them.  It sets
+ *  the C_INCLUDE_FILE_KEY property for ClassDeclNodes to the
+ *  corresponding header (.h) file names. It sets the C_IMPORT_INCLUDE_FILES_KEY
+ *  property for TypeNameNodes that are not contained in subtrees of
+ *  BlockNodes, since the associated header files need to be referenced
+ *  when generating a header file for the current compilation unit.
  *
  *  @author Shuvra S. Bhattacharyya
  *  @version $Id$
@@ -127,12 +132,35 @@ public class UniqueNameGenerator extends JavaVisitor implements CCodeGeneratorCo
         return null;
     }
 
+    /** Disable visitation of children for a visited block node.
+     *  @param node The BlockNode.
+     *  @param args Visitor arguments (unused).
+     *  @return A null object is returned.
+     */
+    public Object visitBlockNode(BlockNode node, LinkedList args) {
+        node.ignoreChildren();
+        return null;  
+    }
+
+    /** Mark a visited TypeNameNode to indicate that the associated
+     *  declarations should be imported when generating a header (.h) file for
+     *  the current compilation unit.
+     *  @param node The TypeNameNode. 
+     *  @param args Visitor arguments (unused).
+     *  @return A null object is returned.
+     */
+    public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
+        node.setProperty(C_IMPORT_INCLUDE_FILE_KEY, new Boolean(true));
+        return null;  
+    }
+
     /** Derive a unique name for a class that is to be used as the
      *  name of the user-defined C type that implements the class. This is
      *  needed to resolve overloaded class names (i.e., classes with 
      *  the same names in different packages). The unique name is set as 
      *  the value of the C_NAME_KEY property of the given abstract syntax 
-     *  tree node.
+     *  tree node. An include file is also associated with the class
+     *  through the C_INCLUDE_FILE_KEY;
      *
      *  @param node The abstract syntax tree node for the given class 
      *  declaration. 
@@ -142,8 +170,12 @@ public class UniqueNameGenerator extends JavaVisitor implements CCodeGeneratorCo
      */
     public Object visitClassDeclNode(
             ClassDeclNode node, LinkedList args) {
-        String className = _uniqueName(node.getName().getIdent());
+        String className = _uniqueName(node.getName().getIdent()) + "_t";
         node.setProperty(C_NAME_KEY, className);
+
+        // FIXME: Include files should be set based on the package
+        // directory structure.
+        node.setProperty(C_INCLUDE_FILE_KEY, node.getName().getIdent() + ".h");
         return null;
     }
 
@@ -157,10 +189,11 @@ public class UniqueNameGenerator extends JavaVisitor implements CCodeGeneratorCo
     public Object _defaultVisit(TreeNode node, LinkedList args) {
         return null; 
     }
-    
+  
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
 
     /** Return a unique method name based on a given method name. 
      *  The unique name is derived from the fully qualified class name,
@@ -208,4 +241,5 @@ public class UniqueNameGenerator extends JavaVisitor implements CCodeGeneratorCo
      */
     private int _uniqueNameIndex = 0;
 
+   
 }
