@@ -108,9 +108,9 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    Icon icon = (Icon)object;
 	    ComponentEntity entity = (ComponentEntity)icon.getContainer();
 	    try {
-                Enumeration ports = entity.getPorts();
-                while(ports.hasMoreElements()) {
-                    Port port = (Port) ports.nextElement();
+                Iterator ports = entity.portList().iterator();
+                while(ports.hasNext()) {
+                    Port port = (Port) ports.next();
                     port.unlinkAll();
                 }
 		entity.setContainer(null);
@@ -148,9 +148,9 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    if(entity == null)
 		throw new GraphException("Icon must be contained " + 
 					 "in an entity");
-	    Enumeration ports = entity.getPorts();
-	    while(ports.hasMoreElements()) {
-		Port port = (Port) ports.nextElement();
+	    Iterator ports = entity.portList().iterator();
+	    while(ports.hasNext()) {
+		Port port = (Port) ports.next();
 	        BasicNode portNode = (BasicNode) createNode(port);
 		n.add(portNode);
 	    }
@@ -167,9 +167,9 @@ public class VergilGraphImpl extends BasicGraphImpl {
         g.setSemanticObject(semanticObject);
 	if(semanticObject instanceof CompositeEntity) {
 	    CompositeEntity toplevel = (CompositeEntity) semanticObject;
-	    Enumeration entities = toplevel.getEntities();
-	    while(entities.hasMoreElements()) {
-		Entity entity = (Entity)entities.nextElement();
+	    Iterator entities = toplevel.entityList().iterator();
+	    while(entities.hasNext()) {
+		Entity entity = (Entity)entities.next();
 		Icon icon = (Icon)entity.getAttribute("_icon");
 		if(icon == null) {
 		    // FIXME this is pretty minimal
@@ -185,9 +185,9 @@ public class VergilGraphImpl extends BasicGraphImpl {
 		addNode(createCompositeNode(icon), g);
 	    }
 	    
-	    Enumeration relations = toplevel.getRelations();
-	    while(relations.hasMoreElements()) {
-		Relation relation = (Relation)relations.nextElement();
+	    Iterator relations = toplevel.relationList().iterator();
+	    while(relations.hasNext()) {
+		Relation relation = (Relation)relations.next();
 		// Create a node for each vertex.
 		Iterator attributes = relation.attributeList().iterator();
 		Node rootVertex = null;

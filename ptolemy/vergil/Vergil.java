@@ -187,25 +187,27 @@ public class Vergil extends MDIApplication {
             Object selection[] = model.getSelectionAsArray();
             for(int i = 0; i < selection.length; i++) {
 		if(selection[i] instanceof Figure) {
-		    model.removeSelection(selection[i]);
 		    Object userObject = 
                         ((Figure)selection[i]).getUserObject();
-		    if(userObject instanceof Node) {	
-                        // FIXME controller should have removeNode
-                        Node node = (Node) userObject;
-			controller.clearNode(node);
-                        impl.removeNode(node);
-                        jgraph.repaint();
-                    } else if(userObject instanceof Edge) {
-                        Edge edge = (Edge) userObject;
-                        controller.clearEdge(edge);
-                        impl.setEdgeHead(edge, null);
-                        impl.setEdgeTail(edge, null);
-                        jgraph.repaint();
-                    }
+		    if(userObject instanceof Edge) {
+                       model.removeSelection(selection[i]);
+		       Edge edge = (Edge) userObject;
+                        controller.removeEdge(edge);
+		    } 
                 } 
             }
-        }
+	    for(int i = 0; i < selection.length; i++) {
+		if(selection[i] instanceof Figure) {
+		    Object userObject = 
+                        ((Figure)selection[i]).getUserObject();
+		   if(userObject instanceof Node) {	
+                        model.removeSelection(selection[i]);
+			Node node = (Node) userObject;
+			controller.removeNode(node);
+                    } 
+                } 
+            }
+	}
     }
 
     /** Grab the keyboard focus when the component that this listener is

@@ -156,6 +156,14 @@ public class GraphPalette extends JGraph {
             return _entityController.drawNode(node);
         }
 
+        public void removeEdge(Edge edge) {
+            throw new GraphException("PaletteController does not allow edges");
+        }
+        
+        public void removeNode(Node node) {
+            _entityController.removeNode(node);
+        }
+
 	/**
 	 * Initialize all interaction on the graph pane. This method
 	 * is called by the setGraphPane() method of the superclass.

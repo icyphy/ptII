@@ -47,13 +47,9 @@ import diva.canvas.interactor.*;
 import diva.canvas.toolbox.*;
 import java.awt.geom.Rectangle2D;
 import diva.util.Filter;
-import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
-import java.util.LinkedList;
-import java.util.HashMap;
-import java.util.Enumeration;
-import java.util.Iterator;
+import java.util.*;
 import java.net.URL;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
@@ -156,6 +152,25 @@ public class EntityController extends LocatableNodeController {
      */
     public NodeController getPortController() {
 	return _portController;
+    }
+    
+    /** 
+     * Remove all the ports in this entity, all the edges connected to those
+     * ports and this node.
+     */
+    public void removeNode(Node node) {
+	// This code sucks because we need a list iterator.
+	CompositeNode composite = (CompositeNode) node;
+	List nodeList = new LinkedList();
+	for(Iterator i = composite.nodes(); i.hasNext(); ) {
+	    nodeList.add(i.next());
+	}
+	Object nodes[] = nodeList.toArray();
+	for(int i = 0; i < nodes.length; i++) {
+	    System.out.println("nodes" + nodes);
+	    _portController.removeNode((Node)(nodes[i]));
+	}
+	super.removeNode(node);
     }
 
     /** Set the controller for the ports of this entity.
