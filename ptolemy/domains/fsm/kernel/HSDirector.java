@@ -189,7 +189,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         // advance time. Will it be safe to iterate the refinements?
         if (tr != null) {
             Actor[] actors = tr.getRefinement();
-            if (actors != null) {
+            if (actors != null && actors.length > 0) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_stopRequested) break;
                     if (actors[i].prefire()) {
@@ -197,8 +197,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                         actors[i].postfire();
                     }
                 }
+                _ctrl._readOutputsFromRefinement();
             }
-            _ctrl._readOutputsFromRefinement();
             // An enabled preemptive transition preempts the
             // firing of the enabled refienements.
             return;
@@ -216,7 +216,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         _ctrl._readOutputsFromRefinement();
 
         // only check enabled transition during event generating phase.
-        if ((getExecutionPhase() ==
+        if ((getExecutionPhase() == 
             CTExecutionPhase.FIRINGEVENTGENERATORS_PHASE) ||
             (getExecutionPhase() ==
             CTExecutionPhase.GENERATINGEVENTS_PHASE) ||
@@ -235,7 +235,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         // execute the refinements of the enabled transition
         if (tr != null) {
             Actor[] transitionActors = tr.getRefinement();
-            if (transitionActors != null) {
+            if (transitionActors != null  && transitionActors.length > 0) {
                 for (int i = 0; i < transitionActors.length; ++i) {
                     if (_stopRequested) break;
                     if (transitionActors[i].prefire()) {
@@ -247,23 +247,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                         transitionActors[i].fire();
                         transitionActors[i].postfire();
                     }
+                    _ctrl._readOutputsFromRefinement();
                 }
-                _ctrl._readOutputsFromRefinement();
             }
-
-            // execute the output actions, since these are normally
-            // executed in chooseTransition, but the outputs may
-            // have been changed by the transition refinemenets
-
-            // FIXME: which happens first? the refinement execution
-            // or the actions associated with the transitions?
-            // FIXME: the semantics here is really ...!
-            Iterator actions = tr.choiceActionList().iterator();
-            while (actions.hasNext()) {
-                Action action = (Action)actions.next();
-                action.execute();
-            }
-            _ctrl._readOutputsFromRefinement();
         }
         return;
     }
@@ -690,7 +676,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 IOPort p = (IOPort)outports.next();
                 transferOutputs(p);
             }
-            _ctrl._readOutputsFromRefinement();
         }
 
         Transition tr = _enabledTransition;
