@@ -820,7 +820,9 @@ JAVA_SYSTEM_JAR='$(PTJAVA_DIR)/jre/lib/rt.jar'
 # We don't bother overriding this below so that something close
 # to the right default is in ptII.mk and the user can just change
 # SOOT_DIR or JAVA_SYSTEM_JAR	
-SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)'
+# Use {} here instead of () because bin/ptinvoke uses SOOT_CLASSES
+# and under /bin/sh $(FOO) does not work, but ${FOO} does
+SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}'
 
 # We only need to look for soot if $PTII/ptolemy/apps/soot exists
 if test ! -d "$PTII/ptolemy/apps/soot"; then
