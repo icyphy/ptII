@@ -59,7 +59,7 @@ the object.  Otherwise, an instance of EditParametersDialog is created.
 */
 public class ConfigureAction extends FigureAction {
 
-    /** Construct a new figure action.
+    /** Construct a new configure action.
      *  @param description A description.
      */
     public ConfigureAction(String description) {
@@ -83,9 +83,6 @@ public class ConfigureAction extends FigureAction {
 
         NamedObj target = getTarget();
         if (target == null) return;
-
-        // NOTE: Should the event be consumed here?
-        // e.consume();
 
         // Create a dialog for configuring the object.
         // First, identify the top parent frame.

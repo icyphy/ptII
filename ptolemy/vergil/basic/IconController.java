@@ -48,6 +48,7 @@ import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AnimationRenderer;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -79,6 +80,33 @@ public class IconController extends ParameterizedNodeController {
         super(controller);
         setNodeRenderer(new IconRenderer());
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Draw the node at its location. This overrides the base class
+     *  to highlight the node if it is defined by the class, and hence
+     *  cannot be deleted.
+     */
+    public Figure drawNode(Object node) {
+        Figure nf = super.drawNode(node);
+        GraphModel model = getController().getGraphModel();
+        Object object = model.getSemanticObject(node);
+        if (object instanceof NamedObj && ((NamedObj)object).isClassElement()) {
+            AnimationRenderer decorator = new AnimationRenderer(
+                    _CLASS_ELEMENT_HIGHLIGHT_COLOR);
+            decorator.renderSelected(nf);
+        }
+        return nf;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Fourth argument makes this highlight transluscent, which enables
+    // combination with other highlights.
+    private static Color _CLASS_ELEMENT_HIGHLIGHT_COLOR
+            = new Color(255, 0, 0, 64);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -181,6 +209,9 @@ public class IconController extends ParameterizedNodeController {
             // FIXME: This text should not be hardwired here, but rather
             // should be provided by a method of the enclosing class.
             result.setToolTipText(object.getClass().getName());
+            
+            // FIXME: The following appear to be undocumented features
+            // that don't actually work... What's up?
             if (object instanceof ComponentEntity) {
                 ComponentEntity ce = (ComponentEntity) object;
                 StringAttribute _colorAttr =
@@ -200,6 +231,7 @@ public class IconController extends ParameterizedNodeController {
             return result;
         }
     }
+    
     // Map used to keep track of icons that have been created
     // but not yet assigned to a container.
     private static Map _iconsPendingContainer = new HashMap();

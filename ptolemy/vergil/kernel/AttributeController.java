@@ -30,10 +30,9 @@
 
 package ptolemy.vergil.kernel;
 
-import diva.graph.GraphController;
-
 import ptolemy.vergil.basic.IconController;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import diva.graph.GraphController;
 
 //////////////////////////////////////////////////////////////////////////
 //// AttributeController

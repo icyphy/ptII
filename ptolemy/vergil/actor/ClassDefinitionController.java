@@ -142,7 +142,8 @@ public class ClassDefinitionController extends ActorController {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Draw the node at its location.
+    /** Draw the node at its location. This overrides the base class
+     *  to highlight the actor to indicate that it is a class definition.
      */
     public Figure drawNode(Object node) {
         Figure nf = super.drawNode(node);
@@ -211,7 +212,9 @@ public class ClassDefinitionController extends ActorController {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private static Color _HIGHLIGHT_COLOR = new Color(200, 200, 240);
+    // Fourth argument makes this highlight transluscent, which enables
+    // combination with other highlights.
+    private static Color _HIGHLIGHT_COLOR = new Color(0, 0, 255, 64);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

@@ -31,7 +31,9 @@
 package ptolemy.vergil.basic;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,13 +42,17 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.Prototype;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.toolbox.ConfigureAction;
+import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import diva.canvas.Figure;
@@ -192,6 +198,13 @@ public abstract class BasicGraphController extends AbstractGraphController
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
+        
+        if (_configuration != null && _menuFactory != null) {
+            // NOTE: The following requires that the configuration be
+            // non-null, or it will report an error.
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_openBaseClassAction));
+        }
     }
 
     /** Set the figure associated with the given semantic object, and if
@@ -329,6 +342,12 @@ public abstract class BasicGraphController extends AbstractGraphController
         _menuCreator = new MenuCreator(_menuFactory);
         pane.getBackgroundEventLayer().addInteractor(_menuCreator);
         pane.getBackgroundEventLayer().setConsuming(false);
+        if (_configuration != null) {
+            // NOTE: The following requires that the configuration be
+            // non-null, or it will report an error.
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_openBaseClassAction));
+        }
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -361,6 +380,10 @@ public abstract class BasicGraphController extends AbstractGraphController
     /** The factory belonging to the menu creator. */
     protected PtolemyMenuFactory _menuFactory;
 
+    /** The open base class action. */
+    protected OpenBaseClassAction _openBaseClassAction
+            = new OpenBaseClassAction();
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -379,12 +402,80 @@ public abstract class BasicGraphController extends AbstractGraphController
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    ////////////////////////////////////////////////////////////////////////
+    //// OpenBaseClassAction
+    
+    /** An action that will open the base class of a subclass or the class
+     *  of an instance.
+     */
+    public class OpenBaseClassAction extends FigureAction {
+
+        /** Construct a new action.
+         *  @param description A description.
+         */
+        public OpenBaseClassAction() {
+            super("Open Base Class");
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /** Open the base class of a subclass or the class of an instance.
+         *  @param e The event.
+         */
+        public void actionPerformed(ActionEvent e) {
+            if (_configuration == null) {
+                MessageHandler.error(
+                        "Cannot open base class without a configuration.");
+                return;
+            }
+
+            // Determine which entity was selected for the look inside action.
+            super.actionPerformed(e);
+
+            NamedObj target = getTarget();
+            if (target == null) return;
+            
+            try {
+                if (target instanceof Prototype) {
+                    Prototype deferTo = ((Prototype)target).getDeferTo();
+                    if (deferTo != null) {
+                        _configuration.openModel(deferTo);
+                        return;
+                    }
+                }
+                NamedObj.MoMLInfo info = target.getMoMLInfo();
+                if (info.source != null && !info.source.trim().equals("")) {
+                    // FIXME: Is there a more reasonable base directory
+                    // to give for the second argument?
+                    URL sourceURL = StringUtilities.stringToURL(
+                            info.source,
+                            null,
+                            target.getClass().getClassLoader());
+                    _configuration.openModel(null, sourceURL, info.source);
+                }
+                // Target does not defer and does not have a defined "source".
+                // Assume its base class is a Java class and open the source
+                // code.
+                String sourceFileName
+                        = StringUtilities.objectToSourceFileName(target);
+                URL sourceURL
+                        = target.getClass().getClassLoader()
+                        .getResource(sourceFileName);
+                _configuration.openModel(
+                        null, sourceURL, sourceURL.toExternalForm());
+            } catch (Exception ex) {
+                MessageHandler.error("Open base class failed.", ex);
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     //// SchematicContextMenuFactory
 
     /** Factory for context menus. */
     public static class SchematicContextMenuFactory
-        extends PtolemyMenuFactory {
+            extends PtolemyMenuFactory {
 
         /** Create a new context menu factory associated with the
          *  specified controller.
