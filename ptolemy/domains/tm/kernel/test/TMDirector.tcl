@@ -181,7 +181,7 @@ test TMDirector-5.1 {run a simple model } {
 	[java::field [java::cast ptolemy.actor.lib.Source $ramp2] output] \
 	[java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]
 
-    # cover debug() clause in TypedIOPort.broadcast
+    # cover debug() clauses
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \
             {java.io.PrintStream java.io.OutputStream} $stream]
