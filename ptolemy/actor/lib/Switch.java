@@ -112,6 +112,15 @@ public class Switch extends Transformer {
         }
     }
 
+    /** Initialize this actor so that channel zero of <i>input</i> is read
+     *  from until a token arrives on the <i>control</i> input.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _control = 0;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
