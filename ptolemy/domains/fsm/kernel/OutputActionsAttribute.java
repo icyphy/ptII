@@ -145,16 +145,20 @@ public class OutputActionsAttribute
                     Token token = variable.getToken();
                     if (token != null) {
                         if (channel != null) {
-                            destination.send(channel.intValue(),token);
-                        if (_debugging)
-                            _debug(getFullName()+" port: "+
-                                   destination.getName()+" channel: "+
-                                   channel.intValue()+", token: "+token);
+                            destination.send(channel.intValue(), token);
+                            if (_debugging) {
+                                _debug(getFullName()+ " port: "
+                                        + destination.getName() + " channel: "
+                                        + channel.intValue() + ", token: "
+                                        + token);
+                            }
                         } else {
                             destination.broadcast(token);
-                            if (_debugging)
-                                _debug(getFullName()+" port: "+
-                                       destination.getName()+" token: "+token);
+                            if (_debugging) {
+                                _debug(getFullName() + " port: "
+                                       destination.getName()
+                                        + " token: " + token);
+                            }
                         }
                     }
                 } catch (NoRoomException ex) {
