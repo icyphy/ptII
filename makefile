@@ -38,7 +38,10 @@ ME =		.
 #   if gcc or cc was found.
 # PTMESCAL_DIR is set to mescal by configure in $PTII/mk/ptII.mk
 #   if $PTII/mescal was found
-DIRS = util com diva ptolemy $(PTJNI_DIR) $(PTMESCAL_DIR) bin doc
+PTTHALES_DIR = thales
+
+DIRS = util com diva ptolemy $(PTJNI_DIR) $(PTMESCAL_DIR) $(PTTHALES_DIR) \
+	bin doc
 
 # Root of Ptolemy II directory
 ROOT =		.
