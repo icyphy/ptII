@@ -585,9 +585,13 @@ public class WirelessChannel extends TypedAtomicActor
                     properties, (RecordToken)defaultPropertiesValue);
         }
         if (_debugging) {
-            _debug(" * transmit properties: \""
-                    + result.toString()
-                    + "\".");
+            if (result != null) {
+                _debug(" * transmit properties: \""
+                        + result.toString()
+                        + "\".");
+            } else {
+                _debug(" * no transmit properties.\"");
+            }
         }
         return result;
     }
