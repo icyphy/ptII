@@ -31,7 +31,7 @@
 
 ME =            ptolemy/actor/lib/security
 
-DIRS =		    
+DIRS =		test    	
 
 # Root of the Java directory
 ROOT =          ../../../..
@@ -65,22 +65,22 @@ JSRCS = \
 	SymmetricDecryption.java \
 	SymmetricEncryption.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	security.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+JCLASS = $(JSRCS:%.java=%.class)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-        doc
-
-JCLASS = $(JSRCS:%.java=%.class)
+	'KeyToken$$KeyType.class'
 
 all: jclass $(ROOT)/ptKeystore
 install: jclass jars
