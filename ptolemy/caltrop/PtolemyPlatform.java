@@ -50,6 +50,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -111,7 +112,8 @@ public class PtolemyPlatform implements Platform {
                     System.out.println(args[0]);
                     return args[0];
                 } catch (Exception ex) {
-                    throw new InterpreterException("Function '$not': Cannot apply.", ex);
+                    throw new InterpreterException(
+                            "Function '$not': Cannot apply.", ex);
                 }
             }
 
@@ -125,10 +127,12 @@ public class PtolemyPlatform implements Platform {
                 try {
                     int a = _theContext.intValue(args[0]);
                     int b = _theContext.intValue(args[1]);
-                    List res = (b < a) ? Collections.EMPTY_LIST : new IntegerList(_theContext, a, b);
+                    List res = (b < a) ? Collections.EMPTY_LIST :
+                        new IntegerList(_theContext, a, b);
                     return _theContext.createList(res);
                 } catch (Exception ex) {
-                    throw new InterpreterException("Function 'Integers': Cannot apply.", ex);
+                    throw new InterpreterException(
+                            "Function 'Integers': Cannot apply.", ex);
                 }
             }
 
@@ -144,7 +148,8 @@ public class PtolemyPlatform implements Platform {
                     ;
                     return b.not();
                 } catch (Exception ex) {
-                    throw new InterpreterException("Function '$not': Cannot apply.", ex);
+                    throw new InterpreterException(
+                            "Function '$not': Cannot apply.", ex);
                 }
             }
 
@@ -160,7 +165,8 @@ public class PtolemyPlatform implements Platform {
                     BooleanToken b = (BooleanToken) args[1];
                     return a.and(b);
                 } catch (Exception ex) {
-                    throw new InterpreterException("Function '$and': Cannot apply.", ex);
+                    throw new InterpreterException(
+                            "Function '$and': Cannot apply.", ex);
                 }
             }
 
@@ -176,7 +182,8 @@ public class PtolemyPlatform implements Platform {
                     BooleanToken b = (BooleanToken) args[1];
                     return a.or(b);
                 } catch (Exception ex) {
-                    throw new InterpreterException("Function '$or': Cannot apply.", ex);
+                    throw new InterpreterException(
+                            "Function '$or': Cannot apply.", ex);
                 }
             }
 
@@ -192,7 +199,25 @@ public class PtolemyPlatform implements Platform {
                     Token b = (Token) args[1];
                     return a.isEqualTo(b);
                 } catch (Exception ex) {
-                    throw new InterpreterException("Function '$eq': Cannot apply.", ex);
+                    throw new InterpreterException(
+                            "Function '$eq': Cannot apply.", ex);
+                }
+            }
+
+            public int arity() {
+                return 2;
+            }
+        }));
+
+        env.bind("$ne", _theContext.createFunction(new Function() {
+            public Object apply(Object[] args) {
+                try {
+                    Token a = (Token) args[0];
+                    Token b = (Token) args[1];
+                    return a.isEqualTo(b).not();
+                } catch (Exception ex) {
+                    throw new InterpreterException(
+                            "Function '$ne': Cannot apply.", ex);
                 }
             }
 
@@ -208,7 +233,8 @@ public class PtolemyPlatform implements Platform {
                     ScalarToken b = (ScalarToken) args[1];
                     return a.isLessThan(b);
                 } catch (Exception ex) {
-                    throw new InterpreterException("Function '$lt': Cannot apply.", ex);
+                    throw new InterpreterException(
+                            "Function '$lt': Cannot apply.", ex);
                 }
             }
 
@@ -501,7 +527,8 @@ public class PtolemyPlatform implements Platform {
                     Map res = new HashMap();
                     for (Iterator i = c.iterator(); i.hasNext(); ) {
                         argument[0] = i.next();
-                        Object mapFragment = _theContext.applyFunction(f, argument);
+                        Object mapFragment = 
+                            _theContext.applyFunction(f, argument);
                         res.putAll(_theContext.getMap(mapFragment));
                     }
                     return _theContext.createMap(res);
@@ -534,6 +561,26 @@ public class PtolemyPlatform implements Platform {
 
             public int arity() {
                 return 2;
+            }
+        }));
+
+        env.bind("listToArray", _theContext.createFunction(new Function() {
+            public Object apply(Object[] args) {
+                try {
+                    ObjectToken input = (ObjectToken)args[0];
+                    List inputList = (List)input.getValue();
+                    Token[] tokens = new Token[inputList.size()];
+                    tokens = (Token[])inputList.toArray(tokens);
+                    return new ArrayToken(tokens);
+                }
+                catch (Exception ex) {
+                    throw new InterpreterException(
+                            "Cannot convert to ArrayToken.", ex);
+                }
+            }
+
+            public int arity() {
+                return 1;
             }
         }));
 
@@ -570,7 +617,8 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isNull(Object o) {
-            return o instanceof ObjectToken && ((ObjectToken)o).getValue() == null;
+            return o instanceof ObjectToken && 
+                ((ObjectToken)o).getValue() == null;
         }
 
         public Object createBoolean(boolean b) {
@@ -590,7 +638,7 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
-        public Object  createCharacter(char c) {
+        public Object createCharacter(char c) {
             try {
                 return new ObjectToken(new Character(c));
             } catch (IllegalActionException iae) {
@@ -599,7 +647,8 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isCharacter(Object o) {
-            return o instanceof ObjectToken && ((ObjectToken)o).getValue() instanceof Character;
+            return o instanceof ObjectToken && 
+                ((ObjectToken)o).getValue() instanceof Character;
         }
 
         public char charValue(Object o) {
@@ -689,7 +738,8 @@ public class PtolemyPlatform implements Platform {
 
         public boolean isList(Object o) {
             return (o instanceof PtArrayList) ||
-                   (o instanceof ObjectToken && ((ObjectToken)o).getValue() instanceof List);
+                   (o instanceof ObjectToken && 
+                           ((ObjectToken)o).getValue() instanceof List);
         }
 
         public List getList(Object o) {
@@ -715,7 +765,8 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isSet(Object o) {
-            return o instanceof ObjectToken && ((ObjectToken)o).getValue() instanceof Set;
+            return o instanceof ObjectToken && 
+                ((ObjectToken)o).getValue() instanceof Set;
         }
 
         public Set getSet(Object o) {
@@ -732,7 +783,8 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isMap(Object o) {
-            return o instanceof ObjectToken && ((ObjectToken)o).getValue() instanceof Map;
+            return o instanceof ObjectToken && 
+                ((ObjectToken)o).getValue() instanceof Map;
         }
 
         public Map getMap(Object a) {
@@ -752,7 +804,8 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isCollection(Object o) {
-            return o instanceof ObjectToken && ((ObjectToken)o).getValue() instanceof Collection;
+            return o instanceof ObjectToken && 
+                ((ObjectToken)o).getValue() instanceof Collection;
         }
 
         public Collection getCollection(Object a) {
@@ -780,7 +833,8 @@ public class PtolemyPlatform implements Platform {
 
         public boolean isFunction(Object a) {
             return (a instanceof FunctionToken) ||
-                    (a instanceof ObjectToken && ((ObjectToken)a).getValue() instanceof Function);
+                    (a instanceof ObjectToken && 
+                            ((ObjectToken)a).getValue() instanceof Function);
         }
 
         public Object applyFunction(Object function, Object[] args) {
@@ -810,7 +864,8 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean  isProcedure(Object a) {
-            return a instanceof ObjectToken && ((ObjectToken) a).getValue() instanceof Procedure;
+            return a instanceof ObjectToken && 
+                ((ObjectToken) a).getValue() instanceof Procedure;
         }
 
         public void callProcedure(Object procedure, Object[] args) {
@@ -837,7 +892,8 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isClass(Object o) {
-            return o instanceof ObjectToken && ((ObjectToken)o).getValue() instanceof ClassObject;
+            return o instanceof ObjectToken && 
+                ((ObjectToken)o).getValue() instanceof ClassObject;
         }
 
         public Class getJavaClass(Object o) {
@@ -921,7 +977,7 @@ public class PtolemyPlatform implements Platform {
                 } else if (o instanceof String) {
                     return new StringToken((String) o);
                 } else if (o instanceof Class) {
-		  return new ObjectToken(new ClassObject((Class)o, this)); 
+                    return new ObjectToken(new ClassObject((Class)o, this)); 
 		} else {
                     return new ObjectToken(o);
                 }
@@ -947,18 +1003,28 @@ public class PtolemyPlatform implements Platform {
                     } catch (NoSuchFieldException nsfe2) {
                         // assume it's a method.
                     } catch (IllegalAccessException iae) {
-                        throw new InterpreterException("Tried to access field " + fieldName +
+                        throw new InterpreterException(
+                                "Tried to access field " + fieldName +
                                 " in " + composite.toString(), iae);
                     }
                 }
+                if(composite instanceof RecordToken) {
+                    return ((RecordToken)composite).get(fieldName);
+                }
                 // assume it's a method.
                 try {
-                    return new ObjectToken(new MethodObject(composite, fieldName, this));
+                    return new ObjectToken(
+                            new MethodObject(
+                                    composite, fieldName, this));
                 } catch (Exception e) {
-                    throw new InterpreterException("Tried to create method object " + fieldName + " in " + composite, e);
+                    throw new InterpreterException(
+                            "Tried to create method object " + fieldName 
+                            + " in " + composite, e);
                 }
             } catch (IllegalAccessException iae) {
-                throw new InterpreterException("Tried to access field " + fieldName + " in " + composite, iae);
+                throw new InterpreterException(
+                        "Tried to access field " + fieldName 
+                        + " in " + composite, iae);
             }
 
         }
