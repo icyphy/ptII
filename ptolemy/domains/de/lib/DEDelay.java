@@ -83,7 +83,7 @@ public class DEDelay extends AtomicActor {
     public void fire()
             throws CloneNotSupportedException, IllegalActionException {
 
-        for(int i=0; i<input.getWidth(); i++) {
+        for(int i = 0; i < input.getWidth(); i++) {
             Token inputToken;
             try {
                 inputToken = input.get(i);

@@ -81,7 +81,7 @@ public class DEClock extends AtomicActor {
         // ensure that this cast is valid.
         super.initialize();
         DECQDirector dir = (DECQDirector)getDirector();
-        dir.enqueueEvent(this,0.0,0);
+        dir.enqueueEvent(this, 0.0, 0);
     }
 
     /** Produce an output event at the current time, and then schedule
@@ -94,7 +94,7 @@ public class DEClock extends AtomicActor {
             throws CloneNotSupportedException, IllegalActionException {
         DECQDirector dir = (DECQDirector)getDirector();
         output.broadcast(new DoubleToken(_value));
-        dir.enqueueEvent(this,_interval,0);
+        dir.enqueueEvent(this, _interval, 0);
     }
 
     ///////////////////////////////////////////////////////////////////
