@@ -152,9 +152,9 @@ public class ODFActor extends AtomicActor {
      *  time stamp this token will come from the highest priority 
      *  receiver that has the minimum rcvrTime. If all receivers have 
      *  expired then throw a TerminateProcessException. 
-     * @see TimedQueueReceiver
-     * @see ODFReceiver
-     * @see ODFThread
+     * @see ptolemy.domains.odf.kernel.TimedQueueReceiver
+     * @see ptolemy.domains.odf.kernel.ODFReceiver
+     * @see ptolemy.domains.odf.kernel.ODFThread
      */
     private Token _getNextInput() {
 	Thread thread = Thread.currentThread();
