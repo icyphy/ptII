@@ -153,6 +153,20 @@ public class CIReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    private void _initialize() {
+        IOPort port = getContainer();
+        _isPush = CIDirector._isPushPort(port);
+        _actor = (Actor)port.getContainer();
+        _isAsyncPullSink = !_isPush && CIDirector._isActive(_actor);
+        Iterator sourcePorts = port.sourcePortList().iterator();
+        if (sourcePorts.hasNext()) {
+            port = (IOPort)sourcePorts.next();
+            Actor actor = (Actor)port.getContainer();
+            _isAsyncPushSink = _isPush && CIDirector._isActive(actor);
+        }
+        _initialized = true;
+    }
+
     /* If an active actor with push output puts a token in this receiver,
      * put the inactive actor that reads from this receiver in the task
      * queue of the director. If an active actor with pull input reads
@@ -185,20 +199,6 @@ public class CIReceiver extends AbstractReceiver {
                 }
             }
         }
-    }
-
-    private void _initialize() {
-        IOPort port = getContainer();
-        _isPush = CIDirector._isPushPort(port);
-        _actor = (Actor)port.getContainer();
-        _isAsyncPullSink = !_isPush && CIDirector._isActive(_actor);
-        Iterator sourcePorts = port.sourcePortList().iterator();
-        if (sourcePorts.hasNext()) {
-            port = (IOPort)sourcePorts.next();
-            Actor actor = (Actor)port.getContainer();
-            _isAsyncPushSink = _isPush && CIDirector._isActive(actor);
-        }
-        _initialized = true;
     }
 
     ///////////////////////////////////////////////////////////////////

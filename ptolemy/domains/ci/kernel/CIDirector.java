@@ -482,13 +482,6 @@ public class CIDirector extends Director {
             || (!inputIsPush && outputIsPush);
     }
 
-    /** Return true if this director is requested to stop.
-     *  @return True if this director is requested to stop.
-     */
-    protected boolean _isStopRequested() {
-        return _stopRequested;
-    }
-
     /** Return true if the given actor has a pending pull request.
      *  @param actor The actor to test.
      *  @return True if the given actor has been pulled.
@@ -517,6 +510,13 @@ public class CIDirector extends Director {
             }
         }
         return result;
+    }
+
+    /** Return true if this director is requested to stop.
+     *  @return True if this director is requested to stop.
+     */
+    protected boolean _isStopRequested() {
+        return _stopRequested;
     }
 
     /** Remove the actor manager from the set of active actor managers.
@@ -587,18 +587,41 @@ public class CIDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Return the next actor having pushed data from an active actor.
-    private synchronized Actor _nextAsyncPushedActor() {
-        if (_asyncPushedActors.size() > 0)
-            return (Actor)_asyncPushedActors.removeFirst();
-        else
-            return null;
+    // Return true if the actor has both pull input and pull output.
+    private boolean _isPullThrough(Actor actor) {
+        boolean inputIsPush = false;
+        boolean hasInput = false;
+        boolean outputIsPush = false;
+        Iterator inputPorts = actor.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort port = (IOPort)inputPorts.next();
+            if (port.getWidth() > 0) {
+                hasInput = true;
+                inputIsPush |= _isPushPort(port);
+            }
+        }
+        Iterator outputPorts = actor.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort port = (IOPort)outputPorts.next();
+            if (port.getWidth() > 0) {
+                outputIsPush |= _isPushPort(port);
+            }
+        }
+        return (!outputIsPush && (!hasInput || !inputIsPush));
     }
 
     // Return the next actor pulled by an active actor.
     private synchronized Actor _nextAsyncPulledActor() {
         if (_asyncPulledActors.size() > 0)
             return (Actor)_asyncPulledActors.removeFirst();
+        else
+            return null;
+    }
+
+    // Return the next actor having pushed data from an active actor.
+    private synchronized Actor _nextAsyncPushedActor() {
+        if (_asyncPushedActors.size() > 0)
+            return (Actor)_asyncPushedActors.removeFirst();
         else
             return null;
     }
@@ -627,29 +650,6 @@ public class CIDirector extends Director {
             }
         }
         return result;
-    }
-
-    // Return true if the actor has both pull input and pull output.
-    private boolean _isPullThrough(Actor actor) {
-        boolean inputIsPush = false;
-        boolean hasInput = false;
-        boolean outputIsPush = false;
-        Iterator inputPorts = actor.inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            IOPort port = (IOPort)inputPorts.next();
-            if (port.getWidth() > 0) {
-                hasInput = true;
-                inputIsPush |= _isPushPort(port);
-            }
-        }
-        Iterator outputPorts = actor.outputPortList().iterator();
-        while (outputPorts.hasNext()) {
-            IOPort port = (IOPort)outputPorts.next();
-            if (port.getWidth() > 0) {
-                outputIsPush |= _isPushPort(port);
-            }
-        }
-        return (!outputIsPush && (!hasInput || !inputIsPush));
     }
 
     ///////////////////////////////////////////////////////////////////
