@@ -56,7 +56,8 @@ JSRCS = \
 	DETimer.java
 
 EXTRA_SRCS =	$(JSRCS) \
-	ABP.htm
+	ABP.htm \
+	ABP.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -82,8 +83,12 @@ all: jclass
 
 install: jclass $(PTCLASSJAR)
 
-demo: $(PTCLASSJAR)
-	CLASSPATH=$(CLASSPATH) appletviewer ABP.htm
+demo: demo_applet demo_vergil
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH="$(CLASSPATH)" appletviewer ABP.htm
+
+demo_vergil: $(PTCLASSJAR)
+	vergil ABP.htm
 
 depend:
 	@echo "no dependencies in this directory"
