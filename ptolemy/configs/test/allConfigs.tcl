@@ -79,6 +79,7 @@ foreach i $configs {
     $inputFileNamesToSkip add "/lib/interactive.xml"
     $inputFileNamesToSkip add "/jai/jai.xml"
     $inputFileNamesToSkip add "/jmf/jmf.xml"
+    $inputFileNamesToSkip add "/joystick/joystick.xml"
     $inputFileNamesToSkip add "/jxta/jxta.xml"
     $inputFileNamesToSkip add "/matlab.xml"
 
