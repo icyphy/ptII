@@ -67,20 +67,10 @@ public class DDEPrintString extends DDEActor {
         double time = 0.0;
 
         while( true ) {
-	    /*
-	    synchronized(this) {
-		try {
-		    wait();
-		} catch(InterruptedException e) {
-		    System.err.println("Thread interruption");
-		}
-	    }
-	    */
             // System.out.println("\nStarting DDEPrintString.getNextToken()");
             // token = (StringToken)_input.get(0);
             token = (StringToken)getNextToken();
             // System.out.println("Finished DDEPrintString.getNextToken()");
-            // time = getTimeKeeper().getCurrentTime();
             time = getCurrentTime();
 	    if( token == null ) {
 		System.out.println("Null token in DDEPrintString");

@@ -96,9 +96,9 @@ public abstract class DDEStringSource extends DDESourceActor {
 	    if( nextOutputReady ) {
 		// _output.send( 0, strToken );
 		/*
-		System.out.println("DDEStringSource current time = "
-			+ getCurrentTime() );
 		*/
+		System.out.println("DDEStringSource repeated current time = "
+			+ getCurrentTime() );
 		_output.send( 0, strToken, getCurrentTime() );
 		nextOutputReady = false;
 	    }
@@ -115,14 +115,6 @@ public abstract class DDEStringSource extends DDESourceActor {
         }
         
         System.out.println(getName()+" is finished with fire()");
-	// System.out.println(getName()+" returns "+postfire()+" for postfire()");
-        
-            /*
-            System.out.println(getName() + " fired \"" 
-                    + strTime.getString() + "\" at time = " + fireTime );
-            */
-        // ((DDEDirector)getDirector()).addWriteBlock();
-        // System.out.println("#####"+getName()+" is finished executing");
     }
     
     ///////////////////////////////////////////////////////////////////
