@@ -37,6 +37,7 @@ import ptolemy.data.*;
 
 import collections.LinkedList;
 import java.util.Enumeration;
+import java.lang.reflect.*;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -167,6 +168,8 @@ public class Manager extends NamedObj implements Runnable {
         try {
             workspace().getReadAccess();
             // Check types.
+	    // resolveTypes();
+
             if (actor.prefire()) {
                 actor.fire();
                 return actor.postfire();
@@ -183,6 +186,72 @@ public class Manager extends NamedObj implements Runnable {
         _isPaused = true;
     }
     
+    /** Check types on all the connections and resolve undeclared types.
+     *  If the container is not an instance of TypedCompositeActor,
+     *  do nothing.
+     *  This method is write-synchronized on the workspace.
+     *  @exception TypeConflictException If type conflict is detected in
+     *   the containing TypedCompositeActor.
+     */
+    public void resolveTypes()
+	    throws TypeConflictException {
+	try {
+	    workspace().getWriteAccess();
+            CompositeActor container = (CompositeActor)getContainer();
+            if ( !(container instanceof TypedCompositeActor)) {
+                return;
+            }
+            Enumeration constraints =
+                ((TypedCompositeActor)container).typeConstraints();
+
+            InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
+	    while (constraints.hasMoreElements()) {
+                Object ineq = constraints.nextElement();
+                solver.addInequality((Inequality)ineq);
+	    }
+
+            // find the greatest solution (most general types)
+            boolean resolved = solver.solveLeast();
+            if ( !resolved) {
+		Enumeration unsatisfied = solver.unsatisfiedInequalities();
+		// exception only contains info. on first unsatisfied ineq.
+		if (unsatisfied.hasMoreElements()) {
+		    Inequality ineq = (Inequality)unsatisfied.nextElement();
+		    TypeTerm term = (TypeTerm)ineq.getLesserTerm();
+		    TypedIOPort arg1 = term.getPort();
+		    term = (TypeTerm)ineq.getGreaterTerm();
+		    TypedIOPort arg2 = term.getPort();
+                    throw new TypeConflictException(arg1, arg2,
+					"cannot satisfy constraint.");
+		}
+            }
+
+	    // check if any resolved type is NaT
+	    Enumeration nats = solver.bottomVariables();
+	    if (nats.hasMoreElements()) {
+		TypeTerm term = (TypeTerm)nats.nextElement();
+		TypedIOPort port = term.getPort();
+		throw new TypeConflictException(port, "port resolved to NaT.");
+	    }
+
+	    // check if any resolved to abstract class, but is not CPO top.
+	    Class top = (Class)TypeCPO.cpo().top();
+	    Enumeration abs = solver.variables();
+	    while (abs.hasMoreElements()) {
+		TypeTerm term = (TypeTerm)abs.nextElement();
+		TypedIOPort port = term.getPort();
+		Class type = port.getResolvedType();
+		int mod = type.getModifiers();
+		if (Modifier.isAbstract(mod) && !type.equals(top)) {
+		    throw new TypeConflictException(port, "port resolved " +
+			"to an abstract class other than the hierarchy top.");
+		}
+	    }
+	} finally {
+	    workspace().doneWriting();
+	}
+    }
+
     /** If paused, resume the currently paused simulation.
      */
     public synchronized void resume() {
