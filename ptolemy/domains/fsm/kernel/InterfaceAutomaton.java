@@ -416,7 +416,7 @@ public class InterfaceAutomaton extends FSMActor {
                     State destinationState = transition.destinationState();
                     if ( !closure.contains(destinationState)) {
                         closure.add(destinationState);
-                        closure.add(destinationState);
+                        frontier.add(destinationState);
                     }
                 }
             }
@@ -1390,6 +1390,7 @@ public class InterfaceAutomaton extends FSMActor {
     private static boolean _condition1Satisfied(
                     InterfaceAutomaton superAutomaton, State superState,
                     InterfaceAutomaton subAutomaton, State subState) {
+
         Set inputLabelsInSuper =
             superAutomaton.externallyEnabledInputTransitionLabels(superState);
         Set inputLabelsInSub =
