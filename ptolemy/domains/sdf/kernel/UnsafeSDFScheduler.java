@@ -69,10 +69,10 @@ import ptolemy.moml.MoMLChangeRequest;
 ///////////////////////////////////////////////////////////
 //// UnsafeSDFScheduler
 /**
-
-This is a newer version of the SDF scheduler that attempts to fix a
-significant shortcoming in the existing implementation.  In the
-SDFScheduler class, scheduling constraints are traversed and solved
+A scheduler that does basic scheduling of SDF graphs. 
+<p>This is a newer version of the SDF scheduler that attempts to fix a
+significant shortcoming in the existing implementation.  In
+SDFScheduler, scheduling constraints are traversed and solved
 one channel at a time.  However, since it is possible to have a
 relatively small number of relations that have large numbers of
 channels, by connecting to multiports and setting the width of the
@@ -83,7 +83,7 @@ The solution is to recognize that the scheduling constraint for every
 channel in such a relation is the same...  Hence, we would really like
 to traverse the hierarchy on a relation by relation basis.
 
-HOWEVER, the current ptolemy base classes provide incomplete support
+<p>HOWEVER, the current ptolemy base classes provide incomplete support
 for traversing the hierarchy this way.  In particular, it is difficult
 to ensure that we have properly included all of the scheduling
 constraints without traversing channel-by channel, using receivers.
@@ -92,58 +92,55 @@ than the original implementation, but has imcomplete error checking.
 I.e., it will return a valid schedule when, in fact, no valid schedule
 exists.  The simplest example is if you have a relation connected to
 an input port and not connected to any output port.  It will never
-receive a token, but this class will return a valid schedule.
+receive a token, but UnsafeSDFScheduler will return a valid schedule.
 
 
-A scheduler that does basic scheduling of SDF graphs.  This
-class calculates the SDF schedule in two phases.  First, the balance
-equations for the rates between actors are solved to determine the
-<i>firing vector</i> (also known as the repetitions vector).  The
-firing vector is the least integer solution such that the number of
-tokens created on each channel of each relation is equal to the number
-of tokens consumed.  In some cases, no solution exists.  Such graphs
-are not executable under SDF.
-<p>
+<p>UnsafeSDFScheduler calculates the SDF schedule in two phases.  First,
+the balance equations for the rates between actors are solved to
+determine the <i>firing vector</i> (also known as the repetitions
+vector).  The firing vector is the least integer solution such that
+the number of tokens created on each channel of each relation is equal
+to the number of tokens consumed.  In some cases, no solution exists.
+Such graphs are not executable under SDF.
 
-Then the actors are ordered such that each actor only fires when the
-scheduler has determined that enough tokens will be present on its
-input ports to allow it to fire.  In cases where the dataflow graph is
-cyclic, a valid firing vector exists, but no actor can fire, since
-they all depend on the output of another actor.  This situation is
-known as <i>deadlock</i>.  Deadlock must be prevented in SDF by manually
-inserting delay actors, which represent initial tokens on each
-relation.  Such delay actors are responsible for creating tokens
-during initialization that will prevent deadlock.  These actors
-set the <i>tokenInitProduction</i> parameter of their output ports
-to represent the number of
-tokens they will create during initialization.  The SDFScheduler uses
-this parameter to break the dependency in a cyclic
-graph.
-<p>
-Note that this scheduler only ensures that the number of firings is
-minimal.  Most notably, it does not attempt to minimize the size of
+<p>If a graph is not executable under SDF, then the actors are ordered
+such that each actor only fires when the scheduler has determined that
+enough tokens will be present on its input ports to allow it to fire.
+In cases where the dataflow graph is cyclic, a valid firing vector
+exists, but no actor can fire, since they all depend on the output of
+another actor.  This situation is known as <i>deadlock</i>.  Deadlock
+must be prevented in SDF by manually inserting delay actors, which
+represent initial tokens on each relation.  Such delay actors are
+responsible for creating tokens during initialization that will
+prevent deadlock.  These actors set the <i>tokenInitProduction</i>
+parameter of their output ports to represent the number of tokens they
+will create during initialization.  The SDFScheduler uses this
+parameter to break the dependency in a cyclic graph.
+
+<p> Note that this scheduler only ensures that the number of firings
+is minimal.  Most notably, it does not attempt to minimize the size of
 the buffers that are associated with each relation.  The resulting
 schedule is a linear schedule (as opposed to a looped schedule) and is
 not suitable for multiprocessing environments.
-<p>
-Any actors may be
-scheduled by this scheduler, which will, by default, assume
-homogeneous behavior for each actor.  (i.e. each output port produces
-one token for each firing, and each input port consumes one token on
-each firing, and no tokens are created during initialization.)  If
-this is not the case then parameters named <i>tokenConsumptionRate</i>,
-<i>tokenProductionRate</i>, and <i>tokenInitProduction</i> must be set.
-The SDFIOPort class provides easier access to these parameters.
-<p>
-Note that reconstructing the schedule is expensive, so the schedule is
-locally cached for as long as possible, and mutations under SDF should
-be avoided.
-<p>
-Note that this scheduler supports actors with 0-rate ports as long as
-the graph is not equivalent to a disconnected graph. This scheduler
-is somewhat conservative in this respect.
-<p>Disconnected graphs are supported if the SDF Director parameter
-<i>allowDisconnectedGraphs</i> is true.
+
+<p> Any actors may be scheduled by this scheduler, which will, by
+default, assume homogeneous behavior for each actor.  (i.e. each
+output port produces one token for each firing, and each input port
+consumes one token on each firing, and no tokens are created during
+initialization.)  If this is not the case then parameters named
+<i>tokenConsumptionRate</i>, <i>tokenProductionRate</i>, and
+<i>tokenInitProduction</i> must be set.  SDFIOPort provides
+easier access to these parameters.
+
+<p> Note that reconstructing the schedule is expensive, so the
+schedule is locally cached for as long as possible, and mutations
+under SDF should be avoided.
+
+<p> Note that this scheduler supports actors with 0-rate ports as long
+as the graph is not equivalent to a disconnected graph. This scheduler
+is somewhat conservative in this respect.  <p>Disconnected graphs are
+supported if the SDF Director parameter <i>allowDisconnectedGraphs</i>
+is true.
 
 
 @see ptolemy.actor.sched.Scheduler
