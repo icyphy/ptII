@@ -84,18 +84,40 @@ public class KeyToken extends Token {
             throws IllegalActionException {
         java.security.Key rightKey = ((KeyToken)rightArgument).getValue();
         java.security.Key leftKey = getValue();
-        byte [] rightEncoded = rightKey.getEncoded();
-        byte [] leftEncoded = leftKey.getEncoded();
-        if (leftEncoded.equals(rightEncoded)) {
-            return BooleanToken.TRUE;
-        } else {
+
+        if (!rightKey.getAlgorithm().equals(leftKey.getAlgorithm())) {
             return BooleanToken.FALSE;
         }
+
+        if (!rightKey.getFormat().equals(leftKey.getFormat())) {
+            return BooleanToken.FALSE;
+        }
+
+        byte [] rightEncoded = rightKey.getEncoded();
+        byte [] leftEncoded = leftKey.getEncoded();
+        if (rightEncoded.length !=  leftEncoded.length) {
+            return BooleanToken.FALSE;
+        }
+        for(int i = 0; i < rightEncoded.length; i++) {
+            if (rightEncoded[i] != leftEncoded[i]) {
+                return BooleanToken.FALSE;
+            }
+        }
+        return BooleanToken.TRUE;
     }
 
 
     public String toString() {
-        return "KeyToken(" + _value + ")";
+        StringBuffer result =  new StringBuffer("KeyToken( Algorithm:"); 
+        result.append(_value.getAlgorithm() + " \n");
+        result.append(" Format: " + _value.getFormat() + " \n");
+        result.append(" Encoded: ");
+        byte [] encoded = _value.getEncoded();
+        for(int i = 0; i < encoded.length -1; i++) {
+            result.append(" " + encoded[i] + ",");
+        }
+        result.append(" " + encoded[encoded.length - 1] + ")");
+        return result.toString();
     }
 
     public static class KeyType implements Type, Serializable {
