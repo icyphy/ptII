@@ -41,7 +41,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.util.*;
 import ptolemy.actor.lib.*;
-import ptolemy.actor.gui.TimedPlotter;
+import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;

@@ -35,6 +35,7 @@ import ptolemy.actor.*;
 import ptolemy.gui.Query;
 import ptolemy.actor.gui.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.actor.corba.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;

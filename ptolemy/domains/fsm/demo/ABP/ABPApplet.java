@@ -32,6 +32,7 @@ package ptolemy.domains.fsm.demo.ABP;
 
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
+import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.gui.*;
 import ptolemy.domains.de.lib.*;

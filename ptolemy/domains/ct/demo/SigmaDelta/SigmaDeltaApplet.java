@@ -44,6 +44,7 @@ import ptolemy.domains.sdf.lib.FIR;
 import ptolemy.actor.*;
 import ptolemy.gui.Query;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;

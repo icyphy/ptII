@@ -40,6 +40,8 @@ import ptolemy.data.*;
 import ptolemy.actor.Manager;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
+import ptolemy.actor.lib.gui.TimedPlotter;
+import ptolemy.actor.lib.gui.HistogramPlotter;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.domains.de.kernel.*;
