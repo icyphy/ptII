@@ -71,6 +71,7 @@ public interface ParserScope {
 
     /** Return the list of variables within the scope.
      *  @return The list of variables within the scope.
+     *  @deprecated We rarely want to construct this list.
      */
     public NamedList variableList();
 }

@@ -1637,7 +1637,7 @@ public class Variable extends Attribute
         }
     }
 
-    private class VariableScope implements ParserScope {
+    private class VariableScope extends ModelScope {
 
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
@@ -1647,31 +1647,32 @@ public class Variable extends Attribute
          */
         public ptolemy.data.Token get(String name)
                 throws IllegalActionException {
-            Variable result = null;
+            Variable result = getScopedVariable(Variable.this, name);
 
             // FIXME: use _variablesDependentOn as a cache.
 
-            // Search through the hierarchy to find the referenced
-            // object.
-            NamedObj container = (NamedObj)getContainer();
-            while (container != null) {
-                result = _searchIn(container, name);
-                if (result != null) {
-                    if(_variablesDependentOn == null) {
-                        _variablesDependentOn = new HashMap();
-                    }
-                    if(!_variablesDependentOn.containsValue(result)) {
-                        result.addValueListener(Variable.this);
-                        _variablesDependentOn.put(name, result);
-                    }
-                    return result.getToken();
-                } else {
-                    container = (NamedObj)container.getContainer();
+            // Cache the result..
+            if (result != null) {
+                if(_variablesDependentOn == null) {
+                    _variablesDependentOn = new HashMap();
                 }
-            }
-            return null;
+                if(!_variablesDependentOn.containsValue(result)) {
+                    result.addValueListener(Variable.this);
+                    _variablesDependentOn.put(name, result);
+                }
+                return result.getToken();
+            } else {
+                return null;
+            }        
         }
 
+        /** Return the object in the model that corresponds to the given 
+         *  identifier name in this scope.  This class always returns a
+         *  variable.
+         */
+        public NamedObj getScopedObject(String name) {
+            return getScopedVariable(Variable.this, name);
+        }
 
         /** Look up and return the type of the attribute with the
          *  specified name in the scope. Return null if such an
@@ -1682,11 +1683,11 @@ public class Variable extends Attribute
          */
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
-            ptolemy.data.Token token = get(name);
-            if(token == null) {
-                return null;
+            Variable result = getScopedVariable(Variable.this, name);
+            if (result != null) {
+                return result.getType();
             } else {
-                return token.getType();
+                return null;
             }
         }
 
@@ -1699,28 +1700,6 @@ public class Variable extends Attribute
          */
         public NamedList variableList() {
             return getScope();
-        }
-
-        // Search in the container for an attribute with the given name.
-        // Search recursively in any instance of ScopeExtender in the
-        // container.
-        private Variable _searchIn(NamedObj container, String name) {
-            Attribute result = container.getAttribute(name);
-            if (result != null
-                    && result instanceof Variable
-                    && result != Variable.this)
-                return (Variable)result;
-            Iterator extenders =
-                    container.attributeList(ScopeExtender.class).iterator();
-            while (extenders.hasNext()) {
-                ScopeExtender extender = (ScopeExtender)extenders.next();
-                result = extender.getAttribute(name);
-                if (result != null
-                        && result instanceof Variable
-                        && result != Variable.this)
-                    return (Variable)result;
-            }
-            return null;
         }
     }
 }

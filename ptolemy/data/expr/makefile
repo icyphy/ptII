@@ -75,6 +75,7 @@ JSRCS = \
 	Constants.java \
 	ExplicitScope.java \
 	FixPointFunctions.java \
+	ModelScope.java \
 	Parameter.java \
 	ParseTreeDumper.java \
 	ParseTreeEvaluator.java \
