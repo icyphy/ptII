@@ -111,8 +111,8 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                         functionDependency.getAbstractPortsGraph());
             } else {
                 throw new InternalErrorException("FunctionDependency can "
-                        + "not be null. Check all four types of function " +
-                    "dependencies. There must be something wrong.");
+                        + "not be null. Check all four types of function "
+                        + "dependencies. There must be something wrong.");
             }
         }
 
