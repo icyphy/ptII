@@ -164,8 +164,6 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         if (StaticResolution.debugLoading) {
             System.out.println("ResolveFieldVisitor.visitSuperConstructorCallNode: "
                     + ctx.currentClassDecl.getName() + "/" + superDecl.getName()); 
-            System.out.println("Super's AST:"); 
-            System.out.println(superDecl.getSource().toString()); 
         }
 
         if (superDecl == null) {
@@ -483,8 +481,10 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         if (oType.classID() == ARRAYTYPENODE_ID) {
             typeDecl = StaticResolution.ARRAY_CLASS_DECL;
+            // FIXME: Ensure deep loading 
         } else {
             typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) oType);
+            ASTReflect.ensureDeepLoading(typeDecl.getSource());
         }
 
         JavaDecl d = null;
@@ -498,11 +498,15 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
                 if (!resolutions.hasNext()) {
                     throw new RuntimeException ("no " + nameString + " field in " +
-                            typeDecl.getName());
+                            typeDecl.getName()
+                            + ".\nA dump of the offending AST node follows.\n" 
+                            + node.toString());
                 } else {
          	    d = (JavaDecl) resolutions.nextDecl();
         	    if (resolutions.hasNext()) {
-                        throw new RuntimeException("ambiguous reference to " + d.getName());
+                        throw new RuntimeException("ambiguous reference to " + d.getName()
+                                + ".\nA dump of the offending AST node follows.\n" 
+                                + node.toString());
                     }
                 }
             }
@@ -512,7 +516,8 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
             if (!resolutions.hasNext()) {
                 throw new RuntimeException("no " + nameString + " method in " +
-                        typeDecl.getName());
+                        typeDecl.getName() + ".\nA dump of the offending AST node "
+                        + "follows.\n" + node.toString());
             } else {
                 d = resolveCall(resolutions, methodArgs);
             }
