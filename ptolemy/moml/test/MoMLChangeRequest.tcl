@@ -779,6 +779,7 @@ test MoMLChangeRequest-7.2 {test propagation of changes} {
         } entities {
         } relations {
         }}
+    } entities {
         {ptolemy.actor.CompositeActor {.top.instance.A} attributes {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.top.instance.A._iconDescription} attributes {
             }}
@@ -788,7 +789,6 @@ test MoMLChangeRequest-7.2 {test propagation of changes} {
         } entities {
         } relations {
         }}
-    } entities {
     } relations {
     }}
 } relations {
