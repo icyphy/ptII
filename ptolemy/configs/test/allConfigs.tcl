@@ -138,17 +138,28 @@ foreach i $configs {
 			# then java::field will not find the field
 			set fieldObj [java::null]
 			catch {
-			    set fieldObj [java::field $realActor $field]
+			    # We use -noconvert here in case there is a public
+			    # int or double. hde.ArrayMem has a public int.
+			    set fieldObj [java::field -noconvert \
+				    $realActor $field]
 			}
 			if {![java::isnull $fieldObj]} {
-			    set dottedName [$fieldObj getName $entity]
-			    set sanitizedName [java::call ptolemy.kernel.util.StringUtilities sanitizeName $dottedName]
-			    if {"$sanitizedName" != "$field"} {
+			    if [catch {set dottedName [$fieldObj getName $entity]} errMsg] {
 				set msg "\n\nIn '$className'\n\
-					The getName() method returns\n \
-					'[$fieldObj getName]' but the \
-					field is named\n  '$field'"
+					On the field '$field'\n\
+					The getName() method failed:\n\
+					$errMsg\n\
+					Perhaps the field is a basic type?\n"
 				lappend results $msg
+			    } else {
+				set sanitizedName [java::call ptolemy.kernel.util.StringUtilities sanitizeName $dottedName]
+				if {"$sanitizedName" != "$field"} {
+				    set msg "\n\nIn '$className'\n\
+					    The getName() method returns\n \
+					    '[$fieldObj getName]' but the \
+					    field is named\n  '$field'"
+				    lappend results $msg
+				}
 			    }
 			}
 		    }
