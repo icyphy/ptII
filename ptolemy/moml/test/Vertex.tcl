@@ -51,4 +51,32 @@ test Vertex-1.1 {Call workspace constructor, exportMoML and toString } {
     </vertex>
 }}
 
+test Vertex-2.1 {addLinkedPort, linkedPorts removeLinkedPort} {
+    set w0 [java::new ptolemy.kernel.util.Workspace "myWorkspace"]
+    set e0 [java::new ptolemy.kernel.Entity]
+    set v1 [java::new ptolemy.moml.Vertex $w0]
+    set p1 [java::new ptolemy.kernel.Port $e0 "p1"]
+    set p2 [java::new ptolemy.kernel.Port $e0 "p2"]
+    set p3 [java::new ptolemy.kernel.Port $e0 "p3"]
 
+    $v1 addLinkedPort $p1
+    $v1 addLinkedPort $p2
+    set r1 [listToNames [$v1 linkedPorts]]
+
+    $v1 removeLinkedPort $p1
+    $v1 addLinkedPort $p3
+    set r2 [listToNames [$v1 linkedPorts]]
+    
+    list $r1 $r2
+} {{p1 p2} {p2 p3}}
+
+
+test Vertex-3.1 {addLinkedPort, linkedPorts removeLinkedPort} {
+    set w0 [java::new ptolemy.kernel.util.Workspace "myWorkspace"]
+    set v1 [java::new ptolemy.moml.Vertex $w0]
+    set v2 [java::new ptolemy.moml.Vertex $w0]
+
+    $v1 setLinkedVertex $v1
+    list [[$v1 getLinkedVertex] toString] \
+	    [expr {[$v2 getLinkedVertex] == [java::null]}]
+} {{(ptolemy.moml.Vertex, Location = null)} 1}
