@@ -144,9 +144,7 @@ public class DirectoryListing extends Source implements FilenameFilter {
             throws IllegalActionException {
         if (attribute == pattern) {
             try {
-                String patternValue
-                    = ((StringToken)pattern.getToken()).stringValue();
-                _pattern = Pattern.compile(patternValue);
+                _pattern = Pattern.compile(pattern.stringValue());
             } catch (PatternSyntaxException ex) {
                 String patternValue
                     = ((StringToken)pattern.getToken()).stringValue();
