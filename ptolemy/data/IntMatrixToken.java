@@ -265,10 +265,18 @@ public class IntMatrixToken extends MatrixToken {
 	}
     }
 
-    // Return the content of this token as a 2-D Fix array.
-    //
-    // FIXME: finish this method after the Fix class is implemented.
-    // public Fix[][] fixMatrix();
+    /** Return the element of the contained array at the specified
+     *  row and column.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return The element at the specified array entry.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the corresponding range
+     *   of the index of the contained array.
+     */
+    public int getElementAt(int row, int column) {
+	return _value[row][column];
+    }
 
     /** Return a copy of the contained 2-D array.
      *  It is safe for the caller to modify the returned array.
