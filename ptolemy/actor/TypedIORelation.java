@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// IORelation
+//// TypedIORelation
 /**
 This class overrides some of the methods in IORelation to ensure that
 TypedIOPorts are only connected to TypedIOPorts. I.e., Instances of
