@@ -1709,6 +1709,47 @@ public class IOPort extends ComponentPort {
         return false;
     }
 
+    /** Return true if the specified inside channel has known state,
+     *  that is, the tokens on this channel are known or this channel
+     *  is known not to have any tokens.  If the channel index is out
+     *  of range, then throw an exception.
+     *  
+     *  <p> Note that this only reports any tokens in inside receivers
+     *  of an output port.
+     *
+     *  @param channelIndex The channel index.
+     *  @return True if it is known whether there is a token in the channel.
+     *  @exception IllegalActionException If the receivers do not
+     *  support this query, if there is no director, and hence no
+     *  receivers, if the port is not an output port, or if the inside
+     *  channel index is out of range.
+     */
+    public boolean isKnownInside(int channelIndex) 
+            throws IllegalActionException {
+        try {
+            if (isOutput()) {
+                Receiver[][] receivers = getInsideReceivers();
+                if (receivers != null && receivers[channelIndex] != null) {
+                    for (int j = 0; j < receivers[channelIndex].length; j++) {
+                        if (receivers[channelIndex][j].isKnown()) return true;
+                    }
+                }
+            }
+            if (isInput()) {
+                Receiver[][] receivers = deepGetReceivers();
+                if (receivers != null && receivers[channelIndex] != null) {
+                    for (int j = 0; j < receivers[channelIndex].length; j++) {
+                        if (receivers[channelIndex][j].isKnown()) return true;
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            throw new IllegalActionException(this,
+                    "isKnownInside: channel index is out of range.");
+        }
+        return false;
+    }
+
     /** Return true if the port is a multiport.  The port is a multiport
      *  if setMultiport() has been called with a true argument.
      *
@@ -2295,7 +2336,7 @@ public class IOPort extends ComponentPort {
         boolean wasTransferred = false;
         for (int i = 0; i < getWidthInside(); i++) {
             try {
-                if (isKnown(i)) {
+                if (isKnownInside(i)) {
                     if (hasTokenInside(i)) {
                         Token t = getInside(i);
                         send(i, t);
