@@ -54,8 +54,11 @@ JSRCS = \
 	ModalPort.java \
 	ModalModel.java \
 	ModalController.java \
+        ModalTransitionController.java \
 	HierarchicalStateControllerFactory.java \
 	HierarchicalStateController.java \
+        TransitionRefinement.java \
+        TransitionRefinementPort.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
