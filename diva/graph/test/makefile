@@ -42,8 +42,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
+TCL_SRCS =
 
 JSRCS = \
 	All.java \
@@ -65,8 +64,9 @@ JGRAPHICAL_TESTS = \
 	dummy
 
 # If we add non-graphical tests, add $(JSIMPLE_TESTS) to EXTRA_SRCS
+# If we add graphical tests, add $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 EXTRA_SRCS =	\
-	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) test.xml
+	$(TCL_SRCS) $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -83,7 +83,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 
-test: $(EXTRA_SRCS) jclass test_java test_jgraphical
+test: $(EXTRA_SRCS) jclass test_java All
 
 # The nightly build runs make tests, which in this case will not
 # run the graphical tests
@@ -101,6 +101,12 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljsimpletests.tcl
 # These tests do require a graphics terminal, but do use Jacl and Java
 test_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
+
+All: jclass
+	CLASSPATH=$(CLASSPATH) $(JAVA) diva.graph.test.All
+
+BasicGraphModelTest: BasicGraphModelTest.class
+	CLASSPATH=$(CLASSPATH) $(JAVA) diva.graph.test.BasicGraphModelTest
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
