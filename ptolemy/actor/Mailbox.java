@@ -104,9 +104,9 @@ public class Mailbox implements Receiver {
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
 
-    // container is not changable.
+    // Container is not changeable.
     private final IOPort _container;
-    // the token held.
+    // The token held.
     private Token _token;
     private boolean _isEmpty;
 }
