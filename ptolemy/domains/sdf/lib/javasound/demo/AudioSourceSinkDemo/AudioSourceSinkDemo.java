@@ -69,7 +69,8 @@ import ptolemy.plot.*;
 //// AudioSourceSinkDemo
 /**
 A simple model demonstrating the use of the AudioSource and 
-AudioSink actors. 
+AudioSink actors. The model consists of an AudioSource connected
+to an AudioSink.
 Note that AudioSource will not work unless the Java 1.3 SDK
 is used.
 // FIXME: currently requies that a soundfile with name 
@@ -104,110 +105,50 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
 
 	    System.out.println("Create invoked");
 
-	    //this.setName("topLevel");
-	    //this.setManager(_manager);
-	     // Initialization
             SDFDirector _sdfDirector = new SDFDirector(this, "SDFDirector");
-
-
-	    // Begin debug.
-	    //StreamListener sa2 = new StreamListener();
-	    //_sdfDirector.addDebugListener(sa2);
-	    // End debug.
-
-            //Parameter iterparam = _sdfDirector.iterations;
-
-	    // Why is this 0????
-            //iterparam.setToken(new IntToken(0));
-	    
-
 
             SDFScheduler scheduler = new SDFScheduler(_workspace);
 
             _sdfDirector.setScheduler(scheduler);
             _sdfDirector.setScheduleValid(false);
 
-	    //_sdfDirector.iterations.setToken(new IntToken(0));
-
-	    // gui stuff goes here.
-
-	    //Create the top-level container and add contents to it.
-	    //  JFrame frame = new JFrame("Real-time Pitch Shifter");
-	    
-	    //JPanel controlpanel = new JPanel();
-
-	    //controlpanel.setLayout(new BorderLayout());
-
-	    
-	     // PtolemyQuery _ptQuery = new PtolemyQuery();
-	    
-	     //controlpanel.add("West", _ptQuery);
-           
-	     //_ptQuery.addSlider("pitchSlider", "Pitch Scale Factor",
-	     //	     1000, 400, 3000);
-
-            //_ptQuery.addQueryListener(new ParameterListener());
-            //_query.setBackground(_getBackground());
-
-	    //frame.getContentPane().add(controlpanel, BorderLayout.CENTER);
-	    //Finish setting up the frame, and show it.
-	    // frame.addWindowListener(new WindowAdapter() {
-	    //    public void windowClosing(WindowEvent e) {
-	    //	System.exit(0);
-	    //    }
-	    //});
-	    // frame.pack();
-	    //frame.setVisible(true);
-
-	   
-
-
-	    // End of gui stuff.
-
 	    // Set the sampling rate to use.
-	    int sampleRate = 11025;
+	    int sampleRate = 22050;
 
 	    // Set the token consumption rate and production rate to use.
 	    // Larger values may speed up execution.
 	    int cPRate = 512;
 
 	    AudioSource soundSource = new AudioSource(this, "soundSource");
-	    // Specify where to get the sound file.
-	    //soundSource.pathName.setToken(new StringToken("NylonGtrSusB2.aiff"));
-	    soundSource.pathName.setToken(new StringToken("1-welcome.wav"));
-	    // soundSource.pathName.setToken(new StringToken("suzanne.aiff"));
-	    //soundSource.pathName.setToken(new StringToken("chamel.aiff"));
-	    //soundSource.pathName.setToken(new StringToken("3violin1.aiff"));
-	    
-            // Read audio data from a local file instread of a URL.
-            soundSource.isURL.setToken(new BooleanToken(false));
-	
-	   
-	    
-	    
+	    // Set the production rate(a performance optimization).
+	    soundSource.tokenProductionRate.setToken(new IntToken(cPRate));
 
+            // Read audio data from a local file.
+            //soundSource.source.setToken(new StringToken("file"));
+	    //soundSource.pathName.setToken(new StringToken("1-welcome.wav"));
+
+	    // *** OR ***
+
+	    // Read audio data from a URL.
+	    //soundSource.source.setToken(new StringToken("URL"));
+	    //soundSource.pathName.setToken(new StringToken("http://209.233.16.71/1-welcome.wav"));	
 	   
+	    // *** OR ***
+
+	    // Read audio form microphone (real-time capture).
+	    soundSource.source.setToken(new StringToken("mic"));
+	    soundSource.sampleRate.setToken(new IntToken(sampleRate));
 
             AudioSink soundSink = new AudioSink(this, "soundSink");
 	  soundSink.fileName.setToken(new StringToken("outputFile.au"));  // FIXME: Does nothing.
-	  
          
 	  soundSink.sampRate.setToken(new IntToken(sampleRate));
-	  
 
             this.connect(soundSource.output, soundSink.input);
-	    
-	    
-
-	    //_ptQuery.attachParameter(soundSink.fileName, "pitchSlider");
-
-
 	   
         } catch (Exception ex) {
             System.err.println("Setup failed:" + ex);
         }
     }
-
- 
 }
 
