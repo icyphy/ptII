@@ -2466,11 +2466,25 @@ fi
 # The problem is that the nesc/configure script does not understand
 # "c:/" style syntax, it works with "/cygdrive/c/", yet Java
 # does not understand /cygdrive/c syntax, so we hack
-if test ! -z "$TOSROOT" ; then 
+if test -z "$TOSROOT" ; then 
+    AC_MSG_RESULT([The TOSROOT environment variable is not present,
+	so we need not set up for TinyOS.])
+
+   # Nothing to exclude
+   # ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/nc/"
+
+else
+    AC_MSG_RESULT([The TOSROOT is found, so we willset up for TinyOS.])
+    # Use changequote to protect the square brackets in sed
 changequote(<<, >>)dnl
     TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
 changequote([, ])dnl
-fi
+
+   # Add TOSROOT to the classpath
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$TOSROOT\"/>"
+fi 
+
 
 #--------------------------------------------------------------------
 #       GiottoSDK is an embedded implementation of the Giotto language
