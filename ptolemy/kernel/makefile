@@ -44,11 +44,12 @@ include $(CONFIG)
 CLASSPATH = ../..
 
 JSRCS = \
-	NamedObj.java \
 	Block.java \
 	Galaxy.java \
+	NamedObj.java \
 	PortHole.java \
-	Star.java
+	Star.java \
+	StatusArray.java
 
 EXTRA_SRCS =	$(JSRCS)
 
