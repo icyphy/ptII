@@ -292,26 +292,22 @@ fixtmpdist:
 	echo "	echo \"Nothing need be done for $$@ in ptolemy/plot)\"" >> \
 		$(PTTMPDIR)/$(PTDIST)/makefile
 	echo "$(PTDIST) - A Java plotting package" > \
-		$(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "Ptplot is a set of two dimensional signal plotters" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
-	echo "implemented in Java." >>  $(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "implemented in Java." >>  $(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "Ptplot is embeddable in applets and applications." >> \
-		$(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "For more information, see ptolemy/plot/doc/index.htm" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
-	echo "" >> $(PTTMPDIR)/$(PTDIST)/README
-	echo "Installer notes " >> $(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "Installer notes " >> $(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "If you are using the auto installer, then note that" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "under Windows, the Ptplot programs will be added to" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
-	echo "your start menu under Ptolemy -> Ptplot.  Note further" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
-	echo "that directory names with spaces do not work very well" >> \
-		$(PTTMPDIR)/$(PTDIST)/README
-	echo " because of limitations in the InstallShield tool." >> \
-		$(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README.txt
+	echo "your start menu under Ptolemy -> Ptplot." >> \
+		$(PTTMPDIR)/$(PTDIST)/README.txt
 	#mv /tmp/ptplotfix $(PTTMPME)/makefile
 	@echo "JShield needs the ico file to be in the top level directory"
 	cp $(PTTMPME)/doc/img/ptplot.ico \
@@ -358,6 +354,9 @@ fixtmpdist:
 		ptolemy.plot \
 		ptolemy.plot.compat \
 		ptolemy.plot.plotml
+	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/design
+	# Remove files that we don't want to include
+	rm -rf $(PTTMPME)/adm $(PTTMPME)/*.gz $(PTTMPME)/*.zip
 	@echo "Fixing up doc/download directory"
 	rm -rf $(PTTMPME)/doc/download
 	mkdir $(PTTMPME)/doc/download
@@ -370,31 +369,3 @@ fixtmpdist:
 	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot" target="_top"><code>http://ptolemy.eecs.berkeley.edu/java/ptplot</code></a>' >> $(PTTMPME)/doc/download/index.htm
 	echo "</body>" >> $(PTTMPME)/doc/download/index.htm
 	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
-
-isj:
-	echo "Setting up for installshield"
-	rm -rf $(PTTMPDIR)/installshield
-	mkdir -p \
-		$(PTTMPDIR)/installshield/doc/$(PTDIST)/ptolemy/plot \
-		$(PTTMPDIR)/installshield/src/ \
-		$(PTTMPDIR)/installshield/runtime/$(PTDIST)/ptolemy/plot/plotml
-	cp -r $(PTTMPDIR)/$(PTDIST) $(PTTMPDIR)/installshield/src
-	@echo "Setup doc dir"
-	mv $(PTTMPDIR)/installshield/src/$(PTDIST)/doc \
-		$(PTTMPDIR)/installshield/doc/$(PTDIST)
-	mv 	$(PTTMPDIR)/installshield/src/$(PTDIST)/ptolemy/plot/doc \
-		$(PTTMPDIR)/installshield/src/$(PTDIST)/ptolemy/plot/demo \
-		$(PTTMPDIR)/installshield/doc/$(PTDIST)/ptolemy/plot
-	mv $(PTTMPDIR)/installshield/src/$(PTDIST)/copyright.txt \
-		$(PTTMPDIR)/installshield/src/$(PTDIST)/ptplot.ico \
-		$(PTTMPDIR)/installshield/runtime/$(PTDIST)
-	@echo "Copy .jar files to runtime dir"
-	(cd $(PTTMPDIR)/installshield/src/$(PTDIST); tar -cf - `find . -name "*.jar" -print`) | ( cd $(PTTMPDIR)/installshield/runtime/$(PTDIST); tar -xf -)
-	mv $(PTTMPDIR)/installshield/src/$(PTDIST)/ptolemy/plot/plotml/*.dtd \
-		$(PTTMPDIR)/installshield/runtime/$(PTDIST)/ptolemy/plot/plotml
-	@echo "Remove the .jar and .class files from the src dir"
-	(cd $(PTTMPDIR)/installshield/src/$(PTDIST); \
-		find . \( -name "*.class" -o -name "*.jar" \) -exec rm {} \;)
-	@echo "Cleanup META-INF dirs etc"
-	(cd $(PTTMPDIR)/installshield/; \
-		find . \( -name "META-INF" -name "#*" -o -name CVS \) -print -exec rm -rf {} \;
