@@ -216,11 +216,11 @@ public class SDFScheduler extends Scheduler {
 
         // A linked list containing all the actors
         LinkedList AllActors = new LinkedList();
-        Enumeration Entities = ca.deepGetEntities();
+        Iterator entities = ca.deepEntityList().iterator();
 
 
-        while(Entities.hasMoreElements()) {
-            ComponentEntity a = (ComponentEntity)Entities.nextElement();
+        while(entities.hasNext()) {
+            ComponentEntity a = (ComponentEntity)entities.next();
 
             if(a instanceof CompositeActor) {
 		if (_debugging) _debug("Scheduling contained system");
@@ -977,16 +977,16 @@ public class SDFScheduler extends Scheduler {
                 "The model must be contained within a CompositeActor in " +
                 "order to be scheduled.");
 
-        Enumeration ports = container.getPorts();
-        while(ports.hasMoreElements()) {
-            IOPort port = (IOPort) ports.nextElement();
+        Iterator ports = container.portList().iterator();
+        while(ports.hasNext()) {
+            IOPort port = (IOPort) ports.next();
             // Extrapolate the Rates
-            Enumeration connectedports = port.insidePorts();
+            Iterator connectedports = port.insidePortList().iterator();
             int consumptionRate = 0;
             int productionRate = 0;
             int initProduction = 0;
-            if(connectedports.hasMoreElements()) {
-                IOPort cport = (IOPort) connectedports.nextElement();
+            if(connectedports.hasNext()) {
+                IOPort cport = (IOPort) connectedports.next();
                 Entity cactor = (Entity) cport.getContainer();
                 consumptionRate = _getFiringCount(cactor) *
                     _getTokenConsumptionRate(cport);
@@ -1002,8 +1002,8 @@ public class SDFScheduler extends Scheduler {
                 }
             }
             // All the ports connected to this port must have the same rate
-            while(connectedports.hasMoreElements()) {
-                IOPort cport = (IOPort) connectedports.nextElement();
+            while(connectedports.hasNext()) {
+                IOPort cport = (IOPort) connectedports.next();
                 Entity cactor = (Entity) cport.getContainer();
                 int crate = _getFiringCount(cactor) *
                     _getTokenConsumptionRate(cport);
@@ -1320,10 +1320,10 @@ public class SDFScheduler extends Scheduler {
             // traverse all the input and output ports, setting the firings
             // for the actor(s)???? that each port is connected to relative
             // to currentActor.
-            Enumeration AllPorts =
-                ((ComponentEntity) currentActor).getPorts();
-            while(AllPorts.hasMoreElements()) {
-                IOPort currentPort = (IOPort) AllPorts.nextElement();
+            Iterator AllPorts =
+                ((ComponentEntity) currentActor).portList().iterator();
+            while(AllPorts.hasNext()) {
+                IOPort currentPort = (IOPort) AllPorts.next();
 
                 if(currentPort.isInput())
                     _propagateInputPort(currentPort, firings,
