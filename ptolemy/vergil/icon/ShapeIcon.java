@@ -31,7 +31,7 @@
 package ptolemy.vergil.icon;
 
 import diva.canvas.Figure;
-import diva.canvas.toolbox.PathFigure;
+import diva.canvas.toolbox.BasicFigure;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -115,11 +115,11 @@ public class ShapeIcon extends EditorIcon {
         // The references to these figures, however, have to be weak
         // references, so that this class does not interfere with garbage
         // collection of the figure when the view is destroyed.
-        PathFigure newFigure;
+        BasicFigure newFigure;
         if (_shape != null) {
-            newFigure = new PathFigure(_shape);
+            newFigure = new BasicFigure(_shape);
         } else {
-            newFigure = new PathFigure(new Rectangle2D.Double(
+            newFigure = new BasicFigure(new Rectangle2D.Double(
                    0.0, 0.0, 20.0, 20.0));
         }
         // By default, the origin should be the upper left.
@@ -157,7 +157,7 @@ public class ShapeIcon extends EditorIcon {
                         // remove it from the list.
                         figures.remove();
                     } else {
-                        ((PathFigure)figure).setCentered(_centered);
+                        ((BasicFigure)figure).setCentered(_centered);
                     }
                 }
             }
@@ -188,7 +188,7 @@ public class ShapeIcon extends EditorIcon {
                         // remove it from the list.
                         figures.remove();
                     } else {
-                        ((PathFigure)figure).setFillPaint(_fillColor);
+                        ((BasicFigure)figure).setFillPaint(_fillColor);
                     }
                 }
             }
@@ -219,7 +219,7 @@ public class ShapeIcon extends EditorIcon {
                         // remove it from the list.
                         figures.remove();
                     } else {
-                        ((PathFigure)figure).setStrokePaint(_lineColor);
+                        ((BasicFigure)figure).setStrokePaint(_lineColor);
                     }
                 }
             }
@@ -250,7 +250,7 @@ public class ShapeIcon extends EditorIcon {
                         // remove it from the list.
                         figures.remove();
                     } else {
-                        ((PathFigure)figure).setLineWidth(_lineWidth);
+                        ((BasicFigure)figure).setLineWidth(_lineWidth);
                     }
                 }
             }
@@ -281,7 +281,7 @@ public class ShapeIcon extends EditorIcon {
                         // remove it from the list.
                         figures.remove();
                     } else {
-                        ((PathFigure)figure).setShape(_shape);
+                        ((BasicFigure)figure).setPrototypeShape(_shape);
                     }
                 }
             }
