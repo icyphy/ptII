@@ -31,7 +31,7 @@ import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
-//// PNAlternate
+//// PNSieve
 /** 
 @author Mudit Goel
 @version $Id$G
