@@ -109,31 +109,25 @@ DERealTimeSubscriber_Stub.class: DERealTimeSubscriber.java
 		ptolemy.domains.ct.demo.$(PTPACKAGE).DERealTimeSubscriber
 
 demo:
-	@echo "Before running this demo, run $PTII/bin/startjini"
+	@echo "Before running this demo the first time, run 'make startjini'"
 	$(MAKE) runLeadingCar &
 	$(MAKE) runFollowingCar &
-	$(MAKE) runMonitor &
+	$(MAKE) runMonitor
 
-# This command is common to all the JINI commands
-DEMO_CMD = $(JAVA) -Djava.security.policy=./policy.all \
-		-Doutrigger.spacename=JavaSpaces \
-		-Dcom.sun.jini.lookup.groups=public \
-		-cp $(CLASSPATH) 
-		-Djava.rmi.server.codebase=file:${PTII}/ \
-		ptolemy.actor.gui.PtolemyApplication
-
-# $(DEMO_CMD) LeadingCar.xml
 runLeadingCar:
 	$(PTII)/bin/ptjini LeadingCar.xml
 
-# $(DEMO_CMD) FollowingCar.xml
 runFollowingCar:
 	$(PTII)/bin/ptjini FollowingCar.xml
 
-# $(DEMO_CMD) Monitor.xml
 runMonitor:
 	$(PTII)/bin/ptjini Monitor.xml
 
+# Start up Jini
+# The first option argument is the Jini home directory,
+# the second optional argument is the temporary directory to use
+startjini:
+	$(PTII)/bin/startjini $(JINI_DIR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
