@@ -39,6 +39,17 @@ a registered error handler is found.  If there is no registered error
 handler, then the error is ignored.  It is like throwing an exception, except
 that instead of unraveling the calling stack, it travels up the Ptolemy II
 hierarchy.
+<p>
+A typical use of this facility is where an actor does the following:
+<pre>
+   handleModelError(this, new IllegalActionException(this, message));
+</pre>
+instead of this:
+<pre>
+   throw new IllegalActionException(this, message);
+</pre>
+The former allows a container in the hierarchy to intercept the
+exception, whereas the latter simply throws the exception.
 
 @author Edward A. Lee
 @version $Id$

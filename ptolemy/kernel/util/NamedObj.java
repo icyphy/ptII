@@ -964,6 +964,18 @@ public class NamedObj implements Nameable, Debuggable,
      *  container, handling is delegated to the container.
      *  If there is no container and no handler that agrees to
      *  handle the error, then return false.
+     *  <p>
+     *  A typical use of this facility is where a subclass of NamedObj
+     *  does the following:
+     *  <pre>
+     *     handleModelError(this, new IllegalActionException(this, message));
+     *  </pre>
+     *  instead of this:
+     *  <pre>
+     *     throw new IllegalActionException(this, message);
+     *  </pre>
+     *  The former allows a container in the hierarchy to intercept the
+     *  exception, whereas the latter simply throws the exception.
      *  @param context The object in which the error occurred.
      *  @param exception An exception that represents the error.
      *  @return True if the error is handled, false otherwise.
