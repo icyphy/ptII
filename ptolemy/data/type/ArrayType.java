@@ -501,6 +501,11 @@ public class ArrayType extends StructuredType {
                             "ArrayToken._setElementType: " +
                             " Cannot set user on the elementType. " +
                             ex.getMessage());
+		} catch (CloneNotSupportedException ex2) {
+		    throw new InternalErrorException(
+                            "ArrayToken._setElementType: " +
+                            " Cannot clone elemTypeStruct" +
+                            ex2.getMessage());
 		}
 	    }
 	}
