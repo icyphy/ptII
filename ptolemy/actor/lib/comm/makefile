@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
         ConvolutionalCoder.java \
 	DeScrambler.java \
+        FlipFlop.java \
 	HadamardCode.java \
         Interleaver.java \
         Scrambler.java \

@@ -238,10 +238,8 @@ public class ConvolutionalCoder extends Transformer {
         for (int i = 0; i < _inputNumber; i++) {
             reg = reg << 1;
             IntToken input = (IntToken)inputToken[i];
-            if (input.intValue() == 1 || input.intValue() == 0) {
-                reg = reg | input.intValue();
-            } else { throw new IllegalActionException(this,
-                    "Input should be either 0 or 1.");
+            if (input.intValue() != 0) {
+                reg = reg | 1;
             }
         }
         _latestShiftReg = reg;

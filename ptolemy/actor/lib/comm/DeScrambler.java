@@ -145,12 +145,10 @@ public class DeScrambler extends Transformer {
         IntToken inputToken = ((IntToken)input.get(0));
         int inputTokenValue = inputToken.intValue();
         int reg = _latestShiftReg << 1;
-        // Put the input in the low-order bit: true = 1, false = 0.
-        if (inputTokenValue == 0 || inputTokenValue == 1){
-            reg = reg | inputTokenValue;
-        } else { throw new IllegalActionException(this,
-                "The input must be either 0 or 1.");
-        }
+        // Put the input in the low-order bit: non-zero is treated 1.
+        if (inputTokenValue != 0){
+            reg = reg | 1;
+        } 
         // Find the parity of "masked".
         int masked = mask & reg;
         int parity = 0;

@@ -54,7 +54,8 @@ The next low-order bit indicates whether the output of the first delay
 should be fed back, etc.
 All the bits that are fed back are exclusive-ored together (i.e., their parity
 is computed), and the result is exclusive-ored with the input bit. The
-result is produced at the output and shifted into the delay line.
+result is produced at the output and shifted into the delay line. We treat
+zero to be 0 and any non-zero integer to be 1.
 <p>
 With a proper choice of polynomial, the resulting output appears highly
 random even if the input is highly non-random.
@@ -199,11 +200,6 @@ public class Scrambler extends Transformer {
      */
     public Parameter initial;
 
-    /** Input port for bit sequence. If there is no input,
-     *  the Scrambler functions as an pseudo random number generator.
-     */
-    //public TypedIOPort input;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -259,10 +255,8 @@ public class Scrambler extends Transformer {
             if (input.hasToken(0)){
                 IntToken inputToken = (IntToken)input.get(0);
                 int inputTokenValue = inputToken.intValue();
-                if (inputTokenValue == 1 || inputTokenValue == 0){
-                    parity = parity ^ inputTokenValue;
-                } else { throw new IllegalActionException(this,
-                        "Input must be either 0 or 1.");
+                if (inputTokenValue != 0){
+                    parity = parity ^ 1;
                 }
             }
         }
