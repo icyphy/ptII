@@ -17,39 +17,8 @@
       <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
       <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector"/>
       <property name="CSP Director" class="ptolemy.domains.csp.kernel.CSPDirector"/>
-      <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-         <property name="ODESolver">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>
-               <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
-	           <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;"/>
-	        </property>
-         </property>
-         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;"/>
-	           <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
-	           <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;"/>
-	        </property>
-         </property>
-      </property>
-      <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
-         <property name="ODESolver">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>
-               <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
-	           <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;"/>
-	        </property>
-         </property>
-         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;"/>
-	           <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;"/>
-	           <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;"/>
-	        </property>
-         </property>
-      </property>
-
+      <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector"/>
+      <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector"/>
       <property name="Director" class="ptolemy.actor.Director">
          <doc>Simple director that executes actors in the order in which they were created.</doc>
       </property>
