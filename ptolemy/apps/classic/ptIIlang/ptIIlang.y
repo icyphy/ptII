@@ -1306,14 +1306,17 @@ void wrapMethod ()
 	}
 	/* not inline: put it into the .cc file */
 	strcat (p, ";\n");
-	sprintf (str2, "\n\n%s %s%s%s::%s ", methodType,
-		 galDef ? "" : domain, objName, coreDef ? coreCategory : "", methodName);
+	//FIXME: Java incompatibility: Don't include the "CGCFix::"
+	//sprintf (str2, "\n\n%s %s%s%s::%s ", methodType,
+	//	 galDef ? "" : domain, objName, coreDef ? coreCategory : "", methodName);
+	sprintf (str2, "\n    /**\n     */\n    %s %s %s ",
+		 methodAccess, methodType, methodName);
 	strcat (miscCode, str2);
 	stripDefaultArgs (str2, methodArgs);
 	strcat (miscCode, str2);
-	strcat (miscCode, "\n{\n");
+	strcat (miscCode, " {\n    ");
 	strcat (miscCode, methodCode);
-	strcat (miscCode, "\n}\n");
+	strcat (miscCode, "\n    }\n");
 }
 
 /* generate an instance of a block within a galaxy */
