@@ -142,6 +142,8 @@ public class SigmaDeltaApplet extends CTApplet {
             _ctPlot.place(getContentPane());
             _ctPlot.plot.setBackground(getBackground());
             _ctPlot.plot.setGrid(true);
+	    double stopT = _query.doubleValue("stopT");
+            _ctPlot.plot.setXRange(0.0, stopT);
             _ctPlot.plot.setYRange(-1.0, 1.0);
             _ctPlot.plot.setSize(500, 180);
             _ctPlot.plot.addLegend(0,"Position");
@@ -193,6 +195,7 @@ public class SigmaDeltaApplet extends CTApplet {
             _dePlot.place(getContentPane());
             _dePlot.plot.setBackground(getBackground());
             _dePlot.plot.setGrid(true);
+            _dePlot.plot.setXRange(0.0, stopT);
             _dePlot.plot.setYRange(-1.0, 1.0);
             _dePlot.plot.setSize(500, 180);
             _dePlot.plot.setConnected(false);
