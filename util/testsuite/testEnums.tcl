@@ -98,6 +98,24 @@ proc _testCrossRefListElements {args} {
 }
 
 ######################################################################
+#### _testEntityEnumEntities
+# Given one or more Entities, return a Tcl list containing 
+# a list of lists of the Entities that each Entity is connected to.
+#
+proc _testEntityEnumEntities {args} {
+    eval _testEnums enumEntities $args
+}
+
+######################################################################
+#### _testEntityEnumRelations
+# Given one or more Entities, return a Tcl list containing 
+# a list of lists of the Relations that each Entity is connected to.
+#
+proc _testEntityEnumRelations {args} {
+    eval _testEnums enumRelations $args
+}
+
+######################################################################
 #### _testParamListEnumParams
 # Given a ParamList, return a Tcl List containing its Params.
 #
@@ -117,11 +135,28 @@ proc _testParamListEnumParams {paramlist} {
     return $results
 }
 
-
 ######################################################################
 #### _testPortEnumRelations
 # Given a Port, return a Tcl List containing its Relations.
 #
 proc _testPortEnumRelations {args} {
     eval _testEnums enumRelations $args
+}
+
+######################################################################
+#### _testRelationsEnumEntities
+# Given one or more Entities, return a Tcl list containing 
+# a list of lists of the Entities that each Relation is connected to.
+#
+proc _testRelationEnumEntities {args} {
+    eval _testEnums enumEntities $args
+}
+
+######################################################################
+#### _testRelationsEnumPorts
+# Given one or more Entities, return a Tcl list containing 
+# a list of lists of the Ports that each Relation is connected to.
+#
+proc _testRelationEnumPorts {args} {
+    eval _testEnums enumPorts $args
 }
