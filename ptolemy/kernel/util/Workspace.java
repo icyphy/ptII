@@ -530,7 +530,7 @@ public final class Workspace implements Nameable, Serializable {
     }
 
     /** Specify whether this workspace is read only. When the workspace is
-     *  read only, calling getWriteAcess() or doneWriting() will result in
+     *  read only, calling getWriteAccess() or doneWriting() will result in
      *  a runtime exception, and calling getReadAccess() and doneReading()
      *  will return immediately. Accesses to topology information are
      *  considerably more efficient if the workspace is read only.
