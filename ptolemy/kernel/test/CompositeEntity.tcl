@@ -477,7 +477,7 @@ test CompositeEntity-10.4 {Create and then remove ports with given names} {
 ####
 # NOTE:  The setup constructed in this test is used in the subsequent
 # tests.
-test CompositeEntity-11.1 {Test deepGetLinkedEntities on component relations} {
+test CompositeEntity-11.1 {Test deepLinkedEntities on component relations} {
     # This structure is the example in the kernel design document.
 
     # See ExampleSystem.tcl for a standalone file containing these commands
