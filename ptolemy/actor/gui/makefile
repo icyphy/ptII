@@ -51,10 +51,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	MatrixViewer.java \
+	GUIApplication.java \
 	ExecEvent.java \
 	ExecEventListener.java \
 	HistogramPlotter.java \
+	MatrixViewer.java \
+	ModelFrame.java \
+	ModelPane.java \
 	MoMLApplication.java \
 	ParameterEditor.java \
 	Placeable.java \
@@ -63,7 +66,6 @@ JSRCS = \
 	PtolemyApplet.java \
 	PtolemyApplication.java \
 	PtolemyQuery.java \
-	PtolemyFrame.java \
 	SequencePlotter.java \
 	SketchedSource.java \
 	TimedPlotter.java\

@@ -79,11 +79,13 @@ public class PtolemyApplication implements ExecutionListener {
      *  @exception Exception If command line arguments have problems.
      */
     public PtolemyApplication(String args[]) throws Exception {
-        _parseArgs(args);
-        Iterator models = _models.iterator();
-        while(models.hasNext()) {
-            CompositeActor model = (CompositeActor)models.next();
-            startRun(model);
+        if (args != null) {
+            _parseArgs(args);
+            Iterator models = _models.iterator();
+            while(models.hasNext()) {
+                CompositeActor model = (CompositeActor)models.next();
+                startRun(model);
+            }
         }
     }
 
@@ -110,7 +112,7 @@ public class PtolemyApplication implements ExecutionListener {
         }
     }
 
-    /** Report that an execution error has occured.  This method
+    /** Report that an execution error has occurred.  This method
      *  is called by the specified manager.
      *  @param manager The manager calling this method.
      *  @param ex The exeception being reported.
@@ -175,7 +177,8 @@ public class PtolemyApplication implements ExecutionListener {
 
     /** Remove a model from this application.  If the model has a manager,
      *  then deregister as an execution listener.  If there are no more
-     *  models, then exit the application.
+     *  models, then exit the application.  If the model is not associated
+     *  with this application, then do nothing.
      *  @param model The model to remove.
      */
     public void remove(CompositeActor model) {

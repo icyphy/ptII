@@ -149,7 +149,6 @@ public class MoMLApplication extends PtolemyApplication {
             if (toplevel instanceof TypedCompositeActor) {
                 CompositeActor castTopLevel = (CompositeActor)toplevel;
                 add(castTopLevel);
-                startRun(castTopLevel);
             }
         } catch (Exception ex) {
             if (ex instanceof XmlException) {

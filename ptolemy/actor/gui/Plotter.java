@@ -130,8 +130,7 @@ public class Plotter extends TypedAtomicActor
 
     /** Configure the plot with data from the specified input stream,
      *  which is assumed to be in PlotML format.  This should be called
-     *  after place(), if place()
-     *  is going to be called at all.
+     *  after place(), if place() is going to be called at all.
      *  @param base The base relative to which references within the input
      *   stream are found, or null if this is not known.
      *  @param in InputStream
@@ -142,7 +141,6 @@ public class Plotter extends TypedAtomicActor
         if (plot == null) {
             place(_container);
         }
-
         PlotMLParser parser = new PlotMLParser(plot);
         parser.parse(base, in);
     }
