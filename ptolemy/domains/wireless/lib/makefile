@@ -54,7 +54,9 @@ JSRCS = \
 	LimitedRangeChannel.java \
 	Locator.java \
 	RadioChannel.java \
-	Triangulator.java
+	Triangulator.java \
+	WiredToWireless.java \
+	WirelessToWired.java
 
 OTHER_FILES_TO_BE_JARED = \
 	actors.xml \

@@ -22,6 +22,12 @@
 	<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector"/>
 </entity>
 
+<entity name="WiredToWireless" class="ptolemy.domains.wireless.lib.WiredToWireless">
+</entity>
+
+<entity name="WirelessToWired" class="ptolemy.domains.wireless.lib.WirelessToWired">
+</entity>
+
       </group>
     ?>
   </configure>
