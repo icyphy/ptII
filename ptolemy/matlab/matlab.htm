@@ -32,11 +32,20 @@ your path includes <code>$PTII/bin</code>.
 <br><code>libeng.dll</code> is located in the <code>bin/win32</code>
 subdirectory of Matlab.
 
-Under Windows 2000, you set the path via
+You can either set your path permanently using the Control panel,
+or set it temporarily in your current Bash shell.
+
+ <p>Under Windows 2000, you set the path via
 the Environment tab of the System control panel
 (<CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt;
 <CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt;
 <CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>
+ <p>Under Cygwin Bash, if your Ptolemy II installation was
+at <CODE>c:/ptII</CODE>, then you might do
+<pre>
+PATH=/cygdrive/c/ptII/bin:$PATH
+export PATH
+</pre>
 
 <h2>Compiling</h2>
 
@@ -104,5 +113,41 @@ the Matlab interface can be found at
    Note that during the preinitialize phase there may be a delay while
    the Matlab engine starts up over the network.
 </ol>
+<h2>Troubleshooting</h2>
+Things to try:
+<ul>
+<li> Be sure that you can run Matlab by hand outside of
+Ptolemy II using <CODE>Start</CODE> -&gt; <CODE>Programs</CODE>
+-&gt; <CODE>Matlab <I>N.N</I></CODE> -&gt; <CODE>Matlab <I>N.N</I></CODE>.
+ <br>This will test that Matlab is properly installed on your machine
+and that you have a license
+
+<li> Be sure that ptmatlab.dll is in you path.
+ <br>Under bash, try:
+<pre>
+type ptmatlab.dll
+</pre>
+You should get something like:
+<pre>
+ptmatlab.dll is /cygdrive/c/ptII/bin/ptmatlab.dll
+</pre>
+If <CODE>ptmatlab.dll</CODE> is not found, then set your path
+and be sure to export PATH
+<pre>
+PATH=/cygdrive/c/ptII/bin:$PATH
+export PATH
+</pre>
+
+<li> It is better to start <CODE>vergil</CODE> and then
+use <CODE>File</CODE> -&gt; <CODE>Open</CODE> of a Matlab model
+than it is to pass the Matlab model as a command line argument.
+ <br>The reason is that the failure to load the Matlab
+interface might result in errors and starting vergil with
+a Matlab model as a command line may result in the error message
+being hidden.
+
+
+</ul>
+
 </body>
 </html>
