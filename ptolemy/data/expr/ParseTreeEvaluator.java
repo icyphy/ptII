@@ -1006,44 +1006,44 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                       inner classes                       ////
 
-        private class ExpressionFunction implements FunctionToken.Function {
-
-                public ExpressionFunction(List argumentNames, ASTPtRootNode exprRoot,
-                                ParserScope freeVariablesScope) {
-                        _argumentNames = new ArrayList(argumentNames);
-                        _exprRoot = exprRoot;
-                        _freeVariablesScope = freeVariablesScope;
-                }
-
-                public ptolemy.data.Token apply(List args)
-                                throws IllegalActionException {
-                        if (_parseTreeEvaluator == null) {
-                                _parseTreeEvaluator = new ParseTreeEvaluator();
-                        }
-                        // construct a NamedConstantsScope that contains mappings from
-                        // argument names to the given argument values
-                        Map map = new HashMap();
-                        for (int i = 0; i < args.size(); ++i) {
-                                String name = (String)_argumentNames.get(i);
-                                ptolemy.data.Token arg = (ptolemy.data.Token)args.get(i);
-                                map.put(name, arg);
-                        }
-                        NamedConstantsScope argumentsScope = new NamedConstantsScope(map);
-                        ArrayList listOfScopes = new ArrayList(2);
-                        listOfScopes.add(0, argumentsScope);
-                        listOfScopes.add(1, _freeVariablesScope);
-                        ParserScope evaluationScope = new NestedScope(listOfScopes);
-                        return _parseTreeEvaluator.evaluateParseTree(_exprRoot, evaluationScope);
-                }
-
-                public int getNumberOfArguments() {
-                        return _argumentNames.size();
-                }
-
-                private ASTPtRootNode _exprRoot;
-                private List _argumentNames;
-                private ParserScope _freeVariablesScope;
-                private ParseTreeEvaluator _parseTreeEvaluator;
+    private class ExpressionFunction implements FunctionToken.Function {
+        
+        public ExpressionFunction(List argumentNames, ASTPtRootNode exprRoot,
+                ParserScope freeVariablesScope) {
+            _argumentNames = new ArrayList(argumentNames);
+            _exprRoot = exprRoot;
+            _freeVariablesScope = freeVariablesScope;
         }
-
+        
+        public ptolemy.data.Token apply(List args)
+                throws IllegalActionException {
+            if (_parseTreeEvaluator == null) {
+                _parseTreeEvaluator = new ParseTreeEvaluator();
+            }
+            // construct a NamedConstantsScope that contains mappings from
+            // argument names to the given argument values
+            Map map = new HashMap();
+            for (int i = 0; i < args.size(); ++i) {
+                String name = (String)_argumentNames.get(i);
+                ptolemy.data.Token arg = (ptolemy.data.Token)args.get(i);
+                map.put(name, arg);
+            }
+            NamedConstantsScope argumentsScope = new NamedConstantsScope(map);
+            ArrayList listOfScopes = new ArrayList(2);
+            listOfScopes.add(0, argumentsScope);
+            listOfScopes.add(1, _freeVariablesScope);
+            ParserScope evaluationScope = new NestedScope(listOfScopes);
+            return _parseTreeEvaluator.evaluateParseTree(
+                    _exprRoot, evaluationScope);
+        }
+        
+        public int getNumberOfArguments() {
+            return _argumentNames.size();
+        }
+        
+        private ASTPtRootNode _exprRoot;
+        private List _argumentNames;
+        private ParserScope _freeVariablesScope;
+        private ParseTreeEvaluator _parseTreeEvaluator;
+    }   
 }

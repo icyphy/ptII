@@ -60,24 +60,24 @@ public class NestedScope implements ParserScope {
 
     /** Look up and return the value with the specified name in the
      *  scope. Start from the first scope in the list supplied to the
-         *  constructor. If a value is found, return the value, otherwise
-         *  continue to look up through the list. Return null if no mapping
-         *  is defined in any scope in the list.
+     *  constructor. If a value is found, return the value, otherwise
+     *  continue to look up through the list. Return null if no mapping
+     *  is defined in any scope in the list.
      *  @return The token associated with the given name in the scope.
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.data.Token get(String name) throws IllegalActionException {
-                Iterator scopes = _scopeList.iterator();
-                while (scopes.hasNext()) {
-                        ParserScope scope = (ParserScope)scopes.next();
-                        ptolemy.data.Token result = scope.get(name);
-                        if (result != null)
-                                return result;
-                }
-                return null;
+        Iterator scopes = _scopeList.iterator();
+        while (scopes.hasNext()) {
+            ParserScope scope = (ParserScope)scopes.next();
+            ptolemy.data.Token result = scope.get(name);
+            if (result != null)
+                return result;
+        }
+        return null;
     }
-
+    
     /** Look up and return the type of the value with the specified
      *  name in the scope. Return null if the name is not defined in
      *  this scope.
@@ -86,28 +86,28 @@ public class NestedScope implements ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.data.type.Type getType(String name)
-                        throws IllegalActionException {
-                Iterator scopes = _scopeList.iterator();
-                while (scopes.hasNext()) {
-                        ParserScope scope = (ParserScope)scopes.next();
-                        ptolemy.data.type.Type result = scope.getType(name);
-                        if (result != null)
-                                return result;
-                }
-                return null;
+            throws IllegalActionException {
+        Iterator scopes = _scopeList.iterator();
+        while (scopes.hasNext()) {
+            ParserScope scope = (ParserScope)scopes.next();
+            ptolemy.data.type.Type result = scope.getType(name);
+            if (result != null)
+                return result;
+        }
+        return null;
     }
-
+    
     /** Return the list of variables within the scope.
      *  @return The list of variables within the scope.
      */
     public NamedList variableList() {
-                //FIXME: create a new NamedList, add all mappings defined in the list
-                //of scopes to the new list, return the list.
+        //FIXME: create a new NamedList, add all mappings defined in the list
+        //of scopes to the new list, return the list.
         return null;
     }
-//NOTE: we probably need a method to collect all the mappings defined in a
-//scope. Such a method could return a hash map from names to value tokens.
-
+    //NOTE: we probably need a method to collect all the mappings defined in a
+    //scope. Such a method could return a hash map from names to value tokens.
+    
     private List _scopeList;
 }
 
