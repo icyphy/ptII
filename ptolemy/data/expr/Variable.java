@@ -1720,6 +1720,28 @@ public class Variable extends Attribute
 
     /** Scope implementation with local caching. */
     protected class VariableScope extends ModelScope {
+        
+        /** Construct a scope consisting of the variables
+         *  of the container of the the enclosing instance of
+         *  Variable and its containers and their scope-extending
+         *  attributes.
+         */
+        public VariableScope() {
+            this(null);
+        }
+        
+        /** Construct a scope consisting of the variables
+         *  of the specified container its containers and their
+         *  scope-extending attributes. If the argument is null,
+         *  then use the container of the enclosing instance of
+         *  Variable as the reference for the scope.
+         */
+        public VariableScope(NamedObj reference) {
+            _reference = reference;
+            if (_reference == null) {
+                _reference = (NamedObj)Variable.this.getContainer();
+            }
+        }
 
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
@@ -1749,7 +1771,8 @@ public class Variable extends Attribute
             
             Variable result = getScopedVariable(
                     Variable.this,
-                    (NamedObj)Variable.this.getContainer(), name);
+                    _reference,
+                    name);
 
             if (result != null) {
                 // If the variable is not in the cache, then we also
@@ -1775,7 +1798,8 @@ public class Variable extends Attribute
                 throws IllegalActionException {
             Variable result = getScopedVariable(
                     Variable.this,
-                    (NamedObj)Variable.this.getContainer(), name);
+                    _reference,
+                    name);
             if (result != null) {
                 return result.getType();
             } else {
@@ -1787,9 +1811,11 @@ public class Variable extends Attribute
          *  @return The list of variable names within the scope.
          */
         public Set identifierSet() {
-            return getAllScopedVariableNames(Variable.this,
-                    (NamedObj)Variable.this.getContainer());
+            return getAllScopedVariableNames(Variable.this, _reference);
         }
+        
+        // Reference object for the scope.
+        private NamedObj _reference;
     }
 }
 

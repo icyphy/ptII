@@ -82,6 +82,7 @@ JSRCS = \
 	CParseTreeCodeGenerator.java \
 	ExplicitScope.java \
 	ExpressionFunction.java \
+	FileParameter.java \
 	FixPointFunctions.java \
 	GeneralToken.java \
 	MatlabUtilities.java \

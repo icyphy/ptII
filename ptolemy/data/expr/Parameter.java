@@ -30,6 +30,7 @@
 */
 
 package ptolemy.data.expr;
+
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
@@ -387,7 +388,9 @@ public class Parameter extends Variable {
         try {
             workspace().getReadAccess();
             if (_parserScope == null) {
-                _parserScope = new VariableScope();
+                // Use this as the reference for the scope so that
+                // a parameter can define its own constants.
+                _parserScope = new VariableScope(this);
             }
             if (!_parseTreeValid) {
                 _parseList = new ParseList(expression, _parserScope);
@@ -541,8 +544,12 @@ public class Parameter extends Variable {
                 } else {
                     ptolemy.data.Token value = _scope.get(element.string);
                     if (value == null) {
-                        throw new IllegalActionException(Parameter.this,
-                        "The ID " + element.string + " is undefined.");
+                        // Look up registered constants.
+                        value = Constants.get(element.string);
+                        if (value == null) {                        
+                            throw new IllegalActionException(Parameter.this,
+                            "The ID " + element.string + " is undefined.");
+                        }
                     }
                     // NOTE: Treat string tokens specially to avoid
                     // getting their double quotes.
