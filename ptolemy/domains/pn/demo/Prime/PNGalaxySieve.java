@@ -107,7 +107,8 @@ public class PNGalaxySieve extends AtomicActor {
         ChangeRequest request = new ChangeRequest(this, "") {
 
             public void execute() {
-                //System.out.println("TopologyRequest event q being constructed!");
+                //System.out.println("TopologyRequest event " +
+                // "q being constructed!");
 
                 // remember this
 		LinkedList listofrels = new LinkedList();
@@ -157,23 +158,28 @@ public class PNGalaxySieve extends AtomicActor {
 		// queueEntityAddedEvent(container, galaxy);
                 // 		queuePortAddedEvent(galaxy, galin);
                 // 		queuePortAddedEvent(galaxy, galout);
-                //                 queueEntityAddedEvent(galaxy, newSieve);
+                //          queueEntityAddedEvent(galaxy, newSieve);
                 // 		Enumeration relations = listofrels.elements();
-                //                 while (relations.hasMoreElements()) {
-                // 		    Relation relation = (Relation)relations.nextElement();
-                //                     queuePortUnlinkedEvent(relation, _output);
-                //                     queuePortLinkedEvent(relation, galout);
-                //                 }
-                // 		queueRelationAddedEvent(galaxy, (ComponentRelation)newin);
-                // 		queueRelationAddedEvent(galaxy, (ComponentRelation)newout);
+                //          while (relations.hasMoreElements()) {
+                // 		    Relation relation =
+                //                       (Relation)relations.nextElement();
+                //              queuePortUnlinkedEvent(relation, _output);
+                //              queuePortLinkedEvent(relation, galout);
+                //          }
+                // 		queueRelationAddedEvent(galaxy,
+                //                              (ComponentRelation)newin);
+                // 		queueRelationAddedEvent(galaxy,
+                //                              (ComponentRelation)newout);
                 // 		queuePortLinkedEvent(newout, galout);
                 // 		queuePortLinkedEvent(newout, outport);
                 // 		queuePortLinkedEvent(newin, input);
                 // 		queuePortLinkedEvent(newin, galin);
-                //                 //FIXME: This cast should not be required. Mention it to johnr
-                //                 queueRelationAddedEvent(container, (ComponentRelation)newRelation);
-                //                 queuePortLinkedEvent(newRelation, _output);
-                //                 queuePortLinkedEvent(newRelation, galin);
+                //          //FIXME: This cast should not be required.
+                //          // Mention it to johnr
+                //          queueRelationAddedEvent(container,
+                //                    (ComponentRelation)newRelation);
+                //          queuePortLinkedEvent(newRelation, _output);
+                //          queuePortLinkedEvent(newRelation, galin);
             }
         };
         return request;

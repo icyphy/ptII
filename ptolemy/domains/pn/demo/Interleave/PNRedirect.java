@@ -67,13 +67,16 @@ public class PNRedirect extends AtomicActor{
     public void fire() throws IllegalActionException {
         int i;
         Token data;
-	System.out.println(this.getName()+" writes *before* "+_initValue.stringValue()+" to "+_output.getName());
+	System.out.println(this.getName() + " writes *before* " +
+                _initValue.stringValue() + " to " + _output.getName());
 	_output.broadcast(_initValue);
-	System.out.println(this.getName()+" writes "+_initValue.stringValue()+" to "+_output.getName());
+	System.out.println(this.getName() + " writes " + 
+                _initValue.stringValue()+" to "+_output.getName());
 	while (true) {
 	    data = _input.get(0);
 	    _output.broadcast(data);
-	    System.out.println(this.getName()+" writes "+data.stringValue()+" to "+_output.getName());
+	    System.out.println(this.getName() + " writes " + 
+                    data.stringValue()+" to "+_output.getName());
 	}
     }
 
@@ -97,7 +100,8 @@ public class PNRedirect extends AtomicActor{
 	if (name.equals("Initial Value")) {
 	    _initValue = new IntToken(valueString);
 	} else {
-	    throw new IllegalActionException(this,name+" param does not exist");
+	    throw new IllegalActionException(this, name +
+                    " parameter does not exist");
 	}
     }
 
