@@ -559,7 +559,7 @@ DIST_DIR = $(DIST_BASE)/$(PTDIST)
 
 update_ftp:
 	rm -rf $(DIST_DIR)
-	cat $(PTDIST).tar.gz | (cd $(DIST_BASE); tar -zxf -)
+	cat $(PTDIST).tar.gz | (cd $(DIST_BASE); $(GNUTAR) -zxf -)
 	cp -r $(DIST_BASE)/$(PTDIST)_tmp/* $(DIST_DIR)/ptolemy/plot/doc/download
 	cp doc/download/index.htm $(DIST_DIR)/ptolemy/plot/doc/download
 	cp $(PTDIST).tar.gz $(DIST_DIR)/ptolemy/plot/
