@@ -56,7 +56,7 @@ been suspended.
 public interface ExecutionListener {
 
     /** Report an execution failure.   This method will be called
-     *  when an exception is caught by a manager.
+     *  when an exception or error is caught by a manager.
      *  Exceptions are reported this way when the run() or startRun()
      *  methods of the manager are used to perform the execution.
      *  If instead the execute() method is used, then exceptions are
@@ -66,9 +66,9 @@ public interface ExecutionListener {
      *  so).
      *
      *  @param manager The manager controlling the execution.
-     *  @param exception The exception to report.
+     *  @param throwable The throwable to report.
      */
-    public void executionError(Manager manager, Exception exception);
+    public void executionError(Manager manager, Throwable throwable);
 
     /** Report that the current execution has finished and
      *  the wrapup sequence has completed normally. The number of successfully
