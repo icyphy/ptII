@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
+@ProposedRating Green (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
@@ -119,7 +119,8 @@ public class LogicFunction extends Transformer {
 
 
     /** Override the base class to determine which function is being
-     *  specified.
+     *  specified.  Read the value of the function attribute and set
+     *  the cached value appropriately.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */
@@ -127,7 +128,8 @@ public class LogicFunction extends Transformer {
             throws  IllegalActionException {
 
         if (attribute == function) {
-            String functionName = function.getExpression();
+            String functionName = 
+                function.getExpression().trim().toLowerCase();
 
             if (functionName.equals("and")) {
                 _function = _AND;
@@ -149,46 +151,21 @@ public class LogicFunction extends Transformer {
                 _negate = true;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized logic function: " + functionName);
+                        "Unrecognized logic function: " + functionName
+                        + ".  Valid functions are 'and', 'or', 'xor', "
+                        + "'nand', 'nor', and 'xnor'.");
             }
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /** Consume at most one input token from each input channel,
-     *  and compute the specified logic function of the input.
-     *  If there is no input, then produce no output.
+    /** Consume at most one input token from each input channel, 
+     *  and produce a token on the output port.  If there is no 
+     *  input on any channel, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        switch(_function) {
-        case _AND:
-            _readAndCalculate();
-            break;
-        case _OR:
-            _readAndCalculate();
-            break;
-        case _XOR:
-            _readAndCalculate();
-            break;
-        default:
-            throw new InternalErrorException(
-                    "Invalid value for _function private variable. "
-                    + "LogicFunction actor (" + getFullName()
-                    + ")"
-                    + " on function type " + _function);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Consume at most one input token from each channel, and produce a
-     *  token on the output port.
-     *  @exception IllegalActionException If there is no director.
-     */
-    private void _readAndCalculate() throws IllegalActionException {
         BooleanToken value = null;
         BooleanToken in = null;
         for (int i = 0; i < input.getWidth(); i++) {
@@ -199,41 +176,37 @@ public class LogicFunction extends Transformer {
         }
         if (value != null) {
             if (_negate) value = value.not();
-            output.broadcast((BooleanToken)value);
+            output.send(0,(BooleanToken)value);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
 
     /** Calculate the function on the given arguments.
      *  @param in The new input value.  Should never be null.
      *  @param old The old result value, or null if there is none.
      *  @return The result of applying the function.
+     *  @exception IllegalActionException Possibly thrown by BooleanToken.
      */
-    private BooleanToken _updateFunction(BooleanToken in, BooleanToken old) {
-        try {
-            Token result;
+    private BooleanToken _updateFunction(BooleanToken in, BooleanToken old)
+            throws IllegalActionException {
+        Token result;
+        if (old == null) {
+            result = in;
+        } else {
             switch(_function) {
             case _AND:
-                if (old == null) {
-                    result = in;
-                } else {
-                    result = old.multiply(in);
-                }
+                result = old.multiply(in);
                 break;
             case _OR:
-                if (old == null) {
-                    result = in;
-                } else {
-                    BooleanToken negatedResult =
-                        (BooleanToken)((old.not()).multiply(in.not()));
-                    result = negatedResult.not();
-                }
+                BooleanToken negatedResult =
+                    (BooleanToken)((old.not()).multiply(in.not()));
+                result = negatedResult.not();
                 break;
             case _XOR:
-                if (old == null) {
-                    result = in;
-                } else {
-                    result = old.add(in);
-                }
+                result = old.add(in);
                 break;
             default:
                 throw new InternalErrorException(
@@ -242,17 +215,15 @@ public class LogicFunction extends Transformer {
                         + ")"
                         + " on function type " + _function);
             }
-            return (BooleanToken)result;
-        } catch (IllegalActionException e) {
-            String err = "Boolean operation performed on non-boolean token.";
-            throw new InternalErrorException(err);
         }
+        return (BooleanToken)result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // An indicator for the function to compute.
+    // An indicator for the function to compute.  
+    // Valid values are _AND, _OR, and _XOR.
     private int _function;
 
     // An indicator for negating the final result.
@@ -263,3 +234,4 @@ public class LogicFunction extends Transformer {
     private static final int _OR  = 1;
     private static final int _XOR = 2;
 }
+
