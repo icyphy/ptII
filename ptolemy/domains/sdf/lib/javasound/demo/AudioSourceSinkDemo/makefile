@@ -67,7 +67,7 @@ all: jclass
 install: all
 
 demo:
-	CLASSPATH="$(CLASSPATH)" java AudioSourceSinkDemo
+	CLASSPATH="$(CLASSPATH)" java  ptolemy.domains.sdf.lib.javasound.demo.AudioSourceSinkDemo.AudioSourceSinkDemo
 
 depend:
 	@echo "no dependencies in this directory"
