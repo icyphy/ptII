@@ -42,6 +42,7 @@ import diva.gui.toolbox.*;
 import diva.graph.GraphController;
 import diva.graph.NodeController;
 import diva.graph.NodeInteractor;
+import diva.graph.BasicNodeController;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -77,7 +78,7 @@ is used to update the location of the node as the figure moves.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class LocatableNodeController extends NodeController {
+public class LocatableNodeController extends BasicNodeController {
 
     public LocatableNodeController(GraphController controller) {
 	super(controller);

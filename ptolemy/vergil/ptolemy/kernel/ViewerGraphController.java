@@ -45,6 +45,7 @@ import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.EdgeController;
+import diva.graph.AbstractGraphController;
 import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.graph.NodeController;
@@ -79,7 +80,7 @@ create a context-sensitive menu for the graph.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class ViewerGraphController extends GraphController {
+public class ViewerGraphController extends AbstractGraphController {
     /**
      * Create a new basic controller with default
      * terminal and edge interactors.

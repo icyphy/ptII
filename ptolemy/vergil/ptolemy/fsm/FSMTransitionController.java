@@ -73,7 +73,7 @@ undirected edge are allowed.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class FSMTransitionController extends EdgeController {
+public class FSMTransitionController extends BasicEdgeController {
     public FSMTransitionController(GraphController controller) {
 	super(controller);
 	// Create and set up the target for connectors

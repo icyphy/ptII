@@ -197,7 +197,6 @@ public class XMLIcon extends EditorIcon implements ValueListener {
         }
         try {
             String text = _description.value();
-
             Reader in = new StringReader(text);
             // FIXME: Do we need a base here?
             XmlDocument document = new XmlDocument((URL)null);

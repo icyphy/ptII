@@ -69,7 +69,7 @@ entity).  Right clicking on the port will create a context menu for the port.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class EntityPortController extends NodeController {
+public class EntityPortController extends BasicNodeController {
     public EntityPortController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new EntityPortRenderer());

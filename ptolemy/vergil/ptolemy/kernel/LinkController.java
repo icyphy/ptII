@@ -69,7 +69,7 @@ undirected edge are allowed.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class LinkController extends EdgeController {
+public class LinkController extends BasicEdgeController {
     public LinkController(GraphController controller) {
 	super(controller);
 	SelectionModel sm = controller.getSelectionModel();
