@@ -129,7 +129,7 @@ public class Exec extends TypedAtomicActor {
 
 
     /** Indicator of whether fire method blocks on the process and waits
-     *  for output.  
+     *  for output.
      *  If true, fire() waits until there is output from the subprocess.
      *  The type is boolean with default true.
      */
@@ -150,7 +150,7 @@ public class Exec extends TypedAtomicActor {
     /** The directory to execute the command in.  The directory parameter is
      *  read each time the subprocess is executed. The initial default
      *  value of this parameter $CWD, which corresponds with the value
-     *  of the JDK user.dir property.  
+     *  of the JDK user.dir property.
      */
     public FileParameter directory;
 
@@ -424,7 +424,7 @@ public class Exec extends TypedAtomicActor {
             _outputGobbler.start();
 
             if (_streamReaderThreadCount > 1000) {
-                // Avoid overflow. 
+                // Avoid overflow.
                 _streamReaderThreadCount = 0;
             }
 
@@ -544,7 +544,7 @@ public class Exec extends TypedAtomicActor {
          *  This method is called if we call stop() or stopFire() or if
          *  another StreamReaderThread gets output and we want to
          *  notify this thread so it stop blocking.
-         */   
+         */
         public void notifyStringBuffer() {
             // Object.notifyAll() is final, so we call this method
             // notifyStringBuffer instead.
@@ -560,7 +560,7 @@ public class Exec extends TypedAtomicActor {
 
         /** Read lines from the inputStream and append them to the
          *  stringBuffer.  If _otherStream is not null, then
-         *  if we read any data, notify the other thread. 
+         *  if we read any data, notify the other thread.
          */
         public void run() {
             try {
@@ -594,7 +594,7 @@ public class Exec extends TypedAtomicActor {
                 }
             } catch (Throwable throwable) {
                 throw new InternalErrorException(_actor, throwable,
-                        "Failed while reading from " + _inputStream); 
+                        "Failed while reading from " + _inputStream);
             }
         }
 
@@ -631,13 +631,13 @@ public class Exec extends TypedAtomicActor {
         /** Create a LockingStringBuffer.
          *  @param actor The parent actor of this LockingStringBuffer, which
          *  is used in error messages.
-         */   
+         */
         public LockingStringBuffer(Nameable actor) {
             _actor = actor;
             _stringBuffer = new StringBuffer();
         }
 
-        /* Call notifyAll() */ 
+        /* Call notifyAll() */
         public synchronized void notifyStringBuffer() {
             // Object.notifyAll() is final, so we call this method
             // notifyStringBuffer instead.
