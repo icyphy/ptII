@@ -59,6 +59,7 @@ JSIMPLE_TESTS = \
 	Object.tcl \
 	Simple.tcl \
     ramp.tcl \
+    FIR.tcl \
     FIRsingle.tcl \
 
 # Graphical Java tests that use Tcl.
