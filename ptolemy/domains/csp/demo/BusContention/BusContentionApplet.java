@@ -171,12 +171,12 @@ public class BusContentionApplet extends CSPApplet {
         Object n5 = model.createNode(_processActor2);
         Object n6 = model.createNode(_processActor3);
 
-        model.addNode(n1, root);
-        model.addNode(n2, root);
-        model.addNode(n3, root);
-        model.addNode(n4, root);
-        model.addNode(n5, root);
-        model.addNode(n6, root);
+        model.addNode(this, n1, root);
+        model.addNode(this, n2, root);
+        model.addNode(this, n3, root);
+        model.addNode(this, n4, root);
+        model.addNode(this, n5, root);
+        model.addNode(this, n6, root);
 
         _nodeMap.put(_contentionActor, n1);
         _nodeMap.put(_alarmActor, n2);
@@ -189,32 +189,32 @@ public class BusContentionApplet extends CSPApplet {
 	Object e;
 
 	e = model.createEdge(null);
-	model.setEdgeHead(e, n1);
-	model.setEdgeTail(e, n2);
+	model.setEdgeHead(this, e, n1);
+	model.setEdgeTail(this, e, n2);
 
  	e = model.createEdge(null);
-	model.setEdgeHead(e, n1);
-	model.setEdgeTail(e, n4);
+	model.setEdgeHead(this, e, n1);
+	model.setEdgeTail(this, e, n4);
 
 	e = model.createEdge(null);
-	model.setEdgeHead(e, n1);
-	model.setEdgeTail(e, n5);
+	model.setEdgeHead(this, e, n1);
+	model.setEdgeTail(this, e, n5);
 
 	e = model.createEdge(null);
-	model.setEdgeHead(e, n1);
-	model.setEdgeTail(e, n6);
+	model.setEdgeHead(this, e, n1);
+	model.setEdgeTail(this, e, n6);
 
 	e = model.createEdge(null);
-	model.setEdgeHead(e, n3);
-	model.setEdgeTail(e, n4);
+	model.setEdgeHead(this, e, n3);
+	model.setEdgeTail(this, e, n4);
 
 	e = model.createEdge(null);
-	model.setEdgeHead(e, n3);
-	model.setEdgeTail(e, n5);
+	model.setEdgeHead(this, e, n3);
+	model.setEdgeTail(this, e, n5);
 
 	e = model.createEdge(null);
-	model.setEdgeHead(e, n3);
-	model.setEdgeTail(e, n6);
+	model.setEdgeHead(this, e, n3);
+	model.setEdgeTail(this, e, n6);
 
         return model;
     }
@@ -464,7 +464,7 @@ public class BusContentionApplet extends CSPApplet {
             // Get the corresponding graph node and its figure
             Object node = (Object) _nodeMap.get(actor);
             LabelWrapper wrapper = (LabelWrapper)
-                _graphPane.getGraphController().getGraphModel().getVisualObject(node);
+                _graphPane.getGraphController().getFigure(node);
             final BasicFigure figure = (BasicFigure)
                 wrapper.getChild();
 

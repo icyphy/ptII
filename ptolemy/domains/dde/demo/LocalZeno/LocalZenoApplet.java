@@ -161,15 +161,15 @@ public class LocalZenoApplet extends DDEApplet {
         Object n8 = model.createNode(_fBack2);
         Object n9 = model.createNode(_rcvr2);
 
-        model.addNode(n1, root);
-        model.addNode(n2, root);
-        model.addNode(n3, root);
-        model.addNode(n4, root);
-        model.addNode(n5, root);
-        model.addNode(n6, root);
-        model.addNode(n7, root);
-        model.addNode(n8, root);
-        model.addNode(n9, root);
+        model.addNode(this, n1, root);
+        model.addNode(this, n2, root);
+        model.addNode(this, n3, root);
+        model.addNode(this, n4, root);
+        model.addNode(this, n5, root);
+        model.addNode(this, n6, root);
+        model.addNode(this, n7, root);
+        model.addNode(this, n8, root);
+        model.addNode(this, n9, root);
 
         _nodeMap.put(_clock, n1);
 
@@ -187,44 +187,44 @@ public class LocalZenoApplet extends DDEApplet {
 	Object e;
 
 	e = model.createEdge(null);
-	model.setEdgeTail(e, n1);
-	model.setEdgeHead(e, n2);
+	model.setEdgeTail(this, e, n1);
+	model.setEdgeHead(this, e, n2);
 
 	e = model.createEdge(null);
-	model.setEdgeTail(e, n2);
-	model.setEdgeHead(e, n3);
+	model.setEdgeTail(this, e, n2);
+	model.setEdgeHead(this, e, n3);
 
 	e = model.createEdge(null);
-	model.setEdgeTail(e, n4);
-	model.setEdgeHead(e, n2);
+	model.setEdgeTail(this, e, n4);
+	model.setEdgeHead(this, e, n2);
 
 	e = model.createEdge(null);
-	model.setEdgeTail(e, n3);
-	model.setEdgeHead(e, n4);
+	model.setEdgeTail(this, e, n3);
+	model.setEdgeHead(this, e, n4);
 
 	e = model.createEdge(null);
-	model.setEdgeTail(e, n3);
-	model.setEdgeHead(e, n5);
+	model.setEdgeTail(this, e, n3);
+	model.setEdgeHead(this, e, n5);
 
 	e = model.createEdge(null);
-	model.setEdgeTail(e, n1);
-	model.setEdgeHead(e, n6);
+	model.setEdgeTail(this, e, n1);
+	model.setEdgeHead(this, e, n6);
 
 	e = model.createEdge(null);
-	model.setEdgeTail(e, n7);
-	model.setEdgeHead(e, n8);
+	model.setEdgeTail(this, e, n7);
+	model.setEdgeHead(this, e, n8);
 
 	e = model.createEdge(null);
-	model.setEdgeTail(e, n6);
-	model.setEdgeHead(e, n7);
+	model.setEdgeTail(this, e, n6);
+	model.setEdgeHead(this, e, n7);
 
 	e = model.createEdge(null);
-	model.setEdgeTail(e, n7);
-	model.setEdgeHead(e, n9);
+	model.setEdgeTail(this, e, n7);
+	model.setEdgeHead(this, e, n9);
 
 	e = model.createEdge(null);
-	model.setEdgeTail(e, n8);
-	model.setEdgeHead(e, n6);
+	model.setEdgeTail(this, e, n8);
+	model.setEdgeHead(this, e, n6);
 
         return model;
     }
@@ -489,7 +489,7 @@ public class LocalZenoApplet extends DDEApplet {
 
             // Get the corresponding graph node and its figure
             Object node = _nodeMap.get(actor);
-            LabelWrapper wrapper = (LabelWrapper)_graphPane.getGraphController().getGraphModel().getVisualObject(node);
+            LabelWrapper wrapper = (LabelWrapper)_graphPane.getGraphController().getFigure(node);
 	    final BasicFigure figure = (BasicFigure)
                 wrapper.getChild();
 
