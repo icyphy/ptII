@@ -2,7 +2,7 @@
 #
 # @Author: John S. Davis II
 #
-# @Version: %W%	%G%
+# @Version: $Id$
 #
 # @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
@@ -50,39 +50,33 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test ODFActor-2.1 {Check setPriorities} {
+test ODFActor-2.1 {getNextToken() - Send One Token} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-    # Note: Director not really needed since blocking won't occur in this test
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
     set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
     $topLevel setDirector $dir
-    set actorA [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorA"] 
-    set actorB [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorB"] 
-    
-    set portA1 [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorA "portA1"]
-    # $portA1 setInput true
-    $portA1 setPriority 15
-    
-    set portA2 [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorA "portA2"]
-    # $portA2 setInput true
-    $portA2 setPriority 5
-    
-    set portB1 [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorB "portB1"]
-    # $portB1 setOutput true
-    
-    set portB2 [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorB "portB2"]
-    # $portB2 setOutput true
-    
-    set rel1 [$topLevel connect $portB1 $portA1 "rel1"]
-    set rel2 [$topLevel connect $portB2 $portA2 "rel2"]
-    
-    $portA1 createReceivers
-    $portA2 createReceivers
-    
-    $actorA setPriorities
+    $topLevel setManager $manager
+    set actorA [java::new ptolemy.domains.odf.kernel.test.ODFPutToken $topLevel "actorA" 1] 
+    set actorB [java::new ptolemy.domains.odf.kernel.test.ODFGetNToken $topLevel "actorB" 1] 
 
-    list [$portA1 getPriority] [$portA2 getPriority]
-} {15 5}
+    set token0 [java::new ptolemy.data.Token]
+    $actorA setToken $token0 5.5 0
+    set portA [$actorA getPort "output"]
+    set portB [$actorB getPort "input"]
+    set rel [$topLevel connect $portB $portA "rel"]
+
+    $manager run
+
+    set outToken0 [$actorB getToken 0] 
+
+    if { $outToken0 == $token0 } {
+	set val 1
+    }
+
+    list $val
+
+} {1}
 
 
 

@@ -100,10 +100,14 @@ public class ODFActor extends AtomicActor {
      */
     public double getCurrentTime() {
 	Thread thread = Thread.currentThread();
+	TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
+	_currentTime = timeKeeper.getCurrentTime();
+	/*
 	if( thread instanceof ODFThread ) {
 	    _currentTime = ((ODFThread)thread).getCurrentTime();
             return _currentTime;
 	}
+	*/
 	return _currentTime;
     }
 
@@ -116,7 +120,7 @@ public class ODFActor extends AtomicActor {
      * @return Return a non-NullToken that has the minimum, nonnegative
      *  rcvrTime of all receivers contained by this actor.
      */
-    public Token getNextToken() {
+    public Token getNextToken() throws IllegalActionException {
         Token token = _getNextInput();
         if( token instanceof NullToken ) {
 	    System.out.println(getName()+": got a NullToken "
@@ -135,6 +139,31 @@ public class ODFActor extends AtomicActor {
      */
     public boolean postfire() throws IllegalActionException {
         return false;
+    }
+
+    /**
+     */
+    public TimeKeeper getTimeKeeper() {
+	return _timeKeeper;
+    }
+
+    /**
+     */
+    public void initialize() throws IllegalActionException {
+	Enumeration enum = inputPorts();
+	ODFReceiver rcvr = null;
+	while( enum.hasMoreElements() ) {
+	    IOPort port = (IOPort)enum.nextElement();
+	    Receiver[][] rcvrs = port.getReceivers();
+            for (int i = 0; i < rcvrs.length; i++) {
+                for (int j = 0; j < rcvrs[i].length; j++) {
+		    rcvr = (ODFReceiver)rcvrs[i][j];
+		    j = rcvrs[i].length;
+		    i = rcvrs.length;
+		}
+	    }
+	}
+	_timeKeeper = rcvr.getReceivingTimeKeeper();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -156,10 +185,32 @@ public class ODFActor extends AtomicActor {
      * @see ptolemy.domains.odf.kernel.ODFReceiver
      * @see ptolemy.domains.odf.kernel.ODFThread
      */
-    private Token _getNextInput() {
+    private Token _getNextInput() throws IllegalActionException {
+	/*
+	Enumeration enum = inputPorts();
+	ODFReceiver rcvr = null;
+	while( enum.hasMoreElements() ) {
+	    IOPort port = (IOPort)enum.nextElement();
+	    Receiver[][] rcvrs = port.getReceivers();
+            for (int i = 0; i < rcvrs.length; i++) {
+                for (int j = 0; j < rcvrs[i].length; j++) {
+		    rcvr = (ODFReceiver)rcvrs[i][j];
+		    j = rcvrs[i].length;
+		    i = rcvrs.length;
+		}
+	    }
+	}
+	TimeKeeper timeKeeper = rcvr.getReceivingTimeKeeper();
+        ODFReceiver lowestRcvr = timeKeeper.getFirstRcvr();
+	*/
+        ODFReceiver lowestRcvr = getTimeKeeper().getFirstRcvr();
+
+	/*
 	Thread thread = Thread.currentThread();
+	TimeKeeper timeKeeper = thread.getTimeKeeper();
 	ODFThread odfthread = null;
         ODFReceiver lowestRcvr = null;
+	lowestRcvr = timeKeeper.getFirstRcvr();
 	if( thread instanceof ODFThread ) {
 	    odfthread = (ODFThread)thread;
             lowestRcvr = odfthread.getFirstRcvr();
@@ -167,6 +218,7 @@ public class ODFActor extends AtomicActor {
 	    System.err.println("Error: Non-ODFThread controlling "
                     +getName());
 	}
+	*/
 
 	if( lowestRcvr.hasToken() ) {
 	    return lowestRcvr.get();
@@ -181,6 +233,8 @@ public class ODFActor extends AtomicActor {
     // The currentTime of this actor is equivalent to the minimum
     // positive rcvrTime of each input receiver.
     private double _currentTime = 0.0;
+
+    private TimeKeeper _timeKeeper;
 
 }
 

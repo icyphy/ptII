@@ -61,7 +61,7 @@ keeps track of its receiver's priorities as well. The receiver with the
 highest priority is enabled for having its token consumed if the receiver
 shares a common minimum rcvrTime with one or more additional receivers.
 <P>
-The receiver priorities are set using the method setPriorities() in the
+The receiver priorities are set using the method setRcvrPriorities() in the
 following manner. All of the input receivers for a given ODFThread are
 grouped by their respective container input ports. The port groups are
 ordered according to the inverse order in which their corresponding ports
@@ -95,19 +95,24 @@ list of RcvrTimeTriples is updated.
 */
 public class ODFThread extends ProcessThread {
 
-    /** Construct a thread to be used to execute the iteration methods
-     *  of an ODFActor. This increases the count of active actors in the
-     *  director.
-     *  @param actor The ODFActor that needs to be executed.
-     *  @param director The director responsible for the execution of this
-     *  actor.
+    /** Construct a thread to be used to execute the iteration 
+     *  methods of an ODFActor. This increases the count of 
+     *  active actors in the director.
+     * @param actor The ODFActor that needs to be executed.
+     * @param director The director responsible for the execution 
+     *  of this actor.
      */
-    public ODFThread(Actor actor, ProcessDirector director) {
+    public ODFThread(Actor actor, ProcessDirector director) 
+            throws IllegalActionException {
         super(actor, director);
         _director = director;
         _manager = ((CompositeActor)
                 ((NamedObj)actor).getContainer()).getManager();
         _rcvrTimeList = new LinkedList();
+	_timeKeeper = new TimeKeeper(actor);
+
+        setRcvrPriorities(); 
+	initializeRcvrList();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,6 +125,14 @@ public class ODFThread extends ProcessThread {
      */
     public double getCurrentTime() {
         return _currentTime;
+    }
+
+    /** Return the time keeper that keeps time for the actor that this
+     *  thread controls.
+     * @return The TimeKeeper of the actor that this thread controls.
+     */
+    public TimeKeeper getTimeKeeper() {
+	return _timeKeeper;
     }
 
     /** Return the RcvrTimeTriple consisting of the receiver with the
@@ -215,21 +228,6 @@ public class ODFThread extends ProcessThread {
 	return true;
     }
 
-    /** Start this thread by first setting the receiver priorities
-     *  of the ODFActor that this thread controls, initializing the
-     *  RcvrTimeTriple and then calling the run method for this thread.
-     */
-    public void start() {
-	try {
-	    setPriorities();
-	    setRcvrList();
-	    super.start();
-        } catch (IllegalActionException e) {
-            _manager.fireExecutionError(e);
-            // _director._decreaseActiveCount();
-	}
-    }
-
     /** Set the current time of this ODFThread. If the new specified
      *  time is less than the previous value for current time, then
      *  throw an IllegalArgumentException. Do not throw an
@@ -246,6 +244,12 @@ public class ODFThread extends ProcessThread {
 		    + "set current time in the past.");
 	}
         _currentTime = time;
+    }
+
+    /** FIXME
+     */
+    public synchronized void setDelayTime(double delay) { 
+	_delayTime = delay;
     }
 
     /** Notify actors connected via output ports of the actor that
@@ -329,7 +333,7 @@ public class ODFThread extends ProcessThread {
      * @exception IllegalActionException If receiver access leads to
      *  an error.
      */
-    public synchronized void setPriorities() throws IllegalActionException {
+    public synchronized void setRcvrPriorities() throws IllegalActionException {
         LinkedList listOfPorts = new LinkedList();
         Actor actor = (Actor)getActor();
 	Enumeration enum = actor.inputPorts();
@@ -338,41 +342,15 @@ public class ODFThread extends ProcessThread {
 	}
 
         //
-        // First Order Ports 
+        // First Order The Ports 
         //
         while( enum.hasMoreElements() ) {
 	    listOfPorts.insertLast( (IOPort)enum.nextElement() ); 
-	    /*
-            IOPort port = (IOPort)enum.nextElement(); 
-            boolean portNotInserted = true;
-            if( listOfPorts.size() == 0 ) {
-                listOfPorts.insertAt( 0, port );
-                portNotInserted = false;
-            } else {
-	        if( actor instanceof ODFActor ) {
-                    for( int cnt = 0; cnt < listOfPorts.size(); cnt++ ) {
-			ODFIOPort odfport = (ODFIOPort)port;
-                        ODFIOPort nextPort = (ODFIOPort)listOfPorts.at(cnt);
-			if( odfport.getPriority() < nextPort.getPriority() ) {
-			    if( odfport != nextPort ) {
-				listOfPorts.insertAt( cnt, odfport );
-				cnt = listOfPorts.size();
-                            }
-                            portNotInserted = false;
-			}
-		    }
-	        }
-            }
-            if( portNotInserted ) {
-                listOfPorts.insertLast(port);
-                portNotInserted = false;
-            }
-	    */
         }
 
         //
-        // Now Set The Priorities Of Each Port's Receiver
-        // And Initialize RcvrList
+        // Now set the priorities of each port's receiver, set the receiving
+	// time keeper and initialize the rcvrList
         //
         int cnt = 0;
         int currentPriority = 0;
@@ -384,15 +362,25 @@ public class ODFThread extends ProcessThread {
                     ((ODFReceiver)rcvrs[i][j]).setPriority(
 			    currentPriority);
                     ((ODFReceiver)rcvrs[i][j]).setThread(this);
+                    ((ODFReceiver)rcvrs[i][j]).setReceivingTimeKeeper(_timeKeeper);
+
+		    /* Is the following necessary?? */
+		    /*****/
                     RcvrTimeTriple triple = new RcvrTimeTriple(
                             (ODFReceiver)rcvrs[i][j],
 			    _currentTime, currentPriority );
                     updateRcvrList( triple );
+		    /*****/
+
                     currentPriority++;
                 }
             }
             cnt++;
         }
+
+	//
+	// Now set the sending time keeper for all connected receivers.
+	//
     }
 
     /** Initialize the RcvrTimeList of this ODFThread by properly
@@ -401,19 +389,20 @@ public class ODFThread extends ProcessThread {
      *  while accessing the receivers contained by the actor
      *  that this ODFThread controls.
      */
-    public void setRcvrList() throws IllegalActionException {
+    public void initializeRcvrList() throws IllegalActionException {
         Actor actor = (Actor)getActor();
 	Enumeration enum = actor.inputPorts();
-	if( enum.hasMoreElements() ) {
-            return;
-	}
+
+	//
+	// Set the receiving time keeper and update the RcvrTimeTable
+	//
         while( enum.hasMoreElements() ) {
-	    IOPort port = (IOPort)enum.nextElement();
-            Receiver[][] rcvrs = port.getReceivers();
+	    IOPort inport = (IOPort)enum.nextElement();
+            Receiver[][] rcvrs = inport.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
-		    ODFReceiver rcvr =
-                            (ODFReceiver)rcvrs[i][j];
+		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j];
+                    rcvr.setReceivingTimeKeeper(_timeKeeper);
                     RcvrTimeTriple triple = new RcvrTimeTriple(
 			    rcvr, rcvr.getRcvrTime(),
 			    rcvr.getPriority() );
@@ -421,6 +410,27 @@ public class ODFThread extends ProcessThread {
 		}
 	    }
 	}
+
+	//
+	// Now set the sending time keeper for all connected receivers.
+	//
+	enum = actor.outputPorts();
+	while( enum.hasMoreElements() ) {
+	    IOPort outport = (IOPort)enum.nextElement();
+            Receiver[][] rcvrs = outport.getRemoteReceivers();
+	    if( rcvrs == null ) {
+		System.out.println("Null Rcvrs!!!");
+	    } else {
+	    }
+            for( int i = 0; i < rcvrs.length; i++ ) {
+                for( int j = 0; j < rcvrs[i].length; j++ ) {
+		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j];
+                    rcvr.setSendingTimeKeeper(_timeKeeper);
+		}
+	    }
+	}
+	/*
+	*/
     }
 
     /** Update the list of RcvrTimeTriples by positioning the
@@ -557,6 +567,11 @@ public class ODFThread extends ProcessThread {
     // thread is equivalent to the minimum positive rcvrTime of
     // each input receiver.
     private double _currentTime = 0.0;
+
+    // The delay time associated with this actor. 
+    private double _delayTime = 0.0;
+
+    private TimeKeeper _timeKeeper = null;
 
 }
 

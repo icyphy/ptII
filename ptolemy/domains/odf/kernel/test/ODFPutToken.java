@@ -73,6 +73,7 @@ public class ODFPutToken extends ODFPut {
 	    for( int i = 0; i < rcvrs.length; i++ ) {
 		for( int j = 0; j < rcvrs[i].length; j++ ) {
 		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j];
+		    System.out.println("ODFPutToken receiver["+i+"]["+j+"]; cnt = "+cnt);
                     if( _oneArg ) {
                         rcvr.put( _tokens[cnt] );
                     } else {
@@ -82,6 +83,7 @@ public class ODFPutToken extends ODFPut {
 	    }
 	    cnt++;
 	}
+	System.out.println("ODFPutToken() ends with cnt = "+cnt);
     }
 
     /**

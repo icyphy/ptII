@@ -61,7 +61,7 @@ The setThread() and getThread() methods serve this purpose.
 @see ptolemy.domains.odf.kernel.ODFReceiver
 */
 
-public class TimedQueueReceiver implements Receiver {
+public class TimedQueueReceiver {
 
     /** Construct an empty queue with no container.
      */
@@ -90,7 +90,8 @@ public class TimedQueueReceiver implements Receiver {
      * @see ptolemy.domains.odf.kernel.RcvrTimeTriple
      */
     public Token get() {
-	Thread thread = Thread.currentThread();
+	// Thread thread = Thread.currentThread();
+	TimeKeeper timeKeeper = getReceivingTimeKeeper();
 	Token token = null;
 	synchronized( this ) {
             Event event = (Event)_queue.take();
@@ -100,14 +101,12 @@ public class TimedQueueReceiver implements Receiver {
                         + "TimedQueueReceiver.");
             }
 	    token = event.getToken();
+	    /*
 	    if( thread instanceof ODFThread ) {
 	        ((ODFThread)thread).setCurrentTime( event.getTime() );
-	    } else {
-                /*
-                System.err.println("ERROR: TimedQueueReceiver.get()"
-                        + " being invoked by non-ODFThread.");
-                */
 	    }
+	    */
+	    timeKeeper.setCurrentTime( event.getTime() );
 
 	    if( getSize() > 0 ) {
 	        Event nextEvent = (Event)_queue.get(0);
@@ -118,9 +117,12 @@ public class TimedQueueReceiver implements Receiver {
 	    // the triple is no longer in front.
 	    RcvrTimeTriple triple;
 	    triple = new RcvrTimeTriple( this, _rcvrTime, _priority );
+	    /*
 	    if( thread instanceof ODFThread ) {
 	        ((ODFThread)thread).updateRcvrList( triple );
 	    }
+	    */
+	    timeKeeper.updateRcvrList( triple );
 	}
         return token;
     }
@@ -166,6 +168,24 @@ public class TimedQueueReceiver implements Receiver {
         return _rcvrTime;
     }
 
+    /** Return the time keeper that maintains time for the actor that
+     *  contains this receiver.
+     * @return The time keeper that maintains time for the actor that
+     *  contains this receiver.
+     */
+    public TimeKeeper getReceivingTimeKeeper() {
+        return _rcvingTimeKeeper;
+    }
+
+    /** Return the time keeper that maintains time for the actor that
+     *  sends through this receiver.
+     * @return The time keeper that maintains time for the actor 
+     *  that sends through this receiver.
+     */
+    public TimeKeeper getSendingTimeKeeper() {
+        return _sendingTimeKeeper;
+    }
+
     /** Get the queue size.
      * @return Return the size of the queue.
      * FIXME
@@ -208,10 +228,10 @@ public class TimedQueueReceiver implements Receiver {
      *  If the queue is full, throw a NoRoomException. Update the
      *  RcvrTimeTriple entry in the ODFThread which manages this receiver.
      * @param token The token to put on the queue.
-     */
     public void put(Token token) {
         put( token, _lastTime );
     }
+     */
 
     /** Put a token on the queue with the specified time stamp and set
      *  the value of the lastTime flag to be equal to this time stamp.
@@ -224,10 +244,15 @@ public class TimedQueueReceiver implements Receiver {
      * @param time The time stamp of the token.
      */
     public void put(Token token, double time) {
+	if( time < _lastTime && time != -1.0 ) {
+	    IOPort port = (IOPort)getContainer(); 
+	    NamedObj actor = (NamedObj)port.getContainer(); 
+	    throw new IllegalArgumentException(actor.getName() + 
+		    " - Attempt to set current time in the past.");
+	}
         Event event;
-        IOPort port = (IOPort)getContainer();
-	ODFThread thread = getThread();
-        Actor actor = (Actor)port.getContainer();
+	// ODFThread thread = getThread();
+	TimeKeeper timeKeeper = getReceivingTimeKeeper();
         synchronized(this) {
             _lastTime = time;
             event = new Event(token, _lastTime);
@@ -236,6 +261,8 @@ public class TimedQueueReceiver implements Receiver {
                 RcvrTimeTriple triple;
                 _rcvrTime = _lastTime;
                 triple = new RcvrTimeTriple( this, _rcvrTime, _priority );
+		timeKeeper.updateRcvrList( triple );
+		/*
 		if( thread instanceof ODFThread ) {
 		    if( ((NamedObj)actor).getName().equals("printer") ) {
                         System.out.println("\t\t***" + 
@@ -244,11 +271,10 @@ public class TimedQueueReceiver implements Receiver {
 		    }
                     ((ODFThread)thread).updateRcvrList( triple );
 		} else {
-                    /*
 		    System.err.println("ERROR: Non-ODFThread calling "
 			    + "TimedQueueReceiver.put()");
-                    */
 		}
+		*/
             }
 
             if (!_queue.put(event)) {
@@ -295,6 +321,24 @@ public class TimedQueueReceiver implements Receiver {
 	_controllingThread = thread;
     }
 
+    /** Set the time keeper that maintains time for the actor that
+     *  contains this receiver.
+     * @param timeKeeper The time keeper that maintains time for 
+     *  the actor that contains this receiver.
+     */
+    public void setReceivingTimeKeeper(TimeKeeper timeKeeper) {
+        _rcvingTimeKeeper = timeKeeper;
+    }
+
+    /** Set the time keeper that maintains time for the actor that
+     *  sends through this receiver.
+     * @param timeKeeper The time keeper that maintains time for 
+     *  the actor that sends through this receiver.
+     */
+    public void setSendingTimeKeeper(TimeKeeper timeKeeper) {
+        _sendingTimeKeeper = timeKeeper;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -318,6 +362,12 @@ public class TimedQueueReceiver implements Receiver {
 
     // The thread controlling the actor that contains this receiver.
     private ODFThread _controllingThread;
+
+    // The time keeper for the actor that receives through this receiver.
+    private TimeKeeper _rcvingTimeKeeper;
+
+    // The time keeper for the actor that sends through this receiver.
+    private TimeKeeper _sendingTimeKeeper;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////

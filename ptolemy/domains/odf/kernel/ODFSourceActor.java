@@ -112,6 +112,7 @@ public class ODFSourceActor extends ODFActor {
                       + "are prohibited.");
 	}
         Token token = new Token();
+	// setDelay(delay);
         _reinvokeOutPort.send( 0, token, delay );
     }
 

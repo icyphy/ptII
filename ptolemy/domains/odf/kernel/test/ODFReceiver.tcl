@@ -2,7 +2,7 @@
 #
 # @Author: John S. Davis II
 #
-# @Version: @(#)ODReceiver.tcl	1.3	11/18/98
+# @Version: $Id$
 #
 # @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
@@ -50,127 +50,234 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test ODFReceiver-2.1 {Single put/get; Check sizes} {
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-    # Note: Director not really needed since blocking won't occur in this test
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
-    $topLevel setDirector $dir
-    set actor [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actor"] 
-    set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"] 
-    set rcvr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-    set initSize [$rcvr getSize]
-    
-    set t1 [java::new ptolemy.data.Token]
-    $rcvr put $t1 5.0
-    set afterPut [$rcvr getSize]
-    
-    set t2 [$rcvr get] 
-    set afterGet [$rcvr getSize]
-    
-    list [expr { $t1 == $t2 } ] $initSize $afterPut $afterGet
-} {1 0 1 0}
+test ODFReceiver-2.1 {get(), single arg put(), check _rcvrTime and \
+_lastTime} {
+    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+	    "port"]
+    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorRcvr]
+    $odr setReceivingTimeKeeper $rcvrkeeper
+
+    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorSend]
+    $odr setSendingTimeKeeper $sendkeeper
+
+    set token0 [java::new ptolemy.data.Token]
+    set token1 [java::new ptolemy.data.Token]
+    set token2 [java::new ptolemy.data.Token]
+
+    $sendkeeper setCurrentTime 12.5
+    $odr put $token0
+    set rcvrTime0 [$odr getRcvrTime]
+    set lastTime0 [$odr getLastTime]
+
+    $sendkeeper setDelayTime 12.5
+    $odr put $token1
+    set rcvrTime1 [$odr getRcvrTime]
+    set lastTime1 [$odr getLastTime]
+
+    set outToken0 [$odr get] 
+    set rcvrTime2 [$odr getRcvrTime]
+
+    list $rcvrTime0 $lastTime0 $rcvrTime1 $lastTime1 $rcvrTime2
+} {12.5 12.5 12.5 25.0 25.0}
 
 ######################################################################
 ####
 #
-test ODFReceiver-3.1 {put, get, put, put, get; Check token, sizes and times} {
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-    # Note: Director not really needed since blocking won't occur in this test
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
-    $topLevel setDirector $dir
-    set actor [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actor"] 
-    set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"] 
-    set rcvr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-    set initSize [$rcvr getSize]
-    
+test ODFReceiver-2.2 {Put delayed event into non-empty queue; \
+	check rcvrTime and lastTime} {
+    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+	    "port"]
+    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorRcvr]
+    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorSend]
+    $odr setReceivingTimeKeeper $rcvrkeeper
+    $odr setSendingTimeKeeper $sendkeeper
+    set t1 [java::new ptolemy.data.Token]
+    set t2 [java::new ptolemy.data.Token]
+    $odr put $t1 
+    $odr put $t2 5.0
+    list [$odr getRcvrTime] [$odr getLastTime]
+} {0.0 5.0}
+
+######################################################################
+####
+#
+test ODFReceiver-3.1 {Set event time = -1.0  and place into \
+	empty queue; check rcvrTime and lastTime} {
+    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+	    "port"]
+    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorRcvr]
+    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorSend]
+    $odr setReceivingTimeKeeper $rcvrkeeper
+    $odr setSendingTimeKeeper $sendkeeper
+
+    $sendkeeper setCurrentTime -1.0
+    $sendkeeper setDelayTime 5.0
+
+    $odr put $t1 
+    list [$odr getRcvrTime] [$odr getLastTime]
+} {-1.0 -1.0}
+
+######################################################################
+####
+#
+test ODFReceiver-3.2 {Set negative delay time} {
+    set wkspc [java::new ptolemy.kernel.util.Workspace]
+    set comp [java::new ptolemy.actor.CompositeActor $wkspc]
+    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor \
+	    $comp "Receiver"]
+    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor \
+	    $comp "Sender"]
+    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+	    "port"]
+    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorRcvr]
+    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorSend]
+    $odr setReceivingTimeKeeper $rcvrkeeper
+    $odr setSendingTimeKeeper $sendkeeper
+
+    catch {$sendkeeper setDelayTime -1.0} msg
+    list $msg 
+
+} {{ptolemy.kernel.util.IllegalActionException: Sender - Attempt to set negative delay time.}}
+
+######################################################################
+####
+#
+test ODFReceiver-3.3 {Set negative current time} {
+    set wkspc [java::new ptolemy.kernel.util.Workspace]
+    set comp [java::new ptolemy.actor.CompositeActor $wkspc]
+    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor \
+	    $comp "Receiver"]
+    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor \
+	    $comp "Sender"]
+    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+	    "port"]
+    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorRcvr]
+    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorSend]
+    $odr setReceivingTimeKeeper $rcvrkeeper
+    $odr setSendingTimeKeeper $sendkeeper
+
+    catch {$sendkeeper setCurrentTime -1.0} msg1
+    catch {$sendkeeper setCurrentTime -3.0} msg2
+    list $msg1 $msg2
+
+} {{} {java.lang.IllegalArgumentException: Sender - Attempt to set current time in the past.}}
+
+######################################################################
+####
+#
+test ODFReceiver-4.1 {Three gets followed by three puts} {
+    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+	    "port"]
+    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorRcvr]
+    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorSend]
+    $odr setReceivingTimeKeeper $rcvrkeeper
+    $odr setSendingTimeKeeper $sendkeeper
+
     set t1 [java::new ptolemy.data.Token]
     set t2 [java::new ptolemy.data.Token]
     set t3 [java::new ptolemy.data.Token]
-
-    $rcvr put $t1 2.0
-    $rcvr put $t2 2.5
-    set time1 [$rcvr getRcvrTime]
-    set size1 [$rcvr getSize]
-    
-    set t4 [$rcvr get]
-    set size2 [$rcvr getSize]
-    set time2 [$rcvr getRcvrTime]
-    
-    $rcvr put $t3 8.0
-    set size3 [$rcvr getSize]
-    set time3 [$rcvr getRcvrTime]
-    set lastTime [$rcvr getLastTime]
-
-    list $initSize $size1 $size2 $size3 $time1 $time2 $time3 $lastTime
-
-} {0 2 1 2 2.0 2.5 2.5 8.0}
+    $odr put $t1 0.5
+    $odr put $t2 5.0
+    $odr put $t3 12.5
+    set t4 [$odr get]
+    set t5 [$odr get]
+    set t6 [$odr get]
+    list [expr {$t1 == $t4} ] [expr {$t2 == $t5} ] [expr {$t3 == $t6} ] \
+	    [$odr getLastTime] [$odr getRcvrTime]
+} {1 1 1 12.5 12.5}
 
 ######################################################################
 ####
 #
-test ODFReceiver-3.2 {put, put, put, get, get, get; Check token and times} {
-    set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-    # Note: Director not really needed since blocking won't occur in this test
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
-    $topLevel setDirector $dir
-    set actor [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actor"] 
-    set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"] 
-    set rcvr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-    set initSize [$rcvr getSize]
-    set t1 [java::new ptolemy.data.Token]
-    set t2 [java::new ptolemy.data.Token]
-    set t3 [java::new ptolemy.data.Token]
+test ODFReceiver-4.2 {Insert events in wrong order} {
+    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+	    "port"]
+    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorRcvr]
+    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorSend]
+    $odr setReceivingTimeKeeper $rcvrkeeper
+    $odr setSendingTimeKeeper $sendkeeper
 
-    $rcvr put $t1 
-    $rcvr put $t2 4.5
-    $rcvr put $t3 5.0
-    set time1 [$rcvr getRcvrTime]
-    
-    
-    set t4 [$rcvr get]
-    set time2 [$rcvr getRcvrTime]
-    set t5 [$rcvr get]
-    set t6 [$rcvr get]
-    
-    set size1 [$rcvr getSize]
-
-    list $initSize [expr {$t1 == $t4} ] [expr {$t2 == $t5} ] [expr {$t3 == $t6} ] $time1 $time2
-} {0 1 1 1 0.0 4.5}
+    $odr put $t1 5.0
+    catch {$odr put $t2 0.5} msg
+    list $msg
+} {{java.lang.IllegalArgumentException:  - Attempt to set current time in the past.}}
 
 ######################################################################
 ####
 #
-#test ODFReceiver-4.1 {Single get on an empty queue. Note: This test is commented out because it blocks. Nevertheless I initially ran it to verify that blocking occurs} {
-#    set wspc [java::new ptolemy.kernel.util.Workspace]
-#    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-#    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
-#    $topLevel setDirector $dir
-#    set actor [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actor"] 
-#    set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"] 
-#    set rcvr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-#    set t1 [java::new ptolemy.data.Token]
-#    $rcvr get 
-#} {}
+test ODFReceiver-5.1 {hasToken() - tokens available} {
+    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+	    "port"]
+    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorRcvr]
+    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorSend]
+    $odr setReceivingTimeKeeper $rcvrkeeper
+    $odr setSendingTimeKeeper $sendkeeper
+
+    set token [java::new ptolemy.data.Token]
+    $odr put $token 5.0
+    set hastoken [$odr hasToken]
+
+    list $hastoken
+} {1}
 
 ######################################################################
 ####
-#
-#test ODFReceiver-4.2 {Single put on a full queue. Note: This test is commented out because it blocks. Nevertheless I initially ran it to verify that blocking occurs} {
-#    set wspc [java::new ptolemy.kernel.util.Workspace]
-#    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-#    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
-#    $topLevel setDirector $dir
-#    set actor [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actor"] 
-#    set iop [java::new ptolemy.domains.odf.kernel.ODFIOPort $actor "port"] 
-#    set rcvr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-#    $rcvr setCapacity 0
-#    set t [java::new ptolemy.data.Token]
-#    $rcvr put $t
-#} {}
+# FIXME
+test ODFReceiver-5.1 {hasToken() - tokens available} {
+    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+	    "port"]
+    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorRcvr]
+    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+	    $actorSend]
+    $odr setReceivingTimeKeeper $rcvrkeeper
+    $odr setSendingTimeKeeper $sendkeeper
 
+    set token [java::new ptolemy.data.Token]
+    $odr put $token 5.0
+    set hastoken [$odr hasToken]
+
+    list $hastoken
+} {1}
 
 
 

@@ -143,11 +143,12 @@ public class ODFReceiver extends TimedQueueReceiver
      */
     public boolean hasToken() {
 	Workspace workspace = getContainer().workspace();
-	ODFThread thread = (ODFThread)Thread.currentThread();
+	// ODFThread thread = getThread();
+	TimeKeeper timeKeeper = getReceivingTimeKeeper();
         ODFDirector director = (ODFDirector)
 	        ((Actor)getContainer().getContainer()).getDirector();
 
-	return _hasToken( workspace, director, thread );
+	return _hasToken( workspace, director, timeKeeper );
     }
 
     /** FIXME
@@ -171,13 +172,23 @@ public class ODFReceiver extends TimedQueueReceiver
      * @param token The token to put on the queue.
      */
     public void put(Token token) {
+	TimeKeeper timeKeeper = getSendingTimeKeeper();
+	double time = timeKeeper.getCurrentTime(); 
+	if( time != -1.0 ) {
+            time += timeKeeper.getDelayTime();
+	}
+	put( token, time );
+	/* 
 	Thread thread = Thread.currentThread();
 	if( thread instanceof ODFThread ) {
+	    // FIXME: This is an error. It should be _lastTime!!!
 	    double time = ((ODFThread)thread).getCurrentTime();
             put( token, time );
 	} else {
             put( token, getLastTime() );
 	}
+	put( token, getLastTime() );
+	*/ 
     }
 
     /** Do a blocking write on the queue. If at any point during this
@@ -197,7 +208,8 @@ public class ODFReceiver extends TimedQueueReceiver
         Workspace workspace = getContainer().workspace();
         ODFDirector director = (ODFDirector)
                 ((Actor)getContainer().getContainer()).getDirector();
-	Thread thread = Thread.currentThread();
+	// Thread thread = Thread.currentThread();
+	TimeKeeper timeKeeper = getSendingTimeKeeper();
 
         synchronized(this) {
             if( time > getCompletionTime() &&
@@ -208,9 +220,12 @@ public class ODFReceiver extends TimedQueueReceiver
             if( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
                 notifyAll();
+		timeKeeper.sendOutNullTokens();
+		/*
 		if( thread instanceof ODFThread ) {
 		    ((ODFThread)thread).sendOutNullTokens();
 		}
+		*/
                 return;
             }
 
@@ -257,7 +272,24 @@ public class ODFReceiver extends TimedQueueReceiver
     // This method provides the recursive functionality
     // of hasToken()
     private synchronized boolean _hasToken(Workspace workspace,
-	    ODFDirector director, ODFThread thread ) {
+	    ODFDirector director, TimeKeeper timeKeeper ) {
+	// ODFDirector director, ODFThread thread ) {
+        if( timeKeeper.getNextTime() == -1.0 ) {
+            requestFinish();
+        }
+	if( getRcvrTime() > timeKeeper.getNextTime() && !_terminate ) {
+	    return false;
+	} else if( !timeKeeper.hasMinRcvrTime() && !_terminate ) {
+            RcvrTimeTriple triple;
+            triple = timeKeeper.getHighestPriorityTriple();
+            if( this != triple.getReceiver() ) {
+                triple = new RcvrTimeTriple( this, getRcvrTime(),
+                        getPriority() );
+                timeKeeper.updateRcvrList( triple );
+		return false;
+	    }
+	}
+	/*
         if( thread.getNextTime() == -1.0 ) {
             requestFinish();
         }
@@ -273,6 +305,7 @@ public class ODFReceiver extends TimedQueueReceiver
 		return false;
 	    }
 	}
+	*/
         if( super.hasToken() && !_terminate ) {
             return true;
 	}
@@ -288,7 +321,7 @@ public class ODFReceiver extends TimedQueueReceiver
                     + "_hasToken()");
 	} else {
             director.removeReadBlock();
-            return _hasToken(workspace, director, thread);
+            return _hasToken(workspace, director, timeKeeper);
 	}
     }
 

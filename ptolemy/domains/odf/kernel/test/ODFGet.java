@@ -47,7 +47,7 @@ import ptolemy.data.StringToken;
 
 */
 
-public class ODFGet extends AtomicActor {
+public class ODFGet extends ODFActor {
 
     /**
      */
