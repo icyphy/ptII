@@ -63,17 +63,23 @@ public class AddSubtract extends CCodeGeneratorHelper {
         tmpStream.append("$ref(output) = ");
         for (int i = 0; i < actor.plus.getWidth(); i++) {
             tmpStream.append("$ref(plus#" + i + ")");
-            if (i < actor.plus.getWidth() - 1)
+            if (i < actor.plus.getWidth() - 1) {
                 tmpStream.append(" + ");
-            else if (actor.minus.getWidth() > 0)
+            }
+            else if (actor.minus.getWidth() > 0) {
                 tmpStream.append(" - ");
+            } else {
+                tmpStream.append(";\n");
+            }
         }
         for (int i = 0; i < actor.minus.getWidth(); i++) {
             tmpStream.append("$ref(minus#" + i + ")");
-            if (i < actor.minus.getWidth() - 1)
+            if (i < actor.minus.getWidth() - 1) {
                 tmpStream.append(" - ");
-            else
+            }
+            else {
                 tmpStream.append(";\n");
+            }
         }
         stream.append(processCode(tmpStream.toString()));
     }
