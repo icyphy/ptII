@@ -56,6 +56,7 @@ JSIMPLE_TESTS = \
 	Manager.tcl \
 	IOPort.tcl \
 	IORelation.tcl \
+	ProcessDirector.tcl \
 	StaticSchedulingDirector.tcl \
 	TypedIOPort.tcl
 
