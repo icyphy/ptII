@@ -36,9 +36,10 @@ import java.util.TreeMap;
 
 import diva.resource.DefaultBundle;
 import diva.util.LoggableOp;
-import diva.util.aelfred.XmlException;
-import diva.util.aelfred.XmlHandler;
-import diva.util.aelfred.XmlParser;
+
+import com.microstar.xml.XmlException;
+import com.microstar.xml.XmlHandler;
+import com.microstar.xml.XmlParser;
 
 /**
  * An XmlReader reads a character stream and constructs the internal

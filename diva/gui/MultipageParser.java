@@ -30,8 +30,10 @@ import java.io.StringReader;
 import java.util.HashMap;
 
 import diva.util.ModelParser;
-import diva.util.aelfred.HandlerBase;
-import diva.util.aelfred.XmlParser;
+
+import com.microstar.xml.HandlerBase;
+import com.microstar.xml.XmlParser;
+
 
 /**
  * Parse all pages of a multi-page document from a file.  The document

@@ -30,7 +30,7 @@
 
 ME =		diva/util
 
-DIRS = 		aelfred java2d xml jester test
+DIRS = 		java2d xml jester test
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -47,7 +47,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	aelfred/aelfred.jar \
 	java2d/java2d.jar \
 	xml/xml.jar
 

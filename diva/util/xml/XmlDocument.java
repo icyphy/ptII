@@ -28,7 +28,7 @@ package diva.util.xml;
 import java.io.File;
 import java.net.URL;
 
-import diva.util.aelfred.XmlParser;
+import com.microstar.xml.XmlParser;
 
 /**
  * An XMLDocument is an in-memory representation of an XML document.
