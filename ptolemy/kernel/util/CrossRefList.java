@@ -345,7 +345,7 @@ public final class CrossRefList implements Serializable  {
         public boolean hasMoreElements() {
             if(_enumeratorVersion != _listVersion) {
                 throw new InvalidStateException(
-                "CrossRefList.hasMoreElements(): The list has been modified.");
+                        "CrossRefList.hasMoreElements(): The list has been modified.");
             }
 
             if (_ref == null)
@@ -362,7 +362,7 @@ public final class CrossRefList implements Serializable  {
                 throws NoSuchElementException {
             if(_enumeratorVersion != _listVersion) {
                 throw new InvalidStateException(
-                "CrossRefList.nextElement(): The list has been modified.");
+                        "CrossRefList.nextElement(): The list has been modified.");
             }
 
             if (_ref == null) {

@@ -791,7 +791,7 @@ public final class Workspace implements Nameable, Serializable {
      *  Ptolemy reader (readDepth field goes from 0 to 1) and decrement it
      *  whenever a Ptolemy reader relinquishes ALL its read access (readDepth
      *  field goes from 1 to 0).
-    */
+     */
     private long _numPtReaders = 0;
 
     /** @serial Indicate that the workspace is read-only, and no changes in

@@ -119,7 +119,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  @exception IllegalActionException If the name has a period.
      */
     public NamedObj(String name)
-             throws IllegalActionException {
+            throws IllegalActionException {
         this(_DEFAULT_WORKSPACE, name);
     }
 
@@ -169,7 +169,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  @exception IllegalActionException If the name has a period.
      */
     public NamedObj(Workspace workspace, String name)
-             throws IllegalActionException {
+            throws IllegalActionException {
         if (workspace == null) {
             workspace = _DEFAULT_WORKSPACE;
         }
@@ -225,7 +225,7 @@ public class NamedObj implements Nameable, Debuggable,
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-           throws IllegalActionException {}
+            throws IllegalActionException {}
 
     /** Return a list of the attributes contained by this object.
      *  If there are no attributes, return an empty list.
@@ -279,7 +279,7 @@ public class NamedObj implements Nameable, Debuggable,
      *   to this container (not thrown in this base class).
      */
     public void attributeTypeChanged(Attribute attribute)
-           throws IllegalActionException {}
+            throws IllegalActionException {}
 
     /** Clone the object into the current workspace by calling the clone()
      *  method that takes a Workspace argument.
@@ -339,7 +339,7 @@ public class NamedObj implements Nameable, Debuggable,
                     _debug("Cloned", getFullName(), "into default workspace.");
                 } else {
                     _debug("Cloned", getFullName(), "into workspace:",
-                    ws.getFullName());
+                            ws.getFullName());
                 }
             }
             return newobj;
@@ -553,13 +553,13 @@ public class NamedObj implements Nameable, Debuggable,
         if (depth == 0
                 && getContainer() == null
                 && (momlElement.equals("class")
-                || momlElement.equals("model")
-                || momlElement.equals("entity"))) {
+                        || momlElement.equals("model")
+                        || momlElement.equals("entity"))) {
             // No container, and this is a top level moml element.
             // Generate header information.
             output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-            + "<!DOCTYPE model PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
-            + "    \"http://ptolemy.eecs.berkeley.edu/archive/moml.dtd\">\n");
+                    + "<!DOCTYPE model PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                    + "    \"http://ptolemy.eecs.berkeley.edu/archive/moml.dtd\">\n");
 
             // Correct the element name, if appropriate.
             if (momlElement.equals("entity")) {
@@ -569,13 +569,13 @@ public class NamedObj implements Nameable, Debuggable,
             }
         }
         output.write(_getIndentPrefix(depth)
-               + "<"
-               + momlElement
-               + " name=\""
-               + getName()
-               + template
-               + className
-               + "\">\n");
+                + "<"
+                + momlElement
+                + " name=\""
+                + getName()
+                + template
+                + className
+                + "\">\n");
         if (_deferTo == null) {
             _exportMoMLContents(output, depth + 1);
         } else {
@@ -754,7 +754,7 @@ public class NamedObj implements Nameable, Debuggable,
         int period = name.indexOf(".");
         if (period >= 0) {
             throw new IllegalActionException(this,
-            "Cannot set a name with a period: " + name);
+                    "Cannot set a name with a period: " + name);
         }
         try {
             _workspace.getWriteAccess();
@@ -1038,7 +1038,7 @@ public class NamedObj implements Nameable, Debuggable,
             _attributes.remove((Nameable)param);
             if (_debugging) {
                 _debug("Removed attribute", param.getName(), "from",
-                getFullName());
+                        getFullName());
             }
         } finally {
             _workspace.doneWriting();
