@@ -462,7 +462,6 @@ public class BasePNDirector extends ProcessDirector {
     synchronized void _informOfWriteBlock(PNQueueReceiver receiver) {
 	_writeBlockCount++;
 	_writeblockedQs.insertFirst(receiver);
-        
         //Inform the listeners
         if (!_processlisteners.isEmpty()) {
             Actor actor = receiver.getWriteBlockedActor();
