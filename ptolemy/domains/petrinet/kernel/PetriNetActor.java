@@ -153,14 +153,14 @@ public class PetriNetActor extends TypedCompositeActor  {
     }
 
 
- /**   It is assumed that the top level of the hierarchy is a PetiNetDirector.
-  *
-  */
+    /**   It is assumed that the top level of the hierarchy is a PetiNetDirector.
+     *
+     */
 
     public void fire() throws IllegalActionException {
         Nameable container = getContainer();
         System.out.println("inside the _PetriNetActor.fire, the actors is"
-                    + container.getFullName() + "  " + getFullName());
+                + container.getFullName() + "  " + getFullName());
         TypedCompositeActor pn = (TypedCompositeActor) this;
         PetriNetDirector director = (PetriNetDirector) getDirector();
 
@@ -168,35 +168,35 @@ public class PetriNetActor extends TypedCompositeActor  {
 
     }
 
-/** find all the transitions contained in the PetriNetActor.
- *  the transitions can be deeply contained....
- *  we will check all the deeply contained transitions and
- *  see which one is ready to fire.
- *  If there is one transition ready to fire, then the container
- *  PetriNetActor is ready to fire.
- */
+    /** find all the transitions contained in the PetriNetActor.
+     *  the transitions can be deeply contained....
+     *  we will check all the deeply contained transitions and
+     *  see which one is ready to fire.
+     *  If there is one transition ready to fire, then the container
+     *  PetriNetActor is ready to fire.
+     */
 
     public boolean prefire() throws IllegalActionException {
         System.out.println("inside the PetriNetActor.prefire, the actors is"
-                    +  getFullName() );
+                +  getFullName() );
         TypedCompositeActor pn = (TypedCompositeActor) this;
         PetriNetDirector director = (PetriNetDirector) getDirector();
 
-            Iterator components = deepEntityList().iterator();
-            while (components.hasNext()) {
-                Nameable component = (Nameable) components.next();
-                if (component instanceof Transition) {
-                    Transition transitionComponent = (Transition) component;
-                    boolean t = director.testReadyTransition(transitionComponent);
-                    if(t)
-                        return true;
-                }
+        Iterator components = deepEntityList().iterator();
+        while (components.hasNext()) {
+            Nameable component = (Nameable) components.next();
+            if (component instanceof Transition) {
+                Transition transitionComponent = (Transition) component;
+                boolean t = director.testReadyTransition(transitionComponent);
+                if(t)
+                    return true;
             }
-            return false;
+        }
+        return false;
 
     }
 
-   ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
 
