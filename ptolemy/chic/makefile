@@ -30,7 +30,7 @@
 
 ME =		ptolemy/chic
 
-DIRS =		demo
+DIRS =		
 
 # Root of Ptolemy II directory
 ROOT =		../..
