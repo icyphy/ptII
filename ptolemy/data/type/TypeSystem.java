@@ -57,7 +57,7 @@ public class TypeSystem implements TypeResolver
      * 
      *  @return An enumeration of Typeable objects that failed type checking.
      *  @exception InternalErrorException If a constraint is given that
-     *  does not fall on DimensionTypes.
+     *  does not fall on ArrayTypes.
      */
     public Enumeration resolveTypes(Enumeration constraints) {
         
@@ -71,8 +71,8 @@ public class TypeSystem implements TypeResolver
             if((lesser instanceof DataType) && (greater instanceof DataType)) {
                 dataconstraints.insertLast(constraint);
             }
-            else if((lesser instanceof DimensionType) && 
-                    (greater instanceof DimensionType)) {
+            else if((lesser instanceof ArrayType) && 
+                    (greater instanceof ArrayType)) {
                 dimensionconstraints.insertLast(constraint);
             }
             else if((lesser instanceof Type) && 
@@ -82,8 +82,8 @@ public class TypeSystem implements TypeResolver
                 Inequality i1 = new Inequality(lt.getDataType(),
                         gt.getDataType());
                 dataconstraints.insertLast(i1);
-                Inequality i2 = new Inequality(lt.getDimensionType(), 
-                        gt.getDimensionType());
+                Inequality i2 = new Inequality(lt.getArrayType(), 
+                        gt.getArrayType());
                 dimensionconstraints.insertLast(i2);
             }
         }
@@ -91,7 +91,7 @@ public class TypeSystem implements TypeResolver
         DataTypeResolver dataresolver = new DataTypeResolver();
         Enumeration dataconflicts = 
             dataresolver.resolveTypes(dataconstraints.elements());
-        DimensionTypeResolver dimensionresolver = new DimensionTypeResolver();
+        ArrayTypeResolver dimensionresolver = new ArrayTypeResolver();
         Enumeration dimensionconflicts = 
             dimensionresolver.resolveTypes(dimensionconstraints.elements());
 

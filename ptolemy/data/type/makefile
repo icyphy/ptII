@@ -45,14 +45,14 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	type
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	ArrayType.java \
+	ArrayTypeLattice.java \
+	ArrayTypeResolver.java \
 	DataType.java \
 	DataTypeResolver.java \
-	DimensionType.java \
-	DimensionTypeLattice.java \
-	DimensionTypeResolver.java \
 	LatticeTypeResolver.java \
 	Type.java \
 	TypeSystem.java \
@@ -72,7 +72,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 docs: javadocs
 
 depend:

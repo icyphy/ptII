@@ -53,15 +53,15 @@ public class Type implements InequalityTerm
      *  variable dimensiontype, initialized to bottom.
      */
     public Type() {
-        this(new DataType(), new DimensionType());
+        this(new DataType(), new ArrayType());
     }
 
     /** Create a new type with the same characteristics as the given datatype
      *  and dimension type.
      */
-    public Type(DataType datatype, DimensionType dimensiontype) {
+    public Type(DataType datatype, ArrayType dimensiontype) {
         _datatype = new DataType(datatype);
-        _dimensiontype = new DimensionType(dimensiontype);
+        _dimensiontype = new ArrayType(dimensiontype);
     }
 
     /** Create a new type with the same characteristics as the given type
@@ -84,7 +84,7 @@ public class Type implements InequalityTerm
         return _datatype;
     }
 
-    public DimensionType getDimensionType() {
+    public ArrayType getArrayType() {
         return _dimensiontype;
     }
     
@@ -157,6 +157,6 @@ public class Type implements InequalityTerm
     }
 
     private DataType _datatype;
-    private DimensionType _dimensiontype;
+    private ArrayType _dimensiontype;
 }
 

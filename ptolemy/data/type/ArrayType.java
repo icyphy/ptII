@@ -37,7 +37,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// DimensionType
+//// ArrayType
 /**
 A class representing the size of a multi-dimensional array as a type.
 
@@ -46,14 +46,14 @@ $Id$
 
 */
 
-public class DimensionType implements InequalityTerm
+public class ArrayType implements InequalityTerm
 {
     /**
      * Create a new dimension type variable, initialized to 
-     * DimensionType.BOTTOM;
+     * ArrayType.BOTTOM;
      */
-    public DimensionType() {
-        this(DimensionType.BOTTOM);
+    public ArrayType() {
+        this(ArrayType.BOTTOM);
         _isSettable = true;
     }
 
@@ -62,7 +62,7 @@ public class DimensionType implements InequalityTerm
      * @param dimensions The number of dimensions of the new type.
      * @param size An array of the size in each dimension of the new type.
      */
-    public DimensionType(int dimensions, int size[]) {
+    public ArrayType(int dimensions, int size[]) {
         _dimensions = dimensions;
         _size = size;
         _isSettable = false;
@@ -70,11 +70,11 @@ public class DimensionType implements InequalityTerm
 
     /**
      * Create a new dimension type constant with the value given by the 
-     * given DimensionType.  If the given type is constant, then the new
+     * given ArrayType.  If the given type is constant, then the new
      * type will also be constant.  If the given type is variable, then the
      * new type will also be variable.
      */
-    public DimensionType(DimensionType type) {
+    public ArrayType(ArrayType type) {
         _dimensions = type._dimensions;
         _size = type._size;
         _isSettable = type._isSettable;
@@ -124,8 +124,8 @@ public class DimensionType implements InequalityTerm
      *  no conversion.
      */
     public boolean isEqualTo(Object type) {
-        if(!(type instanceof DimensionType)) return false;
-        DimensionType dtype = (DimensionType) type;
+        if(!(type instanceof ArrayType)) return false;
+        ArrayType dtype = (ArrayType) type;
         if(_dimensions != dtype._dimensions) return false;
         int i;
         for(i = 0; i < _dimensions; i++) {
@@ -166,14 +166,14 @@ public class DimensionType implements InequalityTerm
      */
     public void setValue(Object e)
             throws IllegalActionException {
-        if(!(e instanceof DimensionType)) 
+        if(!(e instanceof ArrayType)) 
             throw new InternalErrorException(
-                    "Cannot setvalue of a DimensionType to something that" +
-                    " is not a DimensionType");
+                    "Cannot setvalue of a ArrayType to something that" +
+                    " is not a ArrayType");
         if(!isSettable()) throw new IllegalActionException( 
                 "This dimension type is a constant and cannot have its "+
                 "value set!");
-        DimensionType dtype = (DimensionType) e;
+        ArrayType dtype = (ArrayType) e;
         _dimensions = dtype._dimensions;
         _size = dtype._size;        
     }
@@ -182,26 +182,21 @@ public class DimensionType implements InequalityTerm
     /** Return the lattice associated with this type
      */
     public static CPO getTypeLattice() {
-        return DimensionTypeLattice.getInstance();
+        return ArrayTypeLattice.getInstance();
     }
 
    /** 
      * An unspecified dimension type.
      */
-    public static final DimensionType BOTTOM = new DimensionType(-1, null);
+    public static final ArrayType BOTTOM = new ArrayType(-1, null);
     
     /**
      * A general dimension type.
      */
-    public static final DimensionType TOP = new DimensionType(-2, null);
+    public static final ArrayType TOP = new ArrayType(-2, null);
 
-    /** 
-     * The unique scalar type.
-     */
-    public static final DimensionType SCALAR = new DimensionType(0, null);
-    
     /** The number of dimensions of an object of this type.
-     *  0 = scalar, 1 = 1D array, 2 = 2D array, etc.
+     *  1 = 1D array, 2 = 2D array, etc.
      */
     private int _dimensions;
    
