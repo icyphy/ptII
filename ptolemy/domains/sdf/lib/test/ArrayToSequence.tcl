@@ -108,7 +108,7 @@ test ArrayToSequence-2.3 {test string array} {
     $step setExpression {"B"}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {A AB ABB ABBB ABBBB ABBBBB}
+} {{"A"} {"AB"} {"ABB"} {"ABBB"} {"ABBBB"} {"ABBBBB"}}
 
 ######################################################################
 #### Check types of above model
@@ -173,7 +173,7 @@ test ArrayToSequence-2.7 {test array of array of string} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {C CD CDD CDDD CDDDD CDDDDD CDDDDDD CDDDDDDD CDDDDDDDD CDDDDDDDDD CDDDDDDDDDD CDDDDDDDDDDD}
+} {{"C"} {"CD"} {"CDD"} {"CDDD"} {"CDDDD"} {"CDDDDD"} {"CDDDDDD"} {"CDDDDDDD"} {"CDDDDDDDD"} {"CDDDDDDDDD"} {"CDDDDDDDDDD"} {"CDDDDDDDDDDD"}}
 
 ######################################################################
 #### Check types of above model
