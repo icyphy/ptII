@@ -47,6 +47,7 @@ import javax.media.control.FrameGrabbingControl;
 import javax.media.control.FramePositioningControl;
 import javax.media.protocol.DataSource;
 
+import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.type.BaseType;
@@ -119,7 +120,18 @@ public class MovieReader extends Source implements ControllerListener {
                 try {
                     _dataSource = Manager.createDataSource(url);
                 } catch (Exception ex) {
-                    throw new IllegalActionException(this, ex, "Invalid URL");
+                    try {
+                        // Web Start: javax.media.Manager.createDataSource()
+                        // does not deal with jar urls because it cannot
+                        // find a data source, so we copy the jar file.
+                        url = new URL(JNLPUtilities
+                                .saveJarURLAsTempFile(url.toString(),
+                                        "JMFMovieReader", null, null));
+                        _dataSource = Manager.createDataSource(url);
+                    } catch (Exception ex2) {
+                        // Ignore this exception, throw the original. 
+                        throw new IllegalActionException(this, ex, "Invalid URL");
+                    }
                 }
             }
         } else {
