@@ -45,6 +45,8 @@ include $(CONFIG)
 # Bourne Shell scripts for Unix and Cygwin
 SHELL_FILES = \
 	histogram \
+	ptjacl \
+	ptjaclapp \
 	ptplot \
 	ptolemy \
 	pxgraph \
@@ -75,12 +77,16 @@ all: ptinvoke
 	-chmod a+x ptinvoke
 	rm -f histogram
 	ln -s ptinvoke histogram
-	rm -f pxgraph
-	ln -s ptinvoke pxgraph
-	rm -f ptplot
-	ln -s ptinvoke ptplot
+	rm -f ptjacl
+	ln -s ptinvoke ptjacl
+	rm -f ptjaclapp
+	ln -s ptinvoke ptjaclapp
 	rm -f ptolemy
 	ln -s ptinvoke ptolemy
+	rm -f ptplot
+	ln -s ptinvoke ptplot
+	rm -f pxgraph
+	ln -s ptinvoke pxgraph
 	rm -f vergil
 	ln -s ptinvoke vergil
 
