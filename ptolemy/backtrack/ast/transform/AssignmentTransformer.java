@@ -93,7 +93,8 @@ public class AssignmentTransformer
                 return;
         } else {
             name = (SimpleName)leftHand;
-            // TODO: check variable.
+            if (state.isVariable(name.getIdentifier()))
+                return;
         }
         
         MethodInvocation invocation = ast.newMethodInvocation();
