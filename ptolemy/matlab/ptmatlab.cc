@@ -372,7 +372,9 @@ extern "C"
         jni->ReleaseStringUTFChars(name, nstr);
     }
     jsize nfields = jni->GetArrayLength(fieldNames);
-    char *names[nfields];
+    // MSVC can't deal with variable length arrays 
+    //char *names[nfields];
+    char **names = (char **)malloc(nfields * sizeof(char));
     for (int i = 0; i < nfields; i++) {
       names[i] = (char*) jni->GetStringUTFChars((jstring)jni->GetObjectArrayElement(fieldNames,i),0);
       if (debug > 1) printf(" %s", names[i]);
@@ -383,6 +385,7 @@ extern "C"
     for (int i = 0; i < nfields; i++) {
       jni->ReleaseStringUTFChars((jstring)jni->GetObjectArrayElement(fieldNames,i),names[i]);
     }
+    free(names);
     return (ptrint) ma;
   }
 
@@ -444,12 +447,15 @@ extern "C"
     mxArray *ma = (mxArray*)(ptrint) pma;
     jint ndims = mxGetNumberOfDimensions(ma);
     const int *dims = mxGetDimensions(ma);
-    jint jdims[ndims];
+    // MSVC can't deal with variable length arrays 
+    //jint jdims[ndims];
+    jint *jdims= (jint *)malloc(ndims * sizeof(jint));
     if (debug > 1) printf("ptmatlabGetDimensions(%s) = %d x %d\n", mxGetName(ma), dims[0], dims[1]);
     for (int i = 0; i < ndims; i++)
       jdims[i] = dims[i];
     jintArray retval = jni->NewIntArray(ndims);
     jni->SetIntArrayRegion(retval, 0, ndims, jdims);
+    free(jdims);
     return retval;
   }
 
