@@ -217,8 +217,14 @@ public class TMReceiver extends AbstractReceiver {
             }
             int priorityValue = 5;
             if (priority != null) {
-                priorityValue = ((IntToken)priority.getToken()).
-                    intValue();
+                try {
+                    priorityValue = ((IntToken)priority.getToken()).
+                        intValue();
+                } catch (ClassCastException ex) {
+                    throw new InternalErrorException(null, ex, 
+                            "priorityValue '" + priority.getToken() 
+                            + "' must be an integer in " + getContainer());
+                }
             }
             getDirector()._enqueueEvent(new TMEvent(this, token,
                     priorityValue, -1.0));
