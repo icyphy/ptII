@@ -110,20 +110,16 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
             throw new IllegalActionException( this,
                     "does not have a scheduler.");
         }
-
         sch.setValid(false);
         _first = true;
         _debug(getName(), " _first is set to true.");
         Director exe = ca.getExecutiveDirector();
         double tnow = exe.getCurrentTime();
         setStartTime(tnow);
-        setCurrentTime(tnow);
-        _initialize();
         _debug(getName(), " register init break point " + tnow);
         fireAt(null, tnow);
         _debug(getName(), "call super._initialize().");
-        _debug(getName(), "breakpt table contains ", 
-                getBreakPoints().toString());
+        _initialize();
     }
 
     /** fire
@@ -207,7 +203,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
     public boolean postfire() throws IllegalActionException {
         //super.postfire();
         _debug(getFullName(), " postfire.");
-        _eventPhaseExecution();
+        // _eventPhaseExecution();
         updateStates();
         
         if(_first) {
@@ -240,8 +236,6 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
      */
     public double predictedStepSize() {
         try {
-            _debug(getName(), "at " + getCurrentTime(),
-                    "predict next step size" + _predictNextStepSize());
             return _predictNextStepSize();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException (
@@ -292,14 +286,11 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
                 _setIsBPIteration(true);
             } else {
                 _setCurrentODESolver(getODESolver());
-                _setIsBPIteration(false);
             }
 
         }
         _outsideStepSize = nextIterTime - _outsideTime;
         setCurrentStepSize(_outsideStepSize);
-        _debug(getName(), "at" + getCurrentTime(), "breakpt table contains ", 
-                getBreakPoints().toString());
         return true;
     }
 

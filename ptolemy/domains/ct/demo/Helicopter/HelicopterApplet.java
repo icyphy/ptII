@@ -78,7 +78,6 @@ public class HelicopterApplet extends CTApplet {
 
 
         _query = new Query();
-        _query.setBackground(_getBackground());
         //_query.addQueryListener(new ParameterListener());
         controlpanel.add("West", _query);
         _query.addLine("stopT", "Stop Time", "70.0");

@@ -254,13 +254,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         sch.setValid(false);
         _first = true;
         if(!_isTopLevel()) {
-            _initialize();
             // this is an embedded director.
             // synchronize the start time and request a fire at the start time.
             Director exe = ca.getExecutiveDirector();
             double tnow = exe.getCurrentTime();
             setStartTime(tnow);
             exe.fireAt(ca, tnow);
+            _initialize();
         } else {
             super.initialize();
         }

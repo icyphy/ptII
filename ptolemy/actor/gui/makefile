@@ -58,7 +58,6 @@ JSRCS = \
 	Plotter.java \
 	PtolemyApplet.java \
 	SequencePlotter.java \
-	Show.java \
 	TimedPlotter.java\
 	XYPlotter.java
 

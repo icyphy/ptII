@@ -149,11 +149,11 @@ public class CTBaseIntegrator extends CTActor
     }
 
     /** Construct an integrator, with a name, a input port, a output port
-     *  and a TypedCompositeActor as the container.
+     *  and a CTSubSystem as the container.
      *  A integrator has one single input port and one single
      *  output port.
      *
-     * @param container The TypedCompositeActor that contains this integrator.
+     * @param container The CTSubSystem that contains this integrator.
      * @param name The name
      * @return The CTBaseIntegrator
      * @exception NameDuplicationException If the name is used by another
@@ -197,7 +197,7 @@ public class CTBaseIntegrator extends CTActor
             throw new IllegalActionException( dir,
                     " has no ODE solver.");
         }
-        _debug(getName() + "using solver:", solver.getName());
+        System.out.println("using solver: " + solver.getName());
         solver.integratorFire(this);
     }
 
@@ -273,7 +273,7 @@ public class CTBaseIntegrator extends CTActor
         _tentativeState = _initState;
         _tentativeDerivative = 0.0;
         _state = _tentativeState;
-        _debug(getName(), " init, token = " + _initState);
+        System.out.println(getName() + " init, token = " + _initState);
         _history = new double[2];
     }
 
@@ -307,7 +307,7 @@ public class CTBaseIntegrator extends CTActor
      */
     public boolean postfire() throws IllegalActionException {
         _state = _tentativeState;
-        _debug(getName(), " state: " + _state);
+        System.out.println(getName() + " state: " + _state);
         _pushHistory(_tentativeState, _tentativeDerivative);
         return true;
     }

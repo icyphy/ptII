@@ -212,20 +212,6 @@ public class TotallyOrderedSet {
         return temp;
     }
 
-    /** Return a String that consists of the contents of the elements
-     *  in the set. The elements are represented by there toString()
-     *  value.
-     *  @return The String description of the set.
-     */
-    public String toString() {
-        String result = new String();
-        Enumeration eles = elements();
-        while(eles.hasMoreElements()) {
-            result = result + (eles.nextElement()).toString() + " ";
-        }
-        return result;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
