@@ -118,7 +118,14 @@ to 1.
 input port, then the fire() method will call fireAtCurrentTime()
 on the director before returning.
 
-<p> This actor currently works only under Windows.
+<p> FIXME: This actor has some key limitations.
+<ul>
+<li> It currently works only under Windows.
+<li> It is designed under the (poor) assumption that there will
+be only one instance of the actor present.  It should use static
+data structures to ensure that if there are multiple instances,
+then all instances see all serial port input data.
+</ul>
 
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
