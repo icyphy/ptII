@@ -28,6 +28,7 @@
 package ptolemy.domains.pn.kernel;
 import ptolemy.kernel.*;
 import ptolemy.kernel.mutation.*;
+import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.*;
@@ -245,32 +246,28 @@ public class PNDirector extends ProcessDirector {
         return rec;
     }
 
+
     /** Add a mutation object to the mutation queue. These mutations
-     *  are executed when the _performMutations() method is called,
-     *  which in this class is in the fire() method.  This method
-     *  also arranges that the director gets notified of queueing of new 
-     *  mutations.
-     *  <p>
-     *  This method should be called only if the mutations are to be performed
-     *  immediately.
+     *  are executed when the _performTopologyChanges() method is called,
+     *  which in this base class is in the prefire() method.  This method
+     *  also arranges that all additions of new actors are recorded.
+     *  The prefire() method then invokes the initialize() method of all
+     *  new actors after the mutations have been completed.
      *
-     *  @param mutation A object with a perform() and update() method that
+     *  @param request A object with a perform() and update() method that
      *   performs a mutation and informs any listeners about it.
      */
-    public void queueMutation(Mutation mutation) {
-	try {
-	    super.queueMutation(mutation);
-            //FIXME: I am not sure about making a local copy.
-            //What if two threads try to make mutations together and list gets
-            //corrupted?
-	    _pausedRecs = setPause();
-	    synchronized(this) {
-		_urgentMutations = true;
-		notifyAll();
-	    } 
-	} catch (IllegalActionException e) {
-	    System.err.println(e.toString());
-	}
+    public void queueTopologyChangeRequest(TopologyChangeRequest request) {
+        try {
+            super.queueTopologyChangeRequest(request);
+            _pausedRecs = setPause();
+            synchronized(this) {
+                _urgentMutations = true;
+                notifyAll();
+            } 
+        } catch (IllegalActionException e) {
+            System.err.println(e.toString());
+        }
     }
 
     /** Return true indicating that the director is ready to be fired. This 
@@ -360,26 +357,6 @@ public class PNDirector extends ProcessDirector {
 	return;
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
-
-    /** Perform all pending mutations and inform all registered listeners
-     *  of the mutations.  Return true if any mutations were performed,
-     *  and false otherwise.
-     *
-     *  @exception IllegalActionException If the mutation throws it.
-     *  @exception NameDuplicationException If the mutation throws it.
-     */
-    protected boolean _performMutations() 
-	    throws IllegalActionException, NameDuplicationException {
-        if (_pnActorListener==null){
-	    _pnActorListener = new PNActorListener(this);
-	    addMutationListener(_pnActorListener);
-        }
-	//System.out.println("Calling super.mutations");
-	boolean mut = super._performMutations();
-	return mut;
-    }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -488,22 +465,44 @@ public class PNDirector extends ProcessDirector {
 	    //System.out.println("Performed mutations");
             try {
                 //FIXME: Should it be while or if?
-                if (_performMutations()) {
-                    // Initialize any new actors
-                    //Creates receivers and then starts up threads for all
-                        //System.out.println("Initializing new actors");
-	 	    _pnActorListener.initializeNewActors();
-                    // FIXME: Should type resolution be done here?
-	        }
-            } catch (NameDuplicationException nde) {
+                _processTopologyRequests();
+                //if (_performMutations()) {
+                // Initialize any new actors
+                //Creates receivers and then starts up threads for all
+                //System.out.println("Initializing new actors");
+	 	//_pnActorListener.initializeNewActors();
+                // FIXME: Should type resolution be done here?
+                //}
+                
+                LinkedList threadlist = new LinkedList();
+                //FIXME: Maybe we require a cleaner method for this
+                //FIXME: Where does the type resolution go?
+                Enumeration newactors = _newActors();
+                while (newactors.hasMoreElements()) {
+                    increaseActiveCount();
+                    Actor actor = (Actor)newactors.nextElement();
+                    actor.createReceivers();
+                    actor.initialize();
+                    ProcessThread pnt = new ProcessThread(actor, this);
+                    threadlist.insertFirst(pnt);
+                }
+                //Resume the paused actors
+                setResumeRequested();
+                Enumeration threads = threadlist.elements();
+                //Starting threads;
+                while (threads.hasMoreElements()) {
+                    ProcessThread pnt = (ProcessThread)threads.nextElement();
+                    pnt.start();
+                    //System.out.println("Started a thread for "+((Entity)pnt.getActor()).getName());
+                }
+            } catch (TopologyChangeFailedException e) {
                 throw new IllegalActionException("Name duplication error: " +
-                        nde.getMessage());
+                        e.getMessage());
             }
 	    return false;
-	}
+	} 
         if (writebl==0 && deadl) {
             //Check if there are any events in the future.
-            //if (_eventQueue.isEmpty()) {
             //FIXME: Is this the right way?
             if (delaybl ==0) {
                 System.out.println("real deadlock. Everyone would be erased");
