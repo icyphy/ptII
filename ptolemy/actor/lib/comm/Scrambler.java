@@ -30,6 +30,7 @@
 
 package ptolemy.actor.lib.comm;
 
+import ptolemy.actor.lib.Source;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
@@ -177,7 +178,8 @@ public class Scrambler extends Transformer {
         initial.setTypeEquals(BaseType.INT);
         initial.setExpression("1");
 
-        // Declare data types.
+        // Create input port and declare data types.
+        //input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.INT);
         output.setTypeEquals(BaseType.INT);
     }
@@ -199,6 +201,11 @@ public class Scrambler extends Transformer {
      *  integer. Its default value is the integer 1.
      */
     public Parameter initial;
+
+    /** Input port for bit sequence. If there is no input,
+     *  the Scrambler functions as an pseudo random number generator.
+     */
+    //public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -277,7 +284,8 @@ public class Scrambler extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _latestShiftReg = _shiftReg = ((IntToken)initial.getToken()).intValue();
+        _latestShiftReg = _shiftReg
+            = ((IntToken)initial.getToken()).intValue();
     }
 
     /** Record the most recent shift register state as the new

@@ -99,10 +99,6 @@ public class ConvolutionalCoder extends Transformer {
         inputNumber.setTypeEquals(BaseType.INT);
         inputNumber.setExpression("1");
 
-        constraintLength = new Parameter(this, "constraintlength");
-        constraintLength.setTypeEquals(BaseType.INT);
-        constraintLength.setExpression("3");
-
         polynomialArray = new Parameter(this, "polynomialArray");
         polynomialArray.setTypeEquals(new ArrayType(BaseType.INT));
         polynomialArray.setExpression("{05, 07}");
@@ -127,7 +123,7 @@ public class ConvolutionalCoder extends Transformer {
       *  binary coefficients. The coefficients indicate the presence (1)
       *  or absence (0) of a tap in the shift register. Each element
       *  of this array parameter should be a positive integer.
-      *  The array's default value is {03}.
+      *  The array's default value is {05, 07}.
       */
     public Parameter polynomialArray;
 
@@ -143,7 +139,6 @@ public class ConvolutionalCoder extends Transformer {
      *  default value is the integer 1.
      */
     public Parameter inputNumber;
-    public Parameter constraintLength;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -178,13 +173,6 @@ public class ConvolutionalCoder extends Transformer {
             _inputNumberInvalid = true;
             // Set the input comsumption rate.
             _inputRate.setToken(new IntToken(_inputNumber));
-        } else if (attribute == constraintLength) {
-            _stageNumber = ((IntToken)constraintLength.getToken()).intValue();
-            if (_stageNumber <= 1) {
-                throw new IllegalActionException(this,
-                        "constraintLength must be a integer greater than 1");
-            }
-            _inputNumberInvalid = true;
         } else if (attribute == polynomialArray) {
             ArrayToken maskToken = ((ArrayToken)polynomialArray.getToken());
             _maskNumber = maskToken.length();
@@ -217,17 +205,6 @@ public class ConvolutionalCoder extends Transformer {
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,
                 "Output rate should be larger than input rate.");
-            }
-             _shiftRegLength = _stageNumber * _inputNumber;
-            if (_inputNumber > _shiftRegLength) {
-                throw new IllegalActionException(this,
-                "Input rate is larger than the shift register length.");
-            }
-            for (int i = 0; i < _maskNumber; i ++) {
-                if(_mask[i] > (1 << _shiftRegLength)) {
-                    throw new IllegalActionException(this,
-          "Shift register's length must be greater than polynomials' order");
-                }
             }
             _inputNumberInvalid = false;
         }
@@ -327,10 +304,8 @@ public class ConvolutionalCoder extends Transformer {
     // Number bits the actor consumes per firing.
     private int _inputNumber;
 
-    private int _stageNumber;
-
     // Polynomial array.
-    private int[] _mask;    
+    private int[] _mask;
 
     // Number of polynomials.
     private int _maskNumber;

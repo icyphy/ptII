@@ -30,32 +30,41 @@
 
 package ptolemy.actor.lib.comm;
 
-import ptolemy.domains.sdf.lib.SDFTransformer;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypeAttribute;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.Token;
-
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ArrayType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ViterbiDecoder
 /**
-FIXME
+The Viterbi algorithm is a optimal decoding algorithm for convolutional
+codes. Same as in ConvolutionalCoder actor, we continue to use <i>k</i>
+to denotes the input rate of a convolutional code and <i>n</i> to denote
+its output rate. <i>K</i> is the constraint length.
+We compute the distance (Hamming distance for hard-decision decoding
+and Euclidean distance for soft-decision decoding) between the received
+code word and the 2<sup>k</sup> possible transmitted code words. Then
+we select the code word that is closest in distance to the received code
+word.
 <p>
-For more information on convolutional codes, see Proakis, Digital
-Communications, Fourth Edition, McGraw-Hill, 2001, pp. 471-477.
+For more information on convolutional codes and Viterbi decoder,
+see Proakis, Digital Communications, Fourth Edition, McGraw-Hill, 
+2001, pp. 471-477 and pp. 482-485.
 <p>
-b@author Rachel Zhou
+@author Rachel Zhou
 @version $Id$
 */
 
@@ -78,10 +87,6 @@ public class ViterbiDecoder extends Transformer {
         inputNumber.setTypeEquals(BaseType.INT);
         inputNumber.setExpression("1");
 
-        constraintLength = new Parameter(this, "constraintLength");
-        constraintLength.setTypeEquals(BaseType.INT);
-        constraintLength.setExpression("3");
-
         polynomialArray = new Parameter(this, "polynomialArray");
         polynomialArray.setTypeEquals(new ArrayType(BaseType.INT));
         polynomialArray.setExpression("{05, 07}");
@@ -90,13 +95,18 @@ public class ViterbiDecoder extends Transformer {
         delay.setTypeEquals(BaseType.INT);
         delay.setExpression("10");
 
+        softDecoding = new Parameter(this, "softDecoding");
+        softDecoding.setExpression("true");
+        softDecoding.setTypeEquals(BaseType.BOOLEAN);
+
         // Declare data types, consumption rate and production rate.
         input.setTypeEquals(BaseType.DOUBLE);
         _inputRate = new Parameter(input, "tokenConsumptionRate",
-            new IntToken(1));
+                     new IntToken(1));
         output.setTypeEquals(BaseType.INT);
         _outputRate = new Parameter(output, "tokenProductionRate",
-            new IntToken(1));
+                      new IntToken(1));
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -106,35 +116,46 @@ public class ViterbiDecoder extends Transformer {
       *  binary coefficients. The coefficients indicate the presence (1)
       *  or absence (0) of a tap in the shift register. Each element
       *  of this array parameter should be a positive integer.
-      *  The array's default value is {03}.
+      *  The array's default value is {05, 07}.
       */
     public Parameter polynomialArray;
 
     /** Integer defining the number of bits that the shift register
-     *  takes in each time. It should be a positive integer. Its
+     *  takes in each firing. It should be a positive integer. Its
      *  default value is the integer 1.
      */
     public Parameter inputNumber;
 
-    public Parameter constraintLength; 
-
+    /** Integer defining the trace back depth of the viterbi decoder.
+     *  It should be a posivitive integer. Its default value is the
+     *  integer 10.
+     */
     public Parameter delay;
+
+    /** Boolean defining the decoding mode. If it is true, the decoder
+     *  will do soft decoding; otherwise it will do hard decoding.
+     *  Its default value is soft decoding.
+     */
+    public Parameter softDecoding;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>inputNumber</i>,
-     *  then verify that it is a positive integer; if it is
-     *  <i>polynomailArray</i>, then verify that each of its elements is
-     *  a positive integer and compute the shift register's length,
-     *  which is the highest order of all polynomials.
-     *  @exception IllegalActionException If <i>initial</i> is negative
-     *  or <i>inputLength</i> is non-positive or any element of
-     *  <i>polynomialArray</i> is non-positive.
+    /** If the attribute being changed is <i>softDecoding</i>, read
+     *  the decoding mode into a private variable _mode. If it is
+     *  <i>inputNumber</i>, <i>constraintLength</i> or <i>delay</i> , 
+     *  then verify it is  a positive integer; if it is
+     *  <i>polynomailArray</i>, then verify that each of its elements
+     *  is a positive integer.
+     *  @exception IllegalActionException If <i>inputNumber</i>,
+     *  <i>constraintLength</i> or <i>delay</i> is non-positive,
+     *  or any element of <i>polynomialArray</i> is non-positive.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == inputNumber) {
+        if (attribute == softDecoding) {
+            _mode = ((BooleanToken)softDecoding.getToken()).booleanValue();
+        } else if (attribute == inputNumber) {
             _inputNumber = ((IntToken)inputNumber.getToken()).intValue();
             if (_inputNumber < 1 ) {
                 throw new IllegalActionException(this,
@@ -146,15 +167,7 @@ public class ViterbiDecoder extends Transformer {
             _inputNumberInvalid = true;
             // Set the input comsumption rate.
             _outputRate.setToken(new IntToken(_inputNumber));
-        } else if (attribute == constraintLength) {
-            _stageNumber = ((IntToken)constraintLength.getToken()).intValue();
-            if (_stageNumber <= 1) {
-                throw new IllegalActionException(this,
-                        "constraintLength must be an integer greater than 1.");
-            }
-            _inputNumberInvalid = true;
-        }
-          else if (attribute == delay) {
+        } else if (attribute == delay) {
             _depth = ((IntToken)delay.getToken()).intValue();
             if (_depth < 1) {
                 throw new IllegalActionException(this,
@@ -164,12 +177,15 @@ public class ViterbiDecoder extends Transformer {
             ArrayToken maskToken = ((ArrayToken)polynomialArray.getToken());
             _maskNumber = maskToken.length();
             _mask = new int[_maskNumber];
-            int maxPolyValue = 0;
+            _maxPolyValue = 0;
             for(int i = 0; i < _maskNumber; i++) {
                 _mask[i] = ((IntToken)maskToken.getElement(i)).intValue();
                 if (_mask[i] <= 0) {
                     throw new IllegalActionException(this,
                     "Polynomial is required to be strictly positive.");
+                }
+                if (_mask[i] > _maxPolyValue) {
+                    _maxPolyValue = _mask[i];
                 }
             }
             _inputNumberInvalid = true;
@@ -180,32 +196,35 @@ public class ViterbiDecoder extends Transformer {
         }
     }
 
-    /** Read "<i>inputLength</i>" bits from the input port and shift
-     *  them into the shift register. Compute the parity for each
-     *  polynomial specified in <i>polynomialArray</i>. Send the results
-     *  in sequence. The n-th bit corresponds to the parity computed
-     *  using the n-th polynomial.
+    /** If the private variable _inputNumberInvalid is true, verify
+     *  the validity of the parameters. If they are valid, compute
+     *  the state-transition table of this convolutional code, which
+     *  is stored in a 3-D array _truthTable[][][]. There are totally
+     *  2<sup>k</sup> possible transmitted codewords for each state.
+     *  Read <i>n</i> bits from the input port, where <i>n</i> is
+     *  the number of polynomials in <i>polynomialArray</i>.
+     *  Compute the minimum distance between the 
      */
     public void fire() throws IllegalActionException {
-
         if (_inputNumberInvalid) {
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,
                 "Output rate should be larger than input rate.");
             }
-            _shiftRegLength = _stageNumber * _inputNumber;
+
+            //Comput the length of shift register.
+            _shiftRegLength = 0;
+            int regLength = 1;
+            while (regLength <= _maxPolyValue) {
+                regLength = regLength << _inputNumber;
+                _shiftRegLength = _shiftRegLength + _inputNumber;
+            }
             if (_inputNumber >= _shiftRegLength) {
                 throw new IllegalActionException(this,
-                "Input rate must be smaller than shift register length.");
-            }
-            for (int i = 0; i < _maskNumber; i ++) {
-                if (_mask[i] >= (1 << _shiftRegLength)) {
-                    throw new IllegalActionException(this,
-             "shift register's length must be higher than polynomials' order");
-                }
+                "Input rate must be smaller than the higest order of polynomials.");
             }
             _inputNumberInvalid = false;
- 
+
             _rowNum = 1 << (_shiftRegLength - _inputNumber);
             _colNum = 1 << _inputNumber;
             _truthTable = new int[_rowNum][_colNum][3];
@@ -221,8 +240,8 @@ public class ViterbiDecoder extends Transformer {
                     _path[i][j] = 0;
                     _tempPath[i][j] = 0;
                 }
-            }    
-           
+            }
+
             int inputMask = (1 << _inputNumber) - 1;
             // Compute truthTable
             // _truthTable[][][0] is the output y
@@ -235,7 +254,9 @@ public class ViterbiDecoder extends Transformer {
                    reg = reg + state;
                    int[] parity =  _calculateParity(_mask, _maskNumber, reg);
                    int outValue = 0;
-                   for (int i = 0; i < _maskNumber; i ++) {
+                   // store the output values as an integer
+                   //in the order of yn...y1y0
+                   for (int i = _maskNumber - 1; i >= 0; i --) {
                        outValue = outValue << 1;
                        outValue = outValue + parity[i];
                    }
@@ -244,30 +265,27 @@ public class ViterbiDecoder extends Transformer {
                    _truthTable[state][head][1] = oldState;
                    int input = reg & inputMask;
                    _truthTable[state][head][2] = input;
-                   System.out.println("state=" + state + " y=" + outValue + 
-                      " oldState=" + oldState + " input=" + input);
                }
             }
         }
-        System.out.println(" ");
-        System.out.println("flag =" + _flag);
+
         // Read from the input port.
         Token[] inputToken = (Token[])input.get(0, _maskNumber);
         double[] y = new double[_maskNumber];
+        int z = 0;
         for (int i = 0; i < _maskNumber; i++) {
-             y[i] = ((DoubleToken)inputToken[i]).doubleValue();             
+            y[i] = ((DoubleToken)inputToken[i]).doubleValue();
         }
 
         // Search the optimal path (minimum distance) for each state.
         for (int state = 0; state < _rowNum; state ++) {
-            System.out.println("state = " + state);
             double minDistance = 0;
             int minInput = 0;
             int minState = 0;
             for (int colIndex = 0; colIndex < _colNum; colIndex ++) {
                 // Compute the distance for each possible path to "state".
-                double d = _computeSoftDistance(y,
-                        _truthTable[state][colIndex][0], _maskNumber);
+                double d = _computeDistance(y,
+                    _truthTable[state][colIndex][0], _maskNumber, _mode);
                 // The previous state for that path.
                 int oldState = _truthTable[state][colIndex][1];
                 d = _tempDistance[oldState] + d;
@@ -280,41 +298,33 @@ public class ViterbiDecoder extends Transformer {
             _distance[state] = minDistance;
             for (int i = 0; i < _flag; i ++) {
                 _path[state][i] = _tempPath[minState][i];
-            }  
+            }
             _path[state][_flag] = minInput;
             // Note each element in path[][] is an integer representing k bits.
             // order: x0x1x2x3... where x0 is the first input bit that entered.
             // When sending to the output, should convert to binary.
-            System.out.println("d = " + minDistance);
-            System.out.print("path = ");
-            for (int i = 0; i <= _flag; i ++) {
-                System.out.print( _path[state][i] + " ");
-            }
-            System.out.println(" ");
+
         }
 
         //When to decide to output?
         if (_flag >= _depth) {
             //send to the output;
-            
             double minD = 0;
             int minIndex = 0;
             for (int state = 0; state < _rowNum; state ++) {
                 if (state == 0 || _distance[state] < minD) {
                     minD = _distance[state];
-                    minIndex = state; 
+                    minIndex = state;
                 }
             }
 
             IntToken[] decoded = new IntToken[_inputNumber];
-            System.out.println("minIndex = " + minIndex);
-            System.out.println("decoded = " + _path[minIndex][0]);
             decoded = _convertToBit(_path[minIndex][0], _inputNumber);
             output.broadcast(decoded, _inputNumber);
 
             // path should move to the front.
             for (int state = 0; state < _rowNum; state ++ ) {
-                //System.out.println("move to the front path for state " + state);
+          //("move to the front path for state " + state);
                 for (int i = 0; i < _flag; i ++) {
                    _path[state][i] = _path[state][i+1];
                 }
@@ -323,7 +333,6 @@ public class ViterbiDecoder extends Transformer {
         }
         _flag = _flag + 1;
     }
-
 
     /** Initialize the actor by resetting the shift register state
      *  equal to the value of <i>initial</i>
@@ -340,16 +349,12 @@ public class ViterbiDecoder extends Transformer {
      *  @exception IllegalActionException If the base class throws it
      */
     public boolean postfire() throws IllegalActionException {
-        //_shiftReg = _latestShiftReg;
         // copy distance/path to tempDistance/Path
         for (int i = 0; i < _rowNum; i ++) {
             _tempDistance[i] = _distance[i];
-            //System.out.print("temp path state for " + i + " ");    
             for (int j = 0; j < _flag; j ++) {
                 _tempPath[i][j] = _path[i][j];
-                //System.out.print(_tempPath[i][j] + " ");
             }
-            //System.out.println(" ");
         }
         return super.postfire();
     }
@@ -378,14 +383,28 @@ public class ViterbiDecoder extends Transformer {
         return parity;
     }
 
-    private double _computeSoftDistance(double[] y, int truthValue, int maskNum) {
-        double softDistance = 0.0;
-        for (int i = maskNum -1; i >= 0; i --) {
+    private double _computeDistance(
+            double[] y, int truthValue, int maskNum, boolean mode) {
+        double distance = 0.0;
+        int hammingDistance = 0;
+        int z = 0;
+        for (int i = 0; i < maskNum; i ++) {
             int truthBit = truthValue & 1;
             truthValue = truthValue >> 1;
-            softDistance = softDistance + java.lang.Math.pow(y[i] - truthBit, 2);
+            if (mode == true) {
+                distance = distance
+                    + java.lang.Math.pow(y[i] - truthBit, 2);
+            } else {
+                if (y[i] > 0.5) {
+                    z = 1;
+                } else {
+                    z = 0;
+                }
+                hammingDistance = hammingDistance + (z ^ truthBit);
+                distance = hammingDistance;
+            }
         }
-        return softDistance;
+        return distance;
     }
 
     private IntToken[] _convertToBit(int integer, int length) {
@@ -401,7 +420,7 @@ public class ViterbiDecoder extends Transformer {
         return bit;
     }
 
-     
+
     //////////////////////////////////////////////////////////////
     ////           private parameters and variables           ////
 
@@ -411,16 +430,20 @@ public class ViterbiDecoder extends Transformer {
     // Production rate of the output port.
     private Parameter _outputRate;
 
+    //private TypeAttribute _type;
+
+    private boolean _mode;
+
     // Number bits the actor consumes per firing.
     private int _inputNumber;
-
-    private int _stageNumber;
 
     // Number of polynomials.
     private int _maskNumber;
 
     // Polynomial array.
     private int[] _mask;
+
+    private int _maxPolyValue;
 
     // Length of the shift register.
     private int _shiftRegLength = 0;
