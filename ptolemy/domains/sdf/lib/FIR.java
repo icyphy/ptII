@@ -142,16 +142,12 @@ public class FIR extends SDFAtomicActor {
     public Object clone(Workspace ws) {
         try {
             FIR newobj = (FIR)(super.clone(ws));
-            newobj.input = new TypedIOPort(this, "input", true, false);
-            newobj.output = new TypedIOPort(this, "output", false, true);
-            interpolation = new Parameter(this, "interpolation",
-                    interpolation.getToken());
-            taps = new Parameter(this, "taps", taps.getToken());
+            newobj.input = (TypedIOPort)newobj.getPort("input");
+            newobj.output = (TypedIOPort)newobj.getPort("output");
+            newobj.interpolation =
+                    (Parameter)newobj.getAttribute("interpolation");
+            newobj.taps = (Parameter)newobj.getAttribute("taps");
             return newobj;
-        } catch (KernelException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Internal error: " + ex.getMessage());
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
             throw new InternalErrorException(
@@ -186,20 +182,25 @@ public class FIR extends SDFAtomicActor {
         }
         _phaseLength = (int)(_taps.length / _interp);
         if ((_taps.length % _interp) != 0) _phaseLength++;
+
+        // Create new data array and initialize index into it.
+        int datalength = _taps.length/_interp;
+        if (_taps.length%_interp != 0) datalength++;
+        _data = new double[datalength];
+        _mostrecent = datalength;
     }
 
     /** Consume the inputs and produce the outputs of the FIR filter.
      */
     public void fire() throws IllegalActionException {
-        int outCount = _interp - 1;
 	
         // phase keeps track of which phase of the filter coefficients
         // are used. Starting phase depends on the _decPhase value.
         int phase = _dec - _decPhase - 1;   
 	
         // FIXME: consume just one input for now.
-        DoubleToken inputToken = (DoubleToken)(input.get(0));
-        double inputvalue = inputToken.doubleValue();
+        if (--_mostrecent < 0) _mostrecent = _data.length - 1;
+        _data[_mostrecent] = ((DoubleToken)(input.get(0))).doubleValue();
 
         // Interpolate once for each input consumed
         for (int inC = 1; inC <= _dec; inC++) {
@@ -212,9 +213,9 @@ public class FIR extends SDFAtomicActor {
                     int tapsIndex = i * _interp + phase;
                     double tap = 0.0;
                     if (tapsIndex < _taps.length) tap = _taps[tapsIndex];
-// FIXME: Should consume past inputs here. (_dec - inC +i) in the past.
-// rather than inputvalue.
-                    out += tap * inputvalue;
+                    int dataIndex =
+                            (_mostrecent + _dec - inC + i)%(_data.length);
+                    out += tap * _data[dataIndex];
                 }
                 output.broadcast(new DoubleToken(out));
                 phase += _dec;
@@ -237,5 +238,7 @@ public class FIR extends SDFAtomicActor {
     // Local cache of these parameter values.
     private int _dec, _interp, _decPhase;
     private double[] _taps;
+    private double[] _data;
+    private int _mostrecent;
 }
 

@@ -72,7 +72,7 @@ if <i>length</i> is even.
 <p>
 For the ordinary raised cosine response, the
 distance (in number of samples) from the center
-to the first zero crossing is given by <i>interpolation</i>.
+to the first zero crossing is given by <i>symbolInterval</i>.
 For the square-root raised cosine response, a cascade of two identical
 square-root raised cosine filters would be equivalent to a single
 ordinary raised cosine filter.
@@ -88,11 +88,12 @@ to a raised cosine pulse.  However, because of the abrupt rectangular
 windowing of the pulse, with low excess bandwidth, this ideal is not
 closely approximated except for very long filters.
 <p>
-The output sample rate is <i>upsample</i> times the input.
+The output sample rate is <i>interpolation</i> times the input.
 This is set by default to 16 because in digital communication systems
 this pulse is used for the line coding of symbols, and upsampling is necessary.
-Typically, the value of <i>upsample</i> is the same as that of
-<i>interpolation</i>.
+Typically, the value of <i>interpolation</i> is the same as that of
+<i>symbolInterval</i>, at least when the filter is being used
+as a transmit pulse shaper.
 <h3>References</h3>
 <p>[1]  
 E. A. Lee and D. G. Messerchmitt,
@@ -122,6 +123,8 @@ public class RaisedCosine extends FIR {
         interpolation.setToken(new IntToken(16));
         excessBW = new Parameter(this, "excessBW", new DoubleToken(1.0));
         root = new Parameter(this, "root", new BooleanToken(false));
+        symbolInterval =
+                new Parameter(this, "symbolInterval", new IntToken(16));
 
         // FIXME: Need a way to hide taps and interpolation from UI.
     }
@@ -129,21 +132,27 @@ public class RaisedCosine extends FIR {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The length of the pulse.  This contains an
-     *  IntToken, and by default it has value 64.
-     */
-    public Parameter length;
-
     /** The excess bandwidth.  This contains a
      *  DoubleToken, and by default it has value 1.0.
      */
     public Parameter excessBW;
+
+    /** The length of the pulse.  This contains an
+     *  IntToken, and by default it has value 64.
+     */
+    public Parameter length;
 
     /** If true, use the square root of the raised cosine instead of the
      *  raised cosine.  This contains a
      *  BooleanToken, and by default it has value false.
      */
     public Parameter root;
+
+    /** The symbol interval, which is the number of samples to the first
+     *  zero crossing on each side of the main lobe.  Its value is an
+     *  IntToken, and by default it has value 16.
+     */
+    public Parameter symbolInterval;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -155,18 +164,13 @@ public class RaisedCosine extends FIR {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-        try {
-            RaisedCosine newobj = (RaisedCosine)(super.clone(ws));
-            newobj.length = new Parameter(this, "length", length.getToken());
-            newobj.excessBW = new Parameter(this, "excessBW",
-                    excessBW.getToken());
-            newobj.root = new Parameter(this, "root", root.getToken());
-            return newobj;
-        } catch (KernelException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Internal error: " + ex.getMessage());
-        }
+        RaisedCosine newobj = (RaisedCosine)(super.clone(ws));
+        newobj.length = (Parameter)(newobj.getAttribute("length"));
+        newobj.excessBW = (Parameter)(newobj.getAttribute("excessBW"));
+        newobj.root = (Parameter)(newobj.getAttribute("root"));
+        newobj.symbolInterval = (Parameter)
+                 (newobj.getAttribute("symbolInterval"));
+        return newobj;
     }
 
     /** Set up the taps and consumption and production constants.
@@ -176,7 +180,7 @@ public class RaisedCosine extends FIR {
 
         // FIXME: Doesn't handle mutations.
         double ebw = ((DoubleToken)(excessBW.getToken())).doubleValue();
-        int inter = ((IntToken)(interpolation.getToken())).intValue();
+        int inter = ((IntToken)(symbolInterval.getToken())).intValue();
         int len = ((IntToken)(length.getToken())).intValue();
         boolean sqrt = ((BooleanToken)(root.getToken())).booleanValue();
         if(ebw < 0.0) {
