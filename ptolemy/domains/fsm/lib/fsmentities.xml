@@ -6,7 +6,7 @@
   </doc>
   <entity name="State" class="ptolemy.domains.fsm.kernel.State">
   <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-  <configure>generic.transformer</configure>
+  <configure>generic.state</configure>
   </rendition>
   </entity>
 </class>
