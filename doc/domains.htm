@@ -45,6 +45,7 @@ feature of rendezvous-based models is their ability to cleanly model
 nondeterminate interactions. The CSP domain implements both conditional
 send and conditional receive. It also includes an experimental timed
 extension.
+<p> The CSP domain is shipped only with the full Ptolemy II release.
 
 <h2><a name="ct">CT</a></h2>
 <p>
@@ -145,6 +146,7 @@ its local time to the minimum of the local times on each of its input
 connections. The domain systematizes the transmission of null events,
 which in effect provide guarantees that no event will be supplied with
 a time stamp less than some specified value.
+<p> The DDE domain is experimental and is shipped only with the full Ptolemy II release.
 
 <h2><a name="dt">DT</a></h2>
 <p>
@@ -159,6 +161,8 @@ are always causal, meaning that output tokens that depend on input
 tokens are always produced with time values greater than or equal
 to those of the input tokens.  In order to ensure causal semantics,
 this domain automatically introduces delays in multirate models.
+
+<p> The DT domain is experimental and is shipped only with the full Ptolemy II release.
 
 <h2><a name="fsm">FSM</a></h2>
 <p>
@@ -218,6 +222,7 @@ defaults to one, but can be specified to be some other value, with
 certain technical constraints (frequencies in a model must be
 harmonically related).
 </p>
+<p> The Giotto domain is experimental and is shipped only with the full Ptolemy II release.
 
 <h2><a name="gr">GR</a></h2>
 <p>
@@ -233,7 +238,7 @@ other domains provide the transformations for the graphical
 elements.  For example, a model of a physical system might
 be constructed in CT and animated in GR.
 </p>
-
+<p> The GR domain is experimental and is shipped only with the full Ptolemy II release.
 <h2><a name="pn">PN</a></h2>
 <p>
 
@@ -316,7 +321,8 @@ real-time applications are a good match. However, also because of the
 tight synchronization, some applications are overspecified in the SR
 model, limiting the implementation alternatives. Moreover, in most
 realizations, modularity is compromised by the need to seek a global
-fixed point at each clock tick. An SR domain has not yet been
+fixed point at each clock tick. 
+ <p> An SR domain has not yet been
 implemented in Ptolemy II, although the methods used by Stephen Edwards
 in Ptolemy Classic can be adapted to this purpose.
 </p>
