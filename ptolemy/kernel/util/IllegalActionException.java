@@ -70,6 +70,18 @@ public class IllegalActionException extends KernelException {
         this(object, null, null, detail);
     }
 
+    /** Constructs an Exception with a detail message that includes the
+     *  name of the first argument.
+     *  @param object The object.
+     *  @param cause The cause of this exception, or null if the cause
+     *  is not known or nonexistent.
+     *  @param detail The message.
+     */
+    public IllegalActionException(Nameable object,
+            Throwable cause, String detail) {
+        this(object, null, cause, detail);
+    }
+
     /** Constructs an Exception with a detail message that consists of
      *  only the names of the object1 and object2 arguments.
      *  @param object1 The first object.
