@@ -10,6 +10,10 @@
         <doc>The function is applied to its input data.</doc>
       </entity>
 
+      <entity name="ApplyFunctionOverSequence" class="ptolemy.actor.lib.hoc.ApplyFunctionOverSequence">
+        <doc>The function is applied to its input data.</doc>
+      </entity>
+
       <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
           <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
               <property name="iterations" value="0"/>

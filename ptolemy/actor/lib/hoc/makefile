@@ -53,6 +53,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	AbstractCase.java \
 	ApplyFunction.java \
+	ApplyFunctionOverSequence.java \
 	Case.java \
 	IterateOverArray.java \
 	LifeCycleManager.java \
