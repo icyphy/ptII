@@ -203,7 +203,12 @@ public abstract class Branch {
 
     /** 
      */
-    public void registerRcvrBlock() {
+    public void registerRcvrBlocked() {
+    }
+
+    /** 
+     */
+    public void registerRcvrUnBlocked() {
     }
 
     /** 

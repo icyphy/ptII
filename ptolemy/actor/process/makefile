@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	MailboxBoundaryReceiver.java \
 	NotifyThread.java \
 	ProcessDirector.java \
 	ProcessReceiver.java \
