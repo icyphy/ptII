@@ -65,7 +65,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
 
         super.init();
         // Initialization
-        _stopTimeBox = new TextField("50.0", 10);
+        _stopTimeBox = new TextField("70.0", 10);
         _alphaPBox = new TextField("500.0 650.0 395.0 121.0 17.8", 10);
         _alphaVBox = new TextField("100.0 110.0 57.0 12.80", 10);
         _alphaABox = new TextField("20.0 18.0 7.80", 10);
@@ -76,12 +76,18 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
         // The applet has tow panels, stacked vertically
         setLayout(new BorderLayout());
         Panel appletPanel = new Panel();
-        appletPanel.setLayout(new GridLayout(1,1));
+        appletPanel.setLayout(new GridLayout(2,2));
         add(appletPanel, "Center");
         
         Plot ctPanel = new Plot();
         appletPanel.add(ctPanel);
-
+        Plot pxPanel = new Plot();
+        appletPanel.add(pxPanel);
+        Plot pzPanel = new Plot();
+        appletPanel.add(pzPanel);
+        Plot thPanel = new Plot();
+        appletPanel.add(thPanel);
+        
         // Adding a control panel in the main panel.
         Panel controlPanel = new Panel();
         add(controlPanel, "South");
@@ -124,13 +130,15 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
         alphaAPanel.add(new Label("alphaA"));
         alphaAPanel.add(_alphaABox);
         // done adding b
-        
+
+        Panel buttonPanel = new Panel();
+        simulationParam.add(buttonPanel);
         // Adding go button in the control panel.
-        ctPanel.add(_goButton);
+        buttonPanel.add(_goButton);
         _goButton.addActionListener(new GoButtonListener());
 
         // Adding action button in the control panel.
-        ctPanel.add(_actionButton);
+        buttonPanel.add(_actionButton);
         _actionButton.addActionListener(new ActionButtonListener());
         
         //System.out.println("Construct ptII");
@@ -349,12 +357,23 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
 
             CTIntegrator A = new CTIntegrator(sys, "IntegratorA");
 
+            CTGain MINUS = new CTGain(sys, "MINUS");
             //CTPlot ctPlot = new CTPlot(sys, "CTPlot", ctPanel);
-            CTXYPlot ctPlot = new CTXYPlot(sys, "CTXYPlot", ctPanel);
+            CTXYPlot ctPlot = new CTXYPlot(sys, "XZPlot", ctPanel);
             String[] ctLegends = {"(Px,Pz)"};
-            
             ctPlot.setLegend(ctLegends);
-            
+
+            CTPlot pxPlot = new CTPlot(sys, "VxPlot", pxPanel);
+            String[] pxLegends = {"Vx"};
+            pxPlot.setLegend(pxLegends);
+
+            CTPlot pzPlot = new CTPlot(sys, "PzPlot", pzPanel);
+            String[] pzLegends = {"Pz"};
+            pzPlot.setLegend(pzLegends);
+
+            CTPlot thPlot = new CTPlot(sys, "ThPlot", thPanel);
+            String[] thLegends = {"Th"};
+            thPlot.setLegend(thLegends);
             
             // CTConnections
             TypedIORelation rPx = new TypedIORelation(sys, "rPx");
@@ -455,25 +474,15 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
 
             // Connect HoverLinearizer
             
-            /*
-            hover.outputVx.link(rVx);
-            hover.outputVz.link(rVz);
-            hover.inputPx.link(rPx);
-            hover.inputDPx.link(rDPx);
-            hover.inputDDPx.link(rDDPx);
-            hover.inputD3Px.link(rD3Px);
-            hover.inputD4Px.link(rD4Px);
-            
-            hover.inputPz.link(rPz);
-            hover.inputDPz.link(rDPz);
-            hover.inputDDPz.link(rDDPz);
-            hover.inputD3Pz.link(rD3Pz);
-            hover.inputD4Pz.link(rD4Pz);
-            */
-
+            TypedIORelation rmPz = new TypedIORelation(sys, "RMPz");
+            MINUS.input.link(rPz);
+            MINUS.output.link(rmPz);
             ctPlot.inputX.link(rPx);
-            ctPlot.inputY.link(rPz);
+            ctPlot.inputY.link(rmPz);
             //ctPlot.input.link(rPz);
+            pxPlot.input.link(rDPx);
+            pzPlot.input.link(rmPz);
+            thPlot.input.link(rTh);
 
             //System.out.println("Parameters");
             // CT Director parameters
@@ -506,52 +515,25 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             solver2.setToken(token2);
             solver2.parameterChanged(null);
 
-            /*
-            // sub dir parameters
-             initstep = 
-                (Parameter)subdir.getAttribute("InitialStepSize");
-            initstep.setExpression("0.01");
-            initstep.parameterChanged(null);
-
-             minstep =
-                (Parameter)subdir.getAttribute("MinimumStepSize");
-            minstep.setExpression("0.01");
-            minstep.parameterChanged(null);
-            
-            solver1 =
-                (Parameter)subdir.getAttribute("BreakpointODESolver");
-            token1 = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-            solver1.setToken(token1);
-            solver1.parameterChanged(null);
            
-            
-            solver2 =
-                (Parameter)subdir.getAttribute("ODESolver");
-            token2 = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
-            solver2.setToken(token2);
-            solver2.parameterChanged(null);
-
-            */
             // CTActorParameters
             Parameter Pxi = (Parameter)Px.getAttribute("InitialState");
             Pxi.setExpression("0.0");
             Pxi.parameterChanged(null);
 
             Parameter Pzi = (Parameter)Pz.getAttribute("InitialState");
-            Pzi.setExpression("-2.5");
+            Pzi.setExpression("-1.5");
             Pzi.parameterChanged(null);
 
             Parameter Tmi = (Parameter)Tm.getAttribute("InitialState");
             Tmi.setExpression("48.02");
             Tmi.parameterChanged(null);
             
-            /*
-            Parameter m1 = (Parameter)MINUS1.getAttribute("Gain");
+            
+            Parameter m1 = (Parameter)MINUS.getAttribute("Gain");
             m1.setExpression("-1.0");
             m1.parameterChanged(null);
-            
+            /*
             Parameter m2 = (Parameter)MINUS2.getAttribute("Gain");
             m2.setExpression("-1.0");
             m2.parameterChanged(null);
@@ -566,7 +548,7 @@ public class HeliControlApplet extends ptolemy.actor.util.PtolemyApplet {
             xmin.parameterChanged(null);
             
             Parameter xmax = (Parameter)ctPlot.getAttribute("X_Max");
-            xmax.setExpression("50.0");
+            xmax.setExpression("70.0");
             xmax.parameterChanged(null);
 
             Parameter ymin = (Parameter)ctPlot.getAttribute("Y_Min");
