@@ -103,9 +103,17 @@ proc speedComparison  {xmlFile \
 	    set startDirectory [pwd]
 	    cd ../cg/$modelName
 	    puts "Running builtin $codeGenType codegen $repeat times"
-	    set codegenElapsed [time {java::call \
-					  ptolemy.actor.gui.CompositeActorApplication \
-					  main $args} $repeat]
+	    set timeout 1200
+
+	    puts "Setting watchdog for $timeout milliseconds"
+	    set watchDog [java::new util.testsuite.WatchDog $timeout]
+
+	    set codegenElapsed \
+		    [time {java::call \
+		    ptolemy.actor.gui.CompositeActorApplication \
+		    main $args} $repeat]
+	    $watchDog cancel
+
 	    cd $startDirectory
 
 
@@ -418,7 +426,13 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
         puts "Running Copernicus: $execCommand"
 	#    	java::new ptolemy.copernicus.kernel.Copernicus $args
 	
+	set timeout 1300000
+	puts "Setting watchdog for $timeout milliseconds"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+
 	set results [eval exec $execCommand]
+	$watchDog cancel
+
 	puts $results
 
 	#    if [catch {set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
