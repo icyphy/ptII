@@ -542,7 +542,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 isUndeclared = destinationPort.getTypeTerm().isSettable();
 
                     if (!isUndeclared) {
-                        // both source/destination ports are declared, check type
+                        // both source/destination ports are declared,
+                        // check type
                         Type destDeclared = destinationPort.getType();
                     int compare = TypeLattice.compare(srcDeclared,
                             destDeclared);
@@ -584,11 +585,12 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         Iterator destinationPorts = destinationPortList.iterator();
         while (destinationPorts.hasNext()) {
             TypedIOPort destinationPort = (TypedIOPort)destinationPorts.next();
-            boolean destUndeclared = destinationPort.getTypeTerm().isSettable();
+            boolean destUndeclared =
+                destinationPort.getTypeTerm().isSettable();
 
             if (srcUndeclared || destUndeclared) {
-                    // At least one of the source/destination ports does not have
-                // declared type, form type constraint.
+                // At least one of the source/destination ports does
+                // not have declared type, form type constraint.
                 Inequality ineq = new Inequality(sourcePort.getTypeTerm(),
                         destinationPort.getTypeTerm());
                 result.add(ineq);
