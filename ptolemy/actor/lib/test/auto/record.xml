@@ -87,7 +87,7 @@
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
         <property name="parameterTypes" class="ptolemy.data.expr.Parameter" value="{Const={value=&quot;double&quot;}, Ramp={firingCountLimit=&quot;int&quot;, init=&quot;int&quot;, step=&quot;int&quot;}}">
         </property>
-        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const={output=&quot;double&quot;, trigger=&quot;unknown&quot;}, Expression={f=&quot;double&quot;, output=&quot;{l1=double, l2=int}&quot;, x=&quot;int&quot;}, Expression2={output=&quot;{l1=double}&quot;, x=&quot;{l1=double, l2=int}&quot;}, Ramp={output=&quot;int&quot;, step=&quot;int&quot;, trigger=&quot;unknown&quot;}}">
+        <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const={output=&quot;double&quot;, trigger=&quot;unknown&quot;}, Expression={f=&quot;double&quot;, output=&quot;{l1 = double, l2 = int}&quot;, x=&quot;int&quot;}, Expression2={output=&quot;{l1 = double}&quot;, x=&quot;{l1 = double, l2 = int}&quot;}, Ramp={output=&quot;int&quot;, step=&quot;int&quot;, trigger=&quot;unknown&quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
