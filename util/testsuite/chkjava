@@ -159,7 +159,8 @@ do
 
 	# Check that all commas have spaces
 	# A line that contains ", is ok
-	results=`egrep '[^"],[^v" ]' $file`
+	# A line that contains ,</i> is ok
+	results=`egrep '[^"],[^v" ]' $file | grep -v ',[</i>]'`
 	if [ "x$results" != "x" ]; then
 	    echo "$file: comma without out trailing space:"
 	    echo "$results"
