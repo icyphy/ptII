@@ -1,0 +1,39 @@
+<!-- $Id$-->
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="AudioSourceSinkDemo" class="ptolemy.actor.TypedCompositeActor">
+<doc>A simple model demonstrating the use of the AudioSource and 
+AudioSink actors. The model consists of an AudioSource connected
+to an AudioSink.</doc>
+<!---@author Brian K. Vogel-->
+    <director class="ptolemy.domains.sdf.kernel.SDFDirector">
+      <property name="iterations" value="0">
+        <doc>Number of iterations in an execution.</doc>
+      </property>
+    </director>
+
+    <entity name="soundSource" class="ptolemy.domains.sdf.lib.javasound.AudioSource">
+      <property name="tokenProductionRate" value="256"></property>
+      <property name="sampleRate" value="44100"></property>
+      <property name="source" value="&quot;mic&quot;"></property>
+      <property name="channels" value="1"></property>
+      <property name="bufferSize" value="4096"></property>
+      <port name="output"></port>
+    </entity>
+
+    <entity name="soundSink" class="ptolemy.domains.sdf.lib.javasound.AudioSink">
+      <property name="tokenConsumptionRate" value="256"></property>
+      <property name="sampleRate" value="44100"></property>
+      <property name="sink" value="&quot;speaker&quot;"></property>
+      <property name="channels" value="1"></property>
+      <property name="bufferSize" value="4096"></property>
+      <port name="input"></port>
+    </entity>
+
+    <!-- Make the connections -->
+    <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+    <link port="soundSource.output" relation="r1"/>
+    <link port="soundSink.input" relation="r1"/>
+
+</model>
