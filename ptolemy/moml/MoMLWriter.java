@@ -321,6 +321,7 @@ public class MoMLWriter extends Writer {
                     // System.out.println("reflecting " + theClass);
                     // OK..  try reflecting using a workspace constructor
                     _reflectionArguments[0] = _reflectionWorkspace;
+System.out.println(theClass);
                     Constructor[] constructors =
                         theClass.getConstructors();
                     for (int i = 0; i < constructors.length; i++) {
@@ -332,6 +333,12 @@ public class MoMLWriter extends Writer {
                             continue;
                         boolean match = true;
                         for (int j = 0; j < parameterTypes.length; j++) {
+//                              System.out.println(" " +
+//                                      parameterTypes[j] + " "
+//                                      +_reflectionArguments[j] + " " 
+//                                      + parameterTypes[j]
+//                                      .isInstance(_reflectionArguments[j]));
+
                             if (!(parameterTypes[j].isInstance(
                                     _reflectionArguments[j]))) {
                                 match = false;
@@ -373,11 +380,34 @@ public class MoMLWriter extends Writer {
                         toplevel = (CompositeEntity)
                             _reflectionParser.parse(source);
                     } catch (Exception ex) {
+                        StringBuffer possibleConstructors = new StringBuffer();
+                        try {
+                            Constructor[] constructors =
+                                theClass.getConstructors();
+                            possibleConstructors.append("Constructors for "
+                                    + theClass + ":\n");
+                            for(int i = 0; i < constructors.length; i++) {
+                                Constructor constructor = constructors[i];
+                                Class[] parameterTypes =
+                                    constructor.getParameterTypes();
+                                for (int j = 0; j < parameterTypes.length;
+                                     j++) {
+                                    possibleConstructors.
+                                        append(parameterTypes[j] + " ");
+                                }
+                                possibleConstructors.append("\n");
+                            }
+                        } catch (Exception ex2) {
+                           possibleConstructors.append(
+                                   "\nFailed to find constructors: " + ex2);
+                        }
                         throw new InternalErrorException(null, ex,
                                 "Attempt to create an instance of "
                                 + deferredClass + " failed because "
                                 + "it does not have a Workspace "
-                                + "constructor.");
+                                + "constructor.\n"
+                                + "Constructors found were:\n"
+                                + possibleConstructors);
                     }
                     if (object instanceof Attribute) {
                         deferredObject =
