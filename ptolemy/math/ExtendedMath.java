@@ -113,14 +113,15 @@ public class ExtendedMath {
      *  second argument as prescribed by the IEEE 754 standard.  This
      *  is implemented by the java.lang.Math class method IEEERemainder.
      *  The documentation for that class says:
-     *  <p>
-     *  "The remainder value is mathematically equal to f1 - f2 × <i>n</i>,
-     *  where <i>n</i> is the mathematical integer
+     *
+     *  <p> "The remainder value is mathematically equal to f1 - f2
+     *  &times; <i>n</i>, where <i>n</i> is the mathematical integer
      *  closest to the exact mathematical value of the quotient f1/f2,
      *  and if two mathematical integers are equally close to f1/f2,
-     *  then <i>n</i> is the integer that is even. If the remainder is zero,
-     *  its sign is the same as the sign of the first argument. Special
-     *  cases:
+     *  then <i>n</i> is the integer that is even. If the remainder is
+     *  zero, its sign is the same as the sign of the first
+     *  argument. Special cases:
+     *
      *  <ul>
      *  <li> If either argument is NaN, or the first argument is
      *  infinite, or the second argument is positive zero or negative
