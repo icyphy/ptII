@@ -30,7 +30,7 @@ import pt.kernel.*;
 import pt.actors.*;
 import pt.data.*;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNDirector 
@@ -111,10 +111,7 @@ public class PNDirector extends Director {
     public void readBlock(Receptionist recep) {
         synchronized(workspace()) {
             _readBlockCount++;
-	    if (_readblockedQs == null) {
-	        _readblockedQs = new Hashtable();
-	    } 
-	    _readblockedQs.put((PNPort)recep.getContainer(), recep);
+	    _readblockedQs.insertFirst(recep);
             //System.out.println("readblkcount is "+_readBlockCount);
             _checkForDeadlock(0);
             return;
@@ -123,10 +120,10 @@ public class PNDirector extends Director {
  
     /** Decreases the number of queues blocked on a read
      */
-    public void readUnblock(PNPort key) {
+    public void readUnblock(Receptionist recep) {
         synchronized(workspace()) {
             _readBlockCount--;
-	    _readblockedQs.remove(key);
+	    _readblockedQs.removeOneOf(recep);
             //System.out.println("readunblkcount is "+_readBlockCount);
             return;
         }
@@ -159,10 +156,7 @@ public class PNDirector extends Director {
         //The exception should never be thrown!!
         synchronized(workspace()) {
             _writeBlockCount++;
-	    if (_writeblockedQs == null) {
-	        _writeblockedQs = new Hashtable();
-	    }
-	    _writeblockedQs.put((PNPort)recep.getContainer(), recep);
+	    _writeblockedQs.insertFirst(recep);
             _checkForDeadlock(0);
             return;
         }
@@ -172,10 +166,10 @@ public class PNDirector extends Director {
     /** If the stars can be blocked on a write, then unblock it and 
      *  decrement the number of stars blocked on write.
      */
-    public void writeUnblock(PNPort key) {
+    public void writeUnblock(Receptionist recep) {
         synchronized(workspace()) {
             _writeBlockCount--;
-	    _writeblockedQs.remove(key);
+	    _writeblockedQs.removeOneOf(recep);
             return;
         }
     }
@@ -249,11 +243,11 @@ public class PNDirector extends Director {
             } else { 
 	        smallestCapacityQueue.setCapacity(smallestCapacityQueue.capacity()+1);
             }
-	    _readblockedQs.remove((PNPort)smallestCapacityRecep.getContainer());
+	    //_readblockedQs.remove((PNPort)smallestCapacityRecep.getContainer());
 	    //FIXME: Wont this alwas be true?? Check it out
 	    //if ((PNInPort)(smallestCapacityRecep.getContainer()).isWritePending()) {
-	    writeUnblock((PNPort)(smallestCapacityRecep.getContainer()));
-	    ((PNInPort)smallestCapacityRecep.getContainer()).setWritePending(false);
+	    writeUnblock(smallestCapacityRecep);
+	    ((PNInPort)smallestCapacityRecep.getContainer()).setWritePending(smallestCapacityRecep, false);
 	    workspace().notifyAll();
 	    //}
         } catch (IllegalActionException e) {
@@ -353,31 +347,22 @@ public class PNDirector extends Director {
     ////                         private variables                        ////
 
     private boolean _mutate = true;
-
     // Container is the CompositeEntity the executive is responsible for
     private CompositeEntity _container;
-
     // Is set when a deadlock occurs
     private boolean _deadlock = false;
-
     // Level of debugging output
     private int _debug = 0;
-
     // The threadgroup in which all the stars are created.
     private ThreadGroup _processGroup;
-    
     // Number of stars blocking on read.
     private int _readBlockCount = 0;    
-
-    private Hashtable _readblockedQs;
-
     // Is set when the simulation is to be terminated
     private boolean _terminate = false;
-
     // No of stars blocking on write.
     private int _writeBlockCount = 0;
-
-    private Hashtable _writeblockedQs;
+    private LinkedList _readblockedQs = new LinkedList();
+    private LinkedList _writeblockedQs = new LinkedList();
 
 }
 
