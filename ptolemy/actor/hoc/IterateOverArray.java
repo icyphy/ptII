@@ -282,12 +282,7 @@ public class IterateOverArray extends TypedCompositeActor {
                         // current entity. This preserves connections to
                         // ports with the same name.
                         
-                        // FIXME: Have to also only delete ports that
-                        // match ports of deleted entities.  Otherwise
-                        // this will delete any ports that are persistent
-                        // in the moml file because the entity has not
-                        // been fully constructed and hence has no ports.
-                        // However, then if I add ports to an empty
+                        // NOTE: then if I add ports to an empty
                         // instance (no inside entity), then these ports
                         // don't go away if I drop in an entity.  Maybe
                         // this is OK?
@@ -394,6 +389,7 @@ public class IterateOverArray extends TypedCompositeActor {
                 }
             }
         };
+        request.setUndoable(true);
         // Do this so that a single undo reverses the entire operation.
         request.setMergeWithPreviousUndo(true);
 
@@ -413,6 +409,9 @@ public class IterateOverArray extends TypedCompositeActor {
         super._addPort(port);
         if (!_inAddEntity) {
             // Create and connect a matching inside port on contained entities.
+            // Do this as a change request to ensure that the action of
+            // creating the port passed in as an argument is complete by
+            // the time this executes.
             ChangeRequest request = new ChangeRequest(
                     this,
                     "Add a port on the inside") {
@@ -431,16 +430,6 @@ public class IterateOverArray extends TypedCompositeActor {
                             boolean createdInsidePort = false;
                             if (insidePort == null) {
                                 insidePort = insideEntity.newPort(portName);
-                                createdInsidePort = true;
-                                // FIXME: Caution: If this executed immediately, the port
-                                // is not fully constructed.  It could be executed
-                                // immediately if this _addPort() method is called
-                                // directly by the MoMLParser and not from within
-                                // a change request.  I think this works currently
-                                // only because when initially reading the model,
-                                // when the ports of this actor created, there is
-                                // not yet any contained actor, so this code is not
-                                // executed.
                                 if (port instanceof IOPort
                                         && insidePort instanceof IOPort) {
                                     IOPort castInsidePort = (IOPort)insidePort;
@@ -450,21 +439,30 @@ public class IterateOverArray extends TypedCompositeActor {
                                     castInsidePort.setMultiport(castPort.isMultiport());
                                 }
                             }
-                            // FIXME: Caution: Same issue as previous FIXME.
                             if (port instanceof IteratePort) {
                                 ((IteratePort)port).associatePort(insidePort);
                             }
-                            final ComponentRelation relation
-                                    = newRelation(uniqueName("relation"));
-                            insidePort.link(relation);
-                            port.link(relation);
+                            // Create a link only if it doesn't already exist.
+                            List connectedPorts = insidePort.connectedPortList();
+                            ComponentRelation newRelation = null;
+                            if (!connectedPorts.contains(port)) {
+                                // There is no connection. Create one.
+                                newRelation = newRelation(uniqueName("relation"));
+                                insidePort.link(newRelation);
+                                port.link(newRelation);
+                            }
                             
                             // Create the undo action.
                             final Port finalInsidePort = insidePort;
                             final boolean finalCreatedInsidePort = createdInsidePort;
+                            final ComponentRelation finalRelation = newRelation;
+                            final boolean finalCreatedRelation = (newRelation != null);
+                            
                             UndoAction action = new UndoAction() {
                                 public void execute() throws Exception {
-                                    relation.setContainer(null);
+                                    if (finalCreatedRelation) {
+                                        finalRelation.setContainer(null);
+                                    }
                                     if (finalCreatedInsidePort) {
                                         finalInsidePort.setContainer(null);
                                     }
@@ -702,7 +700,7 @@ public class IterateOverArray extends TypedCompositeActor {
             setPersistent(false);
         }
 
-        /** Invoke iterations on each of the contained actor of the
+        /** Invoke iterations on the contained actor of the
          *  container of this director repeatedly until either it runs out
          *  of input data or prefire() returns false. If postfire() of the
          *  actor returns false, then set a flag indicating to postfire() of
@@ -712,7 +710,7 @@ public class IterateOverArray extends TypedCompositeActor {
          */
         public void fire() throws IllegalActionException {
             CompositeActor container = (CompositeActor)getContainer();
-            Iterator actors = container.deepEntityList().iterator();
+            Iterator actors = container.entityList().iterator();
             _postfireReturns = true;
             while (actors.hasNext() && !_stopRequested) {
 
