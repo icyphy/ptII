@@ -63,14 +63,14 @@ public interface Derivable extends Nameable {
      *  a container of this object). Implementors may return an empty
      *  list, but should not return null. This method should return a
      *  complete list, including objects that have been locally
-     *  modified (as indicated by isModifiedHeritage()).
+     *  modified (as indicated by getOverrideDepth()).
      *  All objects in the returned list are required to be of the same
      *  class as the object on which this method is called (they should
      *  be clones constructed directly or indirectly).
      *  @return A list of objects of the same class as the object on
      *   which this is called.
-     *  @see #isModifiedHeritage()
-     *  @see #getShadowedHeritageList()
+     *  @see #getOverrideDepth()
+     *  @see #getShadowedDerivedList()
      */
     public List getDerivedList();
 
@@ -141,8 +141,8 @@ public interface Derivable extends Nameable {
      *   the depths of propagation along the derivation chain.
      *  @return A list of objects of the same class as the object on
      *   which this is called.
-     *  @see #isModifiedHeritage()
-     *  @see #getHeritageList()
+     *  @see #getOverrideDepth()
+     *  @see #getDerivedList()
      */
     public List getShadowedDerivedList(List depthList);
 
@@ -155,12 +155,12 @@ public interface Derivable extends Nameable {
      *  If this method returns true, then there is typically no need
      *  to export a description of this object to a persistent representation
      *  (such as MoML), unless this object has been modified (as indicated
-     *  by isModifiedHeritage().  Moreover, if this method returns true,
+     *  by getOverrideDepth().  Moreover, if this method returns true,
      *  then it is reasonable to prohibit certain changes to this object,
      *  such as a name change or a change of container.  Such changes
      *  break the relationship with the object from which this inherits.
      *  @see Instantiable
-     *  @see #isModifiedHeritage()
+     *  @see #getOverrideDepth()
      *  @return True if the object is an inherited object.
      */
     public boolean isDerived();
@@ -175,7 +175,7 @@ public interface Derivable extends Nameable {
      *  well, making all containers above in the hierarchy not
      *  inherited objects.
      *  @param isDerived True to mark this object as an inherited object.
-     *  @see #isInherited()
+     *  @see #isDerived()
      */
     public void setDerived(boolean isDerived);
 
