@@ -52,7 +52,7 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Polar to Rectangular" class="ptolemy.actor.lib.conversions.PolarToRectangular">
+    <entity name="Polar to Cartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
         <property name="_location" class="ptolemy.moml.Location" value="332.99998474121094, 176.0">
         </property>
         <port name="magnitude" class="ptolemy.actor.TypedIOPort">
@@ -119,10 +119,10 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="node9"/>
-    <link port="Polar to Rectangular.magnitude" relation="relation12"/>
-    <link port="Polar to Rectangular.angle" relation="node9"/>
-    <link port="Polar to Rectangular.x" relation="_R8"/>
-    <link port="Polar to Rectangular.y" relation="_R9"/>
+    <link port="Polar to Cartesian.magnitude" relation="relation12"/>
+    <link port="Polar to Cartesian.angle" relation="node9"/>
+    <link port="Polar to Cartesian.x" relation="_R8"/>
+    <link port="Polar to Cartesian.y" relation="_R9"/>
     <link port="XY Plotter.inputX" relation="_R8"/>
     <link port="XY Plotter.inputY" relation="_R9"/>
     <link port="Expression.output" relation="relation12"/>

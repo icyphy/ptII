@@ -35,7 +35,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.lib.Expression;
 import ptolemy.actor.lib.Ramp;
-import ptolemy.actor.lib.conversions.PolarToRectangular;
+import ptolemy.actor.lib.conversions.PolarToCartesian;
 import ptolemy.actor.lib.gui.XYPlotter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.util.IllegalActionException;
@@ -83,8 +83,8 @@ public class Butterfly extends TypedCompositeActor {
 
         // Next, a conversion to use the ramp as an angle specifier,
         // and the output of the expression as the vector length.
-	PolarToRectangular polarToRect =
-	        new PolarToRectangular(this, "Polar to Rectangular");
+	PolarToCartesian polarToCartesian =
+	        new PolarToCartesian(this, "Polar to Cartesian");
 
         // Finally, the plotter.
 	XYPlotter xyPlotter = new XYPlotter(this, "xyPlotter");
@@ -100,12 +100,12 @@ public class Butterfly extends TypedCompositeActor {
 	TypedIORelation node = (TypedIORelation) newRelation("node");
         ramp.output.link(node);
         expInput.link(node);
-        polarToRect.angle.link(node);
+        polarToCartesian.angle.link(node);
 
         // The rest of the connections are point-to-point, so we can use
         // the connect() method.
-	connect(expression.output, polarToRect.magnitude);
-	connect(polarToRect.x, xyPlotter.inputX);
-	connect(polarToRect.y, xyPlotter.inputY);
+	connect(expression.output, polarToCartesian.magnitude);
+	connect(polarToCartesian.x, xyPlotter.inputX);
+	connect(polarToCartesian.y, xyPlotter.inputY);
     }
 }
