@@ -206,7 +206,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
     public boolean integratorIsSuccessful(CTBaseIntegrator integrator){
         try {
             CTDirector dir = (CTDirector)getContainer();
-            double errtol = dir.getLTETolerance();
+            double errtol = dir.getErrorTolerance();
             double[] k = integrator.getAuxVariables();
             double lte = 0.5*Math.abs(integrator.getPotentialState() - k[0]);
             integrator.setAuxVariables(1, lte);
@@ -243,7 +243,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
         CTDirector dir = (CTDirector)getContainer();
         double lte = (integrator.getAuxVariables())[1];
         double h = dir.getCurrentStepSize();
-        double errtol = dir.getLTETolerance();
+        double errtol = dir.getErrorTolerance();
         double newh = 5.0*h;
         if(lte>dir.getValueResolution()) {
             newh = h* Math.max(0.5, Math.pow((3.0*errtol/lte), 1.0/3.0));
