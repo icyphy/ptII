@@ -117,19 +117,21 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
     /** React to a change in the type of an attribute.  This method is
      *  called by a contained attribute when its type changes.
-     *  In this base class, the method throws an exception.
-     *  Thus, by default, attribute types are not allowed to change.
-     *  If an actor can allow attribute types to change, then it should
+     *  In this base class, the method informs the director to invalidate
+     *  type resolution, if the directory is not null.
+     *  Thus, by default, attribute type changes cause type resolution to
+     *  be redone at the next opportunity.
+     *  If an actor does not allow attribute types to change, then it should
      *  override this method.
      *  @param attribute The attribute whose type changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this actor (always thrown in this base class).
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
-        throw new IllegalActionException(this,
-                "Attribute type changes are not allowed. Attempt to change: "
-                + attribute.getName());
+        Director director = getDirector();
+        if (director != null) {
+            director.invalidateResolvedTypes();
+        }
     }
 
     /** Clone the actor into the specified workspace. This calls the
