@@ -55,7 +55,9 @@ PTDIST =        $(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = TxDatagram.java
+JSRCS = DatagramSender.java \
+        DatagramReceiver.java \
+	TxDatagram.java
 
 EXTRA_SRCS =    $(JSRCS)
 
