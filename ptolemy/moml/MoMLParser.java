@@ -456,7 +456,7 @@ public class MoMLParser extends HandlerBase {
             }
             // Create a new doc element only if there is character data.
             // NOTE: This will replace any preexisting doc element with the
-            // same name, since Documentation is a SigletonAttribute.
+            // same name, since Documentation is a SingletonAttribute.
             if (_currentCharData.length() > 0) {
                 Documentation doc
                     = new Documentation(_current, _currentDocName);
@@ -519,7 +519,7 @@ public class MoMLParser extends HandlerBase {
      *  @param column The approximate column number of the error.
      *  @exception XmlException If called.
      */
-    public void error(String message, String sysid,
+    public void error(String message, String systemId
             int line, int column) throws XmlException {
 	String currentExternalEntity = "";
 	try {
@@ -966,7 +966,7 @@ public class MoMLParser extends HandlerBase {
             // an XML that would call methods of this class that are not
             // intended to be called, simply by putting in an element
             // whose name matches the method name.  So instead, we do
-            // a dumb if...then...elseif... chain with string comparisons.
+            // a dumb if...then...else.if... chain with string comparisons.
             // FIXME: Instead of doing all these string comparisons, do
             // a hash lookup.
             if (elementName.equals("class")) {
