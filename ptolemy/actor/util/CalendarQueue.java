@@ -125,227 +125,6 @@ public class CalendarQueue {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Check whether the queue is empty.
-     * @return True if empty, false otherwise.
-     */
-    public boolean isEmpty() {
-        if (_qSize == 0) {
-            // also need to set _minKey equal to null,
-            // because a lower bound of empty set doesn't make sense.
-            _minKey = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /** Add one entry to the queue. An entry is specified by its key and
-     *  its value. If the key is null, then an IllegalArgumentException
-     *  is thrown.
-     *  <p>
-     *  The method returns true if the operation succeeded, and false
-     *  otherwise. Since the CalendarQueue class adopts 'bag' behavior,
-     *  it will always return true, unless there's an exception thrown.
-     *  <p>
-     *  Later, when need arises to have subclass of CalendarQueue that adopts
-     * 'set' behavior, then the overridden put method should return false
-     *  if the entry is already in the queue, and true otherwise.
-     *
-     * @param key The key of the entry to be put/added into the queue.
-     * @param value The value of the entry to be put/added into the queue.
-     * @return True is succeed, false otherwise.
-     * @exception IllegalArgumentException The key may not be null.
-     */
-    public synchronized boolean put(Object key, Object value) {
-        if (key == null)
-            throw new IllegalArgumentException(
-                    "CalendarQueue.put() can't accept null key"
-                    );
-
-
-        // if this is the first put since the queue creation,
-        // then do initialization.
-        // The initialization is deferred until this stage because
-        // when the queue is created, we don't know what kind of
-        // sort-key implementation we'll get, so can't
-        // initialize the zeroRef.
-        // The zero refererence is chosen to be the first entry, while
-        // initial bin width is obtained by passing null argument to
-        // the getBinWidth() method.
-        if (_zeroRef == null) {
-            _zeroRef = key;
-            _qSize = 0;
-            _localInit(_minNumBucket, _cqComparator.getBinWidth(null), key);
-        }
-
-        // create a CQEntry object to wrap value and key
-        CQEntry cqEntry = new CQEntry(value, key);
-
-        // calculate i, the index into the queue array according to
-        // these steps:
-        // 1. quantize the sort-key object using the getBinIndex() method.
-        // 2. calculate the modulo with respect to nBuckets.
-        // 3. add nBuckets if necessary to get a positive modulo.
-
-        long i = _getBinIndex(key);
-        i = i % _nBuckets;
-        if (i < 0)
-            i += _nBuckets;
-
-        // if _minKey equal to null (happens when there are no entries
-        // in the queue) or the new entry has lower key than the current
-        // smallest key) then update.
-        if (_minKey == null || _cqComparator.compare(key, _minKey) < 0) {
-            _minKey = key;
-            _minVirtualBucket = _getBinIndex(_minKey);
-            _minBucket = (int)(_minVirtualBucket % _nBuckets);
-            if (_minBucket < 0) _minBucket += _nBuckets;
-        }
-
-        // Insert entry into bucket i in sorted list
-        _bucket[(int)i].insertAndSort(cqEntry);
-        // Increase the queue size
-        ++_qSize;
-
-        // double the calendar size if needed
-        if (_qSize > _topThreshold) {
-            _resize(_nBuckets*_thresholdFactor);
-        }
-
-        // Notify other thread waitings on the CalendarQueue object, that
-        // the content has changed.
-        notifyAll();
-
-        return true;
-    }
-
-    /** Remove the smallest entry from the queue and return the value
-     *  associated with that entry. If there are multiple smallest entries,
-     *  then FIFO behavior is implemented. Note that since values are
-     *  permitted to be null, this method could return null.
-     *  <p>
-     *  If this method is called while the queue is empty, then an
-     *  IllegalAccessException is thrown.
-     * @return The value associated with the smallest key.
-     * @exception IllegalAccessException If invoked when the queue is empty.
-     */
-    public synchronized Object take() throws IllegalAccessException {
-        // first check if the queue is empty, if it is, return null
-        if (_qSize == 0) {
-            _takenKey = null;
-            _minKey = null;
-            throw new IllegalAccessException("Invoking take() on empty"+
-                    " queue is not allowed.");
-        }
-
-        // Search buckets starting from index: _minBucket
-        //   analogy: starting from the current page(month) of the calendar
-        for (int i = _minBucket, j = 0; ; )
-            {
-                // Starting from the lastBucket, we go through each bucket in
-                // a cyclic fashion (i.e. modulo fashion) for one whole cycle.
-                // At each bucket, we first determine if the bucket is empty.
-                // If not, then we check if the content of the bucket is in the
-                // current year. (This latter check is done simply by
-                // comparing the virtual bucket number)
-                //
-                // A bucket that's found to satisfy both condition is where
-                // we're going to take our next item.
-                //
-                // If turns out, after a whole cycle, we still can't find such
-                // bucket, then we go to direct search. Using brute force, we
-                // compare the items with smallest key in each bucket and find
-                // the one with smallest key among those items. The bucket
-                // containing that 'smallest smallest' entry is then
-                // recorded as the lastBucket, and we resume by calling take()
-                // but now start searching from the new lastBucket.
-
-                if (    !_bucket[i].isEmpty()
-                        &&
-                        _getBinIndex(_bucket[i].peekKey())
-                        == _minVirtualBucket + j
-                        ) {
-
-                    // Item to take has been found, remove that
-                    // item from the list
-                    CQEntry linkFound = (CQEntry)_bucket[i].take();
-
-                    // Update position on calendar
-                    _minBucket = i;
-                    _minKey = linkFound.key;
-                    _minVirtualBucket = _getBinIndex(_minKey);
-                    --_qSize;
-
-                    // Halve calendar size if needed.
-                    if (_qSize < _botThreshold) {
-                        // if it's already minimum, then do nothing.
-                        if (_nBuckets != _minNumBucket) {
-                            if (_nBuckets/_thresholdFactor > _minNumBucket) {
-                                _resize (_nBuckets/_thresholdFactor);
-                            } else {
-                                _resize (_minNumBucket);
-                            }
-                        }
-                    }
-                    // Return the item found.
-                    _takenKey = linkFound.key;
-                    return linkFound.value;
-                }
-                else {
-                    // Prepare to check next bucket or
-                    // else go to a direct search.
-                    ++i; ++j;
-                    if (i == _nBuckets) i = 0;
-                    // If one round of search already elapsed,
-                    // then go to direct search
-                    if (i == _minBucket) {
-                        // Go to direct search
-                        break;
-                    }
-                }
-            }
-        // Directly search for minimum key entry.
-        // Find smallest entry by examining first event of each bucket.
-        // Note that the first entry of a bucket corresponds to the
-        // one with smallest key among those in that bucket.
-
-        // startComparing being false, indicate we have yet to find
-        // a non-empty bucket, so can't compare yet.
-        boolean startComparing = false;
-        long minVirtualBucket = 0;
-        int minBucket = -1;
-        Object minKey = null;
-        for (int i = 0; i < _nBuckets; i++) {
-            // First check if bucket[i] is empty
-            if (!_bucket[i].isEmpty()) {
-
-                if (!startComparing) {
-                    minBucket = i;
-                    minKey = _bucket[i].peekKey();
-                    minVirtualBucket = _getBinIndex(minKey);
-                    startComparing = true;
-                } else {
-                    Object maybeMinKey = _bucket[i].peekKey();
-                    if (_cqComparator.compare(maybeMinKey, minKey) < 0) {
-                        minKey = maybeMinKey;
-                        minVirtualBucket = _getBinIndex(minKey);
-                        minBucket = i;
-                    }
-                }
-
-            }
-        }
-
-        if (minBucket == -1)
-            throw new IllegalStateException("Failed Direct search");
-        // Set lastBucket, lastPrio, and bucketTop for this event
-        _minBucket = minBucket;
-        _minVirtualBucket = minVirtualBucket;
-        _minKey = minKey;
-        // Resume search at that minimum bucket
-        return (take());
-    }
-
     /** Return the key associated with the object that's at the head of the
      *  queue (i.e. the one that would be obtained on the next take).
      *  If the queue is empty, then an IllegalAccessException will be thrown.
@@ -475,6 +254,126 @@ public class CalendarQueue {
         return _takenKey;
     }
 
+    /** Query whether a specific entry is in the queue,
+     *  return true is succeed and false otherwise.
+     *
+     * @param key The sort-key of the entry
+     * @param value The value of the entry
+     *
+     * @return boolean
+     */
+    public boolean includes(Object key, Object value) {
+        // if the queue is empty then return false
+        if (_qSize == 0) return false;
+
+        // create a CQEntry object to wrap value and key
+        CQEntry cqEntry = new CQEntry(value, key);
+
+        // calculate i, the index into the queue array
+        long i = _getBinIndex(key);
+        i = i % _nBuckets;
+        if (i < 0)
+            i += _nBuckets;
+
+        // call the includes method in private
+        // class CQLinkedList.
+        return _bucket[(int)i].includes(cqEntry);
+    }
+
+    /** Check whether the queue is empty.
+     * @return True if empty, false otherwise.
+     */
+    public boolean isEmpty() {
+        if (_qSize == 0) {
+            // also need to set _minKey equal to null,
+            // because a lower bound of empty set doesn't make sense.
+            _minKey = null;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /** Add one entry to the queue. An entry is specified by its key and
+     *  its value. If the key is null, then an IllegalArgumentException
+     *  is thrown.
+     *  <p>
+     *  The method returns true if the operation succeeded, and false
+     *  otherwise. Since the CalendarQueue class adopts 'bag' behavior,
+     *  it will always return true, unless there's an exception thrown.
+     *  <p>
+     *  Later, when need arises to have subclass of CalendarQueue that adopts
+     * 'set' behavior, then the overridden put method should return false
+     *  if the entry is already in the queue, and true otherwise.
+     *
+     * @param key The key of the entry to be put/added into the queue.
+     * @param value The value of the entry to be put/added into the queue.
+     * @return True is succeed, false otherwise.
+     * @exception IllegalArgumentException The key may not be null.
+     */
+    public synchronized boolean put(Object key, Object value) {
+        if (key == null)
+            throw new IllegalArgumentException(
+                    "CalendarQueue.put() can't accept null key"
+                    );
+
+
+        // if this is the first put since the queue creation,
+        // then do initialization.
+        // The initialization is deferred until this stage because
+        // when the queue is created, we don't know what kind of
+        // sort-key implementation we'll get, so can't
+        // initialize the zeroRef.
+        // The zero refererence is chosen to be the first entry, while
+        // initial bin width is obtained by passing null argument to
+        // the getBinWidth() method.
+        if (_zeroRef == null) {
+            _zeroRef = key;
+            _qSize = 0;
+            _localInit(_minNumBucket, _cqComparator.getBinWidth(null), key);
+        }
+
+        // create a CQEntry object to wrap value and key
+        CQEntry cqEntry = new CQEntry(value, key);
+
+        // calculate i, the index into the queue array according to
+        // these steps:
+        // 1. quantize the sort-key object using the getBinIndex() method.
+        // 2. calculate the modulo with respect to nBuckets.
+        // 3. add nBuckets if necessary to get a positive modulo.
+
+        long i = _getBinIndex(key);
+        i = i % _nBuckets;
+        if (i < 0)
+            i += _nBuckets;
+
+        // if _minKey equal to null (happens when there are no entries
+        // in the queue) or the new entry has lower key than the current
+        // smallest key) then update.
+        if (_minKey == null || _cqComparator.compare(key, _minKey) < 0) {
+            _minKey = key;
+            _minVirtualBucket = _getBinIndex(_minKey);
+            _minBucket = (int)(_minVirtualBucket % _nBuckets);
+            if (_minBucket < 0) _minBucket += _nBuckets;
+        }
+
+        // Insert entry into bucket i in sorted list
+        _bucket[(int)i].insertAndSort(cqEntry);
+        // Increase the queue size
+        ++_qSize;
+
+        // double the calendar size if needed
+        if (_qSize > _topThreshold) {
+            _resize(_nBuckets*_thresholdFactor);
+        }
+
+        // Notify other thread waitings on the CalendarQueue object, that
+        // the content has changed.
+        notifyAll();
+
+        return true;
+    }
+
     /** Remove a specific entry (specified by the key and the
      *  value). This method returns true if the entry
      *  is found and successfully removed, and returns false
@@ -519,32 +418,6 @@ public class CalendarQueue {
         return result;
     }
 
-    /** Query whether a specific entry is in the queue,
-     *  return true is succeed and false otherwise.
-     *
-     * @param key The sort-key of the entry
-     * @param value The value of the entry
-     *
-     * @return boolean
-     */
-    public boolean includes(Object key, Object value) {
-        // if the queue is empty then return false
-        if (_qSize == 0) return false;
-
-        // create a CQEntry object to wrap value and key
-        CQEntry cqEntry = new CQEntry(value, key);
-
-        // calculate i, the index into the queue array
-        long i = _getBinIndex(key);
-        i = i % _nBuckets;
-        if (i < 0)
-            i += _nBuckets;
-
-        // call the includes method in private
-        // class CQLinkedList.
-        return _bucket[(int)i].includes(cqEntry);
-    }
-
     /** Return the queue size.
      * @return The queue size.
      */
@@ -552,8 +425,210 @@ public class CalendarQueue {
         return _qSize;
     }
 
+    /** Remove the smallest entry from the queue and return the value
+     *  associated with that entry. If there are multiple smallest entries,
+     *  then FIFO behavior is implemented. Note that since values are
+     *  permitted to be null, this method could return null.
+     *  <p>
+     *  If this method is called while the queue is empty, then an
+     *  IllegalAccessException is thrown.
+     * @return The value associated with the smallest key.
+     * @exception IllegalAccessException If invoked when the queue is empty.
+     */
+    public synchronized Object take() throws IllegalAccessException {
+        // first check if the queue is empty, if it is, return null
+        if (_qSize == 0) {
+            _takenKey = null;
+            _minKey = null;
+            throw new IllegalAccessException("Invoking take() on empty"+
+                    " queue is not allowed.");
+        }
+
+        // Search buckets starting from index: _minBucket
+        //   analogy: starting from the current page(month) of the calendar
+        for (int i = _minBucket, j = 0; ; )
+            {
+                // Starting from the lastBucket, we go through each bucket in
+                // a cyclic fashion (i.e. modulo fashion) for one whole cycle.
+                // At each bucket, we first determine if the bucket is empty.
+                // If not, then we check if the content of the bucket is in the
+                // current year. (This latter check is done simply by
+                // comparing the virtual bucket number)
+                //
+                // A bucket that's found to satisfy both condition is where
+                // we're going to take our next item.
+                //
+                // If turns out, after a whole cycle, we still can't find such
+                // bucket, then we go to direct search. Using brute force, we
+                // compare the items with smallest key in each bucket and find
+                // the one with smallest key among those items. The bucket
+                // containing that 'smallest smallest' entry is then
+                // recorded as the lastBucket, and we resume by calling take()
+                // but now start searching from the new lastBucket.
+
+                if (    !_bucket[i].isEmpty()
+                        &&
+                        _getBinIndex(_bucket[i].peekKey())
+                        == _minVirtualBucket + j
+                        ) {
+
+                    // Item to take has been found, remove that
+                    // item from the list
+                    CQEntry linkFound = (CQEntry)_bucket[i].take();
+
+                    // Update position on calendar
+                    _minBucket = i;
+                    _minKey = linkFound.key;
+                    _minVirtualBucket = _getBinIndex(_minKey);
+                    --_qSize;
+
+                    // Halve calendar size if needed.
+                    if (_qSize < _botThreshold) {
+                        // if it's already minimum, then do nothing.
+                        if (_nBuckets != _minNumBucket) {
+                            if (_nBuckets/_thresholdFactor > _minNumBucket) {
+                                _resize (_nBuckets/_thresholdFactor);
+                            } else {
+                                _resize (_minNumBucket);
+                            }
+                        }
+                    }
+                    // Return the item found.
+                    _takenKey = linkFound.key;
+                    return linkFound.value;
+                }
+                else {
+                    // Prepare to check next bucket or
+                    // else go to a direct search.
+                    ++i; ++j;
+                    if (i == _nBuckets) i = 0;
+                    // If one round of search already elapsed,
+                    // then go to direct search
+                    if (i == _minBucket) {
+                        // Go to direct search
+                        break;
+                    }
+                }
+            }
+        // Directly search for minimum key entry.
+        // Find smallest entry by examining first event of each bucket.
+        // Note that the first entry of a bucket corresponds to the
+        // one with smallest key among those in that bucket.
+
+        // startComparing being false, indicate we have yet to find
+        // a non-empty bucket, so can't compare yet.
+        boolean startComparing = false;
+        long minVirtualBucket = 0;
+        int minBucket = -1;
+        Object minKey = null;
+        for (int i = 0; i < _nBuckets; i++) {
+            // First check if bucket[i] is empty
+            if (!_bucket[i].isEmpty()) {
+
+                if (!startComparing) {
+                    minBucket = i;
+                    minKey = _bucket[i].peekKey();
+                    minVirtualBucket = _getBinIndex(minKey);
+                    startComparing = true;
+                } else {
+                    Object maybeMinKey = _bucket[i].peekKey();
+                    if (_cqComparator.compare(maybeMinKey, minKey) < 0) {
+                        minKey = maybeMinKey;
+                        minVirtualBucket = _getBinIndex(minKey);
+                        minBucket = i;
+                    }
+                }
+
+            }
+        }
+
+        if (minBucket == -1)
+            throw new IllegalStateException("Failed Direct search");
+        // Set lastBucket, lastPrio, and bucketTop for this event
+        _minBucket = minBucket;
+        _minVirtualBucket = minVirtualBucket;
+        _minKey = minKey;
+        // Resume search at that minimum bucket
+        return (take());
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    // This function calculates the width to use for buckets
+    // It does so by these steps:
+    // a. Figure out how many samples to take (as a function of qSize)
+    // b. Disable resize and take nSamples elements from the queue
+    // c. Record the statistics of those elements
+    // d. Put the element back in and re-enable resize
+    // e. Pass the array containing the data into the priority class
+    //    to let it calculate the width object.
+
+    private Object _computeNewWidth() {
+        int nSamples;
+        Object[] sampledData;
+        Object[] sampledKey;
+        /* Decide how many queue elements to sample */
+        if (_qSize < 2) return _cqComparator.getBinWidth(null);
+        if (_qSize <= 5) {
+            nSamples = _qSize;
+        }
+        else {
+            nSamples = 5 + _qSize/10;
+        }
+        if (nSamples > 25) {
+            nSamples = 25;
+        }
+        // Record lastprio, lastbucket, buckettop
+        Object savedLastPrio = _minKey;
+        int savedLastBucket = _minBucket;
+        long savedLastVirtualBucket = _minVirtualBucket;
+
+        // Take nsample events from the queue and record their priorities
+        // with resizeEnabled equal to false
+        // Data sample is done by dequeuing nsample elements, record
+        // their values, and then enqueuing them back in again.
+        // With resizeEnabled equal to false, the overhead of sampling
+        // process is reduced. Besides, more importantly, to do resize
+        // we need to call this method (computeNewWidth) anyway; so it
+        // also prevents infinite loop.
+        //
+        _resizeEnabled = false;
+        sampledData = new Object[nSamples];
+        sampledKey = new Object[nSamples];
+        for (int i = 0; i < nSamples; ++i) {
+            try {
+                sampledData[i] = take();
+            } catch (IllegalAccessException e) {
+                // do nothing
+            }
+            try {
+                sampledKey[i] = getPreviousKey();
+            } catch (IllegalAccessException e) {
+                // do nothing
+            }
+        }
+        // Restore the sampled events to the queue using put
+        for (int i = nSamples-1; i >= 0; --i) {
+            put(sampledKey[i], sampledData[i]);
+        }
+
+        // Done sampling data and putting them back in
+        // therefore, we can reenable resize
+        _resizeEnabled = true;
+        // Restore lastprio, lastbucket, and buckettop
+        _minKey = savedLastPrio;
+        _minBucket = savedLastBucket;
+        _minVirtualBucket = savedLastVirtualBucket;
+
+        /* Calculate average separation of sampled events */
+        return _cqComparator.getBinWidth(sampledKey);
+    }
+
+    // FIXME: This is only a macro...
+    private long _getBinIndex(Object key) {
+        return _cqComparator.getBinIndex(key, _zeroRef, _width);
+    }
 
     // do local initialization on bucket[] array starting from index qbase,
     // as many as nbuckets. This method is called inside resize() method and
@@ -788,80 +863,6 @@ public class CalendarQueue {
 
     }
 
-    // This function calculates the width to use for buckets
-    // It does so by these steps:
-    // a. Figure out how many samples to take (as a function of qSize)
-    // b. Disable resize and take nSamples elements from the queue
-    // c. Record the statistics of those elements
-    // d. Put the element back in and re-enable resize
-    // e. Pass the array containing the data into the priority class
-    //    to let it calculate the width object.
-
-    private Object _computeNewWidth() {
-        int nSamples;
-        Object[] sampledData;
-        Object[] sampledKey;
-        /* Decide how many queue elements to sample */
-        if (_qSize < 2) return _cqComparator.getBinWidth(null);
-        if (_qSize <= 5) {
-            nSamples = _qSize;
-        }
-        else {
-            nSamples = 5 + _qSize/10;
-        }
-        if (nSamples > 25) {
-            nSamples = 25;
-        }
-        // Record lastprio, lastbucket, buckettop
-        Object savedLastPrio = _minKey;
-        int savedLastBucket = _minBucket;
-        long savedLastVirtualBucket = _minVirtualBucket;
-
-        // Take nsample events from the queue and record their priorities
-        // with resizeEnabled equal to false
-        // Data sample is done by dequeuing nsample elements, record
-        // their values, and then enqueuing them back in again.
-        // With resizeEnabled equal to false, the overhead of sampling
-        // process is reduced. Besides, more importantly, to do resize
-        // we need to call this method (computeNewWidth) anyway; so it
-        // also prevents infinite loop.
-        //
-        _resizeEnabled = false;
-        sampledData = new Object[nSamples];
-        sampledKey = new Object[nSamples];
-        for (int i = 0; i < nSamples; ++i) {
-            try {
-                sampledData[i] = take();
-            } catch (IllegalAccessException e) {
-                // do nothing
-            }
-            try {
-                sampledKey[i] = getPreviousKey();
-            } catch (IllegalAccessException e) {
-                // do nothing
-            }
-        }
-        // Restore the sampled events to the queue using put
-        for (int i = nSamples-1; i >= 0; --i) {
-            put(sampledKey[i], sampledData[i]);
-        }
-
-        // Done sampling data and putting them back in
-        // therefore, we can reenable resize
-        _resizeEnabled = true;
-        // Restore lastprio, lastbucket, and buckettop
-        _minKey = savedLastPrio;
-        _minBucket = savedLastBucket;
-        _minVirtualBucket = savedLastVirtualBucket;
-
-        /* Calculate average separation of sampled events */
-        return _cqComparator.getBinWidth(sampledKey);
-    }
-
-    // FIXME: This is only a macro...
-    private long _getBinIndex(Object key) {
-        return _cqComparator.getBinIndex(key, _zeroRef, _width);
-    }
 
     ////////////////////////////////////////////////////////////////////////
     ////                 private inner class                            ////
