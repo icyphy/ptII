@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (nsmyth@eecs.berkeley.edu)
-@AcceptedRating
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 // Review base URL stuff.
 */
 
