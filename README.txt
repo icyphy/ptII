@@ -1,7 +1,7 @@
 Ptolemy II README File
 Version: $Id$
 
-Ptolemy II 1.0 consists of a group of Java packages that support
+Ptolemy II 1.0.1 consists of a group of Java packages that support
 heterogeneous concurrent modeling and design.
 
 The Ptolemy II documentation can be found in doc/index.htm
