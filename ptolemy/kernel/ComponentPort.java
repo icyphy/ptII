@@ -100,15 +100,6 @@ public class ComponentPort extends Port {
      */
     public ComponentPort() {
 	super();
-        // Ignore exception because "this" cannot be null.
-        try {
-            _insideLinks = new CrossRefList(this);
-        } catch (IllegalActionException ex) {
-            // This exception should not be thrown.
-            throw new InternalErrorException(
-                    "Internal error in ComponentPort constructor!"
-                    + ex.getMessage());
-        }
     }
 
     /** Construct a port in the specified workspace with an empty
@@ -120,15 +111,6 @@ public class ComponentPort extends Port {
      */
     public ComponentPort(Workspace workspace) {
 	super(workspace);
-        // Ignore exception because "this" cannot be null.
-        try {
-            _insideLinks = new CrossRefList(this);
-        } catch (IllegalActionException ex) {
-            // This exception should not be thrown.
-            throw new InternalErrorException(
-                    "Internal error in ComponentPort constructor!"
-                    + ex.getMessage());
-        }
     }
 
     /** Construct a port with the given name contained by the specified
@@ -147,15 +129,6 @@ public class ComponentPort extends Port {
     public ComponentPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
-        // Ignore exception because "this" cannot be null.
-        try {
-            _insideLinks = new CrossRefList(this);
-        } catch (IllegalActionException ex) {
-            // This exception should not be thrown.
-            throw new InternalErrorException(
-                    "Internal error in ComponentPort constructor!"
-                    + ex.getMessage());
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -173,14 +146,7 @@ public class ComponentPort extends Port {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         ComponentPort newObject = (ComponentPort)super.clone(workspace);
-        try {
-            newObject._insideLinks = new CrossRefList(newObject);
-        } catch (IllegalActionException ex) {
-            // This exception should not be thrown.
-            throw new InternalErrorException(
-                    "Internal error in ComponentPort clone() method!"
-                    + ex.getMessage());
-        }
+        newObject._insideLinks = new CrossRefList(newObject);
         return newObject;
     }
 
@@ -978,12 +944,6 @@ public class ComponentPort extends Port {
             _workspace.doneWriting();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** @serial The list of inside relations for this port. */
-    protected CrossRefList _insideLinks;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
