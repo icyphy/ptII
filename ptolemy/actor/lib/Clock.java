@@ -335,9 +335,11 @@ public class Clock extends TimedSource {
         // If we are beyond the number of cycles requested, then
         // change the output value to zero.
         int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
-        if (cycleLimit > 0
-                && currentTime
-                >= _tentativeStartTime + cycleLimit * periodValue) {
+
+        double stopTime = Utilities.round(
+                _tentativeStartTime + cycleLimit * periodValue, 
+                getDirector().getTimeResolution());
+        if (cycleLimit > 0 && currentTime >= stopTime) {
             _tentativeCurrentValue = _tentativeCurrentValue.zero();
         }
 
