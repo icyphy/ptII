@@ -56,6 +56,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 	SigmaDelta.gif \
 	SigmaDelta.htm \
 	SigmaDelta.vsd \
+	SigmaDelta.xml \
 	SigmaDelta2.gif \
 	SigmaDelta2.vsd
 
