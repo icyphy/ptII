@@ -41,9 +41,11 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -154,7 +156,7 @@ public class DDFDirector extends Director {
      * Fire all actors in the list. If no actor has been fired, fire the 
      * minimax actor. If still no actor has been fired, a deadlock has 
      * been detected. This concludes one basic iteration. If some actors
-     * has a parameter named firingsPerIteration defined, continue to 
+     * has a parameter named _requiredFiringsPerIteration defined, continue to 
      * execute basic iterations until the actors have been fired at 
      * least the number of times given in that parameter.
      * 
@@ -165,6 +167,8 @@ public class DDFDirector extends Director {
     	
     	boolean repeatBasicIteration = true;
     	while(repeatBasicIteration) {
+    		
+    		//System.out.println("");
     		
     		// The default value indicates basic iteration will not
     		// be repeated until proved otherwise.
@@ -223,18 +227,16 @@ public class DDFDirector extends Director {
             }     
         
             // Check to see if we need to repeat basic iteration to 
-            // satisfy firingsPerIteration for some actors.
-            actors = container.deepEntityList().iterator();       
+            // satisfy requiredFiringsPerIteration for some actors.
+            actors = _actorsToCheckNumberOfFirings.iterator();       
             while (actors.hasNext()) {
         	    Actor actor = (Actor)actors.next();
         	    int[] flags = (int[])_actorsFlags.get(actor);
-        	    int requiredFirings = flags[_firingsPerIteration];
-        	    if (requiredFirings > 0) {
-        		    int firingsDone = flags[_numberOfFirings];
-        		    if (firingsDone < requiredFirings) {
-        		    	repeatBasicIteration = true;
-        		    	break;
-        		    }
+        	    int requiredFirings = flags[_requiredFiringsPerIteration];
+                int firingsDone = flags[_numberOfFirings];
+        		if (firingsDone < requiredFirings) {
+        		 repeatBasicIteration = true;
+        		 break;
         	    }
             }
     	}
@@ -247,20 +249,21 @@ public class DDFDirector extends Director {
      *  For each actor, dertermine its enabling status: 
      *  _NOT_ENABLED, _ENABLED_NOT_DEFERRABLE or _ENABLED_DEFERRABLE. 
      *  
-     *  Determine firingsPerIteration for each actor.
+     *  Determine requiredFiringsPerIteration for each actor.
      * 
-     *  @exception IllegalActionException If the firingsPerIteration
+     *  @exception IllegalActionException If the requiredFiringsPerIteration
      *  parameter does not contain an IntToken.
      */
     
     public void initialize() throws IllegalActionException {
     	super.initialize();
         _iterationCount = 0;
+        _actorsToCheckNumberOfFirings.clear();
         
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
         Iterator actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
-        	
+        	        	
             // Get an array of actor flags from HashMap. 
         	// Creat it if none found.
         	int[] flags;
@@ -275,21 +278,22 @@ public class DDFDirector extends Director {
         	// Determine actor enabling status.
         	flags[_enablingStatus]  = _actorStatus(actor);
         	
-        	// Determine required firingsPerIteration for each actor.
+        	// Determine required requiredFiringsPerIteration for each actor.
         	// The default vaule 0 means no requirement on this actor.
-        	flags[_firingsPerIteration] = 0;
-            Parameter firingsPerIteration = 
-    		    (Parameter)((Entity)actor).getAttribute("firingsPerIteration");
-        	if (firingsPerIteration != null) {
-        		Token token = firingsPerIteration.getToken();
+        	flags[_requiredFiringsPerIteration] = 0;
+            Variable requiredFiringsPerIteration = 
+    		    (Variable)((Entity)actor).getAttribute("requiredFiringsPerIteration");
+        	if (requiredFiringsPerIteration != null) {
+        		Token token = requiredFiringsPerIteration.getToken();
         		if(token instanceof IntToken) {
         			int value = ((IntToken)token).intValue();
         			if (value > 0)
-        				flags[_firingsPerIteration] = value;
+        				flags[_requiredFiringsPerIteration] = value;
+        			    _actorsToCheckNumberOfFirings.add(actor);
         		} else       			
 					throw new IllegalActionException(this,
-		                    (ComponentEntity)actor, "The parameter " +
-		                    "firingsPerIteration must contain an IntToken.");
+		                    (ComponentEntity)actor, "The variable " +
+		                    "requiredFiringsPerIteration must contain an IntToken.");
         	}
         }	    
     }
@@ -323,7 +327,9 @@ public class DDFDirector extends Director {
     }
     
     
-    /** Initialize numberOfFirings to zero for each actor.
+    /** Initialize numberOfFirings to zero for those actors 
+     *  for which positive requiredFiringsPerIteration has
+     *  been defined.
      *  
      *  Assume that the director is always ready to be fired, 
      *  so return true because super.prefire() returns true. 
@@ -332,10 +338,12 @@ public class DDFDirector extends Director {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public boolean prefire() throws IllegalActionException {
+    	
+    	//System.out.println("\niterationCount " + _iterationCount);
         _postfireReturns = true;
         
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-        Iterator actors = container.deepEntityList().iterator();
+        Iterator actors = _actorsToCheckNumberOfFirings.iterator();
         while (actors.hasNext()) {
         	Actor actor = (Actor)actors.next();
         	int[] flags = (int[])_actorsFlags.get(actor);
@@ -376,7 +384,7 @@ public class DDFDirector extends Director {
      *  IllegalActionException or actor is not ready.
      */
     protected int _fireActor(Actor actor) throws IllegalActionException {
-    	
+    	      	
     	// Iterate once.
     	int returnValue = actor.iterate(1);
         if (returnValue == STOP_ITERATING) {
@@ -388,20 +396,27 @@ public class DDFDirector extends Director {
                     "is not ready to fire.");
         }
         
+        //System.out.print(((Entity)actor).getName() + ": " );
+        //System.out.println(((int[])_actorsFlags.get(actor))[_enablingStatus]);
+        
         // At least one actor has been fired in this basic iteration.
         _firedOne = true;
         
-        // Increment the firing number for this actor.
+        // Increment the firing number.
         int[] flags = (int[])_actorsFlags.get(actor);
         flags[_numberOfFirings]++;
-        
+
         // Update enabling status for each connected actor.
-        Iterator connectedPorts = ((Entity)actor).connectedPortList().iterator();
-        while (connectedPorts.hasNext()) {
-        	Port connectedPort = (Port)connectedPorts.next();
-        	Actor container = (Actor)connectedPort.getContainer();
-        	int[] containerFlags = (int[])_actorsFlags.get(container);
-        	containerFlags[_enablingStatus] = _actorStatus(container);
+        Iterator ports = ((Entity)actor).portList().iterator();
+        while (ports.hasNext()) {
+        	ComponentPort port = (ComponentPort)ports.next();
+        	Iterator deepConnectedPorts = port.deepConnectedPortList().iterator();
+        	while (deepConnectedPorts.hasNext()) {
+        		Port deepConnectedPort = (Port)deepConnectedPorts.next();
+        		Actor container = (Actor)deepConnectedPort.getContainer();
+            	int[] containerFlags = (int[])_actorsFlags.get(container);
+            	containerFlags[_enablingStatus] = _actorStatus(container);
+        	}       	
         }
         
         // Update enabling status for this actor. 
@@ -448,10 +463,14 @@ public class DDFDirector extends Director {
     				int tokenConsumptionRate = 1;
     				Parameter parameter = 
     					    (Parameter)container.getAttribute("tokenConsumptionRate");
+    				if (parameter == null) {
+    					parameter = 
+    					    (Parameter)container.getAttribute("_tokenConsumptionRate");
+    				}
     	    		if (parameter != null) {
     	    			Token token = parameter.getToken();
     	    			tokenConsumptionRate = ((IntToken)token).intValue();      			
-    	    		}
+    	    		} 
     	    		if (farReceiver.size() >= tokenConsumptionRate) {
     	    			deferrable = true;
     	    		} 		
@@ -503,6 +522,10 @@ public class DDFDirector extends Director {
     		int tokenConsumptionRate = 1;
       		Parameter parameter = 
       			    (Parameter)inputPort.getAttribute("tokenConsumptionRate");
+      		if (parameter == null) {
+      			parameter = 
+      			    (Parameter)inputPort.getAttribute("_tokenConsumptionRate");
+      		}
     		if (parameter != null) {
     			Token token = parameter.getToken();
     			tokenConsumptionRate = ((IntToken)token).intValue();      			
@@ -544,8 +567,15 @@ public class DDFDirector extends Director {
     
     // HashMap containing actor flags. Each actor maps to an array of 
     // four integers, representing enablingStatus, numberOfFirings, 
-    // maxNumberOfTokens and firingsPerIteration. 
+    // maxNumberOfTokens and requiredFiringsPerIteration. 
     private HashMap _actorsFlags = new HashMap();
+    
+    // To store those actors for which positive requiredFiringsPerIteration 
+    // has been defined.
+    // We could save more space by making it a HashMap and storing
+    // requiredFiringsPerIterationa and numberOfFirings in this  
+    // variable instead of in _actorsFlags.
+    private LinkedList _actorsToCheckNumberOfFirings = new LinkedList(); 
     
     // An indicator that the actor is enabled and deferrable. 
     private static final int _ENABLED_DEFERRABLE = 2;
@@ -560,5 +590,5 @@ public class DDFDirector extends Director {
     private static final int _enablingStatus = 0;
     private static final int _numberOfFirings = 1;
     private static final int _maxNumberOfTokens = 2;
-    private static final int _firingsPerIteration = 3;
+    private static final int _requiredFiringsPerIteration = 3;
 }
