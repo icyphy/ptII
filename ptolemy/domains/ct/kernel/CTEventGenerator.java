@@ -56,7 +56,7 @@ public interface CTEventGenerator extends Actor{
     public void emitCurrentEvents() throws IllegalActionException;
     */
 
-    /** Imeplementations of this method should return
+    /** Implementations of this method should return
      *  true if there is an event at the current time.
      *  @return True if there is an event to emit now.
      */

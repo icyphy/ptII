@@ -273,7 +273,7 @@ public class CTMultiSolverDirector extends CTDirector {
         */
             // Allow waveform generators to consume events if there is any.
             // FIXME: Since this director will always be at the top-level
-            // we don't need to consumre events.
+            // we don't need to consume events.
             //_setDiscretePhase(true);
             //Iterator waveGenerators = getScheduler().getSchedule().get(
             //        CTSchedule.WAVEFORM_GENERATORS).actorIterator();

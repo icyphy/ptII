@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// CTSchedule
 /**
-A schdule for CT models. This class overrides the base class and uses
+A schedule for CT models. This class overrides the base class and uses
 an ArrayList implementation for the first level of the schedule, so
 that accessing subschedules takes constant time. A CT schedule is an
 array of LinkedList. The array always have length X, consisting of the
@@ -133,7 +133,7 @@ public class CTSchedule extends Schedule {
 
     /** Override the base class and add the element to the Schedule.
      *  The reason of overriding this method is to use a more
-     *  effiecient data structure to store the schedule.
+     *  efficient data structure to store the schedule.
      *  @param element The scheduling element.
      */
     public void add(ScheduleElement element) {

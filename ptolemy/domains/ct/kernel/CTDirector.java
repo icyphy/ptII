@@ -153,7 +153,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             throw new InternalErrorException(this.getFullName() +
                     "Error setting a CTScheduler.");
         } catch (NameDuplicationException ex) {
-            throw new InternalErrorException("There is alreeady a scheduler" +
+            throw new InternalErrorException("There is already a scheduler" +
                     " with name " + this.getFullName());
         }
     }
@@ -520,7 +520,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
         if(Math.abs(time - getCurrentTime()) < getTimeResolution() &&
            isDiscretePhase()) {
-            // This is specifc for discrete actors.
+            // This is specific for discrete actors.
             // Fire it right away.
             if (actor.prefire()) {
                 actor.fire();

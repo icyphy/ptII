@@ -501,7 +501,7 @@ public class CTScheduler extends Scheduler {
                     if (needManuallySetType) {
                         throw new NotSchedulableException("Cannot resolve "
                                 + "signal type for port " + port.getFullName()
-                                + ".\n To set the singal type manually, "
+                                + ".\n To set the signal type manually, "
                                 + "add a parameter with name signalType "
                                 + "and a string value \"CONTINUOUS\" "
                                 + "or \"DISCRETE\".");

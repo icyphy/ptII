@@ -344,7 +344,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             double nextIterationTime = exe.getNextIterationTime();
 
             if(_debugging) _debug("Outside time is " + _outsideTime,
-                    "\nNext interation time is " + nextIterationTime,
+                    "\nNext iteration time is " + nextIterationTime,
                     "\nCurrent local time is " + getCurrentTime());
 
             // Now, check the next iteration time.
@@ -362,7 +362,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             //time.
             // If outside next iteration time is equal to the outside
             // time, then request for a zero delay refire.
-            // Notice that DE will pust this zero delay refire to be the
+            // Notice that DE will post this zero delay refire to be the
             // last one with the same time stamp. So we expect that
             // next time we wake up, the next iteration time is not
             // the same as the current time.
@@ -448,7 +448,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     " Inferred run length = " + aheadLength);
 
             if (aheadLength < timeResolution ) {
-                // We should use the runAheadLength paremeter.
+                // We should use the runAheadLength parameter.
                 _setIterationEndTime(_outsideTime + _runAheadLength);
                 if(_debugging) _debug( "Outside next iteration length",
                         " is zero. We proceed any way with length "

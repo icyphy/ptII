@@ -179,7 +179,7 @@ public class CTCompositeActor extends TypedCompositeActor
                     new StringToken("CONTINUOUS"));
         } catch (IllegalActionException ex) {
             // This should never occur.
-            throw new InternalErrorException("Fail to add parameter singlaType"
+            throw new InternalErrorException("Fail to add parameter signalType"
                     + " to new Port " + newPort.getFullName());
         }
         return newPort;
