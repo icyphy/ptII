@@ -54,6 +54,7 @@ JSIMPLE_TESTS = \
 	DoubleToken.tcl \
 	IntMatrixToken.tcl \
 	IntToken.tcl \
+	FixToken.tcl \
 	LongToken.tcl \
 	ObjectToken.tcl \
 	StringToken.tcl \

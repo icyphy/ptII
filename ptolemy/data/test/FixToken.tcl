@@ -49,104 +49,73 @@ if {[string compare test [info procs test]] == 1} then {
 
 ######################################################################
 test FixToken-1.0 {Create an empty instance} {
-    set p [java::new ptolemy.data.FixToken]
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set c0 [java::call ptolemy.math.Quantizer round 0.0 $p0 ]
+    set p [java::new ptolemy.data.FixToken $c0 ]
     $p toString
-} {ptolemy.data.FixToken(0.0)}
+} {fix(0.0,16,4)}
 
-######################################################################
 test FixToken-1.1 {Create a non-empty instance from two strings} {
-    set p [java::new ptolemy.data.FixToken "(16/4)" 5.5734]
+    set c1 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
+    set p [java::new ptolemy.data.FixToken $c1 ]
     $p toString
-} {ptolemy.data.FixToken(5.5732421875)}
+} {fix(5.573486328125,16,4)}
 
 test FixToken-1.2 {Create a non-empty instance from two strings} {
-    set p [java::new ptolemy.data.FixToken "(4^32)" 5.5734]
+    set p1 [java::new ptolemy.math.Precision "(4^32)" ]
+    set c2 [java::call ptolemy.math.Quantizer round 5.5734 $p1 ]
+    set p [java::new ptolemy.data.FixToken $c2 ]
     $p toString
-} {ptolemy.data.FixToken(5.573399998247623)}
+} {fix(5.573399998247623,32,4)}
 
 test FixToken-1.3 {Create a non-empty instance from an String} {
-    set ft [java::new ptolemy.data.FixToken "(4.12)" "7.7734"]
-    $ft toString
-} {ptolemy.data.FixToken(7.773193359375)}
-
+    set p1 [java::new ptolemy.math.Precision "(4.12)" ]
+    set c3 [java::call ptolemy.math.Quantizer round  7.7734 $p1 ]
+    set p [java::new ptolemy.data.FixToken $c3 ]
+    $p toString
+} {fix(7.7734375,16,4)}
 
 ######################################################################
-test FixToken-2.1 {Test additive identity} {
-    set p [java::new ptolemy.data.FixToken "(16/4)" 12.2]
+
+test FixToken-2.1 {Test additive identity} {	   
+    set c21 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
+    set p [java::new ptolemy.data.FixToken $c21 ]
     set token [$p zero]
     list [$token toString]
-} {ptolemy.data.FixToken(0.0)}
+} {fix(0.0,1,1)}
 
-test FixToken-2.2 {Test multiplicative identity} {
-    set p [java::new ptolemy.data.FixToken "(16/4)" 12.2]
+test FixToken-2.2 {Test multiplicative identity} { 
+    set c22 [java::call ptolemy.math.Quantizer round 12.2 $p0 ]
+    set p [java::new ptolemy.data.FixToken $c22 ]
     set token [$p one]
     list [$token toString]
-} {ptolemy.data.FixToken(1.0)}
+} {fix(1.0,4,4)}
+
+#FIXME: the 4,4 is a bit strange?
 
 ######################################################################
-test FixToken-3.1 {Test Addition} {
-    set pa [java::new ptolemy.data.FixToken "(16/4)" 3.2334454232]
-    set pb [java::new ptolemy.data.FixToken "(16/4)" -1.5454325]
 
-    set res [$pa add $pb]
-    
+test FixToken-3.1 {Test Addition} {
+    set c31 [java::call ptolemy.math.Quantizer round 3.2334454232 $p0 ]	
+    set c32 [java::call ptolemy.math.Quantizer round -1.5454325   $p0 ]
+    set pa [java::new ptolemy.data.FixToken $c31 ]
+    set pb [java::new ptolemy.data.FixToken $c32 ]
+    set res [$pa add $pb]    
     list [$pa toString] [$pb toString] [$res toString]
 
-} {ptolemy.data.FixToken(3.2333984375) ptolemy.data.FixToken(-1.54541015625) ptolemy.data.FixToken(1.68798828125)}
+} {fix(3.2333984375,16,4) fix(-1.54541015625,16,4) fix(1.68798828125,16,4)}
 
 test FixToken-3.2 {Test Subtraction} {
-    set pa [java::new ptolemy.data.FixToken "(16/4)" 3.2334454232]
-    set pb [java::new ptolemy.data.FixToken "(16/4)" -1.5454325]
-
-    set res [$pa subtract $pb]
-    
+    set res [$pa subtract $pb]   
     list [$res toString]
-
-} {ptolemy.data.FixToken(4.77880859375)}
+} {fix(4.77880859375,16,4)}
 
 test FixToken-3.3 {Test Multiply} {
-    set pa [java::new ptolemy.data.FixToken "(16/4)" 3.2334454232]
-    set pb [java::new ptolemy.data.FixToken "(16/4)" -1.5454325]
-
-    set res [$pa multiply $pb]
-    
+    set res [$pa multiply $pb]   
     list [$res toString]
+} {fix(-4.996926784515381,27,3)}
 
-} {ptolemy.data.FixToken(-4.996926784515381)}
-
-test FixToken-3.4 {Test Divide} {
-    set pa [java::new ptolemy.data.FixToken "(16/4)" 3.2334454232]
-    set pb [java::new ptolemy.data.FixToken "(16/4)" -1.5454325]
-
-    set res [$pa divide $pb]
-    
-    list [$res toString]
-
-} {ptolemy.data.FixToken(-2.092041015625)}
-
-######################################################################
-test FixToken-4.1 {Change the precision of a FixToken} {
-    set pa [java::new ptolemy.data.FixToken "(16/4)" 3.2334454232]
-    set pk [ $pa scaleToPrecision "(32/16)"  ]   
-    set j [$pk fixpointValue ]
-    list "[$pa toString]\n[$pk toString]\n[$j getErrorDescription]"
-} {{ptolemy.data.FixToken(3.2333984375)
-ptolemy.data.FixToken(3.2333984375)
-No Overflow Occurred}}
-
-test FixToken-4.2 {Change the precision of a FixToken} {
-    set pa [java::new ptolemy.data.FixToken "(16/4)" 3.2334454232]
-    set pk [ $pa scaleToPrecision "(8/4)"  ]   
-    set j [$pk fixpointValue ]
-    list "[$pk toString]\n[$j getErrorDescription]"
-} {{ptolemy.data.FixToken(3.1875)
-Rounding Occurred}}
-
-
-test FixToken-4.3 {Change the precision of a FixToken} {
-    set pa [java::new ptolemy.data.FixToken "(16/4)" 3.2334454232]
-    set pk [ $pa scaleToPrecision "(8/1)"  ]   
-    set j [$pk fixpointValue ]
-    list "[$pk toString]\n[$j getErrorDescription]"
-} {{ptolemy.data.FixToken(1.9921875)
-Overflow Occurred}}
+test FixToken-3.4 {Test Divide} {    
+   set res [$pa divide $pb]    	
+   list [$res toString]
+} {fix(-2.09228515625,16,4)}
