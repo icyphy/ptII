@@ -46,16 +46,24 @@ import java.lang.reflect.*;
 /**
 A Manager is a domain-independent object that manages the execution of 
 a model.   It provides several methods to control execution with: run() 
-startRun(), pause(), resume(), terminate(), and finish(). 
+startRun(), pause(), resume(), terminate(), and finish().
 Most often, methods in this object will be called by a 
 graphical user interface.  However, it is possible to manually call 
 these methods from a java object, a java applet, or an interactive 
-prompt, such as TclBlend.
+prompt, such as TclBlend. 
 Because user interaction will likely be occuring asynchronously to the 
 execution of the model, it is important that all the processing for the 
 model occur in a separate thread.   The Manager is responsible for creating 
-and managing the java thread in which execution begins, although some 
-domains may spawn additional threads of their own.  
+and managing the Java thread in which execution begins, although some 
+domains may spawn additional threads of their own.
+<p>
+Note that the Manager class implements the Runnable interface with the run()
+method implements the execution of the model. The run() method call is a
+blocking method call, in the sense that the flow of execution will be returned
+to the caller only after the run() method finishes. On the other hand, the
+startRun() method call is a non-blocking method call. It creates a separate
+thread running the execution and the flow of execution will be returned
+immediately to the caller.
 <p>
 Manager also tries to optimize the simulation by making the workspace
 <i>write-protected</i> during the iteration period when all the 
@@ -206,9 +214,12 @@ public final class Manager extends NamedObj implements Runnable {
                                     listeners.nextElement();
                                 l.executionPaused(event);
                             }
-
-                            // suspend this thread until somebody wakes us up.
-                            _simulationThread.wait();
+                            
+                            synchronized (_simulationThread) {
+                                // suspend this thread until 
+                                // somebody wakes us up.
+                                _simulationThread.wait();
+                            }
 
                             // Somebody woke us up, so notify all the 
                             // listeners that we are resuming.
@@ -278,8 +289,11 @@ public final class Manager extends NamedObj implements Runnable {
     public synchronized void finish() {
         _keepIterating = false;
         _isPaused = false;
-        if(_simulationThread != null)
-            _simulationThread.notify();
+        if(_simulationThread != null) {
+            synchronized(_simulationThread) {
+                _simulationThread.notify();
+            }
+        }
     }
 
     /** Encapsulate the Exception with an ExecutionEvent and call 
@@ -462,8 +476,11 @@ public final class Manager extends NamedObj implements Runnable {
     public synchronized void resume() {
         if(_keepIterating && _isPaused) {
             _isPaused = false;
-            if(_simulationThread != null)
-                _simulationThread.notify();
+            if(_simulationThread != null) {
+                synchronized (_simulationThread) {
+                    _simulationThread.notify();
+                }
+            }
         }
     }
 
