@@ -79,6 +79,9 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# KRUFT is used by make clean
+KRUFT = *.o *.obj *.dll *.so
+
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
 all: jclass $(PTCLASSJAR)
