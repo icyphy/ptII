@@ -318,7 +318,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
             node.setExpr(new AllocateNode(new TypeNameNode(
                     new NameNode(AbsentTreeNode.instance, "RuntimeException")),
-                    TNLManip.cons(new StringLitNode(message)),
+                    TNLManip.addFirst(new StringLitNode(message)),
                     AbsentTreeNode.instance));
 
             return node;
@@ -487,7 +487,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                                 new NameNode(AbsentTreeNode.instance, "oneRight"),
                                 new TypeNameNode(
                                         new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
-                        TNLManip.cons(accessedObj));
+                        TNLManip.addFirst(accessedObj));
             } else if (methodName.equals("isEqualTo")) {
                 ExprNode retval = new EQNode(accessedObj, firstArg);
                 // mark this node as being created by the actor transformer
@@ -522,7 +522,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     return new MethodCallNode(new TypeFieldAccessNode(
                             new NameNode(AbsentTreeNode.instance, "valueOf"),
                             (TypeNameNode) StaticResolution.STRING_TYPE.clone()),
-                            TNLManip.cons(accessedObj));
+                            TNLManip.addFirst(accessedObj));
 
                 case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
@@ -555,7 +555,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                 case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
                     {
-                        LinkedList toStringArgList = TNLManip.cons(accessedObj);
+                        LinkedList toStringArgList = TNLManip.addFirst(accessedObj);
                         toStringArgList.addLast(new TypeFieldAccessNode(
                                 new NameNode(AbsentTreeNode.instance, "exprASFormat"),
                                 new TypeNameNode(new NameNode(AbsentTreeNode.instance,
@@ -602,7 +602,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             return new MethodCallNode(
                     new ObjectFieldAccessNode(fieldAccessNode.getName(),
                             new AllocateNode(_typeID.typeNodeForKind(accessedObjKind),
-                                    TNLManip.cons(accessedObj), AbsentTreeNode.instance)),
+                                    TNLManip.addFirst(accessedObj), AbsentTreeNode.instance)),
                     methodArgs);
 
         } else if (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
@@ -1329,7 +1329,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
     protected Object _makeDefaultPrefireMethod() {
-        List blockList = TNLManip.cons(new ReturnNode(new BoolLitNode("true")));
+        List blockList = TNLManip.addFirst(new ReturnNode(new BoolLitNode("true")));
         return new MethodDeclNode(PUBLIC_MOD,
                 new NameNode(AbsentTreeNode.instance, "prefire"), new LinkedList(),
                 new LinkedList(),
@@ -1344,7 +1344,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
     protected Object _makeDefaultPostfireMethod() {
-        List blockList = TNLManip.cons(new ReturnNode(new BoolLitNode("true")));
+        List blockList = TNLManip.addFirst(new ReturnNode(new BoolLitNode("true")));
         return new MethodDeclNode(PUBLIC_MOD,
                 new NameNode(AbsentTreeNode.instance, "postfire"), new LinkedList(),
                 new LinkedList(),
@@ -1461,7 +1461,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     new NameNode(AbsentTreeNode.instance, "one"),
                     new TypeNameNode(
                             new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
-                    TNLManip.cons(accessedObj));
+                    TNLManip.addFirst(accessedObj));
 
         default:
             ApplicationUtility.error("found zero() method call on unknown token kind " +
@@ -1645,7 +1645,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     new NameNode(AbsentTreeNode.instance, "zero"),
                     new TypeNameNode(
                             new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
-                    TNLManip.cons(accessedObj));
+                    TNLManip.addFirst(accessedObj));
 
         default:
             ApplicationUtility.error("found zero() method call on unknown token kind " +

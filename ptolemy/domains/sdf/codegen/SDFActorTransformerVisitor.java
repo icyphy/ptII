@@ -240,7 +240,7 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
 
                 // wrap the put statement in a for loop
 
-                List forInitList = TNLManip.cons(
+                List forInitList = TNLManip.addFirst(
                         new LocalVarDeclNode(NO_MOD, IntTypeNode.instance,
                                 (NameNode) chanNameNode.clone(),
                                 new IntLitNode("0")));
@@ -249,7 +249,7 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
                         (ExprNode) chanObjectNode.clone(),
                         new IntLitNode(String.valueOf(port.getWidth())));
 
-                List forUpdateList = TNLManip.cons(new PostIncrNode(
+                List forUpdateList = TNLManip.addFirst(new PostIncrNode(
                         (ExprNode) chanObjectNode.clone()));
 
                 // return value is not an expression, needs to get

@@ -134,7 +134,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         ApplicationUtility.trace("acg : changing types " + filename);
 
         TNLManip.traverseList(new ChangeTypesVisitor(),
-                TNLManip.cons(declToTypeMap), unitList);
+                TNLManip.addFirst(declToTypeMap), unitList);
 
         // add the import for ptolemy.data.* in case we have changed a token
         // type to one that was not imported previously
@@ -195,7 +195,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
             // invalidate types
             unitNode.accept(new RemovePropertyVisitor(),
-                    TNLManip.cons(TYPE_KEY));
+                    TNLManip.addFirst(TYPE_KEY));
 
             ApplicationUtility.trace("acg : transforming code " + filename);
 
@@ -478,7 +478,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         }
 
         TNLManip.traverseList(new RenameJavaVisitor(),
-                TNLManip.cons(renameMap), unitList);
+                TNLManip.addFirst(renameMap), unitList);
 
         return renamedClassNameList;
     }

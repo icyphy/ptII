@@ -254,7 +254,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
             int bufferLength = bufferInfo.length;
 
-            LinkedList dimExprList = TNLManip.cons(new IntLitNode(
+            LinkedList dimExprList = TNLManip.addFirst(new IntLitNode(
                     String.valueOf(bufferLength)));
 
             if (bufferDimension > 1) {
@@ -301,7 +301,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         CompileUnitNode unitNode = new CompileUnitNode(
                 StaticResolution.makeNameNode(_outputPackageName),
-                importList, TNLManip.cons(classDeclNode));
+                importList, TNLManip.addFirst(classDeclNode));
 
         String outFileName = _packageDirectoryName +  "CG_Main.java";
                 
@@ -309,11 +309,11 @@ public class SDFCodeGenerator extends CompositeActorApplication
         // namely those for Complex and FixPoint added previously.
         // The CompileUnitNode must first undergo pass 2.
         unitNode.setProperty(IDENT_KEY, _packageDirectoryName + "CG_Main");
-        unitNode = StaticResolution.load(unitNode, 2);
+        unitNode = StaticResolution.loadCompileUnit(unitNode, 2);
         unitNode.accept(new FindExtraImportsVisitor(true, null), null);
                 
-        JavaCodeGenerator.writeCompileUnitNodeList(TNLManip.cons(unitNode),
-                TNLManip.cons(outFileName));
+        JavaCodeGenerator.writeCompileUnitNodeList(TNLManip.addFirst(unitNode),
+                TNLManip.addFirst(outFileName));
     }
 
     /** Generate the main() method of the main class. */
@@ -495,7 +495,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                         ObjectNode loopCounterObjectNode =
                             new ObjectNode(loopCounterNameNode);
 
-                        List forInitList = TNLManip.cons(
+                        List forInitList = TNLManip.addFirst(
                                 new LocalVarDeclNode(NO_MOD, IntTypeNode.instance,
                                         (NameNode) loopCounterNameNode.clone(),
                                         new IntLitNode("0")));
@@ -504,7 +504,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                                 loopCounterObjectNode,
                                 new IntLitNode(String.valueOf(contiguousAppearances)));
 
-                        List forUpdateList = TNLManip.cons(new PostIncrNode(
+                        List forUpdateList = TNLManip.addFirst(new PostIncrNode(
                                 (ObjectNode) loopCounterObjectNode.clone()));
 
                         iterationStmtList.addLast(new ForNode(forInitList,
@@ -539,7 +539,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 ObjectNode loopCounterObjectNode =
                     new ObjectNode(loopCounterNameNode);
 
-                List forInitList = TNLManip.cons(
+                List forInitList = TNLManip.addFirst(
                         new LocalVarDeclNode(NO_MOD, IntTypeNode.instance,
                                 (NameNode) loopCounterNameNode.clone(),
                                 new IntLitNode("0")));
@@ -548,7 +548,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                         loopCounterObjectNode,
                         new IntLitNode(String.valueOf(iterations)));
 
-                List forUpdateList = TNLManip.cons(new PostIncrNode(
+                List forUpdateList = TNLManip.addFirst(new PostIncrNode(
                         (ObjectNode) loopCounterObjectNode.clone()));
 
                 stmtList.addLast(new ForNode(forInitList, forTestExprNode,
@@ -658,7 +658,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         return new MethodDeclNode(PUBLIC_MOD | STATIC_MOD,
                 new NameNode(AbsentTreeNode.instance, "main"),
-                TNLManip.cons(new ParameterNode(NO_MOD,
+                TNLManip.addFirst(new ParameterNode(NO_MOD,
                         TypeUtility.makeArrayType(
                                 (TypeNode) StaticResolution.STRING_TYPE.clone(), 1),
                         new NameNode(AbsentTreeNode.instance, "args"))),
