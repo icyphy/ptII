@@ -77,7 +77,6 @@ JSIMPLE_TESTS = \
 	StringAttribute.tcl \
 	StringUtilities.tcl \
 	TransientSingletonConfigurableAttribute.tcl \
-	VersionAttribute.tcl \
 	Workspace.tcl
 
 # Graphical Java tests that use Tcl.
