@@ -34,6 +34,7 @@ package ptolemy.domains.csp.kernel;
 import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.event.*;
 import collections.LinkedList;
 import java.util.Enumeration;
 
@@ -65,6 +66,7 @@ there are no pending mutations, then this marks the end of an iteration
 one level up in the hierarchy. Otherwise the deadlock marks the end 
 of an iteration at this level. Mutations are only perfromed at the 
 start of each iteration at this level. FIXME: two types of mutations.
+Also after a pause.
 <p>
 If this director is controlling the top-level composite actor, and 
 real deadlock is encountered(an iteration one level up), then terminate 
@@ -142,49 +144,34 @@ public class CSPDirector extends ProcessDirector {
      */
     public synchronized void actorBlocked() {
         _actorsBlocked++;
-        System.out.println(getName() + ": Actor blocked, count is: " +
-                _actorsBlocked);
         _checkForDeadlock();
     }
 
-    /** Called by a CSPActor when it wants to delay. This method 
+    /** Called by a CSPActor when it wants to delay. FIXME: This method 
      *  does not return until it is ok for the actor to proceed 
      *  i.e. time has advanced enough.
      *  Note that actors can only deal with delta time.
      *  <p>
-     *  FIXME: what is here is my first pass thru time...
+     *  If delta is negative treat as delaying until next time 
+     *  artificial deadlock is reached.
      *  @param delta The length of time to delay the actor.
      */
-    public void actorDelayed(double delta) {
-        double resumeTime = 0;
-        synchronized(this) {
-            _actorsDelayed++;
-            resumeTime = getTime() + delta;
-            _delayedUntilTime(resumeTime);
-        }
+    public synchronized void actorDelayed(double delta, CSPActor actor) {
+        System.out.println(Thread.currentThread().getName() + 
+                ": delaying for " + delta);
+        double resumeTime = 0.0;
+        _actorsDelayed++;
+        resumeTime = getTime() + delta;
+        // Enter the actor and the time to wake it up into the
+        // LinkedList of delayed actors..
+        _delayedUntilTime(resumeTime, actor);
 
-        // FIXME: where to call checkForDeadlock()?
-        // Delay the actor calling this method until appropriate time.
-        try {
-            synchronized(_delayLock) {
-                _delayLock.wait();
-                // Note that the director could decide to move to
-                // next time instant without increasing real time!
-                while (getTime() < resumeTime) {
-                    _delayLock.wait();
-                }
-            }
-        } catch (InterruptedException ex) {
-            System.out.println("CSPDirector.postfire: interrupted while" +
-                    " waiting for iteration to finish.");
-        }
+        System.out.println("actorsDelayed: " + _actorsDelayed + ", delayList size: " + _delayedActorList.size());
         
-        synchronized(this) {
-            _actorsDelayed--;
-        }    
+        _checkForDeadlock();
         return;
     }
-
+    
     /** A actor has unblocked, update count of blocked actors.
      */
     public synchronized void actorUnblocked() {     
@@ -212,11 +199,14 @@ public class CSPDirector extends ProcessDirector {
         return newobj;
     }
 
-    /** Need to override the fire method of base director class so 
-    *  that it doesn't call the fire methods on each of the contained 
-    *  actors as these actors get executed in a separate thread.
-    */
+    /** Handles artificial deadlocks and mutations. Returns when a 
+     *  real deadlock(all processes blocked trying to communicate) 
+     *  occurs.
+     *  FIXME: IllegalActionException needed?
+     */
     public void fire() throws IllegalActionException {
+        // This method will not return until real deadlock occurs.
+        _handleDeadlock();
     }
 
     /** The current simulation time.
@@ -225,7 +215,7 @@ public class CSPDirector extends ProcessDirector {
     public double getTime() {
         return _time;
     }
-    
+  
     /** Return a new CSPReceiver compatible with this director.
      *  In the CSP domain, we use CSPReceivers.
      *  @return A new CSPReceiver.
@@ -235,21 +225,6 @@ public class CSPDirector extends ProcessDirector {
     }
 
     public boolean postfire() {
-        try {
-            synchronized(_iterationLock) {
-                while (!_iterationFinished) {
-                    // simulation is not yet finished so must wait.
-                    _iterationLock.wait();
-                }
-                // FIXME: what other checks should go in here?
-             }
-        } catch (InterruptedException ex) {
-            System.out.println("CSPDirector.postfire: interrupted while" +
-                    " waiting for iteration to finish.");
-        }
-        // FIXME: do we always only run for one iteration?;
-        _iterationFinished = false;
-        
         return false;
     }
 
@@ -262,6 +237,35 @@ public class CSPDirector extends ProcessDirector {
         return super.prefire();
     }
 
+    /** Request the director to process topology change requests
+     *  immediately. This should be called by clients that have
+     *  queued a request and require that the request be processed
+     *  immediately. The method does not return until requests
+     *  have been processed.
+     *  <p> 
+     *  @exception TopologyChangeFailedException If the mutations could not 
+     *   be completed.
+     */
+    public void processTopologyRequests() throws TopologyChangeFailedException{
+        try {
+            setPauseRequested();
+            synchronized(this) {
+                _urgentMutations = true;
+                while (!_paused) {
+                    this.wait();
+                }
+            }
+            // simulation is paused.
+            // Do mutations.
+            // Resume.
+            setResumeRequested();
+        } catch (InterruptedException ex) {
+            // FIXME: what goes here?
+        } catch (IllegalActionException ex) {
+            // FIXME: throw new TopologyChangeFailedException();
+        }
+    }
+            
     /** Set the current simulation time.
      *  @param newTime The new current simulation time.
      */
@@ -297,77 +301,200 @@ public class CSPDirector extends ProcessDirector {
     }
   
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected methods                 ////
 
-    /* Used to keep track of when are for how long processes are delayed.
+    /** Check if all active processes are either blocked or delayed.
+     *  If so, then wake up the director so that it can handle 
+     *  the deadlock.
      */
-    private void _delayedUntilTime(double actorTime) {
-        // FIXME: initial simple implementation, make more sophistictaed later.
-        if ( (actorTime <= _getNextTime()) && (actorTime >= getTime()) ) {
-            _nextTime= actorTime;
-        }
-    }
-
-    /* FIXME: this will be more sophisticated later.
-     */
-    private double _getNextTime() {
-        return _nextTime;
-    }
-
-    /** FIXME: Needs a lot of polishing...
-    */
     protected synchronized void _checkForDeadlock() {
-        if (_simulationFinished) {
-            return;
-        }
-        System.out.println("_checkForDeadlock: Active = " + _actorsActive + 
-                ", blocked = " + _actorsBlocked);
+        System.out.println("_checkForDeadlock: Active = " + 
+                _actorsActive + ", blocked = " + _actorsBlocked + 
+                ", delayed = " + _actorsDelayed );
         if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
-            if (_actorsDelayed > 0) {
-                // Artificial deadlock.
-                double nextTime = _getNextTime();
-                setTime(nextTime);
-                synchronized(_delayLock) {
-                    _delayLock.notifyAll();
+            this.notifyAll();
+        }
+    }
+
+    /** Check if all active processes are either blocked, delayed or
+     *  paused. If so, then none of the processes are running so the 
+     *  simulation has been paused. This allows urgent mutations to occur.
+     */
+    protected synchronized void _checkForPause() {
+        if (_actorsBlocked + _actorsPaused + _actorsDelayed == _actorsActive) {
+            _paused = true;
+            System.out.println("CSPDirector: simulation successfully paused!");
+            notifyAll();
+        }
+        return;
+    }
+  
+    /** The heart of the director that controls what happens 
+     *  when a deadlock is detected. It is where nearly all the control for 
+     *  the simulation at this level in the hierarchy is located.
+     *  <p>
+     *  Deadlock occurs if the number of blocked and delayed process 
+     *  equals the number of activeprocesses. If the number of delayed 
+     *  processes is greater than zero, or there are mutations waiting 
+     *  to happen, then the deadlock is artificial. In this case this
+     *  method determines what needs to be done, does it and waits 
+     *  until the next deadlock. Otherwaise the 
+     *  deadlock is real and this method returns.
+     *  If this director is not controlling the top level 
+     *  composite actor, then real deadlock marks the end of one 
+     *  iteration one level up in the hierarchy. If there is no level 
+     *  above this one, then real deadlock marks the end of the simulation.
+     *  <p>
+     *  When artificial deadlock occurs and there are no pending 
+     *  mutations, then time is advanced and at least one of the 
+     *  delayed actors will wake up and continue. Note that time can 
+     *  be advanced to the current time. This happens if one of the 
+     *  delayed actors delayed with a delta delay of zero. Otherwise the 
+     *  simulation time is increased as well as being advanced.
+     *  FIXME: Needs a lot of polishing...
+     *  FIXME: possible for an actor to be both blocked and paused!
+    */
+    protected synchronized boolean _handleDeadlock() {
+        while (true) {
+            try {
+                this.wait();
+                if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
+                    if (_mutationsPending) {
+                        // FIXME: fill in later!
+                        System.out.println("ARTIFICIAL MUTATION DEADLOCK!!");
+                    } else if (_actorsDelayed > 0) {
+                        // Artificial deadlock.
+                        System.out.println("ARTIFICIAL TIME DEADLOCK!!");
+                        double nextTime = _getNextTime();
+                        System.out.println("\nCSPDirector: advancing time " + 
+                                "to: " + nextTime);
+                        setTime(nextTime);
+                            
+                        // Now go through list of delayed actors 
+                        // and wake up those at this time
+                        // FIXME: what about round off errors leading 
+                        // to errors?
+                        boolean done = false;
+                        while (!done && _delayedActorList.size() > 0 ) {
+                            DelayListLink val = 
+                                (DelayListLink)_delayedActorList.first();
+                            if (val._resumeTime == nextTime) {
+                                _delayedActorList.removeFirst();
+                                val._actor._delayed = false;
+                                Object lock = val._actor._getInternalLock();
+                                // FIXME: not efficent!
+                                (new NotifyThread(lock)).start();
+                                System.out.println("\nresumeing actor at " + 
+                                        "time: " + val._resumeTime);
+                                _actorsDelayed--;
+                            } else {
+                                done = true;
+                            }
+                        }
+                                        
+                        System.out.println("All delayed actors woken up.");
+                    } else {
+                        System.out.println("REAL DEADLOCK!!");
+                        // Real deadlock. This marks the end of an 
+                        // iteration so return.
+                        System.out.println("_handleDeadlock returning...");
+                        return true;
+                    }
+                    System.out.println("_handleDeadlock waiting again.");
                 }
-            } else if (false) {
-                // FIXME: handle immediate mutations here.
-            } else {
-                System.out.println("REAL DEADLOCK!!");
-                // Real deadlock. This marks the end of an iteration so 
-                // allow the postfire method to continue by issueing 
-                // a notifyAll of the delayLock.
-                // FIXME: this could be todied up a bit.
-                synchronized(_iterationLock) {
-                    _iterationFinished = true;
-                    _iterationLock.notifyAll();
-                }
-                System.out.println("returning from _checkForDeadlock");
+            } catch (InterruptedException ex ) {
+                throw new InvalidStateException("CSPDirector interruped " +
+                        "while waiting for deadlock to occur or " +
+                        "resolving an artificial deadlock.");
             }
         }
     }
-     
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /* Used to keep track of when are for how long processes are delayed.
+     * FIXME: this method is horribly inefficent, change data structure!
+     */
+    private void _delayedUntilTime(double actorTime, CSPActor actor) {
+        // FIXME: initial simple implementation, make more sophisticted later.
+        DelayListLink newLink = new DelayListLink();
+        newLink._resumeTime = actorTime;
+        newLink._actor = actor;
+
+        int size = _delayedActorList.size();
+      
+        boolean done = false;
+        for (int i = 0; i < size; i++) {
+            DelayListLink tmp = (DelayListLink)_delayedActorList.at(i);
+            if (!done && actorTime < tmp._resumeTime) {
+                _delayedActorList.insertAt(i, newLink);
+                //System.out.println("Inserting at " + actorTime);
+                done = true;
+            }
+        }
+        if (!done) {
+            _delayedActorList.insertLast(newLink);
+            //System.out.println("Inserting at " + actorTime);
+        }
+        
+        // For debugging
+        System.out.println("\n");
+        Enumeration enum = _delayedActorList.elements();
+        while (enum.hasMoreElements()) {
+            DelayListLink val = (DelayListLink)enum.nextElement();
+            System.out.println(val._actor.getName() + 
+                    ": Delayyed actor at time: " + val._resumeTime);
+        }
+    }
+
+    /* Get the earliest time which an actor has been delayed to. This 
+     * should always be the top link on the list.
+     */
+    private double _getNextTime() {
+        double val = 0.0;
+        if (_delayedActorList.size() > 0) {
+            return ((DelayListLink)_delayedActorList.first())._resumeTime;
+        } else {
+            System.out.println("getNextTime called in error.");
+        }
+        return val;
+    }
+  
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private int _actorsBlocked = 0;
     private int _actorsDelayed = 0;
 
-    private boolean _iterationFinished = false;
-
     // the current time of this simulation.
     private double _time = 0;
 
-    // Lock object used to delay actors in time.
-    private Object _delayLock = new Object();
+    // Lock object used to notify handleDeadlock a deadlock has occured.
+    private Object _deadlock = new Object();
 
-    // Lock object used to mark the end of an iteration one level 
-    // up in the hierarchy.elay actors in time.
-    private Object _iterationLock = new Object();
+    // A sorted list of the times of delayed actors. The time the simulation 
+    // will next be advanced to is the time at the top of the list.
+    private LinkedList _delayedActorList = new LinkedList();
 
-    // Store the next time that simulation time will get advanced to.
-    private double _nextTime;
+    // Flag indicating that mutations have been registered with this director.
+    private boolean _mutationsPending = false;
+
+    // Flag indicating whether time was advanced. Note that thsi amy 
+    // include "advancing" time to the same time as before!
+    private boolean _timeAdvanced = false;
 
     // Set to true when the simulation is terminated
     private boolean _simulationFinished = false;
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    // Class DelayedListLink
+    // Keeps track of the actor that is delayed and the time 
+    // at which to resume it.
+    private class DelayListLink {
+
+        public double _resumeTime;
+        public CSPActor _actor;
+    }
 }
