@@ -632,14 +632,20 @@ public class TokenToNativeTransformer extends SceneTransformer {
             if (r.getMethod().getDeclaringClass().equals(
                         PtolemyUtilities.typeLatticeClass)) {
                 try {
-                    if (debug) System.out.println("inlining typelattice method = " + unit);
+                    if (debug) {
+                        System.out.println("inlining typelattice method = "
+                                + unit);
+                    }
                     typeAnalysis.inlineTypeLatticeMethods(method,
                             unit, box, r, localDefs, localUses);
                 } catch (Exception ex) {
-                    System.out.println("Exception occured " + ex.getMessage());
+                    System.out.println("Exception occurred "
+                            + ex.getMessage());
                 }
             } else {
-                if (debug) System.out.println("static invoking = " + r.getMethod());
+                if (debug) {
+                    System.out.println("static invoking = " + r.getMethod());
+                }
                 SootMethod inlinee = (SootMethod)r.getMethod();
                 SootClass declaringClass = inlinee.getDeclaringClass();
                 // These methods contain a large amount of
