@@ -50,11 +50,12 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include these jars in PTAUXALLJAR
+# plotmlapplet pulls in the com/microstar/xml classes
 PTAUXALLJARS = \
 		../collections/ptcollections.jar \
 		gui/gui.jar \
 		kernel/kernel.jar \
-		plot/plotapplet.jar \
+		plot/plotmlapplet.jar \
 		graph/graph.jar \
 		data/data.jar \
 		actor/actor.jar \
