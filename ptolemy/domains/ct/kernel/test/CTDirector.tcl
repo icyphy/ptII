@@ -288,6 +288,10 @@ test CTMultiSolverDirector-3.1 {register a breakpoint} {
     $stoptime setToken $token
     $dir preinitialize
     $dir initialize
+    # NOTE: Each of these causes two breakpoints to be registered.
+    # One at the specified time, and one at the specified time minus
+    # the time resolution.
+    set timeResolution [$dir getTimeResolution]
     $dir fireAt $sys 0.1
     $dir fireAt $sys 0.4
     $dir fireAt $sys 0.2
@@ -295,16 +299,22 @@ test CTMultiSolverDirector-3.1 {register a breakpoint} {
     set starttime [$bptable first]
     $bptable removeFirst
     set first [$bptable first]
-    set firstAgain [$bptable first]
     $bptable removeFirst
     set second [$bptable first]
     set secondAgain [$bptable first]
     $bptable removeFirst
     set third [$bptable first]
     $bptable removeFirst
+    set fourth [$bptable first]
+    $bptable removeFirst
+    set fifth [$bptable first]
+    $bptable removeFirst
+    set sixth [$bptable first]
+    $bptable removeFirst
     set stoptime [$bptable first]
-    list $starttime $first $firstAgain $second $secondAgain $third $stoptime
-} {0.0 0.1 0.1 0.2 0.2 0.4 1.0}
+    list $starttime $first $second $secondAgain $third $fourth \
+            $fifth $sixth $stoptime
+} {0.0 0.0999999999 0.1 0.1 0.1999999999 0.2 0.3999999999 0.4 1.0}
 
 test CTMultiSolverDirector-3.2 {access empty breakpoint table} {     
     #Note: use above set up.
