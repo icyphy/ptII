@@ -1,4 +1,4 @@
-# makefile to create tar files for distribution
+# Makefile to create tar files for distribution
 # Version: $Id$
 # Copyright (c) 1994-2001 The Regents of the University of California.
 # All rights reserved.
@@ -410,6 +410,7 @@ remote1distjavadocs:
 # de/test should be run after sdf
 # dt/kernel should be run after sdf
 # fsm/kernel should be run after moml
+# vergil should be run after vergil/toolbox
 # We include the following directories so that they will appear in the
 # code coverage stats even though they are graphical: gui actor/gui
 #
@@ -472,12 +473,12 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/c \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/ptolemy \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/ptolemy/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/conversions \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/hoc \
