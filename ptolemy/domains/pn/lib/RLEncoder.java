@@ -67,6 +67,7 @@ public class RLEncoder extends AtomicActor {
      *  Assuming data in 16 bit, higher byte first format.
      */
     public void fire() throws IllegalActionException {
+        //Get and transmit the dimensions
         IntToken token = (IntToken)_dimenin.get(0);
         int rows = token.intValue();
         _dimenout.broadcast(token);
@@ -74,7 +75,9 @@ public class RLEncoder extends AtomicActor {
         int columns = token.intValue();
         _dimenout.broadcast(token);
         int inlen = rows*columns;
+        _inputlength = rows*columns;
 
+        //Read the stream of tokens to be encoded
         token = (IntToken)_input.get(0);
         int value = token.intValue();
         int count = 1;
@@ -85,14 +88,17 @@ public class RLEncoder extends AtomicActor {
             } else {
                 _output.broadcast(new IntToken(value));
                 _output.broadcast(new IntToken(count));
+                _outputlength += (count+127-((count+127)%128))/128;
                 value = newval;
                 count =1;
             }
         }
         _output.broadcast(new IntToken(value));
         _output.broadcast(new IntToken(count));
+        System.out.println("Approximate compression ratio = "+
+                ((double)(_outputlength*8))*100/_inputlength);
     }
-    
+        
     //public boolean postfire() { 
     //return false; 
     //}
@@ -104,8 +110,8 @@ public class RLEncoder extends AtomicActor {
     private IOPort _dimenout;
     private IOPort _output;
     private IOPort _input;
+    private int _inputlength = 0;
+    private int _outputlength = 0;
 }
-
-
 
 
