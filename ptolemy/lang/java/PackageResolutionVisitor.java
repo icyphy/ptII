@@ -65,19 +65,15 @@ public class PackageResolutionVisitor extends JavaVisitor
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
+        if (StaticResolution.traceLoading)
+            System.out.println("PackageResolution for " + node.getProperty(IDENT_KEY));
 
         PackageDecl thePkgDecl;
         TreeNode pkgDeclNode = node.getPkg();
-
+        
         if (pkgDeclNode == AbsentTreeNode.instance) {
             thePkgDecl = StaticResolution.UNNAMED_PACKAGE;
         } else {
-
-            if (StaticResolution.traceLoading) {
-                System.out.println("Calling resolveAName from " + 
-                        "PackageResolutionVisitor.visitCompileUnitNode(" + 
-                        ((NameNode) pkgDeclNode).getIdent() + ")");
-            }
 
             NameNode name = (NameNode) StaticResolution.resolveAName(
                     (NameNode) pkgDeclNode,
@@ -94,14 +90,14 @@ public class PackageResolutionVisitor extends JavaVisitor
         Scope pkgScope = new Scope(importOnDemandScope);
 
         pkgScope.copyDeclList(thePkgDecl.getScope());
-
+        
         Scope scope = new Scope(pkgScope); // the file level scope
         node.setProperty(SCOPE_KEY, scope);
 
         node.accept(new ResolvePackageVisitor(), null);
-
+        
         node.accept(new ResolveTypesVisitor(), null);
-
+        
         return null;
     }
 
