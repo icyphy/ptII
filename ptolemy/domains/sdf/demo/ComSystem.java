@@ -101,7 +101,7 @@ public class ComSystem extends SDFApplet {
             // segments overlap by one pixel, and leave a blank spot.
             myplot.plot.setMarksStyle("none");
             myplot.plot.setPointsPersistence(512);
-            myplot.plot.setSize(500,300);
+            myplot.plot.setSize(500, 300);
             myplot.timed.setToken(new BooleanToken(false));
 
             _toplevel.connect(data.output, coder.input);
