@@ -374,6 +374,8 @@ public class Manager extends NamedObj implements Runnable {
             // Since we have just initialized all actors, clear the
             // list of actors pending initialization.
             _actorsToInitialize.clear();
+
+            _processChangeRequests();
         } finally {
             _workspace.doneReading();
         }
