@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/demo/Pendulum
+ME =		ptolemy/domains/gr/demo/Pendulum
 
 # Root of the Java directory
 ROOT =		../../../../..
