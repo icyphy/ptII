@@ -36,7 +36,7 @@
 # environment variables.  If you do not set these variables
 # then the script will guess values.
 #
-# If the Pxgraph class is at /users/ptdesign/tycho/java/plot/Pxgraph.class
+# If the Pxgraph class is at /users/ptdesign/tycho/java/ptplot/Pxgraph.class
 # then the TYCHO variable should be set to /users/ptdesign/tycho
 #
 # Your JAVAHOME variable should be set to the directory that
@@ -113,9 +113,9 @@ if [ -z "$JAVAHOME" ]; then
 fi
 
 if [ "$windows" = "yes" ]; then 
-    $JAVAHOME/bin/java -classpath $TYCHO/java\;$JAVAHOME/lib/classes.zip plot.Pxgraph ${1+"$@"}
+    $JAVAHOME/bin/java -classpath $TYCHO/java\;$JAVAHOME/lib/classes.zip ptplot.Pxgraph ${1+"$@"}
 else
-    $JAVAHOME/bin/java -classpath $TYCHO/java:$JAVAHOME/lib/classes.zip plot.Pxgraph ${1+"$@"}
+    $JAVAHOME/bin/java -classpath $TYCHO/java:$JAVAHOME/lib/classes.zip ptplot.Pxgraph ${1+"$@"}
 fi
 
 
