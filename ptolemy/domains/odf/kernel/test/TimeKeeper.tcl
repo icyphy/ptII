@@ -60,15 +60,12 @@ test TimeKeeper-2.1 {hasMinRcvrTime - No simultaneous Events} {
     set rcvr1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
     set rcvr2 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
     set rcvr3 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set triple1 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr1 0.0 1]
-    set triple2 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr2 0.5 2]
-    set triple3 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr3 2.5 3]
 
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $triple1
-    $keeper updateRcvrList $triple2
-    $keeper updateRcvrList $triple3
+    $keeper updateRcvrList $rcvr1 0.0 1
+    $keeper updateRcvrList $rcvr2 0.5 2
+    $keeper updateRcvrList $rcvr3 2.5 3
 
     list [$keeper getCurrentTime] [$keeper hasMinRcvrTime]
 
@@ -87,15 +84,12 @@ test TimeKeeper-2.2 {hasMinRcvrTime - Simultaneous Events} {
     set rcvr1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
     set rcvr2 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
     set rcvr3 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set triple1 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr1 5.0 1]
-    set triple2 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr2 5.0 2]
-    set triple3 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr3 18.0 3]
-
+    
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $triple1
-    $keeper updateRcvrList $triple2
-    $keeper updateRcvrList $triple3
+    $keeper updateRcvrList $rcvr1 5.0 1
+    $keeper updateRcvrList $rcvr2 5.0 2
+    $keeper updateRcvrList $rcvr3 18.0 3
 
     list [$keeper getCurrentTime] [$keeper hasMinRcvrTime]
 
@@ -114,17 +108,14 @@ test TimeKeeper-2.3 {hasMinRcvrTime - Negative Events} {
     set rcvr1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
     set rcvr2 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
     set rcvr3 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set triple1 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr1 -1.0 2]
-    set triple2 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr2 5.0 1]
-    set triple3 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr3 18.0 3]
 
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $triple1
+    $keeper updateRcvrList $rcvr1 -1.0 2
     set time1 [$keeper getNextTime]
-    $keeper updateRcvrList $triple2
+    $keeper updateRcvrList $rcvr2 5.0 1
     set time2 [$keeper getNextTime]
-    $keeper updateRcvrList $triple3
+    $keeper updateRcvrList $rcvr3 18.0 3
     set time3 [$keeper getNextTime]
 
     list [$keeper hasMinRcvrTime] $time1 $time2 $time3
@@ -147,26 +138,20 @@ test TimeKeeper-3.1 {hasMinRcvrTime, getNextTime - With Negative Events} {
     set rcvr4 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
     set rcvr5 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
     set rcvr6 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set triple1 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr1 -1.0 2]
-    set triple2 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr2 5.0 1]
-    set triple3 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr3 18.0 3]
-    set triple4 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr4 18.0 4]
-    set triple5 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr5 18.0 5]
-    set triple6 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr6 28.0 6]
 
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $triple1
+    $keeper updateRcvrList $rcvr1 -1.0 2
     set time1 [$keeper getNextTime]
-    $keeper updateRcvrList $triple2
+    $keeper updateRcvrList $rcvr2 5.0 1
     set time2 [$keeper getNextTime]
-    $keeper updateRcvrList $triple3
+    $keeper updateRcvrList $rcvr3 18.0 3
     set time3 [$keeper getNextTime]
-    $keeper updateRcvrList $triple4
+    $keeper updateRcvrList $rcvr4 18.0 4
     set time4 [$keeper getNextTime]
-    $keeper updateRcvrList $triple5
+    $keeper updateRcvrList $rcvr5 18.0 5
     set time5 [$keeper getNextTime]
-    $keeper updateRcvrList $triple6
+    $keeper updateRcvrList $rcvr6 28.0 6
     set time6 [$keeper getNextTime]
 
     list [$keeper hasMinRcvrTime] $time1 $time2 $time3 $time4 $time5 $time6
@@ -187,15 +172,12 @@ test TimeKeeper-4.1 {getNextTime()} {
     set rcvr1 [java::new ptolemy.domains.odf.kernel.ODFReceiver $port]
     set rcvr2 [java::new ptolemy.domains.odf.kernel.ODFReceiver $port]
     set rcvr3 [java::new ptolemy.domains.odf.kernel.ODFReceiver $port]
-    set triple1 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr1 15.0 2]
-    set triple2 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr2 5.0 1]
-    set triple3 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr3 6.0 3]
 
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $triple1
-    $keeper updateRcvrList $triple2
-    $keeper updateRcvrList $triple3
+    $keeper updateRcvrList $rcvr1 15.0 2
+    $keeper updateRcvrList $rcvr2 5.0 1
+    $keeper updateRcvrList $rcvr3 6.0 3
     set newrcvr [$keeper getFirstRcvr]
 
     list [$keeper getNextTime] [expr {$rcvr2 == $newrcvr} ]
@@ -214,7 +196,7 @@ test TimeKeeper-5.1 {Call Methods On Uninitialized TimeKeeper} {
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
 
     set val 1
-    if { ![java::isnull [$keeper getHighestPriorityTriple]] } {
+    if { ![java::isnull [$keeper getHighestPriorityReceiver]] } {
 	set val 0
     }
     if { [$keeper getCurrentTime] != 0.0 } {
@@ -247,18 +229,15 @@ test TimeKeeper-6.1 {getHighestPriorityTriple - Simultaneous Events} {
     set rcvr1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
     set rcvr2 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
     set rcvr3 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set triple1 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr1 5.0 1]
-    set triple2 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr2 5.0 2]
-    set triple3 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr3 6.0 3]
 
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $triple1
-    $keeper updateRcvrList $triple2
-    $keeper updateRcvrList $triple3
-    set newtriple [$keeper getHighestPriorityTriple]
+    $keeper updateRcvrList $rcvr1 5.0 1
+    $keeper updateRcvrList $rcvr2 5.0 2
+    $keeper updateRcvrList $rcvr3 6.0 3
+    set newrcvr [$keeper getHighestPriorityReceiver]
 
-    list [$keeper getCurrentTime] [expr {$triple2 == $newtriple} ]
+    list [$keeper getCurrentTime] [expr {$rcvr2 == $newrcvr} ]
 
 } {0.0 1}
 
@@ -275,16 +254,14 @@ test TimeKeeper-6.2 {getHighestPriorityTriple - No Simultaneous Events} {
 
     set rcvr1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $port]
     set rcvr2 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $port]
-    set triple1 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr1 15.0 1]
-    set triple2 [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $rcvr2 5.0 2]
 
     set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $triple1
-    $keeper updateRcvrList $triple2
-    set newtriple [$keeper getHighestPriorityTriple]
+    $keeper updateRcvrList $rcvr1 15.0 1
+    $keeper updateRcvrList $rcvr2 5.0 2
+    set newrcvr [$keeper getHighestPriorityReceiver]
 
-    list [$keeper getCurrentTime] [expr {$triple2 == $newtriple} ]
+    list [$keeper getCurrentTime] [expr {$rcvr2 == $newrcvr} ]
 
 } {0.0 1}
 
