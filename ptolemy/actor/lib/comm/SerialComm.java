@@ -385,10 +385,10 @@ public class SerialComm extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // pointer/handle thingy for the serial port.
+    // Pointer/handle thingy for the serial port.
     private SerialPort _serialPort;
 
-    // Weirdo thing required for accessing the serial port.
+    // Required for accessing the serial port.
     // Somehow the .initialize() call must do something crucial.
     // Removing this code makes things fail.  Specifically,
     // it makes the 'try' block in fire() have an exception whose
