@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	java
+PTPACKAGE = 	actor
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
@@ -51,8 +51,6 @@ JSRCS = \
 	Main.java 
 
 OTHER_FILES_TO_BE_JARED = \
-	compileCommandTemplate.txt \
-	makefile.in \
 	runCommandTemplate.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -73,6 +71,11 @@ all: jclass
 
 install: jclass $(PTCLASSJAR)
 
+demo:
+	$(ROOT)/bin/copernicus -codeGenerator actor \
+		-targetPackage ptolemy.actor.lib \
+		-targetPath "cg/Sinewave" \
+		$(PTII)/ptolemy/actor/lib/Sinewave.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
