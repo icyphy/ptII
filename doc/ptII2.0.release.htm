@@ -167,6 +167,10 @@ sdf.lib.vq.HTVQEncode, sdf.lib.vq.VQDecode:
 
 Below are the changes that are not handled automatically
 <menu>
+<li> ct.kernel.CTRealTimeDirector has been removed, the fix
+is to use ct.kernel.CTDirector instead and to 
+set the synchronizeToRealTime parameter to true.
+
 <li> DDE: RcvrComparator renamed to ReceiverComparator
 
 <li> actor.lib.Reader is now actor.lib.DoubleReader
@@ -303,8 +307,10 @@ in floating point numbers.
 
 <li> The readFile() parameter function does not work with applets.
 
-<li> The Matlab actor requires that Matlab is installed.  The Matlab
-actor will only work under Windows.
+<!-- If you change the next paragraph update install.htm -->
+<li>The Matlab interface works only under Windows and it requires that
+Matlab be installed on the local machine.  The Matlab interface has
+been tested with Matlab 6.1, which corresponds with R12.1.
 
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 <a href="http://java.sun.com/products/javacomm/index.html"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.  The SerialComm actor
