@@ -40,11 +40,14 @@ A token that contains a FixPoint.
 <p>
 @author Bart Kienhuis
 @see ptolemy.data.Token
-@see java.text.NumberFormat
+@see ptolemy.math.FixPoint
 @version $Id$
 
 */
 public class FixToken extends ScalarToken {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Construct a FixToken with value 0.0 and a precision of (16/16)
      */
@@ -106,16 +109,6 @@ public class FixToken extends ScalarToken {
 	return new FixToken(result);
     }
 
-    /** Return a new FixToken with value equal to the subtraction of this
-     *  FixToken number and the argument. 
-     *  @param arg A FixToken.
-     *  @return A new FixToken.  
-     */
-    public FixToken subtract(FixToken arg) {
-	FixPoint result = _value.subtract( arg.fixpointValue() );
-	return new FixToken(result);
-    }
-
     /** Return a new FixToken with value equal to the division of this
      *  FixToken number and the argument. 
      *  @param arg A FixToken.
@@ -126,6 +119,14 @@ public class FixToken extends ScalarToken {
 	return new FixToken(result);
     }
 
+
+    /** Return the value of this token as a Fixpoint.
+     *  @return A Fixpoint
+     */
+    public FixPoint fixpointValue() {
+        // FixToken is immutable, so we can just return the value.
+        return _value;
+    }
     /** Return a new FixToken with value equal to the multiplication
 	of this FixToken number and the argument.  
 	@param arg A FixToken.  
@@ -136,13 +137,6 @@ public class FixToken extends ScalarToken {
 	return new FixToken(result);
     }
 
-    /** Return the value of this token as a Fixpoint.
-     *  @return A Fixpoint
-     */
-    public FixPoint fixpointValue() {
-        // FixToken is immutable, so we can just return the value.
-        return _value;
-    }
 
     /** Returns a new Token representing the multiplicative identity
      *  with a default precision of 1 bit for the integer part and 0
@@ -153,6 +147,15 @@ public class FixToken extends ScalarToken {
         return new FixToken("(4.0)", 1.0);
     }
 
+    /** Return a new FixToken with value equal to the subtraction of this
+     *  FixToken number and the argument. 
+     *  @param arg A FixToken.
+     *  @return A new FixToken.  
+     */
+    public FixToken subtract(FixToken arg) {
+	FixPoint result = _value.subtract( arg.fixpointValue() );
+	return new FixToken(result);
+    }
     /** Get the value contained in this Token as a String in the form
      *  of "<i>integerbits . fractionbits</i>". This giving the same
      *  string representation on all possible platforms, facilitating a
