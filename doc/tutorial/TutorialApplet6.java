@@ -1,7 +1,7 @@
 package doc.tutorial;
 import ptolemy.domains.de.gui.DEApplet;
 import ptolemy.actor.lib.Clock;
-import ptolemy.actor.gui.TimedPlotter;
+import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import java.awt.Panel;
