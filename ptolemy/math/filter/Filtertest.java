@@ -1,90 +1,120 @@
 package ptolemy.math.filter;
-
-import ptolemy.math.Complex;
-
+ 
+import ptolemy.math.*;
 public class Filtertest {
 
    public void run() {
-
-       /* tests for designFilter
-        */
-       
-       RealDigitalFilter desFilter = DigitalFilter.designRealIIR(1,3,
-               1, new double[] {1.26, 1.88}, new double[] {0.99,0.001}, 1.0);
-       //double[] num = {1,0,6};
-       //double[] denom = {1,0,2};
-              
-       double[] input3 = {1, 1, 0, 0};
-       double[] input4 = {1, 2, 3};
-       //RealZFactor newFactor = new RealZFactor(num, denom, 1);
-       //test.addFactor(newFactor);
-       
-       desFilter.resetState();
-       
-       double[] output = desFilter.getResponse(input3, input3.length);
-       //output = test2.getResponse(output,output.length);
-       for (int i = 0; i < output.length; i++) {
-           System.out.println("output:  " + output[i]);
-       }
-       
-       //RealAnalogFilter desFilter = new RealAnalogFilter();
-       //desFilter.clearFactors();
-       //test.resetState();
-       //desFilter.addPolePair(new ConjugateComplex(new Complex(-2,3)));
-       //desFilter.addZeroPair(new ConjugateComplex(new Complex(-3,4)));
-       //desFilter.addPole(-4);
-       //desFilter.addZero(-5);
-       //desFilter.resetState();
-       //output = test.getResponse(input2,input2.length);
-       Complex[] poles = desFilter.getPoles();
-       Complex[] zeroes = desFilter.getZeroes();
-       for (int i = 0; i<poles.length; i++){
-           System.out.println(
-                   "poles are = " + poles[i].real+"and "+poles[i].imag);
-       }
-       for (int i = 0; i<zeroes.length; i++){
-           System.out.println(
-                   "zeroes are = " + zeroes[i].real+"and "+zeroes[i].imag);
-       }
-       System.out.println("poleLength = " + poles.length);
-       
-       
        /*
-       desFilter.movePole(poles[3], -5, 5);
-       poles = desFilter.getPoles();
-       zeroes = desFilter.getZeroes();
-       for (int i = 0; i<poles.length; i++){
+       RealAnalogFilter afilter = new RealAnalogFilter();
+       afilter.addPoleZero(new Complex(-3,-4),new Complex(
+               Double.POSITIVE_INFINITY), true);
+       afilter.addPoleZero(new Complex(-2,-5), 
+               new Complex(-2,-3), true);
+       afilter.addPoleZero(new Complex(-3,0), new Complex(-5), false);
+       Complex[] poles = afilter.getPoles();
+       Complex[] zeroes = afilter.getZeroes();
+       System.out.println(poles.length);
+       for (int i=0;i<poles.length;i++){
            System.out.println(
-                   "poles now are = " + poles[i].real+"and "+poles[i].imag);
+                   "poles are "+poles[i].real+" and "+poles[i].imag);
        }
-       for (int i = 0; i<zeroes.length; i++){
+       for (int i=0;i<zeroes.length;i++){
            System.out.println(
-                   "zeroes now are = " + zeroes[i].real+"and "+zeroes[i].imag);
+                   "zeroes are "+zeroes[i].real+" and "+zeroes[i].imag);
        }
-       //desFilter.deletePole(poles[0]);
-       //System.out.println("poles delete");
-       poles = desFilter.getPoles();
-       zeroes = desFilter.getZeroes();
-       desFilter.moveZero(zeroes[0],-5,5);
-       poles = desFilter.getPoles();
-       zeroes = desFilter.getZeroes();
-       desFilter.resetState();
-       for (int i = 0; i<poles.length; i++){
+       */
+
+
+       RealDigitalFilter filter = DigitalFilter.designRealIIR(1,2,1,new 
+               double[] {1.25,1.88}, new double[] {0.99,.001},1);
+       Complex [] poles = filter.getPoles();
+       Complex [] zeroes = filter.getZeroes();
+       System.out.println(poles.length);
+       for (int i=0;i<poles.length;i++){
            System.out.println(
-                   "poles now are = " + poles[i].real+"and "+poles[i].imag);
+                   "poles are "+poles[i].real+" and "+poles[i].imag);
        }
-       for (int i = 0; i<zeroes.length; i++){
+       for (int i=0;i<zeroes.length;i++){
            System.out.println(
-                   "zeroes now are = " + zeroes[i].real+"and "+zeroes[i].imag);
+                   "zeroes are "+zeroes[i].real+" and "+zeroes[i].imag);
        }
-       //desFilter.addPole(-3);
-       output = desFilter.getResponse(input3,input3.length);
-       for (int i = 0; i < output.length; i++) {
-           System.out.println("output2: " + output[i]);
+       /*
+       Complex[] fq = filter.getFrequencyResponse();
+       for (int i = 0; i < fq.length; i++) {
+           System.out.println("freqResponse: " + fq[i].real+" "+fq[i].imag);
        }
        
-
-       /**
+       RealDigitalFilter dfilter = new RealDigitalFilter();
+       dfilter.addPoleZero(new Complex(0),new Complex(1),false);
+       fq = dfilter.getFrequencyResponse();
+       for (int i = 0; i < fq.length; i++) {
+           System.out.println("freqResponse: " + fq[i].real+" "+fq[i].imag);
+       }
+       */
+       /*
+       RealDigitalFilter filter = new RealDigitalFilter();
+       filter.addFactor(new RealZFactor(new double[] {1}, new double[] {1},
+       2));
+       
+       filter.addPoleZero(new Complex(-0.5,-0.5), new Complex(-0.1,-0.2), true);
+       double[] transferNum;
+       double[] transferDen;
+       transferNum = filter.getNumerator();
+       transferDen = filter.getDenominator();
+       
+       for (int i = 0; i < transferNum.length; i++) {
+           System.out.println("transferNum " + i + " " + transferNum[i]);
+       }
+       for (int i = 0; i < transferDen.length; i++) {
+           System.out.println("transferDen " + i + " " + transferDen[i]);
+       }
+       double gain = filter.getGain();
+       System.out.println("gain = " + gain);
+       filter.resetState();
+       RealZFactor[] factors = filter.getFactors();
+       double[] numer = factors[0].getNumerator();
+       for (int i = 0; i < numer.length; i++) {
+           System.out.println("numer" + numer[i]);
+       }
+       double[] den = factors[0].getDenominator();
+       for (int i = 0; i < den.length; i++) {
+           System.out.println("den" + den[i]);
+       }
+       double o = factors[1].computeOutput(1);
+       System.out.println(o);
+       double[] output;
+       double[] input = new double[] {1,0,0,0};
+       double out = filter.getOutput(1.5);
+       */
+       /*
+       Complex[] poles = filter.getPoles();
+       Complex[] zeroes = filter.getZeroes();
+       for (int i=0;i<poles.length;i++){
+           System.out.println(
+                   "poles are "+poles[i].real+" and "+poles[i].imag);
+       }
+       for (int i=0;i<zeroes.length;i++){
+           System.out.println(
+                   "zeroes are "+zeroes[i].real+" and "+zeroes[i].imag);
+       }
+       */
+       /*
+       System.out.println("out is " + out);
+              output = filter.getResponse(input, input.length);
+       for (int i = 0; i < output.length; i++) {
+           System.out.println("output is" + output[i]);
+       }
+       output = filter.getImpulseResponse();
+       for (int i = 0; i < output.length; i++) {
+           System.out.println("output is" + output[i]);
+       }
+       
+       Complex[] freq = filter.getFreqResponse();
+       for (int i = 0; i < 30; i++) {
+           System.out.println("freq = " + freq[i].real + " " + freq[i].imag);
+       }
+       */
+                   /**
        //test.resetState();
        //desFilter.resetState();
        //Complex pole = new Complex(-1,2);

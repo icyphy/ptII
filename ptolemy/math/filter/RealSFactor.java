@@ -35,11 +35,12 @@ import ptolemy.math.*;
 /** 
 The RealSFactor class is used to implement RealAnalogFilter's transfer
 function.  Like the RealZFactor, the RealSFactor supports methods like
-movePole, moveZero, addZero, addPole, setNumerator, setDenominator, the 
+movePole, moveZero, addPoleZero, setNumerator, setDenominator, the 
 methods to change the factors characteristics.  To support those methods, 
 RealSFactor contains two polynomials of decreasing positive powers representing
 the transfer function this factor and the zero and pole locations 
 corresponding to the transfer function.  This class is derived from RealFactor.
+
 @author  David Teng(davteng@hkn.eecs.berkeley.edu), William Wu(wbwu@eecs.berkeley.edu)
 @version %W%	%G%
 
@@ -151,7 +152,6 @@ public class RealSFactor extends RealFactor {
               double b = _numerator[1];   
               double c = _numerator[2]; 
               
-              System.out.println("a b c = "+a+" "+b+" "+c);
               Complex [] roots = new Complex[2]; 
               
               boolean conjugate = 
@@ -167,11 +167,9 @@ public class RealSFactor extends RealFactor {
                               new Complex(Double.POSITIVE_INFINITY));
                  
                   conjpole.addElement(conjp);
-                  System.out.println("roots" + roots[0].real);
-                  System.out.println("roots" + roots[1].real);
               } else {
                   if (roots[0] == null && roots[1] == null) {
-                      System.out.println("num two nulls");
+              
                   } else if (roots[1] == null) {
                       pole = new Complex(Double.POSITIVE_INFINITY);
                       singlepole.addElement(pole);
@@ -186,8 +184,6 @@ public class RealSFactor extends RealFactor {
                       singlezero.addElement(roots[0]);
                       singlepole.addElement(pole);
                       singlezero.addElement(roots[1]);
-                      System.out.println("roots" + roots[0].real);
-                      System.out.println("roots" + roots[1].real);
                   }
               }
          } else {
@@ -195,7 +191,6 @@ public class RealSFactor extends RealFactor {
               throw new IllegalArgumentException(str);
          }
          
-System.out.println("in solve denominator: "+_denominator.length);
          if (_denominator.length == 1) {
              // single scalar value, no pole/zero produced
          } else if (_denominator.length == 2) {
@@ -230,12 +225,8 @@ System.out.println("in solve denominator: "+_denominator.length);
                  
                  conjzero.addElement(conjz);
                  conjpole.addElement(conjp);
-                 System.out.println("roots" + roots[0].real);
-                 System.out.println("roots" + roots[1].real);
              } else {
-                 System.out.println("two nulls");
                  if (roots[0] == null && roots[1] == null) {
-                     System.out.println("two nulls again");
                      
                  } else if (roots[1] == null) {
                      zero = new Complex(Double.POSITIVE_INFINITY);
@@ -277,10 +268,6 @@ System.out.println("in solve denominator: "+_denominator.length);
          for (int i=0;i<conjzero.size();i++){
              _conjugateZero[i] = (ConjugateComplex) conjzero.elementAt(i);
          }
-         for (int i = 0; i < _singlePole.length; i++) {
-             System.out.println("singlepole = " + _singlePole[i].real + " " + _singlePole[i].imag);
-         } 
-         System.out.println("converting vector to array, "+_singlePole.length+" "+_singleZero.length+" "+_conjugatePole.length+" "+_conjugateZero.length); 
     }
 
     
@@ -315,4 +302,8 @@ System.out.println("in solve denominator: "+_denominator.length);
     private static final double TINY = 1.0e-6;   
     
 }
+
+
+
+
 

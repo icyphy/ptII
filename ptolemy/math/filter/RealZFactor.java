@@ -136,13 +136,10 @@ public class RealZFactor extends RealFactor{
         // compute the latest state with this equation
         // lateststate = k=1:N Sum(denom(k)*w[n-k] + input  
         double lateststate = input;
-        
                 
-        
         for (int i=1;i<_denominator.length;i++){
             lateststate -= _denominator[i]*
                 _state[_circularAddition(_firstState,-i+1,_state.length)];
-            
         }
         
         // divide the intermediate state by denom(0) to feed this 

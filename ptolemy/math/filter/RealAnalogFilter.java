@@ -317,7 +317,8 @@ public class RealAnalogFilter extends AnalogFilter {
      * @param pole the value of a real pole's location that is to be 
      *                             added
      */
-    public void addPoleZero(Complex pole, Complex zero, boolean conj) {
+    public void addPoleZero(Complex pole, Complex zero, double gain,
+            boolean conj) {
         
         if (pole.isInfinite() & zero.isInfinite()) {
             return;
@@ -342,11 +343,11 @@ public class RealAnalogFilter extends AnalogFilter {
                 for (int i = 0; i < polyTemp.length; i++) {
                     numer[i] = polyTemp[i].real;
                 }
-                RealSFactor newFactor = new RealSFactor(numer, denom, 1);
-                addFactor(newFactor);
-                _polesZeroesValid = false;
-                _transferFnValid = false;
             }
+            RealSFactor newFactor = new RealSFactor(numer, denom, gain);
+            addFactor(newFactor);
+            _polesZeroesValid = false;
+            _transferFnValid = false;
         } else if (zero.isInfinite()) {
             numer = new double[] {0,0,1};
             if (conj == false) {
@@ -360,7 +361,7 @@ public class RealAnalogFilter extends AnalogFilter {
                 }
                 System.out.println("in RAF, denom.length = " + denom.length);
             }
-            RealSFactor newFactor = new RealSFactor(numer, denom, 1);
+            RealSFactor newFactor = new RealSFactor(numer, denom, gain);
             addFactor(newFactor);
             _polesZeroesValid = false;
             _transferFnValid = false;
@@ -384,7 +385,7 @@ public class RealAnalogFilter extends AnalogFilter {
                     denom[i] = polyTemp[i].real;
                 }
             }
-            RealSFactor newFactor = new RealSFactor(numer, denom, 1);
+            RealSFactor newFactor = new RealSFactor(numer, denom, gain);
             addFactor(newFactor);
             _polesZeroesValid = false;
             _transferFnValid = false;

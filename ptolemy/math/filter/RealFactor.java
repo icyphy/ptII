@@ -76,6 +76,12 @@ public abstract class RealFactor extends Factor{
         _solvePoleZero();
     }
 
+    /** set the gain of this factor
+     */
+    public void setGain(double gain) {
+        _gain = gain;
+    }
+    
     /** Return the gain of this factor.   
      * @return double value equal to the gain 
      */	
@@ -103,8 +109,6 @@ public abstract class RealFactor extends Factor{
      * @return array of Complex poles
      */	
     public Complex[] getPoles(){
-        if (_singlePole == null){ System.out.println("single pole null");}
-if (_conjugatePole == null){ System.out.println("conjugate pole null");}
         return _streamlineComplex(_singlePole, _conjugatePole);
     }
 
@@ -189,8 +193,6 @@ if (_conjugatePole == null){ System.out.println("conjugate pole null");}
      */	
     public void movePole(Complex pole, double real, double imag) 
             throws NoSuchElementException{
-                System.out.println(
-                        "moving the pole to Real: "+real+" Imag: "+imag);
      // first check if the given pole is in the single pole array
      boolean found = false;
      for (int i=0;i<_singlePole.length;i++){
@@ -241,7 +243,6 @@ if (_conjugatePole == null){ System.out.println("conjugate pole null");}
     public void moveZero(Complex zero, double real, double imag)
                         throws NoSuchElementException {
 
-System.out.println("moving the zero to Real: "+real+" Imag: "+imag);
          // first check if the given zero is in the single pole array
          boolean found = false;
          for (int i=0;i<_singleZero.length;i++){

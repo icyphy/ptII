@@ -76,26 +76,8 @@ public abstract class DigitalFilter extends Filter{
     */
     public abstract Complex[] getPoles();
 
-    public abstract void addPoleZero(Complex pole, Complex zero, boolean conj);
-
-
-    /** Take as parameter a conjugate pair of pole locations and 
-     * incorporate them into the current transfer function of the
-     * filter.  This method should be overwritten in the derived classes.
-     * @param polePair a ConjugateComplex instance containing the
-     *                           values of a pair of poles that 
-     *                           is to added
-     */
-    //public abstract void addPolePair(ConjugateComplex zeroPair);
-    
-    /** Take as parameter a conjugate pair of zero locations and 
-     * incorporate them in to the current transfer function of the 
-     * filter.  This method should be overwritten in the derived classes.
-     * @param zeroPair a ConjugateComplex instance containing the
-     *                           values of a pair of zeroes that
-     *                           is to be added
-     */
-    //public abstract void addZeroPair(ConjugateComplex polePair);
+    public abstract void addPoleZero(Complex pole, Complex zero, 
+            double gain, boolean conj);
 
     /** Given a pole, deletePole will find the factor associated 
      * with this pole and delete that factor.  This method should be 
@@ -163,41 +145,14 @@ public abstract class DigitalFilter extends Filter{
         RealAnalogFilter aFilter = 
             AnalogFilter.designRealIIR(mapmethod, appmethod, filttype, 
                     critfreq, gain, fs);
-        System.out.println("number of sfactors = " + 
-                aFilter.getNumberOfFactors());
-        
-        RealSFactor[] factors = aFilter.getFactors();
-        double[] numerator;
-        double[] denominator;
-        for (int i = 0; i < aFilter.getNumberOfFactors(); i++) {
-            numerator = factors[i].getNumerator();
-            denominator = factors[i].getDenominator();
-            System.out.println("factor " + i);
-            for (int j = 0; j < numerator.length; j++) {
-                System.out.println("numerator = " + 
-                        numerator[j]);
-            }
-            for (int k = 0; k < numerator.length; k++) {
-                System.out.println("denominator = " + denominator[k]);
-            }
-        }
-        Complex[] poles = aFilter.getPoles();
-        Complex[] zeroes = aFilter.getZeroes();
-        for (int i = 0; i<poles.length; i++){
-            System.out.println(
-                    "poles are = " + poles[i].real+" and "+poles[i].imag);
-        }
-        for (int i = 0; i<zeroes.length; i++){
-            System.out.println(
-                    "zeroes are = " + zeroes[i].real+" and "+zeroes[i].imag);
-        }
-        
+                
         // Bilinear transfer back to z-domain
         RealDigitalFilter dFilter =
                _bilinearQuadTransform(aFilter, fs);
 
-        System.out.println("number of zfactors = " + dFilter.getNumberOfFactors());
-        System.out.println("how about?");
+        Complex[] poles = dFilter.getPoles();
+        Complex[] zeroes = dFilter.getZeroes();
+        
         return dFilter;
     }
             
@@ -231,13 +186,6 @@ public abstract class DigitalFilter extends Filter{
     private static RealDigitalFilter _bilinearQuadTransform(
             RealAnalogFilter filter, double fs){
         
-        int iternum;
-        if (filter.order%2==0){
-            iternum = filter.order/2;
-        } else{ 
-            iternum = filter.order/2 + 1;
-        }
-        
         int k;
         k = 0;
         double gain = 1.0;
@@ -254,26 +202,22 @@ public abstract class DigitalFilter extends Filter{
         }
         
 
-        for (int iter = 0; iter < iternum; iter++){
+        for (int iter = 0; iter < sFactors.length; iter++){
             
             // transformation 
-            gain *= _bilinear(sFactors[iter], zFactors[iter], fs);
+            _bilinear(sFactors[iter], zFactors[iter], fs);
         }
         
         RealDigitalFilter designedFilter = new RealDigitalFilter();
         designedFilter.clearFactors();
-        
-        // add the gain of DigitalFilter 
-        designedFilter.addFactor(new RealZFactor(new double[] {1}, 
-        new double[] {1}, gain));
-        System.out.println("gain = " + gain);
         
         // put in the transformed z factors
                
         for (int i = 0; i < zFactors.length; i++) {
             designedFilter.addFactor(zFactors[i]);
         }
-       
+        
+        System.out.println("bil numFact "+designedFilter.getNumberOfFactors());
         return designedFilter;
     }
 
@@ -301,6 +245,8 @@ public abstract class DigitalFilter extends Filter{
             double fs){
         double[] snum = sFactor.getNumerator();
         double[] sden = sFactor.getDenominator();
+        double sgain = sFactor.getGain();
+        
         double a0;
         double a1;
         double a2;
@@ -309,18 +255,18 @@ public abstract class DigitalFilter extends Filter{
         double b2;
         
         if (snum.length == 3) {
-            a2 = snum[0]; 
-            a1 = snum[1]; 
-            a0 = snum[2]; 
+            a2 = snum[0]*sgain; 
+            a1 = snum[1]*sgain; 
+            a0 = snum[2]*sgain; 
         }
         else if (snum.length == 2 & snum.length == 2) {
             a2 = 0;
-            a1 = snum[0];
-            a0 = snum[1];
+            a1 = snum[0]*sgain;
+            a0 = snum[1]*sgain;
         } else {
             a2 = 0;
             a1 = 0;
-            a0 = snum[0];
+            a0 = snum[0]*sgain;
         }
         
         if (sden.length == 3) {
@@ -350,7 +296,8 @@ public abstract class DigitalFilter extends Filter{
                bd = 4.0*b2*fs*fs + 2.0*b1*fs+b0; 
         
         gain = ad/bd;
-        
+        System.out.println("bilinear gain = " + gain);
+
         d1 = (2.0*b0-8.0*b2*fs*fs)/bd;
         d0 = (4.0*b2*fs*fs-2.0*b1*fs+b0)/bd; 
         c1 = (2.0*a0-8.0*a2*fs*fs)/ad;
@@ -366,12 +313,10 @@ public abstract class DigitalFilter extends Filter{
         zden[1] = d1;
         zden[0] = 1.0;
         
-        System.out.println("znum = "+1.0+" "+c1+" "+c0);
-        System.out.println("zden = "+1.0+" "+d1+" "+d0);
-
         zFactor.setNumerator(znum);
         zFactor.setDenominator(zden);
-        
+        zFactor.setGain(gain);
+
         return gain;
     }  
     
@@ -380,7 +325,6 @@ public abstract class DigitalFilter extends Filter{
 
     protected boolean _transferFnValid;
     protected LinkedList _factors;
-    protected int _numberOfFactors;
     protected boolean _polesZeroesValid;
 
     protected Complex[] _freqResponse; 
@@ -391,6 +335,12 @@ public abstract class DigitalFilter extends Filter{
 
     protected int NUMSTEP = 150;
 }
+
+
+
+
+
+
 
 
 
