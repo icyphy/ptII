@@ -169,11 +169,7 @@ compat2:
 			$@/vqtest1.xml; \
 		echo "Removing tests that failed in earlier releases"; \
 		rm -f $@/MaximumEntropy.xml \
-			$@/OutputActionsAttribute.xml \
-			$@/ImageReader*.xml \
-			$@/testAudio*.xml \
-			$@/automataLibrary.xml \
-			$@/VariableFIR2.xml; \
+			$@/OutputActionsAttribute.xml; \
 	fi
 
 # Directory that contains models from the demo directory 
@@ -197,7 +193,7 @@ compatDemo2:
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass compat compatDemo $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass compat compatDemo compat2 compatDemo2 $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl 
 
 # Run vergil on each of the demos in compatDemo
