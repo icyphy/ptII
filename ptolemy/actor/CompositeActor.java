@@ -27,6 +27,7 @@
 @ProposedRating Green (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 setDirector throws NameDuplicationException
+fire: call transferOutputs on local, not executive director.
 */
 
 package ptolemy.actor;
@@ -221,7 +222,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  domain).  If the actor is not opaque, throw an exception.
      *  This method is read-synchronized on the workspace, so the
      *  fire() method of the director need not be (assuming it is only
-     *  called from here).
+     *  called from here).  After the fire() method of the director returns,
+     *  send any output data created by calling the local director's 
+     *  transferOutputs method.
      *
      *  @exception IllegalActionException If there is no director, or if
      *   the director's fire() method throws it, or if the actor is not
@@ -241,14 +244,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 _director.transferInputs(p);
             }
             _director.fire();
-            // Use the executive director to transfer outputs.
-            Director executiveDirector = getExecutiveDirector();
-            if (executiveDirector != null) {
-                Iterator outports = outputPortList().iterator();
-                while(outports.hasNext()) {
-                    IOPort p = (IOPort)outports.next();
-                    executiveDirector.transferOutputs(p);
-                }
+            // Use the local director to transfer outputs.
+            Iterator outports = outputPortList().iterator();
+            while(outports.hasNext()) {
+                IOPort p = (IOPort)outports.next();
+                _director.transferOutputs(p);
             }
         } finally {
             _workspace.doneReading();
