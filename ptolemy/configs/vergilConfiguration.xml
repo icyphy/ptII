@@ -25,6 +25,17 @@
         </property>
       </entity>
     </entity>
+    <entity name="Interface Automaton Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+          <configure>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+              <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
+            </entity>
+          </configure>
+        </property>
+      </entity>
+    </entity>
     <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
     <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
   </entity>
@@ -70,6 +81,15 @@
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/>
     <entity name="continuous time composite actor" class="ptolemy.domains.ct.kernel.CTCompositeActor"/>
     <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+          <configure>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+              <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
+            </entity>
+          </configure>
+        </property>
+    </entity>
+    <entity name="interface automaton" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
           <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity">
