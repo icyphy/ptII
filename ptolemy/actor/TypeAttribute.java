@@ -55,7 +55,7 @@ using
 The Constants class defines the constant "double" to have the value
 0.0, so that instead you may give the type by name.
 The Constants class defines for convenience the following
-constants: boolean, complex, double, fixed point, general,
+constants: boolean, complex, double, fixedpoint, general,
 int, long, matrix, object, scalar, string, and unknown.
 The constant "unknown" has a rather special behavior, in that
 it sets the type of the port to be unknown, allowing type resolution
