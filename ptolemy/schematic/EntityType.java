@@ -43,8 +43,11 @@ an entity so that it can be a) instantiated in a Ptolemy II
 simulation and b) looked up in an icon library for display
 and editing of a schematic. In the external data format of Ptolemy
 II schmatics, the entity type is represented by the <type/>
-element embedded in the <entity> element.   An EntityType always 
-has a valid name, and should not contain other XMLElements.
+element embedded in the <entity> element.   
+<!-- entitytype elements will be parsed into class EntityType -->   
+<!ELEMENT entitytype EMPTY>
+<!ATTLIST entitytype
+name ID #REQUIRED>
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
