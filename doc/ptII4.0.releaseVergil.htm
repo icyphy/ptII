@@ -74,14 +74,9 @@ see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/mac.htm#in_brows
 	<li> Applets seems to be trying to download tmp.jar, which
 	is not found.
 
-	<li> FSM ChainedTransitions and the TM applets
-	should show the insides of the composite actors.
- 
         <li> The SDF TrellisDecoder and VitebiDecoder applets do
 	not properly display the result values.
 	
-	<li> The model in Wireless AntennaPattern is offset
-
 	<li> We've experienced problems with the browser freezing
 	when between applets.  What happens is that the previous
 	applet gets a InterruptedException and pops up a modal dialog
@@ -137,7 +132,7 @@ see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/mac.htm#in_brows
 <pre>
 java.lang.NoClassDefFoundError: diva/graph/GraphController	
 at java.lang.Class.getDeclaredConstructors0(Native Method)  
-vat java.lang.Class.privateGetDeclaredConstructors(Class.java:1576) 
+at java.lang.Class.privateGetDeclaredConstructors(Class.java:1576) 
 at java.lang.Class.getConstructor0(Class.java:1748) 
 at java.lang.Class.newInstance0(Class.java:266)  
 at java.lang.Class.newInstance(Class.java:249) 
@@ -183,9 +178,6 @@ Attempted to find as a moml class, but got:
 <li> Windows Installer Issues:
  	<ul>
 
-	<li> The HyVisual HSIF translater does not work when HyVisual
-	is installed using the Windows Installer or Web Start.
-
 	<li> Sometimes running a model that uses the Matlab interface
 	will cause Ptolemy II to exit.  Usually this occurs if Vergil
 	has been running for a while and then the Matlab interface is loaded.
@@ -219,15 +211,6 @@ executing java...
 lax.nl.java.option.additional=-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,suspend=n 
         </pre>
 
-	<li> The Windows task bar shows a 'Launch Anywhere' icon instead
-	of a Vergil Icon.
-
-
-	<li> Some of the dependency issues in the installer have not
-	be resolved.   For example:
-	 <br>documentation requires minimal
-	 <br>full requires minimal
-
 	<li> The Windows installer works best if you are in the 
 	Administrators Windows group.   Otherwise, the Windows installer
 	tends to dump lots of icons on your desktop
@@ -258,6 +241,7 @@ lax.nl.java.option.additional=-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,susp
 	<li> The Python Ptolemizer demo does not work under Web Start,
 	probably because Jython cannot handle loading classes
 	from the Ptolemy II classes. 
+
 	<li> Viewing a pdf file may bring up a blank window along with
 	the pdf file.  Running the code generator may bring up
 	a blank window while the java or javac processes are running.
@@ -286,9 +270,6 @@ lax.nl.java.option.additional=-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,susp
 
         <li> Bouncer demo: If the user drags the bouncing icon, it no
 	longer bounces
-	<li> TM Merged Events: Clicking on the 'Plot Schedule' icon
-	brings up a plot, but the plot remains empty, the schedule
-	never appears
         </ul>
 </ul>
 
