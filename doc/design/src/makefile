@@ -134,11 +134,11 @@ $(WPUBLISH_OUTPUT_DIR)/introduction.html: $(wildcard $(DESIGNDOC)/*.fm) support_
 
 $(WPUBLISH_OUTPUT_DIR)/index.html:
 	rm -f $@
-	(cd $(WPUBLISH_OUTPUT_DIR)/Output; ln -s title.html index.html)
+	(cd $(WPUBLISH_OUTPUT_DIR); ln -s title.html index.html)
 
 
 $(WPUBLISH_OUTPUT_DIR)/bottom.gif:
-	-cp -f /users/ptdesign/doc/lib/buttons/* $(WPUBLISH_OUTPUT_DIR)/Output
+	-cp -f /users/ptdesign/doc/lib/buttons/* $(WPUBLISH_OUTPUT_DIR)
 
 $(WPUBLISH_OUTPUT_DIR)/support/bottom.gif:
 	-mkdir $(WPUBLISH_OUTPUT_DIR)/support
@@ -147,11 +147,11 @@ $(WPUBLISH_OUTPUT_DIR)/support/bottom.gif:
 
 $(WPUBLISH_OUTPUT_DIR)/idx.html:
 	rm -f $@
-	(cd $(WPUBLISH_OUTPUT_DIR)/Output; ln -s designix.html idx.html)
+	(cd $(WPUBLISH_OUTPUT_DIR); ln -s designix.html idx.html)
 
 $(WPUBLISH_OUTPUT_DIR)/content.html:
 	rm -f $@
-	(cd $(WPUBLISH_OUTPUT_DIR)/Output; ln -s designtoc.html content.html)
+	(cd $(WPUBLISH_OUTPUT_DIR); ln -s designtoc.html content.html)
 
 $(WPUBLISH_OUTPUT_DIR)/search.html:
 	echo "<html>" >> $@
