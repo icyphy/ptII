@@ -46,7 +46,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.sched.*;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -134,17 +135,56 @@ public class GiottoCodeGenerator extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Generate Giotto code for the _container model.
+     *  @return The Giotto code.
+     */
+    public String generateCode() throws IllegalActionException {
+	try {
+	    generatedCode = "";
+	    if (!_initialize()) {
+	        return "Not in Giotto domain!";
+    	    }
+
+	    _currentDepth = depthInHierarchy();
+	    String containerName = _container.getName();
+
+	    generatedCode += _sensorCode();
+	    generatedCode += _actuatorCode();
+	    generatedCode += _outputCode();
+	    generatedCode += _tasksCode();
+	    generatedCode += _driversCode();
+
+	    generatedCode += "start "
+                + containerName
+                + " {"
+                + _endLine;
+
+	    generatedCode += _modeCode();
+
+	    generatedCode +=  "}"
+                + _endLine;
+
+	} catch (IllegalActionException ex) {
+	    System.out.println(ex.getMessage());
+	    throw new IllegalActionException(ex.getMessage());
+	}
+
+	return generatedCode;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                    ////
+
     /** Topology analysis and initialization.
      *
      * @ return Ture if in giotto domain, False if in other domains.
      */
     private boolean _initialize() throws IllegalActionException {
-	// Get containers, _commActors, modes List and _modeSwitchController  .
+	// Get container, _commActors .
 	// _commActors List contains actors which exist in all the modes.
 	// Often, the depth of _commActors is smaller than modal director.
 
 	_commActors = new LinkedList();
-	_modeList = new LinkedList();
 
 	_container = (TypedCompositeActor) getContainer();
 
@@ -152,13 +192,8 @@ public class GiottoCodeGenerator extends Attribute {
 
 	if (!(director instanceof GiottoDirector))
             return false;
-	// FIXME _container1 should be a better name.
-	//_container1 = null;
-
-	_modeSwitchController   = null;
 
 	Iterator actors = _container.deepEntityList().iterator();
-	//Iterator actors = _container.entityList().iterator();
 
 	while (actors.hasNext()) {
 	    TypedActor actor = (TypedActor)actors.next();
@@ -179,32 +214,7 @@ public class GiottoCodeGenerator extends Attribute {
 
 	_inPorts = _container.inputPortList().iterator();
 
-	/*
-          while (_inPorts.hasNext()) {
-          TypedIOPort port = (TypedIOPort)_inPorts.next();
-          // FIXME: Assuming ports are either
-          // input or output but not both.
-          // FIXME: May want the driver name
-          // specified by a port parameter.
-
-
-          String driverName = port.getName() + "_device_driver";
-          codeString +=  "  "
-          + "giotto_c_type"
-          //+ port.getType()
-          + " "
-          + port.getName()
-          + " uses "
-          + driverName
-          + ";"
-          + _endLine;
-
-          }
-	*/
-
-	// FORDEMO
 	// we combine several inputs into one composite sensor
-	// reason?? no
 
 	String compositeSensor = "composite_sensor";
 	String sensorDriverName = compositeSensor + "_device_driver";
@@ -242,7 +252,6 @@ public class GiottoCodeGenerator extends Attribute {
 	    String actuatorDriverName = port.getName() + "_device_driver";
 	    codeString +=  "  "
                 + port.getName().toUpperCase()
-                //+ port.getType()
                 + " "
                 + port.getName()
                 + " uses "
@@ -275,7 +284,6 @@ public class GiottoCodeGenerator extends Attribute {
 		String outPortName = StringUtilities.sanitizeName(port.getName(_container));
 		codeString +=  "  "
                     + outPortName.toUpperCase()
-                    //+ port.getType()
                     + " "
                     + outPortName
                     + " := init_"
@@ -330,8 +338,6 @@ public class GiottoCodeGenerator extends Attribute {
     }
 
     /** Generate code for the tasks.
-     *  There are two parts:
-     *        _commActors AND modeActors
      *  @return The task code.
      */
     private String _tasksCode() throws IllegalActionException {
@@ -339,7 +345,7 @@ public class GiottoCodeGenerator extends Attribute {
 	String codeString = "";
 	Actor actor;
 
-	// Generate task functions for common actors.
+	// Generate task code for common actors.
 	Iterator actors = _commActors.iterator();
 
 	while (actors.hasNext()) {
@@ -347,18 +353,6 @@ public class GiottoCodeGenerator extends Attribute {
 	    codeString += _taskCode(actor);
 	}
 
-        /*	//Generate task code for mode actors.
-
-                Iterator modes = _modeList.iterator();
-                while (modes.hasNext()) {
-                TypedCompositeActor mode = (TypedCompositeActor) modes.next();
-                Iterator modeActors = mode.deepEntityList().iterator();
-                while (modeActors.hasNext()) {
-		actor = (TypedCompositeActor)modeActors.next();
-		codeString += _taskCode(actor);
-                }
-                }
-        */
 	return codeString;
     }
 
@@ -375,7 +369,6 @@ public class GiottoCodeGenerator extends Attribute {
 	driverParas = "";
 	actorName = "";
 
-	//actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName(_container));
 	actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
 
 	codeString += "driver "
@@ -391,17 +384,12 @@ public class GiottoCodeGenerator extends Attribute {
 	    String sanitizedPortName =
                 StringUtilities.sanitizeName(
                         inPort.getName(_container));
-	    //Iterator sourcePorts = inPort.sourcePortList().iterator();
 	    Iterator sourcePorts = inPort.connectedPortList().iterator();
 	    while (sourcePorts.hasNext()) {
 		IOPort port = (IOPort)sourcePorts.next();
 		sanitizedPortName = StringUtilities.sanitizeName(
                         port.getName(_container));
 		NamedObj portContainer = (NamedObj) port.getContainer();
-		//System.out.println(portContainer.getName() + " " + port.depthInHierarchy() + " " + _currentDepth);
-		// I hate to make (_currentDepth + 1) here but have to
-		// anyway, I think we should make the inside should has some different director
-		// again, not modal model.
 		if ((port.isOutput()) && (port.depthInHierarchy() == (_currentDepth + 1))) {
 		    if (driverParas.length()==0) {
 			driverParas +=  sanitizedPortName;
@@ -441,8 +429,6 @@ public class GiottoCodeGenerator extends Attribute {
     }
 
     /** Generate code for the drivers.
-     *  There are four parts:
-     *        commActors + modeActors + controller + actuator
      *  The order of ports in model has effect
      *  on the order of driver input parameters
      *  @return The drivers code.
@@ -459,68 +445,6 @@ public class GiottoCodeGenerator extends Attribute {
 	    codeString += _driverCode(actor);
 	}
 
-	//Generate driver functions for mode actors.
-	Iterator modes = _modeList.iterator();
-	while (modes.hasNext()) {
-	    Actor mode = (Actor) modes.next();
-	    Iterator modeActors = ((TypedCompositeActor)mode).deepEntityList().iterator();
-	    while (modeActors.hasNext()) {
-		actor = (Actor) modeActors.next();
-		codeString += _driverCode(actor);
-	    }
-	}
-
-        /*
-          //Generate driver functions for the _modeSwitchController's inputs
-          //Only when there are several modes, the following drivers for
-          // modes switch are necessary.
-          if (_modeSwitchController!= null) {
-          _inPorts = _modeSwitchController.inputPortList().iterator();
-          while (_inPorts.hasNext()) {
-          driverParas = "";
-          IOPort inPort = (IOPort) _inPorts.next();
-          String sanitizedPortName = StringUtilities.sanitizeName(
-          inPort.getName(_container1));
-          pout.print("driver "
-          + sanitizedPortName
-          + "_driver (");
-          Iterator sourcePorts = inPort.sourcePortList().iterator();
-          while (sourcePorts.hasNext()) {
-          IOPort port = (IOPort)sourcePorts.next();
-          Actor actor = (Actor) port.getContainer();
-          Director director3 = actor.getDirector();
-          TypedCompositeActor portContainer = _container1;
-          if ((director3 instanceof GiottoDirector) &&
-          director3.depthInHierarchy()<=1) {
-          portContainer = _container;
-          }
-          sanitizedPortName = StringUtilities.sanitizeName(
-          port.getName(portContainer));
-          if (driverParas.length()==0) {
-          driverParas += sanitizedPortName;
-          } else {
-          driverParas += ", " + sanitizedPortName;
-          }
-          }
-          codeString += driverParas
-          + ") output ("
-          + ") {"
-          + _endLine;
-          codeString +=  "  if "
-          + sanitizedPortName
-          + "_guard ("
-          + driverParas
-          + ") then"
-          + _endLine;
-          codeString +=  "    "
-          + sanitizedPortName
-          + "doNothing()"
-          + _endLine;
-          codeString +=  "}"
-          + _endLine;
-          }
-          }
-        */
 	// Generate driver functions for toplevel output ports.
 	// FIXME: the giotto director should do some checking to
 	// avoid several outputs of actors connect to the same output port?
@@ -546,10 +470,6 @@ public class GiottoCodeGenerator extends Attribute {
 		sanitizedPortName = StringUtilities.sanitizeName(
                         outPort.getName(_container));
 		NamedObj portContainer = (NamedObj) outPort.getContainer();
-		//System.out.println(portContainer.getName() + " " + outPort.depthInHierarchy() + " " + _currentDepth);
-		// I hate to make (_currentDepth + 1) here but have to
-		// anyway, I think we should make the inside should has some different director
-		// again, not modal model.
 		if (outPort.isOutput()) {
 		    if (driverParas.length()==0) {
 			driverParas +=  sanitizedPortName;
@@ -681,217 +601,14 @@ public class GiottoCodeGenerator extends Attribute {
 
     }
 
-    /** Generate Giotto code for the _container model.
-     *  @return The Giotto code.
-     */
-    public String generateCode() throws IllegalActionException {
-	try {
-	    // initialization
-	    generatedCode = "";
-	    if (!_initialize()) {
-	        return "Not in Giotto domain!";
-    	    }
 
-	    _currentDepth = depthInHierarchy();
-	    String containerName = _container.getName();
-
-	    generatedCode += _sensorCode();
-	    generatedCode += _actuatorCode();
-	    generatedCode += _outputCode();
-	    generatedCode += _tasksCode();
-	    generatedCode += _driversCode();
-
-	    generatedCode += "start "
-                + containerName
-                + " {"
-                + _endLine;
-
-	    // for one mode only
-	    generatedCode += _modeCode();
-
-            /*	    if (_modeSwitchController!= null) {
-                    // check to make sure it is multi-modes
-                    // find the modes from the state's refinement of the
-                    // _modeSwitchController
-                    State initState = _modeSwitchController.getInitialState();
-                    Iterator states = _modeSwitchController.entityList().iterator(); //???
-                    while (states.hasNext()) {
-		    State state = (State) states.next();
-		    if (state != initState) {
-                    StringAttribute statePara = (StringAttribute)
-                    state.getAttribute("refinementName");
-                    String modeName = statePara.getExpression();
-                    codeString +=  "  mode "
-                    + modeName
-                    + " () period "
-                    //+ periodValue
-                    + (new Double(periodValue)).intValue()
-                    + " {";
-                    // generate mode code for toplevel outputs drivers
-                    // FIXME: if there are several OUTPUTs..., we have
-                    // multiple ACTFREQ?
-                    // find the lowest frequency
-                    // trace the output port updating frequency
-                    _outPorts = _container.outputPortList().iterator();
-                    while (_outPorts.hasNext()) {
-                    outputName = "";
-                    TypedIOPort outPort = (TypedIOPort)_outPorts.next();
-                    Actor actor = (Actor) outPort.getContainer();
-                    Director director3 = actor.getDirector();
-                    TypedCompositeActor portContainer = _container1;
-                    if ((director3 instanceof GiottoDirector) &&
-                    director3.depthInHierarchy()<=1) {
-                    portContainer = _container;
-                    }
-                    outputName =
-                    StringUtilities.sanitizeName(
-                    outPort.getName(portContainer));
-                    Iterator portConnected = outPort.
-                    insidePortList().iterator();
-                    if (outPort.insidePortList().size() != 0) {
-                    while (portConnected.hasNext()) {
-                    TypedIOPort port = (TypedIOPort)
-                    portConnected.next();
-                    Nameable portActor = port.getContainer();
-                    if (portActor instanceof AtomicActor) {
-                    Parameter actorFreqPara = (Parameter)
-                    ((NamedObj)portActor).
-                    getAttribute("frequency");
-                    actorFreq = ((IntToken) actorFreqPara.
-                    getToken()).intValue();
-                    }
-                    }
-                    codeString +=  "    actfreq "
-                    + actorFreq
-                    + " do "
-                    + outputName
-                    + " ("
-                    + outputName
-                    + "_driver);";
-                    }
-                    }
-
-                    //generate mode code for the _modeSwitchController
-                    Iterator trs = state.nonpreemptiveTransitionList().
-                    iterator();
-                    while (trs.hasNext()) {
-                    Transition tr = (Transition)trs.next();
-                    State trState = (State) tr.destinationState();
-                    StringAttribute trStatePara = (StringAttribute) trState.
-                    getAttribute("refinementName");
-                    String trModeName = trStatePara.getExpression();
-                    _inPorts = _modeSwitchController.inputPortList().iterator();
-                    while (_inPorts.hasNext()) {
-                    IOPort inPort = (IOPort) _inPorts.next();
-                    String inPortName = StringUtilities.sanitizeName(
-                    inPort.getName(_container1));
-                    Iterator sourcePorts = inPort.sourcePortList().
-                    iterator();
-                    if (sourcePorts.hasNext()) {
-                    IOPort port = (IOPort)sourcePorts.next();
-                    Nameable portActor = port.getContainer();
-                    if (portActor instanceof AtomicActor) {
-                    Parameter actorPara = (Parameter)
-                    ((NamedObj)portActor).
-                    getAttribute("frequency");
-                    exitFreq = ((IntToken) actorPara.
-                    getToken()).intValue();
-                    }
-                    codeString +=  "    exitfreq "
-                    + exitFreq
-                    + " do "
-                    + trModeName
-                    + " ("
-                    + inPortName
-                    + "_driver);";
-                    }
-                    }
-
-
-                    }
-
-                    //generate mode code for each common actor driver
-                    actors = _commActors.iterator();
-                    while (actors.hasNext()) {
-                    TypedActor actor = (TypedActor) actors.next();
-                    actorName = StringUtilities.sanitizeName(((NamedObj)
-                    actor).getName(_container));
-                    Parameter actorFreqPara = (Parameter) ((NamedObj)
-                    actor).getAttribute("frequency");
-                    actorFreq = ((IntToken) actorFreqPara.
-                    getToken()).intValue();
-                    codeString +=  "    taskfreq "
-                    + actorFreq
-                    + " do "
-                    + actorName
-                    + "("
-                    + actorName
-                    + "_driver;";
-                    }
-
-                    //generate mode code for each mode actor driver
-                    modes = _modeList.iterator();
-                    while (modes.hasNext()) {
-                    TypedCompositeActor mode =
-                    (TypedCompositeActor) modes.next();
-                    if (mode.getName().trim().equals(modeName)){;
-                    Iterator modeActors = mode.
-                    deepEntityList().iterator();
-                    while (modeActors.hasNext()) {
-                    TypedActor modeActor =
-                    (TypedActor)modeActors.next();
-                    actorName = StringUtilities.sanitizeName((
-                    (NamedObj)modeActor).
-                    getName(_container1));
-                    Parameter actorFreqPara = (Parameter)
-                    ((NamedObj)modeActor).
-                    getAttribute("frequency");
-                    actorFreq = ((IntToken) actorFreqPara.
-                    getToken()).intValue();
-                    codeString +=  "    taskfreq "
-                    + actorFreq
-                    + " do "
-                    + actorName
-                    + "("
-                    + actorName
-                    + "_driver);";
-                    codeString +=  "  }";
-                    }
-                    }
-                    }
-		    }
-                    }
-
-                    } else {
-                    generatedCode += _modeCode(_container);
-                    }
-	    */
-
-	    generatedCode +=  "}"
-                + _endLine;
-
-	} catch (IllegalActionException ex) {
-	    System.out.println(ex.getMessage());
-	    throw new IllegalActionException(ex.getMessage());
-	}
-
-	//return generatedCode;
-	return generatedCode;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private LinkedList _commActors;
-    private LinkedList _modeList;
-    // FIXME _container1 should be a better name.
-    //private TypedCompositeActor _container1;
-    private FSMActor _modeSwitchController;
-
     private TypedCompositeActor _container;
-
     private String _endLine = "\n";
-
     private int _currentDepth;
     private Iterator _inPorts, _outPorts;
 
