@@ -36,11 +36,9 @@ DIRS = 		demo test
 # Root of the Java directory
 ROOT =		../../../..
 
-# COLT_DIR is set in $PTII/mk/ptII.mk by configure
-
-COLT_JAR = $(COLT_DIR)/colt.jar
-
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(COLT_JAR)
+# $PTII/configure sets PTCOLT_JARS to include $PTII/vendors/misc/colt/colt.jar
+# and $PTII/lib/ptcolt.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
