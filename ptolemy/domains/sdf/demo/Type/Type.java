@@ -34,7 +34,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Hashtable;
 
-import diva.graph.*;
+import diva.graph.compat.*;
 import diva.graph.model.*;
 import diva.graph.layout.*;
 import diva.canvas.*;
