@@ -41,7 +41,7 @@ ME =		ptolemy
 # if $PTII/lib/ptCal.jar was found
 DIRS = util kernel plot graph moml data actor gui math media	\
 	$(PTCOPERNICUS_DIR) \
-	$(PTMATLAB_DIR)	domains vergil hsif apps $(PTCAL_DIR) configs
+	$(PTMATLAB_DIR)	domains vergil hsif chic apps $(PTCAL_DIR) configs
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -95,7 +95,7 @@ MISC_FILES = util kernel plot graph moml data actor gui math media	\
 	$(PTCOPERNICUS_DIR) \
 	$(PTMATLAB_DIR)	domains vergil configs
 
-OPTIONAL_FILES = apps cal hsif matlab
+OPTIONAL_FILES = apps cal chic hsif matlab
 
 all: suball $(EXTRA_SRCS)
 install: subinstall jars
