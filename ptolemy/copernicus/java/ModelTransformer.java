@@ -112,8 +112,29 @@ public class ModelTransformer extends SceneTransformer {
     /** Return the name of the field that is created for the
      *  given entity.
      */
-    public static String getFieldNameForEntity(Entity entity) {
-        return SootUtilities.sanitizeName(entity.getName());
+    public static String getFieldNameForEntity(Entity entity, NamedObj context) {
+        return "E" + SootUtilities.sanitizeName(entity.getName(context));
+    }
+
+    /** Return the name of the field that is created for the
+     *  given entity.
+     */
+    public static String getFieldNameForPort(Port port, NamedObj context) {
+        return "P" + SootUtilities.sanitizeName(port.getName(context));
+    }
+
+    /** Return the name of the field that is created for the
+     *  given entity.
+     */
+    public static String getFieldNameForAttribute(Attribute attribute, NamedObj context) {
+        return "A" + SootUtilities.sanitizeName(attribute.getName(context));
+    }
+
+    /** Return the name of the field that is created for the
+     *  given entity.
+     */
+    public static String getFieldNameForRelation(Relation relation, NamedObj context) {
+        return "R" + SootUtilities.sanitizeName(relation.getName(context));
     }
 
     /** Return the name of the field that is created to 
@@ -329,7 +350,7 @@ public class ModelTransformer extends SceneTransformer {
             String className = attribute.getClass().getName();
             Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
-            String fieldName = SootUtilities.sanitizeName(attributeName);
+            String fieldName = getFieldNameForAttribute(attribute, context);
            
             Local local;
             if(classObject.getAttribute(attribute.getName()) != null) {
@@ -362,7 +383,7 @@ public class ModelTransformer extends SceneTransformer {
                                 local,
                                 PtolemyUtilities.settableType)));
                 String expression = ((Settable)attribute).getExpression();
-                System.out.println("expression for " + attribute + " =*" + expression + "*");
+        
 		// call setExpression.
 		body.getUnits().add(Jimple.v().newInvokeStmt(
                         Jimple.v().newInterfaceInvokeExpr(
@@ -453,7 +474,7 @@ public class ModelTransformer extends SceneTransformer {
                     // include a field for each actor.
                     // The name of the field is the sanitized version
                     // of the entity's name.
-                    String entityFieldName = getFieldNameForEntity(entity);
+                    String entityFieldName = getFieldNameForEntity(entity, container);
                     SootUtilities.createAndSetFieldFromLocal(
                             body, local, modelClass,
                             PtolemyUtilities.actorType, entityFieldName);
@@ -485,8 +506,7 @@ public class ModelTransformer extends SceneTransformer {
 	    ports.hasNext();) {
 	    Port port = (Port)ports.next();
 	    String className = port.getClass().getName();
-            String fieldName =
-                SootUtilities.sanitizeName(port.getName(container));
+            String fieldName = getFieldNameForPort(port, container);
 	    Local portLocal;
 
             portLocal = Jimple.v().newLocal("port",
