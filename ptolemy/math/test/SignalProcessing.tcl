@@ -222,7 +222,7 @@ test SignalProcessing-4.1 {decibel} {
 	    [java::call ptolemy.math.SignalProcessing {decibel double} 0.1] \
 	    [java::call ptolemy.math.SignalProcessing {decibel double} 1.0] \
 	    [java::call ptolemy.math.SignalProcessing {decibel double} 10.0] \
-	    ] {NaN -Infinity -106.03796221 0.0 106.03796221}
+	    ] {NaN -Infinity -20 0.0 20 }
 } {}
 
 
@@ -239,7 +239,7 @@ test SignalProcessing-4.3 {decibel array} {
     set dbresults [java::call ptolemy.math.SignalProcessing \
 	    {decibel double[]} $dbarray]
     epsilonDiff [$dbresults getrange 0] \
-	    {NaN -Infinity -106.03796221 0.0 106.03796221}
+	    {NaN -Infinity -20 0.0 20}
 } {}
 
 ####################################################################
