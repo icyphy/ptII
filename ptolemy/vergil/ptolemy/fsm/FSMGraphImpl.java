@@ -153,21 +153,46 @@ public class FSMGraphImpl extends BasicGraphImpl {
 		    links.nextElement();
 		    count++;
 		}
+		System.out.println("relation = " + relation);
+		System.out.println("linkCount = " + count);
 		   		
 		// If there are no verticies, and the relation has
 		// two connections, then create a direct link.
-                /*		if(rootVertex == null && count == 2) {
+		if(count == 2) {
 		    links = relation.linkedPorts();
 		    Port port1 = (Port)links.nextElement();
 		    Port port2 = (Port)links.nextElement();
-		    Node node1 = _findNode(g, port1);
-		    Node node2 = _findNode(g, port2);
+		    Port tailPort = null;
+		    Port headPort = null;
+		    if(port1.getName().equals("outgoingPort")) {
+			tailPort = port1;
+		    } else if(port1.getName().equals("incomingPort")) {
+			headPort = port1;
+		    }
+		    if(port2.getName().equals("outgoingPort")) {
+			tailPort = port2;
+		    } else if(port2.getName().equals("incomingPort")) {
+			headPort = port2;
+		    }
+		    
+		    Node tailNode = _findNode(g, tailPort);
+		    Node headNode = _findNode(g, headPort);
 		    Edge newEdge = createEdge(relation);
-		    super.setEdgeHead(newEdge, node1);
-                    super.setEdgeTail(newEdge, node2);
+		    if(headNode == null) {
+			System.out.println("Head = null");
+		    } else {
+			System.out.println("Head = " + headNode);
+		    }
+		    if(tailNode == null) {
+			System.out.println("Tail = null");
+		    } else {
+			System.out.println("Tail = " + tailNode);
+		    }
+		    super.setEdgeHead(newEdge, headNode);
+                    super.setEdgeTail(newEdge, tailNode);
 		} else {		  
 		   throw new GraphException("FSM only allows binary transitions.");
-                   }*/
+		}
 	    }
 	}
         return g;
@@ -283,18 +308,14 @@ public class FSMGraphImpl extends BasicGraphImpl {
 	// This is a bit ugly.
 	Node foundNode = null;
 	Iterator nodes = graph.nodes();
+	Entity parent = (Entity)port.getContainer();
+	System.out.println("parent = " + parent);
 	while(nodes.hasNext() && foundNode == null) {
 	    Node node = (Node)nodes.next();
-	    if(node.getSemanticObject().equals(port)) {
+	    NamedObj object = (NamedObj)node.getSemanticObject();
+	    System.out.println("checking = " + object);
+	    if(object.getContainer().equals(parent)) {
 		foundNode = node;
-	    }
-	    if(node instanceof CompositeNode) {
-		Iterator portNodes = ((CompositeNode)node).nodes();
-		while(portNodes.hasNext() && foundNode == null) {
-		    Node portNode = (Node)portNodes.next();
-		    if(portNode.getSemanticObject().equals(port))
-			foundNode = portNode;
-		}
 	    }
 	}
 	return foundNode;

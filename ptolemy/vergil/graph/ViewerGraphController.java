@@ -34,6 +34,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.vergil.*;
 import ptolemy.vergil.toolbox.BasicContextMenu;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
@@ -83,6 +84,8 @@ public class ViewerGraphController extends CompositeGraphController {
 	_linkController = new LinkController(this);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**
      * Return the controller for entities
      */
@@ -190,39 +193,38 @@ public class ViewerGraphController extends CompositeGraphController {
         _linkController = controller;
     }
 
-    /**
-     * The graph that is being displayed.
-     */
+    ///////////////////////////////////////////////////////////////////
+    ////                        public variables                   ////
+    // The graph that is being displayed.
     private Graph _graph;
 
-    /** The selection interactor for drag-selecting nodes
-     */
+    // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;
 
-    /**
-     * The interactor for creating context sensitive menus on the
-     * graph itself.
-     */
+    
+    // The interactor for creating context sensitive menus on the
+    // graph itself.
     private MenuCreator _menuCreator;
 
-    /** The controllers
-     */
+    // The controllers
     private EntityController _entityController;
     private PortController _portController;
     private RelationController _relationController;
     private LinkController _linkController;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                          inner classes                    ////
     public class SchematicContextMenuFactory extends MenuFactory {
 	public JPopupMenu create(Figure figure) {
 	    Graph graph = getGraph();
 	    CompositeEntity object =
 		(CompositeEntity) graph.getSemanticObject();
-	    return new Menu(object);
+	    return new Menu(VergilApplication.getInstance(), object);
 	}
 
         public class Menu extends BasicContextMenu {
-	    public Menu(CompositeEntity target) {
-		super(target);
+	    public Menu(Application application, CompositeEntity target) {
+		super(application, target);
 		//FIXME -- implement this.
 		JLabel domain = new JLabel("Domain");
 		add(domain);

@@ -33,6 +33,7 @@ package ptolemy.vergil.ptolemy.fsm;
 import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.vergil.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.vergil.graph.*;
 import ptolemy.gui.*;
@@ -111,17 +112,17 @@ public class FSMStateController extends LocatableNodeController {
     /**
      * The factory for creating context menus on entities.
      */
-    public class EntityContextMenuFactory extends MenuFactory {
+    public static class EntityContextMenuFactory extends MenuFactory {
 	public JPopupMenu create(Figure source) {
 	    Node sourcenode = (Node) source.getUserObject();
 	    Icon icon = (Icon)sourcenode.getSemanticObject();
 	    NamedObj object = (NamedObj) icon.getContainer();
-	    return new Menu(object);
+	    return new Menu(VergilApplication.getInstance(), object);
 	}
 
 	public class Menu extends BasicContextMenu {
-	    public Menu(NamedObj target) {
-		super(target);
+	    public Menu(Application application, NamedObj target) {
+		super(application, target);
 	    }
 	}
     }

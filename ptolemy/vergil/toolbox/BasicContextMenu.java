@@ -81,9 +81,10 @@ this menu.
 */
 public class BasicContextMenu extends JPopupMenu {
 
-    public BasicContextMenu(NamedObj target) {
+    public BasicContextMenu(Application application, NamedObj target) {
 	super(target.getFullName());
 	_target = target;
+	_application = application;
 
 	Action action;
 	action = new AbstractAction("Edit Parameters") {
@@ -103,8 +104,7 @@ public class BasicContextMenu extends JPopupMenu {
                         panel.restore();
                     }
                 } catch (IllegalActionException ex) {
-                    // FIXME: How are errors reported in Vergil?
-                    System.out.println(ex.toString());
+                    _application.showError("Edit Parameters failed", ex);
                 }
 	    }
 	};
@@ -127,69 +127,11 @@ public class BasicContextMenu extends JPopupMenu {
                         panel.restore();
                     }
                 } catch (IllegalActionException ex) {
-                    // FIXME: How are errors reported in Vergil?
-                    System.out.println(ex.toString());
+		    _application.showError("Configure Parameters failed", ex);
                 }
-
-		// Create a dialog for configuring a parameter.
-		/* try {
-                    List parameterList = _target.attributeList(Parameter.class);
-                    String[] parameterNames = new String[parameterList.size()];
-                    Iterator parameters = parameterList.iterator();
-                    int i = 0;
-                    while (parameters.hasNext()) {
-                        parameterNames[i++] =
-                            ((NamedObj)parameters.next()).getName();
-                    }
-                    Query query = new Query();
-                    query.addChoice("Parameter", "Parameter", parameterNames,
-                            parameterNames[0]);
-                    // FIXME: First argument below should be a parent window
-                    // (a JFrame).
-                    ComponentDialog dialog = new ComponentDialog(
-                            null,
-                            "Select a parameter of " + _target.getName(),
-                            query);
-                    if (dialog.buttonPressed().equals("OK")) {
-                        String parameterName = query.stringValue("Parameter");
-                        query = new Query();
-                        query.setTextWidth(25);
-                        String[] choices = {"none", "check box",
-                                            "choice", "radio button", "slider"};
-                        query.addChoice("Style", "Interaction style",
-                                choices, choices[0]);
-                        // FIXME: First argument below should be a parent window
-                        // (a JFrame).
-                        dialog = new ComponentDialog(
-                                null,
-                                "Configure parameter " + parameterName +
-                                " of " + _target.getName(),
-                                query);
-                        if (dialog.buttonPressed().equals("OK")) {
-                            String choiceResponse = query.stringValue("Style");
-                            Attribute attribute
-                                = _target.getAttribute(parameterName);
-                            if (choiceResponse.equals("check box")) {
-                                CheckBoxStyle style
-                                    = new CheckBoxStyle(attribute,
-                                            attribute.uniqueName("style"));
-                            }
-                            // FIXME...  need to deal with other styles.
-                        }
-                    }
-                } catch (IllegalActionException ex) {
-                    // FIXME: How are errors reported in Vergil?
-                    System.out.println(ex.toString());
-                } catch (NameDuplicationException ex) {
-                    // FIXME: How are errors reported in Vergil?
-                    // NOTE: This error should not occur.
-                    System.out.println(ex.toString());
-                }
-		*/
 	    }
 	};
 	add(action, "Configure Parameters");
-
     }
 
     /** Add an action to this menu and return the menu item created.  If
@@ -225,9 +167,14 @@ public class BasicContextMenu extends JPopupMenu {
         return item;
     }
 
+    public Application getApplication() {
+	return _application;
+    }
+
     public NamedObj getTarget() {
 	return _target;
     }
 
-    final NamedObj _target;
+    final private Application _application;
+    final private NamedObj _target;
 }

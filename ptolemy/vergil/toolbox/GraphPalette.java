@@ -32,6 +32,7 @@ package ptolemy.vergil.toolbox;
 
 import ptolemy.kernel.*;
 import ptolemy.vergil.graph.*;
+import ptolemy.moml.Icon;
 import java.io.*;
 import java.awt.*;
 import java.awt.dnd.*;
@@ -75,9 +76,14 @@ public class GraphPalette extends JGraph {
 	makeDraggable(this);
     }
     
-    public void addNode(Object object, double x, double y) {
+    public void addNode(Icon object, double x, double y) {
         Node node = _controller._entityController.createNode(object);
 	_controller._entityController.addNode(node, x, y);
+    }
+    
+    public void addNode(Port object, double x, double y) {
+        Node node = _controller._portController.createNode(object);
+	_controller._portController.addNode(node, x, y);
     }
 
     public Node getDraggedNode() {
@@ -126,45 +132,36 @@ public class GraphPalette extends JGraph {
         }
     }
 
-    public class PaletteController extends GraphController {
+    public class PaletteController extends CompositeGraphController {
 	public PaletteController(GraphPalette palette) {
 	    _portController = new PortController(this);
 	    _entityController = new EntityController(this);
 	    DragInteractor di = new NodeDnDInteractor(palette);
 	    _entityController.setNodeInteractor(di);
+	    _portController.setNodeInteractor(di);
 	    di.setConsuming(false);
 	}
 
-        /** Add the node to this graph editor and render it
-         * at the given location.
-         */
-        public void addNode(Node node, double x, double y) {
-            _entityController.addNode(node, x, y);
-        }
-        
-        public void clearEdge(Edge edge) {
-            throw new GraphException("PaletteController does not allow edges");
-        }
-
-        public void clearNode(Node node) {
-            _entityController.clearNode(node);
-        }
-
-        public Figure drawEdge(Edge edge) {
-            throw new GraphException("PaletteController does not allow edges");
-        }
-
-        public Figure drawNode(Node node) {
-            return _entityController.drawNode(node);
-        }
-
-        public void removeEdge(Edge edge) {
-            throw new GraphException("PaletteController does not allow edges");
-        }
-
-        public void removeNode(Node node) {
-            _entityController.removeNode(node);
-        }
+	/**
+	 * Return the node controller appropriate for the given node.
+	 */
+	public NodeController getNodeController(Node node) {
+	    Object object = node.getSemanticObject();
+	    if(object instanceof ptolemy.moml.Icon) {
+		return _entityController;
+	    } else if(object instanceof Port) {
+		return _portController;
+	    } else
+		throw new RuntimeException(
+		  "Node with unknown semantic object: " + object);
+	}
+	
+	/**
+	 * Return the edge controller appropriate for the given node.
+	 */
+	public EdgeController getEdgeController(Edge edge) {
+	    return null;
+	}
 
 	/**
 	 * Initialize all interaction on the graph pane. This method

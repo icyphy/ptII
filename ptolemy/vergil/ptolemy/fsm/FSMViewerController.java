@@ -34,6 +34,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.vergil.*;
 import ptolemy.vergil.toolbox.BasicContextMenu;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
@@ -164,12 +165,12 @@ public class FSMViewerController extends CompositeGraphController {
 	    Graph graph = getGraph();
 	    CompositeEntity object =
 		(CompositeEntity) graph.getSemanticObject();
-	    return new Menu(object);
+	    return new Menu(VergilApplication.getInstance(), object);
 	}
 
         public class Menu extends BasicContextMenu {
-	    public Menu(CompositeEntity target) {
-		super(target);
+	    public Menu(Application application, CompositeEntity target) {
+		super(application, target);
 		//FIXME -- implement this.
 		JLabel domain = new JLabel("Domain");
 		add(domain);

@@ -41,6 +41,8 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 
+import diva.canvas.*;
+import diva.canvas.connector.*;
 import diva.graph.*;
 import diva.graph.layout.*;
 import diva.graph.model.*;
@@ -64,6 +66,7 @@ import java.awt.Container;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.*;
+import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -484,6 +487,121 @@ public class PtolemyPackage implements Module {
 	}
     }
 
+    // A class for properly doing the layout of the graphs we have
+    private class PtolemyLayout extends LevelLayout {
+	/**
+	 * Construct a new levelizing layout with a horizontal orientation.
+	 */
+	public PtolemyLayout() {
+	    super();
+	    setOrientation(LevelLayout.HORIZONTAL);
+	}
+	
+	/**
+	 * Construct a new levelizing layout with a vertical orientation
+	 * which uses the given graph implementation on which to perform
+	 * its layout, create dummy nodes, etc.
+	 */
+	public PtolemyLayout(GraphImpl impl) {
+	    super(impl);
+	}
+	
+	/**
+	 * Copy the given graph and make the nodes/edges in the copied
+	 * graph point to the nodes/edges in the original.
+	 */
+	protected Graph copyGraph(Graph origGraph, LayoutTarget target) {
+	    GraphImpl impl = getGraphImpl();
+	    Graph copyGraph = impl.createGraph(null);
+	    Hashtable map = new Hashtable();
+	    
+	    // Copy all the nodes for the graph.
+	    for(Iterator i = origGraph.nodes(); i.hasNext(); ) {
+		Node origNode = (Node)i.next();
+		if(target.isNodeVisible(origNode)) {
+		    Rectangle2D r = target.getBounds(origNode);
+		    LevelInfo inf = new LevelInfo();
+		    inf.origNode = origNode;
+		    inf.x = r.getX();
+		    inf.y = r.getY();
+		    inf.width = r.getWidth();
+		    inf.height = r.getHeight();
+		    Node copyNode = impl.createNode(inf);
+		    impl.addNode(copyNode, copyGraph);
+		    map.put(origNode, copyNode);
+		}
+	    }
+	    
+	    // Add all the edges.
+	    for(Iterator i = GraphUtilities.localEdges(origGraph); 
+		i.hasNext(); ) {
+		Edge origEdge = (Edge)i.next();
+		Node origTail = origEdge.getTail();
+		Node origHead = origEdge.getHead();
+		if(origHead != null && origTail != null) {
+		    Figure tailFigure = (Figure)origTail.getVisualObject();
+		    Figure headFigure = (Figure)origHead.getVisualObject();
+		    // Swap the head and the tail if it will improve the 
+		    // layout, since LevelLayout only uses directed edges.
+		    if(tailFigure instanceof Terminal) {
+			Terminal terminal = (Terminal)tailFigure;
+			Site site = terminal.getConnectSite();
+			if(site instanceof FixedNormalSite) {
+			    double normal = site.getNormal();
+			    int direction = 
+				CanvasUtilities.getDirection(normal);
+			    if(direction == SwingUtilities.WEST) {
+				Node temp = origTail;
+				origTail = origHead;
+				origHead = temp;
+			    }
+			}
+		    } else if(headFigure instanceof Terminal) {
+			Terminal terminal = (Terminal)headFigure;
+			Site site = terminal.getConnectSite();
+			if(site instanceof FixedNormalSite) {
+			    double normal = site.getNormal();
+			    int direction = 
+				CanvasUtilities.getDirection(normal);
+			    if(direction == SwingUtilities.EAST) {
+				Node temp = origTail;
+				origTail = origHead;
+				origHead = temp;
+			    }
+			}
+		    }
+
+		    origTail = _getParentInGraph(origGraph, origTail);
+		    origHead = _getParentInGraph(origGraph, origHead);
+		    Node copyTail = (Node)map.get(origTail);
+		    Node copyHead = (Node)map.get(origHead);
+		    if(copyHead != null && copyTail != null) {
+			Edge copyEdge = impl.createEdge(origEdge);
+			impl.setEdgeTail(copyEdge, copyTail);
+			impl.setEdgeHead(copyEdge, copyHead);
+		    }
+		}
+	    }
+	    return copyGraph;
+	}
+
+	// Unfortunately, the head and/or tail of the edge may not 
+	// be directly contained in the graph.  In this case, we need to
+	// figure out which of their parents IS in the graph 
+	// and calculate the cost of that instead.
+	private Node _getParentInGraph(Graph graph, Node node) {
+	    while(node != null && !graph.contains(node)) {
+		Graph parent = node.getParent();
+		if(parent instanceof Node) {
+		    node = (Node)parent;
+		} else {
+		    node = null;
+		}
+	    }
+	    return node;
+	}
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -522,8 +640,8 @@ public class PtolemyPackage implements Module {
 	    jgraph.getGraphPane().getGraphController();
         LayoutTarget target = new BasicLayoutTarget(controller);
         Graph graph = controller.getGraph();
-        GlobalLayout layout = new GridAnnealingLayout();
-
+        PtolemyLayout layout = new PtolemyLayout(); //GridAnnealingLayout();
+	layout.setOrientation(LevelLayout.HORIZONTAL);
         // Perform the layout and repaint
         try {
             layout.layout(target, graph);

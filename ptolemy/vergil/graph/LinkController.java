@@ -36,6 +36,8 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
+import ptolemy.vergil.*;
+import ptolemy.vergil.toolbox.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
@@ -85,16 +87,15 @@ public class LinkController extends EdgeController {
 	ConnectorManipulator manipulator = (ConnectorManipulator)
 	    selectionRenderer.getDecorator();
 	manipulator.setConnectorTarget(ct);
-	//	    manipulator.addConnectorListener(new EdgeDropper());
+	
+	//manipulator.addConnectorListener(new EdgeDropper());
 	//getEdgeInteractor().setPrototypeDecorator(manipulator);
 
 	//    MouseFilter handleFilter = new MouseFilter(1, 0, 0);
 	//manipulator.setHandleFilter(handleFilter);
 
-	// FIXME links should have context menus as well
-	//	    EdgeInteractor interactor =
-	//(EdgeInteractor)getEdgeInteractor();
-	//new MenuCreator(interactor);
+	_menuCreator = new MenuCreator(new LinkContextMenuFactory());
+	interactor.addInteractor(_menuCreator);
     }
 
     public class LinkTarget extends PerimeterTarget {
@@ -119,6 +120,37 @@ public class LinkController extends EdgeController {
         }
     }
 
+    /**
+     * The factory for creating context menus on relations
+     */
+    public static class LinkContextMenuFactory 
+	extends RelationController.RelationContextMenuFactory {
+	public JPopupMenu create(Figure source) {
+	    Edge edge = (Edge) source.getUserObject();
+	    Relation relation = (Relation)edge.getSemanticObject();
+	    if(relation == null) {
+		Node node = edge.getHead();
+		Object object = node.getSemanticObject();
+		if(!(object instanceof Vertex)) {
+		    node = edge.getTail();
+		    object = node.getSemanticObject();
+		}
+		if(object != null && object instanceof Vertex) {
+		    Vertex vertex = (Vertex) object;
+		    relation = (Relation)vertex.getContainer();
+		}
+	    }
+	    return new Menu(VergilApplication.getInstance(), relation);
+	}
+
+
+	public class Menu extends BasicContextMenu {
+	    public Menu(Application application, NamedObj target) {
+		super(application, target);		
+	    }
+	}
+    }
+
     public class LinkRenderer implements EdgeRenderer {
 	/**
          * Render a visual representation of the given edge.
@@ -130,4 +162,5 @@ public class LinkController extends EdgeController {
             return c;
         }
     }
+    private MenuCreator _menuCreator;
 }

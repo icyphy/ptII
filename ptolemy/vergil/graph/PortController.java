@@ -46,9 +46,11 @@ import diva.canvas.interactor.*;
 import diva.canvas.toolbox.*;
 import java.awt.geom.Rectangle2D;
 import diva.util.Filter;
+import diva.util.java2d.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
+import java.awt.geom.*;
 import java.util.HashMap;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -76,13 +78,40 @@ public class PortController extends NodeController {
 	SelectionModel sm = controller.getSelectionModel();
 	NodeInteractor interactor = new NodeInteractor(sm);
 	setNodeInteractor(interactor);
+	_menuCreator = new MenuCreator(
+	    new EntityPortController.PortContextMenuFactory());
+	interactor.addInteractor(_menuCreator);
     }
-
 
     public class PortRenderer implements NodeRenderer {
 	public Figure render(Node n) {
-	    Figure figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
+            Port port = (Port) n.getSemanticObject();
+
+	    Polygon2D.Double polygon = new Polygon2D.Double();
+	    polygon.moveTo(-6, 6);
+	    polygon.lineTo(0, 6);
+	    polygon.lineTo(8, 0);
+	    polygon.lineTo(0, -6);
+	    polygon.lineTo(-6, -6);
+	    polygon.closePath();
+	    Figure figure = new BasicFigure(polygon, Color.black);
+
+	   // Note that these are reversed from the normals that are
+	    // set when a port is in an entity.
+	    int direction = SwingConstants.NORTH;	    
+	    if(port instanceof IOPort) {
+		IOPort ioport = (IOPort) port;
+		if(ioport.isInput()) direction = SwingConstants.EAST;
+		if(ioport.isOutput()) direction = SwingConstants.WEST;
+	    }
+		
+	    double normal = CanvasUtilities.getNormal(direction);	    
+	    Site tsite = new PerimeterSite(figure, 0);
+	    tsite.setNormal(normal);
+	    tsite = new FixedNormalSite(tsite);
+	    figure = new TerminalFigure(figure, tsite);
 	    return figure;
 	}
     }
+    private MenuCreator _menuCreator;
 }

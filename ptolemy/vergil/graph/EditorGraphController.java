@@ -82,34 +82,6 @@ public class EditorGraphController extends ViewerGraphController {
 	super();
     }
 
-    /** Add an edge to this graph editor and render it
-     * from the given tail node to the given head node.  This edge is
-     * anchored to it's head and tail node, and does not have a regular edge
-     * interactor.
-
-     public void addAnchoredEdge(Edge edge, Node head, Node tail,
-     double x, double y) {
-     Figure hf = (Figure) head.getVisualObject();
-     Figure tf = (Figure) tail.getVisualObject();
-     FigureLayer layer = getGraphPane().getForegroundLayer();
-     Site headSite, tailSite;
-
-     tailSite = getConnectorTarget().getTailSite(tf, x, y);
-     getGraphImpl().setEdgeTail(edge, tail);
-     headSite = getConnectorTarget().getHeadSite(hf, x, y);
-     getGraphImpl().setEdgeHead(edge, head);
-
-     Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
-
-     // Add to the view
-     ef.setUserObject(edge);
-     edge.setVisualObject(ef);
-     layer.add(ef);
-
-     ef.route();
-     }
-    */
-
     /**
      * Initialize all interaction on the graph pane. This method
      * is called by the setGraphPane() method of the superclass.

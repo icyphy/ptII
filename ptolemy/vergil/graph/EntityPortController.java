@@ -33,6 +33,7 @@ package ptolemy.vergil.graph;
 import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.vergil.*;
 import ptolemy.vergil.toolbox.BasicContextMenu;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
@@ -91,35 +92,33 @@ public class EntityPortController extends NodeController {
             double fraction) {
         // Create a figure for it
 	//System.out.println("adding port");
-	Figure nf = getNodeRenderer().render(node);
+	Figure figure = getNodeRenderer().render(node);
 	double normal = CanvasUtilities.getNormal(direction);
 	
-	Site tsite = new PerimeterSite(nf, 0);
+	Site tsite = new PerimeterSite(figure, 0);
 	tsite.setNormal(normal);
 	tsite = new FixedNormalSite(tsite);
-	nf = new TerminalFigure(nf, tsite);
+	figure = new TerminalFigure(figure, tsite);
 
-        nf.setInteractor(getNodeInteractor());
-        nf.setUserObject(node);
-        node.setVisualObject(nf);
+        figure.setInteractor(getNodeInteractor());
+        figure.setUserObject(node);
+        node.setVisualObject(figure);
         CompositeFigure parentFigure =
 	    (CompositeFigure)parentNode.getVisualObject();
 	BoundsSite site =
 	    new BoundsSite(parentFigure.getBackgroundFigure(), 0,
                     direction, fraction);
 
-	nf.translate(site.getX() -
+	figure.translate(site.getX() -
                 parentFigure.getBackgroundFigure().getBounds().getX(),
                 site.getY() -
                 parentFigure.getBackgroundFigure().getBounds().getY());
 
-	parentFigure.add(nf);
+	parentFigure.add(figure);
     }
 
     public class EntityPortRenderer implements NodeRenderer {
 	public Figure render(Node n) {
-            Port port = (Port) n.getSemanticObject();
-
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(-4, 4);
 	    polygon.lineTo(4, 0);
@@ -133,16 +132,16 @@ public class EntityPortController extends NodeController {
     /**
      * The factory for creating context menus on entities.
      */
-    public class PortContextMenuFactory extends MenuFactory {
+    public static class PortContextMenuFactory extends MenuFactory {
 	public JPopupMenu create(Figure source) {
 	    Node sourcenode = (Node) source.getUserObject();
 	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
-	    return new Menu(object);
+	    return new Menu(VergilApplication.getInstance(), object);
 	}
 
 	public class Menu extends BasicContextMenu {
-	    public Menu(NamedObj target) {
-		super(target);
+	    public Menu(Application application, NamedObj target) {
+		super(application, target);
 		if(target instanceof IOPort) {
 		    IOPort port = (IOPort)target;
 		    JCheckBox checkBox;
@@ -154,18 +153,6 @@ public class EntityPortController extends NodeController {
 		    add(checkBox);
 		}
 	    }
-	}
-    }
-
-    /** A site decorator that disallows changing the normal
-     */
-    public class FixedNormalSite extends SiteDecorator {
-	public FixedNormalSite(Site site) {
-	    super(site);
-	}
-
-	public void setNormal(double normal) {
-	    // Do nothing
 	}
     }
 

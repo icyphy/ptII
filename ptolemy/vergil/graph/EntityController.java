@@ -33,6 +33,7 @@ package ptolemy.vergil.graph;
 import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.vergil.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
@@ -51,6 +52,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
 import java.util.*;
 import java.net.URL;
+import javax.swing.Action;
+import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.event.*;
@@ -194,17 +197,32 @@ public class EntityController extends LocatableNodeController {
     /**
      * The factory for creating context menus on entities.
      */
-    public class EntityContextMenuFactory extends MenuFactory {
+    public static class EntityContextMenuFactory extends MenuFactory {
 	public JPopupMenu create(Figure source) {
 	    Node sourcenode = (Node) source.getUserObject();
 	    Icon icon = (Icon)sourcenode.getSemanticObject();
 	    NamedObj object = (NamedObj) icon.getContainer();
-	    return new Menu(object);
+	    return new Menu(VergilApplication.getInstance(), object);
 	}
 
 	public class Menu extends BasicContextMenu {
-	    public Menu(NamedObj target) {
-		super(target);
+	    public Menu(Application application, NamedObj target) {
+		super(application, target);		
+	
+		if(target instanceof CompositeEntity) {
+		    Action action;
+		    final CompositeEntity entity = (CompositeEntity)target;
+		    action = new AbstractAction("Look Inside") {
+			public void actionPerformed(ActionEvent e) {
+			    Application app = getApplication();
+			    PtolemyDocument doc = new PtolemyDocument(app);
+			    doc.setModel(entity);
+			    app.addDocument(doc);
+			    app.displayDocument(doc);
+			    app.setCurrentDocument(doc);}
+		    };
+		    add(action, "Look Inside");
+		}
 	    }
 	}
     }

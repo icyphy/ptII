@@ -108,10 +108,6 @@ public class PtolemyDocument extends AbstractDocument
                 KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
         jgraph.setRequestFocusEnabled(true);
-	// remove all the current subviews.
-	//	_subViews.clear();
-	// add the new view.
-	//_subViews.
 	return jgraph;
     }
 
@@ -130,7 +126,7 @@ public class PtolemyDocument extends AbstractDocument
     public void open() throws Exception {
         if (getFile() == null) {
             throw new IllegalStateException(
-                    "PtolemyDocument " + getTitle() + " has no current file");
+	        "PtolemyDocument " + getTitle() + " has no current file");
         }
         String filename = getFile().getAbsolutePath();
 	URL schematicURL = new URL("file", null, filename);

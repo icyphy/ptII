@@ -36,6 +36,9 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
+import ptolemy.vergil.*;
+import ptolemy.vergil.graph.*;
+import ptolemy.vergil.toolbox.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*;
@@ -47,7 +50,6 @@ import diva.canvas.interactor.*;
 import diva.canvas.toolbox.*;
 import java.awt.geom.Rectangle2D;
 import diva.util.Filter;
-import java.awt.*;
 import diva.util.java2d.Polygon2D;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
@@ -56,6 +58,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.net.URL;
 
+import javax.swing.JPopupMenu;
 import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -91,10 +94,8 @@ public class FSMTransitionController extends EdgeController {
 	//    MouseFilter handleFilter = new MouseFilter(1, 0, 0);
 	//manipulator.setHandleFilter(handleFilter);
 
-	// FIXME links should have context menus as well
-	//	    EdgeInteractor interactor =
-	//(EdgeInteractor)getEdgeInteractor();
-	//new MenuCreator(interactor);
+	_menuCreator = new MenuCreator(new LinkContextMenuFactory());
+	interactor.addInteractor(_menuCreator);
     }
 
     public class LinkTarget extends PerimeterTarget {
@@ -119,6 +120,25 @@ public class FSMTransitionController extends EdgeController {
         }
     }
 
+    /**
+     * The factory for creating context menus on relations
+     */
+    public static class LinkContextMenuFactory 
+	extends RelationController.RelationContextMenuFactory {
+	public JPopupMenu create(Figure source) {
+	    Edge edge = (Edge) source.getUserObject();
+	    Relation relation = (Relation)edge.getSemanticObject();
+	    return new Menu(VergilApplication.getInstance(), relation);
+	}
+
+
+	public class Menu extends BasicContextMenu {
+	    public Menu(Application application, NamedObj target) {
+		super(application, target);		
+	    }
+	}
+    }
+
     public class LinkRenderer implements EdgeRenderer {
 	/**
          * Render a visual representation of the given edge.
@@ -131,4 +151,5 @@ public class FSMTransitionController extends EdgeController {
             return c;
         }
     }
+    private MenuCreator _menuCreator;
 }

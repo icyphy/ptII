@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.*;
 import ptolemy.moml.Icon;
 import ptolemy.vergil.toolbox.*;
 
@@ -107,13 +108,13 @@ public class EditorDropTarget extends DropTarget {
          * graph editor.
          */
         public void drop(DropTargetDropEvent dtde) {
-            CompositeNode data = null;
+            Node data = null;
 
             if(dtde.isDataFlavorSupported(GraphPalette.nodeFlavor)) {
                 try {
 		    // System.out.println(GraphPalette.nodeFlavor);
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-		    data = (CompositeNode)dtde.getTransferable().
+		    data = (Node)dtde.getTransferable().
 			getTransferData(GraphPalette.nodeFlavor);
 		    // System.out.println("Data is [" + data + "]");//DEBUG
                 }
@@ -134,24 +135,38 @@ public class EditorDropTarget extends DropTarget {
                 Point p = dtde.getLocation();
                 GraphController gc =
 		    ((JGraph)getComponent()).getGraphPane().getGraphController();
-		Icon sourceIcon = (Icon) data.getSemanticObject();
-                NamedObj sourceEntity = (NamedObj) sourceIcon.getContainer();
-                Graph graph;
-
-                try {
-                    // Figure out where this is going, so we can clone into
-                    // the right workspace.
-                    graph = gc.getGraph();
-                    NamedObj container = (NamedObj) graph.getSemanticObject();
-                    // Create the new node
-                    NamedObj entity = (NamedObj) sourceEntity.clone(
-                            container.workspace());
-		    Icon icon = (Icon) entity.getAttribute("_icon");
-                    // FIXME it would be nice if this was not editor specific.
-                    entity.setName(container.uniqueName(
-                            sourceEntity.getName()));  
-                    Node node = gc.getGraphImpl().createCompositeNode(icon);
-                    gc.addNode(node, p.x, p.y);
+		Object object = (Object) data.getSemanticObject();
+		// Figure out where this is going, so we can clone into
+		// the right workspace.
+		Graph graph = gc.getGraph();
+		NamedObj container = (NamedObj) graph.getSemanticObject();
+		try {
+		    Node newNode = null;
+		    if(object instanceof Icon) {
+			Icon sourceIcon = (Icon) object;
+			NamedObj sourceEntity = 
+			    (NamedObj) sourceIcon.getContainer();
+			// Create the new node
+			NamedObj entity = (NamedObj) sourceEntity.clone(
+				container.workspace());
+			// FIXME get by class.
+			Icon icon = (Icon) entity.getAttribute("_icon");
+			// FIXME it would be nice if this was 
+			// not editor specific.
+			entity.setName(container.uniqueName(
+			    sourceEntity.getName()));  
+		        newNode = 
+			    gc.getGraphImpl().createCompositeNode(icon);
+		    } else if(object instanceof Port) {
+			Port sourcePort = (Port) object;
+			Port port = 
+			    (Port)sourcePort.clone(container.workspace());
+			port.setName(container.uniqueName(
+			    sourcePort.getName()));
+			newNode =
+			    gc.getGraphImpl().createNode(port);
+		    }
+		    gc.addNode(newNode, p.x, p.y);
 		}
                 catch (Exception ex) {
                     ex.printStackTrace();

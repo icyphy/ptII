@@ -1,4 +1,4 @@
-/* The ptolemy schematic editor.
+/* A user interface application for component-based design.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -72,8 +72,11 @@ be used with other tools as well.  The features of Vergil include:
 <p>
 This class is associated with a desktop frame.  This frame contains a palette
 into which packages can place design libraries.  The frame also inherits
-improved support for multiple documents, a toolbar, status bar and progress bar
-from the Diva desktop frame.
+improved support for multiple documents, a toolbar, status bar and
+progress bar from the Diva desktop frame.
+<p>
+Only a singleton instance of this class ever exists, which is created by 
+the static main method.
 
 @author Steve Neuendorffer
 @contributor John Reekie
@@ -195,9 +198,18 @@ public class VergilApplication extends MDIApplication {
      */
     public void createTreeNodes(JTreePane pane,
             String parent, CompositeEntity library) {
-        Iterator entities = library.entityList().iterator();
         int i = 0;
-        while(entities.hasNext()) {
+	Iterator ports = library.portList().iterator();
+	while(ports.hasNext()) {
+	    Port port = (Port)ports.next();
+	    GraphPalette palette = (GraphPalette)
+		pane.getComponentAt(library.getFullName());
+	    palette.addNode(port,
+			    60, 50 + (i++) * 50);
+	}
+	    
+        Iterator entities = library.entityList().iterator();
+	while(entities.hasNext()) {
             Entity entity = (Entity)entities.next();
             if(!(entity instanceof CompositeEntity)) {
 		GraphPalette palette = (GraphPalette)
@@ -259,6 +271,14 @@ public class VergilApplication extends MDIApplication {
     }
 
     /** 
+     * Return the instance of this class that makes up the
+     * application.
+     */
+    public static VergilApplication getInstance() {
+	return _instance;
+    }
+
+    /** 
      * Get the title of this application.  This class returns
      * the string "Vergil", although subclasses may override this.
      */
@@ -272,8 +292,8 @@ public class VergilApplication extends MDIApplication {
      * interface which will remain after this method returns.
      */
     public static void main(String argv[]) {
-        VergilApplication application = new VergilApplication();
-        application.setVisible(true);
+        _instance = new VergilApplication();
+        _instance.setVisible(true);
     }
 
    /** 
@@ -455,6 +475,9 @@ public class VergilApplication extends MDIApplication {
 
     // The File->New menu.  Each document factory will appear in this menu.
     private JMenu _fileNewMenu = new JMenu("New");
+
+    // The instance of this application.
+    private static VergilApplication _instance = null;
 }
 
 

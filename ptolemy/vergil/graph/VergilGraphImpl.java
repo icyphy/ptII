@@ -88,54 +88,6 @@ public class VergilGraphImpl extends BasicGraphImpl {
     }
 
     /**
-     * Remove a node from the graph that contains it.
-     */
-    public void removeNode(Node n) {
-        super.removeNode(n);
-	NamedObj object = (NamedObj)n.getSemanticObject();
-	if((object == null))
-	    return;
-	if(object instanceof Port) {
-	    Port port = (Port)object;
-	    try {
-                port.unlinkAll();
-		port.setContainer(null);
-	    } catch (Exception ex) {
-		ex.printStackTrace();
-		throw new GraphException(ex.getMessage());
-	    }
-	} else if(object instanceof Icon) {
-	    Icon icon = (Icon)object;
-	    ComponentEntity entity = (ComponentEntity)icon.getContainer();
-	    try {
-                Iterator ports = entity.portList().iterator();
-                while(ports.hasNext()) {
-                    Port port = (Port) ports.next();
-                    port.unlinkAll();
-                }
-		entity.setContainer(null);
-	    } catch (Exception ex) {
-		ex.printStackTrace();
-		throw new GraphException(ex.getMessage());
-	    }
-	} else if(object instanceof Vertex) {
-            Vertex vertex = (Vertex) object;
-            ComponentRelation relation =
-                (ComponentRelation)vertex.getContainer();
-	    try {
-                relation.unlinkAll();
-		relation.setContainer(null);
-            } catch (Exception ex) {
-		ex.printStackTrace();
-		throw new GraphException(ex.getMessage());
-	    }
-	} else {
-            throw new GraphException("removing unknown object:" + object);
-        }
-    }
-
-
-    /**
      * Return a new instance of a BasicCompositeNode with the given
      * semantic object.
      */
@@ -183,6 +135,12 @@ public class VergilGraphImpl extends BasicGraphImpl {
 		    }
 		}
 		addNode(createCompositeNode(icon), g);
+	    }
+
+	    Iterator ports = toplevel.portList().iterator();
+	    while(ports.hasNext()) {
+		Port port = (Port)ports.next();
+		addNode(createNode(port), g);
 	    }
 
 	    Iterator relations = toplevel.relationList().iterator();
@@ -251,6 +209,53 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    }
 	}
         return g;
+    }
+
+    /**
+     * Remove a node from the graph that contains it.
+     */
+    public void removeNode(Node n) {
+        super.removeNode(n);
+	NamedObj object = (NamedObj)n.getSemanticObject();
+	if((object == null))
+	    return;
+	if(object instanceof Port) {
+	    Port port = (Port)object;
+	    try {
+                port.unlinkAll();
+		port.setContainer(null);
+	    } catch (Exception ex) {
+		ex.printStackTrace();
+		throw new GraphException(ex.getMessage());
+	    }
+	} else if(object instanceof Icon) {
+	    Icon icon = (Icon)object;
+	    ComponentEntity entity = (ComponentEntity)icon.getContainer();
+	    try {
+                Iterator ports = entity.portList().iterator();
+                while(ports.hasNext()) {
+                    Port port = (Port) ports.next();
+                    port.unlinkAll();
+                }
+		entity.setContainer(null);
+	    } catch (Exception ex) {
+		ex.printStackTrace();
+		throw new GraphException(ex.getMessage());
+	    }
+	} else if(object instanceof Vertex) {
+            Vertex vertex = (Vertex) object;
+            ComponentRelation relation =
+                (ComponentRelation)vertex.getContainer();
+	    try {
+                relation.unlinkAll();
+		relation.setContainer(null);
+            } catch (Exception ex) {
+		ex.printStackTrace();
+		throw new GraphException(ex.getMessage());
+	    }
+	} else {
+            throw new GraphException("removing unknown object:" + object);
+        }
     }
 
     /**
