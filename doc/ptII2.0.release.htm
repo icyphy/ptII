@@ -699,10 +699,14 @@ ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
 <li> The Using Vergil html file has some bogus characters in it, and
 the internal hyperlinks refer to usingVergil.html instead of index.htm
 
-<li> <code>vergil foo</code> hangs.  No window comes up if foo does not exist.
-
 <li> The documentation for custom actors used in demonstrations is not
 included in the release.
+
+<li> If a URL ends with <CODE>#in_browser</CODE>, then
+Ptolemy II will invoke the User's web browser.  Unfortunately, this
+does not always work, especially under Windows if Netscape is already
+running.  The workaround is to exit Netscape and let Ptolemy II
+start up Netscape for you.
 
 
 <li> Applet issues:
@@ -715,10 +719,8 @@ included in the release.
 		<li> Giotto applets
 		<li> SDF Expression, FixPoint, LMSAdaptive, MaximumEntropy
 		</ul>
-
-
-<li> The DDE Zeno demo produces an error message in the Java Plug-in console
-window:
+	<li> The DDE Zeno demo produces an error message in the Java Plug-in
+	console window:
 <pre>
 java.lang.IllegalArgumentException: LowerJoin - Attempt to set current time
 	      to the past; time = 50.001. The _lastTime was 54.0
@@ -731,8 +733,8 @@ java.lang.IllegalArgumentException: LowerJoin - Attempt to set current time
 ptolemy.actor.Manager run(): elapsed time: 23004 ms
 </pre>
 
-<li> Running the Networked demo via an applet on the local
-file system results in an AccessControlException.
+	<li> Running the Networked demo via an applet on the local
+	file system results in an AccessControlException.
 <pre>
 com.microstar.xml.XmlException: XML element "entity" triggers exception:
   java.lang.Exception: Attempted to lookup 'Waveform', but got: 
@@ -763,8 +765,11 @@ not on the local file system, so we get a SecurityException.
 
 <li> Web Start issues:
 	<ul>
-	<li> Invoking a pdf file or the code generator brings up a blank
-	 window.
+
+	<li> Viewing a pdf file may bring up a blank window along with
+	the pdf file.  Running the code generator may bring up
+	a blank window while the java or javac processes are running.
+
 	<li> Web Start is limited to about 65Mb of memory
 	 <br>If you try to run all the demos, then eventually you may
 	see the following in the Web Start console
