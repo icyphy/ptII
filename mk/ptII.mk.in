@@ -166,7 +166,7 @@ JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-j
 MATLAB_DIR = 	@MATLAB_DIR@
 
 # Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
-PTCC =	$(PTCC)
+PTCC =	@PTCC@
 
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
