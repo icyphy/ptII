@@ -123,7 +123,7 @@ detector and executes Ptolemy demos.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 75.0">
         </property>
     </property>
-    <entity name="Controller" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="Controller" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -134,7 +134,7 @@ detector and executes Ptolemy demos.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -144,27 +144,27 @@ detector and executes Ptolemy demos.</text></svg></configure>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
-        <port name="on" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="on" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
-        <port name="off" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="off" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
-        <port name="motion" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="motion" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
-        <port name="idle" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="idle" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="isOff">
             </property>
             <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
@@ -201,22 +201,22 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 230.0">
                 </property>
             </property>
-            <port name="on" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="on" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 85.0">
                 </property>
             </port>
-            <port name="off" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="off" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 130.0">
                 </property>
             </port>
-            <port name="motion" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="motion" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 175.0">
                 </property>
             </port>
-            <port name="idle" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="idle" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 220.0">
                 </property>
@@ -356,7 +356,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <link port="running.incomingPort" relation="relation5"/>
             <link port="running.outgoingPort" relation="relation2"/>
         </entity>
-        <entity name="running" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="running" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 518}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -366,22 +366,22 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
                 </property>
             </property>
-            <port name="on" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="on" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 120.0">
                 </property>
             </port>
-            <port name="off" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="off" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 180.0">
                 </property>
             </port>
-            <port name="motion" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="motion" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 245.0">
                 </property>
             </port>
-            <port name="idle" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="idle" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 305.0">
                 </property>
@@ -451,7 +451,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
             </entity>
         </entity>
-        <entity name="turnOff" class="ptolemy.vergil.fsm.modal.TransitionRefinement">
+        <entity name="turnOff" class="ptolemy.domains.fsm.modal.TransitionRefinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -468,22 +468,22 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <port name="on" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="on" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 110.0">
                 </property>
             </port>
-            <port name="off" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="off" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 190.0">
                 </property>
             </port>
-            <port name="motion" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="motion" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 270.0">
                 </property>
             </port>
-            <port name="idle" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="idle" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 350.0">
                 </property>
@@ -586,7 +586,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <link port="Middle Spotlight.off" relation="relation"/>
             <link port="Side Lights.off" relation="relation"/>
         </entity>
-        <entity name="toStandby" class="ptolemy.vergil.fsm.modal.TransitionRefinement">
+        <entity name="toStandby" class="ptolemy.domains.fsm.modal.TransitionRefinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -603,22 +603,22 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <port name="on" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="on" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 110.0">
                 </property>
             </port>
-            <port name="off" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="off" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 190.0">
                 </property>
             </port>
-            <port name="motion" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="motion" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 270.0">
                 </property>
             </port>
-            <port name="idle" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="idle" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 350.0">
                 </property>
@@ -742,7 +742,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <link port="Middle Spotlight.on" relation="relation"/>
             <link port="Side Lights.off" relation="relation2"/>
         </entity>
-        <entity name="toDemo" class="ptolemy.vergil.fsm.modal.TransitionRefinement">
+        <entity name="toDemo" class="ptolemy.domains.fsm.modal.TransitionRefinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -759,22 +759,22 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <port name="on" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="on" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 95.0">
                 </property>
             </port>
-            <port name="off" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="off" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 175.0">
                 </property>
             </port>
-            <port name="motion" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="motion" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 255.0">
                 </property>
             </port>
-            <port name="idle" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
+            <port name="idle" class="ptolemy.domains.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 335.0">
                 </property>

@@ -628,36 +628,36 @@ of following the LeadingPlatoon.</text></svg></configure>
             <link port="Limiter.input" relation="relation"/>
             <link port="Limiter.output" relation="relation2"/>
         </entity>
-        <entity name="controller" class="ptolemy.vergil.fsm.modal.ModalModel">
+        <entity name="controller" class="ptolemy.domains.fsm.modal.ModalModel">
             <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
                 <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
                 </property>
             </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="209.0, 110.0">
             </property>
-            <port name="vel" class="ptolemy.vergil.fsm.modal.ModalPort">
+            <port name="vel" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="input"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
             </port>
-            <port name="dist" class="ptolemy.vergil.fsm.modal.ModalPort">
+            <port name="dist" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="input"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
             </port>
-            <port name="otherVel" class="ptolemy.vergil.fsm.modal.ModalPort">
+            <port name="otherVel" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="input"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
             </port>
-            <port name="acc" class="ptolemy.vergil.fsm.modal.ModalPort">
+            <port name="acc" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
             </port>
-            <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+            <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
                 <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="optimum">
                 </property>
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -671,22 +671,22 @@ of following the LeadingPlatoon.</text></svg></configure>
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
                 </property>
-                <port name="vel" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="vel" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 305.0">
                     </property>
                 </port>
-                <port name="dist" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="dist" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 145.0">
                     </property>
                 </port>
-                <port name="otherVel" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="otherVel" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 230.0">
                     </property>
                 </port>
-                <port name="acc" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="acc" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 180.0">
@@ -761,7 +761,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                 <link port="optimum.incomingPort" relation="relation2"/>
                 <link port="optimum.outgoingPort" relation="relation"/>
             </entity>
-            <entity name="optimum" class="ptolemy.vergil.fsm.modal.Refinement">
+            <entity name="optimum" class="ptolemy.domains.fsm.modal.Refinement">
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
@@ -812,22 +812,22 @@ of following the LeadingPlatoon.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 50.0">
                     </property>
                 </property>
-                <port name="vel" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="vel" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 140.0">
                     </property>
                 </port>
-                <port name="dist" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="dist" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 280.0">
                     </property>
                 </port>
-                <port name="otherVel" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="otherVel" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 80.0">
                     </property>
                 </port>
-                <port name="acc" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="acc" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 240.0">
                     </property>
@@ -1007,7 +1007,7 @@ of following the LeadingPlatoon.</text></svg></configure>
                 <link port="Scale4.input" relation="relation4"/>
                 <link port="Scale4.output" relation="relation6"/>
             </entity>
-            <entity name="previous" class="ptolemy.vergil.fsm.modal.Refinement">
+            <entity name="previous" class="ptolemy.domains.fsm.modal.Refinement">
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[598, 400]">
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[238, 198]">
@@ -1058,22 +1058,22 @@ of following the LeadingPlatoon.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 50.0">
                     </property>
                 </property>
-                <port name="vel" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="vel" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 145.0">
                     </property>
                 </port>
-                <port name="dist" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="dist" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 280.0">
                     </property>
                 </port>
-                <port name="otherVel" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="otherVel" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 80.0">
                     </property>
                 </port>
-                <port name="acc" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="acc" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 240.0">
                     </property>

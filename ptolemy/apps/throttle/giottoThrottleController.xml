@@ -783,22 +783,22 @@ the drivers for the pulse-width modulated (pwm) actuators.
                         <property name="output"/>
                     </port>
                 </entity>
-                <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
+                <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
                     <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
                         <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
                         </property>
                     </property>
-                    <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+                    <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 220.0">
                     </property>
-                    <port name="difference" class="ptolemy.vergil.fsm.modal.ModalPort">
+                    <port name="difference" class="ptolemy.domains.fsm.modal.ModalPort">
                         <property name="input"/>
                     </port>
-                    <port name="pwm_signal" class="ptolemy.vergil.fsm.modal.ModalPort">
+                    <port name="pwm_signal" class="ptolemy.domains.fsm.modal.ModalPort">
                         <property name="output"/>
                     </port>
-                    <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+                    <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
                         <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="start">
                         </property>
                         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -812,12 +812,12 @@ the drivers for the pulse-width modulated (pwm) actuators.
                         </property>
                         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[50, 25]">
                         </property>
-                        <port name="difference" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                        <port name="difference" class="ptolemy.domains.fsm.modal.RefinementPort">
                             <property name="input"/>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 310.0">
                             </property>
                         </port>
-                        <port name="pwm_signal" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                        <port name="pwm_signal" class="ptolemy.domains.fsm.modal.RefinementPort">
                             <property name="input"/>
                             <property name="output"/>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="645.0, 305.0">
@@ -1232,30 +1232,30 @@ implemented in a single Giotto task.</text></svg></configure>
                         <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                     </port>
-                    <entity name="modal_controller" class="ptolemy.vergil.fsm.modal.ModalModel">
+                    <entity name="modal_controller" class="ptolemy.domains.fsm.modal.ModalModel">
                         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
                             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
                             </property>
                         </property>
-                        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+                        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 250.0">
                         </property>
-                        <port name="throttle_positions" class="ptolemy.vergil.fsm.modal.ModalPort">
+                        <port name="throttle_positions" class="ptolemy.domains.fsm.modal.ModalPort">
                             <property name="input"/>
                         </port>
-                        <port name="desired_throttle_position" class="ptolemy.vergil.fsm.modal.ModalPort">
+                        <port name="desired_throttle_position" class="ptolemy.domains.fsm.modal.ModalPort">
                             <property name="input"/>
                         </port>
-                        <port name="current" class="ptolemy.vergil.fsm.modal.ModalPort">
+                        <port name="current" class="ptolemy.domains.fsm.modal.ModalPort">
                             <property name="output"/>
                         </port>
-                        <port name="mode" class="ptolemy.vergil.fsm.modal.ModalPort">
+                        <port name="mode" class="ptolemy.domains.fsm.modal.ModalPort">
                             <property name="input"/>
                             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                             </property>
                         </port>
-                        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+                        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
                             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
                             </property>
                             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -1282,17 +1282,17 @@ implemented in a single Giotto task.</text></svg></configure>
                             </property>
                             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
                             </property>
-                            <port name="throttle_positions" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="throttle_positions" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 155.0">
                                 </property>
                             </port>
-                            <port name="desired_throttle_position" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="desired_throttle_position" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 240.0">
                                 </property>
                             </port>
-                            <port name="servo_control_output" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="servo_control_output" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="output"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 140.0">
@@ -1300,7 +1300,7 @@ implemented in a single Giotto task.</text></svg></configure>
                                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                                 </property>
                             </port>
-                            <port name="mode" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="mode" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="49.0, 325.0">
                                 </property>
@@ -1408,7 +1408,7 @@ implemented in a single Giotto task.</text></svg></configure>
                             <link port="limp_home.outgoingPort" relation="relation3"/>
                             <link port="init.outgoingPort" relation="relation4"/>
                         </entity>
-                        <entity name="driver" class="ptolemy.vergil.fsm.modal.Refinement">
+                        <entity name="driver" class="ptolemy.domains.fsm.modal.Refinement">
                             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                             </property>
                             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
@@ -1423,21 +1423,21 @@ implemented in a single Giotto task.</text></svg></configure>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="98.0, 48.5">
                                 </property>
                             </property>
-                            <port name="throttle_positions" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="throttle_positions" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="108.0, 114.0">
                                 </property>
                                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
                             </port>
-                            <port name="desired_throttle_position" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="desired_throttle_position" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="128.0, 254.0">
                                 </property>
                                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
                             </port>
-                            <port name="current" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="current" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="output"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="416.5, 300.0">
                                 </property>
@@ -1446,7 +1446,7 @@ implemented in a single Giotto task.</text></svg></configure>
                                 <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                                 </property>
                             </port>
-                            <port name="mode" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="mode" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="74.0, 325.0">
                                 </property>
@@ -2330,7 +2330,7 @@ implemented in a single Giotto task.</text></svg></configure>
                             <link port="AddSubtract.minus" relation="relation7"/>
                             <link port="AddSubtract.output" relation="relation8"/>
                         </entity>
-                        <entity name="limp_home" class="ptolemy.vergil.fsm.modal.Refinement">
+                        <entity name="limp_home" class="ptolemy.domains.fsm.modal.Refinement">
                             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                             </property>
                             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[52, 199]">
@@ -2345,21 +2345,21 @@ implemented in a single Giotto task.</text></svg></configure>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="98.0, 48.5">
                                 </property>
                             </property>
-                            <port name="throttle_positions" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="throttle_positions" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 105.0">
                                 </property>
                                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
                             </port>
-                            <port name="desired_throttle_position" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="desired_throttle_position" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 205.0">
                                 </property>
                                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                                 </property>
                             </port>
-                            <port name="current" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="current" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="output"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 255.0">
                                 </property>
@@ -2368,7 +2368,7 @@ implemented in a single Giotto task.</text></svg></configure>
                                 <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                                 </property>
                             </port>
-                            <port name="mode" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="mode" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 265.0">
                                 </property>
@@ -3252,7 +3252,7 @@ implemented in a single Giotto task.</text></svg></configure>
                             <link port="throttle_position.input" relation="relation"/>
                             <link port="throttle_position.output" relation="1:relation2"/>
                         </entity>
-                        <entity name="init" class="ptolemy.vergil.fsm.modal.Refinement">
+                        <entity name="init" class="ptolemy.domains.fsm.modal.Refinement">
                             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                             </property>
                             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
@@ -3267,28 +3267,28 @@ implemented in a single Giotto task.</text></svg></configure>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 85.0">
                                 </property>
                             </property>
-                            <port name="throttle_positions" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="throttle_positions" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location">
                                 </property>
                                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                                 </property>
                             </port>
-                            <port name="desired_throttle_position" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="desired_throttle_position" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location">
                                 </property>
                                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                                 </property>
                             </port>
-                            <port name="current" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="current" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="output"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location">
                                 </property>
                                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
                                 </property>
                             </port>
-                            <port name="mode" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                            <port name="mode" class="ptolemy.domains.fsm.modal.RefinementPort">
                                 <property name="input"/>
                                 <property name="_location" class="ptolemy.kernel.util.Location">
                                 </property>
