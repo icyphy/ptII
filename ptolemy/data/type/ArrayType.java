@@ -180,12 +180,12 @@ public class ArrayType extends Type implements InequalityTerm
      *  if it represents an instantiable object.
      *  @return True if the current type is acceptable.
      */
-    public boolean isTypeAcceptable() {
+    public boolean isValueAcceptable() {
         if(this.isEqualTo(TOP)) return false;
         if(this.isEqualTo(BOTTOM)) return false;
         if(_dimensions < 0) return false;
         if(_dimensions > 2) return false;
-        return this._type.isTypeAcceptable();
+        return this._type.isValueAcceptable();
     }
 
     /** Set the value of this term to the specified CPO element.

@@ -1277,7 +1277,7 @@ public class Variable extends Attribute implements Typeable {
          *  if it represents an instantiable object.
          *  @return True if the current type is acceptable.
          */
-        public boolean isTypeAcceptable() {
+        public boolean isValueAcceptable() {
             if (TypeLattice.isInstantiableType(getType())) {
                 return true;
             }

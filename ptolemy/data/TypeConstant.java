@@ -97,7 +97,7 @@ public class TypeConstant implements InequalityTerm {
      *  if it represents an instantiable object.
      *  @return True if the current type is acceptable.
      */
-    public boolean isTypeAcceptable() {
+    public boolean isValueAcceptable() {
         if (TypeLattice.isInstantiableType(_type)) {
             return true;
         }

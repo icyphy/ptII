@@ -61,7 +61,7 @@ public abstract class Type
 
     public abstract boolean isEqualTo(Object t);
 
-    public abstract boolean isTypeAcceptable();
+    public abstract boolean isValueAcceptable();
     
     
 }
