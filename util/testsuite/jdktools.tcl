@@ -123,8 +123,8 @@ proc jdkStackTrace {} {
 
 	puts "    while executing"
 	set stack [$stream toString]
-	if { [string length $stack] > 250 } {
-	    puts "[string range $stack 0 250] . . ."
+	if { [string length $stack] > 1250 } {
+	    puts "[string range $stack 0 1250] . . ."
 	} else {
 	    puts "$stack"
 	}
