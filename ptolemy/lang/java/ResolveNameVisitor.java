@@ -201,7 +201,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
 
         NameContext subctx = (NameContext) ctx.clone();
-        subctx.scope = new Scope(ctx.scope);
+        subctx.scope = new Scope(ctx.environ);
 
         node.setStmts(TNLManip.traverseList(this, TNLManip.addFirst(subctx),
                 node.getStmts()));
@@ -245,7 +245,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         node.setExpr((ExprNode) node.getExpr().accept(this, args));
 
         subCtx.breakTarget = node;
-        subCtx.scope = new Scope(ctx.scope);
+        subCtx.scope = new Scope(ctx.environ);
 
         node.setSwitchBlocks(
                 TNLManip.traverseList(this, TNLManip.addFirst(subCtx),
@@ -262,7 +262,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         subCtx.breakTarget = node;
         subCtx.encLoop = node;
-        subCtx.scope = new Scope(ctx.scope);
+        subCtx.scope = new Scope(ctx.environ);
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
         node.setForeStmt((TreeNode) node.getForeStmt().accept(this, childArgs));
@@ -275,7 +275,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
         NameContext subCtx = (NameContext) ctx.clone();
 
-        subCtx.scope = new Scope(ctx.scope);
+        subCtx.scope = new Scope(ctx.environ);
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
 
@@ -329,7 +329,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
 
         NameContext subCtx = (NameContext) ctx.clone();
-        subCtx.scope = new Scope(ctx.scope);
+        subCtx.scope = new Scope(ctx.environ);
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
 

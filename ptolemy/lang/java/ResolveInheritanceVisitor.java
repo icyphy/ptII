@@ -1,4 +1,5 @@
-/* Fills in class and interface scopes with inherited members.
+/* Resolve names of local variables, formal parameters, field accesses,
+method calls, and statement labels.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -27,342 +28,451 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Red (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
+
 */
 
 package ptolemy.lang.java;
 
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Set;
 
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
-//////////////////////////////////////////////////////////////////////////
-//// ResolveInheritanceVisitor
-/** Adds inherited class and interface members to the respective
-scopes  This is part 2 of pass 1, part 1 of pass 1 happens in ResolveClassVisitor.
-<p>
+/** A visitor that does name resolution.
+After this phase, all fields and methods are referred to via
+ThisFieldAccessNode, SuperFieldAccessNode or ObjectFieldAccessNode.
+ObjectNode is only used for local variables and parameters.
+
+The decl in methods may be wrong, because overloading resolution is
+done later (when types become available)
+
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
 and Army Research Office.
 
-@see ResolveClassVisitor
-
-@author Jeff Tsay, Christopher Hylands
+@author Jeff Tsay
 @version $Id$
  */
-public class ResolveInheritanceVisitor extends ResolveVisitorBase
+public class ResolveNameVisitor extends ReplacementJavaVisitor
     implements JavaStaticSemanticConstants {
-
-    /** Create a new visitor that uses the default type policy. */
-    public ResolveInheritanceVisitor() {
-        this(new TypePolicy(new TypeIdentifier()));
+    public ResolveNameVisitor() {
+        super(TM_CUSTOM);
     }
 
-    public ResolveInheritanceVisitor(TypePolicy typePolicy) {
-        _typePolicy = typePolicy;
+    public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
+        return node;
+    }
+
+    public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
+        return node;
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        //System.out.println("resolveInheritance for " +
-        //        node.getProperty(IDENT_KEY));
 
-        TNLManip.traverseList(this, null, node.getDefTypes());
+        //System.out.println("resolve name on " +
+        //        node.getDefinedProperty(IDENT_KEY));
 
-        //System.out.println("finished resolveInheritance for " +
-        //        node.getProperty(IDENT_KEY));
+        _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
-        return null;
+        NameContext c = new NameContext();
+        c.scope = (Scope) node.getDefinedProperty(ENVIRON_KEY);
+
+        LinkedList childArgs = TNLManip.addFirst(c);
+
+        TNLManip.traverseList(this, childArgs, node.getDefTypes());
+
+        //System.out.println("finished resolve name on " +
+        //        node.getDefinedProperty(IDENT_KEY));
+
+        return node;
     }
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
-        ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
+        return _visitUserTypeDeclNode(node, args);
+    }
 
-        if (!me.addVisitor(_myClass)) {
-            return null;
+    public Object visitLocalVarDeclNode(LocalVarDeclNode node, LinkedList args) {
+        node.setInitExpr((TreeNode) node.getInitExpr().accept(this, args));
+
+        NameContext ctx = (NameContext) args.get(0);
+        Scope env = ctx.scope;
+
+        NameNode name = node.getName();
+        String varName = name.getIdent();
+
+        Decl other = env.lookup(varName, CG_FORMAL);
+
+        if (other != null) {
+            throw new RuntimeException("declaration shadows " + varName);
         }
 
-        int modifiers = node.getModifiers();
+        other = env.lookupProper(varName, CG_LOCALVAR);
 
-        ClassDecl superClass = me.getSuperClass();
-
-        if (superClass != null) {
-            if ((superClass.getModifiers() & FINAL_MOD) != 0) {
-                throw new RuntimeException("final class " + superClass.getName() +
-                        " cannot be extended");
-            }
-
-            _fillInInheritedMembers(me, superClass);
-        } else {
-            if (me != StaticResolution.OBJECT_DECL) {
-                throw new RuntimeException("ResolveInheritanceVisitor." +
-                        "visitClassDeclNode: " + me + 
-                        "has no superclass, yet is not Object");
-            }
+        if (other != null) {
+            throw new RuntimeException("redeclaration of " + varName);
         }
 
+        LocalVarDecl d = new LocalVarDecl(varName, node.getDefType(),
+                node.getModifiers(), node);
 
-        Iterator iFaceItr = me.getInterfaces().iterator();
+        env.add(d);
+        name.setProperty(DECL_KEY, d);
 
-        while (iFaceItr.hasNext()) {
-            _fillInInheritedMembers(me, (ClassDecl) iFaceItr.next());
+        return node;
+    }
+
+    public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+        NameContext subCtx = (NameContext) ctx.clone();
+
+        subCtx.encLoop = null;
+        subCtx.breakTarget = null;
+
+        Scope newEnv1 = new Scope(ctx.scope);
+        subCtx.scope = newEnv1;
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+
+        node.setParams(TNLManip.traverseList(this, childArgs,
+                node.getParams()));
+
+        TreeNode body = node.getBody();
+        subCtx.scope = new Scope(newEnv1);
+
+        if (body != AbsentTreeNode.instance) {
+            node.setBody((BlockNode) body.accept(this, childArgs));
         }
 
-        if ((modifiers & ABSTRACT_MOD) == 0) {
-            if (_hasAbstractMethod(node)) {
-                throw new RuntimeException("ResolveInheritanceVisitor." +
-                        "visitClassDeclNode(): " +  me.fullName() +
-                        " has abstract methods: it must be declared abstract");
-            }
-        }
-        return null;
+        return node;
+    }
+
+    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+        NameContext subCtx = (NameContext) ctx.clone();
+
+        subCtx.encLoop = null;
+        subCtx.breakTarget = null;
+
+        Scope newEnv1 = new Scope(ctx.scope);
+        subCtx.scope = newEnv1;
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+
+        node.setParams(TNLManip.traverseList(this, childArgs,
+                node.getParams()));
+
+        subCtx.scope = new Scope(newEnv1);
+
+        node.setConstructorCall((ConstructorCallNode)
+                node.getConstructorCall().accept(this, childArgs));
+
+        node.setBody((BlockNode) node.getBody().accept(this, childArgs));
+
+        return node;
     }
 
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
-        ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
-
-        if (!me.addVisitor(_myClass)) {
-            return null;
-        }
-
-        int modifiers = node.getModifiers();
-
-        Iterator interfaceItr = me.getInterfaces().iterator();
-
-        while (interfaceItr.hasNext()) {
-            _fillInInheritedMembers(me, (ClassDecl) interfaceItr.next());
-        }
-
-        return null;
+        return _visitUserTypeDeclNode(node, args);
     }
 
-    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
-        ClassDecl me = (ClassDecl) node.getDefinedProperty(DECL_KEY);
+    public Object visitParameterNode(ParameterNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+        Scope env = ctx.scope;
 
-        if (!me.addVisitor(_myClass)) {
-            return null;
+        NameNode name = node.getName();
+        String varName = name.getIdent();
+
+        Decl other = env.lookup(varName, CG_FORMAL | CG_LOCALVAR);
+
+        if (other != null) {
+            throw new RuntimeException("declaration shadows " + varName);
         }
 
-        ClassDecl superClass = me.getSuperClass();
+        FormalParameterDecl d = new FormalParameterDecl(varName,
+                node.getDefType(), node.getModifiers(), node);
 
-        if ((superClass.getModifiers() & FINAL_MOD) != 0) {
-            throw new RuntimeException("final class " + superClass.getName() +
-                    " cannot be extended");
-        }
+        name.setProperty(DECL_KEY, d);
+        env.add(d);
 
-        _fillInInheritedMembers(me, superClass);
-
-        Object iFaceObj = node.getDefinedProperty(INTERFACE_KEY);
-
-        if (iFaceObj != NullValue.instance) {
-            ClassDecl iFace = (ClassDecl) iFaceObj;
-
-            _fillInInheritedMembers(me, iFace);
-        }
-
-        return null;
+        return node;
     }
 
-    /** Return the Class object of this visitor. */
-    public static Class visitorClass() {
-        return _myClass;
+    public Object visitBlockNode(BlockNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        NameContext subctx = (NameContext) ctx.clone();
+        subctx.scope = new Scope(ctx.scope);
+
+        node.setStmts(TNLManip.traverseList(this, TNLManip.addFirst(subctx),
+                node.getStmts()));
+
+        return node;
     }
 
-    /** The default visit method. Visit all child nodes. */
-    protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        LinkedList childArgs = new LinkedList();
-        TNLManip.traverseList(this, args, node.children());
-        return null;
-    }
+    public Object visitLabeledStmtNode(LabeledStmtNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+        NameNode label = node.getName();
+        String labelString = label.getIdent();
 
-    /** The type policy used to do comparison of types. */
-    protected TypePolicy _typePolicy = null;
+        Decl other = ctx.scope.lookup(labelString, CG_STMTLABEL);
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+        Scope newEnv = new Scope(ctx.scope);
 
-    // Given ClassDecls TO and FROM, add to TO's scope the members in
-    // CATEGORIES (a bitwise union of category values) that TO
-    // inherits from FROM.
-    private void _fillInInheritedMembers(ClassDecl to,
-            ClassDecl from) {
-        // make sure 'from' is filled in
-        TreeNode sourceNode = from.getSource();
-
-        if ((sourceNode != null) && (sourceNode != AbsentTreeNode.instance)) {
-            sourceNode.accept(this, null);
+        if (other != null) {
+            throw new RuntimeException("duplicate " + labelString);
         }
 
-        Iterator declItr = from.getScope().allProperDecls();
+        StmtLblDecl d = new StmtLblDecl(labelString, node);
 
-        Scope toScope = to.getScope();
+        label.setProperty(DECL_KEY, d);
 
-        while (declItr.hasNext()) {
-            JavaDecl member = (JavaDecl) declItr.next();
+        newEnv.add(d);
 
-            if (((member.category &
-                    (CG_FIELD | CG_METHOD | CG_USERTYPE)) != 0) &&
-                    ((member.getModifiers() & PRIVATE_MOD) == 0) &&
-                    !_overriddenIn(member, to)) {
-                toScope.add(member);
+        NameContext subCtx = (NameContext) ctx.clone();
+        subCtx.scope = newEnv;
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+
+        node.setStmt((StatementNode) node.getStmt().accept(this, childArgs));
+        return node;
+    }
+
+    public Object visitSwitchNode(SwitchNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+        NameContext subCtx = (NameContext) ctx.clone();
+
+        node.setExpr((ExprNode) node.getExpr().accept(this, args));
+
+        subCtx.breakTarget = node;
+        subCtx.scope = new Scope(ctx.scope);
+
+        node.setSwitchBlocks(
+                TNLManip.traverseList(this, TNLManip.addFirst(subCtx),
+                        node.getSwitchBlocks()));
+
+        return node;
+    }
+
+    public Object visitLoopNode(LoopNode node, LinkedList args) {
+        node.setTest((ExprNode) node.getTest().accept(this, args));
+
+        NameContext ctx = (NameContext) args.get(0);
+        NameContext subCtx = (NameContext) ctx.clone();
+
+        subCtx.breakTarget = node;
+        subCtx.encLoop = node;
+        subCtx.scope = new Scope(ctx.scope);
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+        node.setForeStmt((TreeNode) node.getForeStmt().accept(this, childArgs));
+        node.setAftStmt((TreeNode) node.getAftStmt().accept(this, childArgs));
+
+        return node;
+    }
+
+    public Object visitForNode(ForNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+        NameContext subCtx = (NameContext) ctx.clone();
+
+        subCtx.scope = new Scope(ctx.scope);
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+
+        node.setInit(TNLManip.traverseList(this, childArgs, node.getInit()));
+        subCtx.breakTarget = node;
+        subCtx.encLoop = node;
+
+        node.setTest((ExprNode) node.getTest().accept(this, childArgs));
+        node.setUpdate(TNLManip.traverseList(this, childArgs, node.getUpdate()));
+        node.setStmt((StatementNode) node.getStmt().accept(this, childArgs));
+
+        return node;
+    }
+
+    public Object visitBreakNode(BreakNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        if ((node.getLabel() == AbsentTreeNode.instance) &&
+                (ctx.breakTarget == null)) {
+            throw new RuntimeException("unlabeled break only allowed in loops or switches");
+        }
+
+        _resolveJump(node, ctx.breakTarget, ctx.scope);
+
+        return node;
+    }
+
+    public Object visitContinueNode(ContinueNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        if (ctx.encLoop == null) {
+            throw new RuntimeException("unlabeled continue only allowed in loops");
+        }
+
+        _resolveJump(node, ctx.encLoop, ctx.scope);
+
+        if (node.hasProperty(JUMP_DESTINATION_KEY)) {
+
+            StatementNode dest = (StatementNode)
+                node.getDefinedProperty(JUMP_DESTINATION_KEY);
+
+            if (!(dest instanceof IterationNode)) {
+                throw new RuntimeException("continue's target is not a loop");
             }
         }
+
+        return node;
     }
 
+    public Object visitCatchNode(CatchNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
 
-    // Return true if there is at least one abstract method in the class
-    // scope.
-    private static boolean _hasAbstractMethod(UserTypeDeclNode node) {
-        Scope classEnv = JavaDecl.getDecl((NamedNode) node).getScope();
+        NameContext subCtx = (NameContext) ctx.clone();
+        subCtx.scope = new Scope(ctx.scope);
 
-        Iterator memberItr = classEnv.allProperDecls();
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
 
-        while (memberItr.hasNext()) {
-            JavaDecl member = (JavaDecl) memberItr.next();
+        node.setParam((ParameterNode) node.getParam().accept(this, childArgs));
+        node.setBlock((BlockNode) node.getBlock().accept(this, childArgs));
 
-            if ((member.category == CG_METHOD) &&
-                    ((member.getModifiers() & ABSTRACT_MOD) != 0)) {
-                return true;
+        return node;
+    }
+
+    public Object visitThisNode(ThisNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        node.setProperty(THIS_CLASS_KEY, ctx.currentClass);
+
+        return node;
+    }
+
+    public Object visitObjectNode(ObjectNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+        NameNode name = node.getName();
+
+        return StaticResolution.resolveAName(name, ctx.scope,
+                ctx.currentClass, _currentPackage,
+                ctx.resolveAsObject ? (CG_FIELD | CG_LOCALVAR | CG_FORMAL) : CG_METHOD);
+    }
+
+    public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
+        NameContext subCtx = (NameContext) ((NameContext) args.get(0)).clone();
+        subCtx.resolveAsObject = true;
+
+        node.setObject((ExprNode) (node.getObject().accept(this, TNLManip.addFirst(subCtx))));
+
+        return node;
+    }
+
+    public Object visitSuperFieldAccessNode(SuperFieldAccessNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        node.setProperty(THIS_CLASS_KEY, ctx.currentClass);
+
+        return node;
+    }
+
+    public Object visitTypeFieldAccessNode(TypeFieldAccessNode node, LinkedList args) {
+        NameContext subCtx = (NameContext) ((NameContext) args.get(0)).clone();
+
+        subCtx.resolveAsObject = true;
+
+        LinkedList childArgs = TNLManip.addFirst(subCtx);
+
+        // CHECK ME : is this all that needs to be done?
+
+        return node;
+    }
+
+    public Object visitThisFieldAccessNode(ThisFieldAccessNode node, LinkedList args) {
+        NameContext ctx = (NameContext) args.get(0);
+
+        node.setProperty(THIS_CLASS_KEY, ctx.currentClass);
+
+        return node;
+    }
+
+    public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
+        node.setArgs(TNLManip.traverseList(this, args, node.getArgs()));
+
+        NameContext subCtx = (NameContext) ((NameContext) args.get(0)).clone();
+        subCtx.resolveAsObject = false;
+
+        node.setMethod((ExprNode) node.getMethod().accept(this, TNLManip.addFirst(subCtx)));
+
+        return node;
+    }
+
+    /* The default visit method comes from ReplacementJavaVisitor. */
+
+    protected Object _visitUserTypeDeclNode(UserTypeDeclNode node,
+            LinkedList args) {
+        NameContext  ctx = new NameContext();
+
+        ClassDecl decl = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
+
+        ctx.scope = decl.getScope();
+        ctx.currentClass = decl.getDefType();
+
+        LinkedList childArgs = TNLManip.addFirst(ctx);
+
+        node.setMembers(
+                TNLManip.traverseList(this, childArgs, node.getMembers()));
+
+        return node;
+    }
+
+    protected static JumpStmtNode _resolveJump(JumpStmtNode node, TreeNode noLabel,
+            Scope env) {
+        TreeNode label = node.getLabel();
+
+        if (label == AbsentTreeNode.instance) {
+            node.setProperty(JUMP_DESTINATION_KEY, noLabel);
+        } else {
+            NameNode labelName = (NameNode) label;
+            String labelString = labelName.getIdent();
+
+            StmtLblDecl dest = (StmtLblDecl)
+                env.lookup(labelString, CG_STMTLABEL);
+
+            if (dest == null) {
+                throw new RuntimeException("label " + labelString + " not found");
+            }
+
+            labelName.setProperty(DECL_KEY, dest);
+
+            LabeledStmtNode labeledStmtNode = (LabeledStmtNode) dest.getSource();
+            node.setProperty(JUMP_DESTINATION_KEY, labeledStmtNode.getStmt());
+        }
+        return node;
+    }
+
+    protected static class NameContext implements Cloneable {
+        public NameContext() {}
+
+        public Object clone() {
+            try {
+                return super.clone();
+            } catch (CloneNotSupportedException cnse) {
+                throw new InternalError("clone of NameContext not supported");
             }
         }
-        return false;
+
+        /** The last scope. */
+        public Scope scope = null;
+
+        /** The type of the current class. */
+        public TypeNameNode currentClass = null;
+
+        public TreeNode breakTarget = null;
+
+        /** The enclosing loop. null if not in a loop. */
+        public TreeNode encLoop = null;
+
+        boolean resolveAsObject = true;
     }
 
-    // Return true iff MEMBER would be hidden or overridden by a
-    // declaration in TO. 
-    private boolean _overriddenIn(JavaDecl member, ClassDecl to) {
-        Scope env = to.getScope();
-        String memberName = member.getName();
-
-        if (member.category == CG_FIELD) {
-            FieldDecl current = (FieldDecl)
-                env.lookupProper(memberName, CG_FIELD);
-
-            // Only definitions in the destination scope override fields
-            // If multiple definitions are inherited, a compile-time error
-            // must be reported for any use (this is achieved by letting the
-            // scope contain multiple copies of the field, which will
-            // produce an ambiguous reference error in the name lookup)
-            // But: multiple inheritances of the *same* field only count once
-            return ((current != null) &&
-                    ((current.getContainer() == to) || (member == current)));
-
-        } else if (member.category == CG_METHOD) {
-            MethodDecl methodMember = (MethodDecl) member;
-
-            Iterator methodItr =
-                env.lookupFirstProper(memberName, CG_METHOD);
-
-            while (methodItr.hasNext()) {
-
-                MethodDecl d = (MethodDecl) methodItr.next();
-
-                if (_typePolicy.doMethodsConflict(d, methodMember)) {
-
-                    // Note: member is overriden method, d is overriding method
-
-                    if (d == methodMember) {
-                        return true; // seeing the same thing twice
-                    }
-
-                    boolean isLocalDecl = (d.getContainer() == to);
-                    int dm = d.getModifiers();
-                    int mm = methodMember.getModifiers();
-
-                    // Note: if !isLocalDecl, then the method necessarily comes
-                    // from an interface (i.e. is abstract). If d is also abstract,
-                    // then all methods are inherited (j8.4.6.4).
-                    boolean inheritAllAbstract =
-                        (!isLocalDecl && ((dm & ABSTRACT_MOD) != 0));
-
-                    TypeNode dtype = d.getType();
-
-                    if (!_typePolicy.compareTypes(d.getType(),
-                            methodMember.getType())) {
-  	                throw new RuntimeException(to.getName() +
-                                ": overriding of " + memberName +
-                                " changes return type: " +
-                                d.getType() + " vs. " + 
-                                methodMember.getType());
-                    }
-
-                    if ((dm & STATIC_MOD) != (mm & STATIC_MOD)) {
-                        throw new RuntimeException("overriding of "
-                                + memberName + " adds/removes 'static'");
-                    }
-
-                    // make sure d was a legal override/hide of member
-                    if ((mm & FINAL_MOD) != 0) {
-                        throw new RuntimeException(to.getName() +
-						 ": cannot override final " +
-						 memberName);
-                    }
-
-                    /*
-                      if ((mm & PUBLIC_MOD) &&
-                      ((dm & PUBLIC_MOD) == 0) ||
-                      ((mm & PROTECTED_MOD) != 0) &&
-       		      !(dm & (PUBLIC_MOD | PROTECTED_MOD)) ||
-                      !(mm & (PUBLIC_MOD | PROTECTED_MOD)) &&
-                      (dm & PRIVATE_MOD)) {
-                      throw new RuntimeException("overriding of " + memberName +
-                      " must provide at least as much access");
-                      }
-                    */
-
-                    if (!inheritAllAbstract &&
-                            !_throwsSubset(d.getThrows(),
-                                    methodMember.getThrows())) {
-                        throw new RuntimeException(d.getName() +
-                                " throws more exceptions than overridden " +
-                                memberName);
-                    }
-
-                    // update overriding/hiding information for
-                    // declarations of 'to'
-                    if (isLocalDecl) {
-                        methodMember.addOverrider(d);
-
-	                switch (member.getContainer().category) {
-                        case CG_CLASS:
-		            d.setOverrides(methodMember);
-		            break;
-
-                        case CG_INTERFACE:
-                            d.addImplement(methodMember);
-		            break;
-                        }
-                    }
-
-                    return !inheritAllAbstract;
-                } // if (doMethodsConflict(dtype, mtype))
-            } // while methodItr.hasNext()
-            return false;
-        } else if (member.category == CG_CLASS) {
-            // Declared inner classes override those in outer scope.
-            return true;
-        } else if (member.category == CG_INTERFACE) {
-            // Declared inner classes override those in outer scope.
-            return true;
-        }
-
-        return false;
-    }
-
-    // Return true iff newThrows is a "subset" of oldThrows (j8.4.4)
-    private static boolean _throwsSubset(Set newThrows,
-            Set oldThrows) {
-        // FIXME : even Titanium appears to be having trouble
-        return true;
-    }
- 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The Class object of this visitor. */
-    private static Class _myClass = new ResolveInheritanceVisitor().getClass();
+    /** The package this compile unit is in. */
+    protected PackageDecl _currentPackage = null;
 }
