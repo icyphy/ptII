@@ -117,7 +117,7 @@ public class AppContextDelegate implements AppContext {
     }
 
     /**
-     * Set the layerd pane of the delegate.  A Container that manages
+     * Set the layered pane of the delegate.  A Container that manages
      * the contentPane and in some cases a menu bar
      */
     public void setLayeredPane(JLayeredPane layeredPane) {
