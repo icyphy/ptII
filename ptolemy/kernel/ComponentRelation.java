@@ -185,6 +185,7 @@ public class ComponentRelation extends Relation {
 
     /** Get the container entity.
      *  @return An instance of CompositeEntity.
+     *  @see #setContainer(CompositeEntity)
      */
     public NamedObj getContainer() {
         return _container;
@@ -217,6 +218,7 @@ public class ComponentRelation extends Relation {
      *   throws it.
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the contents list of the container.
+     *  @see getContainer() 
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
