@@ -128,7 +128,7 @@ all: sources jclass $(PTCLASSZIP) $(PTCLASSJAR) $(PTAUXJAR)
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
-install: sources jclass javadocs subinstall jars bin_install_dir
+install: sources jclass javadocs jars bin_install_dir
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
