@@ -1615,13 +1615,201 @@ echo "configure:1590: checking for \$KVM_DIR/bin/api/classes" >&5
 fi
 
 #--------------------------------------------------------------------
+#       MATLAB Interface
+#       check to see if matlab is in the user's path
+#--------------------------------------------------------------------
+# PTMATLAB_DIR is set to matlab and used in
+# $PTII/ptolemy/makefile if matlab, extern/include/libeng.def and gcc are found
+PTMATLAB_DIR=
+
+# We only need to look for matlab if $PTII/ptolemy/matlab exists
+if test ! -d "$PTII/ptolemy/matlab"; then
+    echo "$ac_t""$PTII/ptolemy/matlab is not present,
+	so we need not find matlab, gcc and dlltool." 1>&6
+    MATLAB=/matlab
+    PTCC=gcc
+    PTDLLTOOL=dlltool
+else
+    echo $ac_n "checking for matlab""... $ac_c" 1>&6
+echo "configure:1635: checking for matlab" >&5
+    # Extract the first word of "matlab", so it can be a program name with args.
+set dummy matlab; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+echo "configure:1639: checking for $ac_word" >&5
+if eval "test \"`echo '$''{'ac_cv_path_MATLAB'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$MATLAB" in
+  /*)
+  ac_cv_path_MATLAB="$MATLAB" # Let the user override the test with a path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+  for ac_dir in $PATH; do
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_MATLAB="$ac_dir/$ac_word"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  ;;
+esac
+fi
+MATLAB="$ac_cv_path_MATLAB"
+if test -n "$MATLAB"; then
+  echo "$ac_t""$MATLAB" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+    if test "${MATLAB:-none}" = "none"; then
+	echo "configure: warning: Failed to find matlab executable in the path.
+    Perhaps Matlab is not installed?
+    If Matlab is not present, then the Ptolemy II/Matlab interface in
+    \$PTII/ptolemy/matlab will not be usable." 1>&2;
+    else 
+	MATLAB_DIR=${MATLAB%%/bin*}
+	if test -d "$MATLAB_DIR"; then
+	    if test -f "${MATLAB_DIR}/extern/include/libeng.def"; then
+		echo "$ac_t""$MATLAB_DIR" 1>&6
+		echo $ac_n "checking for gcc""... $ac_c" 1>&6
+echo "configure:1678: checking for gcc" >&5
+		# Extract the first word of "gcc", so it can be a program name with args.
+set dummy gcc; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+echo "configure:1682: checking for $ac_word" >&5
+if eval "test \"`echo '$''{'ac_cv_path_PTCC'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$PTCC" in
+  /*)
+  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+  for ac_dir in $PATH; do
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_PTCC="$ac_dir/$ac_word"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  ;;
+esac
+fi
+PTCC="$ac_cv_path_PTCC"
+if test -n "$PTCC"; then
+  echo "$ac_t""$PTCC" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+		if test "${PTCC:-none}" != "none"; then
+		    echo "$ac_t""$PTCC" 1>&6
+		    PTMATLAB_DIR=matlab
+		else    
+		    echo "configure: warning: Failed to find gcc" 1>&2
+		    echo $ac_n "checking for cc""... $ac_c" 1>&6
+echo "configure:1716: checking for cc" >&5
+		    # Extract the first word of "cc", so it can be a program name with args.
+set dummy cc; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+echo "configure:1720: checking for $ac_word" >&5
+if eval "test \"`echo '$''{'ac_cv_path_PTCC'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$PTCC" in
+  /*)
+  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+  for ac_dir in $PATH; do
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_PTCC="$ac_dir/$ac_word"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  ;;
+esac
+fi
+PTCC="$ac_cv_path_PTCC"
+if test -n "$PTCC"; then
+  echo "$ac_t""$PTCC" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+		    if test "${PTCC:-none}" != "none"; then
+			echo "$ac_t""$PTCC" 1>&6
+			PTMATLAB_DIR=matlab
+		    else	
+			echo "configure: warning: Failed to find gcc or cc, so we will
+    not be able to compile the Matlab interface in ptolemy/matlab" 1>&2;
+		    fi
+		fi
+		# FIXME: currently, the Matlab interface only works
+		# under Windows
+		echo $ac_n "checking for dlltool""... $ac_c" 1>&6
+echo "configure:1759: checking for dlltool" >&5
+		# Extract the first word of "dlltool", so it can be a program name with args.
+set dummy dlltool; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+echo "configure:1763: checking for $ac_word" >&5
+if eval "test \"`echo '$''{'ac_cv_path_PTDLLTOOL'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$PTDLLTOOL" in
+  /*)
+  ac_cv_path_PTDLLTOOL="$PTDLLTOOL" # Let the user override the test with a path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+  for ac_dir in $PATH; do
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_PTDLLTOOL="$ac_dir/$ac_word"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  ;;
+esac
+fi
+PTDLLTOOL="$ac_cv_path_PTDLLTOOL"
+if test -n "$PTDLLTOOL"; then
+  echo "$ac_t""$PTDLLTOOL" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+		if test "${PTDLLTOOL:-none}" = "none"; then
+		    PTMATLAB_DIR=
+		    echo "configure: warning: Failed to find dlltool, so we will
+    not be able to compile the Matlab interface in ptolemy/matlab" 1>&2;
+		fi
+	    else 
+		echo "configure: warning: Failed to find matlab libeng.def file at
+    ${MATLAB_DIR}/extern/include/libeng.def. 
+    Perhaps Matlab is not installed?" 1>&2;
+	    fi
+	fi
+    fi	
+fi
+
+
+#--------------------------------------------------------------------
 #       Soot is a Java Optimization Framework, see
 #	http://www.sable.mcgill.ca/soot/
 #       See if there was a command-line option for where Soot is
 #       If not, look in $PTII/vendors/sun/soot
 #--------------------------------------------------------------------
 
-# PTCOPERNICUS_DIR is set to coperniucs and used in
+# PTCOPERNICUS_DIR is set to copernicus and used in
 # $PTII/ptolemy/makefile if soot was found
 PTCOPERNICUS_DIR=
 
@@ -1646,7 +1834,7 @@ if test ! -d "$PTII/ptolemy/copernicus"; then
     SOOT_DIR='${PTII}/lib'
 else
     echo $ac_n "checking for soot directory""... $ac_c" 1>&6
-echo "configure:1650: checking for soot directory" >&5
+echo "configure:1838: checking for soot directory" >&5
     # Check whether --with-soot or --without-soot was given.
 if test "${with_soot+set}" = set; then
   withval="$with_soot"
@@ -1659,11 +1847,11 @@ fi
     if test -d "$SOOT_DIR"; then
 	echo "$ac_t""$SOOT_DIR" 1>&6
         echo $ac_n "checking for \$SOOT_DIR/sootclasses.jar""... $ac_c" 1>&6
-echo "configure:1663: checking for \$SOOT_DIR/sootclasses.jar" >&5
+echo "configure:1851: checking for \$SOOT_DIR/sootclasses.jar" >&5
 	if test -f "$SOOT_DIR/sootclasses.jar"; then
 	    echo "$ac_t""$SOOT_DIR/sootclasses.jar" 1>&6
 	    echo $ac_n "checking for \$SOOT_DIR/jasminclasses.jar""... $ac_c" 1>&6
-echo "configure:1667: checking for \$SOOT_DIR/jasminclasses.jar" >&5
+echo "configure:1855: checking for \$SOOT_DIR/jasminclasses.jar" >&5
   	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
                 echo "$ac_t""$SOOT_DIR/jasminclasses.jar" 1>&6
             fi
@@ -1676,10 +1864,10 @@ echo "configure:1667: checking for \$SOOT_DIR/jasminclasses.jar" >&5
     fi
     	
     if test "$SOOT_CLASSES_FOUND" = "no"; then
-        echo "configure: warning: 'Failed to find soot/sootclasses.jar
+        echo "configure: warning: Failed to find soot/sootclasses.jar
     perhaps Soot is not installed?
     You need not download Soot unless you plan on using code generation
-    The Soot SDK can be downloaded from http://www.sable.mcgill.ca/soot/'" 1>&2
+    The Soot SDK can be downloaded from http://www.sable.mcgill.ca/soot/" 1>&2
 	# Note that we don't substitute in the ${PTII} or $(SOOT_DIR) here
 	SOOT_DIR='${PTII}/lib'
     else
@@ -1689,7 +1877,7 @@ echo "configure:1667: checking for \$SOOT_DIR/jasminclasses.jar" >&5
     fi
 
     echo $ac_n "checking for rt.jar by compiling config/SystemJar.java""... $ac_c" 1>&6
-echo "configure:1693: checking for rt.jar by compiling config/SystemJar.java" >&5
+echo "configure:1881: checking for rt.jar by compiling config/SystemJar.java" >&5
     # Check whether --with-javasystemjar or --without-javasystemjar was given.
 if test "${with_javasystemjar+set}" = set; then
   withval="$with_javasystemjar"
@@ -1704,7 +1892,7 @@ fi
     if "$JAVAC" SystemJar.java ; then
 	echo "$ac_t""ok" 1>&6
 	echo $ac_n "checking the value of the java.home property ""... $ac_c" 1>&6
-echo "configure:1708: checking the value of the java.home property " >&5
+echo "configure:1896: checking the value of the java.home property " >&5
 	if env CLASSPATH=$PTII/config "$JAVA" SystemJar > /dev/null; then
 	    # Run it again and get the results
 	    JAVA_SYSTEM_JAR=`CLASSPATH=$PTII/config "$JAVA" SystemJar`
@@ -1741,7 +1929,7 @@ if test ! -d "$PTII/ptolemy/apps/tini"; then
     TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
 else
     echo $ac_n "checking for tini directory""... $ac_c" 1>&6
-echo "configure:1745: checking for tini directory" >&5
+echo "configure:1933: checking for tini directory" >&5
     # Check whether --with-tini or --without-tini was given.
 if test "${with_tini+set}" = set; then
   withval="$with_tini"
@@ -1754,11 +1942,11 @@ fi
     if test -d "$TINI_DIR"; then
 	echo "$ac_t""$TINI_DIR" 1>&6
         echo $ac_n "checking for \$TINI_DIR/bin/tiniclasses.jar""... $ac_c" 1>&6
-echo "configure:1758: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+echo "configure:1946: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 	if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
 	    echo "$ac_t""$TINI_DIR/bin/tiniclasses.jar" 1>&6
 	    echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
-echo "configure:1762: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo "configure:1950: checking for \$TINI_DIR/bin/tini.jar" >&5
   	    if test -f "$TINI_DIR/bin/tini.jar"; then
                 echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
 	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
@@ -1772,17 +1960,17 @@ echo "configure:1762: checking for \$TINI_DIR/bin/tini.jar" >&5
     else
 	echo "$ac_t""Not found in $TINI_DIR" 1>&6
 	echo $ac_n "checking for tini directory in /tini""... $ac_c" 1>&6
-echo "configure:1776: checking for tini directory in /tini" >&5
+echo "configure:1964: checking for tini directory in /tini" >&5
 	# Likely place for tini under windows
 	TINI_DIR=/tini
         if test -d "$TINI_DIR"; then
 	    echo "$ac_t""$TINI_DIR" 1>&6
             echo $ac_n "checking for \$TINI_DIR/bin/tiniclasses.jar""... $ac_c" 1>&6
-echo "configure:1782: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+echo "configure:1970: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 	    if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
 	        echo "$ac_t""$TINI_DIR/bin/tiniclasses.jar" 1>&6
 	        echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
-echo "configure:1786: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo "configure:1974: checking for \$TINI_DIR/bin/tini.jar" >&5
 	        if test -f "$TINI_DIR/bin/tini.jar"; then
 	            echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
 	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
@@ -1798,11 +1986,11 @@ echo "configure:1786: checking for \$TINI_DIR/bin/tini.jar" >&5
 
     fi
     if test "$TINI_CLASSES" = "no"; then
-        echo "configure: warning: 'Failed to find tini/bin/tiniclasses.jar
+        echo "configure: warning: Failed to find tini/bin/tiniclasses.jar
     perhaps Tini is not installed?
     You need not download Tini unless you plan on building applications
     for the Dallas Semiconductor Tini board.
-    The Tini SDK can be downloaded from http://www.ibutton.com'" 1>&2
+    The Tini SDK can be downloaded from http://www.ibutton.com" 1>&2
 	# Note that we don't substitute in the ${PTII} or $(TINI_DIR) here
 	TINI_DIR='${PTII}/vendors/dalsemi/tini'
    	TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
@@ -1834,7 +2022,7 @@ if test ! -d "$PTII/ptolemy/apps/kvm"; then
     WABA_CLASSES='$(WABA_DIR)/classes'
 else
     echo $ac_n "checking for waba directory""... $ac_c" 1>&6
-echo "configure:1838: checking for waba directory" >&5
+echo "configure:2026: checking for waba directory" >&5
     # Check whether --with-waba or --without-waba was given.
 if test "${with_waba+set}" = set; then
   withval="$with_waba"
@@ -1847,7 +2035,7 @@ fi
     if test -d "$WABA_DIR"; then
 	echo "$ac_t""$WABA_DIR" 1>&6
         echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:1851: checking for \$WABA_DIR/classes" >&5
+echo "configure:2039: checking for \$WABA_DIR/classes" >&5
 	if test -d "$WABA_DIR/classes"; then
 	    WABA_CLASSES='$(WABA_DIR)/classes'
 	    echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -1857,13 +2045,13 @@ echo "configure:1851: checking for \$WABA_DIR/classes" >&5
     else
 	echo "$ac_t""Not found in $WABA_DIR" 1>&6
 	echo $ac_n "checking for waba directory in /waba""... $ac_c" 1>&6
-echo "configure:1861: checking for waba directory in /waba" >&5
+echo "configure:2049: checking for waba directory in /waba" >&5
 	# Likely place for waba under windows
 	WABA_DIR=/waba/wabasdk
         if test -d "$WABA_DIR"; then
 	    echo "$ac_t""$WABA_DIR" 1>&6
             echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:1867: checking for \$WABA_DIR/classes" >&5
+echo "configure:2055: checking for \$WABA_DIR/classes" >&5
 	    if test -d "$WABA_DIR/classes"; then
 	        WABA_CLASSES='$(WABA_DIR)/classes'
 	        echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -1876,11 +2064,11 @@ echo "configure:1867: checking for \$WABA_DIR/classes" >&5
 
     fi
     if test "$WABA_CLASSES" = "no"; then
-        echo "configure: warning: 'Failed to find waba/wabasdk
+        echo "configure: warning: Failed to find waba/wabasdk
     perhaps Waba is not installed?
     You need not download Waba unless you plan on building applications
     for the Palm Pilot or Handspring Visor.
-    Waba can be downloaded from http://www.wabasoft.com'" 1>&2
+    Waba can be downloaded from http://www.wabasoft.com" 1>&2
 	# Note that we don't substitute in the ${PTII} or $(WABA_DIR) here
 	WABA_DIR='${PTII}/vendors/misc/waba/wabasdk'
    	WABA_CLASSES='$(WABA_DIR)/classes'
@@ -1890,6 +2078,7 @@ echo "configure:1867: checking for \$WABA_DIR/classes" >&5
 	PTWABA_DIR=waba
     fi
 fi
+
 
 # Keep these substitutions alphabetical, with a description
 
@@ -1947,7 +2136,18 @@ fi
 # $PTII/vendors/lejos
 
 
+# Set to the location of the matlab installation, e.g. /matlabr11
+# This directory usually contains bin,...
+
+
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
+
+
+# Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
+
+
+# Set to dlltool if dlltool was found and used in
+# $PTII/ptolemy/matlab/makefile.
 
 
 # ptjacl.jar file, used to run the test suites
@@ -1989,6 +2189,10 @@ fi
 # Set to lejos and used in
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
 # and Legos was found
+
+
+# Set to matlab and used in
+# $PTII/ptolemy/makefile if the Matlab was found.
 
 
 # Set to rtos and used in
@@ -2172,6 +2376,9 @@ s%@JAVAC@%$JAVAC%g
 s%@JAVA@%$JAVA%g
 s%@CMD_PATH@%$CMD_PATH%g
 s%@JJTREE@%$JJTREE%g
+s%@MATLAB@%$MATLAB%g
+s%@PTCC@%$PTCC%g
+s%@PTDLLTOOL@%$PTDLLTOOL%g
 s%@CLASSPATHSEPARATOR@%$CLASSPATHSEPARATOR%g
 s%@COMMAPI_DIR@%$COMMAPI_DIR%g
 s%@COMMAPI_PRESENT@%$COMMAPI_PRESENT%g
@@ -2189,6 +2396,7 @@ s%@JODE_CLASSES@%$JODE_CLASSES%g
 s%@KVM_CLASSES@%$KVM_CLASSES%g
 s%@KVM_DIR@%$KVM_DIR%g
 s%@LEJOS_DIR@%$LEJOS_DIR%g
+s%@MATLAB_DIR@%$MATLAB_DIR%g
 s%@PTCOPERNICUS_DIR@%$PTCOPERNICUS_DIR%g
 s%@PTJACL_JAR@%$PTJACL_JAR%g
 s%@PTJACL_JFLAG@%$PTJACL_JFLAG%g
@@ -2201,6 +2409,7 @@ s%@PTRTOS_DIR@%$PTRTOS_DIR%g
 s%@PTKVM_DIR@%$PTKVM_DIR%g
 s%@PTLEGO_DIR@%$PTLEGO_DIR%g
 s%@PTLEJOS_DIR@%$PTLEJOS_DIR%g
+s%@PTMATLAB_DIR@%$PTMATLAB_DIR%g
 s%@PTTINI_DIR@%$PTTINI_DIR%g
 s%@PTWABA_DIR@%$PTWABA_DIR%g
 s%@PTII_DEFAULT@%$PTII_DEFAULT%g
