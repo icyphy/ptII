@@ -75,7 +75,7 @@ public class FileChooserQuery extends JFrame
         String[] options = {"mayonnaise", "mustard", "both", "none"};
         _query.addRadioButtons("radio", "Radio buttons", options, "none");
 
-        _query.addFileChooser("fileChooser", "FileChooser", "/");
+        _query.addFileChooser("fileChooser", "FileChooser", "default", "/");
 
         _query.addQueryListener(this);
         _query.setBackground(getBackground());

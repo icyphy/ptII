@@ -61,6 +61,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -237,17 +238,16 @@ public class Query extends JPanel {
     /** Create a FileChooser
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
-     *  @param currentDirectory The directory to open up the file chooser in.
+     *  @param defaultName The default file name to use.
+     *  @param startingDirectory The directory to open the file chooser in.
      */
     public void addFileChooser(String name, String label,
-            String currentDirectory) {
+            String defaultName, String startingDirectory) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
-	JFileChooser fileChooser =
-	    new JFileChooser(new File(currentDirectory));
-	fileChooser.setMultiSelectionEnabled(true);
+	QueryFileChooser fileChooser = new QueryFileChooser(
+                name, defaultName, startingDirectory);
         _addPair(name, lbl, fileChooser, fileChooser);
-        fileChooser.addActionListener(new QueryActionListener(name));
     }
 
     /** Create a single-line entry box with the specified name, label, and
@@ -642,49 +642,8 @@ public class Query extends JPanel {
         // is added.
         if (result instanceof JTextField) {
             return ((JTextField)result).getText();
-        } else if (result instanceof JFileChooser) {
-	    if (((JFileChooser)result).getSelectedFile() == null) {
-		return "";
-	    } else {
-		File files[] = ((JFileChooser)result).getSelectedFiles();
-		// FIXME: How do we handle multiple files being returned
-		// 1. We could return "file:/c:/foo/bar" if only one file
-		// was selected and {"file:/c/foo/bar", "file:c:/foo/bar"}
-		// if two files were selected
-		// 2. We could return "{file:/c:/foo/bar}" if only one file
-		// was selected and {"file:/c/foo/bar", "file:c:/foo/bar"}
-		// if two files were selected
-		// 3. We could have various FileChoosers, one for single
-		// files, one for multiple files, one for urls, one for
-		// files.  This would point to some sort of configuration
-		// mechanism being used in the style.
-		StringBuffer urls = new StringBuffer();
-		// If only one file is chosen, then return
-		// "file:/c:/foor/bar"
-		// If there was more than one file chosen, then return
-		// an array of strings of the format
-		// {"file:/c:/foo/bar", "file:c:/foo/bar"}
-		for ( int i = 0; i < files.length; i++ ) {
-		    if (i == 0 && files.length > 1) {
-			urls.append("{");
-		    }
-		    if (i > 0) {
-			// If we throw an exception below, then
-			// urls will have a trailing comma.
-			urls.append(", ");
-		    }
-		    try {
-			urls.append("\"" + files[i].toURL().toString() + "\"");
-		    } catch (MalformedURLException malformed) {
-			// FIXME: this can't be right
-			throw new IllegalArgumentException(malformed.toString());
-		    }
-		}
-		if (files.length > 1) {
-		    urls.append("}");
-		}
-		return urls.toString();
-	    }
+        } else if (result instanceof QueryFileChooser) {
+            return ((QueryFileChooser)result).getSelectedFileName();
         } else if (result instanceof JTextArea) {
             return ((JTextArea)result).getText();
         } else if (result instanceof JRadioButton) {
@@ -1259,6 +1218,55 @@ public class Query extends JPanel {
         public void actionPerformed(ActionEvent e) {
             _notifyListeners(_name);
         }
+        private String _name;
+    }
+
+    /** Panel containing an entry box and file chooser.
+     */
+    class QueryFileChooser extends Box implements ActionListener {
+        public QueryFileChooser(String name,
+                String defaultName,
+                String startingDirectory) {
+            super(BoxLayout.X_AXIS);
+            _directory = startingDirectory;
+            _entryBox = new JTextField(defaultName, _width);
+            JButton button = new JButton("Browse");
+            button.addActionListener(this);
+            add(_entryBox);
+            add(button);
+            // Add the listener last so that there is no notification
+            // of the first value.
+            _entryBox.addActionListener(new QueryActionListener(name));
+
+            // Add a listener for loss of focus.  When the entry gains
+            // and then loses focus, listeners are notified of an update,
+            // but only if the value has changed since the last notification.
+            // FIXME: Unfortunately, Java calls this listener some random
+            // time after the window has been closed.  It is not even a
+            // a queued event when the window is closed.  Thus, we have
+            // a subtle bug where if you enter a value in a line, do not
+            // hit return, and then click on the X to close the window,
+            // the value is restored to the original, and then sometime
+            // later, the focus is lost and the entered value becomes
+            // the value of the parameter.  I don't know of any workaround.
+            _entryBox.addFocusListener(new QueryFocusListener(name));
+
+            _name = name;
+        }
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser fileChooser 
+                    = new JFileChooser(new File(_directory));
+            int returnValue = fileChooser.showOpenDialog(Query.this);
+            if(returnValue == JFileChooser.APPROVE_OPTION) {
+                _entryBox.setText(fileChooser.getSelectedFile().getName());
+                _notifyListeners(_name);
+            }
+        }
+        public String getSelectedFileName() {
+            return _entryBox.getText();
+        }
+        private JTextField _entryBox;
+        private String _directory;
         private String _name;
     }
 
