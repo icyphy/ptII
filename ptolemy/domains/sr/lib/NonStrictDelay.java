@@ -51,8 +51,9 @@ than one token is received on the input port in a given iteration, only
 the final token is output on the next iteration.  If no tokens are received
 in a given iteration, no token is output on the next iteration.
 
-You can specify an the value of token to be emitted in the first
-iteration by setting the <i>initialValue</i> parameter.
+You can specify the value of the token to be emitted in the first
+iteration by setting the <i>initialValue</i> parameter.  If the
+parameter is left empty, then no initial token is emitted.
 
 @author Paul Whitaker and Elaine Cheong
 @version $Id$
