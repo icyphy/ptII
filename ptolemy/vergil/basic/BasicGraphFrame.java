@@ -54,6 +54,10 @@ import diva.graph.modular.Node;
 import diva.gui.toolbox.FocusMouseListener;
 import diva.gui.toolbox.JCanvasPanner;
 import diva.util.java2d.ShapeUtilities;
+
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.LocationAttribute;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -65,7 +69,15 @@ import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
@@ -302,6 +314,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	_cutAction = new CutAction();
 	_copyAction = new CopyAction();
 	_pasteAction = new PasteAction();
+        _createHierarchyAction = new CreateHierarchyAction();
 	_layoutAction = new LayoutAction();
 	_saveInLibraryAction = new SaveInLibraryAction();
 	_importLibraryAction = new ImportLibraryAction();
@@ -359,6 +372,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	HashSet nodeSet = new HashSet();
         // First get all the nodes.
 	for(int i = 0; i < selection.length; i++) {
+            
 	    if(selection[i] instanceof Figure) {
 		Object userObject = ((Figure)selection[i]).getUserObject();
                 if(graphModel.isNode(userObject)) {
@@ -376,7 +390,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     // Check to see if the head and tail are both being
                     // copied.  Only if so, do we actually take the edge.
                     Object head = graphModel.getHead(userObject);
+                    System.out.println("Head: " + ((NamedObj)head).getName());
                     Object tail = graphModel.getTail(userObject);
+                    System.out.println("Tail: " + ((NamedObj)tail).getName());
                     boolean headOK = nodeSet.contains(head);
                     boolean tailOK = nodeSet.contains(tail);
                     Iterator objects = nodeSet.iterator();
@@ -404,6 +420,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	    Iterator elements = namedObjSet.iterator();
 	    while(elements.hasNext()) {
                 NamedObj element = (NamedObj)elements.next();
+                System.out.println("Selected: " + element.getName());
                 // first level to avoid obnoxiousness with
 		// toplevel translations.
 		element.exportMoML(buffer, 1);
@@ -424,6 +441,260 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	}
 
     }
+
+    /** Create a typed composite actor that contains the selected actors 
+     *  and connections. The created typed composite actor is transparent.
+     *  The resulting topology is the same in the sense
+     *  of deep conctivities.
+     */
+    public void createHierarchy() {
+        GraphPane graphPane = _jgraph.getGraphPane();
+	GraphController controller =
+	        (GraphController)graphPane.getGraphController();
+	SelectionModel model = controller.getSelectionModel();
+	GraphModel graphModel = controller.getGraphModel();
+	Object selection[] = model.getSelectionAsArray();
+        // A set, because some objects may represent the same
+        // ptolemy object.
+        HashSet namedObjSet = new HashSet();
+	HashSet nodeSet = new HashSet();
+        
+        StringBuffer newPorts = new StringBuffer();
+        StringBuffer extRelations = new StringBuffer();
+        StringBuffer extConnections = new StringBuffer();
+        StringBuffer intRelations = new StringBuffer();
+        StringBuffer intConnections = new StringBuffer();
+        
+        // First get all the nodes.
+        try {
+            final CompositeEntity container = 
+                (CompositeEntity)graphModel.getRoot();
+            final String name = container.uniqueName("typed composite actor");
+            final TypedCompositeActor compositeActor = new TypedCompositeActor(
+                    container, name);
+            
+            for(int i = 0; i < selection.length; i++) {
+                if(selection[i] instanceof Figure) {
+                    Object userObject = ((Figure)selection[i]).getUserObject();
+                    if(graphModel.isNode(userObject)) {
+                        nodeSet.add(userObject);
+                        NamedObj actual =
+                            (NamedObj)graphModel.getSemanticObject(userObject);
+                        namedObjSet.add(actual);
+                        System.out.println("Selected: " + actual.getName());
+                    }
+                }
+            }
+
+            for(int i = 0; i < selection.length; i++) {
+                if(selection[i] instanceof Figure) {
+                    Object userObject = ((Figure)selection[i]).getUserObject();
+                    if(graphModel.isEdge(userObject)) {
+                        // Check to see if the head and tail are both being
+                        // selected.
+                        Object head = graphModel.getHead(userObject);
+                        Object tail = graphModel.getTail(userObject);
+                        
+                        boolean headOK = nodeSet.contains(head);
+                        boolean tailOK = nodeSet.contains(tail);
+                        Iterator objects = nodeSet.iterator();
+                        while(!(headOK && tailOK) && objects.hasNext()) {
+                            Object object = objects.next();
+                            if(!headOK && GraphUtilities.isContainedNode(head,
+                                    object, graphModel)) {
+                                headOK = true;
+                            }
+                            if(!tailOK && GraphUtilities.isContainedNode(tail,
+                                    object, graphModel)) {
+                                tailOK = true;
+                            }
+                        }
+                        // For the edges at the boundary.
+                        if((!headOK && tailOK)|| (headOK && !tailOK)) {
+                            IOPort port = null;
+                            IORelation relation = null;
+                            boolean duplicateRelation = false;
+                            if(head instanceof IOPort) {
+                                port = (IOPort)head;
+                                if(tail instanceof IOPort) {
+                                    relation = (IORelation)graphModel.
+                                        getSemanticObject(userObject);
+                                    duplicateRelation = true;
+                                } else {
+                                    relation = (IORelation)graphModel.
+                                        getSemanticObject(tail);
+                                }
+                            } else if(tail instanceof IOPort) {
+                                port = (IOPort)tail;
+                                relation = (IORelation)graphModel.
+                                    getSemanticObject(head);
+                            }
+                            System.out.println("port = " + port.getName() +
+                                    "\nrelation = " + relation.getName());
+                            if(port != null) {
+                                ComponentEntity entity = (ComponentEntity)
+                                    ((IOPort)port).getContainer();
+                                String portName = "port_" + i;
+                                    boolean isInput = ((IOPort)port).isInput();
+                                    boolean isOutput = ((IOPort)port).isOutput();
+                                    newPorts.append("<port name=\"" + portName + 
+                                            "\" class=\"ptolemy.actor.TypedIOPort"
+                                            + "\">\n");
+                                if(namedObjSet.contains(entity)) {
+                                    // The port is inside the hierarchy.
+                                    // The relation must be outside.
+                                    // Create composite port.
+                                    if(isInput) {
+                                        newPorts.append(
+                                                "<property name=\"input\"/>");
+                                    }
+                                    if(isOutput) {
+                                        newPorts.append(
+                                                "<property name=\"output\"/>");
+                                    }
+                                    newPorts.append("\n</port>\n");
+                                    // Create internal relation and links. 
+                                    // Note we can reuse
+                                    // the relation name, it is guranteed not
+                                    // duplicated.
+                                    intRelations.append("<relation name=\"" +
+                                            relation.getName() + "\" class=\"" +
+                                            "ptolemy.actor.TypedIORelation\"/>\n");
+                                    intConnections.append("<link port=\"" +
+                                            entity.getName() + "." + port.getName()
+                                            + "\" relation=\"" + 
+                                            relation.getName() + "\"/>\n");
+                                    intConnections.append("<link port=\"" +
+                                            portName + "\" relation=\"" + 
+                                            relation.getName() + "\"/>\n");
+                                    // Create external links.
+                                    if(duplicateRelation) {
+                                        extRelations.append("<relation name=\"" +
+                                            relation.getName() + "\" class=\"" +
+                                            "ptolemy.actor.TypedIORelation\"/>\n");
+                                        IOPort otherPort = (IOPort)tail;
+                                        ComponentEntity otherEntity = 
+                                            (ComponentEntity)otherPort.
+                                            getContainer();
+                                        extConnections.append("<link port=\"" +
+                                                otherEntity.getName() + "." +
+                                                otherPort.getName() + 
+                                                "\" relation=\"" +
+                                                relation.getName() + "\"/>\n");
+                                    }
+                                    extConnections.append("<link port=\"" +
+                                            compositeActor.getName() + "." 
+                                            + portName + "\" relation=\"" + 
+                                            relation.getName() + "\"/>\n");
+                                } else {
+                                    // The port is outside the hierarchy.
+                                    // The relation must be inside.
+                                    if(isInput) {
+                                        newPorts.append(
+                                                "<property name=\"output\"/>");
+                                    }
+                                    if(isOutput) {
+                                        newPorts.append(
+                                                "<property name=\"input\"/>");
+                                    }
+                                    newPorts.append("\n</port>\n");
+                                    // Create external relation and links. 
+                                    // NOTE: we can reuse
+                                    // the relation name, it is guranteed not
+                                    // duplicated.
+                                    extRelations.append("<relation name=\"" +
+                                            relation.getName() + "\" class=\"" +
+                                            "ptolemy.actor.TypedIORelation\"/>\n");
+                                    extConnections.append("<link port=\"" +
+                                            entity.getName() + "." + port.getName()
+                                            + "\" relation=\"" + 
+                                            relation.getName() + "\"/>\n");
+                                    extConnections.append("<link port=\"" +
+                                            compositeActor.getName() + "." 
+                                            + portName + "\" relation=\"" + 
+                                            relation.getName() + "\"/>\n");
+                                    // Create external links.
+                                    if(duplicateRelation) {
+                                        intRelations.append("<relation name=\"" +
+                                            relation.getName() + "\" class=\"" +
+                                            "ptolemy.actor.TypedIORelation\"/>\n");
+                                        IOPort otherPort = (IOPort)tail;
+                                        ComponentEntity otherEntity = 
+                                            (ComponentEntity)otherPort.
+                                            getContainer();
+                                        intConnections.append("<link port=\"" +
+                                                otherEntity.getName() + "." +
+                                                otherPort.getName() + 
+                                                "\" relation=\"" +
+                                                relation.getName() + "\"/>\n");
+                                    }
+                                    intConnections.append("<link port=\"" +
+                                            portName + "\" relation=\"" + 
+                                            relation.getName() + "\"/>\n");
+                                }
+                            }
+                        } else if (!headOK && !tailOK) {
+                            // We only selected an edge. Build one input
+                            // port, one output port for it, and build
+                            // a direct connection.
+                        }
+                    }
+                }
+            }
+
+            System.out.println(" new port:" + newPorts);
+
+            final Point2D point = new Point2D.Double();
+            
+            // copy the selection.
+            copy();
+            delete();
+            // Create the MoML command.
+            StringBuffer moml = new StringBuffer();
+            // If the dropObj defers to something else, then we
+            // have to check the parent of the object
+            // for import attributes, and then we have to
+            // generate import statements.  Note that everything
+            // imported by the parent will be imported now by
+            // the object into which this is dropped.
+            moml.append("<group>\n");
+            moml.append("<entity name=\"" + name + "\" class=\"ptolemy.actor"
+                        + ".TypedCompositeActor\">\n");
+            moml.append(newPorts);
+            // additional ports.
+            _copyNumber++;
+            _pasteToBuffer(moml);
+            // internal connections 
+            moml.append(intRelations);
+            moml.append(intConnections);
+            moml.append("</entity>\n");
+            // external relations.
+            moml.append(extRelations);
+            moml.append(extConnections);
+            // external connections.
+            moml.append("</group>\n");
+            System.out.println("************************");
+            System.out.println(moml.toString());
+            
+           
+            ChangeRequest request = null;
+            
+            request = new MoMLChangeRequest(
+                    this, container, moml.toString()) {
+                    protected void _execute() throws Exception {
+                        super._execute();
+                        NamedObj newObject = container.getEntity(name);
+                        //_setLocation(compositeActor, point);
+                    }
+                };
+            if (request != null) {
+                container.requestChange(request);
+            }
+        } catch (Exception ex) {
+	    MessageHandler.error("Creating hierarchy failed", ex);
+	}
+    }
+
 
     /** Remove the currently selected objects from this document, if any,
      *  and place them on the clipboard.
@@ -562,6 +833,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  the current model by issuing a change request.
      */
     public void paste() {
+        /*
 	Clipboard clipboard =
 	        java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
 	Transferable transferable = clipboard.getContents(this);
@@ -572,6 +844,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	if(transferable == null) return;
 	try {
 	    CompositeEntity toplevel = (CompositeEntity)model.getRoot();
+            System.out.println("Paste root: " + toplevel.getName());
             StringBuffer moml = new StringBuffer();
             // The pasted version will have the name prepended with
             // a unique number.  This isn't really what we want, but
@@ -581,10 +854,28 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	    moml.append((String)
                     transferable.getTransferData(DataFlavor.stringFlavor));
 	    moml.append("</group>\n");
+            System.out.println(moml.toString());
 	    toplevel.requestChange(
                     new MoMLChangeRequest(this, toplevel, moml.toString()));
 	} catch (Exception ex) {
-	    MessageHandler.error("Copy failed", ex);
+	    MessageHandler.error("Paste failed", ex);
+	}
+        */
+        GraphPane graphPane = _jgraph.getGraphPane();
+	GraphController controller =
+	        (GraphController)graphPane.getGraphController();
+	GraphModel model = controller.getGraphModel();
+        CompositeEntity toplevel = (CompositeEntity)model.getRoot();
+        StringBuffer moml = new StringBuffer();
+        moml.append("<group name=\"" + _copyNumber + "\">\n");
+        _copyNumber++;
+        _pasteToBuffer(moml);
+        moml.append("</group>\n");
+        try {
+            toplevel.requestChange(
+                    new MoMLChangeRequest(this, toplevel, moml.toString()));
+        } catch (Exception ex) {
+	    MessageHandler.error("Paste failed", ex);
 	}
     }
 
@@ -687,6 +978,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	diva.gui.GUIUtilities.addMenuItem(_editMenu, _copyAction);
 	diva.gui.GUIUtilities.addHotKey(_jgraph, _pasteAction);
 	diva.gui.GUIUtilities.addMenuItem(_editMenu, _pasteAction);
+        _editMenu.addSeparator();
+        diva.gui.GUIUtilities.addHotKey(_jgraph, _createHierarchyAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _createHierarchyAction);
 
         // May be null if there are not multiple views in the configuration.
         if (_viewMenu == null) {
@@ -735,6 +1029,26 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         // static members.
         return _directory;
     }
+
+    /** Paste the contents in the clipboard to a particular model.
+     */
+    protected StringBuffer _pasteToBuffer(StringBuffer moml) {
+        Clipboard clipboard =
+                java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
+	Transferable transferable = clipboard.getContents(this);
+        try {
+            // The pasted version will have the name prepended with
+            // a unique number.  This isn't really what we want, but
+            // it will have to do for now.  FIXME.
+            
+	    moml.append((String)
+                    transferable.getTransferData(DataFlavor.stringFlavor));
+        } catch (Exception ex) {
+	    MessageHandler.error("Paste failed", ex);
+	}
+        return moml;
+    }
+    
 
     /** Query the user for a filename and save the model to that file.
      *  This overrides the base class so that if we are in
@@ -859,6 +1173,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     protected Action _cutAction;
     protected Action _copyAction;
     protected Action _pasteAction;
+    protected Action _createHierarchyAction;
     protected JMenu _graphMenu;
     protected Action _layoutAction;
     protected Action _saveInLibraryAction;
@@ -900,6 +1215,33 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	public void actionPerformed(ActionEvent e) {
 	    copy();
 	}
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    //// CreateHierarchy
+
+    /** Action to create a typed composite actor that contains the
+     *  the selected actors.
+     */
+    private class CreateHierarchyAction extends AbstractAction {
+        
+        /**  Create a new action to introduce a level of hierarchy.
+         */
+        public CreateHierarchyAction() {
+            super("CreateHierarchy");
+            putValue("tooltip",
+                    "Create a TypedCompositeActor that contains the"
+                     + " selected actors.");
+	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_H,
+                            java.awt.Event.CTRL_MASK));
+	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    new Integer(KeyEvent.VK_H));
+	}
+        
+        public void actionPerformed(ActionEvent e) {
+            createHierarchy();
+        }
     }
 
     /////////////////////////////////////////////////////////////////////
