@@ -67,6 +67,7 @@ will be read at the same firing time, in the order in which
 they arrived.  Thus, no input tokens are lost.
 
 @author Edward A. Lee
+@version $Id$
 */
 
 public class Select extends Transformer {
