@@ -76,13 +76,15 @@ test UtilityFunctions-1.1 {Check readFile method on a file that does not exist} 
 
     #$tree displayParseTree " "
     catch {set res [$tree evaluateParseTree]} msg
-    list $msg
+    # Use range here because the last part of the message varies
+    # depending on the platform
+    list [string range $msg 0 260]
 } {{ptolemy.kernel.util.IllegalActionException: Error invoking function public static ptolemy.data.StringToken ptolemy.data.expr.UtilityFunctions.readFile(java.lang.String) throws ptolemy.kernel.util.IllegalActionException
 
 Because:
 File not found
 Because:
-not a file (The system cannot find the file specified)}}
+not a fi}}
 
 ######################################################################
 ####
