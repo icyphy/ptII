@@ -268,7 +268,7 @@ jtclsh is a startup script for Tcl Blend, which is used to run the test suite.
 You only need to have jtclsh or tclsh if you are planning on running
 the test suite.
 See http://www.scriptics.com/java for Tcl Blend sources and binaries.])
-	AC_PATH_PROGS(TCLSH, "tclsh80 tclsh8.0 tclsh", tclsh)
+	AC_PATH_PROGS(TCLSH, "tclsh80 tclsh8.0 tclsh tclsh80.exe", tclsh)
         if test ! -x "$TCLSH"; then	
 		AC_MSG_WARN([tclsh80 not found either, so we default to '$TCLSH'.
 tclsh is only necessary for the test suite.]);
