@@ -317,16 +317,16 @@ Berkeley, CA 94706</property>
                     <property name="folderGroup"/>
                 </action>
                 <action class="com.installshield.product.actions.Launcher" id="bean8">
-                    <displayName>Vergil DSP Launcher</displayName>
+                    <displayName>Vergil (DSP 0nly) Launcher</displayName>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
                         <property name="showConsole">False</property>
                         <property name="launcherUIDisplayTime">10</property>
                         <property name="fileName">vergildsp.exe</property>
                     </extendedProperty>
-                    <property name="title">Vergil DSP Launcher</property>
+                    <property name="title">Vergil (DSP Only) Launcher</property>
                     <property name="mainClass">ptolemy.actor.gui.MoMLApplication</property>
-                    <property name="mainClassArguments">./ptolemy/configs/dspConfiguration.xml ./ptolemy/configs/dspIntro.htm</property>
+                    <property name="mainClassArguments">./ptolemy/configs/vergilConfigurationDSP.xml ./ptolemy/configs/introDSP.htm</property>
                     <property array="True" length="8" name="classPath" type="string">
                         <arrayItem>./</arrayItem>
                         <arrayItem>./lib/user.jar</arrayItem>
@@ -342,7 +342,7 @@ Berkeley, CA 94706</property>
                     <property name="JVMId">jvm</property>
                 </action>
                 <action class="com.installshield.product.actions.DesktopIcon" id="bean9">
-                    <displayName>Vergil DSP</displayName>
+                    <displayName>Vergil (DSP Only)</displayName>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32DesktopIconExtra">
                         <property name="iconFile">doc\img\ptIIplanet.ico</property>
@@ -351,7 +351,7 @@ Berkeley, CA 94706</property>
                         <property name="folderContext">$AllUsersPrograms$</property>
                     </extendedProperty>
                     <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
-                    <property name="name">Vergil DSP</property>
+                    <property name="name">Vergil (DSP only)</property>
                     <property name="target">vergildsp.exe</property>
                     <property name="args"/>
                     <property name="workingDirectory"/>
@@ -619,7 +619,7 @@ Berkeley, CA 94706</property>
 <buildConfiguration>
     <property name="name">Default</property>
     <property name="outputDirectory">default</property>
-    <property name="archiveName">ptIIsetup.jar</property>
+    <property name="archiveName">ptII1_0ptinybeta2setup.jar</property>
     <property name="archiveType">1</property>
     <property array="True" length="3" name="support" type="com.installshield.isje.build.BuildConfigurationSupport">
         <arrayItem type="com.installshield.isje.wizard.PlatformSupport">
@@ -638,7 +638,7 @@ Berkeley, CA 94706</property>
             <property array="True" length="2" name="distributions" type="com.installshield.isje.build.Distribution">
                 <arrayItem type="com.installshield.wizard.platform.win32.Win32LauncherDistribution">
                     <property name="enabled">True</property>
-                    <property name="fileName">ptIIsetup.exe</property>
+                    <property name="fileName">ptII1_0ptinybeta2setup.exe</property>
                     <property array="True" length="3" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
                         <arrayItem type="com.installshield.util.jvm.JVMFile">
                             <property name="fullSearch">False</property>
