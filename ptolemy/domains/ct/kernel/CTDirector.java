@@ -930,7 +930,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
     // NOTE: Time objects are not initialized here. They are initialized at
     // the end of the preinitialize method of this director.
     private void _initializeLocalVariables() throws IllegalActionException {
-        _errorTolerance = ((DoubleToken)errorTolerance.getToken()).doubleValue();
+        _errorTolerance =
+            ((DoubleToken)errorTolerance.getToken()).doubleValue();
         _initStepSize = ((DoubleToken)initStepSize.getToken()).doubleValue();
         _maxIterations = ((IntToken)maxIterations.getToken()).intValue();
         _maxStepSize = ((DoubleToken)maxStepSize.getToken()).doubleValue();
