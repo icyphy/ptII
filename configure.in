@@ -1,5 +1,5 @@
 nl	This file is an input file used by the GNU "autoconf" program to
-dnl	generate the file "configure", which is run to configure the
+dnl	generate the file "configure", which is run to configure the 
 dnl	Makefile in this directory.
 
 # Version: $Id$
