@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StateTracker" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -61,15 +61,11 @@ David Hermann, Research in Motion</text></svg></configure>
         </property>
     </entity>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 170.0">
-        </property>
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
         </property>
         <port name="out" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -213,8 +209,6 @@ expression to show how the Set and Output Actions still function as normally.</t
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
-                </property>
                 <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -264,8 +258,6 @@ expression to show how the Set and Output Actions still function as normally.</t
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
-                </property>
                 <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -314,8 +306,6 @@ expression to show how the Set and Output Actions still function as normally.</t
         <entity name="relation" class="ptolemy.domains.fsm.modal.TransitionRefinement">
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
                 </property>
                 <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -383,8 +373,6 @@ expression to show how the Set and Output Actions still function as normally.</t
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
-                </property>
                 <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -450,8 +438,6 @@ expression to show how the Set and Output Actions still function as normally.</t
         <entity name="C" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
                 </property>
                 <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
