@@ -974,6 +974,63 @@ fi
 
 
 #--------------------------------------------------------------------
+#       Java Native Interface (JNI)
+#       Ptolemy II can interface to native code using JNI
+#--------------------------------------------------------------------
+# PTJNI_DIR is set to matlab and used in
+# $PTII/makefile if gcc or cc is found.
+PTJNI_DIR=
+
+if test ! -d "$PTII/jni"; then
+    AC_MSG_RESULT([$PTII/jni is not present,
+        so we need not find gcc or cc])
+else
+    AC_MSG_CHECKING([for gcc])
+    AC_PATH_PROG(PTCC, gcc)
+    if test "${PTCC:-none}" != "none"; then
+        AC_MSG_RESULT([$PTCC])
+        PTJNI_DIR=jni
+    else    
+        AC_MSG_WARN([Failed to find gcc])
+        AC_MSG_CHECKING([for cc])
+        AC_PATH_PROG(PTCC, cc)
+        if test "${PTCC:-none}" != "none"; then
+            AC_MSG_RESULT([$PTCC])
+            PTJNI_DIR=jni
+        else    
+            AC_MSG_WARN([Failed to find gcc or cc, so we will
+    not be able to compile the JNI interface in $PTII/jni]);
+        fi
+    fi
+
+    AC_MSG_CHECKING([for the proper JNI architecture])
+    PTJNI_ARCHITECTURE=win32;;
+    case "`uname -s`" in
+	 Linux)	 PTJNI_ARCHITECTURE=linux;;
+	 SunOS)	 PTJNI_ARCHITECTURE=solaris;;
+	 *) PTJNI_ARCHITECTURE=unknown;;
+    esac
+
+    AC_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
+
+    AC_MSG_CHECKING([for the proper JNI architecture include directory])
+    if test ! -d "$PTJAVADIR/include/$PTJNI_ARCHITECTURE"; then 
+	AC_MSG_WARN(["$PTJAVADIR/include/$PTJNI_ARCHITECTURE" was not found.
+    As a result, compilation of JNI actors will fail.])
+    else 
+	AC_MSG_RESULTS(["$PTJAVADIR/include/$PTJNI_ARCHITECTURE"])
+    fi
+
+    AC_MSG_CHECKING([for the proper shared library suffix])
+    PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
+    case "`uname -s`" in
+	 SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=.so;;
+	 *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
+    esac
+    AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
+fi
+
+#--------------------------------------------------------------------
 #      	Jode is a java decompiler.  It is useful for looking at the contents
 #       of class files.  It can be downloaded from 
 #	http://jode.sourceforge.net/download.php
@@ -1555,6 +1612,16 @@ AC_SUBST(PTJHDL_DIR)
 
 # Set to jmf if jmf.jar was found
 AC_SUBST(PTJMF_DIR)
+
+# JNI architecture, used to compile C files
+AC_SUBST(PTJNI_ARCHITECTURE)
+
+# Set to jni and used in 
+# $PTII/makefile if gcc or cc was found
+AC_SUBST(PTJNI_DIR)
+
+# JNI shared library suffix
+AC_SUBST(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 # Set to joystick if Joystick.jar was found
 AC_SUBST(PTJOYSTICK_DIR)
