@@ -142,26 +142,26 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             ctrl._chooseTransition(st.preemptiveTransitionList());
         if (tr != null) {
 
-	    Actor[] actors = tr.destinationState().getRefinement();
+            Actor[] actors = tr.destinationState().getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (actors[i].prefire()) {
                         actors[i].fire();
-			actors[i].postfire();
+                        actors[i].postfire();
                     }
                 }
             }
 
             return;
         }
-	Iterator actors = _enabledRefinements.iterator();
-	while (actors.hasNext()) {
-	    Actor actor = (Actor)actors.next();
+        Iterator actors = _enabledRefinements.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
             if (_debugging) _debug(getName(), " fire refinement",
                     ((ptolemy.kernel.util.NamedObj)actor).getName());
-	    actor.fire();
-	}
-	ctrl._setInputsFromRefinement();
+            actor.fire();
+        }
+        ctrl._setInputsFromRefinement();
         ctrl._chooseTransition(st.nonpreemptiveTransitionList());
         return;
     }
