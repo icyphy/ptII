@@ -91,8 +91,9 @@ public class Director implements ActorCodeGenerator {
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ComponentCodeGenerator helperObject = _getHelper((NamedObj)actor);
-            helperObject.generateWrapupCode(code);
+            CodeGeneratorHelper helperObject = 
+                (CodeGeneratorHelper) _getHelper((NamedObj)actor);
+            helperObject.generateFireCode(code);
         }
     }
     
@@ -112,6 +113,10 @@ public class Director implements ActorCodeGenerator {
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             ComponentCodeGenerator helperObject = _getHelper((NamedObj)actor);
+            // Set the buffer sizes and offsets of each port of the actor
+            // to the default values in the initialization phase.
+            ((CodeGeneratorHelper)helperObject).resetBufferSizes();
+            ((CodeGeneratorHelper)helperObject).resetOffsets();
             code.append(helperObject.generateInitializeCode());
         }
         return code.toString();
@@ -173,5 +178,5 @@ public class Director implements ActorCodeGenerator {
     private NamedObj _director;
     
     // The code generator containing this director helper.
-    private CodeGenerator _codeGenerator;
+    protected CodeGenerator _codeGenerator;
 }

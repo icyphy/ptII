@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -35,7 +36,6 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -71,35 +71,32 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** Do nothing. Subclasses may extend this method to generate the fire
      *  code of the associated component and append the code to the given
      *  string buffer.
-     * @param stream The given string buffer.
+     *  @param stream The given string buffer.
+     *  @exception illegalActionException Subclasses may throw it.
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
     }
 
-    /** Set the _firingCount and _firingPerIteration to their default
-     *  values. Subclasses may extend this method to generate the
-     *  initialize code of the associated component and append the
-     *  code to the given string buffer.
-     * @param stream The given string buffer.
+    /** Return an empty string. Subclasses may extend this method to
+     *  generate the initialize code of the associated component and
+     *  append the code to the given string buffer.
+     *  @param stream The given string buffer.
+     *  @exception IllegalActionException Subclass may throw it.
      */
     public String generateInitializeCode()
             throws IllegalActionException {
-        _firingCount = 0;
-        _firingsPerIteration = 1;
         return "";
     }
 
-    /** Reset the _firingCount and _firingPerIteration to their default
-     *  values. Subclasses may extend this method to generate
+    /** Do nothing. Subclasses may extend this method to generate
      *  the wrapup code of the associated component and append the
      *  code to the give string buffer.
-     * @param stream The given string buffer.
+     *  @param stream The given string buffer.
+     *  @exception IllegalActionException Subclasses may throw it.
      */
     public void generateWrapupCode(StringBuffer stream)
             throws IllegalActionException {
-        _firingCount = 0;
-        _firingsPerIteration = 1;
     }
 
     /** Get the component associated with this helper.
@@ -109,22 +106,22 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return _component;
     }
 
-    /** Get the number of times that the generateFireCode() method
-     *  of this helper has been called.
-     * @return The number of times that the generateFireCode() method
-     *  of this helper has been called.
+    /** Get the buffer size of the given port of this actor.
+     *  @param port The given port.
+     *  @return The buffer size of the given port of this actor.
      */
-    public int getFiringCount() {
-        return _firingCount;
+    public int getBufferSize(IOPort port) {
+        return ((Integer) _bufferSizes.get(port)).intValue();
     }
-
-    /** Get the number of times that the generateFireCode() method
-     *  of this helper is called per iteration.
-     * @return The number of times that the generateFireCode() method
-     *  of this helper has been called.
+    
+    /** Get the offset in the buffer of a given port to which a token
+     *  should be put.
+     *  @param port The given port.
+     *  @return The offset in the buffer of a given port to which a token
+     *   should be put.
      */
-    public int getFiringsPerIteration() {
-        return _firingsPerIteration;
+    public int getOffset(IOPort port) {
+        return ((Integer) _offsets.get(port)).intValue();
     }
 
     /** Return the value of the specified parameter of the associated actor.
@@ -189,14 +186,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     // Channel number specified. This must be a multiport.
                     result.append("[" + channelAndOffset[0] + "]");
                 }
-                if (!channelAndOffset[1].equals("")) {
-                    int temp = _firingCount * DFUtilities.getRate(port);
-                    String offset = channelAndOffset[1] + " + " + temp;
-                    result.append("[" + offset + "]");
-                } else if (_firingsPerIteration > 1) {
+                if (!channelAndOffset[1].equals("") && getBufferSize(port) > 1) {
+                    //int temp = _firingCount * DFUtilities.getRate(port);
+                    //String offset = channelAndOffset[1] + " + " + temp;
+                    //String temp = getOffset(port) + " + " + channelAndOffset[1];
+                    int temp = getOffset(port) + (new Integer(channelAndOffset[1])).intValue();
+                    temp = temp % getBufferSize(port);
+                    result.append("[" + temp + "]");
+                } else if (getBufferSize(port) > 1) {
                     // Did not specify offset, so the receiver buffer size is 1.
                     // This is multiple firing.
-                    result.append("[" + _firingCount + "]");
+                    int temp = getOffset(port) % getBufferSize(port);
+                    result.append("[" + temp + "]");
                 }
                 return result.toString();
             }
@@ -217,18 +218,23 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
 
                 String[] channelAndOffset = _getChannelAndOffset(name);
+                
                 if (channelAndOffset[0].equals("")) {
                     result.append(getSinkChannels(port, 0));
                 } else {
                     int channel = (new Integer(channelAndOffset[0])).intValue();
                     result.append(getSinkChannels(port, channel));
                 }
-                if (!channelAndOffset[1].equals("")) {
-                    result.append("[" + channelAndOffset[1] + "]");
-                } else if (_firingsPerIteration > 1) {
+                if (!channelAndOffset[1].equals("") && getBufferSize(port) > 1) {
+                    //String temp = getOffset(port) + " + " + channelAndOffset[1];
+                    int temp = getOffset(port) + (new Integer(channelAndOffset[1])).intValue();
+                    temp = temp % getBufferSize(port);
+                    result.append("[" + temp + "]");
+                } else if (getBufferSize(port) > 1) {
                     // Did not specify offset, so the receiver buffer size is 1.
                     // This is multiple firing.
-                    result.append("[" + _firingCount + "]");
+                    int temp = getOffset(port) % getBufferSize(port);
+                    result.append("[" + temp + "]");
                 }
                 return result.toString();
             }
@@ -436,24 +442,54 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return result.toString();
     }
 
-    /** Set the number of times that the generateFireCode() method
-     *  of this helper has been called.
-     * @param firingCount The number of times that the generateFireCode()
-     *  method of this helper has been called.
+    /** Reset the buffer sizes of all ports of the associated actor to the
+     *  default value of 1.
      */
-    public void setFiringCount(int firingCount) {
-        _firingCount = firingCount;
+    public void resetBufferSizes() {
+        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            setBufferSize(inputPort, 1);
+        }
+        Iterator outputPorts = ((Actor) _component).outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort outputPort = (IOPort) outputPorts.next();
+            setBufferSize(outputPort, 1);
+        }
+    }
+    
+    /** Reset the offsets of all ports of the associated actor to the
+     *  default value of 0.
+     */
+    public void resetOffsets() {
+        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            setOffset(inputPort, 0);
+        }
+        Iterator outputPorts = ((Actor) _component).outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort outputPort = (IOPort) outputPorts.next();
+            setOffset(outputPort, 0);
+        }
+    }
+    
+    /** Set the buffer size of a given port.
+     *  @param port The given port.
+     *  @param bufferSize The buffer size to be set to that port.
+     */
+    public void setBufferSize(IOPort port, int bufferSize) {
+        _bufferSizes.put(port, new Integer(bufferSize));
     }
 
-    /** Set the number of times that the generateFireCode() method
-     *  of this helper is called per iteration.
-     * @param firingsPerIteration The number of times that the
-     *  generateFireCode() method of this helper is called per iteration.
+    /** Set the offset in a buffer of a given port to which a token should
+     *  be put.
+     *  @param port The given port.
+     *  @param offset The offset to be set to the buffer of that port.
      */
-    public void setFiringsPerIteration(int firingsPerIteration) {
-        _firingsPerIteration = firingsPerIteration;
+    public void setOffset(IOPort port, int offset) {
+        _offsets.put(port, new Integer(offset));
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -495,10 +531,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     /** The associated component. */
     private NamedObj _component;
+
     // Number of firings already fired. The default value is 0.
-    private int _firingCount;
+    //private int _firingCount;
+    private HashMap _bufferSizes = new HashMap();
+
     // Total number of firings per iteration. The default value is 1.
-    private int _firingsPerIteration;
+    //private int _firingsPerIteration;
+    private HashMap _offsets = new HashMap();
+
     // A set of parameters that have been referenced.
     private HashSet _referencedParameters = new HashSet();
 }
