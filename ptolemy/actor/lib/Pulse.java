@@ -221,6 +221,8 @@ public class Pulse extends SequenceSource {
             newobj.attributeChanged(newobj.indexes);
             newobj.values = (Parameter)newobj.getAttribute("values");
             newobj.attributeChanged(newobj.values);
+            newobj.repeat = (Parameter)newobj.getAttribute("repeat");
+            newobj.attributeChanged(newobj.repeat);
             // set the type constraints
 	    ArrayType valuesArrayType = (ArrayType)newobj.values.getType();
 	    InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
