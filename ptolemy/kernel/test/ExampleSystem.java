@@ -219,7 +219,7 @@ public class ExampleSystem implements Serializable {
 
     /**
      * Print the connected ports for a given ComponentPort.  Restricted
-     * to the same level of hierachy.
+     * to the same level of hierarchy.
      * @see ptolemy.kernel.Port#connectedPorts()
      * @param ComponentPort Print the connected ports for this Port.
      */
