@@ -164,6 +164,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _stopTime;
     }
 
+    /** Return the suggested next step size.
+     *  @return The suggested next step size.
+     */
+    public final double getSuggestedNextStepSize() {
+        return _suggestedNextStepSize;
+    }
+
     /** Return the time accuracy such that two time stamp within this
      *  accuracy is considered identical.
      *  @return The time accuracy.
@@ -320,6 +327,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
         _currentTime = tnow;
     }
 
+    /** Set the suggested next step size.
+     *  @param nextstep The suggested next step size.
+     */
+    public void setSuggestedNextStepSize(double nextstep) {
+        _suggestedNextStepSize = nextstep;
+    }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
@@ -436,6 +450,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     // Simulation progress variables.
     private double _currentTime;
     private double _currentStepSize;
+    private double _suggestedNextStepSize;
 
     //A table for wave form break points.
     private TotallyOrderedSet _breakPoints;
