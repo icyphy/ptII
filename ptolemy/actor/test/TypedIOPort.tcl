@@ -121,6 +121,36 @@ test TypedIOPort-3.2 {set resolved types} {
     list [expr {[$p1 getDeclaredType] == [java::null]}] $rt1
 } {1 ptolemy.data.DoubleToken}
 
+######################################################################
+####
+#
+test TypedIOPort-4.2 {test clone} {
+    # use set up above
+    set p2 [$p1 clone]
+    set rt2 [[$p2 getResolvedType] getName]
+
+    list [expr {[$p1 getDeclaredType] == [java::null]}] $rt1 \
+    [expr {[$p2 getDeclaredType] == [java::null]}] $rt2
+} {1 ptolemy.data.DoubleToken 1 ptolemy.data.DoubleToken}
+
+######################################################################
+####
+#
+test TypedIOPort-4.3 {test clone} {
+    # use set up above
+
+    set tInt [java::new ptolemy.data.IntToken]
+    set tString [java::new ptolemy.data.StringToken]
+    $p1 setDeclaredType [$tInt getClass]
+
+    set tt2 [$p2 getTypeTerm]
+    $tt2 setValue [$tString getClass]
+
+    set dt1 [[$p1 getDeclaredType] getName]
+    set rt1 [[$p1 getResolvedType] getName]
+    set rt2 [[$p2 getResolvedType] getName]
+    list $dt1 $rt1 [expr {[$p2 getDeclaredType] == [java::null]}] $rt2
+} {ptolemy.data.IntToken ptolemy.data.IntToken 1 ptolemy.data.StringToken}
 
 ######################################################################
 ####
