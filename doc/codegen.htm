@@ -8,6 +8,7 @@
 <body>
 <h1>Code Generation</h1>
 <h2>Contents</h2>
+
 <font color="red">Ptolemy II 2.0-beta: Note that the hyperlinks below
 do not work from within Vergil.  This is because the Java URL class
 does not handle fragments very well.  We are working on a fix.</font>
@@ -506,14 +507,73 @@ Orthogonal Communication Model</a>
 <li> The code generator will invoke an separate java process that
 generates code in 
 <CODE>$PTII/ptolemy/copernicus/<b>applet</b>/cg/OrthogonalCom</CODE>
-<li> The co
 </ol>
+
+If you would like to generate an applet in a directory outside
+of the Ptolemy tree, follow these steps:
+
+<ol> 
+<li> Open your model
+<li> Select View -&gt; Code Generator
+<li> Change the <code>CodeGenerator</code> combo box from
+<code>java</code> to <code>applet</code>
+
+<li> Change the <CODE>ptIIUserDirectory</CODE> to
+the directory where you would like the applet to be created.
+Be sure to place the directory name in double quotes:
+<pre>
+"d:/tmp/testapplet2"
+</pre>
+Note that the directory must already exist.  If it does
+not exist, then the default directory will automatically
+be used.
+
+<li> Change the <CODE>targetPath</CODE> to the string
+<CODE>modelName</CODE>.  Note that no double quotes are used
+here.  This will 
+
+<li> Hit the Parameters button, which will update the
+parameters and display their values.
+
+<li> Hit the Generate Button
+
+<li> The code generator will invoke an separate java process that
+generates an applet.
+</ol>
+
+See the limitations below for information about how to
+handle missing classes at runtime.
+
+
+
+
 
 <h3><a name="#appletLimitations">Applet Limitations</a></h3>
 <menu>
+
+<li> Under Web Start, you may need to add classes to the
+<CODE>necessaryClasses</CODE> parameter so that
+the <CODE>necessaryClassPath</CODE> parameter will get
+updated with the appropriate jar files and passed
+to the subprocess that invokes the applet code generator.
+  <br>The reason this is necessary is because Web Start
+is invoked using a special class loader that
+accesses separate jar files in the Web Start cache.
+The applet code generator does not have direct
+access to the Web Start class loader, so we tell
+it what classes we need so that they can be added
+to the class path.
+
+
 <li>It would be nice if the applet code generator would bundle
 up the necessary class files in a single jar file so that
-it was easier to install an applet
+it was easier to install an applet.
+<li>The applet code generator could use tree shaking to
+create a much smaller jar file that contains only the classes
+that are used.  One issue is that the user would need
+to exercise the applet by invoking all the features
+of the GUI, such as the plot format window.
+
 <li>The applet code generator should read the value of the
 <code>_vergilSize</code> attribute and use it when generating
 the <code><i>xxx</i>Model.htm</code> file.
