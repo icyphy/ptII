@@ -60,7 +60,7 @@ import java.util.*;
  * @see pt.data.expr.PtParser 
  * @see pt.data.Token 
 */
-public class Parameter extends NamedObj implements Observer, Cloneable {
+public class Parameter extends NamedObj implements Observer {
     
     /** Construct a Parameter with the given Token in the workspace of its 
      *  container with the given name. 
@@ -109,23 +109,27 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Promote the clone method of the base class Object to public.
-     *  FIXME: needs to be fully implemented to return a proper clone.
-     *  @param The workspace the cloned Parameter should be place in.
+    /** Clone the parameter. 
+     *  FIXME: what is meant by cloning a parameter?
+     *  @param The workspace in which to place the cloned Parameter.
+     *  @exception CloneNotSupportedException If the parameter
+     *   cannot be cloned.
      *  @see java.lang.Object#clone()
      *  @return An identical Parameter.
      */
-    public Object clone(Workspace newWS) throws CloneNotSupportedException {
-        //Token newToken = _token.clone();
-        //String name = getName();
-        
-        //if (_origToken != null) {
-        //   ....            
-        return super.clone();
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+      Parameter result = (Parameter)super.clone();
+      pt.data.Token token = getToken();
+      result.setToken(token);
+      //String currentValue = _getCurrentValue();
+      // What does it mean to clone a Param? Current Token, initial value, 
+      // currentvalue etc??
+      return result;
     }
 
     /** Return a description of the object.
      *  @param verbosity The level of verbosity.
+     *  @return A String desrcibing the Parametr.
      *  FIXME: needs to be finisihed.
      */
     public String description(int verbosity) {
@@ -133,8 +137,9 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
     }
 
 
-    /** Get the Nameable this Parameter is attached to. It should be cast to 
-     *  a Namedobj as Parameters can only be attached to NamedObj objects
+    /** Get the Nameable this Parameter is attached to. It should be cast
+     *  to a Namedobj as Parameters can only be attached to NamedObj objects
+     *  @return The container of this parameter.
      */
     public Nameable getContainer() {
         return _container;
@@ -144,11 +149,11 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
      *  Parameter can depend on. The scope is limited to the params in the 
      *  same NamedObj and those one level up in the hierarchy.
      *  It catches any exceptions thrown by NamedList as 1) the param must 
-     *  have a container with a NamedList of Parameters, and 2) if there is a
-     *  clash in the names of the two scopeing levels, the parameter from 
+     *  have a container with a NamedList of Parameters, and 2) if there is
+     *  a clash in the names of the two scopeing levels, the parameter from 
      *  the top level is considered not to be visible in the scope of this 
      *  Parameter
-     *  
+     *  @return The parameters on which this parameter can depend.
      */
     public NamedList getScope() {
         if ( (_scope != null) && (_lastVersion == workspace().getVersion()) ) {
@@ -217,7 +222,57 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
             _token.notifySubscribers();
         }
     }
-   
+
+    /** Specify the container NamedObj, adding this parameter to the 
+     *  list of parameters in the container.  If the container already 
+     *  contains a parameter with the same name, then throw an exception 
+     *  and do not make any changes.  Similarly, if the container is 
+     *  not in the same workspace as this parameter, throw an exception.
+     *  If the parameter already has a container, remove
+     *  this parameter from its parameter list first.  Otherwise, remove 
+     *  it from the list of objects in the workspace. If the argument 
+     *  is null, then remove it from its container,
+     *  and add it to the list of objects in the workspace.
+     *  If the parameter is already contained by the entity, do nothing.
+     *  This method is synchronized on the
+     *  workspace and increments its version number.
+     *  @param namedobj The container to attach this parameter to..
+     *  @exception IllegalActionException If this parameter is not of the
+     *   expected class for the container, or it has no name,
+     *   or the parameter and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   a parameter with the name of this parameter.
+     */
+    public void setContainer(NamedObj namedobj)
+            throws IllegalActionException, NameDuplicationException {
+        if (namedobj != null && workspace() != namedobj.workspace()) {
+            throw new IllegalActionException(this, namedobj,
+                "Cannot set container because workspaces are different.");
+        }
+        synchronized(workspace()) {
+            NamedObj prevcontainer = (NamedObj)getContainer();
+            if (prevcontainer == namedobj) return;
+            // Do this first, because it may throw an exception.
+            if (namedobj != null) {
+                namedobj.addParameter(this);
+                if (prevcontainer == null) {
+                    workspace().remove(this);
+                }
+            }
+            _container = namedobj;
+            if (namedobj == null) {
+                // Ignore exceptions, which mean the object is already
+                // on the workspace list.
+                try {
+                    workspace().add(this);
+                } catch (IllegalActionException ex) {}
+            }
+            if (prevcontainer != null) {
+                prevcontainer.removeParameter(this);
+            }
+            workspace().incrVersion();
+        }
+    }
 
     /** Put a new Token in this Parameter. This is the way to give the 
      *  give the Parameter a new simple value.
@@ -261,10 +316,10 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
     
 
     /** Get a string representation of the current parameter value.
-     * @return A String representing the current value.
+     *  @return A String representing the class and the current token.
      */	
     public String toString() {
-        String s =  (super.toString() + " " + getToken().toString());
+        String s =  super.toString() + " " + getToken().toString();
         return s;
     }
 
@@ -300,6 +355,7 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
      *  FIXME: currently this just checks if they are the same type!!
      */
     protected void _checkType(pt.data.Token t) {
+        if (_token == null) return; 
         String type1 = this.getToken().getClass().getName();
         if( !(type1.equals(t.getClass().getName()))) {
             String str = "Cannot store a Token of type ";
@@ -308,7 +364,26 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
             throw new IllegalArgumentException(str);
         }
     }
-    
+
+    /** Clear references that are not valid in a cloned object. The clone()
+     *  method makes a field-by-field copy, which results
+     *  in invalid references to objects. 
+     *  In this class, this method reinitializes the private members.
+     *  @param ws The workspace the cloned object is to be placed in.
+     */
+    protected void _clear(Workspace ws) {
+        super._clear(ws);
+        _container = null;
+        _token = null;
+        _origToken = null;
+        _initialValue = null;
+        _parser = null;
+        _parseTreeRoot = null;
+        _scope = null;
+        _lastVersion = 0;
+        
+    }
+
         
     
     //////////////////////////////////////////////////////////////////////////
