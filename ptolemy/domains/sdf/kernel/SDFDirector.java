@@ -36,6 +36,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
@@ -49,6 +50,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -333,11 +335,35 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @return True if data are transferred.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
+        if (!port.isInput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferInputs on a port is not an opaque" +
+                    "input port.");
+        }
         int rate = SDFScheduler.getTokenConsumptionRate(port);
 	boolean wasTransferred = false;
-	for (int k = 0; k < rate; k++) {
-	    wasTransferred |= super.transferInputs(port);
-	}
+        for (int i = 0; i < port.getWidth(); i++) {
+            try {
+                for (int k = 0; k < rate; k++) {
+                    if (port.hasToken(i)) {
+                        Token t = port.get(i);
+                        if (_debugging) _debug(getName(),
+                                "transferring input from "
+                                + getName());
+                        port.sendInside(i, t);
+                        wasTransferred = true;
+                    } else {
+                        throw new IllegalActionException(this, port,
+                                "Port should consume " + rate
+                                + " tokens, but there were only "
+                                + k + " tokens available.");
+                    }
+                }
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
 	return wasTransferred;
     }
 
@@ -355,11 +381,35 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferOutputs on a port that " 
+                    + "is not an opaque input port.");
+        }
         int rate = SDFScheduler.getTokenProductionRate(port);
 	boolean wasTransferred = false;
-	for (int k = 0; k < rate; k++) {
-	    wasTransferred |= super.transferOutputs(port);
-	}
+        for (int i = 0; i < port.getWidthInside(); i++) {
+            try {
+                for (int k = 0; k < rate; k++) {
+                    if (port.hasTokenInside(i)) {
+                        Token t = port.getInside(i);
+                        if (_debugging) _debug(getName(),
+                                "transferring output from "
+                                + getName());
+                        port.send(i, t);
+                        wasTransferred = true;
+                    } else {
+                        throw new IllegalActionException(this, port,
+                                "Port should produce " + rate
+                                + " tokens, but there were only "
+                                + k + " tokens available.");
+                    }
+                }
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
 	return wasTransferred;
     }
 
