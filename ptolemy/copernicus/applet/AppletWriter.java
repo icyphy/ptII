@@ -442,7 +442,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     String pathName = className.replace('.', '/');
                     String directoryName = pathName.substring(0,  
                             pathName.lastIndexOf("/"));
-                    String jarFileName = directoryName + "/"
+                    String jarFileName = directoryName
                         + directoryName.substring(
                                 directoryName.lastIndexOf("/"))
                         + ".jar";
