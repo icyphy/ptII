@@ -69,9 +69,6 @@ public class DoubleToFix extends Transformer {
    
 	mode = new Parameter(this, "mode", new StringToken("Round"));
         mode.setTypeEquals(BaseType.STRING);
-
-        attributeChanged( precision );
-        attributeChanged( mode );
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -86,29 +83,11 @@ public class DoubleToFix extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notification that an attribute has changed.          
-        @exception IllegalActionException If the expression of the
-        attribute cannot be parsed or cannot be evaluated.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == precision) {
-            _precision = new Precision(precision.getToken().toString());
-	} else {
-	    if (attribute == mode) {
-		_mode = ((StringToken)mode.getToken()).toString();
-	    } else {
-		super.attributeChanged(attribute);
-	    }
-        }
-    }
-
     /** Read at most one token from each input and convert the Token
      *  value in a FixToken with a given precision.  
      *
      * @exception IllegalActionException If there is no director.  
      */
-
     public void fire() throws IllegalActionException {
         FixToken result = null;
 	if (input.hasToken(0)) {
@@ -118,8 +97,18 @@ public class DoubleToFix extends Transformer {
             } else {
                 result = new FixToken( Quantizer.truncate(in.doubleValue(), _precision) );
             }
+            System.out.println(" D->F: output: " + result.toString() );
             output.send(0, result);
         }
+    }
+
+    /** Initialize the parameter of the actor.
+     *  @exception IllegalActionException If the director throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _precision = new Precision(precision.getToken().toString());        
+        _mode = ((StringToken)mode.getToken()).toString();
     }
 
     ///////////////////////////////////////////////////////////////////

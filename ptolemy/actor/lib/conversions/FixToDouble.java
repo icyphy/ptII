@@ -65,10 +65,6 @@ public class FixToDouble extends Transformer {
         // Set the Parameter
 	precision = new Parameter(this, "precision", new StringToken(""));
         precision.setTypeEquals(BaseType.STRING);              
-       
-        // FIXME
-        // initialize the parameter
-        // attributeChanged(precision);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -82,21 +78,6 @@ public class FixToDouble extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notification that an attribute has changed.          
-        @exception IllegalActionException If the expression of the
-        attribute cannot be parsed or cannot be evaluated.
-     */
-    public void attributeChanged(Attribute attribute) 
-            throws IllegalActionException {
-        if (attribute == precision) {
-            _precision = new Precision( 
-                    ((StringToken) precision.getToken()).toString() );
-        } else {
-                super.attributeChanged(attribute);
-        }        
-    }
-
-
     /** Read at most one token from each input and convert the FixToken
      *  into a DoubleToken. The user has the option to change the
      *  precision of the FixToken before it is converted into the
@@ -109,6 +90,15 @@ public class FixToDouble extends Transformer {
 	    DoubleToken result = new DoubleToken(in.doubleValue());    
             output.send(0, result);
         }
+    }
+
+    /** Initialize the parameter of the actor.
+     *  @exception IllegalActionException If the director throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        // FIXME: Need to do the scaling in Quantizer
+        _precision = new Precision(precision.getToken().toString());        
     }
 
     ///////////////////////////////////////////////////////////////////
