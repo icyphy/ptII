@@ -34,9 +34,15 @@ ROOT =		../..
 
 ME =		util/testsuite
 
+CLASSPATH =	$(ROOT)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
+
+# Java Sources, keep these alphabetical,
+JSRCS = \
+	PrintThreads.java
 
 TCL_SRCS = \
 	description.tcl \
@@ -63,7 +69,7 @@ SCRIPTS = \
 	rmtrailingline \
 	rmtrailingspace
 
-EXTRA_SRCS =	$(TCL_SRCS) $(SCRIPTS) \
+EXTRA_SRCS =	$(JAVA_SRCS) $(TCL_SRCS) $(SCRIPTS) \
 	jindent.el \
 	ptjavastyle.el \
 	ptlocaldict \
@@ -76,8 +82,10 @@ MISC_FILES = README.jindent
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	doc
 
+JCLASS = $(JSRCS:%.java=%.class)
+
 # Do make sources so that we ensure that the subdirectories are checked out
-all:  sources $(MISC_SRCS)
+all:  jclass sources $(MISC_SRCS)
 	-chmod a+x $(SCRIPTS)
 
 install: all
