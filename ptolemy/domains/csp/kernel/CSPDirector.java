@@ -350,6 +350,12 @@ public class CSPDirector extends Director {
         }
     }
 
+    /** FIXME! Needed to mask trhe wrapup method from Director.
+    */
+    public void wrapup() {
+        return;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
