@@ -80,7 +80,7 @@ public class Domain extends XMLElement {
     ////                         public methods                    ////
 
     /** Return an enumeration of the names of the actor packages.
-     *  @return an Enumartion of String
+     *  @return an Enumeration of String
      */
     public Enumeration actorPackageNames(){
         return _actorpackages.keys();
