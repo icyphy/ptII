@@ -70,7 +70,7 @@ import java.util.Iterator;
  instances (clones) of itself during the {@link #preinitialize()} phase
  of model execution and destroys these additional instances during model
  {@link #wrapup()}. MultiInstanceComposite <em>must be opaque</em> (have
- a director), so that its Actor interface methods (preinitialize(),...,
+ a director), so that its Actor interface methods (preinitialize(), ...,
  wrapup()) are invoked during model initialization. Each instance may
  refer to its {@link #instance} [0..{@link #nInstances}-1] parameter
  which is set automatically by the master if it needs to know its
@@ -114,8 +114,9 @@ import java.util.Iterator;
  */
 public class MultiInstanceComposite extends TypedCompositeActor {
 
-    /** Construct a MultiInstanceComposite actor in the specified workspace with
-     *  no container and an empty string as a name. */
+    /** Construct a MultiInstanceComposite actor in the specified
+     *  workspace with no container and an empty string as a name.
+     */
      public MultiInstanceComposite(Workspace workspace) {
         super(workspace);
         _initialize();
@@ -140,7 +141,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     ////                     ports and parameters                  ////
 
     /** The total number of instances to instantiate including instance
-     * 0 (the master copy). */
+     * 0 (the master copy).
+     */
     public Parameter nInstances;
 
     /** The index of this instance. */
@@ -167,9 +169,8 @@ public class MultiInstanceComposite extends TypedCompositeActor {
      * additional copies, and link them to the same input/output ports
      * this master is connected to.
      *
-     * @exception IllegalActionException thrown if cloning the
-     * additional copies fails, or if any ports are not connected to
-     * multiports.
+     * @exception IllegalActionException If cloning the additional
+     * copies fails, or if any ports are not connected to multiports.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -291,7 +292,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     /** Call the base class to perform standard wrapup() functions, and,
      * if this is the master copy, delete the clones of this actor
      * created during {@link #preinitialize()}.
-     * @exception IllegalActionException not thrown by this method.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
@@ -360,6 +361,37 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
 
+    private void _addScopeExtendingAttribute()
+        throws IllegalActionException {
+        try {
+            ScopeExtendingAttribute scopeExtender = (ScopeExtendingAttribute)
+                getAttribute(_scopeExtendingAttributeName);
+            if (scopeExtender != null) {
+                scopeExtender.setContainer(null); // old
+            }
+            scopeExtender = new ScopeExtendingAttribute
+                (this, _scopeExtendingAttributeName);
+            Iterator scopeVariables = nInstances.getScope().
+                elementList().iterator();
+            while (scopeVariables.hasNext()) {
+                Variable variable = (Variable)scopeVariables.next();
+                new Variable(scopeExtender, variable.getName(),
+                             variable.getToken());
+            }
+        } catch (NameDuplicationException ex) {
+            throw new IllegalActionException(getFullName()+ex.toString());
+        }
+    }
+
+    /** Clone to create a copy of the master copy. */
+    private Object _cloneClone(Workspace workspace)
+        throws CloneNotSupportedException {
+        MultiInstanceComposite newObject =
+            (MultiInstanceComposite)super.clone(workspace);
+        newObject._isMasterCopy = false;
+        return newObject;
+    }
+
     private void _initialize() {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
@@ -384,37 +416,6 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                     "<rect x=\"-22\" y=\"-10\" width=\"40\" " +
                     "height=\"24\" style=\"fill:lightgrey\"/>\n" +
                     "</svg>\n");
-    }
-
-    /** Clone to create a copy of the master copy. */
-    private Object _cloneClone(Workspace workspace)
-        throws CloneNotSupportedException {
-        MultiInstanceComposite newObject =
-            (MultiInstanceComposite)super.clone(workspace);
-        newObject._isMasterCopy = false;
-        return newObject;
-    }
-
-    private void _addScopeExtendingAttribute()
-        throws IllegalActionException {
-        try {
-            ScopeExtendingAttribute scopeExtender = (ScopeExtendingAttribute)
-                getAttribute(_scopeExtendingAttributeName);
-            if (scopeExtender != null) {
-                scopeExtender.setContainer(null); // old
-            }
-            scopeExtender = new ScopeExtendingAttribute
-                (this, _scopeExtendingAttributeName);
-            Iterator scopeVariables = nInstances.getScope().
-                elementList().iterator();
-            while (scopeVariables.hasNext()) {
-                Variable variable = (Variable)scopeVariables.next();
-                new Variable(scopeExtender, variable.getName(),
-                             variable.getToken());
-            }
-        } catch (NameDuplicationException ex) {
-            throw new IllegalActionException(getFullName()+ex.toString());
-        }
     }
 
     private void _removeScopeExtendingAttribute()
