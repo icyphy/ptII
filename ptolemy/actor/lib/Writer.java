@@ -93,6 +93,7 @@ public class Writer extends Sink {
                 }
             }
             _writer.write("\n");
+            _writer.flush();
             return super.postfire();
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex.getMessage());
