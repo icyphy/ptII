@@ -49,6 +49,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = ArrayStringFormat.java \
 	Complex.java \
+	FixPoint.java \
+	Precision.java \
 	ExtendedMath.java \
 	Fraction.java \
         SampleGenerator.java \
