@@ -72,10 +72,10 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
                 result = ((BooleanToken)result).negate();
             } else if (isBitwiseNot == true) {
                 if (result instanceof IntToken) {
-                    int tmp = ~(((IntToken)result).getValue());
+                    int tmp = ~(((IntToken)result).intValue());
                     return new IntToken(tmp);
                     /*                 } else if (result instanceof LongToken) {
-                                       long tmp = ~(((LongToken)result).getValue());
+                                       long tmp = ~(((LongToken)result).longValue());
                                        return new LongToken(tmp);*/
                 } else {
                     String str = "Cannot apply bitwise NOT \"~\" to  ";

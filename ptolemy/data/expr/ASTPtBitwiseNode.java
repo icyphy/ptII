@@ -78,8 +78,9 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
                     if ( !(childTokens[i] instanceof BooleanToken) ) {
                         throw new Exception();
                     }
-                    boolean arg1 = ((BooleanToken)result).getValue();
-                    boolean arg2 = ((BooleanToken)childTokens[i]).getValue();
+                    boolean arg1 = ((BooleanToken)result).booleanValue();
+                    boolean arg2 =
+				 ((BooleanToken)childTokens[i]).booleanValue();
                     if (op.equals("&")) {
                         result = new BooleanToken(arg1 & arg2);
                     } else if (op.equals("|")) {

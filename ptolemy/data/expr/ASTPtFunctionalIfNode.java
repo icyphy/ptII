@@ -80,7 +80,7 @@ public class ASTPtFunctionalIfNode extends ASTPtRootNode {
             throw new IllegalArgumentException(str);
         }
         // construct appears ok
-        boolean value = ((BooleanToken)test).getValue();
+        boolean value = ((BooleanToken)test).booleanValue();
         if (value) {
             return childTokens[1];
         } else {

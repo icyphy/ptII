@@ -114,22 +114,23 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         for (int i = 0; i<args; i++) {
             ptolemy.data.Token child = childTokens[i];
             if (child instanceof DoubleToken) {
-                argValues[i] = new Double(((DoubleToken)child).getValue());
+                argValues[i] = new Double(((DoubleToken)child).doubleValue());
                 argTypes[i] = Double.TYPE;
             } else if (child instanceof IntToken) {
-                argValues[i] = new Integer(((IntToken)child).getValue());
+                argValues[i] = new Integer(((IntToken)child).intValue());
                 argTypes[i] = Integer.TYPE;
             } else if (child instanceof LongToken) {
-                argValues[i] = new Long(((LongToken)child).getValue());
+                argValues[i] = new Long(((LongToken)child).longValue());
                 argTypes[i] = Long.TYPE;
             } else if (child instanceof StringToken) {
-                argValues[i] = new String(((StringToken)child).getValue());
+                argValues[i] = new String(((StringToken)child).stringValue());
                 argTypes[i] = argValues[i].getClass();
             } else if (child instanceof BooleanToken) {
-                argValues[i] = new Boolean(((BooleanToken)child).getValue());
+                argValues[i] =
+			 new Boolean(((BooleanToken)child).booleanValue());
                 argTypes[i] = Boolean.TYPE;
             } else if (child instanceof ComplexToken) {
-                argValues[i] = ((ComplexToken)child).getValue();
+                argValues[i] = ((ComplexToken)child).complexValue();
                 argTypes[i] = argValues[i].getClass();;
             } else {
                 throw new IllegalArgumentException("FunctionNode: "+

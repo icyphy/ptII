@@ -398,7 +398,7 @@ test PtParser-9.0 {Check that evaluation of the parse tree does not change the p
     set res5a [ $root5 evaluateParseTree ]
     set res5b [ $root5 evaluateParseTree ]
 
-    list [$res1a getValue] [$res1b getValue] [$res2a getValue] [$res2b getValue] [$res3a getValue] [$res3b getValue] [$res4a getValue] [$res4b getValue] [$res5a getValue] [$res5b getValue]
+    list [$res1a intValue] [$res1b intValue] [$res2a intValue] [$res2b intValue] [$res3a intValue] [$res3b intValue] [$res4a doubleValue] [$res4b doubleValue] [$res5a intValue] [$res5b intValue]
 } {5 5 -1 -1 6 6 0.5 0.5 2 2}
 ######################################################################
 ####
