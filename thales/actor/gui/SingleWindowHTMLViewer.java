@@ -45,7 +45,7 @@ import thales.vergil.navigable.NavigationPTree;
 
 /**
  * <p>Titre : SingleWindowHTMLViewer</p>
- * <p>Description : Main application Frame. Contains all the 
+ * <p>Description : Main application Frame. Contains all the
  * panels, menus and needed widget for the whole Design Environment</p>
 Copyright (c) 2003 THALES.
 All rights reserved.
@@ -145,8 +145,8 @@ public class SingleWindowHTMLViewer
         /**
          * The first panel, handle the welcome window.
          * N.B: it has a null name, which is its signature
-         * 
-         * @param _scroller 
+         *
+         * @param _scroller
          */
         protected void buildStartPanel(JScrollPane _scroller) {
                 startPanel.setLayout(new BorderLayout());
@@ -161,12 +161,12 @@ public class SingleWindowHTMLViewer
         /**
          * Creates a new Tab to the TabbedPane. Add a "windows closed" listener to
          * automaticly remove Tabs;
-         * 
+         *
          * @param frame
          */
         public void newTabbedPanel(Tableau tableau) {
                 removeEmptyTabs();
-                //Create the TabbedPanel 
+                //Create the TabbedPanel
                 JFrame frame = tableau.getFrame();
 
                 String tableauName = tableau.getFullName();
@@ -216,7 +216,7 @@ public class SingleWindowHTMLViewer
         protected void removeEmptyTabs() {
                 for (int i = 0; i < _viewsTabbedPane.getComponentCount(); ++i) {
                         String name = _viewsTabbedPane.getComponentAt(i).getName();
-                        if (name != null) { //Not using 
+                        if (name != null) { //Not using
                                 Tableau tableau = findComponentTableau(name);
                                 if (tableau == null) {
                                         removeTab(name);
@@ -229,7 +229,7 @@ public class SingleWindowHTMLViewer
         /**
          * Replaces corresponding Menu and Toolbar from the frame.
          * And hides the report bar
-         * 
+         *
          * @param frame
          */
         public void fillMainFrame(JMenuBar menuBar) {

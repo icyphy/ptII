@@ -50,7 +50,7 @@ public class NavigationTreeModel extends EntityTreeModel {
 
         /** Return true if the object is a leaf node.  In this base class,
          *  an object is a leaf node if it is not an instance of CompositeEntity.
-         *  ATTENTION il se peut qu'il faille ne plus faire se test lors de 
+         *  ATTENTION il se peut qu'il faille ne plus faire se test lors de
          * l'utilisation de bibliothèque.
          *  @return True if the node has no children.
          */
@@ -63,10 +63,10 @@ public class NavigationTreeModel extends EntityTreeModel {
                         return true;
                 return false;
         }
-        
+
         //private members
         private List listeners = new ArrayList();
-        
+
         /**
          * Register a listener
          * @param tree
@@ -74,14 +74,14 @@ public class NavigationTreeModel extends EntityTreeModel {
         public void register(NavigationPTree tree){
                 listeners.add(tree);
         }
-        
+
         /**
          * remove a listener
          * @param tree
          * @return wether the tree was in the listeners or not
          */
         public boolean unRegister(NavigationPTree tree){
-                return listeners.remove(tree);        
+                return listeners.remove(tree);
         }
 
         /**

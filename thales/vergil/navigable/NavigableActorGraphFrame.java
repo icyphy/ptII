@@ -198,12 +198,12 @@ public class NavigableActorGraphFrame extends ExtendedGraphFrame {
          *  and place them on the clipboard in MoML format.
          */
         /**
-         * THALES CORRECTION, for some reasons, the relation can appear 
+         * THALES CORRECTION, for some reasons, the relation can appear
          * into the namedObjSet before the copied entities ... so when the
-         * paste action occurs, relations are rendered as diamonds .... 
-         * to avoid this silly things, the MoML export at the end of 
-         * the method is ordered as follow : 
-         * entities, relation and links to finish. 
+         * paste action occurs, relations are rendered as diamonds ....
+         * to avoid this silly things, the MoML export at the end of
+         * the method is ordered as follow :
+         * entities, relation and links to finish.
          */
         public void copy() {
                 Clipboard clipboard =
@@ -364,7 +364,7 @@ public class NavigableActorGraphFrame extends ExtendedGraphFrame {
 
                 //To avoid this, we force the topLevel effigy (wich is a NavigableEffigy for us)
                 //to answer 1 at the numberOfOpenTableaux in this case (and only this one)
-                //we hope that this bug will be fixed in a future version of Ptolemy 
+                //we hope that this bug will be fixed in a future version of Ptolemy
                 //to stop this silly thing ;)
 
                 Effigy topEffigy = getEffigy().topEffigy();

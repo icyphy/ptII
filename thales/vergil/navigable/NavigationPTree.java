@@ -50,7 +50,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 public class NavigationPTree extends PTree {
 
         /**
-         * Most of the time, we use the tree of the ptolemt.vergil.tree package, 
+         * Most of the time, we use the tree of the ptolemt.vergil.tree package,
          * according to the choosen model, detail level can vary
          *
          * @param model the used model to create the tree
@@ -68,7 +68,7 @@ public class NavigationPTree extends PTree {
         /**
          * This listener intends to get the selection from the user, open the correst model but
          * also to inform all the other referenced Navigation tree of this event
-         * 
+         *
          * @author masson
          *
          */
@@ -106,7 +106,7 @@ public class NavigationPTree extends PTree {
         /**
          * This expandListener inform all other Tree of the Path expanded or collapse so that all Tree
          * have the same expand/collapse state.
-         * 
+         *
          * @author masson
          *
          */

@@ -33,7 +33,7 @@ import thales.vergil.SingleWindowApplication;
 
 /**
  * <p>Titre : SingleWindowConfiguration</p>
- * <p>Description : A Configuration that intercept created Tableau, 
+ * <p>Description : A Configuration that intercept created Tableau,
  * and the content of its Frame into a TabbnedPane.</p>
 Copyright (c) 2003 THALES.
 All rights reserved.
@@ -157,7 +157,7 @@ public class SingleWindowConfiguration extends Configuration {
         /**
          * Catches the tableau, gets the corresponding JFrame and builds a new JTabbedPane
          * into the SingleWindowHTMLViewer.
-         * 
+         *
          * @param tableau tableau to catch
          */
         //THALES MODIF
