@@ -129,5 +129,5 @@ test Commutator-5.1 {test under DE} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     $m execute
     list [enumToTokenValues [$rec getRecord 0]] \
-            [enumToStrings [$rec getTimeRecord]]
+            [enumToObjects [$rec getTimeRecord]]
 } {{-1 1 -2 0 -1 1 -2 0 -1 1} {0.0 0.0 1.0 1.0 3.0 3.0 4.0 4.0 6.0 6.0}}

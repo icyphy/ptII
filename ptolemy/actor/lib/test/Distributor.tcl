@@ -128,6 +128,6 @@ test Distributor-5.1 {test under DE} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]]
     set m [$e0 getManager]
     $m execute
-    list [enumToStrings [$rec1 getTimeRecord]] \
-            [enumToStrings [$rec2 getTimeRecord]]
+    list [enumToObjects [$rec1 getTimeRecord]] \
+            [enumToObjects [$rec2 getTimeRecord]]
 } {{0.0 2.0 4.0 6.0} {1.0 3.0 5.0}}

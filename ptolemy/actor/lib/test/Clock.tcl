@@ -70,7 +70,7 @@ test Clock-2.1 {test with the default output value} {
 } {1 0 1 0 1}
 
 test Clock-2.2 {check times} {
-    enumToStrings [$rec getTimeRecord]
+    enumToObjects [$rec getTimeRecord]
 } {0.0 1.0 2.0 3.0 4.0}
 
 test Clock-2.3 {change output value and type and rerun} {
