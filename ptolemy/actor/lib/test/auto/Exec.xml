@@ -14,9 +14,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 50.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.3245033112583">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{298.5, 173.125}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test of Exec.&#10;-No input.&#10;-Produces the same output.">
@@ -25,6 +25,8 @@
         </property>
     </property>
     <entity name="Exec" class="ptolemy.actor.lib.Exec">
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="echo &quot;Hello, world.&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 185.0">
         </property>
     </entity>

@@ -114,7 +114,7 @@ public class Exec extends TypedAtomicActor {
         super(container, name);
 
         command = new PortParameter(this, "command",
-                new StringToken("echo 'Hello, world.'"));
+                new StringToken("echo \"Hello, world.\""));
         // Make command be a StringParameter (no surrounding double quotes).
         command.setStringMode(true);
                 
@@ -153,7 +153,8 @@ public class Exec extends TypedAtomicActor {
     /** The command to be executed.  The command is parsed by
      * {@link ptolemy.util.StringUtilities#tokenizeForExec(String)}
      * into tokens and then executed as a separate subprocess.
-     * The initial default value is the string "echo 'Hello, world.'".
+     * The initial default value is the string
+     * <code>echo "Hello, world."</code>.
      *
      * <p>The command parameter is read only once during fire().
      * If you want to spawn another different command,
