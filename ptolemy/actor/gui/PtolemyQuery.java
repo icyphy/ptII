@@ -66,9 +66,9 @@ handler</i>.  The change handler is specified as a constructor
 argument.
 <p>
 It is important to note that it may take
-some time before the value of a parameter is actually changed, since it 
+some time before the value of a parameter is actually changed, since it
 is up to the change handler to decide when change requests are processed.
-The change handler will typically delegate change requests to the 
+The change handler will typically delegate change requests to the
 Manager, although this is not necessarily the case.
 <p>
 To use this class, add an entry to the query using addStyledEntry().
@@ -92,7 +92,7 @@ public class PtolemyQuery extends Query
 	super();
 	addQueryListener(this);
 	_handler = handler;
-        
+
         if (_handler != null) {
             _handler.addChangeListener(this);
         }
@@ -106,7 +106,7 @@ public class PtolemyQuery extends Query
      *  The name of the entry will be set to the name of the parameter,
      *  and the parameter will be attached to the entry, so that if the
      *  parameter is updated, then the entry is updated.
-     *  If the parameter contains a parameter style, then use the style to 
+     *  If the parameter contains a parameter style, then use the style to
      *  create the entry, otherwise just create a new line entry.
      *  Attach the variable to the new entry.
      *  @param param The parameter for which to create an entry.
@@ -319,14 +319,14 @@ public class PtolemyQuery extends Query
 
         // Check that the parameter is attached to at least one entry.
         if (_parameters.containsValue(parameter)) {
-                        
+
             // Get the list of entry names that the parameter is attached to.
             List entryNameList = (List)_varToListOfEntries.get(parameter);
 
             // For each entry name, call set() to update its
             // value with the value of parameter.
             Iterator entryNames = entryNameList.iterator();
-            
+
             while (entryNames.hasNext()) {
                 String name = (String)entryNames.next();
                 String newValue = parameter.stringRepresentation();
