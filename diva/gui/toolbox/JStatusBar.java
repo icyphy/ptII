@@ -33,7 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 /**
- * A status bar for displaying at the bottonm of typical applications.
+ * A status bar for displaying at the bottom of typical applications.
  *
  * @author John Reekie (johnr@eecs.berkeley.edu)
  * @version $Id$
