@@ -36,7 +36,10 @@ ME =		ptolemy/domains
 # DT has to come after SDF, sorry.
 # PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
 #   Java 3D was found
-DIRS =		csp ct dde de fsm pn sdf dt hdf giotto pbo rtp rtos sr $(PTJAVA3D_DIR)
+# PTRTOS_DIR is set by configure in $PTII/mk/ptII.mk to rtos if
+#   java.util.Timer is found.
+DIRS =		csp ct dde de fsm pn sdf dt hdf giotto pbo rtp \
+		$(PTRTOS_DIR) sr $(PTJAVA3D_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../..
