@@ -67,11 +67,15 @@ baud rate to use are made by parameters.  If the specified serial port
 is not successfully opened, then another one will automatically be
 chosen if available.
 
-<p>NOTE: If you get the following error on the console:
+<p>Currently, this actor will only work under Windows, though in
+principle it could be made to work on any platform that supports
+the Java Comm api.
+
+<p>If you get the following error on the console:
  Error loading win32com: java.lang.UnsatisfiedLinkError:
  no win32com in java.library.path
 Then you need to copy the win32com.dll file to some additional directory,
-such as c:\jdk1.3\bin.  @see vendors/sun/commapi/PlatformSpecific.html
+such as c:\jdk1.3\bin.
 
 <p>This actor is designed for use in DE and SDF.  By default, this actor
 does not block in fire().  When fired, if no data is available on the
