@@ -29,7 +29,9 @@ COPYRIGHTENDKEY
 
 package doc.doclets;
 
+import java.lang.reflect.Constructor;
 import java.util.Map;
+
 
 import com.sun.javadoc.Tag;
 import com.sun.tools.doclets.Taglet;
@@ -41,7 +43,7 @@ import com.sun.tools.doclets.Taglet;
 
    This class was based on Sun's example taglets.
 
-   @author Steve Neuendorffer
+   @author Steve Neuendorffer, Contributor: Christopher Brooks
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (neuendor)
@@ -185,13 +187,51 @@ public class RatingTaglet implements Taglet {
     // Remove any previous entry in the given map with the given name
     // and add an entry in the given map with the given name as the key
     // and the given taglet as the value.
-    private static void _register(Map tagletMap, Taglet taglet) {
-        Taglet t = (Taglet) tagletMap.get(taglet.getName());
-        if (t != null) {
-            tagletMap.remove(taglet.getName());
+    // For info about running under Java 1.4.0, see
+    // http://forum.java.sun.com/thread.jspa?threadID=586411&tstart=15
+    // Test test this under Java 1.4.0, try:
+    // make JAVAC=c:/j2sdk1.4.2_06/bin/javac TOOLS_JAR=c:/j2sdk1.4.2_06/lib/tools.jar 
+    private static void _register( Map tagletMap, Taglet taglet) {
+        final String tagName = taglet.getName();
+        if (tagletMap.containsKey(tagName)) {
+            tagletMap.remove(tagName);
         }
-        tagletMap.put(taglet.getName(), taglet);
+        String javaSpecificationVersion
+            = System.getProperty("java.Specification.version");
+        if (javaSpecificationVersion.equals("1.4")) {
+            tagletMap.put(taglet.getName(), taglet);
+        } else {
+            String legacyTagletClassName =
+                "com.sun.tools.doclets.internal.toolkit.taglets.LegacyTaglet";
+            try {
+                // Use reflection so that this code will compile under jdk1.4.
+                Class legacyTagletClass = Class.forName(legacyTagletClassName);
+                Constructor legacyTagletConstructor =
+                    legacyTagletClass.getConstructor(
+                            new Class [] {
+                                Taglet.class
+                            });
+                Object legacyTagletObject =
+                    legacyTagletConstructor.newInstance(
+                            new Object [] {
+                                taglet
+                            });
+                tagletMap.put(tagName, legacyTagletObject);
+            } catch (Throwable throwable) {
+                throw new RuntimeException("Failed to find '"
+                        + legacyTagletClassName + "' class: " + throwable);
+
+            }
+        }
     }
+
+//     private static void _register(Map tagletMap, Taglet taglet) {
+//         Taglet t = (Taglet) tagletMap.get(taglet.getName());
+//         if (t != null) {
+//             tagletMap.remove(taglet.getName());
+//         }
+//         tagletMap.put(taglet.getName(), taglet);
+//     }
 
     // The name of this taglet.
     private String _name;
