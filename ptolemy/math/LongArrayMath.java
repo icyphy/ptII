@@ -745,36 +745,57 @@ public class LongArrayMath {
         return new String(sb);
     }
 
-    /** Return true if all the absolute differences between corresponding
-     *  elements of array1 and array2 are all less than or equal to maxError.
-     *  Otherwise return false.
-     *  If the two arrays do not have the same length, throw an
-     *  IllegalArgumentException.
+    /** Return true if all the distances between corresponding elements
+     *  <i>array1</i> and <i>array2</i> are all less than or equal to
+     *  the corresponding elements in <i>maxError</i>. If both arrays
+     *  are empty, return true. If <i>maxError</i> is negative, return
+     *  false.
+     *
+     *  @param array1 The first array.
+     *  @param array2 The second array.
+     *  @param maxError The threshold for the magnitude of the difference.
+     *  @return True if all the distances between corresponding elements
+     *  <i>array1</i> and <i>array2</i> are all less than or equal to
+     *  the corresponding elements in <i>maxError</i>.
+     *  @exception IllegalArgumentException If the arrays are not of the same
+     *   length.
      */
     public static final boolean within(final long[] array1,
             final long[] array2, long maxError) {
         int length = _commonLength(array1, array2, "LongArrayMath.within");
 
         for (int i = 0; i < length; i++) {
-            if (Math.abs(array1[i] - array2[i]) > maxError) {
+            if (array1[i] > array2[i] + maxError ||
+                array1[i] < array2[i] - maxError) {
                 return false;
             }
         }
         return true;
     }
 
-    /** Return true if all the absolute differences between corresponding
-     *  elements of array1 and array2 are all less than or equal to the
-     *  elements in maxError. Otherwise return false.
-     *  If the two arrays do not have the same length, throw an
-     *  IllegalArgumentException.
+    /** Return true if all the distances between corresponding elements
+     *  <i>array1</i> and <i>array2</i> are all less than or equal to
+     *  the corresponding elements in <i>maxError</i>. If both arrays
+     *  are empty, return true. If any element of <i>maxError</i> is
+     *  negative, return false.
+     *
+     *  @param array1 The first array.
+     *  @param array2 The second array.
+     *  @param maxError The array of thresholds for the magnitudes of
+     *   the difference.
+     *  @return True if all the distances between corresponding elements
+     *  <i>array1</i> and <i>array2</i> are all less than or equal to
+     *  the corresponding elements in <i>maxError</i>.
+     *  @exception IllegalArgumentException If the arrays are not of the same
+     *   length.
      */
     public static final boolean within(final long[] array1,
             final long[] array2, long[] maxError) {
         int length = _commonLength(array1, array2, "LongArrayMath.within");
 
         for (int i = 0; i < length; i++) {
-            if (Math.abs(array1[i] - array2[i]) > Math.abs(maxError[i])) {
+            if (array1[i] > array2[i] + maxError[i] ||
+                array1[i] < array2[i] - maxError[i]) {
                 return false;
             }
         }

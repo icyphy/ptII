@@ -57,7 +57,7 @@ public class DoubleMatrixMath {
 
     // private constructor prevents construction of this class.
     private DoubleMatrixMath() {}
-    
+
     /////////////////////////////////////////////////////////////////////////
     ////                      public methods                             ////
 
@@ -832,7 +832,7 @@ public class DoubleMatrixMath {
         }
         return returnValue;
     }
-    
+
 	/** Return the sum of the elements of a matrix.
 	 *  @return The sum of the elements of the matrix.
 	 */
@@ -1020,24 +1020,17 @@ public class DoubleMatrixMath {
 
     /** Return true if the elements of the two matrices differ by no more
      *  than the specified distance. The specified distance must be non-negative.
+     *  If <i>distance</i> is negative, return false.
      *  @param matrix1 The first matrix.
      *  @param matrix2 The second matrix.
      *  @param distance The distance to use for comparison.
      *  @return True if the elements of the two matrices are within the
      *   specified distance.
-     *  @exception IllegalArgumentException If the third argument is negative,
-     * 	 or if the matrices do not have the same dimension.
+     *  @exception IllegalArgumentException If the matrices do not have the same dimension.
      * 	 This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final double[][] matrix1,
-            final double[][] matrix2, double distance)
-            throws IllegalArgumentException {
-        if (distance < 0.0) {
-            throw new IllegalArgumentException(
-                    "within(): distance (" + distance +
-                    " must be non-negative.");
-        }
-
+            final double[][] matrix2, double distance) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1055,7 +1048,8 @@ public class DoubleMatrixMath {
 
 	/** Return true if the elements of the two matrices differ by no more
 	 *  than the specified distances. The specified distances must all
-	 *  be non-negative.
+	 *  be non-negative. If any element of <i>errorMatrix</i> is negative,
+     *  return false.
 	 *  @param matrix1 The first matrix.
 	 *  @param matrix2 The second matrix.
 	 *  @param errorMatrix The distance to use for comparison.
@@ -1063,13 +1057,11 @@ public class DoubleMatrixMath {
          *  then this method will return false.
 	 *  @return True if the elements of the two matrices are within the
 	 *   specified distance.
-	 *  @exception IllegalArgumentException If the third argument has negative
-	 *   elements, or if the matrices do not have the same dimension.
+	 *  @exception IllegalArgumentException If the matrices do not have the same dimension.
 	 * 	 This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final double[][] matrix1,
-            final double[][] matrix2, final double[][] errorMatrix)
-            throws IllegalArgumentException {
+            final double[][] matrix2, final double[][] errorMatrix) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1086,7 +1078,7 @@ public class DoubleMatrixMath {
         }
         return true;
     }
-    
+
 	/////////////////////////////////////////////////////////////////////////
 	////                      protected methods                          ////
 

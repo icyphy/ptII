@@ -991,24 +991,17 @@ public class FloatMatrixMath {
     }
 
 	/** Return true if the elements of the two matrices differ by no more
-	 *  than the specified distance. The specified distance must be non-negative.
+	 *  than the specified distance. If <i>distance</i> is negative, return false.
 	 *  @param matrix1 The first matrix.
 	 *  @param matrix2 The second matrix.
 	 *  @param distance The distance to use for comparison.
 	 *  @return True if the elements of the two matrices are within the
 	 *   specified distance.
-	 *  @exception IllegalArgumentException If the third argument is negative,
-	 * 	 or if the matrices do not have the same dimension.
+	 *  @exception IllegalArgumentException If the matrices do not have the same dimension.
 	 * 	 This is a run-time exception, so it need not be declared explicitly.
 	 */
     public static final boolean within(final float[][] matrix1,
             final float[][] matrix2, float distance) {
-        if (distance < 0.0f) {
-            throw new IllegalArgumentException(
-                    "within(): distance (" + distance +
-                    " must be non-negative.");
-        }
-
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1016,29 +1009,27 @@ public class FloatMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (Math.abs(matrix1[i][j] - matrix2[i][j]) > distance) {
+                if (matrix1[i][j] > matrix2[i][j] + distance ||
+                    matrix1[i][j] < matrix2[i][j] - distance)
                     return false;
-                }
             }
         }
         return true;
     }
 
 	/** Return true if the elements of the two matrices differ by no more
-	 *  than the specified distances. The specified distances must all
-	 *  be non-negative.
+	 *  than the specified distances. If any element of <i>errorMatrix</i> is
+     *  negative, return false.
 	 *  @param matrix1 The first matrix.
 	 *  @param matrix2 The second matrix.
-	 *  @param distance The distance to use for comparison.
+	 *  @param errorMatrix The distance to use for comparison.
 	 *  @return True if the elements of the two matrices are within the
 	 *   specified distance.
-	 *  @exception IllegalArgumentException If the third argument has negative
-	 *   elements, or if the matrices do not have the same dimension.
+	 *  @exception IllegalArgumentException If the matrices do not have the same dimension.
 	 * 	 This is a run-time exception, so it need not be declared explicitly.
 	 */
     public static final boolean within(final float[][] matrix1,
-            final float[][] matrix2, final float[][] errorMatrix)
-            throws IllegalArgumentException {
+            final float[][] matrix2, final float[][] errorMatrix) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -1047,10 +1038,9 @@ public class FloatMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (Math.abs(matrix1[i][j] - matrix2[i][j]) >
-                        Math.abs(errorMatrix[i][j])) {
+                if (matrix1[i][j] > matrix2[i][j] + errorMatrix[i][j] ||
+                    matrix1[i][j] < matrix2[i][j] - errorMatrix[i][j])
                     return false;
-                }
             }
         }
         return true;

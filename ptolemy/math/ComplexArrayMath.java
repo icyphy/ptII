@@ -925,6 +925,7 @@ public class ComplexArrayMath {
     /** Return true if all the distances between corresponding elements
      *  <i>array1</i> and <i>array2</i> are all less than or equal to
      *  <i>maxError</i>. If both arrays are empty, return true.
+     *  If <i>maxError</i> is negative, return false.
      *
      *  @param array1 The first array.
      *  @param array2 The second array.
@@ -933,23 +934,14 @@ public class ComplexArrayMath {
      *  <i>array1</i> and <i>array2</i> are all less than or equal to
      *  <i>maxError</i>.
      *  @exception IllegalArgumentException If the arrays are not of the same
-     *   length, or if <i>maxError</i> is negative.
+     *   length.
      */
     public static final boolean within(Complex[] array1,
             Complex[] array2, double maxError) {
         int length = _commonLength(array1, array2,
                 "ComplexArrayMath.within");
-
-        if (maxError < 0) {
-            throw new IllegalArgumentException(
-                    "ComplexArrayMath.within requires that the third argument "
-                    + "be non-negative.");
-        }
         for (int i = 0; i < length; i++) {
-            double realDifference = array1[i].real - array2[i].real;
-            double imagDifference = array1[i].imag - array2[i].imag;
-            if (realDifference*realDifference + imagDifference*imagDifference
-                    > maxError*maxError) {
+            if (!array1[i].isCloseTo(array2[i], maxError)) {
                 return false;
             }
         }
@@ -959,7 +951,8 @@ public class ComplexArrayMath {
     /** Return true if all the distances between corresponding elements
      *  <i>array1</i> and <i>array2</i> are all less than or equal to
      *  the corresponding elements in <i>maxError</i>. If both arrays
-     *  are empty, return true.
+     *  are empty, return true. If any element in <i>maxError</i> is negative,
+     *  return false.
      *
      *  @param array1 The first array.
      *  @param array2 The second array.
@@ -969,26 +962,15 @@ public class ComplexArrayMath {
      *  <i>array1</i> and <i>array2</i> are all less than or equal to
      *  the corresponding elements in <i>maxError</i>.
      *  @exception IllegalArgumentException If the arrays are not of the same
-     *   length, or if an elment in <i>maxError</i> is negative.
+     *   length.
      */
     public static final boolean within(Complex[] array1,
             Complex[] array2, double[] maxError) {
 
         int length = _commonLength(array1, array2,
                 "ComplexArrayMath.within");
-
         for (int i = 0; i < length; i++) {
-
-            if (maxError[i] < 0) {
-                throw new IllegalArgumentException(
-                        "ComplexArrayMath.within requires that the third "
-                        + "argument be non-negative.");
-            }
-
-            double realDifference = array1[i].real - array2[i].real;
-            double imagDifference = array1[i].imag - array2[i].imag;
-            if (realDifference*realDifference + imagDifference*imagDifference
-                    > maxError[i]*maxError[i]) {
+            if (!array1[i].isCloseTo(array2[i], maxError[i])) {
                 return false;
             }
         }

@@ -1088,33 +1088,25 @@ public class ComplexMatrixMath {
      *  @return True or false.
      */
     public static final boolean within(Complex[][] matrix1,
-            Complex[][] matrix2, Complex maxError)
-            throws IllegalArgumentException {
+            Complex[][] matrix2, Complex maxError) {
         return within(matrix1, matrix2, maxError.magnitude());
     }
 
     /** Return true if all the distances between corresponding
      *  elements in <i>matrix1</i> and <i>matrix2</i> are all less
      *  than or equal to the magnitude of <i>maxError</i>. If both
-     *  matrices are empty, return true.
+     *  matrices are empty, return true. If <i>maxError</i> is negative,
+     *  return false.
      *  @param matrix1 The first matrix.
      *  @param matrix2 The second matrix.
      *  @param maxError The threshold for the magnitude of the difference.
      *  @exception IllegalArgumentException If the matrices do not have the same
-     *   dimensions, or if <i>maxError</i> is negative.  This is a run-time
-     *   exception, so it need not be declared explicitly.
+     *   dimensions.  This is a run-time exception, so it need not be declared explicitly.
      *  @return True or false.
      */
     public static final boolean within(Complex[][] matrix1,
-            Complex[][] matrix2, double maxError)
-            throws IllegalArgumentException {
+            Complex[][] matrix2, double maxError) {
         _checkSameDimension("within", matrix1, matrix2);
-
-        if (maxError < 0) {
-            throw new IllegalArgumentException(
-                    "ComplexMatrixMath.within() requires that the third argument "
-                    + "be non-negative.");
-        }
 
         int rows = _rows (matrix1);
         int columns = _columns (matrix1);
@@ -1132,19 +1124,19 @@ public class ComplexMatrixMath {
     /** Return true if all the distances between corresponding
      *  elements in <i>matrix1</i> and <i>matrix2</i> are all less
      *  than or equal to corresponding elements in <i>maxError</i>. If
-     *  both matrices are empty, return true.
+     *  both matrices are empty, return true. If any element of
+     *  <i>maxError</i> is negative, return false.
      *
      *  @param matrix1 The first matrix.
      *  @param matrix2 The second matrix.
      *  @param maxError The matrix of thresholds for the magnitudes of
      *  difference.
      *  @exception IllegalArgumentException If the matrices do not have the same
-     *   dimensions, or if an elment in <i>maxError</i> is negative.
+     *   dimensions.
      *  @return True or false.
      */
     public static final boolean within(Complex[][] matrix1,
             Complex[][] matrix2, double[][] maxError) {
-
         _checkSameDimension("within", matrix1, matrix2);
 
         int rows = _rows (matrix1);
@@ -1152,13 +1144,6 @@ public class ComplexMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-
-                if (maxError[i][j] < 0) {
-                    throw new IllegalArgumentException(
-                            "ComplexMatrixMath.within requires that the "
-                            + "third argument be non-negative.");
-                }
-
                 if (!matrix1[i][j].isCloseTo(matrix2[i][j], maxError[i][j])) {
                     return false;
                 }

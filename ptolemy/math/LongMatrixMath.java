@@ -958,25 +958,18 @@ public class LongMatrixMath {
     }
 
 	/** Return true if the elements of the two matrices differ by no more
-	 *  than the specified distance. The specified distance must be non-negative.
+	 *  than the specified distance. If <i>distance</i> is negative, return
+     *  false.
 	 *  @param matrix1 The first matrix.
 	 *  @param matrix2 The second matrix.
 	 *  @param distance The distance to use for comparison.
 	 *  @return True if the elements of the two matrices are within the
 	 *   specified distance.
-	 *  @exception IllegalArgumentException If the third argument is negative,
-	 * 	 or if the matrices do not have the same dimension.
+	 *  @exception IllegalArgumentException If the matrices do not have the same dimension.
 	 * 	 This is a run-time exception, so it need not be declared explicitly.
 	 */
     public static final boolean within(final long[][] matrix1,
-            final long[][] matrix2, long distance)
-            throws IllegalArgumentException {
-        if (distance < 0L) {
-            throw new IllegalArgumentException(
-                    "within(): distance (" + distance +
-                    " must be non-negative.");
-        }
-
+            final long[][] matrix2, long distance) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -994,20 +987,18 @@ public class LongMatrixMath {
     }
 
 	/** Return true if the elements of the two matrices differ by no more
-	 *  than the specified distances. The specified distances must all
-	 *  be non-negative.
+	 *  than the specified distances. If any element of <i>errorMatrix</i> is
+     *  negative, return false.
 	 *  @param matrix1 The first matrix.
 	 *  @param matrix2 The second matrix.
 	 *  @param errorMatrix The distance to use for comparison.
 	 *  @return True if the elements of the two matrices are within the
 	 *   specified distance.
-	 *  @exception IllegalArgumentException If the third argument has negative
-	 *   elements, or if the matrices do not have the same dimension.
+	 *  @exception IllegalArgumentException If the matrices do not have the same dimension.
 	 * 	 This is a run-time exception, so it need not be declared explicitly.
 	 */
     public static final boolean within(final long[][] matrix1,
-            final long[][] matrix2, final long[][] errorMatrix)
-            throws IllegalArgumentException {
+            final long[][] matrix2, final long[][] errorMatrix) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 

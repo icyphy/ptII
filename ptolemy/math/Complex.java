@@ -547,7 +547,8 @@ public class Complex implements Cloneable, Serializable {
     }
 
     /** Return true if the distance between this complex number and
-     * 	the first argument is less than or equal to the second argument.
+     * 	the first argument is less than or equal to the second argument. If
+     *  the distance argument is negative, return false.
      *  @param z The number to compare against.
      *  @param distance The distance criterion.
      *  @return True if the distance to the first argument is less
@@ -559,6 +560,9 @@ public class Complex implements Cloneable, Serializable {
         // wrong answer due to rounding errors:
         //    close (1.0i, 1.1i, 0.1)
         // (This is how to invoke this in the expression language.)
+        if (distance < 0.0) {
+            return false;
+        }
         double differenceSquared = subtract(z).magnitudeSquared();
         double distanceSquared = distance*distance;
         if (differenceSquared > distanceSquared) {
