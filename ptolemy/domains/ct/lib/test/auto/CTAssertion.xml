@@ -119,7 +119,7 @@ fails. </text></svg></configure>
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 235.0">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
