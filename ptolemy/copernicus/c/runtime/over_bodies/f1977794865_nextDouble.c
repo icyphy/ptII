@@ -29,16 +29,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @version $Id$
 */
 
+/* FIXME : This is not a uniform random distribution. */
+
 double r, s, i;
 
 /* r is between 0 and 1 */
-r = random()/(double)RAND_MAX;
+r = rand()/(double)RAND_MAX;
 
 /* r is now between -1 and 1 */
 r = r*2.0 - 1.0;
 
 /* s between 0 and 1*/
-s = (random()/(double)RAND_MAX);
+s = (rand()/(double)RAND_MAX);
 
 /* s between -1 and +1 */
 s = s*2.0 - 1.0;

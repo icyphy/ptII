@@ -28,6 +28,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @author Ankush Varma 
 @version $Id$
 */
-
-printf("%s", (char*)p0->f1860107401_value->array_data);
+char* output;
+output = (char*)p0->f1860107401_value->array_data;
+if (output != NULL) {
+    printf("%s", output);
+}
 
