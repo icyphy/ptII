@@ -75,7 +75,13 @@ RegenerateCode:
 # FIXME: we can't ship these
 JAVASRC_STUBS=$(PTII)/vendors/sun/src
 
-codegen: generate_codegen compile_codegen run_codegen 
+codegen: $(ROOT)/ptolemy/domains/sdf/demo/orthocom/OrthogonalComSystem.class \
+		generate_codegen compile_codegen run_codegen 
+
+$(ROOT)/ptolemy/domains/sdf/demo/orthocom/OrthogonalComSystem.class: \
+	$(ROOT)/ptolemy/domains/sdf/demo/orthocom/OrthogonalComSystem.java
+	(cd $(ROOT)/ptolemy/domains/sdf/demo/orthocom; $(MAKE))
+
 generate_codegen:
 	@if [ ! -d $(JAVASRC_STUBS) ]; then \
 		echo "Warning $(JAVASRC_STUBS) does not exist"; \
