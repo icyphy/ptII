@@ -753,7 +753,8 @@ public class MoMLParser extends HandlerBase {
                 if (className != null) {
                     Object[] arguments = new Object[1];
                     arguments[0] = _workspace;
-                    Class newClass = Class.forName(className, true, _classLoader);
+                    Class newClass
+                            = Class.forName(className, true, _classLoader);
                     _toplevel = _createInstance(newClass, arguments);
                     _toplevel.setName(modelName);
                     _toplevel.setMoMLElementName("model");
@@ -1417,6 +1418,11 @@ public class MoMLParser extends HandlerBase {
                             _parser.getColumnNumber());
                 }
                 return result;
+            }
+            if (_current == null) {
+                // The name might be a top-level name, but without
+                // the leading period.
+                return _searchForEntity("." + name, enforceContainment);
             }
             return null;
         }
