@@ -40,6 +40,15 @@
 #	doc/codeDoc.jar
 DOC_CODEDOC_JAR =
 
+# If a jar file is checked in to cvs, and we sign it, then
+# cvs update will think that we need to update it.
+# So, we copy the jar files to a different directory and then sign
+# them.
+SIGNED_DIR =		signed
+SIGNED_LIB_JARS =	$(SIGNED_DIR)/lib/diva.jar \
+			$(SIGNED_DIR)/lib/jasminclasses.jar \
+			$(SIGNED_DIR)/lib/sootclasses.jar
+
 # Web Start can load jars either eagerly or lazily.
 # This makefile variable gets passed to $PTII/bin/mkjnlp and determines
 # the number of jars that are loaded eagerly.  Of course, for this to
@@ -47,10 +56,11 @@ DOC_CODEDOC_JAR =
 # list.  In general, large jars such as diva.jar and ptsupport.jar
 # should be loaded eagerly.
 NUMBER_OF_JARS_TO_LOAD_EAGERLY = 8
+
 # Jar files that will appear in all Ptolemy II JNLP files.
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
-	lib/diva.jar \
+	$(SIGNED_DIR)/lib/diva.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/ptsupport.jar \
@@ -58,7 +68,6 @@ CORE_JNLP_JARS = \
 	ptolemy/actor/lib/javasound/javasound.jar \
 	ptolemy/media/javasound/javasound.jar \
 	$(DOC_CODEDOC_JAR)
-
 
 #######
 # DSP - The smallest runtime
@@ -99,8 +108,8 @@ PTINY_JNLP_JARS = \
 # Full
 #
 COPERNICUS_JARS = \
-	lib/jasminclasses.jar \
-	lib/sootclasses.jar \
+	$(SIGNED_DIR)/lib/jasminclasses.jar \
+	$(SIGNED_DIR)/lib/sootclasses.jar \
 	ptolemy/copernicus/copernicus.jar
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
@@ -142,7 +151,7 @@ MKJNLP =		$(PTII)/bin/mkjnlp
 # JNLP files that do the actual installation
 JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergil.jnlp 
 
-jnlp_all: $(JNLPS) jnlp_sign
+jnlp_all: $(JNLPS) $(SIGNED_LIB_JARS) jnlp_sign
 jnlps: $(JNLPS)
 jnlp_clean: 
 	rm -f $(JNLPS)
@@ -244,8 +253,7 @@ vergil.jnlp: vergil.jnlp.in
 		$(STOREPASSWORD) \
 		$(FULL_MAIN_JAR) $(KEYALIAS)
 
-# the .jnlp file itself must be included in the signed jar file
-# and not be changed (See Section 5.4 of the JNLP specification).
+
 jnlp_sign: $(JNLPS) $(KEYSTORE)
 	set $(ALL_JNLP_JARS); \
 	for x do \
@@ -255,6 +263,25 @@ jnlp_sign: $(JNLPS) $(KEYSTORE)
 			$(STOREPASSWORD) \
 			$$x $(KEYALIAS); \
 	done;
+
+
+# Jar files that we copy befor signing so as to avoid problems with cvs
+# Each of the jar files below should be listed in $(SIGNED_LIB_JARS)
+$(SIGNED_DIR)/lib:
+		if [ ! -d $(SIGNED_DIR)/lib ]; then \
+			mkdir -p $(SIGNED_DIR)/lib; \
+		fi
+
+$(SIGNED_DIR)/lib/diva.jar: $(SIGNED_DIR)/lib lib/diva.jar
+		cp lib/diva.jar $@
+
+$(SIGNED_DIR)/lib/jasminclasses.jar: $(SIGNED_DIR)/lib lib/jasminclasses.jar
+		cp lib/jasminclasses.jar $@
+
+$(SIGNED_DIR)/lib/sootclasses.jar: $(SIGNED_DIR)/lib lib/sootclasses.jar
+		cp lib/diva.jar $@
+
+
 
 
 sign_jar: 
