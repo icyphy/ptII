@@ -30,10 +30,6 @@
 
 package ptolemy.data.type;
 
-import java.lang.reflect.Modifier;
-import java.util.Hashtable;
-import java.util.HashMap;
-import java.util.Map;
 import java.io.Serializable;
 
 import ptolemy.kernel.util.IllegalActionException;
