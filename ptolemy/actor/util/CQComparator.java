@@ -62,7 +62,7 @@ public interface CQComparator extends Comparator {
      *  <i>(entry - zeroReference) / binWidth</i>,
      *  </p>
      *  with the result cast to long.
-     * 
+     *
      *  <p> Classes that implement this interface will in general need
      *  to perform a downcast on the arguments (of type Object) to the
      *  appropriate user defined classes. If the arguments are not of

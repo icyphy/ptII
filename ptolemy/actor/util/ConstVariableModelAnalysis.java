@@ -125,9 +125,9 @@ public class ConstVariableModelAnalysis {
             throws IllegalActionException, NameDuplicationException {
         _containerToNotConstVariableSet = new HashMap();
         _containerToConstVariableSet = new HashMap();
-    
+
         _variableToChangeContext = new HashMap();
-        
+
         for(Iterator variables = variableSet.iterator();
             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
@@ -135,7 +135,7 @@ public class ConstVariableModelAnalysis {
         }
 
         _collectNotConstantVariables(model, _variableToChangeContext);
-  
+
         System.out.println("Analyzing constants");
         _analyzeAllVariables(model);
         System.out.println("Done analyzing constants");
@@ -241,7 +241,7 @@ public class ConstVariableModelAnalysis {
 
     private static void _collectNotConstantVariables(
             FSMActor actor,
-            AbstractActionsAttribute action, 
+            AbstractActionsAttribute action,
             Map variableToChangeContext)
             throws IllegalActionException {
         for (Iterator names = action.getDestinationNameList().iterator();
@@ -266,12 +266,12 @@ public class ConstVariableModelAnalysis {
         // All port parameters of an entity that have connections are
         // dynamic.  Their context of change is the actor that
         // contains the port parameter
-        for (Iterator portParameters = 
+        for (Iterator portParameters =
                  entity.attributeList(PortParameter.class).iterator();
              portParameters.hasNext();) {
             PortParameter parameter = (PortParameter)portParameters.next();
             ParameterPort port = parameter.getPort();
-   
+
             // Under what conditions is a PortParameter not associated
             // with a port?  This came up in the context of
             // IterateOverArray.
@@ -279,7 +279,7 @@ public class ConstVariableModelAnalysis {
                 variableToChangeContext.put(parameter, entity);
             }
         }
-      
+
         if (entity instanceof FSMActor) {
             // Collect assignments from FSM transitions
             for (Iterator states = ((FSMActor)entity).entityList().iterator();
@@ -295,7 +295,7 @@ public class ConstVariableModelAnalysis {
                         AbstractActionsAttribute action =
                             (AbstractActionsAttribute)actions.next();
                         _collectNotConstantVariables(
-                                (FSMActor) entity, action, 
+                                (FSMActor) entity, action,
                                 variableToChangeContext);
                     }
                     for (Iterator actions =
@@ -304,7 +304,7 @@ public class ConstVariableModelAnalysis {
                         AbstractActionsAttribute action =
                             (AbstractActionsAttribute)actions.next();
                         _collectNotConstantVariables(
-                                (FSMActor) entity, action, 
+                                (FSMActor) entity, action,
                                 variableToChangeContext);
                     }
                 }
@@ -314,7 +314,7 @@ public class ConstVariableModelAnalysis {
             CompositeEntity composite = (CompositeEntity)entity;
             for (Iterator entities = composite.entityList().iterator();
                  entities.hasNext();) {
-                _collectNotConstantVariables((Entity)entities.next(), 
+                _collectNotConstantVariables((Entity)entities.next(),
                         variableToChangeContext);
             }
         }
@@ -345,12 +345,12 @@ public class ConstVariableModelAnalysis {
             while (!notTestedSet.isEmpty()) {
                 Variable variable = (Variable)notTestedSet.iterator().next();
                 notTestedSet.remove(variable);
-           
+
                 // Perform the test.
                 boolean isNotConstant = false;
                 NamedObj changeContext = null;
-                         
-                // If the 
+
+                // If the
                 if (_variableToChangeContext.keySet().contains(variable)) {
                     isNotConstant = true;
                     changeContext = (NamedObj)
@@ -364,7 +364,7 @@ public class ConstVariableModelAnalysis {
                     for(Iterator dependents = declaration.getDependents().iterator();
                         dependents.hasNext() && !isNotConstant;) {
                         Variable scopeVariable = (Variable)dependents.next();
-                        boolean scopeVariableChanges = 
+                        boolean scopeVariableChanges =
                             _variableToChangeContext.keySet().contains(
                                     scopeVariable);
                         if(scopeVariableChanges) {
@@ -393,8 +393,8 @@ public class ConstVariableModelAnalysis {
                             Variable scopeVariable =
                                 ModelScope.getScopedVariable(
                                         variable, variable, name);
-                            boolean scopeVariableChanges = 
-                                scopeVariable != null && 
+                            boolean scopeVariableChanges =
+                                scopeVariable != null &&
                                 _variableToChangeContext.keySet().contains(
                                         scopeVariable);
                             if(scopeVariableChanges) {
@@ -416,7 +416,7 @@ public class ConstVariableModelAnalysis {
                         }
                     } catch (IllegalActionException ex) {
                         // Assume that this will be changed later...
-                        // i.e. input_isPresent in FSM.  
+                        // i.e. input_isPresent in FSM.
 
                         // Note that this also traps expressions that
                         // have no value as being variable...
@@ -466,7 +466,7 @@ public class ConstVariableModelAnalysis {
             }
         }
         if (container instanceof Entity) {
-            for(Iterator ports = 
+            for(Iterator ports =
                     ((Entity)container).portList().iterator();
                 ports.hasNext();) {
                 Port port = (Port)ports.next();

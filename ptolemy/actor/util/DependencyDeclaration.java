@@ -44,7 +44,7 @@ import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DependencyDeclaration
-/** 
+/**
 An instance of DependencyDeclaration is an attribute that declares
 variable dependence information of a parameter.  This attribute is
 usually created in a parameter, when necessary, during the
@@ -92,7 +92,7 @@ public class DependencyDeclaration extends Attribute {
     public List getDependents() {
         return _dependents;
     }
-    
+
     /** Set the set of dependents for this declaration.
      */
     public void setDependents(List dependents) {
@@ -104,5 +104,5 @@ public class DependencyDeclaration extends Attribute {
 
     // The declared dependents;
     private List _dependents;
-    
+
 }
