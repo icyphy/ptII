@@ -165,6 +165,34 @@ test Complex-5.2.5 {equals} {
 } {1 1 1 0 1}
 
 ####################################################################
+test Complex-5.2.5 {isCloseTo} {
+    # Copy the values of c2
+    set ct4 [java::new ptolemy.math.Complex \
+	    [java::field $c2 real] \
+	    [java::field $c2 imag]]
+    list \
+	    [$c0 {isCloseTo ptolemy.math.Complex} $c0] \
+	    [$c1 {isCloseTo ptolemy.math.Complex} $c1] \
+	    [$c2 {isCloseTo ptolemy.math.Complex} $c2] \
+	    [$c2 {isCloseTo ptolemy.math.Complex} $c1] \
+	    [$c2 {isCloseTo ptolemy.math.Complex} $ct4]
+} {1 1 1 0 1}
+
+####################################################################
+test Complex-5.2.5 {isCloseTo epsilon} {
+    # Copy the values of c2
+    set ct4 [java::new ptolemy.math.Complex \
+	    [java::field $c2 real] \
+	    [java::field $c2 imag]]
+    list \
+	    [$c0 {isCloseTo ptolemy.math.Complex double} $c0 10.0] \
+	    [$c1 {isCloseTo ptolemy.math.Complex double} $c1 10.0] \
+	    [$c2 {isCloseTo ptolemy.math.Complex double} $c2 10.0] \
+	    [$c2 {isCloseTo ptolemy.math.Complex double} $c1 10.0] \
+	    [$c2 {isCloseTo ptolemy.math.Complex double} $ct4 10.0]
+} {1 1 1 1 1}
+
+####################################################################
 test Complex-5.3.1 {exp} {
     set ec2 [$c2 exp]
     epsilonDiff [$ec2 toString] {-7.315110094901103 - 1.0427436562359045i}
@@ -214,6 +242,13 @@ test Complex-9.1 {pow} {
     set c6 [java::new ptolemy.math.Complex -0.5 0.9]
     set c7 [$c2 pow $c6]
     epsilonDiff [$c7 toString] {-0.09534790752229648 + 1.2718528818533663i}
+} {}
+
+####################################################################
+test Complex-9.2 {pow} {
+    set c6 [java::new ptolemy.math.Complex -0.5 0.9]
+    set c7 [$c2 {pow double} 2.0]
+    epsilonDiff [$c7 toString] {-5.0 - 12.0i}
 } {}
 
 ####################################################################
@@ -304,3 +339,18 @@ test Complex-15.1 {isInfinite} {
 
 
 } {1 1 1 1 0 0}
+
+
+####################################################################
+test Complex-16.1 {roots} {
+    set c2 [java::new ptolemy.math.Complex 2.0 -3.0]
+    set c11 [$c1 roots 2] 
+    $c11 length
+    epsilonDiff [[$c11 get 0] toString] {4.329780281177466E-17 + 0.7071067811865475i}
+} {}
+
+####################################################################
+test Complex-16.1.1 {roots} {
+    # Uses 16.1 above
+    epsilonDiff [[$c11 get 1] toString] {4.329780281177466E-17 + 0.7071067811865475i}
+} {}
