@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="leadingcar" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <property name="director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -21,11 +23,15 @@
         </property>
         <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
         </property>
         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
     </property>
     <doc>CT model for the leading car, with discrete output.</doc>
@@ -41,7 +47,13 @@
         </port>
     </entity>
     <entity name="forceV" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" value="sin">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -52,6 +64,8 @@
     </entity>
     <entity name="scaleV" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0.05*PI">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -92,18 +106,28 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
         </port>
     </entity>
     <entity name="fhold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
     </entity>
     <entity name="add1" class="ptolemy.actor.lib.AddSubtract">
@@ -122,6 +146,8 @@
     <entity name="scaleM" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -131,6 +157,8 @@
     </entity>
     <entity name="scaleN" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -144,9 +172,13 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
     </entity>
     <entity name="position" class="ptolemy.domains.ct.lib.Integrator">
@@ -154,9 +186,13 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
     </entity>
     <entity name="vssamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
@@ -165,10 +201,14 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
         </port>
     </entity>
     <entity name="ssamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
@@ -177,14 +217,20 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
         </port>
     </entity>
     <entity name="ctdisp" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -215,24 +261,21 @@
     </relation>
     <relation name="r6" class="ptolemy.actor.TypedIORelation">
         <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location value="403.5, 135.79999999999998"/>
         </vertex>
     </relation>
     <relation name="r7" class="ptolemy.actor.TypedIORelation">
         <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location value="277.5, 272.0"/>
         </vertex>
     </relation>
     <relation name="r8" class="ptolemy.actor.TypedIORelation">
         <vertex name="Vertex0" class="ptolemy.moml.Vertex">
-            <location value="483.5, 136.79999999999998"/>
         </vertex>
     </relation>
     <link port="time.output" relation="r0"/>
-    <link port="scaleV.input" relation="r0"/>
-    <link port="scaleV.output" relation="r0_3"/>
     <link port="forceV.input" relation="r0_3"/>
     <link port="forceV.output" relation="r0_1"/>
+    <link port="scaleV.input" relation="r0"/>
+    <link port="scaleV.output" relation="r0_3"/>
     <link port="forceC.output" relation="r0_2"/>
     <link port="add0.plus" relation="r0_1"/>
     <link port="add0.plus" relation="r0_2"/>
