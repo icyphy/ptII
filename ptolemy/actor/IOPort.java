@@ -742,7 +742,8 @@ public class IOPort extends ComponentPort {
     /** Call the {@link #getModelTime} method. 
      *  @param channelIndex The channel index.
      *  @return The current time associated with a certain channel.
-     *  @deprecated As Ptolemy II 4.1, replaced by {@link #getModelTime).
+     *  @deprecated As Ptolemy II 4.1, 
+     *  replaced by {@link #getModelTime()).
      */
     public double getCurrentTime(int channelIndex)
             throws IllegalActionException {
