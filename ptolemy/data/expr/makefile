@@ -44,7 +44,7 @@ include $(CONFIG)
 
 DIRS = 		test # doc
 
-CLASSPATH = ../../..$(CLASSPATHSEPARATOR)$(JAVACCDIR)/JavaCC.zip
+CLASSPATH = ../../..$(CLASSPATHSEPARATOR)$(JAVACC_DIR)/JavaCC.zip
 
 # Used to build zip files
 PTPACKAGE = 	ptolemy.data.expr
