@@ -1,6 +1,6 @@
 /* Starts all the processes and handles deadlocks
 
- Copyright (c) 1998 The Regents of the University of California.
+ Copyright (c)  The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,6 +30,7 @@ import pt.kernel.*;
 import pt.actors.*;
 import pt.data.*;
 import java.util.Enumeration;
+import java.util.Hashtable;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNDirector 
@@ -107,9 +108,13 @@ public class PNDirector extends Director {
     
     /** Increments the no of queues blocked on read. Also checks for deadlocks 
      */
-    public void readBlock() {
+    public void readBlock(Receptionist recep) {
         synchronized(workspace()) {
             _readBlockCount++;
+	    if (_readblockedQs == null) {
+	        _readblockedQs = new Hashtable();
+	    } 
+	    _readblockedQs.put((PNPort)recep.getContainer(), recep);
             //System.out.println("readblkcount is "+_readBlockCount);
             _checkForDeadlock(0);
             return;
@@ -118,9 +123,10 @@ public class PNDirector extends Director {
  
     /** Decreases the number of queues blocked on a read
      */
-    public void readUnblock() {
+    public void readUnblock(PNPort key) {
         synchronized(workspace()) {
             _readBlockCount--;
+	    _readblockedQs.remove(key);
             //System.out.println("readunblkcount is "+_readBlockCount);
             return;
         }
@@ -148,11 +154,15 @@ public class PNDirector extends Director {
      * @param latest input port that blocked the corresponding output star
      *  on a write.
      */
-    public void writeBlock() 
+    public void writeBlock(Receptionist recep) 
 	    throws IllegalActionException {
         //The exception should never be thrown!!
         synchronized(workspace()) {
             _writeBlockCount++;
+	    if (_writeblockedQs == null) {
+	        _writeblockedQs = new Hashtable();
+	    }
+	    _writeblockedQs.put((PNPort)recep.getContainer(), recep);
             _checkForDeadlock(0);
             return;
         }
@@ -162,9 +172,10 @@ public class PNDirector extends Director {
     /** If the stars can be blocked on a write, then unblock it and 
      *  decrement the number of stars blocked on write.
      */
-    public void writeUnblock() {
+    public void writeUnblock(PNPort key) {
         synchronized(workspace()) {
             _writeBlockCount--;
+	    _writeblockedQs.remove(key);
             return;
         }
     }
@@ -201,66 +212,56 @@ public class PNDirector extends Director {
 
     // Finds and returns the port with the smallest write capacity 
     // that is blocked on a write.
-    private PNInPort _incrementLowestWriteCapacityPort() {
+    private void _incrementLowestWriteCapacityPort() {
+        //System.out.println("Incrementing capacity");    
         //FIXME: Should this be synchronized
         FIFOQueue smallestCapacityQueue = null;
-        PNInPort smallestCapacityPort = null;
+        FlowFifoQ smallestCapacityRecep = null;
         int smallestCapacity = -1;
-        Enumeration allMyStars = ((CompositeEntity)getContainer()).deepGetEntities();
-        while (allMyStars.hasMoreElements()) {
-            PNActor star = (PNActor)allMyStars.nextElement();
-            Enumeration starPorts = star.getPorts();
-            while (starPorts.hasMoreElements()) {
-                PNPort port = (PNPort)starPorts.nextElement();
-                //Only input ports have a queue
-                if (port.isInput()) {
-                    //To search only in queues blocked on a write
-                    if (((PNInPort)port).isWritePending()) {
-                        try {
-                            Enumeration outports = port.deepConnectedOutputPorts();
-                            while(outports.hasMoreElements()) {
-                                PNOutPort outport = (PNOutPort)outports.nextElement();
-                                FIFOQueue queue = ((PNInPort)port).getQueue(outport);
-                                if (smallestCapacity == -1) {
-                                    smallestCapacityQueue = queue;
-                                    smallestCapacity = queue.capacity();
-                                    smallestCapacityPort = (PNInPort)port;
-                                }
-                                else if (smallestCapacity > queue.capacity()) {
-                                    smallestCapacityQueue = queue;
-                                    smallestCapacity = queue.capacity();
-                                    smallestCapacityPort = (PNInPort)port;
-                                }
-                            }
-                        } catch (IllegalActionException e) {
-                            System.err.println("Exception: " + e.toString());
-                            //Should not be thrown as this exception is thrown 
-                            //only if port is not an input port, checked above
-                        }
-                    }
-                }
-            }
-        }            
-        //Ensuring that a write is possible, by incrementing capacity to 
-        // a positive number.
-
+	Enumeration receps = _writeblockedQs.elements();
+	//System.out.println("Enumeration receos done");
+	while (receps.hasMoreElements()) {
+	    FlowFifoQ flowqueue = (FlowFifoQ)receps.nextElement();
+//  	    try {
+//  	        System.out.println("The queue : "+flowqueue.getContainer().getFullName());
+//  	    } catch (Exception e) {
+//  	        System.err.println("Exception e: "+e.toString());
+//  	    }
+	    FIFOQueue queue = flowqueue.getQueue();
+	    if (smallestCapacity == -1) {
+	        smallestCapacityQueue = queue;
+		smallestCapacity = queue.capacity();
+		smallestCapacityRecep = flowqueue;
+//  		try {
+//  		  System.out.println("The queue and  : "+flowqueue.getContainer().getFullName());
+//  		} catch (Exception e) {
+//  		  System.err.println("Exception e: "+e.toString());
+//  		}
+	    } else if (smallestCapacity > queue.capacity()) {
+	        smallestCapacityQueue = queue;
+	        smallestCapacity = queue.capacity();
+		smallestCapacityRecep = flowqueue;
+	    }
+	}
         try {
             if (smallestCapacityQueue.capacity() <= 0) { 
                 smallestCapacityQueue.setCapacity(1);
             } else { 
-                smallestCapacityQueue.setCapacity(smallestCapacityQueue.capacity()+1);
+	        smallestCapacityQueue.setCapacity(smallestCapacityQueue.capacity()+1);
             }
-            if (smallestCapacityPort.isWritePending()) {
-                writeUnblock();
-                smallestCapacityPort.setWritePending(false);
-                workspace().notifyAll();
-            }
+	    _readblockedQs.remove((PNPort)smallestCapacityRecep.getContainer());
+	    //FIXME: Wont this alwas be true?? Check it out
+	    //if ((PNInPort)(smallestCapacityRecep.getContainer()).isWritePending()) {
+	    writeUnblock((PNPort)(smallestCapacityRecep.getContainer()));
+	    ((PNInPort)smallestCapacityRecep.getContainer()).setWritePending(false);
+	    workspace().notifyAll();
+	    //}
         } catch (IllegalActionException e) {
-            System.err.println("Exception: " + e.toString());
-            //Should not be thrown as this exception is thrown 
+	    System.err.println("Exception: " + e.toString());
+	    //Should not be thrown as this exception is thrown 
             //only if port is not an input port, checked above
         }
-        return smallestCapacityPort;
+        return;
     }
 
     // Handles deadlock, both real and artificial
@@ -319,12 +320,13 @@ public class PNDirector extends Director {
                     _deadlock = false;
                     // find the input port with lowest capacity queue 
                     // that is blocked on a write and increment it's capacity
-                    PNInPort lowestCap = _incrementLowestWriteCapacityPort();
+                    _incrementLowestWriteCapacityPort();
                 }
             }
-        if (_debug > 5 ) System.out.println(
-                "PNExecutive: _handleDeadlock(): return at bottom");
-	return true;
+	    if (_debug > 5 ) 
+	        System.out.println("PNExecutive: "+
+				   "_handleDeadlock(): return at bottom");
+	    return true;
         }
     }
     
@@ -367,11 +369,15 @@ public class PNDirector extends Director {
     // Number of stars blocking on read.
     private int _readBlockCount = 0;    
 
+    private Hashtable _readblockedQs;
+
     // Is set when the simulation is to be terminated
     private boolean _terminate = false;
 
     // No of stars blocking on write.
     private int _writeBlockCount = 0;
+
+    private Hashtable _writeblockedQs;
 
 }
 
