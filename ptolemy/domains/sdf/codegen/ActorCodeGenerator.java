@@ -93,7 +93,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         // rename the class
         String actorName = actorInfo.actor.getName();
-        String actorClassName = StringManip.unqualifiedPart(actorInfo.actor.getClass().getName());
+        String actorClassName = 
+         StringManip.unqualifiedPart(actorInfo.actor.getClass().getName());
         String newActorName = "CG_" +  actorClassName + "_" + actorName;
          
         HashMap renameMap = new HashMap();
@@ -112,12 +113,11 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         System.out.println("acg : loading " + filename);        
                 
         unitNode = StaticResolution.resolvePass2(unitNode);
-                        
-        LinkedList visitorArgs = TNLManip.cons(actorInfo);
-        
+                                
         System.out.println("acg : specializing tokens " + filename);        
                 
-        Map declToTypeMap = (Map) unitNode.accept(new SpecializeTokenVisitor(), visitorArgs);
+        Map declToTypeMap = (Map) unitNode.accept(
+         new SpecializeTokenVisitor(actorInfo), null);
 
         System.out.println("acg : changing types " + filename);        
 
@@ -125,11 +125,14 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
          TNLManip.cons(declToTypeMap));
         
         // should redo resolution here
-                        
+        
+        // maybe it's ok not to redo field resolution
+        unitNode.accept(new RemovePropertyVisitor(), TNLManip.cons(TYPE_KEY));
+                                        
         System.out.println("acg : transforming code " + filename);        
         
-        unitNode = (CompileUnitNode) unitNode.accept(new ActorTransformerVisitor(),
-         visitorArgs);
+        unitNode = (CompileUnitNode) unitNode.accept(
+         new ActorTransformerVisitor(actorInfo), null);
                   
         // regenerate the code          
                   
@@ -148,7 +151,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
            
            String portName = port.getName();
            
-           actorInfo.portNameToPortMap.put(portName,  port);
+           actorInfo.portNameToPortMap.put(portName, port);
         }
     }
     
@@ -168,9 +171,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
            }        
         }
     }
-    
-
-    
+        
     protected final Entity _entity;
     protected CompileUnitNode unitNode;
 }
