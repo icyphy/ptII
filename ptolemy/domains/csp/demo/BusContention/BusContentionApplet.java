@@ -124,7 +124,7 @@ public class BusContentionApplet extends CSPApplet {
                 new LineBorder(Color.black), "Animation"));
         _divaPanel.setBackground(_getBackground());
 	_divaPanel.setSize( new Dimension(600, 350) );
-	_divaPanel.setBackground( getBackground() );
+	_divaPanel.setBackground(_getBackground());
 	_jgraph.setBackground(_getBackground());
 	getContentPane().add( _divaPanel, BorderLayout.CENTER );
 
