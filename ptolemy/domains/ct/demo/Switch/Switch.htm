@@ -2,11 +2,11 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Bouncing Ball</title>
+<title>Switching Continuous Signals</title>
 <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<H1>Bouncing Ball</H1>
+<H1>Switching Continuous Signals</H1>
 <P>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
@@ -52,7 +52,16 @@ applet is displayed on a XGA screen-->
 </OBJECT>
 </center>
 <p>
-An <a href="SwitchVergil.htm">alternative definition</a>
+This model shows how to handle hybrid systems with both continuous
+and discrete inputs (and outputs). The EventSource actor generates
+a seqeunce of discrete events which trigger the transition of the 
+FSM inside the continuous time composite actor. The FSM routes one
+of the two continuous time input signals to the output. Notice that
+the "trigger" port of the continuous time composite actor has a 
+parameter "signalType" with value "DISCRETE", which helps the 
+CTDirector to schedule and execute the model correctly.
+
+<p>An <a href="SwitchVergil.htm">alternative definition</a>
 uses Vergil, the Ptolemy II schematic editor.
 <p>
 </BODY>
