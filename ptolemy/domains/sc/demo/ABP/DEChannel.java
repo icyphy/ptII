@@ -98,9 +98,8 @@ public class DEChannel extends DEActor {
                 }
             }
 
-/* REMOVE */
-System.out.println("DEChannel " + this.getFullName() + " get input message at "
-        + getCurrentTime());
+//System.out.println("DEChannel " + this.getFullName() + 
+//        " get input message at " + getCurrentTime());
 
         }
 
@@ -109,9 +108,8 @@ System.out.println("DEChannel " + this.getFullName() + " get input message at "
             IntToken msg = (IntToken)_msgs.take();
             output.broadcast(msg);
 
-/* REMOVE */
-System.out.println("DEChannel " + this.getFullName() + " sends message at "
-        + getCurrentTime());
+//System.out.println("DEChannel " + this.getFullName() + 
+//       " sends message at " + getCurrentTime());
 
             if (_msgs.size() > 0) {
                 // schedule output time

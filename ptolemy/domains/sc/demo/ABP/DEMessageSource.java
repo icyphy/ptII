@@ -81,7 +81,8 @@ public class DEMessageSource extends DEActor {
         _msgNum = 0;
         _nextMsgTime = -1.0;
 
-System.out.println("DEChannel "+getFullName()+" initializing at time "+getCurrentTime());
+//System.out.println("DEChannel "+getFullName()+" initializing at time "+
+//        getCurrentTime());
 
         fireAfterDelay(((DoubleToken)_maxDelay.getToken()).doubleValue()*Math.random());
     }
@@ -112,9 +113,8 @@ System.out.println("DEChannel "+getFullName()+" initializing at time "+getCurren
                 _nextMsgTime = getCurrentTime() + delay;
             }
 
-/* REMOVE */
-System.out.println("DEMessageSource " + this.getFullName() + " next message "
-        + "scheduled at " + _nextMsgTime);
+//System.out.println("DEMessageSource " + this.getFullName() + 
+//        " next message " + "scheduled at " + _nextMsgTime);
 
         }
 
