@@ -131,7 +131,6 @@ OPTIONAL_FILES = \
 	'PlotFrame$$1.class' \
 	'PlotFrame$$2.class' \
 	'PlotFrame$$FormatListener.class' \
-	$(PTCLASSZIP)\
 	ptolemy.plot$(JVERSION).tar.gz \
 	ptolemy.plot$(JVERSION).zip \
 	$(PTAUXJAR) \
