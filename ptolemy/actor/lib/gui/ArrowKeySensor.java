@@ -207,20 +207,20 @@ public class ArrowKeySensor extends TypedAtomicActor {
     /** Create the JFrame window capable of detecting the key-presses. */
     public void initialize() {
         if (_debugging) _debug("frame will be constructed");
-        _myframe = new MyFrame();
+        _myFrame = new MyFrame();
         if (_debugging) _debug("frame was constructed");
     }
 
     /** Dispose of the JFrame, causing the window to vanish. */
     public void wrapup() {
-	_myframe.dispose();
+	_myFrame.dispose();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
 
     /** The JFrame */
-    private MyFrame _myframe;
+    private MyFrame _myFrame;
 
     /** The flags indicating which keys have been pressed or released
      *  since the last firing of the actor.  <i>Pressed</i> and

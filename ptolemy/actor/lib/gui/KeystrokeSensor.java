@@ -151,21 +151,21 @@ public class KeystrokeSensor extends TypedAtomicActor {
      */
     public void preinitialize() {
         if (_debugging) _debug("frame will be constructed");
-        _myframe = new MyFrame();
+        _myFrame = new MyFrame();
         if (_debugging) _debug("frame was constructed");
     }
 
     /** Dispose of the JFrame, thus closing that window.
      */
     public void wrapup() {
-	_myframe.dispose();
+	_myFrame.dispose();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
 
     /** The JFrame window */
-    private MyFrame _myframe;
+    private MyFrame _myFrame;
 
     /** The flags indicating which keys have been pressed since
      *  the last firing og the actor.
