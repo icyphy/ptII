@@ -48,9 +48,6 @@ if {[string compare test [info procs test]] == 1} then {
 cd ..
 set configs [glob *Configuration*.xml]
 cd test
-puts "If you get a 'X connection to xxx:11.0 broken' message, then"
-puts "see $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java"
-puts "Or run java -verbose -classpath ../../../lib/ptjacl.jar:../../../lib/diva.jar:../../.. tcl.lang.Shell allConfigs.tcl"
 
 foreach i $configs {
     set parser [java::new ptolemy.moml.MoMLParser]
@@ -61,26 +58,9 @@ foreach i $configs {
     $parser addMoMLFilters \
 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
-    set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
-    $filter put "ptolemy.actor.lib.gui.Plotter" [java::null]
-    $filter put "ptolemy.actor.lib.gui.BarGraph" [java::null]
-    $filter put "ptolemy.actor.lib.gui.Display" [java::null]
-    $filter put "ptolemy.actor.lib.gui.RealTimePlotter" [java::null]
-    $filter put "ptolemy.actor.lib.gui.SequencePlotter" [java::null]
-    $filter put "ptolemy.actor.lib.gui.SequenceScope" [java::null]
-    $filter put "ptolemy.actor.lib.gui.TimedPlotter" [java::null]
-    $filter put "ptolemy.actor.lib.gui.TimedScope" [java::null]
-    $filter put "ptolemy.actor.lib.gui.XYPlotter" [java::null]
-    $filter put "ptolemy.actor.lib.gui.XYScope" [java::null]
-    $filter put "ptolemy.domains.sr.lib.NonStrictDisplay" [java::null]
-    $filter put "ptolemy.actor.lib.gui.MatrixVisualizer" [java::null]
-    $filter put "ptolemy.actor.lib.gui.MatrixViewer" [java::null]
-    $filter put "ptolemy.domains.tm.kernel.TMDirector" [java::null]
+    # See ptII/util/testsuite/removeGraphicalClasses.tcl
+    removeGraphicalClasses $parser
 
-
-    $parser addMoMLFilter $filter
-
-    
     set loader [[$parser getClass] getClassLoader]
     
 
