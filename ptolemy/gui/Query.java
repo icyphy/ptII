@@ -60,6 +60,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -72,6 +73,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
@@ -179,7 +181,7 @@ public class Query extends JPanel {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
-        JRadioButton checkbox = new JRadioButton();
+        JCheckBox checkbox = new JCheckBox();
         checkbox.setBackground(_background);
         checkbox.setOpaque(false);
         checkbox.setSelected(defaultValue);
@@ -736,8 +738,8 @@ public class Query extends JPanel {
                     + "\" in the query box.");
         }
 
-        if (result instanceof JRadioButton) {
-            return ((JRadioButton) result).isSelected();
+        if (result instanceof JToggleButton) {
+            return ((JToggleButton) result).isSelected();
         } else {
             throw new IllegalArgumentException("Item named \"" + name
                     + "\" is not a radio button, and hence does not have "
@@ -854,10 +856,10 @@ public class Query extends JPanel {
             return ((JSlider) result).getValue();
         } else if (result instanceof JComboBox) {
             return ((JComboBox) result).getSelectedIndex();
-        } else if (result instanceof JRadioButton[]) {
+        } else if (result instanceof JToggleButton[]) {
             // Regrettably, ButtonGroup gives no way to determine
             // which button is selected, so we have to search...
-            JRadioButton[] buttons = (JRadioButton[]) result;
+            JToggleButton[] buttons = (JToggleButton[]) result;
 
             for (int i = 0; i < buttons.length; i++) {
                 if (buttons[i].isSelected()) {
@@ -943,10 +945,11 @@ public class Query extends JPanel {
             return ((QueryFileChooser) result).getSelectedFileName();
         } else if (result instanceof JTextArea) {
             return ((JTextArea) result).getText();
-        } else if (result instanceof JRadioButton) {
-            JRadioButton radioButton = (JRadioButton) result;
+        } else if (result instanceof JToggleButton) {
+            // JRadioButton and JCheckButton are subclasses of JToggleButton
+            JToggleButton toggleButton = (JToggleButton) result;
 
-            if (radioButton.isSelected()) {
+            if (toggleButton.isSelected()) {
                 return "true";
             } else {
                 return "false";
@@ -955,10 +958,13 @@ public class Query extends JPanel {
             return "" + ((JSlider) result).getValue();
         } else if (result instanceof JComboBox) {
             return (String) (((JComboBox) result).getSelectedItem());
-        } else if (result instanceof JRadioButton[]) {
+        } else if (result instanceof JToggleButton[]) {
+            // JRadioButton and JCheckButton are subclasses of JToggleButton
+
             // Regrettably, ButtonGroup gives no way to determine
             // which button is selected, so we have to search...
-            JRadioButton[] buttons = (JRadioButton[]) result;
+
+            JToggleButton[] buttons = (JToggleButton[]) result;
             String toReturn = null;
 
             for (int i = 0; i < buttons.length; i++) {
@@ -1064,7 +1070,8 @@ public class Query extends JPanel {
             ((JTextArea) result).setText(value);
         } else if (result instanceof QueryScrollPane) {
             ((QueryScrollPane) result).setText(value);
-        } else if (result instanceof JRadioButton) {
+        } else if (result instanceof JToggleButton) {
+            // JRadioButton and JCheckButton are subclasses of JToggleButton
             Boolean flag = new Boolean(value);
             setBoolean(name, flag.booleanValue());
         } else if (result instanceof JSlider) {
@@ -1072,7 +1079,7 @@ public class Query extends JPanel {
             ((JSlider) result).setValue(parsed.intValue());
         } else if (result instanceof JComboBox) {
             ((JComboBox) result).setSelectedItem(value);
-        } else if (result instanceof JRadioButton[]) {
+        } else if (result instanceof JToggleButton[]) {
             // First, parse the value, which may be a comma-separated list.
             Set selectedValues = new HashSet();
             StringTokenizer tokenizer = new StringTokenizer(value, ",");
@@ -1081,7 +1088,7 @@ public class Query extends JPanel {
                 selectedValues.add(tokenizer.nextToken().trim());
             }
 
-            JRadioButton[] buttons = (JRadioButton[]) result;
+            JToggleButton[] buttons = (JToggleButton[]) result;
 
             for (int i = 0; i < buttons.length; i++) {
                 if (selectedValues.contains(buttons[i].getText())) {
@@ -1159,8 +1166,9 @@ public class Query extends JPanel {
                     + "\" in the query box.");
         }
 
-        if (result instanceof JRadioButton) {
-            ((JRadioButton) result).setSelected(value);
+        if (result instanceof JToggleButton) {
+            // JRadioButton and JCheckButton are subclasses of JToggleButton
+            ((JToggleButton) result).setSelected(value);
         } else {
             throw new IllegalArgumentException("Item named \"" + name
                     + "\" is not a radio button, and hence does not have "
@@ -1235,8 +1243,8 @@ public class Query extends JPanel {
 
         if (result instanceof JComponent) {
             ((JComponent) result).setEnabled(value);
-        } else if (result instanceof JRadioButton[]) {
-            JRadioButton[] buttons = (JRadioButton[]) result;
+        } else if (result instanceof JToggleButton[]) {
+            JToggleButton[] buttons = (JToggleButton[]) result;
 
             for (int i = 0; i < buttons.length; i++) {
                 buttons[i].setEnabled(value);
