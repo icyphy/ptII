@@ -76,7 +76,7 @@ public class ColtGamma extends ColtRandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        alpha = new Parameter(this, "mean", new DoubleToken(1.0));
+        alpha = new Parameter(this, "alpha", new DoubleToken(1.0));
         alpha.setTypeEquals(BaseType.DOUBLE);
         lambda = new Parameter(this, "lambda", new DoubleToken(1.0));
         lambda.setTypeEquals(BaseType.DOUBLE);
