@@ -282,7 +282,7 @@ public class Transition extends ComponentRelation {
         if ((pt == s.incomingPort && port == st.incomingPort) ||
                 (pt == s.outgoingPort && port == st.outgoingPort)) {
             throw new IllegalActionException(this,
-                    "Transition can only have one source/destination.");
+                    "Transition can only have one source and one destination.");
         }
         return;
     }
