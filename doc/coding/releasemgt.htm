@@ -16,7 +16,39 @@ This page describes how we release software.
 
 <h2><a name="Building a release">Building a release</a></h2>
 
+
+<h2>Splitting the tree</h2>
 <ol>
+<li> Ptolemy handled 
+<a href="about:copyright"><code>about:copyright</code>
+URLS specially.  One facility on the copyrigth page is the ability
+to expand all the model, .html files and .pdf files on 
+the various demonstration pages.  This allows us to
+verify that all the resources are present in the tree.
+<br>Following the links on 
+<a href="about:copyright"><code>about:copyright</code>
+is an essential part of testing each release.
+
+<br>For details, see
+<a href="codeDoc/ptolemy/actor/gui/GenerateCopyrights.html">actor.gui.GenerateCopyrights</a>
+and
+<a href="codeDoc/ptolemy/actor/gui/HTMLViewer.html">actor.gui.HTMLViewer</a>
+
+
+<li> Ptolemy II is organized in to jar files, where each
+directory contains a jar file of the .class files and another
+resources that are necessary for that package.  These resources
+include files like images and pdfs.  Parent directories contain
+the jar files in children directories.  
+<br>When building a release, it is usually best to build
+the Web Start release first because it is easier to change
+one jar file and retry something in
+<a href="../webStartHelp.htm">Web Start</a> than it is to 
+rebuild an entire Windows installer.
+<br>Use
+<a href="about:copyright"><code>about:copyright</code>
+to test the Web Start release.
+
 <li> Clean the tree by running <CODE>make checkjunk</CODE>
 and adding files as appropriate to the makefiles
 
@@ -35,6 +67,21 @@ the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CO
 find . -type f -print &gt; ~/tmp/ff
 sh ~ptII/adm/copyright/chkcopyright `cat ~/tmp/ff | grep -v .class | grep -v codeDoc | grep -v xml | grep -v alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v gif`
 </pre>
+
+<li> Use Eclipse to fix the imports of the entire tree.
+
+<li> Consider fixing other Eclipse warnings.
+
+<li> Currently, we use 
+<a href="http://www.zerog.com" target="_top">Zerog's InstallAnywhere</a>
+to build Windows installers.  Building the Windows installer is fairly complex,
+below are some things to be aware of
+  <menu>
+  <li> The Windows installer includes source files.  These sources
+  come from $PTII/adm/gen-<i>N.M</i>/ptII<i>N.M</i>.src.jar.  Obviously,
+  this jar file should be created on a Windows machine so the end
+  of line characters are Windows end of line characters.
+  </menu>
 
 <li> Tag the tree as the release tree and create a branch
 For more information about CVS, see the
