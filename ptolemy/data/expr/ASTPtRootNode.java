@@ -191,7 +191,7 @@ public class ASTPtRootNode implements Node {
   /* Override this method if you want to customize how the node dumps
      out its children. - overridden Neil Smyth*/
 
-  public void dump(String prefix) {
+  public void displayParseTree(String prefix) {
       if (_ptToken != null) {
           String str = toString(prefix) + ", Token type: ";
           str = str + _ptToken.getClass().getName() + ", Value: "; 
@@ -203,7 +203,7 @@ public class ASTPtRootNode implements Node {
       for (int i = 0; i < children.length; ++i) {
 	ASTPtRootNode n = (ASTPtRootNode)children[i];
 	if (n != null) {
-	  n.dump(prefix + " ");
+	  n.displayParseTree(prefix + " ");
 	}
       }
     }

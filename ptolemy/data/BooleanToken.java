@@ -67,11 +67,9 @@ public class BooleanToken extends Token {
         }
         boolean arg = ((BooleanToken)a).getValue();
         if ((_value && arg) || !(_value || arg)) {
-            _value = true;
-        } else {
-            _value = false;
+            return new BooleanToken(true);
         }
-        return this;
+        return new BooleanToken(false);
     }
 
     /** Set the value in the token to the value represented by the
@@ -110,7 +108,8 @@ public class BooleanToken extends Token {
     /** Create a string representation of the value in the token.
      */
     public String toString() {
-	return (new Boolean(_value)).toString();
+        String str = getClass().getName() + "(" + _value + ")";
+        return str;
     }
 
     //////////////////////////////////////////////////////////////////////////

@@ -150,7 +150,7 @@ public class PtParser {
         try {
             // First parse the expression to obtain the parse tree
             ASTPtRootNode rootNode = start();
-            if (debug) rootNode.dump(" ");
+            if (debug) rootNode.displayParseTree(" ");
             return rootNode;
         } catch (ParseException x) {
             str = "parse of " + stringIn + " failed: " + x.getMessage();
