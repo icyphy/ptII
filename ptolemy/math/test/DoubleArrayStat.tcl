@@ -351,7 +351,7 @@ test DoubleArrayStat-8.1 {randomExponential} {
      # 100 randoms should not be the same
      list [$a1 length] \
 	[$a2 length] \
-	[expr {string compare [$a1 getrange] [$a2 getrange] == 0}]
+	[expr {[string compare [$a1 getrange] [$a2 getrange]] == 0}]
 } {100 100 0}
 
 ####################################################################

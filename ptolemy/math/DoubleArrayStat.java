@@ -578,6 +578,31 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Throw an exception if the array is null or length 0.
+     *  Otherwise return the length of the array.
+     *  @param array An array of doubles.
+     *  @param methodName A String representing the method name of the caller,
+     *  without parentheses.
+     *  @return The length of the array.
+     */
+    protected static final int _nonZeroLength(final double[] array,
+            String methodName) {
+        if (array == null) {
+            throw new IllegalArgumentException("ptolemy.math." + methodName +
+                    "() : input array is null.");
+        }
+
+        if (array.length <= 0) {
+            throw new IllegalArgumentException("ptolemy.math." + methodName +
+                    "() : input array has length 0.");
+        }
+
+        return array.length;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Common instance of Random to be shared by all methods that need
