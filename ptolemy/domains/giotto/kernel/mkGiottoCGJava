@@ -119,7 +119,6 @@ public class $task implements TaskInterface, Serializable {
 EOF1
 done
 
-set -x
 # Create the driver
 drivers1=`egrep "^driver" $giottoFile | awk '{print substr($2, 1, length($2) - length("driver"))"inputdriver"}'`
 drivers2=`egrep ":=" $giottoFile | awk '{print substr($4, 1, length($4)-1)}'`
