@@ -160,23 +160,6 @@ public class MoMLApplet extends PtolemyApplet {
                 ModelPane pane = new ModelPane(_toplevel);
                 pane.setBackground(_background);
 
-                // Create a panel to place placeable objects.
-                JPanel displayPanel = new JPanel();
-                displayPanel.setLayout(new BoxLayout(displayPanel,
-                        BoxLayout.Y_AXIS));
-                displayPanel.setBackground(_background);
-
-                pane.setDisplayPane(displayPanel);
-
-		// Put placeable objects in the display panel.
-		Iterator entities = _toplevel.deepEntityList().iterator();
-                while (entities.hasNext()) {
-		    Object entity = entities.next();
-		    if(entity instanceof Placeable) {
-			((Placeable) entity).place(displayPanel);
-		    }
-		}
-
                 getContentPane().add(pane);
                 pane.setDefaultButton();
                 validate();
