@@ -119,20 +119,6 @@ public class SDFPitchDetector extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notify the director when type changes in the parameters occur.
-     *  This will cause type resolution to be redone at the next opportunity.
-     *  It is assumed that type changes in the parameters are implemented
-     *  by the director's change request mechanism, so they are implemented
-     *  when it is safe to redo type resolution.
-     *  If there is no director, then do nothing.
-     */
-    public void attributeTypeChanged(Attribute attribute) {
-        Director dir = getDirector();
-        if (dir != null) {
-            dir.invalidateResolvedTypes();
-        }
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the <code>isPeriodic</code> and <code>pathName</code>
      *  public members to the parameters of the new actor.
