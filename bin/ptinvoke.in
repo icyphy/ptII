@@ -29,10 +29,17 @@
 # 						COPYRIGHTENDKEY
 
 # If this script is named 'ptolemy', 'ptplot', or 'vergil', don't edit it!
-# instead, edit ptinvoke.in and run configure
-#
-# configure substitutes in variables that are surrounded with @,
-#
+# instead, edit ptinvoke.in and run make
+# make runs configure, which reads in $PTII/bin/ptinvoke.in, 
+# and substitutes in variables that are surrounded with @,
+# and generates $PTII/bin/ptinvoke.
+# Most of the scripts in $PTII/bin are actually symbolic links to
+# $PTII/bin/ptinvoke.  Thus, all the scripts share the same body
+# but the $0 argument is different depending on how this script
+# was invoked.
+
+# Run 'vergil -helpall' for a short description of what
+# commands can be run.
 
 #### Generic stuff.
 # Location of the Ptolemy II tree.  The bin directory should be found
@@ -351,23 +358,14 @@ case `basename "$0"` in
 	    ;;
         esac
 	;;
-    ptjini)
-	# Ptolemy II Application that uses Jini
+    ptolemy)
+        help="Bring up a control panel for each model rather than running it \
+	    like ptexecute, for example: \
+            $0 $PTII_CLEAN/ptolemy/moml/demo/modulation.xml"
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
 	javasourcedir=ptolemy/actor/gui
 	jarfile="$ALL_JAR"
 	javaflag="$ALL_JFLAG"
-	;;
-    ptolemy)
-        help="Bring up a control panel for each model rather than running it \
-	    like ptinvoke, for example: \
-            $0 $PTII_CLEAN/ptolemy/moml/demo/modulation.xml"
-	javastartupclass=ptolemy.actor.gui.PtolemyApplication
-	javasourcedir=ptolemy/actor/gui
-	# Please don't add jini or commapi to ptolemy.
-	# If you want to start up jini or commapi, the run ptjini -cxh 7/00
-	jarfile="${DIVA_JAR}"
-	javaflag="${DIVA_JFLAG}"
 	;;
     ptplot)
 	help="Signal Plotter, see \$PTII/ptolemy/plot/doc"
@@ -486,6 +484,7 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
 	echo " Where commonOptions is one or more of:"
 	echo " -debug   Enable debugging, see \$PTII/doc/coding/debugging.htm"
 	echo " -help    Print this help message"
+	echo " -helpall List all the Ptolemy II commands that can be invoked"
 	echo " -jdb     Run jdb instead of java, see \$PTII/doc/coding/debugging.htm"
 	echo " -profiler Run under cpu sample profiling"
         echo " -q       Do not echo the command being run"
@@ -509,6 +508,42 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
 	# Since we are not shifting the -help argument, we do not call
 	# continue, we break out down below.
 	# continue
+    fi
+    if [ "$1" = "-helpall" ]; then
+	cat <<EOF
+The primary command used to invoke the Ptolemy II development environment is:
+    vergil
+
+Below is a list of Ptolemy II Shell scripts that can be invoked from the
+command line if Cygwin is present.
+
+    copernicus     Do deep codegen
+    decompile      Decompile a .class file using javap or jode [1]
+    histogram      Histogram Plotter
+    htmlconverter  Java Plug-in applet converter [1]
+    jode           Run jode, which can be used for decompiling [1]
+    mescal         Mescal: not usually shipped with Ptolemy II [1]
+    moml           Start the Ptolemy II UI using a different config
+    obfuscate      Jode obfuscator, useful for reducing class file size [1]
+    ptexecute      Execute a model without a UI
+    ptinvoke       Invoke a class with $PTII in the classpath
+    ptjacl         Tcl shell in the current window
+    ptjaclapp      Tcl shell in a separate window
+    ptplot         2-D Signal Plotter
+    ptstartjini    Start up Jini [1]
+    ptolemy        Bring up the control panel for a model but don't run it
+    pxgraph        2-D Signal Plotter compatible with old X11 pxgraph
+    soot           Soot optimizer
+    vergil         Invoke the Ptolemy II User Interface
+
+[1] This command uses optional software that might not be present in your
+local installation
+
+Each of the above commands takes a '-help' command line argument
+that will display usage information for that command. "For example:"
+    vergil -help
+EOF
+	exit
     fi
     if [ "$1" = "-debug" ]; then
 	# If -debug is supplied then allow debugger attaches to java VM.
