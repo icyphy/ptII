@@ -5,11 +5,33 @@
 </head>
 <body bgcolor="#faf0e6">
 <h1>Ptolemy II 2.0beta Release Notes</h1>
+
+Ptolemy II is a set of Java packages supporting heterogeneous,
+concurrent modeling and design.  Its <code>kernel</code> package
+supports clustered hierarchical graphs, which are collections of
+<I>entities</I> and <I>relations</I> between those entities.  Its
+<code>actor</code> package extends the kernel so that entities have
+functionality and can communicate via the relations.  Its
+<I>domains</I> extend the actor package by imposing <I>models of
+computation</I> on the interaction between entities.  Examples of
+models of computation include discrete-event systems, dataflow,
+process networks, synchronous/reactive systems, and communicating
+sequential processes.
+
+ <br>Ptolemy II includes a number of support packages, such as 
+<code>graph</code>, providing graph-theoretic manipulations,
+
+<code>math</code>, providing matrix and vector math and signal
+processing functions,
+
+<code>plot</code>, providing visual display of data,
+
+<code>data</code>, providing a type system, data encapsulation and an
+expression parser, etc.
+
+
 Ptolemy II 2.0beta is a release of the Ptolemy II 
 java classes and the Ptolemy II design document
-
- <p>Ptolemy II 2.0beta includes Vergil, a graphical user interface for
-developing models.
 
  <p>The design document describes the Ptolemy II design and the implementation
 of the Java classes.  The design document is not included
@@ -18,6 +40,55 @@ production release.   In the interim, please see the "Using Vergil"
 chapter (<a href="design/usingVergil.pdf">PDF</a> - 
 <a href="design/usingVergil/index.htm">HTML</a>)
 
+
+<h2>Complete List of Domains in Ptolemy II</h2>
+ <!-- We include this list here since we will be posting the release notes
+to the newsgroups etc.  See also main.htm
+ -->
+<ul>
+<li> <a href="../ptolemy/domains/csp/doc/body.htm" target="body">CSP</a>:
+	 communicating sequential processes,
+<li> <a href="../ptolemy/domains/ct/doc/body.htm" target="body">CT</a>:
+	continuous-time modeling,
+<li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
+	discrete-event modeling,
+<li> <a href="../ptolemy/domains/dde/doc/body.htm" target="body">DDE</a>:
+	distributed discrete events (experimental),
+<li> <a href="../ptolemy/domains/dt/doc/body.htm" target="body">DT</a>:
+	discrete time,
+<li> <a href="../ptolemy/domains/fsm/doc/body.htm" target="body">FSM</a>:
+b	 finite state machines,
+<li> <a href="../ptolemy/domains/giotto/doc/body.htm" target="body">Giotto</a>:
+	periodic time-driven (experimental),
+<li> <a href="../ptolemy/domains/gr/doc/body.htm" target="body">GR</a>:
+	3-D graphics (experimental),
+ <!-- petrinet ??-->
+<li> <a href="../ptolemy/domains/pn/doc/body.htm" target="body">PN</a>:
+	process networks,
+<li> <a href="../ptolemy/domains/sdf/doc/body.htm" target="body">SDF</a>:
+	synchronous dataflow,
+<li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">SR</a>:
+	synchronous/reactive (experimental), and
+<li> <a href="../ptolemy/domains/tm/doc/body.htm" target="body">TM</a>:
+	timed multitasking (experimental).
+
+</ul>
+
+<h2>Platforms</h2>
+
+The core of Ptolemy II 2.0 is 100% Java, so it should work on any
+platform that has JDK1.3
+
+ <p>We developed Ptolemy II 2.0 under Solaris 8 and Windows 2000 sr2
+and with JDK1.3.1 and JDK1.4beta.  Note that code generation 
+only works under JDK1.3.0 or 1.3.1 because of limitations in Soot.
+
+Ptolemy II 2.0 will not compile under JDK1.2.2.
+
+<p>The code generation facility requires JDK1.3.0, it will not
+work under JDK 1.4.0
+
+<!--whatsnew-->
 <h2>Major Features that are new in Ptolemy 2.0 </h2>
 <menu>
 
@@ -68,6 +139,12 @@ behavior
 <li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">Synchronous/Reactive Domain</a>:
 (Primary Author: Paul Whitaker, Contributors: Elaine Cheong, John Reekie)
 
+<li> <a href="webStartHelp.htm">Web Start</a>
+ (Christopher Hylands) -  
+Ptolemy II includes support to build distributions using Sun's Web Start
+facility, which allows end users to download fully functional distributions
+via the web.
+
 </menu>
 
 <h2>Other Features that are new in Ptolemy II 2.0</h2>
@@ -109,12 +186,6 @@ to perform multiple runs of refinement on a model
 <li> <a href="codeDoc/ptolemy/graph/package-summary.html">ptolemy.graph</a>
  (Shuvra S. Bhattacharyya (University of Maryland at College Park)) -
 The graph package was redesigned and reimplemented.
-
-<li> <a href="webStartHelp.htm">Web Start</a>
- (Christopher Hylands) -  
-Ptolemy II includes support to build distributions using Sun's Web Start
-facility, which allows end users to download fully functional distributions
-via the web.
 
  <!-- Tcl shell is not shipping in 2.0, it makes the download larger.-->
 
@@ -169,7 +240,9 @@ via the web.
 	Synchronous Dataflow
  <menu>
  <li><a href="../ptolemy/domains/sdf/demo/LMSAdaptive/LMSAdaptive.htm">LMSAdaptive</a>
+ An adaptive filter
  <li><a href="../ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.htm">MaximumEntropySpectrum</a>
+ A spectral estimation example
  </menu>
 
 
@@ -470,6 +543,7 @@ writing your own Java files, you should recompile all your java code with
 the new release.  In theory, copying the .class files should work, but
 recompiling is safer.
 
+<!--/whatsnew-->
 
 <h2>Major Features that were new in Ptolemy II 1.0.1 </h2>
 <menu>
@@ -515,61 +589,6 @@ recompiling is safer.
 <li> <a href="../ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.htm" target="main">Audio signal processing capabilities;</a></br>
 </ul>
 
-<h2>Complete List of Domains in Ptolemy II</h2>
- <!-- We include this list here since we will be posting the release notes
-to the newsgroups etc.  See also main.htm
- -->
-<ul>
-<li> <a href="../ptolemy/domains/csp/doc/body.htm" target="body">CSP</a>:
-	 communicating sequential processes,
-<li> <a href="../ptolemy/domains/ct/doc/body.htm" target="body">CT</a>:
-	continuous-time modeling,
-<li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
-	discrete-event modeling,
-<li> <a href="../ptolemy/domains/dde/doc/body.htm" target="body">DDE</a>:
-	distributed discrete events (experimental),
-<li> <a href="../ptolemy/domains/dt/doc/body.htm" target="body">DT</a>:
-	discrete time,
-<li> <a href="../ptolemy/domains/fsm/doc/body.htm" target="body">FSM</a>:
-b	 finite state machines,
-<li> <a href="../ptolemy/domains/giotto/doc/body.htm" target="body">Giotto</a>:
-	periodic time-driven (experimental),
-<li> <a href="../ptolemy/domains/gr/doc/body.htm" target="body">GR</a>:
-	3-D graphics (experimental),
- <!-- petrinet ??-->
-<li> <a href="../ptolemy/domains/pn/doc/body.htm" target="body">PN</a>:
-	process networks,
-<li> <a href="../ptolemy/domains/sdf/doc/body.htm" target="body">SDF</a>:
-	synchronous dataflow,
-<li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">SR</a>:
-	synchronous/reactive (experimental), and
-<li> <a href="../ptolemy/domains/tm/doc/body.htm" target="body">TM</a>:
-	timed multitasking (experimental).
-
-</ul>
-
-<h2>Platforms</h2>
-
-The core of Ptolemy II 2.0 is 100% Java, so it should work on any
-platform that has JDK1.3
-
- <p>We developed Ptolemy II 2.0 under Solaris 8 and Windows 2000 sr2
-and with JDK1.3.1 and JDK1.4beta.  Note that code generation 
-only works under JDK1.3.0 or 1.3.1 because of limitations in Soot.
-
-Ptolemy II 2.0 will not compile under JDK1.2.2.
-
-<p>The code generation facility requires JDK1.3.0, it will not
-work under JDK 1.4.0
-
-<p>Ptolemy II is available in two versions
-   <menu>
-   <li> Ptiny - which can be used to build models in 
-   CT, DE, FSM, PN and SDF using built-in actors.
-   <li> Full - which includes other domains and 
-   support for devloping custom actors.
-   </menu>
-
 
 <!--vergilDocs-->
 <h2>Limitations</h2>
@@ -578,16 +597,23 @@ Version 2.0 has a number of limitations.
 <h3>Release Limitations</h3>
 <menu>
 
-<li> Code generation does not work in the Ptolemy 2.0 Web Edition.
-The problem is that some of the code generation facility requires
-that the <CODE>PTII</CODE> environment variable be set.
-
 <li> The gzipped tar file that contains the Ptolemy II distribution
  <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
 untar this file with a checksum error because the pathnames are longer
 than 100 characters.  If you do not have GNU tar, you can obtain
 source and selected binaries from 
 ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
+
+<li> The Ptolemy II 2.0-beta release does not include the design
+document.  We will include an updated version of the design document
+in the full release.  The Ptolemy II 1.0 design document can be found
+in:
+
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm#in_browser">Ptolemy Web Site</a>
+
+<li> The Vergil HTML Viewer does not correctly handle internal hyperlinks.
+The codegen page is especially difficult to use because of this.
+
 </menu>
 
 
