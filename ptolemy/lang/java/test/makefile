@@ -87,8 +87,14 @@ tests:: $(EXTRA_SRCS) jclass test_jsimple \
 		ASTReflect PrintTree RegenerateCode codegen
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
+		test_skeleton
 	$(JTCLSH) alljtests.tcl
+
+test_skeleton:
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS)" \
+	  $(JAVA) ptolemy.lang.java.Skeleton -i \
+		FindExtraImportsVisitorTest.java
 
 ASTReflect:
 	CLASSPATH=$(CLASSPATH) $(JAVA) \
