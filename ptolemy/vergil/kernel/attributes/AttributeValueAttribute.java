@@ -119,11 +119,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
     /** React to a change in the value of the associated attribute.
      */
     public void valueChanged(Settable settable) {
-        try {
-            _setAttributeName(attributeName.getExpression());
-        } catch (IllegalActionException ex) {
-            // Ignore?  or reset attribute?
-        }
+        _setAttributeName(attributeName.getExpression());
     }
 
     /** Add a listener to be notified when the value of this settable
@@ -207,8 +203,11 @@ public class AttributeValueAttribute extends AbstractTextAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    protected void _setAttributeName(String attributeName)
-            throws IllegalActionException {
+
+    /** Set the attribute name.
+     *  @param attributeName The attribute name.
+     */
+    protected void _setAttributeName(String attributeName) {
         NamedObj container = (NamedObj) getContainer();
 
         if (container != null) {
