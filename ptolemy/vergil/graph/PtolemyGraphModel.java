@@ -61,7 +61,6 @@ then the Link represents a proxy for a single link between the port and the
 vertex's Relation.  However, if an edge is placed between two ports, then 
 it proxies a Relation (with no vertex) and links from the relation to each 
 port.
-
 @author Steve Neuendorffer
 @version $Id$
  */
@@ -230,8 +229,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    addNode(eventSource, (Vertex)node, (CompositeEntity)parent);
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. node = " + node + 
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. node = " + node + 
                     "parent = " + parent);
 	}
     }
@@ -240,7 +239,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * Add a node to the given graph and notify listeners with a
      * NODE_ADDED event. <p>
      */
-    public void addNode(Object eventSource, Vertex vertex, CompositeEntity parent) {
+    public void addNode(Object eventSource, Vertex vertex, 
+			CompositeEntity parent) {
 	ComponentRelation relation = 
 	    (ComponentRelation)vertex.getContainer();
 	try {
@@ -257,7 +257,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * Add a node to the given graph and notify listeners with a
      * NODE_ADDED event. <p>
      */
-    public void addNode(Object eventSource, Icon icon, CompositeEntity parent) {
+    public void addNode(Object eventSource, Icon icon, 
+			CompositeEntity parent) {
 	ComponentEntity entity = (ComponentEntity)icon.getContainer();
 	try {
 	    _doChangeRequest(new PlaceEntity(icon, entity, parent));
@@ -273,7 +274,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * Add a node to the given graph and notify listeners with a
      * NODE_ADDED event. <p>
      */
-    public void addNode(Object eventSource, ComponentPort port, CompositeEntity parent) {
+    public void addNode(Object eventSource, ComponentPort port, 
+			CompositeEntity parent) {
 	try {
 	    _doChangeRequest(new PlacePort(port, port, parent));
 	} catch (Exception ex) {
@@ -322,8 +324,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    }
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. link = " + link +
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. link = " + link +
                     "tail = " + tail + " head = " + head);
 	}
     }
@@ -357,8 +359,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    return containsNode((NamedObj)composite, (NamedObj)node);
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. composite = " +
+		    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. composite = " +
                     composite + "node = " + node);
 	}
     }
@@ -380,8 +382,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    disconnectEdge(eventSource, (Link)edge);
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. edge = " + edge);
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. edge = " + edge);
 	}
     }
 
@@ -431,8 +433,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    return getHead((Link)link);
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. link = " + link);
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. link = " + link);
 	}       
     }
 		
@@ -448,14 +450,19 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * this graph or composite node.
      */
     public int getNodeCount(Object composite) {
+	if(!isComposite(composite)) {
+	    throw new InternalErrorException("object " + composite + 
+					     " is not a composite node in " + 
+					     "this graph model.");
+	}
 	if(composite instanceof CompositeEntity) {
 	    return getNodeCount((CompositeEntity)composite);
 	} else if(composite instanceof Icon) {
 	    return getNodeCount((Icon)composite);
        	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. composite = " + composite);
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. composite = " + composite);
 	}
     }
 	
@@ -494,8 +501,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    return getParent((Port)node);
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. node = " + node);
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. node = " + node);
 	}       
     }
 
@@ -542,8 +549,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    return getTail((Link)link);
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. link =" + link);
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. link =" + link);
 	}       
     }
 
@@ -552,37 +559,6 @@ public class PtolemyGraphModel extends AbstractGraphModel
      */
     public Object getTail(Link link) {
 	return link.getTail();
-    }
-
-    /**
-     * Return the visual object correspoding
-     * to the given node, edge, or composite.
-     
-    public Object getVisualObject(Object o) {
-	if(o instanceof NamedObj) {
-	    return getVisualObject((NamedObj)o);
-	} else {
-	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. object =" + o);
-	}       	
-    }
-
-    /**
-     * Return the visual object correspoding
-     * to the given node, edge, or composite.
-     
-    public Object getVisualObject(NamedObj o) {
-	return _visualObjectMap.get(o);
-
-	List list = o.attributeList(FigureAttribute.class);
-	Iterator i = list.iterator();
-	if(i.hasNext()) {
-	    FigureAttribute a = (FigureAttribute)list.iterator().next();
-	    return a.getFigure();
-	} else {
-	    return null;
-	    }
     }
 
     /**
@@ -600,8 +576,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    return getSemanticObject((Link)o);
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. object= " + o);
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. object= " + o);
 	}       
     }
 
@@ -642,8 +618,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    return new NullIterator();
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. icon = " + node);
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. icon = " + node);
 	}       
     }
     
@@ -680,7 +656,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * node in this model, i.e. it contains children.
      */
     public boolean isComposite(Object o) {
-        return(o instanceof Icon);
+        return(o instanceof Icon) || getRoot().equals(o);
     }
 
     /**
@@ -714,8 +690,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    return nodes((Icon)object);
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. icon = " + object);
+		    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. icon = " + object);
 	}       
     }
 
@@ -776,8 +752,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    return new NullIterator();
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. icon = " + node);
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. icon = " + node);
 	}       
     }
 
@@ -816,8 +792,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    removeNode(eventSource, (Vertex)node);
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. node = " + node);
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. node = " + node);
 	}
 	GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_REMOVED,
 				      node, parent);
@@ -842,6 +818,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * graph listeners with a NODE_REMOVED event.
      */
     public void removeNode(Object eventSource, Icon icon) {
+	// remove all the edges connected to each port of the icon.
 	Iterator nodes = nodes(icon);
 	while(nodes.hasNext()) {
 	    _removeConnectedEdges(eventSource, (ComponentPort)nodes.next());
@@ -851,18 +828,6 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	_doChangeRequest(new RemoveActor(icon, entity));
 
     }  
-
-    private void _removeConnectedEdges(Object eventSource, 
-				       ComponentPort port) {
-	for(Iterator edges = outEdges(port); edges.hasNext(); ) {
-	    Object edge = edges.next();
-	    disconnectEdge(eventSource, edge);
-	}
-	for(Iterator edges = inEdges(port); edges.hasNext(); ) {
-	    Object edge = edges.next();
-	    disconnectEdge(eventSource, edge);
-	}
-    }
 
     /**
      * Delete a node from its parent graph and notify
@@ -885,8 +850,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 			(NamedObj)object);
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. link = " + link + 
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. link = " + link + 
                     "object = " + object);
 	}
     }
@@ -897,7 +862,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
      */
     public void setEdgeHead(Object eventSource, 
 			    final Link link, final Object head) {
-	_doChangeRequest(new ChangeRequest(link, "move head of link" + link.getFullName()) {
+	_doChangeRequest(new ChangeRequest(link, "move head of link" + 
+					   link.getFullName()) {
 	    public void execute() throws ChangeFailedException {
 		System.out.println("executing change request");
 		try {
@@ -931,8 +897,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 			(NamedObj)object);
 	} else {
 	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. link = " + link +
+                    "Ptolemy Graph Model does not recognize the " +
+		    "given graph objects. link = " + link +
                     "object = " + object);
 	}
     }
@@ -941,8 +907,10 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * Connect an edge to the given tail node and notify listeners
      * with an EDGE_TAIL_CHANGED event.
      */
-    public void setEdgeTail(Object eventSource, final Link link, final NamedObj tail) {
-	_doChangeRequest(new ChangeRequest(link, "move head of link" + link.getFullName()) {
+    public void setEdgeTail(Object eventSource, final Link link,
+			    final NamedObj tail) {
+	_doChangeRequest(new ChangeRequest(link, "move head of link" + 
+					   link.getFullName()) {
 	    public void execute() throws ChangeFailedException {
 		System.out.println("executing change request");
 		try {
@@ -962,40 +930,6 @@ public class PtolemyGraphModel extends AbstractGraphModel
 				      GraphEvent.EDGE_TAIL_CHANGED,
 				      link, tail);
         dispatchGraphEvent(e);
-    }
-
-    /**
-     * Set the visual object correspoding
-     * to the given node, edge, or composite.
-     
-    public void setVisualObject(Object o, Object visual) {
-	if(o instanceof NamedObj) {
-	    setVisualObject((NamedObj)o, visual);
-	} else {
-	    throw new InternalErrorException(
-                    "Ptolemy Graph Model only handles " +
-                    "named objects. object = " + o);
-	}       
-    }
-
-    /**
-     * Set the visual object correspoding
-     * to the given node, edge, or composite.
-     
-    public void setVisualObject(final NamedObj o, final Object visual) {
-	_visualObjectMap.put(o, visual);
-	_doChangeRequest(new ChangeRequest(o, 
-	       "setting visual object of " + o.getFullName()) {
-	    public void execute() throws ChangeFailedException {
-		try {
-		    FigureAttribute a = 
-			new FigureAttribute(o, o.uniqueName("figure"));
-		    a.setFigure(visual);
-		} catch (Exception ex) {
-		    throw new ChangeFailedException(this, ex.getMessage());
-		}
-	    }
-	    });
     }
 
     /**
@@ -1019,6 +953,19 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}
     }
     
+    // Remove all the edges connected to the given port.
+    private void _removeConnectedEdges(Object eventSource, 
+				       ComponentPort port) {
+	for(Iterator edges = outEdges(port); edges.hasNext(); ) {
+	    Object edge = edges.next();
+	    disconnectEdge(eventSource, edge);
+	}
+	for(Iterator edges = inEdges(port); edges.hasNext(); ) {
+	    Object edge = edges.next();
+	    disconnectEdge(eventSource, edge);
+	}
+    }
+
     /**
      * The root of the graph contained by this model.
      */

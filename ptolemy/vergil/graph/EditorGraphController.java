@@ -64,8 +64,10 @@ import javax.swing.event.*;
 A Graph Controller for the Ptolemy II schematic editor.  In addition to the
 interaction allowed in the viewer, this controller allows nodes to be
 dragged and dropped onto its graph.  Relations can be created by
-control-clicking, and links can be created by control-clicking and dragging on
-a port or a relation.  Anything can be deleted by selecting it and pressing
+control-clicking on the background.  Links can be created by control-clicking 
+and dragging on a port or a relation.  In addition links can be created by
+clicking and dragging on the ports that are inside an entity.
+Anything can be deleted by selecting it and pressing
 the delete key on the keyboard.
 
 @author Steve Neuendorffer

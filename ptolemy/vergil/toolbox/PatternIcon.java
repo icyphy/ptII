@@ -44,6 +44,7 @@ import diva.canvas.toolbox.*;
 //////////////////////////////////////////////////////////////////////////
 //// PatternIcon
 /**
+An icon represnts the visual representation of a schematic entity.
 This icon represents an icon with a similar look to another icon (its
 'pattern').  This is useful for using an icon in more than one place, while
 keeping a reference to it's original, in case the original is changed.
@@ -58,6 +59,12 @@ public class PatternIcon extends EditorIcon {
 
     /**
      * Create a new icon with the given name in the given container.
+     * @param container The container.
+     * @param name The name of the attribute.
+     * @exception IllegalActionException If the attribute is not of an
+     *  acceptable class for the container.
+     * @exception NameDuplicationException If the name coincides with
+     *  an attribute already in the container.
      */
     public PatternIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -65,10 +72,11 @@ public class PatternIcon extends EditorIcon {
     }
 
     /**
-     * Create a background figure based on this icon.  The background figure
-     * will be painted with each graphic element that this icon contains.
-     * In this class, return the background figure of the pattern, if a 
-     * pattern has been set.
+     * Create a new background figure based on this icon.  
+     * In this class, defer to the pattern, if a 
+     * pattern has been set.  If the pattern has not been set, then 
+     * return a new instance of the default background figure specified
+     * in the base class.
      */
     public Figure createBackgroundFigure() {
 	if(_pattern == null)
@@ -79,12 +87,8 @@ public class PatternIcon extends EditorIcon {
 
 
     /** 
-     * Create a new graphical icon that represents this class visually.  This
-     * method will generally want to cache the swing icon that is created,
-     * since swing icons are expensive and don't contain state.
+     * Create a new Swing icon that visually represents this icon.
      * In this class, defer to the pattern if one is present.
-     * @exception UnsupportedOperationException If a swing icon cannot be
-     * created.
      */
     public javax.swing.Icon createIcon() {
         if(_pattern != null) {
@@ -109,7 +113,7 @@ public class PatternIcon extends EditorIcon {
     }
 
     /**
-     * Return a string this representing Icon.
+     * Return a string representing this Icon.
      */
     public String toString() {
         String str = super.toString() + "(";
@@ -117,10 +121,13 @@ public class PatternIcon extends EditorIcon {
         return str + ")";
     }
 
-    /** Return a description of the object.  Lines are indented according to
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
+    /** Return a description of the object.  Lines are indented according
      *  to the level argument using the protected method _getIndentPrefix().
      *  Zero, one or two brackets can be specified to surround the returned
-     *  description.  If one is specified it is the the leading bracket.
+     *  description.  If one is specified it is the leading bracket.
      *  This is used by derived classes that will append to the description.
      *  Those derived classes are responsible for the closing bracket.
      *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
@@ -145,6 +152,9 @@ public class PatternIcon extends EditorIcon {
 
         return result;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
 
     // The pattern
     private EditorIcon _pattern;

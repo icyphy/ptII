@@ -60,15 +60,13 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// PortController
 /**
- * A Graph Controller for the Ptolemy II schematic editor.
- * Terminal creation: Ctrl-button 1
- * Edge creation: Ctrl-Button 1 Drag
- * Entity creation: Shift-Button 1
- * Edges can connect to Terminals, but not entities.
- *
- * @author Steve Neuendorffer
- * @version $Id$
- */
+A Controller for Ptolemy ports that are contained within the composite.
+Left clicking selects the port, which can then be dragged.
+Right clicking on the port will create a context menu for the port.
+
+@author Steve Neuendorffer
+@version $Id$
+*/
 
 public class PortController extends NodeController {
     public PortController(GraphController controller) {
@@ -84,6 +82,7 @@ public class PortController extends NodeController {
 
     public static class PortRenderer implements NodeRenderer {
 	public Figure render(Object n) {
+	    Port port = (Port)n;
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(-6, 6);
 	    polygon.lineTo(0, 6);
@@ -93,18 +92,23 @@ public class PortController extends NodeController {
 	    polygon.closePath();
 	    Figure figure = new BasicFigure(polygon, Color.black);
 
-	    // Note that these are reversed from the normals that are
-	    // set when a port is in an entity.
-	    int direction = SwingConstants.NORTH;	    
-	    if(n != null) {
-		Port port = (Port) n;
-		if(port instanceof IOPort) {
-		    IOPort ioport = (IOPort) port;
-		    if(ioport.isInput()) direction = SwingConstants.EAST;
-		    if(ioport.isOutput()) direction = SwingConstants.WEST;
-		}
+	    // Wrap the figure in a TerminalFigure to set the direction that
+	    // connectors exit the port.  Note that this direction is the
+	    // OPPOSITE direction that is used to layout the port in the
+	    // Entity Controller.
+	    int direction;
+	    if(!(port instanceof IOPort)) {
+		direction = SwingUtilities.NORTH;
+	    } else if(((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
+		direction = SwingUtilities.NORTH;
+	    } else if(((IOPort)port).isInput()) {
+		direction = SwingUtilities.EAST;
+	    } else if(((IOPort)port).isOutput()) {
+		direction = SwingUtilities.WEST;
+	    } else {
+		// should never happen
+		direction = SwingUtilities.NORTH;
 	    }
-		
 	    double normal = CanvasUtilities.getNormal(direction);	    
 	    Site tsite = new PerimeterSite(figure, 0);
 	    tsite.setNormal(normal);
@@ -115,3 +119,5 @@ public class PortController extends NodeController {
     }
     private MenuCreator _menuCreator;
 }
+
+

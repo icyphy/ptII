@@ -627,8 +627,8 @@ public class PtolemyModule implements Module {
 	 * Copy the given graph and make the nodes/edges in the copied
 	 * graph point to the nodes/edges in the original.
 	 */ 
-	protected Object copyComposite(Object origComposite, 
-				       LayoutTarget target) {
+	protected Object copyComposite(Object origComposite) {
+	    LayoutTarget target = getLayoutTarget();
 	    GraphModel model = target.getGraphModel();
 	    diva.graph.basic.BasicGraphModel local = getLocalGraphModel();
 	    Object copyComposite = local.createComposite(null);

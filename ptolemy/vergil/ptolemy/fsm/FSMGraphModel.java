@@ -4,7 +4,6 @@ package ptolemy.vergil.ptolemy.fsm;
 import ptolemy.kernel.util.*;
 import ptolemy.vergil.toolbox.*;
 
-import ptolemy.vergil.graph.FigureAttribute;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.moml.*;
@@ -355,34 +354,6 @@ public class FSMGraphModel extends AbstractGraphModel
     }
 
     /**
-     * Return the visual object correspoding
-     * to the given node, edge, or composite.
-     */
-    public Object getVisualObject(Object o) {
-	if(o instanceof NamedObj) {
-	    return getVisualObject((NamedObj)o);
-	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. object =" + o);
-	}       	
-    }
-
-    /**
-     * Return the visual object correspoding
-     * to the given node, edge, or composite.
-     */
-    public Object getVisualObject(NamedObj o) {
-	List list = o.attributeList(FigureAttribute.class);
-	Iterator i = list.iterator();
-	if(i.hasNext()) {
-	    FigureAttribute a = (FigureAttribute)list.iterator().next();
-	    return a.getFigure();
-	} else {
-	    return null;
-	}
-    }
-
-    /**
      * Return the semantic object correspoding
      * to the given node, edge, or composite.
      */
@@ -652,34 +623,6 @@ public class FSMGraphModel extends AbstractGraphModel
 	    new GraphEvent(eventSource, GraphEvent.EDGE_TAIL_CHANGED,
 			   link, tail);
         dispatchGraphEvent(e);
-    }
-
-    /**
-     * Set the visual object correspoding
-     * to the given node, edge, or composite.
-     */
-    public void setVisualObject(Object o, Object visual) {
-	if(o instanceof NamedObj) {
-	    setVisualObject((NamedObj)o, visual);
-	} else {
-	    throw new RuntimeException("Ptolemy Graph Model only handles " +
-				       "named objects. object = " + o);
-	}       
-    }
-
-    /**
-     * Set the visual object correspoding
-     * to the given node, edge, or composite.
-     */
-    public void setVisualObject(NamedObj o, Object visual) {
-	try {
-	    FigureAttribute a = 
-		new FigureAttribute(o, o.uniqueName("figure"));
-	    a.setFigure(visual);
-	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
-	}
     }
 
     /**

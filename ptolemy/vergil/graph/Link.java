@@ -65,6 +65,17 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// Link
 /**
+Instances of this class represent a link between a port and a
+relation, OR a binary connection between two ports.  In the first
+case, the relation is represented by an explicit node in the graph.  In the
+second case, there is no explicit node representing the relation and
+the edge runs directly from one port to the other.   This class
+dynamically determines how to make and break connections based on
+which of the above contexts the link is being used in.  This class
+is an attribute of the container which contains the relation that the
+link represents, as in the case of a binary connection, or the relation that
+the link is connected to, as in the case of a relation that is explicitly
+represented as a node.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -115,20 +126,26 @@ public class Link extends Attribute {
     public void setHead(Object head) {
 	_head = head;
     }
-
+    
     /** Set the relation for this link.  
      */
     public void setRelation(ComponentRelation relation) {
 	_relation = relation;
     }
 
-   /** Set the tail of this link.   This may be a port, or a vertex
+    /** Set the tail of this link.   This may be a port, or a vertex
      *  in a relation.
      */
     public void setTail(Object tail) {
 	_tail = tail;
     } 
 
+    /** Create the necessary connections between the head and the tail of this
+     * object so that the connectivity of the Ptolemy graph corresponds
+     * with the connection that this link represents.  This method is called
+     * by the Ptolemy graph model in response to changing the head or the
+     * tail.
+     */
     public void link() throws IllegalActionException, 
             NameDuplicationException {
 	ComponentPort port;
@@ -172,6 +189,12 @@ public class Link extends Attribute {
 	_checkSchedule(container);
     }
 
+    /** Remove the connections between the head and the tail of this
+     * object so that the connectivity of the Ptolemy graph no longer 
+     * corresponds with the connection that this link represents.
+     * This method is called by the Ptolemy graph model just prior to 
+     * changing the head or tail.
+     */
     public void unlink() throws IllegalActionException,
         NameDuplicationException {
 	ComponentPort port;
@@ -224,7 +247,7 @@ public class Link extends Attribute {
 	return;
     }
 
-    /** Return a string representation of this link
+    /** Return a string representation of this link.
      */
     public String toString() {
 	return "Link(" 

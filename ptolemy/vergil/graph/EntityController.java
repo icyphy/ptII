@@ -66,10 +66,9 @@ import javax.swing.event.*;
 /**
 This class provides interaction with nodes that represent Ptolemy II entities.
 (Or, more specifically, with the icon that is contained in an entity.)
-It contains a node controller for the ports that the entity contains, and when
-it draws an entity, it defers to that controller to draw the ports.  The
-figures for ports are automatically placed on the left and right side of the
-figure for the entity.  Standard selection and movement interaction is
+A layout algorithm is applied so that the figures for ports are 
+automatically placed on the sides of the figure for the entity.  
+Standard selection and movement interaction is
 provided.  In addition, right clicking on the entity will create a context
 menu for the entity.
 
@@ -197,51 +196,7 @@ public class EntityController extends LocatableNodeController {
 	    }		    
 	}	    
     }
-    
-    /** Draw the node and all the ports contained within the node.
-     */
-    public Figure drawNode(Object n) {
-        Figure nf = super.drawNode(n);
-	/*	LinkedList inputs = new LinkedList();
-	LinkedList outputs = new LinkedList();
-	LinkedList inouts = new LinkedList();
-	int inCount = 0;
-	int outCount = 0;
-	int inOutCount = 0;
-
-	Iterator nodes = getController().getGraphModel().nodes(n);
-	while(nodes.hasNext()) {
-	    Port port = (Port) nodes.next();
-	    if(!(port instanceof IOPort)) {
-		inOutCount++;
-		inouts.addLast(port);
-	    } else {
-		IOPort ioport = (IOPort) port;
-		if(ioport.isInput() && ioport.isOutput()) {
-		    inOutCount++;
-		    inouts.addLast(port);
-		} else if(ioport.isInput()) {
-		    inCount++;
-		    inputs.addLast(port);
-		} else if(ioport.isOutput()) {
-		    outCount++;
-		    outputs.addLast(port);
-		}
-	    }
-	}
-
-	int nodeNumber = 0;
-
-	_createPortFigures((Icon)n, inputs, inCount,
-                SwingConstants.WEST);
-	_createPortFigures((Icon)n, outputs, outCount,
-                SwingConstants.EAST);
-	_createPortFigures((Icon)n, inouts, inOutCount,
-                SwingConstants.SOUTH);
-	*/
-        return nf;
-    }
-
+ 
     /** Get the menu factory that will create context menus for this
      *  controller.
      */
@@ -254,24 +209,6 @@ public class EntityController extends LocatableNodeController {
     public void setMenuFactory(MenuFactory factory) {
         _menuCreator.setMenuFactory(factory);
     }
-
-    /** Create figures for each node in the node list.  Place them on the
-     * side of the composite given by direction.
-     * Count must be the number of nodes in the list.
-     
-    protected void _createPortFigures(Icon container,
-            LinkedList nodeList, int count,
-            int direction) {
-	int nodeNumber = 0;
-	Iterator nodes = nodeList.iterator();
-	while(nodes.hasNext()) {
-	    nodeNumber ++;
-	    Port port = (Port) nodes.next();
-	    _portController.drawNode(port, container, direction,
-                    100.0*nodeNumber/(count+1));
-	}
-    }
-    */
 
     /**
      * The factory for creating context menus on entities.

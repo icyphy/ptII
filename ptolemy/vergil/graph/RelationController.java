@@ -63,7 +63,7 @@ import javax.swing.event.*;
 //// RelationController
 /**
 This class provides interaction with nodes that represent Ptolemy II relations.
-(Or, more specifically, for the verteces that are contained in a relation.)
+(Or, more specifically, for the vertecies that are contained in a relation.)
 Standard selection and movement interaction is
 provided.  In addition, right clicking on the entity will create a context
 menu for the entity.

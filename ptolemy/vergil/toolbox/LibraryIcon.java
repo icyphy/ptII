@@ -44,13 +44,17 @@ import diva.canvas.toolbox.*;
 //////////////////////////////////////////////////////////////////////////
 //// LibraryIcon
 /**
-
-An icon is the graphical representation of a schematic entity.
+An icon represnts the visual representation of a schematic entity.
 Some generic icons are stored in icon libraries to serve as generic templates.
 This icon references such an icon as its pattern.
 If the icon is never configured or the name of the icon in the library
-that it represents is not set, then it will use a default figure for its
-pattern.
+that it represents is not set, then it will use the default figure specified by
+its pattern.
+<p>
+The icon library is a composite entity that may contain other composite
+entities.  Each entity generally contains some number of icons as attributes.
+The name of an icon within the icon library is thus the dotted name of the
+icon attribute within the icon library.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -59,11 +63,17 @@ public class LibraryIcon extends PatternIcon implements Configurable {
 
     /**
      * Create a new icon with the given name in the given container.
+     * @param container The container.
+     * @param name The name of the attribute.
+     * @exception IllegalActionException If the attribute is not of an
+     *  acceptable class for the container.
+     * @exception NameDuplicationException If the name coincides with
+     *  an attribute already in the container.
      */
     public LibraryIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	_iconName = null;
+	_patternName = null;
     }
 
     /** Configure the icon by giving a name of an icon in the icon
@@ -89,15 +99,29 @@ public class LibraryIcon extends PatternIcon implements Configurable {
                    "LibraryIcon cannot be configured via a URL.");
         }
         if (text != null && !text.equals("")) {
-            setIconName(text);
+            setPatternName(text);
         }
+    }
+
+    /** 
+     * Return the root icon library from which to search for icons.
+     */
+    public static CompositeEntity getIconLibrary() {
+	return _iconLibrary;
     }
 
     /** 
      * Return the name of the pattern in the icon library.
      */
-    public String getIconName() {
-	return _iconName;
+    public String getPatternName() {
+	return _patternName;
+    }
+
+    /** 
+     * Set the root icon library from which to search for icons.
+     */
+    public static void setIconLibrary(CompositeEntity library) {
+	_iconLibrary = library;
     }
 
     /** 
@@ -108,14 +132,14 @@ public class LibraryIcon extends PatternIcon implements Configurable {
      * If the library is null or if the icon was not found 
      * in the library, then do nothing.  
      */
-    public void setIconName(String name) {   
+    public void setPatternName(String name) {   
         CompositeEntity library = LibraryIcon.getIconLibrary();
         if(library == null) return;
 	EditorIcon icon = (EditorIcon)library.getAttribute(name);
 	// if it is found
 	if(icon != null) {
 	    setPattern(icon);
-	    _iconName = name;
+	    _patternName = name;
 	}
     }        
  
@@ -158,33 +182,18 @@ public class LibraryIcon extends PatternIcon implements Configurable {
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
 	super._exportMoMLContents(output, depth);
-	if(_iconName != null) {
+	if(_patternName != null) {
 	    output.write(_getIndentPrefix(depth));
-	    output.write("<configure>" + _iconName + "</configure>\n");
+	    output.write("<configure>" + _patternName + "</configure>\n");
 	}
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
-    private String _iconName;
+    // The name of the pattern of this icon in the icon library.
+    private String _patternName;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         static methods                    ////
-
-    /** 
-     * Return the root icon library from which to search for icons.
-     */
-    public static CompositeEntity getIconLibrary() {
-	return _iconLibrary;
-    }
-
-    /** 
-     * Set the root icon library from which to search for icons.
-     */
-    public static void setIconLibrary(CompositeEntity library) {
-	_iconLibrary = library;
-    }
-
+    // The icon library.
     private static CompositeEntity _iconLibrary;
 }

@@ -47,19 +47,30 @@ import javax.swing.SwingConstants;
 //////////////////////////////////////////////////////////////////////////
 //// EditorIcon
 /**
-
-An icon is the graphical representation of a schematic entity.
-Every icon has a name, along with a graphical representation.
+An icon represnts the visual representation of a schematic entity.
+Every icon has a name, along with the data necessary for creating 
+a visual representation.
 EditorIcons are capable of creating a visual representation representing
-the icon as either a swing icon, or as a diva figure.
+the icon as either a Swing icon (e.g. an instance of javax.swing.Icon), 
+or as a Diva figure (e.g. an instanceof of diva.canvas.Figure).
 In general, one or the other will form the basis of the visual representation, 
 and the other will be created from the first, using either a SwingWrapper
-or a FigureIcon. This class assumes that the figure forms the basis, 
-so it is only necessary to override createBackgroundFigure.  If the reverse
-is true, then you should override createBackgroundFigure and createIcon to
-avoid unnecessarily converting to a figure and back again.
-This base class icon is just a simple white box.  For a more interesting
-Icon, see the XMLIcon class.
+or a FigureIcon.  In other words, this class is a factory for visual
+representations.
+<p> In this base class, the visual representation as a Diva
+figure is created by adding a label representing the name of the entity that
+contains this icon to a background figure which is created by the 
+createBackgroundFigure method.  The visual representation as a Swing icon
+is created from the background figure using a FigureIcon.
+Thus, most subclasses that which to modify the visual representation can 
+simply override the createBackgroundFigure method.
+<p> Subclasses that wish to create the figure or the icon in a different way
+entirely (for example, starting with a Swing icon and creating the figure using
+a SwingWrapper) should override both the createBackgroundFigure and 
+createIcon methods.
+<p>
+This visual representation created by this base class is just a simple white
+ box.  For a more interesting icon, see the XMLIcon class.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -68,8 +79,12 @@ public class EditorIcon extends Icon {
 
     /**
      * Create a new icon with the given name in the given container.
-     * By default, the icon contains no graphic
-     * representations.
+     * @param container The container.
+     * @param name The name of the attribute.
+     * @exception IllegalActionException If the attribute is not of an
+     *  acceptable class for the container.
+     * @exception NameDuplicationException If the name coincides with
+     *  an attribute already in the container.
      */
     public EditorIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -77,12 +92,16 @@ public class EditorIcon extends Icon {
     }
 
     /**
-     * Create a figure based on this icon.  The figure will be a
-     * Composite Figure with the figure returned by createBackgroundFigure
-     * as its background.  This method adds a nice label as well.
+     * Create a new Diva figure that visually represents this icon. 
+     * The figure will be an instance of
+     * CompositeFigure with the figure returned by createBackgroundFigure
+     * as its background.  This method adds a LabelFigure to the
+     * CompositeFigure that contains the name of the container of this icon.
      * Subclasses of this
      * class should never return null, even if the icon has not been properly
      * initialized. 
+     * @return A new CompositeFigure.
+     * @see diva.canvas.CompositeFigure
      */
     public Figure createFigure() {
 	Figure background = createBackgroundFigure();
@@ -99,69 +118,59 @@ public class EditorIcon extends Icon {
     }
 
     /**
-     * Create the background figure based on this icon.  This should
+     * Create a new background figure based on this icon.  This should
      * manufacture a new figure each time, since figures are cheap and contain
      * their own location.  This base class returns a default background 
      * figure which is a simple white box.  Subclasses will generally override
      * this method to create more interesting figures.  Subclasses of this
      * class should never return null, even if the icon has not been properly
      * initialized. 
+     * @return A new figure.
      */
     public Figure createBackgroundFigure() {
 	return _createDefaultBackgroundFigure();
     }
 
     /** 
-     * Create a new graphical icon that represents this class visually. 
-     * The default implementation in this base class creates the Icon
+     * Create a new Swing icon that visually represents this icon.
+     * The default implementation in this base class creates the Swing icon
      * from the background figure, so it is not necessary to override this 
-     * method in most cases.  Note that the swing Icon does NOT include a
+     * method in most cases.  Note that the Swing icon does NOT include a
      * label for the name, since that is usually added separately in a
-     * swing component.
-     * @exception UnsupportedOperationException If a swing icon cannot be
-     * created.
+     * Swing component.
+     * @return A new Swing Icon.
      */
     public javax.swing.Icon createIcon() {
-	// Note that the implementation of this method caches the 
-	// rendered icon in a Variable.  This may not be the right thing. 
-        // First check to see if the icon has a rendering cached.
-        NamedObj renderedObject=
-            getAttribute("renderedIcon");
-        if(renderedObject != null &&
-                renderedObject instanceof Variable) {
-            Variable renderedVariable = (Variable)renderedObject;
-            try {
-                ObjectToken token =
-                    (ObjectToken)renderedVariable.getToken();
-                return (javax.swing.Icon)token.getValue();
-            } 
-            catch (Exception ex) {
-                // Ignore... we'll fall through to the next if
-                // statement and rerender.
-            }
+	// In this class, we cache the rendered icon, since creating icons from
+	// figures is expensive.
+        if(_iconCache != null) {
+	    return _iconCache;
         }
         
-        // No cached object, so render the icon.
-        try {
-            Figure figure = createBackgroundFigure();
-            javax.swing.Icon newIcon = new FigureIcon(figure, 20, 15);
-            Variable renderedVariable = 
-                new Variable(this, "renderedIcon");
-            renderedVariable.setToken(new ObjectToken(newIcon));
-            return newIcon;
-        } catch (Exception ex) {
-            throw new UnsupportedOperationException("Icon could not create " +
-                    "Swing Icon:" + ex.getMessage());
-        }
+        // No cached object, so rerender the icon.
+	Figure figure = createBackgroundFigure();
+	_iconCache = new FigureIcon(figure, 20, 15);
+	return _iconCache;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
     /**
-     * The default background figure, if nothing else is available.
+     * Create a new default background figure.
      * Subclasses of this class should generally override 
-     * the createBackgroundFigure method instead and use this method only if
-     * the icon has not been properly initialized.
+     * the createBackgroundFigure method instead.  This method is provided
+     * so that subclasses are always able to create a default figure even if
+     * an error occurs or the subclass has not been properly initialized.
+     * @return A figure representing a rectangular white box.
      */
     protected static Figure _createDefaultBackgroundFigure() {
 	return new BasicRectangle(0, 0, 60, 40, Color.white, 1);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
+
+    // The cached Swing icon.
+    private javax.swing.Icon _iconCache = null;
 }

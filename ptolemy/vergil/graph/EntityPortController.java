@@ -56,6 +56,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.net.URL;
 import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
 import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -136,6 +137,29 @@ public class EntityPortController extends NodeController {
             }
 	    Figure figure = new BasicFigure(polygon, fill, (float)1.5);
 	    figure.setToolTipText(port.getName());
+	    
+	    // Wrap the figure in a TerminalFigure to set the direction that
+	    // connectors exit the port.  Note that this direction is the
+	    // same direction that is used to layout the port in the
+	    // Entity Controller.
+	    int direction;
+	    if(!(port instanceof IOPort)) {
+		direction = SwingUtilities.SOUTH;
+	    } else if(((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
+		direction = SwingUtilities.SOUTH;
+	    } else if(((IOPort)port).isInput()) {
+		direction = SwingUtilities.WEST;
+	    } else if(((IOPort)port).isOutput()) {
+		direction = SwingUtilities.EAST;
+	    } else {
+		// should never happen
+		direction = SwingUtilities.SOUTH;
+	    }
+	    double normal = CanvasUtilities.getNormal(direction);	    
+	    Site tsite = new PerimeterSite(figure, 0);
+	    tsite.setNormal(normal);
+	    tsite = new FixedNormalSite(tsite);
+	    figure = new TerminalFigure(figure, tsite);
 	    return figure;
 	}
     }

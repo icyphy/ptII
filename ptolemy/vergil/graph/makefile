@@ -31,7 +31,7 @@
 
 ME =		ptolemy/vergil/graph
 
-DIRS = 		
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -52,7 +52,6 @@ JSRCS = \
 	EditorGraphController.java \
 	EntityController.java \
 	EntityPortController.java \
-	FigureAttribute.java \
 	Link.java \
 	LinkController.java \
 	LocatableNodeController.java \
