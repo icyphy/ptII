@@ -327,11 +327,13 @@ public class TimeKeeper {
 	Thread thread = Thread.currentThread();
         
         if( !((ComponentEntity)_actor).isAtomic() ) {
+	    /*
 	    if( thread instanceof DDEThread ) {
 		Actor actor = ((DDEThread)thread).getActor();
 		String name = ((Nameable)actor).getName();
                 System.out.println("Call to CompositeActor's TimeKeeper.getOutputTime() at time "+_outputTime + " by " + name);
 	    }
+	    */
             return _outputTime;
         }
         
@@ -339,7 +341,7 @@ public class TimeKeeper {
         if( _outputTime < _currentTime ) {
             _outputTime = _currentTime;
         }
-        System.out.println("Call to AtomicActor's TimeKeeper.getOutputTime() at time "+_outputTime);
+        // System.out.println("Call to AtomicActor's TimeKeeper.getOutputTime() at time "+_outputTime);
         return _outputTime;
     }
 
@@ -495,9 +497,30 @@ public class TimeKeeper {
 		    + "set current time in the past.");
 	}
             
+	String name = ((Nameable)_actor).getName();
+	if( name.equals("fBack") ) {
+	    /*
+	    if( time == 9.0 ) {
+		try {
+		    throw new IllegalActionException("fBack.setCurrentTime() at time = 9.0");
+		} catch(IllegalActionException e) {
+		    e.printStackTrace();
+		}
+	    }
+	    */
+	}
+
 	if( time != TimedQueueReceiver.IGNORE ) {
             _currentTime = time;
+	} else {
+	    return;
 	}
+
+	String actorName = ((Nameable)_actor).getName();
+	if( actorName.equals("wormhole") ) {
+	    // System.out.println(actorName+"'s TimeKeeper.setCurrentTime() called at time = "+time);
+	}
+
     }
 
     /** Set the priorities of the receivers contained in the input
@@ -621,6 +644,8 @@ public class TimeKeeper {
      *  each such receiver, call DDEReceiver.clearIgnoredTokens().
      */
     public synchronized void updateIgnoredReceivers() {
+	String name = ((Nameable)_actor).getName();
+	System.out.println(name+": updateIgnoredReceivers() called");
 	if( _rcvrTimeList == null ) {
 	    return;
 	}
@@ -656,20 +681,30 @@ public class TimeKeeper {
     public synchronized void updateRcvrList(TimedQueueReceiver tqr) {
 	String calleeName = ((Nameable)_actor).getName();
 	double time = tqr.getRcvrTime();
+
+	/*
+	if( time == 15.0 && calleeName.equals("wormhole") ) {
+	    try {
+		throw new IllegalActionException(calleeName+": updateRcvrList() at time = "+time);
+	    } catch(IllegalActionException e) {
+		e.printStackTrace();
+	    }
+	}
+	*/
+
 	int priority = tqr.getPriority();
 	RcvrTimeTriple triple =
             new RcvrTimeTriple(tqr, time, priority);
 	_removeRcvrTriple( triple );
 	_addRcvrTriple( triple );
-        /*
-        try {
-            setOutputTime( getCurrentTime() );
-        } catch( IllegalActionException e ) {
-            // This exception will never be thrown since 
-            // the current time is never in the past.
-        }
-        */
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                   package friendly variables              ////
+
+    // A flag indicating whether a token has been consumed. This
+    // flag is only used by composite actors.
+    boolean _tokenConsumed = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods		   ////
@@ -677,6 +712,7 @@ public class TimeKeeper {
     /** Print the contents of the RcvrTimeTriple list contained by
      *  this actor. Use this method for testing purposes only.
      * @deprecated
+     */
     synchronized void printRcvrList() {
 	String name = ((NamedObj)_actor).getName();
         System.out.println("\n###Print "+name+"'s RcvrList.");
@@ -692,6 +728,9 @@ public class TimeKeeper {
 	    TimedQueueReceiver testRcvr = testTriple.getReceiver();
             double time = testTriple.getTime();
 	    Token token = null;
+	    if( testRcvr._queue.size() > 0 ) {
+		token = ((TimedQueueReceiver.Event)testRcvr._queue.get(0)).getToken();
+	    }
 	    String msg = "\t"+name+"'s Receiver "+i+
                 " has a time of " +time+" and ";
 	    if( token instanceof NullToken ) {
@@ -705,7 +744,6 @@ public class TimeKeeper {
         }
         System.out.println("###End of printRcvrList()\n");
     }
-     */
 
     /** Set a flag indicating whether a search for ignored
      *  tokens is taking place as per the specified parameter.
