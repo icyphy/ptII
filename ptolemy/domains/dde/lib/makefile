@@ -49,14 +49,10 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	DDEPrinter.java \
 	DDESink.java \
-	DDEStringMerge.java \
-	DDEStringSource.java \
 	DDEPipe.java \
 	DDEDoubleFork.java \
 	TimeAdvance.java 
-	# TimedSource.java
 
 EXTRA_SRCS =	$(JSRCS)
 
