@@ -79,8 +79,8 @@ public class InvalidStateException extends RuntimeException {
         String obj1string = _getFullName(obj1);
         String obj2string = _getFullName(obj2);
         String prefix;
-        if (obj1string != "") {
-            if (obj2string != "") {
+        if (!obj1string.equals("")) {
+            if (!obj2string.equals("")) {
                 prefix = new String(obj1string + " and " + obj2string);
             } else {
                 prefix = obj1string;
