@@ -71,13 +71,6 @@ JSRCS = \
 	UnusedFieldRemover.java \
 	WatchDogTimer.java 
 
-#	ImprovedDeadAssignmentEliminator.java \
-#	InstanceEqualityEliminator.java \
-#	MaybeAliasAnalysis.java \
-#	MustAliasAnalysis.java \
-#	AliasAssignmentEliminator.java \
-
-
 OTHER_FILES_TO_BE_JARED = \
 	Generator.xml \
 	soot-license.html
@@ -92,6 +85,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'LibraryUsageReporter$$1.class' \
 	'Copernicus$$_StreamReaderThread.class' \
 	'FastForwardFlowAnalysis$$1.class' \
 	'KernelMain$$_IgnoreAllApplicationClasses.class' \
