@@ -137,10 +137,10 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      *  called by the manager.
      */
     public void managerStateChanged(Manager manager) {
-        Manager.State newstate = manager.getState();
-        if (newstate != _previousState) {
+        Manager.State newState = manager.getState();
+        if (newState != _previousState) {
             showStatus(manager.getState().getDescription());
-            _previousState = newstate;
+            _previousState = newState;
         }
     }
 
@@ -214,10 +214,10 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      */
     protected String[][] _concatStringArrays(
             String[][] first, String[][] second) {
-        String[][] newinfo = new String[first.length + second.length][];
-        System.arraycopy(first, 0, newinfo, 0, first.length);
-        System.arraycopy(second, 0, newinfo, first.length, second.length);
-        return newinfo;
+        String[][] newInfo = new String[first.length + second.length][];
+        System.arraycopy(first, 0, newInfo, 0, first.length);
+        System.arraycopy(second, 0, newInfo, first.length, second.length);
+        return newInfo;
     }
 
     /** Create run controls in a panel and return that panel.
