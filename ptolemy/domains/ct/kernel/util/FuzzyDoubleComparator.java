@@ -61,22 +61,22 @@ public class FuzzyDoubleComparator implements Comparator{
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Return -1 if fst < snd - threshold/2; <BR>
-     *  return 1 if fst > snd + threshold/2; <BR>
+    /** Return -1 if first < second - threshold/2; <BR>
+     *  return 1 if first > second + threshold/2; <BR>
      *  return 0 otherwise.
      *
      *  <p>If any of the argument is not a Double object, a ClassCastException
      *  will be thrown.
-     *  @param fst The first Double object.
-     *  @param snd The second Double object.
+     *  @param first The first Double object.
+     *  @param second The second Double object.
      *  @return The comparison result, -1, 0, or 1.
      */
-    public int compare(Object fst, Object snd) {
-        double fstvalue = ((Double)fst).doubleValue();
-        double sndvalue = ((Double)snd).doubleValue();
-        if (fstvalue < sndvalue - _threshold/2.0) {
+    public int compare(Object first, Object second) {
+        double firstValue = ((Double)first).doubleValue();
+        double secondValue = ((Double)second).doubleValue();
+        if (firstValue < secondValue - _threshold/2.0) {
             return -1;
-        } else if (fstvalue > sndvalue + _threshold/2.0) {
+        } else if (firstValue > secondValue + _threshold/2.0) {
             return 1;
         } else {
             return 0;

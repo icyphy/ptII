@@ -246,9 +246,9 @@ public class TotallyOrderedSet {
      */
     public String toString() {
         String result = new String();
-        Iterator eles = elementList().iterator();
-        while (eles.hasNext()) {
-            result = result + (eles.next()).toString() + " ";
+        Iterator elements = elementList().iterator();
+        while (elements.hasNext()) {
+            result = result + (elements.next()).toString() + " ";
         }
         return result;
     }
