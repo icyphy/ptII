@@ -73,9 +73,16 @@ public class ODPunctuation extends ODStringSource {
         
         _punctuation.insertLast( new StringTime( 11.0, " " ) );
         
+        _punctuation.insertLast( new StringTime( 14.5, " " ) );
+        
+        _punctuation.insertLast( new StringTime( 16.0, " " ) );
+        
+        _punctuation.insertLast( new StringTime( 20.5, "." ) );
+        
         _punctuation.insertLast( new StringTime( 5000.0, ";" ) );
         
-        // Up to "Hello!! The"
+        // Up to "Hello!! The Ptolemy Domain is complete."
+        
         
         return _punctuation;
     }

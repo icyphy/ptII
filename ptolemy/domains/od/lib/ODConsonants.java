@@ -89,9 +89,21 @@ public class ODConsonants extends ODStringSource {
         
         _consonants.insertLast( new StringTime( 14.0, "n" ) );
         
+        _consonants.insertLast( new StringTime( 15.5, "s" ) );
+        
+        _consonants.insertLast( new StringTime( 16.5, "c" ) );
+        
+        _consonants.insertLast( new StringTime( 17.5, "m" ) );
+        
+        _consonants.insertLast( new StringTime( 18.0, "p" ) );
+        
+        _consonants.insertLast( new StringTime( 18.5, "l" ) );
+        
+        _consonants.insertLast( new StringTime( 19.5, "t" ) );
+        
         _consonants.insertLast( new StringTime( 5000.0, ";" ) );
         
-        // Up to "Hello!! The" run
+        // Up to "Hello!! The Ptolemy Domain is complete."
         
         return _consonants;
     }
