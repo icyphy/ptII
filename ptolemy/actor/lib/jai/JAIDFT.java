@@ -107,7 +107,7 @@ public class JAIDFT extends Transformer {
             if (natureName.equals("complexToComplex")) {
                 _dataNature = _COMPLEX_TO_COMPLEX;
             } else if (natureName.equals("complexToReal")) {
-                _dataNature = _COMPLEX_TO_COMPLEX;
+                _dataNature = _COMPLEX_TO_REAL;
             } else if (natureName.equals("realToComplex")) {
                 _dataNature = _REAL_TO_COMPLEX;
             } else {
