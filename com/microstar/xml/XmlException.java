@@ -49,7 +49,12 @@ public class XmlException extends Exception
     */
   public String getMessage ()
   {
-    return message;
+      //Modified by Steve Neuendorffer because the message didn't tell what
+      // the location was.
+      return message + 
+          " in " + systemId + 
+          " at line " + line + 
+          " and column " + column;
   }
 
 
