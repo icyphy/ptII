@@ -30,23 +30,25 @@
 
 package ptolemy.domains.dt.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.data.Token;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.actor.util.*;
-import ptolemy.actor.*;
-import ptolemy.domains.sdf.lib.SampleDelay;
-
-import java.util.NoSuchElementException;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Hashtable;
 import java.util.Iterator;
-import javax.swing.*;
+import java.util.List;
+import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.Type;
+import ptolemy.domains.sdf.kernel.SDFReceiver;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// DTReceiver
