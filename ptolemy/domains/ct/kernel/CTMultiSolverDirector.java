@@ -329,6 +329,9 @@ public class CTMultiSolverDirector extends CTDirector {
         // synchronized on time and initialize all actors
         if(_debugging) _debug(getFullName(), " initialize directed actors: ");
         super.initialize();
+        // Display schedule
+        if(_debugging) _debug(getScheduler().getSchedule().toString());
+
         _setDiscretePhase(false);
         _first = true;
         // set step sizes
