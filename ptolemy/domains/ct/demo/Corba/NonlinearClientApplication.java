@@ -124,7 +124,7 @@ public class NonlinearClientApplication {
 
             _dir.initStepSize.setToken(new DoubleToken(0.0001));
 
-            _dir.minStepSize.setToken(new DoubleToken(1e-6));
+            _dir.minStepSize.setToken(new DoubleToken(1e-7));
 
             _dir.stopTime.setToken(new DoubleToken(6.0));
 

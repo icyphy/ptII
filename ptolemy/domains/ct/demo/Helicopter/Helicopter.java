@@ -454,7 +454,7 @@ public class Helicopter extends TypedCompositeActor {
         // CT Director parameters
         dir.initStepSize.setToken(new DoubleToken(0.1));
         
-        dir.minStepSize.setToken(new DoubleToken(1e-3));
+        dir.minStepSize.setToken(new DoubleToken(1e-7));
         
         dir.maxStepSize.setToken(new DoubleToken(0.5));
         
