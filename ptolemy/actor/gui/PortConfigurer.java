@@ -179,11 +179,13 @@ public class PortConfigurer extends Query implements QueryListener {
 
         if (foundOne) {
             moml.append("</group>");
-            ChangeRequest request = new MoMLChangeRequest(
+            MoMLChangeRequest request = new MoMLChangeRequest(
                     this,            // originator
                     parent,          // context
                     moml.toString(), // MoML code
                     null);           // base
+
+            request.setUndoable(true);
 
             // NOTE: There is no need to listen for completion
             // or errors in this change request, since, in theory,
