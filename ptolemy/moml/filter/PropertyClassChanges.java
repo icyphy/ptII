@@ -252,6 +252,16 @@ public class PropertyClassChanges implements MoMLFilter {
             .put("ptolemy.actor.lib.Expression",
                     expressionClassChanges);
 
+        // MatlabExpression
+        HashMap matlabClassChanges = new HashMap();
+        // Key = property name, Value = new class name
+        matlabClassChanges.put("expression",
+                "ptolemy.data.expr.StringParameter");
+
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.matlab.Expression",
+                    matlabClassChanges);
+
         // ImagePartition
         HashMap inputOutputTypedIOPortClassChanges = new HashMap();
         inputOutputTypedIOPortClassChanges.put("input",
