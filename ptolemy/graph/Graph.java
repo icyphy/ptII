@@ -103,9 +103,10 @@ public class Graph implements Cloneable {
         _nodes = new LabeledList();
         _edges = new LabeledList();
         _initializeAnalyses();
-        _nodeWeightMap = new HashMap();
         _edgeWeightMap = new HashMap();
+        _hiddenEdgeSet = new HashSet();
         _incidentEdgeMap = new HashMap();
+        _nodeWeightMap = new HashMap();
     }
 
     /** Construct an empty graph with enough storage allocated for the
@@ -118,9 +119,10 @@ public class Graph implements Cloneable {
         _nodes = new LabeledList(nodeCount);
         _edges = new LabeledList();
         _initializeAnalyses();
-        _nodeWeightMap = new HashMap(nodeCount);
         _edgeWeightMap = new HashMap();
+        _hiddenEdgeSet = new HashSet();
         _incidentEdgeMap = new HashMap(nodeCount);
+        _nodeWeightMap = new HashMap(nodeCount);
     }
 
     /** Construct an empty graph with enough storage allocated for the
@@ -134,9 +136,10 @@ public class Graph implements Cloneable {
         _nodes = new LabeledList(nodeCount);
         _edges = new LabeledList(edgeCount);
         _initializeAnalyses();
-        _nodeWeightMap = new HashMap(nodeCount);
         _edgeWeightMap = new HashMap(edgeCount);
+        _hiddenEdgeSet = new HashSet();
         _incidentEdgeMap = new HashMap(nodeCount);
+        _nodeWeightMap = new HashMap(nodeCount);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -230,6 +233,17 @@ public class Graph implements Cloneable {
         }
     }
 
+    /** Add a collection of edges to the graph. Each element in the
+     *  argument collection must be a unique {@link Edge}.
+     *  @param edgeCollection The collection of edges to add.
+     */
+    public void addEdges(Collection edgeCollection) {
+        Iterator edges = edgeCollection.iterator();
+        while (edges.hasNext()) {
+            addEdge((Edge)(edges.next()));
+        }
+    }
+
     /** Add an analysis to the list of analyses that this graph is associated
      *  with.
      *  @param analysis The analysis.
@@ -301,6 +315,17 @@ public class Graph implements Cloneable {
             nodes.add(addNodeWeight(weights.next()));
         }
         return nodes;
+    }
+
+    /** Add a collection of nodes to the graph. Each element in the
+     *  argument collection must be a unique {@link Node}.
+     *  @param nodeCollection The collection of nodes to add.
+     */
+    public void addNodes(Collection nodeCollection) {
+        Iterator nodes = nodeCollection.iterator();
+        while (nodes.hasNext()) {
+            addNode((Node)(nodes.next()));
+        }
     }
 
     /** Return the present value of a counter that keeps track
@@ -571,15 +596,42 @@ public class Graph implements Cloneable {
 
     /** Return all the edges in this graph in the form of a collection.
      *  Each element in the returned collection is an instance of {@link Edge}.
+     *  Hidden edges are not included in the returned collection.
+     *  The returned collection cannot be modified.
+     *  This is an <em>O(1)</em> operation if there are no hidden edges;
+     *  otherwise, it is an <em>O(e)</em> operation.
      *  @return All the edges in this graph.
      */
     public Collection edges() {
-        return Collections.unmodifiableList(_edges);
+        int hiddenEdgeCount = _hiddenEdgeSet.size();
+        if (hiddenEdgeCount == 0) {
+            return Collections.unmodifiableList(_edges);
+        }
+
+        // There is at least one hidden edge.
+        int visibleEdgeCount = _edges.size() - hiddenEdgeCount;
+        ArrayList result = new ArrayList(visibleEdgeCount);
+        if (visibleEdgeCount == 0) {
+            return Collections.unmodifiableList(result);
+        }
+
+        // There is at least one edge to return.
+        Iterator edges = _edges.iterator();
+        while (edges.hasNext()) {
+            Edge edge = (Edge)(edges.next());
+            if (!hidden(edge)) {
+                result.add(edge);
+            }
+        } 
+        return Collections.unmodifiableList(result); 
     }
 
     /** Return all the edges in this graph that have a specified weight.
      *  The edges are returned in the form of a collection.
      *  Each element in the returned collection is an instance of {@link Edge}.
+     *  Hidden edges are not included in the returned collection.
+     *  The returned collection cannot be modified.
+     *  This is an <em>O(1)</em> operation.
      *  @param weight The specified weight.
      *  @return The edges in this graph that have the specified weight.
      *  @exception NullPointerException If the specified weight
@@ -667,6 +719,40 @@ public class Graph implements Cloneable {
         }
         return code;
     }
+
+    /** Return true if a given edge is hidden in this graph.
+     *  @param edge The given edge.
+     *  @return True if the edge is hidden in this graph.
+     */
+    public boolean hidden(Edge edge) {
+        return _hiddenEdgeSet.contains(edge); 
+    }
+
+    /** Hide an edge if the edge exists in the graph and is not already hidden. 
+     *  This method removes an edge from the graph, including
+     *  removal from the incidence lists of the source and sink nodes, but
+     *  preserves the allocation of the edge label to the edge. This
+     *  makes the operation more efficient than standard edge removal
+     *  {@link removeEdge(Edge)}, and
+     *  allows the same label to be used if the edge is restored later.
+     *  This is an <em>O(1)</em> operation.
+     *  @param edge The edge to hide.
+     *  @return true If the edge is in the graph and not already hidden.
+     *  @see #restoreEdge(Edge).
+     */
+    public boolean hideEdge(Edge edge) {
+        if (!containsEdge(edge)) {
+            return false;
+        }
+        if (_hiddenEdgeSet.add(edge)) {
+            _disconnectEdge(edge);
+            return true;
+        } else {
+            // The edge is already hidden.
+            return false;
+        }
+    }
+     
 
     /** Return the number of edges that are incident to a specified node.
      *  @param node The node.
@@ -1007,6 +1093,7 @@ public class Graph implements Cloneable {
      * provided that the incident nodes are still in the graph.
      * This is an <em>O(e)</em> operation.
      * @param edge The edge to be removed.
+     * @see #hideEdge(Edge).
      * @exception IllegalArgumentException If the edge is not contained
      * in the graph.
      */
@@ -1017,16 +1104,7 @@ public class Graph implements Cloneable {
             throw new IllegalArgumentException("Attempt to remove an edge "
                     + "that is not in the graph." + _edgeDump(edge));
         }
-        _disconnect(edge, edge.source());
-        _disconnect(edge, edge.sink());
-        if (edge.hasWeight()) {
-            ArrayList sameWeightList = _sameWeightEdges(edge.getWeight());
-            sameWeightList.remove(edge);
-            if (sameWeightList.size() == 0) {
-                _edgeWeightMap.remove(edge.getWeight());
-            }
-        }
-        _registerChange();
+        _disconnectEdge(edge);
     }
 
     /** Remove a node from this graph.
@@ -1060,6 +1138,25 @@ public class Graph implements Cloneable {
         _registerChange();
     }
 
+    /** Restore an edge if the edge exists in the graph and is presently 
+     *  hidden. This is an <em>O(1)</em> operation.
+     *  @param edge The edge to restore.
+     *  @return true If the edge is in the graph and was hidden.
+     *  @see #hideEdge(Edge).
+     */
+    public boolean restoreEdge(Edge edge) {
+        if (!containsEdge(edge)) {
+            return false;
+        }
+        if (_hiddenEdgeSet.remove(edge)) {
+            _connectEdge(edge);
+            return true;
+        } else {
+            // The edge was not hidden.
+            return false;
+        }
+    }
+     
     /** Return the number of self loop edges in this graph.
      *  @param node The node.
      *  @return The number of self loop edges.
@@ -1113,6 +1210,8 @@ public class Graph implements Cloneable {
      *  {@link ptolemy.graph.Graph#_emptyGraph()}.
      *  @param nodes The collection of nodes; each element is a {@link Node}.
      *  @return The induced subgraph.
+     *  @exception IllegalArgumentException if the collection contains a node
+     *  that is not in this graph.
      */
     public Graph subgraph(Collection collection) {
         Graph subgraph = _emptyGraph();
@@ -1123,6 +1222,11 @@ public class Graph implements Cloneable {
         nodes = collection.iterator();
         while (nodes.hasNext()) {
             Node node = (Node)nodes.next();
+            if (!containsNode(node)) {
+                throw new IllegalArgumentException("Attempt to form an " 
+                        + "induced subgraph \ncontaining a node that is not in "
+                        + "the 'parent' graph.\n" + _nodeDump(node));
+            }
             Iterator incidentEdges = incidentEdges(node).iterator();
             while (incidentEdges.hasNext()) {
                 Edge edge = (Edge)(incidentEdges.next());
@@ -1140,25 +1244,42 @@ public class Graph implements Cloneable {
      *  edges. Node and edge weights are preserved.
      *  In derived classes, this
      *  method returns the same type of graph as is returned by
-     *  FIXME: what if nodes and edges are not consistent?
-     *  {@link ptolemy.graph.Graph#_emptyGraph()}.
+     *  {@link ptolemy.graph.Graph#_emptyGraph()}. 
      *  @param nodes The subset of nodes; each element is an instance
      *  of {@link Node}.
      *  @param edges The subset of edges. Each element is an instance
      *  of {@link Edge}.
+     *  @exception IllegalArgumentException if the argument collections contain
+     *  a node or edge that is not in this graph.
      *  @return The subgraph.
+     *  @see #addEdges(Collection).
+     *  @see #addNodes(Collection).
      */
     public Graph subgraph(Collection nodeCollection,
             Collection edgeCollection) {
         Graph subgraph = _emptyGraph();
+
         Iterator nodes = nodeCollection.iterator();
         while (nodes.hasNext()) {
-            subgraph.addNode((Node)(nodes.next()));
+            Node node = (Node)(nodes.next());
+            if (!containsNode(node)) {
+                throw new IllegalArgumentException("Attempt to form a " 
+                        + "subgraph \ncontaining a node that is not in "
+                        + "the 'parent' graph.\n" + _nodeDump(node));
+            }
         }
+
         Iterator edges = edgeCollection.iterator();
         while (edges.hasNext()) {
-            subgraph.addEdge((Edge)(edges.next()));
+            Edge edge = (Edge)(edges.next());
+            if (!containsEdge(edge)) {
+                throw new IllegalArgumentException("Attempt to form a " 
+                        + "subgraph \ncontaining a edge that is not in "
+                        + "the 'parent' graph.\n" + _edgeDump(edge));
+            }
         }
+        subgraph.addNodes(nodeCollection);
+        subgraph.addEdges(edgeCollection);
         return subgraph;
     }
 
@@ -1313,13 +1434,81 @@ public class Graph implements Cloneable {
         }
     }
 
+    /** Connect a given edge in this graph. The edge is assumed to be in 
+     *  the graph. This method performs operations that are common to
+     *  the addition of a new edge and the restoration of a hidden edge. 
+     *  Specifically, this method connects, using {@link #_connect(Edge, Node)},
+     *  the given edge to its source and sink nodes;
+     *  updates the mapping of weights into corresponding graph 
+     *  edges; and registers a change in the graph. This method should be
+     *  overridden to perform additional operations that are necessary
+     *  to connect edges in derived graph classes. 
+     *  @param edge The edge to connect.
+     *  @see #hideEdge(Edge).
+     *  @see #removeEdge(Edge).
+     *  @see #_disconnectEdge(Edge).
+     *  @see #_registerChange().
+     */
+    protected void _connectEdge(Edge edge) {
+        _connect(edge, edge.source());
+        if (!edge.isSelfLoop()) {
+            _connect(edge, edge.sink());
+        }
+        if (edge.hasWeight()) {
+            ArrayList sameWeightList;
+            try {
+                sameWeightList = _sameWeightEdges(edge.getWeight());
+            } catch (Exception exception) {
+                sameWeightList = new ArrayList();
+                _edgeWeightMap.put(edge.getWeight(), sameWeightList);
+            }
+            sameWeightList.add(edge);
+        }
+        _registerChange();
+    }
+
     /** Disconnect an edge from a node that it is incident to.
-     *  Do nothing if the edge is not incident to the node.
+     *  Specifically, this method removes the edge from the set of
+     *  edges that are considered incident to the node in this graph.
+     *  This method does nothing if the given edge is not incident to the 
+     *  given node.
+     *  This method should be overridden to incorporate additional operations
+     *  that are required to disconnect an edge from a node (see, for
+     *  example, DirectedGraph.#_disconnect(Edge, Node)).
      *  @param edge The edge.
      *  @param node The node.
      */
     protected void _disconnect(Edge edge, Node node) {
         _removeIfPresent(_incidentEdgeList(node), edge);
+    }
+
+    /** Disconnect a given edge in this graph. The edge is assumed to be in 
+     *  the graph and
+     *  not already hidden. This method performs operations that are common to
+     *  the removal of and hiding of an edge. Specifically, this method
+     *  disconnects, using {@link #_disconnect(Edge, Node)}, the given edge 
+     *  from its source and sink nodes;
+     *  updates the mapping of weights into corresponding graph 
+     *  edges; and registers a change in the graph. This method should be
+     *  overridden to perform additional operations that are necessary
+     *  to disconnect edges in derived graph classes. 
+     *  @param edge The edge to disconnect.
+     *  @see #hideEdge(Edge).
+     *  @see #removeEdge(Edge).
+     *  @see #_connectEdge(Edge)
+     *  @see #_registerChange().
+     */
+    protected void _disconnectEdge(Edge edge) {
+        _disconnect(edge, edge.source());
+        _disconnect(edge, edge.sink());
+        if (edge.hasWeight()) {
+            ArrayList sameWeightList = _sameWeightEdges(edge.getWeight());
+            sameWeightList.remove(edge);
+            if (sameWeightList.size() == 0) {
+                _edgeWeightMap.remove(edge.getWeight());
+            }
+        }
+        _registerChange();
     }
 
     /** Return an empty graph that has the same run-time type as this graph.
@@ -1385,21 +1574,7 @@ public class Graph implements Cloneable {
                     ("\n" + weight.toString() + "\n")));
         }
         _edges.add(edge);
-        _connect(edge, edge.source());
-        if (!edge.isSelfLoop()) {
-            _connect(edge, edge.sink());
-        }
-        if (edge.hasWeight()) {
-            ArrayList sameWeightList;
-            try {
-                sameWeightList = _sameWeightEdges(weight);
-            } catch (Exception exception) {
-                sameWeightList = new ArrayList();
-                _edgeWeightMap.put(weight, sameWeightList);
-            }
-            sameWeightList.add(edge);
-        }
-        _registerChange();
+        _connectEdge(edge);
     }
 
     /** Register a new node in the graph. The node is assumed to
@@ -1585,6 +1760,9 @@ public class Graph implements Cloneable {
     // The list of edges in this graph.
     // Each element of this list is an Edge.
     private LabeledList _edges;
+
+    // The set of hidden edges. Each element is an Edge.
+    private HashSet _hiddenEdgeSet;
 
     // A mapping from nodes into their lists of incident edges.
     // This redundant information is maintained for improved
