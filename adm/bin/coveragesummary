@@ -1,8 +1,9 @@
 #!/bin/sh
-# -[Thu Nov 20 10:29:36 2003 by cxh]-
+# -[Fri Mar  4 10:38:19 2005 by cxh]-
 # Generate a quick summary of the code coverage
 summaryfile=/users/ptdesign/public_html/java/js/coverage.html
 summaryfile=/home/www/cvswww/ptolemy/nightly/coverage.html
+summaryfile=/tmp/coverage.html
 
 cat <<EOF
 Code Coverage for $summaryfile
@@ -16,7 +17,7 @@ awk '	$0 ~ /<th colspan=10>Package/ { split($4,p,"\"")
 			 # Remove the leading ptolemy
 			 nf=split(p[2],pp,".")
 			 package=""
-			 for(i=3;i < nf; i++) {
+			 for(i=2;i < nf; i++) {
 				package = package pp[i] "."
 			 }
 			package = package pp[nf]
@@ -29,4 +30,6 @@ awk '	$0 ~ /<th colspan=10>Package/ { split($4,p,"\"")
 		split(method[1],m2,"=")
 		printf("%-30s %7s= %4s %11s    %11s\n", package, m2[1], m2[2], constructor[1], basicblock[1])
 			
-'} $summaryfile | sort +2bnr -3bnr
+'} $summaryfile 
+
+#| sort +2bnr -3bnr
