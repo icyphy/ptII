@@ -191,7 +191,7 @@ W.E0.E1.A3.wrapup
 test Director-8.1 {Test type checking} {
     set director [java::new ptolemy.actor.Director]
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
     $e0 setName E0
 
     #create e1
@@ -218,6 +218,29 @@ test Director-8.1 {Test type checking} {
     set rt2 [[$p2 getResolvedType] getName]
     list $rt1 $rt2
 } {ptolemy.data.IntToken ptolemy.data.DoubleToken}
+
+######################################################################
+####
+#
+test Director-8.1.1 {Test run-time type checking} {
+    #use setup above
+    set token [java::new ptolemy.data.IntToken 3]
+    $director initialize
+    $p1 broadcast $token
+    set rtoken [$p2 get 0]
+    list [[$rtoken getClass] getName] [$rtoken getValue]
+} {ptolemy.data.DoubleToken 3.0}
+
+######################################################################
+####
+#
+test Director-8.1.2 {Test run-time type checking} {
+    #use setup above
+    set token [java::new ptolemy.data.DoubleToken]
+    $director initialize
+    catch {$p1 broadcast $token} msg
+    list $msg
+} {{java.lang.IllegalArgumentException: send: token cannot be converted to the resolved type of this port.}}
 
 ######################################################################
 ####
