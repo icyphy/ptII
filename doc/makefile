@@ -86,6 +86,7 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.actor \
 			ptolemy.actor.gui \
 			ptolemy.actor.lib \
+			ptolemy.actor.lib.conversions \
 			ptolemy.actor.lib.gui \
 			ptolemy.actor.process \
 			ptolemy.actor.sched \

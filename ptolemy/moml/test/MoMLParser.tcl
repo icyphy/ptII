@@ -2356,3 +2356,22 @@ test MoMLParser-11.5 {test configuration with external source} {
 </entity>
 }
 
+#----------------------------------------------------------------------
+    set incMomlBase "$header
+<entity name=\"top\" class=\"ptolemy.kernel.ComponentEntity\">
+</entity>
+"
+test MoMLParser-12.1 {test rename} {
+    $parser reset
+    set toplevel [$parser parse $incMomlBase]
+    $parser parse "<entity name=\".top\">
+<rename name=\"foo\"/>
+</entity>
+"
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="foo" class="ptolemy.kernel.ComponentEntity">
+</entity>
+}

@@ -91,6 +91,9 @@
 <!ATTLIST relation name CDATA #REQUIRED
                    class CDATA #IMPLIED>
 
+<!ELEMENT rename EMPTY>
+<!ATTLIST rename name CDATA #REQUIRED>
+
 <!-- Deprecated.  Use a property instead. -->
 <!ELEMENT rendition (configure | location | property)*>
 <!ATTLIST rendition class CDATA #REQUIRED>
