@@ -109,7 +109,7 @@ and where appropriate employs workspace.
 @see ptolemy.domains.dde.kernel.TimeKeeper
 */
 
-public class PrioritizedTimedQueue {
+public class PrioritizedTimedQueue extends AbstractReceiver {
 
     /** Construct an empty queue with no container.
      */
@@ -242,6 +242,17 @@ public class PrioritizedTimedQueue {
     public boolean hasToken() {
         return _queue.size() > 0;
     }
+
+    /** Throw an exception, since this method is not used in
+     *  DDE.
+     *  @param token The token to be put to the receiver.
+     *  @exception NoRoomException If the receiver is full.
+     */
+    public void put(Token token) {
+	throw new NoRoomException("put(Token) is not used in the " +
+				  "DDE domain.");
+    }
+
 
     /** Put a token on the queue with the specified time stamp and set
      *  the last time value to be equal to this time stamp. If the
