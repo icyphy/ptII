@@ -7,62 +7,11 @@
 </head>
 <body>
 <h1>Limitations</h1>
+Limitations are listed in the release notes:
+(<a href="ptII4.0.release.htm">Master Version</a>
+<a href="ptII4.0.releaseVergil.htm">Vergil Safe Version, derived from
+the Master Version</a>)
+
 <p>
-The following are known limitations and bugs that are not
-sufficiently mission-critical to have been addressed.
-<ol>
-
-<li>
-<b>Applet limitations</b>
-The GR applets do not work well under Java 1.5.0-beta.
-Use 1.4.2-04 instead.
-
-<li>
-<b>JNI User interface problems</b>
-The JNI User interface has problems creating new JNI models.
-<b>If you follow the instructions in 
-<a href="codeDoc/jni/JNIUtilities.html">JNIUtilities</a>, then
-eventually you will get a NameDuplicationException.
-<p>The resulting model will be missing
-<pre>
-&lt;property name="output" class="jni.Argument" value="false,false,true,double"&gt;
-&lt;/property&gt;
-</pre>
-We are working with the original authors on a solution.
-<br>In the short term, one workaround is to edit the xml file directly
-and add the appropriate property by hand.
-
-<p>Another issue is the the JNI interface will not work wit
-Hierarchical classes, subclasses, and inner classes.
-<li>
-
-<b>Matlab interface has problems work with gcc-3.3</b>
-Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
-<br>Under Windows, we recommend using gcc-3.2.
-
-<li>
-<b>Copernicus does not work will if there are spaces in $PTII</b>
-If Ptolemy is installed in a directory that has a space in the pathname,
-then the Copernicus code generator does not work well.
-<br>The problem is because Soot uses the StringTokenizer to process
-options. The space character is a delimiter, which causes problems.
-
-<li>
-<b>Plot windows don't resize when control panel is resized</b>.
-If a model with plotters
-is executed using the run button on the toolbar, and
-then re-executed using the run control panel accessed through
-the View menu, then resizing the run control panel does not
-cause the plots to resize to fit.
-<b>Workaround</b>:
-Close the model and re-open it, and then run first using the
-run control panel.
-
-<li>
-<b>Control click and Mac OS X</b>.
-
-</li>
-</ol>
-<p></p>
 </body>
 </html>

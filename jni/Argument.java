@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.StringTokenizer;
 
-import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -51,7 +51,7 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (vincent.arnould)
    @see jni.GenericJNIActor
 */
-public class Argument extends Attribute implements Settable {
+public class Argument extends AbstractSettableAttribute {
 
     /** Creates a new instance of Argument with the given name
      * for the given GenericJNIActor
@@ -86,7 +86,7 @@ public class Argument extends Attribute implements Settable {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (_suppressMoML(depth)) {
+        if (_isMoMLSuppressed(depth)) {
             return;
         }
         String value = getExpression();
@@ -426,27 +426,26 @@ public class Argument extends Attribute implements Settable {
      * The format wanted is "_isInput,_isOutput,_isReturn,_cType".
      */
     public void setExpression(String expression) {
-        _value = expression;
-        StringTokenizer tokenizer = new StringTokenizer(
-                _value, ",");
         try {
-            setInput(new Boolean(tokenizer.nextToken()
-                             .toString()).booleanValue());
-            setOutput(new Boolean(tokenizer.nextToken()
-                              .toString()).booleanValue());
-            setReturn(new Boolean(tokenizer.nextToken()
-                              .toString()).booleanValue());
-            setCType(tokenizer.nextToken().toString());
-        } catch(java.util.NoSuchElementException e) {}
-        try {
+            super.setExpression(expression);
+            _value = expression;
+            StringTokenizer tokenizer = new StringTokenizer(
+                    _value, ",");
+            try {
+                setInput(new Boolean(tokenizer.nextToken()
+                                 .toString()).booleanValue());
+                setOutput(new Boolean(tokenizer.nextToken()
+                                  .toString()).booleanValue());
+                setReturn(new Boolean(tokenizer.nextToken()
+                                  .toString()).booleanValue());
+                setCType(tokenizer.nextToken().toString());
+            } catch(java.util.NoSuchElementException e) {}
             validate();
         } catch (IllegalActionException e) {
             MessageHandler.error(
                     "TRT error! Bad expression for Argument "
                     + getName(), e);
         }
-        // Make sure the new value is exported in MoML.  EAL 12/03.
-        setPersistent(true);
     }
 
     /** Set the expression of the argument from its attributes
@@ -597,6 +596,19 @@ public class Argument extends Attribute implements Settable {
         }
     }
 
+    /** Propagate the value of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as this one, or
+     *  a ClassCastException will be thrown.
+     *  @param destination Object to which to propagate the
+     *   value.
+     *  @exception IllegalActionException If the value cannot
+     *   be propagated.
+     */
+    protected void _propagateValue(NamedObj destination)
+            throws IllegalActionException {
+        ((Settable)destination).setExpression(getExpression());
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////

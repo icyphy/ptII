@@ -116,6 +116,7 @@ OTHER_FILES_TO_BE_JARED = \
 	expressions7.gif \
 	expressions70.gif \
 	expressions71.gif \
+	expressions72.gif \
 	expressions8.gif \
 	expressions9.gif \
 	expressionsa.gif \
