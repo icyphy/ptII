@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Mon Nov 24 09:27:59 2003 by cxh]-
+# -[Tue Nov 25 09:18:17 2003 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -182,7 +182,7 @@ awk '{
 	print "<BLOCKQUOTE>"
 	print "... it measures the number of linearly-independent paths"
 	print "through a program module. This measure provides a single"
-	print "ordinal number that can be compared to the complexity of
+	print "ordinal number that can be compared to the complexity of"
 	print "other programs."
 	print "</BLOCKQUOTE>"
 	print "<br>The second number is the rank of the file as a percentage"
