@@ -365,6 +365,23 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return new ArrayToken(oneValueArray);
     }
 
+    /** Return the contiguous subarray starting at the specified index and
+     *  of the specified length.
+     *  @param index The index of the beginning of the subarray
+     *  @param count The length of the subarray
+     *  @return The extracted subarray.
+     *  @exception ArrayIndexOutOfBoundsException If the requested subarray
+     *      falls outside of the actual bounds of this array.
+     *  @since Ptolemy II 4.1
+     */
+    //FIXME: This code has not been reviewed.
+    public ArrayToken subarray(int index, int count) 
+            throws IllegalActionException {
+        Token result[] = new Token[count];
+        System.arraycopy(_value, index, result, 0, count);
+        return new ArrayToken(result);
+    } 
+
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
      *  @return A string beginning with "{" that contains expressions
