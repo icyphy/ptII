@@ -172,6 +172,22 @@ public class Assertion extends TypedAtomicActor {
      *   yields an incompatible type, or if there is no director.
      */
     public void fire() throws IllegalActionException {
+    }
+
+    /** Initialize the iteration count to 1.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _iterationCount = 1;
+        _iteration.setToken(new IntToken(_iterationCount));
+    }
+
+    /** Increment the iteration count.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+	
         Director director = getDirector();
         if (director == null) {
             throw new IllegalActionException(this, "No director!");
@@ -198,21 +214,7 @@ public class Assertion extends TypedAtomicActor {
                     "Assertion fails! " +
                     assertion.getExpression());
         }
-    }
 
-    /** Initialize the iteration count to 1.
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _iterationCount = 1;
-        _iteration.setToken(new IntToken(_iterationCount));
-    }
-
-    /** Increment the iteration count.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public boolean postfire() throws IllegalActionException {
         _iterationCount++;
         _iteration.setToken(new IntToken(_iterationCount));
         // This actor never requests termination.
