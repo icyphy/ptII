@@ -39,31 +39,11 @@
 	<port name="input"></port>
         <port name="output"></port>
     </entity>
-    <entity name="add1" class="ptolemy.actor.lib.AddSubtract">
-	<port name="plus"></port>
-	<port name="minus"></port>
-        <port name="output"></port>
-    </entity>
-    <entity name="scaleM" class="ptolemy.actor.lib.Scale">
-	<property name="factor" value="1.0"></property>
-	<port name="input"></port>
-        <port name="output"></port>
-    </entity>
-    <entity name="scaleN" class="ptolemy.actor.lib.Scale">
-	<property name="factor" value="0.5"></property>
-	<port name="input"></port>
-        <port name="output"></port>
-    </entity> 
-    <entity name="velocity" class="ptolemy.domains.ct.lib.Integrator">
-	<property name="initialState" value="0.0"></property>
-	<port name="input"></port>
-        <port name="output"></port>
-    </entity>
-    <entity name="position" class="ptolemy.domains.ct.lib.Integrator">
-	<property name="initialState" value="0.0"></property>
-	<port name="input"></port>
-        <port name="output"></port>
-    </entity>
+    <entity name="car" class=".carmodel">
+        <port name="forceInput"></port>
+        <port name="velocityOutput"></port>
+	<port name="positionOutput"></port>
+    </entity>	
     <entity name="ssamp" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" value="SamplingPeriod"></property>
 	<port name="input"></port>
@@ -116,24 +96,13 @@
   	<link port="fhold.input" relation="r2"/>
     <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
   	<link port="fhold.output" relation="r3"/>
-  	<link port="add1.plus" relation="r3"/>
+  	<link port="car.forceInput" relation="r3"/>
 	<link port="toEventChannel.force" relation="r3"/>
-    <relation name="r4" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="add1.output" relation="r4"/>
-  	<link port="scaleM.input" relation="r4"/>
-    <relation name="r5" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="scaleM.output" relation="r5"/>
-  	<link port="velocity.input" relation="r5"/>
     <relation name="r6" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="velocity.output" relation="r6"/>
-  	<link port="position.input" relation="r6"/>
-	<link port="scaleN.input" relation="r6"/>
+  	<link port="car.velocityOutput" relation="r6"/>
 	<link port="toEventChannel.velocity" relation="r6"/>
-    <relation name="r7" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="scaleN.output" relation="r7"/>
-  	<link port="add1.minus" relation="r7"/>
     <relation name="r8" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="position.output" relation="r8"/>
+  	<link port="car.positionOutput" relation="r8"/>
 	<link port="toEventChannel.position" relation="r8"/>
 	<link port="ssamp.input" relation="r8"/>
     <relation name="r9" class="ptolemy.actor.TypedIORelation"></relation>
