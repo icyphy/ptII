@@ -141,5 +141,5 @@ public interface Changeable {
      *  @see #isDeferringChangeRequests()
      *  @see #requestChange(ChangeRequest)
      */
-    public void setDeferringChangeRequests(boolean isDeferring);
+    public boolean setDeferringChangeRequests(boolean isDeferring);
 }
