@@ -103,14 +103,7 @@ public class PortController extends LocatableNodeController {
      */
     public static class PortRenderer implements NodeRenderer {
 	public Figure render(Object n) {
-
 	    Polygon2D.Double polygon = new Polygon2D.Double();
-	    polygon.moveTo(-6, 6);
-	    polygon.lineTo(0, 6);
-	    polygon.lineTo(8, 0);
-	    polygon.lineTo(0, -6);
-	    polygon.lineTo(-6, -6);
-	    polygon.closePath();
 
 	    Figure figure;
 	    // Wrap the figure in a TerminalFigure to set the direction that
@@ -121,10 +114,41 @@ public class PortController extends LocatableNodeController {
 	    Location location = (Location)n;
 	    if(location != null) {
 		Port port = (Port)location.getContainer();
+
 		Color fill;
-		if(port instanceof IOPort && ((IOPort)port).isMultiport()) {
-		    fill = Color.white;
+		if(port instanceof IOPort) {
+		    IOPort ioport = (IOPort)port;
+		    polygon.moveTo(0, 5);
+		    polygon.lineTo(0, 10);
+		    if(ioport.isOutput()) {
+			polygon.lineTo(6, 5);
+			polygon.lineTo(14, 5);
+			polygon.lineTo(14, -5);
+			polygon.lineTo(6, -5);
+		    } else {
+			polygon.lineTo(12, 0);
+		    }
+		    polygon.lineTo(0, -10);
+		    if(ioport.isInput()) {
+			polygon.lineTo(0, -5);
+			polygon.lineTo(-6, -5);
+			polygon.lineTo(-6, 5);
+		    } 
+		    
+		    polygon.closePath();
+
+		    if(ioport.isMultiport()) {
+			fill = Color.white;
+		    } else {
+			fill = Color.black;
+		    }
 		} else {
+		    polygon.moveTo(-6, 6);
+		    polygon.lineTo(0, 6);
+		    polygon.lineTo(8, 0);
+		    polygon.lineTo(0, -6);
+		    polygon.lineTo(-6, -6);
+		    polygon.closePath();
 		    fill = Color.black;
 		}
 		figure = new BasicFigure(polygon, fill, (float)1.5);
@@ -152,6 +176,12 @@ public class PortController extends LocatableNodeController {
 		tsite = new FixedNormalSite(tsite);
 		figure = new TerminalFigure(figure, tsite);
 	    } else {
+		polygon.moveTo(0, 0);
+		polygon.lineTo(0, 10);
+		polygon.lineTo(12, 0);
+		polygon.lineTo(0, -10);
+		polygon.closePath();
+
 		figure = new BasicFigure(polygon, Color.black);
 	    }			    
 	    return figure;
