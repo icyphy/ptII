@@ -34,7 +34,6 @@ import java.util.StringTokenizer;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
@@ -136,11 +135,6 @@ import ptolemy.kernel.util.Workspace;
    be the only enabled transition at a time. The default value is a boolean 
    token with value as false, meaning that if this transition is enabled, it
    must be the only enabled transition.
-   <p>
-   The <i>probability</i> parameter specifies the probability that this 
-   transition will be taken if there exist multiple enabled transitions. The 
-   default value is a double token with value 1.0, meaning the transition is 
-   always taken.
 
    @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng
    @version $Id$
@@ -228,13 +222,6 @@ public class Transition extends ComponentRelation {
      */
     public Parameter preemptive = null;
 
-    /** Parameter specifying the probability that this transition will be 
-     *  taken if there exist multiple enabled transitions. The default value
-     *  is a double token with value 1.0, meaning the transition is always 
-     *  taken.
-     */
-    public Parameter probability = null;
-
     /** Parameter specifying whether the refinement of the destination
      *  state is reset when the transition is taken.
      */
@@ -284,9 +271,6 @@ public class Transition extends ComponentRelation {
         } else if (attribute == nondeterministic) {
             _nondeterministic = 
                 ((BooleanToken) nondeterministic.getToken()).booleanValue();
-        } else if (attribute == probability) {
-            _probability = 
-                ((DoubleToken) probability.getToken()).doubleValue();
         } else if (attribute == guardExpression) {
             // The guard and trigger expressions can only be evaluated at run
             // time, because the input variables they can reference are created
@@ -431,15 +415,6 @@ public class Transition extends ComponentRelation {
         } else {
             return "";
         }
-    }
-
-    /** Return the probability that this transition will be taken if this 
-     *  transition is enabled. 
-     *  @return The probability that this transition will be taken if this 
-     *  transition is enabled. 
-     */
-    public double getProbability() {
-        return _probability;
     }
 
     /** Return the refinements of this transition. The names of the refinements
@@ -811,10 +786,6 @@ public class Transition extends ComponentRelation {
         nondeterministic.setTypeEquals(BaseType.BOOLEAN);
         nondeterministic.setToken(BooleanToken.FALSE);
         
-        probability = new Parameter(this, "probability");
-        probability.setTypeEquals(BaseType.DOUBLE);
-        probability.setExpression("1.0");
-
         _exeDirectorIsHSDirector = false;
 
         CompositeEntity container = (CompositeEntity) getContainer();
@@ -933,9 +904,6 @@ public class Transition extends ComponentRelation {
     // Set to true when the transition is preemptive.
     private boolean _preemptive = false;
 
-    // Cached probability value.
-    private double _probability = 1.0;
-    
     // Cached source state of this transition.
     private State _sourceState = null;
 
