@@ -33,11 +33,11 @@ import java.util.*;
 //// Graph
 /** 
 An undirected graph.
+This class is evolved from the staticGraph class written by Jie Liu.
 Each node in the graph is represented by an Object. To construct a graph,
 use add() to add nodes and addEdge() to add edges between nodes.
 
-@author Yuhong Xiong (This class is evolved from the staticGraph class
- written by Jie Liu.)
+@author Yuhong Xiong, Jie Liu 
 $Id$
 */
 
@@ -67,12 +67,12 @@ public class Graph {
     ////                         public methods                    ////
 
     /** Adds a node to this graph.  The node is represented by the
-     *  spedified object. The object cannot be null.  In addition, two
-     *  objects equal to each other, as determined by the
+     *  specified Object. The Object cannot be null.  In addition, two
+     *  Objects equal to each other, as determined by the
      *  <code>equals</code> method, cannot both be added.
      *
-     *  @param o the object representing a graph node
-     *  @exception IllegalArgumentException an object equals to the
+     *  @param o the Object representing a graph node
+     *  @exception IllegalArgumentException an Object equals to the
      *   specified one is already in this graph.
      *  @exception NullPointerException argument is null.
      */
@@ -90,12 +90,12 @@ public class Graph {
      *  between the same nodes are allowed, and are considered different
      *  edges.  Self loop is also allowed.
      *
-     *  @param o1 the object representing one graph node
-     *  @param o2 the object representing another graph node
+     *  @param o1 the Object representing one graph node
+     *  @param o2 the Object representing another graph node
      *  @exception IllegalArgumentException at least one argument is not
      *   a graph node, i.e., the argument is not equal to an Object
-     *   specified in a successful <code>add</code> call. The
-     *   equality is determined by the <code>equals</code> method.
+     *   specified in a successful <code>add</code> call. Equality
+     *   is determined by the <code>equals</code> method.
      */ 
     public void addEdge(Object o1, Object o2) {        
         int id1 = _getNodeId(o1);

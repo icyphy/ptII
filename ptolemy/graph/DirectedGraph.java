@@ -1,4 +1,4 @@
-/* A mutable directed graph, and related graph algorithms.
+/* A directed graph and some graph algorithms.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -36,15 +36,16 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// DirectedGraph
 /** 
-A mutable directed graph, and associated graph algorithms.
-This class is evolved from Jie's static graph classes.
+A directed graph and some graph algorithms.
+This class is evolved from the StaticGraph class written by Jie Liu.
 
 @author Yuhong Xiong, Jie Liu
-@version $Id$
+$Id$
 */
 
 public class DirectedGraph extends Graph {
-    /** Construct an empty directed graph.
+
+    /** Constructs an empty directed graph.
      */
     public DirectedGraph() {
         super();
@@ -54,25 +55,24 @@ public class DirectedGraph extends Graph {
      *  for the specified number of nodes.  Memory management is more
      *  efficient with this constructor if the number of nodes is
      *  known.
-     *  @param numNodes the integer specifying the number of nodes.
+     *  @param numNodes the integer specifying the number of nodes
      */ 
     public DirectedGraph(int numNodes) {
         super(numNodes);
     }
-        
+ 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Adds a node to this graph.  The node is associated with the
-     *  spedified object. The object can't be null.  In addition, two
-     *  objects equal to each other, as determined by the
-     *  <code>equals</code> method, can't both be added.
+    /** Adds a node to this graph.  The node is represented by the
+     *  specified Object. The Object cannot be null.  In addition, two
+     *  Objects equal to each other, as determined by the
+     *  <code>equals</code> method, cannot both be added.
      *
-     *  @param o the Object associated with the node to be added.
-     *  @exception IllegalArgumentException an object equals to the
-     *  specified one is already associated with a node in this graph,
-     *  where equality is determined by the <code>equals</code> method.
-     *  @exception NullPointerException the specified object is null.
+     *  @param o the Object representing a graph node
+     *  @exception IllegalArgumentException an Object equals to the
+     *   specified one is already in this graph.
+     *  @exception NullPointerException argument is null.
      */
     public void add(Object o) {
         super.add(o);
@@ -80,17 +80,18 @@ public class DirectedGraph extends Graph {
         _inDegree.addElement(new Integer(0));
 	_tranClosureValid = false;
     }
-        
-    /** Adds a directed edge to connect two nodes.  Multiple connections
-     *  between two nodes are allowed, but they are counted separately.
-     *  Self loop is also allowed.
+ 
+    /** Adds a directed edge to connect two nodes. The first argument
+     *  is the source node and the second the sink.  Multiple connections
+     *  between two nodes are allowed, and are considered different
+     *  edges. Self loop is also allowed.
      *
-     *  @param o1 the Object associated with the source node in directed
-     *  graph.
-     *  @param o2 the Object associated with the sink node in directed graph.
-     *  @exception IllegalArgumentException at least one object is not
-     *  equal to an object associated with the nodes in this graph, as
-     *  determined by the <code>equals</code> method.
+     *  @param o1 the Object representing the source node
+     *  @param o2 the Object representing the sink node
+     *  @exception IllegalArgumentException at least one argument is not
+     *   a graph node, i.e., the argument is not equal to an Object
+     *   specified in a successful <code>add</code> call. Equality
+     *   is determined by the <code>equals</code> method.
      */ 
     public void addEdge(Object o1, Object o2) {
         super.addEdge(o1, o2);
@@ -101,21 +102,21 @@ public class DirectedGraph extends Graph {
 	_tranClosureValid = false;
     }
 
-    /** Test if this graph is directed.
+    /** Tests if this graph is directed.
      *  @return always returns <code>true</code>.
      */
     public boolean isDirected() {
         return true;
     } 
 
-    /** Tests if this graph is acyclic(is a DAG).
+    /** Tests if this graph is acyclic (is a DAG).
      *  The implementation computes the transitive closure of the
      *  graph, if it is not already computed after the last graph
      *  mutation.  So the first call to this method after graph
      *  mutation may be slow, but all the subsequent calls returns
      *  in constant time.
-     *  @return <code>true</code> if the the graph is a DAG;
-     *  <code>false</code> otherwise.
+     *  @return <code>true</code> if the the graph is acyclic.
+     *   <code>false</code> otherwise.
      */
     public boolean isAcyclic() {
         _compTranClosure();
@@ -123,12 +124,12 @@ public class DirectedGraph extends Graph {
         return _isAcyclic;
     }
 
-    /** Finds all the nodes reachable from the specified one.
-     *  @param o an object associated with a node in this graph.
-     *  @return an array of objects associated with the reachable
-     *   nodes.
-     *  @exception IllegalArgumentException the specified object is
-     *   not associated with a node in this graph.
+    /** Finds all the nodes that can be reached from the specified node.
+     *  @param o an Object representing a node in this graph.
+     *  @return an array of Objects representing nodes reachable from
+     *   the specified one.
+     *  @exception IllegalArgumentException the specified Object is
+     *   not a node in this graph.
      */
     public Object[] reachableNodes(Object o) {
 	_compTranClosure();
@@ -150,19 +151,17 @@ public class DirectedGraph extends Graph {
             arr[i] = nodes.elementAt(i);
         }
         return arr;
-
-
     }
  
-    /** Topological sort of this directed graph. 
-     * The implementation uses the method of A.B. Kahn: ``Topological
-     * Sorting of Large Networks", Communications of the ACM, 
-     * Vol. 5, 558-562, 1962. 
-     * It has complexity O(|N|+|E|), where N for nodes and E for edges.
+    /** Topological sort of this graph. 
+     *  The implementation uses the method of A.B. Kahn: ``Topological
+     *  Sorting of Large Networks", Communications of the ACM, 
+     *  Vol. 5, 558-562, 1962. 
+     *  It has complexity O(|N|+|E|), where N for nodes and E for edges.
      *
-     * @return an array of objects represents an enumeration of the nodes
-     * sorted according to the topology.
-     * @exception InvalidStateException if the graph is cyclic.
+     *  @return an array of Objects representing the nodes sorted
+     *   according to the topology.
+     *  @exception InvalidStateException the graph is cyclic.
      */
     public Object[] topSort() {
         int size = numNodes();
@@ -202,9 +201,14 @@ public class DirectedGraph extends Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /* Computes the transitive closure. Puts the result in the protected
-     * variable _tranClosure.
+    /*  Computes the transitive closure. Puts the result in the
+     *  boolean array _tranClosure. The implementation uses Warshall's
+     *  algorithm, which can be found in chapter 6 of "Discrete
+     *  Mathematics and Its Applications", 3rd Ed., by Kenneth H. Rosen.
+     *  The complexity of this algorithm is O(|N|^3), where N for nodes.
      */ 
+    // This method also checks if the graph is acyclic and set
+    // _isAcyclic.
     protected void _compTranClosure() {
         if (_tranClosureValid) {
             return;
@@ -212,9 +216,11 @@ public class DirectedGraph extends Graph {
 
         int size = numNodes();
         if (size == 0) {          // graph empty
-            throw new InvalidStateException("graph empty.");
+            throw new InvalidStateException("DirectedGraph._compTranClosure:"
+						+ " graph empty.");
         }
 
+	// Initialize _tranClosure to the adjacency matrix
         _tranClosure = new boolean[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -229,8 +235,6 @@ public class DirectedGraph extends Graph {
         }
 
         // Warshall's algorithm
-        // FIXME: check the algorithm LEDA uses and see if it's
-        // more efficient.
         for (int k=0; k<size; k++) {
             for (int i=0; i<size; i++) {
                 for (int j=0; j<size; j++) {
@@ -239,7 +243,7 @@ public class DirectedGraph extends Graph {
                 }
             }
         }
-       
+ 
         // check for cycles.
         _isAcyclic = true;
         for (int i = 0; i < size; i++) {
@@ -247,7 +251,7 @@ public class DirectedGraph extends Graph {
                 _isAcyclic = false;
             }
         }
-        
+ 
         _tranClosureValid = true;
     }
 
@@ -255,19 +259,18 @@ public class DirectedGraph extends Graph {
     ////                         protected variables               ////
 
     /** The in-degree of each node.
-     *  This vector is indexed by node id with each entry an
-     *  <code>Integer</code> containing the in-degree of the corresponding
-     *  node.
+     *  This vector is indexed by node ID with each entry an
+     *  <code>Integer</code> containing the in-degree of the
+     *  corresponding node.
      */
     protected Vector _inDegree = new Vector();
 
-    /** A 2D boolean array representing the adjacency matrix of the
-     *  transitive closure. <code>_tranClosure[i][j] = true</code>
-     *  if there is a path from node i to node j, where i and j are
-     *  node IDs.
-     *  This array is computed by the _compTranClosure method. After
-     *  graph mutation, that method should be called before using 
-     *  this array. Otherwise, the array is not valid.
+    /** The adjacency matrix representation of the transitive closure.
+     *  The entry (i, j) is <code>true</code> if and only if there
+     *  exists a path from the node with ID i to the node with ID j.
+     *  This array is computed by <code>_compTranClosure</code>. After
+     *  each graph mutation, that method should be called before this
+     *  array is used. Otherwise, this array is not valid.
      */
     protected boolean[][] _tranClosure;
 
