@@ -98,15 +98,15 @@ compat:
 	@if [ ! -d $(OLDTREE) ]; then \
 		echo "$(OLDTREE) does not exist"; \
 		echo "skipping compatibility tests"; \
+	else \
+		@echo "Generating compat/ from $(OLDTREE)"; \
+		cd $(OLDTREE); \
+			find . -name "*.xml" -print | \
+			grep auto | \
+			awk '{print "$(OLDTREE)/" $$1}' > /tmp/oldxmls;
+		mkdir compat; \
+		cp `cat /tmp/oldxmls` compat; \
 	fi
-	@echo "Generating compat/ from $(OLDTREE)"
-	cd $(OLDTREE); \
-		find . -name "*.xml" -print | \
-		grep auto | \
-		awk '{print "$(OLDTREE)/" $$1}' > /tmp/oldxmls
-	mkdir compat
-	cp `cat /tmp/oldxmls` compat
-
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
