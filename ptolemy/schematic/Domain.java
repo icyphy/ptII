@@ -27,7 +27,7 @@
 
 */
 
-package ptolemy.system;
+package ptolemy.schematic;
 
 import java.io.*;
 import ptolemy.actor.Director;
