@@ -241,7 +241,7 @@ public class DEDirector extends Director {
     ////                         parameters                        ////
 
     /** The start time of model. This parameter must contain a
-     *  DoubleToken.  The value defaults to -1*MaxDouble.
+     *  DoubleToken.  The value defaults to 0.0.
      */
     public Parameter startTime;
 
@@ -315,6 +315,7 @@ public class DEDirector extends Director {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+        // FIXME: how to handle the change of the other parameters?
         if (attribute == stopWhenQueueIsEmpty) {
             _stopWhenQueueIsEmpty =
                 ((BooleanToken)stopWhenQueueIsEmpty.getToken()).booleanValue();
@@ -614,62 +615,7 @@ public class DEDirector extends Director {
      *  @return The next larger time on the event queue.
      */
     public double getNextIterationTime() {
-        // FIXME: the following code can be simplified as:
         return _eventQueue.get().timeStamp();
-
-//        // It seems like the current design of the DECQEventQueue, and
-//        // the use the calendar queue in general, cannot support this
-//        // method very efficiently. To get the next iteration time, the
-//        // director has to dequeue all events at the current time, find
-//        // the first event in the next iteration,
-//        // and put all event just been dequeued back to queue.
-//        // <P>
-//        // An alternative design is to have a hierarchical queue. The
-//        // top level of the queue sorts entries (a groups of DEEvents)
-//        // only by their time stamp.
-//        // Each entry at this level is another priority queue, which
-//        // sort (simultaneous) events further according to their microsteps
-//        // and depth. Then the next iteration time is simply the time stamp
-//        // of the next entry in the top queue.
-//        // However, since this method is called only when CT is side DE.
-//        // It is unclear how the change may effect normal DE execution.
-//        // So we will keep the current design unless there's prove that
-//        // the new design can improve (or at least does not ruin) the
-//        // performance under regular uses.
-//        if (_eventQueue.isEmpty()) {
-//            // FIXME: the event queue contains the stop time as an event.
-//            return getStopTime();
-//        } else {
-//            DEEvent next = _eventQueue.get();
-//            double nextTime = next.timeStamp();
-//            // The next event on the queue may have the current time.
-//            // May need to look deeper in the queue.
-//            // Save items to reinsert into queue.
-//            LinkedList eventsToPutBack = new LinkedList();
-//            while (nextTime <= getCurrentTime()) {
-//                if (_debugging) _debug("Temporarily remove event.");
-//                // take() is safe, since the queue is not empty.
-//                eventsToPutBack.add(_eventQueue.take());
-//                if (!_eventQueue.isEmpty()) {
-//                    next = _eventQueue.get();
-//                    nextTime = next.timeStamp();
-//                } else {
-//                    nextTime = getStopTime();
-//                    break;
-//                }
-//            }
-//            // Put back events that need to be put back.
-//            Iterator events = eventsToPutBack.iterator();
-//            while (events.hasNext()) {
-//                if (_debugging) _debug("Put dequeued current event back.");
-//                try {
-//                    _eventQueue.put((DEEvent)events.next());
-//                } catch (IllegalActionException ex) {
-//                    throw new InternalErrorException(this, ex, null);
-//                }
-//            }
-//            return nextTime;
-//        }
     }
 
     /** Return the system time at which the model begins executing.
@@ -732,6 +678,11 @@ public class DEDirector extends Director {
         super.initialize();
         _exceedStopTime = false;
         _realStartTime = System.currentTimeMillis();
+        // FIXME: the following statement may not be necessary.
+        // Because whenever an event (acturally only a pure event) can
+        // be inserted into the event queue during the initialize phase.
+        // The fireAt method should be smart enough to request
+        // refiring of this container.
         // Request a firing to the outer director if the queue is not empty.
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
             if (_debugging) _debug("DE director requests refiring" +
