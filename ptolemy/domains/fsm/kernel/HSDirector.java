@@ -152,6 +152,16 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 }
             }
 
+            actors = tr.getRefinement();
+            if (actors != null) {
+                for (int i = 0; i < actors.length; ++i) {
+                    if (_stopRequested) break;
+                    if (actors[i].prefire()) {
+                        actors[i].fire();
+			actors[i].postfire();
+                    }
+                }
+            }
             return;
         }
         Iterator actors = _enabledRefinements.iterator();
@@ -161,8 +171,36 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     ((ptolemy.kernel.util.NamedObj)actor).getName());
             actor.fire();
         }
-        ctrl._setInputsFromRefinement();
-        ctrl._chooseTransition(st.nonpreemptiveTransitionList());
+ 
+        ctrl._setInputsFromRefinement();       
+        
+        tr = ctrl._chooseTransition(st.nonpreemptiveTransitionList());
+        if(tr != null) {
+            Actor[] transitionActors = tr.getRefinement();
+            if (transitionActors != null) {
+                for (int i = 0; i < transitionActors.length; ++i) {
+                    if (_stopRequested) break;
+                    if (transitionActors[i].prefire()) {
+                        if(_debugging) { 
+                            _debug(getFullName(), " fire transition refinement",
+                                  ((ptolemy.kernel.util.NamedObj)transitionActors[i]).getName());
+                        }
+                        transitionActors[i].fire();
+                        transitionActors[i].postfire();
+                    }
+                }
+            }
+            // execute the output actions, since these are normally
+            // executed in chooseTransition, but the outputs may
+            // have been changed by the transition refinemenets
+            Iterator actions = tr.choiceActionList().iterator();
+            while (actions.hasNext()) {
+                Action action = (Action)actions.next();
+                action.execute();
+            }
+            ctrl._setInputsFromRefinement();       
+        }
+	
         return;
     }
 

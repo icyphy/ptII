@@ -202,17 +202,28 @@ public class FSMDirector extends Director {
      *   choice action.
      */
     public void fire() throws IllegalActionException {
-        if (_debugging) _debug(getName(), " fire.");
+        if(_debugging) _debug(getFullName(), "fire at time: "+getCurrentTime());
 
 	FSMActor ctrl = getController();
         ctrl._setInputVariables();
-        if (_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
+        if(_debugging) _debug(getFullName(), " find FSMActor " + ctrl.getName());
         State st = ctrl.currentState();
         Transition tr =
             ctrl._chooseTransition(st.preemptiveTransitionList());
-
+        
 	if (tr != null) {
 	    Actor[] actors = tr.destinationState().getRefinement();
+            if (actors != null) {
+                for (int i = 0; i < actors.length; ++i) {
+                    if (_stopRequested) break;
+                    if (actors[i].prefire()) {
+                        actors[i].fire();
+			actors[i].postfire();
+                    }
+                }
+            }
+            
+            actors = tr.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_stopRequested) break;
@@ -230,13 +241,43 @@ public class FSMDirector extends Director {
 	    for (int i = 0; i < actors.length; ++i) {
                 if (_stopRequested) break;
 		if (actors[i].prefire()) {
-		    actors[i].fire();
+                    if(_debugging)
+                        _debug(getFullName(), " fire refinement",
+                               ((ptolemy.kernel.util.NamedObj)
+                                actors[i]).getName());
+                    actors[i].fire();
 		    actors[i].postfire();
 		}
 	    }
 	}
-	ctrl._setInputsFromRefinement();
-        ctrl._chooseTransition(st.nonpreemptiveTransitionList());
+        
+        ctrl._setInputsFromRefinement();
+        
+        tr = ctrl._chooseTransition(st.nonpreemptiveTransitionList());
+        if (tr != null) {        
+            actors = tr.getRefinement();
+            if (actors != null) {
+                for (int i = 0; i < actors.length; ++i) {
+                    if (_stopRequested) break;
+                    if (actors[i].prefire()) {
+                        if(_debugging)
+                            _debug(getFullName(),
+                                   " fire transition refinement",
+                                   ((ptolemy.kernel.util.NamedObj)
+                                    actors[i]).getName());
+                        actors[i].fire();
+                        actors[i].postfire();
+                    }
+                }
+            }
+            //execute the output actions
+            Iterator actions = tr.choiceActionList().iterator();
+            while (actions.hasNext()) {
+                Action action = (Action)actions.next();
+                action.execute();
+            }
+            ctrl._setInputsFromRefinement();       
+        }
         return;
     }
 
@@ -262,7 +303,7 @@ public class FSMDirector extends Director {
         if (container instanceof Actor) {
             Actor cont = (Actor)container;
             Director executiveDirector = cont.getExecutiveDirector();
-            if (executiveDirector != null) {
+            if(executiveDirector != null) {
                 executiveDirector.fireAt(cont, time);
             } else {
                 setCurrentTime(time);
@@ -321,7 +362,7 @@ public class FSMDirector extends Director {
             Actor[] actors = getController().currentState().getRefinement();
 	    if (actors == null || actors.length == 0) {
 		return super.getNextIterationTime();
-	    }
+	    }	
 	    double result = Double.MAX_VALUE;
 	    boolean givenByRefinement = false;
 	    for (int i = 0; i < actors.length; ++i) {
@@ -386,6 +427,8 @@ public class FSMDirector extends Director {
      */
     public boolean postfire() throws IllegalActionException {
         // FIXME: Changed by liuj, not yet reviewed.
+        if(_debugging) _debug(getFullName(),
+                              "postfire called at time: "+getCurrentTime());
         FSMActor controller = getController();
         boolean result = controller.postfire();
         _currentLocalReceiverMap =
@@ -403,6 +446,9 @@ public class FSMDirector extends Director {
      *  FIXME: Changed by liuj, not yet reviewed.
      */
     public boolean prefire() throws IllegalActionException {
+        if(_debugging) _debug(getFullName(),
+                              "prefire called at time: "+getCurrentTime());
+
         // Clear the inside receivers of all output ports of the container.
         CompositeActor actor = (CompositeActor)getContainer();
         Iterator outputPorts = actor.outputPortList().iterator();
@@ -486,11 +532,11 @@ public class FSMDirector extends Director {
                                 insideReceivers[i][j].get();
                             }
                             insideReceivers[i][j].put(t);
-                            if (_debugging) _debug(getName(),
-                                    "transferring input from " + port.getName()
-                                    + " to "
-                                    + (insideReceivers[i][j]).getContainer()
-                                    .getName());
+                            if(_debugging) _debug(getFullName(),
+                                "transferring input from " + port.getFullName()
+                                + " to "
+                                + (insideReceivers[i][j]).getContainer()
+                                    .getFullName());
                         }
                         transferredToken = true;
                     }
@@ -579,9 +625,21 @@ public class FSMDirector extends Director {
                             if (cont == controller) {
 				resultsList.add(receiver);
 			    } else {
-				List stateList = new LinkedList();
+				// check transitions
+                                Iterator transitions = 
+                                    state.nonpreemptiveTransitionList()
+                                    .iterator();
+                                while(transitions.hasNext()) {
+                                    Transition transition = 
+                                        (Transition) transitions.next();
+                                    _checkActorsForReceiver
+                                        (transition.getRefinement(), cont,
+                                         receiver, resultsList);
+                                }
+                                // check refinements
+                                List stateList = new LinkedList();
 				stateList.add(state);
-			        Iterator transitions =
+			        transitions =
                                     state.preemptiveTransitionList()
                                     .iterator();
 				while (transitions.hasNext()) {
@@ -589,24 +647,17 @@ public class FSMDirector extends Director {
                                         (Transition)transitions.next();
 				    stateList.add(transition
                                             .destinationState());
+                                    _checkActorsForReceiver
+                                        (transition.getRefinement(), cont,
+                                         receiver, resultsList);
 				}
 				Iterator nextStates = stateList.iterator();
 				while (nextStates.hasNext()) {
 				    actors =
                                         ((State)nextStates.next())
                                         .getRefinement();
-				    if (actors != null) {
-					for (int k = 0; k < actors.length;
-                                             ++k) {
-					    if (cont == actors[k]) {
-						if (!resultsList
-                                                        .contains(receiver)) {
-						    resultsList.add(receiver);
-						    break;
-						}
-					    }
-					}
-				    }
+                                    _checkActorsForReceiver
+                                        (actors,cont, receiver, resultsList);
 				}
                             }
                         }
@@ -648,6 +699,21 @@ public class FSMDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    private void _checkActorsForReceiver(TypedActor[] actors,
+                                         Nameable cont, Receiver receiver,
+                                         List resultsList) {
+        if (actors != null) {
+	    for (int k = 0; k < actors.length; ++k) {
+	        if (cont == actors[k]) {
+		    if (!resultsList.contains(receiver)) {
+		        resultsList.add(receiver);
+			break;
+		    }	
+		}
+	    }
+	}
+    }
+    
     // Create the controllerName attribute.
     private void _createAttribute() {
         try {
