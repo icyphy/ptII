@@ -279,7 +279,6 @@ public class ShellTextArea extends JPanel {
                     setEditable(false);
                 }
                 _commandBuffer.setLength(0);
-                _commandCursor = _promptCursor;
                 _jTextArea.setCursor(oldCursor);
                 _updateHistory(command);
             } else {
@@ -299,7 +298,7 @@ public class ShellTextArea extends JPanel {
                     _historyCommands.size() - _historyCursor - 1);
         }
         replaceRangeJTextArea(
-                text, _commandCursor, _jTextArea.getText().length());
+                text, _promptCursor, _jTextArea.getText().length());
     }
 
     // Replace the command with an entry from the history.
@@ -313,7 +312,7 @@ public class ShellTextArea extends JPanel {
                     _historyCommands.size() - _historyCursor);
         }
         replaceRangeJTextArea(
-                text, _commandCursor, _jTextArea.getText().length());
+                text, _promptCursor, _jTextArea.getText().length());
     }
 
     // Update the command history.
@@ -334,9 +333,8 @@ public class ShellTextArea extends JPanel {
     // The TextArea widget for displaying commands and results
     private JTextArea _jTextArea;
 
-    // Cursors
+    // Cursor, showing where last prompt or result ended.
     private int _promptCursor = 0;
-    private int _commandCursor = 0;
 
     // History
     private int _historyCursor = 0;
