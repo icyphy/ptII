@@ -57,25 +57,6 @@ of any token type that supports addition.
 
 public class Ramp extends SequenceSource {
 
-    /** Construct an actor in the specified workspace.  This constructor
-     *  is used to create actors that are to be added dynamically to a
-     *  container during execution of a model.
-     *  @param workspace The workspace.
-     */
-    public Ramp(Workspace workspace) {
-        super(workspace);
-        try {
-            init = new Parameter(this, "init", new IntToken(0));
-            step = new Parameter(this, "step", new IntToken(1));
-            
-            // set the type constraints.
-            output.setTypeAtLeast(init);
-            output.setTypeAtLeast(step);
-        } catch (KernelException ex) {
-            throw new InternalErrorException(ex.getMessage());
-        }
-    }
-
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the <i>init</i> and <i>step</i> parameters. Initialize <i>init</i>

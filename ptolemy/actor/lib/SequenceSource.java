@@ -62,20 +62,6 @@ work.
 
 public class SequenceSource extends Source implements SequenceActor {
 
-    /** Construct an actor in the specified workspace.  This constructor
-     *  is used to create actors that are to be added dynamically to a
-     *  container during execution of a model.
-     *  @param workspace The workspace.
-     */
-    public SequenceSource(Workspace workspace) {
-        super(workspace);
-        try {
-            lifetime = new Parameter(this, "lifetime", new IntToken(0));
-        } catch (KernelException ex) {
-            throw new InternalErrorException(ex.getMessage());
-        }
-    }
-
     /** Construct an actor with the given container and name.
      *  The <i>lifetime</i> parameter is also constructed.
      *  @param container The container.
