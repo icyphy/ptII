@@ -151,10 +151,10 @@ public class ImageUnpartition extends SDFAtomicActor {
         }
 
         image = new int[_imageRows * _imageColumns];
-        int partitionCount = _imageColumns * _imageRows
+        _partitionCount = _imageColumns * _imageRows
             / _partitionColumns / _partitionRows;
-        partitions = new IntMatrixToken[partitionCount];
-        input.setTokenConsumptionRate(partitionCount);
+        partitions = new IntMatrixToken[_partitionCount];
+        input.setTokenConsumptionRate(_partitionCount);
     }
 
     /**
@@ -170,12 +170,12 @@ public class ImageUnpartition extends SDFAtomicActor {
 	int x, y;
         int partitionNumber;
 
-        input.getArray(0, partitions);
+        partitions = input.get(0, _partitionCount);
 
         for(j = 0, partitionNumber = 0; j < _imageRows; j += _partitionRows)
             for(i = 0; i < _imageColumns; i += _partitionColumns,
                     partitionNumber++) {
-                IntMatrixToken partition = partitions[partitionNumber];
+                IntMatrixToken partition = (IntMatrixToken)partitions[partitionNumber];
                 if((partition.getRowCount() != _partitionRows) ||
                         (partition.getColumnCount() != _partitionColumns)) {
                     throw new IllegalActionException(
@@ -193,7 +193,7 @@ public class ImageUnpartition extends SDFAtomicActor {
                 new IntMatrixToken(image, _imageRows, _imageColumns));
     }
 
-    private IntMatrixToken partitions[];
+    private ptolemy.data.Token partitions[];
 
     private int part[];
     private int image[];
@@ -201,4 +201,6 @@ public class ImageUnpartition extends SDFAtomicActor {
     private int _imageRows;
     private int _partitionColumns;
     private int _partitionRows;
+    // This is the input port consumption rate.
+    private int _partitionCount;
 }
