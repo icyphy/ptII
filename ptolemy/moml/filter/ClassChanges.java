@@ -181,6 +181,38 @@ public class ClassChanges implements MoMLFilter {
         // Moved MultiInstanceComposite
         _classChanges.put("ptolemy.actor.hoc.MultiInstanceComposite",
                 "ptolemy.actor.lib.hoc.MultiInstanceComposite");
+
+        // Moved ModalModel
+        _classChanges.put("ptolemy.vergil.fsm.modal.ModalModel",
+                "ptolemy.domains.fsm.modal.ModalModel");
+                
+        // Moved ModalTableauFactory
+        _classChanges.put("ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory",
+                "ptolemy.vergil.fsm.modal.ModalTableauFactory");
+                
+        // Moved ModalPort
+        _classChanges.put("ptolemy.vergil.fsm.modal.ModalPort",
+                "ptolemy.domains.fsm.modal.ModalPort");
+
+        // Moved ModalController
+        _classChanges.put("ptolemy.vergil.fsm.modal.ModalController",
+                "ptolemy.domains.fsm.modal.ModalController");
+
+        // Moved Refinement
+        _classChanges.put("ptolemy.vergil.fsm.modal.Refinement",
+                "ptolemy.domains.fsm.modal.Refinement");
+
+        // Moved RefinementPort
+        _classChanges.put("ptolemy.vergil.fsm.modal.RefinementPort",
+                "ptolemy.domains.fsm.modal.RefinementPort");
+
+        // Moved TransitionRefinement
+        _classChanges.put("ptolemy.vergil.fsm.modal.TransitionRefinement",
+                "ptolemy.domains.fsm.modal.TransitionRefinement");
+
+        // Moved TransitionRefinementPort
+        _classChanges.put("ptolemy.vergil.fsm.modal.TransitionRefinementPort",
+                "ptolemy.domains.fsm.modal.TransitionRefinementPort");
     }
     
     // Set of class names that are obsolete and should be simply

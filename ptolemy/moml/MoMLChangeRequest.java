@@ -30,6 +30,7 @@
 
 package ptolemy.moml;
 
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -146,6 +147,25 @@ public class MoMLChangeRequest extends ChangeRequest {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Enable or disable propagation of changes to instances or classes
+     *  that defer their definitions to the context of this change.  By
+     *  default, propagation is enabled. Call this with a false argument
+     *  to disable it. Disabling propagation is reasonable when non-persistent
+     *  changes or changes that only affect visualization are being applied.
+     *  @param flag False to disable propagation.
+     */
+    public void enablePropagation(boolean flag) {
+        _enablePropagation = flag;
+    }
+    
+    /** Return the context specified in the constructor, or null if none
+     *  was specified.
+     *  @return The context.
+     */
+    public NamedObj getContext() {
+        return _context;
+    }
+    
     /** Return the first container, moving up the hierarchy, for which there
      *  are other objects that defer their MoML definitions to it.
      *  If there is no such container, then return null. If the specified
@@ -264,7 +284,11 @@ public class MoMLChangeRequest extends ChangeRequest {
         }
 
         // Apply the same change to any object that defers its MoML
-        // definition to the context in which we just applied the change.
+        // definition to the context in which we just applied the change,
+        // unless propagation has been turned off.
+        if (!_enablePropagation) {
+            return;
+        }
         NamedObj context = _context;
         if (context == null) {
             context = _parser.getToplevel();
@@ -274,7 +298,8 @@ public class MoMLChangeRequest extends ChangeRequest {
 
             Iterator others = othersList.iterator();
             while (others.hasNext()) {
-                NamedObj other = (NamedObj)others.next();
+                WeakReference reference = (WeakReference)others.next();
+                NamedObj other = (NamedObj)reference.get();
                 if (other != null) {
                     // Make the request by queueing a new change request.
                     // This needs to be done because we have no assurance
@@ -309,6 +334,9 @@ public class MoMLChangeRequest extends ChangeRequest {
     
     // Flag to print out information about what's being done.
     private static boolean _DEBUG = false;
+    
+    // Flag indicating whether propagation is enabled.
+    private boolean _enablePropagation = true;
 
     // The parser given in the constructor.
     private MoMLParser _parser;

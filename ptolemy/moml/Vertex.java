@@ -119,7 +119,7 @@ public class Vertex extends Location {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (!isPersistent()) {
+        if (!isPersistent() || isClassElement()) {
             return;
         }
         // This method is very similar to the superclass

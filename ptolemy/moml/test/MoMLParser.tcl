@@ -186,12 +186,15 @@ test MoMLParser-1.3.2 {parse class with a property with no class} {
 set moml_3_3 "$header
 <entity name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
-    <property name=\"xxx\"/>
+    <property name=\"xxx\" class=\"ptolemy.kernel.util.StringAttribute\"/>
 </class>
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
-    <property name=\"yyy\"/>
+    <property name=\"xxx\" value=\"a\"/>
+    <property name=\"yyy\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"b\"/>
 </class>
-<entity name=\"test\" class=\".lib.top\"/>
+<entity name=\"test\" class=\".lib.top\">
+    <property name=\"yyy\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"c\"/>
+</entity>
 </entity>
 "
 test MoMLParser-1.3.3 {check overriding class definition} {
@@ -201,9 +204,7 @@ test MoMLParser-1.3.3 {check overriding class definition} {
     set test [$toplevel getEntity test]
     $test exportMoML
 } {<entity name="test" class=".lib.top">
-    <property name="xxx" class="ptolemy.kernel.util.Attribute">
-    </property>
-    <property name="yyy" class="ptolemy.kernel.util.Attribute">
+    <property name="yyy" class="ptolemy.kernel.util.StringAttribute" value="c">
     </property>
 </entity>
 }
@@ -312,22 +313,6 @@ set result {<?xml version="1.0" standalone="no"?>
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="top" extends="ptolemy.actor.TypedCompositeActor">
     <entity name="a" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
 </class>
 }
@@ -408,22 +393,8 @@ set result {<?xml version="1.0" standalone="no"?>
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="top" extends="ptolemy.actor.TypedCompositeActor">
     <entity name="a" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
 </class>
 }
@@ -523,8 +494,6 @@ test MoMLParser-1.11 {test instantiation of a class} {
         </entity>
     </class>
     <entity name="b" class=".top.a">
-        <property name="p" class="ptolemy.data.expr.Parameter">
-        </property>
     </entity>
 </entity>
 }
@@ -534,7 +503,9 @@ test MoMLParser-1.11 {test instantiation of a class} {
 #
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
-    <entity name="b" class="ptolemy.moml.test.testClass"/>
+    <entity name="b" class="ptolemy.moml.test.testClass">
+        <property name="prop" value="1"/>
+    </entity>
 <property name="xxx"/>
 </entity>
 }
@@ -553,7 +524,7 @@ test MoMLParser-1.12 {test instantiation of a class} {
     set b [$toplevel getEntity b]
     $b exportMoML
 } {<entity name="b" class="ptolemy.moml.test.testClass">
-    <property name="prop" class="ptolemy.data.expr.Parameter">
+    <property name="prop" class="ptolemy.data.expr.Parameter" value="1">
     </property>
 </entity>
 }
@@ -564,7 +535,10 @@ test MoMLParser-1.12 {test instantiation of a class} {
 set body {
 <entity name="yyy" class="ptolemy.kernel.CompositeEntity">
     <entity name="b" class="ptolemy.moml.test.testClass"/>
-    <entity name="c" class="ptolemy.moml.test.testClass2"/>
+    <entity name="c" class="ptolemy.moml.test.testClass2">
+    <property name="y" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    </entity>
 </entity>
 }
 
@@ -578,40 +552,9 @@ test MoMLParser-1.12.1 {test instantiation of a class} {
     set c [$foo getEntity c]
     list [$b exportMoML] [$c exportMoML]
 } {{<entity name="b" class="ptolemy.moml.test.testClass">
-    <property name="prop" class="ptolemy.data.expr.Parameter">
-    </property>
 </entity>
 } {<entity name="c" class="ptolemy.moml.test.testClass2">
-    <property name="x" class="ptolemy.kernel.util.Attribute">
-    </property>
-</entity>
-}}
-
-######################################################################
-####
-#
-set body {
-<entity name="top" class="ptolemy.kernel.CompositeEntity">
-    <entity name="b" class="ptolemy.moml.test.testClass"/>
-    <entity name="c" class="ptolemy.moml.test.testClass2"/>
-</entity>
-}
-
-set moml "$header $body"
-
-test MoMLParser-1.12.2 {test import with a relative source } {
-    $parser reset
-    set toplevel [java::cast ptolemy.kernel.CompositeEntity \
-            [$parser parse $moml]]
-    set b [$toplevel getEntity b]
-    set c [$toplevel getEntity c]
-    list [$b exportMoML] [$c exportMoML]
-} {{<entity name="b" class="ptolemy.moml.test.testClass">
-    <property name="prop" class="ptolemy.data.expr.Parameter">
-    </property>
-</entity>
-} {<entity name="c" class="ptolemy.moml.test.testClass2">
-    <property name="x" class="ptolemy.kernel.util.Attribute">
+    <property name="y" class="ptolemy.kernel.util.StringAttribute">
     </property>
 </entity>
 }}
@@ -628,7 +571,7 @@ set body {
 
 set moml "$header $body"
 
-test MoMLParser-1.12.3 {test import with a relative source } {
+test MoMLParser-1.12.3 {test class instances with no override} {
     $parser reset
     set toplevel [java::cast ptolemy.kernel.CompositeEntity \
             [$parser parse $moml]]
@@ -636,12 +579,8 @@ test MoMLParser-1.12.3 {test import with a relative source } {
     set c [$toplevel getEntity c]
     list [$b exportMoML] [$c exportMoML]
 } {{<entity name="b" class="testClass" source="testClass.xml">
-    <property name="prop" class="ptolemy.data.expr.Parameter">
-    </property>
 </entity>
 } {<entity name="c" class="testClass2" source="testClass2.xml">
-    <property name="x" class="ptolemy.kernel.util.Attribute">
-    </property>
 </entity>
 }}
 
@@ -949,23 +888,11 @@ set body {
 
 set moml "$header $body"
 
-test MoMLParser-1.18.3 {test deletion persistence in instatiation of a class} {
+test MoMLParser-1.18.3 {test illegal deletion in instatiation of a class} {
     $parser reset
-    set toplevel [$parser parse $moml]
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.actor.CompositeActor">
-    <class name="master" extends="ptolemy.actor.CompositeActor">
-        <entity name="e" class="ptolemy.actor.CompositeActor">
-        </entity>
-    </class>
-    <entity name="derived" class=".top.master">
-        <deleteEntity name="e"/>
-    </entity>
-</entity>
-}
+    catch {set toplevel [$parser parse $moml]} msg
+    string range $msg 0 52
+} {com.microstar.xml.XmlException: XML element "deleteEn}
 
 ######################################################################
 ####
@@ -983,23 +910,11 @@ set body {
 
 set moml "$header $body"
 
-test MoMLParser-1.18.4 {test deletion persistence in instatiation of a class} {
+test MoMLParser-1.18.4 {test illegal deletion in instatiation of a class} {
     $parser reset
-    set toplevel [$parser parse $moml]
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.actor.CompositeActor">
-    <class name="master" extends="ptolemy.actor.CompositeActor">
-        <port name="p" class="ptolemy.actor.IOPort">
-        </port>
-    </class>
-    <entity name="derived" class=".top.master">
-        <deletePort name="p"/>
-    </entity>
-</entity>
-}
+    catch {set toplevel [$parser parse $moml]} msg
+    string range $msg 0 52
+} {com.microstar.xml.XmlException: XML element "deletePo}
 
 ######################################################################
 ####
@@ -1018,27 +933,11 @@ set body {
 
 set moml "$header $body"
 
-test MoMLParser-1.18.5 {test deletion persistence in instatiation of a class} {
+test MoMLParser-1.18.5 {test illegal deletion in instatiation of a class} {
     $parser reset
-    set toplevel [$parser parse $moml]
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.actor.CompositeActor">
-    <class name="master" extends="ptolemy.actor.CompositeActor">
-        <property name="a" class="ptolemy.data.expr.Parameter">
-        </property>
-        <property name="b" class="ptolemy.data.expr.Parameter">
-        </property>
-    </class>
-    <entity name="derived" class=".top.master">
-        <property name="b" class="ptolemy.data.expr.Parameter">
-        </property>
-        <deleteProperty name="a"/>
-    </entity>
-</entity>
-}
+    catch {set toplevel [$parser parse $moml]} msg
+    string range $msg 0 52
+} {com.microstar.xml.XmlException: XML element "deletePr}
 
 ######################################################################
 ####
@@ -1058,21 +957,9 @@ set moml "$header $body"
 
 test MoMLParser-1.18.6 {test deletion persistence in instatiation of a class} {
     $parser reset
-    set toplevel [$parser parse $moml]
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.actor.CompositeActor">
-    <class name="master" extends="ptolemy.actor.CompositeActor">
-        <relation name="r" class="ptolemy.actor.IORelation">
-        </relation>
-    </class>
-    <entity name="derived" class=".top.master">
-        <deleteRelation name="r"/>
-    </entity>
-</entity>
-}
+    catch {set toplevel [$parser parse $moml]} msg
+    string range $msg 0 52
+} {com.microstar.xml.XmlException: XML element "deleteRe}
 
 ######################################################################
 ####
@@ -2353,7 +2240,7 @@ test MoMLParser-8.1 {test input with a relative source } {
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="testClass2" extends="ptolemy.kernel.CompositeEntity">
-        <property name="x" class="ptolemy.kernel.util.Attribute">
+        <property name="x" class="ptolemy.kernel.util.StringAttribute">
         </property>
     </class>
 </entity>
@@ -2380,7 +2267,7 @@ test MoMLParser-8.2 {test input with a relative source } {
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="testClass2" extends="ptolemy.kernel.CompositeEntity">
-        <property name="x" class="ptolemy.kernel.util.Attribute">
+        <property name="x" class="ptolemy.kernel.util.StringAttribute">
         </property>
     </class>
 </entity>
@@ -2885,8 +2772,6 @@ test MoMLParser-13.4 {test with weird configure text containing escaped tags wit
     <class name="utilities" extends="ptolemy.moml.EntityLibrary">
         <configure>
             <group>
-                <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <entity name="actor" class="ptolemy.actor.TypedCompositeActor">
                     <property name="ParamWithEscapedValue" class="ptolemy.data.expr.Parameter" value="&quot;hello&quot;">
                     </property>

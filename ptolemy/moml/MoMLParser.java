@@ -160,12 +160,13 @@ where components are instances cloned from reference models called
 the elementName field of its MoMLInfo object is the string "class".  If a
 component is cloned from a class, then when that component exports
 MoML, it references the class from which it was cloned
-and exports only its attributes.  However, if further changes are
+and exports only differences from that class.  I.e., if further changes are
 made to the component, it is important that when the component
 exports MoML, that those changes are represented in the exported MoML.
 This parser ensures that they are by creating an instance of
-MoMLAttribute for each change that is made to the clone after cloning.
-That attribute exports a MoML description of the change.
+MoMLAttribute for each change that is made to the clone after cloning,
+if necessary, or by marking the modified elements as not class elements.
+The MoMLAttribute class exports a MoML description of a change.
 This effectively implements an inheritance mechanism, where
 a component inherits all the features of the master from which it
 is cloned, but then extends the model with its own changes.
@@ -619,15 +620,20 @@ public class MoMLParser extends HandlerBase {
                     previousValue = previous.getValue();
                 }
 
-                // Create a new doc element only if there is character data.
+                // Set the doc value only if there is character data
+                // and if it differs from the previous.
                 // NOTE: This will replace any preexisting doc element with the
                 // same name, since Documentation is a SigletonAttribute.
-                if (_currentCharData.length() > 0) {
-                    Documentation doc
-                        = new Documentation(_current, _currentDocName);
-                    doc.setValue(_currentCharData.toString());
-                }
-                else {
+                if (_currentCharData.length() > 0
+                        && !_currentCharData.equals(previousValue)) {
+                    if (previous != null) {
+                        previous.setExpression(_currentCharData.toString());
+                    } else {
+                        Documentation doc
+                                = new Documentation(_current, _currentDocName);
+                        doc.setValue(_currentCharData.toString());
+                    }
+                } else {
                     // Empty doc tag.  Remove previous doc element, if
                     // there is one.
                     if (previous != null) {
@@ -1128,6 +1134,9 @@ public class MoMLParser extends HandlerBase {
      *  @see MoMLFilter
      */
     public static void setModified(boolean modified) {
+        // NOTE: To see who sets this true, uncomment this:
+        // if (modified == true) (new Exception()).printStackTrace();
+
         _modified = modified;
     }
 
@@ -1446,13 +1455,6 @@ public class MoMLParser extends HandlerBase {
                 _current = _createInstance(newClass, arguments);
                 _namespace = _DEFAULT_NAMESPACE;
 
-                // If the container is cloned from something, then
-                // add to it a MoML description of the director, so that
-                // this new director will be persistent.
-                // NOTE: This is no longer needed, since Director is
-                // now an attribute, and hence always exported.
-                // _recordNewObject(container, _current);
-
             } else if (elementName.equals("doc")) {
                 _currentDocName = (String)_attributes.get("name");
                 _currentCharData = new StringBuffer();
@@ -1762,11 +1764,6 @@ public class MoMLParser extends HandlerBase {
                         arguments[1] = portName;
                         port = (Port)_createInstance(newClass, arguments);
                     }
-
-                    // If the container is cloned from something, then
-                    // add to it a MoML description of the port, so that
-                    // this new port will be persistent.
-                    _recordNewObject(container, port);
                 }
                 _pushContext();
                 _current = port;
@@ -2009,10 +2006,18 @@ public class MoMLParser extends HandlerBase {
                             property = _createInstance(newClass, arguments);
 
                             if (value != null) {
+                                if (property == null) {
+                                    throw new XmlException(
+                                            "Property does not exist: "
+                                            + propertyName
+                                            + "\n",
+                                            _currentExternalEntity(),
+                                            _parser.getLineNumber(),
+                                            _parser.getColumnNumber());
+                                }
                                 if (!(property instanceof Settable)) {
                                     throw new XmlException(
-                                            "Property does not exist or "
-                                            + "cannot be assigned a value: "
+                                            "Property cannot be assigned a value: "
                                             + propertyName
                                             + "\n",
                                             _currentExternalEntity(),
@@ -2130,11 +2135,6 @@ public class MoMLParser extends HandlerBase {
                         newRelation = _createInstance(newClass, arguments);
                     }
                     _namespace = _DEFAULT_NAMESPACE;
-
-                    // If the container is cloned from something, then
-                    // add to it a MoML description of the relation, so that
-                    // this new relation will be persistent.
-                    _recordNewObject(_current, newRelation);
                     _current = newRelation;
 
                 } else {
@@ -2738,11 +2738,6 @@ public class MoMLParser extends HandlerBase {
                 arguments[0] = _current;
                 arguments[1] = entityName;
                 NamedObj newEntity = _createInstance(newClass, arguments);
-
-                // If the container is cloned from something, then
-                // add to it a MoML description of the entity, so that
-                // this new entity will be persistent.
-                _recordNewObject(container, newEntity);
                 return newEntity;
             } else {
                 // Top-level entity.  Instantiate in the workspace.
@@ -2777,6 +2772,9 @@ public class MoMLParser extends HandlerBase {
             // Set up the new object to defer its MoML definition
             // to the original class.
             newEntity.setDeferMoMLDefinitionTo(reference);
+            
+            // Mark contents as being class elements.  EAL 12/03
+            _markContentsClassElements(newEntity);
 
             // Set the name of the clone.
             // NOTE: The container is null, so there will be no
@@ -2799,13 +2797,6 @@ public class MoMLParser extends HandlerBase {
             // that name will be cloned, so we need to change this.
             // It may get changed back if we are inside a "class" element.
             newEntity.getMoMLInfo().elementName = "entity";
-
-            // If the container is cloned from something, then
-            // add to it a MoML description of the entity, so that
-            // this new entity will be persistent.
-            if (container != null) {
-                _recordNewObject(container, newEntity);
-            }
 
             return newEntity;
         }
@@ -2924,6 +2915,8 @@ public class MoMLParser extends HandlerBase {
     // of inner classes, since those take an additional argument (the
     // first argument), which is the enclosing class. Static inner
     // classes, however, work fine.
+    // This method marks the contents of what it creates as class elements,
+    // since they are defined in the Java code of the constructor.
     // @param newClass The class.
     // @param arguments The constructor arguments.
     // @exception Exception If no matching constructor is found, or if
@@ -2943,7 +2936,10 @@ public class MoMLParser extends HandlerBase {
                 }
             }
             if (match) {
-                return (NamedObj)constructor.newInstance(arguments);
+                NamedObj newEntity = (NamedObj)constructor.newInstance(arguments);
+                // Mark the contents of the new entity as being class elements.
+                _markContentsClassElements(newEntity);
+                return newEntity;
             }
         }
         // If we get here, then there is no matching constructor.
@@ -3008,11 +3004,6 @@ public class MoMLParser extends HandlerBase {
         }
 
         toDelete.setContainer(null);
-
-        // If the container is cloned from something, then
-        // add to it a MoML description of the deletion, so that
-        // this deletion will be persistent.
-        _recordDeletion("Entity", _current, entityName);
 
         return toDelete;
     }
@@ -3130,11 +3121,6 @@ public class MoMLParser extends HandlerBase {
         }
         toDelete.setContainer(null);
 
-        // If the container is cloned from something, then
-        // add to it a MoML description of the deletion, so that
-        // this deletion will be persistent.
-        _recordDeletion("Port", _current, portName);
-
         return toDelete;
     }
 
@@ -3150,14 +3136,6 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
         toDelete.setContainer(null);
-
-        // If the container is cloned from something, then
-        // add to it a MoML description of the deletion, so that
-        // this deletion will be persistent.  Note that addition of
-        // properties does not need to be recorded, because exportMoML()
-        // always describes properties.  However, deletion of properties
-        // does need to be recorded.
-        _recordDeletion("Property", _current, propName);
 
         return toDelete;
     }
@@ -3202,11 +3180,6 @@ public class MoMLParser extends HandlerBase {
             _undoContext.appendUndoMoML("</group>\n");
         }
         toDelete.setContainer(null);
-
-        // If the container is cloned from something, then
-        // add to it a MoML description of the deletion, so that
-        // this deletion will be persistent.
-        _recordDeletion("Relation", _current, relationName);
 
         return toDelete;
     }
@@ -3280,6 +3253,59 @@ public class MoMLParser extends HandlerBase {
             return true;
         }
         return false;
+    }
+    
+    /** Mark the contents as being class elements.
+     *  This makes them not export MoML, and prohibits name and
+     *  container changes. Normally, the argument is an Entity,
+     *  but this method will accept any NamedObj.
+     *  This method also validates all settables, something
+     *  that used to be done when the settables were individually
+     *  created in explicit MoML.
+     *  @param entity The instance that is defined by a class.
+     *  @exception IllegalActionException If the specified object
+     *   has settables that cannot be validated.
+     */
+    private void _markContentsClassElements(NamedObj object)
+            throws IllegalActionException {
+        // NOTE: Added as part of big change in class handling. EAL 12/03.
+        // NOTE: It is not necessary to mark objects deeply contained
+        // because they will not be asked to export MoML.
+        // However, we do it anyway in order to add any
+        // deeply contained Settables to the _paramsToParse list.
+        Iterator attributes = object.attributeList().iterator();
+        while (attributes.hasNext()) {
+            NamedObj attribute = (NamedObj)attributes.next();
+            attribute.setClassElement(true);
+            if (attribute instanceof Settable) {
+                _paramsToParse.add(attribute);
+            }
+            _markContentsClassElements(attribute);
+        }
+        if (object instanceof Entity) {
+            Iterator ports = ((Entity)object).portList().iterator();
+            while (ports.hasNext()) {
+                NamedObj port = (NamedObj)ports.next();
+                port.setClassElement(true);
+                _markContentsClassElements(port);
+            }
+        }
+        if (object instanceof CompositeEntity) {
+            Iterator entities
+                    = ((CompositeEntity)object).entityList().iterator();
+            while (entities.hasNext()) {
+                NamedObj containedEntity = (NamedObj)entities.next();
+                containedEntity.setClassElement(true);
+                _markContentsClassElements(containedEntity);
+            }            
+            Iterator relations
+                    = ((CompositeEntity)object).relationList().iterator();
+            while (relations.hasNext()) {
+                NamedObj relation = (NamedObj)relations.next();
+                relation.setClassElement(true);
+                _markContentsClassElements(relation);
+            }            
+        }
     }
 
     /** Use the specified parser to parse the file or URL,
@@ -3429,24 +3455,6 @@ public class MoMLParser extends HandlerBase {
         _namespaceTranslations.push(_namespaceTranslationTable);
     }
 
-    // If an object is deleted from a container, and this is not the
-    // result of a propagating change from a master, then we need
-    // to record the change so that it will be exported in any exported MoML.
-    private void _recordDeletion(
-            String type, NamedObj container, String deleted) {
-        if (container.getMoMLInfo().deferTo != null && !_propagating) {
-            try {
-                MoMLAttribute attr = new MoMLAttribute(container,
-                        container.uniqueName("_extension"));
-                attr.appendMoMLDescription(
-                        "<delete" + type + " name=\"" + deleted + "\"/>");
-            } catch (KernelException ex) {
-                throw new InternalErrorException(container, ex,
-                        "Unable to record deletion from class!");
-            }
-        }
-    }
-
     // If a new link is added to a container, and this is not the
     // result of a propagating change from a master, then we need
     // to record the change so that it will be exported in any exported MoML.
@@ -3483,22 +3491,6 @@ public class MoMLParser extends HandlerBase {
 
     }
 
-    // If a new object is added to a container, and this is not the
-    // result of a propagating change from a master, then we need
-    // to record the change so that it will be exported in any exported MoML.
-    private void _recordNewObject(NamedObj container, NamedObj newObj) {
-        if (container.getMoMLInfo().deferTo != null && !_propagating) {
-            try {
-                MoMLAttribute attr = new MoMLAttribute(container,
-                        container.uniqueName("_extension"));
-                attr.appendMoMLDescription(newObj.exportMoML());
-            } catch (KernelException ex) {
-                throw new InternalErrorException(container, ex,
-                        "Unable to record extension to class!");
-            }
-        }
-    }
-
     // If a link is deleted from a container, and this is not the
     // result of a propagating change from a master, then we need
     // to record the change so that it will be exported in any exported MoML.
@@ -3508,6 +3500,10 @@ public class MoMLParser extends HandlerBase {
             String relation,
             String indexSpec,
             String insideIndexSpec) {
+        // NOTE: We permit unlinking of links defined in the class only because we have
+        // no way to distinguish links defined by the class from links that were
+        // added later, and clearly, links that were added later have to be able
+        // to be deleted.  EAL 12/03
         if (container.getMoMLInfo().deferTo != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,

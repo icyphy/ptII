@@ -81,27 +81,10 @@ test MoMLUndoChangeRequest-1.1 {Test adding an entity} {
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </property>
     <entity name="const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
 </entity>
 }
@@ -125,11 +108,7 @@ test MoMLUndoChangeRequest-1.2 {Undo} {
     list \
 	[regexp  {<     <entity name="const" class="ptolemy.actor.lib.Const">} \
 	     $r] \
-	[regexp  {<         <port name="output" class="ptolemy.actor.TypedIOPort">} \
-	     $r] \
-	[regexp  {<         <port name="trigger" class="ptolemy.actor.TypedIOPort">} \
-	     $r] \
-} {1 1 1}
+} {1}
 
 test MoMLUndoChangeRequest-1.2a {Undo again, with nothing to undo} {
     # Uses $undoneMoML from 1.2 above

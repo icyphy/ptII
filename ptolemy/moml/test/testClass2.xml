@@ -4,6 +4,6 @@
 <class name="testClass2" extends="ptolemy.kernel.CompositeEntity">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
-    <property name="x" class="ptolemy.kernel.util.Attribute">
+    <property name="x" class="ptolemy.kernel.util.StringAttribute">
     </property>
 </class>
