@@ -228,25 +228,39 @@ public class PtolemyQuery extends Query
             // using this one as a class.  This is only an issue if
             // attribute is a NamedObj, so we first check.
             if (attribute instanceof NamedObj) {
-                // The parent will form the context of the MoML.
-                NamedObj parent = 
-                       (NamedObj)((NamedObj)attribute).getContainer();
+                NamedObj castAttribute = (NamedObj)attribute;
 
-                // FIXME: In order for undo to work, the PtolemyQuery
-                // needs to have a MoMLParser given to it rather than
-                // creating a new one.  This will need to be passed to
-                // the MoMLChangeRequest.
-                String moml = "<property name=\""
-                        + name
+                // The context for the MoML should be the first container
+                // above this attribute in the hiearchy that defers its
+                // MoML definition, or the immediate parent if there is none.
+                NamedObj parent = MoMLChangeRequest.getDeferredToParent(
+                        castAttribute);
+                if (parent == null) {
+                    parent = (NamedObj)castAttribute.getContainer();
+                }
+                try {
+                    String moml = "<property name=\""
+                        + castAttribute.getName(parent) 
                         + "\" value=\""
                         + stringValue(name)
                         + "\"/>";
-                request = new MoMLChangeRequest(
+                   // FIXME: In order for undo to work, the PtolemyQuery
+                   // needs to have a MoMLParser given to it rather than
+                   // creating a new one.  This will need to be passed to
+                   // the MoMLChangeRequest.
+                   request = new MoMLChangeRequest(
                         this,         // originator
                         null,         // parser  -- FIXME: see above.
                         parent,       // context
                         moml,         // MoML code
                         null);        // base
+                } catch (IllegalActionException ex) {
+                    // This should only occur if the parent doesn't contain
+                    // the attribute, which shouldn't happen.
+                    throw new InternalErrorException("Parent returned by "
+                    + "MoMLChangeRequest.getDeferringParent() appears to not "
+                    + "be a parent.");
+                }
             } else {
                 // If the attribute is not a NamedObj, then we
                 // set its value directly.

@@ -46,6 +46,28 @@ mechanism for implementing mutations on a model while it is executing.
 To use it, create an instance of this class, specifying MoML code as
 an argument to the constructor.  Then queue the instance of this class
 with a composite entity by calling its requestChange() method.
+<p>
+There is one significant subtlety with using this class.
+If you create a MoMLChangeRequest with a specified context,
+then the change will be executed in that context.  Moreover, if
+that context has other objects deferring their MoML definitions to
+it, then the change will be replicated in those other objects.
+This is the principal mechanism in MoML for an object to serve
+as a class definition, and others to serve as instances.  A change
+to the class propagates to the instances.  However, it means that
+when you make a change request, you have to be sure to pick the
+right context.  The getDeferredToParent() method returns the first
+parent in the containment hierarchy of its argument that has other
+objects deferring their MoML definitions to it.  That is the correct
+context to use for a change request.
+<p>
+NOTE: A significant subtlety remains.  If the parent
+returned by getDeferredToParent() itself has a parent that
+is deferred to, then changes will <i>not</i> propagate to the
+objects that defer to it.  That is, if a MoML class contains
+a MoML class, and a change is made to the inner class, then
+instances of the outer class are unaffected.
+Perhaps MoML should not permit inner classes.
 
 @author  Edward A. Lee
 @version $Id$
@@ -168,6 +190,29 @@ public class MoMLChangeRequest extends ChangeRequest {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return the first container, moving up the hierarchy, for which there
+     *  are other objects that defer their MoML definitions to it.
+     *  If there is no such container, then return null. If the specified
+     *  object has other objects deferring to it, then return the specified
+     *  object.
+     *  @returns An object that deeply contains this one, or null.
+     */
+    public static NamedObj getDeferredToParent(NamedObj object) {
+        if (object == null) {
+            return null;
+        } else {
+            List deferList = object.deferredMoMLDefinitionFrom();
+            if(deferList != null && deferList.size() > 0) {
+                return object;
+            } else {
+                return getDeferredToParent((NamedObj)object.getContainer());
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Execute the change by evaluating the request using the
@@ -182,6 +227,7 @@ public class MoMLChangeRequest extends ChangeRequest {
             
             if (_context != null) {
                 _parser.setContext(_context);
+
             }
             _parser.parse(_base, getDescription());
         } finally {
@@ -206,9 +252,6 @@ public class MoMLChangeRequest extends ChangeRequest {
                     // that just because this change request is being
                     // executed now that the propogated one is safe to
                     // execute.
-                    // FIXME: undo is going to be difficult to
-                    // handle here.  I guess we just count on undo
-                    // commands propagating as well...
                     MoMLChangeRequest newChange = new MoMLChangeRequest(
                             getOriginator(),
                             _parser,
