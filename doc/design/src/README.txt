@@ -5,20 +5,37 @@ To create a PDF File
 2. Select Edit -> Update Book (In frame 5.5, this was File->Generate/Update)
 3. After generating the toc and idx, edit the idx and
    move the first index entry for the UML symbol - to below the header.
-4. Select File->Print
+4. Select File->Print Book
    Select 'Print Only to File' and select a file ending in .ps
+   Select 'Generate Acrobat Data'
+   Hit the "PDF Setup" button, then turn off
+       'Create Named Destinations for All Paragraphs"
+
    Select Distiller Assistant v3.01 as your printer
-   Print the file, which will create a PostScript file
+   Print the file, which will create a 36Mb PostScript file
+
+5. Start up Acrobat Distiller from 
+   Start->Programs->Adobe Acrobat 4.0 -> Distiller
+   Check out the settings
+	 Job Options: PrintOptimized
+	 Compatibility: Acrobat 4.0 
 
 In Acrobat distiller, if you select Screen Optimized, then by default
 images are downsampled to 72 dpi.  This seems dumb.  Turning this off
 fixes the printing problems with chapter 3, with no noticable increase
-in file size.  See the file ~eal/TMP/design.pdf.  I've also checked in
-some minor fixes in the domain chapters, and regenerated everything.
-The pdf file in ~eal/TMP is the latest version.
+in file size.
 
 BTW, in Distiller, If you also turn off compression of images, the
 file size increases from about 3.7M to about 8M.  So don't do that!
+
+Then open the Postscript file with File->Open
+
+Select a location to save the pdf file.  Note that we
+check a small pdf version of the Design Doc into
+doc/design/design.pdf, so be sure not to overwrite that
+version and then commit the new file - We want the 
+doc/design/design.pdf, to be a small one page file
+
 
 In Distiller, if you select Job Options: Print Optimized, then you
 will see messages:
@@ -30,9 +47,49 @@ will see messages:
 
 These messages can probably be ignored.
 
-Sizes:
-Screen Optimized, Acrobat 3.0 compatibility: 4.80Mb
-Print Optimized, Acrobat 4.0 compatiblity:   4.96Mb
+Sizes for Ptolemy II 2.0.1 design doc, Frame 6, Acrobat Distiller 4.0.5:
+
+36Mb PS, Distiller, with Links, Print Optimized, Acrobat 4.0 compat:  12.1Mb
+36Mb PS, Distiller, w/o Links, Print Optimized, Acrobat 3.0 compat:   11.6Mb
+36Mb PS, Distiller, w/o Links, Print Optimized, Acrobat 4.0 compat:   11.6Mb
+19Mb PS, HP 5Si/MX, w/o Links, Print Optimized, Acrobat 4.0 compat:   11.5Mb
+  1200 dpi, downsampling bicubic/300 for color and greyscale
+
+19Mb PS, HP 5Si/MX, w/o Links, Screen Optimized, Acrobat 4.0 compat:   5.5Mb
+  600 dpi
+
+19Mb PS, HP 5Si/MX, w/o Links, Screen Optimized, Acrobat 4.0 compat:
+  600 dpi, Changed downsampling from Average/72 to bixxx/300
+  for color and greyscale images				       5.6Mb
+
+19.0Mb PS, Distiller, w/o Links, Screen Optimized, Acrobat 4.0 compat:
+  600 dpi, Changed downsampling from Average/72 to bicubic/300
+  for color and greyscale images				       5.6Mb
+
+36Mb PS, Distiller, w/o Links, Screen Optimized, Acrobat 4.0 compat:
+  600 dpi, Changed downsampling from Average/72 to bicubic/300
+  for color and greyscale images				       5.678Mb
+
+36Mb PS, Distiller, w/o Links, Screen Optimized, Acrobat 4.0 compat:
+  600 dpi, downsampling: average/300 for color and greyscale images    5.678Mb
+
+36Mb PS, Distiller, w/o Links, Screen Optimized, Acrobat 4.0 compat:
+  600 dpi, downsampling: average/300 for color and greyscale images    5.685Mb
+  color and greyscale image quality changed from medium to high
+
+36Mb PS, Distiller, w/o Links, Screen Optimized, Acrobat 4.0 compat:
+  600 dpi, downsampling: average/300 for color and greyscale images    5.815Mb
+  maximum color and greyscale image quality
+
+36Mb PS, Distiller, w/o Links, Screen Optimized, Acrobat 4.0 compat:
+  600 dpi, downsampling: average/300 for color and greyscale images    5.815Mb
+  maximum color and greyscale image quality
+  resampling off
+
+36Mb PS, Distiller, w/o Links, Screen Optimized, Acrobat 4.0 compat:
+  600 dpi, downsampling: average/300 for color and greyscale images    5.677Mb
+  medium color and greyscale image quality
+  resampling off
 
 Figures
 -------
