@@ -75,7 +75,7 @@ set to 4003, just to pick a number.  The socket is not allocated
 until the model is run.<p>
 
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
-(Based on TiltSensor actor written by 
+(Based on TiltSensor actor written by
  Chamberlain Fong, Xiaojun Liu, Edward Lee)
 @version $Id$
 */
