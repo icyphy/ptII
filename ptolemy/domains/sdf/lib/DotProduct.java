@@ -145,7 +145,7 @@ public class DotProduct extends TypedAtomicActor {
             }
         }
         else if ((input1.getType() instanceof UnsizedMatrixType) &&
-                (input1.getType() instanceof UnsizedMatrixType)) {
+                (input2.getType() instanceof UnsizedMatrixType)) {
             try {
                 _matrixFire();
             }
