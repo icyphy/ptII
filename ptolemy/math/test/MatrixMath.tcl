@@ -1,4 +1,4 @@
-# Tests for the *MatrixMath classes
+# Tests for the *ArrayMath and *MatrixMath classes
 #
 # @Author: Christopher Hylands (tests only)
 #
@@ -93,6 +93,9 @@ set float2_2nonzero [java::new {float[][]} {2 2} [list [list 2.0 -1.0] \
 set int1 2
 set int2array [java::new {int[]} {2} [list 2 -1]]
 set int4array [java::new {int[]} {4} [list 2 -1 1 0]]
+# array of length 2  with power of two elements
+set int2powerof2array [java::new {int[]} {2} [list 32 16]]
+
 set int1_1 [java::new {int[][]} 1 [list 2]]
 set int2_2 [java::new {int[][]} {2 2} [list [list 2 -1] \
                                        [list 1 0]]]
@@ -107,6 +110,9 @@ set int2_2powerof2 [java::new {int[][]} {2 2} [list [list 32 16] \
 set long1 2
 set long2array [java::new {long[]} {2} [list 2 -1]]
 set long4array [java::new {long[]} {4} [list 2 -1 1 0]]
+# array of length 2  with power of two elements
+set long2powerof2array [java::new {long[]} {2} [list 32 16]]
+
 set long1_1 [java::new {long[][]} 1 [list 2]]
 set long2_2 [java::new {long[][]} {2 2} [list [list 2 -1] \
                                        [list 1 0]]]
@@ -123,7 +129,7 @@ set long2_2powerof2 [java::new {long[][]} {2 2} [list [list 32 16] \
 
 # Test an operation that takes two arguments
 # This proc is rather complex because it is fairly flexible, we usually
-# call this proc from other wrapper procs below
+# call this proc from other wrapper procs below.
 #
 # Arguments:
 #    op - The operation to be tested, for example "add"
@@ -134,14 +140,14 @@ set long2_2powerof2 [java::new {long[][]} {2 2} [list [list 32 16] \
 #              The base type, for example double or Complex
 #              The base name of the variable to use, for example double 
 #              The expected results
-#    arraySize - the suffix of the variable name that contains the
-#                the test data. If arraySize is 2_2, then long2_2, int2_2
+#    matrixSize - the suffix of the variable name that contains the
+#                the test data. If matrixSize is 2_2, then long2_2, int2_2
 #                etc. should exist
 #    opSignature - the signature of the op, usually something like
 #                  {[list $op "$t\[\]\[\]" $t]}
 #    arg1 - The first argument to pass to $op, for example: {[subst $$matrix]}
 #
-proc testMatrixMath {op types arraySize opSignature \
+proc testMatrixMath {op types matrixSize opSignature \
 	arg1 arg2 {arg3 {}} {baseclass MatrixMath}} {
     foreach typeList $types {
 	set m [lindex $typeList 0]
@@ -151,9 +157,17 @@ proc testMatrixMath {op types arraySize opSignature \
 	
 	test testMatrixMatrix-$op \
 		"$m.MatrixMath.[subst $opSignature]" {
-	    set matrix ${v}${arraySize}
-	    set array ${v}[string range $arraySize 0 0]array
+	    set matrix ${v}${matrixSize}
+
+	    # Strip off the x_ from the matrixSize
+	    set array ${v}[string range $matrixSize 2 end]array
+
 	    global $matrix $array ${v}1
+
+	    # We could be smarter here and use Tcl's variable number
+	    # of arguments facility, but the substitution is bad enough
+	    # as it is, so we have three different branches depending
+	    # on the number of args.
 	    if { $arg2 == {}} {
 		set matrixResults [java::call \
 			ptolemy.math.${m}${baseclass} \
@@ -171,6 +185,8 @@ proc testMatrixMath {op types arraySize opSignature \
 		}
 	    }
 
+
+	    # Call the appropriate toString method
 	    if [catch {java::info dimensions $matrixResults}] {
 		# Could be a number like 2.0
 		set stringResults $matrixResults
@@ -216,24 +232,34 @@ proc testMatrixMath {op types arraySize opSignature \
 #              The base type, for example double or Complex
 #              The base name of the variable to use, for example double 
 #              The expected results
-#    arraySize - the suffix of the variable name that contains the
-#                the test data. If arraySize is 2_2, then long2_2, int2_2
+#    matrixSize - the suffix of the variable name that contains the
+#                the test data. If matrixSize is 2_2, then long2_2, int2_2
 #                etc. should exist
 
-proc testArrayMathArray {op types {arraySize 2_2}} {
-    testMatrixMath $op $types $arraySize {[list $op "$t\[\]"} {[subst $$array]} {} {} ArrayMath
+proc testArrayMathArray {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]"} \
+	    {[subst $$array]} {} {} ArrayMath
 }
 
 # Test a *ArrayMath  operation that takes an array, and a scalar
 # like xxx[] add(xxx[], xxx[])
-proc testArrayMathArrayArray {op types {arraySize 2_2}} {
-    testMatrixMath $op $types $arraySize {[list $op "$t\[\]" "$t\[\]"} {[subst $$array]} {[subst $$array]} {} ArrayMath
+proc testArrayMathArrayArray {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" "$t\[\]"} \
+	    {[subst $$array]} {[subst $$array]} {} ArrayMath
+}
+
+# Test a *ArrayMath  operation that takes an array, and an int
+# like xxx[] shiftArithmetic(xxx[] int)
+proc testArrayMathArrayInt {op types {matrixSize 2_2} {intValue 1}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" int} \
+	    {[subst $$array]} [list $intValue] {} ArrayMath
 }
 
 # Test a *ArrayMath  operation that takes an array, and a scalar
 # like xxx[] add(xxx[], xxx)
-proc testArrayMathArrayScalar {op types {arraySize 2_2}} {
-    testMatrixMath $op $types $arraySize {[list $op "$t\[\]" $t} {[subst $$array]} {[subst $${v}1]} {} ArrayMath
+proc testArrayMathArrayScalar {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" $t} \
+	    {[subst $$array]} {[subst $${v}1]} {} ArrayMath
 }
 
 
@@ -252,60 +278,60 @@ proc testArrayMathArrayScalar {op types {arraySize 2_2}} {
 #              The base type, for example double or Complex
 #              The base name of the variable to use, for example double 
 #              The expected results
-#    arraySize - the suffix of the variable name that contains the
-#                the test data. If arraySize is 2_2, then long2_2, int2_2
+#    matrixSize - the suffix of the variable name that contains the
+#                the test data. If matrixSize is 2_2, then long2_2, int2_2
 #                etc. should exist
-proc testArrayMatrix {op types {arraySize 2_2}} {
-    testMatrixMath $op $types $arraySize {[list $op "$t\[\]" "$t\[\]\[\]"} {[subst $$array]} {[subst $$matrix]}
+proc testArrayMatrix {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" "$t\[\]\[\]"} {[subst $$array]} {[subst $$matrix]}
 }
 
 # Test a *MatrixMath operation that takes an array, an int and an int
 # like xxx[][] toMatrixFromArray(xxx[], int, int)
-proc testArrayIntInt {op types {arraySize 2_2} {intValue1 1} {intValue2 2}} {
-    testMatrixMath $op $types $arraySize {[list $op "$t\[\]" int int} {[subst $$array]} [list $intValue1] [list $intValue2]
+proc testArrayIntInt {op types {matrixSize 2_2} {intValue1 1} {intValue2 2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" int int} {[subst $$array]} [list $intValue1] [list $intValue2]
 }
 
 # Test an operation that takes an int
 # like xxx[][] identity(int)
-proc testInt {op types {arraySize 2_2} {intValue 1}} {
-    testMatrixMath $op $types $arraySize {[list $op int]} [list $intValue] {}
+proc testInt {op types {matrixSize 2_2} {intValue 1}} {
+    testMatrixMath $op $types $matrixSize {[list $op int]} [list $intValue] {}
 }
 
 # Test an operation that takes a matrix
 # like allocCopy(long[][])
-proc testMatrix {op types {arraySize 2_2}} {
-    testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]"]} {[subst $$matrix]} {}
+proc testMatrix {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]\[\]"]} {[subst $$matrix]} {}
 }
 
 # Test an operation that takes a matrix and an array
 # like multiply(xxx[][], xxx[])
-proc testMatrixArray {op types {arraySize 2_2}} {
-    testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]" "$t\[\]"]} {[subst $$matrix]} {[subst $$array]}
+proc testMatrixArray {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]\[\]" "$t\[\]"]} {[subst $$matrix]} {[subst $$array]}
 }
 
 # Test an operation that takes a matrix and an int
 # like xxx[][] shiftArithmetic(xxx[][], int)
-proc testMatrixInt {op types {arraySize 2_2} {intValue 1}} {
-    testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]" int]} {[subst $$matrix]} [list $intValue]
+proc testMatrixInt {op types {matrixSize 2_2} {intValue 1}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]\[\]" int]} {[subst $$matrix]} [list $intValue]
 }
 
 # Test an operation that takes a matrix and an int
 # like xxx[] fromMatrixToArray(xxx[][], int, int)
-proc testMatrixIntInt {op types {arraySize 2_2} {intValue1 1} {intValue2 2}} {
-    testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]" int int]} {[subst $$matrix]} [list $intValue1] [list $intValue2]
+proc testMatrixIntInt {op types {matrixSize 2_2} {intValue1 1} {intValue2 2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]\[\]" int int]} {[subst $$matrix]} [list $intValue1] [list $intValue2]
 }
 
 
 # Test an operation that takes a matrix and a matrix
 # like add(long[][], long[][])
-proc testMatrixMatrix {op types {arraySize 2_2}} {
-    testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]" "$t\[\]\[\]"]} {[subst $$matrix]} {[subst $${v}${arraySize}]}
+proc testMatrixMatrix {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]\[\]" "$t\[\]\[\]"]} {[subst $$matrix]} {[subst $${v}${matrixSize}]}
 }
 
 # Test an operation that takes a matrix and a scalar,
 # like add(long[][], long)
-proc testMatrixScalar {op types {arraySize 2_2}} {
-    testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]" $t]} {[subst $$matrix]} {[subst $${v}1]}
+proc testMatrixScalar {op types {matrixSize 2_2}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]\[\]" $t]} {[subst $$matrix]} {[subst $${v}1]}
 }
 
 
@@ -340,7 +366,7 @@ testMatrixScalar add $types
 
 ######################################################################
 ####
-#  *ArrayMath Test out: xxx[] add(xxx[], xxx)
+#  *ArrayMath Test out: xxx[] add(xxx[], xxx[])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -349,7 +375,6 @@ set types [list \
 	[list Float float float {{4.0 -2.0}}] \
 	[list Integer int int {{4 -2}}] \
 	[list Long long long {{4 -2}}]]
-
 
 testArrayMathArrayArray add $types
 
@@ -748,22 +773,40 @@ set types [list \
 	[list Integer int int {{0 0}}] \
 	[list Long long long {{0 0}}]]
 
-testArrayMathArrayArray modulo $types
+testArrayMathArrayArray moduloElements $types
 
 ######################################################################
 ####
-#  *MatrixMath Test out: xxx[][] modulo(xxx[][], xxx[][])
+#  *MatrixMath Test out: xxx[][] moduloElements(xxx[][], xxx[][])
 
 set types [list \
 	[list Integer int int {{{0 0} {0 0}}}] \
 	[list Long long long {{{0 0} {0 0}}}]]
 
 
-testMatrixMatrix modulo $types 2_2nonzero
+testMatrixMatrix moduloElements $types 2_2nonzero
+
 
 ######################################################################
 ####
-#  Test out: xxx[][] multiply(xxx[][], xxx)
+#  *ArrayMath Test out: xxx[] multiply(xxx[], xxx)
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{0.0 - 8.0i 4.0 + 0.0i}}]]
+
+# FIXME: Missing methods xxx[] multiply(xxx[], xxx)
+#	[list Double double double {{4.0 -2.0}}] \
+#	[list Float float float {{4.0 -2.0}}] \
+#	[list Integer int int {{4 -2}}] \
+#	[list Long long long {{4 -2}}]]
+
+
+testArrayMathArrayScalar multiply $types
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[][] multiply(xxx[][], xxx)
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -778,7 +821,21 @@ testMatrixScalar multiply $types
 
 ######################################################################
 ####
-#  Test out: xxx[] multiply(xxx[][], xxx[])
+#  *ArrayMath Test out: xxx[] multiply(xxx[], xxx)
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{0.0 - 8.0i 0.0 + 2.0i}}] \
+	[list Double double double {{4.0 1.0}}] \
+	[list Float float float {{4.0 1.0}}] \
+	[list Integer int int {{4 1}}] \
+	[list Long long long {{4 1}}]]
+
+testArrayMathArrayArray multiply $types
+
+######################################################################
+####
+#  *MatrixMath Test out: xxx[] multiply(xxx[][], xxx[])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -816,13 +873,11 @@ set types [list \
 	[list Integer int int {{{3 -2} {2 -1}}}] \
 	[list Long long long {{{3 -2} {2 -1}}}]]
 
-
 testMatrixMatrix multiply $types
-
 
 ######################################################################
 ####
-#  Test out: xxx[][] multiply(xxx[][], xxx[][])
+#  Test out: xxx[][] multiplyElements(xxx[][], xxx[][])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -837,7 +892,23 @@ testMatrixMatrix multiplyElements $types
 
 ######################################################################
 ####
-##  Test out: xxx[][] negative(xxx[][])
+##  *ArrayMath Test out: xxx[] negative(xxx[])
+
+# FIXME: Missing method "negative {ptolemy.math.Complex[]}"
+#	[list Complex ptolemy.math.Complex complex \
+#	{{{-2.0 + 2.0i -1.0 - 1.0i} {1.0 + 1.0i 0.0 + 0.0i}}} ] \
+
+set types [list \
+	[list Double double double {{-2.0 1.0}}] \
+	[list Float float float {{-2.0 1.0}}] \
+	[list Integer int int {{-2 1}}] \
+	[list Long long long {{-2 1}}]]
+
+testArrayMathArray negative $types
+
+######################################################################
+####
+##  *MatrixMath Test out: xxx[][] negative(xxx[][])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -852,7 +923,40 @@ testMatrix negative $types
 
 ######################################################################
 ####
-##  Test out: xxx[][] shiftArithmetic(xxx[][], int)
+##  *ArrayMath Test out: xxx[] shiftArithmetic(xxx[], int)
+
+set types [list \
+	[list Integer int int {{4 -2}}] \
+	[list Long long long {{4 -2}}]]
+
+testArrayMathArrayInt shiftArithmetic $types 2_2 1
+
+set types [list \
+	[list Integer int int {{8 -4}}] \
+	[list Long long long {{8 -4}}]]
+
+testArrayMathArrayInt shiftArithmetic $types 2_2 2
+
+set types [list \
+	[list Integer int int {{2 -1}}] \
+	[list Long long long {{2 -1}}]]
+
+testArrayMathArrayInt shiftArithmetic $types 2_2 0
+
+set types [list \
+	[list Integer int int {{1 2147483647}}]]
+
+testArrayMathArrayInt shiftArithmetic $types 2_2 -1
+
+set types [list \
+	[list Integer int int {{8 4}}] \
+	[list Long long long {{8 4}}]] 
+
+testArrayMathArrayInt shiftArithmetic $types 2_2powerof2 -2
+
+######################################################################
+####
+##  *MatrixMath Test out: xxx[][] shiftArithmetic(xxx[][], int)
 
 set types [list \
 	[list Integer int int {{{4 -2} {2 0}}}] \
@@ -885,7 +989,40 @@ testMatrixInt shiftArithmetic $types 2_2powerof2 -2
 
 ######################################################################
 ####
-##  Test out: xxx[][] shiftLogical(xxx[][], int)
+##  *ArrayMath Test out: xxx[] shiftLogical(xxx[], int)
+
+set types [list \
+	[list Integer int int {{4 -2}}] \
+	[list Long long long {{4 -2}}]]
+
+testArrayMathArrayInt shiftLogical $types 2_2 1
+
+set types [list \
+	[list Integer int int {{8 -4}}] \
+	[list Long long long {{8 -4}}]]
+
+testArrayMathArrayInt shiftLogical $types 2_2 2
+
+set types [list \
+	[list Integer int int {{2 -1}}] \
+	[list Long long long {{2 -1}}]]
+
+testArrayMathArrayInt shiftLogical $types 2_2 0
+
+set types [list \
+	[list Integer int int {{1 -1}}]]
+
+testArrayMathArrayInt shiftLogical $types 2_2 -1
+
+set types [list \
+	[list Integer int int {{0 -1}}] \
+	[list Long long long {{0 -1}}]] 
+
+testArrayMathArrayInt shiftLogical $types 2_2 -2
+
+######################################################################
+####
+##  *MatrixMath Test out: xxx[][] shiftLogical(xxx[][], int)
 
 set types [list \
 	[list Integer int int {{{4 -2} {2 0}}}] \
@@ -914,7 +1051,21 @@ testMatrixInt shiftLogical $types 2_2 -2
 
 ######################################################################
 ####
-#  Test out subtract(xxx[][], xxx[][])
+#  *ArrayMath Test out: xxx[] subtract(xxx[], xxx[])
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{0.0 + 0.0i 0.0 + 0.0i}}] \
+	[list Double double double {{0.0 0.0}}] \
+	[list Float float float {{0.0 0.0}}] \
+	[list Integer int int {{0 0}}] \
+	[list Long long long {{0 0}}]]
+
+testArrayMathArrayArray subtract $types
+
+######################################################################
+####
+#  *MatrixMath Test out subtract(xxx[][], xxx[][])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -928,11 +1079,23 @@ testMatrixMatrix subtract $types
 
 ######################################################################
 ####
+##  FIXME: double[] toDoubleArray(xxx[])
+
+######################################################################
+####
 ##  FIXME: double[][] toDoubleMatrix(xxx[][])
 
 ######################################################################
 ####
+##  FIXME: float[] toFloatArray(xxx[])
+
+######################################################################
+####
 ##  FIXME: float[][] toFloatMatrix(xxx[][])
+
+######################################################################
+####
+##  FIXME: int[] toIntegerArray(xxx[])
 
 ######################################################################
 ####
@@ -950,7 +1113,8 @@ set types [list \
 	[list Integer int int {{{2 -1} {1 0}}}] \
 	[list Long long long {{{2 -1} {1 0}}}]]
 
-testArrayIntInt toMatrixFromArray $types 4 2 2
+# The x_ is stripped off
+testArrayIntInt toMatrixFromArray $types x_4 2 2
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -960,7 +1124,8 @@ set types [list \
 	[list Integer int int {{{2} {-1}}}] \
 	[list Long long long {{{2} {-1}}}]]
 
-testArrayIntInt toMatrixFromArray $types 4 2 1
+# The x_ is stripped off
+testArrayIntInt toMatrixFromArray $types x_4 2 1
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -970,7 +1135,8 @@ set types [list \
 	[list Integer int int {{{2 -1}}}] \
 	[list Long long long {{{2 -1}}}]]
 
-testArrayIntInt toMatrixFromArray $types 4 1 2
+# The x_ is stripped off
+testArrayIntInt toMatrixFromArray $types x_4 1 2
 
 ######################################################################
 ####
