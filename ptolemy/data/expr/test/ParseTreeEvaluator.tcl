@@ -221,7 +221,7 @@ test ParseTreeEvaluator-6.2 {Construct a Parser, check underflow} {
 	[theTest "MinLong - 1L"] \
 	[theTest "MinDouble - 1.0"] \
 	[theTest "MinDouble * 2.0"]
-} {0ub 2147483647 9223372036854775807L -1.0 1.0E-323}
+} {255ub 2147483647 9223372036854775807L -1.0 1.0E-323}
 
 
 ######################################################################
