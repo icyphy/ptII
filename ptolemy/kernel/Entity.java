@@ -40,8 +40,6 @@ Entities and Relations are linked together via Ports.
 @version $Id$
 @see Port
 @see Relation
-@see pt.kernel.Port
-@see pt.kernel.Relation
 */
 public abstract class Entity extends NamedObj { 
     /** 
@@ -51,7 +49,7 @@ public abstract class Entity extends NamedObj {
     }
 
     /** 
-     * @param name The name of the Entity
+     * @param name The name of the Entity.
      */	
     public Entity(String name) {
 	super(name);
@@ -82,7 +80,6 @@ public abstract class Entity extends NamedObj {
 		 }
 	     }
 	 }
-
 	 return storedEntities.elements();
     }
 
@@ -116,7 +113,6 @@ public abstract class Entity extends NamedObj {
 		 }
 	     }
 	 }
-
 	 return storedEntities.elements();
     }
 
@@ -133,9 +129,7 @@ public abstract class Entity extends NamedObj {
 	     Enumeration relations = newPort.enumRelations(); 
 	     storedRelations.prependElements( relations );
 	 }
-
 	 return storedRelations.elements();
-
     }
 
 
@@ -145,7 +139,6 @@ public abstract class Entity extends NamedObj {
      *  Suppose no such Port is owned.
      */	
     public Enumeration enumRelations(String portName) {
-
 	 Enumeration ports = _portList.enumPorts(); 
 	 LinkedList storedRelations = new LinkedList();
 	 while( ports.hasMoreElements() ) {
@@ -155,20 +148,17 @@ public abstract class Entity extends NamedObj {
 	         storedRelations.prependElements( relations );
 	     }
 	 }
-
 	 return storedRelations.elements();
     }
 
 
-    /** Return this Entity's PortList.
-     */	
+    /** Return this Entity's PortList. */	
     public PortList getPortList() {
 	 return _portList;
     }
 
 
-    /** Return the number of Entities connected to this.
-     */	
+    /** Return the number of Entities connected to this. */	
     public int numberOfConnectedEntities() {
 	 int count = 0;
 	 Enumeration enum = enumEntities();
@@ -193,22 +183,10 @@ public abstract class Entity extends NamedObj {
     }
 
     //////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
-
-    //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* A list of Ports owned by this Entity.
-     */
+    // A list of Ports owned by this Entity.
     private PortList _portList;
-
 }
 
 
