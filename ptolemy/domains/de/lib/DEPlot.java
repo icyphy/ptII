@@ -136,7 +136,7 @@ public class DEPlot extends AtomicActor{
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private inner class                      ////
+    ////                         private inner class               ////
 
     public class DEPlotFrame extends Frame {
 
