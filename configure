@@ -1555,7 +1555,7 @@ fi
 
 
     if test -f "$CHIC_DIR/chic.jar"; then
-	echo "$ac_t""$CHIC_DIR" 1>&6
+        echo "$ac_t""ok" 1>&6
 	# We found chic
 	PTCHIC_DIR=chic
     else  
@@ -1612,7 +1612,7 @@ fi
 
 
     if test -f "$COLT_DIR/colt.jar"; then
-	echo "$ac_t""$COLT_DIR" 1>&6
+        echo "$ac_t""ok" 1>&6
 	# We found colt
 	PTCOLT_DIR=colt
     else  
@@ -1672,7 +1672,7 @@ fi
 
 
     if test -f "$COMMAPI_DIR/comm.jar"; then
-	echo "$ac_t""$COMMAPI_DIR" 1>&6
+        echo "$ac_t""ok" 1>&6
 	# Subdirectories that contains Java Communications API specific code
 	PTLEGO_DIR=lego
 	PTCOMM_DIR=comm
@@ -4713,7 +4713,7 @@ s%@MATLAB@%$MATLAB%g
 s%@CALTROP_DIR@%$CALTROP_DIR%g
 s%@CHIC_DIR@%$CHIC_DIR%g
 s%@CLASSPATHSEPARATOR@%$CLASSPATHSEPARATOR%g
-s%@COLT_JAR@%$COLT_JAR%g
+s%@COLT_DIR@%$COLT_DIR%g
 s%@CMKIT_DIR@%$CMKIT_DIR%g
 s%@COMMAPI_DIR@%$COMMAPI_DIR%g
 s%@COMMAPI_PRESENT@%$COMMAPI_PRESENT%g
