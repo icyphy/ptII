@@ -240,8 +240,8 @@ abstract public class CipherActor extends CryptographyActor {
      *  if there is a problem processing the data.
      */
     public void fire() throws IllegalActionException {
-        _updateCipher();
         super.fire();
+        _updateCipher();
     }
 
     /** Retrieve the values of the parameters and set up
