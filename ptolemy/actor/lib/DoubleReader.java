@@ -74,6 +74,7 @@ called "test.txt", then <i>sourceURL</i> should be set to
 @author  Jie Liu, Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0
+@deprecated Use ExpressionReader instead.
 */
 public class DoubleReader extends URLReader {
 
