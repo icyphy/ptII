@@ -91,14 +91,14 @@ $Id$
                class="ptolemy.data.expr.Parameter"
 	       value="modelName"
 	       >
-	       <doc>The package to generate code in with the model name appended. Defaults to the modelName</doc>
+	       <doc>The package to generate code in. Defaults to the model name</doc>
      </property>
 
      <property name="targetPath" 
                class="ptolemy.data.expr.Parameter"
-	       value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/cg/&quot; + modelName"
+	       value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/cg/&quot;"
 	       >
-	       <doc>The path relative to the ptIIUserDirectory to generate code in. The default is derived from the value of codeGenerator + targetPackage.</doc>
+	       <doc>The path relative to the ptIIUserDirectory to generate code in.</doc>
      </property>
 
      <property name="modelPath" 

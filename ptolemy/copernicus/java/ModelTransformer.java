@@ -834,8 +834,9 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
         // Note that we use sanitizeName because entity names can have
         // spaces, and append leading characters because entity names
         // can start with numbers.
+        NamedObj toplevel = object.toplevel();
         return PhaseOptions.getString(options, "targetPackage")
-            + ".CG"
+            + "." + StringUtilities.sanitizeName(toplevel.getName()) + "$"
             + StringUtilities.sanitizeName(object.getName(object.toplevel()));
     }
 
@@ -854,7 +855,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
         // spaces, and append leading characters because entity names
         // can start with numbers.
         return PhaseOptions.getString(options, "targetPackage")
-            + ".CGModel" + StringUtilities.sanitizeName(model.getName());
+            + "." + StringUtilities.sanitizeName(model.getName());
     }
 
     /** Return the name of the field that references the container of
