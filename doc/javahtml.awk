@@ -32,7 +32,7 @@
 # This awk script is used to generate vergil compatible html files by
 # reading in a html file and printing out the header up to and including
 # <body>, and then only printing sections of the input that start
-# with <!--vergilDoc--> and end with <!--/vergilDoc-->
+# with <!--vergilDocs--> and end with <!--/vergilDocs-->
 # 
 # To run this script, do
 # awk -f javahtml.awk foo.htm > fooVergil.htm
