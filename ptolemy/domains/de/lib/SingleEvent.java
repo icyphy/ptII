@@ -150,13 +150,12 @@ public class SingleEvent extends TypedAtomicActor {
     /** If the current time matches the value of the <i>time</i> parameter,
      *  then produce an output token with value given by the <i>value</i>
      *  parameter.
-     *  @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {
         double eventTime = ((DoubleToken)time.getToken()).doubleValue();
         if (getDirector().getCurrentTime() == eventTime) {
             output.send(0, value.getToken());
         }
-        return super.postfire();
+        super.fire();
     }
 }
