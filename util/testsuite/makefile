@@ -66,7 +66,7 @@ all:  sources $(MISC_SRCS)
 install: all
 
 # Get the rest of the rules
-include $(ROOT)/mk/tycommon.mk
+include $(ROOT)/mk/ptcommon.mk
 
 
 

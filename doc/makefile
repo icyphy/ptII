@@ -92,6 +92,6 @@ codeDoc/tree.html: 	../ptolemy/plot/*.java \
 	done
 
 # We don't include common.mk since we don't use the compiler here
-include $(ROOT)/mk/no-compile.mk
+include $(ROOT)/mk/ptno-compile.mk
 
 

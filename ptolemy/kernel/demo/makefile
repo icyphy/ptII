@@ -84,4 +84,4 @@ test_serializable:
 	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.kernel.demo.ExampleSerializable
 
 # Get the rest of the rules
-include $(ROOT)/mk/tycommon.mk
+include $(ROOT)/mk/ptcommon.mk

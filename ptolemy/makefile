@@ -42,7 +42,7 @@ DIRS = kernel plot graph data actor automata gui math domains #filter
 # Root of Ptolemy II directory
 ROOT =		..
 
-# $(ME) is used in tydir.mk
+# $(ME) is used in ptdir.mk
 ME =		ptolemy
 
 # True source directory
@@ -53,4 +53,4 @@ CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
 # Include rules for directories that contain only subdirectories.
-include $(ROOT)/mk/tydir.mk
+include $(ROOT)/mk/ptdir.mk

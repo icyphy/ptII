@@ -123,5 +123,5 @@ PtParser.jj: $(EXTRA_SRCS)
 	CLASSPATH="$(CLASSPATH)" $(JJTREE) PtParser.jjt
 
 # Get the rest of the rules
-include $(ROOT)/mk/tycommon.mk
+include $(ROOT)/mk/ptcommon.mk
 

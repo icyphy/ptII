@@ -97,4 +97,4 @@ tests:: $(EXTRA_SRCS)
 	echo "Sorry no automatic Java tests yet"
 
 # Get the rest of the rules
-include $(ROOT)/mk/tycommon.mk
+include $(ROOT)/mk/ptcommon.mk

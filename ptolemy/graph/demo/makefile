@@ -72,4 +72,4 @@ docs: javadocs
 tests:: $(EXTRA_SRCS)
 
 # Get the rest of the rules
-include $(ROOT)/mk/tycommon.mk
+include $(ROOT)/mk/ptcommon.mk

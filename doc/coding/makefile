@@ -61,4 +61,4 @@ all: $(EXTRA_SRCS)
 install: all
 
 # We don't include common.mk since we don't use the compiler here
-include $(ROOT)/mk/no-compile.mk
+include $(ROOT)/mk/ptno-compile.mk

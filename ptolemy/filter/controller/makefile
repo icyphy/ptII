@@ -64,6 +64,6 @@ docs: javadocs
 depend:
 	@echo "no dependencies in this directory"
 
-include $(ROOT)/mk/tycommon.mk
+include $(ROOT)/mk/ptcommon.mk
  
 
