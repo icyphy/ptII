@@ -22,7 +22,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red (chf@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -35,6 +35,14 @@ import ptolemy.actor.*;
 import javax.media.j3d.*;
 import javax.vecmath.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// GRActor
+/**
+A base class for all GR actors. 
+
+ @author C. Fong
+ @version $Id$
+*/
 public class GRActor extends TypedAtomicActor {
 
     public GRActor(CompositeEntity container, String name)
@@ -42,9 +50,12 @@ public class GRActor extends TypedAtomicActor {
         super(container, name);
     }
 
-    public Node getNodeObject() {
-        return null;
+
+    public void addChild(Node node) throws IllegalActionException {
+        throw new IllegalActionException("GR domain actor" + this +
+                " cannot have children");
     }
+
 
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -58,6 +69,15 @@ public class GRActor extends TypedAtomicActor {
         }
     }
 
+    public void fire() throws IllegalActionException {
+    }
+
+
+    public Node getNodeObject() {
+        return null;
+    }
+
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (!(getDirector() instanceof GRDirector)) {
@@ -67,22 +87,13 @@ public class GRActor extends TypedAtomicActor {
         _createModel();
     }
 
-
-    public void fire() throws IllegalActionException {
-    }
-
     public void makeSceneGraphConnection() throws IllegalActionException {
     }
-    
-    
-    public void addChild(Node node) throws IllegalActionException {
-        throw new IllegalActionException("GR domain actor" + this +
-                " cannot have children");
-    }
+   
 
     protected void _createModel() throws IllegalActionException {
     }
-    
+
     protected void _stopRenderer() {
     }
     

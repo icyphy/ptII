@@ -40,12 +40,13 @@ import ptolemy.graph.*;
 
 import java.util.*;
 
-///////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 //// GRScheduler
 /**
 
 A scheduler that implements scheduling of the active parts of a GR
-scene graph DAG.
+scene graph. The scene graph is assumed to be a directed-acyclic-graph.
+Scheduling is done by performing a topological sort on all the actors.
 
 @see ptolemy.actor.sched.Scheduler
 
@@ -53,6 +54,7 @@ scene graph DAG.
 @version $Id$
 */
 public class GRScheduler extends Scheduler {
+
     /** Construct a scheduler with no container (director)
      *  in the default workspace, the name of the scheduler is
      *  "Scheduler".
@@ -79,10 +81,10 @@ public class GRScheduler extends Scheduler {
     /** Return the scheduling sequence.  An exception will be thrown if the
      *  graph is not schedulable.  This occurs in the following circumstances:
      *  <ul>
-     *  <li>The graph is not a connected graph.
-     *  <li>The graph is not a DAG
+     *  <li>The graph is not a connected graph. // FIXME. not checked
+     *  <li>The graph is not acyclic 
      *  <li>Multiple output ports are connected to the same broadcast
-     *  relation. (equivalent to a non-deterministic merge)
+     *  relation. (equivalent to a non-deterministic merge) // FIXME: check
      *  </ul>
      *
      * @return An Enumeration of the deeply contained opaque entities
@@ -123,7 +125,7 @@ public class GRScheduler extends Scheduler {
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
 
-            // Find the successors of a
+            // Find the successors of the actor
             LinkedList successors = new LinkedList();
             Iterator outports = actor.outputPortList().iterator();
             while(outports.hasNext()) {
@@ -163,9 +165,9 @@ public class GRScheduler extends Scheduler {
             throw new NotSchedulableException(this,
                     "GR graph is not acyclic: " + names.toString());
         }
-        //System.out.println("DAG top "+dag.top());
+
         if (dag.top() == null) {
-            // issue warning
+            // FIXME: throw exception here
         }
         
         

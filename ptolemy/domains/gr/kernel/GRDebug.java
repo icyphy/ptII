@@ -1,4 +1,4 @@
-/* 3D domain class for internal debugging
+/* GR domain class for internal debugging
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -53,7 +53,8 @@ public class GRDebug {
 
     public static final void prompt(String str) {
         if (_debugOn) {
-            JOptionPane.showMessageDialog(null,str,"MessageDialog",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(
+                      null,str,"MessageDialog",JOptionPane.ERROR_MESSAGE);
         }
     }
 

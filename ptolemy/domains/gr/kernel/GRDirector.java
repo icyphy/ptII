@@ -42,9 +42,30 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.domains.gr.lib.*;
 
 import javax.media.j3d.*;
-
 import java.util.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// GRDirector
+/**
+
+<h1>GR overview</h1>
+GR is a domain/infrastructure for displaying three-dimensional graphics in
+Ptolemy II.  GR. is an untimed domain that follows loop-less 
+synchronous/reactive (SR) semantics.
+
+The basic idea behind the GR domain is to arrange geometry and transform 
+actors in a directed-acyclic-graph to represent the location and orientation
+of objects in a natural world scene. This topology of connected GR actors 
+form what is commonly called in computer graphics literature as a scene graph.
+The GR director converts the GR scene graph into a Java3D representation for
+rendering on the computer screen. 
+
+@see ptolemy.domains.gr.kernel.GRReceiver
+@see ptolemy.domains.gr.kernel.GRActor
+
+@author C. Fong
+@version $Id$
+*/
 public class GRDirector extends StaticSchedulingDirector {
 
     /** Construct a director in the default workspace with an empty string
@@ -372,18 +393,18 @@ public class GRDirector extends StaticSchedulingDirector {
                     "transferInputs: port argument is not an opaque" +
                     "input port.");
         }
-        boolean trans = false;
-        Receiver[][] insiderecs = port.deepGetReceivers();
+        boolean transferred = false;
+        Receiver[][] insideReceivers = port.deepGetReceivers();
         for (int i = 0; i < port.getWidth(); i++) {
             ptolemy.data.Token t = port.get(i);
-            if (insiderecs != null && insiderecs[i] != null) {
-                for (int j = 0; j < insiderecs[i].length; j++) {
-                    insiderecs[i][j].put(t);
+            if (insideReceivers != null && insideReceivers[i] != null) {
+                for (int j = 0; j < insideReceivers[i].length; j++) {
+                    insideReceivers[i][j].put(t);
                 }
-                trans = true;
+                transferred = true;
             }
         }
-        return trans;
+        return transferred;
     }
 
 

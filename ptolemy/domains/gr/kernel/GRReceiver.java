@@ -39,13 +39,17 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// GRReceiver
 /**
-The receiver for the graphics domain. This is a mailbox with
-capacity one, and any token put in the receiver overwrites
-any token previously present in the receiver. As a consequence,
-hasRoom() method always returns true. The get() method will consume
-the token if there exists one. After the consumption, the hasToken()
-method will return false, until a token is put into this receiver.
+The receiver for the GR domain. This receiver is a mailbox with capacity one,
+and any token put in the receiver overwrites any token previously present in 
+the receiver. As a consequence, hasRoom() method always returns true. The 
+get() method will consume the token if there exists one. After the 
+consumption, the hasToken() method will return false, until a token is put
+into this receiver.
 
+@see ptolemy.actor.Mailbox
+
+@author C. Fong
+@version $Id$
 */
 public class GRReceiver extends Mailbox {
 
@@ -88,12 +92,12 @@ public class GRReceiver extends Mailbox {
             get();
         }
         super.put(token);
-        // Uncomment the following lines when debugging the receiver.
-        // System.out.println(getContainer().getFullName() +
-        //        " received " + token);
     }
     
     
+    /** FIXME: this is an experimental method for putting
+     *  Java3D BranchGroups in a receiver
+     */
     public void createGroupNode() {
     }
 }
