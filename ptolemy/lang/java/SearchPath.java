@@ -206,6 +206,13 @@ public class SearchPath extends Vector {
                                     ptolemyCorePackages[p].replace('/', '.') +
                                     "." +
                                     StringManip.partBeforeLast(name, '.'));
+			    if (name.indexOf('$') != -1) {
+				// Handle inner classes
+				classSet.add(
+                                    ptolemyCorePackages[p].replace('/', '.') +
+                                    "." +
+                                    (StringManip.partBeforeLast(name, '.')).replace('$','.'));
+			    }
                         }
                     }
                 }
