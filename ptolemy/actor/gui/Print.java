@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor.gui;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.StringToken;

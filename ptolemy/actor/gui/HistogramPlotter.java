@@ -1,4 +1,5 @@
-/*
+/* Plot histograms.
+
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
@@ -23,11 +24,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor.gui;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -37,18 +38,25 @@ import ptolemy.actor.*;
 import ptolemy.plot.*;
 import java.awt.Panel;
 
-/** A signal plotter.  This plotter contains an instance of the Plot class
- *  from the Ptolemy plot package as a public member.  Data at the input, which
- *  can consist of any number of channels, is plotted on this instance.
- *  The horizontal axis can represent either time or a count of the
- *  firings.
+/** A histogram plotter.  This plotter contains an instance of the Histogram
+ *  class from the Ptolemy plot package as a public member.  A histogram
+ *  of data at the input port, which can consist of any number of channels,
+ *  is plotted on this instance.
  *
  *  @author  Edward A. Lee
  *  @version $Id$
  */
-public class PlotActor extends TypedAtomicActor implements Placeable {
+public class HistogramPlotter extends TypedAtomicActor implements Placeable {
 
-    public PlotActor(TypedCompositeActor container, String name)
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public HistogramPlotter(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -56,9 +64,6 @@ public class PlotActor extends TypedAtomicActor implements Placeable {
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         input.setTypeEquals(DoubleToken.class);
-
-        // create parameters.
-        timed = new Parameter(this, "timed", new BooleanToken(true));
         fillOnWrapup = new Parameter(this, "fillOnWrapup",
                 new BooleanToken(true));
     }
@@ -66,20 +71,16 @@ public class PlotActor extends TypedAtomicActor implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 
-    /** Input port. */
-    public TypedIOPort input;
-
-    /** The plot object. */
-    public Plot plot;
-
-    /** If true, fill the plot when wrapup is called. */
+    /** If true, fill the histogram when wrapup is called.
+     *  This parameter has type BooleanToken, and default value true.
+     */
     public Parameter fillOnWrapup;
 
-    /** Specify whether to use token count (vs. current time)
-     *  for the X axis value.  Using current time is the default.
-     *  This parameter contains a BooleanToken.
-     */
-    public Parameter timed;
+    /** The histogram object. */
+    public Histogram histogram;
+
+    /** Input port, which has type DoubleToken. */
+    public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -91,12 +92,11 @@ public class PlotActor extends TypedAtomicActor implements Placeable {
      */
     public Object clone(Workspace ws) {
         try {
-            PlotActor newobj = (PlotActor)super.clone(ws);
+            HistogramPlotter newobj =
+                (HistogramPlotter)super.clone(ws);
             newobj.input = (TypedIOPort)newobj.getPort("input");
             newobj.input.setMultiport(true);
             newobj.input.setTypeEquals(DoubleToken.class);
-            newobj.timed
-                = (Parameter)newobj.getAttribute("timed");
             newobj.fillOnWrapup
                 = (Parameter)newobj.getAttribute("fillOnWrapup");
             return newobj;
@@ -107,78 +107,70 @@ public class PlotActor extends TypedAtomicActor implements Placeable {
         }
     }
 
-    /** Read all available inputs and plot them as a function of time.
+    /** Read all available inputs and update the histogram.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (_useCurrentTime) {
-            _xValue = ((Director)getDirector()).getCurrentTime();
-        } else {
-            _xValue += 1.0;
-        }
         int width = input.getWidth();
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
                 DoubleToken curToken = (DoubleToken)input.get(i);
                 double curValue = curToken.doubleValue();
-                plot.addPoint(i, _xValue, curValue, true);
+                histogram.addPoint(i, curValue);
             }
         }
     }
 
-    /** If the plot has not already been created, create it.
-     *  If a panel has been specified, and that panel is an instance of
-     *  of Plot, then plot data to that instance.  If a panel has been
-     *  specified but it is not an instance of Plot, then create a new
-     *  instance of Plot and place the plot in that panel
-     *  using its add() method.
+    /** If the histogram has not already been created, create it using
+     *  setPanel().
      */
     public void initialize() {
-        if (plot == null) {
+        if (histogram == null) {
             setPanel(_panel);
         } else {
-            plot.clear(false);
+            histogram.clear(false);
         }
-        // Process parameters.
-        _useCurrentTime = ((BooleanToken)timed.getToken()).booleanValue();
-
-        plot.repaint();
-        _xValue = -1.0;
+        histogram.repaint();
     }
 
-    /** Specify the panel into which this plot should be placed.
+    /** Specify the panel into which this histogram should be placed.
      *  This method needs to be called before the first call to initialize().
-     *  Otherwise, the plot will be placed in its own frame.
-     *  The plot is also placed in its own frame if this method
-     *  is called with a null argument.
+     *  Otherwise, the histogram will be placed in its own frame.
+     *  The histogram is also placed in its own frame if this method
+     *  is called with the argument null.
+     *  If the panel argument is an instance
+     *  of Histogram, then plot data to that instance.  If a panel has been
+     *  specified but it is not an instance of Histogram, then create a new
+     *  instance of Histogram and place it in that panel
+     *  using its add() method.
      *
-     *  @param panel The panel into which to place the plot.
+     *  @param panel The panel into which to place the histogram.
      */
     public void setPanel(Panel panel) {
         _panel = panel;
         if (_panel == null) {
-            // place the plot in its own frame.
-            plot = new Plot();
-            PlotFrame frame = new PlotFrame(getFullName(), plot);
+            // place the histogram in its own frame.
+            histogram = new Histogram();
+            PlotFrame frame = new PlotFrame(getFullName(), histogram);
         } else {
-            if (_panel instanceof Plot) {
-                plot = (Plot)_panel;
+            if (_panel instanceof Histogram) {
+                histogram = (Histogram)_panel;
             } else {
-                plot = new Plot();
-                _panel.add(plot);
-                plot.setButtons(true);
+                histogram = new Histogram();
+                _panel.add(histogram);
+                histogram.setButtons(true);
             }
         }
     }
 
-    /** Rescale the plot so that all the data is visible if the fillOnWrapup
-     *  parameter is true.
+    /** If the <i>fillOnWrapup</i> parameter is true, rescale the
+     *  plot so that all the data is visible.
      *
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void wrapup() throws IllegalActionException {
         if(((BooleanToken)fillOnWrapup.getToken()).booleanValue()) {
-            plot.fillPlot();
+            histogram.fillPlot();
         }
         super.wrapup();
     }
@@ -187,6 +179,4 @@ public class PlotActor extends TypedAtomicActor implements Placeable {
     ////                         private members                   ////
 
     private Panel _panel;
-    private boolean _useCurrentTime = true;
-    private double _xValue;
 }

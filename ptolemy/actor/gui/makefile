@@ -31,7 +31,7 @@
 
 # This directory contains polymorphic actors.
 
-ME =		ptolemy/actor/lib
+ME =		ptolemy/actor/gui
 
 DIRS = 		test #doc
 
@@ -51,26 +51,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	AddSub.java \
-	Average.java \
-	Bernoulli.java \
-	Commutator.java \
-	Const.java \
-	Distributor.java \
-	Expression.java \
-	FileWrite.java \
-	Gaussian.java \
-	Pulse.java \
-	Ramp.java \
-	RandomSource.java \
-	Recorder.java \
-	SequenceActor.java \
-	SequenceSource.java \
-	Sin.java \
-	Sink.java \
-	Source.java \
-	TimeActor.java \
-	Transformer.java
+	HistogramPlotter.java \
+	Placeable.java \
+	Plotter.java \
+	SequencePlotter.java \
+	Show.java \
+	TimePlotter.java
 
 EXTRA_SRCS =	$(JSRCS)
 

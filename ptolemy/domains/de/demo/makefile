@@ -47,7 +47,6 @@ JSRCS = \
 	AdderApplet.java \
 	ClockApplet.java \
 	ClockSystem.java \
-	DEApplet.java \
 	HierarchyApplet.java \
 	HistogramApplet.java \
 	InterruptApplet.java \

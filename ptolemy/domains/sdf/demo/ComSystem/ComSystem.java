@@ -41,6 +41,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.gui.*;
 import ptolemy.actor.util.PtolemyApplet;
 import ptolemy.domains.sdf.demo.*;
 import ptolemy.domains.sdf.kernel.*;
@@ -79,7 +80,7 @@ public class ComSystem extends SDFApplet {
 
             // Create and configure noise source
             Gaussian noise = new Gaussian(_toplevel, "noise");
-            noise.stddev.setToken(new DoubleToken(0.1));
+            noise.standardDeviation.setToken(new DoubleToken(0.1));
 
             // Create the adder.
             Add add = new Add(_toplevel, "add");
@@ -95,7 +96,7 @@ public class ComSystem extends SDFApplet {
             matched.root.setToken(new BooleanToken(true));
 
             // Create and configure plotter
-            PlotActor myplot = new PlotActor(_toplevel, "plot");
+            SequencePlotter myplot = new SequencePlotter(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(false);
             myplot.plot.setTitle("Eye Diagram");
@@ -105,7 +106,6 @@ public class ComSystem extends SDFApplet {
             myplot.plot.setMarksStyle("none");
             myplot.plot.setPointsPersistence(512);
             myplot.plot.setSize(500, 300);
-            myplot.timed.setToken(new BooleanToken(false));
 
             _toplevel.connect(data.output, coder.input);
             _toplevel.connect(coder.output, shaper.input);

@@ -41,6 +41,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.gui.*;
 import ptolemy.actor.util.*;
 import ptolemy.actor.util.PtolemyApplet;
 import ptolemy.domains.sdf.demo.*;
@@ -101,13 +102,12 @@ public class ExpressionApplet extends SDFApplet {
             TypedIOPort fast = new TypedIOPort(_expr, "fast", true, false);
 
             // Create and configure plotter
-            PlotActor myplot = new PlotActor(_toplevel, "plot");
+            SequencePlotter myplot = new SequencePlotter(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(false);
             myplot.plot.setXRange(0.0, 200.0);
             myplot.plot.setYRange(-2.0, 2.0);
             myplot.plot.setSize(500, 300);
-            myplot.timed.setToken(new BooleanToken(false));
 
             _toplevel.connect(ramp1.output, slow);
             _toplevel.connect(ramp2.output, fast);

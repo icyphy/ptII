@@ -39,6 +39,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.gui.*;
 import ptolemy.actor.util.*;
 import ptolemy.actor.util.PtolemyApplet;
 import ptolemy.domains.sdf.demo.*;
@@ -106,7 +107,7 @@ public class Pulses extends SDFApplet {
             pulse4.excessBW.setToken(new DoubleToken(0.0));
 
             // Create and configure plotter
-            PlotActor myplot = new PlotActor(_toplevel, "plot");
+            SequencePlotter myplot = new SequencePlotter(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(false);
             myplot.plot.setTitle("Transmit Pulse Shapes");
@@ -118,7 +119,6 @@ public class Pulses extends SDFApplet {
             myplot.plot.setXRange(0.0, 64.0);
             myplot.plot.setYRange(-0.3, 1.0);
             myplot.plot.setSize(500, 300);
-            myplot.timed.setToken(new BooleanToken(false));
 
             ComponentRelation r1 =
                 _toplevel.connect(impulse.output, pulse1.input);

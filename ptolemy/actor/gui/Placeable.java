@@ -29,7 +29,7 @@
 
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor.gui;
 
 import java.awt.Panel;
 

@@ -42,6 +42,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.gui.*;
 import ptolemy.actor.util.*;
 import ptolemy.actor.util.PtolemyApplet;
 import ptolemy.domains.sdf.demo.*;
