@@ -24,6 +24,9 @@ the Sieve of Eratosthenes.
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (nsmyth@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.csp.lib;
@@ -109,7 +112,8 @@ public class CSPSieve extends CSPActor {
 		    /* JFIXME
                        TopologyChangeRequest t = _makeChangeRequest(lastSeen);
                        getDirector().queueTopologyChangeRequest(t);
-                       //System.out.println(getName() +":Queued TopologyChange");
+                       //System.out.println(getName() +
+                       //     ":Queued TopologyChange");
 		    */
 		    _waitForDeadlock();
                     //System.out.println(getName() +": change succeeded?");
