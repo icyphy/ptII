@@ -156,7 +156,6 @@ public class Subscriber extends Source implements RemoteEventListener {
         _entryName = ((StringToken)entryName.getToken()).stringValue();
    
         _lookupThread = Thread.currentThread();
-
         
         _space = SpaceFinder.getSpace(
                 ((StringToken)jspaceName.getToken()).stringValue());
