@@ -215,8 +215,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 ((ASTPtRootNode)node.jjtGetChild(0 + 1));
             ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
             try {
-                castTypeNode.visit(parseTreeEvaluator);
-                ptolemy.data.Token t = castTypeNode.getToken();
+                ptolemy.data.Token t = 
+                    parseTreeEvaluator.evaluateParseTree(castTypeNode, _scope);
                 _setType(node, t.getType());
             } catch (IllegalActionException ex) {
                 _setType(node, castTypeNode.getType());
