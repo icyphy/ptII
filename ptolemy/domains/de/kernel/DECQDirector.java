@@ -115,7 +115,7 @@ import java.util.Enumeration;
 // currently supported.
 public class DECQDirector extends DEDirector {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     /** Construct a director with empty string as name in the
      *  default workspace.
