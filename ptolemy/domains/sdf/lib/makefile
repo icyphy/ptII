@@ -61,6 +61,7 @@ JSRCS = \
 	Autocorrelation.java \
 	BitsToInt.java \
 	Chop.java \
+	CountTrues.java \
 	DelayLine.java \
         DotProduct.java \
 	DoubleToMatrix.java \
