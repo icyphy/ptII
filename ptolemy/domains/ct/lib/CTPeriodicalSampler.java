@@ -45,7 +45,7 @@ which has the value of the input signal.
 @see full-classname
 */
 public class CTPeriodicalSampler extends CTActor
-        implements CTEventDetectActor {
+        implements CTEventGenerateActor {
 
     public static final boolean DEBUG = true;
             
