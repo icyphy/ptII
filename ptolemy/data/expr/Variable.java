@@ -64,7 +64,7 @@ setToken(). To set the value from an expression, call setExpression().
 The expression is not actually evaluated until you call getToken(),
 getType(). By default, it is also evaluated when you call validate(),
 unless you have called setLazyValidation(true), in which case it will only
-be evaluted if there are other variables that depend on it and those
+be evaluated if there are other variables that depend on it and those
 have not had setLazyValidation(true) called.
 <p>
 Consider for example the sequence:
@@ -273,29 +273,29 @@ public class Variable extends Attribute
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Variable newvar = (Variable)super.clone(workspace);
+        Variable newObject = (Variable)super.clone(workspace);
 
         // _currentExpression and _initialExpression are preserved in clone
         if (_currentExpression != null) {
-            newvar._needsEvaluation = true;
+            newObject._needsEvaluation = true;
         }
-        newvar._dependencyLoop = false;
+        newObject._dependencyLoop = false;
         // _noTokenYet and _initialToken are preserved in clone
-        newvar._parserScope = null;
+        newObject._parserScope = null;
 
         // set _declaredType and _varType
         if (_declaredType instanceof StructuredType &&
                 !_declaredType.isConstant()) {
-            newvar._declaredType =
+            newObject._declaredType =
                 (Type)((StructuredType)_declaredType).clone();
-            newvar._varType = newvar._declaredType;
+            newObject._varType = newObject._declaredType;
         }
         // _typeAtMost is preserved
-        newvar._parseTree = null;
+        newObject._parseTree = null;
 
-        newvar._constraints = new LinkedList();
-        newvar._typeTerm = null;
-        return newvar;
+        newObject._constraints = new LinkedList();
+        newObject._typeTerm = null;
+        return newObject;
     }
 
     /** Write a MoML description of this object, which in this case is
@@ -610,7 +610,7 @@ public class Variable extends Attribute
         super.setContainer(container);
         if (container != cont) {
             // Every variable that this may shadow in its new location
-            // must invalidate all their dependants.
+            // must invalidate all their dependents.
             _invalidateShadowedSettables(container);
 
             // This variable must still be valid.
