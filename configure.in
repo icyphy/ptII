@@ -478,6 +478,64 @@ else
     fi
 fi
 
+#--------------------------------------------------------------------
+#       JMF is the Java Media Framework
+#	For more information, 
+#       see http://java.sun.com/products/java-media/jmf/index.html
+#       See if there was a command-line option for where JHDL is
+#       If not, look in $PTII/ptolemy/apps/jmf
+#--------------------------------------------------------------------
+
+# PTJMF_DIR is set to jmf and used in
+# $PTII/ptolemy/codegen/makefile if jmf was found
+PTJMF_DIR=
+
+# Directory that contains the jmf jar files
+JMF_JAR='${PTII}/vendors/jmf/JMF_0_3_4.jar'
+
+# We only need to look for jmf if $PTII/ptolemy/apps/jmf exists
+if test ! -d "$PTII/ptolemy/apps/jmf"; then
+    AC_MSG_RESULT([$PTII/ptolemy/apps/jmf is not present,
+	so we need not find the JMF - The Java Media Framework.])
+    JMF_JAR='${PTII}/vendors/jmf/JMF_0_3_4.jar'
+else
+    AC_MSG_CHECKING([for jmf jar file])
+    AC_ARG_WITH(jmf_jar, [  --with-jmf-jar=JARFILE       use JMF from JARFILE,
+                          defaults to \$JMFHOME/lib/jmf.jar],
+	JMF_JAR=$withval,
+	JMF_JAR=$JMFHOME/lib/jmf.jar)
+
+    if test -f "$JMF_JAR"; then
+	AC_MSG_RESULT([$JMF_JAR])
+	# Set to jmf and used in
+	# $PTII/ptolemy/apps/makefile if jmf was found
+	PTJMF_DIR=jmf
+    else
+	JMF_JAR=$PTII/vendors/jmf/JMF_0_3_4_1.jar
+	if test -f "$JMF_JAR"; then
+	    AC_MSG_RESULT([$JMF_JAR])
+	    # Set to jmf and used in
+	    # $PTII/ptolemy/apps/makefile if jmf was found
+	    PTJMF_DIR=jmf
+	fi    
+    fi	
+
+    if test "$JMFHOME" = ""; then
+        AC_MSG_WARN(['\$JMFHOME is not set, perhaps you
+    did not reboot after installing JMF?']) 		
+    fi	
+    if test "$PTJMF_DIR" = ""; then
+        AC_MSG_WARN(['Failed to find \$JMFHOME/lib/jmf.jar
+    perhaps Jmf is not installed?
+    You need not download Jmf unless you plan on using the video
+    actors in $PTII/apps/jmf	
+    The JMF SDK can be downloaded from 
+    http://java.sun.com/products/java-media/jmf/index.html'])
+	# Note that we don't substitute in the ${JMFHOME} here
+	JMF_JAR='${JMFHOME}/lib/jmf.jar'
+    fi
+fi
+
 
 #--------------------------------------------------------------------
 #       Lejos is a Java Virtual machine that runs on the Lego Mindstorm
@@ -1255,6 +1313,9 @@ AC_SUBST(JINI_DIR)
 # If Jini is present, the set to yes, otherwise, set to no
 AC_SUBST(JINI_PRESENT)
 
+# Jar file that contains JMF
+AC_SUBST(JMF_JAR)
+
 # jtclsh script, used for test suites
 AC_SUBST(JTCLSH)
 
@@ -1320,6 +1381,9 @@ AC_SUBST(PTJAVASOUND_DIR)
 
 # Set to jhdl if JDHL.jar was found
 AC_SUBST(PTJHDL_DIR)
+
+# Set to jmf if jmf.jar was found
+AC_SUBST(PTJMF_DIR)
 
 # Set to jspaces and used in
 # $PTII/ptolemy/actor/lib/makefile if jini was found
