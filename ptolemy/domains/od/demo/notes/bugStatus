@@ -40,3 +40,8 @@ Then ODStringDemo reaches
 and the queue size = 8 (see ODPrintString.wrapup). This assumes 
 completionTime = 5001.
 
+Note that in the above two cases, the time references are off in one
+case but not in the other. Nevertheless, the difference in the 
+character output is accounted for in the relative queue sizes. The
+queue sizes do not add up to the total number of characters. 
+
