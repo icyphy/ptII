@@ -135,7 +135,9 @@ JVM_SIZE = -Xmx256m
 SOOT_USER_ARGS =
 
 # Time that we should let code generation run before exiting in ms.
-WATCH_DOG_TIMEOUT = 150000
+WATCH_DOG_TIMEOUT =     150000
+# Number of Iterations to run the generated code for.
+ITERATIONS =		50000
 compileDeepDemo: $(JCLASS)
 	@echo "generate deep code for $(SOURCECLASS)"
 	$(JAVA) $(JVM_SIZE) \
@@ -145,7 +147,8 @@ compileDeepDemo: $(JCLASS)
 		-p wjtp.watchDog time:$(WATCH_DOG_TIMEOUT) \
 		-p wjtp.at targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.clt targetPackage:$(TARGETPACKAGE),iterations:50000 \
+		-p wjtp.clt \
+		targetPackage:$(TARGETPACKAGE),iterations:$(ITERATIONS) \
 		-p wjtp.fot targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ffat targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ffpt targetPackage:$(TARGETPACKAGE) \
@@ -154,15 +157,39 @@ compileDeepDemo: $(JCLASS)
 		-p wjtp.ipt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.itt targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.ttn disabled,targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.snapshot1 outDir:jimple1 \
-		-p wjtp.snapshot2 outDir:jimple2 \
-		-p wjtp.snapshot3 outDir:jimple3 \
-		-p wjtp.snapshot4 outDir:jimple4 \
-		-p wjtp.snapshot5 outDir:jimple5 \
+		-p wjtp.snapshot1 outDir:$(ROOT)/$(TARGETPATH)/jimple1 \
+		-p wjtp.snapshot2 outDir:$(ROOT)/$(TARGETPATH)/jimple2 \
+		-p wjtp.snapshot3 outDir:$(ROOT)/$(TARGETPATH)/jimple3 \
+		-p wjtp.snapshot4 outDir:$(ROOT)/$(TARGETPATH)/jimple4 \
+		-p wjtp.snapshot5 outDir:$(ROOT)/$(TARGETPATH)/jimple5 \
 		-p wjtp.iee debug \
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
+
+# Directories that contain snapshots
+SNAPSHOTS=jimple1 jimple2 jimple3 jimple4 jimple5
+
+# Run the simulation in each snapshot directory
+runSnapshots:
+	@echo "Run without codegen"
+	CLASSPATH="$(CLASSPATH)" \
+		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
+		-class $(SOURCECLASS) \
+		-iterations $(ITERATIONS) | tail -1
+	@echo "Run the snapshots"
+	for snapshot in $(SNAPSHOTS); \
+	do \
+		echo "Running the code from $(TARGETPATH)/$$snapshot"; \
+		$(JAVA) \
+			-Xfuture -classpath \
+	"$(ROOT)/$(TARGETPATH)/$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+			$(TARGETPACKAGE).Main | tail -1 ; \
+	done
+	@echo "Run the final version"
+	$(JAVA) \
+		-Xfuture -classpath "$(CLASSPATH)" \
+		$(TARGETPACKAGE).Main | tail -1 
 
 runDeepDemo:
 	@echo "Run the deep model"
