@@ -327,21 +327,21 @@ public class LabeledList implements List {
         return removed;
     }
 
-    /**  Unsupported optional method of the List interface.
+    /** Unsupported optional method of the List interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean removeAll(Collection c) {
         throw new UnsupportedOperationException();
     }
 
-    /**  Unsupported optional method of the List interface.
+    /** Unsupported optional method of the List interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean retainAll(Collection c) {
         throw new UnsupportedOperationException();
     }
 
-    /**  Unsupported optional method of the List interface.
+    /** Unsupported optional method of the List interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public Object set(int index, Object element)  {
@@ -355,7 +355,7 @@ public class LabeledList implements List {
         return _elements.size();
     }
 
-    /**  Unsupported method of the List interface.
+    /** Unsupported method of the List interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public List subList(int fromIndex, int toIndex) {
