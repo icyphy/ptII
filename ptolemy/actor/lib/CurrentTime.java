@@ -80,7 +80,7 @@ public class CurrentTime extends TimedSource {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        Ramp newobj = (Ramp)super.clone(ws);
+        CurrentTime newobj = (CurrentTime)super.clone(ws);
 	// set the type constraints.
 	output.setTypeEquals(BaseType.DOUBLE);
         return newobj;
@@ -95,3 +95,6 @@ public class CurrentTime extends TimedSource {
         output.send(0, new DoubleToken(dir.getCurrentTime()));
     }
 }
+
+
+
