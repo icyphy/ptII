@@ -133,7 +133,7 @@ public class DEApplet extends PtolemyApplet {
                 defaultStopSpec = "1.0";
             }
 
-            _stopTimeBox = new TextField(defstopspec, 10);
+            _stopTimeBox = new TextField(defaultStopSpec, 10);
             _stopTimeBox.addActionListener(new StopTimeBoxListener());
             stopTimePanel.add(_stopTimeBox);
             panel.add(stopTimePanel);

@@ -65,36 +65,78 @@ public class InspectionParadox extends DEApplet {
         try {
             _query = new Query();
             _query.addQueryListener(new ParameterListener());
-            _query.line("mean", "Mean interarrival time", "0.2");
+            _query.line("busmean", "Bus mean interarrival time", "1.0");
+            _query.line("passmean", "Passenger mean interarrival time", "1.0");
             _query.onoff("regular", "Regular arrivals", false);
             add(_query);
 
             // The 2 argument requests a go and stop button.
             add(_createRunControls(2));
 
-            // Create and configure Poisson source
-            _poisson = new DEPoisson(_toplevel, "poisson");
-            _poisson.outputvalue.setToken(new DoubleToken(1.0));
-            _poisson.meantime.setToken(new DoubleToken(0.1));
+            // Create and configure bus source
+            _bus = new DEPoisson(_toplevel, "bus");
+            _bus.outputvalue.setToken(new DoubleToken(1.0));
+            _bus.meantime.setToken(new DoubleToken(1.0));
+
+            // Create and configure passenger source
+            _passenger1 = new DEPoisson(_toplevel, "passenger");
+            _passenger1.outputvalue.setToken(new DoubleToken(0.5));
+            _passenger1.meantime.setToken(new DoubleToken(1.0));
+
+            // Waiting time
+            _wait = new DEWaitingTime(_toplevel, "waitingTime");
+
+            // Average actor
+            Average average = new Average(_toplevel, "average");
+
+            // Display of average
+            Show show = new Show(_toplevel, "show");
+            show.setPanel(this);
+            show.labels.setToken(new StringToken("Average waiting time"));
 
             // Create and configure plotter
-            _eventPlot = new TimePlot(_toplevel, "plot");
-            _eventPlot.setPanel(this);
-            _eventPlot.plot.setGrid(false);
-            _eventPlot.plot.setTitle("Transmit Pulse Shapes");
-            _eventPlot.plot.addLegend(0, "Bus");
-            _eventPlot.plot.addLegend(1, "Passenger");
-            _eventPlot.plot.addLegend(2, "Wait Time");
-            _eventPlot.plot.setXLabel("Time");
-            _eventPlot.plot.setYLabel("Wait time");
-            _eventPlot.plot.setXRange(0.0, _getStopTime());
-            _eventPlot.plot.setYRange(0.0, 2.0);
-            _eventPlot.plot.setSize(450,150);
-            _eventPlot.plot.setConnected(false);
-            _eventPlot.plot.setImpulses(true);
-            _eventPlot.plot.setMarksStyle("dots");
+            _eventplot = new PlotActor(_toplevel, "plot");
+            _eventplot.setPanel(this);
+            _eventplot.plot.setGrid(false);
+            _eventplot.plot.setTitle("Events");
+            _eventplot.plot.addLegend(0, "Bus");
+            _eventplot.plot.addLegend(1, "Passenger");
+            _eventplot.plot.addLegend(2, "Wait Time");
+            _eventplot.plot.setXLabel("Time");
+            _eventplot.plot.setYLabel("Wait time");
+            _eventplot.plot.setXRange(0.0, _getStopTime());
+            _eventplot.plot.setYRange(-1.0, 4.0);
+            _eventplot.plot.setSize(450,200);
+            _eventplot.plot.setConnected(false);
+            _eventplot.plot.setImpulses(true);
+            _eventplot.plot.setMarksStyle("dots");
+            _eventplot.fillOnWrapup.setToken(new BooleanToken(false));
 
-            _toplevel.connect(_poisson.output, _eventPlot.input);
+            // Create and configure histogram
+            _histplot = new HistogramActor(_toplevel, "histplot");
+            _histplot.setPanel(this);
+            _histplot.histogram.setGrid(false);
+            _histplot.histogram.setTitle("Histogram of Waiting Times");
+            _histplot.histogram.setXLabel("Waiting Time");
+            _histplot.histogram.setYLabel("Passengers");
+            _histplot.histogram.setXRange(0.0, 7.0);
+            _histplot.histogram.setYRange(0.0, 15.0);
+            _histplot.histogram.setSize(450,200);
+            _histplot.histogram.setBinWidth(0.2);
+            _histplot.fillOnWrapup.setToken(new BooleanToken(false));
+
+            // Connections
+            ComponentRelation rel1 = 
+                   _toplevel.connect(_bus.output, _eventplot.input);
+            ComponentRelation rel2 = 
+                   _toplevel.connect(_passenger1.output, _eventplot.input);
+            _wait.waitee.link(rel1);
+            _wait.waiter.link(rel2);
+            ComponentRelation rel3 = 
+                   _toplevel.connect(_wait.output, _eventplot.input);
+            _histplot.input.link(rel3);
+            average.input.link(rel3);
+            _toplevel.connect(average.output, show.input);
 
             // Get one iteration right away.
             _go();
@@ -110,9 +152,11 @@ public class InspectionParadox extends DEApplet {
      *  values in the query box first and set parameters.
      */
     protected void _go() {
-        _poisson.meantime.setToken
-            (new DoubleToken(_query.doubleValue("mean")));
-        _eventPlot.plot.setXRange(0.0, _getStopTime());
+        _bus.meantime.setToken
+                (new DoubleToken(_query.doubleValue("busmean")));
+        _passenger1.meantime.setToken
+                (new DoubleToken(_query.doubleValue("passmean")));
+        _eventplot.plot.setXRange(0.0, _getStopTime());
         super._go();
     }
 
@@ -120,8 +164,11 @@ public class InspectionParadox extends DEApplet {
     ////                         private variables                      ////
 
     private Query _query;
-    private DEPoisson _poisson;
-    private TimePlot _eventPlot;
+    private DEPoisson _bus;
+    private DEPoisson _passenger1;
+    private PlotActor _eventplot;
+    private HistogramActor _histplot;
+    private DEWaitingTime _wait;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -130,7 +177,7 @@ public class InspectionParadox extends DEApplet {
      */
     class ParameterListener implements QueryListener {
         public void changed(String name) {
-            _go();
+            // _go();
         }
     }
 }
