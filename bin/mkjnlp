@@ -87,7 +87,7 @@ awk '{
 		}
 	    }
 	    part = package
-	    printf("\t<jar href=%c/%s%c\n\t\tpart=%c%s%c", 34, basedirectory, jars[n], 34, 34, part, 34)
+	    printf("\t<jar href=%c%s/%s%c\n\t\tpart=%c%s%c", 34, basedirectory, jars[n], 34, 34, part, 34)
 	    printf("\n\t\tsize=%c%s%c", 34, sizes[n], 34)
 	    if (jars[n] == mainjar) {
 		printf("\n\t\tmain=%ctrue%c", 34, 34)
