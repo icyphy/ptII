@@ -594,7 +594,7 @@ public abstract class Top extends JFrame {
     private File _file = null;
 
     // The most recently entered URL in Open URL.
-    private String _lastURL = "http://ptolemy.eecs.berkeley.edu/";
+    private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
 
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;
