@@ -26,10 +26,10 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "acataldo"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Mon Oct 21 18:08:37 2002"
-  ModelVersionFormat	  "1.%<AutoIncrement:67>"
+  LastModifiedDate	  "Fri Oct 25 17:59:58 2002"
+  ModelVersionFormat	  "1.%<AutoIncrement:78>"
   ConfigurationManager	  "None"
-  SimParamPage		  "Solver"
+  SimParamPage		  "Optimization"
   StartTime		  "0.0"
   StopTime		  "4*pi"
   SolverMode		  "Auto"
@@ -154,7 +154,7 @@ Model {
   }
   System {
     Name		    "circles"
-    Location		    [460, 74, 1016, 383]
+    Location		    [426, 78, 982, 386]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -180,7 +180,7 @@ Model {
       BlockType		      Mux
       Name		      "Mux"
       Ports		      [2, 1]
-      Position		      [385, 89, 390, 116]
+      Position		      [340, 89, 345, 116]
       ShowName		      off
       Inputs		      "2"
       DisplayOption	      "bar"
@@ -188,10 +188,10 @@ Model {
     Block {
       BlockType		      Mux
       Name		      "Mux1"
-      Ports		      [3, 1]
+      Ports		      [2, 1]
       Position		      [380, 146, 385, 184]
       ShowName		      off
-      Inputs		      "3"
+      Inputs		      "2"
       DisplayOption	      "bar"
     }
     Block {
@@ -205,7 +205,7 @@ Model {
       BlockType		      "S-Function"
       Name		      "S-Function"
       Ports		      [1]
-      Position		      [420, 125, 480, 155]
+      Position		      [435, 90, 495, 120]
       FunctionName	      "planeplot"
       PortCounts	      "[]"
       SFunctionModules	      "''"
@@ -235,7 +235,7 @@ Model {
       Position		      [125, 164, 155, 196]
       Floating		      off
       Location		      [203, 474, 527, 713]
-      Open		      on
+      Open		      off
       NumInputPorts	      "1"
       TickLabels	      "OneTimeTick"
       ZoomMode		      "xonly"
@@ -268,7 +268,7 @@ Model {
       Orientation	      "left"
       Floating		      off
       Location		      [55, 94, 379, 333]
-      Open		      on
+      Open		      off
       NumInputPorts	      "1"
       TickLabels	      "OneTimeTick"
       ZoomMode		      "on"
@@ -301,7 +301,7 @@ Model {
       Orientation	      "left"
       Floating		      off
       Location		      [56, 390, 380, 629]
-      Open		      on
+      Open		      off
       NumInputPorts	      "1"
       TickLabels	      "OneTimeTick"
       ZoomMode		      "xonly"
@@ -349,7 +349,7 @@ Model {
       System {
 	Name			"aircraft_dynamics"
 	Location		[203, 173, 844, 529]
-	Open			off
+	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
 	ScreenColor		"white"
@@ -372,9 +372,10 @@ Model {
 	  Ports			  [1, 1]
 	  Position		  [380, 120, 410, 150]
 	  ShowName		  off
+	  AttributesFormatString  "initial_X = %<InitialCondition>"
 	  ExternalReset		  "none"
 	  InitialConditionSource  "internal"
-	  InitialCondition	  "0"
+	  InitialCondition	  "1"
 	  LimitOutput		  off
 	  UpperSaturationLimit	  "inf"
 	  LowerSaturationLimit	  "-inf"
@@ -388,9 +389,10 @@ Model {
 	  Ports			  [1, 1]
 	  Position		  [550, 175, 580, 205]
 	  ShowName		  off
+	  AttributesFormatString  "initial_Y = %<InitialCondition>"
 	  ExternalReset		  "none"
 	  InitialConditionSource  "internal"
-	  InitialCondition	  "0"
+	  InitialCondition	  "-1"
 	  LimitOutput		  off
 	  UpperSaturationLimit	  "inf"
 	  LowerSaturationLimit	  "-inf"
@@ -455,8 +457,8 @@ Model {
 	  RTWFileNameOpts	  "Auto"
 	  System {
 	    Name		    "angle_integrator"
-	    Location		    [471, 216, 1027, 585]
-	    Open		    off
+	    Location		    [442, 218, 998, 587]
+	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    212
 	    ScreenColor		    "white"
@@ -468,7 +470,7 @@ Model {
 	    Block {
 	      BlockType		      Inport
 	      Name		      "headingDot"
-	      Position		      [55, 103, 85, 117]
+	      Position		      [45, 103, 75, 117]
 	      Port		      "1"
 	      LatchInput	      off
 	      Interpolate	      on
@@ -477,7 +479,7 @@ Model {
 	      BlockType		      Demux
 	      Name		      "Demux"
 	      Ports		      [1, 2]
-	      Position		      [195, 196, 200, 234]
+	      Position		      [145, 196, 150, 234]
 	      Orientation	      "left"
 	      BackgroundColor	      "black"
 	      ShowName		      off
@@ -485,10 +487,19 @@ Model {
 	      BusSelectionMode	      off
 	    }
 	    Block {
+	      BlockType		      Constant
+	      Name		      "Initial_Heading"
+	      Position		      [305, 180, 335, 210]
+	      Value		      "pi/4"
+	      VectorParams1D	      on
+	    }
+	    Block {
 	      BlockType		      Integrator
 	      Name		      "Integrator"
 	      Ports		      [3, 1, 0, 0, 1]
-	      Position		      [185, 100, 265, 150]
+	      Position		      [215, 100, 295, 150]
+	      NamePlacement	      "alternate"
+	      ShowName		      off
 	      ExternalReset	      "level"
 	      InitialConditionSource  "external"
 	      InitialCondition	      "0"
@@ -503,16 +514,26 @@ Model {
 	      BlockType		      "S-Function"
 	      Name		      "S-Function"
 	      Ports		      [1, 1]
-	      Position		      [240, 200, 305, 230]
+	      Position		      [175, 200, 240, 230]
 	      Orientation	      "left"
 	      FunctionName	      "convertangle"
 	      PortCounts	      "[]"
 	      SFunctionModules	      "''"
 	    }
 	    Block {
+	      BlockType		      Sum
+	      Name		      "Sum"
+	      Ports		      [2, 1]
+	      Position		      [350, 115, 370, 135]
+	      ShowName		      off
+	      IconShape		      "round"
+	      Inputs		      "|++"
+	      SaturateOnIntegerOverflow	on
+	    }
+	    Block {
 	      BlockType		      Outport
 	      Name		      "heading"
-	      Position		      [295, 118, 325, 132]
+	      Position		      [410, 118, 440, 132]
 	      Port		      "1"
 	      OutputWhenDisabled      "held"
 	      InitialOutput	      "[]"
@@ -521,12 +542,6 @@ Model {
 	      SrcBlock		      "headingDot"
 	      SrcPort		      1
 	      DstBlock		      "Integrator"
-	      DstPort		      1
-	    }
-	    Line {
-	      SrcBlock		      "Integrator"
-	      SrcPort		      1
-	      DstBlock		      "heading"
 	      DstPort		      1
 	    }
 	    Line {
@@ -552,8 +567,26 @@ Model {
 	    Line {
 	      SrcBlock		      "Integrator"
 	      SrcPort		      state
-	      Points		      [110, 0; 0, 120]
 	      DstBlock		      "S-Function"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Integrator"
+	      SrcPort		      1
+	      DstBlock		      "Sum"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Initial_Heading"
+	      SrcPort		      1
+	      Points		      [20, 0]
+	      DstBlock		      "Sum"
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "Sum"
+	      SrcPort		      1
+	      DstBlock		      "heading"
 	      DstPort		      1
 	    }
 	    Annotation {
@@ -673,44 +706,35 @@ Model {
     Line {
       SrcBlock		      "aircraft_dynamics"
       SrcPort		      1
-      Points		      [25, 0]
-      Branch {
-	DstBlock		"Mux"
-	DstPort			1
-      }
-      Branch {
-	Points			[0, 60]
-	DstBlock		"Mux1"
-	DstPort			1
-      }
+      DstBlock		      "Mux"
+      DstPort		      1
     }
     Line {
       SrcBlock		      "aircraft_dynamics"
       SrcPort		      2
-      Points		      [15, 0]
-      Branch {
-	DstBlock		"Mux"
-	DstPort			2
-      }
-      Branch {
-	Points			[0, 55]
-	DstBlock		"Mux1"
-	DstPort			2
-      }
+      DstBlock		      "Mux"
+      DstPort		      2
     }
     Line {
       SrcBlock		      "Mux"
       SrcPort		      1
       Points		      [10, 0]
-      DstBlock		      "S-Function"
-      DstPort		      1
+      Branch {
+	DstBlock		"S-Function"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 50]
+	DstBlock		"Mux1"
+	DstPort			1
+      }
     }
     Line {
       SrcBlock		      "aircraft_dynamics"
       SrcPort		      3
       Points		      [5, 0; 0, 50]
       DstBlock		      "Mux1"
-      DstPort		      3
+      DstPort		      2
     }
     Line {
       SrcBlock		      "Mux1"
