@@ -53,11 +53,29 @@ if {[string compare test [info procs test]] == 1} then {
 test CSPContentionAlarm-2.1 {Check that alarm "rings" at proper time} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-    set dir [java::new ptolemy.domains.od.kernel.ODDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
     $topLevel setDirector $dir
-    set actorA [java::new ptolemy.domains.od.kernel.ODActor $topLevel "actorA"] 
-    set actorB [java::new ptolemy.domains.od.kernel.ODActor $topLevel "actorB"] 
-    
+    set cntrllr [java::new ptolemy.domains.csp.lib.CSPController $topLevel "cntrllr"] 
+    set proc [java::new ptolemy.domains.csp.lib.CSPProcessor $topLevel "proc"] 
+    set alarm [java::new ptolemy.domains.csp.lib.CSPContentionAlarm $topLevel "alarm"] 
+
+    set reqOut [$cntrllr getPort "requestOut"]
+    set reqIn [$cntrllr getPort "requestIn"]
+
+    set conOut [$cntrllr getPort "contendOut"]
+    set conIn [$cntrllr getPort "contendIn"]
+
+    set alarmOut [$alarm getPort "output"]
+    set alarmIn [$alarm getPort "input"]
+
+    set pReqOut [$proc getPort "requestOut"]
+    set pReqIn [$proc getPort "requestIn"]
+
+    set rel1 [$topLevel connect $reqOut $pReqIn "rel1"]
+    set rel2 [$topLevel connect $reqIn $pReqOut "rel2"]
+    set rel3 [$topLevel connect $conIn $alarmIn "rel3"]
+    set rel4 [$topLevel connect $conIn $alarmOut "rel4"]
+
     set t [java::new ptolemy.data.Token]
     set e1 [java::new ptolemy.domains.od.kernel.CSPContentionAlarm $t 5.0]
     list [$e1 getTime] 
