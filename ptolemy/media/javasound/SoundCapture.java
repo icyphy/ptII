@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.media.javasound;
@@ -146,7 +146,7 @@ public class SoundCapture {
      *   the local filesystem.
      *  @param fileName The name of the file. This can be either a URL
      *   file name or a local file sytem file name. Valid sound file
-     *   formats are WAVE (.wav), AIFF (.aif,.aiff), AU (.au). The file
+     *   formats are WAVE (.wav), AIFF (.aif, .aiff), AU (.au). The file
      *   format is automatically determined from the file extension.
      *  @param getSamplesSize The number of samples per channel
      *   returned by <i>getSamples()</i>.
@@ -313,8 +313,7 @@ public class SoundCapture {
         _frameSizeInBytes = format.getFrameSize();
 
 	DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class,
-                format
-                ,AudioSystem.NOT_SPECIFIED);
+                format, AudioSystem.NOT_SPECIFIED);
 
         if (!AudioSystem.isLineSupported(targetInfo)) {
 	    // FIXME: throw exception here.
@@ -452,7 +451,7 @@ public class SoundCapture {
     }
 
     /* Convert a byte array of audio samples in linear signed pcm big endian
-     * format into a double array of audio samples (-1,1) range.
+     * format into a double array of audio samples (-1, 1) range.
      * @param byteArray  The linear signed pcm big endian byte array
      * formated array representation of audio data.
      * @param bytesPerSample Number of bytes per sample. Supported
