@@ -67,7 +67,7 @@ public abstract class ODStringSource extends ODSourceActor {
      */
     public void initialize() throws IllegalActionException { 
         super.initialize();
-	refireAfterDelay( 0.0 );
+	reinvokeAfterDelay( 0.0 );
         _contents = setUpStrings();
     }
     
@@ -102,7 +102,7 @@ public abstract class ODStringSource extends ODSourceActor {
             strToken = new StringToken( strTime.getString() );
             double fireTime = strTime.getTime();
 
-                refireAfterDelay( fireTime );
+                reinvokeAfterDelay( fireTime );
 	        nextOutputReady = true;
 	    }
 
