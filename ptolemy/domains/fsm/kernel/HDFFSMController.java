@@ -821,7 +821,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             throws IllegalActionException, NameDuplicationException {
         if (!(relation instanceof FSMTransition)) {
             throw new IllegalActionException(this, relation,
-                    "FSMController can only contain instances of FSMTransition.");
+                    "FSMController can only contain instances " +
+                    "of FSMTransition.");
         }
         super._addRelation(relation);
     }

@@ -161,7 +161,8 @@ public class FSMState extends ComponentEntity {
             }
             _refinement = refinement;
             if (_refinement != null) {
-                ((ComponentEntity)_refinement).setContainer((CompositeEntity)getContainer().getContainer());
+                ((ComponentEntity)_refinement).setContainer(
+                        (CompositeEntity)getContainer().getContainer());
             }
         } finally {
             workspace().doneWriting();
