@@ -138,7 +138,7 @@ public class TimedSource extends Source implements TimedActor {
      */
     public boolean postfire() throws IllegalActionException {
         double time = ((DoubleToken)stopTime.getToken()).doubleValue();
-        if (getDirector().getCurrentTime() >= time) {
+        if (time > 0.0 && getDirector().getCurrentTime() >= time) {
             return false;
         }
         return true;
