@@ -332,7 +332,7 @@ public class PlotBox extends JPanel implements Printable {
      *  This method calls repaint(), which eventually causes the display
      *  to be updated.
      */
-    public synchronized void fillPlot() {
+    public void fillPlot() {
         _setXRange(_xBottom, _xTop);
         _setYRange(_yBottom, _yTop);
         repaint();
