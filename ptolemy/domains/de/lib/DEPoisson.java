@@ -74,16 +74,15 @@ public class DEPoisson extends DEActor {
 
     /** Produce the initializer event that will cause the generation of
      *  the first event at time zero.
-     *  @exception CloneNotSupportedException If the base class throws it.
      *  @exception IllegalActionException If there is no director.
      */
-    public void initialize()
-            throws CloneNotSupportedException, IllegalActionException {
+    public void initialize() throws IllegalActionException {
         // FIXME: This should be just DEDirector
         // FIXME: This class should be derived from DEActor, which should
         // ensure that this cast is valid.
         super.initialize();
-	refireAtTime(0.0);
+        double curTime = getCurrentTime();
+	refireAtTime(0.0-curTime);
     }
 
     /** Produce an output event at the current time, and then schedule
@@ -92,8 +91,7 @@ public class DEPoisson extends DEActor {
      *   destination and the output token cannot be cloned.
      *  @exception IllegalActionException If there is no director.
      */
-    public void fire()
-            throws CloneNotSupportedException, IllegalActionException {
+    public void fire() throws IllegalActionException {
         
 	// send a token via the output port.
 	output.broadcast(new DoubleToken(_value));

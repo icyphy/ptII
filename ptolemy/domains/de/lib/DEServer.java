@@ -77,20 +77,13 @@ public class DEServer extends DEActor {
     /** Produce the output event according to whether the server is busy or
      *  not.
      * 
-     * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
      */	
-    public void fire()
-             throws CloneNotSupportedException, IllegalActionException{
+    public void fire() throws IllegalActionException{
         // get the input token from the input port.
         DoubleToken inputToken;
-        try {
-            inputToken = (DoubleToken)(input.get(0));
-        } catch (NoSuchItemException e) {
-            // this can't happen
-            throw new InvalidStateException("Bug in DEServer.fire()");
-        }
-        
+        inputToken = (DoubleToken)(input.get(0));
+                
         // produce the output token.
         double inputTime = ((DECQDirector)getDirector()).getCurrentTime();
 	double outputTime;
@@ -107,7 +100,6 @@ public class DEServer extends DEActor {
 		_doneTime = _doneTime + _serviceTime;
 	    }
 	}
-
 	
         // send the output token via output DEIOPort.
         output.broadcast(inputToken, _serviceTime);

@@ -73,17 +73,11 @@ public class Not extends AtomicActor {
      *  @exception CloneNotSupportedException Error when cloning event.
      *  @exception IllegalActionException Not thrown in this class.
      */
-    public void fire()
-            throws CloneNotSupportedException, IllegalActionException {
+    public void fire() throws IllegalActionException {
 	// get the input token from the input port.
         DoubleToken inputToken;
-        try {
-            inputToken = (DoubleToken)(input.get(0));
-        } catch (NoSuchItemException e) {
-            // this can't happen
-            throw new InternalErrorException("Fired with no input event");
-        }
-
+        inputToken = (DoubleToken)(input.get(0));
+        
         // produce the output token.
 	DoubleToken outputToken;
 	if (inputToken.getValue() == 0.0)

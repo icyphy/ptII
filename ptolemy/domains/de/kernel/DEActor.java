@@ -37,10 +37,11 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// DEActor
 /**
-A base class for DE domain actor. This class provides a higher level of
-abstraction for actors to communicate with directors. 
+A base class for DE domain actor.
 FIXME: actor can access time only in the relative sense, shouldn't we also
 provide ways for actors to access time in the absolute sense.
+FIXME: I think actors can access absolute sense by calling getCurrentTime()
+and then figuring out the necessary delay..
 
 @author Lukito Muliadi
 @version $Id$

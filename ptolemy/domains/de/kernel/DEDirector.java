@@ -135,8 +135,7 @@ public abstract class DEDirector extends Director {
      *  I.e., these events may be made visible over multiple firings rather
      *  than all at once.
      */
-    public void fire()
-	 throws CloneNotSupportedException, IllegalActionException {
+    public void fire() throws IllegalActionException {
       super.fire();
     }
 
@@ -163,62 +162,11 @@ public abstract class DEDirector extends Director {
 	return _stopTime;
     }
 
-    /** Set current time to zero, calculate priorities for simultaneous
-     *  events, and invoke the initialize() methods of all actors deeply
-     *  contained by the container.  To be able to calculate the priorities,
-     *  it is essential that the graph not have a delay-free loop.  If it
-     *  does, then this can be corrected by inserting a DEDelay actor
-     *  with a zero-valued delay.  This has the effect of breaking the
-     *  loop for the purposes of calculating priorities, without introducing
-     *  a time delay.
-     *  <p>
-     *  This method should be invoked once per execution, before any
-     *  iteration. Actors may produce output data in their initialize()
-     *  methods, or more commonly, they may schedule pure events.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *
-     *  @exception CloneNotSupportedException If the initialize() method of the
-     *   container or one of the deeply contained actors throws it.
-     *  @exception IllegalActionException If there is a delay-free loop, or
-     *   if the initialize() method of the
-     *   container or one of the deeply contained actors throws it.
-     */
-    public void initialize()
-	 throws CloneNotSupportedException, IllegalActionException {
-      super.initialize();
-    }
-
     /** Return a new receiver of a type DEReceiver.
      *  @return A new DEReceiver.
      */
     public Receiver newReceiver() {
 	return new DEReceiver();
-    }
-    
-    /** Invoke the base class prefire() method, and if it returns true,
-     *  dequeue the next event from the event queue, advance time to its
-     *  time stamp, and mark its destination actor for firing.
-     *  If there are multiple events on the queue with the same time
-     *  stamp that are destined for the same actor, dequeue all of them,
-     *  making them available in the input ports of the destination actor.
-     *  If the time stamp is greater than the stop time, or there are no
-     *  events on the event queue, then return false,
-     *  which will have the effect of stopping the simulation.
-     *
-     *  @return True if there is an actor to fire.
-     *  @exception CloneNotSupportedException If the base class throws it.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @exception NameDuplicationException If the base class throws it.
-     */
-    // FIXME: This isn't quite right in that it may put multiple simultaneous
-    // events into the same receiver.  Actors are unlikely to be written
-    // in such a way as to look for these.  Perhaps such actors need to
-    // be fired repeatedly?
-    public boolean prefire()
-	 throws CloneNotSupportedException, IllegalActionException,
-	     NameDuplicationException {
-      return super.prefire();
     }
     
     /** Set the stop time of the simulation.

@@ -138,8 +138,8 @@ public class DEIOPort extends IOPort {
      *   destination and the token cannot be cloned.
      *  @exception IllegalActionException If the port is not an output.
      */
-    public void broadcast(Token token, double delay)
-	    throws CloneNotSupportedException, IllegalActionException {
+    public void broadcast(Token token, double delay) 
+            throws IllegalActionException {
         try {
             // FIXME: Shouldn't this use the base class method, rather
             // than copying it and editing it?
@@ -153,15 +153,9 @@ public class DEIOPort extends IOPort {
             if(fr == null) {
                 return;
             }
-            boolean first = true;
-
+            
             for (int j = 0; j < fr.length; j++) {
-                if (first) {
-                    send(j, token, delay);
-                    first = false;
-                } else {
-                    send(j, ((Token)(token.clone())), delay);
-                }
+                send(j, token, delay);
             }
         } finally {
             workspace().doneReading();
@@ -181,7 +175,7 @@ public class DEIOPort extends IOPort {
      *   or if the index is out of range.
      */
     public void send(int channelindex, Token token, double delay)
-            throws CloneNotSupportedException, IllegalActionException {
+            throws IllegalActionException {
         try {
             // FIXME: Shouldn't this use the base class method, rather
             // than copying it and editing it?
@@ -201,29 +195,16 @@ public class DEIOPort extends IOPort {
             }
             Receiver[][] fr = getRemoteReceivers();
             if (fr == null || fr[channelindex] == null) return;
-            boolean first = true;
             for (int j = 0; j < fr[channelindex].length; j++) {
-                if (first) {
-                    // FIXME: need to catch ?
-                    try {
-                        ((DEReceiver)fr[channelindex][j]).put(token, delay);
-                    } catch (ClassCastException e) {
-                        throw new InvalidStateException("DEIOPort.send() is" +
-                                " expected to have receivers of type "+
-                                "DEReceiver (1)");
-                    }
-                    first = false;
-                } else {
-                    // FIXME: need to catch ?
-                    try {
-                        ((DEReceiver)fr[channelindex][j]).put(
-                            (Token)(token.clone()), delay);
-                    } catch (ClassCastException e) {
-                        throw new InvalidStateException("DEIOPort.send() is" +
-                                " expected to have receivers of type "+
-                                "DEReceiver (2)");
-                    }
+                // FIXME: need to catch ?
+                try {
+                    ((DEReceiver)fr[channelindex][j]).put(token, delay);
+                } catch (ClassCastException e) {
+                    throw new InvalidStateException("DEIOPort.send() is" +
+                            " expected to have receivers of type "+
+                            "DEReceiver (1)");
                 }
+                
             }
         } finally {
             workspace().doneReading();

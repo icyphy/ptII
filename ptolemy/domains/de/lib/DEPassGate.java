@@ -1,4 +1,4 @@
-/* An attempt at a polymorphic actor.
+/* Pass gate.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -83,28 +83,19 @@ public class DEPassGate extends DEActor {
      * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
      */
-    public void fire()
-            throws CloneNotSupportedException, IllegalActionException{
+    public void fire() throws IllegalActionException{
         // Check if there's an event in the "input" port.
         if (input.hasToken(0)) {
             DoubleToken inputToken = null;
-            try {
-                inputToken = (DoubleToken)(input.get(0));
-            } catch (NoSuchItemException e) {
-                // Can't occur.
-                throw new InvalidStateException("Check DEPassGate.fire()"+
-                        " for bug." + e.getMessage());
-            }
+            // The following code might throw a NoTokenException.
+            inputToken = (DoubleToken)(input.get(0));
+            
 	    // If the gate also has token, change the state of the gate.
             if (gate.hasToken(0)) {
 		DoubleToken gateToken = null;
-                try {
-		    gateToken=(DoubleToken)(gate.get(0));
-                } catch (NoSuchItemException e) {
-                    // Can't occur
-                    throw new InvalidStateException("Check DEPassGate.fire()"+
-                            " for bug (2)" + e.getMessage());
-                }
+                // The following code might throw a NoTokenException.
+                gateToken=(DoubleToken)(gate.get(0));
+                
 		if (gateToken.getValue() == 0.0) {
 		    // gate is closing (or closed)
 		    _gateOpen = false;
@@ -125,14 +116,9 @@ public class DEPassGate extends DEActor {
 	} else if (gate.hasToken(0)) {
 	    // No token on input, only on gate.
 	    DoubleToken gateToken = null;
-	    try {
-                gateToken = (DoubleToken)(gate.get(0));
-            } catch (NoSuchItemException e) {
-                // Can't occur.
-                throw new IllegalStateException("Check DEPassGate.fire() "+
-                        "for bug (3)" + e.getMessage());
-
-            }
+            // The following method call might throw a NoTokenException.
+            gateToken = (DoubleToken)(gate.get(0));
+            
 	    if (gateToken.getValue() != 0.0 && _gateOpen == false) {
 		// gate just reoopened.
 		_gateOpen = true;
@@ -156,7 +142,7 @@ public class DEPassGate extends DEActor {
      *  @exception IllegalActionException Thrown if could not create the 
      *   receivers.
      */
-    public void initialize() throws CloneNotSupportedException, IllegalActionException {
+    public void initialize() throws IllegalActionException {
         _gateOpen = true;
         _lastToken = null;
             

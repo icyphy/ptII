@@ -38,8 +38,6 @@ import java.util.Enumeration;
 //// DEClock
 /**
 Generate events at regular intervals, starting at time zero.
-FIXME: I assumed here that a typical user don't want to know about director.
-So, I'll try to abstract away any code that uses method in the director.
 
 @author Lukito Muliadi, Edward A. Lee
 @version $Id$
@@ -73,16 +71,21 @@ public class DEClock extends DEActor {
 
     /** Produce the initializer event that will cause the generation of
      *  the first output at time zero.
+     *
+     *  FIXME: What to do if the initial current event is less than zero ?
      *  @exception CloneNotSupportedException If the base class throws it.
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize()
-            throws CloneNotSupportedException, IllegalActionException {
+            throws IllegalActionException {
         // FIXME: This should be just DEDirector
         // FIXME: This class should be derived from DEActor, which should
         // ensure that this cast is valid.
         super.initialize();
-	refireAtTime(0.0);
+        double curTime = getCurrentTime();
+        // The delay parameter maybe negative, but it's permissible in the
+        // director because the start time is not initialized yet.
+	refireAtTime(0.0-curTime);
     }
 
     /** Produce an output event at the current time, and then schedule
@@ -92,7 +95,7 @@ public class DEClock extends DEActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire()
-            throws CloneNotSupportedException, IllegalActionException {
+            throws IllegalActionException {
         output.broadcast(new DoubleToken(_value));
 	refireAtTime(_interval);
     }
@@ -111,3 +114,9 @@ public class DEClock extends DEActor {
     // the output value.
     private double _value;
 }
+
+
+
+
+
+

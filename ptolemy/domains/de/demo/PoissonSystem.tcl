@@ -70,4 +70,4 @@ set r1 [$sys connect $poissonOut $rampIn R1]
 set r2 [$sys connect $rampOut $plotIn R2]
 
 # Run it
-$exec run
+$exec go

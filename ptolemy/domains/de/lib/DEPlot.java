@@ -95,8 +95,7 @@ public class DEPlot extends DEActor {
 
     /** Clear the plot window.
      */
-    public void initialize()
-            throws CloneNotSupportedException, IllegalActionException {
+    public void initialize() throws IllegalActionException {
 
         _plot.clear(false);
 
@@ -109,8 +108,7 @@ public class DEPlot extends DEActor {
 
     /** Add new input data to the plot.
      */
-    public void fire()
-            throws CloneNotSupportedException, IllegalActionException{
+    public void fire() throws IllegalActionException{
 
         if (_firstFiring) {
             _plot.setXRange(getStartTime(), getStopTime());
@@ -128,11 +126,7 @@ public class DEPlot extends DEActor {
                 // channel i is not empty, get all the tokens in it.
                 while (input.hasToken(i)) {
                     DoubleToken curToken = null;
-                    try {
-			// FIXME: this might be changed once changes in the
-			// Receiver class go through.
-                        curToken = (DoubleToken)input.get(i);
-                    } catch (NoSuchItemException e) {}
+                    curToken = (DoubleToken)input.get(i);
                     double curValue = curToken.doubleValue();
                     _plot.addPoint(i, curTime, curValue, false);
                 }

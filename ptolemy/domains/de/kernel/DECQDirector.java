@@ -166,8 +166,12 @@ public class DECQDirector extends DEDirector {
             throws IllegalActionException {
 
         // FIXME: Should this check that the depth is not negative?
-        if (delay < 0.0) throw new IllegalActionException(getContainer(),
-        "Attempt to queue a token with a past time stamp.");
+        // This check is done only done after the start time is initialized.
+        if (_startTimeInitialized) {
+            if (delay < 0.0) throw new IllegalActionException(getContainer(), 
+                    "Attempt to queue a token with a past time stamp " + 
+                    "after start time is fixed.");
+        }
 
         // FIXME: Provide a mechanism for listening for events.
 
@@ -211,8 +215,7 @@ public class DECQDirector extends DEDirector {
      *  in all of its receivers. If the firing actor resulted from a 'pure
      *  event' then the actor will be fired exactly once.
      */
-    public void fire()
-	 throws CloneNotSupportedException, IllegalActionException {
+    public void fire() throws IllegalActionException {
 		
 	// Repeatedly fire the actor until it doesn't have any more filled 
 	// receivers. In the case of 'pure event' the actor is fired once.
@@ -264,8 +267,7 @@ public class DECQDirector extends DEDirector {
      *   if the initialize() method of the
      *   container or one of the deeply contained actors throws it.
      */
-    public void initialize()
-            throws CloneNotSupportedException, IllegalActionException {
+    public void initialize() throws IllegalActionException {
         
         // FIXME: Something weird going on here with respect to the
         // order of method invocation.
@@ -289,6 +291,8 @@ public class DECQDirector extends DEDirector {
 		    "cyclic graph in DECQDirector.initialize()");
 	}
         // Call the parent initialize method to create the receivers.
+        // Some events might be scheduled in the global event queue as
+        // a result of this operation.
         super.initialize();
         // Set the depth field of the receivers.
         _computeDepth();
@@ -313,8 +317,7 @@ public class DECQDirector extends DEDirector {
     // events into the same receiver.  Actors are unlikely to be written
     // in such a way as to look for these.  Perhaps such actors need to
     // be fired repeatedly?
-    public boolean prefire()
-            throws CloneNotSupportedException, IllegalActionException,
+    public boolean prefire() throws IllegalActionException,
             NameDuplicationException {
 	// During prefire, new actor will be chosen to fire
 	// therefore, initialize _actorToFire field.

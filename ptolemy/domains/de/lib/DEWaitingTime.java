@@ -78,23 +78,22 @@ public class DEWaitingTime extends DEActor {
      *   destinations and the token does not support cloning.
      *  @exception IllegalActionException If get or broadcast throws it.
      */
-    public void fire()
-            throws CloneNotSupportedException, IllegalActionException {
+    public void fire() throws IllegalActionException {
 
         boolean godot = false;
         for (int i=0; i<waitee.getWidth(); i++) {
-            try {
+            if (waitee.hasToken(i)) {
                 waitee.get(i);
                 godot = true;
-            } catch (NoSuchItemException ex) {}
+            }
         }
         // FIXME: Should be DEDirector, not DECQDirector
         double currentTime = ((DECQDirector)getDirector()).getCurrentTime();
         for (int i=0; i<waitee.getWidth(); i++) {
-            try {
+            if (waiter.hasToken(i)) {
                 waiter.get(i);
                 _waiting.addElement(new Double(currentTime));
-            } catch (NoSuchItemException ex) {}
+            }
         }
         if(godot) {
             for (int i=0; i<_waiting.size(); i++) {

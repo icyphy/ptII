@@ -86,9 +86,9 @@ public class DEReceiver implements Receiver {
      *  @return A token.
      *  @exception NoSuchItemException If there are no more tokens.
      */
-    public Token get() throws NoSuchItemException {
+    public Token get() throws NoTokenException {
         if(_tokens.isEmpty()) {
-            throw new NoSuchItemException(getContainer(),
+            throw new NoTokenException(getContainer(),
                     "No more tokens in the DE receiver.");
         }
         return (Token)_tokens.take();
@@ -101,10 +101,12 @@ public class DEReceiver implements Receiver {
         return _container;
     }
 
-    /** Return the director.
+    /** Return the director. Note that the director returned is guaranteed
+     *  to be non-null.
      *  @return An instance of DEDirector.
      *  @exception IllegalActionException If there is no container port, or
-     *   if the port has no container actor, or if the actor has no director.
+     *   if the port has no container actor, or if the actor has no director,
+     *   or if the director is not an instance of DEDirector.
      */
     public DEDirector getDirector() throws IllegalActionException {
         IOPort port = (IOPort)getContainer();
@@ -116,10 +118,12 @@ public class DEReceiver implements Receiver {
             Actor actor = (Actor)port.getContainer();
             if (actor != null) {
                 Director dir = actor.getDirector();
-                if (dir instanceof DEDirector) {
-                    _director = (DEDirector)dir;
-                    _directorVersion = port.workspace().getVersion();
-                    return _director;
+                if (dir != null) {
+                    if (dir instanceof DEDirector) {
+                        _director = (DEDirector)dir;
+                        _directorVersion = port.workspace().getVersion();
+                        return _director;
+                    }
                 }
             }
         }
@@ -127,10 +131,16 @@ public class DEReceiver implements Receiver {
         "Does not have a DE director.");
     }
 
-    /** Return true (the capacity is unbounded).
-     *  @return True.
+    /** Return true if the director exist and is an instance of
+     *  DEDirector. Note that the capacity of the receiver is unbounded.
+     *  @return True if the director exist and is an instance of DEDirector.
      */
     public boolean hasRoom() {
+        try {
+            getDirector();
+        } catch (IllegalActionException e) {
+            return false;
+        }
         return true;
     }
 
@@ -138,6 +148,9 @@ public class DEReceiver implements Receiver {
      *  @return True if there are more tokens.
      */
     public boolean hasToken() {
+        // Don't need to check the validity of the director, because the fact
+        // that _tokens is not empty means there is a director that put datas
+        // there.
         return (!_tokens.isEmpty());
     }
 
@@ -149,9 +162,23 @@ public class DEReceiver implements Receiver {
      *  method in order for the token to become available.
      *
      *  @param token The token to put.
+     *  @exception NoRoomException Not thrown in this class.
      */
-    public void put(Token token) throws IllegalActionException{
-        getDirector().enqueueEvent(this, token, 0.0, _depth);
+    public void put(Token token) throws NoRoomException{
+        
+        try {
+            // The DEDirector.enqueueEvent() method throws
+            // IllegalActionException when the delay argument is less
+            // than zero.
+            getDirector().enqueueEvent(this, token, 0.0, _depth);
+        } catch (IllegalActionException e) {
+            // Can't happen.
+            e.printStackTrace();
+            throw new InternalErrorException("enqueueEvent with delay "+
+                    "argument = 0 shouldn't throw an exception." + 
+                    " : " + e.getMessage());
+        }
+        
     }
 
     /** Put a token with the specified delay into the receiver.  The time
@@ -167,8 +194,8 @@ public class DEReceiver implements Receiver {
      *  @exception IllegalActionException If the delay is negative, or if
      *   there is no director.
      */
-    public void put(Token token, double delay)
-            throws IllegalActionException {
+    public void put(Token token, double delay) 
+            throws NoRoomException, IllegalActionException{
         getDirector().enqueueEvent(this, token, delay, _depth);
     }
 
@@ -210,9 +237,18 @@ public class DEReceiver implements Receiver {
     // _depth: The topological depth associated with this receiver.
     long _depth = 0;
 
+    // _director: The director of the actor that contains the port that
+    // contains this receiver.
+    // Note: the code should be written to not refer to this field directly.
+    // Rather, it should call the getDirector() method.
     DEDirector _director;
     long _directorVersion = -1;
 
     // List for storing tokens.  Access with clear(), insertFirst(), take().
     private LinkedList _tokens = new LinkedList();
 }
+
+
+
+
+

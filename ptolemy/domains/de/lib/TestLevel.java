@@ -81,15 +81,11 @@ public class TestLevel extends AtomicActor {
      * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
      */
-    public void fire() throws CloneNotSupportedException, IllegalActionException{
+    public void fire() throws IllegalActionException{
 	// get the input token from the input port.
         double inputValue;
-        try {
-            inputValue = ((DoubleToken)(input.get(0))).getValue();
-        } catch (NoSuchItemException e) {
-            // this can't happen
-            throw new InvalidStateException("Bug in DERamp.fire()");
-        }
+        inputValue = ((DoubleToken)(input.get(0))).getValue();
+        
 
         // produce the output token.
 

@@ -49,7 +49,7 @@ meaning of zero depends on the token type.
 */
 public class DESampler extends DEActor {
 
-    /** Constructor.
+    /** Construct a DESampler actor.
      *  @param container The composite actor that this actor belongs too.
      *  @param name The name of this actor.
      *
@@ -77,11 +77,9 @@ public class DESampler extends DEActor {
     /** If there's an event in the clock input port then produce an event,
      *  otherwise just record the value of the input port.
      *
-     * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
      */
-    public void fire()
-            throws CloneNotSupportedException, IllegalActionException{
+    public void fire() throws IllegalActionException{
 
         // Get the receivers.
         DEReceiver clockR = (DEReceiver)(clock.getReceivers())[0][0];
@@ -90,36 +88,17 @@ public class DESampler extends DEActor {
         // Check if there's an event in the clock input port.
         if (clockR.hasToken()) {
             DoubleToken clockToken = null;
-            try {
-                clockToken = (DoubleToken)(clock.get(0));
-            } catch (NoSuchItemException e) {
-                // Can't occur
-                throw new InvalidStateException("Check DESampler.fire()"+
-                        " for bug." + e.getMessage());
-            }
+            clockToken = (DoubleToken)(clock.get(0));
             // If the input also has token then update _lastToken.
             if (inputR.hasToken()) {
-                try {
-                    _lastToken=(DoubleToken)(input.get(0));
-                } catch (NoSuchItemException e) {
-                    // Can't occur
-                    throw new InvalidStateException("Check DESampler.fire()"+
-                            " for bug (2)" + e.getMessage());
-                }
+                _lastToken=(DoubleToken)(input.get(0));
             }
 
             // send the output token via the output port.
             output.broadcast(_lastToken);
         } else if (inputR.hasToken()) {
             // Record the token from the input.
-            try {
-                _lastToken = (DoubleToken)(input.get(0));
-            } catch (NoSuchItemException e) {
-                // Can't occur.
-                throw new IllegalStateException("Check DESampler.fire() "+
-                        "for bug (3)" + e.getMessage());
-
-            }
+            _lastToken = (DoubleToken)(input.get(0));
         } else {
             // if both inputs are empty, then the scheduler is wrong.
             throw new InvalidStateException("DESampler.fire(), "+

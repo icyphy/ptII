@@ -43,12 +43,12 @@ of precedences when calculating priorities for dealing with simultaneous
 events. Thus, this actor can be used in feedback loops when there are
 no other delays to maintain determinacy.
 
-@author Edward A. Lee
+@author Edward A. Lee, Lukito Muliadi
 @version $Id$
 */
 public class DEDelay extends DEActor {
 
-    /** Constructor.
+    /** Construct a DEDelay actor with the specified delay.
      *  @param container The composite actor that this actor belongs too.
      *  @param name The name of this actor.
      *  @param delay The amount of delay.
@@ -80,16 +80,10 @@ public class DEDelay extends DEActor {
      *   destinations and the token does not support cloning.
      *  @exception IllegalActionException Not thrown in this class.
      */
-    public void fire()
-            throws CloneNotSupportedException, IllegalActionException {
-
+    public void fire() throws IllegalActionException {
         for(int i = 0; i < input.getWidth(); i++) {
             Token inputToken;
-            try {
-                inputToken = input.get(i);
-            } catch (NoSuchItemException e) {
-                throw new InternalErrorException("Fired with no input event");
-            }
+            inputToken = input.get(i);
             output.send(i, inputToken, _delay);
         }
     }
