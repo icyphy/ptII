@@ -110,7 +110,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         CachedMethod method = CachedMethod.findMethod(functionName,
                 argTypes, CachedMethod.FUNCTION);
-        if (!method.isMissing()) {
+        if (method.isValid()) {
             ptolemy.data.Token result = method.invoke(argValues);
             return result;
         } else {
@@ -141,7 +141,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         CachedMethod method = CachedMethod.findMethod(methodName,
                 argTypes, CachedMethod.METHOD);
-        if (!method.isMissing()) {
+        if (method.isValid()) {
             ptolemy.data.Token result = method.invoke(argValues);
             return result;
         } else {

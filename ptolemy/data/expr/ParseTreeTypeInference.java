@@ -216,7 +216,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             CachedMethod.findMethod(functionName,
                     childTypes, CachedMethod.FUNCTION);
 
-        if (!cachedMethod.isMissing()) {
+        if (cachedMethod.isValid()) {
             Type type = cachedMethod.getReturnType();
             _setType(node, type);
         } else {
@@ -305,7 +305,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             CachedMethod.findMethod(node.getMethodName(),
                     childTypes, CachedMethod.METHOD);
 
-        if (!cachedMethod.isMissing()) {
+        if (cachedMethod.isValid()) {
             Type type = cachedMethod.getReturnType();
             _setType(node, type);
         } else {

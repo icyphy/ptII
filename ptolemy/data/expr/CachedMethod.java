@@ -75,13 +75,12 @@ Java's built-in reflection mechanism:
    increase the applicability of single methods
 
 <p> Instances of this class have a type returned by getType(), which
-is a bitwise OR of either {@link #REAL} or {@link #MISSING} with
-either {@link #FUNCTION} or {@link #METHOD}.  REAL indicates that the
-method or function has been searched for and found, while MISSING
-indicates that it has been searched for and not found.  FUNCTION
-indicates that it is a function (a static method of a class registered
-with the parser), while METHOD indicates that it is a method of a
-Token.
+is either {@link #FUNCTION} or {@link #METHOD}.  FUNCTION indicates
+that it is a function (a static method of a class registered with the
+parser), while METHOD indicates that it is a method of a Token.  If
+the method or function is actually found, then the CachedMethod is
+considered valid, as returned by the isValid method.  CachedMethods
+that are not valid cannot be invoked by the invoke() method.
 
 <p> Additional classes to be searched for static methods can be added
 through the method registerFunctionClass() in PtParser.  This class
@@ -111,7 +110,8 @@ public class CachedMethod {
      *  is an additional type in the array (the first) corresponding
      *  to the type of object the method is getting invoked on.
      *  @param method The Java method that will be invoked by the
-     *  invoke() method.
+     *  invoke() method.  If this parameter is null, then the method is
+     *  not valid and cannot be invoked.
      *  @param conversions An array of conversions that will convert
      *  arguments of the corresponding argument types to arguments
      *  that the method will accept.  If the method accepts Token
@@ -121,7 +121,8 @@ public class CachedMethod {
      *  @param type The type of the method.
      */
     protected CachedMethod(String methodName, Type[] argTypes,
-            Method method, ArgumentConversion[] conversions, int type) {
+            Method method, ArgumentConversion[] conversions,
+            int type) {
         // Note clones for safety...
         _methodName = methodName;
         _argTypes = (Type[]) argTypes.clone();
@@ -246,9 +247,9 @@ public class CachedMethod {
             if (hasArray) {
                 CachedMethod mapCachedMethod =
                     findMethod(methodName, newArgTypes, type);
-                if (!mapCachedMethod.isMissing()) {
+                if (mapCachedMethod.isValid()) {
                     cachedMethod = new ArrayMapCachedMethod(
-                            methodName, argTypes, type+REAL,
+                            methodName, argTypes, type,
                             mapCachedMethod, isArrayArg);
                 }
             }
@@ -278,9 +279,9 @@ public class CachedMethod {
             if (hasArray) {
                 CachedMethod mapCachedMethod =
                     findMethod(methodName, newArgTypes, type);
-                if (!mapCachedMethod.isMissing()) {
+                if (mapCachedMethod.isValid()) {
                     cachedMethod = new MatrixMapCachedMethod(
-                            methodName, argTypes, type+REAL,
+                            methodName, argTypes, type,
                             mapCachedMethod, isArrayArg);
                 }
             }
@@ -292,7 +293,7 @@ public class CachedMethod {
             // up...  Store an invalid cached method, so we don't try 
             // the same search any more.
             cachedMethod = new CachedMethod(methodName, argTypes,
-                    null, null, type+MISSING);
+                    null, null, type);
         }
         
         // Add the method we found, or the placeholder for the missing method.
@@ -324,8 +325,7 @@ public class CachedMethod {
         return _method;
     }
 
-    /** Return the type of this class, which is one of REAL or MISSING
-     *  or'ed with one of METHOD or FUNCTION.
+    /** Return the type of this class, which is one of METHOD or FUNCTION.
      *  @return The type of this class.
      */
     public int getType() {
@@ -339,10 +339,10 @@ public class CachedMethod {
      *  code generator that need more than the usual amount of
      *  information about methods that have been found.
      *  @exception IllegalActionException If this method or function
-     *   was not found (it is MISSING).
+     *   was not found (it is not valid).
      */
     public Type getReturnType() throws IllegalActionException {
-        if (isMissing()) {
+        if (!isValid()) {
             throw new IllegalActionException("The return type of the method "
                     + toString() + " cannot be determined because "
                     + "no matching method was found.");
@@ -371,7 +371,7 @@ public class CachedMethod {
      *  as the arguments.
      *  @return The result of the method invocation, as a Token.
      *  @exception IllegalActionException If this cached method is
-     *   MISSING, or the invoked method throws it.
+     *   not valid, or the invoked method throws it.
      */
     public ptolemy.data.Token invoke(Object[] argValues)
             throws IllegalActionException {
@@ -380,7 +380,7 @@ public class CachedMethod {
         //     System.out.println("arg " + i + " = " + argValues[i]);
         // }
 
-        if (isMissing()) {
+        if (!isValid()) {
             throw new IllegalActionException("A method compatible with "
                     + toString() + " cannot be found");
         }
@@ -464,19 +464,11 @@ public class CachedMethod {
     }
 
     /** Return true if the search for the method or function represented
-     *  by this object turned up nothing.
-     *  @return True if there is no such method.
+     *  by this object found an invokeable method.
+     *  @return True if a method was found.
      */
-    public boolean isMissing() {
-        return (_type & MISSING) == MISSING;
-    }
-
-    /** Return true if the search for the method or function represented
-     *  by this object turned up nothing.
-     *  @return True if there is no such method.
-     */
-    public boolean isReal() {
-        return (_type & REAL) == REAL;
+    public boolean isValid() {
+        return (_method != null);
     }
 
     /** Return a string representation.
@@ -505,14 +497,6 @@ public class CachedMethod {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
-    /** A "missing" method or function is one that was not found. */
-    public static final int MISSING = 1;
-
-    /** A method or function that is "real" is one that has been
-     *  found with the specified signature.
-     */
-    public static final int REAL = 4;
 
     /** Indicator of a function (vs. method). */
     public static final int FUNCTION = 8;
@@ -797,7 +781,7 @@ public class CachedMethod {
                     methodName, methodArgTypes, conversions);
             if (method != null) {
                 cachedMethod = new CachedMethod(methodName, argTypes,
-                        method, conversions, METHOD+REAL);
+                        method, conversions, METHOD);
             }
         } catch (SecurityException security) {
             // If we are running under an Applet, then we
@@ -817,7 +801,7 @@ public class CachedMethod {
             if (method != null) {
                 cachedMethod = new BaseConvertCachedMethod(
                         methodName, argTypes, method, NATIVE, conversions,
-                        METHOD+REAL);
+                        METHOD);
             }
         }
         return cachedMethod;
@@ -877,7 +861,7 @@ public class CachedMethod {
             // System.out.println("*** Chosen conversions: "
             //        + preferredConversions[0]);
             cachedMethod = new CachedMethod(methodName, argTypes,
-                    preferredMethod, preferredConversions, FUNCTION+REAL);
+                    preferredMethod, preferredConversions, FUNCTION);
         }
         return cachedMethod;
     }
@@ -910,6 +894,9 @@ public class CachedMethod {
     private int _hashcode;
     // The type.
     private int _type;
+    // Flag determining validity of the method.  (i.e. whether or not
+    // it was actually found)
+    private boolean _valid;
     // The static table containing cached methods.  Note that a
     // synchronized hashtable is used to provide safe access to the
     // table of methods from multiple threads.
@@ -1048,13 +1035,20 @@ public class CachedMethod {
             return new ArrayToken(tokenArray);
         }
 
+        /** Override the base class to correctly implement the
+         * isValid() method.
+         */
+        public boolean isValid() {
+            return _cachedMethod.isValid();
+        }
+
         /** Override the base class to return an array type with the
          *  element type being the return type of the underlying scalar
          *  method.
          *  @return An ArrayType with an appropriate element type.
          */
         public Type getReturnType() throws IllegalActionException {
-            if (isMissing()) {
+            if (!isValid()) {
                 throw new IllegalActionException(
                         "The return type of the method "
                         + toString() + " cannot be determined because "
@@ -1144,8 +1138,15 @@ public class CachedMethod {
             return MatrixToken.createMatrix(tokenArray, ydim, xdim);
         }
 
+        /** Override the base class to correctly implement the
+         * isValid() method.
+         */
+        public boolean isValid() {
+            return _cachedMethod.isValid();
+        }
+
         public Type getReturnType() throws IllegalActionException {
-            if (isMissing()) {
+            if (!isValid()) {
                 throw new IllegalActionException(
                         "The return type of the method "
                         + toString() + " cannot be determined because "
