@@ -165,7 +165,7 @@ public class OrderedMerge extends TypedAtomicActor {
 
     /** Commit the recorded token.
      *  @return True.
-     *  @exception IllegalActionException Not thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
         recordedToken = tentativeRecordedToken;
