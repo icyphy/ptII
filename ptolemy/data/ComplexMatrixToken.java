@@ -457,7 +457,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @param token The token to add this Token to.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than DoubleMatrixToken.
+     *   token is not lower than ComplexMatrixToken.
      */
     public final Token subtractReverse(final Token token)
             throws IllegalActionException {
