@@ -80,7 +80,6 @@ JSRCS = \
 	ArrayElement.java \
 	ArrayExtract.java \
 	ArrayLength.java \
-	ArrowKeySensor.java \
 	Average.java \
 	Bernoulli.java \
 	BooleanMultiplexor.java \
@@ -103,7 +102,6 @@ JSRCS = \
 	Gaussian.java \
 	IIR.java \
 	Interpolator.java \
-	KeystrokeSensor.java \
 	Lattice.java \
 	LevinsonDurbin.java \
 	Limiter.java \
@@ -140,7 +138,6 @@ JSRCS = \
 	Source.java \
 	Switch.java \
 	Synchronizer.java \
-	SystemClipboard.java \
 	Test.java \
 	TimedActor.java \
 	TimedSource.java \
