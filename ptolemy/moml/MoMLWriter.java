@@ -399,10 +399,7 @@ public class MoMLWriter extends Writer {
                 }
             }
             catch (Exception ex) {
-                System.err.println("Exception occurred during parsing:\n"
-                        + ex);
-                // FIXME: Why doesn't this line actually print the stack
-                // when running inside a test?
+                System.err.println("Exception occurred during parsing:");
                 ex.printStackTrace();
                 deferredObject = null;
             }
