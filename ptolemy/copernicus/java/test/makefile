@@ -43,8 +43,7 @@ include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
-	testDefs.tcl \
-	sootDeepCodeGeneration.tcl
+	testDefs.tcl
 
 JSRCS = \
 

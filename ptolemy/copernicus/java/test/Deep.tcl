@@ -37,11 +37,6 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-if {[string compare test [info procs autoShallowCG]] == 1} then {
-    source sootDeepCodeGeneration.tcl
-} {}
-
-
 if {[info procs jdkClassPathSeparator] == "" } then { 
     source [file join $PTII util testsuite jdktools.tcl]
 }
