@@ -31,22 +31,27 @@
 	<dt><a href="../../mk"><CODE>mk</CODE></a>
 	<dd> Makefiles that are included into other makefiles
 		<dl>
-		<dt> <a href="../../mk/tycho.mk"><CODE>tycho.mk</CODE></a>
-		<dd> Contains installation dependent makefile variables,
+		<dt> <a href="../../mk/ptII.mk.in"><CODE>ptII.mk.in</CODE></a>
+		<dd> <CODE>$PTII/configure</CODE> reads in
+		 <CODE>mk/ptII.mk.in </CODE> and generates 
+		<CODE>mk/ptII.mk</CODE> by substituting in
+		installation dependent makefile variables,
 		such as the location of the Java Development Kit
-		<CODE>tycho.mk</CODE> is the file you should modify
-		with local pathnames.
 
-		<dt> <a href="../../mk/no-compile.mk"><CODE>no-compile.mk</CODE></a>
+		<dt> <a href="../../mk/ptno-compile.mk"><CODE>ptno-compile.mk</CODE></a>
 		<dd> Used in directories that contain source files that
 		are not compiled.
 
-		<dt> <a href="../../mk/tydir.mk"><CODE>tydir.mk</CODE></a>
+		<dt> <a href="../../mk/ptdir.mk"><CODE>ptdir.mk</CODE></a>
 		<dd> Used in directories that contain no source files,
 		only subdirectories.
 
-		<dt> <a href="../../mk/tycommon.mk"><CODE>tycommon.mk</CODE></a>
-		<dd> Contains rules to build files from source files.
+		<dt> <a href="../../mk/ptcommon.mk"><CODE>ptcommon.mk</CODE></a>
+		<dd> Contains rules to build derived files from source files.
+
+		<dt> <a href="../../mk/ptdist.mk"><CODE>ptdist.mk</CODE></a>
+		<dd> Contains rules to build tar and zip distributions.
+		<a href="../../ptolemy/plot/makefile"><CODE>$PTII/ptolemy/plot/makefile</CODE></a> is an example of a makefile that uses <CODE>ptdist.mk</CODE>
 		</dl>
 
 
@@ -56,9 +61,13 @@
 		<dt> <a href="../../ptolemy/actor"><CODE>actor</CODE></a> -
 		<a href="../../ptolemy/actor/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
 		<dd> Functional block code
-		<dt> <a href="../../ptolemy/audio"><CODE>audio</CODE></a> -
-		<a href="../../ptolemy/audio/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
-		<dd> Audio tools
+			<dl>
+			<dt> <a href="../../ptolemy/actor/util"><CODE>util</CODE></a> -
+		<a href="../../ptolemy/actor/util/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
+			<dd> Utility classes 
+			</dl>
+
+
 		<dt> <a href="../../ptolemy/data"><CODE>data</CODE></a> -
 		<a href="../../ptolemy/data/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
 		<dd> Code used to pass data between blocks
@@ -70,6 +79,7 @@
 
 		<dt> <a href="../../ptolemy/domains"><CODE>domains</CODE></a>
 		<dd> Various models of computation (Not shipped with 0.1)
+
 		<dt> <a href="../../ptolemy/graph"><CODE>graph</CODE></a> -
 		<a href="../../ptolemy/graph/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
 		<dd> Non-hierarchical graph classes
@@ -82,6 +92,10 @@
 			<a href="../../ptolemy/kernel/util/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
 			<dd> Kernel Utilities
 			</dl>
+
+		<dt> <a href="../../ptolemy/math"><CODE>math</CODE></a> -
+		<a href="../../ptolemy/math/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
+		<dd> Math classes for Complex numbers and Signal Processing
 
 		<dt> <a href="../../ptolemy/plot"><CODE>plot</CODE></a> -
 		<a href="../../ptolemy/plot/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>

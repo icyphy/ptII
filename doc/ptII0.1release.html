@@ -5,11 +5,51 @@
 </head>
 <body bgcolor="#faf0e6">
 <h1>Ptolemy II version 0.1 Release Notes</h1>
-Ptolemy II version 0.1 is a release of some of the Ptolemy II Java
-packages and the design document.
+Ptolemy II version 0.1 is a release of the Ptolemy II design document
+and a set of Java packages.
+
  <p>This release is meant for programmers already familiar with Java.
 Ptolemy 0.x users may want to wait until Ptolemy II version 1.0
 is released in December, 1998.
+
+ <p>Ptolemy II 0.1 does not include any domains nor does it include a 
+GUI.  The code and test suites are being released solely for the purposes 
+of clarifying the design document.
+ <p>The design document describes the Ptolemy II design and the implementation
+of the Java classes.
+
+<p> The Ptolemy design document is shipped with Ptolemy 0.1, it can be found
+in <a href="design">$PTII/doc/design</a>.
+
+The most recent copy of the Ptolemy II design document can be
+found online at
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/doc/design.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/doc/design.html</CODE></a>
+
+
+ <hr>
+<h2>Platforms</h2>
+
+The core of Ptolemy II 0.1 is 100% Java, so it should work on any
+platform that has JDK1.1.  (Note that the GUI shipped with Ptolemy II
+1.0 will use Tcl/Tk and Itcl, so it will not be 100% Java).
+
+ <p>We developed Ptolemy II 0.1 under Solaris 2.5.1 and NT4.0sp3 
+with JDK1.1.6.
+
+ <p>Ptolemy II can be built under JDK1.2, though we have not thoroughly
+tested Ptolemy II under JDK1.2.
+
+ <p>See the <a href="install.html#tclblend">Tcl Blend</a> section of
+the installation page for information about the Ptolemy II test suite 
+
+<h2>Limitations</h2>
+<menu>
+
+<li> Ptolemy II version 0.1 does not include any domains or a GUI.
+
+<li> The <CODE>ptolemy.kernel.event</CODE> package is likely to
+change substantially.
+</menu>
 
 <HR>
 Copyright &#169 1997-1998 The Regents of the University of California.

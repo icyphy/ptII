@@ -5,20 +5,88 @@
 </head>
 <body bgcolor="#faf0e6">
 <h1>Ptolemy II Installation</h1>
+See the <a href="ptII0.1release.html">Ptolemy II 0.1 release notes</a>
+for details about this release.
+
+
+<h2>Requirements</h2>
+<h3>Java</h3>
+
+Ptolemy II uses JDK1.1, which is available from
+<a href="http://java.sun.com/products/jdk/1.1"><CODE>http://java.sun.com/products/jdk/1.1</CODE></a>
+
+ <p>Ptolemy II can be built under JDK1.2, though we have not thoroughly
+tested Ptolemy II under JDK1.2.
+
+<h3><a href="tclblend">Tcl Blend</a></h3>
+Tcl Blend is a Tcl/Java interface that we use for testing Ptolemy II.
+Each Java directory contains a <CODE>test</CODE> subdirectory that contains
+Tcl files that use Tcl Blend to test the Ptolemy II Java code.
+ <p>Tcl Blend is <B>only</B> necessary if you are planning on running
+the Ptolemy II test suite.  
+ <p>Tcl Blend can be downloaded from the 
+<a href="http://www.scriptics.com/software/java.html">Scriptics Jacl and Tcl Blend page</a>.
+Note that to use Tcl Blend, you must also have a Tcl installed. 
+
 <h2>Rebuilding</h2>
 The Ptolemy II distribution includes the compiled Java <CODE>.class</CODE>
 files and the <CODE>javadoc</CODE> output, so it is not
-necessary to 'build' or run <CODE>make</CODE> to use Ptolemy II
- <p>However, if you would like to rebuild from the Java sources,
-you should run <CODE>$PTII/configure</CODE>, which is a GNU autoconf script
-that looks for your Java compiler, reads in <CODE>$PTII/mk/ptII.mk.in</CODE>
-and generates <CODE>$PTII/mk/ptII.mk</CODE>.
+necessary to 'build' or run <CODE>make</CODE> to use Ptolemy II.
+
+<h3>Unix</h3>
+ If you would like to rebuild from the Java sources under Unix,  
+you should set the <CODE>PTII</CODE> environment variable in your
+environment.  Under C Shell:
+<pre>
+setenv PTII /users/ptII
+</pre>
+You may want to add that line to your <CODE>~/.cshrc</CODE> file.
+
+ <p>To configure the makefiles, run <CODE>$PTII/configure</CODE>, which is
+a GNU autoconf script that looks for your Java compiler, reads in
+<CODE>$PTII/mk/ptII.mk.in</CODE> and generates
+<CODE>$PTII/mk/ptII.mk</CODE>.
+
+ <p>To build:
+<pre>
+cd $PTII
+make
+</pre>
+
+<h3>Windows NT</h3>
+To build Ptolemy II under Windows NT4.0:
+<ol>
+<li> Install the Cygwin toolkit from
+<a href="http://sourceware.cygnus.com/cygwin/"><CODE>http://sourceware.cygnus.com/cygwin/</CODE></a>.
+ <p>The Cygwin toolkit includes GNU <CODE>make</CODE> and <CODE>bash</CODE>.
+
+<li> Set the value of the <CODE>PTII</CODE> environment variable to the 
+name of the directory where Ptolemy II is installed.
+Under NT, you set the environment variable via
+the Environment tab of the System control panel 
+(<CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt; 
+<CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt; Environment)
+
+<li> In the Environment tab, you should also set your path to include the location of the JDK bin directory (i.e. <CODE>C:\\jdk1.1.6\\bin</CODE>)
+
+<li> Start up Cygwin <CODE>bash</CODE>, and cd to the Ptolemy II directory.
+
+<li> Run <CODE>configure</CODE>
+
+<li> Run <CODE>make</CODE>
+</ol>
+
+
+ <p>Currently, Ptolemy II does not support building via Microsoft
+Visual Studio <CODE>nmake</CODE> under Windows.  Also, we have not
+tried building Ptolemy II under Windows '95 or Windows '98.  In the
+short term, we are only interested in supporting Windows NT 4.0sp3.
 
 <HR>
 Copyright &#169 1998 The Regents of the University of California.
 All rights reserved.
 <br>
 Last updated: $Date$,
-comments to: <author>cxh@eecs.berkeley.edu</author>
+comments to: <author>ptII@eecs.berkeley.edu</author>
 </body>
 </html>

@@ -11,13 +11,40 @@ The information below is primarily for use by developers at U.C. Berkeley.
 
 <h2>Parallel trees</h2>
 Locally, the master development tree is in <CODE>~ptII</CODE>.
-The <a href="../../bin/ptlndir"><CODE>ptlndir</CODE></a> script
-will create a parallel tree with links into the <CODE>~ptII</CODE> tree.
+We use the Concurrent Version System (CVS) to manage the source files.
+For more information about CVS, see
+<a href="http://www.cyclic.com"><CODE>http://www.cyclic.com</CODE></a>.
+
+Locally, the CVS Repository is in <CODE>~cvs/Repository</CODE>.
+
+To create a copy of the Ptolemy II tree, follow the steps below:
+<ol>
+<li> Verify that the <CODE>CVSROOT</CODE> environment variable is set
+to <CODE>~cvs/Repository</CODE>
+
+<li> The most common location for a Ptolemy II tree is in 
+<CODE>~/ptII</CODE>.  To create a copy of the tree in <CODE>~/ptII</CODE>:
 <pre>
-mkdir ~/ptII
-cd ptII
-~ptII/bin/ptlndir ~ptII .
+cd
+cvs checkout ptII
 </pre>
+
+
+<li> Set the <CODE>PTII</CODE> environment variable to the location
+of your Ptolemy II tree.  In this case, under C shell:
+<pre>
+setenv PTII ~/ptII
+</pre>
+
+
+<li> cd to the directory where your Ptolemy II tree is and run
+<pre>
+cd $PTII
+configure
+make
+</pre>
+
+</ol>
 
 
 <h2>Browsing your tree from the web</h2>

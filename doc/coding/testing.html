@@ -18,18 +18,26 @@ mentioned below are not included in the Ptolemy II distribution.
 
 <H2><A NAME="test suite">Test Suite</A></H2>
 
-We have included regression tests for most of the Ptolemy IIcode.  Usually,
+We have included regression tests for most of the Ptolemy II code.  Usually,
 wherever there is Java file, the tests are in the <CODE>test</CODE>
 directory.
 
 <H3>Running the tests</H3>
 The tests themselves are written in Tcl, and use
-<a href="http://ptolemy.eecs.berkeley.edu/~cxh/java/tclblend">Tcl Blend</a>,
+<a href="http://www.scriptics.com/software/java.html">Tcl Blend</a>,
 which is an interface between Tcl and Java.
 
  <p>To run the tests, you must have Tcl Blend installed.
  <p><CODE>make tests</CODE> will run the tests in the current directory
 and any subdirectories.
+
+<h3>Jacl</h3>
+
+Jacl is a 100% Java implementation of a subset of Tcl.  In theory it
+would be possible to use Jacl to run the test suite.  However the GUI
+in Ptolemy 0.1 uses Tcl Blend to communicate with the Ptolemy II Java
+kernel, so Tcl Blend needs to be installed anyway.
+
 
 <H3>Writing your own tests</H3>
 
@@ -37,7 +45,7 @@ The test suite infrastructure is based on the Tcl test suite code.  The
 
  <P>The file <A HREF="../../util/testsuite/testDefs.tcl"><CODE>$PTII/util/testsuite/testDefs.tcl</CODE></A> defines the Tcl proc <CODE>test</CODE>.
 
- <P><CODE>test</CODE> takes four arguments:
+ <P><CODE>test</CODE> takes five arguments:
 <OL>
 <LI> The name of the test, for example: <CODE>foo-1.0</CODE>
   <br> The name of the test should strictly follow the format below.
@@ -72,6 +80,16 @@ The test suite infrastructure is based on the Tcl test suite code.  The
 be tested.  The last line of the contents should return a value.
 
 <LI> The results to be compared against.
+
+
+<li> The last argument is optional and determines what sort of test is
+being run.  The default value is <CODE>NORMAL</CODE>, which means that
+the test should pass under normal conditions.  If the value is
+<CODE>KNOWN_FAILED</CODE>, then the test is expected to fail, but
+eventually will be fixed.  By using <CODE>KNOWN_FAILED</CODE>, developers
+can mark tests that they know are failing, which will save other
+developers from attempting to debug known problems.
+
 </OL>
 
 Below is a sample piece of code that sources the
@@ -96,32 +114,22 @@ Test files should be located in the <CODE>test</CODE> directory.
  <P>It is better to have many small test files as opposed to a few
 large test files so that other developers can quickly find the tests
 for the class they are working with.  Usually tests for the class
-<CODE>Foo</CODE> are found in the file <CODE>test/testFoo.itcl</CODE>
+<CODE>Foo</CODE> are found in the file <CODE>test/Foo.tcl</CODE>
 
  <P>Each test file should have the following parts:
 <OL>
-
-<LI> The name of the test file should begin with the word <CODE>test</CODE>.
-For example, if we were testing the Tcl <CODE>foo</CODE> command, then
-the file would be named <CODE>testFoo.itcl</CODE>.  The extension of the file
-is either <CODE>.tcl</CODE> or <CODE>.itcl</CODE>:
-<MENU>
-<LI> <CODE>.tcl</CODE> if the file can be sourced in a <CODE>tclsh</CODE>
-	that does not contain Itcl.
-	<CODE>$TYCHO/kernel/gui/test/testPath.tcl</CODE> is an example.
-
-<LI> <CODE>.itcl</CODE> if the file contains Itcl constructs or tests
-	Itcl classes.
-</MENU>
-Most of the tests are <CODE>.itcl</CODE> files.
 
 <LI> The Copyright
 
 <LI> The code that loads the test system package
 <PRE>
-package require tycho.util.tytest
+if {[string compare test [info procs test]] == 1} then {
+    source testDefs.tcl
+}
 </PRE>
-
+Each directory contains a <CODE>testDefs.tcl</CODE> file which
+in turn sources <a href="../../util/testsuite/testDefs.tcl"><CODE>$PTII/util/testsuite/testDefs.tcl</CODE></a>.  The idea here is that
+if the test framework changes, each test file need not be updated.
 
 <LI> A line that the user can uncomment if they want the test system to
 produce verbose messages:
@@ -130,7 +138,7 @@ produce verbose messages:
 </PRE>
 
 
-<LI> The individual tests, which should loosely follow the Tycho
+<LI> The individual tests, which should loosely follow the Ptolemy II
 file format standard:
 <PRE>
 ############################################################################
@@ -163,7 +171,7 @@ usually are longer and have more complicated return results.
 <HR>
 <H2><A NAME="testing java">Testing Java</A></H2>
 
-Tcl Blend is Sun's Tcl/Java interface.  We use Tcl Blend to test Java
+Tcl Blend is a Tcl/Java interface.  We use Tcl Blend to test Java
 by writing Tcl code that exercises the Java classes.
 
 <H3>Running the tests</H3>
@@ -213,24 +221,6 @@ is defined.
  <P>For example, if we are testing <CODE>NamedObj.java</CODE>, then
 the Tcl test file should be at <CODE>test/NamedObj.tcl</CODE>.
 
-<H4><A NAME="getJavaInfo testing proc">getJavaInfo Testing Proc</A></H4>
- <P>Tcl Blend provides a Tcl procedure called <CODE>java::info</CODE>
-which returns information about an instance of a Java class.
-<A HREF="../../kernel/gui/test/testDefs.tcl"><CODE>$TYCHO/kernel/gui/test/testDefs.tcl</CODE></A>
-defines the <CODE>getJavaInfo</CODE> Tcl proc, which takes a Java object
-handle and returns a string that describes the object's fields, methods
-constructors, and superclass.
- <P>Each Java class should have a Tcl test that calls <CODE>getJavaInfo</CODE>
-so that if the Java class definition changes, then the test will fail.
-This will hopefully prompt the developer to write a test for the
-changed feature.
- <P>If a test fails because of changes in the values returned by
-<CODE>getJavaInfo</CODE>, then the way to fix the test is to run
-the test and grab the strings actually returned and substitute it back
-into the test file.  Of course, you should write tests that cover any
-changes reported by <CODE>getJavaInfo</CODE>.
-
-
 <H3><A NAME="JavaScope">JavaScope</A></H3>
 <A HREF="http://www.suntest.com/JavaScope">JavaScope</A> is Sun's
 Java code coverage tool.
@@ -239,7 +229,7 @@ Java code coverage tool.
 
 <LI> Run:
 <PRE>
-cd $TYCHO/java/pt/kernel
+cd $PTII/ptolemy/kernel
 make jsall
 </PRE>
 The <CODE>jsall</CODE> makefile rule does the following:
@@ -256,11 +246,12 @@ is added to the CLASSPATH and then the classes are recompiled.
 <LI> The test suite is run.
 </MENU>
 
-<LI> To views the code coverage run either <CODE>jsreport</CODE>
-or <CODE>javascope</CODE>
-<PRE>
-jsreport -dbsummary
-</PRE>
+<LI> To views the code coverage run either <CODE>jsreport</CODE>,
+<CODE>jssummary</CODE> or <CODE>javascope</CODE>:
+<pre>
+jssummary -HTML -PROGRESS -OUTFILE=/tmp/summary
+jsreport -HTML -PROGRESS -RECURSIVE -OUTDIR=/tmp/report
+</pre>
 
 <LI> To restore the files
 back to the original state, run <CODE>make jsrestore</CODE>.
@@ -333,31 +324,12 @@ embedded comment option.
 
 See the <A HREF="http://www.suntest.com/JavaScope/jsinstr.html"><CODE>jsinstr</CODE></A> documentation for details.
 
-I tried to use Tcl Blend to call a dummy Java method that flushes the
-database using an embedded comment, and then call that method before
-exiting.
-
- <P>Here's how I attempted to flush the database using a dummy Java method.
- <P>I created the <CODE>JavaScopeFlush</CODE> class:
-<PRE>
-public class JavaScopeFlush {
-    /*jsoptions:IFLUSH=true*/
-    public static void flush() {
-    }
-    /*jsoptions:IFLUSH=false*/
-}
-</PRE>
- <P>Ran <CODE>jsinstr</CODE> on <CODE>JavaScopeFlush.java</CODE>
-
- <P>I then tried to call this method with:
-<PRE>
-java::call JavaScopeFlush flush
-</PRE>
-Unfortunately, it looks like embedded comments are broken.
- <P>For more information, see the
-<A HREF="http://www.suntest.com/NewJavaScope/faq.html#Q5">JavaScope FAQ</A>.
-
-
+ <p>The <CODE>doneTests</CODE> proc of
+<a href="../../util/testsuite/testDefs.tcl"><CODE>$PTII/util/testsuite/testDefs.tcl</CODE></a>
+includes a call that will flush the database:
+<pre>
+    catch {java::call COM.sun.suntest.javascope.database.js\$ flush}
+</pre>
 <HR>
 <H2><A NAME="testing documentation">Testing Documentation</A></H2>
 
@@ -390,13 +362,13 @@ and then run <CODE>htmlchek</CODE>
 <OL>
 <LI> Create the test distribution:
 <PRE>
-cd /users/ptdesign/adm/gen-latest; make htmlchek
+cd /users/ptII/adm/gen-latest; make htmlchek
 </PRE>
 
-<LI> Reset <CODE>TYCHO</CODE> to point to the test distribution:
+<LI> Reset <CODE>PTII</CODE> to point to the test distribution:
 <PRE>
-setenv TYCHO /users/ptdesign/adm/dists/tycho-latest
-cd $TYCHO
+setenv PTII /users/ptII/adm/dists/ptII-latest
+cd PTII
 </PRE>
 
 <LI> Run <CODE>make install</CODE>.  This will make the Itcl HTML docs
@@ -428,27 +400,18 @@ files appear in <CODE>htmlchekout.HREF</CODE> because the non-HTML
 files were not included in the list of files that
 <CODE>htmlchek</CODE> ran on.  One quick way to search all the the <CODE>*.html</CODE> files is
 <PRE>
-cd $TYCHO
+cd $PTII
 grep mystring `find . -name "*.html" -print`
 </PRE>
 
-<H3>Spellchecking</H3>
+<H3>Spell checking</H3>
 Checking the spelling in all the HTML files can be done with:
 <PRE>
-cd $TYCHO
+cd $PTII
 spell `find . -name "*.html" -print`
 </PRE>
 You can spell check an individual HTML file by using the HTML
 editor built-in spell checker under the <CODE>Edit</CODE> menu.
-
-<H3>Checking for bogus copyright SCCS keywords</H3>
-
-Run <CODE>~ptdesign/adm/copyright/chkq $TYCHO</CODE> to print out
-the names of files that might have bogus <CODE>&#37;Q&#37;</CODE> values.
- <P>
-Then run <CODE>~ptdesign/adm/bin/sccsadmin</CODE> on each file that
-has no value for <CODE>&#37;Q&#37;</CODE>
-substituted in.
 
 <H3>Check the distribution for bogus files</H3>
 Run the following makefile rules and commands:
@@ -474,15 +437,11 @@ in the distribution.
 </DL>
 
 <p>
-<a href="../../doc/index.html">Tycho Home Page</a><br>
+<a href="../../doc/index.html">Ptolemy II Home Page</a><br>
 <HR>
-<<<<<<< testing.html
-Copyright &#169 1996-1998  The Regents of the University of California.
-All rights reserved.
-<br> Last updated: $Date$, comments to:
-=======
 Copyright &#169 1996-1998 The Regents of the University of California.
 All rights reserved. 
 <br> Last updated: $Date$, comments to:
->>>>>>> 1.2
-<author>ptII@eecs.berkeley.edu</author> </body> </html>
+<author>ptII@eecs.berkeley.edu</author>
+</body>
+</html>
