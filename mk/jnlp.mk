@@ -190,8 +190,6 @@ COPERNICUS_JARS = \
 	ptolemy/copernicus/copernicus.jar
 
 
-PYTHON_JARS =	ptolemy/actor/gui/python/python.jar 
-
 EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
 PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
@@ -209,6 +207,12 @@ FULL_ONLY_JNLP_JARS = \
 	vendors/jython/jython.jar \
 	ptolemy/actor/hoc/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
+	ptolemy/actor/lib/jai/jai.jar \
+	ptolemy/actor/lib/jmf/jmf.jar \
+	ptolemy/actor/lib/joystick/jstick.jar \
+	ptolemy/actor/lib/python/python.jar \
+	ptolemy/cal/cal.jar \
+	ptolemy/cal/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/dt/demo/demo.jar \
