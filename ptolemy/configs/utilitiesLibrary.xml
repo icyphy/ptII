@@ -1,36 +1,17 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-    <class name="utilities" extends="ptolemy.moml.EntityLibrary">
-      <configure>
-        <?moml
-          <group>
-    <input source="ptolemy/configs/basicUtilities.xml"/>
-    <!-- Blank composite actor. -->
-    <entity name="typed composite actor"
-            class="ptolemy.actor.TypedCompositeActor"/>
-    <entity name="modal model"
-            class="ptolemy.vergil.fsm.modal.ModalModel">
-       <entity name="_Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
-         <input source="ptolemy/configs/fsmLibrary.xml"/>
-         <property name="annotation" class="ptolemy.kernel.util.Attribute">
-           <property name="_hideName"
-                     class="ptolemy.kernel.util.SingletonAttribute"/>
-           <property name="_iconDescription"
-                     class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states. Each refinement needs a director.
-For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure></property>
-           <property name="_location"
-                     class="ptolemy.kernel.util.Location" value="120.0, 5.0"/>
-           <property name="_controllerFactory"
-                     class="ptolemy.vergil.basic.NodeControllerFactory"/>
-           <property name="_editorFactory"
-                     class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
-         </property>
-       </entity>
-    </entity>
-    <input source="ptolemy/data/unit/unitSystems.xml"/>
-          </group>
-        ?>
-      </configure>
-    </class>
+
+<!-- Full utilities library. -->
+<class name="utilities" extends="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <input source="ptolemy/configs/basicUtilities.xml"/>
+        <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+        <input source="ptolemy/configs/utilityModalModel.xml"/>
+        <input source="ptolemy/data/unit/unitSystems.xml"/>
+      </group>
+    ?>
+  </configure>
+</class>

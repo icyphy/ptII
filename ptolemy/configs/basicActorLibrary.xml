@@ -12,7 +12,6 @@
   <input source="ptolemy/actor/lib/logic/logic.xml"/>
   <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
   <input source="ptolemy/actor/lib/array.xml"/>
-  <input source="ptolemy/actor/lib/busses.xml"/>
   <input source="ptolemy/actor/lib/signalprocessing.xml"/>
   <input source="ptolemy/domains/ptinyDomains.xml"/>
 </group>

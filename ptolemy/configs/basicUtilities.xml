@@ -7,74 +7,8 @@
 <!-- of its custom library.  -->
 <group>
 <input source="ptolemy/configs/annotation.xml"/>
-
-<!-- Parameter. -->
-<property name="parameter" class="ptolemy.data.expr.Parameter">
-  <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
-  <property name="_icon" class="ptolemy.vergil.icon.ValueIcon"/>
-  <property name="_smallIconDescription" 
-            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    <configure>
-      <svg>
-        <text x="20"
-              style="font-size:14; font-family:SansSerif; fill:blue"
-              y="20">-P-</text>
-      </svg>
-    </configure>
-  </property>
-  <property name="_editorFactory"
-            class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory"/>
-</property>
-
-<!-- IntRangeParameter, which gets rendered as a slider. -->
-<property name="IntRangeParameter"
-          class="ptolemy.actor.parameters.IntRangeParameter"/>
-
-<!-- PortParameter. -->
-<property name="portParameter" class="ptolemy.actor.parameters.PortParameter">
-  <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
-  <property name="_iconDescription"
-            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    <configure>
-      <svg>
-	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"/>
-      </svg>
-    </configure>
-  </property>
-  <property name="_icon" class="ptolemy.vergil.icon.ValueIcon"/>
-  <property name="_smallIconDescription"
-            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    <configure>
-      <svg>
-        <text x="20"
-              style="font-size:14; font-family:SansSerif; fill:black"
-              y="20">-P-</text>
-      </svg>
-    </configure>
-  </property>
-  <property name="_editorFactory"
-            class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory"/>
-</property>
-
-<!-- RequireVersion, a parameter that insists on a specified version. -->
-<property name="requireVersion"
-          class="ptolemy.kernel.attributes.RequireVersion">
-  <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
-  <property name="_icon" class="ptolemy.vergil.icon.ValueIcon"/>
-  <property name="_smallIconDescription"
-            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    <configure>
-      <svg>
-        <text x="20"
-              style="font-size:14; font-family:SansSerif; fill:blue"
-              y="20">-V-</text>
-      </svg>
-    </configure>
-  </property>
-</property>
-
-<!-- EntityLibrary, Used to add hierarchy to the user's vergilUserLibrary.xml -->
-<property name="EntityLibrary" 
-          class="ptolemy.moml.EntityLibrary"/>
-
+<input source="ptolemy/configs/utilityParameter.xml"/>
+<input source="ptolemy/configs/utilityIntRangeParameter.xml"/>
+<input source="ptolemy/configs/utilityPortParameter.xml"/>
+<input source="ptolemy/configs/utilityRequireVersion.xml"/>
 </group>
