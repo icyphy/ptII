@@ -96,6 +96,7 @@
             <input source="ptolemy/actor/lib/jxta/jxta.xml"/>
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>
+            <input source="ptolemy/actor/lib/security/security.xml"/>
             <input source="ptolemy/apps/superb/superb.xml"/>
             <input source="ptolemy/actor/lib/python/python.xml"/>
             <input source="ptolemy/actor/lib/test.xml"/>
