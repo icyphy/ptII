@@ -178,20 +178,21 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <input source="ptolemy/domains/de/lib/deentities.xml"/>
             <input source="ptolemy/domains/sr/lib/srentities.xml"/>
 	    <input source="ptolemy/domains/rtos/lib/rtosentities.xml"/>
-            <input source="ptolemy/matlab/actors.xml"/>
           </group>
         ?>
       </configure>
     </class>
 
-    <!-- The graphics package is in a sublibrary because it may not be present. -->
-    <!-- It depends on the 3D graphics package of Java being present. -->
-    <class name="Graphics" extends="ptolemy.moml.EntityLibrary">
+    <!-- Optional packages that may or may not be present  -->
+    <class name="optional library" extends="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
+	    <!-- GR depends on the 3D graphics package of Java being present-->
             <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector"/>
             <input source="ptolemy/domains/gr/lib/grentities.xml"/>
+	    <!-- matlab depends on Matlab being present -->
+            <input source="ptolemy/matlab/actors.xml"/>
           </group>
         ?>
       </configure>
