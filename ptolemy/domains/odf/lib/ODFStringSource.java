@@ -94,6 +94,10 @@ public abstract class ODFStringSource extends ODFSourceActor {
 
 	    if( nextOutputReady ) {
 		// _output.send( 0, strToken );
+		/*
+		System.out.println("ODFStringSource current time = "
+			+ getCurrentTime() );
+		*/
 		_output.send( 0, strToken, getCurrentTime() );
 		nextOutputReady = false;
 	    }
@@ -109,7 +113,7 @@ public abstract class ODFStringSource extends ODFSourceActor {
             cnt++;
         }
         
-        // System.out.println(getName()+" is finished with fire()");
+        System.out.println(getName()+" is finished with fire()");
 	// System.out.println(getName()+" returns "+postfire()+" for postfire()");
         
             /*
@@ -128,7 +132,6 @@ public abstract class ODFStringSource extends ODFSourceActor {
 
     private ODFIOPort _output;
     private LinkedList _contents;
-  // private double _endTime = 5000.0;
     
     ///////////////////////////////////////////////////////////////////
     ////                        inner variables                    ////

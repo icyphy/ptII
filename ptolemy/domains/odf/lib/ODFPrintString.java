@@ -64,35 +64,43 @@ public class ODFPrintString extends ODFActor {
      */
     public void fire() throws IllegalActionException {
     // System.out.println("printer is beginning to fire()");
-        StringToken token;
-        double time;
-        
+        StringToken token = null;
+        double time = 0.0;
+
         while( true ) {
-            // System.out.println("\nStarting ODFPrintString.getNextToken()");
-            token = (StringToken)getNextToken();
-            // System.out.println("Finished ODFPrintString.getNextToken()");
-            // System.out.println("\t"+ token.stringValue() );
-            time = getCurrentTime();
-            // System.out.println("\t"+token.stringValue() );
-            System.out.println("\t"+token.stringValue()+"\tTime is " + time);
 	    /*
-            if( time > 6000.0 || time == -1.0 ) {
-                // System.out.println(getName() + " is finished with fire()");
-                return;
-            } else {
-               System.out.print( token.stringValue() );
+	    synchronized(this) {
+		try {
+		    wait();
+		} catch(InterruptedException e) {
+		    System.err.println("Thread interruption");
+		}
 	    }
 	    */
+            // System.out.println("\nStarting ODFPrintString.getNextToken()");
+            // token = (StringToken)_input.get(0);
+            token = (StringToken)getNextToken();
+            System.out.println("Finished ODFPrintString.getNextToken()");
+	    Thread thread = Thread.currentThread();
+	    if( thread instanceof ODFThread ) {
+                time = ((ODFThread)thread).getCurrentTime();
+	    }
+	    if( token == null ) {
+		System.out.println("Null token in ODFPrintString");
+	    }
+            // time = getCurrentTime();
+            // System.out.println("\t"+ token.stringValue() );
             // System.out.println("\tTime is " + time);
-            // System.out.print("\n");
+            System.out.println("\t"+token.stringValue()+"\tTime is " + time);
+            System.out.print("\n");
         }
     }
     
     /** 
      */
     public void wrapup() throws IllegalActionException {
-        // FIXME
-        // System.out.println("\nIt Be Over.\n");
+        System.out.println("\nIt is finished.\n");
+	/*
 	int queue = 0;
 	Enumeration inputPorts = null;
 	inputPorts = inputPorts();
@@ -112,18 +120,17 @@ public class ODFPrintString extends ODFActor {
 		}
             }
 	}
-	/*
 	System.out.println("Queue Size = " + queue);
 	System.out.println("Active Actors = " 
                 + ((ODFDirector)getDirector())._getActiveActorsCount() );
 	*/
-        // super.wrapup();
+        super.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
-    private ODFIOPort _input;
+    public ODFIOPort _input;
     
 }
 

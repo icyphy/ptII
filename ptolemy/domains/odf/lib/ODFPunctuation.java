@@ -79,8 +79,6 @@ public class ODFPunctuation extends ODFStringSource {
         
         _punctuation.insertLast( new StringTime( 20.5, "." ) );
         
-        // _punctuation.insertLast( new StringTime( 5000.0, ";" ) );
-        
         // Up to "Hello!! The Ptolemy Domain is complete."
         
         
@@ -93,7 +91,7 @@ public class ODFPunctuation extends ODFStringSource {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                        privte variables                  ////
 
     private LinkedList _punctuation;
     

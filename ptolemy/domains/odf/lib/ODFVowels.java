@@ -52,6 +52,7 @@ public class ODFVowels extends ODFStringSource {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _vowels = new LinkedList();
+
     }
  
     ///////////////////////////////////////////////////////////////////
@@ -86,8 +87,6 @@ public class ODFVowels extends ODFStringSource {
         _vowels.insertLast( new StringTime( 19.0, "e" ) );
         
         _vowels.insertLast( new StringTime( 20.0, "e" ) );
-        
-        // _vowels.insertLast( new StringTime( 5000.0, ";" ) );
         
         // Up to "Hello!! The Ptolemy Domain is complete."
         
