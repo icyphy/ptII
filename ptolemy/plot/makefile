@@ -219,6 +219,8 @@ BASECLASSFILES = \
 # Class files used in simple applets
 APPLETCLASSFILES = \
 		$(ME)/PlotApplet.class \
+		'$(ME)/PlotLive$$StartButtonListener.class' \
+		'$(ME)/PlotLive$$StopButtonListener.class' \
 		$(ME)/PlotLive.class \
 		$(ME)/PlotLiveApplet.class
 
@@ -232,8 +234,6 @@ COMPLEXCLASSFILES = \
 		$(ME)/EditListener.class \
 		$(ME)/Histogram.class \
 		$(ME)/HistogramApplet.class \
-		'$(ME)/PlotLive$$StartButtonListener.class' \
-		'$(ME)/PlotLive$$StopButtonListener.class' \
 		'$(ME)/PlotFrame$$EPSFileFilter.class' \
 		'$(ME)/PlotFrame$$FileMenuListener.class' \
 		'$(ME)/PlotFrame$$FormatListener.class' \
