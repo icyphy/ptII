@@ -85,11 +85,14 @@ public class DDEThread extends ProcessThread {
      *  this thread is ending execution. "Directly connected actors"
      *  are those that are connected to the actor controlled by this
      *  thread via output ports of this thread's actor. Send events 
-     *  with time stamps of -1.0 to these "downstream" actors.
+     *  with time stamps of TimedQueueReceiver.INACTIVE to these 
+     *  "downstream" actors.
+     * @see ptolemy.domains.dde.kernel.TimedQueueReceiver
      */
     public synchronized void noticeOfTermination() { 
         Actor actor = (Actor)getActor();
 	Enumeration outputPorts = actor.outputPorts();
+	double endTime = TimedQueueReceiver.INACTIVE;
 	if( outputPorts != null ) {
 	    while( outputPorts.hasMoreElements() ) {
 	        IOPort port = (IOPort)outputPorts.nextElement();
@@ -100,7 +103,7 @@ public class DDEThread extends ProcessThread {
                 for (int i = 0; i < rcvrs.length; i++) {
                     for (int j = 0; j < rcvrs[i].length; j++) {
 			try {
-                            ((DDEReceiver) rcvrs[i][j]).put(null, -1.0);
+                            ((DDEReceiver) rcvrs[i][j]).put(null, endTime);
 			} catch( TerminateProcessException e ) {
 			    // Do nothing since we are ending
 			}
