@@ -18,6 +18,10 @@
       <entity name="DatagramWriter"
               class="ptolemy.actor.lib.net.DatagramWriter">
       </entity>
+      
+      <entity name="DirectoryListing"
+              class="ptolemy.actor.lib.io.DirectoryListing">
+      </entity>
 
       <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
         <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>

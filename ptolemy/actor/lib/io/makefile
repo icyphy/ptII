@@ -50,7 +50,9 @@ PTDIST =        $(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = ExpressionReader.java \
+JSRCS = \
+	DirectoryListing.java \
+	ExpressionReader.java \
 	ExpressionWriter.java \
 	LineReader.java \
 	LineWriter.java \
