@@ -238,6 +238,9 @@ MATLAB_LIBDIR =	@MATLAB_LIBDIR@
 # Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
 PTCAL_DIR = @PTCAL_DIR@
 
+# Set to caltrop and used in $PTII/ptolemy/makefile if Cal was found.
+PTCALTROP_DIR = @PTCALTROP_DIR@
+
 # Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
 PTCC =	@PTCC@
 
