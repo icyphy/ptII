@@ -519,6 +519,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * container.
 	 */
 	public Object getParent(Object node) {
+	    // FIXME: what if no parent?
 	    ComponentPort port = (ComponentPort)node;
 	    Entity entity = (Entity)port.getContainer();
 	    List iconList = entity.attributeList(Icon.class);
