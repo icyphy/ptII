@@ -71,6 +71,16 @@ test TotallyOrderedSet-2.2 {Construct an empty set and check emptiness} {
 } {1}
 
 ######################################################################
+#### get the comparator
+#
+test TotallyOrderedSet-2.2 {get the comparator} {
+    #Note: use the above setup.
+    set comp [java::cast ptolemy.domains.ct.kernel.util.FuzzyDoubleComparator \
+	    [$toset getComparator]]
+    list [$comp getThreshold]
+} {1e-10}
+
+######################################################################
 ####  set up some Double objects
 #
 

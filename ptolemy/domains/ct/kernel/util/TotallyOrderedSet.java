@@ -112,6 +112,13 @@ public class TotallyOrderedSet {
         return _set.first();
     }
 
+    /** Return the comparator.
+     *  @return The comparator.
+     */
+    public Comparator getComparator() {
+        return _comparator;
+    }
+
     /** Return the index of the given object. Return -1 if the object
      *  is not in the set.
      */
