@@ -94,7 +94,7 @@ between levels are discrete and the signal is piecewise constant),
 with <i>N</i> levels, where <i>N</i> is the length of the <i>values</i>
 parameter.  Changes between levels occur at times
 <i>nP</i> + <i>o<sub>i </sub></i> where <i>n</i> is any nonnegative integer,
-<i>P</i> is the period, and <i>o<sub>i < /sub></i> is an entry
+<i>P</i> is the period, and <i>o<sub>i </sub></i> is an entry
 in the <i>offsets</i> vector.
 <p>
 The type of the output can be any token type that has a corresponding
