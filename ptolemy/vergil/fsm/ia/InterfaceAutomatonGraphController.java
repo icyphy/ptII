@@ -34,6 +34,7 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 import ptolemy.gui.Top;
+import ptolemy.gui.GUIStringUtilities;
 import ptolemy.vergil.fsm.FSMGraphController;
 
 import javax.swing.AbstractAction;
@@ -131,7 +132,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                 // typically an absurd directory inside the O/S installation.
                 // So we use the current directory instead.
                 // FIXME: Could this throw a security exception in an applet?
-                String cwd = System.getProperty("user.dir");
+                String cwd = GUIStringUtilities.getProperty("user.dir");
                 if (cwd != null) {
                     fileDialog.setCurrentDirectory(new File(cwd));
                 }

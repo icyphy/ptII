@@ -29,6 +29,7 @@
 
 package ptolemy.plot;
 
+import ptolemy.gui.GUIStringUtilities;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -297,7 +298,7 @@ public class PlotFrame extends JFrame {
             // The default on Windows is to open at user.home, which is
             // typically an absurd directory inside the O/S installation.
             // So we use the current directory instead.
-            String cwd = System.getProperty("user.dir");
+            String cwd = GUIStringUtilities.getProperty("user.dir");
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
@@ -345,7 +346,7 @@ public class PlotFrame extends JFrame {
             // The default on Windows is to open at user.home, which is
             // typically an absurd directory inside the O/S installation.
             // So we use the current directory instead.
-            String cwd = System.getProperty("user.dir");
+            String cwd = GUIStringUtilities.getProperty("user.dir");
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
