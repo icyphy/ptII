@@ -39,6 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -237,7 +238,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
                         inputPorts.add(p);
                     }
                 }
-                _cachedInputPorts = inputPorts;
+                // Create an arrayList, since the cache will not be
+                // modified.  This reduces memory usage.
+                _cachedInputPorts = new ArrayList(inputPorts);
                 _inputPortsVersion = _workspace.getVersion();
             } finally {
                 _workspace.doneReading();
@@ -336,14 +339,17 @@ public class AtomicActor extends ComponentEntity implements Actor {
         if (_outputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
-                _cachedOutputPorts = new LinkedList();
+                List outputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
                 while (ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
                     if ( p.isOutput()) {
-                        _cachedOutputPorts.add(p);
+                        outputPorts.add(p);
                     }
                 }
+                // Create an arrayList, since the cache will not be
+                // modified.  This reduces memory usage.
+                _cachedOutputPorts = new ArrayList(outputPorts);
                 _outputPortsVersion = _workspace.getVersion();
             } finally {
                 _workspace.doneReading();
