@@ -101,7 +101,7 @@ radians per second, centered at zero frequency.</text>
         </port>
     </entity>
     <entity name="DB" class="ptolemy.actor.lib.DB">
-        <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
         </property>
@@ -207,7 +207,7 @@ radians per second, centered at zero frequency.</text>
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="65">
             </property>
         </port>
     </entity>
