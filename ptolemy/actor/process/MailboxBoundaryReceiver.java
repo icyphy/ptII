@@ -79,45 +79,6 @@ public class MailboxBoundaryReceiver extends Mailbox
         return _writeBlock;
     }
     
-    /** Associated with Atomic Get/Composite Put
-     *
-     *  Get a token from the mailbox receiver and specify a Branch
-     *  to control the execution of this method. If the controlling
-     *  branch becomes inactive during the execution of this method,
-     *  then throw a TerminateBranchException. If this receiver is
-     *  terminated during the execution of this method, then throw
-     *  a TerminateProcessException.
-     * @param controllingBranch The Branch controlling execution of
-     *  this method.
-     * @return The token contained by this receiver.
-    public Token consumerGet() throws TerminateBranchException {
-        Workspace workspace = getContainer().workspace();
-        ProcessDirector director = ((ProcessDirector)((Actor)
-        	(getContainer().getContainer())).getDirector());
-        
-        synchronized(this) {
-            if( !_terminate && !hasToken() ) {
-                _readBlock = true;
-            	director._actorBlocked(this);
-                while( _readBlock && !_terminate ) {
-                    workspace.wait(this);
-                }
-            }
-            
-            if( _terminate ) {
-            	throw new TerminateProcessException("");
-            } else {
-                if( _writeBlock ) {
-                    _writeBlock = false;
-                    _otherBranch.registerRcvrUnBlocked(this);
-                    notifyAll();
-                }
-            	return super.get();
-            }
-        }
-    }
-     */
-
     /** Get a token from the mailbox receiver and specify a null
      *  Branch to control the execution of this method. 
      * @return The token contained by this receiver.
@@ -138,16 +99,10 @@ public class MailboxBoundaryReceiver extends Mailbox
      */
     public Token get(Branch branch) {
         Workspace workspace = getContainer().workspace();
-        /*
-        ProcessDirector director = ((ProcessDirector)((Actor)
-        	(getContainer().getContainer())).getDirector());
-        */
-        
         synchronized(this) {
             if( !_terminate && !hasToken() ) {
                 _readBlock = true;
                 prepareToBlock(branch);
-            	// director._actorBlocked(this);
                 while( _readBlock && !_terminate ) {
                     checkIfBranchIterationIsOver(branch);
                     workspace.wait(this);
@@ -157,18 +112,11 @@ public class MailboxBoundaryReceiver extends Mailbox
             if( _terminate ) {
             	throw new TerminateProcessException("");
             } else {
-                
                 checkIfBranchIterationIsOver(branch);
-                
                 waitForBranchPermission(branch);
-                
                 if( _writeBlock ) {
                     _writeBlock = false;
-                    
                     wakeUpBlockedPartner();
-                    
-                    // director._actorUnBlocked(this);
-                    // notifyAll();
                 }
             	return super.get();
             }
@@ -203,7 +151,6 @@ public class MailboxBoundaryReceiver extends Mailbox
             workspace.wait(this);
         }
         branch.registerRcvrUnBlocked(this);
-        
         checkIfBranchIterationIsOver(branch);
     }
             
@@ -233,134 +180,7 @@ public class MailboxBoundaryReceiver extends Mailbox
             _otherBranch = branch;
         }
     }
-    
             
-    /** Remove and return the oldest token from the FIFO queue contained
-     *  in the receiver. Terminate the calling process by throwing a
-     *  TerminateProcessException if requested.
-     *  Otherwise, if the FIFO queue is empty, then suspend the calling
-     *  process and inform the director of the same.
-     *  If a new token becomes available to the FIFO queue, then resume the
-     *  suspended process.
-     *  If the queue was not empty, or on availability of a new token (calling
-     *  process was suspended), take the oldest token from the FIFO queue.
-     *  Check if any process is blocked on a write to this
-     *  receiver. If a process is indeed blocked, then unblock the
-     *  process, and inform the director of the same. 
-     *  Otherwise return.
-     *  @return The oldest Token read from the queue
-    public Token get(Branch branch) {
-	if( isInsideBoundary() ) {
-	    if( isConnectedToBoundary() ) {
-		return consumerProducerGet(branch);
-	    }
-	    return producerGet(branch);
-	} else if( isOutsideBoundary() ) {
-	    if( isConnectedToBoundary() ) {
-		return consumerProducerGet(branch);
-	    }
-	    return producerGet(branch);
-	} else if( isConnectedToBoundary() ) {
-	    return consumerGet();
-	}
-	return get();
-
-    }
-     */
-
-    /** Remove and return the oldest token from the FIFO queue contained
-     *  in the receiver. Terminate the calling process by throwing a
-     *  TerminateProcessException if requested.
-     *  Otherwise, if the FIFO queue is empty, then suspend the calling
-     *  process and inform the director of the same.
-     *  If a new token becomes available to the FIFO queue, then resume the
-     *  suspended process.
-     *  If the queue was not empty, or on availability of a new token (calling
-     *  process was suspended), take the oldest token from the FIFO queue.
-     *  Check if any process is blocked on a write to this
-     *  receiver. If a process is indeed blocked, then unblock the
-     *  process, and inform the director of the same. 
-     *  Otherwise return.
-     *  @return The oldest Token read from the queue
-    public void put(Token token, Branch branch) {
-	if( isInsideBoundary() ) {
-	    if( isConnectedToBoundary() ) {
-		consumerProducerPut(token, branch);
-	    }
-	    producerPut(token);
-	} else if( isOutsideBoundary() ) {
-	    if( isConnectedToBoundary() ) {
-		consumerProducerPut(token, branch);
-	    }
-	    producerPut(token);
-	} else if( isConnectedToBoundary() ) {
-	    consumerPut(token, branch);
-	}
-	put(token);
-
-    }
-     */
-
-    /** Get a token from the mailbox receiver and specify a Branch
-     *  to control the execution of this method. If the controlling
-     *  branch becomes inactive during the execution of this method,
-     *  then throw a TerminateBranchException. If this receiver is
-     *  terminated during the execution of this method, then throw
-     *  a TerminateProcessException.
-     * @param controllingBranch The Branch controlling execution of
-     *  this method.
-     * @return The token contained by this receiver.
-    public Token consumerProducerGet(Branch controllingBranch) throws 
-    	    TerminateBranchException {
-        Workspace workspace = getContainer().workspace();
-        Branch brnch = controllingBranch;
-        
-        synchronized(this) {
-            if( !_terminate && !hasToken() && !brnch.isIterationOver() ) {
-                _readBlock = true;
-            	brnch.registerRcvrBlocked(this);
-                _otherBranch = brnch;
-                while( _readBlock && !_terminate && !brnch.isIterationOver() ) {
-                    workspace.wait(this);
-                }
-                _readBlock = false;
-            	brnch.registerRcvrUnBlocked(this);
-                _otherBranch = null;
-            }
-            
-            if( _terminate ) {
-            	throw new TerminateProcessException("");
-            } else if( brnch.isIterationOver() ) {
-            	throw new TerminateBranchException("");
-            } else {
-                //
-                // Get Permission From Controlling Branch
-                //
-                while( !brnch.isBranchPermitted() && !brnch.isIterationOver() ) {
-                    brnch.registerRcvrBlocked(this);
-                    workspace.wait(this);
-                }
-                brnch.registerRcvrUnBlocked(this);
-                if( brnch.isIterationOver() ) {
-                    throw new TerminateBranchException("");
-                }
-                
-                if( _writeBlock ) {
-                    _writeBlock = false;
-                    _otherBranch.registerRcvrUnBlocked(this);
-                    notifyAll();
-                }
-                
-                //
-                // Inform The Controlling Branch Of Success
-                //
-            	brnch.completeEngagement();
-            	return super.get();
-            }
-        }
-    }
-     */
-
     /**
      */
     public boolean isConnectedToBoundary() {
@@ -399,73 +219,6 @@ public class MailboxBoundaryReceiver extends Mailbox
     	return false;
     }
 
-    /** Associated with Composite Get/Atomic Put
-     *  Get a token from the mailbox receiver and specify a Branch
-     *  to control the execution of this method. If the controlling
-     *  branch becomes inactive during the execution of this method,
-     *  then throw a TerminateBranchException. If this receiver is
-     *  terminated during the execution of this method, then throw
-     *  a TerminateProcessException.
-     * @param controllingBranch The Branch controlling execution of
-     *  this method.
-     * @return The token contained by this receiver.
-    public Token producerGet(Branch controllingBranch) throws 
-    	    TerminateBranchException {
-        Workspace workspace = getContainer().workspace();
-        ProcessDirector director = ((ProcessDirector)((Actor)
-        	(getContainer().getContainer())).getDirector());
-        Branch brnch = controllingBranch;
-        
-        synchronized(this) {
-            if( !_terminate && !hasToken() && !brnch.isIterationOver() ) {
-                _readBlock = true;
-            	brnch.registerRcvrBlocked(this);
-                _otherBranch = brnch;
-                while( _readBlock && !_terminate && !brnch.isIterationOver() ) {
-                    workspace.wait(this);
-                }
-            	brnch.registerRcvrUnBlocked(this);
-                _otherBranch = null;
-            }
-            
-            if( _terminate ) {
-            	throw new TerminateProcessException("");
-            } else if( brnch.isIterationOver() ) {
-            	throw new TerminateBranchException("");
-            } else {
-                //
-                // Get Permission From Controlling Branch
-                //
-                while( !brnch.isBranchPermitted() && !brnch.isIterationOver() ) {
-                    brnch.registerRcvrBlocked(this);
-                    try {
-                        wait();
-                    } catch( InterruptedException e ) {
-                        throw new TerminateProcessException(
-                        	"InterruptedException thrown");
-                    }
-                }
-                brnch.registerRcvrUnBlocked(this);
-                if( brnch.isIterationOver() ) {
-                    throw new TerminateBranchException("");
-                }
-                
-                if( _writeBlock ) {
-                    _writeBlock = false;
-                    director._actorUnBlocked(this);
-                    notifyAll();
-                }
-                
-                //
-                // Inform The Controlling Branch Of Success
-                //
-            	brnch.completeEngagement();
-            	return super.get();
-            }
-        }
-    }
-     */
-
     /** Put a token into the mailbox receiver and specify a Branch
      *  to control the execution of this method. If the controlling
      *  branch becomes inactive during the execution of this method,
@@ -478,11 +231,6 @@ public class MailboxBoundaryReceiver extends Mailbox
      */
     public void put(Token token, Branch branch) {
         Workspace workspace = getContainer().workspace();
-        /*
-        ProcessDirector director = ((ProcessDirector)((Actor)
-        	(getContainer().getContainer())).getDirector());
-        */
-        
         synchronized(this) {
             if( !_terminate && !hasRoom() ) {
                 _writeBlock = true;
@@ -490,15 +238,6 @@ public class MailboxBoundaryReceiver extends Mailbox
                 while( _writeBlock && !_terminate ) {
                     checkIfBranchIterationIsOver(branch);
                     workspace.wait(this);
-                    /*
-                    director._actorBlocked(this);
-                    try {
-                        wait();
-                    } catch( InterruptedException e ) {
-                        throw new TerminateProcessException(
-                        	"InterruptedException thrown");
-                    }
-                    */
                 }
             }
             
@@ -512,10 +251,9 @@ public class MailboxBoundaryReceiver extends Mailbox
                 
                 super.put(token);
                 if( _readBlock ) {
-                    _readBlock = false;
                     wakeUpBlockedPartner();
-                    // director._actorUnBlocked(this);
-                    // notifyAll();
+                    _readBlock = false;
+                    notifyAll();
                 }
             }
         }
@@ -526,214 +264,8 @@ public class MailboxBoundaryReceiver extends Mailbox
      */
     public void put(Token token) {
         put(token, null);
-        /*
-        ProcessDirector director = ((ProcessDirector)((Actor)
-        	(getContainer().getContainer())).getDirector());
-        
-        synchronized(this) {
-            if( !_terminate && !hasRoom() ) {
-                _writeBlock = true;
-                while( _writeBlock && !_terminate ) {
-                    director._actorBlocked(this);
-                    try {
-                        wait();
-                    } catch( InterruptedException e ) {
-                        throw new TerminateProcessException(
-                        	"InterruptedException thrown");
-                    }
-                }
-            }
-            
-            if( _terminate ) {
-            	throw new TerminateProcessException("");
-            } else {
-                super.put(token);
-                if( _readBlock ) {
-                    _readBlock = false;
-                    director._actorUnBlocked(this);
-                    notifyAll();
-                }
-            }
-        }
-        */
     }
             
-    /** Put a token into the mailbox receiver and specify a Branch
-     *  to control the execution of this method. If the controlling
-     *  branch becomes inactive during the execution of this method,
-     *  then throw a TerminateBranchException. If this receiver is
-     *  terminated during the execution of this method, then throw
-     *  a TerminateProcessException.
-     * @param token The token being placed in this receiver.
-     * @param controllingBranch The Branch controlling execution of
-     *  this method.
-    public void consumerPut(Token token, Branch controllingBranch) throws 
-    	    TerminateBranchException {
-        Workspace workspace = getContainer().workspace();
-        ProcessDirector director = ((ProcessDirector)((Actor)
-        	(getContainer().getContainer())).getDirector());
-        Branch brnch = controllingBranch;
-        
-        synchronized(this) {
-            if( !_terminate && !hasRoom() && !brnch.isIterationOver() ) {
-                _writeBlock = true;
-            	brnch.registerRcvrBlocked(this);
-                _otherBranch = brnch;
-                while( _writeBlock && !_terminate && !brnch.isIterationOver() ) {
-                    workspace.wait(this);
-                }
-                _writeBlock = false;
-            	brnch.registerRcvrUnBlocked(this);
-                _otherBranch = null;
-            }
-            
-            if( _terminate ) {
-            	throw new TerminateProcessException("");
-            } else if( brnch.isIterationOver() ) {
-            	throw new TerminateBranchException("");
-            } else {
-                //
-                // Get Permission From Controlling Branch
-                //
-                while( !brnch.isBranchPermitted() && !brnch.isIterationOver() ) {
-                    brnch.registerRcvrBlocked(this);
-                    workspace.wait(this);
-                }
-                brnch.registerRcvrUnBlocked(this);
-                if( brnch.isIterationOver() ) {
-                    throw new TerminateBranchException("");
-                }
-            
-                super.put(token);
-                if( _readBlock ) {
-                    _readBlock = false;
-                    director._actorUnBlocked(this);
-                    notifyAll();
-                }
-                
-                //
-                // Inform The Controlling Branch Of Success
-                //
-            	brnch.completeEngagement();
-            }
-        }
-    }
-     */
-
-    /** Put a token into the mailbox receiver and specify a Branch
-     *  to control the execution of this method. If the controlling
-     *  branch becomes inactive during the execution of this method,
-     *  then throw a TerminateBranchException. If this receiver is
-     *  terminated during the execution of this method, then throw
-     *  a TerminateProcessException.
-     * @param token The token being placed in this receiver.
-     * @param controllingBranch The Branch controlling execution of
-     *  this method.
-    public void consumerProducerPut(Token token, Branch controllingBranch) throws 
-    	    TerminateBranchException {
-        ProcessDirector director = ((ProcessDirector)((Actor)
-        	(getContainer().getContainer())).getDirector());
-        Branch brnch = controllingBranch;
-        
-        synchronized(this) {
-            if( !_terminate && !hasRoom() && !brnch.isIterationOver() ) {
-                _writeBlock = true;
-            	brnch.registerRcvrBlocked(this);
-                _otherBranch = brnch;
-                while( _writeBlock && !_terminate && !brnch.isIterationOver() ) {
-                    try {
-                        wait();
-                    } catch( InterruptedException e ) {
-                        throw new TerminateProcessException(
-                        	"InterruptedException thrown");
-                    }
-                }
-                _writeBlock = false;
-            	brnch.registerRcvrUnBlocked(this);
-                _otherBranch = null;
-            }
-            
-            if( _terminate ) {
-            	throw new TerminateProcessException("");
-            } else if( brnch.isIterationOver() ) {
-            	throw new TerminateBranchException("");
-            } else {
-                //
-                // Get Permission From Controlling Branch
-                //
-                while( !brnch.isBranchPermitted() && !brnch.isIterationOver() ) {
-                    brnch.registerRcvrBlocked(this);
-                    try {
-                        wait();
-                    } catch( InterruptedException e ) {
-                        throw new TerminateProcessException(
-                        	"InterruptedException thrown");
-                    }
-                }
-                brnch.registerRcvrUnBlocked(this);
-                if( brnch.isIterationOver() ) {
-                    throw new TerminateBranchException("");
-                }
-            
-                super.put(token);
-                if( _readBlock ) {
-                    _readBlock = false;
-                    _otherBranch.registerRcvrUnBlocked(this);
-                    notifyAll();
-                }
-                
-                //
-                // Inform The Controlling Branch Of Success
-                //
-            	brnch.completeEngagement();
-            }
-        }
-    }
-     */
-
-    /** Atomic Put/Composite Get
-     *  Put a token into the mailbox receiver and specify a Branch
-     *  to control the execution of this method. If the controlling
-     *  branch becomes inactive during the execution of this method,
-     *  then throw a TerminateBranchException. If this receiver is
-     *  terminated during the execution of this method, then throw
-     *  a TerminateProcessException.
-     * @param token The token being placed in this receiver.
-     * @param controllingBranch The Branch controlling execution of
-     *  this method.
-    public void producerPut(Token token) throws 
-    	    TerminateBranchException {
-        ProcessDirector director = ((ProcessDirector)((Actor)
-        	(getContainer().getContainer())).getDirector());
-        
-        synchronized(this) {
-            if( !_terminate && !hasRoom() ) {
-                _writeBlock = true;
-                director._actorBlocked(this);
-                while( _writeBlock && !_terminate ) {
-                    try {
-                        wait();
-                    } catch( InterruptedException e ) {
-                        throw new TerminateProcessException(
-                        	"InterruptedException thrown");
-                    }
-                }
-            }
-            
-            if( _terminate ) {
-            	throw new TerminateProcessException("");
-            } else {
-                super.put(token);
-                if( _readBlock ) {
-                    _readBlock = false;
-                    _otherBranch.registerRcvrUnBlocked(this);
-                    notifyAll();
-                }
-            }
-        }
-    }
-     */
-
     /** Reset the local flags of this receiver. Use this method when
      *  restarting execution.
      */
