@@ -45,6 +45,7 @@ import java.net.URL;
 import javax.media.jai.RenderedOp;
 
 import ptolemy.actor.lib.Sink;
+import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -105,7 +106,7 @@ public class JAIJPEGWriter extends Sink {
         writeTableDataOnly.setTypeEquals(BaseType.BOOLEAN);
         writeTableDataOnly.setToken(BooleanToken.FALSE);
 
-        quality = new Parameter(this, "quality", new DoubleToken("0.75F"));
+        quality = new IntRangeParameter(this, "quality");
 
         useDefaultLuminanceTable
             = new Parameter(this, "useDefaultLuminanceTable");
@@ -168,12 +169,12 @@ public class JAIJPEGWriter extends Sink {
      */
     public Parameter horizontalSubsampling;
 
-    /** The quality of the file written.  The quality ranges from 0.0
+    /** The quality of the file written.  The quality ranges from 0
      *  which is a high amount of compression, small file size, and
-     *  poor picture quality, to 1.0, which is no compression, larger
+     *  poor picture quality, to 100, which is no compression, larger
      *  file size, and high picture quality.
      */
-    public Parameter quality;
+    public IntRangeParameter quality;
 
     /** The restart interval in number of JPEG Minimum Coded Units
      *  (MCUs).  JPEG images can use these restart markers to
@@ -274,8 +275,7 @@ public class JAIJPEGWriter extends Sink {
             _jpegEncodeParameters.setWriteTablesOnly(writeTableDataOnlyValue);
             _jpegEncodeParameters.setWriteImageOnly(writeImageDataOnlyValue);
         }
-        _jpegEncodeParameters.setQuality((float)
-                ((DoubleToken)quality.getToken()).doubleValue());
+        _jpegEncodeParameters.setQuality(0.01f * quality.getCurrentValue());
         if (!((BooleanToken)useDefaultLuminanceTable
                 .getToken()).booleanValue()) {
 
@@ -303,8 +303,6 @@ public class JAIJPEGWriter extends Sink {
             _jpegEncodeParameters.setVerticalSubsampling(i,
                     ((IntToken)verticalSubsamplingData[i]).intValue());
         }
-        _jpegEncodeParameters.setQuality((float)((DoubleToken)quality
-                .getToken()).doubleValue());
         _jpegEncodeParameters.setRestartInterval(((IntToken)restartInterval
                 .getToken()).intValue());
 
