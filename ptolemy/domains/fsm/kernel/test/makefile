@@ -46,6 +46,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+        CombineInternalTransitions.java \
         Compose.java \
         GetInfo.java \
 	ZeroOneSource.java

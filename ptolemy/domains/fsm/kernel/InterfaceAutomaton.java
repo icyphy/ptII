@@ -165,6 +165,87 @@ public class InterfaceAutomaton extends FSMActor {
             }
     }
 
+    /** Combine each chain of internal transitions into one transition.
+     *  This method iterates through all the states. If a state has just
+     *  one incoming and one outgoing internal transitions, and it is
+     *  not the initial state, it is removed and the two transitions are
+     *  combined into one. The label on the new transition is formed by 
+     *  <incomingLabel><NAME_CONNECTOR><outgoingLabel>.
+     */
+    public void combineInternalTransitions() {
+        State initialState = (State)getEntity(initialStateName.getExpression());
+        try {
+            Iterator states = entityList().iterator();
+            while (states.hasNext()) {
+                State state = (State)states.next();
+
+                ComponentPort inPort = state.incomingPort;
+                List transitionList = inPort.linkedRelationList();
+                InterfaceAutomatonTransition incomingTransition = null;
+                if (transitionList.size() != 1) {
+		    continue;
+		}
+
+                // just one incoming transition, check if it's internal
+                incomingTransition = 
+                    (InterfaceAutomatonTransition)transitionList.get(0);
+                if (incomingTransition.getType() != 
+                    InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
+                    continue;
+		}
+
+                ComponentPort outPort = state.outgoingPort;
+                transitionList = outPort.linkedRelationList();
+                InterfaceAutomatonTransition outgoingTransition = null;
+                if (transitionList.size() != 1) {
+		    continue;
+		}
+
+                // just one outgoing transition, check if it's internal
+                outgoingTransition = 
+                    (InterfaceAutomatonTransition)transitionList.get(0);
+                if (outgoingTransition.getType() != 
+                    InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
+                    continue;
+		}
+
+                // only has one incoming and one outgoing internal transition,
+                // check if this state is initial.
+                if (state == initialState) {
+                    continue;
+                }
+
+                // combine transitions
+                State sourceState = incomingTransition.sourceState();
+                State destinationState = outgoingTransition.destinationState();
+                String incomingLabel = incomingTransition.getLabel();
+                String incomingName = incomingLabel.substring(0,
+                                              incomingLabel.length() -1);
+                String outgoingLabel = outgoingTransition.getLabel();
+                String newLabel = incomingName + NAME_CONNECTOR + outgoingLabel;
+
+                String relationNamePrefix = incomingTransition.getName() + 
+                        NAME_CONNECTOR + outgoingTransition.getName();
+
+                // remove this state and add new transition
+                _removeStateAndTransitions(state);
+                _addTransition(this, relationNamePrefix,
+                               sourceState, destinationState, newLabel);
+            }
+        } catch (IllegalActionException exception) {
+            // should not happen
+            throw new InternalErrorException(
+                "InterfaceAutomaton.combineInternalTransitions: "
+                + exception.getMessage());
+        } catch (NameDuplicationException exception) {
+            // should not happen since _addTransition() uses unique name.
+            // Maybe that method should not throw this exception.
+            throw new InternalErrorException(
+                "InterfaceAutomaton.combineInternalTransitions: "
+                + exception.getMessage());
+        }
+    }
+
     /** Return a new InterfaceAutomaton that is the composition of the
      *  specified InterfaceAutomaton and this one.
      *  @param automaton An InterfaceAutomaton to compose with this one.
@@ -395,17 +476,17 @@ public class InterfaceAutomaton extends FSMActor {
             }
         }
 
-	// for ports that do not have corresponding transitions, rename the
-	// ports
+        // for ports that do not have corresponding transitions, rename the
+        // ports
         iterator = portList().iterator();
-	while (iterator.hasNext()) {
-	    TypedIOPort port = (TypedIOPort)iterator.next();
-	    String oldName = port.getName();
-	    String newName = (String)nameMap.get(oldName);
-	    if (newName != null) {
-	        port.setName(newName);
-	    }
-	}
+        while (iterator.hasNext()) {
+            TypedIOPort port = (TypedIOPort)iterator.next();
+            String oldName = port.getName();
+            String newName = (String)nameMap.get(oldName);
+            if (newName != null) {
+                port.setName(newName);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
