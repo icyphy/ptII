@@ -76,7 +76,7 @@ public class CSPSource extends AtomicActor {
                 //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
                 Token t = new IntToken(_value);
                 //System.out.println(getName() + " sending...");
-                output.send(0,t);
+                output.send(0, t);
                 System.out.println(getName() + " sent Token: " + t.toString());
                 _value++;
             }
