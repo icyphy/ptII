@@ -214,6 +214,19 @@ if [ "$PTCHIC_DIR" = "chic" ]; then
     CHIC_JARS="${CLASSPATHSEPARATOR}${CHIC_DIR}/chic.jar"
 fi
 
+#### Colt "Open Source Libraries for High Performance Scientific and Technical
+# Computing in Java"
+# For more information, see http://hoschek.home.cern.ch/hoschek/colt/
+# Set to colt and used in $PTII/ptolemy/actor/lib/makefile if Colt was found.
+PTCOLT_DIR=@PTCOLT_DIR@
+COLT_JARS=""
+if [ "$PTCOLT_DIR" = "caltrop" ]; then
+    # Directory that contains the Colt jar file colt.jar
+    COLT_DIR="@COLT_DIR@"
+    COLT_JARS="${CLASSPATHSEPARATOR}${COLT_DIR}/colt.jar"
+fi
+
+
 #### Serial port stuff
 # If Commapi is present, then set to yes, otherwise set to no
 COMMAPI_PRESENT="@COMMAPI_PRESENT@"
@@ -412,7 +425,7 @@ fi
 # Note that CALTROP_JARS should be before SOOT_JARS because
 # CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
 # a version of java cup
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${CHIC_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${X10_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
