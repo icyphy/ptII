@@ -1,0 +1,30 @@
+#!/bin/sh
+# $Id$
+# filter a file using XSLT
+# Usage: ptfilter stylesheet.xsl inputfile.xml output.xml
+# We generate a separate output.xml file so that we can use
+# this in scripts
+
+if [ $# -ne 3 ]; then
+    echo "$0: Usage: ptfilter stylesheet.xsl input.xml output.xml"
+    exit 5
+fi
+
+stylesheet=$1 
+input=$2
+output=$3
+
+java -jar /users/ptII/vendors/saxon/saxon7-1/saxon7.jar \
+	$input \
+	$stylesheet
+	$PTII/ptolemy/apps/xsl/filter/expressionFix.xsl | \
+
+sed -e 's@<?xml version="1.0" encoding="utf-8" standalone="no"?>@<?xml version="1.0" standalone="no"?>@' \
+    -e 's@<!DOCTYPE entity@<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"@' \
+    -e 's@PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">@  "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">@' \
+    > $output
+	
+# We could pipe to awk here, but instead we check to see if 
+# the file has a trailing newline
+$PTII/adm/bin/addtrailingnl $output
+
