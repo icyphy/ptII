@@ -6,39 +6,23 @@
     </property>
     <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
         <property name="circle2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-            <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-            </property>
-            <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
             <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
             <property name="width" class="ptolemy.data.expr.Parameter" value="range*2.0">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="range*2.0">
             </property>
-            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
             <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="haloColor">
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
             </property>
         </property>
         <property name="circle3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-            <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-            </property>
-            <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
             <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
             <property name="width" class="ptolemy.data.expr.Parameter" value="20">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="20">
             </property>
-            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
             <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="nodeColor">
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
             </property>
         </property>
     </property>
@@ -228,12 +212,6 @@ Discard the rest.</text></svg></configure>
         <property name="input"/>
         <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="Channel">
         </property>
-        <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-        </property>
-        <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-        </property>
-        <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-        </property>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
         </property>
         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -247,12 +225,6 @@ Discard the rest.</text></svg></configure>
         <property name="output"/>
         <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="ReportChannel">
         </property>
-        <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-        </property>
-        <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-        </property>
-        <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-        </property>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
         </property>
         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -265,12 +237,6 @@ Discard the rest.</text></svg></configure>
     <port name="out" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
         <property name="output"/>
         <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="Channel">
-        </property>
-        <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
-        </property>
-        <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-        </property>
-        <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
         </property>
@@ -293,13 +259,6 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 290.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in &gt;= 1">
@@ -328,30 +287,12 @@ Discard the rest.</text></svg></configure>
     <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 175.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="control" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
         <property name="delay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="590.0, 165.0">
         </property>
-        <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="{1.0, 0.0, 0.0, 1.0}">
@@ -365,25 +306,12 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 330.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Previous" class="ptolemy.domains.de.lib.Previous">
         <property name="initialValue" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 200.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -392,9 +320,6 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 385.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0}">
@@ -408,29 +333,10 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 385.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="BooleanSwitch2" class="ptolemy.actor.lib.BooleanSwitch">
         <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 300.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="control" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
@@ -444,13 +350,6 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 200.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="nodeColor">
@@ -463,20 +362,10 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="655.0, 385.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
         <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 385.0">
         </property>
-        <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in + 1">
