@@ -47,6 +47,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
 //// StyleConfigurer
@@ -93,23 +94,23 @@ public class StyleConfigurer extends Query implements QueryListener {
             // Note that fixing this will probably move the accept method
             // into some sort of factory object (instead of cloning
             // existing styles).
-            parameterStyles = new ParameterEditorStyle[8];
-            parameterStyles[0] = new LineStyle();
-            parameterStyles[0].setName("Line");
-            parameterStyles[1] = new CheckBoxStyle();
-            parameterStyles[1].setName("Check Box");
-            parameterStyles[2] = new ChoiceStyle();
-            parameterStyles[2].setName("Choice");
-            parameterStyles[3] = new EditableChoiceStyle();
-            parameterStyles[3].setName("EditableChoice");
-            parameterStyles[4] = new TextStyle();
-            parameterStyles[4].setName("Text");
-            parameterStyles[5] = new FileChooserStyle();
-            parameterStyles[5].setName("FileChooser");
-            parameterStyles[6] = new NotEditableLineStyle();
-            parameterStyles[6].setName("Fixed");
-            parameterStyles[7] = new PasswordStyle();
-            parameterStyles[7].setName("Password");
+            _parameterStyles = new ParameterEditorStyle[8];
+            _parameterStyles[0] = new LineStyle();
+            _parameterStyles[0].setName("Line");
+            _parameterStyles[1] = new CheckBoxStyle();
+            _parameterStyles[1].setName("Check Box");
+            _parameterStyles[2] = new ChoiceStyle();
+            _parameterStyles[2].setName("Choice");
+            _parameterStyles[3] = new EditableChoiceStyle();
+            _parameterStyles[3].setName("EditableChoice");
+            _parameterStyles[4] = new TextStyle();
+            _parameterStyles[4].setName("Text");
+            _parameterStyles[5] = new FileChooserStyle();
+            _parameterStyles[5].setName("FileChooser");
+            _parameterStyles[6] = new NotEditableLineStyle();
+            _parameterStyles[6].setName("Fixed");
+            _parameterStyles[7] = new PasswordStyle();
+            _parameterStyles[7].setName("Password");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
@@ -143,17 +144,17 @@ public class StyleConfigurer extends Query implements QueryListener {
             } else {
                 int count = 0;
                 // Reduce the list of parameters
-                for (int i = 0; i < parameterStyles.length; i++) {
+                for (int i = 0; i < _parameterStyles.length; i++) {
                     if (foundOne &&
-                            parameterStyles[i].getClass()
+                            _parameterStyles[i].getClass()
                             == foundStyle.getClass()) {
                         defaultIndex = count;
                         if (foundStyle.acceptable(param)) {
-                            styleList.add(parameterStyles[i].getName());
+                            styleList.add(_parameterStyles[i].getName());
                             count++;
                         }
-                    } else if (parameterStyles[i].acceptable(param)) {
-                        styleList.add(parameterStyles[i].getName());
+                    } else if (_parameterStyles[i].acceptable(param)) {
+                        styleList.add(_parameterStyles[i].getName());
                         count++;
                     }
                 }
@@ -174,54 +175,63 @@ public class StyleConfigurer extends Query implements QueryListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Called to notify that one of the entries has changed.
+    /** Generate a change request to apply the changes.
+     *  This is called to notify that one of the entries has changed.
      *  The name of the entry is passed as an argument.
      *  @param name The name of the entry.
      */
     public void changed(String name) {
+        StringBuffer moml = new StringBuffer();
         // Treat the expertMode entry specially.
         if (name.equals("expertMode")) {
             Attribute previousExpert = _object.getAttribute("_expertMode");
             boolean isExpert = previousExpert != null;
             boolean toExpert = getBooleanValue("expertMode");
             if (isExpert != toExpert) {
-                try {
-                    if (isExpert) {
-                        previousExpert.setContainer(null);
-                    } else {
-                        new Attribute(_object, "_expertMode");
-                    }
-                } catch (KernelException e) {
-                    // This should not occur.
-                    throw new InternalErrorException(e);
+                if (isExpert) {
+                    moml.append("<deleteProperty name=\"_expertMode\"/>");
+                } else {
+                    moml.append("<property name=\"_expertMode\" "
+                    + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
                 }
             }
-            return;
-        }
-
-        // Entry is not expertMode.
-        ParameterEditorStyle found = null;
-        Attribute param = _object.getAttribute(name);
-        for (int i = 0; i < parameterStyles.length && found == null; i++) {
-            if (getStringValue(name).equals(parameterStyles[i].getName())) {
-                found = parameterStyles[i];
+        } else {
+                        
+            // Entry is not expertMode.
+            // Figure out which style is being requested.
+            ParameterEditorStyle found = null;
+            for (int i = 0; i < _parameterStyles.length && found == null; i++) {
+                if (getStringValue(name).equals(_parameterStyles[i].getName())) {
+                    found = _parameterStyles[i];
+                }
             }
-        }
-        Iterator styles
-            = param.attributeList(ParameterEditorStyle.class).iterator();
-        ParameterEditorStyle style = null;
-        try {
+            // First remove all pre-existing styles.
+            moml.append("<group>");
+            Attribute param = _object.getAttribute(name);
+            moml.append("<property name=\"" + param.getName() + "\">");
+            Iterator styles
+                    = param.attributeList(ParameterEditorStyle.class).iterator();
+            boolean foundOne = false;
             while (styles.hasNext()) {
-                style = (ParameterEditorStyle)styles.next();
-                style.setContainer(null);
+                foundOne = true;
+                ParameterEditorStyle style = (ParameterEditorStyle)styles.next();
+                moml.append("<deleteProperty name=\"" + style.getName() + "\"/>\n");
             }
-            style = (ParameterEditorStyle)found.clone(_object.workspace());
-            style.setName(style.uniqueName("style"));
-            style.setContainer(param);
-        } catch (Exception ex) {
-            // FIXME: This is no way to report the error.
-            System.out.println(ex.getMessage());
+            if (foundOne) {
+                // Have to close and re-open the context to ensure
+                // that deletions occur before additions.
+                moml.append("</property>");
+                moml.append("<property name=\"" + param.getName() + "\">");
+            }
+            moml.append("<group name=\"auto\">");
+            moml.append(found.exportMoML("style"));
+            moml.append("</group></property></group>");
         }
+        // FIXME
+        System.out.println(moml.toString());
+        MoMLChangeRequest change = new MoMLChangeRequest(
+                this, _object, moml.toString());
+        _object.requestChange(change);
     }
 
     /** Request restoration of the parameter values to what they
@@ -250,6 +260,7 @@ public class StyleConfigurer extends Query implements QueryListener {
                             if (isExpert) {
                                 currentExpert.setContainer(null);
                             } else {
+                                // FIXME: This won't propagate.
                                 new Attribute(_object, "_expertMode");
                             }
                         } catch (KernelException e) {
@@ -289,5 +300,5 @@ public class StyleConfigurer extends Query implements QueryListener {
     private Map _originalValues = new HashMap();
 
     // The list of the possible styles.
-    private ParameterEditorStyle parameterStyles[];
+    private ParameterEditorStyle _parameterStyles[];
 }
