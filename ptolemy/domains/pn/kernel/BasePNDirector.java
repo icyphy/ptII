@@ -94,14 +94,6 @@ This base director does not support any form of mutations or topology changes
 but provides the basic infrastructure in the form of methods that the derived
 directors can use.
 <p>
-This director also permits pausing of the execution. An execution is paused
-when all active processes are blocked or paused (at least one process is
-paused). In case of PN, a process can be paused only when it tries to
-communicate with other processes. Thus a process can be paused in the get()
-or put() methods of the receivers alone. If there is a process that does
-not communicate with other processes in the model, then the execution can
-never pause in that model.
-<p>
 Though this class defines and uses a event-listener mechanism for notifying
 the listeners of the various states a process is in, this mechanism is expected
 to change to a great extent in the later versions of this class. A developer
@@ -205,8 +197,8 @@ public class BasePNDirector extends ProcessDirector {
      *  <i>not</i> added to the directory of that workspace (It must be added
      *  by the user if he wants it to be there).
      *  The result is a new director with no container, no pending mutations,
-     *  and no topology listeners. The count of active processes is zero
-     *  and it is not paused. The parameter "Initial_queue_capacity" has the
+     *  and no topology listeners. The count of active processes is zero.
+     *  The parameter "Initial_queue_capacity" has the
      *  same value as the director being cloned.
      *
      *  @param ws The workspace for the cloned object.
@@ -324,28 +316,6 @@ public class BasePNDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Decrease by 1 the count of active processes under the control of this
-     *  director. Also check whether this results in the model arriving at a
-     *  deadlock or a pause. If either of these is detected, then notify
-     *  the directing thread of the same. Inform all the process listeners
-     *  that the relevant process has finished its execution.
-     */
-    protected synchronized void _decreaseActiveCount() {
-	super._decreaseActiveCount();
-        if (!_processlisteners.isEmpty()) {
-            ProcessThread pro = (ProcessThread)Thread.currentThread();
-            Actor actor = pro.getActor();
-            PNProcessEvent event = new PNProcessEvent(actor,
-                    PNProcessEvent.PROCESS_FINISHED,
-		    PNProcessEvent.FINISHED_PROPERLY);
-            Iterator enum = _processlisteners.iterator();
-            while (enum.hasNext()) {
-                PNProcessListener lis = (PNProcessListener)enum.next();
-                lis.processFinished(event);
-            }
-        }
-    }
-
     /** Handle (resolve) an artificial deadlock and return false. If the
      *  deadlock is not an artificial deadlock (it is a real deadlock), then
      *  return true.
@@ -437,7 +407,7 @@ public class BasePNDirector extends ProcessDirector {
      */
     protected synchronized void _informOfMutationBlock() {
 	_mutationBlockCount++;
-	if (_isDeadlocked() || _isPaused()) {
+	if (_isDeadlocked()) {
 	    notifyAll();
 	}
 	return;
@@ -461,20 +431,7 @@ public class BasePNDirector extends ProcessDirector {
      */
     protected synchronized void _actorReadBlocked(boolean internal) {
 	_readBlockCount++;
-        /*
-        if (!_processlisteners.isEmpty()) {
-            Actor actor = receiver.getReadBlockedActor();
-            PNProcessEvent event = new PNProcessEvent(actor,
-                    PNProcessEvent.PROCESS_BLOCKED,
-                    PNProcessEvent.BLOCKED_ON_READ);
-            Iterator enum = _processlisteners.iterator();
-            while (enum.hasNext()) {
-                PNProcessListener lis = (PNProcessListener)enum.next();
-                lis.processStateChanged(event);
-            }
-        }
-        */
-	if (_isDeadlocked() || _isPaused()) {
+	if (_isDeadlocked()) {
 	    notifyAll();
 	}
 	return;
@@ -530,7 +487,7 @@ public class BasePNDirector extends ProcessDirector {
      */
     protected synchronized void _actorWriteBlocked() {
 	_writeBlockCount++;
-	if (_isDeadlocked() || _isPaused()) {
+	if (_isDeadlocked()) {
 	    notifyAll();
 	}
 	return;
@@ -546,16 +503,6 @@ public class BasePNDirector extends ProcessDirector {
     protected synchronized void _informOfWriteUnblock(PNQueueReceiver queue) {
 	_writeBlockCount--;
 	_writeblockedQueues.remove(queue);
-        if (!_processlisteners.isEmpty()) {
-            Actor actor = queue.getWriteBlockedActor();
-            PNProcessEvent event = new PNProcessEvent(actor,
-                    PNProcessEvent.PROCESS_RUNNING);
-            Iterator enum = _processlisteners.iterator();
-            while (enum.hasNext()) {
-                PNProcessListener lis = (PNProcessListener)enum.next();
-                lis.processStateChanged(event);
-            }
-        }
 	return;
     }
 
@@ -568,22 +515,6 @@ public class BasePNDirector extends ProcessDirector {
      */
     protected synchronized boolean _isDeadlocked() {
 	if (_readBlockCount + _writeBlockCount >= _getActiveActorsCount()) {
-	    return true;
-	} else {
-	    return false;
-	}
-    }
-
-
-    /** Return true if the execution has paused. This base class returns true
-     *  if all the active processes are either blocked (on a read or a write)
-     *  or paused. Derived classes should override this method if they
-     *  introduce any new forms of blocking of processes.
-     *  @return true if the execution has paused.
-     */
-    protected synchronized boolean _isPaused() {
-	if (_readBlockCount + _writeBlockCount + _getPausedActorsCount()
-		>= _getActiveActorsCount()) {
 	    return true;
 	} else {
 	    return false;

@@ -103,9 +103,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  process was suspended), take the oldest token from the FIFO queue.
      *  Check if any process is blocked on a write to this
      *  receiver. If a process is indeed blocked, then unblock the
-     *  process, and inform the director of the same. Then check if a pause is
-     *  requested, in which case suspend the calling process until the
-     *  execution is resumed.
+     *  process, and inform the director of the same. 
      *  Otherwise return.
      *  @return The oldest Token read from the queue
      */
@@ -116,8 +114,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         Token result = null;
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
-                //Only for listeners. Keep it before inform
-                _readblockedactor = (Actor)getContainer().getContainer();
                 director._actorReadBlocked(true);
                 _readpending = true;
                 while (_readpending && !_terminate) {
@@ -131,34 +127,12 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 //Check if pending write to the Queue;
                 if (_writepending) {
                     director._informOfWriteUnblock(this);
-                    //For listeners alone. Keep it after informOfWriteU
-                    _writeblockedactor = null;
                     _writepending = false;
-                    notifyAll(); //Wake up threads waiting on a write;
+                    notifyAll(); // Wake up threads waiting on a write;
                 }
-            }
-            while (_pause) {
-                director.increasePausedCount();
-                workspace.wait(this);
             }
             return result;
         }
-    }
-
-    /** Return the actor blocked on a read from this receiver, if any. Return
-     *  null if there is no actor blocked on a read from this receiver.
-     *  @return the blocked actor if any, else null.
-     */
-    public Actor getReadBlockedActor() {
-        return _readblockedactor;
-    }
-
-    /** Return the actor blocked on a write to this receiver, if any. Return
-     *  null if there is no actor blocked on a write to this receiver.
-     *  @return the blocked actor if any, else null.
-     */
-    public Actor getWriteBlockedActor() {
-        return _writeblockedactor;
     }
 
     /** Return true since a channel in the Kahn process networks
@@ -354,8 +328,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  Check whether any process is blocked
      *  on a read from this receiver. If a process is indeed blocked, then
      *  unblock the process, and inform the director of the same.
-     *  If a pause is requested, then suspend the calling process until a
-     *  resumption is requested.
      *  @param token The token to be put in the receiver.
      */
     public void put(Token token) {
@@ -365,9 +337,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         synchronized(this) {
             if (!super.hasRoom()) {
                 _writepending = true;
-                //Note: Required only to inform the listeners
-                _writeblockedactor =
-                    ((ProcessThread)Thread.currentThread()).getActor();
                 director._actorWriteBlocked(this);
                 while (!_terminate && !super.hasRoom()) {
                     while(_writepending) {
@@ -383,16 +352,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 //Check if pending write to the Queue;
                 if (_readpending) {
                     director._informOfReadUnblock(this, true);
-                    //NOTE: Only for listeners. Please keep it after informU
-                    _readblockedactor = null;
                     _readpending = false;
                     notifyAll();
                     //Wake up all threads waiting on a write to this receiver;
                 }
-            }
-            while (_pause) {
-                director.increasePausedCount();
-                workspace.wait(this);
             }
         }
     }
@@ -401,11 +364,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public void reset() {
 	super.reset();
-	_readblockedactor = null;
-	_writeblockedactor = null;
 	_readpending = false;
 	_writepending = false;
-	_pause = false;
 	_terminate = false;
     	_insideBoundaryCacheIsOn = false;
     	_isInsideBoundaryValue = false;
@@ -413,21 +373,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     	_isOutsideBoundaryValue = false;
     	_connectedBoundaryCacheIsOn = false;
     	_isConnectedBoundaryValue = false;
-    }
-
-    /** Pause any process that tries to read from or write to this receiver
-     *  if the argument is true. If the argument is false, then resume any
-     *  process paused while reading from or writing to this receiver.
-     *  @param pause true if requesting a pause and false if requesting a
-     *  resumption of the paused thread.
-     */
-    public synchronized void requestPause(boolean pause) {
-	if (pause) {
-	    _pause = true;
-	} else {
-	    _pause = false;
-	    notifyAll();
-	}
     }
 
     /** Set a state flag indicating that there is a process blocked while
@@ -461,11 +406,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Actor _readblockedactor = null;
-    private Actor _writeblockedactor = null;
     private boolean _readpending = false;
     private boolean _writepending = false;
-    private boolean _pause = false;
     private boolean _terminate = false;
 
     private boolean _insideBoundaryCacheIsOn = false;

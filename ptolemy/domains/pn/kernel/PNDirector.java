@@ -62,16 +62,6 @@ read from a channel (read-blocked), when trying to write to a channel
 (write-blocked) or when waiting for a queued topology change request to be
 processed (mutation-blocked).
 <p>
-This director also permits pausing of the execution. An execution is paused
-when all active processes are blocked or paused (at least one process is
-paused). In case of PN, a process can be paused only when it tries to
-communicate with other processes. Thus a process can be paused in the get()
-or put() methods of the receivers alone. In case a pause is requested, the
-process does not return from the call to the get() or the put() method of the
-receiver until the execution is resumed. If there is a process that does
-not communicate with other processes in the model, then the simulation can
-never pause in that model.
-<p>
 A <i>deadlock</i> is when all the active processes are blocked.
 The director is responsible for handling deadlocks during execution.
 This director handles two different sorts of deadlocks, <i>real deadlock</i>
@@ -99,16 +89,9 @@ since the execution of a model is not centralized, it is impossible to define
 a useful point in the execution of all the active processes where
 mutations can occur. Due to this, PN permits mutations
 to happen as soon as they are requested. Thus as soon as a process queues
-mutations in PN, the director is notified and the director pauses the
+mutations in PN, the director is notified and the director stops the
 execution. Then it performs all the mutations requested, and notifies the
 topology listeners. After this the execution is resumed.
-<p>
-In case of PN, a process can be paused only when it tries to communicate with
-other processes. A pause in PN is defined as a state when all processes are
-blocked or are explicitly paused in the get() or
-put() method of the receiver. Thus if there is a process that does not
-communicate with other processes in the model, then the simulation may
-never pause in that model.
 <p>
 Though this class defines and uses a event-listener mechanism for notifying
 the listeners of the various states a process is in, this mechanism is expected
@@ -172,8 +155,8 @@ public class PNDirector extends BasePNDirector {
      *  <i>not</i> added to the directory of that workspace (It must be added
      *  by the user if he wants it to be there).
      *  The result is a new director with no container, no pending mutations,
-     *  and no topology listeners. The count of active processes is zero
-     *  and it is not paused. The parameter "Initial_queue_capacity" has the
+     *  and no topology listeners. The count of active processes is zero.
+     *  The parameter "Initial_queue_capacity" has the
      *  same value as the director being cloned.
      *
      *  @param ws The workspace for the cloned object.
@@ -244,7 +227,7 @@ public class PNDirector extends BasePNDirector {
      *  After queuing the requests, increment the count of processes blocked
      *  while waiting for the topology change requests to be processed
      *  (mutation-blocked). Notify the directing thread
-     *  of pending topology changes. The directing thread pauses the execution
+     *  of pending topology changes. The directing thread stops the execution
      *  and processes the queued topology change requests in the fire() method
      *  of the director. After the directing thread processes all the requests,
      *  it notifies the calling thread to resume. On resuming, decrease the
@@ -303,20 +286,6 @@ public class PNDirector extends BasePNDirector {
     protected synchronized boolean _isDeadlocked() {
 	return (_readBlockCount + _writeBlockCount +
                 _mutationBlockCount == _getActiveActorsCount());
-    }
-
-    /** Return true if the execution has paused or deadlocked.
-     *  Return false otherwise.
-     *  Return true if all the active processes in the container are either
-     *  blocked on a read, blocked on a write, paused or waiting after
-     *  requesting a mutation.
-     *  This method should be used only to detect
-     *  if the execution has paused. To detect deadlocks, use _isDeadlocked().
-     *  @return true if the execution has paused or deadlocked.
-     */
-    protected synchronized boolean _isPaused() {
-	return (_readBlockCount + _writeBlockCount + _getPausedActorsCount() +
-                _mutationBlockCount >= _getActiveActorsCount());
     }
 
     ///////////////////////////////////////////////////////////////////

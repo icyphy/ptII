@@ -140,7 +140,7 @@ test PNQueueReceiver-4.2 {Put and get tokens when more than one token} {
 
 ######################################################################
 ####
-#FIXME: How do you check for setFinish and setPause?
+#FIXME: How do you check for setFinish?
 test PNQueueReceiver-4.3 {Test for reset} {
     $rec setCapacity 3
     $rec put [java::new {ptolemy.data.IntToken int} 4]
@@ -148,7 +148,6 @@ test PNQueueReceiver-4.3 {Test for reset} {
     $rec put [java::new {ptolemy.data.IntToken int} 6]
     $rec setReadPending true
     $rec setWritePending true
-    $rec requestPause true
     $rec requestFinish
     $rec reset
     set elem [$rec elements]

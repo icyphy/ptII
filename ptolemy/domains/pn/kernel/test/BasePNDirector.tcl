@@ -138,17 +138,13 @@ test BasePNDirector-7.1 {Test finishing methods} {
     set p1 [$t1 getPort input]
     set p2 [$t1 getPort output]
     $e71 connect $p1 $p2
-    set lis [java::new ptolemy.domains.pn.kernel.event.test.StringPNListener]
-    $d71 addProcessListener $lis
     $manager run
     set prof [$t1 getProfile]
-    #Remove listener and run it again to confirm the action of removelistener
-    #It also tests that the application can run twice without recreating the 
+    #This tests that the application can run twice without recreating the 
     #model
-    $d71 removeProcessListener $lis
     $t1 clearProfile
     $manager run
-    list $prof [$t1 getProfile] [$lis getProfile]
+    list $prof [$t1 getProfile]
 } {{broadcast new token 0
 broadcast new token 1
 received new token 0
@@ -157,6 +153,5 @@ received new token 1
 broadcast new token 1
 received new token 0
 received new token 1
-} {State of .E71.t1 is PROCESS_FINISHED and the cause = FINISHED_PROPERLY
 }}
 
