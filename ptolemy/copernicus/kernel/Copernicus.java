@@ -241,8 +241,21 @@ public class Copernicus {
      */
     public static int executeCommand(String command) throws Exception {
 
+	if (command == null || command.length() == 0 ) {
+	    System.out.println("Warning, null or 0 length command string "
+			       + "passed to Copernicus.executeCommand()");
+	    return 0;
+	}
+
 	String [] commands = GUIStringUtilities.tokenizeForExec(command);
 
+	if (commands.length == 0) {
+	    System.out.println("Warning, command was parsed to 0 tokens, "
+			         + "perhaps the command string was empty or "
+				 + "consisted only of comments?\n"
+				 + "command string was '" + command + "'");
+	    return 0;
+	}
         System.out.println("About to execute:\n ");
 	for (int i = 0; i < commands.length; i++) {
 	    System.out.println("	" + commands[i]);
