@@ -37,6 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -123,23 +124,26 @@ public class JAIBMPWriter extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize this actor.
-     *  There are two parameters to set here.  The version of bitmap that
-     *  we are writing (which at the time being can only be version 3),
-     *  and whether to store the data from top to bottom or from bottom
-     *  to top.
+    /** Override the base class and attempt set either the fileName,
+     *  whether to overwrite an existing file or not, or how the data
+     *  will be written.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _file = fileName.asFile();
-        _fileRoot = _file.toString();
-        boolean storeTopDownValue
-            = ((BooleanToken)storeTopDown.getToken()).booleanValue();
-        _bmpEncodeParameters = new BMPEncodeParam();
-        _bmpEncodeParameters.setVersion(_bmpEncodeParameters.VERSION_3);
-        _bmpEncodeParameters.setTopDown(storeTopDownValue);
-
+    public void attributeChanged(Attribute attribute) 
+            throws IllegalActionException {
+        if (attribute == fileName) {
+            _file = fileName.asFile();
+            _fileRoot = _file.toString();
+        } else if (attribute == confirmOverwrite) {
+            _confirmOverwriteValue = 
+                ((BooleanToken)confirmOverwrite.getToken()).booleanValue();
+        } else if (attribute == storeTopDown) {
+            _storeTopDownValue = 
+                ((BooleanToken)storeTopDown.getToken()).booleanValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** Read an input JAIImageToken and write it to the file.
@@ -149,14 +153,20 @@ public class JAIBMPWriter extends Sink {
      *  or created, if the user refuses to overwrite an existing file,
      *  of if the image in unable to be encoded.
      */
-    public boolean postfire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp image = jaiImageToken.getValue();
+        // Set the encoding parameters.  Note that only Version 3
+        // bitmaps are currently supported, otherwise it would be
+        // a parameter.
+        BMPEncodeParam bmpEncodeParameters = new BMPEncodeParam();
+        bmpEncodeParameters.setVersion(bmpEncodeParameters.VERSION_3);
+        bmpEncodeParameters.setTopDown(_storeTopDownValue);
         boolean confirmOverwriteValue
             = ((BooleanToken)confirmOverwrite.getToken())
             .booleanValue();
         if (_file.exists()) {
-            if (confirmOverwriteValue) {
+            if (_confirmOverwriteValue) {
                 if (!MessageHandler.yesNoQuestion(
                         "OK to overwrite " + _file + "?")) {
                     throw new IllegalActionException(this,
@@ -182,27 +192,29 @@ public class JAIBMPWriter extends Sink {
             throw new IllegalActionException("Could not create stream");
         }
         ImageEncoder encoder = ImageCodec.createImageEncoder(
-                "BMP", _stream, _bmpEncodeParameters);
+                "BMP", _stream, bmpEncodeParameters);
         try {
             encoder.encode(image);
             _stream.close();
         } catch (IOException error) {
             throw new IllegalActionException("Couldn't encode image");
         }
-        return false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The Bitmap encoding parameters. */
-    private BMPEncodeParam _bmpEncodeParameters;
+    /** The value of the confirmOverwrite parameter. */
+    private boolean _confirmOverwriteValue;
 
     /** The File to be saved to. */
     private File _file;
 
     /** The above file as a String. */
     private String _fileRoot;
+
+    /** The value of the storeTopDown parameter. */
+    private boolean _storeTopDownValue;
 
     /** The FileOutputStream for file writing. */
     private FileOutputStream _stream;
