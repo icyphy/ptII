@@ -56,17 +56,34 @@ public class ProcessThread extends PtolemyThread {
         _director = director;
     }
 
+    /** Construct a thread to be used for the execution of the 
+     *  iteration methods of the actor. 
+     *  @param actor The actor that needs to be executed.
+     *  @param director The director responsible for the execution of this 
+     *  actor.
+     *  @param name The name of the thread.
+     */
+    public ProcessThread(Actor actor, ProcessDirector director, String name) {
+        super(name);
+	_actor = actor;
+        _director = director;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-    //FIXME: Currently this is not used anywhere and I am not sure if it 
-    //should exist
     /** This returns the actor being executed by this thread
      *  @return The actor being executed by this thread.
      */
     public Actor getActor() {
 	return _actor;
+    }
+    
+    /** This returns the director that started this thread.
+     *  @return The director that started this thread.
+     */
+    public ProcessDirector getDirector() {
+	return _director;
     }
 
     /** This initializes the actor, and iterates it through the execution 
