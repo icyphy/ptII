@@ -16,7 +16,7 @@ if {[info command update] == ""} then {
 #Do an update so that we are sure tycho is done displaying
 update
 set savedir "[pwd]"
-if {"XMLElement.tcl" != ""} {foreach i [list XMLElement.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
+if {"Icon.tcl IconLibrary.tcl PTMLParser.tcl Schematic.tcl SchematicElement.tcl SchematicEntity.tcl SchematicParameter.tcl SchematicPort.tcl SchematicRelation.tcl XMLElement.tcl" != ""} {foreach i [list Icon.tcl IconLibrary.tcl PTMLParser.tcl Schematic.tcl SchematicElement.tcl SchematicEntity.tcl SchematicParameter.tcl SchematicPort.tcl SchematicRelation.tcl XMLElement.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
 puts stderr dummy.tcl
 cd "$savedir"
 if [ file exists dummy.tcl ] {source dummy.tcl}

@@ -59,12 +59,10 @@ to directly access its child elements that represent icons.
 public class PTMLParser extends HandlerBase{
 
     /**
-     * Create a PTMLParser that will operate relative to the url in the given
-     * string.
+     * Create a PTMLParser
      */
-    public PTMLParser(String s) {
+    public PTMLParser() {
         super();
-        url=s;
     }
 
     /**
@@ -128,13 +126,13 @@ public class PTMLParser extends HandlerBase{
      * move up one leve in the entity tree.
      */
     public void endExternalEntity(String URI) throws Exception {
-        if(DEBUG)
-            System.out.println("endExternalEntity: URI=\"" + URI + "\"\n");
         if(!_currentExternalEntity().equals(URI))
             throw new XmlException("Entities out of order",
                     _currentExternalEntity(),
                     parser.getLineNumber(),
                     parser.getColumnNumber());
+        if(DEBUG)
+            System.out.println("endExternalEntity: URI=\"" + URI + "\"\n");
         sysids.removeFirst();
     }
 
@@ -148,13 +146,6 @@ public class PTMLParser extends HandlerBase{
     }
 
     /**
-     * Get the URL associated with this Parser.
-     */
-    public String getURL() {
-        return url;
-    }
-
-    /**
      * Parse the URL associated with this library.  The URL should specify
      * an XML file that is valid with IconLibrary.dtd.
      *
@@ -164,7 +155,7 @@ public class PTMLParser extends HandlerBase{
      * could not be retrieved.
      * @throws IllegalActionException if the parser fails.
      */
-    public XMLElement parse() throws Exception {
+    public XMLElement parse(String url) throws Exception {
         try {
         parser.setHandler(this);
         parser.parse(url, null, (String)null);
@@ -184,7 +175,7 @@ public class PTMLParser extends HandlerBase{
      * this element will have element type of "document".
      * @throws IllegalActionException if the parser fails.
      */
-    public XMLElement parse(InputStream is)
+    public XMLElement parse(String url, InputStream is)
     throws Exception {
         try {
             parser.setHandler(this);
@@ -215,7 +206,7 @@ public class PTMLParser extends HandlerBase{
         dtdPath.append("ptolemy" + fileSep + "schematic" + fileSep);
         dtdPath.append("lib" + fileSep + pubID);
 
-        return "file://" + dtdPath;
+        return "file:/" + dtdPath;
     }
 
     /**
@@ -302,7 +293,6 @@ public class PTMLParser extends HandlerBase{
      * entities being parsed.  The leaf is first in the list.
      */
     private LinkedList sysids = new LinkedList();
-    private String url;
     private HashedMap attributes;
     private XMLElement current;
     private XMLElement root;
