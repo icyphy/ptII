@@ -1185,7 +1185,10 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug("Refining the current step size w.r.t. all output actors:");
         }
 
+        double timeResolution = getTimeResolution();
         double refinedStep = getCurrentStepSize();
+        boolean triedTheMinimumStepSize = (refinedStep == getMinStepSize());
+        
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator actors = 
             schedule.get(CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS)
@@ -1197,10 +1200,26 @@ public class CTMultiSolverDirector extends CTDirector {
             refinedStep = Math.min(refinedStep, actor.refinedStepSize());
         }
 
-        if (refinedStep < (0.5 * getTimeResolution())) {
-            throw new IllegalActionException(this,
-                    "The refined step size is less than the minimum time "
-                    + "resolution, at time " + getModelTime());
+        if (refinedStep < (0.5 * timeResolution)) {
+            if (triedTheMinimumStepSize) {
+                if (_debugging) {
+                    _debug("The previous step size is the time" +
+                            " resolution. The refined step size is less than" +
+                            " the time resolution. We can not refine the step" +
+                            " size more.");
+                }
+                throw new IllegalActionException(this,
+                        "The refined step size is less than the minimum time "
+                        + "resolution, at time " + getModelTime());
+            } else {
+                if (_debugging) {
+                    _debug("The previous step size is bigger than the time" +
+                            " resolution. The refined step size is less than" +
+                            " the time resolution, try setting the step size" +
+                            " to the time resolution.");
+                }
+                refinedStep = timeResolution;
+            }
         }
 
         if (_debugging && _verbose) {
@@ -1450,7 +1469,6 @@ public class CTMultiSolverDirector extends CTDirector {
                                 + "the minimum step size, at time "
                                 + getModelTime());
                     }
-
                     setCurrentStepSize(0.5 * getCurrentStepSize());
                 }
 
