@@ -1,4 +1,4 @@
-/* A viewer for sound files.
+/* A viewer for audio files.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -46,9 +46,9 @@ Display sound files.
 @author Edward A. Lee
 @version $Id$
 */
-public class Sound extends PtolemyPlot {
+public class AudioViewer extends PtolemyPlot {
 
-    public Sound(String args[]) {
+    public AudioViewer(String args[]) {
         super(args);
         MenuItem play = new MenuItem("Play", new MenuShortcut(KeyEvent.VK_H));
         play.setActionCommand("Play");
@@ -67,7 +67,7 @@ public class Sound extends PtolemyPlot {
      */
     protected void _about() {
         Message message = new Message(
-                "Ptolemy Sound Plotter\n" +
+                "Ptolemy AudioViewer Plotter\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "Version 2.0, Build: $Id$\n\n"+
                 "For more information, see\n" +
@@ -81,14 +81,14 @@ public class Sound extends PtolemyPlot {
     protected void _help() {
         // NOTE:  This is a pretty lame excuse for help...
         Message message = new Message("Use Control-P to play the sound");
-        message.setTitle("Usage of Ptolemy Sound");
+        message.setTitle("Usage of Ptolemy AudioViewer");
     }
 
     /** Open a new file and plot its data.
      */
     protected void _open() {
         FileDialog filedialog = new FileDialog(this, "Select a sound file");
-        filedialog.setFilenameFilter(new SoundFilenameFilter());
+        filedialog.setFilenameFilter(new AudioViewerFilenameFilter());
         if (_directory != null) {
             filedialog.setDirectory(_directory);
         }
@@ -341,7 +341,7 @@ public class Sound extends PtolemyPlot {
     }
 
     // FIXME: This filter doesn't work.  Why?
-    private class SoundFilenameFilter implements FilenameFilter {
+    private class AudioViewerFilenameFilter implements FilenameFilter {
         public boolean accept(File dir, String name) {
             name = name.toLowerCase();
             if (name.endsWith(".au")) return true;
