@@ -88,7 +88,7 @@ public abstract class Relation extends NamedObj {
 
         // JFIXME: Enumeration XRefs = _portList.elements();
 	// Should this not be:
-	Enumeration XRefs = _portList.enumerate();
+	Enumeration XRefs = _portList.elements();
         LinkedList storedEntities = new LinkedList();
 
         while( XRefs.hasMoreElements() ) {
@@ -109,7 +109,7 @@ public abstract class Relation extends NamedObj {
     public boolean isPortConnected(String portName) {
         // JFIXME: Enumeration XRefs = _portList.elements();
 	// Should this not be:
-	Enumeration XRefs = _portList.enumerate();
+	Enumeration XRefs = _portList.elements();
         while (XRefs.hasMoreElements()) {
             Port nextPort = (Port)XRefs.nextElement();
             if (nextPort.getName() == portName) return true;
@@ -150,19 +150,19 @@ public abstract class Relation extends NamedObj {
 
     // Class PortEnumeration
     /** Wrapper class for returning an emumeration of Ports. It uses the 
-     *  enumerate() method provided by CrossRefList
+     *  elements() method provided by CrossRefList
      *  @see CrossRefList
      */
 
     private class PortEnumeration implements Enumeration {
 
         public PortEnumeration() {
-            _XRefEnum = _portList.enumerate();
+            _XRefEnum = _portList.elements();
         }
 
         /** @param exceptPort Do not return this port in the enumeration. */
         public PortEnumeration(Port exceptPort) {
-            _XRefEnum = _portList.enumerate();
+            _XRefEnum = _portList.elements();
             _exceptPort = exceptPort;
             _skip = true;
         }
