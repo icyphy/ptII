@@ -46,7 +46,6 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -87,14 +86,6 @@ import ptolemy.kernel.util.Workspace;
 */
 public class NonStrictFSMDirector extends FSMDirector {
 
-    /** Construct a director in the default workspace with an empty string
-     *  as its name. The director is added to the list of objects in
-     *  the workspace. Increment the version number of the workspace.
-     */
-    public NonStrictFSMDirector() {
-        super();
-    }
-
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -110,15 +101,6 @@ public class NonStrictFSMDirector extends FSMDirector {
     public NonStrictFSMDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }
-
-    /** Construct a director in the  workspace with an empty name.
-     *  The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace of this director.
-     */
-    public NonStrictFSMDirector(Workspace workspace) {
-        super(workspace);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -948,6 +948,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
 
     /** Return the enabled transition among the given list of transitions.
      *  Throw an exception if there is more than one transition enabled.
+     *  This method is called by subclasses of FSMDirector in other packages.
      *
      *  @param transitionList A list of transitions.
      *  @return An enabled transition, or null if none is enabled.

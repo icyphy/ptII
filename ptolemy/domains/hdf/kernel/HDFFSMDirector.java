@@ -42,7 +42,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -80,23 +79,6 @@ import ptolemy.kernel.util.Workspace;
    @see HDFDirector
 */
 public class HDFFSMDirector extends MultirateFSMDirector {
-    /** Construct a director in the default workspace with an empty string
-     *  as its name. The director is added to the list of objects in
-     *  the workspace. Increment the version number of the workspace.
-     */
-    public HDFFSMDirector() {
-        super();
-    }
-
-    /** Construct a director in the  workspace with an empty name.
-     *  The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace of this object.
-     */
-    public HDFFSMDirector(Workspace workspace) {
-        super(workspace);
-    }
-
     /** Construct a director in the given container with the given name.
      *  If the container argument must not be null, or a
      *  NullPointerException will be thrown.
