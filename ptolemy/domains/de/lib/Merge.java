@@ -47,7 +47,7 @@ a single output signal.  It has an input port
 The types of the ports are undeclared and will be resolved by the type
 resolution mechanism, with the constraint that the output type must be
 greater than or equal to the input type. On each call to the fire method, the
-actor reads all available tokens from each input channel and broadcasts
+actor reads all available tokens from each input channel and sends
 them to the output port. In DE, all tokens read in one invocation of the
 fire method have the same time stamp.  Thus, the output is a chronological
 merging of input events.
@@ -82,7 +82,7 @@ public class Merge extends Transformer implements SequenceActor, TimedActor {
     public void fire() throws IllegalActionException {
         for (int i = 0; i < input.getWidth(); i++) {
             while (input.hasToken(i)) {
-                output.broadcast(input.get(i));
+                output.send(0, input.get(i));
             }
         }
     }

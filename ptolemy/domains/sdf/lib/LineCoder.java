@@ -143,7 +143,7 @@ public class LineCoder extends SDFAtomicActor {
                 tableaddress |= 1 << i;
             }
         }
-        output.broadcast(new DoubleToken(_table[tableaddress]));
+        output.send(0, new DoubleToken(_table[tableaddress]));
     }
 
     /** Set up the consumption constant.

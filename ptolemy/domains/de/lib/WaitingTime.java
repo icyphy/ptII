@@ -104,7 +104,7 @@ public class WaitingTime extends TypedAtomicActor
      *  the waiting time for each prior event arrival at waiter since the
      *  last arrival of waitee.  If there is no event at waitee, then record
      *  the time of arrival of the events at waiter, and produce no output.
-     *  @exception IllegalActionException If get() or broadcast() throws it.
+     *  @exception IllegalActionException If get() or send() throws it.
      */
     public void fire() throws IllegalActionException {
 
@@ -124,7 +124,7 @@ public class WaitingTime extends TypedAtomicActor
                     ((Double)_waiting.elementAt(i)).doubleValue();
                 DoubleToken outToken =
                     new DoubleToken(currentTime-previousTime);
-                output.broadcast(outToken);
+                output.send(0, outToken);
             }
             _waiting.removeAllElements();
         }

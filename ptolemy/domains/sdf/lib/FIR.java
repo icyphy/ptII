@@ -183,7 +183,7 @@ public class FIR extends SDFAtomicActor {
                         (_mostRecent + _dec - inC + i)%(_data.length);
                     out += tap * _data[dataIndex];
                 }
-                output.broadcast(new DoubleToken(out));
+                output.send(0, new DoubleToken(out));
                 phase += _dec;
             }
             phase -= _interp;
