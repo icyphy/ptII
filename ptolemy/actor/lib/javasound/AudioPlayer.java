@@ -142,7 +142,7 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	// to LiveSound.putSamples().
 	if (_debugInfo) {
 	    System.out.println("AudioPlayer: constructor: _putSampleSize = "
-			       + _putSampleSize);
+                    + _putSampleSize);
 	}
 	// The size of the array (in samples per channel) to pass
 	// to LiveSound.putSamples().
@@ -199,9 +199,9 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 		    ((IntToken)channels.getToken()).intValue();
 		if (_channels < 1) {
 		    throw new IllegalActionException(this,
-                        "Attempt to set channels parameter to an illegal " +
-                        "value of: " +  _channels + " . The value must be a " +
-                        "positive integer.");
+                            "Attempt to set channels parameter to an illegal " +
+                            "value of: " +  _channels + " . The value must be a " +
+                            "positive integer.");
 		}
 		// Check if we need to reallocate.
 		if ((_inArray == null) || (_channels != _inArray.length)) {
@@ -212,7 +212,7 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 		}
 		if (_debugInfo) {
 		    System.out.println("AudioPlayer: attributeChanged() "
-				   + "_putSampleSize = " + _putSampleSize);
+                            + "_putSampleSize = " + _putSampleSize);
 		}
 		for (int i = 0; i < _channels; i++) {
 		    _audioPutArray[i] = new double[_putSampleSize];
@@ -244,9 +244,9 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	    }
 	} catch (IOException ex) {
 	    throw new IllegalActionException(this,
-                            "Cannot perform audio playback " +
-			    "with the specified parameter values." +
-                            ex);
+                    "Cannot perform audio playback " +
+                    "with the specified parameter values." +
+                    ex);
 	}
     }
 
@@ -265,8 +265,8 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	    _initializePlayback();
 	} catch (IOException ex) {
 	    throw new IllegalActionException(this,
-                            "Cannot initialize audio playback " +
-                            ex);
+                    "Cannot initialize audio playback " +
+                    ex);
 	}
 	_safeToInitialize = true;
     }
@@ -293,8 +293,8 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
     public int iterate(int count) throws IllegalActionException {
 	if (_debugInfo) {
 	    System.out.println("AudioPlayer: iterate() top: " +
-                          "LiveSound.getTransferSize() = " +
-                           LiveSound.getTransferSize());
+                    "LiveSound.getTransferSize() = " +
+                    LiveSound.getTransferSize());
 	}
 	if(_debugging) _debug("iterate(count) with count = " + count);
 	for (int j = 0; j < _channels; j++) {
@@ -357,9 +357,9 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 		if (_debugInfo) {
 		    System.out.println("AudioPlayer: liveSoundChanged() invoked");
 		    System.out.println("AudioPlayer: liveSoundChanged() " +
-			       "activeSampleRate = " + activeSampleRate +
-			       ", thisActorSampleRate = " +
-			       thisActorSampleRate);
+                            "activeSampleRate = " + activeSampleRate +
+                            ", thisActorSampleRate = " +
+                            thisActorSampleRate);
 		}
 		// Only set the sampleRate parameter if it is different from
 		// the new sample rate.
@@ -395,8 +395,8 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	    }
 	} catch (IllegalActionException ex) {
 	    throw new InternalErrorException(
-                        "Error responding to audio parameter change. " +
-                        ex);
+                    "Error responding to audio parameter change. " +
+                    ex);
 	}
     }
 
@@ -472,17 +472,17 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	// up audio system resources.
 	if (LiveSound.isPlaybackActive()) {
 	    throw new IllegalActionException(this,
-               "This actor cannot start audio playback because " +
-               "another actor currently has access to the audio " +
-               "playback resource. Only one AudioPlayback actor may " +
-					     "be used at a time.");
+                    "This actor cannot start audio playback because " +
+                    "another actor currently has access to the audio " +
+                    "playback resource. Only one AudioPlayback actor may " +
+                    "be used at a time.");
 	}
 	if (_debugInfo) {
 	    System.out.println("AudioPlayer: _initializePlayback() "
-			       + "_putSampleSize = " + _putSampleSize);
+                    + "_putSampleSize = " + _putSampleSize);
 	}
 	for (int i = 0; i < _channels; i++) {
-		_audioPutArray[i] = new double[_putSampleSize];
+            _audioPutArray[i] = new double[_putSampleSize];
 	}
 	// Initialize audio playback.
 	int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();

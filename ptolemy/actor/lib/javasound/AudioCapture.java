@@ -182,7 +182,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
             throws IllegalActionException {
 	if (_debugInfo) {
 	    System.out.println("AudioCapture: attributeChanged() invoked on: " +
-			       attribute.getName());
+                    attribute.getName());
 	}
 	try {
 	    if (attribute == channels) {
@@ -190,9 +190,9 @@ public class AudioCapture extends Source implements LiveSoundListener {
 		    ((IntToken)channels.getToken()).intValue();
 		if (_channels < 1) {
 		    throw new IllegalActionException(this,
-		      "Attempt to set channels parameter to an illegal " +
-		      "value of: " +  _channels + " . The value must be a " +
-		      "positive integer.");
+                            "Attempt to set channels parameter to an illegal " +
+                            "value of: " +  _channels + " . The value must be a " +
+                            "positive integer.");
 		}
 		// Only set the channels if it is different than
 		// the currently active channels.
@@ -221,9 +221,9 @@ public class AudioCapture extends Source implements LiveSoundListener {
 	    }
 	} catch (IOException ex) {
 	    throw new IllegalActionException(this,
-		 "Cannot perform audio capture " +
-		 "with the specified parameter values." +
-					     ex);
+                    "Cannot perform audio capture " +
+                    "with the specified parameter values." +
+                    ex);
 	}
     }
 
@@ -239,13 +239,13 @@ public class AudioCapture extends Source implements LiveSoundListener {
 	if (_debugInfo) {
 	    System.out.println("AudioCapture: initialize(): invoked");
 	}
-	 try {
-	     _initializeCapture();
-	 } catch (IOException ex) {
-	     throw new IllegalActionException(this,
-                            "Cannot initialize audio capture " +
-                            ex);
-	 }
+        try {
+            _initializeCapture();
+        } catch (IOException ex) {
+            throw new IllegalActionException(this,
+                    "Cannot initialize audio capture " +
+                    ex);
+        }
 	_safeToInitialize = true;
 	_haveASample = false;
     }
@@ -277,7 +277,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
 	// channels then exception thrown.
 	if (_debugInfo) {
 	    System.out.println("AudioCapture: iterate(): invoked with count = " +
-			       count);
+                    count);
 	}
 	// Check if we need to reallocate the output token array.
 	if (count > _audioSendArray.length) {
@@ -361,9 +361,9 @@ public class AudioCapture extends Source implements LiveSoundListener {
 		if (_debugInfo) {
 		    System.out.println("AudioCapture: liveSoundChanged() invoked");
 		    System.out.println("AudioCapture: liveSoundChanged() " +
-			       "activeSampleRate = " + activeSampleRate +
-			       ", thisActorSampleRate = " +
-			       thisActorSampleRate);
+                            "activeSampleRate = " + activeSampleRate +
+                            ", thisActorSampleRate = " +
+                            thisActorSampleRate);
 		}
 		// Only set the sampleRate parameter if it is different from
 		// the new sample rate.
@@ -399,8 +399,8 @@ public class AudioCapture extends Source implements LiveSoundListener {
 	    }
 	} catch (IllegalActionException ex) {
 	    throw new InternalErrorException(
-                        "Error responding to audio parameter change. " +
-                        ex);
+                    "Error responding to audio parameter change. " +
+                    ex);
 	}
     }
 
@@ -464,16 +464,16 @@ public class AudioCapture extends Source implements LiveSoundListener {
      *   audio capture.
      */
     private synchronized void _initializeCapture()
-        throws IllegalActionException, IOException {
+            throws IllegalActionException, IOException {
 	if (_debugInfo) {
 	    System.out.println("AudioCapture: _initializeCapture() invoked.");
 	}
 	if (LiveSound.isCaptureActive()) {
 	    throw new IllegalActionException(this,
-               "This actor cannot start audio capture because " +
-               "another actor currently has access to the audio " +
-               "capture resource. Only one AudioCapture actor may " +
-					     "be used at a time.");
+                    "This actor cannot start audio capture because " +
+                    "another actor currently has access to the audio " +
+                    "capture resource. Only one AudioCapture actor may " +
+                    "be used at a time.");
 	    //LiveSound.stopCapture(this);
 
 	}
@@ -506,17 +506,17 @@ public class AudioCapture extends Source implements LiveSoundListener {
 	// Set the size of the array that is returned by
 	// LiveSound.getSamples().
 	if (LiveSound.getTransferSize() != 128) {
-	LiveSound.setTransferSize(128);
+            LiveSound.setTransferSize(128);
 	}
 
 	try {
 	    // Start capturing audio.
 	    LiveSound.startCapture(this);
-	    } catch (IOException ex) {
-		throw new IllegalActionException(this,
-                        "Cannot capture audio:\n" +
-                        ex);
-	    }
+        } catch (IOException ex) {
+            throw new IllegalActionException(this,
+                    "Cannot capture audio:\n" +
+                    ex);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

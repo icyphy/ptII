@@ -143,8 +143,8 @@ public class AudioReader extends Source {
 		    _initializeReader();
 		} catch (IOException ex) {
 		    throw new IllegalActionException(this,
-				 "Cannot read audio:\n" +
-				  ex);
+                            "Cannot read audio:\n" +
+                            ex);
 		}
 	    }
 	} else {
@@ -165,8 +165,8 @@ public class AudioReader extends Source {
 	    _initializeReader();
 	} catch (IOException ex) {
 	    throw new IllegalActionException(this,
-			 "Cannot open the specified URL: " +
-			 ex);
+                    "Cannot open the specified URL: " +
+                    ex);
 	}
 	_safeToInitialize = true;
 	_haveASample = false;
@@ -311,9 +311,9 @@ public class AudioReader extends Source {
      *   the audio reader.
      */
     private synchronized void _initializeReader()
-	throws IOException, IllegalActionException {
+            throws IOException, IllegalActionException {
 	if (_soundReader != null) {
-		_soundReader.closeFile();
+            _soundReader.closeFile();
 	}
 	// Load audio from a URL.
 	String theURL = sourceURL.getExpression();
@@ -322,7 +322,7 @@ public class AudioReader extends Source {
 	// This value was chosen somewhat arbitrarily.
 	int getSamplesArraySize = 64;
 	_soundReader = new SoundReader(theURL,
-				       getSamplesArraySize);
+                getSamplesArraySize);
 	// Read the number of audio channels and set
 	// parameter accordingly.
 	_channels = _soundReader.getChannels();

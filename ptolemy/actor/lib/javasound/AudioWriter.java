@@ -386,10 +386,10 @@ public class AudioWriter extends Sink {
 	int putSamplesSize = _putSampleSize;
 
 	_soundWriter = new SoundWriter(pathNameString,
-                    sampleRateInt,
-                    bitsPerSampleInt,
-                    channelsInt,
-                    putSamplesSize);
+                sampleRateInt,
+                bitsPerSampleInt,
+                channelsInt,
+                putSamplesSize);
 	_curElement = 0;
     }
 
