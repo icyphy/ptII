@@ -1079,6 +1079,50 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         }
     }
 
+    /** Save the given entity in the user library in the given
+     *  configuration.
+     *  @param entity The entity to save.
+     *  @since Ptolemy 2.1   
+     */
+    public static void saveComponentInLibrary(Configuration configuration, 
+            Entity entity) {
+        try {
+            CompositeEntity library = (CompositeEntity)
+                configuration.getEntity("actor library.vergilUserLibrary");
+            if(library == null) {
+                MessageHandler.error(
+                        "Save In Library failed: " +
+                        "Could not find user library with name " +
+                        "\"vergilUserLibrary\".");
+                return;
+            }
+            configuration.openModel(library);
+            
+            StringWriter buffer = new StringWriter();
+            
+            // Check if there is already something existing in the 
+            // user library with this name.
+            if(library.getEntity(entity.getName()) != null) {
+                MessageHandler.error(
+                        "Save In Library failed: An object" +
+                        " already exists in the user library with name " +
+                        "\"" + entity.getName() + "\".");
+                return;
+            }  
+            entity.exportMoML(buffer, 1);
+            
+            ChangeRequest request =
+                new MoMLChangeRequest(entity, library, buffer.toString());
+            library.requestChange(request);
+        }
+        catch (IOException ex) {
+            // Ignore.
+        }
+        catch (KernelException ex) {
+            // Ignore.
+        }
+    }
+
     /** Set the center location of the visible part of the pane.
      *  This will cause the panner to center on the specified location
      *  with the current zoom factor.
@@ -1094,6 +1138,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         
         _jgraph.getCanvasPane().setTransform(newTransform);
     }
+
 
     /**
      *  Undo the last undoable change on the model
@@ -1494,11 +1539,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue("tooltip",
                     "Create a TypedCompositeActor that contains the"
                      + " selected actors.");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_H,
-                            java.awt.Event.CTRL_MASK));
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_H));
+	    //putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+            //        KeyStroke.getKeyStroke(KeyEvent.VK_H,
+            //                java.awt.Event.CTRL_MASK));
+	    //putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+            //        new Integer(KeyEvent.VK_H));
 	}
         
         public void actionPerformed(ActionEvent e) {
@@ -1923,8 +1968,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue("tooltip",
                     "Redo the last change undone.");
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_Z,
-                    (java.awt.Event.CTRL_MASK | java.awt.Event.SHIFT_MASK)));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_Y,
+                    (java.awt.Event.CTRL_MASK)));
+            // FIXME: Why is this R?
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_R));
         }
@@ -1959,31 +2005,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame
          *  actor library of the configuration.
          */
 	public void actionPerformed(ActionEvent e) {
-	    try {
-		PtolemyEffigy effigy =
-		        (PtolemyEffigy)getTableau().getContainer();
-		NamedObj object = effigy.getModel();
-		if (object == null) {
-                    return;
-                }
-		StringWriter buffer = new StringWriter();
-		object.exportMoML(buffer, 1);
-		Configuration configuration = (Configuration)effigy.toplevel();
-		NamedObj library =
-                    configuration.getEntity("actor library.vergilUserLibrary");
-		if (library == null) {
-                    MessageHandler.error(
-                            "Save In Library failed: " +
-                            "Could not find user library with name " +
-                            "\"vergilUserLibrary\".");
-                    return;
-                }
-                ChangeRequest request =
-                    new MoMLChangeRequest(this, library, buffer.toString());
-		library.requestChange(request);
-	    } catch (IOException ex) {
-		// Ignore.
-	    }
+            PtolemyEffigy effigy =
+                (PtolemyEffigy)getTableau().getContainer();
+            NamedObj object = effigy.getModel();
+            if (object == null) {
+                return;
+            }
+            if (!(object instanceof Entity)) {
+                throw new KernelRuntimeException("Could not save in "
+                        + "library, '" + object + "' is not an Entity");
+            }
+
+            Entity entity = (Entity) object;
+            Configuration configuration = (Configuration)effigy.toplevel();
+            saveComponentInLibrary(configuration, entity);
 	}
     }
 
@@ -2006,6 +2041,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_Z,
                     java.awt.Event.CTRL_MASK));
+            // FIXME: Why is this U?
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_U));
         }
