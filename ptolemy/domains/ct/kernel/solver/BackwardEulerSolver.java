@@ -85,7 +85,7 @@ public class BackwardEulerSolver extends FixedStepSolver
         return 1;
     }
 
-    /** For the integrator, do x(n+1)=x(n)+h*x'(n+1). Test if this
+    /** For the integrator, do x(n+1) = x(n)+h*x'(n+1). Test if this
      *  calculation is
      *  converge for this integrator.
      *
@@ -102,7 +102,7 @@ public class BackwardEulerSolver extends FixedStepSolver
         }
         double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
         double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
-        double cerror =Math.abs(pstate-integrator.getTentativeState());
+        double cerror = Math.abs(pstate-integrator.getTentativeState());
         if( !(cerror < dir.getValueResolution())) {
             voteForConverge(false);
         }

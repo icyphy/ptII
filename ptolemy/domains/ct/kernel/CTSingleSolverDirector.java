@@ -452,9 +452,9 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     protected void _initialize() throws IllegalActionException {
         if(STAT) {
-            NSTEP=0;
-            NFUNC=0;
-            NFAIL=0;
+            NSTEP = 0;
+            NFUNC = 0;
+            NFAIL = 0;
         }
         _debug("updating parameters");
         // Instantiate ODE solver
@@ -483,7 +483,7 @@ public class CTSingleSolverDirector extends CTDirector {
     protected void _initParameters() {
         super._initParameters();
         try {
-            _solverclass=
+            _solverclass =
                 "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
             ODESolver = new Parameter(
                     this, "ODESolver", new StringToken(_solverclass));
