@@ -72,7 +72,7 @@ public class MoMLUndoEntry implements UndoAction {
      *  @see ParserAttribute#getParser(NamedObj)
      */
     public void execute() throws Exception {
-        // Use a MoMLChangeRequest so that changes get propogated
+        // Use a MoMLChangeRequest so that changes get propagated
         // as appropriate to models that defer to this.
         MoMLChangeRequest request = new MoMLChangeRequest(
                 this, _context, _undoMoML);
