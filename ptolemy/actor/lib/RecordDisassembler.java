@@ -55,11 +55,12 @@ import java.util.List;
 On each firing, read one RecordToken from the input port and send out
 the fields of the RecordToken to multiple output ports.
 The labels for the RecordToken must match the names of the output ports.
+If the received token contains more fields than the output
+ports, the extra fields are ignored.
 To use this class, instantiate it, and then add output ports (instances
 of TypedIOPort).  This actor is polymorphic. The type constraint is that
 the type of each output port is no less than the type of the corresponding
-record field. This constraint also ensures that each output port has a
-corresponding field in the input record token.
+record field.
 
 @author Yuhong Xiong
 @version $Id$
@@ -112,7 +113,12 @@ public class RecordDisassembler extends TypedAtomicActor {
 	        String label = (String)labels.next();
 		Token value = record.get(label);
 		IOPort port = (IOPort)getPort(label);
-		port.send(0, value);
+		// since the record received may contain more fields than the
+		// output ports, some fields may not have a corresponding
+		// output port.
+		if (port != null) {
+		    port.send(0, value);
+		}
 	    }
 	}
     }
