@@ -336,7 +336,7 @@ class JHDLClass extends SootClass  {
   	Scene.v().addClass(jclass);
 	jclass.initClass();
 	jclass.addPort("datain", true, 8);
-	jclass.addPort("dataout",f alse, 8);
+	jclass.addPort("dataout",false, 8);
   	jclass.write();
     }
 
