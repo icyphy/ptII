@@ -114,7 +114,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
             throws IllegalActionException {
         Parameter param = (Parameter)attr;
         if (param == BreakpointODESolver) {
-            _debug("breakpoint solver updating.");
+            _debug(getName() + "breakpoint solver updating.");
             _breakpointsolverclass =
                     ((StringToken)param.getToken()).stringValue();
             _breakpointSolver =
@@ -142,6 +142,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _debug(getFullName() + " register the initial break point.");
         fireAt(null, getCurrentTime());
     }
 

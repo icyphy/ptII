@@ -74,7 +74,7 @@ public class StickyBallApplet extends CTApplet {
             // the top level CT director
             CTMultiSolverDirector topdir = new CTMultiSolverDirector(
                     _toplevel, "CTTopLevelDirector");
-            //topdir.addDebugListener(new StreamListener());
+            topdir.addDebugListener(new StreamListener());
             // two const sources
             // FIXME: to be replaced by impulse sources
             Const source1 = new Const(_toplevel, "Const1");
@@ -86,13 +86,15 @@ public class StickyBallApplet extends CTApplet {
             // FIXME: adjust configuration.
             TimedPlotter myplot = new TimedPlotter(_toplevel, "plot");
             myplot.setPanel(this);
-            myplot.plot.setGrid(false);
+            myplot.plot.setGrid(true);
             myplot.plot.setTitle("Sticky Ball");
             myplot.plot.addLegend(0, "Ball 1 Position");
             myplot.plot.addLegend(1, "Ball 2 Position");
-
-            myplot.plot.setXRange(0.0, 5.0);
-            myplot.plot.setYRange(-0.1, 0.3);
+            //myplot.plot.setWrap(true);
+            //myplot.plot.setPointsPersistence(1024);
+            //myplot.plot.setConnected(true);
+            myplot.plot.setXRange(0.0, 25.0);
+            myplot.plot.setYRange(0, 3.0);
             myplot.plot.setSize(500, 300);
 
             //System.out.println("Building a simple hybrid system.");
@@ -243,7 +245,7 @@ public class StickyBallApplet extends CTApplet {
 
             CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector(
                     ctInc, "CTIncDir");
-            //ctIncDir.addDebugListener(new StreamListener());
+            ctIncDir.addDebugListener(new StreamListener());
             //System.out.println("Building the dynamics of two balls "
             //        + "sticking together.");
             CTCompositeActor ctDec = new CTCompositeActor(hs, "Together");
@@ -305,7 +307,8 @@ public class StickyBallApplet extends CTApplet {
             ctDecOP2.link(ctDecR2);
             ctDec.connect(ctDecOF, ctDecE2.output);
             CTEmbeddedNRDirector ctDecDir = new CTEmbeddedNRDirector(
-                    ctDec, "CTDecDir");
+                    ctDec, "CTDecDir");            
+            ctDecDir.addDebugListener(new StreamListener());
 
             // connect the hybrid system
             ctrlInc.setRefinement(ctInc);
@@ -337,13 +340,13 @@ public class StickyBallApplet extends CTApplet {
 
             //System.out.println("Set parameters.");
             // try to run the system
-            topdir.StartTime.setToken(new DoubleToken(-100.0));
+            //topdir.StartTime.setToken(new DoubleToken(-100.0));
             topdir.StopTime.setToken(new DoubleToken(100.0));
            
             // CT embedded director 1 parameters
             ctIncDir.InitStepSize.setToken(new DoubleToken(0.01));
             
-            ctIncDir.MinStepSize.setToken(new DoubleToken(1e-3));
+            ctIncDir.MinStepSize.setToken(new DoubleToken(1e-5));
             
             StringToken tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
@@ -355,7 +358,7 @@ public class StickyBallApplet extends CTApplet {
 
             // CT embedded director 2  parameters
             ctDecDir.InitStepSize.setToken(new DoubleToken(0.01));
-            ctDecDir.MinStepSize.setToken(new DoubleToken(1e-3));
+            ctDecDir.MinStepSize.setToken(new DoubleToken(1e-5));
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             ctDecDir.BreakpointODESolver.setToken(tok);
@@ -365,14 +368,15 @@ public class StickyBallApplet extends CTApplet {
 
             // CT director parameters
             topdir.InitStepSize.setToken(new DoubleToken(0.01));
-            topdir.MinStepSize.setToken(new DoubleToken(1e-3));
-            topdir.MaxStepSize.setToken(new DoubleToken(0.05));
+            topdir.MinStepSize.setToken(new DoubleToken(1e-5));
+            topdir.MaxStepSize.setToken(new DoubleToken(0.3));
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             topdir.BreakpointODESolver.setToken(tok);
             tok = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+                    "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
             topdir.ODESolver.setToken(tok);
+            
         }catch (KernelException ex) {
             report("Setup failed:", ex);
         }

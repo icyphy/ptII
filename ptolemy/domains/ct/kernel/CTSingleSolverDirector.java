@@ -163,7 +163,8 @@ public class CTSingleSolverDirector extends CTDirector {
         setCurrentStepSize(getSuggestedNextStepSize());
         _processBreakpoints();
         _debug("execute the system from "+
-                    getCurrentTime() +" step size" + getCurrentStepSize());
+                    getCurrentTime() +" step size" + getCurrentStepSize()
+               + " using solver " + getCurrentODESolver().getName());
         _fireOneIteration();
     }
     
