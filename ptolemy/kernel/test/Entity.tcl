@@ -57,34 +57,6 @@ if {[info procs enumToFullNames] == "" } then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-######################################################################
-####
-# 
-test Entity-1.1 {Get information about an instance of Entity} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.Entity]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.Entity
-  fields:        
-  methods:       clone {clone pt.kernel.util.Workspace} connectedPorts {
-    deepContains pt.kernel.util.NamedObj} description {desc
-    ription int} {equals java.lang.Object} {getAttribute ja
-    va.lang.String} getAttributes getClass getContainer get
-    FullName getName {getPort java.lang.String} getPorts ha
-    shCode linkedRelations {newPort java.lang.String} notif
-    y notifyAll removeAllPorts {setName java.lang.String} t
-    oString wait {wait long} {wait long int} workspace
-    
-  constructors:  pt.kernel.Entity {pt.kernel.Entity java.lang.String} {p
-    t.kernel.Entity pt.kernel.util.Workspace java.lang.Stri
-    ng}
-    
-  properties:    attributes class container fullName name ports
-    
-  superclass:    pt.kernel.util.NamedObj
-    
-}}
 
 ######################################################################
 ####

@@ -55,36 +55,6 @@ if {[info procs _testEntityGetPorts] == "" } then {
 ######################################################################
 ####
 # 
-test ComponentEntity-1.1 {Get information about an instance of ComponentEntity} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.ComponentEntity]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.ComponentEntity
-  fields:        
-  methods:       clone {clone pt.kernel.util.Workspace} connectedPorts {
-    deepContains pt.kernel.util.NamedObj} description {desc
-    ription int} {equals java.lang.Object} {getAttribute ja
-    va.lang.String} getAttributes getClass getContainer get
-    FullName getName {getPort java.lang.String} getPorts ha
-    shCode isAtomic linkedRelations {newPort java.lang.Stri
-    ng} notify notifyAll removeAllPorts {setContainer pt.ke
-    rnel.CompositeEntity} {setName java.lang.String} toStri
-    ng wait {wait long} {wait long int} workspace
-    
-  constructors:  pt.kernel.ComponentEntity {pt.kernel.ComponentEntity pt
-    .kernel.CompositeEntity java.lang.String} {pt.kernel.Co
-    mponentEntity pt.kernel.util.Workspace}
-    
-  properties:    atomic attributes class container fullName name ports
-    
-  superclass:    pt.kernel.Entity
-    
-}}
-
-######################################################################
-####
-# 
 test ComponentEntity-2.1 {Construct entities} {
     set e1 [java::new pt.kernel.ComponentEntity]
     set e2 [java::new pt.kernel.ComponentEntity]

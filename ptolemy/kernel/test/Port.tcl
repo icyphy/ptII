@@ -60,36 +60,6 @@ if {[info procs enumToNames] == "" } then {
 ######################################################################
 ####
 # 
-test Port-1.1 {Get information about an instance of Port} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.Port]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.Port
-  fields:        
-  methods:       clone {clone pt.kernel.util.Workspace} connectedPorts {
-    deepContains pt.kernel.util.NamedObj} description {desc
-    ription int} {equals java.lang.Object} {getAttribute ja
-    va.lang.String} getAttributes getClass getContainer get
-    FullName getName hashCode {isLinked pt.kernel.Relation}
-     isOpaque {link pt.kernel.Relation} linkedRelations not
-    ify notifyAll numLinks {setContainer pt.kernel.Entity} 
-    {setName java.lang.String} toString {unlink pt.kernel.R
-    elation} unlinkAll wait {wait long} {wait long int} wor
-    kspace
-    
-  constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
-    ng.String} {pt.kernel.Port pt.kernel.util.Workspace}
-    
-  properties:    attributes class container fullName name opaque
-    
-  superclass:    pt.kernel.util.NamedObj
-    
-}}
-
-######################################################################
-####
-# 
 test Port-2.1 {Construct Ports} {
     set e1 [java::new pt.kernel.Entity]
     set p1 [java::new pt.kernel.Port]

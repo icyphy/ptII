@@ -58,45 +58,6 @@ if {[info procs description2TclBlend] == "" } then {
 ######################################################################
 ####
 # 
-test CompositeEntity-1.1 {Get information about an instance \
-	of CompositeEntity} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.CompositeEntity]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.CompositeEntity
-  fields:        
-  methods:       {allowLevelCrossingConnect boolean} clone {clone pt.ker
-    nel.util.Workspace} {connect pt.kernel.ComponentPort pt
-    .kernel.ComponentPort} {connect pt.kernel.ComponentPort
-     pt.kernel.ComponentPort java.lang.String} connectedPor
-    ts {deepContains pt.kernel.util.NamedObj} deepGetEntiti
-    es description {description int} {equals java.lang.Obje
-    ct} {getAttribute java.lang.String} getAttributes getCl
-    ass getContainer getEntities {getEntity java.lang.Strin
-    g} getFullName getName {getPort java.lang.String} getPo
-    rts {getRelation java.lang.String} getRelations hashCod
-    e isAtomic linkedRelations {newPort java.lang.String} {
-    newRelation java.lang.String} notify notifyAll numEntit
-    ies numRelations removeAllEntities removeAllPorts remov
-    eAllRelations {setContainer pt.kernel.CompositeEntity} 
-    {setName java.lang.String} toString wait {wait long} {w
-    ait long int} workspace
-    
-  constructors:  pt.kernel.CompositeEntity {pt.kernel.CompositeEntity pt
-    .kernel.CompositeEntity java.lang.String} {pt.kernel.Co
-    mpositeEntity pt.kernel.util.Workspace}
-    
-  properties:    atomic attributes class container entities fullName nam
-    e ports relations
-    
-  superclass:    pt.kernel.ComponentEntity
-    
-}}
-
-######################################################################
-####
-# 
 test CompositeEntity-2.0 {Construct CompositeEntities, call a few methods} {
     set e1 [java::new pt.kernel.CompositeEntity]
     set e2 [java::new pt.kernel.CompositeEntity]

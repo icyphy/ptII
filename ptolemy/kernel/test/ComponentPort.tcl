@@ -56,39 +56,6 @@ if {[info procs enumToFullNames] == "" } then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-######################################################################
-####
-# 
-test ComponentPort-1.1 {Get information about an instance of ComponentPort} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.ComponentPort]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.ComponentPort
-  fields:        
-  methods:       clone {clone pt.kernel.util.Workspace} connectedPorts d
-    eepConnectedPorts {deepContains pt.kernel.util.NamedObj
-    } deepInsidePorts description {description int} {equals
-     java.lang.Object} {getAttribute java.lang.String} getA
-    ttributes getClass getContainer getFullName getName has
-    hCode insidePorts insideRelations {isDeeplyConnected pt
-    .kernel.ComponentPort} {isInsideLinked pt.kernel.Relati
-    on} {isLinked pt.kernel.Relation} isOpaque {liberalLink
-     pt.kernel.ComponentRelation} {link pt.kernel.Relation}
-     linkedRelations notify notifyAll numInsideLinks numLin
-    ks {setContainer pt.kernel.Entity} {setName java.lang.S
-    tring} toString {unlink pt.kernel.Relation} unlinkAll w
-    ait {wait long} {wait long int} workspace
-    
-  constructors:  pt.kernel.ComponentPort {pt.kernel.ComponentPort pt.ker
-    nel.ComponentEntity java.lang.String} {pt.kernel.Compon
-    entPort pt.kernel.util.Workspace}
-    
-  properties:    attributes class container fullName name opaque
-    
-  superclass:    pt.kernel.Port
-    
-}}
 
 ######################################################################
 ####

@@ -55,35 +55,6 @@ if {[info procs _testRelationEnumPorts] == "" } then {
 ######################################################################
 ####
 # 
-test Relation-1.1 {Get information about an instance of Relation} {
-    # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.Relation]
-    list [getJavaInfo $n]
-} {{
-  class:         pt.kernel.Relation
-  fields:        
-  methods:       clone {clone pt.kernel.util.Workspace} {deepContains pt
-    .kernel.util.NamedObj} description {description int} {e
-    quals java.lang.Object} {getAttribute java.lang.String}
-     getAttributes getClass getContainer getFullName getNam
-    e hashCode linkedPorts {linkedPorts pt.kernel.Port} not
-    ify notifyAll numLinks {setName java.lang.String} toStr
-    ing unlinkAll wait {wait long} {wait long int} workspac
-    e
-    
-  constructors:  pt.kernel.Relation {pt.kernel.Relation java.lang.String
-    } {pt.kernel.Relation pt.kernel.util.Workspace java.lan
-    g.String}
-    
-  properties:    attributes class container fullName name
-    
-  superclass:    pt.kernel.util.NamedObj
-    
-}}
-
-######################################################################
-####
-# 
 test Relation-2.1 {Construct Relations, checks numLinks on empty Relations} {
     set r1 [java::new pt.kernel.Relation]
     set r2 [java::new pt.kernel.Relation "My Relation"]
