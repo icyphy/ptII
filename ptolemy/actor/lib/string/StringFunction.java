@@ -175,7 +175,8 @@ public class StringFunction extends Transformer {
         case _TOLOWERCASE:
             return inputString.toLowerCase();
         default:
-            throw new InternalErrorException("Invalid value provided as function");
+            throw new InternalErrorException(
+                    "Invalid value provided as function");
         }
     }
 
