@@ -682,7 +682,7 @@ public class Pxgraph extends Frame {
 	    // deprecated in JDK1.1, but we need to compile under
 	    // 1.0.2 for netscape3.x compatibilty.
 	    _printButton.show(); // FIXME: show() deprecated, but . . .
-	    _htmlButton.hide(); // FIXME: hide() deprecated, but . . .
+	    _htmlButton.show(); // FIXME: hide() deprecated, but . . .
 	    _aboutButton.show(); // FIXME: show() deprecated, but . . .
 	}
     }
