@@ -47,7 +47,7 @@ import java.util.Random;
 //////////////////////////////////////////////////////////////////////////
 //// Philosopher in the Dining Philosophers demo.
 /**
-A philosopher sits at a table with 4 other philososphers. Between
+A philosopher sits at a table with 4 other philosophers. Between
 each two philosophers there is a fork. A Philosopher eats when he has
 both forks next to him. A Philosopher thinks for a while, then tries
 to eat. When he suceeds in obtaining both forks he eats for a while,
@@ -189,7 +189,7 @@ public class Philosopher extends CSPActor {
         return false;
     }
 
-    /** Register a PhilosospherListener with this Philosopher.
+    /** Register a PhilosopherListener with this Philosopher.
      */
      public void addPhilosopherListener(PhilosopherListener newListener) {
          if (_listeners == null) {
@@ -198,8 +198,8 @@ public class Philosopher extends CSPActor {
          _listeners.insertLast(newListener);
      }
 
-    /*  Notify any PhilosospherListeners that have registered an
-     *  interest/dependency in this Philosospher.
+    /*  Notify any PhilosopherListeners that have registered an
+     *  interest/dependency in this Philosopher.
      */
     protected void notifyListeners() {
         if (_listeners == null) {
