@@ -1,4 +1,5 @@
-/* A data structure for storing a receiver along with its rcvrTime and priority.
+/* A data structure for storing a receiver along with its rcvrTime 
+and priority.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +45,7 @@ receivers of an ODFActor have simultaneous events, the priority of the
 RcvrTimeTriples are used to determine order.
 
 @author John S. Davis II 
-@version @(#)RcvrTimeTriple.java	1.9	11/17/98
+@version $Id$
 @see ptolemy.domains.odf.kernel.Event
 @see ptolemy.domains.odf.kernel.ODFReceiver
 @see ptolemy.domains.odf.kernel.ODFActor
@@ -57,9 +58,11 @@ public class RcvrTimeTriple extends NamedObj {
      *  rcvr time and a priority. The rcvr time must be greater 
      *  than or equal to any previous rcvr times associated with
      *  the TimedQueueReceiver.
-     * @param rcvr The TimedQueueReceiver associated with this RcvrTimeTriple
+     * @param rcvr The TimedQueueReceiver associated with this 
+     *  RcvrTimeTriple
      * @param rcvrTime The time associated with this RcvrTimeTriple
-     * @param priority The priority associated with this RcvrTimeTriple
+     * @param priority The priority associated with this 
+     *  RcvrTimeTriple
      */
     public RcvrTimeTriple(TimedQueueReceiver rcvr, double rcvrTime, 
             int priority ) {
@@ -69,7 +72,8 @@ public class RcvrTimeTriple extends NamedObj {
             setTime(rcvrTime); 
             setPriority(priority);
         } catch( IllegalActionException e) {
-            System.out.println("This is very bad!!");
+            System.err.println("Invalid time argument for "
+                    + "RcvrTimeTriple()");
         }
     }
 
@@ -110,16 +114,13 @@ public class RcvrTimeTriple extends NamedObj {
      *  the TimedQueueReceiver. 
      * @param time The time associated with this RcvrTimeTriple
      * @exception IllegalActionException If the specified time is less than
-     *  previously set rcvr times and is not equal to -1. 
+     *  previously set rcvrTimes and is not equal to -1. 
      */
     public void setTime( double time ) throws IllegalActionException {
         if( time < _rcvrTime && time != -1 ) {
             throw new IllegalActionException( getContainer(), 
-                    "###\n"
-                    +
-                    "Error! Rcvr times must be monotonically non-decreasing!\n"
-                    +
-                    "###\n");
+                    " Rcvr times must be monotonically "
+                    + "non-decreasing!\n");
         }
         _rcvrTime = time;
     }
