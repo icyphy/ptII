@@ -7,7 +7,7 @@
       <group>
 
 <entity name="StringToXml" class="ptolemy.actor.lib.conversions.StringToXml"/>
-<entity name="XsltTransformer" class="ptolemy.actor.xslt.XSLTransformer"/>
+<entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer"/>
 
       </group>
     ?>
