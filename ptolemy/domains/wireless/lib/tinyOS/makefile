@@ -45,6 +45,7 @@ PTPACKAGE = tinyOS
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+        VirtualTinyOS.java
 
 OTHER_FILES_TO_BE_JARED = \
 
@@ -69,10 +70,10 @@ SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)TOS.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: $(SHARED_LIBRARY)
+all: jclass $(SHARED_LIBRARY)
 	@echo "To run all the demos, run 'make demo'"
 
-install: all
+install: all jars
 
 #libs:
 #	$(MAKE) SHAREDBASE=Blink shared
@@ -80,7 +81,7 @@ install: all
 #VirtualTinyOS.class: VirtualTinyOS.java
 #	javac -classpath $(ROOT) VirtualTinyOS.java
 
-#can do it autumatiocally in the makefile since we need to manually
+#cann't do it autumatiocally in the makefile since we need to manually
 #modify the .h file before we could compile the other .c files.
 #VirtualTinyOS.h: VirtualTinyOS.class
 #	javah -classpath $(ROOT) -o VirtualTinyOS.h ptolemy.domains.wireless.lib.tinyOS.VirtualTinyOS
