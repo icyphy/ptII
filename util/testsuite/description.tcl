@@ -37,48 +37,73 @@
 # method, return a Tcl Blend script that will regenerate the description
 #
 # An example use would be:
-# set filename [tmpFileName ptII .dag
+# set filename [tmpFileName ptII .dag]
+# source ExampleSystem.tcl
 # set desc [$e0 description [java::field pt.kernel.Nameable LIST_PRETTYPRINT]]]
 # description2DAG "Ptolemy II Entities" $filename $desc
 # 
-proc description2Dag {title filename desc} {
+proc description2DAG {title filename desc} {
     set fd [open $filename w]
     puts $fd "{configure -canvasheight 600} {configure -canvaswidth 800}"
     puts $fd "{titleSet title {$title}}"
     puts $fd "\{titleSet subtitle \{created:\
             [clock format [clock seconds]]\}\}"
-    listprint $fd $desc
+    _description2DAGInternal $fd $desc
     close $fd
 }
 
 # Internal proc that traverses a description and generates the DAG
 # This is called by description2DAG
-proc _description2DagInternal {fd contents {parent {}} {oldparent {}}
+proc _description2DAGInternal {fd contents {parent {}} {oldparent {}}
         {depth 1}} {
-    #puts "$depth $parent $oldparent [llength $contents] --$contents--"
+    #puts "dbg: top: $depth parent='$parent' oldparent='$oldparent' \
+    #	    [llength $contents] --$contents--"
 
     foreach element $contents {
-	puts "$depth $parent $oldparent [llength $element] $element"
-	if {[llength $element] == 2} {
+	#puts "dbg: $depth parent='$parent' oldparent='$oldparent'\
+	#	[llength $element] [llength [lindex $element 0]] '$element'"
+
+	# Checking that the list has two elements is not enough, since
+	# we could have the case where we have a graph that consists
+	# of a parent Entity with two child entities that are
+	# connected to each other.  
+	if {[llength $element] == 2 && [llength [lindex $element 0]] == 1} {
+
+	    # Substitute / for . in the classname
+	    regsub -all {\.} [lindex $element 0] {/} fileName
+
+	    # Get the name of the Entity or Relation
 	    set fullName [lindex $element 1]
+
+	    #puts "element = '$element' fullName = '$fullName'"
 	    if { $parent == {} } {
 		set oldparent {}
 		set parent $element
-		puts $fd "\{add $fullName \{label \{$fullName\}\} \{\}\}"
+		puts $fd "\{add $fullName \{label \{$fullName\}\
+			link \{\$TYCHO/java/$fileName.java\}\}\
+			\{\}\}"
 	    } else {
 		if  {[lindex $parent 1] == $fullName} {
-		    puts $fd "\{add $fullName \{label \{$fullName\}\}\
-			    \{[lindex $oldparent 1]\}\}"
+		    puts $fd "\{add $fullName \{label \{$fullName\}\
+			link \{\$TYCHO/java/$fileName.java\}\}\
+			\{[lindex $oldparent 1]\}\}"
 
 		} else {
-		    puts $fd "\{add $fullName \{label \{$fullName\}\}\
+		    puts $fd "\{add $fullName \{label \{$fullName\}\
+			    link \{\$TYCHO/java/$fileName.java\}\}\
 			    \{[lindex $parent 1]\}\}"
 		}
 	    }
 	}
 
-	if {[llength $element] > 2} {
-	    listprint $fd $element [lindex $element 0]  $parent [expr {$depth + 1}]
+	if {[llength $element] > 2  } {
+	    _description2DAGInternal $fd $element [lindex $element 0]  \
+		    $parent [expr {$depth + 1}]
+	} else {
+	    if {[llength [lindex $element 0]] > 1  } {
+		_description2DAGInternal $fd $element [lindex $element 0]  \
+		    $parent [expr {$depth + 1}]
+	    }
 	}
     }
 }
