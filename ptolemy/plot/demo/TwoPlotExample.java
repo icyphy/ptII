@@ -23,6 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+@ProposedRating red (eal@eecs.berkeley.edu)
+@AcceptedRating red (cxh@eecs.berkeley.edu)
 */
 
 // This class is not in the ptolemy.plot package so that it is a
