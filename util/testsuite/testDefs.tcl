@@ -628,7 +628,7 @@ if {"$isRunningNightlyBuild" == "true" \
         set timeOutSeconds 4800
     }
     puts "testDefs.tcl: setting time out to\
-	$timeOutSeconds seconds"
+	$timeOutSeconds seconds at [clock format [clock seconds]]"
     java::new util.testsuite.WatchDog [expr {$timeOutSeconds * 1000}]
 }
 
