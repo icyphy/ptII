@@ -1,10 +1,10 @@
 # Makefile for the DDF domain kernel
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2004 The Regents of the University of California.
+# @Copyright (c) 2001-2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -44,7 +44,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \

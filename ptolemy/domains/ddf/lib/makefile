@@ -1,10 +1,10 @@
 # Makefile for DDF domain actors library
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2004 The Regents of the University of California.
+# @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -47,13 +47,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	ActorRecursion.java \
@@ -80,7 +74,6 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass index.xml
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
