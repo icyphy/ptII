@@ -254,5 +254,16 @@ public class ParameterNameChanges implements MoMLFilter {
         _classesWithParameterNameChanges
             .put("ptolemy.domains.pn.kernel.PNDirector",
                     pnDirectorChanges);
+
+        // VariableDelay: After 4.0, 'defaultDelay'
+        // property is now 'delay'
+
+        HashMap variableDelayChanges = new HashMap();
+        variableDelayChanges.put("defaultDelay",
+                "delay");
+
+        _classesWithParameterNameChanges
+            .put("ptolemy.domains.de.lib.VariableDelay",
+                    variableDelayChanges);
     }
 }
