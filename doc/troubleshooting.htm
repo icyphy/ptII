@@ -140,7 +140,21 @@ to turn on verbose class messages:
 <pre>
 appletviewer -J-verbose:class myapplet.html
 </pre>
-
+ <p>If you see the messages below, then you are running 
+a JDK1.1 <CODE>appletviewer</CODE> instead of a JDK 1.2 <CODE>appletviewer</CODE>.
+<pre>
+Warning: &lt;param&gt; tag outside &lt;applet&gt; ... &lt;/applet&gt;.
+Warning: &lt;param&gt; tag outside &lt;applet&gt; ... &lt;/applet&gt;.
+Warning: &lt;param&gt; tag outside &lt;applet&gt; ... &lt;/applet&gt;.
+Warning: &lt;param&gt; tag outside &lt;applet&gt; ... &lt;/applet&gt;.
+Warning: &lt;param&gt; tag outside &lt;applet&gt; ... &lt;/applet&gt;.
+Warning: &lt;param&gt; tag outside &lt;applet&gt; ... &lt;/applet&gt;.
+Warning: No Applets were started. Make sure the input contains an &lt;applet&gt; tag.
+usage: appletviewer [-debug] [-J&lt;javaflag&gt;] [-encoding &lt;character encoding type
+ ] url|file ...
+</pre>
+The solution is to adjust your path so that the JDK1.2 appletviewer
+is before the JDK1.1 version.
 
 <h3><a name="Applet Troubleshooting Checklist">Applet Troubleshooting Checklist</a></h3>
 If you have problems with applets, follow the checklist below
