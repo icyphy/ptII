@@ -144,14 +144,18 @@ vergil, the Ptolemy II user interface.
 <a href="http://www.gigascale.org/diva" target="_top"><CODE>http://www.gigascale.org/diva</CODE></a>.
 
 
-<h2>Optional packages not shipped with Ptolemy</h2>
+<h2>Optional packages not shipped with Ptolemy used at runtime</h2>
+The packages below are used at runtime.  Parts of the prebuilt Ptolemy
+II installers use these packages to provide added functionality.  For
+size or licensing reasons, we do not include these packages with
+the prebuilt Ptolemy releases, so you may want to install these
+packages if you are interested in using the functionality they provide.
 
-<h3>make</h3>
-Ptolemy II has been built with GNU make 3.77, but does not use GNU make extensions, so GNU make is not requires.  Ptolemy II has also been built
-with Solaris 8 <CODE>/usr/ccs/bin/make</CODE>.
- <p>It seems that the make that is included with SGI Irix 6.5 may have
-problems, the workaround is to installed GNU make.
- 
+<h3>JAI</h3>
+The <a name="codeDoc/ptolemy/actor/lib/jai/package-summary.html">Java Advanced Imaging (JAI) actors</a> require that JAI, which can be  downloaded from
+<a href="http://java.sun.com/products/java-media/jmf/"><code>http://java.sun.com/products/java-media/jmf/</code></a>
+<p>You need not install JAI if you are not planning on using the JAI Actors.
+<p>We verified that JAI 1.1.2-rc works with these actors.
 
 <h3>Java3d</h3>
 The 
@@ -177,6 +181,30 @@ The Java 3D 1.2.1_04 release notes say that this bug:
 4470749 Java3D fail to initialize underlying OGL/D3D library in jdk1.4
 </pre>
 was fixed in Java 3D 1.2.1_04
+
+
+<h3>Joystick</h3>
+The <a name="codeDoc/ptolemy/actor/lib/joystick/Joystick.html">Joystick actor</a>
+requires the Joystick interface from
+<a href="http://sourceforge.net/projects/javajoystick/"><code>http://sourceforge.net/projects/javajoystick/</code>.
+<p>Configure looks for the joystick interface in
+<code>$PTII/vendors/misc/joystick</code>.  In that directory, 
+it looks for <code>joystick.jar</code>.
+<ol>
+<li> Download the Joystick 0.6 zip file from
+<a href="http://sourceforge.net/projects/javajoystick/"><code>http://sourceforge.net/projects/javajoystick/</code></a>
+<li> Unzip it in <code>$PTII/vendors/misc</code>
+<li> Under Windows, copy the .dll into your path
+<pre>
+cp $PTII/vendors/misc/joystick/lib/jjstick.dll $PTII/bin
+</pre>
+</ol>
+
+<h3>JMF</h3>
+The <a name="codeDoc/ptolemy/actor/lib/jai/package-summary.html">Java Media Framework (JMF) actors</a> require that JMF, which can be  downloaded from
+<a href="http://java.sun.com/products/java-media/jmf/"><code>http://java.sun.com/products/java-media/jmf/</code></a>
+<p>You need not install JMF if you are not planning on using the JMF Actors.
+<p>We verified that JMF 2.1.1c works with these actors.
 
 <h3><a name="matlab">Matlab</a></h3>
 Ptolemy II includes an interface to Matlab that was  
@@ -222,6 +250,77 @@ $PTII/bin/vergil ./demo/MatlabExpression/MatlabExpression
 
 
 
+<h2>Optional Packages not shipped with Ptolemy that are used
+at compile time</h2>
+
+The packages below are used when Ptolemy II is compiled.
+<br><b>You need not install these packages if you are running
+a prebuilt version of Ptolemy II</b>
+
+If you install a package after building Ptolemy II, rerun
+configure
+<pre>
+cd $PTII; rm config.*; ./configure
+</pre>
+and then make
+<pre>
+make fast
+</pre>
+
+
+<h3>make</h3>
+Ptolemy II uses makefiles to build.  We include a subset
+of the Cygwin tools for Windows, see the
+<a href="#cygwin">Cygwin installation</a> notes.
+
+
+<p>Ptolemy II has been built with GNU make 3.77, but does not use GNU make extensions, so GNU make is not requires.  Ptolemy II has also been built
+with Solaris 8 <CODE>/usr/ccs/bin/make</CODE>.
+ <p>It seems that the make that is included with SGI Irix 6.5 may have
+problems, the workaround is to installed GNU make.
+ 
+
+<h3>GC</h3>
+The Copernicus C code generator uses the Boehm Garbarge Collector,
+which can be found at
+<a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/"><code>http://www.hpl.hp.com/personal/Hans_Boehm/gc/</code>
+<p>You need not download the Garbage Collector unless you are
+planning on using the Copernicus C code generator.
+<p>The configure program looks for the Garbage Collector in
+<code>$PTII/vendors/gc</code>.
+<p>To install the Garbage Collector:
+<ol>
+<li> Download from 
+<a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/"><code>http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/</code></a>
+<li> 
+<pre>
+cd $PTII/vendors/gc
+tar -zxf /tmp/gc.tar.gz
+cd gc6.1
+./configure --prefix=$PTII
+make
+make check
+make install
+</pre>
+Note that under Windows, PTII cannot have a backslash in it or
+else make will have problems.
+
+<p>As of 4/03, we were using version 6.1
+
+<h3>CaffeineMark</h3>
+The CaffeineMark benchmark is used by the Copernicus C code generator.
+<p>You need not download the CaffeineMark benchmark unless you are 
+interested in benchmarking the Copernicus C code generator.
+<p>The main page for the CaffeineMark is
+<a href="http://www-sor.inria.fr/~java/tools/cmkit"><code>http://www-sor.inria.fr/~java/tools/cmkit</code></a>
+To install, do
+<pre>
+cd $PTII/vendors/cm
+# Download http://www-sor.inria.fr/~java/tools/cmkit/embed.zip
+jar -xf embed.zip
+</pre>
+
+
 <h3><a name="javacc">JavaCC</a></h3>
 JavaCC is the Java Compiler Compiler, which similar to <CODE>yacc</CODE>
 and <CODE>lex</CODE>.
@@ -232,7 +331,7 @@ and <CODE>lex</CODE>.
  <p>To install JavaCC, follow the instructions below
 <ol>
 <li> Download JavaCC2_1.zip from
-<a href="http://www.webgain.com/download/javacc/details.html" target="_top"><CODE>http://www.webgain.com/download/javacc/details.html</CODE></a>
+<a href="http://www.experimentalstuff.com/Technologies/JavaCC/" target="_top"><CODE>http://www.experimentalstuff.com/Technologies/JavaCC/</CODE></a>
 <li> <CODE>$PTII/configure</CODE> looks for JavaCC in
 the <CODE>$PTII/vendors/sun/JavaCC</CODE> directory.  If
 <CODE>configure</CODE> does not find JavaCC there, then it looks
