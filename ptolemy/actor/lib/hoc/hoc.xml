@@ -9,7 +9,7 @@
 
       <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
           <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
-              <property name="iterations" value="1"/>
+              <property name="iterations" value="0"/>
               <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 35}"/>
           </property>
       </entity>
