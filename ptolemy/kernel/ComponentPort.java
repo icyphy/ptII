@@ -317,7 +317,10 @@ public class ComponentPort extends Port {
             Iterator relations = insideRelationList().iterator();
             while (relations.hasNext()) {
                 Relation relation = (Relation)relations.next();
-                result.addAll(relation.linkedPortList(this));
+                // A null link might yield a null relation here.
+                if (relation != null) {
+                    result.addAll(relation.linkedPortList(this));
+                }
             }
             return result;
         } finally {
@@ -814,27 +817,31 @@ public class ComponentPort extends Port {
             Iterator relations = insideRelationList().iterator();
             while (relations.hasNext()) {
                 Relation relation = (Relation)relations.next();
-                Iterator insidePorts = relation.linkedPortList(this).iterator();
-                while (insidePorts.hasNext()) {
-                    ComponentPort downPort =
-                        (ComponentPort)insidePorts.next();
-                    // The inside port may not be actually inside,
-                    // in which case we want to look through it
-                    // from the inside (this supports transparent
-                    // entities).
-                    if (downPort._isInsideLinkable(relation.getContainer())) {
-                        // The inside port is not truly inside.
-                        // Check to see whether it is transparent.
-                        if (downPort.isOpaque()) {
-                            result.add(downPort);
+                // A null link might yield a null relation here.
+                if(relation != null) {
+                    Iterator insidePorts = 
+                        relation.linkedPortList(this).iterator();
+                    while (insidePorts.hasNext()) {
+                        ComponentPort downPort =
+                            (ComponentPort)insidePorts.next();
+                        // The inside port may not be actually inside,
+                        // in which case we want to look through it
+                        // from the inside (this supports transparent
+                        // entities).
+                        if (downPort._isInsideLinkable(relation.getContainer())) {
+                            // The inside port is not truly inside.
+                            // Check to see whether it is transparent.
+                            if (downPort.isOpaque()) {
+                                result.add(downPort);
+                            } else {
+                                result.addAll(
+                                        downPort._deepConnectedPortList(path));
+                            }
                         } else {
+                            // The inside port is truly inside.
                             result.addAll(
-                                    downPort._deepConnectedPortList(path));
+                                    downPort._deepInsidePortList(path));
                         }
-                    } else {
-                        // The inside port is truly inside.
-                        result.addAll(
-                                downPort._deepInsidePortList(path));
                     }
                 }
             }

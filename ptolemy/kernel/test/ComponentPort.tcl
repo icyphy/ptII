@@ -157,6 +157,63 @@ test ComponentPort-3.3 {test connectedPorts} {
 ######################################################################
 ####
 #
+test ComponentPort-3.3b {test insidePorts} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    $e1 setName E1
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e2 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set p3 [java::new ptolemy.kernel.ComponentPort $e1 P3]
+    set a1 [java::new ptolemy.kernel.ComponentRelation $e1 A1]
+    $p1 link $a1
+    $p2 link $a1
+    $p3 link $a1
+    list [enumToNames [$p3 insidePorts]] \
+            [enumToNames [$p2 insidePorts]] \
+            [enumToNames [$p1 insidePorts]]
+} {{P1 P2} {} {}}
+
+######################################################################
+####
+#
+test ComponentPort-3.3c {test connectedPorts with null links} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    $e1 setName E1
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e2 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set p3 [java::new ptolemy.kernel.ComponentPort $e1 P3]
+    set a1 [java::new ptolemy.kernel.ComponentRelation $e1 A1]
+    $p1 insertLink 3 $a1
+    $p2 insertLink 3 $a1
+    $p3 insertLink 3 $a1
+    list [enumToNames [$p3 connectedPorts]] \
+            [enumToNames [$p2 connectedPorts]] \
+            [enumToNames [$p1 connectedPorts]]
+} {{} {P1 P3} {P2 P3}}
+
+######################################################################
+####
+#
+test ComponentPort-3.3d {test insidePorts with null links} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    $e1 setName E1
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e2 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set p3 [java::new ptolemy.kernel.ComponentPort $e1 P3]
+    set a1 [java::new ptolemy.kernel.ComponentRelation $e1 A1]
+    $p1 insertLink 3 $a1
+    $p2 insertLink 3 $a1
+    $p3 insertLink 3 $a1
+    list [enumToNames [$p3 insidePorts]] \
+            [enumToNames [$p2 insidePorts]] \
+            [enumToNames [$p1 insidePorts]]
+} {{P1 P2} {} {}}
+
+######################################################################
+####
+#
 test ComponentPort-3.4 {Level-crossing link error} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
     $e1 setName E1
