@@ -68,7 +68,7 @@ public class JAIDFT extends Transformer {
      */    
     public JAIDFT(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+        super(container, name);   
         
         scalingType = new StringAttribute(this, "scalingType");
         scalingType.setExpression("none");
@@ -171,7 +171,6 @@ public class JAIDFT extends Transformer {
             throw new IllegalActionException(
                     "Invalid data natures");
         }        
-        
         RenderedOp newImage = JAI.create("dft", dftParameters);
         output.send(0, new JAIImageToken(newImage));
     }

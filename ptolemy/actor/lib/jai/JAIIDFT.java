@@ -174,7 +174,6 @@ public class JAIIDFT extends Transformer {
             throw new IllegalActionException(
                     "Invalid data natures");
         }
-
         RenderedOp newImage = JAI.create("idft", idftParameters);
         output.send(0, new JAIImageToken(newImage));
     }

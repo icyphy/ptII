@@ -85,6 +85,6 @@ public class JAIDCT extends Transformer {
         RenderedOp oldImage = jaiImageToken.getValue();
         dctParameters.addSource(oldImage);
         RenderedOp newImage = JAI.create("dct", dctParameters);        
-	output.send(0, new JAIImageToken(newImage));
+        output.send(0, new JAIImageToken(newImage));
     }
 }

@@ -71,7 +71,7 @@ public class JAIIDCT extends Transformer {
              throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
-        output.setTypeEquals(BaseType.OBJECT);
+        output.setTypeEquals(BaseType.OBJECT);    
     }
 
     ///////////////////////////////////////////////////////////////////
