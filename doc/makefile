@@ -74,7 +74,6 @@ EXTRA_SRCS = \
 	docs.htm \
 	doctoc.htm \
 	domains.htm \
-	expression.htm \
 	footer.htm \
 	help.htm \
 	index.htm \
