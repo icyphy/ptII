@@ -1936,11 +1936,22 @@ public class PlotBox extends JPanel implements Printable {
      */
     protected int _leftPadding = 10;
 
-    /** @serial The plot rectangle in pixels.
-     * The naming convention is: "_ulx" = "upper left x", where "x" is
-     * the horizontal dimension.
-     */
-    protected int _ulx = 1 , _uly = 1, _lrx = 100, _lry = 100;
+    // The naming convention is: "_ulx" = "upper left x", where "x" is
+    // the horizontal dimension.
+
+    /** The x value of the upper left corner of the plot rectangle in pixels. */
+    protected int _ulx = 1;
+
+    /** The y value of the upper left corner of the plot rectangle in pixels. */
+    protected int _uly = 1;
+
+    /** The x value of the lower right corner of
+      * the plot rectangle in pixels. */
+    protected int _lrx = 100;
+
+    /** The y value of the lower right corner of
+      * the plot rectangle in pixels. */
+    protected int _lry = 100;
 
     /** @serial Scaling used in plotting points. */
     protected double _yscale = 1.0, _xscale = 1.0;
