@@ -40,7 +40,10 @@
          <doc>Read a directory and output each file or subdirectory</doc>
       </entity>
 
-
+      <entity name="Wormhole"
+              class="ptolemy.actor.lib.net.Wormhole">
+         <doc>Reads (&eventually writes) the copy past buffer</doc>
+      </entity>
 
       </group>
     ?>
