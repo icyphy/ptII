@@ -47,7 +47,7 @@ has at most one
 thread trying to send to it and at most one thread trying to receive
 from it at any one time. The receiver performs the synchronization
 necessary for simple rendezvous (get() and put() operations). It
-also stores the flags that allow the ConditionalSend and ConditionalReceive 
+also stores the flags that allow the ConditionalSend and ConditionalReceive
 branches to know when they can proceed.
 <p>
 @author Neil Smyth
@@ -268,14 +268,14 @@ public class CSPReceiver implements ProcessReceiver {
     }
 
     /** The parent CSPActor of the conditional branch to reach the
-     *  rendezvous point first. For a rendezvous to occur when both 
-     *  communications at the receiver are from conditional branches, 
-     *  then the rendezvous can only proceed if <I>both</I> the branches 
-     *  are the first branches to be ready to succeed for their 
-     *  respective parents. This is checked by the second branch to 
-     *  arrive at the rendezvous point, for which it requires the actor 
-     *  that created the other branch. Thus the first branch to arrive 
-     *  stores its parent in the receiver when it is setting the 
+     *  rendezvous point first. For a rendezvous to occur when both
+     *  communications at the receiver are from conditional branches,
+     *  then the rendezvous can only proceed if <I>both</I> the branches
+     *  are the first branches to be ready to succeed for their
+     *  respective parents. This is checked by the second branch to
+     *  arrive at the rendezvous point, for which it requires the actor
+     *  that created the other branch. Thus the first branch to arrive
+     *  stores its parent in the receiver when it is setting the
      *  appropriate flag, which is what is returned by this method.
      *  @return The parent actor which created the first conditional
      *   branch to arrive.
@@ -286,7 +286,7 @@ public class CSPReceiver implements ProcessReceiver {
 
     /** Flag indicating whether or not a ConditionalReceive is trying
      *  to rendezvous with this receiver.
-     *  @return True if a ConditionalReceive branch is trying to 
+     *  @return True if a ConditionalReceive branch is trying to
      *   rendezvous with this receiver.
      */
     protected boolean _isConditionalReceiveWaiting() {
@@ -295,7 +295,7 @@ public class CSPReceiver implements ProcessReceiver {
 
     /** Flag indicating whether or not a ConditionalSend is trying
      *  to rendezvous with this receiver.
-     *  @return True if a ConditionalSend branch is trying to 
+     *  @return True if a ConditionalSend branch is trying to
      *   rendezvous with this receiver.
      */
     protected boolean _isConditionalSendWaiting() {
@@ -377,7 +377,7 @@ public class CSPReceiver implements ProcessReceiver {
             while (_modelPaused) {
                 wait();
             }
-            // The execution of the model may have finished while we were 
+            // The execution of the model may have finished while we were
             // paused...
             // Need to do this as wait is used above.
             if (_modelFinished) {

@@ -48,24 +48,24 @@ import java.util.Enumeration;
    non-deterministic communication and timed features of  the communicating
    sequential processes(CSP) domain.
    <p>
-   Two conditional communication constructs are available: "Conditional if" 
-   (CIF) and "Conditional do" (CDO). The constructs are analogous to, 
-   but different from, the common <I>if</I> and <I>do</I> statements. The 
-   steps involved in using both of these are 
-   <BR>(1) create the branches involved and assign an identification number 
+   Two conditional communication constructs are available: "Conditional if"
+   (CIF) and "Conditional do" (CDO). The constructs are analogous to,
+   but different from, the common <I>if</I> and <I>do</I> statements. The
+   steps involved in using both of these are
+   <BR>(1) create the branches involved and assign an identification number
    to each branch.
-   <BR>(2) call the chooseBranch() method to determine which branch should 
+   <BR>(2) call the chooseBranch() method to determine which branch should
    succeed.
    <BR>(3) execute the statements associated with the successful branch.
    <P>
-   Each branch is either an instance of ConditionalSend or ConditionalReceive, 
-   depending on the communication in the branch. Please see these classes for 
+   Each branch is either an instance of ConditionalSend or ConditionalReceive,
+   depending on the communication in the branch. Please see these classes for
    details on <I>guarded communication statements</I>, which they represent.
-   The identification number assigned to each branch only needs to identify 
-   the branch uniquely for one sequence of the steps above. A good example 
-   of how to use a CDO is the code in the actor CSPBuffer, in the 
-   ptolemy.domians.csp.lib package. One significant difference between a 
-   CDO (or CIF) and a common <I>do</I> (<I>if</I>) is that all the branches 
+   The identification number assigned to each branch only needs to identify
+   the branch uniquely for one sequence of the steps above. A good example
+   of how to use a CDO is the code in the actor CSPBuffer, in the
+   ptolemy.domians.csp.lib package. One significant difference between a
+   CDO (or CIF) and a common <I>do</I> (<I>if</I>) is that all the branches
    are evaluated in parallel, as opposed to sequentially.
 
    <p>The chooseBranch() method takes an array of the branches as an
@@ -280,7 +280,7 @@ public class CSPActor extends AtomicActor {
         if (_successfulBranch == -1) {
             // Conditional construct was ended prematurely
             if (_blocked) {
-                // Actor was registered as blocked when the 
+                // Actor was registered as blocked when the
                 // construct was terminated.
                 ((CSPDirector)getDirector())._actorUnblocked();
             }
@@ -294,8 +294,8 @@ public class CSPActor extends AtomicActor {
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
-     *  The result is a new actor with the same number of ports (cloned) 
-     *  as the original, but no connections and no container.  
+     *  The result is a new actor with the same number of ports (cloned)
+     *  as the original, but no connections and no container.
      *  A container must be set before much can be done with the actor.
      *  <p>
      *  @param ws The workspace for the cloned object.
@@ -316,12 +316,12 @@ public class CSPActor extends AtomicActor {
 	return newobj;
     }
 
-    /** Delay this actor. The actor resumes executing when the 
-     *  director advances the current model time to 
-     *  "getCurrentTime() + delta". If the actor tries to 
-     *  delay for a negative time, an exception is thrown. A delay 
-     *  of zero time has no effect and this method returns immediately. 
-     *  @param delta The time to delay this actor for from the current 
+    /** Delay this actor. The actor resumes executing when the
+     *  director advances the current model time to
+     *  "getCurrentTime() + delta". If the actor tries to
+     *  delay for a negative time, an exception is thrown. A delay
+     *  of zero time has no effect and this method returns immediately.
+     *  @param delta The time to delay this actor for from the current
      *  time.
      */
     public void delay(double delta) {
@@ -346,7 +346,7 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Return false. If an actor wishes to continue for more than 
+    /** Return false. If an actor wishes to continue for more than
      *  one iteration it should override this method to return true.
      *  @return True if another iteration can occur.
      */
@@ -372,9 +372,9 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Wait for deadlock to occur. The current model time will not 
-     *  advance while this actor is delayed. This method may be useful if 
-     *  an actor wishes to delay itself until some topology changes 
+    /** Wait for deadlock to occur. The current model time will not
+     *  advance while this actor is delayed. This method may be useful if
+     *  an actor wishes to delay itself until some topology changes
      *  have been carried out.
      */
     public void waitForDeadlock() {
@@ -410,7 +410,7 @@ public class CSPActor extends AtomicActor {
      *  are not first.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
-     *  @return True if the calling branch is the first branch to try 
+     *  @return True if the calling branch is the first branch to try
      *   to rendezvous, otherwise false.
      */
     protected boolean _isBranchFirst(int branchNumber) {
@@ -425,7 +425,7 @@ public class CSPActor extends AtomicActor {
     }
 
     /** Increase the count of branches that are blocked trying to rendezvous.
-     *  If all the enabled branches (for the CIF or CDO currently 
+     *  If all the enabled branches (for the CIF or CDO currently
      *  being executed) are blocked, register this actor as being blocked.
      */
     protected void _branchBlocked() {
@@ -439,9 +439,9 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Registers the calling branch as failed. It reduces the count 
-     *  of active branches, and if all the active branches have 
-     *  finished, it wakes notifies chooseBranch() to continue. 
+    /** Registers the calling branch as failed. It reduces the count
+     *  of active branches, and if all the active branches have
+     *  finished, it wakes notifies chooseBranch() to continue.
      *  It is called by a conditional branch just before it dies.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
@@ -461,10 +461,10 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Registers the calling branch as the successful branch. It 
-     *  reduces the count of active branches, and notifies chooseBranch() 
-     *  that a branch has succeeded. The chooseBranch() method then 
-     *  proceeds to terminate the remaining branches. It is called by 
+    /** Registers the calling branch as the successful branch. It
+     *  reduces the count of active branches, and notifies chooseBranch()
+     *  that a branch has succeeded. The chooseBranch() method then
+     *  proceeds to terminate the remaining branches. It is called by
      *  the first branch that succeeds with a rendezvous.
      *  @param branchID The ID assigned to the calling branch upon creation.
      */
@@ -483,7 +483,7 @@ public class CSPActor extends AtomicActor {
     }
 
     /** Decrease the count of branches that are blocked.
-     *  If the actor was previously registered as being blocked, register 
+     *  If the actor was previously registered as being blocked, register
      *  this actor with the director as no longer being blocked.
      */
     protected void _branchUnblocked() {
@@ -518,13 +518,13 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Release the status of the calling branch as the first branch 
-     *  to be ready to rendezvous. This method is only called when both 
-     *  sides of a communication at a receiver are conditional. In 
-     *  this case, both of the branches have to be the first branches, 
-     *  for their respective actors, for the rendezvous to go ahead. If 
-     *  one branch registers as being first, for its actor, but the 
-     *  other branch cannot, then the status of the first branch needs 
+    /** Release the status of the calling branch as the first branch
+     *  to be ready to rendezvous. This method is only called when both
+     *  sides of a communication at a receiver are conditional. In
+     *  this case, both of the branches have to be the first branches,
+     *  for their respective actors, for the rendezvous to go ahead. If
+     *  one branch registers as being first, for its actor, but the
+     *  other branch cannot, then the status of the first branch needs
      *  to be released to allow other branches the possibility of succeeding.
      *  @param branchNumber The ID assigned to the branch upon creation.
      */
@@ -568,8 +568,8 @@ public class CSPActor extends AtomicActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // Flag indicating whether this actor is currently registered 
-    // as blocked while in the midst of a CDO or CIF.    
+    // Flag indicating whether this actor is currently registered
+    // as blocked while in the midst of a CDO or CIF.
     boolean _blocked = false;
 
     // Contains the number of conditional branches that are still

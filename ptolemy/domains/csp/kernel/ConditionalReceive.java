@@ -71,7 +71,7 @@ succeeded with its rendezvous is executed in the run method. There are
 roughly three parts to the algorithm, each of which is relevant
 to the different rendezvous scenarios.
 <br>
-<I>Case 1:</I> There is a put already waiting at the rendezvous point. In 
+<I>Case 1:</I> There is a put already waiting at the rendezvous point. In
 this case
 the branch attempts to register itself, with the parent actor, as the first
 branch ready to rendezvous. If it succeeds, it performs the rendezvous,
@@ -92,7 +92,7 @@ the conditional send could "go away". If it is unable to register itself as
 the first branch to try, it again starts trying to rendezvous from the
 beginning.
 <br>
-<I>Case 3:</I> If there is neither a put or a conditional send waiting, it 
+<I>Case 3:</I> If there is neither a put or a conditional send waiting, it
 sets a
 flag in the receiver that a conditional receive is trying to rendezvous. It
 then waits until a put is executed on the receiver, or until another branch
@@ -167,9 +167,9 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  (3) where the ConditionalReceive is the first to arrive at the
      *  receiver.
      *  <P>
-     *  The algorithm used in this method, together with some methods in 
-     *  CSPActor, control how conditional communication takes place in 
-     *  the CSP domain. 
+     *  The algorithm used in this method, together with some methods in
+     *  CSPActor, control how conditional communication takes place in
+     *  the CSP domain.
      */
     public void run() {
         try {

@@ -46,7 +46,7 @@ guarded communication statement is of the form
 If the guard is true, or absent which implies true, then the branch
 is enabled. Guarded communication statements are used to perform
 both forms of conditional communication constructs: "conditional if" (CIF)
-and "conditional do" (CDO). These constructs are analogous to, 
+and "conditional do" (CDO). These constructs are analogous to,
 but different from, the common <I>if</I> and <I>do</I> statements.
 Each guarded communication statement is one branch of a CIF or CDO.
 <p>
@@ -60,12 +60,12 @@ A CDO has the form
 <br>&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;       ...
 <br>&nbsp;&nbsp;&nbsp                          }
 <P>
-The G1, G2 etc. represent the guards. The C1, C2 etc. represent the 
-communication associated with that branch, and may be either a send() 
-or a get(). The S1, S2 etc. represent the blocks of statements 
-associated with that branch. They are executed if that branch is 
-successful. The "[]" hints at the fact that the guards are all evaluated 
-in parallel (as opposed to sequentially in a common <I>if</I> statement). 
+The G1, G2 etc. represent the guards. The C1, C2 etc. represent the
+communication associated with that branch, and may be either a send()
+or a get(). The S1, S2 etc. represent the blocks of statements
+associated with that branch. They are executed if that branch is
+successful. The "[]" hints at the fact that the guards are all evaluated
+in parallel (as opposed to sequentially in a common <I>if</I> statement).
 <p>
 While at least one of the branches is enabled, the construct continues
 to evaluate and execute one of the enabled branches. If more than one
@@ -86,7 +86,7 @@ in a separate thread. For rendezvous, the receiver is the key
 synchronization point.
 <p>
 Conditional branches are designed to be used once. Upon instantiation,
-they are given the guard, the port and channel over which to communicate, 
+they are given the guard, the port and channel over which to communicate,
 and the identification number of the branch according to the parent.
 The port and the channel together define the CSPReceiver with which to
 rendezvous. The CSPActor, executing a CIF or CDO that contains this branch, is
@@ -106,11 +106,11 @@ public abstract class ConditionalBranch {
      *  is subject to communication specific tests.
      *  @param guard The guard for the guarded communication statement
      *   represented by this object.
-     *  @param port The IOPort that contains the channel to 
+     *  @param port The IOPort that contains the channel to
      *   try an communicate through.
      *  @param branch The identification number assigned to this branch
      *   upon creation by the CSPActor.
-     *  @exception IllegalActionException If the actor that contains 
+     *  @exception IllegalActionException If the actor that contains
      *   the port is not of type CSPActor.
      */
     public ConditionalBranch(boolean guard, IOPort port, int branchID)
@@ -144,7 +144,7 @@ public abstract class ConditionalBranch {
         return _branchID;
     }
 
-    /** Return the CSPActor that created this branch when performing 
+    /** Return the CSPActor that created this branch when performing
      *  a CIF or CDO.
      *  @return The CSPActor that created this branch.
      */
@@ -172,7 +172,7 @@ public abstract class ConditionalBranch {
     /** Boolean indicating if this branch is still alive. If it is false, it
      *  indicates another conditional branch was able to rendezvous before
      *  this branch, and this branch should stop trying to rendezvous with
-     *  its receiver and terminate. If it is true, the branch should 
+     *  its receiver and terminate. If it is true, the branch should
      *  continue trying to rendezvous.
      *  @return True if this branch is still alive.
      */
@@ -187,7 +187,7 @@ public abstract class ConditionalBranch {
         _alive = value;
     }
 
-    /** Set the CSPReceiver this branch is trying to rendezvous with. 
+    /** Set the CSPReceiver this branch is trying to rendezvous with.
      *  This method should only be called from derived classes.
      *  @param rec The CSPReceiver this branch is trying to rendezvous with.
      */
@@ -208,8 +208,8 @@ public abstract class ConditionalBranch {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Called by subclasses to wait. It wraps a wait() call, on the 
-     *  receiver associated with this branch, between checks on the state 
+    /** Called by subclasses to wait. It wraps a wait() call, on the
+     *  receiver associated with this branch, between checks on the state
      *  of the receiver. It also takes care of registering
      *  branches as blocked which is needed for deadlock detection.
      *  @exception InterruptedException If this method is interrupted

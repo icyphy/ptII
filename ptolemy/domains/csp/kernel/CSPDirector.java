@@ -44,7 +44,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CSPDirector
 /**
-CSPDirector governs the execution of a CompositeActor with the semantics 
+CSPDirector governs the execution of a CompositeActor with the semantics
 of the Communicating Sequential Processes (CSP) domain.
 <p>
 In the CSP domain, the director creates a thread for executing each
@@ -73,34 +73,34 @@ changes to the topology when it is appropriate.
 <p>
 If real deadlock occurs, the fire method returns. If there are no
 levels above this level in the hierarchy then this marks the end
-of execution of the model. The model execution is terminated by setting 
-a flag in every receiver contained in actors controlled by this director. 
+of execution of the model. The model execution is terminated by setting
+a flag in every receiver contained in actors controlled by this director.
 When a process tries to send or receive from a receiver with the terminated
 flag set, a TerminateProcessException is thrown which causes the
 actors execution thread to terminate.
 <p>
 Time is controlled by the director. Each process can delay for some
-delta time, and it will continue when the director has advanced time 
-by that length of time from the current time. A process is delayed by 
-calling delay(double) method. The director <i>advances</i> time each 
-occasion a time deadlock occurs and no changes to the topology  are 
-pending. If a process specifies zero delay, then the process 
-continues immediately. A process may delay itself until the next 
-time deadlock occurs by calling waitForDeadlock(). Then the next 
-occasion time deadlock occurs, the director wakes up any processes 
-waiting for deadlock, and does not advance the current time. Otherwise 
-the current model time is increased as well as being advanced.  By default 
-the model of computation used in the CSP domain is timed. To use CSP 
+delta time, and it will continue when the director has advanced time
+by that length of time from the current time. A process is delayed by
+calling delay(double) method. The director <i>advances</i> time each
+occasion a time deadlock occurs and no changes to the topology  are
+pending. If a process specifies zero delay, then the process
+continues immediately. A process may delay itself until the next
+time deadlock occurs by calling waitForDeadlock(). Then the next
+occasion time deadlock occurs, the director wakes up any processes
+waiting for deadlock, and does not advance the current time. Otherwise
+the current model time is increased as well as being advanced.  By default
+the model of computation used in the CSP domain is timed. To use CSP
 without a notion of time, do not use the delay(double) method in any process.
 <p>
 The execution of the model may be paused by calling pause() which
-will cause each process to pause the next time it tries to communicate 
-or delay itself. The pause() method only returns when the execution of 
-the model is paused. A paused model may be resumed by calling resume(). These 
-methods only effect the progress of executing the model; they do not have any 
-effect on the results of executing the model. The execution of the model 
-may also be terminated abruptly by calling the terminate() method directly. 
-This may lead to inconsistent state so any results generated after 
+will cause each process to pause the next time it tries to communicate
+or delay itself. The pause() method only returns when the execution of
+the model is paused. A paused model may be resumed by calling resume(). These
+methods only effect the progress of executing the model; they do not have any
+effect on the results of executing the model. The execution of the model
+may also be terminated abruptly by calling the terminate() method directly.
+This may lead to inconsistent state so any results generated after
 it should be ignored.
 <p>
 Changes to the topology can occur each occasion deadlock, real or time, is
@@ -188,8 +188,8 @@ public class CSPDirector extends ProcessDirector {
 	// something may go here e.g. notify GUI
     }
 
-    /** Returns the current model time. 
-     *  Note: this method may disappear if time is implemented in 
+    /** Returns the current model time.
+     *  Note: this method may disappear if time is implemented in
      *  super classes.
      *  @return The current model time.
      */
@@ -228,14 +228,14 @@ public class CSPDirector extends ProcessDirector {
         super.queueTopologyChangeRequest(req);
     }
 
-    /** Set the current model time. It is intended for use when composing 
+    /** Set the current model time. It is intended for use when composing
      *  CSP with other timed domains.
      *  <P>
-     *  This method should only be called when no processes are delayed, as 
-     *  the director stores the model time at which to resume them. If 
-     *  the current model time changed while one or more processes are 
-     *  delayed, then the state of the director would be undefined as 
-     *  the resumption time of the delayed processes would not be 
+     *  This method should only be called when no processes are delayed, as
+     *  the director stores the model time at which to resume them. If
+     *  the current model time changed while one or more processes are
+     *  delayed, then the state of the director would be undefined as
+     *  the resumption time of the delayed processes would not be
      *  comparable with the new model time.
      *  <P>
      *  @exception IllegalActionException If one or more processes
@@ -272,7 +272,7 @@ public class CSPDirector extends ProcessDirector {
     public void wrapup() throws IllegalActionException {
         System.out.println(Thread.currentThread().getName() +
                 ": CSPDirector: about to end the model");
-        if ((_actorsDelayed !=0) || _topologyChangesPending || 
+        if ((_actorsDelayed !=0) || _topologyChangesPending ||
                 (_getPausedActorsCount() != 0)) {
             /*throw new InvalidStateException( "CSPDirector wrapping up " +
               "when there are actors delayed or paused, or when " +
@@ -295,25 +295,25 @@ public class CSPDirector extends ProcessDirector {
 
     /** Called by a CSPActor when it wants to delay. When the
      *  director has advanced time to "getCurrentTime() + delta", the process
-     *  corresponding to the actor will continue. Note that actors 
+     *  corresponding to the actor will continue. Note that actors
      *  can only deal with delta time.
      *  <P>
-     *  The method waitForDeadlock() in CSPActor calls this method 
-     *  with a zero argument. Thus the process will continue the 
-     *  next occasion time deadlock occurs. 
+     *  The method waitForDeadlock() in CSPActor calls this method
+     *  with a zero argument. Thus the process will continue the
+     *  next occasion time deadlock occurs.
      *  <p>
      *  @param delta The length of time to delay the actor.
      *  @param actor The actor being delayed.
-     *  @exception InvalidStateException If an actor is delayed for 
+     *  @exception InvalidStateException If an actor is delayed for
      *   negative time.
      */
-    protected synchronized void _actorDelayed(double delta, CSPActor actor) 
+    protected synchronized void _actorDelayed(double delta, CSPActor actor)
             throws InvalidStateException {
         if (delta < 0.0) {
 	    throw new InvalidStateException(((Nameable)actor).getName() +
                     ": delayed for negative time.");
 	} else {
-            // System.out.println("Delaying actor " + 
+            // System.out.println("Delaying actor " +
             // ((Nameable)actor).getName()+
             //    " for time " + delta + ".");
 	    _actorsDelayed++;
@@ -333,7 +333,7 @@ public class CSPDirector extends ProcessDirector {
         _actorsBlocked--;
     }
 
-    /** Returns true if all active processes are either blocked or 
+    /** Returns true if all active processes are either blocked or
      *  delayed, false otherwise.
      */
     protected synchronized boolean _checkForDeadlock() {
@@ -345,16 +345,16 @@ public class CSPDirector extends ProcessDirector {
 	*/
         if (_getActiveActorsCount() == (_actorsBlocked + _actorsDelayed)) {
             return true;
-        } 
+        }
         return false;
     }
 
     /** Returns true if all active processes are either blocked, delayed or
-     *  paused. If so, then all of the processes cannot make any progress 
+     *  paused. If so, then all of the processes cannot make any progress
      *  and the model has been paused. It returns false otherwise.
      */
     protected synchronized boolean _checkForPause() {
-        if (_actorsBlocked + _getPausedActorsCount() + _actorsDelayed == 
+        if (_actorsBlocked + _getPausedActorsCount() + _actorsDelayed ==
                 _getActiveActorsCount()) {
             System.out.println("CSPDirector: model successfully paused!");
 	    return true;
@@ -373,21 +373,21 @@ public class CSPDirector extends ProcessDirector {
      *  processes blocked trying to rendezvous.
      *  <p>
      *  If there are changes to the topology waiting to happen, they are
-     *  performed and the execution of the model continues. 
-     *  Note that the result of performing the topology changes may be 
+     *  performed and the execution of the model continues.
+     *  Note that the result of performing the topology changes may be
      *  to remove the deadlock that had occurred.
      *  <p>
      *  If the number of delayed processes is greater than zero, then
-     *  <i>time deadlock</i> has occurred. If one or more processes 
-     *  are delayed waiting for deadlock to occur, then those processes 
-     *  are resumed and time is not advanced. Otherwise time is advanced 
-     *  and the earliest delayed process is resumed. Current time is 
-     *  defined as the double value returned by getCurrentTime() 
+     *  <i>time deadlock</i> has occurred. If one or more processes
+     *  are delayed waiting for deadlock to occur, then those processes
+     *  are resumed and time is not advanced. Otherwise time is advanced
+     *  and the earliest delayed process is resumed. Current time is
+     *  defined as the double value returned by getCurrentTime()
      *  plus/minus 10e-10.
      *  <p>
      *  If all the processes are blocked, then <i>real deadlock</i> has
      *  occurred, and this method returns true. If there are no levels
-     *  above this one in the hierarchy, then real deadlock marks the 
+     *  above this one in the hierarchy, then real deadlock marks the
      *  end of executing the model.
      *  @return True if real deadlock occurred, false otherwise.
      */
@@ -424,7 +424,7 @@ public class CSPDirector extends ProcessDirector {
                 System.out.println("\nCSPDirector: advancing time " +
                         "to: " + nextTime);
                 _currentTime = nextTime;
-	      
+
                 // Now go through list of delayed actors
                 // and wake up those at this time
                 // Note that to deal with roundoff errors on doubles,
