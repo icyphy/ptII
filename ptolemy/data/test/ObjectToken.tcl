@@ -57,14 +57,16 @@ test ObjectToken-1.1 {Get information about the class} {
 } {{
   class:         pt.data.ObjectToken
   fields:        
-  methods:       {add pt.data.Token} clone {divide pt.data.Token} {equal
-    ity pt.data.Token} {equals java.lang.Object} {fromStrin
-    g java.lang.String} getClass getObject getPublisher has
-    hCode isArray {modulo pt.data.Token} {multiply pt.data.
-    Token} notify notifyAll notifySubscribers {setPublisher
-     pt.data.TokenPublisher} {setValue java.lang.Object} {s
-    ubtract pt.data.Token} toString wait {wait long} {wait 
-    long int}
+  methods:       {add pt.data.Token} {addR pt.data.Token} clone {divide 
+    pt.data.Token} {divideR pt.data.Token} {equality pt.dat
+    a.Token} {equals java.lang.Object} {fromString java.lan
+    g.String} getClass getObject getPublisher hashCode isAr
+    ray {modulo pt.data.Token} {moduloR pt.data.Token} {mul
+    tiply pt.data.Token} {multiplyR pt.data.Token} notify n
+    otifyAll notifySubscribers one {setPublisher pt.data.To
+    kenPublisher} {setValue java.lang.Object} stringValue {
+    subtract pt.data.Token} {subtractR pt.data.Token} toStr
+    ing wait {wait long} {wait long int} zero
     
   constructors:  pt.data.ObjectToken {pt.data.ObjectToken java.lang.Obje
     ct}

@@ -57,14 +57,17 @@ test IntToken-1.1 {Get information about the class} {
 } {{
   class:         pt.data.IntToken
   fields:        
-  methods:       {add pt.data.Token} byteValue clone {divide pt.data.Tok
-    en} doubleValue {equality pt.data.Token} {equals java.l
-    ang.Object} {fromString java.lang.String} getClass getP
-    ublisher getValue hashCode intValue isArray longValue {
-    modulo pt.data.Token} {multiply pt.data.Token} notify n
-    otifyAll notifySubscribers {setPublisher pt.data.TokenP
-    ublisher} {setValue int} {subtract pt.data.Token} toStr
-    ing wait {wait long} {wait long int}
+  methods:       {add pt.data.Token} {addR pt.data.Token} byteValue clon
+    e {divide pt.data.Token} {divideR pt.data.Token} double
+    Value {equality pt.data.Token} {equals java.lang.Object
+    } {fromString java.lang.String} getClass getPublisher g
+    etValue hashCode intValue isArray longValue {modulo pt.
+    data.Token} {moduloR pt.data.Token} {multiply pt.data.T
+    oken} {multiplyR pt.data.Token} notify notifyAll notify
+    Subscribers one {setPublisher pt.data.TokenPublisher} {
+    setValue int} stringValue {subtract pt.data.Token} {sub
+    tractR pt.data.Token} toString wait {wait long} {wait l
+    ong int} zero
     
   constructors:  pt.data.IntToken {pt.data.IntToken int}
     

@@ -57,14 +57,17 @@ test StringToken-1.1 {Get information about the class} {
 } {{
   class:         pt.data.StringToken
   fields:        
-  methods:       {add pt.data.Token} clone {divide pt.data.Token} {equal
-    ity pt.data.Token} {equals java.lang.Object} {fromStrin
-    g java.lang.String} getClass getObject getPublisher get
-    Value hashCode isArray {modulo pt.data.Token} {multiply
-     pt.data.Token} notify notifyAll notifySubscribers {set
-    Publisher pt.data.TokenPublisher} {setValue java.lang.O
-    bject} {setValue java.lang.String} {subtract pt.data.To
-    ken} toString wait {wait long} {wait long int}
+  methods:       {add pt.data.Token} {addR pt.data.Token} clone {divide 
+    pt.data.Token} {divideR pt.data.Token} {equality pt.dat
+    a.Token} {equals java.lang.Object} {fromString java.lan
+    g.String} getClass getObject getPublisher getValue hash
+    Code isArray {modulo pt.data.Token} {moduloR pt.data.To
+    ken} {multiply pt.data.Token} {multiplyR pt.data.Token}
+     notify notifyAll notifySubscribers one {setPublisher p
+    t.data.TokenPublisher} {setValue java.lang.Object} {set
+    Value java.lang.String} stringValue {subtract pt.data.T
+    oken} {subtractR pt.data.Token} toString wait {wait lon
+    g} {wait long int} zero
     
   constructors:  pt.data.StringToken {pt.data.StringToken java.lang.Stri
     ng}
