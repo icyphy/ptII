@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /** 
    Given a probability distribution and the corresponding alphabet, 
    decode the input using Huffman code and send the result to the output 
-   port. Its base class HuffmanBasic.java generates the code book.
+   port. Its base class HuffmanBasic generates the code book.
    The decoder simply decode the input according to this code book.
 
    @see HuffmanBasic
@@ -78,6 +78,7 @@ public class HuffmanDecoder extends HuffmanBasic {
 
     /** Generate the Huffman codebook for the given <i>pmf</i>, and
      *  encode the input into booleans and send them to the output port.
+     *  @exception If the input is not a decodable code.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -108,6 +109,8 @@ public class HuffmanDecoder extends HuffmanBasic {
         }
     }
     
+    /** Initialize the actor. set the current input string to be empty.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _code = "";
@@ -116,6 +119,7 @@ public class HuffmanDecoder extends HuffmanBasic {
     ////////////////////////////////////////////////////////////
     ////                   private variables                ////
     
+    // The current input string, concatenated by input booleans.
     private String _code = "";
 
 }

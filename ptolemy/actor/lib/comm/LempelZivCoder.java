@@ -39,10 +39,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// HuffmanCoder
+//// LempelZivCoder
 /** 
    Lempel-Ziv encoder.
-
+   
    @author Rachel Zhou
    @version $Id$
    @since Ptolemy II 4.1
@@ -69,18 +69,17 @@ public class LempelZivCoder extends Transformer {
         output.setTypeEquals(BaseType.INT);
     }
 
-    /** Generate the Huffman codebook for the given <i>pmf</i>, and
-     *  encode the input into booleans and send them to the output port.
+    /** Encode the input into Lempel-Ziv code while generating the
+     *  code book.
+     *  @exception IllegalActionException if the super class throws it.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             boolean inputValue 
                 = ((BooleanToken)input.get(0)).booleanValue();
             _current = _current + (inputValue ? "1" : "0");
-            //System.out.println(_current);
             int index = _codeBook.indexOf(_current);
-            if (index == -1 || _firstInput) {
-                _firstInput = false;
+            if (index == -1) {
                 output.send(0, new IntToken(_previousIndex));
                 output.send(0, new IntToken(inputValue ? 1: 0));
                 _codeBook.add(_current);
@@ -89,8 +88,13 @@ public class LempelZivCoder extends Transformer {
             } else {
                 _previousIndex = index;
             }
-        } else if (_current != "") {
+        } /*else if (_current != "") {
             // FIXME: This part of output can not be produced.
+            // The last few input booleans can not be encoded and produced.
+            // The input probably should be a string or frame of booleans.
+            // I.e., the actor knows whether the current input is the last
+            // input token, probably by giving a parameter to specify the
+            // length of the input.
             int length = _current.length();
             _previousIndex =
                 _codeBook.indexOf(_current.substring(0, length - 2));
@@ -100,22 +104,30 @@ public class LempelZivCoder extends Transformer {
             } else {
                 output.send(0, new IntToken(0));
             }
-        }
+        }*/
     }
     
+    /** Initialize the actor by creating the code book containing
+     *  only one empty string "". 
+     */
     public void initialize() {
         _codeBook = new LinkedList();
         _codeBook.add("");
         _current = "";
         _previousIndex = 0;
-        _firstInput = true;
     }
 
     ////////////////////////////////////////////////////////////
     ////                   private variables                ////
     
-    private int _previousIndex = 0;
+    // The Lempel-Ziv code book.
     private LinkedList _codeBook;
+    
+    // The current string, concatenated by the inputs.
     private String _current;
-    private boolean _firstInput;
+    
+    // The index of the previous string in the code book.
+    // current string is previous string appended by "1" or "0",
+    // depending on whether the current input is true or false.
+    private int _previousIndex = 0;
 }

@@ -1,4 +1,4 @@
-/* Lempel-Ziv encoder.
+/* Lempel-Ziv decoder.
 
 Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
@@ -41,10 +41,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// HuffmanCoder
+//// Lempel-Ziv decoder.
 /** 
-   Lempel-Ziv encoder.
-
+   Lempel-Ziv decoder.
+   
+   @see LempelZivCoder
    @author Rachel Zhou
    @version $Id$
    @since Ptolemy II 4.1
@@ -69,34 +70,43 @@ public class LempelZivDecoder extends Transformer {
         // Declare port types.
         input.setTypeEquals(BaseType.INT);
         _inputRate = new Parameter(input, "tokenConsumptionRate",
-                       new IntToken(1));
+                       new IntToken(2));
         output.setTypeEquals(BaseType.BOOLEAN);
     }
 
-    /** Generate the Huffman codebook for the given <i>pmf</i>, and
-     *  encode the input into booleans and send them to the output port.
+    /** Decode the Lempel-Ziv code while generating the decode book.
+     *  The decode book should be same as the code book of the
+     *  corresponding Lempel-Ziv encoder.
+     *  @exception IllegalActionException if the input is not a decodable
+     *  Lempel-Ziv code.
      */
     public void fire() throws IllegalActionException {
         Token[] inputToken = (Token[])input.get(0, 2);
         int oldPhase = ((IntToken)inputToken[0]).intValue();
         int bit = ((IntToken)inputToken[1]).intValue();
         String current = (String)_decodeBook.get(oldPhase);
-        if (bit == 1) {
+        if (bit == 0) {
+            current = current + "0";
+        } else if (bit == 1){
             current = current + "1";
         } else {
-            current = current + "0";
+            throw new IllegalActionException(this,
+                "This is not a valid Lempel-Ziv code.");
         }
         _decodeBook.add(current);
         for (int i = 0; i < current.length(); i ++) {
-            if (current.charAt(i) == '1') {
-                output.send(0, new BooleanToken(true));
-            } else {
+            if (current.charAt(i) == '0') {
                 output.send(0, new BooleanToken(false));
+            } else {
+                output.send(0, new BooleanToken(true));
             }
         }
             
     }
     
+    /** initialize the actor by creating a decode book that only
+     *  contains one empty string "".
+     */
     public void initialize() {
         _decodeBook = new LinkedList();
         _decodeBook.add("");
@@ -105,9 +115,9 @@ public class LempelZivDecoder extends Transformer {
     ////////////////////////////////////////////////////////////
     ////                   private variables                ////
     
-    //private int _previousIndex = 0;
+    // The Lempel-Ziv decode book.
     private LinkedList _decodeBook;
-    //private String _current;
-    //private boolean _firstInput;
+    
+    // The consumption rate of the input port.
     private Parameter _inputRate; 
 }

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /** 
    Given a probability distribution and alphabet, encode the input using
    Huffman code and send the result in booleans to the output port. 
-   Its base class HuffmanBasic.java generates the code book.
+   Its base class HuffmanBasic generates the code book.
    The HuffmanCoder actor simply encode the input into the corresponding 
    booleans in the code book.
    @see HuffmanBasic
