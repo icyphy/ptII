@@ -32,6 +32,8 @@
 package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.FixPoint;
+import ptolemy.math.Quantizer;
+import ptolemy.math.Precision;
 import ptolemy.graph.CPO;
 import ptolemy.data.type.*;
 
@@ -44,16 +46,11 @@ A token that contains a FixPoint.
 @see ptolemy.data.Token
 @see ptolemy.math.FixPoint
 @see ptolemy.math.Precision
+@see ptolemy.math.Quantizer
 @version $Id$
 
 */
 public class FixToken extends ScalarToken {
-
-    /** Construct a FixToken with value 0.0 and a precision of (16/16)
-     */
-    public FixToken() {
-	_value = new FixPoint("16/16","0.0", FixPoint.SATURATE );
-    }
 
     /** Construct a FixToken with for the supplied FixPoint value
      *  @param value a FixPoint value
@@ -67,18 +64,19 @@ public class FixToken extends ScalarToken {
 	number uses a finite number of bits to represent a value the
 	supplied value is rounded to the nearest value possible given the
 	precision, thereby introducing quantization errors.
-	@param precision String representing the precision of the FixToken 
-	@param init String representing	the value of the FixToken 
+	@param pre the precision of the FixToken.
+	@param value the value of the FixToken.
 	@exception IllegalArgumentException If the format of the precision 
 	string is incorrect
     */
-    public FixToken(String precision, String init, String mode ) 
-	throws IllegalArgumentException {
-	try {
-	    _value = new FixPoint(precision, init, _setRounding( mode ) );
-	} catch (NumberFormatException e) {
-	    throw new IllegalArgumentException(e.getMessage());
-	}
+    public FixToken(double value, String pre) 
+            throws IllegalArgumentException {
+                try {
+                    Precision precision = new Precision( pre );
+                    _value = Quantizer.round(value, precision);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException(e.getMessage());
+                }
     }
 
     /** Construct a FixToken with a value given as a String and a
@@ -90,13 +88,15 @@ public class FixToken extends ScalarToken {
 	@param value Double value of the FixToken
 	@exception IllegalArgumentException If the format of the
 	precision string is incorrect */
-    public FixToken(String precision, double value, String mode )  
-	throws IllegalArgumentException {
-	try {
-	    _value = new FixPoint(precision, value, _setRounding( mode ) );
-	} catch (NumberFormatException e) {
-	    throw new IllegalArgumentException(e.getMessage());
-	}
+    public FixToken(double value, int numberOfBits, int integerBits)  
+            throws IllegalArgumentException {
+                try {                    
+                    Precision precision = 
+                        new Precision( numberOfBits, integerBits);
+                    _value = Quantizer.round(value, precision);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException(e.getMessage());
+                }
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -118,7 +118,7 @@ public class FixToken extends ScalarToken {
      *  @return A new FixToken.  
      */
     public FixToken add(FixToken arg) {
-	FixPoint result = _value.add( arg.fixpointValue() );
+	FixPoint result = _value.add( arg.fixValue() );
 	return new FixToken(result);
     }
 
@@ -128,7 +128,7 @@ public class FixToken extends ScalarToken {
      *  @return A new FixToken.  
      */
     public FixToken divide(FixToken arg) {
-	FixPoint result = _value.divide( arg.fixpointValue() );
+	FixPoint result = _value.divide( arg.fixValue() );
 	return new FixToken(result);
     }
 
@@ -142,7 +142,7 @@ public class FixToken extends ScalarToken {
     /** Return the value of this token as a Fixpoint.
      *  @return A Fixpoint
      */
-    public FixPoint fixpointValue() {
+    public FixPoint fixValue() {
         // FixToken is immutable, so we can just return the value.
         return _value;
     }
@@ -197,7 +197,7 @@ public class FixToken extends ScalarToken {
 	@return A new FixToken.  
     */
     public FixToken multiply(FixToken arg) {
-	FixPoint result = _value.multiply( arg.fixpointValue() );
+	FixPoint result = _value.multiply( arg.fixValue() );
 	return new FixToken(result);
     }
 
@@ -207,7 +207,7 @@ public class FixToken extends ScalarToken {
      *  @return A new Token containing the multiplicative identity.  
      */
     public Token one() {
-        return new FixToken("(4.0)", 1.0, "Saturate" );
+        return new FixToken( 1.0, "(4.0)");
     }
 
     /** Return a new FixToken with value equal to the subtraction of this
@@ -216,7 +216,7 @@ public class FixToken extends ScalarToken {
      *  @return A new FixToken.  
      */
     public FixToken subtract(FixToken arg) {
-	FixPoint result = _value.subtract( arg.fixpointValue() );
+	FixPoint result = _value.subtract( arg.fixValue() );
 	return new FixToken(result);
     }
     /** Return the value contained in this Token as a String in the form
@@ -247,14 +247,14 @@ public class FixToken extends ScalarToken {
      */
     public Token zero()
     {
-        return new FixToken("(1/1)", 0, "Saturate" );
+        return new FixToken( 0.0, "(1/1)" );
     }
 
     /** Set the Rounding mode of the FixPoint number. */
     // fixm: Currently it is a string, should be come a
     // type safe enumerated type
     public void setRoundingMode(String x) {
-	_value.setRounding( (String) x );
+	// _value.setRounding( (String) x );
     }
 
     /** Print the content of this FixToken: Debug Function */
@@ -266,23 +266,46 @@ public class FixToken extends ScalarToken {
     ////                         private variables                 ////
     private FixPoint _value;
 
-    /** Set the overflow mode of the Fixpoint using a string. Added to
-     *  make testing easier // FIXME still needed?
-     @param name String describing the overflow mode */
-    private ptolemy.math.FixPoint$Quantize _setRounding(String name) {
-	if ( name.compareTo("Saturate")==0) {
-	    return FixPoint.SATURATE;
-	    //System.out.println(" -- SATURATE --");
-	}
-	if ( name.compareTo("Rounding")==0) {
-	    return FixPoint.ROUND;
-	    //System.out.println(" -- ZERO SATURATE --");
-	}
-	if ( name.compareTo("Truncate")==0) {
-	    return FixPoint.TRUNCATE;
-	    //System.out.println(" -- TRUNCATE --");
-	}
-        return FixPoint.TRUNCATE;
+    public static FixToken fix( double value, int numberOfBits, 
+            int integerBits) {
+        System.out.println(" Expression Language: received value,value,value");
+        return new FixToken( value, numberOfBits, integerBits );
+    }
+
+   public static Token fix(  DoubleMatrixToken values, int numberOfBits, 
+           int integerBits) {
+       System.out.println(" Expression Language: received array of values");
+       System.out.println(" Expression Language: return a double matrix ");
+       System.out.println(" Precision: (" + numberOfBits + "/" + 
+               integerBits + ")" );
+       double [][] fxa = new double[1][values.getColumnCount()];
+       for( int i=0; i<values.getColumnCount(); i++) {
+           // fxa[0][i] = 1.0;
+           fxa[0][i] = (new FixToken( values.getElementAt(0,i), numberOfBits, integerBits ) ).doubleValue();
+           System.out.println(" Result["+i+"] = " + fxa[0][i] );
+       }
+       return new DoubleMatrixToken( fxa );
+   }
+
+    /**
+   public static FixToken fix( DoubleMatrixToken values, int numberOfBits, 
+           int integerBits) {
+       System.out.println(" Expression Language: received Matrix of values");
+       System.out.println(" Precision: (" + numberOfBits + "/" + 
+               integerBits + ")" );
+       FixToken[] fxa = new FixToken[values.getColumnCount()];
+       
+       for( int i=0; i<values.getColumnCount(); i++) {
+           fxa[i] = new FixToken( values.getElementAt(0,i), numberOfBits, integerBits );
+           System.out.println(" Result["+i+"] = " + fxa[i].toString() );
+       }      
+       return new FixToken(10.0, 16,2);
+       }
+       */
+
+    public static FixToken fix( double value, String precision ) {
+        System.out.println(" Expression Language: received value,precision");
+        return new FixToken(value, precision);
     }
 
 }
