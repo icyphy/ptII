@@ -85,8 +85,8 @@ public class BooleanToken extends AbstractConvertibleToken
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new token whose value is the logical AND of the value of this token
-     *  and the the value of the argument token.
+    /** Return a new token whose value is the logical AND of the value
+     *  of this token and the the value of the argument token.
      *  @param rightArgument The BooleanToken to OR with this one.
      *  @return A new BooleanToken containing the result.
      */
@@ -96,6 +96,60 @@ public class BooleanToken extends AbstractConvertibleToken
         } else {
             return FALSE;
         }
+    }
+
+    /** Returns a token representing the bitwise AND of this token and
+     *  the given token.
+     *  @return The boolean AND.
+     */
+    public BitwiseOperationToken bitwiseAnd(Token rightArgument)
+            throws IllegalActionException {
+        if (!(rightArgument instanceof BooleanToken)) {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("bitwiseAnd",
+                            this, rightArgument));
+        }
+        return (BooleanToken)_multiply(rightArgument);
+    }
+
+    /** Returns a token representing the bitwise NOT of this token.
+     *  @return The boolean negation.
+     */
+    public BitwiseOperationToken bitwiseNot() {
+        return not();
+    }
+
+    /** Returns a token representing the bitwise OR of this token and
+     *  the given token.
+     *  @return The boolean OR.
+     */
+    public BitwiseOperationToken bitwiseOr(Token rightArgument)
+            throws IllegalActionException {
+        if (!(rightArgument instanceof BooleanToken)) {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("bitwiseOr",
+                            this, rightArgument));
+        }
+        boolean rightValue = ((BooleanToken)rightArgument).booleanValue();
+        if (_value || rightValue) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /** Returns a token representing the bitwise XOR of this token and
+     *  the given token.
+     *  @return The boolean XOR.
+     */
+    public BitwiseOperationToken bitwiseXor(Token rightArgument)
+            throws IllegalActionException {
+        if (!(rightArgument instanceof BooleanToken)) {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("bitwiseXor",
+                            this, rightArgument));
+        }
+        return (BooleanToken)_add(rightArgument);
     }
 
     /** Return the value as a boolean.
@@ -169,8 +223,9 @@ public class BooleanToken extends AbstractConvertibleToken
         return BaseType.BOOLEAN;
     }
 
-    /** Return a hash code value for this token. This method returns 1 if this
-     *  token has value true, and 0 if this token has value false.
+    /** Return a hash code value for this token. This method returns 1
+     *  if this token has value true, and 0 if this token has value
+     *  false.
      *  @return A hash code value for this token.
      */
     public int hashCode() {
@@ -199,8 +254,8 @@ public class BooleanToken extends AbstractConvertibleToken
         return TRUE;
     }
 
-    /** Return a new token whose value is the logical OR of the value of this token
-     *  and the the value of the argument token.
+    /** Return a new token whose value is the logical OR of the value
+     *  of this token and the the value of the argument token.
      *  @param rightArgument The BooleanToken to OR with this one.
      *  @return A new BooleanToken containing the result.
      */
@@ -210,60 +265,6 @@ public class BooleanToken extends AbstractConvertibleToken
         } else {
             return FALSE;
         }
-    }
-
-    /** Returns a token representing the bitwise AND of this token and
-     *  the given token.
-     *  @return The boolean AND.
-     */
-    public BitwiseOperationToken bitwiseAnd(Token rightArgument)
-            throws IllegalActionException {
-        if (!(rightArgument instanceof BooleanToken)) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("bitwiseAnd",
-                            this, rightArgument));
-        }
-        return (BooleanToken)_multiply(rightArgument);
-    }
-
-    /** Returns a token representing the bitwise NOT of this token.
-     *  @return The boolean negation.
-     */
-    public BitwiseOperationToken bitwiseNot() {
-        return not();
-    }
-
-    /** Returns a token representing the bitwise OR of this token and
-     *  the given token.
-     *  @return The boolean OR.
-     */
-    public BitwiseOperationToken bitwiseOr(Token rightArgument)
-            throws IllegalActionException {
-        if (!(rightArgument instanceof BooleanToken)) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("bitwiseOr",
-                            this, rightArgument));
-        }
-        boolean rightValue = ((BooleanToken)rightArgument).booleanValue();
-        if (_value || rightValue) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
-    /** Returns a token representing the bitwise XOR of this token and
-     *  the given token.
-     *  @return The boolean XOR.
-     */
-    public BitwiseOperationToken bitwiseXor(Token rightArgument)
-            throws IllegalActionException {
-        if (!(rightArgument instanceof BooleanToken)) {
-            throw new IllegalActionException(
-                    notSupportedIncomparableMessage("bitwiseXor",
-                            this, rightArgument));
-        }
-        return (BooleanToken)_add(rightArgument);
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -279,8 +280,8 @@ public class BooleanToken extends AbstractConvertibleToken
         }
     }
 
-    /** Return a new token whose value is the logical XOR of the value of this token
-     *  and the the value of the argument token.
+    /** Return a new token whose value is the logical XOR of the value
+     *  of this token and the the value of the argument token.
      *  @param rightArgument The BooleanToken to XOR with this one.
      *  @return A new BooleanToken containing the result.
      */
