@@ -119,7 +119,7 @@ WATCH_DOG_TIMEOUT = 	100000
 compileDemo: $(JCLASS)
 	@echo "generate an applet for '$(MODELPATH)'"
 	"$(JAVA)" \
-		-classpath "$(ROOT)" \
+		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)" \
 		ptolemy.copernicus.kernel.Copernicus \
 		-verbose \
 		-codeGenerator   '"applet"' \
