@@ -78,9 +78,10 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+PTLIB = $(ROOT)/bin/ptmatlab.dll
 all: jclass
 
-jclass: $(ROOT)/bin/ptmatlab.dll
+jclass: $(PTLIB)
 
 install: jclass jars $(PTPACKAGE)Windows.jar
 	@echo "'$(PTPACKAGE).jar' requires gcc, so we install it in $PTII/lib"
@@ -99,7 +100,7 @@ ptmatlab.h:	Engine.class
 
 # $(PTCC) is set to gcc by configure in $PTII/mk/ptII.mk
 # $(PTDLLTOOL) is set to dlltool by configure in $PTII/mk/ptII.mk
-$(ROOT)/bin/ptmatlab.dll: ptmatlab.h ptmatlab.cc Engine.class libeng.a libmx.a
+$(PTLIB): ptmatlab.h ptmatlab.cc Engine.class libeng.a libmx.a
 	$(PTCC) -I$(MATLAB_DIR)/extern/include -I$(PTJAVA_DIR)/include \
 		-I$(PTJAVA_DIR)/include/win32 -c -o ptmatlab.obj ptmatlab.cc
 	$(PTDLLTOOL) --add-stdcall-alias --dllname ptmatlab.dll \
@@ -107,7 +108,7 @@ $(ROOT)/bin/ptmatlab.dll: ptmatlab.h ptmatlab.cc Engine.class libeng.a libmx.a
 	$(PTCC) -shared -o $@ ptmatlab.obj ptmatlab_exp.obj -L. -leng -lmx
 
 # Jar file for Web Start that contains the dll
-$(PTPACKAGE)Windows.jar: $(ROOT)/bin/ptmatlab.dll
+$(PTPACKAGE)Windows.jar: $(PTLIB)
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	-cp $< $(PTJAR_TMPDIR)
@@ -125,4 +126,4 @@ libmx.a:	$(MATLAB_DIR)/extern/include/libmx.def ../../bin/ptinvoke
 	$(PTDLLTOOL) --input-def $< --output-lib $@
 
 ptmatlab_clean:
-	rm -f ptmatlab.h *.obj $(ROOT)/bin/ptmatlab.dll libeng.a libmx.a
+	rm -f ptmatlab.h *.obj $(PTLIB) libeng.a libmx.a

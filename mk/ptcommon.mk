@@ -193,6 +193,9 @@ fast:
 		echo "fast build with 'CLASSPATH=\"$(CLASSPATH)$(AUXCLASSPATH)\" "$(JAVAC)" $(JFLAGS) *.java' in `pwd`"; \
 		CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" "$(JAVAC)" $(JFLAGS) *.java; \
 	fi
+	@if [ "x$(PTLIB)" != "x" ]; then \
+		$(MAKE) $(PTLIB); \
+	fi
 
 # "make sources" will do SCCS get on anything where SCCS file is newer.
 sources::	$(SRCS) $(EXTRA_SRCS) $(HDRS) $(MISC_FILES) makefile
