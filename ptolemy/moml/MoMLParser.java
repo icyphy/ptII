@@ -1360,7 +1360,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @see #parse(URL, URL)
      */
     public static void purgeModelRecord(URL url) {
-        if (_imports != null) {
+        if (_imports != null && url != null) {
             _imports.remove(url);
         }
     }
