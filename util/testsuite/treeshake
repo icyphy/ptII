@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/sh -x
 # Tree shake a demo: Build the minimal jar file and then run it
-# Usage treeshake treeshakejarfile java_commands . . .
+# Usage treeshake pathToJarExecutable treeshakejarfile java_commands . . .
 #   The first java_command is expected to be the java interpreter
 
 #
@@ -33,10 +33,15 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+# We pass in the location of the jar command so that we are sure
+# that we get the right jar command in our path.  In particular, 
+# gcj comes with a jar command that could end up in /usr/local/bin
+# which is not exactly the same as the Sun jar command.
+JAR=$1
+treeshakejar=$2
+javaCommand=$3
 
-treeshakejar=$1
-javaCommand=$2
-shift; shift
+shift; shift; shift
 
 # We can't use tmp here because under cygwin will remap /tmp
 # to c:/cygwin/tmp, and java will not be able to find it
@@ -66,7 +71,8 @@ ptolemyFiles=`$javaCommand -verbose ${1+"$@"} | \
     awk '{print substr($2, 1, length($2)-1)}' | \
     sed 's@\.@/@g' | awk '{print $1 ".class"}'`
 #set +x
-(cd $PTII; jar -cm $manifest $ptolemyFiles) > $treeshakejar
+(cd $PTII; $JAR -cm $manifest $ptolemyFiles) > $treeshakejar
+
 rm -f $manifest
 
 # Throw away everything before -classpath xxx, where xxx is also tossed
@@ -86,5 +92,5 @@ if [ $retval = 0 ]; then
     done	
 fi
 
-set -x
+#set -x
 $javaCommand -classpath $treeshakejar $@
