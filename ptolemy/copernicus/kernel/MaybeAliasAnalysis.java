@@ -33,6 +33,7 @@ import soot.*;
 import soot.jimple.*;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.graph.UnitGraph;
+import soot.toolkits.graph.HashMutableDirectedGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 import soot.jimple.toolkits.invoke.InvokeGraph;
 
@@ -42,7 +43,7 @@ import java.util.*;
 An analysis that maps each local and field to the set of locals and
 fields that may alias that value.  
 */
-public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
+public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
     /** Create a new analysis that does not rely on 
      *  side effect information.  This is a more conservative,
      *  but computationally cheaper  approximation to the aliases 
@@ -61,9 +62,43 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
         super(g);
         _invokeGraph = invokeGraph;
         _sideEffectAnalysis = sideEffectAnalysis;
+        _countMap = new HashMap();
+
+        int index = 0;
+        _constructorMap = new HashMap();
+        for(Iterator units = g.getBody().getUnits().iterator();
+            units.hasNext();) {
+            Stmt stmt = (Stmt) units.next();
+            if(stmt instanceof DefinitionStmt) {
+                Value rvalue = ((DefinitionStmt)stmt).getRightOp();
+                if(!_isAliasableType(rvalue.getType())) {
+                    continue;
+                }
+                if(rvalue instanceof NewExpr ||
+                        rvalue instanceof NewArrayExpr) {
+                    Object object = new String("Object" + index++ + ":" + 
+                            rvalue.toString());
+                    _constructorMap.put(rvalue, object);
+                } else if(rvalue instanceof Constant) {
+                    Object object = new String("Constant" + index++ + ":" +
+                            rvalue.toString());
+                    _constructorMap.put(rvalue, object);
+                }
+            }
+        }
+
         doAnalysis();
+        if(_debug) {
+            for(Iterator units = g.getBody().getUnits().iterator();
+                units.hasNext();) {
+                Stmt stmt = (Stmt) units.next();
+                System.out.println("visited " + _countMap.get(stmt) +
+                        " to " + stmt);
+            }
+        }
         _invokeGraph = null;
         _sideEffectAnalysis = null;
+        _countMap = null;
     }
     
     /** Return the set of other fields and locals that may reference
@@ -72,14 +107,17 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
      *  field can be aliased to anything, then return null.
      */
     public Set getAliasesOfBefore(SootField field, Unit unit) {
-        Map map = (Map)getFlowBefore(unit);
-        if(map.get(field) == null) {
-            return null;
-        } else {
-            Set set = new HashSet();
-            set.addAll((Set)map.get(field));
-            set.remove(field);
+        GraphFlow map = 
+            (GraphFlow)getFlowBefore(unit);
+        if(map.containsNode(field)) {
+            HashSet set = new HashSet();
+            for(Iterator objects = map.getSuccsOf(field).iterator();
+                objects.hasNext();) {
+                set.addAll(map.getPredsOf(objects.next()));
+            }
             return set;
+        } else {
+            return null;
         }
     }
 
@@ -89,14 +127,17 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
      *  field can be aliased to anything, then return null.
      */
      public Set getAliasesOfAfter(SootField field, Unit unit) {
-        Map map = (Map)getFlowAfter(unit);
-        if(map.get(field) == null) {
-            return null;
-        } else {
-            Set set = new HashSet();
-            set.addAll((Set)map.get(field));
-            set.remove(field);
+        GraphFlow map = 
+            (GraphFlow)getFlowAfter(unit);
+        if(map.containsNode(field)) {
+            HashSet set = new HashSet();
+            for(Iterator objects = map.getSuccsOf(field).iterator();
+                objects.hasNext();) {
+                set.addAll(map.getPredsOf(objects.next()));
+            }
             return set;
+        } else {
+            return null;
         }
     }
 
@@ -106,14 +147,17 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
      *  field can be aliased to anything, then return null.
      */
     public Set getAliasesOfBefore(Local local, Unit unit) {
-        Map map = (Map)getFlowBefore(unit);
-        if(map.get(local) == null) {
-            return null;
-        } else {
-            Set set = new HashSet();
-            set.addAll((Set)map.get(local));
-            set.remove(local);
+        GraphFlow map = 
+            (GraphFlow)getFlowBefore(unit);
+        if(map.containsNode(local)) {
+            HashSet set = new HashSet();
+            for(Iterator objects = map.getSuccsOf(local).iterator();
+                objects.hasNext();) {
+                set.addAll(map.getPredsOf(objects.next()));
+            }
             return set;
+        } else {
+            return null;
         }
     }
 
@@ -123,71 +167,75 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
      *  field can be aliased to anything, then return null.
      */
     public Set getAliasesOfAfter(Local local, Unit unit) {
-        Map map = (Map)getFlowAfter(unit);
-        if(map.get(local) == null) {
-            return null;
-        } else {
-            Set set = new HashSet();
-            set.addAll((Set)map.get(local));
-            set.remove(local);
+        GraphFlow map = 
+            (GraphFlow)getFlowAfter(unit);
+        if(map.containsNode(local)) {
+            HashSet set = new HashSet();
+            for(Iterator objects = map.getSuccsOf(local).iterator();
+                objects.hasNext();) {
+                set.addAll(map.getPredsOf(objects.next()));
+            }
             return set;
+        } else {
+            return null;
         }
     }
 
 
     // Formulation:
-    // The dataflow information is stored in a map from each
-    // aliasable object (SootField or Local)
-    // to a set of aliases.  Note that for each alias-set there 
-    // is exactly one instance of HashSet
-    // stored in the map.  This is implemented as a flow-insensitive
-    // analysis.  
-    // Method calls are handled conservatively, and we assume that
-    // they affect the values of all
-    // fields (i.e. aliases for all fields are killed.)
-    // If no alias information exists for the object (i.e. it could be
-    // aliased to everything) then it points to null.
     protected Object newInitialFlow() {
-        Map flowMap = new HashMap();
-        flowMap.put(allAliasKey, new HashSet());
-        return flowMap;
+        GraphFlow graph = new GraphFlow();
+        graph.addNode(_universeRepresentative);
+        graph.addNode(NullConstant.v());
+        return graph;
     }
-
+ 
     protected void flowThrough(Object inValue, Object d, Object outValue) {
-        Map in = (Map) inValue, out = (Map) outValue;
+        GraphFlow in = (GraphFlow) inValue;
+        GraphFlow out = (GraphFlow) outValue;
         Stmt unit = (Stmt)d;
 
+        //    System.out.println("previous flow = " + outValue);
         // By default, the out is equal to the in.
         copy(inValue, outValue);
 
         if(_debug) System.out.println("maybe flow through " + d);
-
+          
+        Integer i = (Integer)_countMap.get(d);
+        if(i == null) {
+            _countMap.put(d, new Integer(1));
+        } else {
+            _countMap.put(d, new Integer(i.intValue() + 1));
+        }
+      
         // If we have a method invocation, then alias information
         // for fields that the method side effects is killed.
         // If no side effect information was specified in the constructor,
         // then conservatively kill the alias information for all fields.
         // This is a safe flow-insensitive approximation.
         if(unit.containsInvokeExpr()) {
-           if(_sideEffectAnalysis == null) {
-                for(Iterator i = out.keySet().iterator();
-                    i.hasNext();) {
-                    Object object = i.next();
-                    if(object instanceof SootField) {
-                        SootField field = (SootField) object;
+            //if(_sideEffectAnalysis == null) {
+                for(Iterator nodes = out.getNodes().iterator();
+                    nodes.hasNext();) {
+                    Object node = nodes.next();
+                    if(node instanceof SootField) {
+                        SootField field = (SootField) node;
                         // FIXME: properly compute this..
                         boolean targetsAreInDifferentClass = true;
                         if(field.isPrivate() && targetsAreInDifferentClass) {
+                            continue;
+                        } else if(Modifier.isFinal(field.getModifiers())) {
                             continue;
                         } else {
                             if(_debug) {
                                 System.out.println("unit " + unit + 
                                     " kills " + field);
                             }
-                            _killAlias(out, object);
+                            _setCanPointToAnything(out, node);
                         }
                     }
                 }
-            } else {   
+             /*  } else {   
                 InvokeExpr expr = (InvokeExpr)unit.getInvokeExpr();
                 SootMethod method = expr.getMethod();
                 if(_debug) System.out.println("invoking: " + method);
@@ -223,164 +271,279 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
                         _killAlias(out, object);
                     }
                 }
-            }
+                }*/
         }
-        if(unit instanceof AssignStmt) {
-            AssignStmt assignStmt = (AssignStmt)unit;
+        if(unit instanceof DefinitionStmt) {
+            DefinitionStmt assignStmt = (DefinitionStmt)unit;
 
             Value lvalue = assignStmt.getLeftOp();
             Value rvalue = assignStmt.getRightOp();
-            Object lobject = _getAliasObject(lvalue);
-            Object robject = _getAliasObject(rvalue);
-            if(lobject != null) {
-                // First remove the left side from its
-                // current set of aliases.  (Kill rule)
-                _killAlias(out, lobject);
+            
+            if(_debug) {
+             //   System.out.println("lvalueClass = " + lvalue.getClass());
+             //    System.out.println("rvalueClass = " + rvalue.getClass());
+            }
 
-                // System.out.println("robject = " + robject);
-                if(robject != null) {
-                    // If the type is aliasable,
-                    if(lvalue.getType() instanceof ArrayType ||
-                            lvalue.getType() instanceof RefType) {
-                        
-                        // The left side is now aliased to everything
-                        // that the right side was aliased to before.
-                        // (Gen rule)
-                       
-                        //      System.out.println("creating alias");
-                        _createAlias(out, lobject, robject);
-                    }
+            // If we are dealing with aliasable objects.
+            if(_isAliasableType(lvalue.getType())) {
+                
+                Object lobject = _getAliasObject(lvalue, out);
+                Object robject = _getAliasObject(rvalue, out);
+                
+                if(!out.containsNode(lobject)) {
+                    out.addNode(lobject);
                 }
-                if(_debug) {
-                    System.out.println("maybe aliases for " + lobject + 
-                            " = " + out.get(lobject));
+                if(!out.containsNode(robject) && robject != null) {
+                    out.addNode(robject);
+                }
+                if(robject == null) {
+                    //_setCanPointToAnything(out, lobject);
+                } else {
+                    _setCanPointTo(out, lobject, robject);
                 }
             }
         }
         // otherwise, the alias info is unchanged.
+        if(_debug) System.out.println("newflow = " + out);
     }
 
     protected void copy(Object inValue, Object outValue) {
         //      System.out.println("copy");
-        Map in = (Map) inValue, out = (Map) outValue;
-        out.clear();
-        List aliasValues = new LinkedList(in.keySet());
-        while(aliasValues.size() > 0) {
-            Object object = aliasValues.get(0);
-            aliasValues.remove(object);
-            Set inSet = (Set)in.get(object);
-            if(inSet == null) {
-                out.put(object, null);
-            } else {
-                Set outSet = new HashSet();
-                outSet.addAll(inSet);
-                out.put(object, outSet);
-                for(Iterator i = outSet.iterator();
-                    i.hasNext();) {
-                    out.put(i.next(), outSet);
-                }
-                aliasValues.removeAll(inSet);
+        GraphFlow in = (GraphFlow) inValue;
+        GraphFlow out = (GraphFlow) outValue;
+
+        if(in == out) return;
+
+        // clear the output.
+        out.clearAll();
+        
+        // Copy all the nodes.
+        for(Iterator nodes = in.getNodes().iterator();
+            nodes.hasNext();) {
+            Object node = nodes.next();
+            if(!out.containsNode(node)) {
+                out.addNode(node);
             }
+        }
+
+        // Copy all the edges.
+        for(Iterator nodes = in.getNodes().iterator();
+            nodes.hasNext();) {
+            Object node = nodes.next();
+            for(Iterator successors = in.getSuccsOf(node).iterator();
+                successors.hasNext();) {
+                Object successor = successors.next();
+                out.addEdge(node, successor);
+            }  
         }
     }
 
     protected void merge(Object in1Value, Object in2Value, Object outValue) {
         //     System.out.println("merge " + in1Value);
         //System.out.println(" with " + in2Value);
-        Map in1 = (Map) in1Value, in2 = (Map) in2Value, out = (Map) outValue;
+        GraphFlow in1 = (GraphFlow) in1Value;
+        GraphFlow in2 = (GraphFlow) in2Value;
+        GraphFlow out = (GraphFlow) outValue;
        
-        LinkedList allKeys = new LinkedList();
-        allKeys.addAll(in1.keySet());
-        allKeys.addAll(in2.keySet());
+        copy(in1Value, outValue);
 
-        // Loop through all the variables.
-        while(!allKeys.isEmpty()) {
-            // Pick a variable.
-            Object object = allKeys.removeFirst();
-            // Get its sets of aliases.
-            Set in1Set = (Set)in1.get(object);
-            Set in2Set = (Set)in2.get(object);
-            // If either has all aliases, then the output is all aliases.
-            if(in1Set == null || in2Set == null) {
-                out.put(object, null);
-            } else {
-                // Take the union of the two sets.
-                // If we have any maybe aliases on either
-                // input, then the output is the union.
-                Set set = new HashSet();
-                set.addAll(in1Set);
-                set.addAll(in2Set);
-                
-                // This set is the alias set for
-                // all elements in the set.
-                for(Iterator i = set.iterator();
-                    i.hasNext();) {
-                    Object alias = i.next();
-                    allKeys.remove(alias);
-                    out.put(alias, set);
-                }
-                out.put(object, set);
-            } 
+        // Union all the nodes.
+        for(Iterator nodes = in2.getNodes().iterator();
+            nodes.hasNext();) {
+            Object node = nodes.next();
+            if(!out.containsNode(node)) {
+                out.addNode(node);
+            }
         }
-        //     System.out.println(" to " + outValue);
+
+        // Union all the edges.
+        for(Iterator nodes = in2.getNodes().iterator();
+            nodes.hasNext();) {
+            Object node = nodes.next();
+            for(Iterator successors = in2.getSuccsOf(node).iterator();
+                successors.hasNext();) {
+                out.addEdge(node, successors.next());
+            }  
+        }
+        //    System.out.println(" to " + outValue);
     }
    
     // Add lobject to the set of things that are aliased by rObject.
-    private static void _createAlias(Map map, Object lObject, Object rObject) {
-        // Get its new set of aliases.
-        Set rset = (Set)map.get(rObject);
-        if(rset == null) {
-            // New objects create new alias sets...
-            if(rObject instanceof NewExpr ||
-                    rObject instanceof NewArrayExpr) {
-                rset = new HashSet();
-                map.put(rObject, rset);
-                rset.add(rObject);
-            } else {
-                // If we have no information about the aliases for 
-                // rObject, then it could be aliased to anything.
-                // add it to the special set of aliases for which we
-                // know nothing about (which are all aliased together).
-                _createAlias(map, rObject, allAliasKey);
-                rset = (Set)map.get(rObject);
-            }
+    private void _setCanPointTo(GraphFlow graph, 
+            Object lobject, Object robject) {
+        // Remove all the old edges.
+        List list = new ArrayList();
+        list.addAll(graph.getSuccsOf(lobject));
+        for(Iterator successors = list.iterator();
+            successors.hasNext();) {
+            Object target = successors.next();
+            graph.removeEdge(lobject, target);
         }
         
-        // Add the object to the new set of aliases.
-        rset.add(lObject);
+        list.clear();
         
-        // And set its set of aliases.
-        map.put(lObject, rset);
-    }    
+        list.addAll(graph.getSuccsOf(robject));
+        // Add the edges from the right object.
+        for(Iterator successors = list.iterator();
+            successors.hasNext();) {
+            Object target = successors.next();
+            graph.addEdge(lobject, target);
+        }
+    }        
+   
+    // object can point to all objects.
+    private void _setCanPointToAnything(GraphFlow graph, 
+            Object object) {
 
-    private static Object _getAliasObject(Value value) {
+        graph.addEdge(object, _universeRepresentative);
+        for(Iterator constructors = _constructorMap.keySet().iterator();
+            constructors.hasNext();) {
+            Value constructor = (Value)constructors.next();
+            if(object instanceof SootField) {
+                SootField field = (SootField)object;
+                // Only things that have a compatible type can be pointed to..
+                if(constructor.getType() instanceof RefType &&
+                        field.getType() instanceof RefType) {
+                    //        System.out.println("constructor = " + constructor.getClass());
+                    //System.out.println("object = " + object.getClass());
+                    if(constructor.getType().merge(field.getType(),
+                            Scene.v()).equals(constructor.getType())) {
+                        continue;
+                    }
+                }
+            }
+            Object target = _constructorMap.get(constructor);
+            if(graph.containsNode(target)) {
+                graph.addEdge(object, target);
+            }
+        }
+    }        
+   
+    private Object _getAliasObject(Value value,
+            GraphFlow graph) {
         if(value instanceof Local) {
             return value;
         } else if(value instanceof FieldRef) {
-            /// NOTE: we can do better 
-            // if we return something that is
-            // instance-dependent.
-            return ((FieldRef)value).getField();
+            SootField field = ((FieldRef)value).getField();
+            if(!graph.containsNode(field)) {
+                // If we haven't defined the field yet, then it should
+                // point to the universe.
+                graph.addNode(field);
+                graph.addEdge(field, _universeRepresentative);
+            }
+            return field;
+        } else if(value instanceof ArrayRef) {
+            Value base = ((ArrayRef)value).getBase();
+            return base;
         } else if(value instanceof CastExpr) {
             return ((CastExpr)value).getOp();
         } else if(value instanceof NewExpr ||
-                value instanceof NewArrayExpr) {
+                value instanceof NewArrayExpr ||
+                  value instanceof Constant) {
+            // If we haven't defined the expression yet, then it should
+            // point to a new object.
+            Object object = _constructorMap.get(value);
+            if(!graph.containsNode(value)) {
+                graph.addNode(object);
+                graph.addNode(value);
+                graph.addEdge(value, object);
+            }
+            return value;
+        } else if(value instanceof IdentityRef) {
+            if(!graph.containsNode(value)) {
+                // If we haven't defined the method argument yet,
+                // then it should point to the universe.
+                graph.addNode(value);
+                graph.addEdge(value, _universeRepresentative);
+            }
             return value;
         } else {
             return null;
         }
     }
 
-    private static void _killAlias(Map map, Object lObject) {
-        // Get its old set of aliases.
-        Set lset = (Set)map.get(lObject);
-        if(lset != null) {
-            // And remove.
-            lset.remove(lObject);
-            _createAlias(map, lObject, allAliasKey);
+    private boolean _isAliasableType(Type type) {
+        // We include null type here, since we can have null constants...
+        if(type instanceof ArrayType ||
+                type instanceof RefType ||
+                type instanceof NullType) {
+            return true;
+        } else {
+            return false;
         }
     }
 
+    private class GraphFlow extends HashMutableDirectedGraph {
+        public boolean equals(Object object) {
+            if(!(object instanceof GraphFlow)) {
+                return false;
+            } 
+            GraphFlow flow = (GraphFlow)object;
+                     
+            if(!_listEquals(getNodes(), flow.getNodes())) {
+                //  System.out.println("nodes");
+                return false;
+            }
+            for(Iterator heads = flow.getNodes().iterator();
+                heads.hasNext();) {
+                Object head = heads.next();
+                if(!_listEquals(flow.getSuccsOf(head), getSuccsOf(head))) {
+                    //  System.out.println("output from head = " + head);
+                    return false;
+                }
+            }
+            //   System.out.println("returning true");
+            return true;
+        }
+        
+        public String toString() {
+            String string = "nodes = " + getNodes();
+            for(Iterator nodes = getNodes().iterator();
+                nodes.hasNext();) {
+                Object source = nodes.next();
+                string += "\nsource = " + source + " targets = ";
+                for(Iterator succs = getSuccsOf(source).iterator();
+                    succs.hasNext();) {
+                    string += succs.next() + ",";
+                }
+            }
+            return string;
+        }
+        private boolean _listEquals(List list1, List list2) {
+            List copy1 = new ArrayList();
+            copy1.addAll(list1);
+            Collections.sort(copy1, _comparator);
+            List copy2 = new ArrayList();
+            copy2.addAll(list2);
+            Collections.sort(copy2, _comparator);
+            boolean flag = copy1.equals(copy2);
+            // if(!flag && _debug) {
+            //    System.out.println("list1 = " + list1);
+            //    System.out.println("list2 = " + list2);
+            //}
+            return flag;
+        }
+        
+        private Comparator _comparator = new Comparator() {
+            public int compare(Object o1, Object o2) {
+                int flag = o1.toString().compareTo(o2.toString());
+                if(flag == 0) {
+                    if(o1.hashCode() < o2.hashCode()) {
+                        return -1;
+                    } else if(o1.hashCode() > o2.hashCode()) {
+                        return 1;
+                    }
+                } 
+                return flag;
+            }
+        };
+    }
+
+    private HashMap _countMap;
+    private Object _universeRepresentative = 
+    new String("universeRepresentative");
+    private Map _constructorMap;
+    private List _localList;
     private InvokeGraph _invokeGraph;
     private SideEffectAnalysis _sideEffectAnalysis;
 

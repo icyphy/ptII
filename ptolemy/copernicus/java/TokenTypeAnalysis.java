@@ -48,6 +48,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.FastForwardFlowAnalysis;
 
 import java.util.*;
 
@@ -55,7 +56,7 @@ import java.util.*;
 An analysis that maps each local variable that represents a token
 onto the particular type of the token.
 */
-public class TokenTypeAnalysis extends ForwardFlowAnalysis {
+public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     public TokenTypeAnalysis(SootMethod method, CompleteUnitGraph g) {
         super(g);
         _method = method;

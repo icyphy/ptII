@@ -86,9 +86,6 @@ public class Main extends KernelMain {
     public Main(String [] args) throws IllegalActionException {
 	// args[0] contains the MoML class name.
 	super(args[0]);
-        if(args[1].equals("-deep")) {
-            _isDeep = true;
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,8 +99,8 @@ public class Main extends KernelMain {
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
 	// -p wjtp.watchDog time:30000
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
-                WatchDogTimer.v()));
+        //Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
+        //        WatchDogTimer.v()));
        
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
@@ -209,18 +206,27 @@ public class Main extends KernelMain {
         // Unroll loops with constant loop bounds.
         //  Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
+
+        // Simplify to speed up instance equality elimination
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.umr",
+                UnreachableMethodRemover.v()));
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
         // Remove tests of object equality that can be statically
         // determined.  The generated code ends up with alot of
         // these that are really just dead code.
-        //  Scene.v().getPack("wjtp").add(new Transform("wjtp.iee",
-        //        InstanceEqualityEliminator.v()));
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple1",
+                JimpleWriter.v()));
 
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.iee",
+                InstanceEqualityEliminator.v()));
+
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple2",
+                JimpleWriter.v()));
+        
         // Remove casts and instanceof Checks.
         //  Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
         //        new TransformerAdapter(CastAndInstanceofEliminator.v())));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple1",
-                JimpleWriter.v()));
        
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
         //        TokenToNativeTransformer.v(_toplevel)));
@@ -249,13 +255,7 @@ public class Main extends KernelMain {
 
         //   Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
         //        new TransformerAdapter(CastAndInstanceofEliminator.v())));
-       
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.umr",
-                UnreachableMethodRemover.v()));
- 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple2",
-                JimpleWriter.v()));
- 
+        
         // Removes references to instancefields that come from 'this'.
         // Scene.v().getPack("jop").add(new Transform("jop.dae",
         //        ImprovedDeadAssignmentEliminator.v()));
@@ -317,8 +317,6 @@ public class Main extends KernelMain {
         // Print out memory usage info
 	System.out.println(ptolemy.actor.Manager.timeAndMemory(startTime));
     }
-    
-    private boolean _isDeep = false;
 }
 
 

@@ -115,28 +115,28 @@ public class ModelTransformer extends SceneTransformer {
      */
     public static String getFieldNameForEntity(Entity entity, 
             NamedObj context) {
-        return "E" + SootUtilities.sanitizeName(entity.getName(context));
+        return SootUtilities.sanitizeName(entity.getName(context));
     }
 
     /** Return the name of the field that is created for the
      *  given entity.
      */
     public static String getFieldNameForPort(Port port, NamedObj context) {
-        return "P" + SootUtilities.sanitizeName(port.getName(context));
+        return SootUtilities.sanitizeName(port.getName(context));
     }
 
     /** Return the name of the field that is created for the
      *  given entity.
      */
     public static String getFieldNameForAttribute(Attribute attribute, NamedObj context) {
-        return "A" + SootUtilities.sanitizeName(attribute.getName(context));
+        return SootUtilities.sanitizeName(attribute.getName(context));
     }
 
     /** Return the name of the field that is created for the
      *  given entity.
      */
     public static String getFieldNameForRelation(Relation relation, NamedObj context) {
-        return "R" + SootUtilities.sanitizeName(relation.getName(context));
+        return SootUtilities.sanitizeName(relation.getName(context));
     }
 
     /** Return the name of the field that is created to 

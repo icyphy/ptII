@@ -98,20 +98,19 @@ depend:
 demo: deepDemo
 deepDemo: compileDeepDemo runDeepDemo
 
-DEEPTARGETPATH =	ptolemy/copernicus/java/cg/shallow
+TARGETPATH =	ptolemy/copernicus/java/cg/shallow
 
 JADTARGETPACKAGE =	ptolemy.copernicus.java.cg.jad
 JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/java/cg/jad
 
 # Orthocom
-DEEPSOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
-DEEPMODEL = OrthogonalCom 
-DEEPSOURCECLASS = $(DEEPSOURCEPACKAGE).$(DEEPMODEL)
-DEEPTARGETCLASS = $(SHALLOWTARGETPACKAGE).CGToplevelModel
+SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
+MODEL = OrthogonalCom 
+SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
 #make DEEPSOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDeepDemo
 
-DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg
-DEEPTARGETCLASS = $(DEEPTARGETPACKAGE).$(MODEL)
+TARGETPACKAGE = ptolemy.copernicus.java.cg
+TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
 
 JVM_SIZE = -Xmx256m
 
@@ -122,40 +121,40 @@ SOOT_USER_ARGS =
 # Time that we should let code generation run before exiting in ms.
 WATCH_DOG_TIMEOUT = 300000
 compileDeepDemo: $(JCLASS)
-	@echo "generate deep code for $(DEEPSOURCEPACKAGE)"
+	@echo "generate deep code for $(SOURCEPACKAGE)"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
-	ptolemy.copernicus.java.Main $(DEEPSOURCECLASS) -d "$(ROOT)"  \
+	ptolemy.copernicus.java.Main $(SOURCECLASS) -d "$(ROOT)"  \
 		-p wjtp.watchDog time:$(WATCH_DOG_TIMEOUT) \
-		-p wjtp.at targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.mt targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.clt targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.fot targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ffat targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ffpt targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.idt targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.iat targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ipt targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.itt targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ttn disabled,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.at targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.clt targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.fot targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.ffat targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.ffpt targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.idt targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.iat targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.ipt targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.itt targetPackage:$(TARGETPACKAGE) \
+		-p wjtp.ttn disabled,targetPackage:$(TARGETPACKAGE) \
 		-p wjtp.writeJimple1 outDir:jimple1 \
 		-p wjtp.writeJimple2 outDir:jimple2 \
 		-p wjtp.iee debug \
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"
-#	javap -verbose -l -s -classpath $(ROOT) $(DEEPTARGETCLASS)
+#	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
 
 runDeepDemo:
 	@echo "Run the deep model"
 	$(JAVA) \
 	-Xfuture -classpath "$(CLASSPATH)" \
-	$(DEEPTARGETPACKAGE).Main 
+	$(TARGETPACKAGE).Main 
 
 runStaticDeepDemo:
 	@echo "Run the deep model static"
 	$(JAVA) \
 	-Xfuture -classpath "$(CLASSPATH)" \
-	$(DEEPTARGETPACKAGE).StaticMain 
+	$(TARGETPACKAGE).StaticMain 
 # -iterations 50
 
 # Get the rest of the rules

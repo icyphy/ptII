@@ -1,4 +1,4 @@
-/* A transformer that tried to statically evaluate object == object
+/* A transformer that tries to statically evaluate object == object
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -115,7 +115,7 @@ public class InstanceEqualityEliminator extends SceneTransformer
         // The analyses that give us the information to transform the code.
         NullPointerAnalysis nullPointerAnalysis =
             new NullPointerAnalysis(unitGraph);
-        //  if(debug) System.out.println("done nullpointers");
+        // if(debug) System.out.println("done nullpointers");
         MustAliasAnalysis mustAliasAnalysis = 
             new MustAliasAnalysis(unitGraph);
 
