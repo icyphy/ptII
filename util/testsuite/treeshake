@@ -1,16 +1,24 @@
 #!/bin/sh
 # Tree shake a demo: Build the minimal jar file and then run it
 # Usage:
-#       treeshake pathToJarExecutable treeshakejarfile java_commands . . .
+#       treeshake pathToJarExecutable treeshakejarfile \
+#                 [-main Mainclass] java_commands . . .
 #  or
 #       treeshake pathToJarExecutable treeshakejarfile -c filelistingclasses \ 
-#                java_commands . . .
+#                 [-main Mainclass] java_commands . . .
+#
 #   The first java_command is expected to be the java interpreter
 # If -c is the 3rd argument, then 'filelistingclasses' is assumed to be
 # a file listing the classes to be read in where the format is 
 # fully qualified dot separated classnames:
 #   ptolemy.kernel.util.NamedObj
 #   ptolemy.util.StringUtilities
+# Note if the -c argument is present, it _must_ preceed the -main argument
+#
+# If the -main argument is present, then the following argument is
+# is the main class in fully qualified dot separated format:
+#   -main foo.bar.Bif
+#
 #
 # @Authors: Christopher Hylands
 #
@@ -49,11 +57,20 @@ JAR=$1
 treeshakejar=$2
 shift; shift
 fileListingClasses=""
+mainClass=""
+
 if [ "$1" = "-c" ]; then
     shift
     fileListingClasses=$1
     shift
 fi
+
+if [ "$1" = "-main" ]; then
+    shift
+    mainClass=$1
+    shift
+fi
+
 javaCommand=$1
 
 
@@ -63,18 +80,26 @@ javaCommand=$1
 manifest=$PTII/treeshake_manifest$$.txt
 touch $manifest
 
-# Find the class that includes main()
-# This is a bit of a hack, we look for a command line argument that
-# starts with "ptolemy."
-for arg in $@
-do
-    echo "$arg" | egrep "^ptolemy\."
-    retval=$?
-    if [ $retval = 0 ]; then
-	echo "Main-class: $arg" > $manifest
-	break
-    fi
-done
+# If the -main argument was not present, try to find a class
+if [ "$mainClass" == "" ]; then
+    # Find the class that includes main()
+    # This is a bit of a hack, we look for a command line argument that
+    # starts with "ptolemy."
+    for arg in $@
+    do
+	echo "$arg" | egrep "^ptolemy\."
+	retval=$?
+	if [ $retval = 0 ]; then
+	    mainClass=$arg
+	    break
+	fi
+    done
+fi
+
+if [ "$mainClass" == "" ]; then
+    echo "Main-class: $mainClass" > $manifest
+fi
+
 
 # Generate a list of ptolemy classes to include by running
 # the demo with under java -verbose
