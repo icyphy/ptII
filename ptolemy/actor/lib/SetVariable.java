@@ -77,7 +77,8 @@ on the variable is used to set the value.
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class SetVariable extends TypedAtomicActor implements ChangeListener, ExplicitChangeContext {
+public class SetVariable extends TypedAtomicActor 
+    implements ChangeListener, ExplicitChangeContext {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -135,8 +136,12 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener, Exp
         return this;
     }
 
-    /** Return the variable modified by this actor.  This method requires 
-     *  write access on the workspace.
+    /** Return the (presumably Settable) attribute modified by this
+     *  actor.  This is the attribute in the container of this actor
+     *  with the name given by the variableName attribute.  If no such
+     *  attribute is found, then this method creates a new variable in
+     *  the actor's container with the correct name.  This method
+     *  requires write access on the workspace.
      *  @exception IllegalActionException If the variable cannot be found.
      */
     public Attribute getModifiedVariable() throws IllegalActionException {
@@ -145,23 +150,22 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener, Exp
             throw new IllegalActionException(this, "No container.");
         }
         String variableNameValue = variableName.getExpression();
-        Variable variable =
-            (Variable) container.getAttribute(
-                    variableNameValue);
-        if (variable == null) {
+        Attribute attribute = container.getAttribute(
+                variableNameValue);
+        if (attribute == null) {
             try {
-                variable = new Variable(this, variableNameValue);
+                attribute = new Variable(this, variableNameValue);
             } catch (NameDuplicationException ex) {
                 throw new IllegalActionException(
                     this, ex,
-                    "Existing attribute that is not a Variable " + 
+                    "Existing attribute that is not an attribute " + 
                     "with specified name: "
                     + variableNameValue
                     + ". It is: "
                     + container.getAttribute(variableNameValue));
             }
         }   
-        return variable;
+        return attribute;
     }
 
     /** Return a list of variables that this entity modifies.  The
