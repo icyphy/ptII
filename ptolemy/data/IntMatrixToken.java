@@ -425,7 +425,7 @@ public final class IntMatrixToken extends MatrixToken {
 
     /** Return a String representing the value of this token.
      */
-    public String toString() {
+    public String stringValue() {
 	String s = "{\n";
 	for (int i = 0; i < _rowCount; i++) {
 	    s += "{"; 
@@ -438,6 +438,11 @@ public final class IntMatrixToken extends MatrixToken {
 	return s;
     }
 
+    /** Return a representation of the token as a String.
+     */
+    public String toString() {
+        return getClass().getName() + "(" + stringValue() + ")";
+    }
 
     /** Return a new Token representing the additive identity.
      *  The returned token contains a matrix whose elements are
