@@ -100,14 +100,14 @@ public class Graphs {
             if (nodesToRemove.contains(edge.source())) {
                 if (edge.hasWeight()) {
                     newEdge = new Edge(superNode, edge.sink(),
-                            edge.weight());
+                            edge.getWeight());
                 } else {
                     newEdge = new Edge(superNode, edge.sink());
                 }
             } else if (nodesToRemove.contains(edge.sink())) {
                 if (edge.hasWeight()) {
                     newEdge = new Edge(edge.source(), superNode,
-                            edge.weight());
+                            edge.getWeight());
                 } else {
                     newEdge = new Edge(edge.source(), superNode);
                 }
