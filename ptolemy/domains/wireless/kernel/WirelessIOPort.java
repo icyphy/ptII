@@ -34,10 +34,10 @@ import java.util.List;
 
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -63,13 +63,26 @@ Specifically, it will only communicate if it is wired.
 <p>
 The width of this port on either side that is using wireless
 communication is fixed at one.
+<p>
+When this port is used for wireless communications, nothing is
+connected to it.  Consequently, methods that access the topology
+such as connectedPortList() and deepConnectedInPortList()
+return an empty list. There
+are no deeply connected ports.  However, sinkPortList() returns
+a list of all input ports that use the same channel.  This is
+because the semantics of this method is to return all the ports
+that can potentially receive from this one.  A consequence of this
+is that type constraints are automatically set up between ports
+that send on a channel and ports that receive from the channel,
+irrespective of whether communication can actually occur (e.g.,
+a receiver may be out of range of a transmitter).
 
 @author Edward A. Lee and Xiaojun Liu
 @version $Id$
 @since Ptolemy II 0.2
 */
 
-public class WirelessIOPort extends DEIOPort {
+public class WirelessIOPort extends TypedIOPort {
 
     /** Construct a port with the specified container and name
      *  that is neither an input nor an output.  The specified container
@@ -110,13 +123,11 @@ public class WirelessIOPort extends DEIOPort {
         outsideChannel.setExpression("");
         
         outsideTransmitProperties = new Parameter(this, "outsideTransmitProperties");
-        // FIXME: set type to RecordToken.
         
         insideChannel = new StringParameter(this, "insideChannel");
         insideChannel.setExpression("");
         
         insideTransmitProperties = new Parameter(this, "insideTransmitProperties");
-        // FIXME: set type to RecordToken.
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -128,11 +139,10 @@ public class WirelessIOPort extends DEIOPort {
     public StringParameter insideChannel;
 
     /** The transmit properties of this port for inside transmissions.
-     *  This is a record containing
-     *  fields that may be used by the channel to determine transmission
+     *  This field may be used by the channel to determine transmission
      *  range or other properties of the transmission. By default, this
      *  has no value, which indicates to channels to use their default
-     *  properties, whatever those might be.
+     *  properties, whatever those might be. Its type is undeclared.
      */
     public Parameter insideTransmitProperties;
     
@@ -142,11 +152,10 @@ public class WirelessIOPort extends DEIOPort {
     public StringParameter outsideChannel;
     
     /** The transmit properties of this port for outside transmissions.
-     *  This is a record containing
-     *  fields that may be used by the channel to determine transmission
+     *  This field may be used by the channel to determine transmission
      *  range or other properties of the transmission. By default, this
      *  has no value, which indicates to channels to use their default
-     *  properties, whatever those might be.
+     *  properties, whatever those might be. Its type is undeclared.
      */
     public Parameter outsideTransmitProperties;
 
@@ -193,7 +202,7 @@ public class WirelessIOPort extends DEIOPort {
             }
             for (int i = 0; i < tokenArray.length; i++) {
                 Token token = tokenArray[i];
-                // FIXME: Check types.
+                _checkType(token);
                 channel.transmit(token, this, outsideTransmitProperties.getToken());
             }
         } else {
@@ -201,6 +210,23 @@ public class WirelessIOPort extends DEIOPort {
         }
     }
 
+    /** Override the base class to delegate to the channel if there is
+     *  one. If there is not outside channel, then clear as in the base
+     *  class.
+     *  @exception IllegalActionException If a receiver does not support
+     *   clear().
+     */
+    public void broadcastClear() throws IllegalActionException {
+        WirelessChannel channel = getOutsideChannel();
+        if (channel != null) {
+            if (_debugging) {
+                _debug("broadcast clear.");
+            }
+            channel.transmit(null, this, outsideTransmitProperties.getToken());
+        } else {
+            super.broadcastClear();
+        }
+    }
     
     /** Override the base class to create a single receiver if
      *  @exception IllegalActionException If this port is not
@@ -220,6 +246,51 @@ public class WirelessIOPort extends DEIOPort {
         }
     }
 
+    /** Override the base class to always return true if there is
+     *  a wireless channel, and otherwise, defer to the base class.
+     *  For wireless channels, if a particular receiver does not have
+     *  room, the channel treats it as if it were not in range.
+     *  @param channelIndex The channel index.
+     *  @return True if there is room for a token in the channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query, if this is not an output port, or if the channel index
+     *   is out of range.
+     */
+    public boolean hasRoom(int channelIndex) throws IllegalActionException {
+        WirelessChannel channel = getOutsideChannel();
+        if (channel != null) {
+            if (_debugging) {
+                _debug("hasRoom on channel " + channelIndex + " returns true.");
+            }
+            return true;
+        } else {
+            return super.hasRoom(channelIndex);
+        }
+    }
+
+    /** Override the base class to always return true if there is
+     *  a wireless channel, and otherwise, defer to the base class.
+     *  For wireless channels, if a particular receiver does not have
+     *  room, the channel treats it as if it were not in range.
+     *  @param channelIndex The channel index.
+     *  @return True if there is room for a token in the channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query, if this is not an output port, or if the channel index
+     *   is out of range.
+     */
+    public boolean hasRoomInside(int channelIndex)
+            throws IllegalActionException {
+        WirelessChannel channel = getInsideChannel();
+        if (channel != null) {
+            if (_debugging) {
+                _debug("hasRoomInside on channel " + channelIndex + " returns true.");
+            }
+            return true;
+        } else {
+            return super.hasRoomInside(channelIndex);
+        }
+    }
+
     /** Get the channel specified by the <i>insideChannel</i> parameter.
      *  The channel is contained by the container of this  port.
      *  @return A channel, or null if there is none.
@@ -227,17 +298,21 @@ public class WirelessIOPort extends DEIOPort {
      *   value cannot be evaluated.
      */
     public WirelessChannel getInsideChannel() throws IllegalActionException {
-        // FIXME: Should this be cached?
+        if (workspace().getVersion() == _insideChannelVersion) {
+            return _insideChannel;
+        }
+        _insideChannel = null;
         String channelName = insideChannel.stringValue();
         Nameable container = getContainer();
         if (container instanceof CompositeEntity) {
             ComponentEntity entity
                     = ((CompositeEntity)container).getEntity(channelName);
             if (entity instanceof WirelessChannel) {
-                return (WirelessChannel)entity;
+                _insideChannel = (WirelessChannel)entity;
             }
         }
-        return null;
+        _insideChannelVersion = workspace().getVersion();
+        return _insideChannel;
     }
     
     /** Override the base class to return the inside receiver for wireless
@@ -268,7 +343,10 @@ public class WirelessIOPort extends DEIOPort {
      *   value cannot be evaluated.
      */
     public WirelessChannel getOutsideChannel() throws IllegalActionException {
-        // FIXME: Should this be cached?
+        if (workspace().getVersion() == _outsideChannelVersion) {
+            return _outsideChannel;
+        }
+        _outsideChannel = null;
         String channelName = outsideChannel.stringValue();
         Nameable container = getContainer();
         if (container != null) {
@@ -278,11 +356,12 @@ public class WirelessIOPort extends DEIOPort {
                         = ((CompositeEntity)containersContainer)
                         .getEntity(channelName);
                 if (channel instanceof WirelessChannel) {
-                    return (WirelessChannel)channel;
+                    _outsideChannel = (WirelessChannel)channel;
                 }
             }
         }
-        return null;
+        _outsideChannelVersion = workspace().getVersion();
+        return _outsideChannel;
     }
 
     /** Override the base class to return the outside receiver for wireless
@@ -330,6 +409,106 @@ public class WirelessIOPort extends DEIOPort {
         }
     }
 
+    /** Return a list of the ports that can potentially accept data from
+     *  this port when it sends on the inside.  If there is an inside
+     *  channel, then this includes input ports that use that channel
+     *  on the outside and all output ports that use the channel
+     *  on the inside. Otherwise, this includes
+     *  opaque input ports that are connected on the outside to this port
+     *  and opaque output ports that are connected on the inside to this one.
+     *  @return A list of IOPort objects.
+     */
+    public List insideSinkPortList() {
+        try {
+            WirelessChannel channel = getInsideChannel();
+            if (channel != null) {
+                // FIXME: cache this.
+                List result = channel.listeningInputPorts();
+                result.addAll(channel.listeningOutputPorts());
+                return result;
+            } else {
+                return super.insideSinkPortList();
+            }
+        } catch (IllegalActionException e) {
+            // This is not ideal, but the base class doesn't
+            // declare exceptions here.
+            throw new InternalErrorException(e);
+        }
+    }
+
+    /** Return a list of the ports that can potentially send data to
+     *  this port from the inside.  If there is an inside
+     *  channel, then this includes all output ports that use that channel
+     *  on the outside and all input ports that use it on the inside.
+     *  Otherwise, this includes
+     *  opaque output ports that are connected on the outside to this port
+     *  and opaque input ports that are connected on the inside to this one.
+     *  @return A list of IOPort objects.
+     */
+    public List insideSourcePortList() {
+        try {
+            WirelessChannel channel = getInsideChannel();
+            if (channel != null) {
+                // FIXME: Cache this.
+                List result = channel.sendingOutputPorts();
+                result.addAll(channel.sendingInputPorts());
+                return result;
+            } else {
+                return super.insideSourcePortList();
+            }
+        } catch (IllegalActionException e) {
+            // This is not ideal, but the base class doesn't
+            // declare exceptions here.
+            throw new InternalErrorException(e);
+        }
+    }
+    
+    // FIXME: numberOfInsideSinks?
+    // FIXME: numberOfInsideSources?
+    // Apparently, these are not implemented in the base class.
+    
+    /** Return the number of sink ports that can potentially receive data
+     *  sent by this one on the outside. If there is a wireless channel,
+     *  this is the number of ports that are listening to this channel.
+     *  Otherwise, defer to the base class.
+     *  @return The number of ports that can receive data from this one.
+     */
+    public int numberOfSinks() {
+        try {
+            WirelessChannel channel = getOutsideChannel();
+            if (channel != null) {
+                return sinkPortList().size();
+            } else {
+                return super.numberOfSinks();
+            }
+        } catch (IllegalActionException e) {
+            // This is not ideal, but the base class doesn't
+            // throw this.
+            throw new InternalErrorException(e);
+        }
+    }
+
+    /** Return the number of source ports that can potentially send data
+     *  to this one from the outside. If there is a wireless channel,
+     *  this is the number of ports that are listening to this channel.
+     *  Otherwise, defer to the base class.
+     *  @return The number of ports that can receive data from this one.
+     */
+    public int numberOfSources() {
+        try {
+            WirelessChannel channel = getOutsideChannel();
+            if (channel != null) {
+                return sourcePortList().size();
+            } else {
+                return super.numberOfSources();
+            }
+        } catch (IllegalActionException e) {
+            // This is not ideal, but the base class doesn't
+            // throw this.
+            throw new InternalErrorException(e);
+        }
+    }
+    
     /** Override the base class to delegate to the channel if there is
      *  one. If there is not outside channel, then send as in the base
      *  class to connected ports.  If there is an outside channel, then
@@ -349,6 +528,7 @@ public class WirelessIOPort extends DEIOPort {
             if (_debugging) {
                 _debug("send to wireless channel " + channel.getName() + ": " + token);
             }
+            _checkType(token);
             channel.transmit(token, this, outsideTransmitProperties.getToken());
         } else {
             super.send(channelIndex, token);
@@ -378,11 +558,50 @@ public class WirelessIOPort extends DEIOPort {
             }
             for (int i = 0; i < tokenArray.length; i++) {
                 Token token = tokenArray[i];
-                // FIXME: Check types.
+                _checkType(token);
                 channel.transmit(token, this, outsideTransmitProperties.getToken());
             }
         } else {
             super.send(channelIndex, tokenArray, vectorLength);
+        }
+    }
+    
+    /** Override the base class to delegate to the channel if there is
+     *  one. If there is not outside channel, then clear as in the base
+     *  class.
+     *  @param channelIndex The index of the channel, from 0 to width-1
+     *  @exception IllegalActionException If a receiver does not support
+     *   clear().
+     */
+    public void sendClear(int channelIndex) throws IllegalActionException {
+        WirelessChannel channel = getOutsideChannel();
+        if (channel != null) {
+            if (_debugging) {
+                _debug("send clear.");
+            }
+            channel.transmit(null, this, outsideTransmitProperties.getToken());
+        } else {
+            super.sendClear(channelIndex);
+        }
+    }
+
+    /** Override the base class to delegate to the channel if there is
+     *  one. If there is not outside channel, then clear as in the base
+     *  class.
+     *  @param channelIndex The index of the channel, from 0 to width-1
+     *  @exception IllegalActionException If a receiver does not support
+     *   clear().
+     */
+    public void sendClearInside(int channelIndex)
+            throws IllegalActionException {
+        WirelessChannel channel = getInsideChannel();
+        if (channel != null) {
+            if (_debugging) {
+                _debug("send clear inside.");
+            }
+            channel.transmit(null, this, outsideTransmitProperties.getToken());
+        } else {
+            super.sendClearInside(channelIndex);
         }
     }
     
@@ -403,9 +622,64 @@ public class WirelessIOPort extends DEIOPort {
             if (_debugging) {
                 _debug("send inside to wireless channel " + channel.getName() + ": " + token);
             }
+            _checkType(token);
             channel.transmit(token, this, insideTransmitProperties.getToken());
         } else {
             super.sendInside(channelIndex, token);
+        }
+    }
+    
+    /** Return a list of the ports that can potentially accept data from
+     *  this port when it sends on the outside.  If there is an outside
+     *  channel, then this includes all input ports that use that channel
+     *  on the outside and all output ports that use the channel
+     *  on the inside. Otherwise, this includes
+     *  opaque input ports that are connected on the outside to this port
+     *  and opaque output ports that are connected on the inside to this one.
+     *  @return A list of IOPort objects.
+     */
+    public List sinkPortList() {
+        try {
+            WirelessChannel channel = getOutsideChannel();
+            if (channel != null) {
+                // FIXME: cache this.
+                List result = channel.listeningInputPorts();
+                result.addAll(channel.listeningOutputPorts());
+                return result;
+            } else {
+                return super.sinkPortList();
+            }
+        } catch (IllegalActionException e) {
+            // This is not ideal, but the base class doesn't
+            // declare exceptions here.
+            throw new InternalErrorException(e);
+        }
+    }
+
+    /** Return a list of the ports that can potentially send data to
+     *  this port from the outside.  If there is an outside
+     *  channel, then this includes all output ports that use that channel
+     *  on the outside and all input ports that use it on the inside.
+     *  Otherwise, this includes
+     *  opaque output ports that are connected on the outside to this port
+     *  and opaque input ports that are connected on the inside to this one.
+     *  @return A list of IOPort objects.
+     */
+    public List sourcePortList() {
+        try {
+            WirelessChannel channel = getOutsideChannel();
+            if (channel != null) {
+                // FIXME: Cache this.
+                List result = channel.sendingOutputPorts();
+                result.addAll(channel.sendingInputPorts());
+                return result;
+            } else {
+                return super.sourcePortList();
+            }
+        } catch (IllegalActionException e) {
+            // This is not ideal, but the base class doesn't
+            // declare exceptions here.
+            throw new InternalErrorException(e);
         }
     }
 
@@ -421,8 +695,7 @@ public class WirelessIOPort extends DEIOPort {
         try {
             return (getInsideChannel() != null);
         } catch (IllegalActionException e) {
-            return false;
-        }
+            return false;        }
     }
 
     /** Return true if the outside of this port is wireless.
@@ -452,123 +725,10 @@ public class WirelessIOPort extends DEIOPort {
     
     // Receivers for this port for inside wireless connections.
     private Receiver[][] _insideReceivers;
-
-
     
-    // FIXME: Move these up to public space and implement.
-    
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#broadcastClear()
-     */
-    public void broadcastClear() throws IllegalActionException {
-        // TODO Auto-generated method stub
-        super.broadcastClear();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#hasRoom(int)
-     */
-    public boolean hasRoom(int channelIndex) throws IllegalActionException {
-        // TODO Auto-generated method stub
-        return super.hasRoom(channelIndex);
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#hasRoomInside(int)
-     */
-    public boolean hasRoomInside(int channelIndex)
-        throws IllegalActionException {
-        // TODO Auto-generated method stub
-        return super.hasRoomInside(channelIndex);
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#insideSinkPortList()
-     */
-    public List insideSinkPortList() {
-        // TODO Auto-generated method stub
-        return super.insideSinkPortList();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#insideSourcePortList()
-     */
-    public List insideSourcePortList() {
-        // TODO Auto-generated method stub
-        return super.insideSourcePortList();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#numberOfSinks()
-     */
-    public int numberOfSinks() {
-        // TODO Auto-generated method stub
-        return super.numberOfSinks();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#numberOfSources()
-     */
-    public int numberOfSources() {
-        // TODO Auto-generated method stub
-        return super.numberOfSources();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#sendClear(int)
-     */
-    public void sendClear(int channelIndex) throws IllegalActionException {
-        // TODO Auto-generated method stub
-        super.sendClear(channelIndex);
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#sendClearInside(int)
-     */
-    public void sendClearInside(int channelIndex)
-        throws IllegalActionException {
-        // TODO Auto-generated method stub
-        super.sendClearInside(channelIndex);
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#sinkPortList()
-     */
-    public List sinkPortList() {
-        // TODO Auto-generated method stub
-        return super.sinkPortList();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.actor.IOPort#sourcePortList()
-     */
-    public List sourcePortList() {
-        // TODO Auto-generated method stub
-        return super.sourcePortList();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.kernel.ComponentPort#numInsideLinks()
-     */
-    public int numInsideLinks() {
-        // TODO Auto-generated method stub
-        return super.numInsideLinks();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.kernel.Port#connectedPortList()
-     */
-    public List connectedPortList() {
-        // TODO Auto-generated method stub
-        return super.connectedPortList();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.kernel.Port#numLinks()
-     */
-    public int numLinks() {
-        // TODO Auto-generated method stub
-        return super.numLinks();
-    }
+    // Cached versions.
+    private WirelessChannel _insideChannel;
+    private long _insideChannelVersion = -1L;
+    private WirelessChannel _outsideChannel;
+    private long _outsideChannelVersion = -1L;
 }

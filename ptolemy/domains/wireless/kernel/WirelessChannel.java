@@ -102,14 +102,162 @@ public class WirelessChannel extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    /** Return a list of input ports that can potentially receive data
+     *  from this channel.  This includes input ports contained by
+     *  entities contained by the container of this channel that
+     *  have their <i>outsideChannel</i> parameter set to the name
+     *  of this channel. This method gets read access on the workspace.
+     *  @return A new list of input ports of class WirelessIOPort
+     *   using this channel.
+     *  @exception IllegalActionException If a port is encountered
+     *   whose <i>outsideChannel</i> parameter cannot be evaluated.
+     */
+    public List listeningInputPorts() throws IllegalActionException {
+        try {
+            workspace().getReadAccess();
+            List result = new LinkedList();
+            CompositeEntity container = (CompositeEntity)getContainer();
+            Iterator entities = container.entityList().iterator();
+            while (entities.hasNext()) {
+                Entity entity = (Entity)entities.next();
+                Iterator ports = entity.portList().iterator();
+                while (ports.hasNext()) {
+                    Port port = (Port)ports.next();
+                    if (port instanceof WirelessIOPort) {
+                        WirelessIOPort castPort = (WirelessIOPort)port;
+                        if (castPort.isInput()) {
+                            String channelName
+                                    = castPort.outsideChannel.stringValue();
+                            if (channelName.equals(getName())) {
+                                result.add(port);
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Return a list of output ports that can potentially receive data
+     *  from this channel.  This includes output ports contained by
+     *  the container of this channel that
+     *  have their <i>insideChannel</i> parameter set to the name
+     *  of this channel. This method gets read access on the workspace.
+     *  @return The list of output ports of class WirelessIOPort
+     *   using this channel.
+     *  @exception IllegalActionException If a port is encountered
+     *   whose <i>insideChannel</i> parameter cannot be evaluated.
+     */
+    public List listeningOutputPorts() throws IllegalActionException {
+        try {
+            workspace().getReadAccess();
+            List result = new LinkedList();
+            CompositeEntity container = (CompositeEntity)getContainer();
+            Iterator ports = container.portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                if (port instanceof WirelessIOPort) {
+                    WirelessIOPort castPort = (WirelessIOPort)port;
+                    if (castPort.isOutput()) {
+                        String channelName = castPort.insideChannel.stringValue();
+                        if (channelName.equals(getName())) {
+                            result.add(port);
+                        }
+                    }
+                }
+            }
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
+    }
+    
+    /** Return a list of output ports that can potentially send data
+     *  to this channel.  This includes output ports contained by
+     *  entities contained by the container of this channel that
+     *  have their <i>outsideChannel</i> parameter set to the name
+     *  of this channel. This method gets read access on the workspace.
+     *  @return A new list of input ports of class WirelessIOPort
+     *   using this channel.
+     *  @exception IllegalActionException If a port is encountered
+     *   whose <i>outsideChannel</i> parameter cannot be evaluated.
+     */
+    public List sendingOutputPorts() throws IllegalActionException {
+        try {
+            workspace().getReadAccess();
+            List result = new LinkedList();
+            CompositeEntity container = (CompositeEntity)getContainer();
+            Iterator entities = container.entityList().iterator();
+            while (entities.hasNext()) {
+                Entity entity = (Entity)entities.next();
+                Iterator ports = entity.portList().iterator();
+                while (ports.hasNext()) {
+                    Port port = (Port)ports.next();
+                    if (port instanceof WirelessIOPort) {
+                        WirelessIOPort castPort = (WirelessIOPort)port;
+                        if (castPort.isOutput()) {
+                            String channelName
+                                    = castPort.outsideChannel.stringValue();
+                            if (channelName.equals(getName())) {
+                                result.add(port);
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Return a list of input ports that can potentially send data
+     *  to this channel.  This includes input ports contained by
+     *  the container of this channel that
+     *  have their <i>insideChannel</i> parameter set to the name
+     *  of this channel. This method gets read access on the workspace.
+     *  @return The list of output ports of class WirelessIOPort
+     *   using this channel.
+     *  @exception IllegalActionException If a port is encountered
+     *   whose <i>insideChannel</i> parameter cannot be evaluated.
+     */
+    public List sendingInputPorts() throws IllegalActionException {
+        try {
+            workspace().getReadAccess();
+            List result = new LinkedList();
+            CompositeEntity container = (CompositeEntity)getContainer();
+            Iterator ports = container.portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                if (port instanceof WirelessIOPort) {
+                    WirelessIOPort castPort = (WirelessIOPort)port;
+                    if (castPort.isInput()) {
+                        String channelName = castPort.insideChannel.stringValue();
+                        if (channelName.equals(getName())) {
+                            result.add(port);
+                        }
+                    }
+                }
+            }
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
+    }
+    
     /** Transmit the specified token from the specified port with the
-     *  specified properties.  All ports that are in range will receive the token.
+     *  specified properties.  All ports that are in range will receive
+     *  the token if they have room in their receiver.
      *  Note that in this base class, a port is in range if it refers to
      *  this channel by name and is at the right place in the hierarchy.
      *  This base class makes no use of the properties argument.
      *  But derived classes may limit the range or otherwise change
      *  transmission properties using this argument.
-     *  @param token The token to transmit.
+     *  @param token The token to transmit, or null to clear all
+     *   receivers that are in range.
      *  @param port The port from which this is being transmitted.
      *  @param properties The transmit properties (ignored in this base class).
      *  @exception IllegalActionException If a location cannot be evaluated
@@ -135,7 +283,13 @@ public class WirelessChannel extends TypedAtomicActor {
                     _debug(" * " + receiver.getContainer().getFullName());
                 }
                 // FIXME: Check types?
-                receiver.put(token);
+                if (token != null) {
+                    if (receiver.hasRoom()) {
+                        receiver.put(token);
+                    }
+                } else {
+                    receiver.clear();
+                }
             }
         } finally {
             workspace().doneReading();
@@ -237,7 +391,7 @@ public class WirelessChannel extends TypedAtomicActor {
             return _receiversInRangeList;
         }
         _receiversInRangeList = new LinkedList();
-        Iterator ports = _listeningInputPorts().iterator();
+        Iterator ports = listeningInputPorts().iterator();
         while (ports.hasNext()) {
             WirelessIOPort port = (WirelessIOPort)ports.next();
             
@@ -253,7 +407,7 @@ public class WirelessChannel extends TypedAtomicActor {
                 }
             }
         }
-        ports = _listeningOutputPorts().iterator();
+        ports = listeningOutputPorts().iterator();
         while (ports.hasNext()) {
             WirelessIOPort port = (WirelessIOPort)ports.next();
                         
@@ -269,75 +423,7 @@ public class WirelessChannel extends TypedAtomicActor {
         _receiversInRangeListVersion = workspace().getVersion();
         return _receiversInRangeList;
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
-
-    /** Return the list of input ports that can potentially receive data
-     *  from this channel.  This includes input ports contained by
-     *  entities contained by the container of this channel that
-     *  have their <i>outsideChannel</i> parameter set to the name
-     *  of this channel.
-     *  The calling method is expected to have read access on the workspace.
-     *  @return The list of input ports of class WirelessIOPort
-     *   using this channel.
-     *  @exception IllegalActionException If a port is encountered
-     *   whose <i>outsideChannel</i> parameter cannot be evaluated.
-     */
-    private List _listeningInputPorts() throws IllegalActionException {
-        List result = new LinkedList();
-        CompositeEntity container = (CompositeEntity)getContainer();
-        Iterator entities = container.entityList().iterator();
-        while (entities.hasNext()) {
-            Entity entity = (Entity)entities.next();
-            Iterator ports = entity.portList().iterator();
-            while (ports.hasNext()) {
-                Port port = (Port)ports.next();
-                if (port instanceof WirelessIOPort) {
-                    WirelessIOPort castPort = (WirelessIOPort)port;
-                    if (castPort.isInput()) {
-                        String channelName
-                                = castPort.outsideChannel.stringValue();
-                        if (channelName.equals(getName())) {
-                            result.add(port);
-                        }
-                    }
-                }
-            }
-        }
-        return result;
-    }
-    
-    /** Return the list of output ports that can potentially receive data
-     *  from this channel.  This includes output ports contained by
-     *  the container of this channel that
-     *  have their <i>insideChannel</i> parameter set to the name
-     *  of this channel.
-     *  The calling method is expected to have read access on the workspace.
-     *  @return The list of output ports of class WirelessIOPort
-     *   using this channel.
-     *  @exception IllegalActionException If a port is encountered
-     *   whose <i>insideChannel</i> parameter cannot be evaluated.
-     */
-    private List _listeningOutputPorts() throws IllegalActionException {
-        List result = new LinkedList();
-        CompositeEntity container = (CompositeEntity)getContainer();
-        Iterator ports = container.portList().iterator();
-        while (ports.hasNext()) {
-            Port port = (Port)ports.next();
-            if (port instanceof WirelessIOPort) {
-                WirelessIOPort castPort = (WirelessIOPort)port;
-                if (castPort.isOutput()) {
-                    String channelName = castPort.insideChannel.stringValue();
-                    if (channelName.equals(getName())) {
-                        result.add(port);
-                    }
-                }
-            }
-        }
-        return result;
-    }
-    
+        
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
