@@ -53,7 +53,6 @@ import ptolemy.actor.lib.*;
 //////////////////////////////////////////////////////////////////////////
 //// MatrixViewer
 /**
-
 A graphical component that displays the contents of a Matrix. This
 actor has a single input port, which only accepts MatrixTokens. One
 token is consumed per firing.  The data in the MatrixToken is
@@ -92,35 +91,38 @@ public class MatrixViewer extends Sink implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The width of the table (an integer). */
+    /** The width of the table in pixels. This must contain an 
+     *  integer.  The default value is 500.
+     */
     public Parameter width;
 
-    /** The height of the table (an integer). */
+    /** The height of the table in pixels. This must contain an 
+     *  integer.  The default value is 300.
+     */
     public Parameter height;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notification that an attribute has changed.
+    /** Notification that an attribute has changed.  If the attribute is
+     *  width or height then read the value of the attribute.
      *  @exception IllegalActionException If the expression of the
      *   attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException
-        {
-            if (attribute == width) {
-                _width = ((IntToken)width.getToken()).intValue();
-            } else if (attribute == height) {
-                _height = ((IntToken)height.getToken()).intValue();
-            } else {
-                super.attributeChanged(attribute);
-            }
+            throws IllegalActionException {
+        if (attribute == width) {
+            _width = ((IntToken)width.getToken()).intValue();
+        } else if (attribute == height) {
+            _height = ((IntToken)height.getToken()).intValue();
+        } else {
+            super.attributeChanged(attribute);
         }
+    }
 
-    /** Consume a token from the <i>input</i> port when present and
-     *  converted the content of the token into a table when it is of
-     *  type Matrix. If not token is available, do nothing. The table
-     *  that is generated is an instance of a swing class JTable.
+    /** Consume a matrix token from the <i>input</i> port when present and
+     *  display the token in a table.  If a token is not available, 
+     *  do nothing.
      *
      *  @exception IllegalActionException If there is no director, or
      *  if the base class throws it.
@@ -137,7 +139,7 @@ public class MatrixViewer extends Sink implements Placeable {
     /** Get the preferred size of this component.  This is simply the
      *  dimensions specified by the parameters <i>height</i> and
      *  <i>width</i> that represent respectively the height and width
-     *  of the table representing the Matrix. The default value for
+     *  of the table representing the matrix. The default value for
      *  preferred size is a height of 300 pixels and a width of 500
      *  pixels.
      *
@@ -173,9 +175,8 @@ public class MatrixViewer extends Sink implements Placeable {
      *  table is configured such that a user cannot reorder the
      *  columns of the table. Also, the table maintains a fixed
      *  preferred size, and will employ scrollbars if the table is
-     *  larger than the preferred size. This method needs to be called
-     *  before the first call to initialize(). Otherwise, an instance
-     *  of JTable will be placed in its own frame. The table is also
+     *  larger than the preferred size. If this method is not called, 
+     *  the JTable will be placed in its own frame. The table is also
      *  placed in its own frame if this method is called with a null
      *  argument. The background of the table is set equal to that of
      *  the container (unless it is null).
@@ -188,8 +189,6 @@ public class MatrixViewer extends Sink implements Placeable {
         try {
             _width = ((IntToken)width.getToken()).intValue();
             _height = ((IntToken)height.getToken()).intValue();
-            //attributeChanged( height );
-            //attributeChanged( width );
         } catch ( Exception e ){
         }
 
@@ -202,7 +201,7 @@ public class MatrixViewer extends Sink implements Placeable {
 
         // add scroll pane to the table
         _scrollPane = new JScrollPane(_table);
-        _scrollPane.setPreferredSize( getPreferredSize() );
+        _scrollPane.setPreferredSize(getPreferredSize());
 
         if (_container == null) {
             // place the table in its own frame.
@@ -259,14 +258,14 @@ public class MatrixViewer extends Sink implements Placeable {
     /** Frame into which display is placed, if any. */
     private JFrame _frame = null;
 
-    /** The Abstract Table Model of a Matrix. */
+    /** The table model. */
     private MatrixAsTable _matrixTable = null;
 
     /** The scroll pane of the panel. */
     private JScrollPane _scrollPane;
 
     /** The table representing the matrix. */
-    private  JTable _table;
+    private JTable _table;
 
     /** Width of the matrix viewer in pixels. */
     private int _width;
@@ -277,11 +276,11 @@ public class MatrixViewer extends Sink implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         Inner Class                       ////
 
-    /** This class provides the implementations of the methods in the
-     *  TableModel interface. To create a concrete TableModel of a
-     *  Matrix as a subclass of AbstractTableModel, the class provides
-     *  implementations for most of the methods.
+    /** This class provides an implementations of the 
+     *  TableModel interface for viewing matrix tokens. 
      */
+    // FIXME this should be factored so we can use it to edit 
+    // matrix parameters more nicely in PtolemyQuery.
     private class MatrixAsTable extends AbstractTableModel {
 
         /** Construct for a specific matrix.
