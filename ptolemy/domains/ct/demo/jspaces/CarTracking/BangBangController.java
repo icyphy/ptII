@@ -128,29 +128,6 @@ public class BangBangController extends TypedAtomicActor
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   has an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        BangBangController newobj = 
-            (BangBangController)super.clone(ws);
-        newobj.highValue = 
-            (Parameter)newobj.getAttribute("highValue");
-        newobj.lowValue = 
-            (Parameter)newobj.getAttribute("lowValue");
-        newobj.tooSmall = 
-            (TypedIOPort)newobj.getPort("tooSmall");
-        newobj.tooLarge = 
-            (TypedIOPort)newobj.getPort("tooLarge");
-        newobj.output = 
-            (TypedIOPort)newobj.getPort("output");
-        return newobj;
-    }
-
     /** set the default output token to the _lowValue.
      */
     public void initialize() throws IllegalActionException {

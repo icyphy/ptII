@@ -104,22 +104,6 @@ public class CTSubscriber extends Source
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>output</code>
-     *  variable to equal the new port.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        CTSubscriber newobj = (CTSubscriber)super.clone(ws);
-        newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
-        newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-        return newobj;
-    }
-            
     /** Find the JavaSpaces and retrieve the first token. The type of
      *  the output is infered from the type of the token
      *  @exception IllegalActionException If the space cannot be found.

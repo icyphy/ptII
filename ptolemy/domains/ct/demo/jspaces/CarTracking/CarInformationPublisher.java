@@ -145,30 +145,9 @@ public class CarInformationPublisher extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-            throws CloneNotSupportedException {
-        CarInformationPublisher newobj = 
-            (CarInformationPublisher)super.clone(ws);
-        newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
-        newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-        newobj.samplingPeriod = 
-            (Parameter)newobj.getAttribute("samplingPeriod");
-        newobj.malfunctioning =
-            (Parameter)newobj.getAttribute("malfunctioning");
-        newobj.force = (TypedIOPort)newobj.getPort("force");
-        newobj.velocity = (TypedIOPort)newobj.getPort("velocity");
-        newobj.position = (TypedIOPort)newobj.getPort("position");
-        return newobj;
-    }
-
-    /** Return true always.
-     *  @return True if the current integration step is acceptable.
+    /** Return true always, meaning that the current integration step is
+     *  always acceptable.
+     *  @return True 
      */
     public boolean isThisStepSuccessful() {
         return true;

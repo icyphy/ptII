@@ -125,25 +125,6 @@ public class ThresholdMonitor extends TypedAtomicActor
         _upperBound = _thCenter + _thWidth/(double)2.0;
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the type constraints.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        ThresholdMonitor newobj = (ThresholdMonitor)super.clone(ws);
-        newobj.input = (TypedIOPort) newobj.getPort("input");
-        newobj.output = (TypedIOPort) newobj.getPort("output");
-        newobj.thresholdWidth= 
-            (Parameter)newobj.getAttribute("thresholdWidth");
-        newobj.thresholdCenter = 
-            (Parameter)newobj.getAttribute("thrsholdCentor");
-        return newobj;
-    }
-
     /** Consume the current input.
      *  @exception IllegalActionException If there is no input token.
      */

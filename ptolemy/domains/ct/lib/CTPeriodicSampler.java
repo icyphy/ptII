@@ -122,7 +122,6 @@ public class CTPeriodicSampler extends Transformer
         newobj.input.setMultiport(true);
         newobj.output.setMultiport(true);
         newobj.output.setTypeAtLeast(newobj.input);
-        newobj.samplePeriod = (Parameter)newobj.getAttribute("samplePeriod");
         return newobj;
     }
 

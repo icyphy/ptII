@@ -104,7 +104,6 @@ public class CTTriggeredSampler extends Transformer
         newobj.input.setMultiport(true);
         newobj.output.setMultiport(true);
         newobj.output.setTypeAtLeast(newobj.input);
-        newobj.trigger = (TypedIOPort)newobj.getPort("trigger");
         return newobj;
     }
 

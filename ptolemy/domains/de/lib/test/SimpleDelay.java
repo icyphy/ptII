@@ -58,14 +58,6 @@ public class SimpleDelay extends TypedAtomicActor {
     public DEIOPort output;
     private Token _currentInput;
 
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        SimpleDelay newobj = (SimpleDelay)super.clone(ws);
-        newobj.delay = (Parameter)newobj.getAttribute("delay");
-        newobj.input = (DEIOPort)newobj.getPort("input");
-        newobj.output = (DEIOPort)newobj.getPort("output");
-        return newobj;
-    }
-
     public void fire() throws IllegalActionException {
         _currentInput = input.get(0);
     }

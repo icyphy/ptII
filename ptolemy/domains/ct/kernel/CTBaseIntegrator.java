@@ -158,22 +158,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _history.clear();
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        CTBaseIntegrator newobj = (CTBaseIntegrator)super.clone(ws);
-        newobj.input = (TypedIOPort)newobj.getPort("input");
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        newobj.initialState = (Parameter)newobj.getAttribute("initialState");
-        return newobj;
-    }
-
     /** Emit the tentative output, which is the tentative state of the
      *  integrator.
      *  @exception IllegalActionException If the data transfer is not

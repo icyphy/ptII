@@ -144,30 +144,6 @@ public class TrackingAlarm extends DEActor {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   has an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        TrackingAlarm newobj = (TrackingAlarm)super.clone(ws);
-        newobj.closeThreshold = 
-            (Parameter)newobj.getAttribute("closeThreshold");
-        newobj.awayThreshold = 
-            (Parameter)newobj.getAttribute("awayThreshold");
-        newobj.leaderPosition = 
-            (TypedIOPort)newobj.getPort("leaderPosition");
-        newobj.followerPosition = 
-            (TypedIOPort)newobj.getPort("followerPosition");
-        newobj.tooClose = 
-            (TypedIOPort)newobj.getPort("tooClose");
-        newobj.tooFar = 
-            (TypedIOPort)newobj.getPort("tooFar");
-        return newobj;
-    }
-
     /** Read one token from all input ports, if there is any.
      *  Compare the positions, and possibly generate alarms.
      *  @exception IllegalActionException If there is no director.

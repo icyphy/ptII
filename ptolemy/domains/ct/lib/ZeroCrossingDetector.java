@@ -121,13 +121,7 @@ public class ZeroCrossingDetector extends Transformer
      public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         ZeroCrossingDetector newobj = (ZeroCrossingDetector)super.clone(ws);
-        newobj.input.setTypeEquals(BaseType.DOUBLE);
-        newobj.output.setTypeEquals(BaseType.DOUBLE);
-        newobj.trigger = (TypedIOPort)newobj.getPort("trigger");
         newobj.trigger.setMultiport(false);
-        newobj.trigger.setTypeEquals(BaseType.DOUBLE);
-        newobj.errorTolerance = 
-            (Parameter)newobj.getAttribute("errorTolerance");
         return newobj;
     }
 
