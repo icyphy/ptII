@@ -4,4 +4,7 @@
 <entity name="configuration" class="ptolemy.actor.gui.Configuration">
   <doc>Configuration to edit and run Ptolemy II models</doc>
   <input source="ptolemy/configs/defaultFullConfiguration.xml"/>
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Foo" class="ptolemy.actor.lib.Ramp"/>
+  </entity>
 </entity>
