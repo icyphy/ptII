@@ -156,7 +156,7 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
      *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
-     *  @throw CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws)
@@ -172,7 +172,7 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
     }
 
     /** Consume the inputs and produce the output DoubleMatrixToken.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Not thr
      */
     public void fire() throws IllegalActionException {
         double[][] matrix = new double[_iRows][_iColumns];
