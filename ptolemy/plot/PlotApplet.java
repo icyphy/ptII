@@ -84,7 +84,7 @@ public class PlotApplet extends Applet implements Runnable {
         setLayout(new BorderLayout());
 
         if ( plot() == null) {
-            newPlot();
+            _newPlot();
         }
         add("Center",plot());
         //show();
@@ -195,7 +195,7 @@ public class PlotApplet extends Applet implements Runnable {
     /** Create a new Plot object to operate on.  Derived classes can
      * redefine this method to create multiple Plot objects.
      */
-    protected void newPlot() {
+    protected void _newPlot() {
         _myPlot = new Plot();
     }
         
