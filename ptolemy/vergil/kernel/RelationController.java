@@ -36,6 +36,7 @@ import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.ParameterizedNodeController;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.SVGUtilities;
@@ -105,7 +106,7 @@ public class RelationController extends ParameterizedNodeController {
                             SVGUtilities.getColor(_color));
                 }
             }
-            return figure;
+            return new CompositeFigure(figure);
         }
     }
 }

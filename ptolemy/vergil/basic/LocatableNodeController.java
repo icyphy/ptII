@@ -38,7 +38,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
+import diva.canvas.connector.TerminalFigure;
 import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
 import diva.graph.BasicNodeController;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
@@ -79,27 +81,11 @@ public class LocatableNodeController extends BasicNodeController {
     }
 
     /** Draw the node at its location. This overrides the base class
-     *  to assign a location and to highlight the node if it is an
-     *  inherited object, and hence cannot be deleted.
+     *  to assign a location to the object.
      */
     public Figure drawNode(Object node) {
         Figure nf = super.drawNode(node);
         locateFigure(node);
-        GraphModel model = getController().getGraphModel();
-        Object object = model.getSemanticObject(node);
-        if (object instanceof NamedObj && ((NamedObj)object).isDerived()) {
-            float[] dash = {2.0f, 5.0f};
-            Stroke stroke = new BasicStroke(
-                    2f,                     /* width */
-                    BasicStroke.CAP_SQUARE, /* cap   */
-                    BasicStroke.JOIN_MITER, /* join  */
-                    10.0f,                  /* mitre limit */
-                    dash,                   /* dash  */
-                    0.0f);                  /* dash_phase  */
-            AnimationRenderer decorator = new AnimationRenderer(
-                    CLASS_ELEMENT_HIGHLIGHT_COLOR, stroke);
-            decorator.renderSelected(nf);
-        }
         return nf;
     }
 
@@ -195,7 +181,9 @@ public class LocatableNodeController extends BasicNodeController {
 
     /** Render the specified node.  This overrides the base class to
      *  return an invisible figure if the node contains an attribute
-     *  named "_hide".
+     *  named "_hide".   This overrides the base class
+     *  to assign a location and to highlight the node if it is an
+     *  inherited object, and hence cannot be deleted.
      *  @param node The node to render.
      */
     protected Figure _renderNode(java.lang.Object node) {
@@ -207,7 +195,47 @@ public class LocatableNodeController extends BasicNodeController {
             getController().setFigure(node, newFigure);
             return newFigure;
         } else {
-            return super._renderNode(node);
+            Figure nf = super._renderNode(node);
+            GraphModel model = getController().getGraphModel();
+            Object object = model.getSemanticObject(node);
+            CompositeFigure cf;
+            // Try to get a composite figure that we can add the
+            // annotation to.  This is complicated by the fact that
+            // ExternalIOPortController wraps its figure in a
+            // TerminalFigure, and that there is nothing in the API
+            // that enforces that a CompositeFigure is returned.
+            // *sigh*
+            if(nf instanceof CompositeFigure) {
+                cf = (CompositeFigure)nf;
+            } else if(nf instanceof TerminalFigure) {
+                Figure f = ((TerminalFigure)nf).getFigure();
+                if(f instanceof CompositeFigure) {
+                    cf = (CompositeFigure)f;
+                } else {
+                    cf = null;
+                }
+            } else {
+                cf = null;
+            }
+            if (object instanceof NamedObj 
+                    && ((NamedObj)object).isDerived()
+                    && cf != null) {
+                float[] dash = {2.0f, 5.0f};
+                Stroke stroke = new BasicStroke(
+                        2f,                     /* width */
+                        BasicStroke.CAP_SQUARE, /* cap   */
+                        BasicStroke.JOIN_MITER, /* join  */
+                        10.0f,                  /* mitre limit */
+                        dash,                   /* dash  */
+                        0.0f);                  /* dash_phase  */
+                BasicFigure bf = new BasicFigure(
+                        cf.getBackgroundFigure().getBounds());
+                bf.setStroke(stroke);
+                bf.setStrokePaint(CLASS_ELEMENT_HIGHLIGHT_COLOR);
+                cf.add(bf);
+            }
+            
+            return nf;
         }
     }
 
