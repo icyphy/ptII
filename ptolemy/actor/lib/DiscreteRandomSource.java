@@ -164,6 +164,7 @@ public class DiscreteRandomSource extends RandomSource {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         output.send(0, _current);
     }
 

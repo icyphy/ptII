@@ -196,6 +196,7 @@ public class Reader extends Source {
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         for (int i = 0; i < _dataSize; i++) {
             output.send(i, new DoubleToken(_data[i]));
         }

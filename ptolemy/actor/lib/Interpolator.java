@@ -208,6 +208,7 @@ public class Interpolator extends SequenceSource {
      *   or the period is not 0 and not greater than the largest index.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
 	try {
 	    // If some parameters are changed by setExpression(), they are not
 	    // evaluated. Force evaluation. This will cause attributeChanged()
