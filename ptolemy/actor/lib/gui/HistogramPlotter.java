@@ -280,14 +280,16 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
         // instructions cannot be nested in XML (lame, isn't it?).
         String header
                 = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
-        output.write(_getIndentPrefix(depth) + "<configure><?plotml\n"
-                + header + "\n<plot>\n");
-        PrintWriter print = new PrintWriter(output);
-        // The second (null) argument indicates that PlotML PUBLIC DTD
-        // should be referenced.
-        histogram.writeFormat(print);
-        output.write("</plot>?>\n"
-               + _getIndentPrefix(depth) + "</configure>\n");
+	if(histogram != null) {
+	    output.write(_getIndentPrefix(depth) + "<configure><?plotml\n"
+			 + header + "\n<plot>\n");
+	    PrintWriter print = new PrintWriter(output);
+	    // The second (null) argument indicates that PlotML PUBLIC DTD
+	    // should be referenced.
+	    histogram.writeFormat(print);
+	    output.write("</plot>?>\n"
+			 + _getIndentPrefix(depth) + "</configure>\n");
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
