@@ -57,8 +57,10 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	BitsToInt.java \
 	Delay.java \
 	FIR.java \
+	IntToBits.java\
 	LineCoder.java \
 	RaisedCosine.java
 

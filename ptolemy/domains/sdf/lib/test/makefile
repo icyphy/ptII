@@ -50,7 +50,8 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	Delay.tcl
+	Delay.tcl\
+	IntToBits.tcl	
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -92,3 +93,5 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+
