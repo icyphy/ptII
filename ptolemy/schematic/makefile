@@ -58,10 +58,13 @@ JSRCS = \
 	Icon.java \
 	IconLibrary.java \
 	Schematic.java \
+	SchematicElement.java \
 	SchematicEntity.java \
 	SchematicParameter.java \
 	SchematicParser.java \
-	SchematicRelation.java
+	SchematicPort.java \
+	SchematicRelation.java \
+	XMLElement.java
 
 EXTRA_SRCS =	$(JSRCS)
 
