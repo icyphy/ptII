@@ -89,7 +89,7 @@ public abstract class StructuredType implements Type, Cloneable {
      */
     public abstract void needEvaluate(Variable user);
 
-    /** Set the user of this StructuedType. The user can only be set once
+    /** Set the user of this StructuredType. The user can only be set once
      *  Otherwise, an exception will be thrown.
      *  @param Object The user.
      *  @exception IllegalActionException If the user is already set, or
