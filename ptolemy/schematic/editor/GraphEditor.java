@@ -42,6 +42,8 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.IntToken;
 import ptolemy.gui.*;
 import ptolemy.moml.MoMLParser;
+import diva.canvas.interactor.SelectionModel;
+import diva.canvas.Figure;
 import diva.graph.*;
 import diva.graph.editor.*;
 import diva.graph.layout.*;
@@ -51,6 +53,7 @@ import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.resource.DefaultBundle;
 import diva.resource.RelativeBundle;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.*;
@@ -115,7 +118,7 @@ public class GraphEditor extends MDIApplication {
 	JTreePane treepane = new JTreePane("");	
         DesktopFrame frame = new DesktopFrame(this, treepane);
         setApplicationFrame(frame);
-
+       
         // Create and initialize the storage policy
         DefaultStoragePolicy storage = new DefaultStoragePolicy();
         setStoragePolicy(storage);
@@ -187,12 +190,74 @@ public class GraphEditor extends MDIApplication {
         // Set and draw the new graph
         controller.setGraph(graph);
 
-        //        ActionListener deletionListener = new DeletionListener();
-
-        //        jgraph.addKeyListener(keyListener);
-
+        ActionListener deletionListener = new DeletionListener();
+        jgraph.registerKeyboardAction(deletionListener, "Delete", 
+                KeyStroke.getKeyStroke('d'),
+                        //KeyEvent.VK_DELETE, 15), 
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
+        jgraph.setRequestFocusEnabled(true);
+        jgraph.addMouseListener(new MouseFocusMover());
         return jgraph;
 
+    }
+
+    /** Delete any selected nodes and all attached edges in the current graph.
+     */
+    public class DeletionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("delete");
+         
+            JGraph jgraph = (JGraph) e.getSource();
+            GraphPane graphPane = jgraph.getGraphPane();
+            EditorGraphController controller = 
+                (EditorGraphController)graphPane.getGraphController();
+            GraphImpl impl = controller.getGraphImpl();
+            SelectionModel model = controller.getSelectionModel();
+            Iterator selection = model.getSelection();
+            while(selection.hasNext()) {
+                Object object = selection.next();
+                System.out.println("object = " + object);
+                if(object instanceof Figure) {
+                    Object userObject = 
+                        ((Figure)object).getUserObject();
+                    System.out.println("userObject = " + userObject);
+                    if(userObject instanceof Node) {
+                        Node node = (Node) userObject;
+                        //  controller.removeNode(node);
+                        controller.clearNode(node);
+                        impl.removeNode(node);
+                        jgraph.repaint();
+                    } else if(userObject instanceof Edge) {
+                        Edge edge = (Edge) userObject;
+                        controller.clearEdge(edge);
+                        impl.setEdgeHead(edge, null);
+                        impl.setEdgeTail(edge, null);
+                        jgraph.repaint();
+                    }
+                } 
+            }
+        }
+    }
+
+    /** Move the keyboard focus around so that we can grab keyboard events.
+     */
+    public class MouseFocusMover extends MouseAdapter {        
+        public void mouseEntered(
+                MouseEvent mouseEvent) {
+            System.out.println("Entered");
+            Component component = 
+                mouseEvent.getComponent();
+                       
+            if (!component.hasFocus()) {
+                component.requestFocus();
+            }
+        }        
+
+        public void mouseExited(
+                MouseEvent mouseEvent) {            
+            System.out.println("Exited");
+            ((DesktopFrame) getApplicationFrame()).getContentPane().requestFocus();
+        }        
     }
 
     /** Redisplay a document after it appears on the screen. This method

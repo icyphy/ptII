@@ -46,8 +46,65 @@ public class EditorGraphImpl extends BasicGraphImpl {
 		ex.printStackTrace();
 		throw new GraphException(ex.getMessage());
 	    }
+	} else if(object instanceof Vertex) {
+            Vertex vertex = (Vertex) object;
+            ComponentRelation relation = 
+                (ComponentRelation)vertex.getContainer();
+	    try {
+		relation.setContainer(container);
+	    } catch (Exception ex) {
+		ex.printStackTrace();
+		throw new GraphException(ex.getMessage());
+	    }
 	}    
     }
+
+    /**
+     * Remove a node from the graph that contains it.
+     */
+    public void removeNode(Node n) {
+        super.removeNode(n);
+	NamedObj object = (NamedObj)n.getSemanticObject();
+	if((object == null)) 
+	    return;	
+	if(object instanceof Port) {
+	    Port port = (Port)object;
+	    try {
+                port.unlinkAll();
+		port.setContainer(null);
+	    } catch (Exception ex) {
+		ex.printStackTrace();
+		throw new GraphException(ex.getMessage());
+	    }    
+	} else if(object instanceof ComponentEntity) {
+	    ComponentEntity entity = (ComponentEntity)object;
+	    try {
+                Enumeration ports = entity.getPorts();
+                while(ports.hasMoreElements()) {
+                    Port port = (Port) ports.nextElement();
+                    port.unlinkAll();
+                }
+		entity.setContainer(null);
+	    } catch (Exception ex) {
+		ex.printStackTrace();
+		throw new GraphException(ex.getMessage());
+	    }
+	} else if(object instanceof Vertex) {
+            Vertex vertex = (Vertex) object;
+            ComponentRelation relation = 
+                (ComponentRelation)vertex.getContainer();
+	    try {
+                relation.unlinkAll();
+		relation.setContainer(null);
+            } catch (Exception ex) {
+		ex.printStackTrace();
+		throw new GraphException(ex.getMessage());
+	    }
+	} else {
+            System.out.println("removing unknown object:" + object);
+        }
+    }
+       
 
     /**
      * Return a new instance of a BasicCompositeNode with the given
@@ -181,6 +238,7 @@ public class EditorGraphImpl extends BasicGraphImpl {
 	Port port;
 	Relation relation;
 	Vertex vertex;
+        if(head == null || tail == null) return;
 	if(tail.getSemanticObject() instanceof Port &&
 	   head.getSemanticObject() instanceof Vertex) {
 	    vertex = (Vertex)head.getSemanticObject();
@@ -204,6 +262,7 @@ public class EditorGraphImpl extends BasicGraphImpl {
 	Port port;
 	Relation relation;
 	Vertex vertex;
+        if(head == null || tail == null) return;
 	if(tail.getSemanticObject() instanceof Port &&
 	   head.getSemanticObject() instanceof Vertex) {
 	    vertex = (Vertex)head.getSemanticObject();

@@ -140,14 +140,22 @@ public class SchematicPalette extends JGraph {
 	    di.setConsuming(false);
 	}
 
+        public void clearEdge(Edge edge) {
+            throw new GraphException("PaletteController does not allow edges");
+        }
+        
+        public void clearNode(Node node) {
+            _entityController.clearNode(node);
+        }
+
         public Figure drawEdge(Edge edge) {
             throw new GraphException("PaletteController does not allow edges");
-            //return _edgeController.drawEdge(edge);
         }
         
         public Figure drawNode(Node node) {
             return _entityController.drawNode(node);
         }
+
 	/**
 	 * Initialize all interaction on the graph pane. This method
 	 * is called by the setGraphPane() method of the superclass.

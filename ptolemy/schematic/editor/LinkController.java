@@ -97,8 +97,6 @@ public class LinkController extends EdgeController {
 	//new MenuCreator(interactor);
     }
     
-    // FIXME this should be PerimeterTarget, but it doesn't support non-
-    // rectangular shapes yet.
     public class LinkTarget extends PerimeterTarget {
         public boolean accept (Figure f) {
             Object object = f.getUserObject();
