@@ -51,7 +51,7 @@ JSRCS = \
 	DDEGetToken.java \
 	DDEPut.java \
 	DDEPutToken.java \
-	FlowThru.java \
+	FlowThrough.java \
 	TwoPut.java
 
 # Non-graphical Java tests written in Tcl
@@ -62,8 +62,6 @@ JSIMPLE_TESTS = \
 	TimeKeeper.tcl \
 	TimedQueueReceiver.tcl 
 
-	#Test.tcl
-
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
@@ -72,7 +70,6 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
-	DDEActor.tcl DDEDirector.tcl DDEThread.tcl Event.tcl \
 	$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
