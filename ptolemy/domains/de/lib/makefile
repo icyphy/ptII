@@ -56,7 +56,8 @@ JSRCS = \
 	Server.java \
 	TimeBomb.java \
 	VariableDelay.java \
-	WaitingTime.java
+	WaitingTime.java \
+	WaitingTime1.java
 
 EXTRA_SRCS =	$(JSRCS)
 

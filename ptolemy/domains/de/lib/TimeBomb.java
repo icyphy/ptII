@@ -108,12 +108,18 @@ public class TimeBomb extends DETransformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
+            //System.out.println(getName() + " firing.");
             Complex currentInput = ((ComplexToken)input.get(0)).complexValue();
             double time = currentInput.real;
             Double bombTime = new Double(time);
             DoubleToken bombValue = new DoubleToken(currentInput.imag);
-            _tokens.put(bombTime, bombValue);
-            getDirector().fireAt(this, time);
+            if (time > getDirector().getCurrentTime()) {
+                _tokens.put(bombTime, bombValue);
+                getDirector().fireAt(this, time);
+            } else {
+                _tokens.put(new Double(getDirector().getCurrentTime()),
+                        bombValue);
+            }
         } 
     }
 
@@ -126,7 +132,9 @@ public class TimeBomb extends DETransformer {
         double time = getDirector().getCurrentTime();
         Double currentTime = new Double(time);
         if (_tokens.containsKey(currentTime)) {
-            output.send(0, (Token)_tokens.remove(currentTime));
+            Token t = (Token)_tokens.remove(currentTime);
+            output.send(0, t);
+            //System.out.println(getName() + " output token " + t);
         }
         return super.postfire();
     }

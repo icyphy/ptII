@@ -32,7 +32,7 @@
 </rendition>
 </entity>
 
-<entity name="TimeBomb" class="ptolemy.domains.de.lib.TimeBomb">
+<entity name="VirtualTimeBomb" class="ptolemy.domains.de.lib.TimeBomb">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
@@ -50,6 +50,11 @@
 </rendition>
 </entity>
 
+<entity name="WaitingTime1" class="ptolemy.domains.de.lib.WaitingTime1">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
       </group>
     ?>
   </configure>

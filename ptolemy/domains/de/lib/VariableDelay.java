@@ -103,7 +103,7 @@ public class VariableDelay extends DETransformer {
                 throw new IllegalActionException(this,
                         "Cannot have negative delay.");
             } else {
-                System.out.println(getName() + "set delay to " + newValue);
+                //System.out.println(getName() + "set delay to " + newValue);
                 _delay = newValue;
             }
         } else {
@@ -145,7 +145,7 @@ public class VariableDelay extends DETransformer {
             _currentInput = null;
         }
         if (delay.hasToken(0)) {
-            System.out.println(getName() + "set delay to " + _delay);
+            //System.out.println(getName() + "set delay to " + _delay);
             _delay = ((DoubleToken)delay.get(0)).doubleValue();
         }
     }
