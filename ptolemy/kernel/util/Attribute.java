@@ -176,7 +176,9 @@ public class Attribute extends NamedObj {
      *       attribute has this name in the container.
      */
     public void setName(String name) throws NameDuplicationException{
-        if (name == null) name = new String("");
+        if (name == null) {
+            name = new String("");
+        }
         NamedObj container = (NamedObj) getContainer();
         if((container != null) && (container.getAttribute(name) != null)) {
             throw new NameDuplicationException (container, 
