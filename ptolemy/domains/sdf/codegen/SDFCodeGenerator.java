@@ -398,20 +398,37 @@ public class SDFCodeGenerator extends CompositeActorApplication
               if (lastActor != null) {
                  ObjectNode actorVarNode = (ObjectNode)
                   ((ObjectNode) actorToVariableMap.get(lastActor)).clone();
-              
-                 iterationStmtList.addLast(new ExprStmtNode(
+                                 
+                 ExprStmtNode prefireCallStmtNode = new ExprStmtNode(
                   new MethodCallNode(new ObjectFieldAccessNode(
                    new NameNode(AbsentTreeNode.instance, "prefire"),
                    actorVarNode),
-                   new LinkedList())));
-                   
+                   new LinkedList()));
+
+                 // Every node in the tree needs to be unique, so the
+                 // actor node needs to be cloned here.
                  ExprStmtNode fireCallStmtNode = new ExprStmtNode(
                   new MethodCallNode(new ObjectFieldAccessNode(
                    new NameNode(AbsentTreeNode.instance, "fire"),
-                   actorVarNode),
+                   ((ObjectNode)actorVarNode.clone())),
                    new LinkedList()));
+
+                 ExprStmtNode postfireCallStmtNode = new ExprStmtNode(
+                  new MethodCallNode(new ObjectFieldAccessNode(
+                   new NameNode(AbsentTreeNode.instance, "postfire"),
+                   ((ObjectNode)actorVarNode.clone())),
+                   new LinkedList()));                                         
                    
+                 LinkedList iterationCalls = new LinkedList();
+                 iterationCalls.add(prefireCallStmtNode);
+                 iterationCalls.add(fireCallStmtNode);
+                 iterationCalls.add(postfireCallStmtNode);
+
+                 BlockNode iterationBlockNode = 
+                  new BlockNode(iterationCalls);
+
                  if (contiguousAppearances > 1) {
+                    
                     NameNode loopCounterNameNode = 
                      new NameNode(AbsentTreeNode.instance, "fc");
                     
@@ -431,16 +448,10 @@ public class SDFCodeGenerator extends CompositeActorApplication
                      (ObjectNode) loopCounterObjectNode.clone()));
                  
                     iterationStmtList.addLast(new ForNode(forInitList, 
-                     forTestExprNode, forUpdateList, fireCallStmtNode));                                       
+                     forTestExprNode, forUpdateList, iterationBlockNode));                                       
                  }  else {
-                    iterationStmtList.addLast(fireCallStmtNode);                 
+                     iterationStmtList.addLast(iterationBlockNode);
                  }
-
-                 iterationStmtList.addLast(new ExprStmtNode(
-                  new MethodCallNode(new ObjectFieldAccessNode(
-                   new NameNode(AbsentTreeNode.instance, "postfire"),
-                   actorVarNode),
-                   new LinkedList())));                                                               
               }
               lastActor = actor;
               contiguousAppearances = 1;
@@ -485,22 +496,24 @@ public class SDFCodeGenerator extends CompositeActorApplication
           }        
         }
         
-        // generate wrapup statements        
-        actorItr = _actorSet.iterator();
+        // generate wrapup statements, unless we are iterating forever.
+        if (iterations != 0) {
+            actorItr = _actorSet.iterator();
 
-        while (actorItr.hasNext()) {
-           TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
-           
-           ObjectNode actorObjectNode = (ObjectNode)
-            ((ObjectNode) actorToVariableMap.get(actor)).clone();
-           
-           MethodCallNode methodCallNode = new MethodCallNode(            
-            new ObjectFieldAccessNode(
-             new NameNode(AbsentTreeNode.instance, "wrapup"),
-             actorObjectNode),
-            new LinkedList());
-            
-           stmtList.addLast(new ExprStmtNode(methodCallNode)); 
+            while (actorItr.hasNext()) {
+                TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
+                
+                ObjectNode actorObjectNode = (ObjectNode)
+                ((ObjectNode) actorToVariableMap.get(actor)).clone();
+                
+                MethodCallNode methodCallNode = new MethodCallNode(            
+                    new ObjectFieldAccessNode(
+                        new NameNode(AbsentTreeNode.instance, "wrapup"),
+                        actorObjectNode),
+                        new LinkedList());
+                        
+                stmtList.addLast(new ExprStmtNode(methodCallNode)); 
+            }
         }
 
         return new MethodDeclNode(PUBLIC_MOD | STATIC_MOD, 
