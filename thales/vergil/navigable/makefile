@@ -63,9 +63,14 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	navigable
+MISC_FILES = 	img
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'NavigableActorGraphFrame$$DebugMenuListener.class' \
+	'NavigableActorGraphFrame$$UpAction.class' \
+	'NavigableActorGraphTableau$$Factory.class' \
+	'NavigationPTree$$expandListener.class' \
+	'NavigationPTree$$selectionListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -64,6 +64,14 @@ EXTRA_SRCS =
 MISC_FILES =
 
 OPTIONAL_FILES =
+	'ModelValidator$$1.class' \
+	'ModelValidator$$MyEntityResolver.class' \
+	'NavigableEffigy$$Factory.class' \
+	'NavigableEffigy$$FactoryWithoutNew.class' \
+	'SingleWindowHTMLViewer$$1.class' \
+	'SingleWindowHTMLViewer$$2.class' \
+	'SingleWindowHTMLViewer$$3.class' \
+	'SingleWindowHTMLViewerTableau$$Factory.class'
 
 all: jclass
 install: all jars
