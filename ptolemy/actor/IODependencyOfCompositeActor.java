@@ -123,8 +123,15 @@ public class IODependencyOfCompositeActor extends IODependency {
                 */
                 Receiver[][] receivers = outPort.getRemoteReceivers();
                 for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        _directedGraph.addEdge(outPort, receivers[i][j].getContainer());
+                    // FIXME: For PrameterPort, it is possible that 
+                    // the downstream receivers are null. It is a
+                    // unresolved issue about the semantics of Parameter
+                    // Port considering the lazy evaluation of variables.
+                    if (receivers[i] != null) {
+                        for (int j = 0; j < receivers[i].length; j++) {
+                                _directedGraph.addEdge(
+                                    outPort, receivers[i][j].getContainer());
+                        }
                     }
                 }
             }
