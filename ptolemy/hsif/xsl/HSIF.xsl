@@ -1,22 +1,18 @@
+<?xml version="1.0"?>
 <!-- 	This file transforms preprocessed HSIF files into Ptolemy MoML files.
 	Major things:
 	1. Variables are mapped into Input/Outputs.
 	2. HybridAutomata are mapped into Modal models.
 	3. Locations are mapped into States and Refinements in Modal models.
     4. DiffEquations inside locations are mapped into differential equations.
-	5. Expressions inside locations are mapped into assertions (Expression + ThrowModelError) 
+	5. Expressions inside locations are mapped into assertions (Expression + ThrowModelError)
        in Refinements.
-		
+
 	Hierarchical structure is preserved with CT-Modal-CTEmbedded structure.
 
     Future work: 1. Export to HSIF
 -->
-
-
-<xsl:transform
- xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
- version="1.0"
->
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- DOCTYPE element includes public ID and system ID -->
 <xsl:output doctype-system="http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"
@@ -39,7 +35,7 @@
 <xsl:preserve-space elements="*"/>
 
 <!-- ==========================================================
-     root element 
+     root element
      Generates the comments and analyzes the root element
      ========================================================== -->
 
@@ -49,16 +45,16 @@
 </xsl:template>
 
 <!-- ==========================================================
-     DNHA element 
-     Construct a CT domain as top level, iterates the HybridAutomata, 
-     variables and parameters in HSIF to build Modal models, 
-     input/output ports and parameters in Ptolemy. 
+     DNHA element
+     Construct a CT domain as top level, iterates the HybridAutomata,
+     variables and parameters in HSIF to build Modal models,
+     input/output ports and parameters in Ptolemy.
      Construct the relations based on all the ports and link ports.
      ========================================================== -->
 
 <xsl:template match="DNHA">
     <xsl:element name="entity">
-        
+
         <!-- At DNHA level, the CT domain is chosen as top level -->
         <!-- The director is a CT director. -->
         <xsl:call-template name="composite">
@@ -132,21 +128,21 @@
                 <xsl:element name="link">
                     <xsl:attribute name="port"><xsl:value-of select="concat($prefix, '.', @name)"/></xsl:attribute>
                     <xsl:attribute name="relation"><xsl:value-of select="@name"/></xsl:attribute>
-                </xsl:element>              
+                </xsl:element>
             </xsl:for-each>
         </xsl:for-each>
 
     </xsl:element>
-</xsl:template>   
+</xsl:template>
 
 <!-- ==========================================================
-     HybridAutomaton 						
-     Construct a Modal model for a Hybrid Automaton 		
-     including a FSM _Controller. 				
-     Iterates the local variables, parameters, the locations and 
-     the transitions in HSIF to build ports, parameters, 
-     states, refinements and transitions in Ptolemy. 			
-     Construct the relations and link the according ports. 	
+     HybridAutomaton
+     Construct a Modal model for a Hybrid Automaton
+     including a FSM _Controller.
+     Iterates the local variables, parameters, the locations and
+     the transitions in HSIF to build ports, parameters,
+     states, refinements and transitions in Ptolemy.
+     Construct the relations and link the according ports.
      ========================================================== -->
 
 <xsl:template match="HybridAutomaton">
@@ -216,13 +212,13 @@
             </xsl:call-template>
         </xsl:for-each>
 
-    </xsl:element>    
+    </xsl:element>
 
 </xsl:template>
 
 <!-- ==========================================================
-     Composite Entity 					
-     The compositor with different directors. 		
+     Composite Entity
+     The compositor with different directors.
      ========================================================== -->
 
 <xsl:template name="composite">
@@ -241,8 +237,8 @@
 </xsl:template>
 
 <!-- ==========================================================
-     Directors 							
-     Different directors for different domains. 		
+     Directors
+     Different directors for different domains.
      ========================================================== -->
 
 <!-- CT MixedDirector -->
@@ -277,11 +273,11 @@
     </xsl:element>
 </xsl:template>
 
-<!-- ========================================================== 
-     Controller in Modal Model incluidng States and Transitions 
-     A FSM in control of the transitions between states. 
+<!-- ==========================================================
+     Controller in Modal Model incluidng States and Transitions
+     A FSM in control of the transitions between states.
      Iterate the variables to build input ports and output
-     ports. The ports are refinement ports. 		
+     ports. The ports are refinement ports.
      Iterate the states and transitions in HSIF to build FSM.
      ========================================================== -->
 
@@ -290,8 +286,8 @@
     <xsl:element name="property">
         <!-- attributes of property -->
         <xsl:attribute name="name">initialStateName</xsl:attribute>
-        <xsl:attribute name="class">ptolemy.kernel.util.StringAttribute</xsl:attribute> 
-        <xsl:attribute name="value">    
+        <xsl:attribute name="class">ptolemy.kernel.util.StringAttribute</xsl:attribute>
+        <xsl:attribute name="value">
            <xsl:for-each select="Location">
                <xsl:if test="@initial='true'">
                     <xsl:value-of select="@name"/>
@@ -389,17 +385,17 @@
 
                 <!-- Default setActions to ensure continuity of integrator states. -->
                 <!-- This part always appears first because the following actions may over write part of it. -->
-                <xsl:call-template name="defaultSetAction"> 
+                <xsl:call-template name="defaultSetAction">
                     <xsl:with-param name="stateName" select="$dstState"/>
                 </xsl:call-template>
 
-                <!-- It turns out that exit actions of current state 
+                <!-- It turns out that exit actions of current state
                 can be regarded as the entry actions of next state. -->
                 <xsl:apply-templates select="key('nid', $stateID)/Action[@__child_as='exitAction']">
                     <xsl:with-param name="stateName" select="$dstState"/>
                 </xsl:apply-templates>
-                    
-                <xsl:apply-templates select="Action|key('nid', $nextStateID)/Action[@__child_as='entryAction']"> 
+
+                <xsl:apply-templates select="Action|key('nid', $nextStateID)/Action[@__child_as='entryAction']">
                     <xsl:with-param name="stateName" select="$dstState"/>
                 </xsl:apply-templates>
 
@@ -441,9 +437,9 @@
 </xsl:template>
 
 <!-- ==========================================================
-     Refinements 					
-     Construct the invariants and flow equations in HSIF. 
-     Construct ports and relations and link ports. 	
+     Refinements
+     Construct the invariants and flow equations in HSIF.
+     Construct ports and relations and link ports.
      ========================================================== -->
 
 <!-- Discrete State as State in FSM-->
@@ -518,14 +514,14 @@
                 <xsl:attribute name="relation"><xsl:value-of select="@name"/></xsl:attribute>
             </xsl:element>
         </xsl:for-each>
-        
+
         <!-- If some inputs of expression are outputs of other integrators in the same location, -->
         <!-- they should be wired. [/descendant::VarRef/@var=$varID] -->
         <xsl:for-each select="DiffEquation/VarRef">
             <xsl:variable name="varName"><xsl:value-of select="key('nid',@var)/@name"/></xsl:variable>
             <xsl:variable name="varID"><xsl:value-of select="@var"/></xsl:variable>
             <!--
-            <xsl:value-of select="concat('This state contains ', count(../../DiffEquation[descendant::VarRef/@var=$varID]), ' ', $varID)"/> 
+            <xsl:value-of select="concat('This state contains ', count(../../DiffEquation[descendant::VarRef/@var=$varID]), ' ', $varID)"/>
             -->
             <xsl:for-each select="../../DiffEquation/AExpr[descendant::VarRef/@var=$varID]">
                 <xsl:variable name="integrator"><xsl:value-of select="key('nid',../VarRef/@var)/@name"/></xsl:variable>
@@ -547,7 +543,7 @@
                     <xsl:element name="link">
                         <xsl:attribute name="port"><xsl:value-of select="concat($prefix, 'FlowEquation.', $varName)"/></xsl:attribute>
                         <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
-                    </xsl:element>              
+                    </xsl:element>
                 </xsl:if>
             </xsl:for-each>
         </xsl:for-each>
@@ -567,7 +563,7 @@
                     <xsl:element name="link">
                         <xsl:attribute name="port"><xsl:value-of select="concat($name, '.', $varName)"/></xsl:attribute>
                         <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
-                    </xsl:element>              
+                    </xsl:element>
                 </xsl:if>
 
                 <xsl:element name="relation">
@@ -578,12 +574,12 @@
                 <xsl:element name="link">
                     <xsl:attribute name="port"><xsl:value-of select="concat($name, '.', 'output')"/></xsl:attribute>
                     <xsl:attribute name="relation"><xsl:value-of select='expressionToTME'/></xsl:attribute>
-                </xsl:element>  
+                </xsl:element>
                 <xsl:element name="link">
                     <xsl:attribute name="port"><xsl:value-of select="concat('throwModelError', '.', 'input')"/></xsl:attribute>
                     <xsl:attribute name="relation"><xsl:value-of select='expressionToTME'/></xsl:attribute>
-                </xsl:element>              
-                
+                </xsl:element>
+
             </xsl:for-each>
         </xsl:for-each>
 
@@ -651,11 +647,11 @@
                 <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                 <xsl:attribute name="class"><xsl:value-of select="$portType"/></xsl:attribute>
                 <xsl:if test="$environment='controller'">
-                    <xsl:element name="property">    
+                    <xsl:element name="property">
                         <xsl:attribute name="name">input</xsl:attribute>
                     </xsl:element>
                 </xsl:if>
-                <xsl:element name="property">    
+                <xsl:element name="property">
                     <xsl:attribute name="name">output</xsl:attribute>
                 </xsl:element>
                 <xsl:call-template name="value"/>
@@ -671,7 +667,7 @@
             <xsl:element name="port">
                 <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                 <xsl:attribute name="class"><xsl:value-of select="$portType"/></xsl:attribute>
-                <xsl:element name="property">    
+                <xsl:element name="property">
                     <xsl:attribute name="name">input</xsl:attribute>
                 </xsl:element>
                 <xsl:element name="property">
@@ -823,7 +819,7 @@
 
 <!-- Invariants -->
 <xsl:template match="Expr" mode="invariant">
-    <xsl:element name="entity"> 
+    <xsl:element name="entity">
         <xsl:variable name="temp"><xsl:value-of select="@name"/></xsl:variable>
         <xsl:attribute name="name">
             <xsl:if test="$temp!=''"><xsl:value-of select="$temp"/></xsl:if>
@@ -868,7 +864,7 @@
         </xsl:for-each>
     </xsl:element>
 
-    <xsl:element name="entity"> 
+    <xsl:element name="entity">
         <xsl:variable name="temp"><xsl:value-of select="@name"/></xsl:variable>
         <xsl:attribute name="name">
             <xsl:if test="$temp!=''"><xsl:value-of select="$temp"/></xsl:if>
@@ -967,7 +963,7 @@
                     <xsl:attribute name="value"><xsl:value-of select="'double'"/></xsl:attribute>
                 </xsl:element>
             </xsl:element>
-    
+
             <xsl:for-each select="descendant::VarRef">
                 <xsl:variable name="varName" select="key('nid',@var)/@name"/>
                 <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
@@ -1012,9 +1008,9 @@
             <xsl:attribute name="port"><xsl:value-of select="concat($varName, '.output')"/></xsl:attribute>
             <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
         </xsl:element>
-    
+
     </xsl:for-each>
 
 </xsl:template>
 
-</xsl:transform>
+</xsl:stylesheet>
