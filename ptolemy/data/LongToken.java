@@ -26,6 +26,7 @@
 */
 
 package pt.data;
+import pt.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// LongToken
@@ -58,37 +59,6 @@ public class LongToken extends ScalarToken {
 	_value = value;
     }
 
-    /** Return the value in the token as a byte.
-     */
-    public byte byteValue() {
-        return (byte)_value;
-    }
-
-    // Return a reference to a Complex. The real part of the Complex
-    // is the value in the token, the imaginary part is set to 0.
-    // FIXME: finish after the Complex class is moved to this package.
- 
-//    public Complex complexValue() {
-//    }
- 
-    /** Return the value in the token as a double.
-     */
-    public double doubleValue() {
-	return (double)_value;
-    }
-
-    // Return a reference to a Fix.
-    // FIXME: finish after the Fix class is available.
- 
-//    public Fix fixValue() {
-//    }
-
-    /** Return the value in the token as an int.
-     */
-    public int intValue() {
-        return (int)_value;
-    }
-
     /** Return the value in the token as a long integer.
      */
     public long longValue() {
@@ -115,6 +85,117 @@ public class LongToken extends ScalarToken {
 	return Long.toString(_value);
     }
 
+    /** Add the value of the argument Token to the current Token.
+     *  @param The token whose value we add to this Token
+     *  @return A token of the appropriate type.
+     */
+    public Token add(Token a)
+            throws IllegalActionException {
+        if (a instanceof StringToken) {
+            return new StringToken(this.toString() +
+                                        ((StringToken)a).toString());
+        } else if (a instanceof ByteToken) {
+            return new LongToken(_value + ((ByteToken)a).longValue());
+        } else if (a instanceof IntToken) {
+            return new LongToken(_value + ((IntToken)a).longValue());
+        } else if (a instanceof LongToken) {
+            return new LongToken(_value + ((LongToken)a).longValue());
+        } else {
+            throw new IllegalActionException("Can't add " +
+                getClass().getName() + "to " + a.getClass().getName());
+        }
+    }
+
+    /** Subtract the value of the argument Token from the current Token.
+     *  @param The token whose value we substract from this Token.
+     *  @return A token of the appropriate type.
+     */
+    public Token subtract(Token a)
+            throws IllegalActionException {
+        if (a instanceof ByteToken) {
+            return new LongToken(_value - ((ByteToken)a).longValue());
+        } else if (a instanceof IntToken) {
+            return new LongToken(_value - ((IntToken)a).longValue());
+        } else if (a instanceof LongToken) {
+            return new LongToken(_value - ((LongToken)a).longValue());
+        } else {
+            throw new IllegalActionException("Can't subtract " +
+                a.getClass().getName() + "from " + getClass().getName());
+        }
+    }
+ 
+    /** Multiply the value of the argument Token to the current Token.
+     *  @param The token whose value we multiply to this Token.
+     *  @return A token of the appropriate type.
+     */
+    public Token multiply(Token a)
+            throws IllegalActionException {
+        if (a instanceof ByteToken) {
+            return new LongToken(_value * ((ByteToken)a).longValue());
+        } else if (a instanceof IntToken) {
+            return new LongToken(_value * ((IntToken)a).longValue());
+        } else if (a instanceof LongToken) {
+            return new LongToken(_value * ((LongToken)a).longValue());
+        } else {
+            throw new IllegalActionException("Can't multiply " +
+                getClass().getName() + "to " + a.getClass().getName());
+        }
+    }
+
+    /** Divide the value of the argument Token with the current Token.
+     *  @param The token whose value we divide with this Token.
+     *  @return A token of the appropriate type.
+     */
+    public Token divide(Token a)
+            throws IllegalActionException {
+        if (a instanceof ByteToken) {
+            return new LongToken(_value / ((ByteToken)a).longValue());
+        } else if (a instanceof IntToken) {
+            return new LongToken(_value / ((IntToken)a).longValue());
+        } else if (a instanceof LongToken) {
+            return new LongToken(_value / ((LongToken)a).longValue());
+        } else {
+            throw new IllegalActionException("Can't divide " +
+                getClass().getName() + "by " + a.getClass().getName());
+        }
+    }
+ 
+    /** Find the result of the value of this Token modulo the value of the
+     *  argument Token.
+     *  @param The token whose value we do modulo with.
+     *  @return A token of the appropriate type.
+     */
+    public Token modulo(Token a)
+            throws IllegalActionException {
+        if (a instanceof ByteToken) {
+            return new LongToken(_value % ((ByteToken)a).longValue());
+        } else if (a instanceof IntToken) {
+            return new LongToken(_value % ((IntToken)a).longValue());
+        } else if (a instanceof LongToken) {
+            return new LongToken(_value % ((LongToken)a).longValue());
+        } else {
+            throw new IllegalActionException("Can't do modulo on " +
+                getClass().getName() + "and " + a.getClass().getName());
+        }
+    }
+
+    /** Test for equality of the values of this Token and the argument Token.
+     *  @param The token with which to test equality.
+     */
+    public BooleanToken equality(Token a)
+            throws  IllegalActionException {
+        if (a instanceof ByteToken) {
+            return new BooleanToken(_value == ((ByteToken)a).longValue());
+        } else if (a instanceof IntToken) {
+            return new BooleanToken(_value == ((IntToken)a).longValue());
+        } else if (a instanceof LongToken) {
+            return new BooleanToken(_value == ((LongToken)a).longValue());
+        } else {
+            throw new IllegalActionException("Can't compare equality between "
+                + getClass().getName() + "and " + a.getClass().getName());
+        }
+    }
+ 
     //////////////////////////////////////////////////////////////////////////
     ////                        private variables                         ////
     private long _value;
