@@ -69,6 +69,11 @@ public class ECSLMux extends Transformer {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
+
+        // FIXME: input and output types forced to DOUBLE?
+        input.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE);
+
         DisplayOption = new StringParameter(this, "DisplayOption");
         Inputs = new StringParameter(this, "Inputs");
     }
