@@ -39,7 +39,10 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// DEFIRfilter
 /**
-
+A FIR filter that introduce a delay from the input to the output.
+So this is a discrete event actor. 
+Note: This is a temporary actor. I may be removed, or replaced by
+other actors. Please do not use this actor as a template.
 
 @author Lukito Muliadi
 @version $Id$
@@ -77,8 +80,6 @@ public class DEFIRfilter extends DEActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // set the parameters.
-        //double[][] taps2d = new double[1][];
-        //taps2d[0] = taps;
         String tapString  =  new String();
         for (int i = 0; i < taps.length; i++) {
             tapString = tapString + (new Double(taps[i])).toString() + " ";
@@ -113,8 +114,6 @@ public class DEFIRfilter extends DEActor {
         super(container, name);
 
         // set the parameters.
-        //double[][] taps2d = new double[1][];
-        //taps2d[0] = dtaps;
 
         _paramTaps = new Parameter(this, "taps", new StringToken(taps));
         _paramDelay = new Parameter( this, "Delay", new DoubleToken(_delay));
@@ -162,9 +161,6 @@ public class DEFIRfilter extends DEActor {
         if (input.hasToken(0)) {
             double newdata = ((DoubleToken)input.get(0)).doubleValue();
             //figure out the number of taps.
-            //DoubleMatrixToken tapsToken = (DoubleMatrixToken)_taps.getToken();
-            //int numTaps = tapsToken.getColumnCount();
-
             int numTaps = _taps.length;
             // check if the number of taps match to the contentTaps length.
             // If not, then create a new contentTaps with the appropriate
@@ -214,9 +210,6 @@ public class DEFIRfilter extends DEActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
 
     // The value of the filter taps.
     private Parameter _paramTaps;

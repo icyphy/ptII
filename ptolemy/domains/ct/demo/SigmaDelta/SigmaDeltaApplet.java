@@ -43,13 +43,14 @@ import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-//import ptolemy.plot.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// SigmaDeltaApplet
 /**
+A demo of Sigma Delta quantization. The underlying model is a
+micro-accelerometer which uses beam-gap capacitor to measure accelerations.
 A second order CT subsystem is used to model the beam.
 The voltage on the beam-gap capacitor is sampled every T seconds (much
 faster than the required output of the digital signal),  then filtered by
@@ -63,7 +64,7 @@ Feedback Control"</I>, doctoral dissertation,  University of California,
 Berkeley, Fall 1997
 
 @author Jie LIu
-@version $Id $
+@version $Id$
 */
 public class SigmaDeltaApplet extends CTApplet {
 
@@ -147,7 +148,7 @@ public class SigmaDeltaApplet extends CTApplet {
             _sampler =
                 new CTPeriodicSampler(ctsub, "Sampler");
 
-            // CTConnections
+            // CT Connections
             ctsub.connect(time.output, sine.input);
             Relation cr0 = ctsub.connect(sine.output, gain0.input, "CR0");
             Relation cr1 = ctsub.connect(gain0.output, add1.plus, "CR1");
@@ -176,10 +177,15 @@ public class SigmaDeltaApplet extends CTApplet {
             Parameter firdelay = (Parameter)fir.getAttribute("Delay");
             firdelay.setToken(new DoubleToken(0.02));
 
-            DETestLevel quan = new DETestLevel(_toplevel, "Quantizer");
+            Quantizer quan = new Quantizer(_toplevel, "Quantizer");
             DEStatistics accu = new DEStatistics(_toplevel, "Accumulator");
-            DEClock clk = new DEClock(_toplevel, "ADClock", 1, 1);
-
+            Clock clk = new Clock(_toplevel, "ADClock");
+            double[][] offs = {{0.0}};
+            clk.offsets.setToken(new DoubleMatrixToken(offs));
+            clk.period.setToken(new DoubleToken(1.0));
+            int[][] vals = {{0}};
+            clk.values.setToken(new IntMatrixToken(vals));
+            
             _dePlot = new TimedPlotter(_toplevel, "DEPlot");
             _dePlot.setPanel(this);
             _dePlot.plot.setGrid(true);
@@ -187,6 +193,7 @@ public class SigmaDeltaApplet extends CTApplet {
             _dePlot.plot.setSize(500, 200);
             _dePlot.plot.setConnected(false);
             _dePlot.plot.setImpulses(true);
+            _dePlot.plot.setMarksStyle("dots");
             _dePlot.plot.addLegend(0, "Accum");
             _dePlot.plot.addLegend(1, "Quantize");
 
@@ -219,16 +226,13 @@ public class SigmaDeltaApplet extends CTApplet {
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             ctdir.ODESolver.setToken(token2);
 
-            // CTActorParameters
+            // CT Actor Parameters
 
-            sine.frequency.setToken(new DoubleToken(0.5));
+            sine.omega.setToken(new DoubleToken(0.5));
 
             gain0.gain.setToken(new DoubleToken(50.0));
             gain1.gain.setToken(new DoubleToken(-2.50));
             gain2.gain.setToken(new DoubleToken(-250.0));
-
-            //_gain3.gain.setToken(new DoubleToken(-20.0));
-            //_sampler.SamplePeriod.setToken(new DoubleToken(0.02));
 
         } catch (Exception ex) {
             report("Setup failed: ",  ex);
@@ -246,21 +250,21 @@ public class SigmaDeltaApplet extends CTApplet {
     protected void _go() throws IllegalActionException {
         try {
             if(_manager.getState() == _manager.IDLE) {
-                System.out.println("set up parameters");
+                //System.out.println("set up parameters");
 
                 // FIXME: use parameter when the DEDirector is changed.
                 double stopT = _query.doubleValue("stopT");
                 _deDirector.setStopTime(stopT);
-                System.out.println("stop time set");
+                //System.out.println("stop time set");
                 _gain3.gain.setToken(new DoubleToken(
                         _query.doubleValue("feedback")));
-                System.out.println("feedback gain set");
+                //System.out.println("feedback gain set");
                 _sampler.SamplePeriod.setToken(new DoubleToken(
                         _query.doubleValue("sample")));
-                System.out.println("sampler set");
+                //System.out.println("sampler set");
 
                 // adjust plot sizes
-                System.out.println("set up plots");
+                //System.out.println("set up plots");
                 _ctPlot.plot.setXRange(0.0, stopT);
                 _dePlot.plot.setXRange(0.0, stopT);
                 super._go();
@@ -280,8 +284,6 @@ public class SigmaDeltaApplet extends CTApplet {
     private DEDirector _deDirector;
 
     private double _stopTime = 15.0;
-
-    // Parameters of DEProcessor that we want to change.
     private Scale _gain3;
     private CTPeriodicSampler _sampler;
     private TimedPlotter _ctPlot;

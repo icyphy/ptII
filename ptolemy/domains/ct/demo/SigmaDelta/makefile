@@ -48,6 +48,8 @@ TCL_SRCS = \
 	SigmaDelta.tcl
 
 JSRCS = \
+	DEFIRfilter.java \
+	DEStatistics.java \
 	SigmaDeltaApplet.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
