@@ -1,4 +1,4 @@
-* An FIR lattice filter.
+/* An FIR lattice filter.
 
 Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
