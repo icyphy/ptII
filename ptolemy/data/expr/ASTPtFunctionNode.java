@@ -49,10 +49,12 @@ import java.util.StringTokenizer;
 //// ASTPtFunctionNode
 /**
 The parse tree created from the expression string consists of a
-hierarchy of node objects. This class represents function nodes in
-the parse tree.
-<p>
-A function node is created when a function call is parsed. This node
+hierarchy of node objects. This class represents function nodes in the
+parse tree.  The first child of this node is the child node for the
+name.  The remaining children are node representing the arguments of
+the function.
+
+<p> A function node is created when a function call is parsed. This node
 will search for the function, using reflection, in the classes
 registered for this purpose with the parser. Thus to add to the list
 of functions available to the expression, it is only necessary to
