@@ -872,6 +872,12 @@ remote5done: $(REMOTE5DONEFILE) remotealldone
 $(REMOTE5DONEFILE):
 	date > $@
 
+# Semaphore file for the remote6 build
+REMOTE6DONEFILE = $(GENLOGDIR)/remote6done
+remote6done: $(REMOTE6DONEFILE) remotealldone
+$(REMOTE6DONEFILE):
+	date > $@
+
 
 # If the remote done files are present, concatenate the logs and send email
 # Note that currently we are not running remote 1 and remote2
@@ -895,9 +901,6 @@ remotealldone:
 # Build from a tar file - similar to remote1, but w/o test case coverage
 # except for the deep codegen
 
-####################################
-# Build and generate test case coverage on a remote host
-
 # Host to run on
 REMOTE4HOST = cooley
 
@@ -907,9 +910,6 @@ REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
 
 # Log file to save the results in
 REMOTE4LOG = $(GENLOGDIR)/remote4.out
-
-# Use a non-gnu make here for testing purposes
-OTHERMAKE = /usr/ccs/bin/make
 
 # Create a separate tree and build on REMOTE4HOST
 remote4: $(PTII_FULL) $(GENLOGDIR)
@@ -985,13 +985,6 @@ remote4javatest:
 # Build from a src tar file - similar to remote1, but w/o test case coverage
 # except for the shallow codegen
 
-####################################
-# Build and generate test case coverage on a remote host
-
-# Use a non-gnu make here for testing purposes
-OTHERMAKE = /usr/ccs/bin/make
-
-
 # Host to run on
 REMOTE5HOST = bennett
 
@@ -1056,6 +1049,124 @@ remote5shallowtest:
 	@echo "$@ `date`"
 	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; PTII=$(REMOTE5PTIIDIST) $(MAKE) test_long)
 
+
+
+
+
+##########################################################################
+# Build from a src tar file - similar to remote1, we only generate
+# test case coverage from the /test/auto/*.xml tests
+
+# Host to run on
+REMOTE6HOST = andrews
+
+# Directory to build in
+REMOTE6HOME = /vol/$(REMOTE6HOST)/$(REMOTE6HOST)2/ptII
+
+REMOTE6PTIIDIST = $(REMOTE6HOME)/ptII$(VERSION)
+
+# Log file to save the results in
+REMOTE6LOG = $(GENLOGDIR)/remote6.out
+
+# Create a separate tree and build on REMOTE6HOST
+remote6: $(PTII_FULL) $(GENLOGDIR)
+	@echo "#"
+	@echo "# Now building on $(REMOTE6HOST) from dist tar file"
+	@echo "#"
+	@echo "$@ `date`"
+	ssh $(REMOTE6HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+		remote6nuke remote6ptiidist remote6configure \
+		remote6build \
+		remote6buildjsall \
+		remote6autojsall \
+		remote6done \
+		 >& $(REMOTE6LOG)" &
+
+
+# Remove the remote dist
+remote6nuke:
+	rm -rf $(REMOTE6PTIIDIST) $(REMOTE6DONEFILE)
+
+# untarthe remote dist.  Usually this is run on the remote machine
+remote6ptiidist: $(REMOTE6PTIIDIST)
+$(REMOTE6PTIIDIST): $(PTII_FULL)
+	@echo "#"
+	@echo "# Now untaring on `hostname`"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd $(REMOTE6HOME); $(TAR) -zxf $(PTII_SRC))
+
+remote6configure:
+	@echo "#"
+	@echo "# Now configuring on `hostname`"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd $(REMOTE6PTIIDIST);	rm -f config.cache; PTII=$(REMOTE6PTIIDIST) ./configure)
+
+
+remote6build:
+	@echo "#"
+	@echo "# Now running make fast all install in $(REMOTE6PTIIDIST)"
+	@echo "# on  `hostname`"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd $(REMOTE6PTIIDIST);	PTII=$(REMOTE6PTIIDIST) $(MAKE) sources fast all install)
+
+# Run JavaScope Code Coverage tool in the distribution tree
+# For command line options, see
+#http://www.gigascale.org/pubs/gsrc-downloads/JavaScope/docs/pdf/UGApxTools.pdf
+
+remote6buildjsall:
+	@echo "#"
+	@echo "# Now running make jsoriginal clean jsbuild in $(REMOTE1PTIIDIST)"
+	@echo "# on  `hostname`"
+	@echo "# Generating test coverage data for: auto directories"
+	@echo "# $(JSALLDIRS)"
+	@echo "# To add to the list of directories, edit "
+	@echo "# ~ptII/adm/gen-latest/makefile"
+	@echo "#"
+	@echo "$@ `date`"
+
+	@echo "Removing $(JSDATABASE) in prep for $$x "
+	-ls -ldg $(JSDATABASE) $(JSDATABASE)/*
+	-rm -rf $(JSDATABASE)
+	mkdir $(JSDATABASE)
+
+	@-if [ "x$(JSALLDIRS)" != "x" ]; then \
+		set $(JSALLDIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making jsall in $$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) \
+				jsoriginal clean jsbuild JSINSTRFLAGS=;\
+			);  \
+		    fi ; \
+		done ; \
+	fi
+
+remote6autojsall:
+	@-if [ "x$(JSALLDIRS)" != "x" ]; then \
+		set `$(JSALLDIRS) | grep /auto/`; \
+		for x do \
+		    if [ -w $$x/test ] ; then \
+			( cd $$x/test ; \
+			echo making jstest_jsimple in $$x/test ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) \
+				jstest_jsimple; \
+			);  \
+		    fi ; \
+		done ; \
+	fi
+
+	jssummary -HTML -PROGRESS \
+		-OUTFILE=$(JSOUTDIR)/coverage.html
+	jsreport -HTML -PROGRESS -RECURSIVE \
+		-OUTDIR=$(JSOUTDIR)
+	# Add links and colorize the coverage.html page
+	sh $(PTIIADM)/bin/coveragerating $(PTII) \
+		$(JSOUTDIR)/coverage.html
+	-chmod -R a+r $(JSOUTDIR)
 
 
 ###########################################################################
