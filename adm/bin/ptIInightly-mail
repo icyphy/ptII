@@ -80,9 +80,13 @@ fi
 # Find the first 100 lines that contain *** but not compileDemo or runDemo
 # Print out the Entering directory line that precedes the *** line as well
 $AWK ' $0 ~ /Entering directory/ { indir=$0 }
-      $0 ~ /Error: called "test" with too many arguments/ {
-			print indir
-			print $0
+      $0 ~ /^Error/ {
+			if ( $0 !~ /Encountered "/
+			    && $0 !~ /no files matched glob patterns "compat/*.xml compat2/*.xml"/) {
+			    print "WARNING: in", indir, ", there was a problem"
+			    print "         with the test harness:" 
+			    print $0
+			}
 		      }
       $0 ~ /\*\*\*/ { 	if ( $0 !~ /runTreeShakeWithoutCodegen/ && $0 !~ /treeShakeAndRunSnapshots/ && $0 !~ /runTreeShakeCodegen/ && $0 !~ /compileDemo/) {
 			    print indir
