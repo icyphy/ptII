@@ -38,10 +38,11 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyDomain
 /** 
-A domain is a aggregation of actors and directors. This class manage the 
+A domain is an aggregation of actor and directors. This class manage the 
 actor package list and the director list. This base class provide methods
 that support creating actors, create directors, get available directors
-etc. The derived class should provide a list of the directors. The actor
+etc. The derived class should provide a list of the director's full class
+name. The actor
 packages are added at run time through addActorPackage() method, which 
 is generally called by PtolemySystem.
 
