@@ -2296,27 +2296,30 @@ public class IOPort extends ComponentPort {
      *  and the port is a transparent port of a composite actor,
      *  then the input/output status will be inferred from the connection.
      *  This method invalidates the schedule and resolved types of the
-     *  director of the container, if there is one.
+     *  director of the container, if there is one. It also propagates
+     *  the change to any derived ports.  Derived ports cannot override
+     *  the input property.
      *  It is write-synchronized on the workspace, and increments
      *  the version of the workspace.
      *  @param isInput True to make the port an input.
-     *  @exception IllegalActionException If changing the port status is
-     *   not permitted (for example, the port status is fixed by a class
-     *   definition).
      */
-    public void setInput(boolean isInput) throws IllegalActionException {
-        // No need for the try ... finally construct here because no
-        // exception can occur.  Note that although the action here is
-        // atomic, we still need to obtain write access to be sure that
-        // the change is not made in the middle of another read in another
-        // thread.
-        _workspace.getWriteAccess();
-        _isInput = isInput;
-        // Flag that the input status has been set,
-        // and therefore should not be inferred.
-        _isInputOutputStatusSet = true;
-        _invalidate();
-        _workspace.doneWriting();
+    public void setInput(boolean isInput) {
+        try {
+            _workspace.getWriteAccess();    
+            _isInput = isInput;
+            // Flag that the input status has been set,
+            // and therefore should not be inferred.
+            _isInputOutputStatusSet = true;
+            _invalidate();
+            // Propagate. 
+            Iterator heritage = getDerivedList().iterator();
+            while (heritage.hasNext()) {
+                IOPort inherited = (IOPort)heritage.next();
+                inherited.setInput(isInput);
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     /** If the argument is true, make the port a multiport.
@@ -2325,23 +2328,26 @@ public class IOPort extends ComponentPort {
      *  If the argument is false, allow only links with a single
      *  IORelation of width one.
      *  This method invalidates the schedule and resolved types of the
-     *  director of the container, if there is one.
+     *  director of the container, if there is one.  It also propagates
+     *  the change to any derived ports.  Derived ports cannot override
+     *  the multiport property.
      *  It is write-synchronized on the workspace.
      *  @param isMultiport True to make the port a multiport.
-     *  @exception IllegalActionException If changing the port status is
-     *   not permitted (for example, the port status is fixed by a class
-     *   definition).
      */
-    public void setMultiport(boolean isMultiport) throws IllegalActionException {
-        // No need for the try ... finally construct here because no
-        // exception can occur.  Note that although the action here is
-        // atomic, we still need to obtain write access to be sure that
-        // the change is not made in the middle of another read in another
-        // thread.
-        _workspace.getWriteAccess();
-        _isMultiport = isMultiport;
-        _invalidate();
-        _workspace.doneWriting();
+    public void setMultiport(boolean isMultiport) {
+        try {
+            _workspace.getWriteAccess();    
+            _isMultiport = isMultiport;
+            _invalidate();
+            // Propagate. 
+            Iterator heritage = getDerivedList().iterator();
+            while (heritage.hasNext()) {
+                IOPort inherited = (IOPort)heritage.next();
+                inherited.setMultiport(isMultiport);
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     /** If the argument is true, make the port an output port.
@@ -2350,27 +2356,30 @@ public class IOPort extends ComponentPort {
      *  and the port is a transparent port of a composite actor,
      *  then the input/output status will be inferred from the connection.
      *  This method invalidates the schedule and resolved types of the
-     *  director of the container, if there is one.
+     *  director of the container, if there is one.  It also propagates
+     *  the change to any derived ports.  Derived ports cannot override
+     *  the output property.
      *  It is write-synchronized on the workspace, and increments
      *  the version of the workspace.
      *  @param isOutput True to make the port an output.
-     *  @exception IllegalActionException If changing the port status is
-     *   not permitted (for example, the port status is fixed by a class
-     *   definition).
      */
-    public void setOutput(boolean isOutput) throws IllegalActionException {
-        // No need for the try ... finally construct here because no
-        // exception can occur.  Note that although the action here is
-        // atomic, we still need to obtain write access to be sure that
-        // the change is not made in the middle of another read in another
-        // thread.
-        _workspace.getWriteAccess();
-        _isOutput = isOutput;
-        // Flag that the output status has been set,
-        // and therefore should not be inferred.
-        _isInputOutputStatusSet = true;
-        _invalidate();
-        _workspace.doneWriting();
+    public void setOutput(boolean isOutput) {
+        try {
+            _workspace.getWriteAccess();    
+            _isOutput = isOutput;
+            // Flag that the Output status has been set,
+            // and therefore should not be inferred.
+            _isInputOutputStatusSet = true;
+            _invalidate();
+            // Propagate. 
+            Iterator heritage = getDerivedList().iterator();
+            while (heritage.hasNext()) {
+                IOPort inherited = (IOPort)heritage.next();
+                inherited.setOutput(isOutput);
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     /** Return a list of the ports that may accept data from this port when
