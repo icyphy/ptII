@@ -171,6 +171,9 @@ public class Configuration extends CompositeEntity {
                         }
                     } catch (Exception ex) {
                         // Ignore so we keep trying.
+                        // NOTE: Uncomment this line to detect bugs when
+                        // you try to open a model and you get a text editor.
+                        // ex.printStackTrace();
                         factory = null;
                     }
                 }
@@ -192,6 +195,10 @@ public class Configuration extends CompositeEntity {
                 tableau.show();
                 return tableau;
             } catch (Exception ex) {
+                // NOTE: Uncomment this line to detect bugs when
+                // you try to open a model and you get a text editor.
+                // ex.printStackTrace();
+
                 // Remove the effigy.  We were unable to open a tableau for it.
                 try {
                     effigy.setContainer(null);
