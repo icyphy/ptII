@@ -100,7 +100,7 @@ public class Complex implements Cloneable, Serializable {
     ////                         public methods                    ////
 
 
-    /** Calculate the sum of this complex number and the argument <i>z</i>.
+    /** Return the sum of this complex number and the argument <i>z</i>.
      *  <p>
      *  @param z A complex number.
      *  @return A new complex number equal to the sume of the given complex
@@ -111,7 +111,7 @@ public class Complex implements Cloneable, Serializable {
         return new Complex(real + z.real, imag + z.imag);
     }
 
-    /** Calculate the principal arc cosine of this complex number.  This is defined by:
+    /** Return the principal arc cosine of this complex number.  This is defined by:
      *  <pre>
      *   acos(z) = -i * log(z + i*sqrt(1 - z*z))
      *  </pre>
@@ -129,7 +129,7 @@ public class Complex implements Cloneable, Serializable {
         return new Complex(c4.imag, -c4.real);
     }
 
-    /** Calculate the principal hyperbolic arc cosine of this
+    /** Return the principal hyperbolic arc cosine of this
      *  complex number.  This is defined by:
      *  <pre>
      *   acosh(z) = log(z + sqrt(z*z - 1))
@@ -147,7 +147,7 @@ public class Complex implements Cloneable, Serializable {
         return c3.log();
     }
 
-    /** Calculate and return the angle or argument of this complex number.
+    /** Return the angle or argument of this complex number.
      *  <p>
      *  @return A double in the range -<em>pi < /em> to <em>pi</em>.
      *  </p>
@@ -156,7 +156,7 @@ public class Complex implements Cloneable, Serializable {
         return  Math.atan2(imag, real);
     }
 
-    /** Calculate the principal arc sine of this complex number.  
+    /** Return the principal arc sine of this complex number.  
      *  This is defined by:
      *  <pre>
      *   asin(z) = -i * log(i*z + sqrt(1 - z*z))
@@ -175,7 +175,7 @@ public class Complex implements Cloneable, Serializable {
         return new Complex(c4.imag, -c4.real);
     }
 
-    /** Calculate the principal hyperbolic arc sine of this
+    /** Return the principal hyperbolic arc sine of this
      *  complex number.  This is defined by:
      *  <pre>
      *   asinh(z) = log(z + sqrt(z*z + 1))
@@ -193,7 +193,7 @@ public class Complex implements Cloneable, Serializable {
         return c3.log();
     }
 
-    /** Calculate the principal arc tangent of this complex 
+    /** Return the principal arc tangent of this complex 
      *  number.  This is defined by:
      *  <pre>
      *  atan(z) = -i/2 * log((i-z)/(i+z))
@@ -212,7 +212,7 @@ public class Complex implements Cloneable, Serializable {
         return new Complex(c2.imag*0.5, -c2.real*0.5);
     }
 
-    /** Calculate the principal hyperbolic arc tangent of
+    /** Return the principal hyperbolic arc tangent of
      *  this complex number.  This is defined by:
      *  <pre>
      *   atanh(z) = 1/2 * log((1+z)/(1-z))
@@ -231,7 +231,7 @@ public class Complex implements Cloneable, Serializable {
         return new Complex(c2.real*0.5, c2.imag*0.5);
     }
 
-    /** Calculate the complex conjugate of this complex number.
+    /** Return the complex conjugate of this complex number.
      *  <p>
      *  @return a new Complex with value equal to the complex conjugate of
      *  of this complex number.
@@ -244,7 +244,7 @@ public class Complex implements Cloneable, Serializable {
         return new Complex(real, imag);
     }
 
-    /** Calculate the cosine of this complex number.  This is defined by:
+    /** Return the cosine of this complex number.  This is defined by:
      *  <pre>
      *  cos(z) = (exp(i*z) + exp(-i*z))/2
      *  </pre>
@@ -262,7 +262,7 @@ public class Complex implements Cloneable, Serializable {
         return new Complex(c4.real*0.5, c4.imag*0.5);
     }
 
-    /** Calculate the hyperbolic cosine of this complex 
+    /** Return the hyperbolic cosine of this complex 
      *  number.  This is defined by:
      *  <pre>
      *  cosh(z) = (exp(z) + exp(-z))/2
@@ -280,7 +280,7 @@ public class Complex implements Cloneable, Serializable {
         return new Complex(c3.real*0.5, c3.imag*0.5);
     }
 
-    /** Calculate the cotangent of this complex number.  This is simply:
+    /** Return the cotangent of this complex number.  This is simply:
      *  <pre>
      *  cot(z) = 1/tan(z)
      *  </pre>
@@ -295,7 +295,7 @@ public class Complex implements Cloneable, Serializable {
         return c1.reciprocal();
     }
 
-    /** Calculate the cosecant of this complex number.  This is simply:
+    /** Return the cosecant of this complex number.  This is simply:
      *  <pre>
      *  csc(z) = 1/sin(z)
      *  </pre>
@@ -369,7 +369,7 @@ public class Complex implements Cloneable, Serializable {
         return (z.real == real && z.imag == imag);
     }
 
-    /** Calculate the exponential of this complex number,
+    /** Return the exponential of this complex number,
      *  or <em>e<sup>z</sup></em>,
      *  where <code>z</code> is this complex number.
      *  <p>
@@ -406,7 +406,7 @@ public class Complex implements Cloneable, Serializable {
         return  ( Double.isNaN(real) || Double.isNaN(imag) );
     }
 
-    /** Calculate the natural logarithm of this complex 
+    /** Return the natural logarithm of this complex 
      *  number.  The principal value is returned, which
      *  is
      *  <pre>
@@ -508,7 +508,7 @@ public class Complex implements Cloneable, Serializable {
         return polarToComplex(magnitude, angle);
     }
 
-    /** Calculate and return <em>z<sup>y</sup></em>
+    /** Return <em>z<sup>y</sup></em>
      *  where <em>z</em> is this complex number and <em>y</em> is the
      *  argument, a Complex.
      *  <p>
@@ -528,7 +528,7 @@ public class Complex implements Cloneable, Serializable {
         return polarToComplex(magnitude, angle);
     }
 
-    /** Calculate and return the reciprocial of this complex number.
+    /** Return the reciprocial of this complex number.
      *  <p>
      *  @return A new complex number that is the reciprocal of this one.
      *  </p>
