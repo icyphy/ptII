@@ -117,18 +117,12 @@ public class RealTimePublisher extends Sink
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-	try {
-	    RealTimePublisher newobj = 
-                (RealTimePublisher)super.clone(ws);
-	    newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
-            newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-	    return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        RealTimePublisher newobj = (RealTimePublisher)super.clone(ws);
+        newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
+        newobj.entryName = (Parameter)newobj.getAttribute("entryName");
+        return newobj;
     }
 
     /** Find the JavaSpaces according to the jspaceName parameter.

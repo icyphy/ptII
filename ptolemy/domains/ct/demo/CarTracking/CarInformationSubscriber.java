@@ -142,21 +142,15 @@ public class CarInformationSubscriber extends TypedAtomicActor
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-	try {
-	    CarInformationSubscriber newobj =
-                (CarInformationSubscriber)super.clone(ws);
-	    newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
-            newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-            newobj.correct = (TypedIOPort)newobj.getPort("correct");
-            newobj.force = (TypedIOPort)newobj.getPort("force");
-            newobj.velocity = (TypedIOPort)newobj.getPort("velocity");
-            newobj.position = (TypedIOPort)newobj.getPort("position");
-	    return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        CarInformationSubscriber newobj =
+            (CarInformationSubscriber)super.clone(ws);
+        newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
+        newobj.entryName = (Parameter)newobj.getAttribute("entryName");
+        newobj.correct = (TypedIOPort)newobj.getPort("correct");
+        newobj.force = (TypedIOPort)newobj.getPort("force");
+        newobj.velocity = (TypedIOPort)newobj.getPort("velocity");
+        newobj.position = (TypedIOPort)newobj.getPort("position");
+        return newobj;
     }
             
     /** Find the JavaSpaces and retrieve the first token. The type of
