@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	CTPeriodicSampler.java \
+	CTRateLimiter.java \
 	CTTriggeredSampler.java \
 	Integrator.java \
 	IPCInterface.java \
