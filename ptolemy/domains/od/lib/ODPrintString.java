@@ -35,6 +35,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 import collections.LinkedList;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// ODPrintString
@@ -71,17 +72,53 @@ public class ODPrintString extends ODActor {
             token = (StringToken)getNextToken();
             // System.out.println("Finished ODPrintString.getNextToken()");
             // System.out.println("\t"+ token.stringValue() );
-            System.out.print( token.stringValue() );
             time = getCurrentTime();
-            if( time > 4000.0 ) {
+            System.out.println("\t"+token.stringValue() );
+	    /*
+            if( time > 6000.0 || time == -1.0 ) {
                 // System.out.println(getName() + " is finished with fire()");
                 return;
-            }
+            } else {
+               System.out.print( token.stringValue() );
+	    }
+	    */
             // System.out.println("\tTime is " + time);
             // System.out.print("\n");
         }
     }
     
+    /** 
+     */
+    public void wrapup() throws IllegalActionException {
+        // FIXME
+        // System.out.println("\nIt Be Over.\n");
+	int queue = 0;
+	Enumeration inputPorts = null;
+	inputPorts = inputPorts();
+	if( inputPorts == null ) {
+	    System.out.println("Queue Size = " + queue);
+	    return;
+	}
+	while( inputPorts.hasMoreElements() ) {
+	    IOPort port = (IOPort)inputPorts.nextElement();
+	    Receiver rcvrs[][] = (Receiver[][])port.getReceivers();
+	    if( rcvrs == null ) {
+	        return;
+	    }
+            for (int j = 0; j < rcvrs.length; j++) {
+                for (int i = 0; i < rcvrs[j].length; i++) {
+	            queue += ((ODReceiver) rcvrs[j][i]).getSize();
+		}
+            }
+	}
+	System.out.println("Queue Size = " + queue);
+	/*
+	System.out.println("Active Actors = " 
+                + ((ODDirector)getDirector())._getActiveActorsCount() );
+	*/
+        // super.wrapup();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 

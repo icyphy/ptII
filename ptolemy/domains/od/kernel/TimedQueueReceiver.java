@@ -115,40 +115,39 @@ public class TimedQueueReceiver implements Receiver {
         // System.out.println("Call to TimedQueueReceiver.get()");
         // System.out.println("Previous rcvrTime = " + getRcvrTime() );
         // System.out.println("rcvrTime = " + getRcvrTime() );
-        ODActor odactor = (ODActor)getContainer().getContainer();
-        // System.out.println("actor time = " + odactor.getCurrentTime() );
+        ODActor actor = (ODActor)getContainer().getContainer();
+        // System.out.println("actor time = " + actor.getCurrentTime() );
 	Token token = null;
 	synchronized( this ) {
-        Event event = (Event)_queue.take();
-        if (event == null) {
-            throw new NoTokenException(getContainer(),
-                    "Attempt to get token from an empty FIFO queue.");
-        }
-        token = event.getToken();
-        
-        // Set the rcvr time based on the next token
-        if( getSize() > 0 ) {
-            // System.out.println("Size after get is " + getSize());
-            // FIXME: get gives FIFO info now
-            // Event nextEvent = (Event)_queue.get( _queue.size() - 1 ); 
-            Event nextEvent = (Event)_queue.get(0); 
-            _rcvrTime = nextEvent.getTime();
-            // System.out.println("Update via get(): _rcvrTime = " + _rcvrTime );
-            // FIXME We should update the actor rcvrtripletable here 
-        }
-        // Call update even if getSize == 0, so that triple is 
-        // no longer in front
+            Event event = (Event)_queue.take(); 
+	    if (event == null) {
+                throw new NoTokenException(getContainer(), 
+	                "Attempt to get token from an empty FIFO queue.");
+            } 
+	    token = event.getToken(); 
+
+	    // Set the rcvr time based on the next token 
+	    if( getSize() > 0 ) {
+                // System.out.println("Size after get is " + getSize()); 
+	        Event nextEvent = (Event)_queue.get(0); 
+	        _rcvrTime = nextEvent.getTime(); 
+	        // System.out.println("Update via get(): _rcvrTime = " 
+                // + _rcvrTime );
+            } 
+
+	    // Call update even if getSize == 0, so that triple is 
+	    // no longer in front 
+
+	    RcvrTimeTriple triple; 
+	    triple = new RcvrTimeTriple( this, _rcvrTime, _priority ); 
+	    // triple = new RcvrTimeTriple( this, _rcvrTime, getPriority() ); 
+	    // ODActor actor = (ODActor)getContainer().getContainer(); 
+	    actor.updateRcvrTable( triple );
             
-        RcvrTimeTriple triple; 
-        triple = new RcvrTimeTriple( this, _rcvrTime, _priority ); 
-        // triple = new RcvrTimeTriple( this, _rcvrTime, getPriority() ); 
-        // ODActor actor = (ODActor)getContainer().getContainer(); 
-        odactor.updateRcvrTable( triple );
-            
-        /*
-        // System.out.println(((ComponentEntity)odactor).getName()
+            /* 
+	    // System.out.println(((ComponentEntity)actor).getName()
                 + " completed TimedQueueReceiver.get().");
-        */
+            */
 	}
         return token;
     }
@@ -157,6 +156,12 @@ public class TimedQueueReceiver implements Receiver {
      */
     public int getCapacity() {
         return _queue.getCapacity();
+    }
+
+    /** Get the completion time of this receiver. 
+     */
+    public synchronized double getCompletionTime() {
+        return _completionTime;
     }
 
     /** Return the container. 
@@ -233,17 +238,28 @@ public class TimedQueueReceiver implements Receiver {
     public void put(Token token, double time) {
         // System.out.println("Call to TimedQueueReceiver.put()");
         // System.out.println("Previous queue size = " + getSize() );
-        Event event = new Event(token, time);
+        Event event;
         ODIOPort port = (ODIOPort)getContainer();
         ODActor actor = (ODActor)port.getContainer();
         
         synchronized(this) {
+	    /* 
+	    if( time > getCompletionTime() ) {
+	        _lastTime = -1.0;
+	    }
+	    else {
+               _lastTime = time; 
+	    }
+	    */
+
             _lastTime = time; 
+
+            event = new Event(token, _lastTime);
             
             if( getSize() == 0 ) {
                 RcvrTimeTriple triple; 
-                triple = new RcvrTimeTriple( this, time, _priority ); 
-                _rcvrTime = time; 
+                _rcvrTime = _lastTime; 
+                triple = new RcvrTimeTriple( this, _rcvrTime, _priority ); 
                 // System.out.println("Update: _rcvrTime = " + _rcvrTime); 
                 actor.updateRcvrTable( triple ); 
             }
@@ -266,6 +282,12 @@ public class TimedQueueReceiver implements Receiver {
         _queue.setCapacity(capacity);
     }
 
+    /** Set the completion time of this receiver. 
+     */
+    public void setCompletionTime(double time) {
+        _completionTime = time;
+    }
+
     /** Set the container. */
     public void setContainer(IOPort port) {
         _container = port;
@@ -277,11 +299,14 @@ public class TimedQueueReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The time stamp of the last token to be placed in the queue.
+    // The time stamp of the newest token to be placed in the queue.
     private double _lastTime = 0.0;
     
-    // The time stamp of the oldest token that is still in the queue.
+    // The time stamp of the earliest token that is still in the queue.
     private double _rcvrTime = 0.0;
+
+    // The time after which this server will become defunct.
+    private double _completionTime;
 
     private int _priority = 0;
     

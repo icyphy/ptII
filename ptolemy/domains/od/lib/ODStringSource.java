@@ -81,7 +81,7 @@ public abstract class ODStringSource extends ODSourceActor {
         StringTime strTime = null;  
         
 	// FIXME: This is valid because ODSourceActor.initialize()
-        // getNextToken();
+        // calls getNextToken();
         while( cnt <= _contents.size() ) {
 	    if( cnt == _contents.size() ) {
 	        notFinishedYet = false;
@@ -92,8 +92,8 @@ public abstract class ODStringSource extends ODSourceActor {
 	    }
 
 	    if( nextOutputReady ) {
-		_output.send( 0, strToken );
-		// _output.send( 0, strToken, getCurrentTime() );
+		// _output.send( 0, strToken );
+		_output.send( 0, strToken, getCurrentTime() );
 		nextOutputReady = false;
 	    }
 
@@ -109,7 +109,8 @@ public abstract class ODStringSource extends ODSourceActor {
             cnt++;
         }
         
-        // System.out.println(getName() + " is finished with fire()");
+        // System.out.println(getName()+" is finished with fire()");
+	// System.out.println(getName()+" returns "+postfire()+" for postfire()");
         
             /*
             System.out.println(getName() + " fired \"" 

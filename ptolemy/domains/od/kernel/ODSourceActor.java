@@ -76,10 +76,14 @@ public class ODSourceActor extends ODActor {
     ////                         public methods                    ////
 
     /** FIXME: Should we check for negative delays?
-     */        // JFIXME 
+     */        
 
     public void refireAfterDelay(double delay) 
             throws IllegalActionException {
+	if( delay < 0 ) {
+	      throw new IllegalActionException( this, "Negative delays "
+                      + "are prohibited.");
+	}
         Token token = new Token();
         _refireOutPort.send( 0, token, delay );
     }

@@ -120,7 +120,7 @@ public class ODDirector extends ProcessDirector {
     public void initialize() throws IllegalActionException {
         // System.out.println("ODDirector.initialize()");
         super.initialize();
-        System.out.println("Active Count = " + _getActiveActorsCount());
+        // System.out.println("Active Count = " + _getActiveActorsCount());
     }
     
     /** 
@@ -154,20 +154,29 @@ public class ODDirector extends ProcessDirector {
      */
     public void fire() throws IllegalActionException {
         // System.out.println("ODDirector.fire()");
+        Workspace wkSpace = workspace();
         
+        synchronized( this ) {
+	    while( !_checkForDeadlock() ) {
+	        wkSpace.wait(this);
+	    }
+	    _notdone = !_handleDeadlock();
+        }
+	/*
         while( true ) {
             // System.out.println("Director will wait until deadlock");
             workspace().wait(this);
             // System.out.println("Awakened - now checking for deadlock");
-            if( isDeadlocked() ) {
-                resolveDeadlock();
-                if( isDeadlocked() ) {
+            if( _checkForDeadlock() ) {
+                _handleDeadlock();
+                if( _checkForDeadlock() ) {
 		    // System.out.println("End of ODDirector.fire()");
                     _notdone = false;
                     return;
                 }
             }
         }
+	*/
     }
     
     /** FIXME
@@ -177,11 +186,11 @@ public class ODDirector extends ProcessDirector {
         return dummy;
     }
     
-    /** FIXME
+    /** FIXME - Move to protected method section.
      */
-    public synchronized boolean isDeadlocked() {
+    protected synchronized boolean _checkForDeadlock() {
         if( _getActiveActorsCount() == _readBlocks + _writeBlocks ) {
-	  // System.out.println("All actors blocked - Deadlock!");
+	    // System.out.println("All actors blocked - Deadlock!");
             return true;
         }
         return false;
@@ -191,7 +200,12 @@ public class ODDirector extends ProcessDirector {
      *  @return A new ODReceiver.
      */
     public Receiver newReceiver() {
-        return new ODReceiver();
+        ODReceiver rcvr = new ODReceiver();
+	if( _completionTime != -1.0 ) {
+	    // System.out.println("Completion Time = " + _completionTime);
+	    rcvr.setCompletionTime( _completionTime );
+	}
+        return rcvr;
     }
 
     /** 
@@ -212,10 +226,18 @@ public class ODDirector extends ProcessDirector {
         // System.out.println(_writeBlocks + " actors are blocked on writes.");
     }
     
+    /** FIXME - Move to protected method section
+     */
+    protected boolean _handleDeadlock() {
+        // System.out.println("*** Deadlock Needs To Be Resolved!!!");
+        // Currently assume only real deadlocks.
+        return true;
+    }
+    
     /** FIXME
      */
-    public void resolveDeadlock() {
-        // System.out.println("*** Deadlock Needs To Be Resolved!!!");
+    public void setCompletionTime(double time) {
+        _completionTime = time;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -229,8 +251,9 @@ public class ODDirector extends ProcessDirector {
     ////                        private methods                    ////
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+    ////                      private variables                    ////
 
+    private double _completionTime = -1;
     private int _readBlocks = 0;
     private int _writeBlocks = 0;
 
