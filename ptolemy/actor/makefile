@@ -68,7 +68,7 @@ JSRCS = \
 	ExecutionListener.java \
 	FiringEvent.java \
 	GraphReader.java \
-	HasIODEpendencies.java \
+	HasIODependencies.java \
 	InvariantViolationException.java \
 	IODependency.java \
 	IODependencyOfAtomicActor.java \
