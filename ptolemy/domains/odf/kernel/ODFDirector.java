@@ -72,7 +72,7 @@ receiver has not begun to participate in a model's execution.
 
 
 @author John S. Davis II
-@version @(#)ODFDirector.java	1.3	11/16/98
+@version $Id$
 @see ptolemy.domains.pn.kernel.PNDirector
 @see ptolemy.domains.odf.kernel.ODFActor
 */
@@ -194,12 +194,18 @@ public class ODFDirector extends ProcessDirector {
     }
 
     /** Set the completion time of all actors governed by this
-     *  director. If this method is not called then the governed
-     *  actors will act as if there is no completion time.
+     *  director to a nonnegative value. If this method is not 
+     *  called then the governed actors will act as if there is 
+     *  no completion time. If the completion time argument is
+     *  negative, then throw an IllegalArgumentException.
      * @param time The specified completion time.
-     *  FIXME: What if this value is negative?
      */
     public void setCompletionTime(double time) {
+	if( time < 0.0 ) {
+	    throw new IllegalArgumentException(getName() +
+		    " - Attempt to set completion time to a " +
+		    "negative value.");
+	}
         _completionTime = time;
     }
 
@@ -219,7 +225,12 @@ public class ODFDirector extends ProcessDirector {
         return false;
     }
 
-    /**
+    /** Return a new ProcessThread of a type compatible with this
+     *  director.
+     * @param actor The actor that the new ProcessThread will control.
+     * @param director The director that manages the new ProcessThread.
+     * @exception IllegalActionException If an error occurs while
+     *  instantiating the new ProcessThread.
      */
     protected ProcessThread _getProcessThread(Actor actor,
 	    ProcessDirector director) throws IllegalActionException {
@@ -229,19 +240,14 @@ public class ODFDirector extends ProcessDirector {
     /** Resolve any deadlocks of the actors governed by this director.
      *  Return true if the deadlock has successfully been resolved;
      *  return false otherwise.
-     *  <P>
-     *  Currently this method assumes that all queues have infinite
-     *  capacity and hence that deadlocks based on writes can not
-     *  occur. FIXME: Should this return false then??
      * @return True if deadlocks no longer exist; return false otherwise.
      */
     protected boolean _handleDeadlock() {
-        // System.out.println("*** Deadlock Needs To Be Resolved!!!");
         // Currently assume only real deadlocks.
         return true;
     }
 
-    /**
+    /** Mutate the model that this director controls.
      */
     protected void _performMutations() {
         ;
