@@ -33,6 +33,7 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -118,6 +119,60 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 "Attribute does not have a value: " + name);
     }
 
+    /** FIXME
+     * 
+     * @param outputPort
+     * @param channelNumber
+     * @return
+     */
+    public String getSinkChannels(IOPort outputPort, int channelNumber) {
+        StringBuffer result = new StringBuffer();
+        Receiver[][] remoteReceivers 
+            = (outputPort.getRemoteReceivers());
+        
+        if (remoteReceivers.length <= channelNumber) {
+            // This channel of this output port doesn't have any sink.
+            result.append(_component.getFullName());
+            result.append("_");
+            result.append(outputPort.getName());
+            if (outputPort.isMultiport() && channelNumber > 0) {
+                result.append("_");
+                result.append((new Integer(channelNumber)).toString());
+            }
+            return result.toString();
+        }
+        
+        boolean foundIt = false;
+        for (int i = 0; i < remoteReceivers[channelNumber].length; i ++) {
+            IOPort sinkPort = remoteReceivers[channelNumber][i].getContainer();
+            Receiver[][] portReceivers = sinkPort.getReceivers();
+            for (int j = 0; j < portReceivers.length; j ++) {
+                for (int k = 0; k < portReceivers[j].length; k ++) {
+                    if (remoteReceivers[channelNumber][i]
+                            == portReceivers[j][k]) {
+                        if (!foundIt) {
+                            foundIt = true;
+                        } else {
+                            result.append(" = ");
+                        }
+                        result.append(sinkPort.getContainer().getFullName());
+                        result.append("_");
+                        result.append(sinkPort.getName());
+                        if (sinkPort.getWidth() > 1) {
+                            result.append("_");
+                            result.append((new Integer(j)).toString());
+                        }
+                        break;
+                        //sinkPorts.add(sinkPort);
+                        //sinkChannels.add(new Integer(j));
+                    }
+                }
+                    
+            }
+        }
+        return result.toString();
+    }
+    
     /**
      * Return the reference to the specified parameter or port of the associated
      * actor.
@@ -141,8 +196,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         // This method needs to generate this name given
         // the input port name.
 
-        // FIXME: Shouldn't we replace input port name to its
-        // source output port name?
         // Need to implement a method that return the connected
         // source port and channel number given an input port
         // and a channel number. Setting up a look-up table during
@@ -150,8 +203,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         // make it much easier. zhouye
 
         StringBuffer result = new StringBuffer();
-        result.append(_component.getFullName());
-        result.append("_");
 
         if (_component instanceof Actor) {
             Actor actor = (Actor) _component;
@@ -174,10 +225,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 IOPort port = (IOPort) inputPorts.next();
                 // The channel is specified as $ref(port#channelNumber).
                 if (port.getName().equals(portName)) {
+                    result.append(_component.getFullName());
+                    result.append("_");
                     result.append(portName);
                     if (!tokenizer.hasMoreTokens()) {
                         // No channel number specified.
-                        // FIXME: Should get the connected port here.
                         return result.toString();
                     }
                     // get the channel number.
@@ -188,7 +240,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         throw new IllegalActionException(_component, 
                                 "Invalid channel number in " + name);
                     }
-                    // FIXME: Should return the connected port and channel number.
                     result.append("_");
                     result.append(channel.toString());
                     return result.toString();
@@ -199,10 +250,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             while (outputPorts.hasNext()) {
                 IOPort port = (IOPort) outputPorts.next();
                 if (port.getName().equals(portName)) {
-                    result.append(portName);
                     if (!tokenizer.hasMoreTokens()) {
                         // No channel number specified.
-                        // FIXME: Should get the connected port here.
+                        // By default, it is channel 0.
+                        result.append(getSinkChannels(port, 0));
                         return result.toString();
                     }
                     // get the channel number.
@@ -213,9 +264,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         throw new IllegalActionException(_component, 
                                 "Invalid channel number in " + name);
                     }
-                    // FIXME: Should get the connected port and channel number.
-                    result.append("_");
-                    result.append(channel.toString());
+                    result.append(getSinkChannels(port, channelNumber));
                     return result.toString();
                 }
             }
