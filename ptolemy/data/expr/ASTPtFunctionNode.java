@@ -1,4 +1,4 @@
-/* ASTPtFunctionNode represents function nodes in the parse tree
+/* ASTPtFunctionNode represents function nodes or array references in the parse tree
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -79,10 +79,51 @@ FIXME: add note about function argument types and the return type.
 */
 public class ASTPtFunctionNode extends ASTPtRootNode {
     protected String _funcName;
+    protected boolean _isArrayRef;
 
     protected ptolemy.data.Token _resolveNode()
             throws IllegalArgumentException {
         int args = jjtGetNumChildren();
+        if (_isArrayRef) {
+            int row = 0;
+            int col = 0;
+            if (args == 3) {
+                // referencing a matrix
+                if (!(childTokens[1] instanceof IntToken)) {
+                    throw new IllegalExpressionException("The row index to "
+                            + _funcName + " is not an integer.");
+                } else {
+                    row = ((IntToken)childTokens[1]).intValue();
+                }
+            }
+            ptolemy.data.Token colTok = (args == 2) ? childTokens[1] : childTokens[2];
+            if (!(colTok instanceof IntToken)) {
+                throw new IllegalExpressionException("The column index to "
+                        + _funcName + " is not an integer.");
+            } else {
+                col = ((IntToken)colTok).intValue();
+            }
+            ptolemy.data.Token tok = childTokens[0];
+            if (tok instanceof BooleanMatrixToken) {
+                boolean val = ((BooleanMatrixToken)tok).getElementAt(row, col);
+                return new BooleanToken(val);
+            } else if (tok instanceof IntMatrixToken) {
+                int val = ((IntMatrixToken)tok).getElementAt(row, col);
+                return new IntToken(val);
+            } else if (tok instanceof LongToken) {
+                long val = ((LongMatrixToken)tok).getElementAt(row, col);
+                return new LongToken(val);
+            } else if (tok instanceof DoubleMatrixToken) {
+                double val = ((DoubleMatrixToken)tok).getElementAt(row, col);
+                return new DoubleToken(val);
+            } else if (tok instanceof ComplexMatrixToken) {
+                Complex val = ((ComplexMatrixToken)tok).getElementAt(row, col);
+                return new ComplexToken(val);
+            } else {
+                throw new IllegalExpressionException("The value of " + _funcName
+                        + " is not a supported matrix token.");
+            }
+        }
         if (_funcName.compareTo("eval") == 0) {
             // Have a recursive call to the parser.
             String exp = "";

@@ -300,6 +300,22 @@ public class PtParser {
         }
     }
     
+    /* Return true if the id is a variable name in scope or a registered
+     * constant.
+     */
+    private boolean _isKnownID(String id) {
+        boolean result = false;
+        if (_scope != null) {
+            if (_scope.get(id) != null) {
+                result = true;
+            }
+        }
+        if (_constantsRecognized.containsKey(token.image)) {
+            result = true;
+        }
+        return result;
+    }
+
     /* Flag indicating if the default constants and classes searched 
      * by the parser have already been loaded.
      */
@@ -426,15 +442,15 @@ TOKEN : /* Numeric literals */
   < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
 |
   < DOUBLE:
-        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
+        (["0"-"9"])+ "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
       | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
       | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
       | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
   >
 |
   < COMPLEX:
-        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["i","j"])?
-      | "." (["0"-"9"])+ (<EXPONENT>)? (["f","j"])?
+        (["0"-"9"])+ "." (["0"-"9"])+ (<EXPONENT>)? (["i","j"])?
+      | "." (["0"-"9"])+ (<EXPONENT>)? (["i","j"])?
       | (["0"-"9"])+ <EXPONENT> (["i","j"])?
       | (["0"-"9"])+ (<EXPONENT>)? ["i","j"]
   >
@@ -447,7 +463,7 @@ TOKEN : /*Boolean literals */
 
 TOKEN : /* Function names */
 {
-	< ID: ( <LETTER> )+ (["0"-"9", "$", "@", "#", "[", "]" ] | <LETTER> )* >
+	< ID: ( <LETTER> )+ (["0"-"9", "$", "@", "#" ] | <LETTER> )* >
   | 	< #LETTER: ["a"-"z", "A"-"Z", "_"] > 		
 } 
 
@@ -604,6 +620,17 @@ void unary() #void :
 }
 
 void element() #void :
+{  
+  boolean isMethodCall = false;
+}
+{ 
+  ( primaryElement()
+    [ "." <ID> {jjtThis._methodName = token.image; isMethodCall = true;}
+      "(" [ funcIf() ( "," funcIf() )* ] ")" ]
+  ) #PtMethodCallNode(isMethodCall)
+}
+
+void primaryElement() #void :
 {
 int len;
 String tidied, x;
@@ -695,17 +722,7 @@ String tidied, x;
    ) #PtLeafNode   
 
 
-  | 
-    (
-        "(" funcIf() ( 
-            LOOKAHEAD( ")" "." )  (
-                    // we're in a method call on the previous token 
-                  ")" "." <ID> {jjtThis._methodName = token.image; }
-                  "(" [ funcIf() ( "," funcIf()  )* ]  ")" )
-          |            
-            ")"
-         )
-     ) #PtMethodCallNode(>1)
+  | "(" funcIf() ")"
  
   |   LOOKAHEAD( <ID> "(" )
       function()
@@ -740,13 +757,73 @@ String tidied, x;
         }
     }
    ) #PtLeafNode
+  |
+    LOOKAHEAD( "[" )
+    matrixConstruct()
 }
-
 
 void function() #PtFunctionNode :
-{}
-{    <ID> {jjtThis._funcName = token.image;} 
-    "(" [  funcIf() ( ","  funcIf()  )* ]  ")"
+{
+  Token x = null;
+  boolean isArrayRef = false;
+}
+{    
+    ( x = <ID> 
+      {
+        Variable referredVar = null;
+	if (_scope != null) {
+           referredVar = (Variable)_scope.get(x.image);
+	}
+        if (referredVar != null) {
+          // The Parameter is stored in the node so that the tree 
+	  // does not have to be reparsed whenever the Token in 
+	  // the Parameter changes.
+          jjtThis._var   = referredVar; 
+          // Register the calling parameter as a ParameterListener 
+          // of this Parameter this ID references.
+          if (_owner != null) {
+       	    referredVar._addValueDependent(_owner);
+    	  }
+	  isArrayRef = true;
+        } else if (_constantsRecognized.containsKey(x.image)) {
+     	  // constant is registered with the parser.
+      	  Object tmp = _constantsRecognized.get(x.image);
+       	  jjtThis._ptToken = (ptolemy.data.Token)tmp;
+	  isArrayRef = true;
+        }
+      }
+    ) #PtLeafNode(_isKnownID(x.image))
+    { 
+      jjtThis._funcName = x.image;
+      jjtThis._isArrayRef = isArrayRef;
+    }
+    "(" [ funcIf() ( "," funcIf() )* ] ")"
+    { 
+      int nch = jjtThis.jjtGetNumChildren();
+      if (isArrayRef && !(nch == 2 || nch == 3)) {
+        throw new ParseException("PtParser: Parsed an array reference to "
+                + x.image + " having " + (nch - 1) + " indices, "
+                + "only reference to 1 and 2 dimensional arrays are supported.");
+      }
+    }
 }
 
-
+void matrixConstruct() #void :
+{ 
+  int i;
+  int nRows = 0; }
+{
+  ( "[" { ++jjtThis._nColumns; ++nRows; } funcIf()  /* first term */
+    ( "," { ++jjtThis._nColumns; } funcIf() )*  /* first row */
+    ( ";" { ++nRows; i = 0; } funcIf() { ++i; } 
+    ( "," funcIf() { ++i; } )*  /* one more row */
+      { /* Assert that the following rows have the same number of terms as the
+         first row. */
+        if ( i != jjtThis._nColumns ) {
+          throw new ParseException("PtParser: error parsing matrix construction, "
+                  + "the " + nRows + "th row does not have the same number of "
+                  + "terms as the first row.");
+        }
+      }
+     )* { jjtThis._nRows = nRows; } "]" ) #PtMatrixConstructNode
+}

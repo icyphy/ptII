@@ -2,8 +2,8 @@
 /*@egen*//* Input file to JJTree and JavaCC to generate Ptolemy II Parser */
 
 options {
-LOOKAHEAD=1;                                                                      
-STATIC = false;                          
+LOOKAHEAD=1;                                                                   
+STATIC = false;                         
 }
 
 PARSER_BEGIN(PtParser)
@@ -300,6 +300,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
         }
     }
     
+    /* Return true if the id is a variable name in scope or a registered
+     * constant.
+     */
+    private boolean _isKnownID(String id) {
+        boolean result = false;
+        if (_scope != null) {
+            if (_scope.get(id) != null) {
+                result = true;
+            }
+        }
+        if (_constantsRecognized.containsKey(token.image)) {
+            result = true;
+        }
+        return result;
+    }
+
     /* Flag indicating if the default constants and classes searched 
      * by the parser have already been loaded.
      */
@@ -426,15 +442,15 @@ TOKEN : /* Numeric literals */
   < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
 |
   < DOUBLE:
-        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
+        (["0"-"9"])+ "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
       | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
       | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
       | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
   >
 |
   < COMPLEX:
-        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["i","j"])?
-      | "." (["0"-"9"])+ (<EXPONENT>)? (["f","j"])?
+        (["0"-"9"])+ "." (["0"-"9"])+ (<EXPONENT>)? (["i","j"])?
+      | "." (["0"-"9"])+ (<EXPONENT>)? (["i","j"])?
       | (["0"-"9"])+ <EXPONENT> (["i","j"])?
       | (["0"-"9"])+ (<EXPONENT>)? ["i","j"]
   >
@@ -447,7 +463,7 @@ TOKEN : /*Boolean literals */
 
 TOKEN : /* Function names */
 {
-	< ID: ( <LETTER> )+ (["0"-"9", "$", "@", "#", "[", "]" ] | <LETTER> )* >
+	< ID: ( <LETTER> )+ (["0"-"9", "$", "@", "#" ] | <LETTER> )* >
   | 	< #LETTER: ["a"-"z", "A"-"Z", "_"] > 		
 } 
 
@@ -1001,6 +1017,44 @@ void unary()       :
 }
 
 void element()       :
+{  
+  boolean isMethodCall = false;
+}
+{/*@bgen(jjtree) #PtMethodCallNode( isMethodCall) */
+  {
+    ASTPtMethodCallNode jjtn001 = new ASTPtMethodCallNode(this, JJTPTMETHODCALLNODE);
+    boolean jjtc001 = true;
+    jjtree.openNodeScope(jjtn001);
+  }
+  try {
+/*@egen*/ 
+  ( primaryElement()
+    [ "." <ID> {jjtn001._methodName = token.image; isMethodCall = true;}
+      "(" [ funcIf() ( "," funcIf() )* ] ")" ]
+  )/*@bgen(jjtree)*/
+  } catch (Throwable jjte001) {
+    if (jjtc001) {
+      jjtree.clearNodeScope(jjtn001);
+      jjtc001 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte001 instanceof ParseException) {
+      throw (ParseException)jjte001;
+    }
+    if (jjte001 instanceof RuntimeException) {
+      throw (RuntimeException)jjte001;
+    }
+    throw (Error)jjte001;
+  } finally {
+    if (jjtc001) {
+      jjtree.closeNodeScope(jjtn001,  isMethodCall);
+    }
+  }
+/*@egen*/
+}
+
+void primaryElement()       :
 {
 int len;
 String tidied, x;
@@ -1182,61 +1236,24 @@ String tidied, x;
 /*@egen*/   
 
 
-  |/*@bgen(jjtree) #PtMethodCallNode(> 1) */
-    {
-      ASTPtMethodCallNode jjtn006 = new ASTPtMethodCallNode(this, JJTPTMETHODCALLNODE);
-      boolean jjtc006 = true;
-      jjtree.openNodeScope(jjtn006);
-    }
-    try {
-/*@egen*/ 
-    (
-        "(" funcIf() ( 
-            LOOKAHEAD( ")" "." )  (
-                    // we're in a method call on the previous token 
-                  ")" "." <ID> {jjtn006._methodName = token.image; }
-                  "(" [ funcIf() ( "," funcIf()  )* ]  ")" )
-          |            
-            ")"
-         )
-     )/*@bgen(jjtree)*/
-    } catch (Throwable jjte006) {
-      if (jjtc006) {
-        jjtree.clearNodeScope(jjtn006);
-        jjtc006 = false;
-      } else {
-        jjtree.popNode();
-      }
-      if (jjte006 instanceof ParseException) {
-        throw (ParseException)jjte006;
-      }
-      if (jjte006 instanceof RuntimeException) {
-        throw (RuntimeException)jjte006;
-      }
-      throw (Error)jjte006;
-    } finally {
-      if (jjtc006) {
-        jjtree.closeNodeScope(jjtn006, jjtree.nodeArity() > 1);
-      }
-    }
-/*@egen*/
+  | "(" funcIf() ")"
  
   |   LOOKAHEAD( <ID> "(" )
       function()
     
   |/*@bgen(jjtree) PtLeafNode */
    {
-     ASTPtLeafNode jjtn007 = new ASTPtLeafNode(this, JJTPTLEAFNODE);
-     boolean jjtc007 = true;
-     jjtree.openNodeScope(jjtn007);
+     ASTPtLeafNode jjtn006 = new ASTPtLeafNode(this, JJTPTLEAFNODE);
+     boolean jjtc006 = true;
+     jjtree.openNodeScope(jjtn006);
    }
    try {
 /*@egen*/ 
    (
      <ID>/*@bgen(jjtree)*/
      {
-       jjtree.closeNodeScope(jjtn007, true);
-       jjtc007 = false;
+       jjtree.closeNodeScope(jjtn006, true);
+       jjtc006 = false;
      }
 /*@egen*/
      { 
@@ -1248,7 +1265,7 @@ String tidied, x;
            // The Variable is stored in the node so that the tree 
 	   // does not have to be reparsed whenever the Token in 
 	   // the Variable changes.
-           jjtn007._var   = referredVar; 
+           jjtn006._var   = referredVar; 
            // Register the calling Variable as a listener
 	   // of the Variable this ID references.
            if (_owner != null) {
@@ -1257,7 +1274,7 @@ String tidied, x;
         } else if (_constantsRecognized.containsKey(token.image)) {
             // constant is registered with the parser.
 	    Object tmp = _constantsRecognized.get(token.image);
-            jjtn007._ptToken = (ptolemy.data.Token)tmp;
+            jjtn006._ptToken = (ptolemy.data.Token)tmp;
         } else {
             if (true) {
 		throw new ParseException("The ID " + token.image + 
@@ -1267,44 +1284,154 @@ String tidied, x;
     }
    )/*@bgen(jjtree)*/
    } finally {
-     if (jjtc007) {
-       jjtree.closeNodeScope(jjtn007, true);
+     if (jjtc006) {
+       jjtree.closeNodeScope(jjtn006, true);
      }
    }
 /*@egen*/
+  |
+    LOOKAHEAD( "[" )
+    matrixConstruct()
 }
-
 
 void function()                 :
 {/*@bgen(jjtree) PtFunctionNode */
   ASTPtFunctionNode jjtn000 = new ASTPtFunctionNode(this, JJTPTFUNCTIONNODE);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
-/*@egen*/}
+/*@egen*/
+  Token x = null;
+  boolean isArrayRef = false;
+}
 {/*@bgen(jjtree) PtFunctionNode */
-     try {
-/*@egen*/    <ID> {jjtn000._funcName = token.image;} 
-    "(" [  funcIf() ( ","  funcIf()  )* ]  ")"/*@bgen(jjtree)*/
-     } catch (Throwable jjte000) {
-       if (jjtc000) {
-         jjtree.clearNodeScope(jjtn000);
-         jjtc000 = false;
-       } else {
-         jjtree.popNode();
-       }
-       if (jjte000 instanceof ParseException) {
-         throw (ParseException)jjte000;
-       }
-       if (jjte000 instanceof RuntimeException) {
-         throw (RuntimeException)jjte000;
-       }
-       throw (Error)jjte000;
-     } finally {
-       if (jjtc000) {
-         jjtree.closeNodeScope(jjtn000, true);
-       }
-     }
+    try {
+/*@egen*//*@bgen(jjtree) #PtLeafNode( _isKnownID ( x . image )) */
+    {
+      ASTPtLeafNode jjtn001 = new ASTPtLeafNode(this, JJTPTLEAFNODE);
+      boolean jjtc001 = true;
+      jjtree.openNodeScope(jjtn001);
+    }
+    try {
+/*@egen*/    
+    ( x = <ID>/*@bgen(jjtree)*/
+      {
+        jjtree.closeNodeScope(jjtn001,  _isKnownID ( x . image ));
+        jjtc001 = false;
+      }
+/*@egen*/ 
+      {
+        Variable referredVar = null;
+	if (_scope != null) {
+           referredVar = (Variable)_scope.get(x.image);
+	}
+        if (referredVar != null) {
+          // The Parameter is stored in the node so that the tree 
+	  // does not have to be reparsed whenever the Token in 
+	  // the Parameter changes.
+          jjtn001._var   = referredVar; 
+          // Register the calling parameter as a ParameterListener 
+          // of this Parameter this ID references.
+          if (_owner != null) {
+       	    referredVar._addValueDependent(_owner);
+    	  }
+	  isArrayRef = true;
+        } else if (_constantsRecognized.containsKey(x.image)) {
+     	  // constant is registered with the parser.
+      	  Object tmp = _constantsRecognized.get(x.image);
+       	  jjtn001._ptToken = (ptolemy.data.Token)tmp;
+	  isArrayRef = true;
+        }
+      }
+    )/*@bgen(jjtree)*/
+    } finally {
+      if (jjtc001) {
+        jjtree.closeNodeScope(jjtn001,  _isKnownID ( x . image ));
+      }
+    }
+/*@egen*/
+    { 
+      jjtn000._funcName = x.image;
+      jjtn000._isArrayRef = isArrayRef;
+    }
+    "(" [ funcIf() ( "," funcIf() )* ] ")"/*@bgen(jjtree)*/
+    {
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+    }
+/*@egen*/
+    { 
+      int nch = jjtn000.jjtGetNumChildren();
+      if (isArrayRef && !(nch == 2 || nch == 3)) {
+        throw new ParseException("PtParser: Parsed an array reference to "
+                + x.image + " having " + (nch - 1) + " indices, "
+                + "only reference to 1 and 2 dimensional arrays are supported.");
+      }
+    }/*@bgen(jjtree)*/
+    } catch (Throwable jjte000) {
+      if (jjtc000) {
+        jjtree.clearNodeScope(jjtn000);
+        jjtc000 = false;
+      } else {
+        jjtree.popNode();
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
+      }
+      if (jjte000 instanceof RuntimeException) {
+        throw (RuntimeException)jjte000;
+      }
+      throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
 /*@egen*/
 }
 
-
+void matrixConstruct()       :
+{ 
+  int i;
+  int nRows = 0; }
+{/*@bgen(jjtree) PtMatrixConstructNode */
+  {
+    ASTPtMatrixConstructNode jjtn001 = new ASTPtMatrixConstructNode(this, JJTPTMATRIXCONSTRUCTNODE);
+    boolean jjtc001 = true;
+    jjtree.openNodeScope(jjtn001);
+  }
+  try {
+/*@egen*/
+  ( "[" { ++jjtn001._nColumns; ++nRows; } funcIf()  /* first term */
+    ( "," { ++jjtn001._nColumns; } funcIf() )*  /* first row */
+    ( ";" { ++nRows; i = 0; } funcIf() { ++i; } 
+    ( "," funcIf() { ++i; } )*  /* one more row */
+      { /* Assert that the following rows have the same number of terms as the
+         first row. */
+        if ( i != jjtn001._nColumns ) {
+          throw new ParseException("PtParser: error parsing matrix construction, "
+                  + "the " + nRows + "th row does not have the same number of "
+                  + "terms as the first row.");
+        }
+      }
+     )* { jjtn001._nRows = nRows; } "]" )/*@bgen(jjtree)*/
+  } catch (Throwable jjte001) {
+    if (jjtc001) {
+      jjtree.clearNodeScope(jjtn001);
+      jjtc001 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte001 instanceof ParseException) {
+      throw (ParseException)jjte001;
+    }
+    if (jjte001 instanceof RuntimeException) {
+      throw (RuntimeException)jjte001;
+    }
+    throw (Error)jjte001;
+  } finally {
+    if (jjtc001) {
+      jjtree.closeNodeScope(jjtn001, true);
+    }
+  }
+/*@egen*/
+}

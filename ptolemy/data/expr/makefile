@@ -59,7 +59,8 @@ JSRCS = \
 	ASTPtFunctionalIfNode.java \
 	ASTPtLeafNode.java \
 	ASTPtLogicalNode.java \
-	ASTPtMethodCallNode.java \
+        ASTPtMatrixConstructNode.java \
+        ASTPtMethodCallNode.java \
 	ASTPtProductNode.java \
 	ASTPtRelationalNode.java \
 	ASTPtRootNode.java \
