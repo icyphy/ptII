@@ -261,9 +261,6 @@ public class ViewerGraphController extends GraphController {
 	public SchematicContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
-            // FIXME: The port dialog doesn't work properly in this
-            // context for some reason.  I don't know how to get the
-            // visuals updated after the port has been actually removed.
 	    addMenuItemFactory(new PortDialogFactory());
 	}
 
