@@ -8,13 +8,47 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {134, 229, 690, 457}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {134, 229, 690, 459}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 348]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{237.5, 174.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{237.5, 175.0}">
+    </property>
+    <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads in data from the video&#10;camera, processes each frame and displays&#10;the results.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 15.0]">
+        </property>
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: James Yeh</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 235.0]">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires:&#10;* The Java Media Framework (JMF) API&#10;* The Java Advanced Imageing (JAI) API&#10;* A video camera">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 155.0]">
+        </property>
     </property>
     <entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
         <property name="formatName" class="ptolemy.kernel.util.StringAttribute" value="RGB">
@@ -27,15 +61,15 @@
         </property>
         <property name="deviceNumber" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 125.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 125.0]">
         </property>
     </entity>
     <entity name="ImageToJAI" class="ptolemy.actor.lib.jai.ImageToJAI">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 125.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 125.0]">
         </property>
     </entity>
     <entity name="JAIInvert" class="ptolemy.actor.lib.jai.JAIInvert">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 125.0]">
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
@@ -43,7 +77,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[320, 240]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 125.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
