@@ -83,10 +83,10 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
         } else if (_isNot == true) {
             if (!(result instanceof BooleanToken)) {
                 throw new IllegalActionException(
-                        "Cannot negate a non-boolean token: " +
+                        "Not operator not support for non-boolean token: " +
                         result.toString());
             }
-            result = ((BooleanToken)result).negate();
+            result = ((BooleanToken)result).not();
         } else if (_isBitwiseNot == true) {
             if (result instanceof IntToken) {
                 int tmp = ~(((IntToken)result).intValue());
