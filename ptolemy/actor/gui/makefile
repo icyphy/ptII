@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/gui
 
-DIRS = 		style util test
+DIRS = 		style test
 
 # Root of the Java directory
 ROOT =		../../..
