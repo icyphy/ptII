@@ -63,7 +63,6 @@ JGRAPHICAL_TESTS = \
 EXTRA_SRCS = \
 	jad2java \
 	IIRGUI.xml \
-	nonlinearity.xml \
 	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't

@@ -90,7 +90,16 @@ proc autoShallowCG {autoDirectory} {
 #    lrange $result 0 9
 #} {2 4 6 8 10 12 14 16 18 20}
 
-# First, do a SDF and a DE test just be sure things are working
+test Shallow-1.1 {Compile and run this javasound demo from Edward} {
+    set result [sootCodeGeneration \
+	    [file join $relativePathToPTII ptolemy copernicus shallow test \
+	    nonlinearity.xml]]
+    puts $result
+    list {}
+} {{}}
+
+
+# Do a SDF and a DE test just be sure things are working
 test Shallow-1.2 {Compile and run the SDF IIR test} {
     set result [sootCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
@@ -99,16 +108,8 @@ test Shallow-1.2 {Compile and run the SDF IIR test} {
     list {}
 } {{}}
 
-test Shallow-1.3 {Compile and run the MathFunction test, \
-	which tends to hang } {
-    set result [sootCodeGeneration \
-	    [file join $relativePathToPTII ptolemy actor lib test auto \
-	    MathFunction.xml]]
-    puts $result
-    list {}
-} {{}}
 
-test Shallow-1.4{Compile and run the DE Counter test} {
+test Shallow-1.3 {Compile and run the DE Counter test} {
     set result [sootCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    Counter.xml]]
@@ -116,6 +117,15 @@ test Shallow-1.4{Compile and run the DE Counter test} {
     list {}
 } {{}}
  
+test Shallow-1.3 {Compile and run the MathFunction test, which tends to hang} {
+    set result [sootCodeGeneration \
+	    [file join $relativePathToPTII ptolemy actor lib test auto \
+	    MathFunction.xml]]
+    puts $result
+    list {}
+} {{}}
+
+
 # Now try to generate code for all the tests in the auto directories.
 autoShallowCG [file join $relativePathToPTII ptolemy actor lib test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
