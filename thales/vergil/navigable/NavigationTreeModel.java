@@ -51,7 +51,7 @@ public class NavigationTreeModel extends ClassAndEntityTreeModel {
     /** Return true if the object is a leaf node.  In this base class,
      *  an object is a leaf node if it is not an instance of CompositeEntity.
      *  ATTENTION il se peut qu'il faille ne plus faire se test lors de
-     * l'utilisation de bibliothèque.
+     * l'utilisation de biblioth&egrave;que.
      *  @return True if the node has no children.
      */
     public boolean isLeaf(Object object) {
