@@ -33,7 +33,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.lib.InvariantViolationException;
+import ptolemy.actor.InvariantViolationException;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;

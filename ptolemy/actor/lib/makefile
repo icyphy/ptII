@@ -120,7 +120,6 @@ JSRCS = \
 	Gaussian.java \
 	IIR.java \
 	Interpolator.java \
-	InvariantViolationException.java \
 	Lattice.java \
 	LevinsonDurbin.java \
 	Limiter.java \

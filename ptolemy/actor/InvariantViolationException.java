@@ -28,7 +28,7 @@
 @AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;

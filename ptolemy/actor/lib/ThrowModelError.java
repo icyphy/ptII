@@ -30,6 +30,7 @@
 
 package ptolemy.actor.lib;
 
+import ptolemy.actor.InvariantViolationException;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
