@@ -65,7 +65,9 @@ import ptolemy.vergil.kernel.PortDialogFactory;
 import ptolemy.vergil.kernel.SetIconAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PortSite;
+
 
 import java.awt.Event;
 import java.awt.Font;
@@ -120,6 +122,8 @@ public class ActorController extends AttributeController {
     public ActorController(GraphController controller, Access access) {
         super(controller, access);
 
+        _access = access;
+
         // "Configure Ports"
         if (access == FULL) {
             // Add to the context menu.
@@ -154,12 +158,6 @@ public class ActorController extends AttributeController {
                     (BasicGraphController)getController());
             _menuFactory.addMenuItemFactory(_breakpointDialogFactory);
         }
-
-
-        // "Configure Arguments", used by JNI
-        //if (access == FULL) {
-        //    _menuFactory.addMenuItemFactory(new jni.ArgumentDialogFactory());
-        //}
 
 
         // The filter for the layout algorithm of the ports within this
@@ -208,6 +206,20 @@ public class ActorController extends AttributeController {
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_lookInsideAction));
+        }
+    }
+
+    /** If access is FULL, then add the jni.ArgumentDailogFactory() to
+     *  _menuFactory.  If access is not FULL, then do nothing.
+     *  @param menuItemFactory  The MenuItemFactory to be added.
+     */
+    public void addMenuItemFactory(MenuItemFactory menuItemFactory) {
+        // This method is called by jni.ThalesGraphFrame to add a context
+        // menu.
+
+        if (_access == FULL) {
+            _menuFactory
+                .addMenuItemFactory(menuItemFactory);
         }
     }
 
@@ -656,4 +668,7 @@ public class ActorController extends AttributeController {
     + "Perhaps source code is not installed? "
     + "You can obtain source code for Berkeley actors at: "
     + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
+
+    private Access _access;
+
 }
