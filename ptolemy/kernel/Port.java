@@ -134,6 +134,7 @@ public class Port extends NamedObj {
             throws CloneNotSupportedException {
         Port newObject = (Port)super.clone(workspace);
         newObject._relationsList = new CrossRefList(newObject);
+        newObject._insideLinks = new CrossRefList(newObject);
         newObject._container = null;
         return newObject;
     }
