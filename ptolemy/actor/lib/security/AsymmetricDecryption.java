@@ -154,16 +154,17 @@ public class AsymmetricDecryption extends CipherActor {
      *  @return byte[] the decrypted data.
      *  @exception IllegalActionException If exception below is thrown.
      */
-    protected byte[] _process(byte[] dataBytes)throws IllegalActionException{
+    protected byte[] _process(byte[] dataBytes)
+            throws IllegalActionException {
         ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
-        try{
+        try {
             _cipher.init(Cipher.DECRYPT_MODE, _privateKey);
             int blockSize = _cipher.getBlockSize();
             int length = 0;
             for (int i = 0; i < dataBytes.length; i += blockSize) {
                 if (dataBytes.length-i <= blockSize) {
                     length = dataBytes.length-i;
-                } else{
+                } else {
                     length = blockSize;
                 }
                 byteOutputStream.write(_cipher.doFinal(dataBytes, i, length));
@@ -172,7 +173,8 @@ public class AsymmetricDecryption extends CipherActor {
             byteOutputStream.close();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Problem decrypting data with the private key");
+                    "Problem decrypting "+ dataBytes.length
+                    + "bytes data with the private key");
         }
         return byteOutputStream.toByteArray();
     }

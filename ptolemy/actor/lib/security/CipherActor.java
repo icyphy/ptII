@@ -141,7 +141,7 @@ public class CipherActor extends CryptographyActor {
                         _algorithm + "/" + _mode + "/" + _padding, _provider);
             }
         } catch(Exception ex) {
-            throw new IllegalActionException(ex, this,
+            throw new IllegalActionException(this, ex,
                     "Failed to initialize Cipher with algorithm: '"
                     + _algorithm + "', padding: '"
                     + _padding + "', provider: '"

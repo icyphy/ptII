@@ -134,9 +134,9 @@ public class AsymmetricEncryption extends CipherActor {
      * creating the output stream, the key is invalid, the padding is pad
      * or if there is an illegal block size
      */
-    protected byte[] _process(byte[] dataBytes)throws IllegalActionException{
+    protected byte[] _process(byte[] dataBytes)throws IllegalActionException {
         ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
-        try{
+        try {
             _cipher.init(Cipher.ENCRYPT_MODE, _publicKey);
             int blockSize = _cipher.getBlockSize();
             int length = 0;
@@ -152,7 +152,8 @@ public class AsymmetricEncryption extends CipherActor {
             byteOutputStream.close();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Problems processing data, cipher was " + _cipher);
+                    "Problem processing " + dataBytes.length + " bytes. "
+                    + "Cipher was " + _cipher);
         }
         return byteOutputStream.toByteArray();
     }

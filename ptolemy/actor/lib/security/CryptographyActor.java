@@ -163,10 +163,10 @@ public class CryptographyActor extends TypedAtomicActor {
             if (input.hasToken(0)) {
                 byte[] dataBytes =
                     _arrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
-                dataBytes=_process(dataBytes);
+                dataBytes = _process(dataBytes);
                 output.send(0, _unsignedByteArrayToArrayToken(dataBytes));
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Problem sending data");
         }
@@ -228,7 +228,7 @@ public class CryptographyActor extends TypedAtomicActor {
             return key;
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Problem converting " + keyBytes.length + "bytes");
+                    "Problem converting " + keyBytes.length + " bytes");
         }
     }
 
@@ -250,8 +250,8 @@ public class CryptographyActor extends TypedAtomicActor {
             keyPairGen.initialize(_keySize, new SecureRandom());
             return keyPairGen.generateKeyPair();
 
-        } catch (Exception e) {
-            throw new IllegalActionException(ex, this,
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
                     "Failed to create asymmetric keys, "
                     + _algorithm + "', keyAlgorithm: '"
                     + _keyAlgorithm + "', keySize: '"
@@ -276,7 +276,7 @@ public class CryptographyActor extends TypedAtomicActor {
             return keyGen.generateKey();
 
         } catch (Exception ex) {
-            throw new IllegalActionException(ex, this,
+            throw new IllegalActionException(this, ex,
                     "Failed to create symmetric key, "
                     + _algorithm + "', keyAlgorithm: '"
                     + _keyAlgorithm + "', keySize: '"
@@ -299,7 +299,7 @@ public class CryptographyActor extends TypedAtomicActor {
                 new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(key);
             return byteArrayOutputStream.toByteArray();
-        } catch (IOException e) {
+        } catch (IOException ex) {
             throw new IllegalActionException(this, ex, 
                     "Problem with writing key");
         }
@@ -314,7 +314,8 @@ public class CryptographyActor extends TypedAtomicActor {
      * @return dataBytes the data unchanged.
      * @exception IlligalActionException if subclass throws exception.
      */
-    protected byte[] _process(byte [] dataBytes)throws IllegalActionException{
+    protected byte[] _process(byte [] dataBytes)
+            throws IllegalActionException{
         return dataBytes;
     }
 

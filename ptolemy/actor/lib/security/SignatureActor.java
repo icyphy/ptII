@@ -43,24 +43,25 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// SignatureActor
 /**
-This is a base class that implements general and helper functions used by
-signature actors. Actors extending this class take in an unsigned byte
-array at the <i>input</i>, create an encrypted hash of the message and send
-it on the <i>output</i>.  The algorithms that maybe implemented are limited
-to the signature algorithms that are implemented by "providers" following the
-JCE specifications and installed on the machine being run. In case a provider
-specific instance of an algorithm is needed, the provider may also be specified
-in the <i>provider</i> parameter.  The <i>keySize</i> parameter also allows
-implementations of algorithms using various key sizes.
 
-This class and its subclasses rely on the Java Cryptography Extension (JCE)
+This is a base class that implements general and helper functions used
+by signature actors. Actors extending this class take in an unsigned
+byte array at the <i>input</i>, create an encrypted hash of the
+message and send it on the <i>output</i>.  The algorithms that maybe
+implemented are limited to the signature algorithms that are
+implemented by "providers" following the JCE specifications and
+installed on the machine being run. In case a provider specific
+instance of an algorithm is needed, the provider may also be specified
+in the <i>provider</i> parameter.  The <i>keySize</i> parameter also
+allows implementations of algorithms using various key sizes.
+
+<p>This class and its subclasses rely on the Java Cryptography Extension (JCE)
 and Java Cryptography Architecture(JCA).
 
 @author Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
-
 public class SignatureActor extends CryptographyActor {
 
     /** Construct an actor with the given container and name.
@@ -80,26 +81,27 @@ public class SignatureActor extends CryptographyActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** This method initializes the Signature object.  If provider is left
-     *  as "SystemDefault" the system chooses the provider based on the JCE.
+    /** This method initializes the Signature object.  If provider is
+     *  left as "SystemDefault" the system chooses the provider based
+     *  on the JCE.
      *
-     * @exception IllegalActionException if exception below is thrown.
-     * @exception NoSuchAlgorihmException when the algorithm is not found.
-     * @exception NoSuchProviderException if the specified provider does not
-     *  exist.
+     * @exception IllegalActionException If the base class throws it,
+     * if the algorithm is not found, or if the specified provider does
+     *  not exist.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         try{
             if (_provider.equalsIgnoreCase("SystemDefault")) {
                 _signature = Signature.getInstance(_algorithm);
-            } else{
+            } else {
                 _signature = Signature.getInstance(_algorithm, _provider);
             }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to initialize Signature with algorithm: '"
+                    + _algorithm + "', provider: '"
+                    + _provider + "'");
         }
     }
 

@@ -48,29 +48,28 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// AsymmetricEncryption
 /**
-This actor takes an unsigned byte array at the input and encrypts the message.
-The resulting output is an unsigned byte array. Various ciphers that are
-implemented by "providers" and installed on the system maybe used by specifying
-the algorithm in the <i>algorithm</i> parameter. The algorithm specified must be
-asymmetric. The mode and padding can also be specified in the mode and
-padding parameters. In case a provider specific instance of an algorithm is
-needed the provider may also be specified in the provider parameter.
-This actor receives a public key from the AsymmetricDecyption actor and encrypts
+This actor takes an unsigned byte array at the input and encrypts the
+message.  The resulting output is an unsigned byte array. Various
+ciphers that are implemented by "providers" and installed on the
+system maybe used by specifying the algorithm in the <i>algorithm</i>
+parameter. The algorithm specified must be asymmetric. The mode and
+padding can also be specified in the mode and padding parameters. In
+case a provider specific instance of an algorithm is needed the
+provider may also be specified in the provider parameter.  This actor
+receives a public key from the AsymmetricDecyption actor and encrypts
 the data input with the given key.
 
-The following actor relies on the Java Cryptography Architecture (JCA) and Java
+<p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
-
-TODO: include sources of information on JCE cipher and algorithms
-
-TODO: Use cipher streaming to allow for easier file input reading.
 @author Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
-
 public class SignatureVerifier extends SignatureActor {
+
+    // TODO: include sources of information on JCE cipher and algorithms
+    // TODO: Use cipher streaming to allow for easier file input reading.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -89,12 +88,10 @@ public class SignatureVerifier extends SignatureActor {
 
         data = new SDFIOPort(this, "data", true, false);
         data.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
 
     /** This port receives the public key to be used from the
      *  AsymmetricDecryption actor in the form of an unsigned byte array.
@@ -102,23 +99,26 @@ public class SignatureVerifier extends SignatureActor {
      */
     public SDFIOPort keyIn;
 
+    // FIXME: what is this port?
     public SDFIOPort data;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there are tokens on the <i>input</i> and <i>keyIn</i> ports, they
-     *  are consumed.  This method takes the data from the <i>input</i> and
-     *  encrypts the data based on the <i>algorithm</i>, <i>provider</i>,
-     *  <i>mode</i> and <i>padding</i> using the public key from the decryption
-     *  actor.  This is then sent on the <i>output</i>.  All parameters should
+    /** If there are tokens on the <i>input</i> and <i>keyIn</i>
+     *  ports, they are consumed.  This method takes the data from the
+     *  <i>input</i> and encrypts the data based on the
+     *  <i>algorithm</i>, <i>provider</i>, <i>mode</i> and
+     *  <i>padding</i> using the public key from the decryption actor.
+     *  This is then sent on the <i>output</i>.  All parameters should
      *  be the same as the corresponding decryption actor.
      *
-     *  @exception IllegalActionException if base thrown by base class.
+     *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
         if (keyIn.hasToken(0)) {
-            _publicKey = (PublicKey)_bytesToKey(_arrayTokenToUnsignedByteArray((ArrayToken)keyIn.get(0)));
+            _publicKey = (PublicKey)_bytesToKey(
+                    _arrayTokenToUnsignedByteArray((ArrayToken)keyIn.get(0)));
         }
         if (input.hasToken(0) && data.hasToken(0) && _publicKey!=null) {
             _data = _arrayTokenToUnsignedByteArray((ArrayToken)data.get(0));
@@ -128,12 +128,7 @@ public class SignatureVerifier extends SignatureActor {
 
     /** Get an instance of the cipher.
      *
-     *  @exception IllegalActionException if thrown by base class.
-     *  @exception NoSuchAlgorihmException when the algorithm is not found.
-     *  @exception NoSuchPaddingException when the padding scheme is illegal
-     *      for the given algorithm.
-     *  @exception NoSuchProviderException if the specified provider does not
-     *      exist.
+     *  @exception IllegalActionException If thrown by base class.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -142,8 +137,14 @@ public class SignatureVerifier extends SignatureActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////
-    protected byte[] _process(byte[] signatureData)throws IllegalActionException{
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    /** Verify the signature.
+     * @exception IllegalActionException If there is a problem with
+     * the signature or the key.
+     */
+    protected byte[] _process(byte[] signatureData)
+            throws IllegalActionException {
+        ByteArrayOutputStream byteArrayOutputStream =
+            new ByteArrayOutputStream();
 
         try{
             _signature.initVerify(_publicKey);
@@ -154,12 +155,10 @@ public class SignatureVerifier extends SignatureActor {
             } else {
                 return new String("Signature verification failed").getBytes();
             }
-        } catch (SignatureException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Problem processing " + signatureData.length
+                    + " bytes of signature data");
         }
     }
 
@@ -167,6 +166,4 @@ public class SignatureVerifier extends SignatureActor {
     ////                         private variables                 ////
 
     private byte[] _data;
-
-
 }

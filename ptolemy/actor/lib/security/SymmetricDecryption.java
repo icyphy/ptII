@@ -57,31 +57,31 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// SymmetricDecryption
 /**
-This actor takes an unsigned byte array at the input and decrypts the message.
-The resulting output is an unsigned byte array.  The shared secret key is
-received from the SymmetricEncryption actor on the <i>keyIn</i> and is used to
-decrypt the message.  Certain algortihms may also require extra parameters
-generated during encyption to decrypt the message.  These are received on the
-<i>parameters</i> port.  Various ciphers that are implemented by "providers"
-and installed maybe used by specifying the algorithm in the <i>algorithm</i>
-parameter.  The algorithm specified must be symmetric. The mode and padding can
-also be specified in the <i>mode</i> and <i>padding</i> parameters.
-In case a provider specific instance of an algorithm is needed the provider may
-also be specified in the provider parameter.
+This actor takes an unsigned byte array at the input and decrypts the
+message.  The resulting output is an unsigned byte array.  The shared
+secret key is received from the SymmetricEncryption actor on the
+<i>keyIn</i> and is used to decrypt the message.  Certain algortihms
+may also require extra parameters generated during encyption to
+decrypt the message.  These are received on the <i>parameters</i>
+port.  Various ciphers that are implemented by "providers" and
+installed maybe used by specifying the algorithm in the
+<i>algorithm</i> parameter.  The algorithm specified must be
+symmetric. The mode and padding can also be specified in the
+<i>mode</i> and <i>padding</i> parameters.  In case a provider
+specific instance of an algorithm is needed the provider may also be
+specified in the provider parameter.
 
-The following actor relies on the Java Cryptography Architecture (JCA) and Java
+<p>This  actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
-
-TODO: include sources of information on JCE cipher and algorithms
-TODO: Use cipher streaming to allow for easier file input reading.
 @author Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
-
-
 public class SymmetricDecryption extends CipherActor {
+
+    // TODO: include sources of information on JCE cipher and algorithms
+    // TODO: Use cipher streaming to allow for easier file input reading.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -105,7 +105,6 @@ public class SymmetricDecryption extends CipherActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-
     /** This port receives the key to be used from AsymmetricDecryption actor
      *  as an unsigned byte array.  This key is used to decrypt data from the
      *  <i>input</i> port.
@@ -116,8 +115,6 @@ public class SymmetricDecryption extends CipherActor {
      *  encryption if paramters were generated during encryption.
      */
     public SDFIOPort parameters;
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -130,10 +127,8 @@ public class SymmetricDecryption extends CipherActor {
      *  sent on the <i>output</i>.  All parameters should be the same as the
      *  corresponding encryption actor.
      *
-     *  @exception IllegalActionException if exception below is thrown.
-     *  @exception IOException if retrieving paramters fails.
-     *  @exception NoSuchAlgorithmException if algoritm does not exist.
-     *  @exception NoSuchProviderException if provider does not exist.
+     *  @exception IllegalActionException if retrieving parameters fails,
+     *  the algorithm does not exist or if the provider does not exist.
      */
     public void fire() throws IllegalActionException {
         try{
@@ -160,15 +155,8 @@ public class SymmetricDecryption extends CipherActor {
             if (_secretKey !=null) {
                 super.fire();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "fire() failed");
         }
     }
 
@@ -182,37 +170,28 @@ public class SymmetricDecryption extends CipherActor {
      *
      * @param dataBytes the data to be decrypted.
      * @return byte[] the decrypted data.
-     * @exception IllegalActionException if an exception below is thrown.
-     * @exception IOException if error occurs in ByteArrayOutputStream.
-     * @exception InvalideKeyException if key is invalid.
-     * @exception BadPaddingException if padding is bad.
-     * @exception IllegalBockSizeException if illegal block size.
+     * @exception IllegalActionException If an error occurs in
+     * ByteArrayOutputStream, a key is invalid, padding is bad,
+     * or if the block size is illegal. 
      */
-    protected byte[] _process(byte[] dataBytes)throws IllegalActionException{
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try{
+    protected byte[] _process(byte[] dataBytes)
+            throws IllegalActionException {
+        ByteArrayOutputStream byteArrayOutputStream =
+            new ByteArrayOutputStream();
+        try {
 
             _cipher.init(Cipher.DECRYPT_MODE, _secretKey, _algParams);
             byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
             return byteArrayOutputStream.toByteArray();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Problem processing " + dataBytes.length + " bytes.");
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /* The secret key to be used for symmetric encryption and decryption.
      * This key is null for asymmetric decryption.

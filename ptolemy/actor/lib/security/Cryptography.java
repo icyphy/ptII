@@ -211,11 +211,11 @@ public class Cryptography extends TypedAtomicActor {
             _defaultKeySize();
         }
 
-        try{
+        try {
             _cipher =
                 Cipher.getInstance(_algorithm+"/"+mode+"/"+padding, _provider);
-        } catch (Exception ex)
-            throw new IllegalActionException(ex, this,
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
                     "Failed to initialize Cipher with algorithm: '"
                     + _algorithm + "', padding: '"
                     + _padding + "', provider: '"
@@ -285,8 +285,8 @@ public class Cryptography extends TypedAtomicActor {
             _keySize = 80;
         } else if (_algorithm.equals("Square")) {
             _keySize = 128;
-        } else{
-            throw new IllegalActionException(this, null
+        } else {
+            throw new IllegalActionException(this,
                     "No default key size found, "
                     + "the key size must be specified in parameters. "
                     + "The algorithm was '" + _algorithm + "'");

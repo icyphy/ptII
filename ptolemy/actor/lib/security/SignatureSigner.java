@@ -49,27 +49,29 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// SignatureSigner
 /**
-This actor takes an unsigned byte array at the input creates a signature for it.
-The resulting output is an unsigned byte array.  The Signature class in Java is based on calculating the message digest of some data and encrypting it.  Various signature algorithms that are
-implemented by "providers" and installed maybe used by specifying the algorithm
-in the <i>algorithm</i> parameter.  In case a provider specific instance of an algorithm is needed, the provider may
-also be specified in the <i>provider</i> parameter.  This actor creates a private key
-to sign data and a public key which is sent on the <i>keyOut</i> port to
-verify the signature.
 
-The following actor relies on the Java Cryptography Architecture (JCA) and Java
+This actor takes an unsigned byte array at the input creates a
+signature for it.  The resulting output is an unsigned byte array.
+The Signature class in Java is based on calculating the message digest
+of some data and encrypting it.  Various signature algorithms that are
+implemented by "providers" and installed maybe used by specifying the
+algorithm in the <i>algorithm</i> parameter.  In case a provider
+specific instance of an algorithm is needed, the provider may also be
+specified in the <i>provider</i> parameter.  This actor creates a
+private key to sign data and a public key which is sent on the
+<i>keyOut</i> port to verify the signature.
+
+This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
-
-TODO: include sources of information on JCE cipher and algorithms
-
-TODO: Use cipher streaming to allow for easier file input reading.
 @author Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
-
 public class SignatureSigner extends SignatureActor {
+
+    // TODO: include sources of information on JCE cipher and algorithms
+    // TODO: Use cipher streaming to allow for easier file input reading.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -87,62 +89,56 @@ public class SignatureSigner extends SignatureActor {
         keyAlgorithm.setTypeEquals(BaseType.STRING);
         keyAlgorithm.setExpression("");
 
-
         keyOut = new SDFIOPort(this, "keyOut", false, true);
         keyOut.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
         data = new SDFIOPort(this, "data", false, true);
         data.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
 
-    /** This port outputs the key to be used by the AsymmetricEncryption actor
-     *  as an unsigned byte array.
+    /** This port outputs the key to be used by the
+     *  AsymmetricEncryption actor as an unsigned byte array.
      */
     public SDFIOPort keyOut;
 
-    /** This port sends out the original data to be verified with the encypted
-     *  digest
+    /** This port sends out the original data to be verified with the
+     *  encypted digest
      */
     public SDFIOPort data;
 
-    /** The algrotihm to be used to generate the key pair.  For example, using
-     *  RSAwithMD5 as the signature algorithm, RSA would be used for the
-     *  <i>keyAlgrotrithm</i> parameter.
+    /** The algrotihm to be used to generate the key pair.  For
+     *  example, using RSAwithMD5 as the signature algorithm, RSA
+     *  would be used for the <i>keyAlgrotrithm</i> parameter.
      */
     public Parameter keyAlgorithm;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there is a token on the <i>input</i> port, this method takes the
-     *  data from the <i>input</i> and decrypts the data based on the
-     *  <i>algorithm</i>, <i>provider</i>, <i>mode</i> and  <i>padding</i>
-     *  using the created private key.  This is then sent on the
-     *  <i>output</i>.  The public key is also sent out on the <i>keyOut</i>
-     *  port.  All parameters should be the same as the corresponding
-     *  encryption actor.
+    /** If there is a token on the <i>input</i> port, this method
+     *  takes the data from the <i>input</i> and decrypts the data
+     *  based on the <i>algorithm</i>, <i>provider</i>, <i>mode</i>
+     *  and <i>padding</i> using the created private key.  This is
+     *  then sent on the <i>output</i>.  The public key is also sent
+     *  out on the <i>keyOut</i> port.  All parameters should be the
+     *  same as the corresponding encryption actor.
      *
      *  @exception IllegalActionException if thrown by base class.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        keyOut.send(0, _unsignedByteArrayToArrayToken(_keyToBytes(_publicKey)));
+        keyOut.send(0,
+                _unsignedByteArrayToArrayToken(_keyToBytes(_publicKey)));
 
     }
 
     /** Get an instance of the cipher and outputs the key required for
      *  decryption.
      *  @exception IllegalActionException if thrown by base class.
-     *  @exception NoSuchAlgorihmException when the algorithm is not found.
-     *  @exception NoSuchPaddingException when the padding scheme is illegal
-     *      for the given algorithm.
-     *  @exception NoSuchProviderException if the specified provider does not
-     *      exist.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -150,32 +146,27 @@ public class SignatureSigner extends SignatureActor {
         KeyPair pair = _createAsymmetricKeys();
         _publicKey = pair.getPublic();
         _privateKey = pair.getPrivate();
-        keyOut.send(0, _unsignedByteArrayToArrayToken(_keyToBytes(_publicKey)));
+        keyOut.send(0,
+                _unsignedByteArrayToArrayToken(_keyToBytes(_publicKey)));
     }
 
     /** Takes the data and calculates a message digest for it.
      *
      * @param initialData the data to be decrypted.
      * @return byte[] the decrypted data.
-     * @exception IllegalActionException if exception is thrown.
-     * @exception IOException when error occurs in ByteArrayOutputStream.
-     * @exception InvalideKeyException when key is invalid.
-     * @exception BadPaddingException when padding is bad.
-     * @exception IllegalBockSizeException for illegal block sizes.
+     * @exception IllegalActionException If the key or padding is invalid.
      */
-    protected byte[] _process(byte[] dataBytes)throws IllegalActionException{
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try{
+    protected byte[] _process(byte[] dataBytes) throws IllegalActionException{
+        ByteArrayOutputStream byteArrayOutputStream =
+            new ByteArrayOutputStream();
+        try {
             data.send(0, _unsignedByteArrayToArrayToken(dataBytes));
             _signature.initSign(_privateKey);
             _signature.update(dataBytes);
             return _signature.sign();
-        } catch (SignatureException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Problem sending " + dataBytes.length + " bytes.");
         }
     }
 

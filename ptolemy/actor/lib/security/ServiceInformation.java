@@ -49,28 +49,26 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// ServiceInformation
 /**
+Determine the cryptographic services available on the system.
 This actor lists the following services:
 
-TODO:put in a list format
-Provider
-Cipher
-Signature
-KeyGenerator
-KeyPairGenerator
-MessageDigest
+<ul>
+<li>Provider
+<li>Cipher
+<li>Signature
+<li>KeyGenerator
+<li>KeyPairGenerator
+<li>MessageDigest
+</ul>
 
 Services are those algorithms have been implemented by providers and are
-installed on the local system.  To add providers please refer to the JCE and
-JCA.
-
-The following actor relies on the Java Cryptography Architecture (JCA) and Java
-Cryptography Extension (JCE).
+installed on the local system.  To add providers please refer to the 
+Java Cryptography Architecture (JCA) and Java Cryptography Extension (JCE).
 
 @author Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
-
 public class ServiceInformation extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
@@ -95,15 +93,15 @@ public class ServiceInformation extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /** This StringAttribute determines whether decryption will be performed on
-     *  a asymmetric or symmetric cryptographic algorithm.  The to possible
-     *  values are "symmetric" or "asymmetric".  THe default value is
-     *  "asymmetric."
+
+    /** This StringAttribute determines whether decryption will be
+     *  performed on a asymmetric or symmetric cryptographic
+     *  algorithm.  The to possible values are "symmetric" or
+     *  "asymmetric".  THe default value is "asymmetric."
      */
     public StringAttribute service;
 
     /** Multi-port channel that sends the requested information as Strings.
-     *
      */
     public SDFIOPort output;
 
@@ -137,8 +135,8 @@ public class ServiceInformation extends TypedAtomicActor {
                     output.send(i, new StringToken(providers[i].getName()));
                 }
             } else {
-                throw new IllegalActionException(this.getName()
-                        + "Service Cannot Be Listed");
+                throw new IllegalActionException(this, 
+                        "Service request '" + request + "' is not valid");
             }
         } else super.attributeChanged(attribute);
     }

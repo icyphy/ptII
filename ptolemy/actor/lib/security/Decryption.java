@@ -241,7 +241,7 @@ public class Decryption extends TypedAtomicActor {
                 keyOut.send(0, new ObjectToken(_secretKey));
             }
 
-        } catch (Exception e) {
+        } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Problem firing");
         }
@@ -256,13 +256,12 @@ public class Decryption extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         try{
-            _cipher = Cipher.getInstance(_algo, _provider);
+            _cipher = Cipher.getInstance(_algorithm, _provider);
 
         } catch (Exception ex) {
-            throw new IllegalActionException(ex, this,
+            throw new IllegalActionException(this, ex,
                     "Failed to initialize Cipher with algorithm: '"
-                    + _algorithm + "', padding: '"
-                    + _padding + "', provider: '"
+                    + _algorithm + "', provider: '"
                     + _provider + "'");
         }
 
@@ -281,7 +280,7 @@ public class Decryption extends TypedAtomicActor {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-        _algo = ((StringToken)algorithm.getToken()).stringValue();
+        _algorithm = ((StringToken)algorithm.getToken()).stringValue();
         byte[] keyBytes = _createKeys();
         //_keyOutput = _UnsignedByteArrayToArrayToken(keyBytes);
         keyOut.setTokenInitProduction(1);
@@ -319,7 +318,7 @@ public class Decryption extends TypedAtomicActor {
     protected void _createAsymmetricKeys()throws IllegalActionException{
         try{
             KeyPairGenerator keyPairGen =
-                KeyPairGenerator.getInstance(_algo, _provider);
+                KeyPairGenerator.getInstance(_algorithm, _provider);
             keyPairGen.initialize(1024, new SecureRandom());
             KeyPair pair = keyPairGen.generateKeyPair();
             _publicKey = pair.getPublic();
@@ -357,7 +356,7 @@ public class Decryption extends TypedAtomicActor {
      */
     protected void _createSymmetricKey() throws IllegalActionException{
         try{
-            KeyGenerator keyGen = KeyGenerator.getInstance(_algo, _provider);
+            KeyGenerator keyGen = KeyGenerator.getInstance(_algorithm, _provider);
             keyGen.init(56, new SecureRandom());
             _secretKey = keyGen.generateKey();
         } catch (NoSuchAlgorithmException e) {
@@ -457,7 +456,7 @@ public class Decryption extends TypedAtomicActor {
     /** The algorithm to be used for decryption specified by the
      * <i>algorithm</i> parameter.
      */
-    private String _algo;
+    private String _algorithm;
 
     /** The public key to be used for asymmetric encryption. This key is null
      *  for symmetric decryption.

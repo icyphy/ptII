@@ -142,6 +142,7 @@ public class SymmetricEncryption extends CipherActor {
 
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex, "send failed");
+            }
         }
 
         //            if (FIRST_RUN == true) {
@@ -185,7 +186,7 @@ public class SymmetricEncryption extends CipherActor {
             super.initialize();
             _secretKey = (SecretKey)_createSymmetricKey();
             //keyOut.send(0, _unsignedByteArrayToArrayToken(
-            /    _keyToBytes(_secretKey)));
+            //    _keyToBytes(_secretKey)));
 
             _cipher.init(Cipher.ENCRYPT_MODE, _secretKey);
 
@@ -226,7 +227,8 @@ public class SymmetricEncryption extends CipherActor {
      * @exception BadPaddingException if padding is bad.
      * @exception IllegalBockSizeException if illegal block size.
      */
-    protected byte[] _process(byte[] dataBytes)throws IllegalActionException{
+    protected byte[] _process(byte[] dataBytes)
+            throws IllegalActionException{
         //      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         _byteArrayOutputStream.reset();
         //        byteArrayInputStream = new ByteArrayInputStream(initialData);
@@ -248,7 +250,7 @@ public class SymmetricEncryption extends CipherActor {
 
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, 
-                    "Failed to write " + dataBytes.length + " bytes.");
+                    "Problem processing " + dataBytes.length + " bytes.");
         }
 
         return _byteArrayOutputStream.toByteArray();
