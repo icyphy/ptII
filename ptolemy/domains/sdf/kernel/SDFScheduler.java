@@ -207,6 +207,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     }
 
     /** Get the external port rates.
+     *  @return a Map from external ports to the number of tokens that
+     *  that port will produce or consume in each firing.
      */
     public Map getExternalRates() {
         return _externalRates;
@@ -214,6 +216,10 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
     /** Create the schedule.  Return the number of times that the given
      *  entity will fire in a single iteration of the system.
+     *  @param entity The entity that is being fired.
+     *  @return The number of times that the given entity will fire
+     *  @exceptio IllegalActionException If thrown by getSchedule(). 
+
      */
     public int getFiringCount(Entity entity) throws IllegalActionException {
         getSchedule();
@@ -1869,22 +1875,34 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The firing vector.  A map from actor to an integer representing the
-    // number of times the actor will fire.
+
+    /** The firing vector.  A map from actor to an integer represaenting the
+     * number of times the actor will fire.
+     */
     private Map _firingVector;
 
-    // True if the firing vector contains valid information.
+    /** True if the firing vector contains valid information. */
     private boolean _firingVectorValid;
 
-    // A fraction equal to -1.  Used in several places to indicate an
-    // actor for which we have not determined the number of times it will
-    // fire.
+    /** A fraction equal to -1.  Used in several places to indicate an
+     * actor for which we have not determined the number of times it will
+     * fire.
+     */
     private Fraction _minusOne = new Fraction(-1);
+
+    /** Mmaps from external
+     * ports to the number of tokens that that port
+     * will produce or consume in each firing.
+     * It gets populated with the fractional production ratios
+     * and is used in the end to set final rates on external ports.
+     */
     private Map _externalRates = new TreeMap(new DFUtilities.NamedObjComparator());
 
     //private Set _clusteredActors = new HashSet();
     //private Set _clusteredExternalPorts = new HashSet();
-    // The list of rate variables that this scheduler is listening to
-    // for rate changes.
+
+    /** The list of rate variables that this scheduler is listening to
+     * for rate changes.
+     */
     private List _rateVariables = new LinkedList();
 }

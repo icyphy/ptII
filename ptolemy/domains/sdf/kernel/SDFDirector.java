@@ -130,6 +130,10 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  the workspace. Increment the version number of the workspace.
      *
      *  The SDFDirector will have a default scheduler of type SDFScheduler.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public SDFDirector()
             throws IllegalActionException, NameDuplicationException {
@@ -143,6 +147,10 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  The SDFDirector will have a default scheduler of type SDFScheduler.
      *
      *  @param workspace The workspace for this object.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public SDFDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {

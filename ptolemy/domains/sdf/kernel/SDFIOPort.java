@@ -163,6 +163,8 @@ public final class SDFIOPort extends TypedIOPort {
      *
      *  @return The number of tokens consumed on this port, as specified in
      *  the tokenConsumptionRate Parameter.
+     *  @exception IllegalActionException If calling getToken() throws it.
+     *  @see #setTokenConsumptionRate(int)   
      */
     public int getTokenConsumptionRate() throws IllegalActionException {
         return ((IntToken) tokenConsumptionRate.getToken()).intValue();
@@ -173,6 +175,8 @@ public final class SDFIOPort extends TypedIOPort {
      *
      *  @return The number of tokens produced on the port, as specified in
      *  the tokenInitProduction parameter.
+     *  @exception IllegalActionException If calling getToken() throws it.
+     *  @see #setTokenInitProduction(int)
      */
     public int getTokenInitProduction() throws IllegalActionException {
         return ((IntToken) tokenInitProduction.getToken()).intValue();
@@ -183,6 +187,8 @@ public final class SDFIOPort extends TypedIOPort {
      *
      *  @return The number of tokens produced on the port, as specified in
      *  the tokenProductionRate parameter.
+     *  @exception IllegalActionException If calling getToken() throws it.
+     *  @see #getTokenProductionRate(int)
      */
     public int getTokenProductionRate() throws IllegalActionException {
         return ((IntToken) tokenProductionRate.getToken()).intValue();
@@ -241,8 +247,10 @@ public final class SDFIOPort extends TypedIOPort {
      *  on the appropriate port of this Actor during each firing
      *  by setting the value of the tokenConsumptionRate parameter.
      *
+     *  @param rate The number of tokens that are consumed
      *  @exception IllegalActionException If the rate is less than zero,
      *  or the port is not an input port.
+     *  @see #getTokenConsumptionRate()   
      */
     public void setTokenConsumptionRate(int rate) throws IllegalActionException {
         if (rate < 0) {
@@ -261,8 +269,10 @@ public final class SDFIOPort extends TypedIOPort {
      *  on the appropriate port of this Actor during initialize
      *  by setting the value of the tokenInitProduction parameter.
      *
+     *  @param count The number of tokens that are produced
      *  @exception IllegalActionException If the count is less than zero,
      *  or the port is not an output port.
+     *  @see #getTokenInitProduction()
      */
     public void setTokenInitProduction(int count) throws IllegalActionException {
         if (count < 0) {
@@ -281,9 +291,11 @@ public final class SDFIOPort extends TypedIOPort {
      *  on the appropriate port of this Actor during each firing
      *  by setting the value of the tokenProductionRate parameter.
      *
+     *  @param rate The number of tokens that are produced.
      *  @exception IllegalActionException If port is not contained
      *  in this actor, the rate is less than zero, or the port is
      *  not an output port.
+     *  @see #getTokenProductionRate()
      */
     public void setTokenProductionRate(int rate) throws IllegalActionException {
         if (rate < 0) {

@@ -178,6 +178,7 @@ public class SDFReceiver extends AbstractReceiver {
 
     /** Return the capacity, or INFINITE_CAPACITY if it is unbounded.
      *  @return The capacity of the receiver.
+     *  @see #setCapacity(int)   
      */
     public int getCapacity() {
         return _queue.getCapacity();
@@ -327,6 +328,7 @@ public class SDFReceiver extends AbstractReceiver {
      *  @param capacity The desired receiver capacity.
      *  @exception IllegalActionException If the receiver has more tokens
      *   than the proposed capacity or the proposed capacity is illegal.
+     *  @see #getCapacity()
      */
     public void setCapacity(int capacity) throws IllegalActionException {
         try {
