@@ -454,9 +454,9 @@ public class BDFGToJHDLCircuit {
 
 	BinaryMux w = (BinaryMux) node.getWeight();
 
-	Wire condition = _getWire(w.getConditionNode());
-	Wire trueNode = _getWire(w.getTrueNode());
-	Wire falseNode = _getWire(w.getFalseNode());
+	Wire condition = _getWire(w.getConditionNode(_bdfg,node));
+	Wire trueNode = _getWire(w.getTrueNode(_bdfg,node));
+	Wire falseNode = _getWire(w.getFalseNode(_bdfg,node));
 
 	Wire output = _cell.mux(falseNode,trueNode,condition);
 	_wireMap.put(node,output);

@@ -119,8 +119,8 @@ public class SootDFGBuilder extends SootASTVisitor {
     public Stmt processReturnStmt(ReturnStmt stmt, Value returnVal) { 
 	Node returnedValue = _valueMap.getValueNode(returnVal);
 	// TODO: I need to mark the given Value with a "return" flag
-	//Node returnNode = _graph.addNodeWeight(stmt);
-	//_graph.addEdge(returnedValue,returnNode);
+	Node returnNode = _graph.addNodeWeight(stmt);
+	_graph.addEdge(returnedValue,returnNode);
 	return stmt; 
     }
     public Stmt processInvokeStmt(InvokeStmt stmt, InvokeExpr ie) { 

@@ -388,8 +388,9 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	    falseNode = child1;
 	}
 	
-	BinaryMux bmn = new BinaryMux(trueNode,falseNode,cNode,
-					      value.toString());
+//  	BinaryMux bmn = new BinaryMux(trueNode,falseNode,cNode,
+//  					      value.toString());
+	BinaryMux bmn = new BinaryMux(value.toString());
 	Node muxNode = addNodeWeight(bmn);
 
 	addEdge(trueNode,muxNode,"true");

@@ -32,29 +32,59 @@ package ptolemy.copernicus.jhdl.soot;
 import java.util.*;
 
 import ptolemy.graph.Node;
+import ptolemy.graph.DirectedGraph;
+import ptolemy.graph.Edge;
 
 import soot.*;
 import soot.jimple.*;
 import soot.util.*;
 import soot.jimple.internal.*;
 
-public class BinaryMux implements Value {
+public class BinaryMux {
 
+    /*
     public BinaryMux(Node t, Node f, Node c, String name) {
 	_trueNode = t;
 	_falseNode = f;
 	_conditionNode = c;
 	_name = name;
     }
+    */
+    public BinaryMux(String name) {
+	_name = name;
+    }
 
-    public Node getConditionNode() { return _conditionNode; }
-    public Node getTrueNode() { return _trueNode; }
-    public Node getFalseNode() { return _falseNode; }
+    public static Node getNode(DirectedGraph g, Node muxnode, String weight) {
+	Node n=null;
+	for (Iterator i=g.inputEdges(muxnode).iterator();i.hasNext();) {
+	    Edge e = (Edge) i.next();
+	    if (e.hasWeight() && 
+		((String) e.getWeight()).equals(weight)) {
+		n = e.source();
+	    }
+	}
+	return n;
+    }
+
+    public static Node getConditionNode(DirectedGraph g, Node muxnode) {
+	return getNode(g,muxnode,CONDITION_LABEL);
+    }
+    public static Node getTrueNode(DirectedGraph g, Node muxnode) {
+	return getNode(g,muxnode,TRUE_LABEL);
+    }
+    public static Node getFalseNode(DirectedGraph g, Node muxnode) {
+	return getNode(g,muxnode,FALSE_LABEL);
+    }
 
     public String toString() { 
 	return "mux_"+_name; 
     }
 
+    public static final String TRUE_LABEL="true";
+    public static final String FALSE_LABEL="false";
+    public static final String CONDITION_LABEL="condition";
+
+    /*
     // Hack. Need to come up with a better way to represent Values
     public boolean equivTo(Object o) { return false; }
     public int equivHashCode() { return 0; }
@@ -63,9 +93,7 @@ public class BinaryMux implements Value {
     public List getUseBoxes() { return null; }
     public Type getType() {return null;}
     public Object clone() { return null;}
+    */
 
     String _name;
-    Node _trueNode;
-    Node _falseNode;
-    Node _conditionNode;
 }

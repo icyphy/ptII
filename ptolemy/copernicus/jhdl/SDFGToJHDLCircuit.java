@@ -147,7 +147,8 @@ public class SDFGToJHDLCircuit {
 
 	// Process Node
 	Object nweight = node.getWeight();
-	if (DEBUG) System.out.println("Node="+nweight.getClass().getName());
+	if (DEBUG) System.out.println("Node "+nweight+" ("+
+				      nweight.getClass().getName()+")");
 	
 	if (nweight instanceof ParameterRef) {
 	    _processParameterRef(node);
@@ -267,6 +268,9 @@ public class SDFGToJHDLCircuit {
 	} else
 	    _unsupportedOperation(nweight);
 	_wireMap.put(node,output);
+	if (DEBUG)
+	    System.out.println("Creating Wire "+output+" for Node "+node+
+			       "("+System.identityHashCode(node)+")");
 	
     }
 
@@ -445,9 +449,9 @@ public class SDFGToJHDLCircuit {
 
 	BinaryMux w = (BinaryMux) node.getWeight();
 
-	Wire condition = _getWire(w.getConditionNode());
-	Wire trueNode = _getWire(w.getTrueNode());
-	Wire falseNode = _getWire(w.getFalseNode());
+	Wire condition = _getWire(w.getConditionNode(_sdfg,node));
+	Wire trueNode = _getWire(w.getTrueNode(_sdfg,node));
+	Wire falseNode = _getWire(w.getFalseNode(_sdfg,node));
 
 	Wire output = _cell.mux(falseNode,trueNode,condition);
 	_wireMap.put(node,output);
@@ -456,7 +460,8 @@ public class SDFGToJHDLCircuit {
     protected Wire _getWire(Node node) throws JHDLUnsupportedException {
 	Object o = _wireMap.get(node);
 	if (o == null)
-	    _error("No wire for Node " + node);
+	    _error("No wire for Node " + node + " ("+
+		   System.identityHashCode(node)+")");
 	return (Wire) o;
     }
 
@@ -509,18 +514,13 @@ public class SDFGToJHDLCircuit {
 
 
 	// Print out graphs from original method
-	ValueMap.DEBUG = true;
-	//SootASTVisitor.DEBUG = true;
-	SootDFGBuilder.DEBUG = true;
 	SootBlockDirectedGraph graphs[] = 
 	    ControlSootDFGBuilder.createDataFlowGraphs(args,true);
 	
-
-	System.exit(0);
-
 	// Set debug flags
-	ValueMap.DEBUG = true;
-	IntervalBlockDirectedGraph.DEBUG = true;
+	//ValueMap.DEBUG = true;
+	//IntervalBlockDirectedGraph.DEBUG = true;
+	DEBUG = true;
 
 	SootBlockDirectedGraph sbdg=null;
 	try {
@@ -548,7 +548,7 @@ public class SDFGToJHDLCircuit {
 
     }
 
-    public boolean DEBUG = false;
+    public static boolean DEBUG = false;
 
     protected Logic _cell;
     protected SootBlockDirectedGraph _sdfg;

@@ -373,14 +373,13 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	Node cNode = getConditionNode();
 	
 	Value value = (Value) trueNode.getWeight();
- 	BinaryMux bmn = new BinaryMux(trueNode,falseNode,cNode,
-					      value.toString());
+ 	BinaryMux bmn = new BinaryMux(value.toString());
 
 	Node muxNode = addNodeWeight(bmn);
 
- 	addEdge(trueNode,muxNode,"true");
-	addEdge(falseNode,muxNode,"false");
-	addEdge(cNode,muxNode,"condition");
+ 	addEdge(trueNode,muxNode,BinaryMux.TRUE_LABEL);
+	addEdge(falseNode,muxNode,BinaryMux.FALSE_LABEL);
+	addEdge(cNode,muxNode,BinaryMux.CONDITION_LABEL);
 	
   	Node newNode = map.addValueNode(value);
 	addEdge(muxNode,newNode);
