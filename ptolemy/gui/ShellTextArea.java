@@ -261,9 +261,6 @@ public class ShellTextArea extends JPanel {
     private int _historyCursor = 0;
     private Vector _historyCommands = new Vector();
 
-    // Platform dependent newline
-    private static String newline = System.getProperty("line.separator");
-
     // The command input
     private StringBuffer _commandBuffer = new StringBuffer();
 
