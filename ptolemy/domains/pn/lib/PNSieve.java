@@ -28,7 +28,7 @@
 package ptolemy.domains.pn.actors;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.kernel.*;
-import ptolemy.actors.*;
+import ptolemy.actor.*;
 import ptolemy.data.*;
 import java.util.Enumeration;
 

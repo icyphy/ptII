@@ -29,7 +29,7 @@ package ptolemy.domains.pn.actors;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.data.*;
-import ptolemy.actors.*;
+import ptolemy.actor.*;
 import java.util.Enumeration;
 //import java.util.NoSuchElementException;
 
