@@ -254,8 +254,42 @@ public class PlotFrame extends Frame {
             originalMarks = ((Plot)plot).getMarksStyle();
             wideQuery.addRadioButtons("marks", "Marks", marks, originalMarks);
         }
+        Vector[] originalXTicks = plot.getXTicks();
+        String originalXTicksSpec = "";
+        if (originalXTicks != null) {
+            StringBuffer buffer = new StringBuffer();
+            Vector positions = originalXTicks[0];
+            Vector labels = originalXTicks[1];
+            for(int i = 0; i < labels.size(); i++) {
+                if(buffer.length() > 0) {
+                    buffer.append(", ");
+                }
+                buffer.append(labels.elementAt(i).toString());
+                buffer.append(" ");
+                buffer.append(positions.elementAt(i).toString());
+            }
+            originalXTicksSpec = buffer.toString();
+        }
+        wideQuery.addLine("xticks", "X Ticks", originalXTicksSpec);
 
-        // FIXME: Do XTicks and YTicks
+        Vector[] originalYTicks = plot.getYTicks();
+        String originalYTicksSpec = "";
+        if (originalYTicks != null) {
+            StringBuffer buffer = new StringBuffer();
+            Vector positions = originalYTicks[0];
+            Vector labels = originalYTicks[1];
+            for(int i = 0; i < labels.size(); i++) {
+                if(buffer.length() > 0) {
+                    buffer.append(", ");
+                }
+                buffer.append(labels.elementAt(i).toString());
+                buffer.append(" ");
+                buffer.append(positions.elementAt(i).toString());
+            }
+            originalYTicksSpec = buffer.toString();
+        }
+        wideQuery.addLine("yticks", "Y Ticks", originalYTicksSpec);
+
         boolean originalGrid = plot.getGrid();
         narrowQuery.addCheckBox("grid", "Grid", originalGrid);
         boolean originalStems = false;
@@ -271,8 +305,16 @@ public class PlotFrame extends Frame {
         narrowQuery.addCheckBox("color", "Use Color", originalColor);
         boolean originalXLog = plot.getXLog();
         narrowQuery.addCheckBox("xlog", "X Log", originalXLog);
+        if (originalXTicks != null) {
+            narrowQuery.setBoolean("xlog", false);            
+            narrowQuery.setEnabled("xlog", false);
+        }
         boolean originalYLog = plot.getYLog();
         narrowQuery.addCheckBox("ylog", "Y Log", originalYLog);
+        if (originalYTicks != null) {
+            narrowQuery.setBoolean("ylog", false);            
+            narrowQuery.setEnabled("ylog", false);
+        }
 
         // Attach listeners.
         wideQuery.addQueryListener(new QueryListener() {
@@ -285,6 +327,24 @@ public class PlotFrame extends Frame {
                     plot.setYLabel(wideQuery.stringValue("ylabel"));
                 } else if (name.equals("xrange")) {
                     plot.read("XRange: " + wideQuery.stringValue("xrange"));
+                } else if (name.equals("xticks")) {
+                    String spec = wideQuery.stringValue("xticks").trim();
+                    plot.read("XTicks: " + spec);
+                    if(spec.equals("")) {
+                        narrowQuery.setEnabled("xlog", true);
+                    } else {
+                        narrowQuery.setBoolean("xlog", false);
+                        narrowQuery.setEnabled("xlog", false);
+                    }
+                } else if (name.equals("yticks")) {
+                    String spec = wideQuery.stringValue("yticks").trim();
+                    plot.read("YTicks: " + spec);
+                    if(spec.equals("")) {
+                        narrowQuery.setEnabled("ylog", true);
+                    } else {
+                        narrowQuery.setBoolean("ylog", false);
+                        narrowQuery.setEnabled("ylog", false);
+                    }
                 } else if (name.equals("yrange")) {
                     plot.read("YRange: " + wideQuery.stringValue("yrange"));
                 } else if (name.equals("marks")) {
@@ -336,6 +396,20 @@ public class PlotFrame extends Frame {
                 cplot.setImpulses(originalStems);
                 _restoreConnected(originalConnected);
             }
+            plot.read("XTicks: " + originalXTicksSpec);
+            if(originalXTicksSpec.equals("")) {
+                narrowQuery.setEnabled("xlog", true);
+            } else {
+                narrowQuery.setBoolean("xlog", false);
+                narrowQuery.setEnabled("xlog", false);
+            }
+            plot.read("YTicks: " + originalYTicksSpec);
+            if(originalYTicksSpec.equals("")) {
+                narrowQuery.setEnabled("ylog", true);
+            } else {
+                narrowQuery.setBoolean("ylog", false);
+                narrowQuery.setEnabled("ylog", false);
+            }
         } else {
             // Apply current values.
             plot.setTitle(wideQuery.stringValue("title"));
@@ -352,6 +426,22 @@ public class PlotFrame extends Frame {
                 cplot.setMarksStyle(wideQuery.stringValue("marks"));
                 cplot.setImpulses(narrowQuery.booleanValue("stems"));
                 _setConnected(narrowQuery.booleanValue("connected"));
+            }
+            String spec = wideQuery.stringValue("xticks").trim();
+            plot.read("XTicks: " + spec);
+            if(spec.equals("")) {
+                narrowQuery.setEnabled("xlog", true);
+            } else {
+                narrowQuery.setBoolean("xlog", false);
+                narrowQuery.setEnabled("xlog", false);
+            }
+            spec = wideQuery.stringValue("yticks").trim();
+            plot.read("YTicks: " + spec);
+            if(spec.equals("")) {
+                narrowQuery.setEnabled("ylog", true);
+            } else {
+                narrowQuery.setBoolean("ylog", false);
+                narrowQuery.setEnabled("ylog", false);
             }
         }
         plot.repaint();

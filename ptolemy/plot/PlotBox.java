@@ -458,6 +458,20 @@ public class PlotBox extends Panel {
         return result;
     }
 
+    /** Get the X ticks that have been specified, or null if none.
+     *  The return value is an array with two vectors, the first of
+     *  which specifies the X tick locations (as instances of Double),
+     *  and the second of which specifies the corresponding labels.
+     *  @return The X ticks.
+     */
+    public Vector[] getXTicks() {
+        if (_xticks == null) return null;
+        Vector[] result = new Vector[2];
+        result[0] = _xticks;
+        result[1] = _xticklabels;
+        return result;
+    }
+
     /** Get the label for the Y (vertical) axis, or null if none has
      *  been set.
      *  @returns The Y label.
@@ -487,6 +501,20 @@ public class PlotBox extends Panel {
             result[0] = _yMin + ((_yMax - _yMin) * _PADDING);
             result[1] = _yMax - ((_yMax - _yMin) * _PADDING);;
         }
+        return result;
+    }
+
+    /** Get the Y ticks that have been specified, or null if none.
+     *  The return value is an array with two vectors, the first of
+     *  which specifies the Y tick locations (as instances of Double),
+     *  and the second of which specifies the corresponding labels.
+     *  @return The Y ticks.
+     */
+    public Vector[] getYTicks() {
+        if (_yticks == null) return null;
+        Vector[] result = new Vector[2];
+        result[0] = _yticks;
+        result[1] = _yticklabels;
         return result;
     }
 
@@ -1676,9 +1704,11 @@ public class PlotBox extends Panel {
         if (_ylabel != null) output.println(
                 "<yLabel>" + _ylabel + "</yLabel>");
         if (_xRangeGiven) output.println(
-                "<xRange min=\"" + _xlowgiven + "\" max=\"" + _xhighgiven + "\"/>");
+                "<xRange min=\"" + _xlowgiven + "\" max=\""
+                + _xhighgiven + "\"/>");
         if (_yRangeGiven) output.println(
-                "<yRange min=\"" + _ylowgiven + "\" max=\"" + _yhighgiven + "\"/>");
+                "<yRange min=\"" + _ylowgiven + "\" max=\""
+                + _yhighgiven + "\"/>");
         if (_xticks != null && _xticks.size() > 0) {
             output.println("<xTicks>");
             int last = _xticks.size() - 1;
@@ -2169,6 +2199,15 @@ public class PlotBox extends Panel {
      * Otherwise, do the y axis.
      */
     private void _parsePairs(String line, boolean xtick) {
+        // Clear current ticks first.
+        if (xtick) {
+            _xticks = null;
+            _xticklabels = null;
+        } else {
+            _yticks = null;
+            _yticklabels = null;
+        }
+
         int start = 0;
         boolean cont = true;
         while (cont) {
@@ -2570,9 +2609,10 @@ public class PlotBox extends Panel {
     // seems to be no other way to ensure that the generated data exactly
     // matches the DTD.
     private static final String _DTD =
-    "<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | \n"
-    + "	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | \n"
-    + "     yRange | yTicks)*>\n"
+    "<!-- PlotML DTD, created by Edward A. Lee, eal@eecs.berkeley.edu. -->"
+    + "<!ELEMENT plot (barGraph | bin | dataset | default | noColor | \n"
+    + "	noGrid | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | \n"
+    + " yLog | yRange | yTicks)*>\n"
     + "  <!ELEMENT barGraph EMPTY>\n"
     + "    <!ATTLIST barGraph width CDATA #IMPLIED>\n"
     + "    <!ATTLIST barGraph offset CDATA #IMPLIED>\n"

@@ -104,7 +104,7 @@ public class PlotApplication extends PlotFrame {
 
     /** Construct a plot with no command-line arguments.
      *  It initially displays a sample plot.
-     *  @exception Exception If command line arguments have problems.
+     *  @exception Exception Not thrown.
      */
     public PlotApplication() throws Exception {
         this(null);

@@ -95,7 +95,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         super(plot, args);
 
         // Edit menu
-        MenuItem select = new MenuItem("Select Dataset");
+        MenuItem select = new MenuItem("Edit Dataset");
         SelectListener selectListener = new SelectListener();
         select.addActionListener(selectListener);
         _editMenu.add(select);
