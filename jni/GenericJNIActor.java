@@ -65,15 +65,15 @@ import java.net.URL;
 ///// JNIActor
 /**
 Use the Java Native Interface to execute a native mathod.
-This actor must have been configured before to be execute.
-After setting the arguments of an existing native method,
-it is necessary to generate the interface thanks to the JNI Menu in Vergil.
-Once the interface has been generated, it is necessary to open the
-Visual Project generated to compile the interface dll. Then the actor is
-ready to be run.
+To use this actor, first configure the arguments of the native method
+by right clicking on the actor and selecting 'Configure Arguments', then
+configure the library name and location, then create the JNI
+files. 
 
 <p>Note that under Windows, your path needs to include the directory
 named by the libraryDirectory Parameter.
+
+For further details, see {@link JNIUtilities}.
 
 
 @author Vincent Arnould (vincent.arnould@thalesgroup.com), Contributor: Christopher Hylands
