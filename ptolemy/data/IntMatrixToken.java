@@ -1,4 +1,4 @@
-/* A token that contains a reference to a 2-D integer array.
+/* A token that contains a 2-D integer array.
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -26,11 +26,12 @@
 */
 
 package ptolemy.data;
+import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
 //// IntMatrixToken
 /**
-A token that contains a reference to a 2-D integer array.
+A token that contains a 2-D integer array.
 
 @author Yuhong Xiong
 @version $Id$
@@ -101,23 +102,6 @@ public class IntMatrixToken extends MatrixToken {
         }
     }
 
-    /** Return the content in the token as a 2-D byte array.
-     */
-    public byte[][] byteMatrix() {
-        byte[][] array = null;
-        if (_value != null) {
-            int row = _value.length;
-            int col = _value[0].length;
-            array = new byte[row][col];
-            for (int i = 0; i < row; i++) {
-                for (int j = 0; j < col; j++) {
-                    array[i][j] = (byte)_value[i][j];
-                }
-            }
-        }
-	return array;
-    }
-
     /** Return the content in the token as a 2-D double array.
      */
     public double[][] doubleMatrix() {
@@ -135,10 +119,24 @@ public class IntMatrixToken extends MatrixToken {
 	return array;
     }
 
-    /** Return the content in the token as a 2-D Complex array.
+    /** Return the content of this token as a 2-D Complex array.
+     *  @return A 2-D Complex matrix
      */
-    // FIXME: uncomment this method after the Complex class is available.
-    // public Complex[][] complexMatrix();
+    public Complex[][] complexMatrix() {
+        Complex[][] array = null;
+        if (_value != null) {
+            int row = _value.length;
+            int col = _value[0].length;
+            array = new Complex[row][col];
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    array[i][j] = new Complex((double)_value[i][j]);
+                }
+            }
+        }
+        return array;
+    }
+
 
     /** Return the content in the token as a 2-D Fix array.
      */
