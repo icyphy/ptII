@@ -1,11 +1,11 @@
 /* GGAL, CGC domain: CGCGGAL.java file generated from /users/ptolemy/src/domains/cgc/dsp/stars/CGCGGAL.pl by ptlang
-*/
-/*
-Copyright (c) 1992-1996 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1992-1996 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCGGAL
 /**
-Ganged Gradient Adaptive Lattice filters.
+   Ganged Gradient Adaptive Lattice filters.
 
- @Author T. M. Parks
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCGGAL.pl, from Ptolemy Classic 
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author T. M. Parks
+   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCGGAL.pl, from Ptolemy Classic 
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCGGAL extends CGCGAL {
     /** Construct an actor in the specified container with the specified
@@ -48,8 +48,8 @@ public class CGCGGAL extends CGCGAL {
         B = new Parameter(this, "B");
         B.setExpression("{0.0 0.0}");
 
-/* 
-*/
+        /* 
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -67,7 +67,7 @@ public class CGCGGAL extends CGCGAL {
     /**
      *  Backward prediction error. parameter with initial value "0.0 0.0".
      */
-     public Parameter B;
+    public Parameter B;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -76,32 +76,32 @@ public class CGCGGAL extends CGCGAL {
      */
     public void  generateInitializeCode() {
         //# line 57 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCGGAL.pl"
-B.resize(order+1);
+        B.resize(order+1);
 	CGCGAL::setup();
-     }
+    }
 
     /**
      */
     public void  generateFireCode() {
         //# line 63 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCGGAL.pl"
-addCode(main);
+        addCode(main);
 	CGCGAL::go();
-     }
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String main = 
-        "	{\n"
-        + "	    double F;\n"
-        + "	    int m;\n"
-        + "\n"
-        + "	    F = $ref(synthIn);\n"
-        + "	    for(m = $val(order)-1; m >= 0; m--)\n"
-        + "	    {\n"
-        + "		F += $ref(k,m+1) * $ref(B,m);\n"
-        + "		$ref(B,m+1) = $ref(B,m) - $ref(k,m+1) * F;\n"
-        + "	    }\n"
-        + "	    $ref(B,0) = F;\n"
-        + "	    $ref(synthOut) = F;\n"
-        + "	}\n";
+    "	{\n"
+    + "	    double F;\n"
+    + "	    int m;\n"
+    + "\n"
+    + "	    F = $ref(synthIn);\n"
+    + "	    for(m = $val(order)-1; m >= 0; m--)\n"
+    + "	    {\n"
+    + "		F += $ref(k,m+1) * $ref(B,m);\n"
+    + "		$ref(B,m+1) = $ref(B,m) - $ref(k,m+1) * F;\n"
+    + "	    }\n"
+    + "	    $ref(B,0) = F;\n"
+    + "	    $ref(synthOut) = F;\n"
+    + "	}\n";
 }

@@ -1,11 +1,11 @@
 /* Sqrt, CGC domain: CGCSqrt.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCSqrt.pl by ptlang
-*/
-/*
-Copyright (c) 1990-1996 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-1996 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,13 +20,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCSqrt
 /**
-This star computes the square root of its input.
-<p>
-<a name="square root"></a>
+   This star computes the square root of its input.
+   <p>
+   <a name="square root"></a>
 
- @Author E. A. Lee
- @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCSqrt.pl, from Ptolemy Classic 
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author E. A. Lee
+   @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCSqrt.pl, from Ptolemy Classic 
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSqrt extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -46,9 +46,9 @@ public class CGCSqrt extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/*     
-noInternalState();
-*/
+        /*     
+               noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -70,25 +70,25 @@ noInternalState();
      */
     public int  myExecTime() {
         
-return 165;	/* value taken from CG96Sqrt */
-     }
+        return 165;	/* value taken from CG96Sqrt */
+    }
 
     /**
      */
     public void  generatePreinitializeCode() {
         
-addInclude("<math.h>");
-     }
+        addInclude("<math.h>");
+    }
 
     /**
      */
     public void  generateFireCode() {
         
-addCode(ln); 
-     }
+        addCode(ln); 
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String ln = 
-        "	$ref(output) = sqrt($ref(input));\n";
+    "	$ref(output) = sqrt($ref(input));\n";
 }

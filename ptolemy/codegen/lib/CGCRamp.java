@@ -1,11 +1,11 @@
 /* Ramp, CGC domain: CGCRamp.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCRamp.pl by ptlang
-*/
-/*
-Copyright (c) 1990-1996 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-1996 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,12 +20,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCRamp
 /**
-Generates a ramp signal, starting at "value" (default 0)
-with step size "step" (default 1).
+   Generates a ramp signal, starting at "value" (default 0)
+   with step size "step" (default 1).
 
- @Author E. A. Lee
- @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCRamp.pl, from Ptolemy Classic 
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author E. A. Lee
+   @Version $Id$, based on version 1.9 of /users/ptolemy/src/domains/cgc/stars/CGCRamp.pl, from Ptolemy Classic 
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRamp extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -51,8 +51,8 @@ public class CGCRamp extends ClassicCGCActor {
         value = new Parameter(this, "value");
         value.setExpression("0.0");
 
-/* 
-*/
+        /* 
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -65,12 +65,12 @@ public class CGCRamp extends ClassicCGCActor {
     /**
      *  Increment from one sample to the next. parameter with initial value "1.0".
      */
-     public Parameter step;
+    public Parameter step;
 
     /**
      *  Initial (or latest) value output by Ramp. parameter with initial value "0.0".
      */
-     public Parameter value;
+    public Parameter value;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -79,19 +79,19 @@ public class CGCRamp extends ClassicCGCActor {
      */
     public int  myExecTime() {
         
-return 2;
-     }
+        return 2;
+    }
 
     /**
      */
     public void  generateFireCode() {
         
-addCode(std); 
-     }
+        addCode(std); 
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String std = 
-        "	$ref(output) = $ref(value);\n"
-        + "	$ref(value) += $val(step);\n";
+    "	$ref(output) = $ref(value);\n"
+    + "	$ref(value) += $val(step);\n";
 }

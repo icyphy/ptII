@@ -1,11 +1,11 @@
 /* Sinc, CGC domain: CGCSinc.java file generated from /users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl by ptlang
-*/
-/*
-Copyright (c) 1990-1997 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-1997 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,29 +20,29 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCSinc
 /**
-This star computes the sinc of its input given in radians.
-The sinc function is defined as sin(x)/x, with value 1.0 when x = 0.
-<p>
-The discrete-time Fourier transform (DTFT) of a sampled sinc function is 
-an ideal lowpass filter [1-2].
-Modulating a sampled sinc function by a cosine function gives an
-ideal bandpass signal.
-This star defines the sinc function <i>without</i> using <i>pi</i>,
-as is the convention in [2-3].
-<h3>References</h3>
-<p>[1]  
-A. V. Oppenheim and R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
-Prentice-Hall: Englewood Cliffs, NJ, 1989.
-<p>[2]  
-A. V. Oppenheim and A. Willsky, <i>Signals and Systems</i>,
-Prentice-Hall: Englewood Cliffs, NJ, 1983.
-<p>[3]  
-R. N. Bracewell, <i>The Fourier Transform and Its Applications</i>,
-McGraw-Hill: New York, 1986.
+   This star computes the sinc of its input given in radians.
+   The sinc function is defined as sin(x)/x, with value 1.0 when x = 0.
+   <p>
+   The discrete-time Fourier transform (DTFT) of a sampled sinc function is 
+   an ideal lowpass filter [1-2].
+   Modulating a sampled sinc function by a cosine function gives an
+   ideal bandpass signal.
+   This star defines the sinc function <i>without</i> using <i>pi</i>,
+   as is the convention in [2-3].
+   <h3>References</h3>
+   <p>[1]  
+   A. V. Oppenheim and R. W. Schafer, <i>Discrete-Time Signal Processing</i>,
+   Prentice-Hall: Englewood Cliffs, NJ, 1989.
+   <p>[2]  
+   A. V. Oppenheim and A. Willsky, <i>Signals and Systems</i>,
+   Prentice-Hall: Englewood Cliffs, NJ, 1983.
+   <p>[3]  
+   R. N. Bracewell, <i>The Fourier Transform and Its Applications</i>,
+   McGraw-Hill: New York, 1986.
 
- @Author Brian L. Evans
- @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl, from Ptolemy Classic 
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Brian L. Evans
+   @Version $Id$, based on version 1.5 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl, from Ptolemy Classic 
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSinc extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -62,20 +62,20 @@ public class CGCSinc extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-/* 
-*/
+        /* 
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /**
-The input x to the sinc function.
-     */
+       The input x to the sinc function.
+    */
     public ClassicPort input;
 
     /**
-The output of the sinc function.
-     */
+       The output of the sinc function.
+    */
     public ClassicPort output;
 
     ///////////////////////////////////////////////////////////////////
@@ -85,18 +85,18 @@ The output of the sinc function.
      */
     public void  generatePreinitializeCode() {
         //# line 47 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl"
-addModuleFromLibrary("ptdspSinc", "src/utils/libptdsp", "ptdsp");
-     }
+        addModuleFromLibrary("ptdspSinc", "src/utils/libptdsp", "ptdsp");
+    }
 
     /**
      */
     public void  generateFireCode() {
         //# line 50 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCSinc.pl"
-addCode(sinc);
-     }
+        addCode(sinc);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String sinc = 
-        "	        $ref(output) = Ptdsp_Sinc((double)$ref(input));\n";
+    "	        $ref(output) = Ptdsp_Sinc((double)$ref(input));\n";
 }

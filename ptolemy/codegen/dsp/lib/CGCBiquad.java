@@ -1,11 +1,11 @@
 /* Biquad, CGC domain: CGCBiquad.java file generated from /users/ptolemy/src/domains/cgc/dsp/stars/CGCBiquad.pl by ptlang
-*/
-/*
-Copyright (c) 1990-1997 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-1997 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,13 +20,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCBiquad
 /**
-A two-pole, two-zero parametric digital IIR filter (a biquad).
-<p>
-A two-pole, two-zero IIR filter.
+   A two-pole, two-zero parametric digital IIR filter (a biquad).
+   <p>
+   A two-pole, two-zero IIR filter.
 
- @Author J. T. Buck and William Chen
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCBiquad.pl, from Ptolemy Classic 
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author J. T. Buck and William Chen
+   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCBiquad.pl, from Ptolemy Classic 
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCBiquad extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -74,8 +74,8 @@ public class CGCBiquad extends ClassicCGCActor {
         state2 = new Parameter(this, "state2");
         state2.setExpression("0.0");
 
-/* 
-*/
+        /* 
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -93,37 +93,37 @@ public class CGCBiquad extends ClassicCGCActor {
     /**
      *  d1 parameter with initial value "-1.1430".
      */
-     public Parameter d1;
+    public Parameter d1;
 
     /**
      *  d2 parameter with initial value "0.41280".
      */
-     public Parameter d2;
+    public Parameter d2;
 
     /**
      *  n0 parameter with initial value "0.067455".
      */
-     public Parameter n0;
+    public Parameter n0;
 
     /**
      *  n1 parameter with initial value "0.135".
      */
-     public Parameter n1;
+    public Parameter n1;
 
     /**
      *  n2 parameter with initial value "0.067455".
      */
-     public Parameter n2;
+    public Parameter n2;
 
     /**
      *  internal state. parameter with initial value "0.0".
      */
-     public Parameter state1;
+    public Parameter state1;
 
     /**
      *  internal state. parameter with initial value "0.0".
      */
-     public Parameter state2;
+    public Parameter state2;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -132,42 +132,42 @@ public class CGCBiquad extends ClassicCGCActor {
      */
     public void  generatePreinitializeCode() {
         //# line 77 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCBiquad.pl"
-addInclude("<math.h>");
-          addGlobal(mainDecl);
-	  addCode(settapDef);
-     }
+        addInclude("<math.h>");
+        addGlobal(mainDecl);
+        addCode(settapDef);
+    }
 
     /**
      */
     public void  generateFireCode() {
         //# line 96 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCBiquad.pl"
-addCode(localDecl);
-	  addCode(iirfilter);
-     }
+        addCode(localDecl);
+        addCode(iirfilter);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String mainDecl = 
-        "	  double $starSymbol(filtertaps)[5];\n";
+    "	  double $starSymbol(filtertaps)[5];\n";
 
     public String settapDef = 
-        "	  $starSymbol(filtertaps)[0]=$val(d1);\n"
-        + "	  $starSymbol(filtertaps)[1]=$val(d2);\n"
-        + "	  $starSymbol(filtertaps)[2]=$val(n0);\n"
-        + "	  $starSymbol(filtertaps)[3]=$val(n1);\n"
-        + "	  $starSymbol(filtertaps)[4]=$val(n2);\n";
+    "	  $starSymbol(filtertaps)[0]=$val(d1);\n"
+    + "	  $starSymbol(filtertaps)[1]=$val(d2);\n"
+    + "	  $starSymbol(filtertaps)[2]=$val(n0);\n"
+    + "	  $starSymbol(filtertaps)[3]=$val(n1);\n"
+    + "	  $starSymbol(filtertaps)[4]=$val(n2);\n";
 
     public String localDecl = 
-        "	  double nextstate,out;\n";
+    "	  double nextstate,out;\n";
 
     public String iirfilter = 
-        "	  nextstate = $ref(input) - $starSymbol(filtertaps)[0] *\n"
-        + "	    (double)$ref(state1) - $starSymbol(filtertaps)[1] *\n"
-        + "	    (double)$ref(state2);\n"
-        + "	  out = nextstate * $starSymbol(filtertaps)[2] +\n"
-        + "	    (double)$ref(state1) * $starSymbol(filtertaps)[3] +\n"
-        + "	    (double)$ref(state2) * $starSymbol(filtertaps)[4];\n"
-        + "	  $ref(output)=out;\n"
-        + "	  $ref(state2)=$ref(state1);\n"
-        + "	  $ref(state1)=nextstate;\n";
+    "	  nextstate = $ref(input) - $starSymbol(filtertaps)[0] *\n"
+    + "	    (double)$ref(state1) - $starSymbol(filtertaps)[1] *\n"
+    + "	    (double)$ref(state2);\n"
+    + "	  out = nextstate * $starSymbol(filtertaps)[2] +\n"
+    + "	    (double)$ref(state1) * $starSymbol(filtertaps)[3] +\n"
+    + "	    (double)$ref(state2) * $starSymbol(filtertaps)[4];\n"
+    + "	  $ref(output)=out;\n"
+    + "	  $ref(state2)=$ref(state1);\n"
+    + "	  $ref(state1)=nextstate;\n";
 }

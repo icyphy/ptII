@@ -1,11 +1,11 @@
 /* Thresh, CGC domain: CGCThresh.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCThresh.pl by ptlang
-*/
-/*
-Copyright (c) 1990-1997 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-1997 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,12 +20,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCThresh
 /**
-Compares input values to "threshold" (default 0.5).  Output is 0
-if input is greater than or equal to threshold; otherwise, it is 1.
+   Compares input values to "threshold" (default 0.5).  Output is 0
+   if input is greater than or equal to threshold; otherwise, it is 1.
 
- @Author J. Buck
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCThresh.pl, from Ptolemy Classic 
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author J. Buck
+   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCThresh.pl, from Ptolemy Classic 
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCThresh extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -49,9 +49,9 @@ public class CGCThresh extends ClassicCGCActor {
         threshold = new Parameter(this, "threshold");
         threshold.setExpression("0.5");
 
-/*     
-noInternalState();
-*/
+        /*     
+               noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -69,7 +69,7 @@ noInternalState();
     /**
      *  Threshold applied to input. parameter with initial value "0.5".
      */
-     public Parameter threshold;
+    public Parameter threshold;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -78,11 +78,11 @@ noInternalState();
      */
     public void  generateFireCode() {
         
-addCode(gen); 
-     }
+        addCode(gen); 
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String gen = 
-        "		$ref(output) = ($ref(input) > $val(threshold)) ? 1 : 0;\n";
+    "		$ref(output) = ($ref(input) > $val(threshold)) ? 1 : 0;\n";
 }

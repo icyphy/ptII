@@ -1,11 +1,11 @@
 /* RaisedCosine, CGC domain: CGCRaisedCosine.java file generated from /users/ptolemy/src/domains/cgc/dsp/stars/CGCRaisedCosine.pl by ptlang
-*/
-/*
-Copyright (c) 1990-1997 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-1997 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,15 +20,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCRaisedCosine
 /**
-An FIR filter with a magnitude frequency response that is shaped
-like the standard raised cosine or square-root raised cosine
-used in digital communications.
-<p>
-See the SDFRaisedCos star.
+   An FIR filter with a magnitude frequency response that is shaped
+   like the standard raised cosine or square-root raised cosine
+   used in digital communications.
+   <p>
+   See the SDFRaisedCos star.
 
- @Author Joseph T. Buck
- @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCRaisedCosine.pl, from Ptolemy Classic 
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Joseph T. Buck
+   @Version $Id$, based on version 1.4 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCRaisedCosine.pl, from Ptolemy Classic 
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCRaisedCosine extends CGCFIR {
     /** Construct an actor in the specified container with the specified
@@ -60,12 +60,12 @@ public class CGCRaisedCosine extends CGCFIR {
         square_root = new Parameter(this, "square_root");
         square_root.setExpression("NO");
 
-/*     //# line 49 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCRaisedCosine.pl"
-// taps are no longer constant or settable
-		taps.clearAttributes(A_CONSTANT|A_SETTABLE);
-		// fix interpolation default
-		interpolation.setInitValue("16");
-*/
+        /*     //# line 49 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCRaisedCosine.pl"
+        // taps are no longer constant or settable
+        taps.clearAttributes(A_CONSTANT|A_SETTABLE);
+        // fix interpolation default
+        interpolation.setInitValue("16");
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -73,22 +73,22 @@ public class CGCRaisedCosine extends CGCFIR {
     /**
      *  Number of taps parameter with initial value "64".
      */
-     public Parameter length;
+    public Parameter length;
 
     /**
      *  Distance from center to first zero crossing parameter with initial value "16".
      */
-     public Parameter symbol_interval;
+    public Parameter symbol_interval;
 
     /**
      *  Excess bandwidth, between 0 and 1 parameter with initial value "1.0".
      */
-     public Parameter excessBW;
+    public Parameter excessBW;
 
     /**
      *  If YES, use square-root raised cosine pulse parameter with initial value "NO".
      */
-     public Parameter square_root;
+    public Parameter square_root;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -97,20 +97,20 @@ public class CGCRaisedCosine extends CGCFIR {
      */
     public void  generateInitializeCode() {
         //# line 55 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCRaisedCosine.pl"
-if (double(excessBW) < 0.0)
-		    Error::abortRun(*this, "Invalid excess bandwidth");
-		if (int(symbol_interval) <= 0)
-		    Error::abortRun(*this, "Invalid symbol interval");
-		taps.resize(length);
-		int center = int(length)/2;
-		for (int i = 0; i < int(length); i++) {
-		    if (int(square_root))
-			taps[i] = Ptdsp_SqrtRaisedCosine(i - center,
-					int(symbol_interval), excessBW);
-		    else
-			taps[i] = Ptdsp_RaisedCosine(i - center,
-					int(symbol_interval), excessBW);
-		}
-		CGCFIR :: setup();
-     }
+        if (double(excessBW) < 0.0)
+            Error::abortRun(*this, "Invalid excess bandwidth");
+        if (int(symbol_interval) <= 0)
+            Error::abortRun(*this, "Invalid symbol interval");
+        taps.resize(length);
+        int center = int(length)/2;
+        for (int i = 0; i < int(length); i++) {
+            if (int(square_root))
+                taps[i] = Ptdsp_SqrtRaisedCosine(i - center,
+                        int(symbol_interval), excessBW);
+            else
+                taps[i] = Ptdsp_RaisedCosine(i - center,
+                        int(symbol_interval), excessBW);
+        }
+        CGCFIR :: setup();
+    }
 }

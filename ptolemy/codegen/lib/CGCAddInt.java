@@ -1,11 +1,11 @@
 /* AddInt, CGC domain: CGCAddInt.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCAddInt.pl by ptlang
-*/
-/*
-Copyright (c) 1990-1996 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-1996 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCAddInt
 /**
-Output the sum of the inputs, as a floating value.
+   Output the sum of the inputs, as a floating value.
 
- @Author S. Ha
- @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCAddInt.pl, from Ptolemy Classic 
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author S. Ha
+   @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCAddInt.pl, from Ptolemy Classic 
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCAddInt extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -45,9 +45,9 @@ public class CGCAddInt extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
 
-/*     //# line 23 "/users/ptolemy/src/domains/cgc/stars/CGCAddInt.pl"
-noInternalState();
-*/
+        /*     //# line 23 "/users/ptolemy/src/domains/cgc/stars/CGCAddInt.pl"
+               noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -69,19 +69,19 @@ noInternalState();
      */
     public int  myExecTime() {
         //# line 35 "/users/ptolemy/src/domains/cgc/stars/CGCAddInt.pl"
-return input.numberPorts();
-     }
+        return input.numberPorts();
+    }
 
     /**
      */
     public void  generateFireCode() {
         //# line 26 "/users/ptolemy/src/domains/cgc/stars/CGCAddInt.pl"
-StringList out = "\t$ref(output) = ";
-		for (int i = 1; i <= input.numberPorts(); i++) {
-			out << "$ref(input#" << i << ")";
-			if (i < input.numberPorts()) out << " + ";
-			else out << ";\n";
-		}
-		addCode(out);
-     }
+        StringList out = "\t$ref(output) = ";
+        for (int i = 1; i <= input.numberPorts(); i++) {
+            out << "$ref(input#" << i << ")";
+            if (i < input.numberPorts()) out << " + ";
+            else out << ";\n";
+        }
+        addCode(out);
+    }
 }

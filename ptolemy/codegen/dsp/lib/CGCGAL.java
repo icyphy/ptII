@@ -1,11 +1,11 @@
 /* GAL, CGC domain: CGCGAL.java file generated from /users/ptolemy/src/domains/cgc/dsp/stars/CGCGAL.pl by ptlang
-*/
-/*
-Copyright (c) 1992-1996 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1992-1996 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCGAL
 /**
-Gradient Adaptive Lattice filter.
+   Gradient Adaptive Lattice filter.
 
- @Author T. M. Parks
- @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCGAL.pl, from Ptolemy Classic 
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author T. M. Parks
+   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/dsp/stars/CGCGAL.pl, from Ptolemy Classic 
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCGAL extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -72,8 +72,8 @@ public class CGCGAL extends ClassicCGCActor {
         e = new Parameter(this, "e");
         e.setExpression("{0.0 0.0}");
 
-/* 
-*/
+        /* 
+         */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -91,37 +91,37 @@ public class CGCGAL extends ClassicCGCActor {
     /**
      *  Lattice filter order. parameter with initial value "1".
      */
-     public Parameter order;
+    public Parameter order;
 
     /**
      *  Adaptation time constant. parameter with initial value "1.0".
      */
-     public Parameter timeConstant;
+    public Parameter timeConstant;
 
     /**
      *  Adaptation parameter. parameter with initial value "0.0".
      */
-     public Parameter alpha;
+    public Parameter alpha;
 
     /**
      *  Reflection coefficients. parameter with initial value "0.0".
      */
-     public Parameter k;
+    public Parameter k;
 
     /**
      *  Forward prediction error. parameter with initial value "0.0 0.0".
      */
-     public Parameter f;
+    public Parameter f;
 
     /**
      *  Backward prediction error. parameter with initial value "0.0 0.0".
      */
-     public Parameter b;
+    public Parameter b;
 
     /**
      *  Error power estimate. parameter with initial value "0.0 0.0".
      */
-     public Parameter e;
+    public Parameter e;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -130,48 +130,48 @@ public class CGCGAL extends ClassicCGCActor {
      */
     public void  generateInitializeCode() {
         //# line 122 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCGAL.pl"
-k.resize(order+1);
+        k.resize(order+1);
 	f.resize(order+1);
 	b.resize(order+1);
 	e.resize(order+1);
 	alpha = 1.0 - ((timeConstant - 1.0) / (timeConstant + 1.0));
-     }
+    }
 
     /**
      */
     public void  generateFireCode() {
         //# line 131 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCGAL.pl"
-addCode(main);
-     }
+        addCode(main);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String main = 
-        "	{\n"
-        + "	    int m;\n"
-        + "\n"
-        + "	    /* Update forward errors. */\n"
-        + "	    $ref(f,0) = $ref(input);\n"
-        + "	    for(m = 1; m <= $val(order); m++)\n"
-        + "	    {\n"
-        + "	       $ref(f,m) = $ref(f,m-1) - $ref(k,m) * $ref(b,m-1);\n"
-        + "	    }\n"
-        + "\n"
-        + "	    /* Update backward errors, reflection coefficients. */\n"
-        + "	    for(m = $val(order); m > 0; m--)\n"
-        + "	    {\n"
-        + "		$ref(b,m) = $ref(b,m-1) - $ref(k,m)*$ref(f,m-1);\n"
-        + "		$ref(e,m) *= 1.0 - $val(alpha);\n"
-        + "		$ref(e,m) += $val(alpha) * ($ref(f,m-1)*$ref(f,m-1) + $ref(b,m-1)*$ref(b,m-1));\n"
-        + "		if ($ref(e,m) != 0.0)\n"
-        + "		{\n"
-        + "		    $ref(k,m) += $val(alpha) * ($ref(f,m)*$ref(b,m-1) + $ref(b,m)*$ref(f,m-1)) / $ref(e,m);\n"
-        + "		    if ($ref(k,m) > 1.0) $ref(k,m) = 1.0;\n"
-        + "		    if ($ref(k,m) < -1.0) $ref(k,m) = -1.0;\n"
-        + "		}\n"
-        + "	    }\n"
-        + "\n"
-        + "	    $ref(b,0) = $ref(input);\n"
-        + "	    $ref(residual) =  $ref(f,order);\n"
-        + "	}\n";
+    "	{\n"
+    + "	    int m;\n"
+    + "\n"
+    + "	    /* Update forward errors. */\n"
+    + "	    $ref(f,0) = $ref(input);\n"
+    + "	    for(m = 1; m <= $val(order); m++)\n"
+    + "	    {\n"
+    + "	       $ref(f,m) = $ref(f,m-1) - $ref(k,m) * $ref(b,m-1);\n"
+    + "	    }\n"
+    + "\n"
+    + "	    /* Update backward errors, reflection coefficients. */\n"
+    + "	    for(m = $val(order); m > 0; m--)\n"
+    + "	    {\n"
+    + "		$ref(b,m) = $ref(b,m-1) - $ref(k,m)*$ref(f,m-1);\n"
+    + "		$ref(e,m) *= 1.0 - $val(alpha);\n"
+    + "		$ref(e,m) += $val(alpha) * ($ref(f,m-1)*$ref(f,m-1) + $ref(b,m-1)*$ref(b,m-1));\n"
+    + "		if ($ref(e,m) != 0.0)\n"
+    + "		{\n"
+    + "		    $ref(k,m) += $val(alpha) * ($ref(f,m)*$ref(b,m-1) + $ref(b,m)*$ref(f,m-1)) / $ref(e,m);\n"
+    + "		    if ($ref(k,m) > 1.0) $ref(k,m) = 1.0;\n"
+    + "		    if ($ref(k,m) < -1.0) $ref(k,m) = -1.0;\n"
+    + "		}\n"
+    + "	    }\n"
+    + "\n"
+    + "	    $ref(b,0) = $ref(input);\n"
+    + "	    $ref(residual) =  $ref(f,order);\n"
+    + "	}\n";
 }

@@ -1,11 +1,11 @@
 /* SubCx, CGC domain: CGCSubCx.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCSubCx.pl by ptlang
-*/
-/*
-Copyright (c) 1990-1996 The Regents of the University of California.
-All rights reserved.
-See the file $PTOLEMY/copyright for copyright notice,
-limitation of liability, and disclaimer of warranty provisions.
  */
+/*
+  Copyright (c) 1990-1996 The Regents of the University of California.
+  All rights reserved.
+  See the file $PTOLEMY/copyright for copyright notice,
+  limitation of liability, and disclaimer of warranty provisions.
+*/
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCSubCx
 /**
-Output the "pos" input minus all "neg" inputs.
+   Output the "pos" input minus all "neg" inputs.
 
- @Author Jose Luis Pino
- @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCSubCx.pl, from Ptolemy Classic 
- @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+   @Author Jose Luis Pino
+   @Version $Id$, based on version 1.1 of /users/ptolemy/src/domains/cgc/stars/CGCSubCx.pl, from Ptolemy Classic 
+   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSubCx extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -47,9 +47,9 @@ public class CGCSubCx extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.COMPLEX);
 
-/*     
-noInternalState();
-*/
+        /*     
+               noInternalState();
+        */
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -76,27 +76,27 @@ noInternalState();
      */
     public int  myExecTime() {
         
-return 2*(1 + neg.numberPorts());
-     }
+        return 2*(1 + neg.numberPorts());
+    }
 
     /**
      */
     public void  generateFireCode() {
         
-addCode(startOp); 
+        addCode(startOp); 
 	for (int i = 1; i <= neg.numberPorts(); i++) 
 	    addCode(doOp(i)); 
-     }
+    }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String startOp = 
-        "	$ref(output).real = $ref(pos).real;\n"
-        + "	$ref(output).imag = $ref(pos).imag;\n";
+    "	$ref(output).real = $ref(pos).real;\n"
+    + "	$ref(output).imag = $ref(pos).imag;\n";
 
     public String doOp (int i) {
         return
-        "	$ref(output).real -= $ref(neg#" + i + ").real;\n"
-        + "	$ref(output).imag -= $ref(neg#" + i + ").imag;\n";
+            "	$ref(output).real -= $ref(neg#" + i + ").real;\n"
+            + "	$ref(output).imag -= $ref(neg#" + i + ").imag;\n";
     }
 }
