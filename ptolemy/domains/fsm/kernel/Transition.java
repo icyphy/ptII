@@ -38,9 +38,11 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.StreamListener;
 import ptolemy.data.Token;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
@@ -48,10 +50,13 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.data.type.BaseType;
+import ptolemy.actor.TypedActor;
+import ptolemy.actor.TypedCompositeActor;
 
 import java.util.List;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 // FIXME: Replace StringAttribute with lazy variables, and remove _guard.
 // Other places where this could be done?
@@ -160,16 +165,16 @@ public class Transition extends ComponentRelation {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         guardExpression = new StringAttribute(this, "guardExpression");
-        outputActions = new OutputActionsAttribute(this, "outputActions");
+	outputActions = new OutputActionsAttribute(this, "outputActions");
         setActions = new CommitActionsAttribute(this, "setActions");
         exitAngle = new Parameter(this, "exitAngle");
         exitAngle.setVisibility(Settable.NONE);
         exitAngle.setExpression("PI/5.0");
-        exitAngle.setTypeEquals(BaseType.DOUBLE);
+	exitAngle.setTypeEquals(BaseType.DOUBLE);
         gamma = new Parameter(this, "gamma");
         gamma.setVisibility(Settable.NONE);
         gamma.setExpression("0.0");
-        gamma.setTypeEquals(BaseType.DOUBLE);
+	gamma.setTypeEquals(BaseType.DOUBLE);
         reset = new Parameter(this, "reset");
         reset.setTypeEquals(BaseType.BOOLEAN);
         reset.setToken(BooleanToken.FALSE);
@@ -177,7 +182,7 @@ public class Transition extends ComponentRelation {
         preemptive.setTypeEquals(BaseType.BOOLEAN);
         preemptive.setToken(BooleanToken.FALSE);
         triggerExpression = new StringAttribute(this, "triggerExpression");
-        triggerExpression.setVisibility(Settable.NONE);
+	triggerExpression.setVisibility(Settable.NONE);
         _guard = new Variable(this, "_guard");
         // Make the variable lazy since it will often have
         // an expression that cannot be evaluated.
@@ -188,6 +193,8 @@ public class Transition extends ComponentRelation {
         // an expression that cannot be evaluated.
         _trigger.setLazy(true);
         _trigger.setTypeEquals(BaseType.BOOLEAN);
+        // add refinement name parameter
+        refinementName = new StringAttribute(this, "refinementName");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -231,6 +238,18 @@ public class Transition extends ComponentRelation {
      */
     public StringAttribute triggerExpression = null;
 
+    /** Attribute specifying one or more names of refinements. The
+     *  refinements must be instances of TypedActor and have the same
+     *  container as the FSMActor containing this state, otherwise
+     *  an exception will be thrown when getRefinement() is called.
+     *  Usually, the refinement is a single name. However, if a
+     *  comma-separated list of names is provided, then all the specified
+     *  refinements will be executed.
+     *  This attribute has a null expression or a null string as
+     *  expression when the state is not refined.
+     */
+    public StringAttribute refinementName = null;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -254,11 +273,11 @@ public class Transition extends ComponentRelation {
             preemptive.getToken();
             workspace().incrVersion();
         }
-        // The guard and trigger expressions can only be evaluated at run
-        // time, because the input variables they can reference are created
-        // at run time. guardExpression and triggerExpression are string
-        // attributes used to convey expressions without being evaluated.
-        // _guard and _trigger are the variables that do the evaluation.
+	// The guard and trigger expressions can only be evaluated at run
+	// time, because the input variables they can reference are created
+	// at run time. guardExpression and triggerExpression are string
+	// attributes used to convey expressions without being evaluated.
+	// _guard and _trigger are the variables that do the evaluation.
         if (attribute == guardExpression) {
             String expr = guardExpression.getExpression();
             _guard.setExpression(expr);
@@ -267,6 +286,14 @@ public class Transition extends ComponentRelation {
             String expr = triggerExpression.getExpression();
             _trigger.setExpression(expr);
         }
+        if (attribute == refinementName) {
+            _refinementVersion = -1;
+        }
+
+        if (attribute == outputActions && _debugging)
+            outputActions.addDebugListener(new StreamListener());
+        if (attribute == setActions && _debugging)
+            setActions.addDebugListener(new StreamListener());
     }
 
     /** Return the list of choice actions contained by this transition.
@@ -295,6 +322,8 @@ public class Transition extends ComponentRelation {
         newObject.preemptive = (Parameter)newObject.getAttribute("preemptive");
         newObject.triggerExpression =
             (StringAttribute)newObject.getAttribute("triggerExpression");
+        newObject.refinementName =
+            (StringAttribute)newObject.getAttribute("refinementName");
         newObject._guard = (Variable)newObject.getAttribute("_guard");
         newObject._trigger = (Variable)newObject.getAttribute("_trigger");
         newObject._actionListsVersion = -1;
@@ -302,6 +331,62 @@ public class Transition extends ComponentRelation {
         newObject._commitActionList = new LinkedList();
         newObject._stateVersion = -1;
         return newObject;
+    }
+
+    /** Return the refinements of this transition. The names of the refinements
+     *  are specified by the <i>refinementName</i> attribute. The refinements
+     *  must be instances of TypedActor and have the same container as
+     *  the FSMActor containing this state, otherwise an exception is thrown.
+     *  This method can also return null if there is no refinement.
+     *  This method is read-synchronized on the workspace.
+     *  @return The refinements of this state, or null if there are none.
+     *  @exception IllegalActionException If the specified refinement
+     *   cannot be found, or if a comma-separated list is malformed.
+     */
+    public TypedActor[] getRefinement() throws IllegalActionException {
+        if (_refinementVersion == workspace().getVersion()) {
+            return _refinement;
+        }
+        try {
+            workspace().getReadAccess();
+            String names = refinementName.getExpression();
+            if (names == null || names.trim().equals("")) {
+                _refinementVersion = workspace().getVersion();
+                _refinement = null;
+                return null;
+            }
+            StringTokenizer tokenizer = new StringTokenizer(names, ",");
+            int size = tokenizer.countTokens();
+            if (size <= 0) {
+                _refinementVersion = workspace().getVersion();
+                _refinement = null;
+                return null;
+            }
+            _refinement = new TypedActor[size];
+            Nameable container = getContainer();
+            TypedCompositeActor containerContainer =
+                (TypedCompositeActor)container.getContainer();
+            int index = 0;
+            while (tokenizer.hasMoreTokens()) {
+                String name = tokenizer.nextToken().trim();
+                if (name.equals("")) {
+                    throw new IllegalActionException(this,
+                            "Malformed list of refinements: " + names);
+                }
+                TypedActor element =
+                    (TypedActor)containerContainer.getEntity(name);
+                if (element == null) {
+                    throw new IllegalActionException(this, "Cannot find "
+                            + "refinement with name \"" + name
+                            + "\" in " + containerContainer.getFullName());
+                }
+                _refinement[index++] = element;
+            }
+            _refinementVersion = workspace().getVersion();
+            return _refinement;
+        } finally {
+            workspace().doneReading();
+        }
     }
 
     /** Return the list of commit actions contained by this transition.
@@ -365,10 +450,10 @@ public class Transition extends ComponentRelation {
             aLabel = true;
         }
         if (aLabel) {
-            return buffer.toString();
-        } else {
-            return "";
-        }
+	    return buffer.toString();
+	} else {
+	    return "";
+	}
     }
 
     /** Return the trigger expression. The trigger expression should evaluate
@@ -608,5 +693,11 @@ public class Transition extends ComponentRelation {
 
     // Variable for evaluating trigger.
     private Variable _trigger = null;
+    
+    // Cached reference to the refinement of this state.
+    private TypedActor[] _refinement = null;
+
+    // Version of the cached reference to the refinement.
+    private long _refinementVersion = -1;
 
 }
