@@ -366,7 +366,7 @@ public class BasePNDirector extends ProcessDirector {
      *  might be thrown by derived classes.
      */
     protected boolean _handleDeadlock() throws IllegalActionException {
-        if (_writeBlockCount==0) {
+        if (_writeBlockCount == 0) {
 	    //There is a real deadlock. Hence return with a value true.
 	    return true;
         } else {
