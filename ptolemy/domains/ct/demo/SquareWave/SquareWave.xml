@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SquareWave" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="Continuous Time (CT) Solver" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -20,8 +20,6 @@
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
-        </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -45,6 +43,8 @@
                 </property>
             </property>
         </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 35.0">
@@ -54,7 +54,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 3, 709, 459}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 230, 709, 468}, maximized=false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -125,8 +125,30 @@ function. Try Look Inside after running it.</text></svg></configure>
             </property>
         </port>
         <entity name="InputAdder" class="ptolemy.actor.lib.AddSubtract">
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="OutputAdder" class="ptolemy.actor.lib.AddSubtract">
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="Integrator0" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -147,24 +169,24 @@ function. Try Look Inside after running it.</text></svg></configure>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
-            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="Feedforward0" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
-            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -185,24 +207,24 @@ function. Try Look Inside after running it.</text></svg></configure>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
-            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <entity name="Feedforward1" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="500.0">
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                </property>
-            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
         </entity>
         <relation name="node0" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -244,29 +266,16 @@ function. Try Look Inside after running it.</text></svg></configure>
         <link port="Feedforward1.input" relation="node1"/>
         <link port="Feedforward1.output" relation="_R4"/>
     </entity>
-    <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{2.0, -2.0}">
-        </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="53.5, 243.0">
-        </property>
-    </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 413, 508, 348}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 413, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="383.5, 243.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 240.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -276,19 +285,31 @@ function. Try Look Inside after running it.</text></svg></configure>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="6.0"/>
-<yRange min="-2.20116729694037" max="2.1987177099956607"/>
+<yRange min="-2.2017973030746534" max="2.198377084941398"/>
 </plot>?>
         </configure>
+    </entity>
+    <entity name="ContinuousClock" class="ptolemy.domains.ct.lib.ContinuousClock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{2.0, -2.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 240.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_hide" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="138.5, 243.0">
+        <vertex name="vertex1" value="[140.0, 240.0]">
         </vertex>
     </relation>
     <link port="ContinuousTransferFunction.input" relation="relation6"/>
     <link port="ContinuousTransferFunction.output" relation="relation5"/>
-    <link port="Clock.output" relation="relation6"/>
     <link port="TimedPlotter.input" relation="relation5"/>
     <link port="TimedPlotter.input" relation="relation6"/>
+    <link port="ContinuousClock.output" relation="relation6"/>
 </entity>
