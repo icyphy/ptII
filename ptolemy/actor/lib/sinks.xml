@@ -10,6 +10,9 @@
 <entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph"/>
 <entity name="Discard" class="ptolemy.actor.lib.Discard"/>
 <entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
+<entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
+<doc>Write out tokens to a file or stdout</doc>
+</entity>
 <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter"/>
 <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer"/>
 <entity name="MatrixVisualizer" class="ptolemy.actor.lib.gui.MatrixVisualizer"/>
