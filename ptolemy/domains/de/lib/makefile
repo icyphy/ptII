@@ -59,11 +59,13 @@ JSRCS = \
 	WaitingTime.java \
 	WaitingTime1.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	deentities.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	 $(DIRS)
+MISC_FILES =	 $(DIRS) \
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
