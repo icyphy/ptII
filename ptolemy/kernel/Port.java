@@ -55,7 +55,7 @@ subclass.  Similarly, if a subclass wishes to constrain the containers
 of the port to be of a subclass of Entity, they should override
 setContainer().
 
-@author Mudit Goel, Edward A. Lee
+@author Mudit Goel, Edward A. Lee, Jie Liu
 @version $Id$
 @see Entity
 @see Relation
@@ -323,6 +323,22 @@ public class Port extends NamedObj {
         } finally {
             workspace().doneWriting();
         }
+    }
+
+    /** Set the name of the port. If there is already an port
+     *  of the container entity with the name, then throw a 
+     *  NameDuplicationException. 
+     *  @exception IllegalActionException If the name is used by
+     *      another Port in the same container.
+     */
+    public void setName(String name) throws IllegalActionException {
+        if (name == null) name = new String("");
+        Entity container = (Entity) getContainer();
+        if((container != null) && (container.getPort(name) != null)) {
+            throw new IllegalActionException(container,
+                "already contains a port with the name "+name+".");
+        }
+        super.setName(name);
     }
 
     /** Unlink the specified Relation. If the Relation
