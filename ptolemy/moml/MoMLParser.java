@@ -1872,7 +1872,7 @@ public class MoMLParser extends HandlerBase {
                         _undoContext.appendUndoMoML("<property name=\"" +
                                 propertyName +
                                 "\" value=\"");
-                        // Use what was there before
+                        // Use what was there before.
                         _undoContext.appendUndoMoML(previousValue + "\" >\n");
                         // Continue undoing and also use an end tag as a
                         // property can contain other properties
@@ -2091,8 +2091,18 @@ public class MoMLParser extends HandlerBase {
                             _undoContext.appendUndoMoML("class=\"" +
                                     oldClassName + "\" ");
                             if (oldValue != null) {
+
+                                // Escape the value for xml so that if
+                                // the property the user typed in was
+                                // a Parameter "foo", we do not have
+                                // problems.  To replicate this,
+                                // create a Const with a value "foo"
+                                // and then change it to 2 and then
+                                // try undo.
+
                                 _undoContext.appendUndoMoML("value=\"" +
-                                        oldValue + "\" ");
+                                        StringUtilities.escapeForXML(oldValue)
+                                        + "\" ");
                             }
                             _undoContext.appendUndoMoML(">\n");
                             // Add the closing element
@@ -2516,7 +2526,9 @@ public class MoMLParser extends HandlerBase {
         NamedObj context = undoable.getUndoContext();
         setContext(context);
         String undoableMoML = undoable.getUndoMoML();
-        //  System.out.println("undo MoML = " + undoableMoML);
+        if (_undoDebug) {
+            System.out.println("undo(): undo MoML = " + undoableMoML);
+        }
         // Mark this parse as being undone via a redo
         _undoIsRedo = true;
         try {
