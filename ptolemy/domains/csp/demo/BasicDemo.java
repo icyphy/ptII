@@ -63,9 +63,9 @@ public class BasicDemo {
      */	
     public static void main(String[] args) {
         try {
-            CSPCompositeActor univ = new CSPCompositeActor();
+            CompositeActor univ = new CompositeActor();
             univ.setName( "Universe");
-            CSPDirector execdir = new CSPDirector("Executive");
+            Director execdir = new Director("Executive");
             CSPDirector localdir = new CSPDirector("Local Director");
             univ.setExecutiveDirector(execdir);
             univ.setDirector(localdir);
@@ -82,7 +82,7 @@ public class BasicDemo {
             univ.getExecutiveDirector().go(1);
         } catch (Exception e) {
             System.out.println(e.getMessage() + ": " + e.getClass().getName());
-            throw new InvalidStateException(e.getMessage());
+            throw new InvalidStateException("hello" + e.getMessage());
         }
     }
 }
