@@ -174,7 +174,7 @@ public class HDFFSMDirector extends FSMDirector {
     public void chooseStateTransition()
             throws IllegalActionException {
 
-        CompositeActor container = (CompositeActor)getContainer();
+        //CompositeActor container = (CompositeActor)getContainer();
         FSMActor ctrl = getController();
         State st = ctrl.currentState();
 
@@ -228,6 +228,7 @@ public class HDFFSMDirector extends FSMDirector {
         ctrl.setNewIteration(_sendRequest);
         _readInputs();
         State st = ctrl.currentState();
+        //System.out.println("fire: curState = " + st.getName());
         Actor[] actors = ctrl.currentState().getRefinement();
         _fireRefinement = false;
 
@@ -292,19 +293,35 @@ public class HDFFSMDirector extends FSMDirector {
      *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
+        State currentState;
+        FSMActor controller = getController();
+        currentState = controller.currentState();
+        //System.out.println("before superInit: curState = " 
+          //  + currentState.getName());
         if (!_reinitialize) {
             super.initialize();
             _reinitialize = true;
+            //currentState = controller.currentState();
+            //System.out.println("after super init: curState = "
+              //  + currentState.getName());
+            transientStateTransition();
+            //currentState = controller.currentState();
+            //_setCurrentConnectionMap();
+            //System.out.println("after transient State transition" +
+              //  " curState = " + currentState.getName());
         } else {
             // This is a sub-layer HDFFSMDirector.
             // Reinitialize all the refinements in the sub-layer
             // HDFFSMDirector and recompute the schedule.
             super.initialize();
             _sendRequest = true;
-            FSMActor controller = getController();
+            //FSMActor controller = getController();
             controller.setNewIteration(_sendRequest);
-            State initialState = controller.getInitialState();
-            TypedActor[] curRefinements = initialState.getRefinement();
+            //State initialState = controller.getInitialState();
+            //_setCurrentState(initialState);
+            transientStateTransition();
+            currentState = controller.currentState();
+            TypedActor[] curRefinements = currentState.getRefinement();
             if (curRefinements != null) {
                 // FIXME
                 TypedCompositeActor curRefinement =
@@ -353,7 +370,7 @@ public class HDFFSMDirector extends FSMDirector {
     public boolean makeStateTransition() throws IllegalActionException {
         FSMActor ctrl = getController();
         State curState = ctrl.currentState();
-        CompositeActor container = (CompositeActor)getContainer();
+        //CompositeActor container = (CompositeActor)getContainer();
         Transition lastChosenTr = _getLastChosenTransition();
         TypedCompositeActor actor;
         Director refinementDir;
@@ -495,9 +512,17 @@ public class HDFFSMDirector extends FSMDirector {
 
         FSMActor ctrl = getController();
         State initialState = ctrl.getInitialState();
+        State currentState;
         _setCurrentState(initialState);
+        
+        // Make transient state transition in case the initial state
+        // does not have a refinement.
+        transientStateTransition();
+
         // Get the current refinement.
-        TypedActor[] curRefinements = initialState.getRefinement();
+        currentState = ctrl.currentState();
+        //System.out.println("preinit: curState = " + currentState.getName());
+        TypedActor[] curRefinements = currentState.getRefinement();
         if (curRefinements != null) {
             // FIXME
             TypedCompositeActor curRefinement
@@ -576,6 +601,8 @@ public class HDFFSMDirector extends FSMDirector {
         // The receivers of the current refinement that receive data
         // from "port."
         Receiver[][] insideReceivers = _currentLocalReceivers(port);
+        //System.out.println("port = " + port.getFullName() +
+          //  " insideReceivers " + insideReceivers.toString());
         // For each channel.
         for (int i = 0; i < port.getWidth(); i++) {
             int rate = SDFUtilities.getTokenConsumptionRate(port);
@@ -596,6 +623,8 @@ public class HDFFSMDirector extends FSMDirector {
                         for (int j = 0;
                              j < insideReceivers[i].length; j++) {
                             insideReceivers[i][j].put(t);
+                            //System.out.println("transferred token " +
+                              //  t.toString());
                         }
                         // Successfully transferred data, so return true.
                         transferred = true;
@@ -658,6 +687,45 @@ public class HDFFSMDirector extends FSMDirector {
             }
         }
         return trans;
+    }
+    
+    
+    /** Get the current state. If it does not have any refinement,
+     *  consider it as a transient state and make state transition
+     *  until an intransient state (state that has refinement) is
+     *  found. Set that intransient state to be the current state
+     *  and return it.
+     * @throws IllegalActionException If a transient state is reached
+     *  while no further transition is enabled.
+     * @return The intransient state.
+     */
+    public State transientStateTransition()
+                throws IllegalActionException {
+        //CompositeActor container = (CompositeActor)getContainer();
+        FSMActor ctrl = getController();
+        State currentState = ctrl.currentState();
+        TypedActor[] currentRefinements = currentState.getRefinement();
+        while (currentRefinements == null) {
+            //System.out.println("transientStateTransition:");
+            chooseStateTransition();
+            //ctrl.postfire();
+            super.postfire();
+            currentState = ctrl.currentState();
+            //System.out.println("after super(FSM).postfire() curstate = "
+              //  + currentState.getName());
+            Transition lastChosenTr = _getLastChosenTransition();
+            if (lastChosenTr == null) {
+                throw new IllegalActionException(this,
+                    "Reached a transient state " +
+                    "without enabled transition.");
+            }
+            else {
+                //currentState = lastChosenTr.destinationState();
+                //_setCurrentState(currentState);
+                currentRefinements = currentState.getRefinement();
+            }
+        }
+        return currentState;            
     }
 
     ///////////////////////////////////////////////////////////////////
