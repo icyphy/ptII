@@ -141,7 +141,6 @@ public class GUIStringUtilities {
         // Parse the command into tokens
 	List commandList = new LinkedList();
 
-        System.out.println("GUIStringUtilities: " + inputString);
 	StreamTokenizer streamTokenizer =
 	    new StreamTokenizer(new StringReader(inputString));
 
