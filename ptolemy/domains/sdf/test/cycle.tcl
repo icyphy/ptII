@@ -58,8 +58,8 @@ test cycle-1.0 {Cycle Scheduling tests} {
     set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
     $director setScheduler $scheduler
 
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $toplevel Actor1]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $toplevel Actor2]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Actor1]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Actor2]
     set a3 [java::new ptolemy.domains.sdf.lib.Delay $toplevel Delay]
 
     set r1 [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]
@@ -67,10 +67,21 @@ test cycle-1.0 {Cycle Scheduling tests} {
     set r3 [$toplevel connect [java::field $a3 output] [java::field $a1 input] R3]
 
     $scheduler setValid false
-
+    
 #    set l1 [java::new ptolemy.kernel.util.StreamListener]
 #    $scheduler addDebugListener $l1
 
+    $toplevel initialize
     set sched1 [_testEnums schedule $scheduler]
     list $sched1
 } {{{Actor1 Actor2 Delay}}}
+
+test cycle-1.1 {Cycle execution tests} {
+    set iter [$director getAttribute iterations]
+    _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
+
+    set l1 [java::new ptolemy.kernel.util.StreamListener]
+    $director addDebugListener $l1
+    catch {set r1 [$manager run]} s1
+    list $s1 $r1
+} {} {This doesn't work...}
