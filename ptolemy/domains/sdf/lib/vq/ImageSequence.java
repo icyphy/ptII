@@ -80,7 +80,7 @@ public final class ImageSequence extends SDFAtomicActor {
         p = (Parameter) getAttribute("YImageSize");
         ysize = ((IntToken)p.getToken()).intValue();
 
-        // If we've already loaded all these fricking images, then don't load
+        // If we've already loaded all these images, then don't load
         // them again.
         if((_baseurl != null)&&(frames != null)) {
             return;
