@@ -207,7 +207,7 @@ public class Transition extends Transformer {
      *  transition.  Unmarked arcs are treated as weight 1.
      *
      *  To monitor the multiple links, we use the temporaryMarking
-     *  varialbe.  TemporaryMarking starts with the same marking as
+     *  variable.  TemporaryMarking starts with the same marking as
      *  the currentMarking.  Each time a link is seen, the
      *  temporaryMarking decreases the value of the weight on the
      *  link. If at the end, the temporaryMarking is less than 0, then
@@ -272,8 +272,8 @@ public class Transition extends Transformer {
                     }
                     if (place.getTemporaryMarking() <0) {
                         System.out.print("the place has not enough tokens");
-                        System.out.println(" Temporarytokens" +
-                                place.getTemporaryMarking());
+                        System.out.println(" Temporary tokens "
+                                + place.getTemporaryMarking());
                         return false;
                     }
                 }

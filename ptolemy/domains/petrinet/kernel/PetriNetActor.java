@@ -1,4 +1,4 @@
-/* An actor containing a PetriNet composite actor. */
+/* An actor containing a PetriNet composite actor.
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -106,15 +106,7 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-
 
 
     public Object clone(Workspace workspace)
@@ -122,7 +114,6 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
         PetriNetActor newObject = (PetriNetActor)super.clone(workspace);
         return newObject;
     }
-
 
 
     public ComponentRelation newRelation(String name)
@@ -319,20 +310,23 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
                 result.addAll(port.typeConstraintList());
             }
 
-            Iterator attrib = attributeList(Typeable.class).iterator();
-            while (attrib.hasNext()) {
-                Typeable att = (Typeable)attrib.next();
-                result.addAll(att.typeConstraintList());
+            Iterator attributes = attributeList(Typeable.class).iterator();
+            while (attributes.hasNext()) {
+                Typeable attribute = (Typeable)attributes.next();
+                result.addAll(attribute.typeConstraintList());
             }
 
             // Collect constraints from all transitions.
-            Iterator trs = relationList().iterator();
-            while (trs.hasNext()) {
-                Relation tr = (Relation)trs.next();
-                attrib = tr.attributeList(Typeable.class).iterator();
-                while (attrib.hasNext()) {
-                    Typeable att = (Typeable)attrib.next();
-                    result.addAll(att.typeConstraintList());
+            Iterator transitionRelations = relationList().iterator();
+            while (transitionRelations.hasNext()) {
+                Relation transitionRelation =
+                    (Relation)transitionRelations.next();
+                attributes =
+                    transitionRelation.attributeList(Typeable.class)
+                    .iterator();
+                while (attributes.hasNext()) {
+                    Typeable attribute = (Typeable)attributes.next();
+                    result.addAll(attribute.typeConstraintList());
                 }
             }
 
@@ -353,18 +347,6 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
         //    _removeInputVariables(inport);
         //}
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -388,10 +370,6 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
     // current state.
     private Map _currentConnectionMap = null;
 
-
     // Version of the reference to the initial state.
     private long _initialStateVersion = -1;
-
-
-
 }

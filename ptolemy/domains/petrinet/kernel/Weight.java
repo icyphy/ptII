@@ -75,7 +75,7 @@ public class Weight extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public varialbes                    //
+    ////                         public variables                    //
 
     public Parameter initialWeight;
 

@@ -44,7 +44,7 @@ Petri net receiver.
 */
 public class PetriNetReceiver extends Mailbox {
 
-    /** Construct a receiver with no cotainer.
+    /** Construct a receiver with no container.
      */
     public PetriNetReceiver() {
 	super();

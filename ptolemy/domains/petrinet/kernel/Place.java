@@ -1,6 +1,6 @@
 /* A Petri net place.
 
- Copyright (c) 1999 The Regents of the University of California.
+ Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -115,12 +115,12 @@ public class Place extends Transformer {
         _currentMarking = _currentMarking - i;
     }
 
-    /** decreaseTemporaryMarking() is to decrease the _tempoararyMarking by i */
+    /** decreaseTemporaryMarking() is to decrease the _temporaryMarking by i */
     public void decreaseTemporaryMarking(int i) {
         _temporaryMarking = _temporaryMarking - i;
     }
 
-    /** setTemporaryMarking() is to set the _tempoararyMarking to i */
+    /** setTemporaryMarking() is to set the _temporaryMarking to i */
     public void setTemporaryMarking(int i) {
         _temporaryMarking = i;
     }
