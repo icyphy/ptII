@@ -39,7 +39,7 @@ ME =		ptolemy/actor/gui
 # $PTII/configure looks for Jython and sets PTJYTHON_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJYTHON_DIR is empty.
 
-DIRS = 		doc jnlp style test $(PTJACL_DIR) $(PTJYTHON_DIR)
+DIRS = 		doc exec jnlp style test $(PTJACL_DIR) $(PTJYTHON_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
