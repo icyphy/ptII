@@ -61,12 +61,53 @@ public class TypeLattice {
      *  @return An integer.
      */
     public static int compare(Token token1, Token token2) {
-        if (token1==null || token2==null) {
-	    throw new IllegalArgumentException("TypeLattice.compare: " +
+        if (token1 == null || token2 == null) {
+	    throw new IllegalArgumentException(
+                    "TypeLattice.compare(Token, Token): " +
                     "one or both of the argument tokens is null: "
                     + " token1 = " + token1 + ", token2 = " + token2);
 	}
 	return compare(token1.getType(), token2.getType());
+    }
+
+    /** Compare the types of the two specified tokens in the type lattice.
+     *  This method returns one of ptolemy.graph.CPO.LOWER,
+     *  ptolemy.graph.CPO.SAME, ptolemy.graph.CPO.HIGHER,
+     *  ptolemy.graph.CPO.INCOMPARABLE, indicating the the type of the
+     *  first argument is lower than, equal to, higher than, or
+     *  incomparable with that of the second in the type hierarchy,
+     *  respectively.
+     *  @param token a Token.
+     *  @param type a Type.
+     *  @return An integer.
+     */
+    public static int compare(Token token, Type type) {
+        if (token == null) {
+	    throw new IllegalArgumentException(
+                    "TypeLattice.compare(Token, Type): " +
+                    "token argument is null");
+	}
+	return compare(token.getType(), type);
+    }
+
+    /** Compare the types of the two specified tokens in the type lattice.
+     *  This method returns one of ptolemy.graph.CPO.LOWER,
+     *  ptolemy.graph.CPO.SAME, ptolemy.graph.CPO.HIGHER,
+     *  ptolemy.graph.CPO.INCOMPARABLE, indicating the the type of the
+     *  first argument is lower than, equal to, higher than, or
+     *  incomparable with that of the second in the type hierarchy,
+     *  respectively.
+     *  @param token a Token.
+     *  @param type a Type.
+     *  @return An integer.
+     */
+    public static int compare(Type type, Token token) {
+        if (token == null) {
+	    throw new IllegalArgumentException(
+                    "TypeLattice.compare(Type, Token): " +
+                    "token argument is null");
+	}
+	return compare(type, token.getType());
     }
 
     /** Compare two types in the type lattice.
@@ -80,8 +121,9 @@ public class TypeLattice {
      *  @return An integer.
      */
     public static int compare(Type type1, Type type2) {
-        if (type1==null || type2==null) {
-	    throw new IllegalArgumentException("TypeLattice.compare: " +
+        if (type1 == null || type2 == null) {
+	    throw new IllegalArgumentException(
+                    "TypeLattice.compare(Type, Type): " +
                     "one or both of the argument types is null: "
                     + " type1 = " + type1 + ", type2 = " + type2);
 	}
