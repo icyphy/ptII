@@ -29,7 +29,7 @@
 
 # Variables
 MAJOR_VERSION = 	1.0
-MINOR_VERSION =		beta2
+MINOR_VERSION =
 
 VERSION=	$(MAJOR_VERSION)$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
@@ -124,7 +124,7 @@ rebuildptII: rebuild build_unixPtII
 
 # Codedoc directory for ptiny version
 codeDocPtiny:
-	(cd $(PTIIHOME)/doc; rm -rf codeDocPtiny;
+	(cd $(PTIIHOME)/doc; rm -rf codeDocPtiny; \
 	make codeDocPtiny/tree.html JAVASOUNDJSRCS="ptolemy.actor.lib.javasound ptolemy.media.javasound")
 
 clean:
@@ -909,8 +909,7 @@ installshield_app: installshield $(INSTALLSHIELD_APP) \
 			$(INSTALLSHIELD_DESIGNDOC) \
 			$(INSTALLSHIELD_EXPERIMENTAL) \
 			$(INSTALLSHIELD_PTINY) \
-			$(INSTALLSHIELD_PTINY_ONLY) \
-			$(INSTALLSHIELD_DOC)
+			$(INSTALLSHIELD_PTINY_ONLY) # $(INSTALLSHIELD_DOC)
 
 installshield:
 	if [ ! -d $@ ]; then \
@@ -926,7 +925,7 @@ clean_installshield:
 	$(INSTALLSHIELD_DOC) \
 	$(INSTALLSHIELD_EXPERIMENTAL) \
 	$(INSTALLSHIELD_PTINY) \
-	$(INSTALLSHIELD_PTINY_ONLY)
+	$(INSTALLSHIELD_PTINY_ONLY) 	
 
 $(INSTALLSHIELD_APP): $(PTII_FULL)
 	@echo "#"
@@ -1067,8 +1066,8 @@ $(INSTALLSHIELD_CODEDOC):
 $(INSTALLSHIELD_DOC):
 	@echo "#"
 	@echo "# Building $@"
-	 mkdir -p $@
-	 mv $(INSTALLSHIELD_APP)/doc $@/doc
+	 #mkdir -p $@
+	 #mv $(INSTALLSHIELD_APP)/doc $@/doc
 
 $(INSTALLSHIELD_EXPERIMENTAL):
 	@echo "#"
