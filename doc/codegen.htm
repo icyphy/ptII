@@ -204,6 +204,21 @@ Java optimization framework that we hope will have a better AST.
 <li> <a href="http://www.sable.mcgill.ca/soot/" target="_top"><CODE>http://www.sable.mcgill.ca/soot/</CODE></a> 
 </menu>
 
+<p>Soot operates on class files by applying a series of transformations
+that usually do compiler things like common subexpression elimination
+or loop unrolling.  We can add transformations that do things like
+flattening a model into one class for shallow code generation, or
+further processing the AST for deep code generation.
+
+<p>The advantage of Soot over Jeff Tsay's work is that by using soot, we
+do not have to parse java files, and the name resolution of objects is
+done.  In Jeff's code, we spent a lot of time trying to figure out the
+fully dot qualified name of an object who's base name was 'String'.
+
+<p>Jeff Tsay's work was a proof of concept demonstration on what
+could be done.  We hope that by using Soot, we can generate a stable system
+for use in a production environment.
+
 <h3><a name="disassemblers">Disassemblers</a></h3>
 Soot works with byte codes.  A Java decompiler or disassembler 
 can help with debugging
