@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Settable;
 /**
  * Base class for code generator helper.
  *
- * @author Ye Zhou, Edward A. Lee, Contributors: Gang Zhou, Christopher Brooks, Jackie Leung
+ * @author Ye Zhou, Edward A. Lee, Contributors: Gang Zhou, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 5.0
  * @Pt.ProposedRating Red (eal)

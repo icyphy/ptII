@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NamedObj;
 public class SDFDirector extends Director {
 
     /** Construct the code generator helper associated with the given SDFDirector.
-     *  @param component The associated componenet.
+     *  @param component The associated component.
      */
     public SDFDirector(ptolemy.domains.sdf.kernel.SDFDirector sdfDirector) {
         super(sdfDirector);
