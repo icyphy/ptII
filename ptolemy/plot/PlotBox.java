@@ -57,31 +57,34 @@ import java.lang.*;
  * </pre>
  * These commands provide a title and labels for the X (horizontal) and Y
  * (vertical) axes.
- * A <i>string</i> is simply a sequence of characters, possibly including spaces.
- * There is no need here to surround them with quotation marks, and in fact,
- * if you do, the quotation marks will be included in the labels.
+ * A <i>string</i> is simply a sequence of characters, possibly
+ * including spaces.  There is no need here to surround them with
+ * quotation marks, and in fact, if you do, the quotation marks will
+ * be included in the labels.
  * <p>
  * The ranges of the X and Y axes can be optionally given by commands like:
  * <pre>
  * XRange: <i>min</i>, <i>max</i>
  * YRange: <i>min</i>, <i>max</i>
  * </pre>
- * The arguments <i>min</i> and <i>max</i> are numbers, possibly including a sign
- * and a decimal point. If they are not specified, then the ranges are computed
- * automatically from the data.
+ * The arguments <i>min</i> and <i>max</i> are numbers, possibly
+ * including a sign and a decimal point. If they are not specified,
+ * then the ranges are computed automatically from the data.
  * <p>
- * The tick marks for the axes are usually computed automatically from the ranges.
- * Every attempt is made to choose reasonable positions for the tick marks regardless
- * of the data ranges (i.e. powers of ten multiplied by 1, 2, or 5 are used).
- * However, they can also be specified explicitly using commands like:
+ * The tick marks for the axes are usually computed automatically from
+ * the ranges.  Every attempt is made to choose reasonable positions
+ * for the tick marks regardless of the data ranges (i.e. powers of
+ * ten multiplied by 1, 2, or 5 are used).  However, they can also be
+ * specified explicitly using commands like:
  * <pre>
  * XTicks: <i>label position, label position, ...</i>
  * YTicks: <i>label position, label position, ...</i>
  * </pre>
- * A <i>label</i> is a string that must be surrounded by quotation marks if it
- * contains any spaces.  A <i>position</i> is a number giving the location of
- * the tick mark along the axis.  For example, a horizontal axis for a frequency
- * domain plot might have tick marks as follows:
+ * A <i>label</i> is a string that must be surrounded by quotation
+ * marks if it contains any spaces.  A <i>position</i> is a number
+ * giving the location of the tick mark along the axis.  For example,
+ * a horizontal axis for a frequency domain plot might have tick marks
+ * as follows:
  * <pre>
  * XTicks: -PI -3.14159, -PI/2 -1.570795, 0 0, PI/2 1.570795, PI 3.14159
  * </pre>
@@ -116,9 +119,9 @@ public class PlotBox extends Applet {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
     
-    /**
-     * Handle button presses to fill the plot.  This rescales so that the data
-     * that is currently plotted just fits.
+    /** 
+     * Handle button presses to fill the plot.  This rescales so that
+     * the data that is currently plotted just fits.
      */
     public boolean action (Event evt, Object arg) {
         if (evt.target == _fillButton) {
@@ -129,21 +132,22 @@ public class PlotBox extends Applet {
         }
     }
 
-    /**
-     * Add a legend (displayed at the upper right) for the specified data set
-     * with the specified string.
-     * Short strings generally fit better than long strings.
+    /** 
+     * Add a legend (displayed at the upper right) for the specified
+     * data set with the specified string.  Short strings generally
+     * fit better than long strings.
      */
     public void addLegend(int dataset, String legend) {
         _legendStrings.addElement(legend);
         _legendDatasets.addElement(new Integer(dataset));
     }
     
-    /**
-     * Specify a tick mark for the X axis.  The label given is placed on the axis
-     * at the position given by <i>position</i>. If this is called once or more,
-     * automatic generation of tick marks is disabled.  The tick mark will appear
-     * only if it is within the X range.
+    /** 
+     * Specify a tick mark for the X axis.  The label given is placed
+     * on the axis at the position given by <i>position</i>. If this
+     * is called once or more, automatic generation of tick marks is
+     * disabled.  The tick mark will appear only if it is within the X
+     * range.
      */
     public void addXTick (String label, double position) {
         if (_xticks == null) {
@@ -154,11 +158,12 @@ public class PlotBox extends Applet {
         _xticklabels.addElement(label);
     }
     
-    /**
-     * Specify a tick mark for the Y axis.  The label given is placed on the axis
-     * at the position given by <i>position</i>. If this is called once or more,
-     * automatic generation of tick marks is disabled.  The tick mark will appear
-     * only if it is within the Y range.
+    /** 
+     * Specify a tick mark for the Y axis.  The label given is placed
+     * on the axis at the position given by <i>position</i>. If this
+     * is called once or more, automatic generation of tick marks is
+     * disabled.  The tick mark will appear only if it is within the Y
+     * range.
      */
     public void addYTick (String label, double position) {
        	if (_yticks == null) {
@@ -169,28 +174,30 @@ public class PlotBox extends Applet {
         _yticklabels.addElement(label);
     }
     
-	/**
-	 * Draw the axes using the current range, label, and title information.
-	 * If the argument is true, clear the display before redrawing.
-	 */
-	public synchronized void drawPlot(boolean clearfirst) {
-	    if (graphics == null) {
-	        System.out.println("Attempt to draw axes without a Graphics object.");
-	        return;
+    /**
+      * Draw the axes using the current range, label, and title information.
+      * If the argument is true, clear the display before redrawing.
+      */
+    public synchronized void drawPlot(boolean clearfirst) {
+	if (graphics == null) {
+	    System.out.println("Attempt to draw axes without a Graphics object.");
+	    return;
 	    }
 	    
-	    // Give other threads a chance, so that hopefully things are up to date.
-	    Thread.yield();
+	// Give other threads a chance, so that hopefully things are
+	// up to date.
+	Thread.yield();
 	    
         // Find the width and height of the total drawing area, and clear it.
         Rectangle drawRect = bounds();
         graphics.setPaintMode();
         if (clearfirst) {
-            graphics.clearRect(drawRect.x, drawRect.y, drawRect.width, drawRect.height);
+            graphics.clearRect(drawRect.x, drawRect.y,
+			       drawRect.width, drawRect.height);
         }
         
-	    // For use by all text displays below.
-	    // FIXME - consolidate for efficiency.
+	// For use by all text displays below.
+	// FIXME - consolidate for efficiency.
         graphics.setFont(_titlefont);
         FontMetrics tfm = graphics.getFontMetrics();
         graphics.setFont(_superscriptfont);
@@ -198,7 +205,7 @@ public class PlotBox extends Applet {
         graphics.setFont(_labelfont);
         FontMetrics lfm = graphics.getFontMetrics();
 
-	    // If an error message has been set, display it and return.
+	// If an error message has been set, display it and return.
         if (_errorMsg != null) {
             int fheight = lfm.getHeight() + 2;
             int msgy = fheight;
@@ -300,10 +307,12 @@ public class PlotBox extends Applet {
                 // NOTE: The following clever solution doesn't always work:
                 String yfull = Double.toString(Math.floor(ypos*1000.0+0.5)*0.001);
                 // ... so we have to patch up the solution...
-                // This method just copies digits up to the third after the decimal point.
-                // However, for numbers near zero, if the above yields something in
-                // scientific notation, this fails too.  We really need printf!!
-                // FIXME: add printf when java people finally realize they have to have it.
+                // This method just copies digits up to the third
+                // after the decimal point.  However, for numbers near
+                // zero, if the above yields something in scientific
+                // notation, this fails too.  We really need printf!!
+                // FIXME: add printf when java people finally realize
+                // they have to have it.
                 int point = yfull.indexOf('.');
                 if (point < 0) {
                     ylabels[ind] = yfull;
@@ -362,7 +371,8 @@ public class PlotBox extends Applet {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
                 int yCoord1 = lry - (int)((ypos-_yMin)*_yscale);
-                // The lowest label is shifted up slightly to avoid colliding with x labels.
+                // The lowest label is shifted up slightly to avoid
+                // colliding with x labels.
                 int offset = 0;
                 if (ind > 0) offset = halflabelheight;
                 graphics.drawLine(ulx,yCoord1,xCoord1,yCoord1);
@@ -373,15 +383,17 @@ public class PlotBox extends Applet {
                     graphics.setColor(Color.black);
                 }
                 // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(ylabels[ind], ulx-ylabwidth[ind++]-3, yCoord1+offset);
+                graphics.drawString(ylabels[ind],
+				    ulx-ylabwidth[ind++]-3, yCoord1+offset);
             }
         
             // Draw scaling annotation for y axis.
             if (_yExp != 0) {
                 graphics.drawString("x10", 2, titley);
                 graphics.setFont(_superscriptfont);
-                graphics.drawString(Integer.toString(_yExp), lfm.stringWidth("x10") + 2, 
-                       titley-halflabelheight);
+                graphics.drawString(Integer.toString(_yExp),
+				    lfm.stringWidth("x10") + 2, 
+				    titley-halflabelheight);
                 graphics.setFont(_labelfont);
             }
         } else {
@@ -403,7 +415,8 @@ public class PlotBox extends Applet {
                     graphics.setColor(Color.black);
                 }
                 // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(label, ulx - lfm.stringWidth(label) - 3, yCoord1+offset);
+                graphics.drawString(label, ulx - lfm.stringWidth(label) - 3,
+				    yCoord1+offset);
             }
         }
         
@@ -427,10 +440,11 @@ public class PlotBox extends Applet {
             // NOTE: Following disables first tick.  Not a good idea?
             // if (xStart == xMin) xStart+=xStep;
         
-            // Label the x axis.
-            // The labels are quantized so that they don't have excess resolution.
+            // Label the x axis.  The labels are quantized so that
+            // they don't have excess resolution.
             for (double xpos=xStart; xpos <= _xMax; xpos += xStep) {
-                String _xlabel = Double.toString(Math.floor(xpos*1000.0+0.5)*0.001);
+                String _xlabel = Double.toString(Math.floor(xpos*1000.0+0.5)
+						 * 0.001);
                 xCoord1 = ulx + (int)((xpos-_xMin)*_xscale);
                 graphics.drawLine(xCoord1,uly,xCoord1,yCoord1);
                 graphics.drawLine(xCoord1,lry,xCoord1,yCoord2);
@@ -467,7 +481,8 @@ public class PlotBox extends Applet {
         
         ///////////////////// Draw title and axis labels now.
         
-    	// Center the title and X label over the plotting region, not the window.
+    	// Center the title and X label over the plotting region, not
+    	// the window.
         graphics.setColor(Color.black);
         
         if (_title != null) {
@@ -702,12 +717,13 @@ public class PlotBox extends Applet {
         return handled;
     }
 
-	/**
-	 * Paint the applet contents, which in this base class is only the axes.
-	 */
-	public void paint(Graphics g) {
-	    super.paint(g);
-	    drawPlot(true);
+    /** 
+      * Paint the applet contents, which in this base class is
+      * only the axes.
+      */
+    public void paint(Graphics g) {
+	super.paint(g);
+	drawPlot(true);
     }
     
     /** Set the binary flag to true if we are reading pxgraph format binar
@@ -742,27 +758,30 @@ public class PlotBox extends Applet {
     }
     
 
-    /**
-     * Set the label for the X (horizontal) axis.  The label will appear on the subsequent
-     * call to <code>paint()</code> or <code>drawPlot()</code>.
+    /** 
+     * Set the label for the X (horizontal) axis.  The label will
+     * appear on the subsequent call to <code>paint()</code> or
+     * <code>drawPlot()</code>.
      */
     public void setXLabel (String label) {
         this._xlabel = label;
     }
 
-    /**
-     * Set the label for the Y (vertical) axis.  The label will appear on the subsequent
-     * call to <code>paint()</code> or <code>drawPlot()</code>.
+    /** 
+     * Set the label for the Y (vertical) axis.  The label will
+     * appear on the subsequent call to <code>paint()</code> or
+     * <code>drawPlot()</code>.
      */
     public void setYLabel (String label) {
         this._ylabel = label;
     }
 
-    /**
-     * Set the X (horizontal) range of the plot.  If this is not done explicitly,
-     * then the range is computed automatically from data available when <code>paint()</code>
-     * or <code>drawPlot()</code> are called.
-     * If min and max are identical, then the range is arbitrarily spread by 1.
+    /** 
+     * Set the X (horizontal) range of the plot.  If this is not done
+     * explicitly, then the range is computed automatically from data
+     * available when <code>paint()</code> or <code>drawPlot()</code>
+     * are called.  If min and max are identical, then the range is
+     * arbitrarily spread by 1.
      */
     public void setXRange (double min, double max) {
         _setXRange(min,max);
@@ -770,10 +789,11 @@ public class PlotBox extends Applet {
     }
 
     /**
-     * Set the Y (vertical) range of the plot.  If this is not done explicitly,
-     * then the range is computed automatically from data available when <code>paint()</code>
-     * or <code>drawPlot()</code> are called.
-     * If min and max are identical, then the range is arbitrarily spread by 0.1.
+     * Set the Y (vertical) range of the plot.  If this is not done
+     * explicitly, then the range is computed automatically from data
+     * available when <code>paint()</code> or <code>drawPlot()</code>
+     * are called.  If min and max are identical, then the range is
+     * arbitrarily spread by 0.1.
      */
     public void setYRange (double min, double max) {
         _setYRange(min,max);
@@ -793,18 +813,20 @@ public class PlotBox extends Applet {
     }
 
     /**
-     * Put a mark corresponding to the specified dataset at the specified
-     * x and y position.
-     * In this base class, a point is a filled circle 6 pixels across.
-     * Note that marks greater than about 6 pixels in size will not
-     * look very good since they will overlap axis labels and may not fit well
-     * in the legend.  The <i>connected</i> argument is ignored, but in derived classes,
-     * it specifies whether the point should be connected by a line to previously
-     * drawn points.  The <i>clip</i> argument, if <code>true</code>, states that
-     * the point should not be drawn if it is out of range.  The return value
-     * indicates whether the point is drawn.
+     * Put a mark corresponding to the specified dataset at the
+     * specified x and y position.  In this base class, a point is a
+     * filled circle 6 pixels across.  Note that marks greater than
+     * about 6 pixels in size will not look very good since they will
+     * overlap axis labels and may not fit well in the legend.  The
+     * <i>connected</i> argument is ignored, but in derived classes,
+     * it specifies whether the point should be connected by a line to
+     * previously drawn points.  The <i>clip</i> argument, if
+     * <code>true</code>, states that the point should not be drawn if
+     * it is out of range.  The return value indicates whether the
+     * point is drawn.
      */
-    protected boolean drawPoint(int dataset, int xpos, int ypos, boolean connected, boolean clip) {
+    protected boolean drawPoint(int dataset, int xpos, int ypos,
+				boolean connected, boolean clip) {
         boolean pointinside = ypos <= lry && ypos >= uly && xpos <= lrx && xpos >= ulx;
         if (!pointinside && clip) {return false;}
         // Points are only distinguished up to 10 data sets.
@@ -823,8 +845,8 @@ public class PlotBox extends Applet {
      * Everything else is ignored. Return true if the line is recognized.
      */
     public boolean parseLine (String line) {
-        // Parse commands in the input file, ignoring lines with syntax errors or
-        // unrecognized commands.
+        // Parse commands in the input file, ignoring lines with
+        // syntax errors or unrecognized commands.
         if (line.startsWith("#")) {
             // comment character
             return true;
