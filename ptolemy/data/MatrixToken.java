@@ -37,7 +37,7 @@ The derived classes should override the clone() method to do a deep copy
 of the token.
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 */
 public abstract class MatrixToken extends Token {
 

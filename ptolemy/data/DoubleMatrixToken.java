@@ -33,7 +33,7 @@ package pt.data;
 A token that contains a reference to a 2-D double array.
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 */
 public class DoubleMatrixToken extends MatrixToken {
 

@@ -39,7 +39,7 @@ import java.text.NumberFormat;
  * @author Yuhong Xiong, Neil Smyth
  * @see pt.data.Token
  * @see java.text.NumberFormat
- * $Id$
+ * @version $Id$
  */
 public class DoubleToken extends ScalarToken {
 

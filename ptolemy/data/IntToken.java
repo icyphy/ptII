@@ -36,7 +36,7 @@ import pt.graph.CPO;
  * A token that contains an integer number.
  *
  * @author Neil Smyth, Yuhong Xiong
- * $Id$
+ * @version $Id$
  */
 public class IntToken extends ScalarToken {
 

@@ -35,7 +35,7 @@ import pt.kernel.util.IllegalActionException;
  * A token that contains a boolean variable.
  *
  * @author Neil Smyth
- * $Id$
+ * @version $Id$
 */
 
 public class BooleanToken extends Token {
