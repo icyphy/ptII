@@ -6,619 +6,1072 @@
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h1>Code Generation</h1>
-<h2>Contents</h2>
+<html>
 
-<ul>
-<li><a href="#overview">Overview</a>
-<li><a href="#deep">Deep Code Generation</a>
- <ul>
- <li><a href="#deepDemo">Deep Code Generation Demonstration</a>
- <li><a href="#treeShaking">Tree Shaking</a>
- <li><a href="#gcj">GCJ</a>
- </ul>
-<li><a href="#shallow">Shallow Code Generation</a>
- <ul>
- <li><a href="#shallowDemo">Shallow Code Generation Demonstration</a>
- </ul>
-<li><a href="#applet">Applet Code Generation</a>
- <ul>
- <li><a href="#appletDemo">Applet Code Generation Demonstration</a>
- </ul>
-<li><a href="#interpreted">Interpreted Code Generation</a>
-<li><a href="#ui">The Code Generator User Interface</a>
-<li><a href="#history">Code Generation History</a>
-<li><a href="#soot">Soot</a>
-<li><a href="#future">Future Plans</a>
-<li><a href="#resources">Resources</a>
-</ul>
+<h2>
+  <a name="149600"> </a>4  Copernicus
+</h2>
+</div>
+This is an HTML version of a chapter from the
+<a href="design/main.htm">Ptolemy II Design Document"</a>
+<p><a name="161048"> </a>Authors: Steve Neuendorffer<br>		Christopher Brooks<br>
 
-<h2><a name="overview">Overview</a></h2>
-<p>
-Ptolemy II includes the very beginnings a code generation framework.
-Currently, there are four types of code generators:
 
-<dl>
-<dt> <a href="#deep">deep</a>
-<dd> Reads in a .xml model and generates optimized .class files that
-have few dependencies on the Ptolemy II packages.
+<a name="166235"> </a>		Ankush Varma<br>
 
-<dt> <a href="#shallow">shallow</a>
-<dd> Reads in a .xml file and generates a single
-unoptimized .class file that has many dependencies on the Ptolemy II
-packages.
 
-<dt> <a href="#applet">applet</a>
-<dd> Reads in a .xml file and generates files suitable for
-putting a model up on a web page as an applet.
+<a name="166236"> </a>		Shuvra S. Bhattacharyya<br>
 
-<dt> <a href="#interpreted">interpreted</a>
-<dd> Reads in a .xml file and writes out the .xml file.
-The interpreted code generator does very little code generation
-and is used primary to compare the other code generators with
-the standard Ptolemy II interpreted mode that is used when
-the user does <code>View</code> -&gt; <code>Run</code>.
-</dl>
+
+<h3>
+  <a name="161042"> </a>4.1   Introduction
+</h3>
+
+
+<a name="164034"> </a>The copernicus package is an infrastructure for building code generators for Ptolemy II models. The basic design goal was to provide a common interface to different code generators and consolidate some of the basic argument handling and default parameters. Several different code generators of varying complexity have been implemented. There is also quite a bit of testing infrastructure for integrating code generation with the nightly build system.<br>
+
 
 <p>
-The implementation here should be viewed as highly preliminary.
-<font color="red">It is likely to fail on all but a few simple test
-cases.</font>  It is at the stage of being a concept demonstration
-only.  We expect it to mature considerably in the near future.
-<p>The following <a name="limitations">limitations</a>
-apply to all of the code generators:
-<ul>
-
-<li> The primary interface to the code generator is through
-the makefiles and the 
-<a href="codeDoc/ptolemy/copernicus/kernel/Copernicus.html"><code>$PTII/ptolemy/copernicus/kernel/Copernicus.java</code></a> class.  The
-user interface is highly preliminary, and its limitations
-are discussed in
-the <a href="#userInterfaceLimitations">User Interface Limitations</a>
-section.
-
-<li> Code generation can fail if there are spaces in <CODE>$PTII</CODE>.
-The problem is that the Soot option parser users StringTokenizer,
-which does not work will with pathnames that have spaces.
-
-<li> The limitations for the individual code generators are 
-discussed below:
-  <ul>
-  <li> <a href="#deepLimitations">Deep Limitations</a>
-  <li> <a href="#shallowLimitations">Shallow Limitations</a>
-  <li> <a href="#appletLimitations">Applet Limitations</a>
-  <li> <a href="#interpretedLimitations">Interpreted Limitations</a>
-  </ul>
-</ul>
-
-<h2><a name="deep">Deep Code Generation</a></h2>
-Deep code generation is by the most interesting of the code generators
-so we cover it first.  Stephen Neuendorffer is the primary author of
-the deep code generator.
-
- <p>The Ptolemy II code generation system parses Ptolemy II actor
-code, generates an Abstract Syntax Tree (AST), optimizes the tree
-using standard and custom compiler optimization techniques and then
-generates .class files that use very few of the Ptolemy II java
-classes.  This approach is different from the Ptolemy Classic code
-generation approach, where each actor contains target specific code.
-
-<p>Most of the code generator uses <a href="#soot">Soot</a> to analyze a
-model and generate a set of Java .class files.
-
-<p>Our current deep code generator generates Java .class files, so the
-user interface refers to the deep code generator as the
-<code>java</code> code generator.  The deep code generator is
-implemented in the <code>$PTII/ptolemy/copernicus/<b>java</b></code>
-directory.  Other deep code generators could generate code in
-different backend languages.
-
-<p>Professor Shuvra S. Bhattacharyya of the University of Maryland is
-working on C code generation for Ptolemy II Models using Soot, but
-his work is still under development and not being released at this time.
-For details about the status of the C code generation effort, see
-the reports on the Ptolemy II website at
-<a href="http://ptolemy.eecs.berkeley.edu/projects" target="_top"><code>http://ptolemy.eecs.berkeley.edu/projects</code></a>
-
-<p><a name="deepLimitations">Deep code generation has the following
-limitations:</a>
-<ul>
-<li> Deep code generation still requires the <code>ptolemy.math</code>
-and <code>ptolemy.data</code> packages.
-
-Our hope is to eventually implement token unboxing so that the only
-the <code>ptolemy.math</code> package is required at runtime.
-
-<li> Deep code generation only works on flat SDF models.  Composite SDF
-models and domains other than SDF are not supported.
-
-<li> In Ptolemy II 3.0.x, the deep code generator does not work on
-actors that have a FileParameter parameter.  Such actors
-include ExpressionReader, FileReader, LineReader, LineWriter.
+  <a name="163738"> </a>The basic infrastructure is implemented in the copernicus.kernel package. The Copernicus class contains a main function suitable for invocation from the command line. The GeneratorAttribute class represents code generation parameters that can be persistently added to a model for unusual configurations of a code generator. The KernelMain class is a base class from which classes for various code generators can be derived. Instances of these subclasses are instantiated and executed in a code generation job. 
+</p>
 
 
-<li> Deep code generation consumes quite a bit of memory.  We usually exec
-the deep code generator as a separate process with the 
-<CODE>-Xmx256</CODE> java command line argument, which sets the
-initial heap size to 256Mb.  Deep code generation may not work on 
-a on memory-limited platforms.
- <p>Currently, in Ptolemy II, it is not possible to generate custom code 
-for an individual actor using a codeblock.
+<p>
+  <a name="164042"> </a>The Copernicus class itself is invoked to begin code generation from a model. If invoked from the command line, it reads command line arguments to determine various code generation options and an MoML file to load a model from. If invoked via various static methods, code generation options are assumed to be passed in through a GeneratorAttribute. Default code generation options are specified in the Generator.xml file. One of the code generation parameters determines the code generator to execute. The class representing the code generator is loaded through reflection and invoked through the KernelMain base class.
+</p>
 
 
-<li> If you run deep code generation of a model that uses a plot,
-then a plot will be displayed while the deep code generator is run.
-This is because the code generator calls initialize() and the plot
-actors render the plotter during initialize().
+<p>
+  <a name="164047"> </a>The KernelMain base class provides default behavior for most code generators. It performs static analysis, such as type resolution and scheduling by invoking the Manager.preinitalizeAndResolveTypes() method and then passes control to the specific code generator.
+</p>
 
 
-<li> The deep code generator does not handle plot configurations,
-so if your model has a custom configuration for a plot, then
-that information is lost. 
-
-<li> Deep code generation does not work under Mac OSX because
-the deep code generator cannot find the Java <CODE>rt.jar</CODE>
-
-</ul>
+<h4>
+  <a name="164113"> </a>4.1.1   Default options
+</h4>
 
 
-<p><a name="deepDemo">Below is a simple demonstration:</a>
- <p>Note that codegen will not work in an applet, you must
-download the Web Start version, or the Windows Installer version
-or rebuild from source.
-<ol>
-<li> Open up the
-<a href="../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">SDF Orthogonal Communication Model</a>
-
-<li> Select View -&gt; Code Generator
-
-<li> Hit the Generate Button
-
-<li> The code generator will invoke an separate java process that
-generates code in 
-<CODE>$PTII/ptolemy/copernicus/<b>java</b>/cg/OrthogonalCom</CODE>
-<br>The deep code generator takes about 90 seconds to generate code.
-
-<li> The code generators print out statistics about how long
-the run took and how much memory was consumed.  A typical run will
-look like:
-<pre>
-OrthogonalCom: Stats before execution:    0 ms. Memory: 1984K Free: 1805K (91%)
-0
-1
-0
-<i>etc.</i>
-0
-1
-OrthogonalCom: Execution stats:           280 ms. Memory: 1984K Free: 1741K (88%)
-OrthogonalCom: After Garbage Collection:  1392 ms. Memory: 1984K Free: 1804K (91%)
-OrthogonalCom: construction size:         1984K - 1805K = 179K
-OrthogonalCom: model alloc. while exec. : 1805K - 1804K = 1K
-OrthogonalCom: model alloc. runtime data: 1804K - 1741K = 63K
-280 ms. Memory: 1984K Free: 1741K (88%) Stat: 179K StatRT: 1K DynRT: 63K
-All Done.
-</pre>
-
-The last line is the most significant, it indicates that the run
-
-<ul>
- <li> took 280 milliseconds
- <li> Consumed at most 1984K of memory
- <li> Before garbage collection at the end of the run, there was
- 1741K or 88% memory free.  That means that before
- garbage collection, the model consumed 243K (1984K-1741K) of memory.
- <li> The remaining three numbers are somewhat more subjective:
-  <ul>
-  <li> 179K of Memory was allocated during construction of the model
-  <li> 1K was allocated while the model was running
-  <li> 63K of data that was garbage collected.
-  </ul>
-</ul>
-<li>To run the generated code again, click on the <code>compile</code>
-radio button and turn it off, then hit the <code>Generate</code>
-button.  This will show and run the generated code without rerunning
-the 90 second long generator process.
-
-</ol>
-
-Things to note:
-<ul>
-<li> After a model is run, Ptolemy II prints out the amount of time
-and memory the model consumed.  Usually, this output goes to standard
-out, which could be hidden if Vergil was started by clicking on an
-icon.  The <code>interpreted</code> code generator runs a model
-in the usual Ptolemy II interpreted mode, but displays the 
-runtime statistics in the code generator tableau window.  To
-run the interpreted code generator:
- <ol>
- <li>Go to the code generator window and change <code>codeGenerator</code>
- to <code>interpreted</code></li>
- <li> Hit the Generate Button</li>
- </ol>
-</li>
-
-<li> Deep codegen shows a more significant improvement in speed when
-the model is run for a larger number of iterations.
-
-To increase the number of iterations in the model:
-<ol>
-<li>Close the code generator window and go to the
-graph editor</li>
-<li> Click on the green SDF Director Icon and change the number
-of iterations from 20 to 2000.</li>
-<li> Save the model with File -&gt; Save</li>
-<li> Bring up the code generator with
-View -&gt; Code Generator -&gt; Generate.</li>
-<li> Run the model using the interpreted code generator
-by going to the code generator window and change <code>codeGenerator</code>
- to <code>interpreted</code></li>
-<li> Hit the Generate Button</li>
-<li> You should see times like:
-<pre>
-3254 ms. Memory: 1984K Free: 1412K (71%)
-OrthogonalCom: Execution stats:           5097 ms. Memory: 1984K Free: 1411K (71%)
-OrthogonalCom: After Garbage Collection:  6299 ms. Memory: 1984K Free: 1519K (77%)
-OrthogonalCom: construction size:         1984K - 1104K = 880K
-OrthogonalCom: model alloc. while exec. : 1104K - 1519K = -415K
-OrthogonalCom: model alloc. runtime data: 1519K - 1411K = 108K
-5097 ms. Memory: 1984K Free: 1411K (71%) Stat: 880K StatRT: -415K DynRT: 108
-</pre>
-</li>
-<li> Change the <code>codeGenerator</code> to <code>java</code></li>
-<li> Hit the Generate Button</li>
-<li> You should see statistics like
-<pre>
-OrthogonalCom: Execution stats:           941 ms. Memory: 1984K Free: 1494K (75%)
-OrthogonalCom: After Garbage Collection:  2103 ms. Memory: 1984K Free: 1804K (91%)
-OrthogonalCom: construction size:         1984K - 1805K = 179K
-OrthogonalCom: model alloc. while exec. : 1805K - 1804K = 1K
-OrthogonalCom: model alloc. runtime data: 1804K - 1494K = 310K
-941 ms. Memory: 1984K Free: 1494K (75%) Stat: 179K StatRT: 1K DynRT: 310K
-</pre>
-</li>
-</ol>
-Comparing the run times for 2000 iterations, we can see that the
-interpreted version took 5097 ms. compared with the deep code generation
-version taking 941 ms, so in in this case, deep code generation was
-roughly 5 times faster than the regular interpreted version.
-
-<li> Soot produces .class files, and we can run a disassembler
-convert the .class files back to .java files.  Unfortunately, there
-are various reasons that the resulting .java files will not compile.
-See the <a href="#disassemblers">Disassemblers</a> section for
-information about disassemblers.</li>
-
-</ul>
-
-<h3><a name="treeShaking">Tree Shaking</a></h3>
-Tree shaking is a form of optimization where a system is run
-and unused code is removed.  Tree shaking is one way of
-reducing the code foot print, which is especially important
-in embedded applications with small amounts of memory.
-
-<p>The deep code generator includes a prototype tree shaker that
-is implemented using a shell script at
-<code>$PTII/util/testsuite/treeshake</code>.
-(This script requires shell utilities, so it will probably
-only work when Ptolemy II was built from scratch, it is not likely
-to work under Web Start.)
-<p>The treeshaker runs the model using
-<code>java -v</code> to generate a list of classes, creates a jar
-file using those classes, and then runs the model using the new jar file.
-
-<p>The <code>treeShakeAll</code> rule in 
-<code>$PTII/ptolemy/copernicus/java/makefile</code> runs 
-<code>treeshake</code>:
-<ul>
-<li> on the standard .xml file, which is similar to using the
-<code>interpreted</code> code generator
-<li> The various intermediate stages of the deep compiler
-<li> The final output of the deep compiler
-</ul>
-At the end, the <code>treeShakeAll</code> rule prints out the sizes
-of the jar files.  For the OrthogonalCom demo, the standard
-interpreted run treeshakes down to a 570k jar file, and the final
-output is a 283k jar file.
-
-<p>The 283k jar file uncompresses in to about 657k of files, distributed
-as follows:
-<pre>
-1	ptolemy/actor/lib
-1	ptolemy/actor
-37	ptolemy/copernicus/java/cg/OrthogonalCom
-37	ptolemy/copernicus/java/cg
-37	ptolemy/copernicus/java
-37	ptolemy/copernicus
-153	ptolemy/data/expr
-90	ptolemy/data/type
-399	ptolemy/data
-59	ptolemy/graph
-19	ptolemy/kernel/util
-19	ptolemy/kernel
-142	ptolemy/math
-657	ptolemy
-</pre>
-
-Once we have token unboxing, we should be able to eliminate the ptolemy/data 
-packages, which account for 399k of the 657k.
-
-<p>The treeshaking script performs tree shaking on a per class basis,
-where if one method from a class is reported in the <code>java -v</code>
-output, then the entire class is included.
-
-Another optimization would be to do tree shaking on a per
-method basis, which would result in further reductions, especially
-in the ptolemy/math package.
-
-<h3><a name="gcj">GCJ</a></h3>
-
-GCJ is the GNU compiler for Java.  GCJ reads in .java or .class files
-and generates native code.  Building GCJ is a fairly complex task,
-and as of 1/02, GCJ would not build under Cygwin because the Windows file
-system is badly designed and case insensitive but case preserving.
-
-<p>Under Solaris 8 with GCJ installed in <code>/users/ptII/vendors/gcj</code>,
-we were able to build a native OrthogonalCom
-executable that ran about 20% faster
-than the regular deep code generation output:
-
-<pre>
-set path = ( /users/ptII/vendors/gcj/bin $path)
-setenv LD_LIBRARY_PATH /users/ptII/vendors/gcj/lib:/usr/local/lib
-cd $PTII/ptolemy/copernicus
-make gcj
-</pre>
-GCJ support in Ptolemy II is extremely experimental and not likely to work.
+<a name="164120"> </a>Most code generators share common options. The following options are defined by default in generator.xml.<br>
 
 
-<h2><a name="shallow">Shallow Code Generation</a></h2>
-
-Shallow code generation converts a model that has been specified in
-MoML (typically using Vergil) into a Java class definition.  This class
-definition can be used in an applet, which results in faster download
-times because less of the Ptolemy II infrastructure is required
-to execute it. Shallow code generation uses components built into
-the Ptolemy II tree.  
-
-<p>We primarily use shallow code generation as a test bed
-for the code generation facility itself.  
-
-<p><a name="shallowDemo">Below is a simple demonstration:</a>
-<ol>
-<li> Open up the
-<a
-href="../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">SDF
-Orthogonal Communication Model</a>
-
-<li> Select View -&gt; Code Generator
-
-<li> Change the <code>CodeGenerator</code> combo box from
-<code>java</code> to <code>shallow</code>
-<li> Hit the Generate Button
-
-<li> The code generator will invoke an separate java process that
-generates code in 
-<CODE>$PTII/ptolemy/copernicus/<b>shallow</b>/cg/OrthogonalCom</CODE>
-<br>If you do not have write permission to the Ptolemy II tree, then
-the generated code will end up in the directory listed in the
-<code>ptIIUserDirectory</code> parameter.
-
-</ol>
-
-Things to note:
-<ul>
-
-<li> When the MoML version Orthogonal Communication model is run
-through shallow code generation and a .class file is created, then
-the .class file runs faster than the original MoML file because
-the MoML parser is not invoked.  
-<p>For 20 iterations, the shallow code generation print out the following:
-<pre>
-361 ms. Memory: 1984K Free: 1145K (58%)
-</pre>
-Which is almost half the 661 ms. that the interpreted version ran for
-</ul>
-
-<h3><a name="shallowLimitations">Shallow Limitations</a></h3>
-The shallow code generator does not have any shallow specific limitations.
+<p>
+  <a name="164123"> </a>codeGenerator: The code generator to run.
+</p>
 
 
-<h2><a name="applet">Applet Code Generation</a></h2>
+<p>
+  <a name="164127"> </a>
+</p>
 
-<p>The Applet code generator takes a model and creates HTML files for 
-use as a web based applet.  
 
-<p>The applet generator uses the soot framework, though in principle a
-shell script could be used instead.  The applet generator reads
-template files that end in <CODE>.in</CODE> from
-<CODE>$PTII/ptolemy/copernicus/applet</CODE>, substitutes keywords and
-writes out the files in the destination directory.  Users may modify
-the template files to match their local setup
+<p>
+  <a name="164128"> </a>codeGeneratorClassName: The class that is instantiated to execute a particular code generator.  This class is expected to be a subclass of ptolemy.copernicus.kernel.KernelMain.
+</p>
 
- <p>Making an applet available via the web is somewhat complex because
-the Java Plugin has two sections, one for Netscape, the other for
-Internet Explorer, so changes to the htm files must be replicated in 
-both sections.  The codebase and the location of the jar files also add
-to the problems.
 
-<p>If a model is named <CODE>MyModel</CODE>, and the user selects
-<CODE>foo.bar</CODE> as the package, then saving the model as an
-applet will create a directory called <CODE>$PTII/foo/bar/MyModel</CODE>
-and create the following files for that model:
+<p>
+  <a name="164134"> </a>
+</p>
+
+
+<p>
+  <a name="164135"> </a>compile: If true, compile the generated code.  The default is true.
+</p>
+
+
+<p>
+  <a name="164139"> </a>
+</p>
+
+
+<p>
+  <a name="164140"> </a>show: If true, then show the generated code.  The default is true.
+</p>
+
+
+<p>
+  <a name="164144"> </a>
+</p>
+
+
+<p>
+  <a name="164145"> </a>run:  If true, then run the generated code.  The default is true.
+</p>
+
+
+<p>
+  <a name="164149"> </a>
+</p>
+
+
+<p>
+  <a name="164150"> </a>ptII: The location of the Ptolemy II classes.  The default is the value of the ptolemy.ptII.dir Java system property
+</p>
+
+
+<p>
+  <a name="164155"> </a>
+</p>
+
+
+<p>
+  <a name="164156"> </a>ptIIUserDirectory: The top level directory to write the code in. The default is the value of the ptII parameter. The code will appear in 'ptIIUserDirectory/targetpath'.
+</p>
+
+
+<p>
+  <a name="164162"> </a>
+</p>
+
+
+<p>
+  <a name="164163"> </a>targetPackage: The package to generate code in. The default is the model name
+</p>
+
+
+<p>
+  <a name="164167"> </a>
+</p>
+
+
+<p>
+  <a name="164168"> </a>targetPath: The path relative to the ptIIUserDirectory to generate code in. The default is the "cg" subdirectory of the particular code generator.
+</p>
+
+
+<p>
+  <a name="164316"> </a>
+</p>
+
+
+<p>
+  <a name="164269"> </a>outputDirectory: The directory that code will be generated in. By default this is the targetPath parameter appended to the ptIIUserDirectory path.
+</p>
+
+
+<p>
+  <a name="164274"> </a>
+</p>
+
+
+<p>
+  <a name="164275"> </a>modelPath: The path to the model, including the .xml extension. The modelPath parameter is converted to a URL internally before use.
+</p>
+
+
+<p>
+  <a name="164299"> </a>
+</p>
+
+
+<p>
+  <a name="164300"> </a>compileOptions: User supplied arguments to be passed to the code generator.  Defaults to the empty string.
+</p>
+
+
+<p>
+  <a name="164305"> </a>
+</p>
+
+
+<p>
+  <a name="164121"> </a>javaClassPath: The Java class path, converted to a string.
+</p>
+
+
+<p>
+  <a name="164417"> </a>
+</p>
+
+
+<p>
+  <a name="164362"> </a>runCommandTemplateFile: The template file that contains the command to run the generated code.
+</p>
+
+
+<p>
+  <a name="164367"> </a>
+</p>
+
+
+<p>
+  <a name="164368"> </a>runOptions: User supplied arguments to be passed to the command that will run the generated code. Defaults to the empty string.
+</p>
+
+
+<p>
+  <a name="164373"> </a>
+</p>
+
+
+<p>
+  <a name="164374"> </a>sootDir: The directory that contains the soot jar files. Defaults to the value of the ptII parameter  + "/lib"
+</p>
+
+
+<p>
+  <a name="164379"> </a>
+</p>
+
+
+<p>
+  <a name="164380"> </a>sootClasses: The location of sootclasses.jar, jasminclasses.jar and the Java system jar (usually rt.jar).  The necessaryClassPath parameter may end up duplicating some of the elements of this parameter.
+</p>
+
+
+<p>
+  <a name="164462"> </a>
+</p>
+
+
+<p>
+  <a name="164463"> </a>watchDogTimeout: The number of milliseconds that code generation will run for. Defaults to 720000, which is 12 minutes. The watchdog is used to prevent the code generator and the generated code from hanging the nightly build.
+</p>
+
+
+<p>
+  <a name="164400"> </a>
+</p>
+
+
+<p>
+  <a name="164401"> </a>output: The filename to redirect the standard output stream of the code generator to.  This is used, for example, in the nightly build to provide easily parseable error messages.  If the value is not set, then the output will not be redirected.
+</p>
+
+
+<p>
+  <a name="164360"> </a>
+</p>
+
+
+<h3>
+  <a name="164057"> </a>4.2   Java Code Generator
+</h3>
+
+
+<a name="164071"> </a>The Java code generator is implemented by the copernicus.java package. This code generator targets the generation of self-contained Java code optimized for code size, memory usage and execution speed. The Java code generator leverages the Soot compiler framework to parse the bytecode for each atomic actor in the model. The actors are then specialized according to their context in the model [98].<br>
+
+
+<p>
+  <a name="164509"> </a>The Java code generator operates in several phases, and the output of each phase is a partially specialized model. The output from the intermediate phases can be generated by setting the <i>snapshots</i> parameter to be true. The first snapshot consists of self-contained code specialized to the domains in the model. The second snapshot is additionally specialized to the parameter values in the model, while the third is specialized to the structure of the model. The fourth snapshot eliminates all references to Ptolemy named objects in the model, resulting in self-contained code without component interfaces. The final generated code has also been specialized for data types and contains no references to Ptolemy tokens.
+</p>
+
+
+<p>
+  <a name="164531"> </a>One of the goals of the Java code generator was to avoid separate specifications for simulation and code generation wherever possible. The Java code generator operates by transforming Java actor specifications (actor classes) and on Java data type specifications (token classes). In most cases, new actor and token classes will be leveraged transparently by the code generator. Unfortunately, domain specifications are not as easily reused and the Java code generator contains "re-implementations" of domains for code generation. This allows for more efficient code to be generated, at the expense of duplicating aspects of existing Director and Receiver code, and making it more difficult for new domains to be implemented in code generation.
+</p>
+
+
+<p>
+  <a name="164576"> </a>In order for existing actor code to be leveraged by the code generator, it assumes that the code is written according to the Ptolemy style for writing actors. This style assumes naming conventions for the public fields of an actor class that refer to parameters and ports of the actor. The code generator also assumes that the ports and parameters of an actor are created in the class constructor and not modified later. Some actors do not fit these constraints and cannot be used directly in the code generator. Such actor classes cannot be used directly by the code generator, although in some cases we have been able to have the code generator deal specially with such actors. In other cases, the actor class fits the constraints but cannot be effectively specialized using generic techniques. Such actors can also be dealt with specially by the code generator to more effectively generate code.
+</p>
+
+
+<h4>
+  <a name="164584"> </a>4.2.1   Software Architecture
+</h4>
+
+
+<p>
+  <a name="164568"> </a>The Java code generator consists of a large number of individual transformation steps, which will not be described here. These transformation steps are implemented by classes extending the SceneTransformer class, or the BodyTransformer class. Two key points of extensibility are provided for generating domain code and for generating actor code to replace unspecializable actor classes.
+</p>
+
+
+<p>
+  <a name="164603"> </a>Code generation for specific domains is handled by various implementations of the DomainCodeGenerator interface. An implementation of this interface is responsible for generating domain interaction code for a particular composite actor in the hierarchy, including code to invoke the methods of various actors and domain-specific communication structures. Currently, the following domains are handled:
+</p>
+
+
+<p>
+  <a name="164607"> </a>Synchronous Dataflow (SDF): The SDF implementation transforms the SDF schedule into Java code that invokes the actors in a model. Fixed size arrays are generated for communication buffers dedicated to each relation in the model, and communication methods are replaced with circularly indexed addressing into the communication buffers.
+</p>
+
+
+<p>
+  <a name="164623"> </a>Hybrid Systems (HS): The hybrid systems director deals with modal models. Currently, only the subset that is useful in modal SDF models is implemented.
+</p>
+
+
+<p>
+  <a name="164624"> </a>Giotto: The Giotto implementation interfaces directly with the Java output of the Giotto compiler. It generates classes with static methods used for communication by the Giotto compiler and generates a .giotto file that describes the classes implementing the various Giotto tasks. The Giotto compiler compiles this file into a class that implements the Giotto task scheduling model.
+</p>
+
+
+<p>
+  <a name="164627"> </a>Code Generation for actors is handled various implementations of the AtomicActorCreator interface. An implementation of this interface generates a self-contained class for a particular actor. The default implementation of this interface, the GenericAtomicActorCreator class, simply copies the existing actor specification code. Other implementations of the interface deal with generating code for specific actors. Currently the following actors are handled specially:
+</p>
+
+
+<p>
+  <a name="164637"> </a>Expression: The standard implementation of this actor builds a parse tree for the expression and traverses the parse tree to evaluate it at run time. This actor is handled specifically by the ExpressionCreator class for two reasons. Primarily, the parse tree is convenient way of representing an arbitrary expression, but much simpler code can be generated for a specific expression. Secondarily, the parse tree complicates other transformations that specialize communication between actors and data types.
+</p>
+
+
+<p>
+  <a name="164638"> </a>FSMActor: The standard implementation of this actor builds parse trees for every expression in a model, and suffers from the same drawbacks as the Expression actor. The FSMActor also attempts to deal with run-time modifications of the finite-state machine in an efficient manner, which is not necessary in generated code. This actor is handled specifically by the FSMCreator class.
+</p>
+
+
+<p>
+  <a name="164639"> </a>Many actors are not handled specifically, but should be. Here is a short list:
+</p>
+
+
+<p>
+  <a name="164640"> </a>MathFunction: This actor creates and deletes its ports based on a parameter value. In generated code will likely not happen (since the parameter value is not likely to change), but the GenericAtomicActorCreator is not smart enough to deal with ports that are not created in the constructor. It is likely easiest to handle this actor by handling it specially and checking that the parameter value does not change using reconfiguration analysis.
+</p>
+
+
+<p>
+  <a name="164641"> </a>TypeTest: This actor tests the type system, but has no run-time behavior. It is problematic because it iterates over all of the actors in a model, which is currently not supported by the code generation mechanism. It could probably be checked statically and ignored in generated code.
+</p>
+
+
+<p>
+  <a name="164642"> </a>RecordAssembler and RecordDisassembler: These actors iterator over their input and output ports to construct a record. They could either be dealt with specially, or the code generator could be improved to unroll iterators over ports.
+</p>
+
+
+<p>
+  <a name="164643"> </a>ExpressionToToken and ExpressionReader: These actors operate in a similar way to the expression actor, except that the expression is received from an input port. Because of this, code generation will not work. It is not clear how to make this actor work nicely with type specialization.
+</p>
+
+
+<h4>
+  <a name="164644"> </a>4.2.2   Generated Code
+</h4>
+
+
+<p>
+  <a name="164645"> </a>The code generated from the Java code generator is a set of self-contained Java .class files with a command-line interface. A makefile is automatically generated with a large number of rules for manipulating the generated code. The makefile rules are:
+</p>
+
+
+<p>
+  <a name="164959"> </a>	runJava: Run the generated code.
+</p>
+
+
+<p>
+  <a name="164676"> </a>compareAll: Run a series of comparisons between the simulation model, the generated code, and the obfuscated version of the generated code comparing code size, execution speed, and memory usage.
+</p>
+
+
+<p>
+  <a name="164707"> </a>treeShake: Generate a self-contained .jar file containing only code necessary for the generated code. This rule uses reachable method information gained through static analysis in the code generator, if possible. 
+</p>
+
+
+<p>
+  <a name="164974"> </a>treeShakeByRunning: Generate a self-contained .jar file containing only code necessary for the generated code. This rule executes the generated code and extracts information from the virtual machine about which classes were loaded at runtime.
+</p>
+
+
+<p>
+  <a name="164732"> </a>runTreeShake: Run the generated code from the self-contained .jar file.
+</p>
+
+
+<p>
+  <a name="164739"> </a>profileTreeShake: Run the generated code from the self-contained .jar file with profiling options to report runtime memory usage. An average of several runs is reported.
+</p>
+
+
+<p>
+  <a name="165000"> </a>treeShakeWithoutCodegen: Generate a self-contained .jar file containing only code necessary for executing the simulation model. This rule executes the generated code and extracts information from the virtual machine about which classes were loaded at runtime.
+</p>
+
+
+<p>
+  <a name="164768"> </a>runTreeShakeWithoutCodegen: Run the original simulation model from the self-contained .jar file.
+</p>
+
+
+<p>
+  <a name="165017"> </a>profileTreeShakeWithoutCodegen: Run the original simulation model from the self-contained .jar file with profiling options to report runtime memory usage. An average of several runs is reported.
+</p>
+
+
+<p>
+  <a name="164862"> </a>obfuscate: Run the Jode obfuscator on the generated code, to minimize the size of the generated .jar file.
+</p>
+
+
+<p>
+  <a name="164867"> </a>runObfuscate: Run the obfuscated version of the generated code.
+</p>
+
+
+<p>
+  <a name="165066"> </a>profileObfuscate: Run the obfuscated version of the generated code from the self-contained .jar file with profiling options to report runtime memory usage. An average of several runs is reported.
+</p>
+
+
+<p>
+  <a name="164909"> </a>gcj: Compile the generated code into a native executable using gcj. Note: this will likely only work for simple models, as the gcj standard Java libraries are far from complete.
+</p>
+
+
+<h3>
+  <a name="165980"> </a>4.3   C Code Generator
+</h3>
+
+
+<a name="165981"> </a>The C code generator is implemented by the copernicus.c package. This code generator targets the generation of self-contained C code by post-processing the result of the Java code generator, and performing further code size optimizations. The C code generator leverages the Soot compiler framework to parse the bytecode representation for each class to be compiled.<br>
+
+
+<p>
+  <a name="165982"> </a>Within the Ptolemy II framework, the C code generator takes the class files generated by copernicus.java as input.The C code generator can also be used as a stand-alone Java-to-C compiler to generate C code for arbitrary Java programs.
+</p>
+
+
+<h4>
+  <a name="165983"> </a>4.3.1   Code Generation
+</h4>
+
+
+<a name="165984"> </a>The main steps in the code generation algorithm are as follows:<br>
+
+
+<a name="165985"> </a>1.	 Read in main class file using Soot.<br>
+
+
+<a name="165986"> </a>2.	 Use CallGraphPruner to compute the set of required methods, classes and fields.<br>
+
+
+<a name="165987"> </a>3.	 Generate .c and .h files for the main class(es).<br>
+
+
+<a name="165988"> </a>4.	 Generate a .c file containing code for initialization and setup.<br>
+
+
+<a name="165989"> </a>5.	 Generate .c and .h files for all required Java library classes in a separate directory (named j2c_lib by default). Note that these only contain code for required methods and fields, to minimize code size. The code for each method is generated by converting the jimple statements for the method's body atomically into the appropriate C constructs.<br>
+
+
+<a name="165990"> </a>6.	 Generate a makefile for compiling the code into an executable.<br>
+
+
+<h4>
+  <a name="165991"> </a>4.3.2   The Code Pruning Algorithm
+</h4>
+
+
+<p>
+  <a name="165992"> </a>The Soot framework is used to create a Call Graph of the application. This is a graph with methods as the nodes, and calls from one method to another as directed edges.
+</p>
+
+
+<p>
+  <a name="165993"> </a>At first glance, it seems that the transitive closure of the methods in the main class should represent all methods that can be called. However, this is not so, because the first time the field or method of a class is referenced, its class initialization method is also invoked, and this can reference other methods or fields in turn.
+</p>
+
+
+<p>
+  <a name="165994"> </a>The method call graph also contains an edge from a method to every possible target of method calls in it. The number of such targets can be large for polymorphic method calls. A more sophisticated analysis can trim the method call graph by removing some of the edges corresponding to polymorphic invocations.
+</p>
+
+
+<p>
+  <a name="165995"> </a>We use Soot's Variable Type Analysis (VTA) to perform this call graph trimming. This analysis computes the possible runtime types of each variable using a reaching type analysis, and uses this information to remove spurious edges.
+</p>
+
+
+<h4>
+  <a name="165996"> </a>Computing the Set of Required Entities
+</h4>
+
+
+<p>
+  <a name="165997"> </a>
+</p>
+
+
+<p>
+  <a name="165998"> </a>From the analysis mentioned above, the set of all possible required classes, methods and fields (collectively grouped as <i>entities</i>) can be statically computed. We use a set of rules to determine which classes are required. 
+</p>
+
+
+<a name="165999"> </a>1.	 A set of compulsory entities is always required. This includes the System.initializeSystemClass() method, all methods and fields of the java.lang.Object class (since it is the global superclass) and the main method of the main class to be compiled.<br>
+
+
+<a name="166000"> </a>2.	 If a method<i> m</i> is required, the following also become required: the class declaring <i>m</i>, all methods that may possibly be called by <i>m</i>, all fields accessed in the body of <i>m</i>, the classes of all local variables and arguments of m, the classes corresponding to all exceptions that may be caught or thrown by <i>m</i>, and the method corresponding to <i>m</i> in all required subclasses of the class declaring <i>m</i>.<br>
+
+
+<a name="166001"> </a>3.	 If a field <i>f</i> is required, the following also become required: the class declaring <i>f</i>, the class corresponding to the type of <i>f</i> (if any) and the field corresponding to <i>f</i> in all required subclasses of the class declaring it.<br>
+
+
+<a name="166002"> </a>4.	 If a class <i>c</i> is required, the following also become required: all superclasses of <i>c</i>, the class initialization method of <i>c</i>, and the instance initialization method of <i>c</i>.<br>
+
+
+<p>
+  <a name="166003"> </a>Interfaces are treated as classes. A worklist-based algorithm can be used to add to the set of required entities until no additional entities can be found by application of these rules. Together, rules 2, 3 and 4 encapsulate all possible dependencies between entities. This makes the set of required entities self-contained.
+</p>
+
+
+<h4>
+  <a name="166004"> </a>4.3.3   Limitations
+</h4>
+
+
+<a name="166005"> </a>The restrictions imposed C-based static compilation strategy are:<br>
+
+
+<a name="166006"> </a>	 Dynamic Loading and Reflection are not supported.<br>
+
+
+<a name="166007"> </a>	 The generated executable runs as a user process, so applications that rely on a JVM as a buffer between them and the platform for security cannot be guaranteed to run correctly.<br>
+
+
+<p>
+  <a name="166008"> </a>The further limitations of the current implementation are:
+</p>
+
+
+<a name="166009"> </a>	 No support for threads.<br>
+
+
+<a name="166010"> </a>	 GUI-based functions are currently not implemented.<br>
+
+
+<a name="166011"> </a>	 Certain java classes are not currently supported, because the native methods for them need to be coded. The list of these is maintained in the OverriddenMethodGenerator class.<br>
+
+
+<h4>
+  <a name="166012"> </a>4.3.4   Options
+</h4>
+
+
+<a name="166013"> </a>There are a number of command-line options available:<br>
+
+
+<a name="166014"> </a>	 verbose: <i>true/false</i> Turns verbose mode on or off. <br>
+
+
+<a name="166015"> </a>	 compileMode: <i>singleClass</i> compiles only the given class, <i>full</i> generates all required files. <br>
+
+
+<a name="166016"> </a>	 pruneLevel: <i>0</i> no code pruning done, <i>1</i> code pruning done by CallGraphPruner. <br>
+
+
+<a name="166017"> </a>	 vta: <i>true/false</i> Whether or not to perform Variable Type Analysis.<br>
+
+
+<a name="166018"> </a>	 lib: the path to the directory where library of generated files should be stored. <br>
+
+
+<a name="166019"> </a>	 gcDir: stores the path to the directory containing the garbage collector. Not using this option turns the collector off. <br>
+
+
+<a name="166020"> </a>	 target: The target platform. A blank refers to a generic POSIX-like system including Cygwin installations.<i> C6000</i> The TMS320C6xxx series of processors. <br>
+
+
+<a name="166021"> </a>	 runtimeDir: The path to the runtime directory. <br>
+
+
+<a name="166022"> </a>	 ptII: The path to the ptII directory. <br>
+
+
+<a name="166023"> </a>	 compulsoryMethods: A semicolon-separated list of methods for which code must always be generated. If more than one such entity is to be specified, the entire list may be enclosed within double quotes. The complete method subsignature of the form <i>returnType class.method(arg1, arg2, ...)</i> must be specified. <br>
+
+
+<a name="166024"> </a>	 cFlags: The GCC flags to be used in the makefile. <br>
+
+
+<a name="166025"> </a>	 reportEntities: <i>true/false</i> whether to output a summary of the number of classes, methods and fields (entities) generated.<br>
+
+
+<h4>
+  <a name="166026"> </a>4.3.5   Directory structure
+</h4>
+
+
+<a name="166027"> </a>The main subdirectories in copernicus.c are:<br>
+
+
+<a name="166028"> </a>	 runtime: Contains a small amount of C code that provides basic functionality. This is linked in while generating the executables.<br>
+
+
+<a name="166029"> </a>	 runtime/native_bodies: C code for native methods.<br>
+
+
+<a name="166030"> </a>	 runtime/over_bodies: C code for methods with custom code.<br>
+
+
+<a name="166031"> </a>	 test: Various test programs.<br>
+
+
+<a name="166032"> </a>	 testOutput: Auto-generated C code.<br>
+
+
+<h4>
+  <a name="166033"> </a>4.3.6   Code Flow
+</h4>
+
+
+<a name="166034"> </a>The following UML diagram shows the various classes that populate copernicus.c. This is a relatively complex package, so many implementation details have been abstracted out. Complete descriptions of all classes and their members are available in the API, and we attempt to provide an insight into the higher-level structure of the package here.<br>
+
+
+<a name="166035"> </a>	 Protected and private methods are not shown, unless they are central to the functionality of the class.<br>
+
+
+<a name="166036"> </a>	 Unimportant external superclasses are not shown here.<br>
+
+
+<a name="166037"> </a>	 Public methods that are not central to the operation of the class are omitted.<br>
+
+
+<a name="166038"> </a>	 CSwitch has a caseXXX method for each kind of Jimple statement XXX. These are shown as a single entry in the figure.<br>
+
+
+<a name="166039"> </a>	 The methods in ExceptionTracker are omitted. This class tracks the current exceptions and works closely with MethodCodeGenerator. However, the C implementation of Java exceptions is complex and is not discussed here.<br>
+
+
+<p>
+  <a name="166040"> </a>
+</p>
+
+
+<p>
+  <a name="166041"> </a>The dashed arrows in the UML diagram represent the coarse-grained code flow in copernicus.c. The entry class is JavaToC when used in stand-alone mode, and Main when copernicus.c is used as a ptolemy code-generation back-end.
+</p>
+
+
+<p>
+  <a name="166042"> </a>JavaToC reads in a Java class file and implicitly converts it to the Soot Jimple format. Then it calls RequiredFileGenerator, MakeFileGenerator and MainFileGenerator.
+</p>
+
+
+<p>
+  <a name="166043"> </a>RequiredFileGenerator uses CallGraphPruner to compute the set of required classes, methods and fields. Then it calls ClassFileGenerator, HeaderFileGenerator and StubFileGenerator on each required class.
+</p>
+
+
+<p>
+  <a name="166044"> </a>ClassFileGenerator creates the .c file containing all the function definitions. Each of these function definitions is created by MethodCodeGenerator. MethodCodeGenerator calls CSwitch on each Jimple statement to find its C equivalent.
+</p>
+
+
+<p>
+  <a name="166045"> </a>HeaderFileGenerator creates the .h file corresponding to the class. This consists of a class-specific C structure for the class (created by ClassStructureGenerator), an instance-specific C structure for the class (created by InstanceStructureGenerator) and various function declarations. MethodListGenerator is the class that "understands" inheritance to create the lists of constructors, inherited methods, new methods, private methods, etc.
+</p>
+
+
+<p>
+  <a name="166046"> </a>StubFileGenerator creates a small "stub" of prototype declarations useful for breaking circular dependencies between classes.
+</p>
+
+
+<p>
+  <a name="166047"> </a>MakeFileGenerator creates a makefile proving rules for compiling the generated C code into an executable.
+</p>
+
+
+<p>
+  <a name="166048"> </a>MainFileGenerator creates a file that contains the C "main" method, which performs initialization functions, wraps the command-line arguments into the C equivalent of a Java string array and passes them to the "java" main method.
+</p>
+
+
+<p>
+  <a name="166049"> </a>In addition, CNames converts Java names into unique legal C names, InterfaceLookupGenerator takes care of resolving interface method invocations, FileHandler provides file I/O utilities, Options stores configuration information, Context handles useful global information, NativeMethodGenerator handles native methods and OverriddenMethodGenerator allows user-defined code to override the compiler.
+</p>
+
+
+
+<h4>
+  <a name="166050"> </a>4.3.7   HOW TOs
+</h4>
+
+
+<h4>
+  <a name="166051"> </a>Generating an executable from a Java ClassFile
+</h4>
+
+
+<a name="166052"> </a><br>
+
+
+<p>
+  <a name="166053"> </a>Put the classfile in c/test
+</p>
+
+
+<p>
+  <a name="166054"> </a>cd test
+</p>
+
+
+<p>
+  <a name="166055"> </a>java -classpath $classpath ptolemy.copernicus.c.JavaToC $classpath 	 &lt;className&gt;
+</p>
+
+
+<p>
+  <a name="166056"> </a>(note that the classpath has to be specified twice)
+</p>
+
+
+<p>
+  <a name="166057"> </a>make -s -f &lt;classname&gt;.make
+</p>
+
+
+<h4>
+  <a name="166058"> </a>Generating Code from a MoML model
+</h4>
+
+
+<p>
+  <a name="166059"> </a>
+</p>
+
+
+<p>
+  <a name="166060"> </a>Move the xml model to c/test/simple
+</p>
+
+
+<p>
+  <a name="166061"> </a>java ptolemy.copernicus.kernel.Copernicus -codeGenerator c &lt;model&gt;.xml
+</p>
+
+
+<h4>
+  <a name="166062"> </a>Writing Code for a Native Method
+</h4>
+
+
+<a name="166063"> </a><br>
+
+
+<p>
+  <a name="166064"> </a>Java requires certain <i>native</i> methods, which are methods implemented in platform-dependent code, typically written in another programming language such as C. The C code generator allows the user to specify C code for the body of any native method. At compile-time, this is integrated with the generated C code, allowing any C native methods to be fully supported. To do this:
+</p>
+
+
+<a name="166065"> </a>1.	 Find the C name of that method (say <i>f00xx_abc</i>).<br>
+
+
+<a name="166066"> </a>2.	 Create a file by this name (<i>f00xx_abc.c</i>) in runtime/native_bodies, containing the code for that method.<br>
+
+
+<a name="166067"> </a>3.	 Add this method to the list of native methods in NativeMethodGenerator.<br>
+
+
+<h4>
+  <a name="166068"> </a>Overriding Code for an Existing Method
+</h4>
+
+
+<a name="166069"> </a><br>
+
+
+<p>
+  <a name="166070"> </a>It is also possible to override the C code generator and write custom C code for a given method instead. To do this:
+</p>
+
+
+<a name="166071"> </a>1.	 Find the C name of that method (say <i>f00xx_abc</i>).<br>
+
+
+<a name="166072"> </a>2.	 Create a file by this name (<i>f00xx_abc.c</i>) in runtime/over_bodies, containing the code for that method.<br>
+
+
+<a name="166073"> </a>3.	 Add this method to the list of overridden methods in OverriddenMethodGenerator.<br>
+
+
+<p>
+  <a name="166074"> </a>Note that the term <i>overridden</i> in this context does not refer to methods that are overridden through inheritance in Java classes.
+</p>
+
+
+<h4>
+  <a name="166075"> </a>Suppressing Code Generation for a Method, Class or Package
+</h4>
+
+
+<a name="166076"> </a><br>
+
+
+<p>
+  <a name="166077"> </a>To "turn off" code generation for a method, override it without creating code for it in runtime/over_bodies. For an entire class or package, list it in OverriddenMethodGenerator.isOverriddenClass(). This will generate methods with blank bodies and trivial return statements which will return 0 or NULL. 
+</p>
+
+
+<p>
+  <a name="167212"> </a>CAVEAT: Make sure that the returned values are not used. Referencing a NULL pointer will cause the executable to throw a segmentation fault.
+</p>
+
+
+<h3>
+  <a name="167213"> </a>4.4   Applet Code Generator
+</h3>
+
+
+<p>
+  <a name="166584"> </a>The Applet code generator takes a model and creates HTML files for use as a web based applet.
+</p>
+
+
+<p>
+  <a name="166587"> </a>The applet generator reads template files that end in .in from $PTII/ptolemy/copernicus/applet substitutes keywords and writes out the files in the destination directory. Users may modify the template files to match their local setup
+</p>
+
+
+<p>
+  <a name="166593"> </a>Making an applet available via the web is somewhat complex because the Java Plugin has two sections, one for Netscape, the other for Internet Explorer, so changes to the htm files must be replicated in both sections. The codebase and the location of the jar files also add to the problems.
+</p>
+
+
+<p>
+  <a name="166599"> </a>If a model is named MyModel, and the user selects foo.bar as the package, then saving the model as an applet will create a directory called $PTII/foo/bar/MyModel and create the following files for that model:
+</p>
+
+
+<p>
+  <a name="166604"> </a>   
+</p>
+
+
+<p>
+  <a name="166605"> </a>   makefile
+</p>
+
+
+<p>
+  <a name="166606"> </a>          make demo will run appletviewer on the HTML files
+</p>
+
+
+<p>
+  <a name="166607"> </a>          
+</p>
+
+
+<p>
+  <a name="166608"> </a>   MyModel.xml
+</p>
+
+
+<p>
+  <a name="166609"> </a>          A local copy of the model
+</p>
+
+
+<p>
+  <a name="166610"> </a>          
+</p>
+
+
+<p>
+  <a name="166611"> </a>   MyModel.htm
+</p>
+
+
+<p>
+  <a name="166612"> </a>          An HTML file containing the code necessary to MyModel.xml
+</p>
+
+
+<p>
+  <a name="166613"> </a>          
+</p>
+
+
+<p>
+  <a name="166614"> </a>   MyModelVergil.htm
+</p>
+
 <dl>
-<dt> <CODE>makefile</CODE>
-<dd> <CODE>make demo</CODE> will run appletviewer on the HTML files
-
-<dt> <CODE>MyModel.xml</CODE>
-<dd> A local copy of the model
-
-<dt> <CODE>MyModel.htm</CODE>
-<dd> An HTML file containing the code necessary to <CODE>MyModel.xml</CODE>
-
-
-<dt> <CODE>MyModelVergil.htm</CODE>
-<dd> An HTML file containing the code necessary to
-display <CODE>MyModel.xml</CODE> graphically, using ptolemy.vergil.VergilApplet and in text format
-
+  <dt> <a name="166615"> </a>          An HTML file containing the code necessary to display MyModel.xml graphically, using ptolemy.vergil.VergilApplet and in text format
 </dl>
 
-<p><a name="appletDemo">Below is a simple demonstration:</a>
-
-The OrthogonalCom model generates prints output to 
-standard out, so when this model is run as an applet, the output
-will appear in the Java Plugin console.  Instead, we generate
-an applet for the Butterfly model, which will generate display
-a nice plot.  Note that the Butterfly model uses the Expression
-actor so that while we cannot use deep code generation on
-the Butterfly actor, we can generate an applet for this model.
-
-<ol>
-<li> Open up the
-<a
-href="../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml">SDF
-Butterfly Model</a>
-
-<li> Select View -&gt; Code Generator
-
-<li> Change the <code>CodeGenerator</code> combo box from
-<code>java</code> to <code>applet</code>
-<li> Hit the Generate Button
-
-<li> The code generator will invoke an separate java process that
-generates code in 
-<CODE>$PTII/ptolemy/copernicus/<b>applet</b>/cg/Butterfly</CODE>
-
-</ol>
-
-If you would like to generate an applet in a directory outside
-of the Ptolemy tree, follow these steps:
-
-<ol> 
-<li> Open your model
-<li> Select View -&gt; Code Generator
-<li> Change the <code>CodeGenerator</code> combo box from
-<code>java</code> to <code>applet</code>
-
-<li> Change the <CODE>ptIIUserDirectory</CODE> to
-the directory where you would like the applet to be created.
-Be sure to place the directory name in double quotes:
-<pre>
-"d:/tmp/testapplet2"
-</pre>
-Note that the directory must already exist.  If it does
-not exist, then the default directory will automatically
-be used.
-
-<li> Change the <CODE>targetPath</CODE> to the string
-<CODE>modelName</CODE>.  Note that no double quotes are used
-here.
-
-<li> Hit the Parameters button, which will update the
-parameters and display their values.
-
-<li> Hit the Generate Button
-
-<li> The code generator will invoke an separate java process that
-generates an applet.
-</ol>
-
-See the limitations below for information about how to
-handle missing classes at runtime.
+<h4>
+  <a name="166618"> </a>4.4.1   Applet Code Generation demonstrations
+</h4>
 
 
+<a name="167739"> </a>Below are several demonstrations of the applet code generator. The code generator graphical user interface is difficult to use, so we recommend using the copernicus command instead of using the code generator GUI.<br>
 
 
-
-<h3><a name="appletLimitations">Applet Limitations</a></h3>
-<ul>
-
-<li> Under Web Start, you may need to add classes to the
-<CODE>necessaryClasses</CODE> parameter so that
-the <CODE>necessaryClassPath</CODE> parameter will get
-updated with the appropriate jar files and passed
-to the subprocess that invokes the applet code generator.
-  <br>The reason this is necessary is because Web Start
-is invoked using a special class loader that
-accesses separate jar files in the Web Start cache.
-The applet code generator does not have direct
-access to the Web Start class loader, so we tell
-it what classes we need so that they can be added
-to the class path.
+<p>
+  <a name="167895"> </a>The OrthogonalCom model generates prints output to standard out, so when this model is run as an applet, the output will appear in the Java Plugin console. Instead, we generate an applet for the Butterfly model, which will generate display a nice plot. Note that the Butterfly model uses the Expression actor so that while we cannot use deep code generation on the Butterfly actor, we can generate an applet for this model.
+</p>
 
 
-<li>It would be nice if the applet code generator would bundle
-up the necessary class files in a single jar file so that
-it was easier to install an applet.
-<li>The applet code generator could use tree shaking to
-create a much smaller jar file that contains only the classes
-that are used.  One issue is that the user would need
-to exercise the applet by invoking all the features
-of the GUI, such as the plot format window.
+<h4>
+  <a name="167907"> </a>Copernicus command - create applet within the Ptolemy tree
+</h4>
 
-<li>The applet code generator should read the value of the
-<code>_vergilSize</code> attribute and use it when generating
-the <code><i>xxx</i>Model.htm</code> file.
-<li>The applet code generator should grab the top level text
-annotations from the MoML file and use them as comments.
-</ul>
-The following models may require that a jar file be copied
-and the generated html file be modified to refer to that jar file
-<ul>
-<li>If the model is a FSM modal Model, then diva.jar
-is not included automatically.
-<li>If the model is a DT modal, then sdf.jar 
-is not included automatically.  This problem only
-occurs in html files generated outside the Ptolemy II tree
-or the .class files are not present.
-<li>Generating applets for hierarchical models may fail
-if the the domain(s) underneath the top level domain is(are)
-different from the top level domain and html file is generated
-outside the Ptolemy II tree or the .class files are not present.
-<br>The solution is to copy the appropriate jar files and
-add them to the html file.  
-<br>Rather than copying multiple jar files, another solution is to use
-a jar file that contains all standard domains:
-(<code>ptolemy/domains/domains.jar</code>) or all
-the experimental domains
-(<code>ptolemy/domains/experimentalDomains.jar</code>).
 
-</ul>
+<a name="167908"> </a><br>
 
-<p>For example, if dt.jar is necessary and dt.jar requires
-sdf.jar, and the html file
-was created in <code>cg/Eye</code>, then copy over the sdf.jar with
-<pre>
-mkdir cg/Eye/ptolemy/domains/sdf
-cp $PTII/ptolemy/domains/sdf/sdf.jar cg/Eye/ptolemy/domains/sdf
-</pre>
-Then edit <code>cg/Eye/Eye.htm</code>
-and everywhere <code>dt.jar</code> is referred to, add <code>sdf.jar</code>,
+
+<a name="167909"> </a>To create the html file and open it with the browser:<br>
 
 <pre>
- VALUE = "ptolemy/ptsupport.jar,ptolemy/domains/dt/dt.jar" &gt; \
-</pre>
-to
-<pre>
- VALUE = "ptolemy/ptsupport.jar,ptolemy/domains/dt/dt.jar,ptolemy/domains/sdf/sdf.jar" &gt; \
-</pre>
-and make the following change in two locations:
-<pre>
- archive = "ptolemy/ptsupport.jar,ptolemy/domains/dt/dt.jar" \
-</pre>
-to
-<pre>
- archive = "ptolemy/ptsupport.jar,ptolemy/domains/dt/dt.jar,ptolemy/domains/sdf/sdf.jar" \
+cd $PTII/ptolemy/domains/sdf/demo/Butterfly<a name="167910"> </a>
+$PTII/bin/copernicus -codeGenerator applet Butterfly.xml<a name="167911"> </a>
 </pre>
 
-<h2><a name="interpreted">Interpreted Code Generation</a></h2>
-The interpreted code generator is really not a code generator.
-It reads in a MoML file and writes out a MoML file, with very little
-processing.  The interpreted code generator is used as to compare 
-the performance of the other code generators.
+<p>
+  <a name="167914"> </a>The HTML can be found in $PTII/ptolemy/copernicus/applet/cg/Butterfly.
+</p>
 
-<h3><a name="interpretedLimitations">Interpreted Limitations</a></h3>
-The interpreted code generator does not have any interpreted specific limitations.
-<p><p><p>
+
+<h4>
+  <a name="167743"> </a>Applet code generator GUI - create applet within the Ptolemy Tree
+</h4>
+
+
+<a name="167761"> </a><br>
+
+
+<a name="168316"> </a>If you would like to generate an applet in a directory within the Ptolemy tree using the experimental code generation GUI, follow these steps:<br>
+
+
+<a name="168314"> </a>1.	 Open up the SDF Butterfly Model at $PTII/ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml.<br>
+
+
+<a name="167794"> </a>2.	 Select View -&gt; Code Generator<br>
+
+
+<a name="166628"> </a>3.	 Change the CodeGenerator combo box from java to applet<br>
+
+
+<a name="166629"> </a>4.	 Hit the Generate Button<br>
+
+
+<a name="166630"> </a>5.	 The code generator will invoke an separate java process that generates code in $PTII/ptolemy/copernicus/applet/cg/Butterfly and then opens the generated file with the browser.<br>
+
+
+<h4>
+  <a name="167927"> </a>Copernicus command - create applet outside the Ptolemy tree
+</h4>
+
+
+<a name="167928"> </a><br>
+
+
+<p>
+  <a name="167943"> </a>Usually, one wants to put an applet on a website. Ptolemy applets require jar files for the runtime environment, so the applet code generator will copy the necessary jar files if the value of the ptIIUserDirectory parameter is outside the $PTII directory.
+</p>
+
+
+<a name="167929"> </a>1.	 If you built Ptolemy II from source, generate Ptolemy II jar files by running<br>
+
+<pre>
+cd $PTII<a name="167930"> </a>
+make install<a name="167931"> </a>
+</pre>
+
+<a name="167932"> </a>2.	 Create the target directory:<br>
+
+<pre>
+mkdir c:/tmp/ptIIapplet/Butterfly<a name="168234"> </a>
+</pre>
+
+<a name="168230"> </a>3.	 Invoke copernicus:<br>
+
+<pre>
+cd $PTII/ptolemy/domains/sdf/demo/Butterfly<a name="167933"> </a>
+$PTII/bin/copernicus -codeGenerator applet -ptIIUserDirectory \<a name="167934"> </a>
+       c:/tmp/ptIIapplet -targetPath Butterfly Butterfly.xml<a name="168226"> </a>
+</pre>
+
+<p>
+  <a name="167936"> </a>Note that the copernicus command should be typed in on one line.
+</p>
+
+
+<h4>
+  <a name="167755"> </a>Applet code generator GUI - create applet outside the Ptolemy tree
+</h4>
+
+
+<a name="167780"> </a><br>
+
+
+<a name="167777"> </a>If you would like to generate an applet in a directory outside of the Ptolemy tree using the experimental code generation GUI, follow these steps:<br>
+
+
+<a name="166635"> </a>1.	 If you built Ptolemy II from source, generate Ptolemy II jar files by running<br>
+
+<pre>
+cd $PTII<a name="167830"> </a>
+make install<a name="167831"> </a>
+</pre>
+
+<a name="168252"> </a>2.	 Create the target directory:<br>
+
+<pre>
+mkdir c:/tmp/ptIIapplet/Butterfly<a name="168253"> </a>
+</pre>
+
+<a name="168250"> </a>3.	 Open up the SDF Butterfly Model at $PTII/ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml<br>
+
+
+<a name="167883"> </a>4.	 Select View -&gt; Code Generator<br>
+
+
+<a name="166637"> </a>5.	 Change the CodeGenerator combo box from java to applet<br>
+
+
+<a name="166638"> </a>6.	 Change the ptIIUserDirectory to the directory where you would like the applet to be created, for example<br>
+
+<pre>
+c:/tmp/ptapplet<a name="167819"> </a>
+</pre>
+
+<p>
+  <a name="166642"> </a>       Note that the directory must already exist. If it does not exist, then the default directory will automatically be used.
+</p>
+
+
+<a name="166644"> </a>7.	 Change the targetPath to the string<br>
+
+<pre>
+$modelName<a name="167808"> </a>
+</pre>
+
+<a name="166646"> </a>8.	 Change the modelName parameter to<br>
+
+<pre>
+Butterfly<a name="168262"> </a>
+</pre>
+
+<a name="168258"> </a>9.	 Hit the Parameters button, which will update the parameters and display their values.<br>
+
+
+<a name="167531"> </a>10.	 Hit the Generate Button<br>
+
+
+<a name="166649"> </a>11.	 The code generator will invoke an separate java process that generates an applet and then invokes the browser on the generated HTML code.<br>
+
+
+<h4>
+  <a name="168287"> </a>4.4.2     Applet Limitations
+</h4>
+
+
+<p>
+  <a name="166656"> </a>Under Web Start, you may need to add classes to the necessaryClasses parameter so that the necessaryClassPath parameter will get updated with the appropriate jar files and passed to the subprocess that invokes the applet code generator. The reason this is necessary is because Web Start is invoked using a special class loader that accesses separate jar files in the Web Start cache. The applet code generator does not have direct access to the Web Start class loader, so we tell it what classes we need so that they can be added to the class path.
+</p>
+
+
+<a name="166666"> </a>	 It would be nice if the applet code generator would bundle up the necessary class files in a single jar file so that it was easier to install an applet.<br>
+
+
+<a name="166669"> </a>	 The applet code generator could use tree shaking to create a much smaller jar file that contains only the classes that are used. One issue is that the user would need to exercise the applet by invoking all the features of the GUI, such as the plot format window.<br>
+
+
+<a name="166676"> </a>	 The applet code generator should grab the top level text annotations from the MoML file and use them as comments.<br>
+
+
+<p>
+  <a name="166678"> </a>
+</p>
+</blockquote>
+
 
 <h2><a name="ui">The Code Generator User Interface</a></h2>
 Christopher Hylands and Professor Edward A. Lee developed an initial
