@@ -26,25 +26,26 @@
 */
 
 package pt.data;
+import pt.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// IntToken
 /** 
-A token that contains an integer, or more specifically a reference to an 
-instance of an integer. The reference is never null, the default being 0.
+A token that contains an integer value.
+The value is never null, the default being 0.
 
-@author Mudit Goel
+@author Mudit Goel, Yuhong Xiong
 @version $Id$
 */
 public class IntToken extends ScalarToken {
 
-    /** Construct a token with integer 0
+    /** Construct a token with integer 0.
      */	
     public IntToken() {
 	_value = 0;
     }
 
-    /** Construct a token with the specified integer
+    /** Construct a token with the specified value.
      */
     public IntToken(int value) {
         _value = value;
@@ -53,39 +54,208 @@ public class IntToken extends ScalarToken {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-
-    /** Converts value to byte and returns it
+    /** Set the value of the token to be the specified value.
      */
-    public byte byteValue() {
-        return (byte)_value;
+    public void setValue(int value) {
+	_value = value;
     }
 
-    /** Converts value to double and returns it
+    // Return a reference to a Complex. The real part of the Complex
+    // is the value in the token, the imaginary part is set to 0.
+    // FIXME: finish after the Complex class is available.
+ 
+//    public Complex complexValue() {
+//    }
+
+    /** Return the value in the token as a double.
      */
     public double doubleValue() {
         return (double)_value;
     }
 
-    /** Converts value to int and returns it
+    /** Return the value in the token as an int.
      */
     public int intValue() {
-        return (int)_value;
+        return _value;
     }
 
-    /** Converts value to long and returns it
+    /** Return the value in the token as a long integer.
      */
     public long longValue() {
         return (long)_value;
     }
-    
+ 
+    /** Set the value in the token to the value represented by the
+        specified string.
+        @exception IllegalArgumentException The string does not contain
+         a parsable integer.
+     */
+    public void fromString(String init)
+            throws IllegalArgumentException {
+        try {
+            _value = (Integer.valueOf(init)).intValue();
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
 
+    /** Create a string representation of the value in the token.
+     */
+    public String toString() {
+        return Integer.toString(_value);
+    }
+
+    /** Add the value of the argument Token to the current Token.
+     *  @param The token whose value we add to this Token
+     *  @return A token of the appropriate type.
+     */
+    // FIXME: add handling of Complex and Fix tokens.
+    public Token add(Token a)
+	    throws IllegalActionException {
+	if (a instanceof StringToken) {
+	    return new StringToken(this.toString() +
+					((StringToken)a).toString());
+	} else if (a instanceof ByteToken) {
+	    return new IntToken(_value + ((ByteToken)a).intValue());
+//	} else if (a instanceof ComplexToken) {
+	} else if (a instanceof DoubleToken) {
+	    return new DoubleToken(this.doubleValue() +
+				((DoubleToken)a).doubleValue());
+//	} else if (a instanceof FixToken) {
+	} else if (a instanceof IntToken) {
+	    return new IntToken(_value + ((IntToken)a).intValue());
+	} else if (a instanceof LongToken) {
+	    return new LongToken(this.longValue() + ((LongToken)a).longValue());
+	} else {
+	    throw new IllegalActionException("Can't add " +
+		getClass().getName() + "to " + a.getClass().getName());
+	}
+    }
+ 
+    /** Subtract the value of the argument Token from the current Token.
+     *  @param The token whose value we substract from this Token.
+     *  @return A token of the appropriate type.
+     */
+    // FIXME: add handling of Complex and Fix tokens.
+    public Token subtract(Token a)
+	    throws IllegalActionException {
+	if (a instanceof ByteToken) {
+	    return new IntToken(_value - ((ByteToken)a).intValue());
+//	} else if (a instanceof ComplexToken) {
+	} else if (a instanceof DoubleToken) {
+	    return new DoubleToken(this.doubleValue() -
+					((DoubleToken)a).doubleValue());
+//	} else if (a instanceof FixToken) {
+	} else if (a instanceof IntToken) {
+	    return new IntToken(_value - ((IntToken)a).intValue());
+	} else if (a instanceof LongToken) {
+	    return new LongToken(this.longValue() - ((LongToken)a).longValue());
+	} else {
+	    throw new IllegalActionException("Can't subtract " +
+		a.getClass().getName() + "from " + getClass().getName());
+	}
+    }
+ 
+    /** Multiply the value of the argument Token to the current Token.
+     *  @param The token whose value we multiply to this Token
+     *  @return A token of the appropriate type.
+     */
+    // FIXME: add handling of Complex and Fix tokens.
+    public Token multiply(Token a)
+	    throws IllegalActionException {
+	if (a instanceof ByteToken) {
+	    return new IntToken(_value * ((ByteToken)a).intValue());
+//	} else if (a instanceof ComplexToken) {
+	} else if (a instanceof DoubleToken) {
+	    return new DoubleToken(this.doubleValue() *
+				((DoubleToken)a).doubleValue());
+//	} else if (a instanceof FixToken) {
+	} else if (a instanceof IntToken) {
+	    return new IntToken(_value * ((IntToken)a).intValue());
+	} else if (a instanceof LongToken) {
+	    return new LongToken(this.longValue() * ((LongToken)a).longValue());
+	} else {
+	    throw new IllegalActionException("Can't multiply " +
+		getClass().getName() + "to " + a.getClass().getName());
+	}
+    }
+ 
+    /** Divide the value of the argument Token with the current Token.
+     *  @param The token whose value we divide with this Token.
+     *  @return A token of the appropriate type.
+     */
+    // FIXME: add handling of Complex and Fix tokens.
+    public Token divide(Token a)
+	    throws IllegalActionException {
+	if (a instanceof ByteToken) {
+	    return new IntToken(_value / ((ByteToken)a).intValue());
+//	} else if (a instanceof ComplexToken) {
+	} else if (a instanceof DoubleToken) {
+	    return new DoubleToken(this.doubleValue() /
+					((DoubleToken)a).doubleValue());
+//	} else if (a instanceof FixToken) {
+	} else if (a instanceof IntToken) {
+	    return new IntToken(_value / ((IntToken)a).intValue());
+	} else if (a instanceof LongToken) {
+	    return new LongToken(this.longValue() / ((LongToken)a).longValue());
+	} else {
+	    throw new IllegalActionException("Can't divide " +
+		getClass().getName() + "by " + a.getClass().getName());
+	}
+    }
+ 
+    /** Find the result of the value of this Token modulo the value of the
+     *  argument Token. Set the value of this token to the result.
+     *  @param The token whose value we do modulo with.
+     *  @return A token of the appropriate type.
+     */
+    // FIXME: add handling of Complex and Fix tokens.
+    public Token modulo(Token a)
+	    throws IllegalActionException {
+	if (a instanceof ByteToken) {
+	    return new IntToken(_value % ((ByteToken)a).intValue());
+//	} else if (a instanceof ComplexToken) {
+	} else if (a instanceof DoubleToken) {
+	    return new DoubleToken(this.doubleValue() % 
+				((DoubleToken)a).doubleValue());
+//	} else if (a instanceof FixToken) {
+	} else if (a instanceof IntToken) {
+	    return new IntToken(_value % ((IntToken)a).intValue());
+	} else if (a instanceof LongToken) {
+	    return new LongToken(this.longValue() % ((LongToken)a).longValue());
+	} else {
+	    throw new IllegalActionException("Can't do modulo on " +
+		getClass().getName() + "and " + a.getClass().getName());
+	}
+    }
+ 
+    /** Test for equality of the values of this Token and the argument Token.
+     *  @param The token with which to test equality.
+     */
+    // FIXME: add handling of Complex and Fix tokens.
+    public BooleanToken equality(Token a)
+	    throws  IllegalActionException {
+	if (a instanceof ByteToken) {
+	    return new BooleanToken(_value == ((ByteToken)a).intValue());
+//	} else if (a instanceof ComplexToken) {
+	} else if (a instanceof DoubleToken) {
+	    return new BooleanToken(this.doubleValue() ==
+				((DoubleToken)a).doubleValue());
+//	} else if (a instanceof FixToken) {
+	} else if (a instanceof IntToken) {
+	    return new BooleanToken(_value == ((IntToken)a).intValue());
+	} else if (a instanceof LongToken) {
+	    return new BooleanToken(this.longValue() ==
+					 ((LongToken)a).longValue());
+	} else {
+	    throw new IllegalActionException("Can't compare equality between "
+		+ getClass().getName() + "and " + a.getClass().getName());
+	}
+    }
+ 
     /////////////////////////////////////////////////////////////////////////
     ////                        private variables                        ////
  
     private int _value = 0;
-
 }
-
-
-
 
