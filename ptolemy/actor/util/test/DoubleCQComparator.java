@@ -29,7 +29,9 @@
 @AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.util;
+package ptolemy.actor.util.test;
+
+import ptolemy.actor.util.CQComparator;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleCQComparator

@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-set comparator [java::new ptolemy.actor.util.DoubleCQComparator]
+set comparator [java::new ptolemy.actor.util.test.DoubleCQComparator]
 
 ######################################################################
 ####

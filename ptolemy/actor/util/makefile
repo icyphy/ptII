@@ -62,7 +62,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	CalendarQueue.java \
 	CQComparator.java \
-	DoubleCQComparator.java \
 	FIFOQueue.java \
 	TimedEvent.java
 
