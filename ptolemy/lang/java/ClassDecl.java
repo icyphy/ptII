@@ -149,7 +149,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
             String fileName = fullName(File.separatorChar);
 
             if (SearchPath.systemClassSet.contains(fileName)
-                    /* || SearchPath.ptolemyCoreClassSet.contains(fileName)*/){
+                    || SearchPath.ptolemyCoreClassSet.contains(fileName)){
                 // The class is either a JVM system class or Ptolemy core class
                 //System.out.println("ClassDecl: Reading in user type : " +
                 //        fileName + " by loadClassName");
@@ -162,8 +162,8 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
                 File file = _pickLibrary(_container).openSource(fileName);
 
-                //System.out.println("ClassDecl: Reading in user type : " +
-                //        fullName() + " from " + fileName);
+                System.out.println("ClassDecl: Reading in user type : " +
+                        fullName() + " from " + fileName);
 
                 StaticResolution.loadFile(file, 0); // should set the source
 

@@ -156,31 +156,32 @@ public class SearchPath extends Vector {
      * The entry will be of the form ptolemy/kernel/util/NamedObj
      */
     public static Set ptolemyCoreClasses() {
-        // Create a HashSet with a size of 281
-        // The number of .class files in the Ptolemy core is 139
+        // Create a HashSet with a size of 373
+        // The number of .class files in the Ptolemy core is 186
         // Determine that the number of .class files in rt.jar with:
-        // find . -name "*.java" -print | egrep 'ptolemy/kernel|ptolemy/actor/util|ptolemy/actor/sched|ptolemy/data|ptolemy/graph|ptolemy/math' | grep -v test | wc
+        // find . -name "*.class" -print | egrep 'ptolemy/kernel|ptolemy/actor/util|ptolemy/actor/sched|ptolemy/data|ptolemy/graph|ptolemy/math' | grep -v test | wc
         // The Collections tutorial suggests a prime number slighly
         // larger than twice the size of the Set.
-        Set classSet = new HashSet(281);
+        Set classSet = new HashSet(273);
 
         // Array of names of packages that are in the Ptolemy core.
         // We don't parse java files in these packages, we use
         // reflection instead.
         String [] ptolemyCorePackages = {
-            "ptolemy/actor/sched/",
-            "ptolemy/actor/util/",
-            "ptolemy/kernel/",
-            "ptolemy/kernel/util/",
-            "ptolemy/data/",
-            "ptolemy/data/type/",
-            "ptolemy/graph/",
-            "ptolemy/math/" 
+            "ptolemy/actor/sched",
+            "ptolemy/actor/util",
+            "ptolemy/kernel",
+            "ptolemy/kernel/util",
+            "ptolemy/data",
+            "ptolemy/data/type",
+            "ptolemy/graph",
+            "ptolemy/math" 
         };
 
+        ptolemyCorePackageSet = new HashSet();
 
         // As we find packages, we mark them as done in this array
-        // so as to avoid duplication
+        // so as to avoid duplication.
         boolean [] foundPackages = new boolean [ptolemyCorePackages.length];
 
         for (int i = 0; i < NAMED_PATH.size(); i++) {
@@ -197,25 +198,28 @@ public class SearchPath extends Vector {
                         String name = nameList[j];
                         int length = name.length();
                         String className = null;
-                            if ((length > 5) && 
-                                    name.substring(length - 5).
-                                    equals(".java")) {
-                                className = name.substring(0, length - 5);
+                            if ((length > 6) && 
+                                    name.substring(length - 6).
+                                    equals(".class")) {
+                                className = name.substring(0, length - 6);
                             }
-                        classSet.add(ptolemyCorePackages[p] +
+                        classSet.add(ptolemyCorePackages[p] + "/" +
                                 className);
                     }
                 }
             }
         }
-        // Check that we found all the packages.
+        // Check that we found all the packages and add them
+        // to ptolemyCorePackageSet
         for (int p = 0; p < ptolemyCorePackages.length; p++) {
             if (!foundPackages[p]) {
                 throw new RuntimeException("SearchPath.ptolemyCoreClasses():" +
                         " Could not find package " + ptolemyCorePackages[p] +
                         " Searched in " + NAMED_PATH.toString());
             }
+            ptolemyCorePackageSet.add(ptolemyCorePackages[p]);
         }
+
         return classSet;
     }
 
@@ -291,6 +295,9 @@ public class SearchPath extends Vector {
     /** Set of Strings that name the .java files in the Ptolemy II core
      */
     public static Set ptolemyCoreClassSet = ptolemyCoreClasses();
+
+    /** Set of Strings that name all the Ptolemy II Core packages */
+    public static Set ptolemyCorePackageSet;
 
 
     ///////////////////////////////////////////////////////////////////

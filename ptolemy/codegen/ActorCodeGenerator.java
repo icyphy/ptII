@@ -155,8 +155,16 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         _rewriteSources(unitList, renamedClassNameList);
 
+	// FIXME: another File.separatorChar -> . location
+        ApplicationUtility.status("ActorCodeGenerator.pass1(): returning " +
+				 _outputPackageName + "." +
+	    StringManip.partAfterLast((String) renamedClassNameList.getLast(),
+				      File.separatorChar));
+
+	// FIXME: another File.separatorChar -> . location
         return _outputPackageName + "." +
-            (String) renamedClassNameList.getLast();
+	    StringManip.partAfterLast((String) renamedClassNameList.getLast(),
+				      File.separatorChar);
     }
 
     /** Perform pass 2 on the actor with the information given by the
@@ -197,7 +205,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             unitNode.accept(new RemovePropertyVisitor(),
                     TNLManip.addFirst(TYPE_KEY));
 
-            ApplicationUtility.trace("acg : transforming code " + filename);
+            ApplicationUtility.trace("ActorCodeGenerator.pass2(): transforming code " + filename);
 
             unitNode.accept(
                     _factory.createActorTransformerVisitor(actorInfo), null);
@@ -215,7 +223,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
     }
 
     /** Do pass 3 transformation of actor with the given filename (renamed
-     *  after pass 1. Pass 3 is the conversion of Extended Java to ordinary
+     *  after pass 1). Pass 3 is the conversion of Extended Java to ordinary
      *  Java.
      */
     public void pass3(String sourceName) {
@@ -230,7 +238,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         String filename = sourceFile.toString();
 
         ApplicationUtility.status("pass3() : sourceName = " + sourceName +
-                ", filename = " + filename);
+                ", filename = " + filename + ".java");
 
         // save the old type personality
         TypeVisitor oldTypeVisitor = StaticResolution.getDefaultTypeVisitor();
@@ -274,13 +282,27 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         // Now remove the extra imports by reloading the nodes once
         // again. (Pass 2 must be run again because of the new
         // types introduced by converting from Extended Java to Java.)
-        Iterator nameIterator = classNameList.iterator();
+        Iterator classNameItr = classNameList.iterator();
                 
         LinkedList importFilteredList = new LinkedList();
          
-        while (nameIterator.hasNext()) {
-            unitNode = StaticResolution.loadFileName(
-             _makeOutputFilename((String) nameIterator.next()), 2);
+        while (classNameItr.hasNext()) {
+            //unitNode = StaticResolution.loadFileName(
+            // _makeOutputFilename((String) classNameItr.next()), 2);
+
+	    // FIXME: we will need to handle className . to File.separatorChar
+	    String className = 
+		new String(((String)classNameItr.next()).
+			   replace('.',File.separatorChar));
+	    System.out.println("ActorCodeGenerator.pass3(): " + 
+			       "about to call loadFile on " +className);
+
+	    File file = SearchPath.NAMED_PATH.openSource(className);
+
+
+	    // Don't use reflection here, we want to read the file back in
+            unitNode = 
+		StaticResolution.loadFile(file, 2);
              
             // a new visitor must be created for each CompileUnitNode
             // to clear the usage maps
@@ -301,14 +323,22 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
     protected void _invalidateSources(List classNameList, int passNumber) {
         Iterator classNameItr = classNameList.iterator();
         while (classNameItr.hasNext()) {
-            String filename = _makeOutputFilename(
-             (String) classNameItr.next());
+            //String filename = _makeOutputFilename(
+            // (String) classNameItr.next());
 
-            ApplicationUtility.trace("invalidating source filename: "  +
-                    filename);
+            //ApplicationUtility.trace("invalidating source filename: "  +
+            //        filename);
 
-            if (!StaticResolution.invalidateCompileUnit(filename, passNumber)) {
-                ApplicationUtility.warn("failed to invalidate source filename: "                        + filename);
+            //if (!StaticResolution.invalidateCompileUnit(filename, passNumber)) {
+            //    ApplicationUtility.warn("failed to invalidate source filename: "                        + filename);
+            //}
+	    String className = (String) classNameItr.next();
+            ApplicationUtility.status("ActorCodeGenerator._invalidate" +
+				      "CompileUnit: invalidating source " +
+				      "filename: " + className);
+
+            if (!StaticResolution.invalidateCompileUnit(className, passNumber)) {
+                ApplicationUtility.warn("failed to invalidate source filename: "                        + className);
             }
         }
 
@@ -377,7 +407,10 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         nodeList.addFirst(unitNode);
 
         LinkedList classNameList = new LinkedList();
-        classNameList.addFirst(className);
+
+	//classNameList.addFirst(className);
+	// Use the complete class name, including the package name
+	classNameList.addFirst(ASTReflect.getPackageName(unitNode));
 
         ApplicationUtility.trace("_makeUnitList() : className = " + className);
 
@@ -420,7 +453,9 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                 nodeList.addFirst(unitNode);
 
                 className = superDecl.getName();
-                classNameList.addFirst(className);
+                //classNameList.addFirst(className);
+		// Use the complete class name, including the package name
+		classNameList.addFirst(ASTReflect.getPackageName(unitNode));
             }
         } while (true);
     }
@@ -466,7 +501,13 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         LinkedList renamedClassNameList = new LinkedList();
 
         while (classNameItr.hasNext()) {
-            String className = (String) classNameItr.next();
+            //String className = (String) classNameItr.next();
+	    // Get the classname without the package name
+	    // FIXME: another File.separatorChar -> . location
+	    String className =
+		StringManip.partAfterLast((String)classNameItr.next(), 
+					  File.separatorChar);
+
             String newClassName = "CG_" +  className + "_" + actorName;
 
             ApplicationUtility.trace("changing classname from " + className +
@@ -475,7 +516,11 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             // add the mapping from the old class name to the new class name
             renameMap.put(className, newClassName);
 
-            renamedClassNameList.addLast(newClassName);
+	    //renamedClassNameList.addLast(newClassName);
+	    renamedClassNameList.addLast(_outputPackageName.
+					 replace('.', File.separatorChar) +
+					 File.separatorChar +
+					 newClassName);
         }
 
         TNLManip.traverseList(new RenameJavaVisitor(),
@@ -495,8 +540,19 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         Iterator classNameItr = classNameList.iterator();
         while (classNameItr.hasNext()) {
-            filenameList.add(_makeOutputFilename(
-            (String) classNameItr.next()));
+            //filenameList.add(_makeOutputFilename(
+            //(String) classNameItr.next()));
+
+	    // Strip out the package name
+	    // FIXME: another location where File.separatorChar should be
+	    // replaced with .
+	    String filename =
+		_makeOutputFilename(StringManip.
+				    partAfterLast((String)classNameItr.next(),
+						  File.separatorChar));
+            filenameList.add(filename);
+	    System.out.println("ActorCodeGenerator._rewriteSources(): " +
+			       filename);
         }
 
         JavaCodeGenerator.writeCompileUnitNodeList(unitList, filenameList);

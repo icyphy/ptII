@@ -148,8 +148,11 @@ public class ASTReflect {
 
         NameNode packageName = null;
         if (myClass.getPackage() == null ) {
-            // JDK1.2.2 getPackage returns null
-	    packageName = new NameNode(AbsentTreeNode.instance, "");
+            // JDK1.2.2 getPackage returns null, but JDK1.3 does not?
+            packageName =
+                (NameNode) _makeNameNode(StringManip.partBeforeLast(
+                        myClass.getName(), '.'));
+            
         } else {
             packageName =
                 (NameNode) _makeNameNode(myClass.getPackage().getName());
@@ -309,12 +312,30 @@ public class ASTReflect {
 	return interfaceDeclNode;
     }
 
+    /** Given a CompileUnitNode, return the complete package name. */
+    public static String getPackageName(CompileUnitNode loadedAST) {
+	// FIXME: This get(0) worries me.
+        StringBuffer packageBuffer =
+	    new StringBuffer(((UserTypeDeclNode) loadedAST.
+			     getDefTypes().get(0)).getName().getIdent());
+
+	NameNode packageNode = (NameNode) loadedAST.getPkg();
+	while (packageNode.getQualifier() != AbsentTreeNode.instance) {
+	    // FIXME: we should use ., not File.separatorChar
+	    packageBuffer.insert(0,packageNode.getIdent() +
+				 File.separatorChar);
+	    packageNode = (NameNode) packageNode.getQualifier();
+	}
+	packageBuffer.insert(0, packageNode.getIdent() + File.separatorChar);
+	return packageBuffer.toString();
+    }
+
+
     /** Given a pathname, try to find a class that corresponds with it
      *  by starting with the filename and adding directories from the
      *  pathname until we find a class or run through all the directories.
      *  If a class is not found, return null.
      */
-
     public static Class lookupClass(String name) {
         try {
             // The classname was something like java.lang.Object
@@ -335,12 +356,36 @@ public class ASTReflect {
                     // Keep searching the packages.
                 }
 	    } 
-	    // FIXME: We need to do this part
+            // Ok, try the SearchPath
+            
+            for (int i = 0; i < SearchPath.NAMED_PATH.size(); i++) {
+                String candidate = (String) SearchPath.NAMED_PATH.get(i);
+                System.out.println("ASTReflect.lookupClass: SearchPath: " +
+                        candidate);
+                File file = new File(candidate + name + ".class");
+                if (file.isFile()) {
+                    String qualifiedName =
+                        new String(candidate.replace(File.separatorChar, '.')+
+                                "." + name);
+                    System.out.println("ASTReflect.lookupClass: qualified: " +
+                        qualifiedName);
+                    try {
+                        return Class.forName(qualifiedName);
+                    } catch (ClassNotFoundException ee) {
+                        // Keep searching the packages.
+                    }
+                }
+            }
+            StringBuffer packageBuffer = new StringBuffer();
+            for(int i = 0; i < packages.length; i++) {
+                packageBuffer.append(packages[i].getName() + " ");
+            }
 	    throw new RuntimeException("ASTReflect.lookupClass(): " +
 				       "Could not find class '" + name + 
 				       "'. The package of this class has " +
 				       "not yet been loaded, so we need to " +
-				       "look in the searchPath");
+				       "look in the searchPath. Looked in" +
+                                       packageBuffer);
 	}
     }
 
@@ -399,7 +444,12 @@ public class ASTReflect {
      *  If a class is not found, return null.
      */
     public static Class pathnameToClass(String pathname) {
+        try {
+            return Class.forName(new String(pathname));
+        } catch (Exception e) {}
+
 	Class myClass = null;
+
 	// Try to find a class by starting with the file name
 	// and then adding directories as we go along
 	

@@ -281,8 +281,11 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
                     if (!_typePolicy.compareTypes(d.getType(),
                             methodMember.getType())) {
-  	                ApplicationUtility.error("overriding of " + memberName +
-                                " changes return type");
+  	                ApplicationUtility.error(to.getName() +
+                                ": overriding of " + memberName +
+                                " changes return type: " +
+                                d.getType() + " vs. " + 
+                                methodMember.getType());
                     }
 
                     if ((dm & STATIC_MOD) != (mm & STATIC_MOD)) {

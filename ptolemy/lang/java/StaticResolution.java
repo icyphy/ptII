@@ -105,13 +105,20 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      */
     public static boolean invalidateCompileUnit(String canonicalFilename,
 						int pass) {
+	// This is called from ptolemy.codegen.ActorCodeGenerator
         if ((pass < 0) || (pass > 2)) {
             throw new IllegalArgumentException("invalid pass number : " +
 					       pass);
         }
 
-        String noExtensionFilename =
-            StringManip.partBeforeLast(canonicalFilename, '.');
+	String noExtensionFilename = canonicalFilename;
+
+	if (canonicalFilename.indexOf(File.separatorChar) != -1 &&
+	    canonicalFilename.indexOf('.') != -1) { 
+	    // This is probably a real filename
+	    noExtensionFilename =
+		StringManip.partBeforeLast(canonicalFilename, '.');
+	}
 
         boolean found = false;
 
@@ -124,8 +131,37 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 Set keySet = allPass2ResolvedMap.keySet();
                 ApplicationUtility.warn("pass 2 resolved files: " +
 					keySet.toString());
-            }
+		// restOfPath contains the directories that we add one by one.
+		String restOfPath = noExtensionFilename;
+
+		StringBuffer className =
+		    new StringBuffer(StringManip.
+				     baseFilename(noExtensionFilename));
+		while (!found) {
+		    if (restOfPath.lastIndexOf(File.separatorChar) == -1) { 
+			// We are out of directories to try.
+			break;
+		    }
+
+		    // First time through, we pull off the file name,
+		    // after that we pull off directories.
+		    restOfPath = StringManip.partBeforeLast(restOfPath,
+							File.separatorChar);
+		    // FIXME: use . here, not File.separatorChar
+		    className.insert(0,
+				     StringManip.baseFilename(restOfPath) + 
+				     File.separatorChar);
+		    System.out.println("StaticResolution.invalidateCompileUnit: " +
+				       "trying " + className.toString());
+		    found = (allPass2ResolvedMap.remove(className.toString()) != null);
+		    if (found) {
+			noExtensionFilename = className.toString();
+		    }
+		}
+	    }
         }
+	System.out.println("StaticResolution.invalidateCompileUnit: " +
+			   " found = " + found + " " + noExtensionFilename);
 
         if (found || (pass == 1)) {
             CompileUnitNode unitNode = (CompileUnitNode)
@@ -196,12 +232,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         // Check to whether or not we have already resolved the name.
         if (name.hasProperty(DECL_KEY)) {
-            ApplicationUtility.trace("decl already defined");
+            //ApplicationUtility.trace("decl already defined");
             return name;
         }
-
-        //System.out.println("StaticResolution.resolveAName(): " +
-	//			 nameString(name));
 
         EnvironIter possibles = _findPossibles(name, env, currentClass,
                 currentPackage, categories);
@@ -227,9 +260,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         case CG_INTERFACE:
             {
                 ClassDecl classDecl = (ClassDecl) d;
-		//System.out.println("StaticResolution.resolveAName(): " +
-		//		   "about to call classDecl.loadSource() " +
-		//		   d.category + " " + classDecl.getName() );
+		System.out.println("StaticResolution.resolveAName(): " +
+				   "about to call classDecl.loadSource() " +
+				   d.category + " " + classDecl.getName() );
 
                 classDecl.loadSource();
                 int modifiers = classDecl.getModifiers();
@@ -247,13 +280,17 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                         // FIXME : this check is too simple
                         if (!classDecl.deepContainedBy(currentPackage)) {
                             ApplicationUtility.error(classDecl.getName() +
-						     " not accessible");
+                                    " is not accessible. The container " +
+                                    container + " is not the same as the " +
+                                    "currentPackage " + currentPackage +
+                                    " and this classDecl is not contained " +
+                                    " by the current package" + classDecl);
                         }
                     }
                 }
 
-                ApplicationUtility.trace("resolveAName " + nameString(name) +
-                        " (user type) ok");
+                //ApplicationUtility.trace("resolveAName " + nameString(name) +
+                //        " (user type) ok");
                 return name;
             }
 
@@ -280,8 +317,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 }
 
                 name.setQualifier(AbsentTreeNode.instance);
-                ApplicationUtility.trace("resolveAName " + nameString(name) +
-                        " (field or method) ok");
+                //ApplicationUtility.trace("resolveAName " + nameString(name) +
+                //        " (field or method) ok");
                 return res;
             }
 
@@ -395,23 +432,41 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     }
 
     
-    /** Load the source file with the given filename. The filename may be
-     *  relative or absolute.
-     */
-    public static CompileUnitNode loadFileName(String filename, int pass) {
-        return loadFile(new File(filename), pass);
-    }
-
     /** Load the class by name.  The classname does not have a
      *  .class or .java suffix.  The classname should include
      *  the package name, for example "java.lang.Object"
      */
     public static CompileUnitNode loadClassName(String className, int pass) {
+        System.out.println("StaticResolution.loadClassName: " +
+                className);
+
         CompileUnitNode loadedAST =
             (CompileUnitNode) allPass0ResolvedMap.get(className);
 
+        // FIXME: we should not have to try with /
         if (loadedAST == null) {
-            loadedAST = JavaParserManip.parseCanonicalClassName(className, false);
+	    System.out.println("StaticResolution.loadClassName(): " +
+			       " Warning, trying with .");
+            loadedAST =
+                (CompileUnitNode) allPass0ResolvedMap.get(className.replace('.','/'));
+        }
+
+        if (loadedAST == null) {
+	    System.out.println("StaticResolution.loadClassName(): " +
+			       " Warning, trying replacing . with File.separatorChar");
+            loadedAST =
+                (CompileUnitNode) allPass0ResolvedMap.get(className.replace('.',File.separatorChar));
+        }
+        if (loadedAST == null) {
+	    System.out.println("StaticResolution.loadClassName(): " +
+			       " Warning, trying replacing / with File.separatorChar");
+            loadedAST =
+                (CompileUnitNode) allPass0ResolvedMap.get(className.replace('/',File.separatorChar));
+        }
+        if (loadedAST == null) {
+            System.out.print("+");
+            loadedAST =
+                JavaParserManip.parseCanonicalClassName(className, false);
 
             if (loadedAST == null) {
                 ApplicationUtility.error("Couldn't load " + className);
@@ -421,12 +476,21 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     }
 
     public static CompileUnitNode loadFile(File file, int pass) {
+        System.out.println("StaticResolution.loadFile:" +
+                file.getName());
         try {
             return _loadCanonicalFile(file.getCanonicalPath(), pass);
         } catch (IOException ioe) {
             ApplicationUtility.error(ioe.toString());
         }
         return null;
+    }
+
+    /** Load the source file with the given filename. The filename may be
+     *  relative or absolute.
+     */
+    public static CompileUnitNode loadFileName(String filename, int pass) {
+        return loadFile(new File(filename), pass);
     }
 
     /** Load a CompileUnitNode that has been parsed. Go through all passes
@@ -516,9 +580,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
     static {
  	long startTime= System.currentTimeMillis();
-        System.out.println("StaticResolution<static>: --- Creating two new PackageDecls ---" + (System.currentTimeMillis() - startTime) + " ms");
+        System.out.println("StaticResolution<static>: --- Creating SYSTEM_PACKAGE PackageDecl ---" + (System.currentTimeMillis() - startTime) + " ms");
         SYSTEM_PACKAGE  = new PackageDecl("", null);
+        System.out.println("StaticResolution<static>: --- Creating UNNAMED_PACKAGE PackageDecl ---" + (System.currentTimeMillis() - startTime) + " ms");
         UNNAMED_PACKAGE = new PackageDecl("", SYSTEM_PACKAGE);
+
         ApplicationUtility.trace("StaticResolution<static>: " +
                 "SYSTEM_PACKAGE: " +  SYSTEM_PACKAGE.getEnviron().toString());
         ApplicationUtility.trace("StaticResolution<static>: " +
@@ -702,20 +768,20 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
 
         if (!possibles.hasNext() & ((categories & CG_CLASS) == 1)) { 
-//  	    // Use reflection
-//  	    ClassDeclNode classDeclNode =
-//  		ASTReflect.lookupClassDeclNode(name.getIdent());
-//  	    // FIXME: what if this is an interface
-//              ClassDecl classDecl = new ClassDecl(name.getIdent(),
-//  				      CG_CLASS,
-//  				      new TypeNameNode(classDeclNode.getName()),
-//  				      classDeclNode.getModifiers(),
-//  				      classDeclNode, null);
-//  	    System.out.println("possibles.hasNext false, reflection: " + classDecl);
-//  	    Environ environ = new Environ();
-//  	    classDecl.setEnviron(environ);
-//  	    environ.add(classDecl);
-//  	    possibles = ((Environ) environ).lookupFirst(name.getIdent(), categories);
+  	    // Use reflection
+  	    ClassDeclNode classDeclNode =
+  		ASTReflect.lookupClassDeclNode(currentPackage.fullName() +
+                        "." + name.getIdent());
+  	    // FIXME: what if this is an interface
+              ClassDecl classDecl = new ClassDecl(name.getIdent(),
+  				      CG_CLASS,
+  				      new TypeNameNode(classDeclNode.getName()),
+  				      classDeclNode.getModifiers(),
+  				      classDeclNode, currentPackage);
+  	    System.out.println("possibles.hasNext false, reflection: " + classDecl);
+  	    classDecl.setEnviron(env);
+  	    env.add(classDecl);
+  	    possibles = ((Environ) env).lookupFirst(name.getIdent(), categories);
 	}
 
         if (!possibles.hasNext()) {
@@ -725,7 +791,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             }
 	    String envString = env.toString();
 	    if (envString.length() > 100 ) {
-		envString = new String(envString.substring(100) + "...");
+		envString = new String(envString.substring(0,100) + "...");
 	    }
 
             message += "Symbol name: \"" +
@@ -759,8 +825,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     // do partial resolution only.
     private static CompileUnitNode _loadCanonicalFile(
             String filename, int pass) {
-        //System.out.println("StaticResolution._loadCanonicalFile: " + 
-        //filename);
+        System.out.println("StaticResolution._loadCanonicalFile: " + 
+                filename);
 	System.out.print(".");
 
         String noExtensionName = StringManip.partBeforeLast(filename, '.');
@@ -789,7 +855,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         Decl decl = env.lookup(name);
 
         if (decl == null) {
-	    //System.out.println("StaticResolution:_requireClass(): using refl");
+	    System.out.println("StaticResolution:_requireClass(): using refl");
 	    // Use reflection
 	    Class myClass = ASTReflect.lookupClass(name);
 	    if (myClass.isInterface()) {
@@ -856,6 +922,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     private static CompileUnitNode _resolvePass0(CompileUnitNode node) {
         String filename = (String) node.getProperty(IDENT_KEY);
 
+        System.out.println("StaticResolution._resolvePass0: " +
+                filename);
         if (filename != null) {
             CompileUnitNode pass0ResolvedNode =
                 (CompileUnitNode) allPass0ResolvedMap.get(filename);

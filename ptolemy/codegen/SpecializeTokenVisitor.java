@@ -586,19 +586,41 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     }
 
     static {
+        System.out.println("SpecializedTokenVisitor<static>");
         // construct the type lattice
         _cpo = new DirectedAcyclicGraph(18);
 
+        System.out.println("SpecializedTokenVisitor<static>:" +
+                "DUMMY_LOWER_BOUND" + PtolemyTypeIdentifier.DUMMY_LOWER_BOUND);
         _cpo.add(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND);
 
+        System.out.println("SpecializedTokenVisitor<static>:" +
+                "BOOLEAN_TOKEN_DECL" + 
+                PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL);
+
+        System.out.println("SpecializedTokenVisitor<static>:" +
+                "BOOLEAN_MATRIX_TOKEN_DECL" + 
+                PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);
+
+        System.out.println("SpecializedTokenVisitor<static>:" +
+                           "COMPLEX_TOKEN_DECL");
         _cpo.add(PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL);
+
+        System.out.println("SpecializedTokenVisitor<static>:" +
+                           "COMPLEX_MATRIX_TOKEN_DECL");
         _cpo.add(PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL);
+
+        System.out.println("SpecializedTokenVisitor<static>:" +
+                           "DOUBLE_TOKEN_DECL");
         _cpo.add(PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.FIX_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL);
+        System.out.println("SpecializedTokenVisitor<static>:" +
+                           "INT_TOKEN_DECL");
+
         _cpo.add(PtolemyTypeIdentifier.INT_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.LONG_TOKEN_DECL);

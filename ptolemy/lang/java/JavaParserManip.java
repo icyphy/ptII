@@ -1,7 +1,6 @@
-/*
-Methods to aid in parsing Java source code.
+/* Methods to aid in parsing Java source code.
 
-Copyright (c) 1998-1999 The Regents of the University of California.
+Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -40,21 +39,28 @@ import java.util.Map;
 
 import ptolemy.lang.StringManip;
 import ptolemy.lang.ApplicationUtility;
+import ptolemy.lang.java.nodetypes.AbsentTreeNode;
+import ptolemy.lang.java.nodetypes.ClassDeclNode;
 import ptolemy.lang.java.nodetypes.CompileUnitNode;
-
+import ptolemy.lang.java.nodetypes.NameNode;
+import ptolemy.lang.java.nodetypes.UserTypeDeclNode;
 /**
- *  Methods to aid in parsing of Java source code.
- *
- *  @author Jeff Tsay
+Methods to aid in parsing of Java source code.
+@author Jeff Tsay
+@version $Id$
  */
 public class JavaParserManip implements JavaStaticSemanticConstants {
 
     // private constructor prevent instantiation of this class
     private JavaParserManip() {}
 
-    /** Parse the file, doing no static resolution whatsoever. The filename may be
-     *  relative or absolute. If a source file with the same canonical filename
-     *  has already been parsed, return the previous node.
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Parse the file, doing no static resolution whatsoever.
+     *	The filename may be relative or absolute. If a source file with the
+     *  same canonical filename has already been parsed, return the
+     *  previous node.
      */
     public static CompileUnitNode parse(String filename, boolean debug) {
         return parse(new File(filename), debug);
@@ -92,18 +98,17 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 	if (javaFile.length() == 0) {
 	    Class myClass = ASTReflect.pathnameToClass(filename);
 	    if (myClass != null) {
-		System.out.println("JavaParserManip: Calling " +
-					 "ASTCompileUnitNode on " + 
-					 myClass.getName() + " " +
-                        filename);
+		System.out.println("JavaParserManip.parseCanonicalFileName: "+
+				   filename + "is of length 0. Using " +
+				   " reflection on " + myClass.getName());
 		loadedAST = ASTReflect.ASTCompileUnitNode(myClass);
 	    }
 	} else {
 	    JavaParser p = new JavaParser();
 
-	    ApplicationUtility.trace("JavaParserManip: Calling " +
-				     "JavaParser.init() " + 
-				     StringManip.baseFilename(filename));
+	    //ApplicationUtility.trace("JavaParserManip: Calling " +
+	    //			     "JavaParser.init() " + 
+	    //			     StringManip.baseFilename(filename));
 
 	    try {
 		p.init(filename);
@@ -118,12 +123,30 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 	    loadedAST = p.getAST();
 
 	    // Get the part of the filename before the last '.'
-	    filename = StringManip.partBeforeLast(filename, '.');
+	    //filename = StringManip.partBeforeLast(filename, '.');
 	}
 
-        loadedAST.setProperty(IDENT_KEY, filename);
+	if (loadedAST==null) {
+	    javaFile = new File(filename);
+	    throw new NullPointerException("JavaParserManip." +
+					   "parseCanonicalFileName(): "+
+					   "loadedAST is null: " + filename +
+					   (javaFile.exists() ?
+					    " " :" does not ") + "exist, " +
+					   " length: " + javaFile.length());
+	}
 
-        allParsedMap.put(filename, loadedAST);
+
+        // Rather than storing by filename, store by package name
+        //loadedAST.setProperty(IDENT_KEY, filename);
+        //allParsedMap.put(filename, loadedAST);
+
+	String packageName = ASTReflect.getPackageName(loadedAST);
+	System.out.println("JavaParserManip.parseCanonicalFileName: "+
+			   " parsed " + filename + " found " + packageName);
+        loadedAST.setProperty(IDENT_KEY, packageName);
+        allParsedMap.put(packageName, loadedAST);
+
 
         return loadedAST;
     }
@@ -144,13 +167,19 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 
         Class myClass = ASTReflect.pathnameToClass(className);
         if (myClass != null) {
-            System.out.println("JavaParserManip: Calling " +
-                    "ASTCompileUnitNode on " + 
-                    myClass.getName() + " " +
-                    className);
+            //System.out.println("JavaParserManip.parseCanonicalClassName: " +
+            //        "Calling ASTCompileUnitNode on " + 
+            //        myClass.getName() + " " +
+            //        className);
             loadedAST = ASTReflect.ASTCompileUnitNode(myClass);
         }
 
+        if (loadedAST == null) {
+            throw new NullPointerException("JavaParserManip.parseCanonical" +
+                    "ClassName(" + className + "): loadedAST was null " + 
+                    "myClass:" +
+                    ((myClass==null) ? "null" : myClass.getName()));
+        }
 
         loadedAST.setProperty(IDENT_KEY, className);
 
@@ -158,6 +187,9 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 
         return loadedAST;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** A Map containing values of CompileUnitNodes that have been parsed,
      *  including nodes that have undergone later stages of static resolution,

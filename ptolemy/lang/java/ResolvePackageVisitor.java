@@ -205,8 +205,10 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
                     new TypeNameNode(node.getName()), node.getModifiers(), node, encDecl);
 
             if (ocl != null)  { // Redefinition in same package.
-                ApplicationUtility.error("user type name " + className +
-                        " conflicts with " + ocl.getName() + " in same package");
+                ApplicationUtility.error("ResolvePackageVisitor: " +
+					 "User type name " + className +
+					 " conflicts with " + ocl.getName() +
+					 " in same package");
             }
 
             // add to the package environment if it's an top-level class

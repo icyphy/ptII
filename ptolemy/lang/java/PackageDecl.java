@@ -64,6 +64,7 @@ public class PackageDecl extends JavaDecl
     /** Re-override equals() from Decl so that equality is defined as being the
      *  same object. This is necessary to ensure that a Decl named z for x.y.z
      *  does not equal another Decl named z for x.z.
+     *  @return true if the objects are the same object.
      */
     public boolean equals(Object obj) {
         return (this == obj);
@@ -96,75 +97,18 @@ public class PackageDecl extends JavaDecl
     public final boolean hasEnviron() { return true; }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         protected variables               ////
 
-    /** Initialize the Environ by loading in the system packages
-     */
-    protected void _initEnvironSystemPackages() {
-        // FIXME: should this be File.separatorChar?  I think
-        // jar files always use /
-        String packageName = fullName('/');
-        System.out.println("PackageDecl._initEnvironSystemPackages(): loading " + packageName + " _container:" + _container);
+    protected JavaDecl  _container;
 
-        Iterator classes = SearchPath.systemClassSet.iterator();
-        while (classes.hasNext()) {
-            String className = (String) classes.next();
-            if (className.startsWith(packageName)) {
-                String systemPackageName =
-                    StringManip.partBeforeLast(className, '/');
-                if (systemPackageName.equals(packageName)) {
-                    if (_environ.lookupProper(className, CG_USERTYPE) == null) {
-                String shortClassName =
-                    className.substring(packageName.length() + 1);
-                        
-                        System.out.println("PackageDecl._initEnvironSystemPackages():"+
-                                shortClassName);
+    protected Environ _environ = null;
 
-                        _environ.add(new ClassDecl(shortClassName, this));
-                    }
-                }
-            }
-        }
-
-        // Add the sub packages in this package
-        Iterator packages = SearchPath.systemPackageSet.iterator();
-        while(packages.hasNext()) {
-            String systemPackageName = (String) packages.next();
-            // Add the package 
-            // if it is a subpackage of packageName, _or_ 
-            // if the packageName is "" and the
-            // systemPackage does not contain a /
-            //
-            // We need to check to see if the string contains a /
-            // because if packageName == java and systemPackageName == javax
-            // then partBeforeLast will fail. 
-            if (systemPackageName.startsWith(packageName) &&
-                    systemPackageName.indexOf('/') != -1 &&
-                    StringManip.partBeforeLast(systemPackageName,
-                            '/').equals(packageName)) {
-                // Remove the package name and add the subpackage.
-                // For example if we are in java, then add lang instead
-                // of java/lang
-                String shortSystemPackageName =
-                    systemPackageName.substring(packageName.length() + 1);
-                System.out.println("PackageDecl._initEnvironSystemPackages(): " +
-                    "adding package: " + shortSystemPackageName);
-                _environ.add(new PackageDecl(shortSystemPackageName, this));
-            } else {
-                if (packageName.equals("") && 
-                        systemPackageName.indexOf('/') == -1 &&
-                        !systemPackageName.equals("META-INF")
-                    ) {
-                System.out.println("PackageDecl._initEnvironSystemPackages(): " +
-                    "adding toplevel package: " + systemPackageName);
-                _environ.add(new PackageDecl(systemPackageName, this));
-                }
-            }
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
 
-    protected void _initEnviron() {
+    // Initialize the environ by adding declarations for the package.
+    private void _initEnviron() {
 	/* SDFCodeGeneratorClassFactory.createPtolemyTypeIdentifier()
 	 * ptolemy.codegen.PtolemyTypeIdentifier has a static section
          * that calls
@@ -193,17 +137,36 @@ public class PackageDecl extends JavaDecl
         }
 
         // Use the contents of the system jar file to get java.* etc. files 
-        if (fullName().equals("")) {
-            _initEnvironSystemPackages();
-            // Don't return here, we need to add top level packages
-            // such as the ptolemy package.
-        } else {
-            // If this package is a system package, then use the system jar
-            // and return
-            if (SearchPath.systemPackageSet.contains(fullName('/'))) {
-                _initEnvironSystemPackages();
+        if (fullName().equals("") ||
+                SearchPath.systemPackageSet.contains(fullName(File.separatorChar))) {
+            _initEnvironSystemPackages(SearchPath.systemClassSet,
+                    SearchPath.systemPackageSet);
+        }
+
+        if (SearchPath.systemPackageSet.contains(fullName(File.separatorChar))) {
                 return;
+        }
+
+       System.out.println("PackageDecl._initEnvironSystemPackages(): " +
+               "Now processing " + fullName(File.separatorChar));
+        // Use reflection to get at the Ptolemy Core packages.
+        if (SearchPath.ptolemyCorePackageSet.contains(fullName(File.separatorChar))) {
+            _initEnvironSystemPackages(SearchPath.ptolemyCoreClassSet,
+                    SearchPath.ptolemyCorePackageSet);
+
+            if (fullName(File.separatorChar).equals("ptolemy" +
+						    File.separatorChar +
+						    "data")) {
+                // ptolemy.data and ptolemy.data.type are part of the 
+                // ptolemy II core, so we can use reflection, but
+                // ptolemy.data.expr is not part of the core, so
+                // we need to add it by hand so that we can parse
+                // the .java files and get the bodies in to the AST.
+                //System.out.println("PackageDecl._initEnvironSystem" +
+                // "Packages(): saw ptolemy/data ");
+                _environ.add(new PackageDecl("expr", this));
             }
+            return;
         }
 
         SearchPath paths = _pickLibrary(this);
@@ -273,8 +236,9 @@ public class PackageDecl extends JavaDecl
                         if (fs.isDirectory()) {
                             _environ.add(new PackageDecl(name, this));
 	                    empty = false;
-                            System.out.println(fullName() + " " +
-                             getName() + " : found subpackage in " + fullname);
+                            //System.out.println(fullName() + " " +
+                            // getName() + " : found subpackage in " +
+                            // fullname);
                         }
 
                     } // className != null
@@ -288,11 +252,73 @@ public class PackageDecl extends JavaDecl
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    // Initialize the Environ by loading declarations for the system packages
+    // or ptolemy core packages.
+    private void _initEnvironSystemPackages(Set classSet, Set packageSet) {
+        // FIXME: should this be File.separatorChar?  I think
+        // jar files always use /
+        String packageName = fullName(File.separatorChar);
+        //System.out.println(getClass().getName() + 
+	//		   "._initEnvironSystemPackages(): " +
+	//		   "loading " + packageName + " _container:" + _container);
 
-    protected JavaDecl  _container;
+        Iterator classes = classSet.iterator();
+        while (classes.hasNext()) {
+            String className = (String) classes.next();
+            if (className.startsWith(packageName)) {
+                String systemPackageName =
+                    StringManip.partBeforeLast(className, File.separatorChar);
+                if (systemPackageName.equals(packageName)) {
+                    if (_environ.lookupProper(className, CG_USERTYPE) == null) {
+                String shortClassName =
+                    className.substring(packageName.length() + 1);
+                //System.out.println("PackageDecl._initEnviron" +
+                //                "SystemPackages():"+
+                //                shortClassName);
 
-    protected Environ _environ = null;
+                        _environ.add(new ClassDecl(shortClassName, this));
+                    }
+                }
+            }
+        }
+
+        // Add the sub packages in this package
+        Iterator packages = packageSet.iterator();
+        while(packages.hasNext()) {
+            String systemPackageName = (String) packages.next();
+            // Add the package 
+            // if it is a subpackage of packageName, _or_ 
+            // if the packageName is "" and the
+            // systemPackage does not contain a File.separatorChar
+            //
+            // We need to check to see if the string contains
+	    // a File.separatorChar because 
+	    // if packageName == java and systemPackageName == javax
+            // then partBeforeLast will fail. 
+            if (systemPackageName.startsWith(packageName) &&
+                    systemPackageName.indexOf(File.separatorChar) != -1 &&
+                    StringManip.partBeforeLast(systemPackageName,
+                            File.separatorChar).equals(packageName)) {
+                // Remove the package name and add the subpackage.
+                // For example if we are in java, then add lang instead
+                // of java/lang
+                String shortSystemPackageName =
+                    systemPackageName.substring(packageName.length() + 1);
+                // System.out.println("PackageDecl._initEnvironSystem" +
+                // "Packages(): adding package: " + shortSystemPackageName);
+                _environ.add(new PackageDecl(shortSystemPackageName, this));
+            } else {
+                if (packageName.equals("") && 
+                        systemPackageName.indexOf(File.separatorChar) == -1 &&
+                        !systemPackageName.equals("META-INF")
+                    ) {
+                    // System.out.println("PackageDecl._initEnvironSystem" +
+                    // "Packages(): adding toplevel package: " +
+                    // systemPackageName);
+                _environ.add(new PackageDecl(systemPackageName, this));
+                }
+            }
+        }
+    }
 }
 
