@@ -700,7 +700,21 @@ test BackwardCompatibility-13.1 {DirectoryListing}  {
     set toplevel [$parser parse $testMoML]
     set newMoML [$toplevel exportMoML]
     list $newMoML
-} {}
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="testMoML" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    </property>
+    <entity name="test" class="ptolemy.actor.lib.io.DirectoryListing">
+        <port name="directoryOrURL" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+    </entity>
+</entity>
+}}
 
 # NonStrictTest reads ptolemy.actor.lib.NonStrictTest.fire.compat 
 # and ignores fire() not being called if the property is true.
