@@ -71,14 +71,14 @@ test ArrayToSequence-2.1 {test double array} {
     $s2a setContainer $e0
     set s2aIn [java::field $s2a input]
     set s2aOut [java::field $s2a output]
-    $s2a setTokenConsumptionRate $s2aIn 2
+    $s2aIn setTokenConsumptionRate 2
 
     # Use the ArrayToSequence clone
     $a2s setContainer $e0
     $a2s setName a2s
     set a2sIn [java::field $a2s input]
     set a2sOut [java::field $a2s output]
-    $a2s setTokenProductionRate $a2sOut 2
+    $a2sOut setTokenProductionRate 2
 
     # put in a Recorder
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]

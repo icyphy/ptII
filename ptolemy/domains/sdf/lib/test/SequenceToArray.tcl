@@ -69,7 +69,7 @@ test SequenceToArray-2.1 {test double array} {
     $s2a setContainer $e0
     set s2aIn [java::field $s2a input]
     set s2aOut [java::field $s2a output]
-    $s2a setTokenConsumptionRate $s2aIn 2
+    $s2aIn setTokenConsumptionRate 2
 
     # put in a Recorder
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
