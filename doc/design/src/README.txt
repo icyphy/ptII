@@ -41,6 +41,36 @@ If you put them below the point where they are referred to,
 Frame leaves orphaned lines below or above them.  The layout
 ends up being far worse.
 
+Screenshots
+-----------
+To capture a screenshot, use Snagit to save the image as
+a gif, then open the image with Paint copy all of the image into
+the clipboard and then use Framemaker import special to import
+it as a Windows Meta File (WMF).  
+
+More specifically:
+
+1. We have a few licenses for Snagit
+http://www.techsmith.com/products/snagit/index.htm
+Snagit is probably installed on the lab machines.
+2. Start up Snagit and set the input to "Window" and
+you probably don't want to include the cursor.
+Set the output to gif.
+3. Bring up the window you want to capture
+4. Hit Control-Shift-P and click in the window you want to capture
+5. Snagit capture preview should come up, do File-> Save As
+and save the file as a gif or bmp.  Do not save as a jpg, which is lossy.
+6. Open the file you save in Microsoft Paint by going
+to the file right clicking and selecting Open with -> Microsoft Paint
+7. Copy the file into the clipboard by going to Microsoft Paint
+and selecting Edit -> Select all and then Edit -> Copy
+8. Go to Framemaker and select the graphic frame where you would
+like to place the image.  In framemaker, graphic frames can be created 
+inside an anchor frame by doing Graphics -> Tools and then selecting
+the icon that has a partial circle, a square and a triangle.
+9. In Framemaker, do Edit - Paste Special, and select Metafile
+
+
 Converting to html
 ------------------
 http://ptolemy/~cxh/sa/quadralay.html covers the details, but basically
