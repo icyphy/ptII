@@ -27,7 +27,9 @@
 
 */
 
-package ptolemy.actor;
+package ptolemy.actor.util;
+
+import ptolemy.actor.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// HasFunctionDependencies

@@ -33,6 +33,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.util.FunctionDependency;
+import ptolemy.actor.util.FunctionDependencyOfAtomicActor;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;

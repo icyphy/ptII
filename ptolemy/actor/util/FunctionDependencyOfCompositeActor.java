@@ -27,12 +27,16 @@
 
 */
 
-package ptolemy.actor;
+package ptolemy.actor.util;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.kernel.util.InternalErrorException;
 

@@ -28,13 +28,15 @@
 
 */
 
-package ptolemy.actor;
+package ptolemy.actor.util;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Node;
 import ptolemy.kernel.util.InternalErrorException;

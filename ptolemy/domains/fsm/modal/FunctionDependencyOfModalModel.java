@@ -33,7 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.FunctionDependencyOfCompositeActor;
+import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.MessageHandler;
 

@@ -27,8 +27,11 @@
 
 */
 
-package ptolemy.actor;
+package ptolemy.actor.util;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.IOPort;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 

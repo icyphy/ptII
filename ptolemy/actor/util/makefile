@@ -67,6 +67,10 @@ JSRCS = \
 	ExplicitChangeContext.java \
 	FIFOQueue.java \
 	FreeVariableModelAnalysis.java \
+	FunctionDependency.java \
+	FunctionDependencyOfAtomicActor.java \
+	FunctionDependencyOfCompositeActor.java \
+	HasFunctionDependencies.java \
 	TimedEvent.java
 
 EXTRA_SRCS =	$(JSRCS)

@@ -42,6 +42,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.util.FunctionDependency;
+import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
+import ptolemy.actor.util.HasFunctionDependencies;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;

@@ -30,7 +30,7 @@
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.FunctionDependency;
+import ptolemy.actor.util.FunctionDependency;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfFSMActor
