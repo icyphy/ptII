@@ -76,10 +76,10 @@ JSRCS = \
 	Receiver.java \
 	StreamExecutionListener.java \
 	TypeAttribute.java \
+	TypeConflictException.java \
 	TypedActor.java \
 	TypedAtomicActor.java \
 	TypedCompositeActor.java \
-	TypeConflictException.java \
 	TypedIOPort.java \
 	TypedIORelation.java \
 	TypeEvent.java \
