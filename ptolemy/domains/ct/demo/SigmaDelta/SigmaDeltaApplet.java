@@ -130,8 +130,8 @@ public class SigmaDeltaApplet extends CTApplet {
             CTZeroOrderHold hold = new CTZeroOrderHold(ctsub, "Hold");
             AddSubtract add1 = new AddSubtract(ctsub, "Add1");
 
-            CTIntegrator intgl1 = new CTIntegrator(ctsub, "Integrator1");
-            CTIntegrator intgl2 = new CTIntegrator(ctsub, "Integrator2");
+            Integrator intgl1 = new Integrator(ctsub, "Integrator1");
+            Integrator intgl2 = new Integrator(ctsub, "Integrator2");
             Scale gain0 = new Scale(ctsub, "Gain0");
             Scale gain1 = new Scale(ctsub, "Gain1");
             Scale gain2 = new Scale(ctsub, "Gain2");

@@ -1,4 +1,4 @@
-/* The right hand side terms of the helicopter dynamics.
+C/* The right hand side terms of the helicopter dynamics.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.

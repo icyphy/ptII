@@ -82,8 +82,8 @@ public class SquareWaveResponse {
             //dir.addDebugListener(new StreamListener());
             CTSquareWave sqwv = new CTSquareWave(sys, "SQWV");
             AddSubtract add1 = new AddSubtract( sys, "Add1");
-            CTIntegrator intgl1 = new CTIntegrator(sys, "Integrator1");
-            CTIntegrator intgl2 = new CTIntegrator(sys, "Integrator2");
+            Integrator intgl1 = new Integrator(sys, "Integrator1");
+            Integrator intgl2 = new Integrator(sys, "Integrator2");
             Scale gain1 = new Scale( sys, "Gain1");
             Scale gain2 = new Scale( sys, "Gain2");
             Scale gain3 = new Scale( sys, "Gain3");

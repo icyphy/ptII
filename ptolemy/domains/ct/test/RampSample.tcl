@@ -49,7 +49,7 @@ $subout setOutput 1
 set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $ctsub CTEmbDIR]
 # construct the sub system
 set const [java::new ptolemy.domains.ct.lib.CTConst $ctsub Const]
-set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $ctsub Integrator]
+set integral [java::new ptolemy.domains.ct.lib.Integrator $ctsub Integrator]
 set print [java::new ptolemy.domains.ct.lib.CTPlot $ctsub CTPlot]
 set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicalSampler $ctsub Sample]
 

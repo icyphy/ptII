@@ -54,7 +54,7 @@ set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $ctsub CTEm
 
 # construct the sub system
 set hold [java::new ptolemy.domains.ct.lib.CTZeroOrderHold $ctsub Hold]
-set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $ctsub Integrator]
+set integral [java::new ptolemy.domains.ct.lib.Integrator $ctsub Integrator]
 set print [java::new ptolemy.domains.ct.lib.CTPlot $ctsub CTPlot]
 set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicalSampler $ctsub Sample]
 

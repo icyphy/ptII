@@ -158,8 +158,8 @@ public class StickyBallApplet extends CTApplet {
             CTCompositeActor ctInc = new CTCompositeActor(hs, "Separate");
 
             //CTZeroOrderHold ctIncH1 = new CTZeroOrderHold(ctInc, "Hold1");
-            _ctIncV1 = new CTIntegrator(ctInc, "V1");
-            _ctIncP1 = new CTIntegrator(ctInc, "P1");
+            _ctIncV1 = new Integrator(ctInc, "V1");
+            _ctIncP1 = new Integrator(ctInc, "P1");
             Expression ctIncE1 = new Expression(ctInc, "E1");
             TypedIOPort ctIncE1In = (TypedIOPort)ctIncE1.newPort("In");
             ctIncE1In.setInput(true);
@@ -173,8 +173,8 @@ public class StickyBallApplet extends CTApplet {
             ctIncE1.expression.setExpression("1.0*1.0 + In - 1.0*P1");
 
             //CTZeroOrderHold ctIncH2 = new CTZeroOrderHold(ctInc, "Hold2");
-            _ctIncV2 = new CTIntegrator(ctInc, "V2");
-            _ctIncP2 = new CTIntegrator(ctInc, "P2");
+            _ctIncV2 = new Integrator(ctInc, "V2");
+            _ctIncP2 = new Integrator(ctInc, "P2");
             Expression ctIncE2 = new Expression(ctInc, "E2");
             TypedIOPort ctIncE2In = (TypedIOPort)ctIncE2.newPort("In");
             ctIncE2In.setInput(true);
@@ -254,9 +254,9 @@ public class StickyBallApplet extends CTApplet {
             //        + "sticking together.");
             CTCompositeActor ctDec = new CTCompositeActor(hs, "Together");
 
-            CTIntegrator ctDecV1 = new CTIntegrator(ctDec, "V1");
-            CTIntegrator ctDecP1 = new CTIntegrator(ctDec, "P1");
-            CTIntegrator ctDecSTI = new CTIntegrator(ctDec, "STI");
+            Integrator ctDecV1 = new Integrator(ctDec, "V1");
+            Integrator ctDecP1 = new Integrator(ctDec, "P1");
+            Integrator ctDecSTI = new Integrator(ctDec, "STI");
             _ctGain = new Scale(ctDec, "Gain");
             _ctGain.gain.setToken(new DoubleToken(-1.0));
 
@@ -421,10 +421,10 @@ public class StickyBallApplet extends CTApplet {
     private Scale _ctGain;
 
     // Integrators
-    CTIntegrator _ctIncV1;
-    CTIntegrator _ctIncP1;
-    CTIntegrator _ctIncV2;
-    CTIntegrator _ctIncP2;
+    Integrator _ctIncV1;
+    Integrator _ctIncP1;
+    Integrator _ctIncV2;
+    Integrator _ctIncP2;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classess                    ////

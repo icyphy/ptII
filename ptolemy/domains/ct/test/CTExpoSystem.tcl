@@ -74,7 +74,7 @@ test CTExpoSystem-4.1 {Expo with ForwardEulerSolver} {
     
     set const [java::new ptolemy.actor.lib.Const $sys Const]
     set add [java::new ptolemy.actor.lib.AddSubtract $sys Add]
-    set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $sys Integr]
+    set integral [java::new ptolemy.domains.ct.lib.Integrator $sys Integr]
     set testV [java::new ptolemy.domains.ct.test.CTTestValueSink $sys TestV]
 
     set constout [$const getPort output]

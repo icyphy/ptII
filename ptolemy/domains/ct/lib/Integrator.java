@@ -34,23 +34,23 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// CTIntegrator
+//// Integrator
 /**
-A wrapper of CTBaseIntegrator. Basically do nothing. All the action methods
-come from the ODEsolver.
+A wrapper of CTBaseIntegrator. The only purpose of this actor is 
+that it is in the ct.lib package.
 @author Jie Liu
 @version $Id$
 @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
-public class CTIntegrator extends CTBaseIntegrator {
+public class Integrator extends CTBaseIntegrator {
     /** construct the integrator.
      * @see ptolemy.domains.ct.kernel.CTBaseIntegrator
-     * @param container The CTSubSystem this star belongs to
+     * @param container The TypedCompositeActor this star belongs to
      * @param name The name.
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
      */
-    public CTIntegrator(TypedCompositeActor container, String name)
+    public Integrator(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }

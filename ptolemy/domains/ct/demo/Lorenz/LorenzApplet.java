@@ -115,9 +115,9 @@ public class LorenzApplet extends CTApplet {
             MultiplyDivide MULT1 = new MultiplyDivide(_toplevel, "MULT1");
             MultiplyDivide MULT2 = new MultiplyDivide(_toplevel, "MULT2");
 
-            CTIntegrator X1 = new CTIntegrator(_toplevel, "IntegratorX1");
-            CTIntegrator X2 = new CTIntegrator(_toplevel, "IntegratorX2");
-            CTIntegrator X3 = new CTIntegrator(_toplevel, "IntegratorX3");
+            Integrator X1 = new Integrator(_toplevel, "IntegratorX1");
+            Integrator X2 = new Integrator(_toplevel, "IntegratorX2");
+            Integrator X3 = new Integrator(_toplevel, "IntegratorX3");
 
             Scale MINUS1 = new Scale(_toplevel, "MINUS1");
             Scale MINUS2 = new Scale(_toplevel, "MINUS2");

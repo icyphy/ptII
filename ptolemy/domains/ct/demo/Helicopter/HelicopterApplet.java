@@ -303,20 +303,20 @@ public class HelicopterApplet extends CTApplet {
             XZHigherDerivatives higher = new XZHigherDerivatives(_toplevel,
                     "XZHigherDerivatives");
 
-            CTIntegrator Px = new CTIntegrator(_toplevel, "IntegratorPx");
-            CTIntegrator DPx = new CTIntegrator(_toplevel, "IntegratorDPx");
+            Integrator Px = new Integrator(_toplevel, "IntegratorPx");
+            Integrator DPx = new Integrator(_toplevel, "IntegratorDPx");
 
-            CTIntegrator Pz = new CTIntegrator(_toplevel, "IntegratorPz");
-            CTIntegrator DPz = new CTIntegrator(_toplevel, "IntegratorDPz");
+            Integrator Pz = new Integrator(_toplevel, "IntegratorPz");
+            Integrator DPz = new Integrator(_toplevel, "IntegratorDPz");
 
-            CTIntegrator Th = new CTIntegrator(_toplevel, "IntegratorTh");
-            CTIntegrator DTh = new CTIntegrator(_toplevel, "IntegratorDTh");
+            Integrator Th = new Integrator(_toplevel, "IntegratorTh");
+            Integrator DTh = new Integrator(_toplevel, "IntegratorDTh");
 
-            CTIntegrator Tm = new CTIntegrator(_toplevel, "IntegratorTm");
-            CTIntegrator DTm = new CTIntegrator(_toplevel, "IntegratorDTm");
-            CTIntegrator DDTm = new CTIntegrator(_toplevel, "IntegratorDDTm");
+            Integrator Tm = new Integrator(_toplevel, "IntegratorTm");
+            Integrator DTm = new Integrator(_toplevel, "IntegratorDTm");
+            Integrator DDTm = new Integrator(_toplevel, "IntegratorDDTm");
 
-            CTIntegrator A = new CTIntegrator(_toplevel, "IntegratorA");
+            Integrator A = new Integrator(_toplevel, "IntegratorA");
 
             Scale MINUS = new Scale(_toplevel, "MINUS");
             //CTPlot ctPlot = new CTPlot(_toplevel, "CTPlot", ctPanel);
