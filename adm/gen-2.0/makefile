@@ -577,7 +577,8 @@ remote1build:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE1PTIIDIST);	PTII=$(REMOTE1PTIIDIST) $(MAKE) -k install)
+	(cd $(REMOTE1PTIIDIST);	\
+		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k sources install)
 
 # Run tests outside of Javascope
 remote1distnonjsall:
