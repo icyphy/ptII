@@ -35,7 +35,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// Monitor
+//// MonitorValue
 /**
 Monitor inputs by setting the <i>value</i> parameter equal
 to each arriving token.  This actor can be used with
@@ -48,7 +48,7 @@ updated only in postfire.
 @since Ptolemy II 0.3
 */
 
-public class Monitor extends Sink {
+public class MonitorValue extends Sink {
 
     /** Construct an actor.
      *  @param container The container.
@@ -58,7 +58,7 @@ public class Monitor extends Sink {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Monitor(CompositeEntity container, String name)
+    public MonitorValue(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
