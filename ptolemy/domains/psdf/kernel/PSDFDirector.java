@@ -130,9 +130,6 @@ public class PSDFDirector extends SDFDirector {
         _init();
     }
 
-
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -141,27 +138,12 @@ public class PSDFDirector extends SDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Print a debugging message if the debugging flag is turned on.
-    private void _debugMessage(String message) {
-        if (_debugFlag) {
-            System.out.print(message);
-        }
-    }
-
     /** Initialize the object.   In this case, we give the PSDFDirector a
      *  default scheduler of the class PSDFScheduler.
      */
-    private void _init() throws IllegalActionException, NameDuplicationException
-            {
+    private void _init() 
+            throws IllegalActionException, NameDuplicationException {
         PSDFScheduler scheduler =
             new PSDFScheduler(this, uniqueName("Scheduler"));
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Debugging flag.
-    private boolean _debugFlag = true;
-
-
 }

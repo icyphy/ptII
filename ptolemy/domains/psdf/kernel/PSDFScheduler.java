@@ -169,41 +169,27 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
 
     protected Schedule _getSchedule() 
             throws NotSchedulableException, IllegalActionException {
-        _debugMessage("Starting PSDFScheduler._getSchedule()\n"); 
+        _debug("Starting PSDFScheduler._getSchedule()\n"); 
         PSDFDirector director = (PSDFDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
         PSDFGraphReader graphReader = new PSDFGraphReader();
         PSDFGraph psdfGraph = (PSDFGraph) (graphReader.convert(model));
-        _debugMessage("Finished converting to a PSDF graph\n"); 
-        _debugMessage(psdfGraph.toString() + "\n"); 
+        _debug("Finished converting to a PSDF graph\n"); 
+        _debug(psdfGraph.toString() + "\n"); 
         psdfGraph.printEdgeRateExpressions();
-        _debugMessage("Invoking the P-APGAN algorithm\n"); 
+        _debug("Invoking the P-APGAN algorithm\n"); 
         PSDFAPGANStrategy scheduler = new PSDFAPGANStrategy(psdfGraph);
         ptolemy.graph.sched.Schedule schedule = scheduler.schedule();
-        _debugMessage("Returned from P-APGAN; the schedule follows.\n"); 
-        _debugMessage(schedule.toString() + "\n"); 
+        _debug("Returned from P-APGAN; the schedule follows.\n"); 
+        _debug(schedule.toString() + "\n"); 
 
         SymbolicScheduleElement result = 
                  _expandAPGAN(psdfGraph, scheduler.getClusteredGraphRoot(), 
                  scheduler);
-        if (result instanceof SymbolicFiring) {
-            // FIXME: need to convert this to a schedule.
-        }
-        _debugMessage("Completed PSDFScheduler._getSchedule().\n The "
+        _debug("Completed PSDFScheduler._getSchedule().\n The "
                 + "schedule follows.\n" + result.toString() + "\n");
 
-         // FIXME: result is not executable.
-         return (Schedule)result;
-
-         // Just return an empty schedule for now
-         // return new Schedule();
-    }
-
-    // Print a debugging message if the debugging flag is turned on.
-    private void _debugMessage(String message) {
-        if (_debugFlag) {
-            System.out.print(message);
-        }
+        return (Schedule)result;
     }
 
     // Evaluate the given parse tree in the scope of the the model
@@ -325,6 +311,8 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             try {
                 IntToken token = (IntToken)
                         _evaluateExpressionInModelScope(_parseTree);
+                System.out.println("firing " + getActor() + " " +
+                        token.intValue() + " times");
                 return token.intValue();
             } catch (Exception ex) {
                 // FIXME: this isn't very nice.
@@ -519,9 +507,7 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                         reference,
                         name);
             }
-            System.out.println("reference = " + reference);
-            System.out.println("result = " + result);
-
+            
             if (result != null) {
                 return result.getToken();
             } else {
