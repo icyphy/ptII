@@ -522,8 +522,8 @@ fi
 #       If not, check to see if $PTII/vendors/sun/commapi
 #--------------------------------------------------------------------
 
-# We only need to look for commapi if $PTII/ptolemy/actor/lib/comm is present
-COMMAPI_USER_DIR="$PTII/ptolemy/actor/lib/comm"
+# We only need to look for commapi if $PTII/ptolemy/actor/lib/io/comm is present
+COMMAPI_USER_DIR="$PTII/ptolemy/actor/lib/io/comm"
 COMMAPI_PRESENT=no
 # PTLEGO_DIR is set to lego
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
