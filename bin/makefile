@@ -44,6 +44,7 @@ include $(CONFIG)
 
 # Bourne Shell scripts for Unix and Cygwin
 SHELL_FILES = \
+	decompile \
 	histogram \
 	jode \
 	mescal \
@@ -94,6 +95,8 @@ all: ptinvoke
 	-chmod a+x ptinvoke
 	rm -f histogram
 	ln -s ptinvoke histogram
+	rm -f decompile
+	ln -s ptinvoke decompile
 	rm -f jode
 	ln -s ptinvoke jode
 	rm -f mescal

@@ -180,6 +180,23 @@ case `basename "$0"` in
 	javastartupclass=ptolemy.plot.plotml.HistogramMLApplication
 	javasourcedir=ptolemy/plot/plotml
 	;;
+    decompile)
+        # Call either jode or javap
+	if [ -f "$JODE_JAR" ]; then
+	    javastartupclass=jode.decompiler.Main
+	    javasourcedir=
+	    jarfile="$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
+	    javaflag="$JODE_JFLAG"
+	else
+	    echo "Jode was not found when $PTII/configure was run, "
+	    echo "  so we are running javap instead."
+	    echo "  To run Jode, download Jode from:"
+            echo "    http://jode.sourceforge.net/download.php"
+	    echo "  and run: "
+	    echo "    cd $PTII; rm config.*; ./configure; cd bin; make"
+	    
+        fi	    
+	;;
     jode)
 	# JAva decompiler
 	javastartupclass=jode.decompiler.Main
@@ -382,8 +399,13 @@ else
     PTII_DIR=$PTII
 fi
 
-# If JAVAHOME has spaces in it, we need to jump through hoops
-str="\"$JAVAHOME/bin/java\" $javaflag \"-Dptolemy.ptII.dir=$PTII\" $JAVAFLAGS -classpath \"$PTII_DIR$CLASSPATHSEPARATOR$jarfile\" $javastartupclass ${1+"$@"}"
 
+if [ "`basename $0`" = "decompile" -a ! -f "$JODE_JAR" ]; then
+    str="\"$JAVAHOME/bin/javap\" -classpath \"$PTII_DIR$CLASSPATHSEPARATOR$jarfile\" ${1+"$@"}"
+
+else
+    # If JAVAHOME has spaces in it, we need to jump through hoops
+    str="\"$JAVAHOME/bin/java\" $javaflag \"-Dptolemy.ptII.dir=$PTII\" $JAVAFLAGS -classpath \"$PTII_DIR$CLASSPATHSEPARATOR$jarfile\" $javastartupclass ${1+"$@"}"
+fi 
 echo $str
 eval exec $str
