@@ -1,4 +1,4 @@
-/* Compute the remainder after dividing the input by the quotient.
+/* Compute the remainder after dividing the input by the divisor.
 
  Copyright (c) 1990-2001 The Regents of the University of California.
  All rights reserved.
@@ -41,7 +41,7 @@ import ptolemy.data.expr.Parameter;
 
 /**
 
-Compute the remainder after dividing the input by the quotient.
+Compute the remainder after dividing the input by the divisor.
 The input and output data types are both double.
 This is implemented using the IEEEremainder() method of the java Math
 class, which computes the remainder as prescribed by the IEEE 754
@@ -83,7 +83,7 @@ public class Remainder extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        quotient = new Parameter(this, "quotient", new DoubleToken(1.0));
+        divisor = new Parameter(this, "divisor", new DoubleToken(1.0));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,21 +92,23 @@ public class Remainder extends Transformer {
     /** The divisor for calculating the remainder.
      *  This is a double with default value 1.0.
      */
-    public Parameter quotient;
+    public Parameter divisor;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Consume at most one input token and output the remainder after
-     *  dividing the input by the quotient.
+     *  dividing the input by the divisor.
      *  If there is no input token, then no output is produced.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             double in = ((DoubleToken)input.get(0)).doubleValue();
-            double divisor = ((DoubleToken)quotient.getToken()).doubleValue();
-            output.send(0, new DoubleToken(Math.IEEEremainder(in, divisor)));
+            double divisorValue = ((DoubleToken)
+                                    divisor.getToken()).doubleValue();
+            output.send(0, new DoubleToken(
+                            Math.IEEEremainder(in, divisorValue)));
         }
     }
 }
