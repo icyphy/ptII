@@ -59,30 +59,30 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
     /** Create an ActorCodeGenerator. The generated code will be placed in
      *  a directory specified by the directory and package name. For example,
-     *  if the output directory name is "/stuff" and the package name is 
+     *  if the output directory name is "/stuff" and the package name is
      *  "ack.codegen", the code will be written in the /stuff/ack/codegen/
-     *  directory.    
-     * 
-     *  @param factory A class factory that creates instances of 
+     *  directory.
+     *
+     *  @param factory A class factory that creates instances of
      *   domain-specific classes used during analysis and transformation.
-     *  @param outputDirectoryName The canonical pathname of the directory in 
-     *   which  to place the package of the output generated code. The pathname 
-     *   should not end with a trailing slash. The directory must be one that  
+     *  @param outputDirectoryName The canonical pathname of the directory in
+     *   which  to place the package of the output generated code. The pathname
+     *   should not end with a trailing slash. The directory must be one that
      *   is in the CLASSPATH.
-     *  @param outputPackageName The name of the qualified package in which to 
-     *   put the generated code. 
-     *   
+     *  @param outputPackageName The name of the qualified package in which to
+     *   put the generated code.
+     *
      */
     public ActorCodeGenerator(CodeGeneratorClassFactory factory,
      String outputDirectoryName, String outputPackageName) {
         _factory = factory;
         _typeID = factory.createPtolemyTypeIdentifier();
-        
+
         _outputPackageName = outputPackageName;
-        
+
         _outputDirectoryName = outputDirectoryName + File.separatorChar +
-         outputPackageName.replace('.', File.separatorChar) + 
-         File.separatorChar;        
+         outputPackageName.replace('.', File.separatorChar) +
+         File.separatorChar;
     }
 
     /** Perform pass 1 on the actor with the information given by the
@@ -125,7 +125,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         ApplicationUtility.trace("acg : specializing tokens " + filename);
 
-        PtolemyTypeVisitor typeVisitor = 
+        PtolemyTypeVisitor typeVisitor =
          _factory.createPtolemyTypeVisitor(actorInfo);
 
         Map declToTypeMap = SpecializeTokenVisitor.specializeTokens(unitList,
@@ -182,7 +182,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         LinkedList unitList = listArray[0];
 
-        ApplicationUtility.trace("pass2() : unitList has length " + 
+        ApplicationUtility.trace("pass2() : unitList has length " +
          unitList.size());
 
         Iterator unitItr = unitList.iterator();
@@ -194,7 +194,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
            unitNode = (CompileUnitNode) unitItr.next();
 
            // invalidate types
-           unitNode.accept(new RemovePropertyVisitor(), 
+           unitNode.accept(new RemovePropertyVisitor(),
             TNLManip.cons(TYPE_KEY));
 
            ApplicationUtility.trace("acg : transforming code " + filename);
@@ -214,7 +214,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         _invalidateSources(classNameList);
     }
 
-    /** Do pass 3 transformation of actor with the given filename (renamed 
+    /** Do pass 3 transformation of actor with the given filename (renamed
      *  after pass 1. Pass 3 is the conversion of Extended Java to ordinary
      *  Java.
      */
@@ -281,7 +281,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
            String filename = _outputDirectoryName +
             (String) classNameItr.next() + ".java";
 
-           ApplicationUtility.trace("invalidating source filename: "  + 
+           ApplicationUtility.trace("invalidating source filename: "  +
             filename);
 
            if (!StaticResolution.invalidateCompileUnit(filename, 2)) {
@@ -319,7 +319,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
               Parameter param = (Parameter) attributeObj;
 
               try {
-                actorInfo.parameterNameToTokenMap.put(param.getName(), 
+                actorInfo.parameterNameToTokenMap.put(param.getName(),
                  param.getToken());
               } catch (IllegalActionException iae) {
                 ApplicationUtility.error(
@@ -357,7 +357,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
            if ((superDecl == StaticResolution.OBJECT_DECL) ||
                (superDecl == null)) { // just to be sure
 
-              ApplicationUtility.trace("_makeUnitList() : super class = " + 
+              ApplicationUtility.trace("_makeUnitList() : super class = " +
                superDecl + " stopping.");
 
               return new LinkedList[] { nodeList, classNameList };
@@ -367,13 +367,13 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
               int superKind = _typeID.kindOfClassDecl(superDecl);
 
               if (_typeID.isSupportedActorKind(superKind)) {
-                 ApplicationUtility.trace("_makeUnitList() : super class = " + 
+                 ApplicationUtility.trace("_makeUnitList() : super class = " +
                   superDecl + " stopping.");
 
                  return new LinkedList[] { nodeList, classNameList };
               }
 
-              ApplicationUtility.trace("_makeUnitList() : super class = " + 
+              ApplicationUtility.trace("_makeUnitList() : super class = " +
                superDecl + ", continuing. Kind = " + superKind);
 
               fileName = superDecl.fullName(File.separatorChar);
@@ -381,7 +381,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
               // assume we are using the named package
               File file = SearchPath.NAMED_PATH.openSource(fileName);
 
-              unitNode = 
+              unitNode =
                (CompileUnitNode) StaticResolution.load(file, 2).clone();
 
               nodeList.addFirst(unitNode);
@@ -392,7 +392,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         } while (true);
     }
 
-    /** Change the package of the list of CompileUnitNodes to the 
+    /** Change the package of the list of CompileUnitNodes to the
      *  output package.
      */
     protected void _movePackage(List unitList) {
@@ -404,7 +404,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
            NameNode oldPackageNameNode = (NameNode) unitNode.getPkg();
 
            // change the package
-           NameNode newPackageNameNode = 
+           NameNode newPackageNameNode =
             (NameNode) StaticResolution.makeNameNode(_outputPackageName);
 
            unitNode.setPkg(newPackageNameNode);
@@ -418,9 +418,9 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         }
     }
 
-    /** Given the former names of the classes and the name of the instance 
+    /** Given the former names of the classes and the name of the instance
      *  of the actor, modify the list of CompileUnitNodes by changing
-     *  references to the class name (in TypeNameNodes) to 
+     *  references to the class name (in TypeNameNodes) to
      *
      *  "CG_" + className + "_" + actorName
      *
@@ -436,7 +436,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             String className = (String) classNameItr.next();
             String newClassName = "CG_" +  className + "_" + actorName;
 
-            ApplicationUtility.trace("changing classname from " + className + 
+            ApplicationUtility.trace("changing classname from " + className +
              " to " + newClassName);
 
             // add the mapping from the old class name to the new class name
@@ -451,10 +451,10 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         return renamedClassNameList;
     }
 
-    /** Rewrite source files for the CompileUnitNodes in the argument 
+    /** Rewrite source files for the CompileUnitNodes in the argument
      *  unit list, which are to be given the pathless names in the
      *  argument class name list.
-     */     
+     */
     protected void _rewriteSources(List unitList, List classNameList) {
         ApplicationUtility.trace("classNameList = " + classNameList);
 
@@ -510,19 +510,19 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         protected String _className;
     }
 
-    /** A factory that create instances of the domain-specific transformation 
-     *  classes. 
+    /** A factory that create instances of the domain-specific transformation
+     *  classes.
      */
     protected CodeGeneratorClassFactory _factory = null;
-    
-    /** The canonical pathname of the directory in which to output generated 
+
+    /** The canonical pathname of the directory in which to output generated
      *  code. The pathname includes the package name at the end.
      */
     protected String _outputDirectoryName = null;
 
-    /** The name of the qualified package in which to put the generated 
-     *  code. 
-     */        
-    protected String _outputPackageName = null;        
+    /** The name of the qualified package in which to put the generated
+     *  code.
+     */
+    protected String _outputPackageName = null;
 }
 
