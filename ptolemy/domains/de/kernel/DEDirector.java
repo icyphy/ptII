@@ -771,7 +771,8 @@ public class DEDirector extends Director {
      *  The microstep for the queued event is equal to zero,
      *  unless the time is equal to the current time.
      *  If it is, then the event is queued with the current microstep
-     *  plus one.
+     *  plus one.  If there is no event queue, then this method does
+     *  nothing.
      *
      *  @param actor The destination actor.
      *  @param time The time stamp of the "pure event".
@@ -780,6 +781,7 @@ public class DEDirector extends Director {
     protected void _enqueueEvent(Actor actor, double time)
             throws IllegalActionException {
 
+        if (_eventQueue == null) return;
         int microstep = 0;
 
         if (time == getCurrentTime()) {
@@ -803,7 +805,8 @@ public class DEDirector extends Director {
      *  to a higher priority.  The microstep is always equal to zero,
      *  unless the time argument is equal to the current time, in which
      *  case, the microstep is equal to the current microstep (determined
-     *  by the last dequeue, or zero if there has been none).
+     *  by the last dequeue, or zero if there has been none). If there is
+     *  no event queue, then this method does nothing.
      *
      *  @param receiver The destination receiver.
      *  @param token The token destined for that receiver.
@@ -814,6 +817,7 @@ public class DEDirector extends Director {
     protected void _enqueueEvent(DEReceiver receiver, Token token,
             double time) throws IllegalActionException {
 
+        if (_eventQueue == null) return;
         int microstep = 0;
 
         if (time == getCurrentTime()) {
@@ -840,6 +844,7 @@ public class DEDirector extends Director {
      *  microstep. The depth is the depth of the actor.
      *  This method is used by actors that declare that they
      *  introduce delay, but where the value of the delay is zero.
+     *  If there is no event queue, then this method does nothing.
      *
      *  @param receiver The destination receiver.
      *  @param token The token destined for that receiver.
@@ -848,6 +853,8 @@ public class DEDirector extends Director {
      */
     protected void _enqueueEvent(DEReceiver receiver, Token token)
             throws IllegalActionException {
+
+        if (_eventQueue == null) return;
 
         Actor destination = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destination);
