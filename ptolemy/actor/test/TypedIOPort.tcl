@@ -95,7 +95,7 @@ test TypedIOPort-2.1 {set declared/resolved types} {
     $e0 setManager $manager
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P2]
-    set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
+    set tDouble [[java::new ptolemy.data.DoubleToken] getType]
     $p1 setTypeEquals $tDouble
 
     set rt1 [[$p1 getType] toString]
@@ -141,7 +141,7 @@ test TypedIOPort-3.2 {test clone} {
     # use set up above
 
     set tInt [java::new ptolemy.data.IntToken]
-    $p1 setTypeEquals [$tInt getClass]
+    $p1 setTypeEquals [$tInt getType]
 
     set tt2 [$p2 getTypeTerm]
     $tt2 setValue [java::field ptolemy.data.type.BaseType STRING]
@@ -178,7 +178,7 @@ test TypedIOPort-4.2 {test description} {
     $e0 setManager $manager
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
-    set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
+    set tDouble [[java::new ptolemy.data.DoubleToken] getType]
     $p1 setTypeEquals $tDouble
 
     $p1 description $detail

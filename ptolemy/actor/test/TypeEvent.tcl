@@ -61,7 +61,7 @@ test TypeEvent-1.1 {Test type event} {
     set listener [java::new ptolemy.actor.test.TestTypeListener]
     $p1 addTypeListener $listener
 
-    set ti [[java::new ptolemy.data.IntToken] getClass]
+    set ti [[java::new ptolemy.data.IntToken] getType]
     $p1 setTypeEquals $ti
 
     $listener getMessage
@@ -72,7 +72,7 @@ test TypeEvent-1.1 {Test type event} {
 #
 test TypeEvent-1.2 {remove listener} {
     $p1 removeTypeListener $listener
-    set td [[java::new ptolemy.data.DoubleToken] getClass]
+    set td [[java::new ptolemy.data.DoubleToken] getType]
     $p1 setTypeEquals $td
 
     $listener getMessage
@@ -83,7 +83,7 @@ test TypeEvent-1.2 {remove listener} {
 #
 test TypeEvent-1.3 {re-add listener} {
     $p1 addTypeListener $listener
-    set ts [[java::new ptolemy.data.StringToken] getClass]
+    set ts [[java::new ptolemy.data.StringToken] getType]
     $p1 setTypeEquals $ts
 
     $listener getMessage

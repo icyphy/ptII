@@ -55,7 +55,7 @@ test TypeConflictException-1.0 {Constructor that takes a List} {
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     set p2 [java::new ptolemy.actor.TypedIOPort $e1 P2]
-    set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
+    set tDouble [[java::new ptolemy.data.DoubleToken] getType]
     $p1 setTypeEquals $tDouble
 
     set conflicts [java::new java.util.LinkedList]

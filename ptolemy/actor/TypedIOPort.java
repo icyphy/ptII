@@ -329,30 +329,6 @@ public class TypedIOPort extends IOPort implements Typeable {
 	_constraints.add(ineq);
     }
 
-    /** Set the type of this port to the type corresponding to the specified
-     *  Class object.
-     *  This method is write-synchronized on the workspace.
-     *  @param c A Class.
-     *  @exception IllegalArgumentException If the specified Class does not
-     *   corresponds to a BaseType.
-     *  @deprecated Use the method with a Type argument instead.
-     */
-    public void setTypeEquals(Class c) throws IllegalArgumentException {
-	try {
-	    Token token = (Token)c.newInstance();
-	    setTypeEquals(token.getType());
-
-	} catch (InstantiationException ie) {
-	    throw new IllegalArgumentException(
-                    "TypedIOPort.setTypeEquals(Class): Cannot create a " +
-                    "token from the specified Class object. " + ie.getMessage());
-	} catch (IllegalAccessException iae) {
-	    throw new IllegalArgumentException(
-                    "TypedIOPort.setTypeEquals(Class): Cannot create a " +
-                    "token from the specified Class object. " + iae.getMessage());
-	}
-    }
-
     /** Set the type of this port. The type is represented by an instance
      *  of Type. If the type is BaseType.NaT, the determination of the type
      *  is left to type resolution.

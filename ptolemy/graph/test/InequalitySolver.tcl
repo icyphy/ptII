@@ -215,7 +215,7 @@ test InequalitySolver-3.1 {solve constraints on TypeLattic} {
 
     # init. type terms
     set pDouble [java::new ptolemy.actor.TypedIOPort]
-    $pDouble setTypeEquals [[java::new ptolemy.data.DoubleToken] getClass]
+    $pDouble setTypeEquals [[java::new ptolemy.data.DoubleToken] getType]
     set tDouble [$pDouble getTypeTerm]
 
     set ps1c [java::new ptolemy.actor.TypedIOPort]

@@ -67,8 +67,8 @@ test Manager-8.1 {Test type checking} {
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     $p1 setOutput true
-    # set type using an instance of Class
-    set t1 [[java::new ptolemy.data.IntToken] getClass]
+    # set type 
+    set t1 [[java::new ptolemy.data.IntToken] getType]
     $p1 setTypeEquals $t1
 
     #create e2
@@ -132,7 +132,7 @@ test Manager-8.4 {Test type resolution} {
 #
 test Manager-8.5 {Test type resolution} {
     # use the setup above
-    set tInt [[java::new ptolemy.data.IntToken] getClass]
+    set tInt [[java::new ptolemy.data.IntToken] getType]
     $p1 setTypeEquals $tInt
     $p2 setTypeEquals [java::field ptolemy.data.type.BaseType NAT]
 
@@ -156,7 +156,7 @@ test Manager-8.6 {Test type resolution} {
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     $p1 setOutput true
-    set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
+    set tDouble [[java::new ptolemy.data.DoubleToken] getType]
     $p1 setTypeEquals $tDouble
 
     #create e2, a fork
@@ -209,7 +209,7 @@ test Manager-8.6 {Test type resolution} {
 #
 test Manager-8.7 {Test type resolution} {
     # use the setup above
-    set tInt [[java::new ptolemy.data.IntToken] getClass]
+    set tInt [[java::new ptolemy.data.IntToken] getType]
     $p1 setTypeEquals $tInt
     $p4 setTypeEquals $tDouble
 
@@ -229,7 +229,7 @@ test Manager-8.7 {Test type resolution} {
 #
 test Manager-8.8 {Test type resolution} {
     # use the setup in 8.6
-    set tInt [[java::new ptolemy.data.IntToken] getClass]
+    set tInt [[java::new ptolemy.data.IntToken] getType]
     $p1 setTypeEquals $tDouble
     $p4 setTypeEquals $tInt
 

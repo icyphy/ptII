@@ -66,10 +66,10 @@ test DDEIOPort-2.1 {Check send()} {
     set rel [$topLevel connect $outPort $inPort "rel"]
 
     set tok [java::new ptolemy.data.Token]
-    set tokClass [$tok getClass]
+    set tokType [$tok getType]
 
-    $outPort setTypeEquals $tokClass
-    $inPort setTypeEquals $tokClass
+    $outPort setTypeEquals $tokType
+    $inPort setTypeEquals $tokType
 
     $inPort createReceivers
 
@@ -109,11 +109,11 @@ test DDEIOPort-3.1 {Broadcast tokens to two different actors.} {
     set rel3 [$topLevel connect $outPort $inPort3 "rel3"]
 
     set tok [java::new ptolemy.data.Token]
-    set tokClass [$tok getClass]
+    set tokType [$tok getType]
 
-    $outPort setTypeEquals $tokClass
-    $inPort2 setTypeEquals $tokClass
-    $inPort3 setTypeEquals $tokClass
+    $outPort setTypeEquals $tokType
+    $inPort2 setTypeEquals $tokType
+    $inPort3 setTypeEquals $tokType
 
     $dir preinitialize
 
