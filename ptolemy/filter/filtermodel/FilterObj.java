@@ -54,7 +54,7 @@ import ptolemy.math.filter.*;
   - A/D transformation method: Impulse invariant, Bilinear, Mathch-Z <p>
   - band type: low pass, high pass, band stop, band pass. <p>
   - edge frequencies and gain. <p>
-  - ripple heights. <p>
+  - ripple heights can be represent by gain. <p>
   <p> 
   FilterObj also uses class DigitalFilter (either ReadDigitalFilter or
   ComplexDigitalFilter) to store different sets of data that represents 
@@ -179,24 +179,6 @@ public class FilterObj extends Observable {
         return _gain;
     }
 
-    /**
-     * Return the pass band ripple heights.  This is for Chebyshev I 
-     * and Elliptical filter design.
-     * @return ripple height at passband
-     */
-    public double getFreqPassRippleHeight(){
-        return _hrippleh;
-    }
-
-    /**
-     * Return the stop band ripple heights.  This is for Chebyshev II
-     * and Elliptical filter design.
-     * @return ripple height at stopband
-     */
-    public double getFreqStopRippleHeight(){
-        return _lrippleh; 
-    }
- 
     /**
      * Returns the complex gain of the filter.  It is used for complex
      * digital filter.  For real filter use <code> getRealGain() </code>. 
@@ -369,10 +351,6 @@ public class FilterObj extends Observable {
      * IIR design parameters are passed in.  The frequency domain spec
      * is reset according the following manner: <p>
      *
-     * * If the approximation method does not require ripple heights,
-     * the ripple heights will set to -1. <p> 
-     * * ripple heights is reset to default (= 0.1), when the approximation
-     * method is changed to the ones that requre ripple heights. 
      * * If band type did not changed, then previous frequency spec
      * is still valid.  This allow user to do comparison between different
      * design method with the same frequency spec. <p>
@@ -399,26 +377,6 @@ public class FilterObj extends Observable {
    public void setIIRParameter(int atype, int mtype, 
                                int btype, double fs){
 
-
-        if (atype == Filter.BUTTERWORTH) { // butterworth
-            // the ripple to -1
-            _hrippleh = -1;
-            _lrippleh = -1;
-        } else if (atype == Filter.CHEBYSHEV1) { // chebshev 
-            // the ripple to certain default ripple height 
-            if (atype != _appmethod) _hrippleh = 0.1;
-            _lrippleh = -1;
-        } else if (atype == Filter.CHEBYSHEV2) { // chebshev 
-            // the ripple to certain default ripple height 
-            if (atype != _appmethod) _lrippleh = 0.1;
-            _hrippleh = -1;
-        } else if (atype == Filter.ELLIPTICAL) { // ellipitical 
-            // the ripple to certain default ripple height 
-            if (atype != _appmethod) _hrippleh = 0.1;
-            if (atype != _appmethod) _lrippleh = 0.1;
-        } else {
-            System.out.println("unsupported filter spec"); 
-        }
 
         _appmethod = atype;
         _mapmethod = mtype; 
@@ -501,18 +459,15 @@ public class FilterObj extends Observable {
    /**
     * Update the frequency domain spec of the filter.
     * This function is called when the frequency domain observer 
-    * changes the passband/stopband, and ripple height value on the view.  
+    * changes the passband/stopband values on the view.  
     * After the new band data is stored, the filter is 
     * redesigned by calling <code> DigitalFilter.designIIR () </code>.
     * All views/observers are notified about the change.
     * <p>
     * @param banddata frequency domain critical frequencies. 
     * @param gaindata frequency domain gains at critical frequencies. 
-    * @param pr passband ripple height
-    * @param sr stopband ripple height
     */
-   public void updateFreqSpec(double [] banddata, double [] gaindata, 
-                               double pr, double sr){
+   public void updateFreqSpec(double [] banddata, double [] gaindata){
 
         // banddata.length should be the same as _band
         for (int i=0;i<banddata.length;i++){
@@ -523,9 +478,6 @@ public class FilterObj extends Observable {
         for (int i=0;i<gaindata.length;i++){
              _gain[i] = gaindata[i];
         }
-
-        _lrippleh = sr;
-        _hrippleh = pr;
 
 
         // design the new IIR filter
@@ -553,7 +505,7 @@ public class FilterObj extends Observable {
     */
    public void addPoleZero(Complex pole, Complex zero, boolean conj){
         if (_filter == null) return;
-        _filter.addPoleZero(pole, zero, conj);
+        _filter.addPoleZero(pole, zero, 1.0, conj);
         setChanged();
         notifyObservers("UpdatedFilter");
    }
@@ -625,8 +577,6 @@ System.out.println("moving pole in filter object");
    private double _sampleFreq;
    private double [] _band = null;
    private double [] _gain = null;
-   private double _lrippleh = -1;
-   private double _hrippleh = -1;
    private int _stat;
    private int _type; // see ptolemy.math.Filter enum for filter type 
   
