@@ -1,5 +1,4 @@
-/* This interleaves elements from its different input streams into one
-output stream.
+/* A polymorphic commutator.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -40,102 +39,134 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// Commutator
 /**
-Merges its input streams into one output stream by alternating/circulating
-between its input receivers and directing them to the output.
-This actor is a polymorphic actor and should work with most of the domains.
-It reads a token from one of the input receivers and writes a token to the
-output port. Then it reads a token from the next input receiver and sends
-it to the next relation. The order in which the tokens are read from the
-input port is the order of their creation.
+A polymorphic commutator.
 
-This actor can handle mutations of some types.
-The smallest granularity of mutations that this can handle are the mutations
-that can occur between every read from the input channel.
+The commutator has an input port which is a multiport and an output port.
+The types of the ports are undeclared and will be resolved by the type 
+resolution mechanism. During each call to the fire method of the actor, the 
+actor reads the tokens from all the input channels that have tokens and 
+redirects them to the output port. The order in which the tokens are read from
+the various input channels is determined by the order specified by the 
+behaviour of the multiport.
+<p>
+This actor is not strict. That is, it does not require that each input
+channel have a token upon firing. It will take the available tokens at the 
+inputs and ignore the channels that do not have tokens. If no input tokens are
+available at all, then no output is produced.
 
+<p>
 In case of domains like SDF, which need to know the token consumption or
-production rate for all ports to construct a firing schedule,
+production rate for all ports before they can construct a firing schedule,
 this actor defines and sets three different port parameters, namely:
 <UL>
-<LI>TokenConsumptionRate
-<LI>TokenProductionRate
-<LI>TokenInitProduction
+<LI>TokenConsumptionRate = 1 (for the input port).
+<LI>TokenProductionRate = number of input channels (for the output port).
+<LI>TokenInitProduction = 0 (for output port)
 </UL>
-These parameters can be ignored by domains that do not require this information.
-
-These parameters are safe for computing a schedule only after a call to the
-initialize() method of the actor, as they are computed and set in that method.
-
+These parameters are set in the initialize() method of the actor and can be 
+safely used only after a call to initialize(). These parameters can be ignored
+by domains that do not require this information.
+<p>
+In the current form, this actor might not be safe with mutations for some of 
+the domains, like SDF, as the SDF parameters are initialized only by a call to
+the initialize() method of the actor..
 
 @author Mudit Goel
 @version $Id$
 */
-public class Commutator extends AtomicActor{
+public class Commutator extends TypedAtomicActor{
 
-    /** Constructor Create ports and make the input port a multiport.
-     *  @param container This is the compositeActor containing this actor
-     *  @param name This is the name of this actor.
-     *
+    /** Construct an actor in the specified container with the specified
+     *  name. Create ports and make the input port a multiport. Create 
+     *  the actor parameters.
+     * 
+     *  @param container The container.
+     *  @param name This is the name of this commutator within the container.
      *  @exception NameDuplicationException If an actor
      *  with an identical name already exists in the container.
-     *  @exception IllegalActionException If one of the
-     *  called methods throws it.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *  by the proposed container.
      */
-    public Commutator(CompositeActor container, String name)
+    public Commutator(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _input = new IOPort(this, "input", true, false);
-        _input.setMultiport(true);
-        Parameter param = new Parameter(_input, "TokenConsumptionRate",
-                new IntToken(1));
-        param = new Parameter(_input,"TokenProductionRate",
-                new IntToken(1));
-        param = new Parameter(_input,"TokenInitProduction",
-                new IntToken(0));
-
-        _output = new IOPort(this, "output", false, true);
-        param = new Parameter(_output, "TokenConsumptionRate",
-                new IntToken(1));
-        param = new Parameter(_output,"TokenProductionRate",
-                new IntToken(1));
-        param = new Parameter(_output,"TokenInitProduction",
-                new IntToken(0));
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        new Parameter(input, "TokenConsumptionRate", new IntToken(1));
+        output = new TypedIOPort(this, "output", false, true);
+        new Parameter(output,"TokenProductionRate", new IntToken(1));
+        new Parameter(output,"TokenInitProduction", new IntToken(0));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    // Input ports
+    public TypedIOPort input;
+    // Output port
+    public TypedIOPort output;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Reads tokens from each of its input receivers in a circular
-     *  fashion and redirects them each to the output port.
+
+    /** Clone the actor into the specified workspace. This calls the base
+     *  class method and sets the public variables to point to the new ports.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            Commutator newobj = (Commutator)super.clone(ws);
+            newobj.input = (TypedIOPort)newobj.getPort("input");
+            newobj.output = (TypedIOPort)newobj.getPort("output");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
+    
+
+    /** Read one token from each of the input channels that has tokens, and 
+     *  send them to the output port. Read at most one token 
+     *  from each channel, so if more than one token is pending, then leave
+     *  the rest for future firings.  If none of the input
+     *  channels has a token, do nothing. The order in which the tokens are
+     *  read from various channels is specified by the behaviour of a 
+     *  multiport. The order of the tokens at the output port is the order in 
+     *  which the tokens are read from the input channels.
      *
-     *  @exception IllegalActionException This can be thrown by a called
-     *  method
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        for (int i = 0; i < _input.getWidth(); i++) {
-            _output.broadcast(_input.get(i));
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(i)) {
+                output.broadcast(input.get(i));
+            }
         }
     }
 
-    /** Initializes the actor. Sets the parameter representing the number of
-     *  tokens that the output port will produce. This parameter is required
-     *  only for domains like SDF that need this information to calculate
-     *  a static schedule.
+    /** Initialize the actor. Call the base class method. Set the parameter 
+     *  representing the number of tokens that the output port will produce to
+     *  the number of input channels (as returned by the getWidth() method of 
+     *  the port). This parameter is required only for domains like SDF that 
+     *  need this information to calculate a static schedule.
      *
      *  @exception IllegalActionException Not thrown in this class
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        Parameter param = (Parameter)_output.getAttribute("Token " +
-                "Production Rate");
-        param.setToken(new IntToken(_input.getWidth()));
+        Parameter param = (Parameter)output.getAttribute("Token" +
+                "ProductionRate");
+        param.setToken(new IntToken(input.getWidth()));
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Input ports
-    private IOPort _input;
-    // Output port
-    private IOPort _output;
-
 }
+
+
+
+
+
+
