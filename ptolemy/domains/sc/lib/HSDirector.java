@@ -130,9 +130,24 @@ System.out.println("HSDirector: get step status from subsys " + ((ComponentEntit
       }
     }
 
+    private boolean _first = true;
+
+    public void initialize() throws IllegalActionException {
+        _first = true;
+        super.initialize();
+    }
+
     public boolean postfire() throws IllegalActionException {
-        // elaborate
         Actor refine = currentRefinement();
+	if (_first) {
+            _first = false;
+	    if (refine != null) {
+                return refine.postfire();
+            } else {
+                return true;
+            }
+        }
+        // elaborate
         if (refine != null) {
             refine.postfire();
             Enumeration outports = refine.outputPorts();
