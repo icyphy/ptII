@@ -68,13 +68,6 @@ The returned value is top-level composite entity of the model.
 */
 public class MoMLParser extends HandlerBase {
 
-    /**
-     * Create a MoMLParser
-     */
-    public MoMLParser() {
-        super();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -110,34 +103,44 @@ public class MoMLParser extends HandlerBase {
         _attributes.put(name, value);
     }
 
-    /** FIXME: Currently, character data is ignored.
-    public void charData(char c[],int offset, int length)
-    throws Exception {
-        String s = new String(c,offset,length);
-        current.appendPCData(s);
-    }
+    /** Handle character data.  In this implementation, the
+     *  character data is accumulated in a buffer until the
+     *  end element.  Character data appears only in doc elements.
+     *  &AElig;lfred will call this method once for each chunk of
+     *  character data found in the contents of elements.  Note that
+     *  the parser may break up a long sequence of characters into
+     *  smaller chunks and call this method once for each chunk.
+     *  @param chars The character data.
+     *  @param offset The starting position in the array.
+     *  @param length The number of characters available.
      */
+    public void charData(char[] chars, int offset, int length) {
+        _currentCharData.append(chars, offset, length);
+    }
 
-    /**
-     * Implement com.microstar.xml.XMLHandler.endDocument
-     * If we've finished the parse and didn't get back to the root of the
-     * parse tree, then something is wrong, and throw an exception.
-       FIXME
+    /** End the document.  In this implementation, do nothing.
+     *  &AElig;lfred will call this method once, when it has
+     *  finished parsing the XML document.
+     *  It is guaranteed that this will be the last method called.
      */
     public void endDocument() throws Exception {
-        _manager.execute();
     }
 
-    /**
-     * Implement com.microstar.xml.XMLHandler.endElement
-     * Move up one level in the parse tree and apply any semantic meaning
-     * that the element that is ending might have within its parent.  For
-     * example, if the element is an Icon contained within an IconLibrary,
-     * then the icon should be added to the library's list of icons.
+    /** End an element. This method pops the current container from
+     *  the stack, if appropriate, and also adds specialized attributes
+     *  to the container, such as <i>_doc</i>, if appropriate.
+     *  &AElig;lfred will call this method at the end of each element
+     *  (including EMPTY elements).
+     *  @param elementName The element type name.
      */
     public void endElement(String elementName) throws Exception {
         if(DEBUG) System.out.println("Ending Element:" + elementName);
-        if (elementName.equals("director")
+        if (elementName.equals("doc")) {
+            // Use the special attribute name "_doc" to contain the text.
+            // If the attribute already exists, remove it firts.
+            DocAttribute doc
+                    = new DocAttribute(_current, _currentCharData.toString());
+        } else if (elementName.equals("director")
                 || elementName.equals("actor")) {
             _current = (NamedObj)_containers.pop();
         } else if (elementName.equals("connection")) {
@@ -179,12 +182,9 @@ public class MoMLParser extends HandlerBase {
     /** Parse the MoML file with the given URL.
      *  @param url The URL for an a MoML file.
      *  @return The top-level composite entity of the Ptolemy II model.
-     *  @throws Exception if the parser fails.  Regrettably, the Microstar
-     *   &AElig;lfred parser is not more specific about what exceptions
-     *   it might throw.
+     *  @throws Exception if the parser fails.
      */
-// FIXME-- handle exceptions better...
-    public CompositeActor parse(String url) throws Exception {
+    public TypedCompositeActor parse(String url) throws Exception {
         _parser.setHandler(this);
         _parser.parse(url, null, (String)null);
         return _toplevel;
@@ -197,13 +197,9 @@ public class MoMLParser extends HandlerBase {
      *  @param url The context URL.
      *  @param input The stream from which to read XML.
      *  @return The top-level composite entity of the Ptolemy II model.
-     *  @throws Exception if the parser fails.  Regrettably, the Microstar
-     *   &AElig;lfred parser is not more specific about what exceptions
-     *   it might throw.
+     *  @throws Exception if the parser fails.
      */
-// FIXME-- handle exceptions better...  Are the only ones thrown
-// by the parser those thrown by these classes? If not, what does it throw?
-    public CompositeActor parse(String url, InputStream input)
+    public TypedCompositeActor parse(String url, InputStream input)
             throws Exception {
         _parser.setHandler(this);
         _parser.parse(url, null, input, null);
@@ -283,16 +279,20 @@ public class MoMLParser extends HandlerBase {
      *  for the element will already have been reported using the
      *  attribute() method.  Unrecognized elements are ignored.
      *  @param elementName The element type name.
+     *  @exception XmlException If the element produces an error
+     *   in constructing the model.
      */
-    public void startElement(String elementName) {
+    public void startElement(String elementName)
+            throws XmlException {
         if(DEBUG) System.out.println("Starting Element:" + elementName);
         try {
             if (elementName.equals("model")) {
                 String className = (String)_attributes.get("class");
+                _checkForNull(className, "No class for element \"model\"");
                 String modelName = (String)_attributes.get("name");
-                // FIXME: Check for null.
-                // FIXME: Need a different name... applet name?
-                _workspace = new Workspace(modelName);
+                _checkForNull(modelName, "No name for element \"model\"");
+                // NOTE: Workspace has no name.
+                _workspace = new Workspace();
                 Class toplevelClass = Class.forName(className);
                 Class[] argTypes = new Class[1];
                 argTypes[0] = Workspace.class;
@@ -300,17 +300,17 @@ public class MoMLParser extends HandlerBase {
                         = toplevelClass.getConstructor(argTypes);
                 Object[] arguments = new Object[1];
                 arguments[0] = _workspace;
-                _toplevel = (CompositeActor)
+                _toplevel = (TypedCompositeActor)
                         toplevelConstructor.newInstance(arguments);
                 _manager = new Manager(_workspace, "manager");
-                // FIXME: Need a different name.
-                _toplevel.setName("top");
+                _toplevel.setName(modelName);
                 _toplevel.setManager(_manager);
                 _current = _toplevel;
             } else if (elementName.equals("director")) {
                 String className = (String)_attributes.get("class");
+                _checkForNull(className, "No class for element \"director\"");
                 String dirName = (String)_attributes.get("name");
-                // FIXME: Check for null.
+                _checkForNull(dirName, "No name for element \"director\"");
                 Class dirClass = Class.forName(className);
                 Class[] argTypes = new Class[2];
                 argTypes[0] = CompositeActor.class;
@@ -324,60 +324,74 @@ public class MoMLParser extends HandlerBase {
                 _current = (NamedObj)dirConstructor.newInstance(arguments);
             } else if (elementName.equals("actor")) {
                 String className = (String)_attributes.get("class");
+                _checkForNull(className, "No class for element \"actor\"");
                 String actorName = (String)_attributes.get("name");
-                // FIXME: Check for null.
+                _checkForNull(actorName, "No name for element \"actor\"");
+
+                // Get a constructor for the actor.
                 Class actorClass = Class.forName(className);
                 Class[] argTypes = new Class[2];
-                // FIXME: Is this cast OK? Catch errors.
                 argTypes[0] = TypedCompositeActor.class;
                 argTypes[1] = String.class;
                 Constructor actorConstructor
                         = actorClass.getConstructor(argTypes);
+
+                // Invoke the constructor.
                 Object[] arguments = new Object[2];
+                _checkClass(_current, TypedCompositeActor.class,
+                        "Element \"actor\" found inside an element that "
+                        + "is not a TypedCompositeActor.");
                 arguments[0] = (TypedCompositeActor)_current;
                 arguments[1] = actorName;
                 _containers.push(_current);
                 _current = (NamedObj)actorConstructor.newInstance(arguments);
             } else if (elementName.equals("parameter")) {
                 String paramName = (String)_attributes.get("name");
+                _checkForNull(paramName, "No name for element \"parameter\"");
                 String paramValue = (String)_attributes.get("value");
-                // FIXME: Check for null.
-                Variable param = (Variable)_current.getAttribute(paramName);
-                // FIXME: Check for null and/or cast error.
-if (param == null) {
-    System.out.println("No such parameter: " + paramName + " in class "
-    + _current.getClass().toString());
-}
+                _checkForNull(paramValue, "No value for element \"parameter\"");
+                Attribute attribute
+                        = (Attribute)_current.getAttribute(paramName);
+                _checkForNull(attribute, "No such parameter: \"" + paramName
+                        + "\" in class: " + _current.getClass().toString());
+                _checkClass(attribute, Variable.class,
+                        "Element \"parameter\" named \"" + paramName
+                        + "\" is not an instance of Variable.");
+                Variable param = (Variable)attribute;
                 param.setExpression(paramValue);
             } else if (elementName.equals("connection")) {
                 String port1Name = (String)_attributes.get("port1");
+                _checkForNull(port1Name, "No port1 for element \"connection\"");
                 String port2Name = (String)_attributes.get("port2");
-                // FIXME: check for null above
+                _checkForNull(port2Name, "No port2 for element \"connection\"");
                 String name = (String)_attributes.get("name");
 
-                // FIXME: Check cast below.
+                _checkClass(_current, CompositeEntity.class,
+                        "Element \"connection\" found inside a container that"
+                        + " is not an instance of CompositeEntity.");
                 CompositeEntity context = (CompositeEntity)_current;
 
                 // Parse port1
-                int point = port1Name.lastIndexOf(".");
-                // FIXME: Make sure the following is in bounds
+                int point = _positionOfDot(port1Name);
                 String portname = port1Name.substring(point+1);
                 String actorname = port1Name.substring(0, point);
                 ComponentEntity actor = context.getEntity(actorname);
-                // FIXME: Check that above not null.
-                // FIXME: Check cast below.
-                ComponentPort port1 = (ComponentPort)
-                        (actor.getPort(portname));
+                _checkForNull(actor, "No actor named \"" + actorname
+                        + "\" in " + context.getFullName());
+                Port port = actor.getPort(portname);
+                _checkForNull(port, "No port named \"" + portname
+                        + "\" in " + actor.getFullName());
+                ComponentPort port1 = (ComponentPort)port;
 
                 // Parse port2
-                point = port2Name.lastIndexOf(".");
-                // FIXME: Make sure the following is in bounds
+                point = _positionOfDot(port2Name);
                 portname = port2Name.substring(point+1);
                 actorname = port2Name.substring(0, point);
                 actor = context.getEntity(actorname);
-                // FIXME: Check that above not null.
-                ComponentPort port2 = (ComponentPort)
-                        (actor.getPort(portname));
+                port = actor.getPort(portname);
+                _checkForNull(port, "No port named \"" + portname
+                        + "\" in " + actor.getFullName());
+                ComponentPort port2 = (ComponentPort)port;
 
                 if (name == null) {
                     _currentConnection = context.connect(port1, port2);
@@ -386,61 +400,45 @@ if (param == null) {
                 }
             } else if (elementName.equals("link")) {
                 String portName = (String)_attributes.get("port");
+                _checkForNull(portName, "No name for element \"link\"");
                 String connectionName = (String)_attributes.get("connection");
-                // FIXME: check for null above
+                _checkForNull(connectionName,
+                        "No connection for element \"link\"");
 
-                // FIXME: Check cast below.
+                _checkClass(_current, CompositeEntity.class,
+                        "Element \"link\" found inside an element that "
+                        + "is not a CompositeEntity.");
                 CompositeEntity context = (CompositeEntity)_current;
 
                 // Parse port
-                int point = portName.lastIndexOf(".");
-                // FIXME: Make sure the following is in bounds
+                int point = _positionOfDot(portName);
                 String portname = portName.substring(point+1);
                 String actorname = portName.substring(0, point);
                 ComponentEntity actor = context.getEntity(actorname);
-                // FIXME: Check that above not null.
-                // FIXME: Check cast below.
-                ComponentPort port = (ComponentPort)
-                        (actor.getPort(portname));
+                _checkForNull(actor, "No actor named \"" + actorname
+                        + "\" in " + context.getFullName());
+                Port tmpPort = actor.getPort(portname);
+                _checkForNull(tmpPort, "No port named \"" + portname
+                        + "\" in " + actor.getFullName());
+                ComponentPort port = (ComponentPort)tmpPort;
 
                 // Get relation
-                // FIXME: Check cast and for null return value.
-                ComponentRelation relation = (ComponentRelation)
-                        (context.getRelation(connectionName));
+                Relation tmpRelation = context.getRelation(connectionName);
+                _checkForNull(tmpRelation, "No relation named \"" +
+                        connectionName + "\" in " + context.getFullName());
+                ComponentRelation relation = (ComponentRelation)tmpRelation;
+
                 port.link(relation);
+            } else if (elementName.equals("doc")) {
+                _currentCharData = new StringBuffer();
             }
-        } catch (ClassNotFoundException ex) {
-            // FIXME -- thrown by Class.forName().
-            System.out.println(ex.toString());
-            ex.printStackTrace();
-        } catch (NoSuchMethodException ex) {
-            // FIXME -- thrown by getConstructor().
-            System.out.println(ex.toString());
-            ex.printStackTrace();
-        } catch (InstantiationException ex) {
-            // FIXME -- thrown by newInstance().
-            System.out.println(ex.toString());
-            ex.printStackTrace();
-        } catch (IllegalAccessException ex) {
-            // FIXME -- thrown by newInstance().
-            System.out.println(ex.toString());
-            ex.printStackTrace();
-        } catch (InvocationTargetException ex) {
-            // FIXME -- thrown by newInstance().
-            System.out.println(ex.toString());
-            ex.printStackTrace();
-        } catch (ClassCastException ex) {
-            // FIXME -- thrown if class is not a CompositeActor, or Variable
-            System.out.println(ex.toString());
-            ex.printStackTrace();
-        } catch (NameDuplicationException ex) {
-            // FIXME -- thrown by setName().
-            System.out.println(ex.toString());
-            ex.printStackTrace();
-        } catch (IllegalActionException ex) {
-            // FIXME -- thrown by setManager()
-            System.out.println(ex.toString());
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            String msg = "XML element \"" + elementName
+                   + "\" triggers exception:\n  " + ex.toString();
+            throw new XmlException(msg,
+                   _currentExternalEntity(),
+                   _parser.getLineNumber(),
+                   _parser.getColumnNumber());
         }
         _attributes.clear();
     }
@@ -465,26 +463,72 @@ if (param == null) {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    // If the first argument is not an instance of the second,
+    // throw an exception with the given message.
+    private void _checkClass(Object object, Class correctClass, String msg)
+            throws XmlException {
+        if(!correctClass.isInstance(object)) {
+            throw new XmlException(msg,
+                   _currentExternalEntity(),
+                   _parser.getLineNumber(),
+                   _parser.getColumnNumber());
+        }
+    }
+
+    // If the argument is null, throw an exception with the given message.
+    private void _checkForNull(Object object, String message)
+            throws XmlException {
+        if(object == null) {
+            throw new XmlException(message,
+                   _currentExternalEntity(),
+                   _parser.getLineNumber(),
+                   _parser.getColumnNumber());
+        }
+    }
+
+    // Return the position of the last dot (period) in the specified
+    // port name.  Throw an exception if there is none, or if it is the
+    // first or last character.
+    private int _positionOfDot(String portname) throws XmlException {
+        int position = portname.lastIndexOf(".");
+        if ((position <= 0) || (position == portname.length() - 1)) {
+            throw new XmlException("Invalid port name: \"" + portname + "\"",
+                   _currentExternalEntity(),
+                   _parser.getLineNumber(),
+                   _parser.getColumnNumber());
+        }
+        return position;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
     // Attributes associated with an entity.
     private Map _attributes;
-
-    // Top-level entity.
-    private CompositeActor _toplevel = null;
-
-    // The workspace for this model.
-    Workspace _workspace;
-
-    // The manager for this model.
-    Manager _manager;
-
-    // The current object in the hierarchy.
-    NamedObj _current;
 
     // The stack of objects that contain the current one.
     Stack _containers = new Stack();
 
+    // The current object in the hierarchy.
+    NamedObj _current;
+
+    // The current character data for the current element.
+    StringBuffer _currentCharData;
+
     // The relation for the currently active connection.
     ComponentRelation _currentConnection;
+
+    // The manager for this model.
+    Manager _manager;
+
+    // The parser.
+    private XmlParser _parser = new XmlParser();
+
+    // Top-level entity.
+    private TypedCompositeActor _toplevel = null;
+
+    // The workspace for this model.
+    Workspace _workspace;
 
 // FIXME...
 
@@ -493,7 +537,6 @@ if (param == null) {
      */
     private LinkedList sysids = new LinkedList();
 
-    private XmlParser _parser = new XmlParser();
     private static final boolean DEBUG = false;
     private String _dtdlocation = null;
 }

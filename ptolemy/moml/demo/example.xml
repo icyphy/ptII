@@ -14,6 +14,9 @@
 
   <!-- Define the actors -->
   <actor name="ramp" class="ptolemy.actor.lib.Ramp">
+    <doc>
+    Text here documents the role of the actor.
+    </doc>
     <parameter name="step" value="0.1"/>
     <!-- hints for a GUI... -->
     <icon xpos="100" ypos="100"

@@ -47,7 +47,9 @@ PTPACKAGE = 	math
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = MoMLParser.java
+JSRCS = DocAttribute.java \
+	MoMLApplet.java \
+	MoMLParser.java
 
 EXTRA_SRCS =	$(JSRCS)
 

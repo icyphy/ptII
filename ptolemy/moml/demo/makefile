@@ -43,8 +43,7 @@ include $(CONFIG)
 TCL_SRCS = \
 
 
-JSRCS = \
-	MoMLApplet.java
+JSRCS =
 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
