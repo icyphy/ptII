@@ -103,7 +103,7 @@ public class SAXDriver
 
   /**
     * Set the entity resolver for this parser.
-    * @param handler The object to receive entity events.
+    * @param resolver The object to receive entity events.
     */
   public void setEntityResolver (EntityResolver resolver) 
   {

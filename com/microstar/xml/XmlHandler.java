@@ -122,8 +122,7 @@ public interface XmlHandler {
     * necessary.
     * <p>You may use XmlParser.getAttributeType() to find the attribute's
     * declared type.
-    * @param name The name of the attribute.
-    * @param type The type of the attribute (see below).
+    * @param aname The name of the attribute.
     * @param value The value of the attribute, or null if the attribute
     *        is <code>#IMPLIED</code>.
     * @param isSpecified True if the value was specified, false if it
