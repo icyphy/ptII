@@ -129,7 +129,7 @@ SOOT_JARS=""
 if [ "$PTCOPERNICUS_DIR" ]; then
     SOOT_JARS="${CLASSPATHSEPARATOR}${SOOT_JAR}"
 fi
-
+E="E"
 
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
