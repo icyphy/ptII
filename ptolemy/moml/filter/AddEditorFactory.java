@@ -135,7 +135,7 @@ public class AddEditorFactory implements MoMLFilter {
         if (!_currentlyProcessingActorThatMayNeedAnEditorFactory) {
             return elementName;
         } else if ( _currentAttributeHasLocation
-		&& elementName != null
+                && elementName != null
                 && elementName.equals("property")
                 && container != null
                 && container.getFullName()
@@ -177,9 +177,9 @@ public class AddEditorFactory implements MoMLFilter {
      *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
-	return getClass().getName()
-	    + ": If a parameter has a _location, then\n"
-	    + "add a VisibleParameterEditorFactory named _editorFactory.\n";
+        return getClass().getName()
+            + ": If a parameter has a _location, then\n"
+            + "add a VisibleParameterEditorFactory named _editorFactory.\n";
     }
 
     ///////////////////////////////////////////////////////////////////

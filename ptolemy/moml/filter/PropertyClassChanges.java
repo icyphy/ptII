@@ -126,9 +126,9 @@ public class PropertyClassChanges implements MoMLFilter {
                 //_currentlyProcessingActorWithPropertyClassChanges = false;
 
                 String temporaryNewClass = _newClass;
-		if (!attributeValue.equals(_newClass)) {
-		    MoMLParser.setModified(true);
-		}
+                if (!attributeValue.equals(_newClass)) {
+                    MoMLParser.setModified(true);
+                }
                 _newClass = null;
                 return temporaryNewClass;
             } else if (  _currentlyProcessingActorWithPropertyClassChanges
@@ -162,27 +162,27 @@ public class PropertyClassChanges implements MoMLFilter {
      *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
-	StringBuffer results =
-	    new StringBuffer(getClass().getName()
-			     + ": Update any actor port class names that have\n"
-			     + "been renamed.\n"
-			     + "Below are the actors that are affected, along\n"
-			     + "with the port name and the new classname:"
-			     );
-	Iterator actors = _actorsWithPropertyClassChanges.keySet().iterator();
-	while (actors.hasNext()) {
-	    String actor = (String)actors.next();
-	    results.append("\t" + actor + "\n");
+        StringBuffer results =
+            new StringBuffer(getClass().getName()
+                             + ": Update any actor port class names that have\n"
+                             + "been renamed.\n"
+                             + "Below are the actors that are affected, along\n"
+                             + "with the port name and the new classname:"
+                             );
+        Iterator actors = _actorsWithPropertyClassChanges.keySet().iterator();
+        while (actors.hasNext()) {
+            String actor = (String)actors.next();
+            results.append("\t" + actor + "\n");
             HashMap propertyMap =
-		(HashMap) _actorsWithPropertyClassChanges.get(actor);
-	    Iterator properties = propertyMap.keySet().iterator();
-	    while (properties.hasNext()) {
-		String oldProperty = (String) properties.next();
-		String newProperty = (String) propertyMap.get(oldProperty);
-		results.append("\t\t" + oldProperty + "\t -> " + newProperty + "\n");
-	    }
-	}
-	return results.toString();
+                (HashMap) _actorsWithPropertyClassChanges.get(actor);
+            Iterator properties = propertyMap.keySet().iterator();
+            while (properties.hasNext()) {
+                String oldProperty = (String) properties.next();
+                String newProperty = (String) propertyMap.get(oldProperty);
+                results.append("\t\t" + oldProperty + "\t -> " + newProperty + "\n");
+            }
+        }
+        return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

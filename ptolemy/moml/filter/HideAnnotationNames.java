@@ -86,7 +86,7 @@ public class HideAnnotationNames implements MoMLFilter {
                 // We are processing an annotation and it already
                 // has _hideName
                 _currentlyProcessingAnnotation = false;
-		_currentAnnotationFullName = null;
+                _currentAnnotationFullName = null;
             }
         }
         if ( _currentlyProcessingAnnotation
@@ -101,7 +101,7 @@ public class HideAnnotationNames implements MoMLFilter {
             // We found another class in a different container
             // while handling an annotation.
             _currentlyProcessingAnnotation = false;
-	    _currentAnnotationFullName = null;
+            _currentAnnotationFullName = null;
 
         }
         return attributeValue;
@@ -125,13 +125,13 @@ public class HideAnnotationNames implements MoMLFilter {
                 && container.getFullName()
                 .equals(_currentAnnotationFullName)) {
             _currentlyProcessingAnnotation = false;
-	    _currentAnnotationFullName = null;
-	    try {
-		Parameter hideName = new Parameter(container, "_hideName");
-	    } catch (NameDuplicationException ex) {
-		// Ignore, the container already has a _hideName.
-		// The Network model has this problem.
-	    }
+            _currentAnnotationFullName = null;
+            try {
+                Parameter hideName = new Parameter(container, "_hideName");
+            } catch (NameDuplicationException ex) {
+                // Ignore, the container already has a _hideName.
+                // The Network model has this problem.
+            }
             MoMLParser.setModified(true);
         }
         return elementName;
@@ -142,9 +142,9 @@ public class HideAnnotationNames implements MoMLFilter {
      *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
-	return getClass().getName()
-	    + ": If an annotation name ends with\n"
-	    + "'annotation1', then add _hideName if necessary.\n";
+        return getClass().getName()
+            + ": If an annotation name ends with\n"
+            + "'annotation1', then add _hideName if necessary.\n";
     }
 
     ///////////////////////////////////////////////////////////////////

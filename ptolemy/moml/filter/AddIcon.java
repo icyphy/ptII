@@ -161,17 +161,17 @@ public class AddIcon implements MoMLFilter {
      *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
-	StringBuffer results =
-	    new StringBuffer(getClass().getName()
-			     + ": Add specialized icons that display the value\n"
-			     + "of one of the parameters.\n"
-			     + "The affected actors are:\n"
-			     );
-	Iterator actors = _actorsThatShouldHaveIcons.keySet().iterator();
-	while (actors.hasNext()) {
-	    results.append("\t" + (String)actors.next() + "\n");
-	}
-	return results.toString();
+        StringBuffer results =
+            new StringBuffer(getClass().getName()
+                             + ": Add specialized icons that display the value\n"
+                             + "of one of the parameters.\n"
+                             + "The affected actors are:\n"
+                             );
+        Iterator actors = _actorsThatShouldHaveIcons.keySet().iterator();
+        while (actors.hasNext()) {
+            results.append("\t" + (String)actors.next() + "\n");
+        }
+        return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

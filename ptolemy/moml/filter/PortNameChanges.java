@@ -177,25 +177,25 @@ public class PortNameChanges implements MoMLFilter {
      *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
-	StringBuffer results =
-	    new StringBuffer(getClass().getName()
-			     + ": Update any actor port names that have been\n"
-			     + "renamed.\n"
-			     + "Below are the actors that are affected, along\n"
-			     + "with the old port name and the new port name:");
-	Iterator actors = _actorsWithPortNameChanges.keySet().iterator();
-	while (actors.hasNext()) {
-	    String actor = (String)actors.next();
-	    results.append("\t" + actor + "\n");
+        StringBuffer results =
+            new StringBuffer(getClass().getName()
+                             + ": Update any actor port names that have been\n"
+                             + "renamed.\n"
+                             + "Below are the actors that are affected, along\n"
+                             + "with the old port name and the new port name:");
+        Iterator actors = _actorsWithPortNameChanges.keySet().iterator();
+        while (actors.hasNext()) {
+            String actor = (String)actors.next();
+            results.append("\t" + actor + "\n");
             HashMap portMap = (HashMap) _actorsWithPortNameChanges.get(actor);
-	    Iterator ports = portMap.keySet().iterator();
-	    while (ports.hasNext()) {
-		String oldPort = (String) ports.next();
-		String newPort = (String) portMap.get(oldPort);
-		results.append("\t\t" + oldPort + "\t -> " + newPort + "\n");
-	    }
-	}
-	return results.toString();
+            Iterator ports = portMap.keySet().iterator();
+            while (ports.hasNext()) {
+                String oldPort = (String) ports.next();
+                String newPort = (String) portMap.get(oldPort);
+                results.append("\t\t" + oldPort + "\t -> " + newPort + "\n");
+            }
+        }
+        return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

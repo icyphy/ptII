@@ -58,7 +58,7 @@ public class BackwardCompatibility {
      *  MoMLFilter to be applied to handle backward compatibility
      */
     public static List allFilters() {
-	return _filterList;
+        return _filterList;
     }
 
     /** Return a string that describes all the filters
@@ -66,13 +66,13 @@ public class BackwardCompatibility {
      *  newline.
      */
     public String toString() {
-	StringBuffer results =
-	    new StringBuffer("This filter contains the following filters:\n");
-	Iterator filters = _filterList.iterator();
-	while (filters.hasNext()) {
-	    results.append(((MoMLFilter)filters.next()).toString() + "\n");
-	}
-	return results.toString();
+        StringBuffer results =
+            new StringBuffer("This filter contains the following filters:\n");
+        Iterator filters = _filterList.iterator();
+        while (filters.hasNext()) {
+            results.append(((MoMLFilter)filters.next()).toString() + "\n");
+        }
+        return results.toString();
     }
 
     // List of MoMLFilters to be applied.

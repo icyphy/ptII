@@ -119,26 +119,26 @@ public class RemoveGraphicalClasses implements MoMLFilter {
      *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
-	StringBuffer results =
-	    new StringBuffer(getClass().getName()
-			     + ": Remove or replace classes that are graphical.\n"
-			     + "This filter is used by the nightly build, and\n"
-			     + "can be used to run applets so that files like\n"
-			     + "diva.jar do not need to be downloaded.\n"
-			     + "The following actors are affected:\n"
-			     );
-	Iterator classNames = _graphicalClasses.keySet().iterator();
-	while (classNames.hasNext()) {
-	    String oldClassName = (String)classNames.next();
-	    String newClassName = (String) _graphicalClasses.get(oldClassName);
-	    if (newClassName == null) {
-		results.append(oldClassName + "will be removed\n");
-	    } else {
-		results.append(oldClassName + "will be replaced by "
-			       + newClassName +"\n");
-	    }
-	}
-	return results.toString();
+        StringBuffer results =
+            new StringBuffer(getClass().getName()
+                             + ": Remove or replace classes that are graphical.\n"
+                             + "This filter is used by the nightly build, and\n"
+                             + "can be used to run applets so that files like\n"
+                             + "diva.jar do not need to be downloaded.\n"
+                             + "The following actors are affected:\n"
+                             );
+        Iterator classNames = _graphicalClasses.keySet().iterator();
+        while (classNames.hasNext()) {
+            String oldClassName = (String)classNames.next();
+            String newClassName = (String) _graphicalClasses.get(oldClassName);
+            if (newClassName == null) {
+                results.append(oldClassName + "will be removed\n");
+            } else {
+                results.append(oldClassName + "will be replaced by "
+                               + newClassName +"\n");
+            }
+        }
+        return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -160,9 +160,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         //_graphicalClasses.put("ptolemy.actor.lib.gui.Display",
         //        "ptolemy.actor.lib.Discard");
 
-	// Generated applet from moml/demo/modulation.xml
-	// fails to run if substitute Attribute for NodeControllerFactory
-	// so we set it to null instead.
+        // Generated applet from moml/demo/modulation.xml
+        // fails to run if substitute Attribute for NodeControllerFactory
+        // so we set it to null instead.
         //_graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
         //        "ptolemy.kernel.util.Attribute");
 
@@ -176,9 +176,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
                 "ptolemy.kernel.util.Attribute");
-  	// Generated applet from moml/demo/modulation.xml
-  	// fails to run if substitute Attribute for AnnotationEditorFactory
-	// so we set it to null instead.
+          // Generated applet from moml/demo/modulation.xml
+          // fails to run if substitute Attribute for AnnotationEditorFactory
+        // so we set it to null instead.
 
         //_graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
         //        "ptolemy.kernel.util.Attribute");
