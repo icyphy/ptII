@@ -305,7 +305,7 @@ public class Main extends KernelMain {
 
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
-
+        /*
         // Remove Unreachable methods.  This happens BEFORE
         // NamedObjElimination so that we don't have to pick between
         // multiple constructors, if there are more than one.  I'm
