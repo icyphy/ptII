@@ -31,6 +31,8 @@
 
 package ptolemy.data.expr;
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 import ptolemy.data.StringToken;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -63,7 +65,39 @@ public class UtilityFunctions {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** FIXME.
+    /** Return a Gaussian random number.
+     *  @param mean The mean.
+     *  @param standardDeviation The standard deviation.
+     *  @return An observation of a Gaussian random variable.
+     */
+    public static DoubleToken gaussian(double mean, double standardDeviation) {
+        if(_random == null) _random = new Random();
+        double raw = _random.nextGaussian();
+        double result = (raw*standardDeviation) + mean;
+        return new DoubleToken(result);
+    }
+
+    /** Return a matrix of Gaussian random numbers.
+     *  @param mean The mean.
+     *  @param standardDeviation The standard deviation.
+     *  @param rows The number of rows.
+     *  @param columns The number of columns.
+     *  @return A matrix of observations of a Gaussian random variable.
+     */
+    public static DoubleMatrixToken gaussian(
+            double mean, double standardDeviation, int rows, int columns) {
+        if(_random == null) _random = new Random();
+        double[][] result = new double[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                double raw = _random.nextGaussian();
+                result[i][j] = (raw*standardDeviation) + mean;
+            }
+        }
+        return new DoubleMatrixToken(result);
+    }
+
+    /** FIXME. Placeholder for a function that will return a model.
      */
     public static ObjectToken model(String classname)
             throws IllegalActionException {
@@ -223,36 +257,43 @@ public class UtilityFunctions {
         return returnMatrix;
     }
 
-    /** Return a Gaussian random number.
-     *  @param mean The mean.
-     *  @param standardDeviation The standard deviation.
-     *  @return An observation of a Gaussian random variable.
-     */
-    public static DoubleToken gaussian(double mean, double standardDeviation) {
-        if(_random == null) _random = new Random();
-        double raw = _random.nextGaussian();
-        double result = (raw*standardDeviation) + mean;
-        return new DoubleToken(result);
-    }
+    // FIXME: The following methods should be polymorphic, taking MatrixToken
+    // If they can't be, then the set of methods is far from complete.
 
-    /** Return a matrix of Gaussian random numbers.
-     *  @param mean The mean.
-     *  @param standardDeviation The standard deviation.
-     *  @param rows The number of rows.
-     *  @param columns The number of columns.
-     *  @return A matrix of observations of a Gaussian random variable.
+    /** Given a matrix token, return an array token that contains
+     *  all of the elements of the matrix, sequentially read out row-wise.
+     *  @param matrix A matrix token.
+     *  @return A new array token containing the elements of the array
+     *   as instance of Token.
      */
-    public static DoubleMatrixToken gaussian(
-            double mean, double standardDeviation, int rows, int columns) {
-        if(_random == null) _random = new Random();
-        double[][] result = new double[rows][columns];
+    public static ArrayToken toArray(IntMatrixToken matrix) {
+        int rows = matrix.getRowCount();
+        int columns = matrix.getColumnCount();
+        ptolemy.data.Token[] result = new ptolemy.data.Token[rows*columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                double raw = _random.nextGaussian();
-                result[i][j] = (raw*standardDeviation) + mean;
+                result[i*columns + j] = matrix.getElementAsToken(i, j);
             }
         }
-        return new DoubleMatrixToken(result);
+        return new ArrayToken(result);
+    }
+
+    /** Given a matrix token, return an array token that contains
+     *  all of the elements of the matrix, sequentially read out row-wise.
+     *  @param matrix A matrix token.
+     *  @return A new array token containing the elements of the array
+     *   as instance of Token.
+     */
+    public static ArrayToken toArray(DoubleMatrixToken matrix) {
+        int rows = matrix.getRowCount();
+        int columns = matrix.getColumnCount();
+        ptolemy.data.Token[] result = new ptolemy.data.Token[rows*columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                result[i*columns + j] = matrix.getElementAsToken(i, j);
+            }
+        }
+        return new ArrayToken(result);
     }
 
     ///////////////////////////////////////////////////////////////////
