@@ -169,8 +169,8 @@ public class FIR extends SDFAtomicActor {
 
         // FIXME: Does the SDF infrastructure support accessing past samples?
         // FIXME: Handle mutations.
-        setTokenConsumptionRate(input,_dec);
-        setTokenProductionRate(output,_interp);
+        setTokenConsumptionRate(input, _dec);
+        setTokenProductionRate(output, _interp);
         if (_decPhase >= _dec) {
             throw new IllegalActionException(this,"decimationPhase too large");
         }
@@ -178,7 +178,7 @@ public class FIR extends SDFAtomicActor {
         DoubleMatrixToken tapstoken = (DoubleMatrixToken)(taps.getToken());
         _taps = new double[tapstoken.getColumnCount()];
         for (int i = 0; i < _taps.length; i++) {
-            _taps[i] = tapstoken.getElementAt(0,i);
+            _taps[i] = tapstoken.getElementAt(0, i);
         }
         _phaseLength = (int)(_taps.length / _interp);
         if ((_taps.length % _interp) != 0) _phaseLength++;
