@@ -152,6 +152,26 @@ public class ChangeRequestTest implements ChangeListener {
         _top.requestChange(_changeRequest);
     }
 
+    public void waitForCompletionTask() {
+        Thread waitForCompletionThread =
+            new PtolemyThread ( new Runnable() { 
+                public void run() {
+                    System.out.println(Thread.currentThread().getName()
+                            + " About to wait for completion");
+                    try {
+                        _changeRequest.waitForCompletion();
+                    } catch (Exception ex) {
+                        System.out.println(ex);
+                    }
+                    System.out.println(Thread.currentThread().getName()
+                            + " Done waiting for completion");
+                }
+            });
+
+        waitForCompletionThread.setName("waitForCompletionThread");
+        waitForCompletionThread.start();
+    }
+
     /** Create a change request that always throws an exception. */
     public ChangeRequest mutateBadChangeRequest() {
         // Create an anonymous inner class

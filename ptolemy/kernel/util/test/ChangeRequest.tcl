@@ -35,6 +35,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs jdkCapture] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -98,12 +102,32 @@ test ChangeRequest-4.0 {StreamChangeListener} {
     $t start
     $t mutate
 
-    enumToTokenValues [$t finish]
+    jdkCapture {
+	puts "[[java::call Thread currentThread] getName] \
+		Before call to waitForCompletionTask"
+	$t waitForCompletionTask
+	puts "[[java::call Thread currentThread] getName] \
+		After call to waitForCompletionTask"
+	puts "[[java::call Thread currentThread] getName] \
+		Before call to \$t finish"
+	enumToTokenValues [$t finish]
+	puts "[[java::call Thread currentThread] getName] \
+		After call to \$t finish"
+	# This will always return immeadiately because the change is
+	# not pending
+	$changeRequest waitForCompletion
+    } stdoutResults
     $printStream flush
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" output
-    list [$changeRequest isErrorReported] $output 
+    list [$changeRequest isErrorReported] $output $stdoutResults
 } {0 {StreamChangeRequest.changeExecuted(): Changing Const to 2.0 succeeded
+} {main  Before call to waitForCompletionTask
+waitForCompletionThread About to wait for completion
+main  After call to waitForCompletionTask
+main  Before call to $t finish
+waitForCompletionThread Done waiting for completion
+main  After call to $t finish
 }}
 
 test ChangeRequest-4.1 {StreamChangeListener} {
