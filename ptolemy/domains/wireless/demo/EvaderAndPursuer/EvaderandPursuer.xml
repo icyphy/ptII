@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="EvaderandPursuer2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="EvaderandPursuer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 31, 973, 782}}">
@@ -52,7 +52,7 @@
     <entity name="RadioChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=200}">
         </property>
-        <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="0.05">
         </property>
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
@@ -3640,7 +3640,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 40.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 445.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165, 495]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 200, 928, 518}}">
         </property>
@@ -3648,7 +3648,7 @@
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="speed" class="ptolemy.data.expr.Parameter" value="15">
+        <property name="speed" class="ptolemy.data.expr.Parameter" value="12">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>
@@ -3679,7 +3679,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="640.0, 350.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="580.0120086669922, 345.37550354003906">
             </property>
         </port>
         <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -3692,7 +3692,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 350.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="475.0120086669922, 345.37550354003906">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -3742,7 +3742,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="670.0, 85.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="675.0, 95.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -3968,7 +3968,7 @@ to another. Then delete this annotation.</text>
             <link port="_Controller.y" relation="yRelation"/>
         </entity>
         <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="165">
+            <property name="init" class="ptolemy.data.expr.Parameter" value="265">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 130.0">
             </property>
@@ -3985,9 +3985,9 @@ to another. Then delete this annotation.</text>
             </port>
         </entity>
         <entity name="Accumulator2" class="ptolemy.actor.lib.Accumulator">
-            <property name="init" class="ptolemy.data.expr.Parameter" value="495">
+            <property name="init" class="ptolemy.data.expr.Parameter" value="345">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 235.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 230.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -4002,7 +4002,7 @@ to another. Then delete this annotation.</text>
             </port>
         </entity>
         <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x &gt; 550? &#10;(x-speed*2) :&#10;(x&lt;150? &#10;(x+speed*2) &#10;: x) ">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x &gt;= 550? &#10;550 :&#10;(x&lt;=150? &#10;150 : x) ">
                 <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 </property>
             </property>
@@ -4028,7 +4028,7 @@ to another. Then delete this annotation.</text>
             </port>
         </entity>
         <entity name="Expression3" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y &gt; 500?&#10;(y-speed*2) &#10;:(y&lt;180? &#10;(y+speed*2) &#10;: y) ">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y &gt;= 500?&#10;500&#10;:(y&lt;=180? &#10;180 : y) ">
                 <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 </property>
             </property>
@@ -4136,8 +4136,6 @@ to another. Then delete this annotation.</text>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -4151,12 +4149,16 @@ to another. Then delete this annotation.</text>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="630.0, 310.0">
+            <vertex name="vertex1" value="628.5661010742188, 314.4213562011719">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="550.0, 230.0">
+            </vertex>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -4165,7 +4167,7 @@ to another. Then delete this annotation.</text>
         <link port="Const.trigger" relation="relation"/>
         <link port="Expression.output" relation="relation"/>
         <link port="Expression.x" relation="relation8"/>
-        <link port="Expression.y" relation="relation4"/>
+        <link port="Expression.y" relation="relation14"/>
         <link port="SetVariable.input" relation="relation"/>
         <link port="Random.output" relation="relation10"/>
         <link port="Random.trigger" relation="relation7"/>
@@ -4178,7 +4180,7 @@ to another. Then delete this annotation.</text>
         <link port="Accumulator2.output" relation="relation3"/>
         <link port="Expression2.output" relation="relation8"/>
         <link port="Expression2.x" relation="relation5"/>
-        <link port="Expression3.output" relation="relation4"/>
+        <link port="Expression3.output" relation="relation14"/>
         <link port="Expression3.y" relation="relation3"/>
         <link port="Clock.output" relation="relation13"/>
         <link port="Poisson.output" relation="relation7"/>
@@ -4230,7 +4232,7 @@ to another. Then delete this annotation.</text>
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 470.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.4496658367844, 470.656012484826]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}}">
         </property>
