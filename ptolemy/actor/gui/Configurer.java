@@ -31,14 +31,9 @@
 package ptolemy.actor.gui;
 
 // Ptolemy imports.
-import ptolemy.gui.CloseListener;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.StringUtilities;
-
 import java.awt.Component;
 import java.awt.Window;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +41,12 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import ptolemy.gui.CloseListener;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Configurer
@@ -92,23 +93,15 @@ public class Configurer extends JPanel implements CloseListener {
             parent = object;
         }
         _parent = parent;
-        // Create moml with the original values, so restore can happen later.
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<group>\n");
-        Iterator parameters = object.attributeList(Settable.class).iterator();
+        // Record the original values so a restore can happen later.
+        _originalValues = new HashMap();
+        Iterator parameters = _object.attributeList(Settable.class).iterator();
         while (parameters.hasNext()) {
             Settable parameter = (Settable)parameters.next();
             if (isVisible()) {
-                String oldExpression = parameter.getExpression();
-                buffer.append("<property name=\"");
-                buffer.append(((NamedObj)parameter).getName(parent));
-                buffer.append("\" value=\"");
-                buffer.append(StringUtilities.escapeForXML(oldExpression));
-                buffer.append("\"/>\n");
+                _originalValues.put(parameter, parameter.getExpression());
             }
         }
-        buffer.append("</group>\n");
-        _restoreMoML = buffer.toString();
         boolean foundOne = false;
         Iterator editors
             = object.attributeList(EditorPaneFactory.class).iterator();
@@ -161,7 +154,8 @@ public class Configurer extends JPanel implements CloseListener {
     /** Request restoration of the user settable attribute values to what they
      *  were when this object was created.  The actual restoration
      *  occurs later, in the UI thread, in order to allow all pending
-     *  changes to the attribute values to be processed first.
+     *  changes to the attribute values to be processed first. If the original
+     *  values match the current values, then nothing is done.
      */
     public void restore() {
         // This is done in the UI thread in order to
@@ -179,12 +173,38 @@ public class Configurer extends JPanel implements CloseListener {
         // "X" is used to close the window.  Swing bug?
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    MoMLChangeRequest request = new MoMLChangeRequest(
-                            this,         // originator
-                            _parent,       // context
-                            _restoreMoML, // MoML code
-                            null);        // base
-                    _object.requestChange(request);
+                    // First check for changes.
+                    Iterator parameters = _object.attributeList(Settable.class).iterator();
+                    boolean hasChanges = false;
+                    StringBuffer buffer = new StringBuffer("<group>\n");
+                    while (parameters.hasNext()) {
+                        if (isVisible()) {
+                            Settable parameter = (Settable)parameters.next();
+                            String newValue = parameter.getExpression();
+                            String oldValue = (String)_originalValues.get(parameter);
+                            if (!newValue.equals(oldValue)) {
+                                hasChanges = true;                                
+                                buffer.append("<property name=\"");
+                                buffer.append(((NamedObj)parameter).getName(_parent));
+                                buffer.append("\" value=\"");
+                                buffer.append(StringUtilities.escapeForXML(oldValue));
+                                buffer.append("\"/>\n");
+                            }
+                        }
+                    }
+                    buffer.append("</group>\n");
+                    
+                    // If there a changes, then issue a change request.
+                    // Use a MoMLChangeRequest so undo works... I.e., you can undo a cancel
+                    // of a previous change.
+                    if (hasChanges) {
+                        MoMLChangeRequest request = new MoMLChangeRequest(
+                                this,              // originator
+                                _parent,           // context
+                                buffer.toString(), // MoML code
+                                null);             // base
+                        _object.requestChange(request);
+                    }
                 }
             });
     }
@@ -217,6 +237,6 @@ public class Configurer extends JPanel implements CloseListener {
     // The parent of the object that we will queue any change requests with.
     private NamedObj _parent;
 
-    // A MoML string to restore the original values.
-    private String _restoreMoML = "";
+    // A record of the original values.
+    private HashMap _originalValues;
 }
