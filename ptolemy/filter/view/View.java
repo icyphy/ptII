@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-$Id$ %S%
- 
+$Id$ 
+
 */
 
 package ptolemy.filter.view;
@@ -103,6 +103,7 @@ public abstract class View extends Applet implements Observer {
           
     }
 
+    
     public void initPlots(){
 
         if (_plots == null) return;
@@ -125,6 +126,8 @@ public abstract class View extends Applet implements Observer {
          return _viewPanel;
     }
 
+    public abstract void moveInteractComp(InteractComponent ic);
+
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 
@@ -139,4 +142,11 @@ public abstract class View extends Applet implements Observer {
     protected Frame _frame;
     protected Observable _observed; 
     protected int _opMode; // 0. for normal standalone, 1. web applet mode 
+
+    protected InteractObjCrossRef [][] _crossref;
+  
+    class InteractObjCrossRef {
+        InteractComponent interactObj;
+        Object dataObj;
+    }
 }

@@ -22,14 +22,13 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-$Id$ %S%
+$Id$
  
 */
 
 package ptolemy.filter.view;
  
 import ptolemy.filter.filtermodel.*; 
-import ptolemy.math.PoleZero; 
 import ptolemy.math.Complex; 
 
 import java.util.*;
@@ -78,6 +77,13 @@ public class PoleZeroView extends View {
           _opMode = mode;
 
           _viewPanel = new Panel();
+          _viewPanel.setBackground(Color.black); 
+          _addpolezerobutton = new Button("Add Pole/Zero");
+          _addpolezerobutton.setForeground(Color.white);
+          Panel buttonpanel = new Panel();
+          buttonpanel.setLayout(new FlowLayout(2,2,2));
+          buttonpanel.add(_addpolezerobutton);
+          _viewPanel.add("North", buttonpanel);
           _viewPanel.add("Center", plot);
           _viewPanel.resize(300,350);
           if (_opMode == 0){ // frame mode
@@ -85,7 +91,6 @@ public class PoleZeroView extends View {
               _frame.add("Center", _viewPanel);
               _frame.resize(300, 350);
               _frame.show();
-              //  _frame = new InteractPoleZeroFrame(name, plot);
               plot.init();
               plot.resize(300,300);
           } 
@@ -105,8 +110,6 @@ public class PoleZeroView extends View {
      * poles and zeros then pass them to the plot.
      * remember dataset 1: pole
      *          dataset 2: zero 
-     *          dataset 3: non interact corrsponding pole 
-     *          dataset 4: non interact corrsponding zero 
      */ 
     public void update(Observable o, Object arg){
           String command = (String)arg;
@@ -117,231 +120,346 @@ public class PoleZeroView extends View {
                _plots[0].eraseAllPoints(1);
                _plots[0].eraseAllPoints(2);
                InteractComponent ic;
+
                int polecount=0;
-               int ind = 0;
                int zerocount=0;
 
-               PoleZero [] data = jf.getPole();
-               if (data!=null){
+               Complex [] poledata = jf.getPole();
+               _crossref = new InteractObjCrossRef[2][];
 
-                   Vector polevec = new Vector();
-                   for (int i = 0;i<data.length;i++){
-                       polevec.addElement(data[i]);     
-                   } 
+               if (poledata!=null){
 
-                   polecount = data.length; 
-
-
-                   while (polevec.size() != 0){
-                       
-                       PoleZero pole = (PoleZero) polevec.firstElement();
-                       polevec.removeElementAt(0);
+                   _crossref[0] = new InteractObjCrossRef[poledata.length];
  
+                   for (int ind = 0;ind<poledata.length;ind++){
+
                        ic = new InteractComponent("Pole", 
-                                InteractComponent.Cross);
-                       ic.setDrawingParam(Color.black,5, false,
+                                                  InteractComponent.Cross);
+                       ic.setDrawingParam(Color.green, 6, false,
                                 InteractComponent.SymmetricOri);
                        ic.setInteractParam(new String("Pole real"), 
-                        new String("Pole imag"), InteractComponent.AllDegFree); 
+                                           new String("Pole imag"), 
+                                           InteractComponent.AllDegFree); 
                     
-                       ic.setAssociation(1, ind);
-                       ic.xv = pole.re(); 
-                       ic.yv = pole.im();
-                       ind++;
-
-                       if (pole.conjugate != null){
-
-                            PoleZero conjpole = pole.conjugate;
-                            polevec.removeElement((Object) conjpole);
-                            
-                            if (conjpole.conjugate != pole) System.out.println(" error: in consistent conjugate pair");
-
-                            InteractComponent icpair = new InteractComponent("Pole", 
-                                InteractComponent.Cross);
-                            icpair.setDrawingParam(Color.black,5, false,
-                                InteractComponent.SymmetricOri);
-                            icpair.setInteractParam(new String("Pole real"), 
-                                new String("Pole imag"), 
-                                InteractComponent.AllDegFree); 
-                    
-                            icpair.setAssociation(1, ind);
-                            icpair.xv = conjpole.re(); 
-                            icpair.yv = conjpole.im(); 
-                            ind++;
-
-                            // now set the link between two interact components
-                            ic.setLink(icpair,
-                                       InteractComponent.YaxisMirrorXaxisSynch);
-                            icpair.setLink(ic,
-                                    InteractComponent.YaxisMirrorXaxisSynch);
-
-                            ((InteractPlot)_plots[0]).addInteractPoint(icpair, 
-                                          1, icpair.xv, icpair.yv, false); 
-                       }
+                       ic.setDatasetIndex(1, ind);
+                       ic.xv = poledata[ind].real; 
+                       ic.yv = poledata[ind].imag;
+                       _crossref[0][ind] = new InteractObjCrossRef();
+                       _crossref[0][ind].dataObj = (Object) poledata[ind];
+                       _crossref[0][ind].interactObj = ic;
                        ((InteractPlot)_plots[0]).addInteractPoint(ic, 
-                              1, ic.xv, ic.yv, false); 
-                    
-                    }
-                    
-               }
-
-               ind = 0;
-
-               data = jf.getZero();
-               if (data!=null){
-
-                   zerocount = data.length; 
-
-                   Vector zerovec = new Vector();
-                   for (int i = 0;i<data.length;i++){
-                       zerovec.addElement(data[i]);     
+                                         1, ic.xv, ic.yv, false);
+        
                    } 
 
-                   while (zerovec.size() != 0){
-                       
-                       PoleZero zero = (PoleZero) zerovec.firstElement();
-                       zerovec.removeElementAt(0);
- 
+               }
+
+               Complex [] zerodata = jf.getZero();
+               if (zerodata!=null){
+
+                   _crossref[1] = new InteractObjCrossRef[zerodata.length];
+                   for (int ind = 0;ind<zerodata.length;ind++){
+
                        ic = new InteractComponent("Zero", 
                                 InteractComponent.Circle);
-                       ic.setDrawingParam(Color.blue,5, false,
+                       ic.setDrawingParam(Color.cyan, 8, false,
                                 InteractComponent.SymmetricOri);
                        ic.setInteractParam(new String("Zero real"), 
-                        new String("Zero imag"), InteractComponent.AllDegFree); 
+                                           new String("Zero imag"), 
+                                           InteractComponent.AllDegFree); 
 
-                       ic.xv = zero.re(); 
-                       ic.yv = zero.im(); 
-                       ic.setAssociation(2, ind);
-                       ind++;
-
-                       if (zero.conjugate != null){
-
-                            PoleZero conjzero = zero.conjugate;
-                            zerovec.removeElement((Object) conjzero);
-                            
-                            if (conjzero.conjugate != zero) System.out.println(" error: in consistent conjugate pair");
-
-                            InteractComponent icpair = new InteractComponent(
-                                      "Zero", InteractComponent.Circle);
-                            icpair.setDrawingParam(Color.blue,5, false,
-                                      InteractComponent.SymmetricOri);
-                            icpair.setInteractParam(new String("Zero real"), 
-                                      new String("Zero imag"), 
-                                      InteractComponent.AllDegFree); 
-                    
-                            icpair.setAssociation(2, ind);
-                            icpair.xv = conjzero.re(); 
-                            icpair.yv = conjzero.im(); 
-                            ind++;
-
-                            // now set the link between two interact components
-                            ic.setLink(icpair,
-                                       InteractComponent.YaxisMirrorXaxisSynch);
-                            icpair.setLink(ic,
-                                    InteractComponent.YaxisMirrorXaxisSynch);
-
-                            ((InteractPlot)_plots[0]).addInteractPoint(icpair, 
-                                   2, icpair.xv, icpair.yv, false); 
-                        }
-                        ((InteractPlot)_plots[0]).addInteractPoint(ic, 
+                       ic.xv = zerodata[ind].real; 
+                       ic.yv = zerodata[ind].imag; 
+                       _crossref[1][ind] = new InteractObjCrossRef();
+                       _crossref[1][ind].dataObj = (Object) zerodata[ind];
+                       _crossref[1][ind].interactObj = ic;
+                       ((InteractPlot)_plots[0]).addInteractPoint(ic, 
                                2, ic.xv, ic.yv, false); 
                    }
 
                }
-      
-               if (zerocount > polecount){
-                   for (int i=0;i<zerocount-polecount;i++){
-                      // ic = new InteractComponent("CorrspondPole",2,Color.darkGray,0,8,
-                      //        false, new String("Pole real"), 
-                      //        new String("Pole imag"), 0, 0); 
-                      // ic.xv = 0.0; 
-                      // ic.yv = 0.0; 
-                      // ic.dataset = 3;
-                      // ((InteractPlot)_plots[0]).addInteractPoint(ic, 
-                      //        3, 0.0, 0.0, false); 
-                   }
-               }
-                       
-  //             if (polecount > zerocount){
-  //                 for (int i=0;i<polecount-zerocount;i++){
-                       //ic = new InteractComponent("CorrspondZero",1,Color.cyan,0,8,
-                       //       false, new String("Zero real"), 
-                       //       new String("Zero imag"), 0, 0); 
-                       //ic.xv = 0.0; 
-                       //ic.yv = 0.0; 
-                       //ic.dataset = 4;
-                       //((InteractPlot)_plots[0]).addInteractPoint(ic, 
-                       //       4, 0.0, 0.0, false); 
-//                   }
-//               }
-  
                _plots[0].repaint();
           }
      }
 
-     /**
-      * New changes have been made on the plot.  View
-      * passes the new data to the filter.
-      */ 
-     public void newChange(Vector data){
-          FilterObj jf = (FilterObj) _observed;
-          PoleZero [] pole;
-          PoleZero [] zero;
-          int pcount = 0;
-          int zcount = 0;
-          int curp = 0;
-          int curz = 0;
-          // count the number of poles and zeros
-          for (int i=0;i<data.size();i++){
-               InteractComponent ic = (InteractComponent) data.elementAt(i);
-               if (ic.getDataSetNum() == 1) { // poles
-                    pcount++;
-               } else if (ic.getDataSetNum() == 2){ // zeros
-                    zcount++;
-               } 
+    /**
+     * process the action created by clicking the add pole/zero
+     * button and change the mode of mouse (delete or move)
+     * FIXME: fix this for jdk1.1
+     */
+    public boolean action(Event evt, Object arg){
+        if (evt.target == _addpolezerobutton){
+             if (_addpolezerobox == null){
+                   _addpolezerobox = new NewPoleZeroBox("Add Pole-Zero");
+             }
+             return true;
+        }
+        return false;
+    }
+
+    public void newpolezero(boolean conjugate, double polereal, double poleimag,
+                            double zeroreal, double zeroimag){
+        Complex pole = new Complex(polereal, poleimag);
+        Complex zero = new Complex(zeroreal, zeroimag);
+        FilterObj jf = (FilterObj) _observed;
+        jf.addPoleZero(pole, zero, conjugate);
+    }
+
+    public void moveInteractComp(InteractComponent interactpolezero){
+
+        boolean polemoved = false;
+        for (int i=0;i<_crossref[0].length;i++){
+             if (_crossref[0][i].interactObj == interactpolezero){
+                 FilterObj jf = (FilterObj) _observed;
+                 jf.movePole((Complex) _crossref[0][i].dataObj);
+                 polemoved = true;
+                 break;
+             }
+        } 
+    
+        if (!polemoved) {
+            for (int i=0;i<_crossref[1].length;i++){
+                if (_crossref[1][i].interactObj == interactpolezero){
+                    FilterObj jf = (FilterObj) _observed;
+                    jf.moveZero((Complex) _crossref[1][i].dataObj);
+                    break;
+                }
+            }
+        } 
+
+    }
+
+    public void deletePoleZero(InteractComponent interactpolezero){
+
+        boolean poledeleted = false;
+        for (int i=0;i<_crossref[0].length;i++){
+             if (_crossref[0][i].interactObj == interactpolezero){
+                 FilterObj jf = (FilterObj) _observed;
+                 jf.deletePole((Complex) _crossref[0][i].dataObj);
+                 poledeleted = true;
+                 break;
+             }
+        } 
+
+        if (!poledeleted) {
+            for (int i=0;i<_crossref[1].length;i++){
+                if (_crossref[1][i].interactObj == interactpolezero){
+                    FilterObj jf = (FilterObj) _observed;
+                    jf.deleteZero((Complex) _crossref[1][i].dataObj);
+                    break;
+                }
+            }
+        } 
+
+    }
+     
+    public void splitConjPoleZero(InteractComponent interactpolezero){
+
+        boolean polesplited = false;
+        for (int i=0;i<_crossref[0].length;i++){
+             if (_crossref[0][i].interactObj == interactpolezero){
+                 FilterObj jf = (FilterObj) _observed;
+                 jf.splitConjPole((Complex) _crossref[0][i].dataObj);
+                 polesplited = true;
+                 break;
+             }
+        }
+ 
+        if (!polesplited) {
+            for (int i=0;i<_crossref[1].length;i++){
+                if (_crossref[1][i].interactObj == interactpolezero){
+                    FilterObj jf = (FilterObj) _observed;
+                    jf.splitConjZero((Complex) _crossref[1][i].dataObj);
+                    break;
+                }
+            }
+        } 
+    }
+     
+    public void makePoleZeroConj(InteractComponent interactpolezero){
+
+        boolean makepoleconj = false;
+        for (int i=0;i<_crossref[0].length;i++){
+             if (_crossref[0][i].interactObj == interactpolezero){
+                 FilterObj jf = (FilterObj) _observed;
+                 jf.makePoleConj((Complex) _crossref[0][i].dataObj);
+                 makepoleconj = true;
+                 break;
+             }
+        }
+ 
+        if (!makepoleconj) {
+            for (int i=0;i<_crossref[1].length;i++){
+                if (_crossref[1][i].interactObj == interactpolezero){
+                    FilterObj jf = (FilterObj) _observed;
+                    jf.makeZeroConj((Complex) _crossref[1][i].dataObj);
+                    break;
+                }
+            }
+        } 
+    }
+     
+     
+     private Button _addpolezerobutton;
+     private NewPoleZeroBox _addpolezerobox;
+
+
+//////////////////////////////////////////////////////////////////////////
+////  NewPoleZeroBox
+/**
+ * Dialog for add new pole/zero to the plot, inner class.
+ *
+ * author: William Wu
+ * version:
+ * date: 3/2/98
+ */
+ class NewPoleZeroBox extends Frame {
+
+   //////////////////////////////////////////////////////////////////////////
+   ////                         public methods                           ////
+   /**
+    * Constructor.  Setup the widgets for different inputs.
+    */
+   public NewPoleZeroBox(String title){
+      super(title);
+      _polexentry = new TextField(10);
+      _polexentry.setText("1.0");
+      _poleyentry = new TextField(10);
+      _poleyentry.setText("0.0");
+
+      _zeroxentry = new TextField(10);
+      _zeroxentry.setText("0.0");
+      _zeroyentry = new TextField(10);
+      _zeroyentry.setText("0.0");
+
+      // conjugate pair or no conjugate pair
+      _ckg = new CheckboxGroup();
+      _noConj = new Checkbox("no", _ckg, true);
+      _yesConj = new Checkbox("yes", _ckg, false);
+
+      Panel p1 = new Panel();
+      p1.add(new Label("Complex Conjugate ?"));
+      p1.add(_noConj);
+      p1.add(_yesConj);
+
+      Panel p2 = new Panel();
+      p2.setLayout(new BorderLayout(5, 5));
+
+      // real and imaginary value of pole
+
+      Panel p3 = new Panel();
+      p3.setLayout(new FlowLayout(5, 5, 5));
+      p3.add("Left", new Label("Default Real"));
+      p3.add("Center", _polexentry);
+
+      Panel p4 = new Panel();
+      p4.setLayout(new FlowLayout(5, 5, 5));
+      p4.add("Left", new Label("Default Imag"));
+      p4.add("Center", _poleyentry);
+
+      p2.add("North", new Label("Enter Default Value for Pole:"));
+      p2.add("Center", p3);
+      p2.add("South", p4);
+
+      Panel p6 = new Panel();
+      p6.setLayout(new BorderLayout(5, 5));
+
+      // real and imaginary value of zero
+      Panel p7 = new Panel();
+      p7.setLayout(new FlowLayout(5, 5, 5));
+      p7.add("Left", new Label("Default Real"));
+      p7.add("Center", _zeroxentry);
+
+      Panel p8 = new Panel();
+      p8.setLayout(new FlowLayout(5, 5, 5));
+      p8.add("Left", new Label("Default Imag"));
+      p8.add("Center", _zeroyentry);
+
+      p6.add("North", new Label("Enter Default Value for Zero:"));
+      p6.add("Center", p7);
+      p6.add("South", p8);
+
+      Panel p9 = new Panel();
+      p9.setLayout(new BorderLayout(5, 5));
+      p9.add("North", new Label("Enter value for a pair of pole and zero"));
+      p9.add("Center", p1);
+      p9.add("South", p2);
+
+      this.setLayout(new BorderLayout(15, 15));
+      this.add("North", p9);
+      this.add("Center", p6);
+
+      _ok = new Button("OK");
+      this.add("South", _ok);
+      this.pack();
+      this.show();
+   }
+
+   /**
+    * Reads the input from the dialog and sends to polezero plot.
+    * Default value will be a pole at origin.
+    */
+   public boolean action(Event evt, Object arg){
+
+      boolean conjpair;
+
+      if (evt.target == _ok){
+          if (_yesConj.getState() == true){
+              conjpair = true;
+          } else {
+              conjpair = false;
           }
 
-System.out.println("pole count: "+pcount);
-System.out.println("zero count: "+zcount);
-          pole = new PoleZero[pcount]; 
-          zero = new PoleZero[zcount];
-          int i=0; 
-          while (data.size()>0){
-                
-               InteractComponent ic = (InteractComponent) data.firstElement();
-               data.removeElementAt(0);
-               PoleZero pz = new PoleZero(new Complex(ic.xv, ic.yv));
-               if (ic.getDataSetNum() == 1) { //poles
-                   pole[curp] = pz;
-                   InteractComponent pair = ic.getPairIC(); 
-                   if (pair != null){
-                       data.removeElement((Object) pair);
-                       PoleZero conjp = new PoleZero(new Complex(pair.xv, pair.yv));
-                       curp++;
-                       pole[curp] = conjp;
-                       pz.conjugate = conjp;
-                       conjp.conjugate = pz;
-                       
-                   } 
-                   curp++;
-               } else if (ic.getDataSetNum() == 2) { //zeros
-                   zero[curz] = pz;
-                   InteractComponent pair = ic.getPairIC(); 
-                   if (pair != null){
-                       data.removeElement((Object) pair);
-                       PoleZero conjz = new PoleZero(new Complex(pair.xv, pair.yv));
-                       curz++;
-                       zero[curz] = conjz;
-                       pz.conjugate = conjz;
-                       conjz.conjugate = pz;
-                   }
-                   curz++;
-               }
-                
+          double px, py, zx, zy;
+
+          if (_polexentry.getText().equals("")){
+              px = 0.0;
+          } else {
+              Double a = new Double(_polexentry.getText());
+              px = a.doubleValue();
           }
-          Vector sent = new Vector();
-          sent.addElement(pole);
-          sent.addElement(zero);
-          jf.receive(1,"Update", sent);
-     }    
+
+          if (_poleyentry.getText().equals("")){
+              py = 0.0;
+          } else {
+              Double b = new Double(_poleyentry.getText());
+              py = b.doubleValue();
+          }
+
+          if (_zeroxentry.getText().equals("")){
+              zx = 0.0;
+          } else {
+              Double a = new Double(_zeroxentry.getText());
+              zx = a.doubleValue();
+          }
+
+          if (_zeroyentry.getText().equals("")){
+              zy = 0.0;
+          } else {
+              Double b = new Double(_zeroyentry.getText());
+              zy = b.doubleValue();
+          }
+
+          this.hide();
+          this.dispose();
+
+          newpolezero(conjpair, px, py, zx, zy);
+          return true;
+       } else return false;
+
+   }
+
+   //////////////////////////////////////////////////////////////////////////
+   ////                         private variables                        ////
+   private TextField _polexentry;
+   private TextField _poleyentry;
+   private TextField _zeroxentry;
+   private TextField _zeroyentry;
+   private CheckboxGroup _ckg;
+   private Checkbox _noConj;
+   private Checkbox _yesConj;
+   private Button _ok;
+ }
+
+         
 }

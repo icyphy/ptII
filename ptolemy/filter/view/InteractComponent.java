@@ -22,7 +22,7 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-$Id$ %S%
+$Id$
 
 */
 
@@ -86,6 +86,7 @@ public class InteractComponent {
      */
     public void setDrawingParam(Color color, int width, boolean filled, int ori){
         _color = color;
+        _savedcolor = color;
         _filled = filled;
         _width = width;
         _orientation = ori;
@@ -151,7 +152,7 @@ public class InteractComponent {
      *  Check if the given coordinate falls into the bounding box. 
      *  If it does, then return true.
      */ 
-    public boolean ifselect(int xpos, int ypos){
+    public boolean ifEntered(int xpos, int ypos){
        if ((xpos > x - _boundingwidth) 
         && (xpos < x + _boundingwidth)
         && (ypos > y - _boundingheight) 
@@ -159,6 +160,20 @@ public class InteractComponent {
             return true;
        else return false;
     } 
+
+    public void setSelected(boolean select){
+       this._selected = select;
+       if (select == true){
+           _savedcolor = _color;
+           _color = Color.yellow;
+       } else {
+           _color = _savedcolor; 
+       }
+    }
+
+    public boolean getSelected(){
+       return _selected;
+    }
 
     /**
      *  Draw the interact component.
@@ -256,7 +271,7 @@ public class InteractComponent {
      * to.  The dataset number and index number is corrsponding to the dataset
      * and data index in Plot. 
      */ 
-    public void setAssociation(int datas, int ind){
+    public void setDatasetIndex(int datas, int ind){
        _dataindex = ind;
        _dataset = datas;
     } 
@@ -299,18 +314,19 @@ public class InteractComponent {
  
     public double xv, yv;    // holds value this interactcomponent represent
     public int x, y;  // holds the location of this interact component.
-    public boolean selected; // set this flag if the component is seleted
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variable                          ////
 
     private int _dataset;  // tells which group of data this component belongs
     private int _dataindex;
+    private boolean _selected; // set this flag if the component is seleted
 
     // used to specify on the plot upper left corner what each coordinates
     // represents.
     private String _xlabelName, _ylabelName;
     private Color _color = Color.black;
+    private Color _savedcolor = Color.black;
 
     private int _type = Circle ; 
     private String _name; 

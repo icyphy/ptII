@@ -20,7 +20,8 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-$Id$ %S%
+
+$Id$
  
 */
 
@@ -97,22 +98,15 @@ public class IIRFiltSetView extends View {
          } 
     }
 
+    public void moveInteractComp(InteractComponent ic){
+         return;
+    }
+
     // called by setup dialog to notify the viewer about the new changes made on the
     // dialog.  parse the list of options 
     public void newChange(int approx, int mapmethod, int bandtype, double fs){
-
-         Integer approxm = new Integer(approx);
-         Integer mapm = new Integer(mapmethod);
-         Integer band = new Integer(bandtype);
-         Double fss = new Double(fs);
-         Vector sent = new Vector();
-         sent.addElement(approxm);
-         sent.addElement(mapm);
-         sent.addElement(band);
-         sent.addElement(fss);
- 
          FilterObj jf = (FilterObj) _observed;
-         jf.receive(4,"Update", sent);
+         jf.setIIRParameter(approx, mapmethod, bandtype, fs);
     }
 
 

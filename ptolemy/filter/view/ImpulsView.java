@@ -22,7 +22,7 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-$Id$ %S%
+$Id$
  
 */
 
@@ -108,20 +108,14 @@ public class ImpulsView extends View {
           if (command.equals("UpdatedFilter")){
               FilterObj jf = (FilterObj) _observed;
               Complex [] data = jf.getImpulse();
-              Complex [] data2 = jf.getImpulse2();
               // double [] data = jf.getImpulse();
               if (data != null){
                   _plots[0].eraseAllPoints(0);
                   _plots[0].eraseAllPoints(1);
                   for (int i=0;i<data.length;i++){
-                   //   _plots[0].addPoint(0, i, data[i].re(), false); 
-                  //    _plots[0].addPoint(1, 2*i+1, data2[i].abs(), false); 
-                  //    _plots[0].addPoint(1, 2*i+1, 0, true); 
-                  //    _plots[0].addPoint(0, i, data[i], false); 
-                      _plots[0].addPoint(1, 2*i+1, data[i].im(), false); 
+                      _plots[0].addPoint(1, 2*i+1, data[i].imag, false); 
                       _plots[0].addPoint(1, 2*i+1, 0, true); 
-                  //    _plots[0].addPoint(0, 2*i, data[i].abs(), false); 
-                      _plots[0].addPoint(0, 2*i, data[i].re(), false); 
+                      _plots[0].addPoint(0, 2*i, data[i].real, false); 
                       _plots[0].addPoint(0, 2*i, 0, true); 
                   }
               }
@@ -132,12 +126,11 @@ public class ImpulsView extends View {
      /**
       * New changes have been made on the plot.  View
       * passes the new data to the filter.
-      * This method might no longer needed, since it is
-      * unlikely to modify the impulse response. 
+      * This method is only needed at FIR filter design, since it is
+      * unlikely to modify the impulse response during IIR design. 
       */
-     public void newChange(Vector data){
-          FilterObj jf = (FilterObj) _observed;
-          jf.receive(3,"Update", data);
+     public void moveInteractComp(InteractComponent ic){
+          return;
      }
 
 }

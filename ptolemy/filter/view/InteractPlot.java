@@ -22,7 +22,7 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-$Id$ %S%
+$Id$
  
 */
 
@@ -120,7 +120,7 @@ public class InteractPlot extends Plot {
           Color curColor = _graphics.getColor();
           for (int i=0;i<_interactComponents.size();i++){
                InteractComponent iComp = (InteractComponent) _interactComponents.elementAt(i);
-               if (iComp.selected == true) _setXORpaintMode();  // seleted for dragging 
+               if (iComp.getSelected() == true) _setXORpaintMode();  // seleted for dragging 
                // some bugs in finding new location of interactive 
                // objects after zooming, thus old method is commented
                // out... - William Wu
@@ -145,7 +145,7 @@ public class InteractPlot extends Plot {
                    iComp.x = 0;
                    iComp.y = 0;
                }
-               if (iComp.selected==true) _setNormalpaintMode(); // set paintmode back to normal.
+               if (iComp.getSelected()==true) _setNormalpaintMode(); // set paintmode back to normal.
           }
           _graphics.setColor(curColor);
        }
@@ -169,7 +169,7 @@ public class InteractPlot extends Plot {
               InteractComponent iComp = (InteractComponent)_interactComponents.elementAt(i);
               // if cursor is in more than one bounding box, select the
               // the closest. 
-              if (iComp.ifselect(x, y) == true){
+              if (iComp.ifEntered(x, y) == true){
                   int d = Math.min(Math.abs(x-iComp.x), Math.abs(y-iComp.y));
                   if (d < mindis) {
                       closest = i;
@@ -181,7 +181,7 @@ public class InteractPlot extends Plot {
           // got a close one 
           if (closest != -1){
               InteractComponent iComp = (InteractComponent)_interactComponents.elementAt(closest);
-              iComp.selected = true;
+              iComp.setSelected(true);
             
               // set this flag, so the plot know a component is seleted
               _selectsome = true;
@@ -214,8 +214,44 @@ public class InteractPlot extends Plot {
           }
           return true;
        } else if (evt.controlDown()==true){ // select interactcomponent for change data
-          // don't do any thing now, open the dialog box only when button release
-          return true; 
+          if (_cxyframe.isShowing()) return false; // a window is already
+                                               // active so can't create
+                                               // another 
+
+          // do the selection and pop out the dialog box
+          closest = -1;
+          mindis = 200; // minimum distance
+          if (_interactComponents == null) return false;
+          for (int i=0;i<_interactComponents.size();i++){
+              InteractComponent iComp = (InteractComponent)_interactComponents.elementAt(i);
+              // if cursor is in more than one bounding box, select the
+              // the closest. 
+              if (iComp.ifEntered(x, y) == true){
+                  int d = Math.min(Math.abs(x-iComp.x), Math.abs(y-iComp.y));
+                  if (d < mindis) {
+                      closest = i;
+                      mindis = d;
+                  }
+              }
+          }
+ 
+          // got a close one 
+          if (closest != -1){
+              InteractComponent iComp = (InteractComponent)_interactComponents.elementAt(closest);
+              iComp.setSelected(true);
+      
+              // set this flag, so the plot know a component is seleted
+              _selectsome = true;
+              _oldx = x;
+              _oldy = y;
+              String title = new String("Set "+iComp.getName()+" value");
+             
+              _cxyframe = new ChangeXY(title, iComp.xv, iComp.yv,
+                       iComp.getxlabelName(), iComp.getylabelName(), 
+                       iComp.getDegFreedom());
+          }
+          return true;
+
        } else { // for zooming
          return super.mouseDown(evt, x, y);
        }
@@ -239,7 +275,7 @@ public class InteractPlot extends Plot {
                 int ydiff = y - _oldy;
                 for (int i=0;i<_interactComponents.size();i++){
                     InteractComponent iComp = (InteractComponent)_interactComponents.elementAt(i);
-                    if (iComp.selected == true){
+                    if (iComp.getSelected() == true){
                         _setXORpaintMode();  // set the XOR mode to paint.
                         iComp.drawSelf(_graphics); // draw itself to erase the old image
                        
@@ -286,13 +322,6 @@ public class InteractPlot extends Plot {
                         _graphics.drawString(_oldstr, 5, 15);
 
                         // process pair's value 
-                        InteractComponent pair = iComp.getPairIC();
-                        if (pair != null){
-                             if (iComp.getPairICType() == InteractComponent.YaxisMirrorXaxisSynch){
-                                  pair.xv = iComp.xv; 
-                                  pair.yv = -iComp.yv; 
-                             }
-                        }
   
                     }
                 }
@@ -301,7 +330,7 @@ public class InteractPlot extends Plot {
             }
             return true;
          } else if (evt.controlDown()==true){ // select interactcomponent for change data
-          // don't do any thing now, open the dialog box only when button release
+          // don't do any thing now, open the dialog box only when button pressed 
             return true; 
          } else { //for zoom
              return super.mouseDrag(evt, x, y);
@@ -323,7 +352,7 @@ public class InteractPlot extends Plot {
              int ydiff = y - _oldy;
              for (int i=0;i<_interactComponents.size();i++){
                  InteractComponent iComp = (InteractComponent)_interactComponents.elementAt(i);
-                 if (iComp.selected == true){ // if any selected
+                 if (iComp.getSelected() == true){ // if any selected
   
                         // check for degree of freedom
                         if (iComp.getDegFreedom() == InteractComponent.XaxisDegFree){
@@ -360,42 +389,8 @@ public class InteractPlot extends Plot {
           _selectsome = false;
           return true;
        } else if (evt.controlDown()==true){ // select interactcomponent for change data
-          if (_cxyframe != null) return false; // a window is already
-                                               // active so can't create
-                                               // another 
-
-          // do the selection and pop out the dialog box
-          int closest = -1;
-          int mindis = 200; // minimum distance
-          if (_interactComponents == null) return false;
-          for (int i=0;i<_interactComponents.size();i++){
-              InteractComponent iComp = (InteractComponent)_interactComponents.elementAt(i);
-              // if cursor is in more than one bounding box, select the
-              // the closest. 
-              if (iComp.ifselect(x, y) == true){
-                  int d = Math.min(Math.abs(x-iComp.x), Math.abs(y-iComp.y));
-                  if (d < mindis) {
-                      closest = i;
-                      mindis = d;
-                  }
-              }
-          }
- 
-          // got a close one 
-          if (closest != -1){
-              InteractComponent iComp = (InteractComponent)_interactComponents.elementAt(closest);
-              iComp.selected = true;
-      
-              // set this flag, so the plot know a component is seleted
-              _selectsome = true;
-              _oldx = x;
-              _oldy = y;
-              String title = new String("Set "+iComp.getName()+" value");
-              
-              _cxyframe = new ChangeXY(this, title, iComp.xv, iComp.yv,
-                       iComp.getxlabelName(), iComp.getylabelName(), 
-                       iComp.getDegFreedom());
-          }
+          // do nothing now, the change x-y only pop up during mouse
+          // down
           return true;
 
        } else {
@@ -431,7 +426,7 @@ public class InteractPlot extends Plot {
          if (_interactComponents!=null){
             for (int ind = 0; ind < _interactComponents.size();ind++){
                 InteractComponent ic = (InteractComponent) _interactComponents.elementAt(ind);
-                if (ic.selected == true){
+                if (ic.getSelected() == true){
                     
                     PlotPoint pp = _getPlotPoint(ic.getDataSetNum(), 
                                                  ic.getDataIndexNum());
@@ -446,40 +441,45 @@ public class InteractPlot extends Plot {
                         }
 
                     }
-                    ic.selected = false;        
+                    ic.setSelected(false);        
+                    _viewer.moveInteractComp(ic);
                 }
             }
          }
          repaint();
-         _viewer.newChange(_interactComponents);
     }
 
     public void dataChange(double x, double y){
-         if (_interactComponents != null){
-             for (int ind = 0; ind < _interactComponents.size(); ind++){
-                 InteractComponent ic = (InteractComponent) _interactComponents.elementAt(ind);
-                 if (ic.selected == true){
-                      // update both the plot point and interact component 
-                      PlotPoint pp = _getPlotPoint(ic.getDataSetNum(), 
-                                                   ic.getDataIndexNum());
-                      if (ic.getDegFreedom() == InteractComponent.XaxisDegFree) { // x-axis only
-                          ic.xv = x;
-                          if (pp!=null) pp.x = ic.xv; 
-                      } else if (ic.getDegFreedom() == InteractComponent.YaxisDegFree) { // y-axis only
-                          ic.yv = y;
-                          if (pp!=null) pp.y = ic.yv; 
-                      } else if (ic.getDegFreedom() == InteractComponent.AllDegFree) { // both 
-                          ic.xv = x;
-                          ic.yv = y;
-                          if (pp!=null) { pp.x=ic.xv; pp.y=ic.yv; } 
-                      }
-                      ic.selected = false;
-                 }
-             }
-             repaint();
-        }
-        _cxyframe = null;
-    }            
+
+         if (_interactComponents!=null){
+            for (int ind = 0; ind < _interactComponents.size();ind++){
+                InteractComponent ic = (InteractComponent) _interactComponents.elementAt(ind);
+                if (ic.getSelected() == true){
+                    
+                    PlotPoint pp = _getPlotPoint(ic.getDataSetNum(), 
+                                                 ic.getDataIndexNum());
+                    if (pp != null){
+                        if (ic.getDegFreedom() == InteractComponent.XaxisDegFree){
+                            ic.xv = x;
+                            pp.x = x;
+                        } else if (ic.getDegFreedom() == InteractComponent.YaxisDegFree){
+                            ic.yv = y;
+                            pp.y = y;
+                        } else if (ic.getDegFreedom() == InteractComponent.AllDegFree){
+                            ic.xv = x;
+                            pp.x = x;
+                            ic.yv = y;
+                            pp.y = y;
+                        }
+
+                    }
+                    ic.setSelected(false);        
+                    _viewer.moveInteractComp(ic);
+                }
+            }
+         }
+         repaint();
+    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
@@ -491,7 +491,7 @@ public class InteractPlot extends Plot {
     protected String _oldstr;
     protected View _viewer;
     protected ChangeXY _cxyframe;
-}
+    protected boolean _deleteInteractPermission = false;
 
 /**
  * Dialog to change the value of the interact components
@@ -506,11 +506,10 @@ class ChangeXY extends Frame {
    /**
     * Constructor.  Setup the widgets for different inputs.
     */
-   public ChangeXY(InteractPlot p, String title, double v1, double v2, 
-                     String message1, String message2, int deg){
+   public ChangeXY(String title, double v1, double v2, 
+                   String message1, String message2, int deg){
       // super(parent, title, false);
       super(title);
-      _plot = p;
       _entry1 = new TextField(10);
       _entry2 = new TextField(10);
 
@@ -605,7 +604,7 @@ class ChangeXY extends Frame {
           this.hide();
           this.dispose();
  
-          _plot.dataChange(x, y);
+          dataChange(x, y);
           return true;
        } else return false;
  
@@ -616,6 +615,7 @@ class ChangeXY extends Frame {
    private TextField _entry1;
    private TextField _entry2;
    private Button _ok;
-   private InteractPlot _plot;
-}
- 
+
+ }
+
+} 

@@ -144,7 +144,7 @@ public class DataView extends View {
                        ic.setInteractParam(xlab, ylab, 
                                            InteractComponent.YaxisDegFree); 
 
-                       ic.setAssociation(dataset, ind);
+                       ic.setDatasetIndex(dataset, ind);
                        double lx = x[ind]-_barwidth+(dataset - _numset-1)*_offset;
                        double rx = lx + _barwidth;
                        ic.xv = (lx+rx)/2;
@@ -238,7 +238,7 @@ public class DataView extends View {
                            }
                        }
 
-                       ic.setAssociation(dataset, ind); 
+                       ic.setDatasetIndex(dataset, ind); 
                        ic.xv = x[ind]; 
                        ic.yv = y[ind]; 
 
@@ -276,6 +276,9 @@ System.out.println(ind);
     }
 
 
+    public void moveInteractComp(InteractComponent ic){
+         return;
+    }
 
     public void setBars(double xbin, double offset){
          if (_plots[0]!=null) {

@@ -21,7 +21,8 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
-$Id$ %S%
+
+$Id$
  
 */
 
@@ -152,11 +153,14 @@ public class FreqView extends View {
                // get new data
                Complex [] freq = jf.getFrequency();
                double [] freqdb = jf.getFrequencyDB();
-               double [] band = jf.getFreqBand();
-               double [] gain = jf.getFreqGain();
+               double [] edgefreq = jf.getFreqBand();
+               double [] edgegain = jf.getFreqGain();
                double [] rheight = jf.getFreqRippleHeight();
                double step = jf.getStep();
+              
+               if (freq == null) System.out.println("frequency response is null");  
                if (freq != null){
+                   
                    _plots[0].eraseAllPoints(0);
                    _plots[0].repaint();
                    _plots[1].eraseAllPoints(0);
@@ -184,89 +188,104 @@ public class FreqView extends View {
                   // update pha plot
                    for (int i=0;i<freq.length;i++){
                        if (i==0){
-                          _plots[2].addPoint(0, -Math.PI+step*i, freq[i].arg(), false);
+                          _plots[2].addPoint(0, -Math.PI+step*i, freq[i].angle(), false);
                        } else {
-                          _plots[2].addPoint(0, -Math.PI+step*i, freq[i].arg(), true);
+                          _plots[2].addPoint(0, -Math.PI+step*i, freq[i].angle(), true);
                        }
                    }
+
                    _plots[2].repaint();
-             
-                   // update the band
-                   if (band != null){
+            
+                   _crossref = new InteractObjCrossRef[3][]; 
+                   // update the edge frequencies 
+                   if (edgefreq != null){
+                       _crossref[0] = new InteractObjCrossRef[edgefreq.length]; 
                        _plots[0].eraseAllPoints(1);
                        _plots[0].eraseAllPoints(2);
                        ((InteractPlot)_plots[0]).eraseInteractComponents();
                    
-                       for (int i=0;i<band.length;i++){
+                       for (int i=0;i<edgefreq.length;i++){
                            InteractComponent ic;
 
-                           ic = new InteractComponent("Band Frequency", 
-                                     InteractComponent.Line);
+                           ic = new InteractComponent("Edge Frequency", 
+                                                      InteractComponent.Line);
 
                            ic.setDrawingParam(Color.blue, 50, false,
-                                     InteractComponent.VerticalOri);
+                                              InteractComponent.VerticalOri);
 
                            ic.setInteractParam(new String("Band"), 
-                            new String("Gain"), InteractComponent.XaxisDegFree);
+                                               new String("Gain"), 
+                                               InteractComponent.XaxisDegFree);
 
-                           ic.setAssociation(1,i);
-                           ic.xv = band[i]*Math.PI;
-
-                           if (i<gain.length){
-                               ic.yv = gain[i];
+                           ic.setDatasetIndex(1,i);
+                           ic.xv = edgefreq[i];
+                           
+                           if (i<edgegain.length){
+                               ic.yv = edgegain[i];
                            } else { 
-                               ic.yv = gain[i-1];
+                               ic.yv = edgegain[i-1];
                            }
 
                            InteractPlot iplot = (InteractPlot) _plots[0];
                            iplot.addInteractPoint(ic, 1, ic.xv, ic.yv, false); 
 
+                           _crossref[0][i] = new InteractObjCrossRef();
+                           _crossref[0][i].interactObj = ic;
+                           _crossref[0][i].dataObj = (Object) new Double(ic.xv);
+                 
                        }
 
-                       for (int i=0;i<gain.length;i++){
+                       _crossref[1] = new InteractObjCrossRef[edgegain.length]; 
+                       for (int i=0;i<edgegain.length;i++){
                            InteractComponent ic;
                            ic = new InteractComponent("Band Gain", 
-                                     InteractComponent.Line);
+                                                      InteractComponent.Line);
 
                            ic.setDrawingParam(Color.blue, 50, false,
-                                     InteractComponent.HorizontalOri);
+                                              InteractComponent.HorizontalOri);
 
                            ic.setInteractParam(new String("Band"), 
-                            new String("Gain"), InteractComponent.YaxisDegFree);
+                                               new String("Gain"), 
+                                               InteractComponent.YaxisDegFree);
 
-                           ic.xv = band[i]*Math.PI;
-                           ic.yv = gain[i];
+                           ic.xv = edgefreq[i];
+                           ic.yv = edgegain[i];
 
-                           ic.setAssociation(2,i);
+                           ic.setDatasetIndex(2,i);
 
                            InteractPlot iplot = (InteractPlot) _plots[0];
                            iplot.addInteractPoint(ic, 2, ic.xv, ic.yv, false); 
+                           _crossref[1][i] = new InteractObjCrossRef();
+                           _crossref[1][i].interactObj = ic;
+                           _crossref[1][i].dataObj = (Object) new Double(ic.yv);
                        }
 
-                       // the current method to specify the ripple height is only good for 
-                       // IIR, not FIR, since it needs a "mirrored" pair of two lines. 
-
+                       _crossref[2] = new InteractObjCrossRef[rheight.length]; 
                        if (rheight[0] != -1) {  // pass band ripple, high ripple
                            InteractComponent ic;
-                           ic = new InteractComponent("Ripple Height", 
-                                     InteractComponent.Line);
+                           ic = new InteractComponent("Pass Band Ripple Height", 
+                                                       InteractComponent.Line);
 
                            ic.setDrawingParam(Color.darkGray, 50, false,
-                                     InteractComponent.HorizontalOri);
+                                              InteractComponent.HorizontalOri);
 
                            ic.setInteractParam(new String(""), 
-                            new String("height"), InteractComponent.YaxisDegFree);
+                                               new String("height"), 
+                                               InteractComponent.YaxisDegFree);
 
                            ic.xv = 0.0;
                            ic.yv = 1.0 - rheight[0];
-                           ic.setAssociation(3,0);
+                           ic.setDatasetIndex(3,0);
                            InteractPlot iplot = (InteractPlot) _plots[0];
                            iplot.addInteractPoint(ic, 3, ic.xv, ic.yv, false); 
+                           _crossref[2][0] = new InteractObjCrossRef();
+                           _crossref[2][0].interactObj = ic;
+                           _crossref[2][0].dataObj = (Object) new Double(ic.yv);
                        }
  
                        if (rheight[1] != -1) { // stop band ripple, low ripple 
                            InteractComponent ic;
-                           ic = new InteractComponent("Ripple Height", 
+                           ic = new InteractComponent("Stop Ripple Height", 
                                      InteractComponent.Line);
 
                            ic.setDrawingParam(Color.orange, 50, false,
@@ -277,9 +296,12 @@ public class FreqView extends View {
 
                            ic.xv = 0.0;
                            ic.yv = rheight[1];
-                           ic.setAssociation(4,0);
+                           ic.setDatasetIndex(4,0);
                            InteractPlot iplot = (InteractPlot) _plots[0];
                            iplot.addInteractPoint(ic, 4, ic.xv, ic.yv, false); 
+                           _crossref[2][1] = new InteractObjCrossRef();
+                           _crossref[2][1].interactObj = ic;
+                           _crossref[2][1].dataObj = (Object) new Double(ic.yv);
                        }
  
                        _plots[0].repaint();
@@ -289,63 +311,40 @@ public class FreqView extends View {
           }
      }
 
-     /**
-      * New changes have been made on the plot.  View
-      * passes the new data to the filter.
-      */
-     public void newChange(Vector data){
-          int ind=0;
+     public void moveInteractComp(InteractComponent ic){
+          double [] edgefreq = new double[_crossref[0].length]; 
+          for (int i=0;i<_crossref[0].length;i++){
+               if (ic == _crossref[0][i].interactObj){
+                     _crossref[0][i].dataObj = (Object) new Double(ic.xv);
+                     break;
+               }    
+               edgefreq[i] = ((Double) _crossref[0][i].dataObj).doubleValue();
+          }   
+
+          double [] edgegain = new double[_crossref[1].length]; 
+          for (int i=0;i<_crossref[1].length;i++){
+               if (ic == _crossref[1][i].interactObj){
+                     _crossref[1][i].dataObj = (Object) new Double(ic.yv);
+                     break;
+               }    
+               edgegain[i] = ((Double) _crossref[1][i].dataObj).doubleValue();
+          }
  
-          // since we don't know the type of filter here we just
-          // use vector first, then use array later
-          Vector band = new Vector();
-          Vector gain = new Vector();
-          Vector ripple = new Vector();
-          double [] aripple = {-1, -1};
-
-          for (int i=0;i<data.size();i++){
-
-              InteractComponent ic = (InteractComponent) data.elementAt(i);
-              Double ddata;
-
-              if (ic.getDataSetNum() == 1) { // band
-                   ddata = new Double(ic.xv);
-                   band.addElement(ddata);
-              } else if (ic.getDataSetNum() == 2){ // gain
-                   ddata = new Double(ic.yv);
-                   gain.addElement(ddata);
-              } else if (ic.getDataSetNum() == 3){ // pass band ripple height
-                   aripple[0] = 1-ic.yv;
-              } else if (ic.getDataSetNum() == 4){ // stop band ripple height
-                   aripple[1] = ic.yv;
-              }     
-   
+          double passripple; 
+          if (ic == _crossref[2][0].interactObj){
+               _crossref[2][0].dataObj = (Object) new Double(1.0-ic.yv);
           }
+          passripple = ((Double) _crossref[2][0].dataObj).doubleValue();
 
-          double [] aband = new double[band.size()];
-          double [] again = new double[gain.size()];
-
-
-          for (int i=0;i<aband.length;i++){
-               aband[i] = ((Double)band.elementAt(i)).doubleValue()/Math.PI;
+          double stopripple; 
+          if (ic == _crossref[2][1].interactObj){
+               _crossref[2][1].dataObj = (Object) new Double(ic.yv);
           }
-
-          for (int i=0;i<again.length;i++){
-               again[i] = ((Double)gain.elementAt(i)).doubleValue();
-          }
-
-          Vector sent = new Vector();
-          sent.addElement(aband);
-          sent.addElement(again);
-          sent.addElement(aripple);
+          stopripple = ((Double) _crossref[2][1].dataObj).doubleValue();
 
           FilterObj jf = (FilterObj) _observed;
-          jf.receive(2,"Update", sent);
-
+          jf.updateBandValue(edgefreq, edgegain, passripple, stopripple);
      }
-
-
-
 }
 
 // Since the frequency plot requires three plots thus use a 
@@ -391,7 +390,7 @@ class FreqPlotPanel extends Panel {
         _mainpanel.add("Phase", _subpanel3);
         add("Center", _mainpanel);
  
-        this.resize(300, 390);
+        this.resize(300, 350);
  
     }
 
