@@ -412,7 +412,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  time that a delayed process is waiting for, wake up all the actors
      *  waiting for time to advance to the new time, and remove them from 
      *  the priority queue. This method cannot handle instances of an 
-     *  articial deadlock. This is called by the fire() method which handles
+     *  artificial deadlock. This is called by the fire() method which handles
      *  instances of artificial deadlock before calling this method.
      *  This method is synchronized on the director.
      *  @return true if a real deadlock is detected, false otherwise.
