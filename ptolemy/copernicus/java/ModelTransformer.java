@@ -1935,9 +1935,13 @@ public class ModelTransformer extends SceneTransformer
             } else if (entity.getClass().getName().equals(
                                "ptolemy.actor.lib.RecordAssembler") ||
                     entity.getClass().getName().equals(
-                            "ptolemy.actor.lib.RecordDisassembler")) {
+                            "ptolemy.actor.lib.RecordDisassembler") ||
+                    entity.getClass().getName().equals(
+                               "ptolemy.actor.lib.BusAssembler") ||
+                    entity.getClass().getName().equals(
+                            "ptolemy.actor.lib.BusDisassembler")) {
                 throw new RuntimeException("Code Generation for " +
-                        "some record actors not supported, since "
+                        "some actors not supported, since "
                         + "they iterate over ports.");
             } else if (entity.getClass().getName().equals(
                                "ptolemy.actor.lib.conversions.ExpressionToToken") ||
