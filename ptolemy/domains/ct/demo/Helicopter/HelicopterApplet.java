@@ -39,6 +39,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.gui.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.lib.gui.*;
 import ptolemy.actor.util.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;

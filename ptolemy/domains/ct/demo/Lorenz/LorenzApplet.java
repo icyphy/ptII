@@ -41,6 +41,7 @@ import ptolemy.actor.*;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.lib.gui.XYPlotter;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;

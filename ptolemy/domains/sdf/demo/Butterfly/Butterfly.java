@@ -39,9 +39,10 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
+import ptolemy.actor.gui.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.lib.conversions.*;
-import ptolemy.actor.gui.*;
+import ptolemy.actor.lib.gui.XYPlotter;
 import ptolemy.actor.util.*;
 import ptolemy.domains.sdf.gui.*;
 import ptolemy.domains.sdf.kernel.*;
@@ -145,5 +146,6 @@ public class Butterfly {
 
 	toplevel.connect(polarToRect1.xOutput, xyPlotter.inputX);
 	toplevel.connect(polarToRect1.yOutput, xyPlotter.inputY);
+        System.out.println(toplevel.exportMoML());
     }
 }
