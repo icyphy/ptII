@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="MotionDrivenDemos" class="ptolemy.actor.TypedCompositeActor">
+<entity name="MotionDrivenDemosRandom" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 953, 590}}">
@@ -322,7 +322,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="toDemo">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
@@ -342,7 +342,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="toStandby">
                 </property>
             </relation>
             <link port="standby.incomingPort" relation="relation2"/>
@@ -724,6 +724,8 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             </port>
             <port name="random" class="ptolemy.vergil.fsm.modal.TransitionRefinementPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location">
+                </property>
             </port>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="true">
