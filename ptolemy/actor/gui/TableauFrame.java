@@ -29,6 +29,7 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.gui.GUIStringUtilities;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.StatusBar;
@@ -525,7 +526,8 @@ public class TableauFrame extends Top {
             // So we use the current directory instead.
             // FIXME: This will probably fail with a security exception in
             // applets.
-            String currentWorkingDirectory = System.getProperty("user.dir");
+            String currentWorkingDirectory =
+                GUIStringUtilities.getProperty("user.dir");
             if (currentWorkingDirectory != null) {
                 fileDialog.setCurrentDirectory(
                         new File(currentWorkingDirectory));
