@@ -188,7 +188,7 @@ public class FIR extends SDFAtomicActor {
         int datalength = _taps.length/_interp;
         if (_taps.length%_interp != 0) datalength++;
         _data = new double[datalength];
-        _mostrecent = datalength;
+        _mostRecent = datalength;
     }
 
     /** Consume the inputs and produce the outputs of the FIR filter.
@@ -201,8 +201,8 @@ public class FIR extends SDFAtomicActor {
         int phase = _dec - _decPhase - 1;
 
         // FIXME: consume just one input for now.
-        if (--_mostrecent < 0) _mostrecent = _data.length - 1;
-        _data[_mostrecent] = ((DoubleToken)(input.get(0))).doubleValue();
+        if (--_mostRecent < 0) _mostRecent = _data.length - 1;
+        _data[_mostRecent] = ((DoubleToken)(input.get(0))).doubleValue();
 
         // Interpolate once for each input consumed
         for (int inC = 1; inC <= _dec; inC++) {
@@ -216,7 +216,7 @@ public class FIR extends SDFAtomicActor {
                     double tap = 0.0;
                     if (tapsIndex < _taps.length) tap = _taps[tapsIndex];
                     int dataIndex =
-                        (_mostrecent + _dec - inC + i)%(_data.length);
+                        (_mostRecent + _dec - inC + i)%(_data.length);
                     out += tap * _data[dataIndex];
                 }
                 output.broadcast(new DoubleToken(out));
@@ -241,6 +241,6 @@ public class FIR extends SDFAtomicActor {
     private int _dec, _interp, _decPhase;
     private double[] _taps;
     private double[] _data;
-    private int _mostrecent;
+    private int _mostRecent;
 }
 
