@@ -50,7 +50,7 @@ MISC_FILES = #doc test
 
 JCLASS =
 
-tests::
+tests:: $(EXTRA_SRCS)
 	echo "Sorry no automatic Java tests yet"
 
 # We don't include common.mk since we don't use the compiler here
