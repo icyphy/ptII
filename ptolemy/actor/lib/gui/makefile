@@ -64,7 +64,6 @@ JSRCS = \
 	SequenceScope.java \
 	SketchedSource.java \
 	SliderSource.java \
-	SystemClipboard.java \
 	TimedPlotter.java \
 	TimedScope.java \
 	XYPlotter.java \
