@@ -557,84 +557,6 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
     }
 
-    /** Send the specified token to all receivers connected to the
-     *  specified inside channel of this port, checking the type and
-     *  converting the token if necessary.  Tokens are in general
-     *  immutable, so each receiver is given a reference to the same
-     *  token and no clones are made.  If the port is not connected to
-     *  anything on the inside, or receivers have not been created in
-     *  the remote port, or the channel index is out of range, or the
-     *  port is not an input port, then just silently return.  This
-     *  behavior makes it easy to leave external input ports of a
-     *  composite unconnected when you are not interested in the
-     *  received values.  The transfer is accomplished by calling the
-     *  put() method of the inside remote receivers.  If the port is
-     *  not connected to anything, or receivers have not been created
-     *  in the remote port, then just return.  This method is normally
-     *  called only by the transferInputs method of directors of
-     *  composite actors, as AtomicActors do not usually have any
-     *  relations on the inside of their ports.  Before putting the
-     *  token into the destination receivers, this method also checks
-     *  the type of the inside input port, and converts the token if
-     *  necessary.  The conversion is done by calling the convert()
-     *  method of the type of the inside input port.
-     *
-     *  <p> Some of this method is read-synchronized on the workspace.
-     *  Since it is possible for a thread to block while executing a
-     *  put, it is important that the thread does not hold read access
-     *  on the workspace when it is blocked. Thus this method releases
-     *  read access on the workspace before calling put.
-     *
-     *  @param channelIndex The index of the channel, from 0 to width-1
-     *  @param token The token to send
-     *  @exception NoRoomException If there is no room in the receiver.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void sendInside(int channelIndex, Token token)
-            throws IllegalActionException, NoRoomException {
-        Receiver[][] farReceivers;
-        if (_debugging) {
-            _debug("send inside to channel " + channelIndex + ": " + token);
-        }
-        try {
-            try {
-                _workspace.getReadAccess();
-                int compare = TypeLattice.compare(token.getType(),
-                        _resolvedType);
-                if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-                    throw new IllegalActionException(
-                            "Run-time type checking failed. Token type: "
-                            + token.getType().toString() + ", port: "
-                            + getFullName() + ", port type: "
-                            + getType().toString());
-                }
-
-                // Note that the getRemoteReceivers() method doesn't throw
-                // any non-runtime exception.
-                farReceivers = deepGetReceivers();
-                if (farReceivers == null ||
-                        farReceivers[channelIndex] == null) return;
-            } finally {
-                _workspace.doneReading();
-            }
-            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                TypedIOPort port =
-                    (TypedIOPort)farReceivers[channelIndex][j].getContainer();
-                Type farType = port.getType();
-
-                if (farType.equals(token.getType())) {
-                    farReceivers[channelIndex][j].put(token);
-                } else {
-                    Token newToken = farType.convert(token);
-                    farReceivers[channelIndex][j].put(newToken);
-                }
-            }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the channel index is out of range.
-            // This is allowed, just do nothing.
-        }
-    }
-
     /** Send the specified portion of a token array to all receivers
      *  connected to the specified channel, checking the type
      *  and converting the token if necessary. The first
@@ -742,6 +664,84 @@ public class TypedIOPort extends IOPort implements Typeable {
                             farReceivers[channelIndex][j].put(
                                 farType.convert(tokenArray[i]));
                     }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the channel index is out of range.
+            // This is allowed, just do nothing.
+        }
+    }
+
+    /** Send the specified token to all receivers connected to the
+     *  specified inside channel of this port, checking the type and
+     *  converting the token if necessary.  Tokens are in general
+     *  immutable, so each receiver is given a reference to the same
+     *  token and no clones are made.  If the port is not connected to
+     *  anything on the inside, or receivers have not been created in
+     *  the remote port, or the channel index is out of range, or the
+     *  port is not an input port, then just silently return.  This
+     *  behavior makes it easy to leave external input ports of a
+     *  composite unconnected when you are not interested in the
+     *  received values.  The transfer is accomplished by calling the
+     *  put() method of the inside remote receivers.  If the port is
+     *  not connected to anything, or receivers have not been created
+     *  in the remote port, then just return.  This method is normally
+     *  called only by the transferInputs method of directors of
+     *  composite actors, as AtomicActors do not usually have any
+     *  relations on the inside of their ports.  Before putting the
+     *  token into the destination receivers, this method also checks
+     *  the type of the inside input port, and converts the token if
+     *  necessary.  The conversion is done by calling the convert()
+     *  method of the type of the inside input port.
+     *
+     *  <p> Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a
+     *  put, it is important that the thread does not hold read access
+     *  on the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling put.
+     *
+     *  @param channelIndex The index of the channel, from 0 to width-1
+     *  @param token The token to send
+     *  @exception NoRoomException If there is no room in the receiver.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void sendInside(int channelIndex, Token token)
+            throws IllegalActionException, NoRoomException {
+        Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("send inside to channel " + channelIndex + ": " + token);
+        }
+        try {
+            try {
+                _workspace.getReadAccess();
+                int compare = TypeLattice.compare(token.getType(),
+                        _resolvedType);
+                if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+                    throw new IllegalActionException(
+                            "Run-time type checking failed. Token type: "
+                            + token.getType().toString() + ", port: "
+                            + getFullName() + ", port type: "
+                            + getType().toString());
+                }
+
+                // Note that the getRemoteReceivers() method doesn't throw
+                // any non-runtime exception.
+                farReceivers = deepGetReceivers();
+                if (farReceivers == null ||
+                        farReceivers[channelIndex] == null) return;
+            } finally {
+                _workspace.doneReading();
+            }
+            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+                TypedIOPort port =
+                    (TypedIOPort)farReceivers[channelIndex][j].getContainer();
+                Type farType = port.getType();
+
+                if (farType.equals(token.getType())) {
+                    farReceivers[channelIndex][j].put(token);
+                } else {
+                    Token newToken = farType.convert(token);
+                    farReceivers[channelIndex][j].put(newToken);
                 }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
