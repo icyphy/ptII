@@ -173,20 +173,19 @@ public class GeneratorTableau extends Tableau {
 		_save();
 	    }
 
-	    if (getEffigy().url == null 
+	    if (getEffigy() == null
+                || getEffigy().url == null 
 		|| getEffigy().url.getURL() == null) { 
 		// If the user does File -> New -> GraphEditor,
 		// View -> Code Generator, then we might end up 
 		// dealing with an Effigy that has a null url.
-		_save();
-		if (getEffigy() == null
-		    || getEffigy().url == null 
-		    || getEffigy().url.getURL() == null) { 
-		    throw new IllegalActionException(model, (Throwable) null,
-				     "Could not read the URL of this "
-				     + "model.  getEffigy(): "
-				     + getEffigy());
-		}
+                // FIXME: This should work, but TableauFrame._saveAs()
+                // calls effigy.setContainer(null), which means
+                // that getEffigy() returns null
+                throw new IllegalActionException(model, (Throwable) null,
+                        "Could not get the Effigy or read the URL of this "
+                        + "model.  Because of a bug, you may need to try "
+                        + "invoking the code generator again.");
 	    }
 
             // Caveats panel.
