@@ -57,6 +57,10 @@ MISC_FILES =	$(DIRS) mk bin
 OPTIONAL_FILES = \
 	config.log config.status config.cache
 
+# Files to be removed by 'make clean'
+KRUFT =	\
+	collections/ptcollections.jar
+
 # Files to be removed by 'make distclean'
 DISTCLEAN_STUFF = \
 	mk/ptII.mk config.log config.status config.cache
