@@ -56,7 +56,7 @@ public class ShellTextArea extends JPanel {
     public ShellTextArea () {
         this(null);
     }
-    
+
     /** Create a new instance with the specified initial message.
      *  @param initialMessage The initial message.
      */
@@ -108,7 +108,7 @@ public class ShellTextArea extends JPanel {
             };
         SwingUtilities.invokeLater(doAppendJTextArea);
     }
-    
+
     /** Get the interpreter that has been registered with setInterpreter().
      *  @return The interpreter, or null if none has been set.
      *  @see #setInterpreter(ShellInterpreter)
@@ -131,7 +131,7 @@ public class ShellTextArea extends JPanel {
             };
         SwingUtilities.invokeLater(doClearJTextArea);
     }
-    
+
     /** Initialize the text area with the given starting message,
      *  followed by a prompt. If the argument is null or the empty
      *  string, then only a prompt is shown.
@@ -181,7 +181,7 @@ public class ShellTextArea extends JPanel {
             };
         SwingUtilities.invokeLater(doReplaceRangeJTextArea);
     }
-    
+
     /** Return the result of a command evaluation.  This method is used
      *  when it is impractical to insist on the result being returned by
      *  evaluateCommand() of a ShellInterpreter.  For example, computing
@@ -199,7 +199,7 @@ public class ShellTextArea extends JPanel {
             };
         SwingUtilities.invokeLater(doMakeEditable);
     }
-    
+
     /** Set the associated text area editable (with a true argument)
      *  or not editable (with a false argument).  This should be called
      *  in the swing event thread.
@@ -279,7 +279,6 @@ public class ShellTextArea extends JPanel {
                     setEditable(false);
                 }
                 _commandBuffer.setLength(0);
-                _commandCursor = _promptCursor;
                 _jTextArea.setCursor(oldCursor);
                 _updateHistory(command);
             } else {
@@ -299,7 +298,7 @@ public class ShellTextArea extends JPanel {
                     _historyCommands.size() - _historyCursor - 1);
         }
         replaceRangeJTextArea(
-                text, _commandCursor, _jTextArea.getText().length());
+                text, _promptCursor, _jTextArea.getText().length());
     }
 
     // Replace the command with an entry from the history.
@@ -313,7 +312,7 @@ public class ShellTextArea extends JPanel {
                     _historyCommands.size() - _historyCursor);
         }
         replaceRangeJTextArea(
-                text, _commandCursor, _jTextArea.getText().length());
+                text, _promptCursor, _jTextArea.getText().length());
     }
 
     // Update the command history.
@@ -330,13 +329,12 @@ public class ShellTextArea extends JPanel {
 
     // The command input
     private StringBuffer _commandBuffer = new StringBuffer();
-    
+
     // The TextArea widget for displaying commands and results
     private JTextArea _jTextArea;
 
-    // Cursors
+    // Cursor, showing where last prompt or result ended.
     private int _promptCursor = 0;
-    private int _commandCursor = 0;
 
     // History
     private int _historyCursor = 0;
@@ -344,7 +342,7 @@ public class ShellTextArea extends JPanel {
 
     // The initial message, if there is one.
     private String _initialMessage = null;
-    
+
     // The interpreter.
     private ShellInterpreter _interpreter;
 
