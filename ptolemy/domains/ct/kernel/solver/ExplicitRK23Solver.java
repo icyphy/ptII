@@ -276,6 +276,8 @@ public class ExplicitRK23Solver extends ODESolver {
                 next.fire();
             }
         }
+        double currentTime = dir.getCurrentTime();
+        double currentStepSize = dir.getCurrentStepSize();
         for (int i = 0; i < _timeInc.length; i++) {
             actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
             while (actors.hasNext()) {
@@ -284,8 +286,7 @@ public class ExplicitRK23Solver extends ODESolver {
                         ((Nameable)next).getName());
                 next.fire();
             }
-            dir.setCurrentTime(dir.getCurrentTime()+
-                    dir.getCurrentStepSize()*_timeInc[i]);
+            dir.setCurrentTime(currentTime + currentStepSize*_timeInc[i]);
             actors = schedule.get(CTSchedule.STATE_TRANSITION_ACTORS).
                 actorIterator();
             while (actors.hasNext()) {
@@ -308,7 +309,7 @@ public class ExplicitRK23Solver extends ODESolver {
     private static final String _DEFAULT_NAME = "CT_Runge_Kutta_2_3_Solver";
 
     // The ratio of time increments within one integration step.
-    private static final double[] _timeInc = {0.5, 0.25, 0.25};
+    private static final double[] _timeInc = {0.5, 0.75, 1.0};
 
     // B coefficients
     private static final double[][] _B = {{0.5},
