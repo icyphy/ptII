@@ -859,7 +859,7 @@ public class CalendarQueue {
                                     "but head's not ???");
                         }
                     }
-                    // targedLL is an empty list, so after updating it will
+                    // targetLL is an empty list, so after updating it will
                     // have one element which is minCell.
                     // Both tail and head field should point to this sole
                     // 'new' element.
