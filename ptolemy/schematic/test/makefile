@@ -47,8 +47,12 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	XMLElement.tcl \
-	Icon.tcl
+	Icon.tcl \
+	IconLibrary.tcl \
+	PTMLParser.tcl \
+	SchematicElement.tcl \
+	XMLElement.tcl
+
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
@@ -77,7 +81,7 @@ tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 test_java: jclass
 
 # Tycho-wide test definitions.
-KERNEL_TESTDEFS = $(ROOT)/util/tytest/testDefs.tcl
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use TclBlend and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
