@@ -416,6 +416,9 @@ public class MoMLApplication {
         // then we show them now.  This is deferred until now because
         // how they are shown may depend on command-line arguments
         // and/or parameters in some MoML file that is read.
+	if (_config == null) {
+	    throw new NullPointerException("Usage: moml configuration.xml");
+	}
         _config.showAll();
     }
 
