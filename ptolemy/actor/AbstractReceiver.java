@@ -89,10 +89,8 @@ public abstract class AbstractReceiver implements Receiver {
     /** Get an array of tokens from this receiver.
      *  The <i>numberOfTokens</i> argument specifies the number
      *  of tokens to get.
-     *  The length of the returned array may be greater than
-     *  <i>numberOfTokens</i>, in which case, the first
-     *  <i>numberOfTokens</i> elements are the newly obtained
-     *  tokens.
+     *  The length of the returned array will be equal to
+     *  <i>numberOfTokens</i>.
      *  <p>
      *  This implementation works by calling get() repeatedly
      *  to populate an array.  Derived classes may offer more
@@ -126,7 +124,7 @@ public abstract class AbstractReceiver implements Receiver {
     public Token[] getArray(int numberOfTokens) throws NoTokenException {
         // Check whether we need to reallocate the cached
         // token array.
-        if (_tokenCache == null || numberOfTokens > _tokenCache.length) {
+        if (_tokenCache == null || numberOfTokens != _tokenCache.length) {
             // Reallocate the token array.
             _tokenCache = new Token[numberOfTokens];
         }
