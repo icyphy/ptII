@@ -190,14 +190,22 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 	_menuFactory.addMenuItemFactory(_portDialogFactory);
         _portDialogFactory.setConfiguration(getConfiguration());
 
-        // Create a listener that creates new relations
+        // Create listeners that creates new relations.  Note that
+        // both control-click AND shift-click are used here, since
+        // control-click is used under the Mac for retrieving context
+        // menus.
 	_relationCreator = new RelationCreator();
         _relationCreator.setMouseFilter(_controlFilter);
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
+	_relationCreator2 = new RelationCreator();
+        _relationCreator2.setMouseFilter(_shiftFilter);
+        pane.getBackgroundEventLayer().addInteractor(_relationCreator2);
 
         // Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
+	_linkCreator2 = new LinkCreator();
+	_linkCreator2.setMouseFilter(_shiftFilter);
         // NOTE: Do not use _initializeInteraction() because we are
         // still in the constructor, and that method is overloaded in
         // derived classes.
@@ -207,6 +215,12 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 .addInteractor(_linkCreator);
 	((CompositeInteractor)_relationController.getNodeInteractor())
                 .addInteractor(_linkCreator);
+	((CompositeInteractor)_portController.getNodeInteractor())
+                .addInteractor(_linkCreator2);
+        ((CompositeInteractor)_entityPortController.getNodeInteractor())
+                .addInteractor(_linkCreator2);
+	((CompositeInteractor)_relationController.getNodeInteractor())
+                .addInteractor(_linkCreator2);
 
 	LinkCreator linkCreator2 = new LinkCreator();
 	linkCreator2.setMouseFilter(
@@ -237,13 +251,14 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The filter for control operations. */
+    /** The filter for control-click operations. */
     private MouseFilter _controlFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK,
             InputEvent.CTRL_MASK);
-
-    /** The interactor that interactively creates edges. */
-    private LinkCreator _linkCreator;
+ 
+    /** The interactors that interactively creates edges. */
+    private LinkCreator _linkCreator;  // For control-click
+    private LinkCreator _linkCreator2;  // For shift-click
 
     /** Action for creating a new input port. */
     private Action _newInputPortAction = new NewPortAction(
@@ -285,7 +300,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     private PortDialogFactory _portDialogFactory;
 
     /** The interactor for creating new relations. */
-    private RelationCreator _relationCreator;
+    private RelationCreator _relationCreator;  // For control-click
+    private RelationCreator _relationCreator2;  // For shift-click
 
     /** The filter for shift operations. */
     private MouseFilter _shiftFilter = new MouseFilter(

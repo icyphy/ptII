@@ -186,11 +186,15 @@ public class FSMGraphController extends FSMViewerGraphController {
 	// Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
+	_linkCreator2 = new LinkCreator();
+	_linkCreator2.setMouseFilter(_shiftFilter);
         // NOTE: Do not use _initializeInteraction() because we are
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor)_stateController.getNodeInteractor())
             .addInteractor(_linkCreator);
+        ((CompositeInteractor)_stateController.getNodeInteractor())
+            .addInteractor(_linkCreator2);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -213,7 +217,8 @@ public class FSMGraphController extends FSMViewerGraphController {
     ////                         private variables                 ////
 
     /** The interactor that interactively creates edges. */
-    private LinkCreator _linkCreator;
+    private LinkCreator _linkCreator;  // For control-click
+    private LinkCreator _linkCreator2;  // For shift-click
 
     /** The action for creating states. */
     private NewStateAction _newStateAction = new NewStateAction();
