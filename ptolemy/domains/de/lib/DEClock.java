@@ -1,4 +1,4 @@
-/* A DE star that generate events at regular intervals, starting at time zero.
+/* A DE actor that generate events at regular intervals, starting at time zero.
 
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
@@ -37,87 +37,71 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// DEClock
 /**
-An actor that generate events at regular intervals, starting at time zero.
-The actor has 2 output ports and 1 input ports. One input port and one
-output port is connected together forming a loop. The loop is used by the
-actor to schedule itself in the future.
+Generate events at regular intervals, starting at time zero.
 
-@author Lukito Muliadi
+@author Lukito Muliadi, Edward A. Lee
 @version $Id$
-@see Actor
 */
 public class DEClock extends AtomicActor {
-    /** Construct the DEClock star.
-     *  The default output value is 0.
-     * @see CTActor#CTActor()
-     * @param container The CTSubSystem this star belongs to
-     * @param name
-     * @exception NameDuplicationException Other star already had this name
-     * @exception IllegalActionException internal problem
+
+    /** Construct a clock that generates events with the specified values
+     *  at the specified interval.
+     *  @param container The container.
+     *  @param name The name of the actor.
+     *  @param value The value of the output.
+     *  @param interval The interval between clock ticks.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
-    public DEClock(double value,
-            double interval,
-            CompositeActor container,
-            String name)
-            throws NameDuplicationException, IllegalActionException  {
+    // FIXME: The value should be an attribute, as should the interval.
+    // FIXME: Should the value be a double? Probably not...
+    public DEClock(CompositeActor container, String name,
+            double value, double interval)
+            throws IllegalActionException, NameDuplicationException  {
         super(container, name);
-        // create an output port
-        output = new DEIOPort(this, "output", false, true);
-        // create a self loop
-        _loopIn = new DEIOPort(this, "loop input" , true , false);
-        _loopOut = new DEIOPort(this, "loop output", false, true );
-        // now connect loopIn and loopOut
-        _loopRelation = new IORelation(container, name+" loop relation");
-        _loopIn.link(_loopRelation);
-        _loopOut.link(_loopRelation);
-        // set the interval between events.
+        output = new IOPort(this, "output", false, true);
         _interval = interval;
         _value = value;
-
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Produce the initializer event which will cause the generation of
-     *  the first event at time zero.
-     *
-     *  @exception CloneNotSupportedException Not thrown in this base class.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Produce the initializer event that will cause the generation of
+     *  the first output at time zero.
+     *  @exception CloneNotSupportedException If the base class throws it.
+     *  @exception IllegalActionException If there is no director.
      */
     public void initialize()
             throws CloneNotSupportedException, IllegalActionException {
-        // The initializer event is at _interval behind time zero.
-        DoubleToken initEvent = new DoubleToken(_value);
-        // Send out via the self loop output port.
-        _loopOut.send(0, initEvent, 0.0-_interval);
-
+        // FIXME: This should be just DEDirector
+        // FIXME: This class should be derived from DEActor, which should
+        // ensure that this cast is valid.
+        super.initialize();
+        DECQDirector dir = (DECQDirector)getDirector();
+        dir.enqueueEvent(this,0.0,0);
     }
 
-    /** Produce the next event at _interval unit-time aparts.
-     *
-     * @exception CloneNotSupportedException Error when cloning event.
-     * @exception IllegalActionException Not thrown in this class.
+    /** Produce an output event at the current time, and then schedule
+     *  a firing in the future.
+     *  @exception CloneNotSupportedException If there is more than one
+     *   destination and the output token cannot be cloned.
+     *  @exception IllegalActionException If there is no director.
      */
-    public void fire() throws CloneNotSupportedException, IllegalActionException{
-	// get the input token from the self loop input port.
-        DoubleToken inputToken;
-        try {
-            inputToken = (DoubleToken)(_loopIn.get(0));
-        } catch (NoSuchItemException e) {
-            // this can't happen
-            throw new InvalidStateException("In DEClock.fire() the receiver" +
-                    " is empty.");
-        }
-
-        // obtain the time stamp of the input token.
-        double inputTime = ((DECQDirector)getDirector()).currentTime();
-
-        // send the delayed input token via _loopOut and output DEIOPort.
-        _loopOut.send(0, inputToken, inputTime + _interval);
-        output.broadcast((DoubleToken)inputToken.clone(), inputTime + _interval);
+    public void fire()
+            throws CloneNotSupportedException, IllegalActionException {
+        DECQDirector dir = (DECQDirector)getDirector();
+        output.broadcast(new DoubleToken(_value));
+        dir.enqueueEvent(this,_interval,0);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public members                    ////
+
+    // The output port.
+    public IOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -126,13 +110,4 @@ public class DEClock extends AtomicActor {
     private double _interval;
     // the output value.
     private double _value;
-
-    // the ports
-    public DEIOPort output;
-    private DEIOPort _loopIn;
-    private DEIOPort _loopOut;
-    private IORelation _loopRelation;
 }
-
-
-

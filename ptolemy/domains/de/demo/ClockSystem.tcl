@@ -31,8 +31,6 @@
 #######################################################################
 
 #######################################################################
-#  A Exponential system simulation uses a 4th order fixed step
-#  RK solver
 #
 
 # Create the top level Composite Actor
@@ -45,11 +43,8 @@ $sys setDirector $dir
 set exec [java::new ptolemy.actor.Director]
 $sys setExecutiveDirector $exec
 
-# Set the stop time
-$dir setStopTime 10.0
-
 # Build the system
-set clock [java::new ptolemy.domains.de.lib.DEClock 1.0 1.0 $sys Clock]
+set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0]
 set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]
 
 # Identify the ports

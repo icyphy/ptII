@@ -1,4 +1,4 @@
-/* A DE star that generate events according to Poisson process.
+/* An actor that generates events according to Poisson process.
 
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
@@ -37,118 +37,82 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// DEPoisson
 /**
-An actor that generate events according to Poisson process. The first event is
-generated at time zero. The mean inter-arrival time and magnitude of the
+Generate events according to Poisson process. The first event is
+always at time zero. The mean inter-arrival time and value of the
 events are given as parameters.
 
 @author Lukito Muliadi
 @version $Id$
-@see Actor
 */
 public class DEPoisson extends AtomicActor {
-    /** Construct a DEPoisson star.
-     *
-     * @param lambda The mean of the inter-arrival times.
-     * @param magnitude The magnitude of the output events.
-     * @param container The composite actor that this actor belongs to.
-     * @param name The name of this actor.
-     * @exception NameDuplicationException Other star already had this name
-     * @exception IllegalActionException internal problem
+
+    /** Constructor.
+     *  @param container The composite actor that this actor belongs to.
+     *  @param name The name of this actor.
+     *  @param value The value of the output events.
+     *  @param lambda The mean of the inter-arrival times.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
-    public DEPoisson(double lambda,
-            double magnitude,
-            CompositeActor container,
-            String name) throws NameDuplicationException, IllegalActionException  {
+    public DEPoisson(CompositeActor container,
+            String name, double value, double lambda)
+            throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        // create an output port
-        output = new DEIOPort(this, "output", false, true);
-        // create a self loop
-        _loopIn = new DEIOPort(this, "loop input" , true , false);
-        _loopOut = new DEIOPort(this, "loop output", false, true );
-        // now connect loopIn and loopOut
-        _loopRelation = new IORelation(container, name+" loop relation");
-        _loopIn.link(_loopRelation);
-        _loopOut.link(_loopRelation);
-	// no before or trigger relation
-
-        // set the interval between events.
+        output = new IOPort(this, "output", false, true);
         _lambda = lambda;
-        _magnitude = magnitude;
-
+        _value = value;
     }
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Produce the initializer event which will cause the generation of
+    /** Produce the initializer event that will cause the generation of
      *  the first event at time zero.
-     *
-     *  @exception CloneNotSupportedException Not thrown in this base class.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception CloneNotSupportedException If the base class throws it.
+     *  @exception IllegalActionException If there is no director.
      */
-    public void initialize() throws CloneNotSupportedException, IllegalActionException {
-        // The initializer event is at time zero.
-        DoubleToken initEvent = new DoubleToken(_magnitude);
-        // Send out via the self loop output port.
-        _loopOut.send(0, initEvent, -1.0);
-
+    public void initialize()
+            throws CloneNotSupportedException, IllegalActionException {
+        // FIXME: This should be just DEDirector
+        // FIXME: This class should be derived from DEActor, which should
+        // ensure that this cast is valid.
+        super.initialize();
+        DECQDirector dir = (DECQDirector)getDirector();
+        dir.enqueueEvent(this,0.0,0);
     }
 
-    /** Produce the next event T time unit in the future, where T is a random
-     *  variable with exponential distribution.
-     *
-     * @exception CloneNotSupportedException Error when cloning event.
-     * @exception IllegalActionException Not thrown in this class.
+    /** Produce an output event at the current time, and then schedule
+     *  a firing in the future.
+     *  @exception CloneNotSupportedException If there is more than one
+     *   destination and the output token cannot be cloned.
+     *  @exception IllegalActionException If there is no director.
      */
-    public void fire() throws CloneNotSupportedException, IllegalActionException{
-        // get the input token from the self loop input port.
-        DoubleToken inputToken;
-        try {
-            inputToken = (DoubleToken)(_loopIn.get(0));
-        } catch (NoSuchItemException e) {
-            // this can't happen
-            throw new InvalidStateException("Bug in DEPoisson.fire()");
-        }
+    public void fire()
+            throws CloneNotSupportedException, IllegalActionException {
+        DECQDirector dir = (DECQDirector)getDirector();
+        output.broadcast(new DoubleToken(_value));
 
-        // compute T, an exponential random variable.
-        double T = -Math.log((1-Math.random()))*_lambda;
-
-        // produce the output token which is delayed by T time unit.
-
-        double nextEventTime = 0.0;
-        if (_firstTime) {
-            nextEventTime = 0.0;
-            _firstTime = false;
-        } else {
-            nextEventTime = T + ((DECQDirector)getDirector()).currentTime();
-        }
-
-        // send the output token via _loopOut and output IOPort.
-
-        _loopOut.send(0, inputToken, nextEventTime);
-        output.broadcast((Token)inputToken.clone(), nextEventTime);
+        // compute an exponential random variable.
+        double exp = -Math.log((1-Math.random()))*_lambda;
+        dir.enqueueEvent(this,exp,0);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    public IOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
-
-    // the mean inter-arrival time and magnitude
+    // the mean inter-arrival time and value
     private double _lambda = 1.0;
-    private double _magnitude = 1.0;
-
-    // an aux variable to make sure we have the first event at time zero.
-    private boolean _firstTime = true;
-
-    // the ports.
-    public DEIOPort output;
-    private DEIOPort _loopIn;
-    private DEIOPort _loopOut;
-    private IORelation _loopRelation;
+    private double _value = 1.0;
 }
+
 
 
 

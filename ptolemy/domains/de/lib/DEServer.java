@@ -80,8 +80,8 @@ public class DEServer extends AtomicActor {
      * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
      */	
-    public void fire() throws CloneNotSupportedException, IllegalActionException{
-        System.out.println("Firing DERamp");
+    public void fire()
+             throws CloneNotSupportedException, IllegalActionException{
         // get the input token from the input port.
         DoubleToken inputToken;
         try {
@@ -92,28 +92,25 @@ public class DEServer extends AtomicActor {
         }
         
         // produce the output token.
-        double inputTime = ((DECQDirector)getDirector()).currentTime();
+        double inputTime = ((DECQDirector)getDirector()).getCurrentTime();
 	double outputTime;
 	if (_firstInput) {
 	    _firstInput = false;
 	    // always not busy at the first input
-	    outputTime = inputTime + _serviceTime;
-	    _doneTime = outputTime;
+	    _doneTime = inputTime + _serviceTime;
 	} else {
 	    if (_doneTime < inputTime) {
 		// not busy
-		outputTime = inputTime + _serviceTime;
-		_doneTime = outputTime;
+		_doneTime = inputTime + _serviceTime;
 	    } else {
 		// busy
-		outputTime = _doneTime + _serviceTime;
-		_doneTime = outputTime;
+		_doneTime = _doneTime + _serviceTime;
 	    }
 	}
 
 	
         // send the output token via output DEIOPort.
-        output.broadcast(inputToken, outputTime);
+        output.broadcast(inputToken, _serviceTime);
     }
 
     ///////////////////////////////////////////////////////////////////

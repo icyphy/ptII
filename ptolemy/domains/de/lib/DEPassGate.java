@@ -59,15 +59,16 @@ public class DEPassGate extends AtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
-        output = new IOPort(this, "output", false, true);
-        // create input ports
-        input = new IOPort(this, "data input", true, false);
-        gate = new IOPort(this, "gate input", true, false);
-	// Some relations for topological sort.
-        //input.beforePort = gate;
-        //input.triggerList.insertLast(output);
-	//gate.triggerList.insertLast(output);
+        output = new DEIOPort(this, "output", false, true);
 
+        // create input ports
+        input = new DEIOPort(this, "data input", true, false);
+        gate = new DEIOPort(this, "gate input", true, false);
+
+	// Assert priorities
+        gate.before(input);
+        input.triggers(output);
+	gate.triggers(output);
     }
 
 
@@ -84,10 +85,6 @@ public class DEPassGate extends AtomicActor {
      */
     public void fire()
             throws CloneNotSupportedException, IllegalActionException{
-        System.out.println("Firing "+
-                description(CLASSNAME|FULLNAME));
-
-
         // Check if there's an event in the "input" port.
         if (input.hasToken(0)) {
             DoubleToken inputToken = null;
@@ -166,9 +163,9 @@ public class DEPassGate extends AtomicActor {
     private DoubleToken _lastToken = null;
 
     // the ports.
-    public IOPort output;
-    public IOPort input;
-    public IOPort gate;
+    public DEIOPort output;
+    public DEIOPort input;
+    public DEIOPort gate;
 }
 
 

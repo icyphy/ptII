@@ -48,8 +48,8 @@ $sys setExecutiveDirector $exec
 $dir setStopTime 10.0
 
 # Build the system
-set clock [java::new ptolemy.domains.de.lib.DEClock 1.0 1.0 $sys Clock]
-set ramp [java::new ptolemy.domains.de.lib.DERamp 0.0 1.0 $sys Ramp]
+set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0]
+set ramp [java::new ptolemy.domains.de.lib.DERamp $sys Ramp 0.0 1.0]
 set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]
 
 # Identify the ports

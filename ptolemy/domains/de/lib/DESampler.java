@@ -1,6 +1,6 @@
-/* A DE star that performs sampling on input when the "clock" input arrives.
+/* An actor that samples the data input when the clock input arrives.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,26 +37,26 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// DESampler
 /**
-An actor that sample the input at the times given by events on the "clock"
-input. The data value of the "clock" input is ignored. If no input is
-available at the time of sampling, the latest input is used. If there has been
-no input, then a "zero" particle is produced. The exact meaning of zero
-depends on the particle type.
+This actor samples the data input at the times given by events on the clock
+input. The values of the clock input events are ignored. If no data input is
+available at the time of sampling, the most recently seen data input is used.
+If there has been no data input, then a "zero" token is produced. The exact
+meaning of zero depends on the token type.
 
 @author Lukito Muliadi
 @version $Id$
 @see Actor
 */
 public class DESampler extends AtomicActor {
-    /** Construct a DERamp star.
+
+    /** Constructor.
+     *  @param container The composite actor that this actor belongs too.
+     *  @param name The name of this actor.
      *
-     * @param value The initial output event value.
-     * @param step The step size by which to increase the output event values.
-     * @param container The composite actor that this actor belongs too.
-     * @param name The name of this actor.
-     *
-     * @exception NameDuplicationException Other star already had this name
-     * @exception IllegalActionException internal problem
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public DESampler(CompositeActor container,
             String name)
@@ -67,10 +67,8 @@ public class DESampler extends AtomicActor {
         // create input ports
         input = new DEIOPort(this, "data input", true, false);
         clock = new DEIOPort(this, "clock input", true, false);
-        clock.triggerList.insertLast(output);
-
+        clock.triggers(output);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -111,7 +109,7 @@ public class DESampler extends AtomicActor {
             }
 
             // send the output token via the output port.
-            output.broadcast(_lastToken, ((DECQDirector)getDirector()).currentTime());
+            output.broadcast(_lastToken);
         } else if (inputR.hasToken()) {
             // Record the token from the input.
             try {

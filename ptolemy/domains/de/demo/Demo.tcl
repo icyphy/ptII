@@ -52,8 +52,8 @@ $sys setExecutiveDirector $exec
 # Create the actors
 #####################
 
-set clock [java::new ptolemy.domains.de.lib.DEClock 1.0 1.0 $sys Clock]
-set ramp [java::new ptolemy.domains.de.lib.DERamp 0 1.0 $sys Ramp]
+set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0]
+set ramp [java::new ptolemy.domains.de.lib.DERamp $sys Ramp 0 1.0]
 
 # num demands pending = 1, consolidate demands = 1, capacity = 10
 set fifo1 [java::new ptolemy.domains.de.lib.DEFIFOQueue 1 1 10 $sys FIFO1]
@@ -65,7 +65,7 @@ set server1 [java::new ptolemy.domains.de.lib.DEServer 1.0 $sys Server1]
 
 set passgate [java::new ptolemy.domains.de.lib.DEPassGate $sys PassGate]
 
-set delta [java::new ptolemy.domains.de.kernel.DEDelta $sys DEDelta]
+set delta [java::new ptolemy.domains.de.lib.DEDelay $sys DEDelay 0.0]
 
 # num demands pending = 1, consolidate demands = 1, capacity = -1
 set fifo2 [java::new ptolemy.domains.de.lib.DEFIFOQueue 1 1 100 $sys FIFO2]

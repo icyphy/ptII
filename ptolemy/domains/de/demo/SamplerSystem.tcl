@@ -58,12 +58,12 @@ $sys setExecutiveDirector $exec
 $dir setStopTime 20.0
 
 # Build the system
-set poisson [java::new ptolemy.domains.de.lib.DEPoisson 1.0 0.5 $sys Poisson]
+set poisson [java::new ptolemy.domains.de.lib.DEPoisson $sys Poisson 1.0 0.5]
 set sampler1 [java::new ptolemy.domains.de.lib.DESampler $sys Sampler1]
 set sampler2 [java::new ptolemy.domains.de.lib.DESampler $sys Sampler2]
-set ramp1 [java::new ptolemy.domains.de.lib.DERamp 0 2 $sys Ramp1]
-set ramp2 [java::new ptolemy.domains.de.lib.DERamp -2 2 $sys Ramp2]
-set clock [java::new ptolemy.domains.de.lib.DEClock 1.0 1.0 $sys Clock] 
+set ramp1 [java::new ptolemy.domains.de.lib.DERamp $sys Ramp1 0 2]
+set ramp2 [java::new ptolemy.domains.de.lib.DERamp $sys Ramp2 -2 2]
+set clock [java::new ptolemy.domains.de.lib.DEClock $sys Clock 1.0 1.0] 
 set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]
 
 # Identify the ports

@@ -1,4 +1,4 @@
-/* A DE domain director that uses the CalendarQueue class for scheduling.
+/* A DE director that uses the CalendarQueue class for scheduling.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -41,86 +41,91 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// DECQDirector
 //
-/** A Discrete Event (DE) domain director handles the execution of actors
- *  contained by its CompositeActor container. It plays the role of
- *  <i>executive director</i> of the contained actors and
- *  <i>local director</i> of the CompositeActor container, simultaneously.
+/** This director implements the discrete-event model of computation (MoC).
+ *  It should be used as the local director of a CompositeActor that is
+ *  to be executed according to this MoC.  This director maintains a notion
+ *  of current time, and processes events chronologically in this time.
+ *  An <i>event</i> is a token with a time stamp.  Much of the sophistication
+ *  in this director is aimed at handling simultaneous events intelligently,
+ *  so that deterministic behavior can be achieved.
  *  <p>
- *  The execution schedule (FIXME: scheduling ?) is done in the DECQDirector
- *  class by means of a global event queue (a priority queue) implemented as
- *  an instance of the CalendarQueue class.
+ *  Input ports in a DE simulation are given instances of DEReceiver.
+ *  When a token is put into a DEReceiver, that receiver enqueues the
+ *  event by calling the enqueueEvent() method of this director.
+ *  This director sorts all such events in a global event queue
+ *  (a priority queue) implemented as an instance of the CalendarQueue class.
  *  <p>
  *  Sorting in the CalendarQueue class is done with respect to sort-keys
  *  which are implemented by the DESortKey class. DESortKey consists of a
- *  time stamp (double) and a 'receiver-depth' (double). Time stamp
- *  indicates the time when the event occurs, and 'receiver-depth'
- *  indicates the topological depth of the receiver receiving the event.
- *  The topological depth of the receivers are static and computed once
- *  in the initialization() method. This is done by performing the
- *  topological sort algorithm on the directed graph with input ports as
- *  nodes.
+ *  time stamp (double) and a depth (long). The time stamp
+ *  indicates the time when the event occurs, and depth
+ *  indicates the relative priority of events with the same time stamp
+ *  (simultaneous events).  The depth is determined by topologically
+ *  sorting the ports according to data dependencies over which there
+ *  is no time delay.
  *  <p>
- *  Ports in Discrete Event domain are instances of DEIOPort. DEIOPort define
- *  two additional field, namely beforePort and triggerList. Edges of the
- *  directed graph is constructed with respect to these fields. In order to
- *  perform topological sort successfully, the constructed graph is
- *  necessary to be acyclic. A special actor, called DEDelta, can be used to
- *  break the loop in graph.
- *
- *  FIXME: the term 'firing actor' doesn't sound quite right.. no suggestion
- *         though
- *
- *  On invocation of the prefire() method, DECQDirector dequeues
+ *  Ports in the DE domain may instances of DEIOPort. The DEIOPort class
+ *  should be used whenever an actor introduces time delays between the
+ *  inputs and the outputs.  When ordinary IOPort is used, the scheduler
+ *  assumes, for the purpose of calculating priorities, that the delay
+ *  across the actor is zero.
+ *  <p>
+ *  Directed loops with no delay actors are not permitted; they would make
+ *  impossible to assign priorities.  Such a loop can be broken with an
+ *  instance of the Delay actor with its delay set to zero.
+ *  <p>
+ *  On invocation of the prefire() method, this director dequeues
  *  the 'appropriate' oldest events (i.e. ones with smallest time
- *  stamp) from the global event queue and put those into
+ *  stamp) from the global event queue, and puts those events into
  *  their corresponding receivers. The term 'appropriate' means that
- *  the events dequeued are chosen such that all events are destined for
- *  the same actor. That particular actor will then be called the 'firing
+ *  the events dequeued are chosen such that all events that are destined for
+ *  the same actor and have the same time stamp are visible to that actor
+ *  when it fires. That particular actor will then be called the 'firing
  *  actor'. If the oldest events are destined for multiple actors, then
  *  the choice of the firing actor is determined by the topological depth
  *  of the input ports of the actors.
  *  <p>
- *  In the fire() method, the 'firing actor' is fired (i.e. invoke the
- *  fire() method of the 'firing actor'). The actor will consume events from
+ *  In the fire() method, the 'firing actor' is fired (i.e. its fire() method
+ *  is invoked). The actor will consume events from
  *  its input port(s) and will usually produce new events on its output
- *  port(s). These new events will be enqueued into the queue where they're
- *  waiting to be dequeued when the time comes.
+ *  port(s). These new events will be enqueued in the global event queue
+ *  until their time stamps equal the current time.
  *  <p>
  *  A DE domain simulation ends when the time stamp of the oldest events
  *  exceeds a preset stop time. This stopping condition is checked inside
- *  the postfire() method.
+ *  the prefire() method.
  *  <p>
- *  Note that as mentioned before, all oldest events for the 'firing actor'
+ *  NOTE: as mentioned before, all oldest events for the 'firing actor'
  *  are dequeued and put into the corresponding receivers. It is thus
  *  possible to have multiple simultaneous events put into the same receiver.
  *  These events will all be accessible by the actor during the firing
- *  phase, but it's not clear which one is ahead of which. This is, in fact,
- *  one source of indeterminancy in DE semantic. How to handle this is
- *  up to the designer of the actor.
-@author Lukito Muliadi
-@version $Id$
-@see DEDelta
-@see DEReceiver
-@see CalendarQueue
-@
-*/
+ *  phase, but it is not clear which one is ahead of which. This is, in fact,
+ *  one source of nondeterminancy in discrete-event semantics. How to handle
+ *  this is up to the designer of the actor.
+ *
+ *  @author Lukito Muliadi, Edward A. Lee
+ *  @version $Id$
+ *  @see DEReceiver
+ *  @see CalendarQueue
+ */
+// FIXME:
+// The topological depth of the receivers are static and computed once
+// in the initialization() method. This means that mutations are not
+// currently supported.
 public class DECQDirector extends Director {
+
     /** Construct a director with empty string as name in the
      *  default workspace.
-     *
      */
     public DECQDirector() {
         super();
     }
 
-    /** Construct a director with a name in the default
-     *  workspace.  The director is added to the list of objects in
-     *  the workspace.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
-     *  The default stopTime is zero.
-     *
-     *  @param name The name
+    /** Construct a director with the specified name in the default
+     *  workspace. If the name argument is null, then the name is set to the
+     *  empty string. This director is added to the directory of the workspace,
+     *  and the version of the workspace is incremented.
+     *  @param name The name of this director.
      */
     public DECQDirector(String name) {
         super(name);
@@ -131,10 +136,9 @@ public class DECQDirector extends Director {
      *  The director is added to the list of objects in the workspace.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  The default startTime is zero.
      *
-     *  @param workspace Object for synchronization and version tracking
-     *  @param name Name of this director.
+     *  @param workspace Object for synchronization and version tracking.
+     *  @param name The name of this director.
      */
     public DECQDirector(Workspace workspace, String name) {
         super(workspace, name);
@@ -142,198 +146,261 @@ public class DECQDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-   /** Override the default initialize() method. This method constructs
-    *  the directed graph with input ports as nodes and check for zero delay
-    *  loop.
-    *
-    *  @exception CloneNotSupportedException If the initialize() method of the
-    *   container or one of the deeply contained actors throws it.
-    *  @exception IllegalActionException If the initialize() method of the
-    *   container or one of the deeply contained actors throws it.
-    */
-    public void initialize()
-            throws CloneNotSupportedException, IllegalActionException {
 
-        _constructDirectedGraph();
-	if (!_isDelayFreeLoopExist()) {
-	    throw new IllegalActionException("Can't initialize a "+
-		    "cyclic graph in DECQDirector.initialize()");
-	}
-        _computeDepth();
-        super.initialize();
-    }
-
-    /** Invoke the default prefire() method and if it returns true, put
-     *  tokens in the appropriate receivers. If there are multiple
-     *  simultaneous events for the firing actor, then all events are
-     *  dequeued from the global queue and put into the corresponding
-     *  receivers.
+    /** Put a "pure event" into the event queue with the specified delay and
+     *  depth. The time stamp of the event is the current time plus the
+     *  delay.  The depth is used to prioritize events that have equal
+     *  time stamps.  A smaller depth corresponds to a higher priority.
+     *  A "pure event" is one where no token is transfered.  The event
+     *  is associated with a destination actor.  That actor will be fired
+     *  when the time stamp of the event is the oldest in the system.
+     *  Note that the actor may have no new data at its input ports
+     *  when it is fired.
      *
-     *  @return True if the iteration can proceed.
-     *  @exception CloneNotSupportedException If the prefire() method of the
-     *   container or one of the deeply contained actors throws it.
-     *  @exception IllegalActionException If the prefire() method of the
-     *   container or one of the deeply contained actors throws it, or a
-     *   pending mutation throws it.
-     *  @exception NameDuplicationException If a pending mutation throws it.
+     *  @param actor The destination actor.
+     *  @param delay The delay, relative to current time.
+     *  @param depth The depth.
+     *  @exception IllegalActionException If the delay is negative.
      */
-    public boolean prefire()
-            throws CloneNotSupportedException, IllegalActionException,
-            NameDuplicationException {
-        boolean result = super.prefire();
-	if (result) {
-	    _fillReceiver();
-	}
-	return result;
+    public void enqueueEvent(Actor actor, double delay, long depth)
+            throws IllegalActionException {
+
+        // FIXME: Should this check that the depth is not negative?
+        if (delay < 0.0) throw new IllegalActionException(getContainer(),
+        "Attempt to queue a token with a past time stamp.");
+
+        // FIXME: Provide a mechanism for listening for events.
+
+        DESortKey key = new DESortKey(_currentTime + delay, depth);
+        DEEvent event = new DEEvent(actor, key);
+        _cQueue.put(key, event);
     }
 
-    /** Override the default fire method so that only one actor fire.
-     *  The firing actor would be the one obtained from the global queue.
-     *  <p>
-     *  If there are multiple simultaneous events for this firing actor,
-     *  then all events are dequeued from the global queue and put into
+    /** Put a token into the event queue with the specified destination
+     *  receiver, delay and depth. The time stamp of the token is the
+     *  current time plus the delay.  The depth is used to prioritize
+     *  events that have equal time stamps.  A smaller depth corresponds
+     *  to a higher priority.
+     *
+     *  @param receiver The destination receiver.
+     *  @param token The token destined for that receiver.
+     *  @param delay The delay, relative to current time.
+     *  @param depth The depth.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    public void enqueueEvent(DEReceiver receiver, Token token,
+            double delay, long depth) throws IllegalActionException {
+
+        // FIXME: Should this check that the depth is not negative?
+        if (delay < 0.0) throw new IllegalActionException(getContainer(),
+        "Attempt to queue a token with a past time stamp.");
+
+        // FIXME: Provide a mechanism for listening for events.
+
+        DESortKey key = new DESortKey(_currentTime + delay, depth);
+        DEEvent event = new DEEvent(receiver, token, key);
+        _cQueue.put(key, event);
+    }
+
+    /** Fire the one actor identified by the prefire() method as ready to fire.
+     *  If there are multiple simultaneous events destined to this actor,
+     *  then they have all been dequeued from the global queue and put into
      *  the corresponding receivers.
      *  <p>
-     *  FIXME: What to do if there are simultaneous events for the same
-     *  actor via the same receiver.
+     *  NOTE: Currently, this means that there may be multiple simultaneous
+     *  events in a given receiver.  Since many actors may be written in
+     *  such a way that they do not expect this, this may change in the future.
+     *  I.e., these events may be made visible over multiple firings rather
+     *  than all at once.
      */
-
     public void fire()
             throws CloneNotSupportedException, IllegalActionException {
-
-        CompositeActor container = ((CompositeActor)getContainer());
-
-        // First check if container is null, which indicates an error in
-        // the topology.
-        if (container != null) {
-
-            // Done with dequeueing necessary events, time to fire the actor!
-            _currentActor.fire();
-
-        } else {
-            // Error because the container is null.
-            // FIXME: Is this needed ? Cuz, the ptolemy.actor.Director.java
-            // doesn't do this.
-            throw new IllegalActionException("No container. Invalid topology");
-        }
-
-    }
-
-    /** Override the postfire method, so that it'll return false when the time
-     *  reaches stopTime.
-     *
-     *  @return True if the execution can continue into the next iteration.
-     *  @exception CloneNotSupportedException If the postfire() method of the
-     *   container or one of the deeply contained actors throws it.
-     *  @exception IllegalActionException If the postfire() method of the
-     *   container or one of the deeply contained actors throws it.
-     */
-    public boolean postfire()
-            throws CloneNotSupportedException, IllegalActionException {
-        double nextTimeStamp = 0.0;
-        try {
-            nextTimeStamp = ((DESortKey)_cQueue.getNextKey()).timeStamp();
-        } catch (IllegalAccessException e) {
-            // FIXME: can't happen ?
-            System.out.println("Check DECQDirector.postfire() for a bug!");
-        }
-        if (nextTimeStamp > _stopTime) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /** Return a new receiver of a type DEReceiver.
-     *
-     *  @return A new DEReceiver.
-     */
-    public Receiver newReceiver() {
-        return new DEReceiver(this);
-    }
-
-    /** Put the new event into the global event queue. The event consists
-     *  of the destination actor, the destination receiver, and the
-     *  transferred token along with its sort key.
-     *  <p>
-     *  Only the receiver should call this method.
-     *
-     *  @param a The destination actor.
-     *  @param r The destination receiver.
-     *  @param t The transferred token.
-     *  @param k The sort key for the token.
-     *
-     */
-    public void enqueueEvent(Actor a, DEReceiver r, Token t, DESortKey k) {
-
-	/*
-        // FIXME: debug stuff
-        NamedObj b = (NamedObj) a;
-        System.out.println("Enqueuing event: " + b.description(CLASSNAME | FULLNAME) + " at time: " + k.timeStamp());
-        // FIXME: end debug stuff
-	*/
-
-        // FIXME: need to check if Actor == null ??
-        if (a==null) {
-            throw new IllegalArgumentException("DECQDirector, trying to enqueue null actor!");
-        }
-        CQValue newValue = new CQValue(a, r, t, k);
-        _cQueue.put(k, newValue);
-    }
-
-    /** Return the start time of the simulation.
-     *  FIXME: Right now it's only used to determine the axis range
-     *  for the DEPlot star.
-     *  FIXME: This can be obtained from the time stamp of the first token
-     *  enqueued using the enqueueEvent() method.
-     *  FIXME: Or this can also be set by the user.
-     *
-     *  @return The start time of the simulation.
-     */
-    public double startTime() {
-        //FIXME: find the first event in calendar queue and find out the
-        // time stamp
-        return 0.0;
-    }
-
-    /** Return the stop time of the simulation.
-     *  FIXME: Right now, it's only used to determine the axis range
-     *  for the DEPlot star.
-     *  This quantity is set by the user.
-     *
-     *  @return The stop time of the simulation.
-     */
-    public double stopTime() {
-        return _stopTime;
-    }
-
-    /** Set the stop time of the simulation.
-     *
-     *  @param st The new stop time.
-     */
-    public void setStopTime(double st) {
-        _stopTime = st;
+        _actorToFire.fire();
     }
 
     /** Return the current time of the simulation. Firing actors that need to
      *  know the current time (e.g. for calculating the time stamp of the
      *  delayed outputs) call this method.
      */
-    public double currentTime() {
+    public double getCurrentTime() {
         return _currentTime;
+    }
+
+    /** Return the time of the earliest event seen in the simulation.
+     *  Before the simulation begins, this is java.lang.Double.MAX_VALUE.
+     *  @return The start time of the simulation.
+     */
+    public double getStartTime() {
+        return _startTime;
+    }
+
+    /** Return the stop time of the simulation, as set by setStopTime().
+     *  @return The stop time of the simulation.
+     */
+    public double getStopTime() {
+        return _stopTime;
+    }
+
+    /** Set current time to zero, calculate priorities for simultaneous
+     *  events, and invoke the initialize() methods of all actors deeply
+     *  contained by the container.  To be able to calculate the priorities,
+     *  it is essential that the graph not have a delay-free loop.  If it
+     *  does, then this can be corrected by inserting a DEDelay actor
+     *  with a zero-valued delay.  This has the effect of breaking the
+     *  loop for the purposes of calculating priorities, without introducing
+     *  a time delay.
+     *  <p>
+     *  This method should be invoked once per execution, before any
+     *  iteration. Actors may produce output data in their initialize()
+     *  methods, or more commonly, they may schedule pure events.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @exception CloneNotSupportedException If the initialize() method of the
+     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If there is a delay-free loop, or
+     *   if the initialize() method of the
+     *   container or one of the deeply contained actors throws it.
+     */
+    public void initialize()
+            throws CloneNotSupportedException, IllegalActionException {
+        _currentTime = 0.0;
+        // Haven't seen any events yet, so...
+        _startTime = Double.MAX_VALUE;
+        // Update _dag, the directed graph that indicates priorities.
+        _constructDirectedGraph();
+	if (!_dag.isAcyclic()) {
+	    throw new IllegalActionException("Can't initialize a "+
+		    "cyclic graph in DECQDirector.initialize()");
+	}
+        // Set the depth field of the receivers.
+        _computeDepth();
+        super.initialize();
+    }
+
+    /** Return a new receiver of a type DEReceiver.
+     *  @return A new DEReceiver.
+     */
+    public Receiver newReceiver() {
+        return new DEReceiver();
+    }
+
+    /** Invoke the base class prefire() method, and if it returns true,
+     *  dequeue the next event from the event queue, advance time to its
+     *  time stamp, and mark its destination actor for firing.
+     *  If there are multiple events on the queue with the same time
+     *  stamp that are destined for the same actor, dequeue all of them,
+     *  making them available in the input ports of the destination actor.
+     *  If the time stamp is greater than the stop time, or there are no
+     *  events on the event queue, then return false,
+     *  which will have the effect of stopping the simulation.
+     *
+     *  @return True if there is an actor to fire.
+     *  @exception CloneNotSupportedException If the base class throws it.
+     *  @exception IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException If the base class throws it.
+     */
+    // FIXME: This isn't quite right in that it may put multiple simultaneous
+    // events into the same receiver.  Actors are unlikely to be written
+    // in such a way as to look for these.  Perhaps such actors need to
+    // be fired repeatedly?
+    public boolean prefire()
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
+        _actorToFire = null;
+	if (super.prefire()) {
+            DEEvent currentEvent = null;
+            // Keep taking events out until there are no more simultaneous
+            // events or until the queue is empty. Some events get put back
+            // into the queue.  We collect those in the following fifo
+            // to put them back outside the loop.
+            FIFOQueue fifo = new FIFOQueue();
+            while (true) {
+                try {
+                    currentEvent = (DEEvent)_cQueue.take();
+                } catch (IllegalAccessException ex) {
+                    // Queue is empty.
+                    break;
+                }
+                if (_actorToFire == null) {
+                    // Always accept the firstevent.
+                    _actorToFire = currentEvent.actor;
+                    
+                    // Advance current time.
+                    _currentTime = currentEvent.key.timeStamp();
+
+                    if (_currentTime < _startTime) _startTime = _currentTime;
+                    if (_currentTime > _stopTime) return false;
+
+                    // Transfer the event to the port
+                    DEReceiver rec = currentEvent.receiver;
+                    if (rec != null) {
+                        rec._triggerEvent(currentEvent.token);
+                    }
+                } else {
+
+                    // Check whether the event occurred at current time.
+                    if (currentEvent.key.timeStamp() != _currentTime) {
+                        // The event has a later time stamp, so we put it back
+                        fifo.put(currentEvent);
+                        break;
+                    } else {
+                        // The event has the same time stamp as the first
+                        // event seen.  Check whether it is for the same actor.
+                        if (currentEvent.actor == _actorToFire) {
+                            // FIXME: Currently, this might put the event
+                            // into a receiver that already has an event.
+                            // The actors may not be written to look for
+                            // multiple events in the same receiver.
+                            // Perhaps this should check to see whether there
+                            // is an event in the receiver and save this
+                            // one if so.  That's still not quite right though
+                            // because the event in the receiver may be an
+                            // old one...
+                            DEReceiver rec = currentEvent.receiver;
+                            if (rec != null) {
+                                rec._triggerEvent(currentEvent.token);
+                            }
+                        } else {
+                            // Put it back in the queue.
+                            fifo.put(currentEvent);
+                        }
+                    }
+                }
+            }
+            // Transfer back the events from the fifo queue into the calendar
+            // queue.
+            while (fifo.size() > 0) {
+                DEEvent event = (DEEvent)fifo.take();
+
+                _cQueue.put(event.key,event);
+            }
+        }
+        return _actorToFire != null;
+    }
+
+    /** Set the stop time of the simulation.
+     *  @param stopTime The new stop time.
+     */
+    public void setStopTime(double stopTime) {
+        this._stopTime = stopTime;
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 
     // Construct a directed graph with the nodes representing input ports and
-    // directed edges representing zero delay path.
+    // directed edges representing zero delay path.  The directed graph
+    // is put in the private variable _dag, replacing whatever was there
+    // before.
     // FIXME: this method is too complicated and probably means
     // there's a flaw in the design.
     private void _constructDirectedGraph() {
-
         LinkedList portList = new LinkedList();
 	LinkedList deltaList = new LinkedList();
+
+        // Clear the graph
+        _dag = new DirectedGraph();
 
         // First, include all input ports to be nodes in the graph.
         CompositeActor container = ((CompositeActor)getContainer());
@@ -367,27 +434,28 @@ public class DECQDirector extends Director {
         while (copiedPorts.hasMoreElements()) {
             IOPort ioPort = (IOPort)copiedPorts.nextElement();
 
-	    System.out.println("#################################");
-	    System.out.println("Observing : " + ioPort.description(CLASSNAME | FULLNAME));
-	    System.out.println("#################################");
-
 	    // Find the successor of p
             if (ioPort instanceof DEIOPort) {
                 DEIOPort p = (DEIOPort) ioPort;
-                if (p.beforePort != null) {
-                    // create an arc from p.beforePort to p
-                    if (_dag.contains(p.beforePort)) {
-                        _dag.addEdge(p.beforePort, p);
+                Enumeration befores = p.beforePorts();
+                while (befores.hasMoreElements()) {
+                    IOPort after = (IOPort) befores.nextElement();
+                    // create an arc from p to after
+                    if (_dag.contains(after)) {
+                        _dag.addEdge(p, after);
                     } else {
-			throw new InvalidStateException("Check in "+
-				"DECQDirector.computeDepth for bug (1)");
+                        // FIXME: Could this exception be triggered by
+                        // level-crossing transitions?  In this case,
+                        // we need a more reasonable way to handle it.
+                        throw new InternalErrorException(
+                            "Port missing from DAG.");
 		    }
 		}
-		Enumeration triggers = p.triggerList.elements();
+		Enumeration triggers = p.triggersPorts();
 		while (triggers.hasMoreElements()) {
 		    IOPort outPort = (IOPort) triggers.nextElement();
 		    IOPort deltaInPort = _searchDeltaPort(outPort);
-		    // find out the input ports connected to outPort
+		    // find the input ports connected to outPort
 		    Enumeration inPortEnum = outPort.deepConnectedInPorts();
 		    while (inPortEnum.hasMoreElements()) {
                         IOPort pp = (IOPort)inPortEnum.nextElement();
@@ -396,16 +464,19 @@ public class DECQDirector extends Director {
 			    if (pp != deltaInPort)
 			       _dag.addEdge(p,pp);
                         } else {
-			    throw new InvalidStateException("Check in "+
-				    "DECQDirector.computeDepth "+
-				    "for bug (2)");
+                            // FIXME: Could this exception be triggered by
+                            // level-crossing transitions?  In this case,
+                            // we need a more reasonable way to handle it.
+			    throw new InternalErrorException(
+                                "Port missing from DAG.");
 			}
 		    }
 		}
 	    } else {
 		// It is not a DEIOPort, so assume zero delay actor.
-		// Therefore it triggers all.
-		Enumeration triggers = ((Actor)ioPort.getContainer()).outputPorts();
+		// I.e., an input triggers immediate events on all outputs.
+		Enumeration triggers =
+                        ((Actor)ioPort.getContainer()).outputPorts();
                 while (triggers.hasMoreElements()) {
 		    IOPort outPort = (IOPort) triggers.nextElement();
 		    IOPort deltaInPort = _searchDeltaPort(outPort);
@@ -418,9 +489,11 @@ public class DECQDirector extends Director {
 			    if (pp != deltaInPort)
 				_dag.addEdge(ioPort,pp);
                         } else {
-			    throw new InvalidStateException("Check in "+
-				    "DECQDirector.computeDepth "+
-				    "for bug (3)");
+                            // FIXME: Could this exception be triggered by
+                            // level-crossing transitions?  In this case,
+                            // we need a more reasonable way to handle it.
+			    throw new InternalErrorException(
+                                "Port missing from DAG.");
                         }
                     }
                 }
@@ -428,13 +501,8 @@ public class DECQDirector extends Director {
         }
     }
 
-    // Return true if there's no delay free loop, false otherwise.
-    private boolean _isDelayFreeLoopExist() {
-        return (_dag.isAcyclic());
-    }
-
     // Perform topological sort on the directed graph and use the result
-    // to set the fine level field of the DEReceiver objects.
+    // to set the depth field of the DEReceiver objects.
     private void _computeDepth() {
 	Object[] sort = (Object[]) _dag.topSort();
 	for(int i=sort.length-1; i >= 0; i--) {
@@ -447,6 +515,8 @@ public class DECQDirector extends Director {
                 r = p.getReceivers();
             } catch (IllegalActionException e) {
                 // do nothing
+                // FIXME: Replace with InternalErrorException and a more
+                // meaningful message.
                 throw new InvalidStateException("Bug in DECQDirector."+
                         "computeDepth() (3)");
             }
@@ -463,79 +533,6 @@ public class DECQDirector extends Director {
 	}
     }
 
-    // Get the tokens with the oldest time stamp destined for the same
-    // actor and put them into the receivers.
-    //
-    private void _fillReceiver() throws IllegalActionException {
-	CQValue cqValue = null;
-	DEReceiver receiver;
-	_currentActor = null;
-	FIFOQueue fifo = new FIFOQueue();
-
-	// Keep taking events out until there are no more simultaneous
-	// events or until the queue is empty.
-	while (true) {
-
-	    if (_cQueue.size() == 0) {
-		// FIXME: this check is not needed, just for debugging
-		if (_currentActor==null) {
-		    System.out.println("Why invoke DECQDirector.fire()" +
-			    " when queue is empty ??!?!");
-		}
-		break;
-	    }
-
-	    try {
-		cqValue = (CQValue)_cQueue.take();
-	    } catch (IllegalAccessException e) {
-		//This shouldn't happen.
-		System.out.println("Bug in DECQDirector.fire()");
-	    }
-
-	    // On first iteration always accept the event.
-	    if (_currentActor == null) {
-		// These are done only once per execution of this fire()
-		// method.
-		_currentActor = cqValue.actor;
-		_currentTime = cqValue.key.timeStamp();
-	    }
-
-	    // Check if the event occured at current time.
-	    if (cqValue.key.timeStamp() != _currentTime) {
-		// The event occured not at current time, therefore put the
-		// event into the fifo queue to be enqueued back into the
-		// calendar queue later outside the loop.
-                fifo.put(cqValue);
-                break;
-	    }
-
-	    // check if it is for the same actor
-	    if (cqValue.actor == _currentActor) {
-
-
-		// FIXME: assume it's always for different receiver.
-		// FIXME: What do do if there are multiple events destined
-		// for the same receiver.
-
-		// Each DEReceiver can contains multiple simultaneous
-		// events. Therefore, one can simply put the token into
-		// the receiver.
-		cqValue.deReceiver.triggerEvent(cqValue.token);
-
-	    } else {
-		// put it into a FIFOQueue to be returned to queue later.
-		fifo.put(cqValue);
-	    }
-	}
-
-	// Transfer back the events from the fifo queue into the calendar
-	// queue.
-	while (fifo.size() > 0) {
-	    CQValue cqval = (CQValue)fifo.take();
-	    _cQueue.put(cqval.key,cqval);
-	}
-    }
-
     private IOPort _searchDeltaPort(IOPort outPort) {
 	Enumeration cpEnum = outPort.connectedPorts();
 	while (cpEnum.hasMoreElements()) {
@@ -548,30 +545,43 @@ public class DECQDirector extends Director {
 	}
 	return null;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private inner class               ////
 
-    // private inner class CQValue: wrapper for the datas that want to be
-    // stored in the queue.
-    // FIXME: CQValue.. bad name ?
-    private class CQValue {
-        // constructor
-        CQValue(Actor a, DEReceiver r, Token t, DESortKey k) {
-            actor = a;
-            deReceiver = r;
+    // Wrapper for the data to store in the queue.
+    private class DEEvent {
+
+        // Constructor to use when there is a token and destination receiver.
+        DEEvent(DEReceiver r, Token t, DESortKey k)
+                throws IllegalActionException {
+            if(r != null) {
+                Nameable port = r.getContainer();
+                if(port != null) {
+                    actor = (Actor)port.getContainer();
+                }
+            }
+            if (actor == null) {
+                throw new IllegalActionException(
+                    "Attempt to queue an event with an invalid receiver.");
+            }
+            receiver = r;
             token = t;
+            key = k;
+        }
+
+        // Constructor to use when only an actor firing is being requested.
+        DEEvent(Actor a, DESortKey k) {
+            actor = a;
             key = k;
         }
 
         // public fields
         public Actor actor;
-        public DEReceiver deReceiver;
+        public DEReceiver receiver;
         public Token token;
-        // FIXME: key is not really needed, but have it anyway for convenience.
         public DESortKey key;
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -580,30 +590,20 @@ public class DECQDirector extends Director {
     private CalendarQueue _cQueue = new CalendarQueue(new DECQComparator());
 
     // variables to keep track of the objects currently firing.
-    private Actor _currentActor = null;
+    private Actor _actorToFire = null;
 
-    // _stopTime defines the stopping condition
+    // Defines the stopping condition
     private double _stopTime = 0.0;
 
-    // _currentTime the current time of the simulation.
-    // Firing stars may get the current time by calling the getCurrentTime()
-    // method.
+    // The time of the earliest event seen in the current simulation.
+    private double _startTime = Double.MAX_VALUE;
+
+    // The current time of the simulation.
+    // Firing actors may get the current time by calling getCurrentTime()
     private double _currentTime = 0.0;
 
-    // _dag Directed Graph whose nodes represent input ports and whose
-    // edges represent delay free paths.
+    // Directed Graph whose nodes represent input ports and whose
+    // edges represent delay free paths.  This is used for prioritzing
+    // simultaneous events.
     private DirectedGraph _dag = new DirectedGraph();
-
 }
-
-
-
-
-
-
-
-
-
-
-
-

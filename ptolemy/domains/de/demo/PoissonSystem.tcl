@@ -48,8 +48,8 @@ $sys setExecutiveDirector $exec
 $dir setStopTime 50.0
 
 # Build the system
-set poisson [java::new ptolemy.domains.de.lib.DEPoisson 1.0 1.0 $sys Poisson]
-set ramp [java::new ptolemy.domains.de.lib.DERamp 0.0 1.0 $sys Ramp]
+set poisson [java::new ptolemy.domains.de.lib.DEPoisson $sys Poisson 1.0 1.0]
+set ramp [java::new ptolemy.domains.de.lib.DERamp $sys Ramp 0.0 1.0]
 set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]
 
 # Identify the ports
