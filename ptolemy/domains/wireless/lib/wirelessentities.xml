@@ -46,27 +46,17 @@
 </entity>
 
 <entity name="Network" class="ptolemy.moml.EntityLibrary">
+    <entity name="NetworkLayer" class="ptolemy.moml.EntityLibrary">
+        <entity name="IEEE80211MAC" class="ptolemy.domains.wireless.lib.network.PoissonNetwork">
+        </entity>
+    </entity>
+
     <entity name="MAC" class="ptolemy.moml.EntityLibrary">
         <entity name="IEEE80211MAC" class="ptolemy.domains.wireless.lib.network.mac.IEEE80211MAC">
         </entity>
-        <entity name="Backoff" class="ptolemy.domains.wireless.lib.network.mac.Backoff">
-        </entity>
-        <entity name="ChannelState" class="ptolemy.domains.wireless.lib.network.mac.ChannelState">
-        </entity>
-        <entity name="DataPump" class="ptolemy.domains.wireless.lib.network.mac.DataPump">
-        </entity>
-        <entity name="FilterMpdu" class="ptolemy.domains.wireless.lib.network.mac.FilterMpdu">
-        </entity>
-        <entity name="ValidateMpdu" class="ptolemy.domains.wireless.lib.network.mac.ValidateMpdu">
-        </entity>
-        <entity name="TxCoordination" class="ptolemy.domains.wireless.lib.network.mac.TxCoordination">
-        </entity>
-        <entity name="RxCoordination" class="ptolemy.domains.wireless.lib.network.mac.RxCoordination">
-        </entity>
-
     </entity>
    <entity name="PHY" class="ptolemy.moml.EntityLibrary">
-        <entity name="IEEE80211PHY" class="ptolemy.domains.wireless.lib.network.PHY">
+        <entity name="IEEE80211PHY" class="ptolemy.domains.wireless.lib.network.IEEE80211PHY">
         </entity>
     </entity>
 
