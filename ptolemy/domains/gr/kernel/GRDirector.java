@@ -211,19 +211,19 @@ public class GRDirector extends StaticSchedulingDirector {
                 _debug(new FiringEvent(this, actor,
                                FiringEvent.BEFORE_PREFIRE, 1));
             }
+            if (actor instanceof CompositeActor) {
+                CompositeActor compositeActor = (CompositeActor) actor;
+                Director  insideDirector = compositeActor.getDirector();
+
+                _insideDirector = insideDirector;
+                _pseudoTimeEnabled = true;
+            }
             boolean flag = actor.prefire();
             if (_debugging) {
                 _debug(new FiringEvent(this, actor,
                                FiringEvent.AFTER_PREFIRE, 1));
             }
             if (flag) {
-                if (actor instanceof CompositeActor) {
-                    CompositeActor compositeActor = (CompositeActor) actor;
-                    Director  insideDirector = compositeActor.getDirector();
-
-                    _insideDirector = insideDirector;
-                    _pseudoTimeEnabled = true;
-                }
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
                                    FiringEvent.BEFORE_FIRE, 1));
@@ -240,9 +240,9 @@ public class GRDirector extends StaticSchedulingDirector {
                     _debug(new FiringEvent(this, actor,
                                    FiringEvent.AFTER_POSTFIRE, 1));
                 }
-                // Make sure we reset the pseudotime flag.
-                _pseudoTimeEnabled = false;
             }
+            // Make sure we reset the pseudotime flag.
+            _pseudoTimeEnabled = false;
 
             // FIXME: should remove actor from schedule
             // if it returns false on postfire()
