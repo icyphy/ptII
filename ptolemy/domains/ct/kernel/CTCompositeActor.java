@@ -56,7 +56,7 @@ CTTransparentDirector, then the CTStepSizeControlActor calls
 will be delegated to its local director. Otherwise, they return
 default values.
 <P>
-This composite actor should be used when a CT subsystem need to transfer
+This composite actor should be used when a CT subsystem needs to transfer
 its step size control information to the outer domain. Typical usage
 includes CT inside CT or CT inside FSM inside CT.  If you construct
 a modal model, then by default, refinements of the modes are actors
