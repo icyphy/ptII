@@ -65,7 +65,7 @@ monitors data transfer for channels associated with input opaque ports.
 The <I>output</I> branch controller monitors data transfer for channels
 associated with output opaque ports.
 <P>
-Associated with each opaque port's channels is a pair of process
+Associated with the channels of each opaque is a pair of process
 receivers. The <I>producer receiver</I> serves as the channel source
 and the <I>consumer receiver</I> serves as the channel destination.
 Each branch controller allocates a branch for each process receiver
@@ -74,7 +74,7 @@ single token from its producer receiver to its consumer receiver.
 <P>
 When a branch blocks while attempting to transfer data, it informs its
 branch controller by passing the branch controller the blocked receiver.
-If all of a branch controller's branches have blocked, then we say that
+If all of the branches of a controller have blocked, then we say that
 the branch controller is blocked and the branch controller informs the
 composite process director. In addition to monitoring the status of its
 branch controllers, a composite process director keeps track of the
@@ -99,7 +99,7 @@ successive iterations are not allowed. If the actors contained by the
 inner composite actor are externally blocked, then the composite
 process director waits until the branch controllers block (an
 inevitable condition) and registers the block with the containing
-(outer) composite actor's director.
+(outer) composite director of the actor.
 <P>
 In this paragraph we consider the case of a process-oriented opaque
 composite actor that is contained by a schedule-oriented (non process)
@@ -558,8 +558,8 @@ public class CompositeProcessDirector extends ProcessDirector {
         return _outputControllerIsBlocked;
     }
 
-    /** Return true after registering all blocked receivers of this
-     *  director's branch controllers with the executive director
+    /** Return true after registering all blocked receivers of the
+     *  branch controllers of the director with the executive director
      *  and then waiting on the executive director to handle the
      *  blocked receivers.
      *  @return True after registering blocked branch controller
