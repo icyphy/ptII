@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	EfficiencyCurve.xml \
 	Transmission.xml
 
 EXTRA_SRCS = \
