@@ -107,6 +107,7 @@ public class DirectedGraph extends Graph {
      *  each element is a {@link Node}.
      *  @exception IllegalActionException If any two nodes are strongly
      *  connected.
+     *  @see #attemptTopologicalSort(Object[]).
      */
     public Collection attemptTopologicalSort(Collection nodeCollection)
             throws IllegalActionException {
@@ -150,7 +151,7 @@ public class DirectedGraph extends Graph {
      *  @return The weights of the sorted nodes.
      *  @exception IllegalActionException If any two nodes are strongly
      *   connected.
-     *  @see attemptTopologicalSort(Node[]).
+     *  @see #attemptTopologicalSort(Collection).
      */
     public Object[] attemptTopologicalSort(Object[] weights) throws
             IllegalActionException {

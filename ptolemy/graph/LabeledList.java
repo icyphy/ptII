@@ -195,7 +195,7 @@ public class LabeledList implements List {
      *  contain the element.
      *  @param element The element.
      *  @return The label of the element.
-     *  @see label(Object).
+     *  @see #label(Object).
      */
     public int indexOf(Object element) {
         if (element == null) {
@@ -231,7 +231,7 @@ public class LabeledList implements List {
      *  @exception IllegalArgumentException If the specified element is not
      *  not in this list.
      *  @exception NullPointerException If the specified element is null.
-     *  @see indexOf(Object).
+     *  @see #indexOf(Object).
      */
     public final int label(Object element) {
         if (element == null) {

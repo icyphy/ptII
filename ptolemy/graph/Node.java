@@ -60,13 +60,6 @@ of self loop edges.
 directed from (to) the same node are allowed. Thus, multigraphs are
 supported.
 
-<p>To keep this code as fast as possible, minimal error checking is
-performed. Consistency between nodes and their edge lists is up to the
-classes (e.g., graphs) that use the nodes. For example, when {@link
-#addInputEdge(Edge)} is used to insert an edge into a node's input
-edge list, there is no checking performed to see whether or not the
-node is actually the sink node of the edge being inserted.
-
 <p>Note that nodes and edge lists in nodes should normally be
 manipulated (created or modified) only by classes of graphs that contain them.
 

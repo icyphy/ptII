@@ -514,7 +514,7 @@ public class Graph {
      *  @param edge the edge label.
      *  @return the edge.
      *  @exception IllegalArgumentException If the label is not valid.
-     *  @see edgeLabel(Edge).
+     *  @see #edgeLabel(Edge).
      */
     public Edge edge(int label) {
         return (Edge)(_edges.get(label));
@@ -553,7 +553,7 @@ public class Graph {
      *  not valid.
      *  @exception IllegalArgumentException If the edge corresponding
      *  to the label is unweighted.
-     *  @see edgeLabel(Edge).
+     *  @see #edgeLabel(Edge).
      */
     public Object edgeWeight(int label) {
         return ((Edge)(_edges.get(label))).weight();
@@ -636,7 +636,7 @@ public class Graph {
      *  @param node the node label.
      *  @return the node.
      *  @exception IllegalArgumentException If the label is not valid.
-     *  @see nodeLabel(Node).
+     *  @see #nodeLabel(Node).
      */
     public Node node(int label) {
         return (Node)(_nodes.get(label));
@@ -674,7 +674,7 @@ public class Graph {
      *  @return The node label.
      *  @exception IllegalArgumentException If the specified weight wis not
      *  not a node weight in this graph.
-     *  @see nodeLabel(Node).
+     *  @see #nodeLabel(Node).
      */
     public int nodeLabel(Object weight) throws IllegalArgumentException {
         return _nodes.label(node(weight));
@@ -688,7 +688,7 @@ public class Graph {
      *  not valid.
      *  @exception IllegalArgumentException If the node corresponding
      *  to the label is unweighted.
-     *  @see nodeLabel(Node).
+     *  @see #nodeLabel(Node).
      */
     public Object nodeWeight(int label) {
         return ((Node)(_nodes.get(label))).weight();
@@ -881,10 +881,10 @@ public class Graph {
      *  Node and edge weights are preserved.
      *  In derived classes, this
      *  method returns the same type of graph as is returned by
-     *  @link{_emptyGraph()}.
+     *  {@link #_emptyGraph()}.
      *  @param nodes The array of nodes.
      *  @return The induced subgraph.
-     *  @deprecated Use {@link subgraph(Collection)} instead.
+     *  @deprecated Use {@link #subgraph(Collection)} instead.
      */
     public Graph subgraph(Node[] nodes) {
         return subgraph(Arrays.asList(nodes));
