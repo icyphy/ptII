@@ -1,6 +1,6 @@
 # Makefile for Ptolemy backtracking package
 #
-# @Version: $id$
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005 The Regents of the University of California
