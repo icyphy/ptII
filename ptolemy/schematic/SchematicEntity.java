@@ -167,7 +167,7 @@ public class SchematicEntity extends SchematicElement {
      * Take an arbitrary XMLElement and figure out what type it is, then
      * figure out what semantic meaning that has within this XMLElement.
      * This is primarily used by the parser to keep the semantic structures
-     * within an XMLElement consistant with the childElements.
+     * within an XMLElement consistent with the childElements.
      */
     void applySemanticsToChild(XMLElement e) {
         if(e instanceof SchematicPort) {

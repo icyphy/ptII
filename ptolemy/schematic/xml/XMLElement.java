@@ -317,7 +317,7 @@ public class XMLElement extends Object {
      * child elements, so it passes the element to its parent to see if the
      * parent has any semantics for it.
      * This is primarily used by the parser to keep the semantic structures
-     * within an XMLElement consistant with the childElements.
+     * within an XMLElement consistent with the childElements.
      */
     void applySemanticsToChild(XMLElement e) {
         if(_parent != null) _parent.applySemanticsToChild(e);

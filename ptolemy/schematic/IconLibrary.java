@@ -232,7 +232,7 @@ public class IconLibrary extends XMLElement{
      * By default an arbitrary XMLElement has no semantic meaning for its
      * child elements, so this just returns.
 a     * This is primarily used by the parser to keep the semantic structures
-     * within an XMLElement consistant with the childElements.
+     * within an XMLElement consistent with the childElements.
      */
     void applySemanticsToChild(XMLElement e) {
         if(e instanceof Icon) {

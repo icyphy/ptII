@@ -47,7 +47,7 @@ import java.util.Enumeration;
      It is derived from StaticSchedulingDirector and by default uses an
      SDFScheduler to static schedule the execution of the Actors.
      Furthermore, it creates Receivers of type QueueReceiver, which is
-     consistant with a dataflow domain.
+     consistent with a dataflow domain.
 
      The SDF director has a single parameter, "Iterations" corresponding to a
      limit on the number of times the director will fire its hierarchy
@@ -105,7 +105,7 @@ public class DTDirector extends SDFDirector {
     ////                         public methods                    ////
 
 
-    /** Return a new receiver consistant with the SDF domain.
+    /** Return a new receiver consistent with the SDF domain.
         All SDF receivers are FIFOQueues.
         @return A new FIFOQueue
         */
