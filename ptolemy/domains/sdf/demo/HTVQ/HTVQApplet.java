@@ -78,7 +78,7 @@ public class HTVQApplet extends SDFApplet {
             // Create a "Go" button.
             Panel runcontrols = new Panel();
             controlpanel.add("Center", runcontrols);
-            runcontrols.add(_createRunControls(1));
+            runcontrols.add(_createRunControls(2));
 
 	    Panel displayPanel = new Panel();
 	    add(displayPanel, "North");

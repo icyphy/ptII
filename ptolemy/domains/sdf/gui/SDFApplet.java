@@ -47,13 +47,13 @@ for convenience, in order to promote certain common elements among
 SDF applets. It is by no means required in order to create an applet
 that uses the SDF domain. In particular, it creates and configures a
 director. It defines two applet parameters, "iterations" and
-"defaultiterations", which it uses to set the iterations parameter
+"defaultIterations", which it uses to set the iterations parameter
 of the director. If "iterations" is set, then that defines the number
 of iterations. Otherwise, then when (and if) the applet requests on-screen
-controls for model execution, it creates a dialog box on the screen in
+controls for model execution, it creates an entry box on the screen in
 which the applet user can enter the number of
-iterations. If the applet parameter "defaultiterations" is given,
-then the value of this parameter is the default value in the dialog
+iterations. If the applet parameter "defaultIterations" is given,
+then the value of this parameter is the default value in the entry
 box.
 
 @author Edward A. Lee
@@ -70,7 +70,7 @@ public class SDFApplet extends PtolemyApplet {
     public String[][] getParameterInfo() {
         String newinfo[][] = {
             {"iterations", "", "number of iterations"},
-            {"defaultiterations", "1", "default number of iterations"}
+            {"defaultIterations", "1", "default number of iterations"}
         };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
@@ -114,11 +114,15 @@ public class SDFApplet extends PtolemyApplet {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** In addition to creating the buttons provided by the base class,
+    /** Create run controls in a panel and return that panel.
+     *  The argument controls how many buttons are
+     *  created.  If its value is greater than zero, then a "Go" button
+     *  created.  If its value is greater than one, then a "Stop" button
+     *  is also created. In addition,
      *  if the number of iterations has not been specified by the applet
      *  parameter "iterations," then create
-     *  a dialog box for that number to be entered.  The panel containing
-     *  the buttons and the entry box is returned.
+     *  an entry box for that number to be entered. 
+     *  Derived classes may override this method to add additional controls.
      *  @param numbuttons The number of buttons to create.
      *  @return The panel containing the controls.
      */
@@ -130,8 +134,8 @@ public class SDFApplet extends PtolemyApplet {
             Panel iterpanel = new Panel();
             iterpanel.add(new Label("Number of iterations:"));
 
-            // Process the defaultiterations parameter.
-            String defiterspec = getParameter("defaultiterations");
+            // Process the defaultIterations parameter.
+            String defiterspec = getParameter("defaultIterations");
             if (defiterspec == null) {
                 defiterspec = "1";
             }
