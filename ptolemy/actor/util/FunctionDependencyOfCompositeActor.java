@@ -38,7 +38,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.graph.DirectedGraph;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -142,6 +141,14 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         }
     }
 
+    /** Get a list of embedded entities for function dependency
+     *  calculation.
+     *  @return A list of embedded entities.
+     */
+    protected List _getEntities() {
+        return ((CompositeActor)getActor()).deepEntityList();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
     
@@ -172,7 +179,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         
         // FIXME: the situation that a state has multiple refinements 
         // has to be considered.  
-        List embeddedActors = ((CompositeEntity)getActor()).deepEntityList();
+        List embeddedActors = _getEntities();
 
         // Merge dependency graphs of the internal actors into 
         // the dependency graph of the actor.
