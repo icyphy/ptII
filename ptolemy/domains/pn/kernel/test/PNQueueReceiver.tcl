@@ -148,8 +148,8 @@ test PNQueueReceiver-4.3 {Test for initialize} {
     $rec put [java::new {ptolemy.data.IntToken int} 6]
     $rec setReadPending true
     $rec setWritePending true
-    $rec setPause true
-    $rec setFinish
+    $rec requestPause true
+    $rec requestFinish
     $rec initialize
     set elem [$rec elements]
     set ans1 [$elem hasMoreElements]
