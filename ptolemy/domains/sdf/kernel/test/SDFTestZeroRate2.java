@@ -131,20 +131,6 @@ public class SDFTestZeroRate2 extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     *  @param attribute The attribute that has changed.
-     *  @exception IllegalActionException If the parameters are out of range.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        SDFDirector dir = (SDFDirector)getDirector();
-
-        if (dir != null) {
-            dir.invalidateSchedule();
-        }
-        super.attributeChanged(attribute);
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the type constraints.
      *  @param workspace The workspace for the new object.
