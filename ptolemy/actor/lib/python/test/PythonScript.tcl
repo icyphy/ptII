@@ -305,3 +305,28 @@ From script:  4
 Called postfire()
 Called wrapup()
 }
+
+test OrderedMerge-2.5 {Bogus script, test _reportScriptError()} {
+    # Uses test 2.1 above
+    $script setExpression {
+class Main :
+  "double"
+  def fire(self) :
+    if not self.input.hasToken(0) :
+      return
+    t = self.input.get(0)
+    ThisIsATypo 	
+    self.output.broadcast(t.add(t))}
+
+    catch {[$e0 getManager] execute} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Error in invoking the fire method:
+line 8, in fire
+NameError: ThisIsATypo
+
+  in .top.PythonScript
+Because:
+Traceback (innermost last):
+  File "<string>", line 8, in fire
+NameError: ThisIsATypo
+}}
