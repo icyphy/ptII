@@ -191,7 +191,7 @@ public class InterfaceAutomaton extends FSMActor {
                 incomingTransition =
                     (InterfaceAutomatonTransition)transitionList.get(0);
                 if (incomingTransition.getType() !=
-                        InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
+                        InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
                     continue;
                 }
 
@@ -206,7 +206,7 @@ public class InterfaceAutomaton extends FSMActor {
                 outgoingTransition =
                     (InterfaceAutomatonTransition)transitionList.get(0);
                 if (outgoingTransition.getType() !=
-                        InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
+                        InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
                     continue;
                 }
 
@@ -412,7 +412,7 @@ public class InterfaceAutomaton extends FSMActor {
                     (InterfaceAutomatonTransition)transitions.next();
                 int transitionType = transition.getType();
                 if (transitionType ==
-                            InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
+                            InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
                     State destinationState = transition.destinationState();
                     if ( !closure.contains(destinationState)) {
                         closure.add(destinationState);
@@ -465,7 +465,7 @@ public class InterfaceAutomaton extends FSMActor {
      */
     public Set externallyEnabledInputTransitionLabels(State state) {
         Set transitionLabels = _transitionLabelsFrom(state,
-                        InterfaceAutomatonTransition.INPUT_TRANSITION);
+                        InterfaceAutomatonTransition._INPUT_TRANSITION);
 
         Set closure = epsilonClosure(state);
         closure.remove(state);
@@ -473,7 +473,7 @@ public class InterfaceAutomaton extends FSMActor {
         while (states.hasNext()) {
             State nextState = (State)states.next();
             Set labels = _transitionLabelsFrom(nextState,
-                            InterfaceAutomatonTransition.INPUT_TRANSITION);
+                            InterfaceAutomatonTransition._INPUT_TRANSITION);
             transitionLabels.retainAll(labels);
         }
         return transitionLabels;
@@ -488,7 +488,7 @@ public class InterfaceAutomaton extends FSMActor {
      */
     public Set externallyEnabledOutputTransitionLabels(State state) {
         Set transitionLabels = _transitionLabelsFrom(state,
-                        InterfaceAutomatonTransition.OUTPUT_TRANSITION);
+                        InterfaceAutomatonTransition._OUTPUT_TRANSITION);
 
         Set closure = epsilonClosure(state);
         closure.remove(state);
@@ -496,7 +496,7 @@ public class InterfaceAutomaton extends FSMActor {
         while (states.hasNext()) {
             State nextState = (State)states.next();
             Set labels = _transitionLabelsFrom(nextState,
-                        InterfaceAutomatonTransition.OUTPUT_TRANSITION);
+                        InterfaceAutomatonTransition._OUTPUT_TRANSITION);
             transitionLabels.addAll(labels);
         }
         return transitionLabels;
@@ -1012,7 +1012,7 @@ public class InterfaceAutomaton extends FSMActor {
                     // switch depending on type of transition
                     int transitionType = transition.getType();
                     if (transitionType ==
-                            InterfaceAutomatonTransition.INPUT_TRANSITION) {
+                            InterfaceAutomatonTransition._INPUT_TRANSITION) {
                         // case 1
                         if (_inputNames.contains(transitionName)) {
                             // case 1A. Add transition to product as input
@@ -1047,7 +1047,7 @@ public class InterfaceAutomaton extends FSMActor {
                         }
                     }
                     else if (transitionType ==
-                            InterfaceAutomatonTransition.OUTPUT_TRANSITION) {
+                            InterfaceAutomatonTransition._OUTPUT_TRANSITION) {
                         // case 2. T is output for p.
                         if (_outputNames.contains(transitionName)) {
                             // case 2A. T is output of product. Add T to
@@ -1078,7 +1078,7 @@ public class InterfaceAutomaton extends FSMActor {
                             }
                         }
                     } else if (transitionType ==
-                            InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
+                            InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
                         // case 3. T is internal for p. Add T to product
                         State destinationInProduct = _addState(product,
                                 destinationInThis, stateInArgument, frontier);
@@ -1111,7 +1111,7 @@ public class InterfaceAutomaton extends FSMActor {
                     // switch depending on type of transition
                     int transitionType = transition.getType();
                     if (transitionType ==
-                            InterfaceAutomatonTransition.INPUT_TRANSITION) {
+                            InterfaceAutomatonTransition._INPUT_TRANSITION) {
                         // case 1
                         if (_inputNames.contains(transitionName)) {
                             // case 1A. Add transition to product as input
@@ -1147,7 +1147,7 @@ public class InterfaceAutomaton extends FSMActor {
                         }
                     }
                     else if (transitionType ==
-                            InterfaceAutomatonTransition.OUTPUT_TRANSITION) {
+                            InterfaceAutomatonTransition._OUTPUT_TRANSITION) {
                         // case 2. T is output for q.
                         if (_outputNames.contains(transitionName)) {
                             // case 2A. T is output of product. Add T to
@@ -1178,7 +1178,7 @@ public class InterfaceAutomaton extends FSMActor {
                             }
                         }
                     } else if (transitionType ==
-                            InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
+                            InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
                         // case 3. T is internal for q. Add T to product
                         State destinationInProduct = _addState(product,
                                 stateInThis, destinationInArgument, frontier);
@@ -1401,9 +1401,9 @@ public class InterfaceAutomaton extends FSMActor {
                     (InterfaceAutomatonTransition)transitions.next();
                 int transitionType = transition.getType();
                 if (transitionType ==
-                        InterfaceAutomatonTransition.OUTPUT_TRANSITION ||
+                        InterfaceAutomatonTransition._OUTPUT_TRANSITION ||
                         transitionType ==
-                        InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
+                        InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
                     State sourceState = transition.sourceState();
                     if ( !_illegalStates.contains(sourceState)) {
                         _illegalStates.add(sourceState);

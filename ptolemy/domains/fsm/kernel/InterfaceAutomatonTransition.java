@@ -180,17 +180,17 @@ public class InterfaceAutomatonTransition extends Transition {
     }
 
     /** Return the transition type. The transition type is one of
-     *  INPUT_TRANSITION, OUTPUT_TRANSITION, or INTERNAL_TRANSITION.
+     *  _INPUT_TRANSITION, _OUTPUT_TRANSITION, or _INTERNAL_TRANSITION.
      *  @return the transition type.
      */
     public int getType() {
         String labelString = label.getExpression();
         if (labelString.endsWith("?")) {
-            return INPUT_TRANSITION;
+            return _INPUT_TRANSITION;
         } else if (labelString.endsWith("!")) {
-            return OUTPUT_TRANSITION;
+            return _OUTPUT_TRANSITION;
         } else if (labelString.endsWith(";")) {
-            return INTERNAL_TRANSITION;
+            return _INTERNAL_TRANSITION;
         } else {
             throw new InternalErrorException(
                     "InterfaceAutomatonTransition.getType: "
@@ -238,8 +238,7 @@ public class InterfaceAutomatonTransition extends Transition {
     ////                         protected variables               ////
 
     // Transition types.
-    // FIXME: If these are protected, they should have leading _
-    protected static final int INPUT_TRANSITION = 0;
-    protected static final int OUTPUT_TRANSITION = 1;
-    protected static final int INTERNAL_TRANSITION = 2;
+    protected static final int _INPUT_TRANSITION = 0;
+    protected static final int _OUTPUT_TRANSITION = 1;
+    protected static final int _INTERNAL_TRANSITION = 2;
 }
