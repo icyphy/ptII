@@ -310,7 +310,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBOOST_INCLUDE PTCALTROP_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTCHIC_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMESCAL_DIR PTPSDF_DIR PTQUICKTIME_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBOOST_INCLUDE PTCALTROP_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTCHIC_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMESCAL_DIR PTPSDF_DIR PTQUICKTIME_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -887,7 +887,7 @@ Optional Packages:
   --with-soot=DIR       use SOOT from DIR,
                           defaults to \$PTII/lib
   --with-javasystemjar=DIR       use rt.lib from DIR,
-                          defaults to JRE java.home property
+                          defaults to JRE java.home property with lib/rt.jar appended
   --with-tini=DIR       use TINI from DIR,
                           defaults to \$PTII/vendors/dalsemi/tini
   --with-giotto=DIR       use GiottoSDF from DIR,
@@ -4028,24 +4028,82 @@ echo "${ECHO_T}$COMMAPI_DIR" >&6
 	'$COMMAPI_DIR/comm.jar'" >&5
 echo "${ECHO_T}Did not find
 	'$COMMAPI_DIR/comm.jar'" >&6
-	echo "$as_me:$LINENO: checking for commapi by compiling a test program " >&5
-echo $ECHO_N "checking for commapi by compiling a test program ... $ECHO_C" >&6
-        # We need to run javac in the config directory so that javac from
-        # jdk1.1.6 under NT and cygwin works properly
-	startdir=`pwd`
-	cd "$srcdir/config"
-	# Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-	if "$JAVAC" javaCommAPI.java ; then
-	    echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6
-	    PTLEGO_DIR=lego
-	    PTCOMM_DIR=comm
-	    COMMAPI_PRESENT=yes
-	else
-	    COMMAPI_DIR='${PTII}/vendors/sun/commapi'
-	fi
-	cd "$startdir"
     fi
+
+    # Set PTJAVA_HOME
+    # Under Cygwin, PTJAVA_HOME will not contain /cygdrive/c
+    # Under Cygwin, PTJAVA_DIR _will_ contain /cygdrive/c
+    # We need to run javac in the config directory so that javac from
+    # jdk1.1.6 under NT and cygwin works properly
+    startdir=`pwd`
+    cd "$srcdir/config"
+    echo "$as_me:$LINENO: checking for java.home prop by compiling a test program " >&5
+echo $ECHO_N "checking for java.home prop by compiling a test program ... $ECHO_C" >&6
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" JavaHome.java ; then
+        echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+	echo "$as_me:$LINENO: checking for java.home prop by running a test program " >&5
+echo $ECHO_N "checking for java.home prop by running a test program ... $ECHO_C" >&6
+	if env CLASSPATH="$PTII/config" "$JAVA" JavaHome > /dev/null; then
+	    # Run it again and get the results with \ converted to /
+	    PTJAVA_HOME=`CLASSPATH="$PTII/config" "$JAVA" JavaHome | sed 's@\\\@/@'g`
+	    echo "$as_me:$LINENO: result: $PTJAVA_HOME" >&5
+echo "${ECHO_T}$PTJAVA_HOME" >&6
+
+	    echo "$as_me:$LINENO: checking for javax.comm.properties " >&5
+echo $ECHO_N "checking for javax.comm.properties ... $ECHO_C" >&6
+	    if test -f "$PTJAVA_HOME/lib/javax.comm.properties"; then
+	       echo "$as_me:$LINENO: result: $PTJAVA_HOME/lib/javax.comm.properties" >&5
+echo "${ECHO_T}$PTJAVA_HOME/lib/javax.comm.properties" >&6
+	    else
+	       { echo "$as_me:$LINENO: WARNING: $PTJAVA_HOME/lib/javax.comm.properties
+    not found.
+    If you try to access a serial port and get 'No serial ports found!',
+    then the problem is that javax.comm.properties is not being found.
+    Download the Java Comm API from http://java.sun.com/products/javacomm/
+    and place javax.comm.properties in $PTJAVA_HOME/lib" >&5
+echo "$as_me: WARNING: $PTJAVA_HOME/lib/javax.comm.properties
+    not found.
+    If you try to access a serial port and get 'No serial ports found!',
+    then the problem is that javax.comm.properties is not being found.
+    Download the Java Comm API from http://java.sun.com/products/javacomm/
+    and place javax.comm.properties in $PTJAVA_HOME/lib" >&2;}
+	    fi
+	    case "`uname -s`" in
+	    CYGWIN*)	 PTCYGWIN=yes;;
+	    *) PTCYGWIN=no;
+	    esac
+	    if test $PTCYGWIN = "yes"; then
+	       echo "$as_me:$LINENO: checking for win32com.dll " >&5
+echo $ECHO_N "checking for win32com.dll ... $ECHO_C" >&6
+	       if test -f "$PTJAVA_HOME/lib/ext/win32com.dll"; then
+	           echo "$as_me:$LINENO: result: $PTJAVA_HOME/lib/ext/win32com.dll" >&5
+echo "${ECHO_T}$PTJAVA_HOME/lib/ext/win32com.dll" >&6
+   	       else
+	           { echo "$as_me:$LINENO: WARNING: $PTJAVA_HOME/lib/ext/win32com.dll
+    not found.
+    Download the Java Comm API from http://java.sun.com/products/javacomm/
+    and place win32com.dll in $PTJAVA_HOME/lib/ext" >&5
+echo "$as_me: WARNING: $PTJAVA_HOME/lib/ext/win32com.dll
+    not found.
+    Download the Java Comm API from http://java.sun.com/products/javacomm/
+    and place win32com.dll in $PTJAVA_HOME/lib/ext" >&2;}
+	       fi
+	    fi
+	else
+	    { echo "$as_me:$LINENO: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA JavaHome' failed.
+    Running models that access the serial port from within a sandbox
+    might fail.  This is usually only important if you plan on using
+    the sandbox feature, see $PTII/doc/sandbox.htm" >&5
+echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA JavaHome' failed.
+    Running models that access the serial port from within a sandbox
+    might fail.  This is usually only important if you plan on using
+    the sandbox feature, see $PTII/doc/sandbox.htm" >&2;};
+	fi
+    fi
+    cd "$startdir"
+
 
     if test "$COMMAPI_PRESENT" = "no"; then
         { echo "$as_me:$LINENO: WARNING: Perhaps commapi is not installed?
@@ -6773,8 +6831,8 @@ fi;
     if "$JAVAC" SystemJar.java ; then
 	echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
-	echo "$as_me:$LINENO: checking the value of the java.home property " >&5
-echo $ECHO_N "checking the value of the java.home property ... $ECHO_C" >&6
+	echo "$as_me:$LINENO: checking the location or rt.jar" >&5
+echo $ECHO_N "checking the location or rt.jar... $ECHO_C" >&6
 	if env CLASSPATH="$PTII/config" "$JAVA" SystemJar > /dev/null; then
 	    # Run it again and get the results
 	    JAVA_SYSTEM_JAR=`CLASSPATH="$PTII/config" "$JAVA" SystemJar`
@@ -7295,6 +7353,9 @@ fi
 
 
 # Location of the JDK
+
+
+# Value of java.home property, location of the JDK with /cygdrive/c/ converted to c:/
 
 
 # Set to gr and used in
@@ -8136,6 +8197,7 @@ s,@PTJACL_DIR@,$PTJACL_DIR,;t t
 s,@PTJACL_JAR@,$PTJACL_JAR,;t t
 s,@PTJAI_DIR@,$PTJAI_DIR,;t t
 s,@PTJAVA_DIR@,$PTJAVA_DIR,;t t
+s,@PTJAVA_HOME@,$PTJAVA_HOME,;t t
 s,@PTJAVA3D_DIR@,$PTJAVA3D_DIR,;t t
 s,@PTJHDL_DIR@,$PTJHDL_DIR,;t t
 s,@PTJMF_DIR@,$PTJMF_DIR,;t t
