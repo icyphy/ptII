@@ -212,7 +212,7 @@ public class ODReceiver extends TimedQueueReceiver
             } 
             if( _terminate ) {
                 director.removeReadBlock(); 
-                new TerminateProcessException( getContainer(), "This "
+                throw new TerminateProcessException( getContainer(), "This "
                         + "receiver has been terminated during get().");
             } else {
                 // ODActor actor = (ODActor)getContainer().getContainer();
@@ -329,8 +329,7 @@ public class ODReceiver extends TimedQueueReceiver
             
             if( _terminate ) {
                 director.removeWriteBlock(); 
-                new TerminateProcessException( getContainer(), "This "
-                        + "receiver has been terminated during put().");
+                new TerminateProcessException( getContainer(), "" );
             } else {
                 director.removeWriteBlock(); 
                 super.put(token, time);
@@ -343,7 +342,8 @@ public class ODReceiver extends TimedQueueReceiver
     /** FIXME
      */
     public void setFinish() {
-        ;
+        _terminate = true;
+        // notifyAll();
     }
     
     /** FIXME
