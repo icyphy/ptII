@@ -144,34 +144,37 @@ public class UParser implements UParserConstants {
       U = unit();
       jj_consume_token(POWER);
       exponent = exponent();
-            String _unitLabel = U.image;
-            Unit unit = UnitLibrary.getUnitByName(_unitLabel);
-            if (unit != null) {
-                unitTerm.setExponent(exponent);
-                unitTerm.setUnit(unit);
+            String unitLabel = U.image;
+            if (U.kind == UParserConstants.PORT) {
+                unitTerm.setVariable(unitLabel.substring(1));
+            } else if (U.kind == UParserConstants.UNITLABEL) {
+                Unit unit = UnitLibrary.getUnitByName(unitLabel);
+                if (unit != null) {
+                    unitTerm.setUnit(unit);
+                }
             } else {
                 {if (true) throw new ParseException(
-                                         _unitLabel
-                                         + " is not grounded in the Units Library");}
+                                         unitLabel
+                                         + " is a not variable and is not grounded in the Units Library");}
             }
+            unitTerm.setExponent(exponent);
     } else {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case UNITLABEL:
       case PORT:
         U = unit();
-            String image = U.image;
+            String unitLabel = U.image;
             if (U.kind == UParserConstants.PORT) {
-                unitTerm.setVariable(U.image.substring(1));
-            } else {
-                String _unitLabel = U.image;
-                Unit unit = UnitLibrary.getUnitByName(_unitLabel);
+                unitTerm.setVariable(unitLabel.substring(1));
+            } else if (U.kind == UParserConstants.UNITLABEL) {
+                Unit unit = UnitLibrary.getUnitByName(unitLabel);
                 if (unit != null) {
                     unitTerm.setUnit(unit);
-                } else {
-                    {if (true) throw new ParseException(
-                                             _unitLabel
-                                             + " is not grounded in the Units Library");}
                 }
+            } else {
+                {if (true) throw new ParseException(
+                                         unitLabel
+                                         + " is a not variable and is not grounded in the Units Library");}
             }
         break;
       case INTEGER:
@@ -382,35 +385,15 @@ String tidied, x;
     finally { jj_save(1, xla); }
   }
 
-  final private boolean jj_3R_12() {
-    if (jj_scan_token(DOUBLE)) return true;
-    return false;
-  }
-
-  final private boolean jj_3R_11() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3R_12()) {
-    jj_scanpos = xsp;
-    if (jj_3R_13()) return true;
-    }
-    return false;
-  }
-
-  final private boolean jj_3R_4() {
-    if (jj_3R_5()) return true;
+  final private boolean jj_3_2() {
+    if (jj_scan_token(SEMICOLON)) return true;
+    if (jj_3R_4()) return true;
     return false;
   }
 
   final private boolean jj_3_1() {
     if (jj_3R_3()) return true;
     if (jj_scan_token(POWER)) return true;
-    return false;
-  }
-
-  final private boolean jj_3_2() {
-    if (jj_scan_token(SEMICOLON)) return true;
-    if (jj_3R_4()) return true;
     return false;
   }
 
@@ -450,11 +433,6 @@ String tidied, x;
     return false;
   }
 
-  final private boolean jj_3R_6() {
-    if (jj_3R_7()) return true;
-    return false;
-  }
-
   final private boolean jj_3R_13() {
     if (jj_scan_token(INTEGER)) return true;
     return false;
@@ -467,6 +445,31 @@ String tidied, x;
     jj_scanpos = xsp;
     if (jj_scan_token(19)) return true;
     }
+    return false;
+  }
+
+  final private boolean jj_3R_6() {
+    if (jj_3R_7()) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_12() {
+    if (jj_scan_token(DOUBLE)) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_11() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_12()) {
+    jj_scanpos = xsp;
+    if (jj_3R_13()) return true;
+    }
+    return false;
+  }
+
+  final private boolean jj_3R_4() {
+    if (jj_3R_5()) return true;
     return false;
   }
 

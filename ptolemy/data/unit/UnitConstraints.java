@@ -76,21 +76,31 @@ public class UnitConstraints implements UnitPresentation {
         _constraints = new Vector();
     }
 
-    /**
+    /** Construct a set of Unit constraints from the specified componentEntities
+     * and realtions of a model.
+     * <p>
+     * For each componentEntity each constraints in
+     * the form of Unit equation is retrieved and then used a basis to create a
+     * Unit constraint to add to the set. Each port on the componentEntity is
+     * inspected to see if it has a Unit specified for it. If so, then that Unit
+     * specification is used to create a corresponding Unit constraint that gets
+     * added to the set.
+     * <p>
+     * The relations are then considered. XXX
      * @param model
-     * @param nodes
+     * @param componentEntities
      * @param relations
      */
     public UnitConstraints(
         TypedCompositeActor model,
-        Vector nodes,
+        Vector componentEntities,
         Vector relations) {
         this();
         _model = model;
-        _bindings = new Bindings(nodes);
-        for (int i = 0; i < nodes.size(); i++) {
+        _bindings = new Bindings(componentEntities);
+        for (int i = 0; i < componentEntities.size(); i++) {
             ComponentEntity componentEntity =
-                (ComponentEntity) (nodes.elementAt(i));
+                (ComponentEntity) (componentEntities.elementAt(i));
             Vector actorConstraints = getConstraints(componentEntity);
             if (actorConstraints != null) {
                 for (int j = 0; j < actorConstraints.size(); j++) {
@@ -171,6 +181,26 @@ public class UnitConstraints implements UnitPresentation {
         return retv;
     }
 
+    public Vector completeSolve() {
+        Vector solutions = null;
+        try {
+            if (_debug) {
+                System.out.println(humanReadableForm(_bindings));
+            }
+            Solver G =
+                new Solver(
+                    _model,
+                    _bindings.variableLabels(),
+                    getConstraints());
+            G.setDebug(_debug);
+            solutions = G.completeSolve();
+            //G.annotateGraph();
+        } catch (IllegalActionException e) {
+            KernelException.stackTraceToString(e);
+        }
+        return solutions;
+    }
+
     /**
      *
      */
@@ -239,25 +269,27 @@ public class UnitConstraints implements UnitPresentation {
     /**
      *
      */
-    public void solve() {
+    public Vector partialSolve() {
+        Vector solutions = null;
         try {
-            System.out.println(_bindings.toString());
-            System.out.println(humanReadableForm(_bindings));
+            if (_debug) {
+                System.out.println(humanReadableForm(_bindings));
+            }
             Solver G =
                 new Solver(
                     _model,
                     _bindings.variableLabels(),
                     getConstraints());
-            System.out.println(G.dumpContents());
-            G.solve();
-            System.out.println(G.dumpContents());
-            G.annotateGraph();
+            G.setDebug(_debug);
+            solutions = G.partialSolve();
+            //G.annotateGraph();
         } catch (IllegalActionException e) {
             KernelException.stackTraceToString(e);
         }
+        return solutions;
     }
 
-    public static void solve(Tableau tableau, NamedObj target) {
+    public static Vector solve(Tableau tableau, NamedObj target) {
         TypedCompositeActor model =
             ((TypedCompositeActor) (((PtolemyEffigy) (tableau.getContainer()))
                 .getModel()));
@@ -279,42 +311,18 @@ public class UnitConstraints implements UnitPresentation {
             nodes.add(target);
             uConstraints = new UnitConstraints(model, nodes, new Vector());
         }
-        uConstraints.solve();
-    }
-
-    /**
-     * @param model
-     * @param port
-     */
-    public static void solvePort(TypedCompositeActor model, TypedIOPort port) {
-        Vector nodes = new Vector(model.entityList(ComponentEntity.class));
-        Vector relations = new Vector(model.relationList());
-        UnitConstraints uConstraints =
-            new UnitConstraints(model, nodes, relations);
-        Solver G;
-        try {
-            G =
-                new Solver(
-                    model,
-                    uConstraints.getBindings().variableLabels(),
-                    uConstraints.getConstraints());
-            System.out.println(G.dumpContents());
-            G.solveForVariable(port.getFullName());
-            System.out.println(G.dumpContents());
-        } catch (IllegalActionException e) {
-            KernelException.stackTraceToString(e);
-        }
+        return uConstraints.partialSolve();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                 private methods                           ////
 
-    private static void _debug(String msg) {
+    private void _debug(String msg) {
         if (_debug)
             System.out.println(msg);
     }
 
-    /** Create a Vector of selected Nodess in a Tableau. This method really
+    /** Create a Vector of selected odes in a Tableau. This method really
      *  belongs elsewhere and will be moved there at some point.
      * @param tableau
      * @return Vector of selected Nodes.
@@ -391,7 +399,8 @@ public class UnitConstraints implements UnitPresentation {
     ////                     private variables                     ////
     private Bindings _bindings = null;
     private Vector _constraints = null;
-    private static boolean _debug = true;
+    private boolean _debug = true;
     private static ExpandPortNames _equationVisitor = new ExpandPortNames();
     private TypedCompositeActor _model = null;
+
 }

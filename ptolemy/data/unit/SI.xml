@@ -182,4 +182,13 @@
 <property name="time" class="ptolemy.data.expr.Parameter" value="second"/>
 <property name="degrees" class="ptolemy.data.expr.Parameter" value="degree"/>
 
+  <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <rect x="-30" y="-15" width="60" height="30" style="fill:grey"/>
+      </svg>
+    </configure>
+  </property>
+
+
 </property>

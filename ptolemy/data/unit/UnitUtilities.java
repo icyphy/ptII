@@ -35,7 +35,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// UnitUtilities.
 /**
@@ -67,6 +66,165 @@ public class UnitUtilities {
     private UnitUtilities() {
     }
 
+    /** Add the given unit arrays, and return the result in a new
+     *  array.  The size of the returned array will be the maximum of
+     *  the size of the two input arrays, or null if both input arrays
+     *  are unitless.
+     */
+    public static int[] addUnitsArray(int[] units1, int[] units2) {
+        boolean isUnitless1 = isUnitless(units1);
+        boolean isUnitless2 = isUnitless(units2);
+
+        if (isUnitless1 && isUnitless2) {
+            return null;
+        } else if (isUnitless1) {
+            // units2 is not unitless.
+            return copyUnitsArray(units2);
+        } else if (isUnitless2) {
+            // units1 is not unitless.
+            return copyUnitsArray(units1);
+        } else {
+            // both have units.
+            int units1Length = units1.length;
+            int units2Length = units2.length;
+            int[] result;
+            if (units1Length < units2Length) {
+                result = new int[units2Length];
+                System.arraycopy(units2, 0, result, 0, units2Length);
+                for (int i = 0; i < units1Length; i++) {
+                    result[i] += units1[i];
+                }
+            } else {
+                result = new int[units1Length];
+                System.arraycopy(units1, 0, result, 0, units1Length);
+                for (int i = 0; i < units2Length; i++) {
+                    result[i] += units2[i];
+                }
+            }
+
+            if (isUnitless(result)) {
+                return null;
+            }
+            return result;
+        }
+    }
+
+    /** Return true if the units of this token are the same as that of the
+     *  argument token. If both tokens do not have units, return true.
+     *  @param units1 The first array of units.
+     *  @param units2 The second array of units.
+     *  @return True if the units of this token is the same as that of
+     *  the argument token; false otherwise.
+     */
+    public static boolean areUnitArraysEqual(int[] units1, int[] units2) {
+        boolean isUnitless1 = isUnitless(units1);
+        boolean isUnitless2 = isUnitless(units2);
+
+        // Either this token, or the argument token, or both have non null
+        // exponent arrays.
+        if (isUnitless1 && isUnitless2) {
+            return true;
+        } else if (isUnitless1 || isUnitless2) {
+            // one is unitless, the other is not.
+            return false;
+        } else {
+            // both are not unitless.
+            int units1Length = units1.length;
+            int units2Length = units2.length;
+            int shorterLength = Math.min(units1Length, units2Length);
+            for (int i = 0; i < shorterLength; i++) {
+                if (units1[i] != units2[i]) {
+                    return false;
+                }
+            }
+            for (int i = shorterLength; i < units1Length; i++) {
+                if (units1[i] != 0) {
+                    return false;
+                }
+            }
+            for (int i = shorterLength; i < units2Length; i++) {
+                if (units2[i] != 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    /** Return a copy of the given units array. If the given array is
+     *  unitless, then return null.
+     *  @return An int array that is a copy of the unit category
+     *  exponents of this token.
+     */
+    public static int[] copyUnitsArray(int[] units) {
+
+        if (isUnitless(units)) {
+            return null;
+        }
+
+        int length = units.length;
+        int[] newUnits = new int[length];
+        System.arraycopy(units, 0, newUnits, 0, length);
+        return newUnits;
+    }
+
+    /** Return the name of the base unit of the specified category.
+     *  @param categoryIndex The index of the unit category.
+     *  @return The name of the base unit of the category.
+     */
+    public static String getBaseUnitName(int categoryIndex) {
+        synchronized (_indexTable) {
+            if (categoryIndex < 0 || categoryIndex >= _categories) {
+                // FIXME: exception?
+                return "unknown";
+            } else {
+                String categoryName = (String) _categoryList.get(categoryIndex);
+                if (categoryName != null) {
+                    return categoryName;
+                } else {
+                    // FIXME: exception?
+                    return "unknown";
+                }
+            }
+        }
+    }
+
+    /** Return the number of currently registered categories.
+     */
+    public static int getNumCategories() {
+        return _categories;
+    }
+
+    /** Return the index assigned to the specified unit category.
+     *  @param categoryName The unit category.
+     *  @return The index assigned to the category.
+     */
+    public static int getUnitCategoryIndex(String categoryName) {
+        synchronized (_indexTable) {
+            Integer index = (Integer) _indexTable.get(categoryName);
+            if (index == null) {
+                //FIXME: throw an exception?
+                return -1;
+            } else {
+                return index.intValue();
+            }
+        }
+    }
+
+    /** Return true if the given unit array is null, or the exponents for
+     *  each index are zero.
+     */
+    public static boolean isUnitless(int[] exponents) {
+        if (exponents != null) {
+            for (int i = 0; i < exponents.length; i++) {
+                if (exponents[i] != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -75,13 +233,84 @@ public class UnitUtilities {
      *  @param index The unit category index.
      */
     public static int[] newUnitArrayInCategory(int index) {
-        int[] units = new int[index+1];
+        int[] units = new int[index + 1];
         // Note: java.util.Arrays not available on Tini Arrays.fill(units, 0);
-        for(int i = 0; i < units.length; i++) {
+        for (int i = 0; i < units.length; i++) {
             units[i] = 0;
         }
         units[index] = 1;
         return units;
+    }
+
+    /** Register the specified unit category name.
+     *  If the category is not already registered, assign a unique index
+     *  for the category.
+     *  This method is static, so a category added here will be
+     *  available throughout the system.
+     *  <p>Note that the
+     *  {@link UnitCategory#UnitCategory(NamedObj, String)} constructor
+     *  calls this method.
+     *
+     *  @param categoryName The unit categoryName to be registered.
+     */
+    public static void registerUnitCategory(String categoryName) {
+        synchronized (_indexTable) {
+            Integer index = (Integer) _indexTable.get(categoryName);
+            if (index != null) {
+                return;
+            } else {
+                index = new Integer(_categories);
+                _indexTable.put(categoryName, index);
+                ++_categories;
+                _categoryList.add(categoryName);
+            }
+        }
+    }
+
+    /** Reset the internal state of the UnitSystem.  This method is
+     * only useful for testing, and should not be called under most
+     * circumstances, since it will cause any previously created
+     * UnitTokens to have incorrect units.
+     */
+    public static void resetUnitCategories() {
+        // This method is necessary for testing.
+        // UnitSystem has static state, so it makes it difficult
+        // to create multiple small UnitSystems.
+        synchronized (_indexTable) {
+            _indexTable.clear();
+            _categories = 0;
+            _categoryList.clear();
+        }
+    }
+
+    /** Add the exponent array of this token with the argument array,
+     *  and return the result in a new array.
+     */
+    public static int[] subtractUnitsArray(int[] units1, int[] units2) {
+        // negate the exponents of the argument token and add to
+        // this token.
+        int[] negation = null;
+        if (!isUnitless(units2)) {
+            int length = units2.length;
+            negation = new int[length];
+            for (int i = 0; i < length; i++) {
+                negation[i] = -units2[i];
+            }
+        }
+        return addUnitsArray(units1, negation);
+    }
+
+    /** Return a string representation of the UnitSystem.
+     *  @return A string representation of the UnitSystem
+     */
+    public static String summarizeUnitCategories() {
+        synchronized (_indexTable) {
+            StringBuffer buffer =
+                new StringBuffer("The registered categories are:");
+            buffer.append("" + _categories);
+            buffer.append(_categoryList.toString());
+            return buffer.toString();
+        }
     }
 
     /** Return the string representation of the given array of units.
@@ -96,7 +325,7 @@ public class UnitUtilities {
      *  @return A string representation of the given units array.
      */
     public static String unitsString(int[] units) {
-        synchronized(_indexTable) {
+        synchronized (_indexTable) {
             // FIXME: use StringBuffer.
             if (isUnitless(units)) {
                 return "";
@@ -152,237 +381,6 @@ public class UnitUtilities {
             } else {
                 return positiveUnits + " / (" + negativeUnits + ")";
             }
-        }
-    }
-
-    /** Return a copy of the given units array. If the given array is
-     *  unitless, then return null.
-     *  @return An int array that is a copy of the unit category
-     *  exponents of this token.
-     */
-    public static int[] copyUnitsArray(int[] units) {
-
-        if (isUnitless(units)) {
-            return null;
-        }
-
-        int length = units.length;
-        int[] newUnits = new int[length];
-        System.arraycopy(units, 0, newUnits, 0, length);
-        return newUnits;
-    }
-
-    /** Return true if the units of this token are the same as that of the
-     *  argument token. If both tokens do not have units, return true.
-     *  @param units1 The first array of units.
-     *  @param units2 The second array of units.
-     *  @return True if the units of this token is the same as that of
-     *  the argument token; false otherwise.
-     */
-    public static boolean areUnitArraysEqual(int[] units1, int[] units2) {
-        boolean isUnitless1 = isUnitless(units1);
-        boolean isUnitless2 = isUnitless(units2);
-
-        // Either this token, or the argument token, or both have non null
-        // exponent arrays.
-        if (isUnitless1 && isUnitless2) {
-            return true;
-        } else if (isUnitless1 || isUnitless2) {
-            // one is unitless, the other is not.
-            return false;
-        } else {
-            // both are not unitless.
-            int units1Length = units1.length;
-            int units2Length = units2.length;
-            int shorterLength = Math.min(units1Length, units2Length);
-            for (int i = 0; i < shorterLength; i++) {
-                if (units1[i] != units2[i]) {
-                    return false;
-                }
-            }
-            for (int i = shorterLength; i < units1Length; i++) {
-                if (units1[i] != 0) {
-                    return false;
-                }
-            }
-            for (int i = shorterLength; i < units2Length; i++) {
-                if (units2[i] != 0) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-
-    /** Add the given unit arrays, and return the result in a new
-     *  array.  The size of the returned array will be the maximum of
-     *  the size of the two input arrays, or null if both input arrays
-     *  are unitless.
-     */
-    public static int[] addUnitsArray(int[] units1, int[] units2) {
-        boolean isUnitless1 = isUnitless(units1);
-        boolean isUnitless2 = isUnitless(units2);
-
-        if (isUnitless1 && isUnitless2) {
-            return null;
-        } else if (isUnitless1) {
-            // units2 is not unitless.
-            return copyUnitsArray(units2);
-        } else if (isUnitless2) {
-            // units1 is not unitless.
-            return copyUnitsArray(units1);
-        } else {
-            // both have units.
-            int units1Length = units1.length;
-            int units2Length = units2.length;
-            int[] result;
-            if (units1Length < units2Length) {
-                result = new int[units2Length];
-                System.arraycopy(units2, 0, result, 0, units2Length);
-                for (int i = 0; i < units1Length; i++) {
-                    result[i] += units1[i];
-                }
-            } else {
-                result = new int[units1Length];
-                System.arraycopy(units1, 0, result, 0, units1Length);
-                for (int i = 0; i < units2Length; i++) {
-                    result[i] += units2[i];
-                }
-            }
-
-            if (isUnitless(result)) {
-                return null;
-            }
-            return result;
-        }
-    }
-
-    /** Add the exponent array of this token with the argument array,
-     *  and return the result in a new array.
-     */
-    public static int[] subtractUnitsArray(int[] units1, int[] units2) {
-        // negate the exponents of the argument token and add to
-        // this token.
-        int[] negation = null;
-        if (!isUnitless(units2)) {
-            int length = units2.length;
-            negation = new int[length];
-            for (int i = 0; i < length; i++) {
-                negation[i] = -units2[i];
-            }
-        }
-        return addUnitsArray(units1, negation);
-    }
-
-    /** Return true if the given unit array is null, or the exponents for
-     *  each index are zero.
-     */
-    public static boolean isUnitless(int[] exponents) {
-        if (exponents != null) {
-            for (int i = 0; i < exponents.length; i++) {
-                if (exponents[i] != 0) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /** Register the specified unit category name.
-     *  If the category is not already registered, assign a unique index
-     *  for the category.
-     *  This method is static, so a category added here will be
-     *  available throughout the system.
-     *  <p>Note that the
-     *  {@link UnitCategory#UnitCategory(NamedObj, String)} constructor
-     *  calls this method.
-     *
-     *  @param categoryName The unit categoryName to be registered.
-     */
-    public static void registerUnitCategory(String categoryName) {
-        synchronized(_indexTable) {
-            Integer index = (Integer)_indexTable.get(categoryName);
-            if (index != null) {
-                return;
-            } else {
-                index = new Integer(_categories);
-                _indexTable.put(categoryName, index);
-                ++_categories;
-                _categoryList.add(categoryName);
-            }
-        }
-    }
-
-    /** Return the name of the base unit of the specified category.
-     *  @param categoryIndex The index of the unit category.
-     *  @return The name of the base unit of the category.
-     */
-    public static String getBaseUnitName(int categoryIndex) {
-        synchronized(_indexTable) {
-            if (categoryIndex < 0 || categoryIndex >= _categories) {
-                // FIXME: exception?
-                return "unknown";
-            } else {
-                String categoryName =
-                    (String)_categoryList.get(categoryIndex);
-                if (categoryName != null) {
-                    return categoryName;
-                } else {
-                    // FIXME: exception?
-                    return "unknown";
-                }
-            }
-        }
-    }
-
-    /** Return the number of currently registered categories.
-     */
-    public static int getNumCategories() {
-        return _categories;
-    }
-
-    /** Return the index assigned to the specified unit category.
-     *  @param categoryName The unit category.
-     *  @return The index assigned to the category.
-     */
-    public static int getUnitCategoryIndex(String categoryName) {
-        synchronized(_indexTable) {
-            Integer index = (Integer)_indexTable.get(categoryName);
-            if (index == null) {
-                //FIXME: throw an exception?
-                return -1;
-            } else {
-                return index.intValue();
-            }
-        }
-    }
-
-    /** Return a string representation of the UnitSystem.
-     *  @return A string representation of the UnitSystem
-     */
-    public static String summarizeUnitCategories() {
-        synchronized(_indexTable) {
-            StringBuffer buffer = new StringBuffer(
-                    "The registered categories are:");
-            buffer.append("" + _categories);
-            buffer.append(_categoryList.toString());
-            return buffer.toString();
-        }
-    }
-
-    /** Reset the internal state of the UnitSystem.  This method is
-     * only useful for testing, and should not be called under most
-     * circumstances, since it will cause any previously created
-     * UnitTokens to have incorrect units.
-     */
-    public static void resetUnitCategories() {
-        // This method is necessary for testing.
-        // UnitSystem has static state, so it makes it difficult
-        // to create multiple small UnitSystems.
-        synchronized(_indexTable) {
-            _indexTable.clear();
-            _categories = 0;
-            _categoryList.clear();
         }
     }
 

@@ -34,6 +34,8 @@ import java.util.Vector;
 //// Unit
 /**
 Class used to represent a Unit.
+A Unit has the form <b>S</b>&ltE1, E2, ..., En&gt where <b>S</b> is the
+<i>scale</i> and &ltE1, E2, ..., En&gt is the <i>type</i> of the Unit.
 @author Rowland R Johnson
 @version $Id$
 @since Ptolemy II 3.1
@@ -106,7 +108,7 @@ public class Unit implements UnitPresentation {
                 return factor.getName() + " " + xx.getName();
         }
         // End up here if nothing works, so just return the formal description
-        System.out.println("Unit.commonDesc " + toString());
+        System.out.println("Unit.commonDesc had to use " + toString());
         return toString();
     }
 

@@ -28,6 +28,8 @@
 */
 package ptolemy.data.unit;
 
+import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -35,6 +37,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 /** A Library containing definitions of commonly used units.
 @author Rowland R Johnson
@@ -42,6 +45,9 @@ import ptolemy.moml.MoMLParser;
 @since Ptolemy II 3.1
 */
 public class UnitLibrary {
+
+    public UnitLibrary() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -72,9 +78,7 @@ public class UnitLibrary {
         Unit retv = null;
         for (int i = 0; i < possibles.size(); i++) {
             Unit possible = (Unit) (possibles.elementAt(i));
-            double distance =
-                Math.abs(
-                    possible.getScale() - unit.getScale());
+            double distance = Math.abs(possible.getScale() - unit.getScale());
             if (distance < scalarDistance) {
                 scalarDistance = distance;
                 retv = possible;
@@ -112,8 +116,7 @@ public class UnitLibrary {
         Unit retv = getClosestUnit(unit);
         if (retv == null)
             return null;
-        if (Math.abs(retv.getScale() - unit.getScale())
-            < 1.0E-8) {
+        if (Math.abs(retv.getScale() - unit.getScale()) < 1.0E-8) {
             return retv;
         }
         return null;
@@ -169,7 +172,12 @@ public class UnitLibrary {
         try {
             NamedObj container = new NamedObj();
             momlParser.setContext(container);
-            momlParser.parseFile("ptolemy/data/unit/SI.xml");
+            try {
+                momlParser.parseFile("ptolemy/data/unit/SI.xml");
+            } catch (FileNotFoundException fne) {
+                // Do this to pass the unit test
+                momlParser.parseFile("../SI.xml");
+            }
             us = (UnitSystem) (container.getAttribute("SI"));
         } catch (Exception e) {
             KernelException.stackTraceToString(e);

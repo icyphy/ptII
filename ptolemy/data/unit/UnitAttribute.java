@@ -117,7 +117,9 @@ public class UnitAttribute extends Attribute implements Settable {
             _getIndentPrefix(depth)
                 + "<"
                 + _elementName
-                + " name=\"_units\" class=\""
+                + " name=\""
+                + name
+                + "\" class=\""
                 + getMoMLInfo().className
                 + "\""
                 + valueTerm

@@ -8,6 +8,7 @@
         <input source="ptolemy/data/unit/BasicUnits.xml"/>
         <input source="ptolemy/data/unit/CGSUnitBase.xml"/>
         <input source="ptolemy/data/unit/ElectronicUnitBase.xml"/>
+        <input source="ptolemy/data/unit/SI.xml"/>
         <input source="ptolemy/data/unit/UnitConversions.xml"/>
       </group>
     ?>
