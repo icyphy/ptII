@@ -30,11 +30,16 @@
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.HashMap;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomaton
@@ -85,7 +90,7 @@ public class InterfaceAutomaton extends FSMActor {
      *  @param workspace The workspace that will list the actor.
      */
     public InterfaceAutomaton(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Create an InterfaceAutomaton in the specified container with the
@@ -114,9 +119,16 @@ public class InterfaceAutomaton extends FSMActor {
      *  specified InterfaceAutomaton and this one.
      *  @param automaton An InterfaceAutomaton to compose with this one.
      *  @return An InterfaceAutomaton that is the composition.
+     *  @exception IllegalActionException If this automaton is not composable
+     *   with the argument.
      */
-    public InterfaceAutomaton compose(InterfaceAutomaton automaton) {
-        // FIXME: implement this.
+    public InterfaceAutomaton compose(InterfaceAutomaton automaton)
+                throws IllegalActionException {
+        // First computes the product automaton, then prunes the illegal
+        // states.
+        InterfaceAutomaton product = _computeProduct(automaton);
+
+
         return null;
     }
 
@@ -145,7 +157,7 @@ public class InterfaceAutomaton extends FSMActor {
         try {
             workspace().getWriteAccess();
             InterfaceAutomatonTransition transition =
-	            new InterfaceAutomatonTransition(this, name);
+                    new InterfaceAutomatonTransition(this, name);
             return transition;
         } finally {
             workspace().doneWriting();
@@ -172,7 +184,7 @@ public class InterfaceAutomaton extends FSMActor {
         if (!(relation instanceof InterfaceAutomatonTransition)) {
             throw new IllegalActionException(this, relation,
                     "InterfaceAutomaton can only contain instances of "
-		    + "InterfaceAutomatonTransition.");
+                    + "InterfaceAutomatonTransition.");
         }
         super._addRelation(relation);
     }
@@ -183,7 +195,109 @@ public class InterfaceAutomaton extends FSMActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    // Compute the product of this autmaton and the argument.
+    // Use frontier exploration. The frontier is represented by a HashMap
+    // frontier. The key is the name of the state in the product, the value
+    // is a Triple: procudeState, stateInThis, stateInArgument. The keys
+    // are used to easily check if a product state is in the frontier.
+    //
+    // init: set the product to empty
+    //       product = frontier = (this.initialState x automaton.initialSate, 
+    //                             this.initialState, automaton.initialState)
+    // iterate: pick a currentState from frontie
+    //          for each transition from the currentState:
+    //              (1) check composability;
+    //              (2) if destination state not in product, add it to
+    //                  both the product and the frontier
+    //              (3) add the transition to the product.
+    //          remove currentState from frontier
+    // end: when frontier is empty
+    //
+    // The name of the states in the product is formed by the 
+    // <nameInThisAutomaton>_&_<nameInArgumentAutomaton>
+    //
+    private InterfaceAutomaton _computeProduct(InterfaceAutomaton automaton)
+            throws IllegalActionException {
+        try {
+            // init
+            InterfaceAutomaton product = new InterfaceAutomaton();
+            HashMap frontier = new HashMap();
+
+            State currentStateThis = this.getInitialState();
+            State currentStateArgument = automaton.getInitialState();
+            String name = currentStateThis.getName() + "_&_"
+                              + currentStateArgument.getName();
+            // set container to null now so it is not in the product automaton
+            State currentState = new State(null, name);
+            Triple triple = new Triple(currentState, currentStateThis,
+                                       currentStateArgument);
+            frontier.put(name, triple);
+
+            // iterate
+            while ( !frontier.isEmpty()) {
+                // pick a value from frontier. It seems that there isn't an
+                // easy way to pick an arbitrary entry from a HashMap, except
+                // through Iterator
+                Iterator iterator = frontier.keySet().iterator();
+                name = (String)iterator.next();
+                triple = (Triple)frontier.get(name);
+
+                // extend frontier from state in this automaton
+                currentStateThis = triple._stateInThis;
+                ComponentPort outPort = currentStateThis.outgoingPort;
+                Iterator transitions = outPort.linkedRelationList().iterator();
+                while (transitions.hasNext()) {
+                    InterfaceAutomatonTransition transition =
+                            (InterfaceAutomatonTransition)transitions.next();
+                    // check composability
+                    int transitionType = transition.getTransitionType();
+                    if (transitionType ==
+                            InterfaceAutomatonTransition.INPUT_TRANSITION) {
+
+
+                    }
+                    else if (transitionType ==
+                            InterfaceAutomatonTransition.OUTPUT_TRANSITION) {
+
+
+                    } else if (transitionType ==
+                            InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
+
+
+                    } else {
+                        throw new InternalErrorException(
+                            "InterfaceAutomaton._computeProduct: unrecognized "
+                            + "transition type.");
+                    }
+                }
+            }
+
+            return null;
+        } catch (NameDuplicationException exception) {
+            // FIXME: this can actually happen, although extremly unlikely.
+            // Eg. this automaton has states "a" and "b_&_c", the argument
+            // has "a_&_b" and "c". Do we need to worry about this?
+            throw new InternalErrorException(
+                "InterfaceAutomaton._computeProduct: name in product "
+		+ "automaton clashes: " + exception.getMessage());
+	}
+    } 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    ///////////////////////////////////////////////////////////////////
+    ////                            inner class                    ////
+    private class Triple {
+        private Triple(State productState, State stateInThis,
+                                                State stateInArgument) {
+            _productState = productState;
+            _stateInThis = stateInThis;
+            _stateInArgument = stateInArgument;
+        }
+
+        private State _productState = null;
+        private State _stateInThis = null;
+        private State _stateInArgument = null;
+    }
 }
