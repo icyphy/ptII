@@ -294,3 +294,15 @@ test TokenUnboxing-13.2 {} {
 test TokenUnboxing-13.3 {} {
     _doExecuteTest ptolemy.copernicus.java.test.Unboxing13
 } {{token = 0.0} {token = 1.0}}
+
+test TokenUnboxing-14.1 {} {
+    _doSpecializedTypesTest ptolemy.copernicus.java.test.Unboxing14
+} {{{VariableTerm: value = double, depth = 1, associated object = r2}} {{VariableTerm: value = int, depth = 1, associated object = $r1}} {{VariableTerm: value = int, depth = 1, associated object = $r3}} {{VariableTerm: value = int, depth = 1, associated object = $r3}} {{VariableTerm: value = int, depth = 1, associated object = $r4}} {{VariableTerm: value = int, depth = 1, associated object = $r4}} {{VariableTerm: value = int, depth = 1, associated object = $r5}} {{VariableTerm: value = int, depth = 1, associated object = $r6}} {{VariableTerm: value = int, depth = 1, associated object = <ptolemy.copernicus.java.test.Unboxing14: ptolemy.data.Token _stateToken>}} {{VariableTerm: value = int, depth = 1, associated object = <ptolemy.copernicus.java.test.Unboxing14: ptolemy.data.Token[] _resultArray>}} {{VariableTerm: value = int, depth = 1, associated object = newarray (ptolemy.data.Token)[1]}} {{VariableTerm: value = int, depth = 1, associated object = r15}} {{VariableTerm: value = int, depth = 1, associated object = r3}} {{VariableTerm: value = int, depth = 1, associated object = r5}}}
+
+test TokenUnboxing-14.2 {} {
+    _doUnboxingTest ptolemy.copernicus.java.test.Unboxing14
+} {}
+
+test TokenUnboxing-14.3 {} {
+    _doExecuteTest ptolemy.copernicus.java.test.Unboxing14
+} {{token = 0.0} {token = 1.0}}
