@@ -117,9 +117,9 @@ public class ByteToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             ByteToken byteToken;
             if (typeInfo == CPO.HIGHER) {
-               byteToken = (ByteToken)ByteToken.convert(rightArgument);
+                byteToken = (ByteToken)ByteToken.convert(rightArgument);
             } else {
-               byteToken = (ByteToken)rightArgument;
+                byteToken = (ByteToken)rightArgument;
             }
             byte sum = (byte)(_value + byteToken.byteValue());
             ByteToken result = new ByteToken(sum);
@@ -210,16 +210,16 @@ public class ByteToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             ByteToken byteToken;
             if (typeInfo == CPO.HIGHER) {
-               byteToken = (ByteToken)ByteToken.convert(divisor);
+                byteToken = (ByteToken)ByteToken.convert(divisor);
             } else {
-               byteToken = (ByteToken)divisor;
+                byteToken = (ByteToken)divisor;
             }
             byte quotient = (byte) (unsignedConvert(_value)
 	            / unsignedConvert(byteToken.byteValue()));
             ByteToken result = new ByteToken(quotient);
             // compute units
             result._unitCategoryExponents =
-                            _subtractCategoryExponents(byteToken);
+                _subtractCategoryExponents(byteToken);
             return result;
         } else if (typeInfo == CPO.LOWER) {
             return divisor.divideReverse(this);
@@ -249,7 +249,7 @@ public class ByteToken extends ScalarToken {
 
         // compute units
         result._unitCategoryExponents =
-                        byteToken._subtractCategoryExponents(this);
+            byteToken._subtractCategoryExponents(this);
         return result;
     }
 
@@ -283,13 +283,13 @@ public class ByteToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             ByteToken byteToken;
             if (typeInfo == CPO.HIGHER) {
-               byteToken = (ByteToken)ByteToken.convert(token);
+                byteToken = (ByteToken)ByteToken.convert(token);
             } else {
-               byteToken = (ByteToken)token;
+                byteToken = (ByteToken)token;
             }
 
             if (_value == byteToken.byteValue()
-                && _isUnitEqual(byteToken)) {
+                    && _isUnitEqual(byteToken)) {
                 return new BooleanToken(true);
             } else {
                 return new BooleanToken(false);
@@ -322,9 +322,9 @@ public class ByteToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             ByteToken byteToken;
             if (typeInfo == CPO.HIGHER) {
-               byteToken = (ByteToken)ByteToken.convert(token);
+                byteToken = (ByteToken)ByteToken.convert(token);
             } else {
-               byteToken = (ByteToken)token;
+                byteToken = (ByteToken)token;
             }
             if ( !_isUnitEqual(byteToken)) {
                 throw new IllegalActionException("ByteToken.isLessThan: "
@@ -381,9 +381,9 @@ public class ByteToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             ByteToken byteToken;
             if (typeInfo == CPO.HIGHER) {
-               byteToken = (ByteToken)ByteToken.convert(rightArgument);
+                byteToken = (ByteToken)ByteToken.convert(rightArgument);
             } else {
-               byteToken = (ByteToken)rightArgument;
+                byteToken = (ByteToken)rightArgument;
             }
             byte remainder = (byte) (unsignedConvert(_value)
                     % unsignedConvert(byteToken.byteValue()));
@@ -423,7 +423,7 @@ public class ByteToken extends ScalarToken {
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
         ByteToken byteToken =
-                (ByteToken)ByteToken.convert(leftArgument);
+            (ByteToken)ByteToken.convert(leftArgument);
 
         byte remainder = (byte) (unsignedConvert(byteToken.byteValue())
                 % unsignedConvert(_value));
@@ -452,9 +452,9 @@ public class ByteToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             ByteToken byteToken;
             if (typeInfo == CPO.HIGHER) {
-               byteToken = (ByteToken)ByteToken.convert(rightFactor);
+                byteToken = (ByteToken)ByteToken.convert(rightFactor);
             } else {
-               byteToken = (ByteToken)rightFactor;
+                byteToken = (ByteToken)rightFactor;
             }
             byte product = (byte)(unsignedConvert(_value)
                     * unsignedConvert(byteToken.byteValue()));
@@ -511,9 +511,9 @@ public class ByteToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             ByteToken byteToken;
             if (typeInfo == CPO.HIGHER) {
-               byteToken = (ByteToken)ByteToken.convert(rightArgument);
+                byteToken = (ByteToken)ByteToken.convert(rightArgument);
             } else {
-               byteToken = (ByteToken)rightArgument;
+                byteToken = (ByteToken)rightArgument;
             }
             byte difference = (byte) (unsignedConvert(_value)
                     - unsignedConvert(byteToken.byteValue()));
@@ -552,7 +552,7 @@ public class ByteToken extends ScalarToken {
             throws IllegalActionException {
         ByteToken byteToken = (ByteToken)ByteToken.convert(leftArgument);
         byte difference = (byte) (unsignedConvert(byteToken.byteValue())
-        - unsignedConvert(_value));
+                - unsignedConvert(_value));
         ByteToken result = new ByteToken(difference);
         if ( !_isUnitEqual(byteToken)) {
             throw new IllegalActionException("ByteToken.subtractReverse: "
