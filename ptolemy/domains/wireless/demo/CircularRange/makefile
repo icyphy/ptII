@@ -44,9 +44,7 @@ include $(CONFIG)
 PTPACKAGE = 	CircularRange
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	SoundSensor.java \
-	SoundTracker.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	CircularRange.xml
