@@ -155,21 +155,22 @@ public class Relation extends NamedObj {
                 // LinkedList is used instead of a CrossRefList
                 // so that the lifetime of the internal portlist
                 // copy that excludes "exceptPort" ends when
-                // "censored" goes out of scope.  This is not true
-                // with CrossRefList since the internal list would
-                // maintain references to CrossRefs in _portList after
+                // _internalList goes out of scope.  This is not true
+                // with a CrossRefList _internalList since _portList
+                // would maintain references to _internalList after
                 // this PortEnumeration has been marked for garbage
-                // collection.  As usual, modifying the port lists 
+                // collection.  As usual, modifying the lists 
                 // during the lifetime of PortEnumeration is very 
                 // dangerous and must be avoided.
-                LinkedList internalList = new LinkedList();
+                LinkedList _internalList = new LinkedList();
                 Enumeration ports = _portList.elements();
                 while(ports.hasMoreElements()) {
                     Port p = (Port)ports.nextElement();
                     if(p != exceptPort)
-                        internalList.insertFirst(p);
+                        // O(1) operation.
+                        _internalList.insertFirst(p); 
                 }
-                _XRefEnum = internalList.elements();
+                _XRefEnum = _internalList.elements();
             } else {
                 _XRefEnum = _portList.elements();
             }
@@ -186,5 +187,6 @@ public class Relation extends NamedObj {
         }
       
         private Enumeration _XRefEnum;
+        private LinkedList _internalList;
     }
 }
