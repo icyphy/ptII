@@ -36,7 +36,8 @@ DIRS = test
 # Root of the Java directory
 ROOT =          ../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/jython/jython.jar
+# JYTHON_JAR is set in $PTII/mk/ptII.mk by running configure
+CLASSPATH =     $(ROOT)$(CLASSPATHSEPARATOR)$(JYTHON_JAR)
 
 # Get configuration info
 CONFIG =        $(ROOT)/mk/ptII.mk
