@@ -52,17 +52,17 @@ JSRCS = TestModel.java
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JSIMPLE_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
-	MoMLApplication.tcl \
-	PtExecuteApplication.tcl
+	dummy.tcl
 
 # Graphical Java tests that use Tcl.
 JGRAPHICAL_TESTS = \
+	MoMLApplication.tcl \
+	PtExecuteApplication.tcl \
+	PtolemyApplication.tcl
 
-#	PtolemyApplication.tcl
-
+# If we add non-graphical tests, add $(JSIMPLE_TESTS) to EXTRA_SRCS
 EXTRA_SRCS =	\
-	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS) \
-	test.xml
+	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) test.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -77,7 +77,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_java test_jgraphical
 
 test_java: jclass
 
@@ -85,7 +85,11 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljsimpletests.tcl
+	$(JTCLSH) alljsimpletests.tcl
+
+# These tests do require a graphics terminal, but do use Jacl and Java
+test_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljsimpletests.tcl
 	$(JTCLSH) alljtests.tcl
 
 depend:
