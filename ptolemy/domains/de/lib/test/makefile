@@ -46,12 +46,15 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	Iterations.java \
 	SimpleDelay.java \
+	TestSource.java \
 	Time.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	Delay.tcl \
+	Iterations.tcl \
 	Sampler.tcl \
 	Server.tcl \
 	SimpleDelay.tcl \
