@@ -83,12 +83,15 @@ public class Argument extends Attribute implements Settable {
             ptolemy.kernel.util.ValueListener listener) {
     }
 
-    /** Export the Argument in a property MoML
-     *   @return void
-     *   @exception IOException If an IO error occurs
+    /** Export the Argument in a property MoML. If this object is not
+     *  persistent, then write nothing.
+     *  @exception IOException If an IO error occurs
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
+        if (!isPersistent()) {
+            return;
+        }
         String value = getExpression();
         output.write(
                 _getIndentPrefix(depth)
