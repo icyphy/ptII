@@ -194,7 +194,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         ApplicationUtility.trace("StaticResolution.resolveAName(): " +
 				 nameString(name));
 
-        // check to whether or not we have already resolved the name
+        // Check to whether or not we have already resolved the name.
         if (name.hasProperty(DECL_KEY)) {
             ApplicationUtility.trace("decl already defined");
             return name;
@@ -493,6 +493,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         System.out.println("StaticResolution<static>: --- Creating two new PackageDecls ---" + (System.currentTimeMillis() - startTime));
         SYSTEM_PACKAGE  = new PackageDecl("", null);
         UNNAMED_PACKAGE = new PackageDecl("", SYSTEM_PACKAGE);
+        System.out.println("StaticResolution<static>: SYSTEM_PACKAGE: " + 
+			   SYSTEM_PACKAGE.getEnviron().toString());
+        System.out.println("StaticResolution<static>: UNNAMED_PACKAGE: " + 
+			   UNNAMED_PACKAGE.getEnviron().toString());
 
         // dummy environment
         Environ env = new Environ();
@@ -501,6 +505,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
 	// JAVA_LANG_PACKAGE is only used in FindExtraImportsVisitor
 	NameNode javaLangName = (NameNode) makeNameNode("java.lang");
+        System.out.println("StaticResolution<static>: env: " + env.toString());
 	JAVA_LANG_PACKAGE = _importPackage(env, javaLangName);
 
         System.out.println("StaticResolution<static>: --- require class on Object ---" + (System.currentTimeMillis() - startTime));
@@ -564,6 +569,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     }
 
     public static PackageDecl _importPackage(Environ env, NameNode name) {
+	// The getEnviron() call is what loads up the environment with
+	// info about what is in the package by looking in the
+	// appropriate directory
         resolveAName(name, SYSTEM_PACKAGE.getEnviron(), null, null,
                 CG_PACKAGE);
 
@@ -579,7 +587,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 env.add(type); // conflicts appear on use only
             }
         }
-
+	
+        System.out.println("StaticResolution._importPackage(" +
+			   name.getIdent() + ") :" +
+			   env.toString());
         return decl;
     }
 
@@ -596,10 +607,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         if (name.getQualifier() == AbsentTreeNode.instance) {
             if ((categories &
-                    (CG_FIELD | CG_METHOD | CG_LOCALVAR | CG_FORMAL | CG_USERTYPE)) != 0) {
+                    (CG_FIELD | CG_METHOD | CG_LOCALVAR |
+		     CG_FORMAL | CG_USERTYPE)) != 0) {
                 possibles = env.lookupFirst(name.getIdent(), categories);
             } else {
-                //ApplicationUtility.trace("looking up package");
+                System.out.println("StaticResolution._findPossibles(): looking up package " + name.getIdent());
                 possibles = ((Environ) SYSTEM_PACKAGE.getEnviron())
                     .lookupFirst(name.getIdent(), categories);
             }
@@ -621,8 +633,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             }
 
             name.setQualifier(
-                    resolveAName((NameNode) name.getQualifier(), env, currentClass,
-                            currentPackage, newCategories));
+                    resolveAName((NameNode) name.getQualifier(),
+				 env, currentClass,
+				 currentPackage, newCategories));
 
             JavaDecl container = JavaDecl.getDecl(name.getQualifier());
 
@@ -642,8 +655,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 TypedDecl typedContainer = (TypedDecl) container;
                 TypeNode type = typedContainer.getType();
                 if (type instanceof PrimitiveTypeNode) {
-                    ApplicationUtility.error("cannot select " + name.getIdent() +
-                            " from non-reference type represented by " + type);
+                    ApplicationUtility.error("cannot select " +
+					     name.getIdent() +
+					     " from non-reference type" +
+					     " represented by " + type);
                 } else if (type instanceof ArrayTypeNode) {
                     possibles =
 			ARRAY_CLASS_DECL.getEnviron().lookupFirstProper(
