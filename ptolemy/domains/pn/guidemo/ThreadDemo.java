@@ -295,7 +295,7 @@ public class ThreadDemo {
         
         // Configure the view
         TraceView traceView = tracePane.getTraceView();
-        traceView.setTimeScale(0.1);
+        traceView.setTimeScale(0.02);
         traceView.setLayout(10,10,500,30,5);
         traceView.setTraceModel(traceModel);
 
@@ -322,18 +322,45 @@ public class ThreadDemo {
         // The pending start times
         private double _startTime[] = new double[9];
 
-        // The previous states
-        private int _previousState[] = {7,7,7,7,7,7,7,7,7};
-
         // The absolute start time
         private long _start = 0;
+
+        // The current element of each state;
+        private TraceModel.Element _currentElement[];
 
         /* Create a listener on the given graph pane
          */
         public StateListener (GraphPane pane) {
             _graphPane = pane;
-        }
 
+            // Set system "start" time
+            _start = System.currentTimeMillis();
+
+           // Initial elements of all traces
+            TraceModel model = tracePane.getTraceModel();
+            _currentElement = new TraceModel.Element[model.size()];
+
+            for (int i = 0; i < model.size(); i++ ) {
+                TraceModel.Trace trace = model.getTrace(i);
+                
+                final TraceModel.Element element = new TraceModel.Element(
+                        0, 1, 3);
+                element.closure = TraceModel.Element.OPEN_END;
+                trace.add(element);
+                _currentElement[i] = element;
+
+                try {
+                    SwingUtilities.invokeAndWait(new Runnable() {
+                        public void run () {
+                            tracePane.getTraceView().drawTraceElement(element);
+                        }
+                    });
+                }
+                catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        }
         /** Respond to a state changed event.
          */
         public void processStateChanged(PNProcessEvent event) {
@@ -383,18 +410,53 @@ public class ThreadDemo {
             TraceModel.Trace trace = model.getTrace(name);
             int id = trace.getID();
 
-            if (_start == 0) {
-                _start = System.currentTimeMillis();
+            // OK, this is nasty, but get the color "state" from the process state
+            int colorState = 3;
+            switch (state) {
+            case PNProcessEvent.PROCESS_BLOCKED:
+                colorState = 0;
+                break;
+                        
+            case PNProcessEvent.PROCESS_FINISHED:
+                colorState = 7;
+                break;
+                        
+            case PNProcessEvent.PROCESS_PAUSED:
+                colorState = 2;
+                break;
+
+            case PNProcessEvent.PROCESS_RUNNING:
+                colorState = 3;
+                break;
             }
+
+            // Create the new element
             double currentTime = (double) (System.currentTimeMillis() - _start);
             final TraceModel.Element element = new TraceModel.Element(
-                    _startTime[id], currentTime, _previousState[id]);
+                    currentTime, currentTime+1, colorState);
+            element.closure = TraceModel.Element.OPEN_END;
             trace.add(element);
+            
+            // Close the current element
+            final TraceModel.Element current = _currentElement[id];
+            current.closure = 0;
+
+            // Update all elements
+            final int msize = model.size();
+            final TraceModel.Element temp[] = new TraceModel.Element[msize];
+            for (int i = 0; i < msize; i++) {
+                _currentElement[i].stopTime = currentTime;
+                temp[i] = _currentElement[i];
+            }
 
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     public void run () {
-                        tracePane.getTraceView().drawTraceElement(element);
+                        TraceView v = tracePane.getTraceView();
+                        for (int i = 0; i < msize; i++) {
+                            v.updateTraceElement(temp[i]);
+                        }
+                        v.drawTraceElement(element);
                     }
                 });
             }
@@ -402,26 +464,8 @@ public class ThreadDemo {
                 System.out.println(e);
             }
 
-            _startTime[id] = currentTime;
-
-            // OK, this is nasty, but get the color from the previous state
-            switch (state) {
-            case PNProcessEvent.PROCESS_BLOCKED:
-                _previousState[id] = 0;
-                break;
-                        
-            case PNProcessEvent.PROCESS_FINISHED:
-                _previousState[id] = 7;
-                break;
-                        
-            case PNProcessEvent.PROCESS_PAUSED:
-                _previousState[id] = 2;
-                break;
-
-            case PNProcessEvent.PROCESS_RUNNING:
-                _previousState[id] = 3;
-                break;
-            }
+            // Update
+            _currentElement[id] = element;
         }
 
         /** Respond to a process finshed event.
