@@ -550,7 +550,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 throw new InternalErrorException(
                         "Cannot create hierarchy if the container is not a CompositeEntity.");
             }
-            final String name = container.uniqueName("typed composite actor");
+            final String name = container.uniqueName("CompositeActor");
             final TypedCompositeActor compositeActor = new TypedCompositeActor(
                     (CompositeEntity)container, name);
 
