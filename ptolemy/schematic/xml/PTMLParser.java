@@ -259,7 +259,7 @@ public class PTMLParser extends HandlerBase{
     public void startElement(String name) {
         XMLElement e;
         if(DEBUG)
-            System.out.println("Starting Element"+name);
+            System.out.println("Starting Element:"+name);
 
         e=new XMLElement(name,attributes);
         e.setParent(current);

@@ -46,7 +46,7 @@ import ptolemy.schematic.*;
 */
 public class PTMLPrinter {
 
-    public PTMLPrinter(String newurl,XMLElement e) {
+    public PTMLPrinter(String newurl, XMLElement e) {
         super();
         url = newurl;
         root=e;

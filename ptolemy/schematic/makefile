@@ -31,8 +31,7 @@
 
 ME =		ptolemy/schematic
 
-DIRS = 		test \
-		util \
+DIRS = 		util \
 		xml
 
 	# lib is no longer included

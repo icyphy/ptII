@@ -1,6 +1,6 @@
 # CAUTION: automatically generated file by a rule in ptcommon.mk
 # This file will source all the Tcl files that use Java. 
-# This file will source the .itcl files list in the
+# This file will source the tcl files list in the
 # makefile SIMPLE_JTESTS and GRAPHICAL_JTESTS variables
 # This file is different from all.itcl in that all.itcl
 # will source all the .itcl files in the current directory
