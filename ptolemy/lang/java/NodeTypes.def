@@ -105,7 +105,7 @@ BitwiseNode A BinaryOpNode c 2 ExprNode expr1 ExprNode expr2 c
 BitwiseAssignNode A BinaryOpAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 LogCondNode A BinaryOpNode c 2 ExprNode expr1 ExprNode expr2 c
 OuterClassAccessNode A ExprNode k 0 TypeNameNode type k
-UserTypeDeclNode A ReferenceTypeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name List interfaces List members k
+UserTypeDeclNode A TreeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name List interfaces List members k
 LiteralNode A ExprNode k 0 String literal k
 
 // literals
@@ -153,14 +153,14 @@ LocalVarDeclNode C VarInitDeclNode i StatementNode i c 4 int modifiers TypeNode 
 
 InvokableDeclNode A TreeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name List params List throwsList k
 // body may be absent
-MethodDeclNode C InvokableDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List params List throwsList TreeNode body TypeNode returnType k
-ConstructorDeclNode C InvokableDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List params List throwsList BlockNode body ConstructorCallNode constructorCall k
+MethodDeclNode C InvokableDeclNode k 4 int modifiers NameNode name List params List throwsList TreeNode body TypeNode returnType k
+ConstructorDeclNode C InvokableDeclNode k 4 int modifiers NameNode name List params List throwsList BlockNode body ConstructorCallNode constructorCall k
 
 ThisConstructorCallNode C ConstructorCallNode c 1 List args c
 SuperConstructorCallNode C ConstructorCallNode c 1 List args c
 StaticInitNode C TreeNode k 0 BlockNode block k
 InstanceInitNode C TreeNode k 0 BlockNode block k
-InterfaceDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List interfaces List members k
+InterfaceDeclNode C UserTypeDeclNode k 4 int modifiers NameNode name List interfaces List members k
 ParameterNode C VarDeclNode c 3 int modifiers TypeNode defType NameNode name c
 
 // Statements
@@ -203,10 +203,10 @@ NullPntrNode C ExprNode c 0 c
 ThisNode C ExprNode c 0 c
 ArrayAccessNode C ExprNode k 0 ExprNode array ExprNode index k
 ObjectNode C ExprNode i NamedNode i k 0 NameNode name k
-ObjectFieldAccessNode C FieldAccessNode i NamedNode i k 1 NameNode name TreeNode object k
-SuperFieldAccessNode C FieldAccessNode i NamedNode i k 1 NameNode name k
-TypeFieldAccessNode C FieldAccessNode i NamedNode i k 1  NameNode name TypeNameNode fType k
-ThisFieldAccessNode C FieldAccessNode i NamedNode i k 1 NameNode name k
+ObjectFieldAccessNode C FieldAccessNode k 1 NameNode name TreeNode object k
+SuperFieldAccessNode C FieldAccessNode k 1 NameNode name k
+TypeFieldAccessNode C FieldAccessNode k 1  NameNode name TypeNameNode fType k
+ThisFieldAccessNode C FieldAccessNode k 1 NameNode name k
 TypeClassAccessNode C ExprNode k 0 TypeNode fType k
 OuterThisAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 OuterSuperAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
@@ -256,6 +256,6 @@ MinusAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 LeftShiftLogAssignNode C ShiftAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 RightShiftLogAssignNode C ShiftAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 RightShiftArithAssignNode C ShiftAssignNode c 2 ExprNode expr1 ExprNode expr2 c
-BitAndAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
-BitXorAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
-BitOrAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
+BitAndAssignNode C BitwiseAssignNode c 2 ExprNode expr1 ExprNode expr2 c
+BitXorAssignNode C BitwiseAssignNode c 2 ExprNode expr1 ExprNode expr2 c
+BitOrAssignNode C BitwiseAssignNode c 2 ExprNode expr1 ExprNode expr2 c
