@@ -189,18 +189,36 @@ public class Transition extends ComponentRelation {
                 _guard.setLazy(true);
                 _guard.setTypeEquals(BaseType.BOOLEAN);
 
-                // Construct a relation list for the transition.
-                _relationList = new RelationList(this, "relationList");
-                // Associate the relation list with the
-                // ParseTreeEvaluatorForGuardExpression
-                // FIXME: how to get the error tolerance
-                _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
-                        _relationList, 1e-4);
-                // Register the guard expression with the above parse
-                // tree evaluator
-                _guard.setParseTreeEvaluator( 
-                        (ParseTreeEvaluator) _parseTreeEvaluator);
+                // Depending on whether the director is FSM director
+                // or HSDirector, we configure the Transitions with 
+                // different ParseTreeEvaluators.
 
+                TypedCompositeActor modalModel = (TypedCompositeActor) container.getContainer();                
+                
+                // If the executive director is HSDirector, 
+                if (modalModel.getDirector() instanceof HSDirector) {                
+                    // construct a relation list for the transition;
+                    _relationList = new RelationList(this, "relationList");
+           
+                    // associate the relation list with the
+                    // ParseTreeEvaluatorForGuardExpression
+            
+                    // FIXME: how to get the error tolerance
+                    // If we limite the HSDirector only works under CT model
+                    // or Modal Models, we can use the error tolerance from
+                    // the top level CT director.
+                                          
+                    _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
+                            _relationList, 1e-4);
+                            
+                    // Register the guard expression with the above parse
+                    // tree evaluator
+                    _guard.setParseTreeEvaluator( 
+                            (ParseTreeEvaluator) _parseTreeEvaluator);
+                }
+                
+                // If the executive director is FSMDirector, do nothing.
+                
                 _trigger = new Variable(this, "_trigger");
                 // Make the variable lazy since it will often have
                 // an expression that cannot be evaluated.
