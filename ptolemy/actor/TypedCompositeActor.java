@@ -594,7 +594,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 Inequality ineq = new Inequality(sourcePort.getTypeTerm(),
                         destinationPort.getTypeTerm());
                 result.add(ineq);
-                System.out.println("adding inequality from " + sourcePort + " to " + destinationPort);
             }
         }
 
