@@ -79,42 +79,48 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+    <entity name="NonStrictDisplay4" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="434.0, 46.0">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="451.0, 120.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="NonStrictDisplay2" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+    <entity name="NonStrictDisplay5" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="485.0, 197.0">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="468.0, 236.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="NonStrictDisplay3" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+    <entity name="NonStrictDisplay6" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="505.0, 366.0">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="490.0, 367.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -129,14 +135,14 @@
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="255.0, 234.0">
         </vertex>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Pulse.output" relation="relation5"/>
     <link port="Pulse2.output" relation="relation6"/>
     <link port="LogicFunction.input" relation="relation5"/>
     <link port="LogicFunction.input" relation="relation6"/>
-    <link port="LogicFunction.output" relation="relation4"/>
-    <link port="NonStrictDisplay.input" relation="relation5"/>
-    <link port="NonStrictDisplay2.input" relation="relation6"/>
-    <link port="NonStrictDisplay3.input" relation="relation4"/>
+    <link port="LogicFunction.output" relation="relation"/>
+    <link port="NonStrictDisplay4.input" relation="relation5"/>
+    <link port="NonStrictDisplay5.input" relation="relation6"/>
+    <link port="NonStrictDisplay6.input" relation="relation"/>
 </entity>
