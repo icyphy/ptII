@@ -325,6 +325,9 @@ set result {<?xml version="1.0" standalone="no"?>
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
     </entity>
 </class>
 }
@@ -417,6 +420,9 @@ set result {<?xml version="1.0" standalone="no"?>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
         </port>
     </entity>
 </class>
