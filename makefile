@@ -45,8 +45,14 @@ include $(CONFIG)
 DIRS = util ptolemy doc gui com #collections
 
 EXTRA_SRCS = \
+	copyright.txt \
 	configure.in \
-	configure
+	configure \
+	ucb-.cshrc
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	$(DIRS) mk bin
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
