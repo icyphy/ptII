@@ -68,7 +68,7 @@ public class Merge extends DETransformer  {
         super(container, name);
         input.setMultiport(true);
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
                 + "style=\"fill:green\"/>\n" +
                 "</svg>\n");

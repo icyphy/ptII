@@ -70,7 +70,7 @@ public class SingleEvent extends TypedAtomicActor {
     public SingleEvent(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-    	output = new TypedIOPort(this, "output", false, true);
+            output = new TypedIOPort(this, "output", false, true);
         time = new Parameter(this, "time", new DoubleToken(0.0));
         time.setTypeEquals(BaseType.DOUBLE);
         value = new Parameter(this, "value", new BooleanToken(true));

@@ -78,9 +78,9 @@ public class QueueWithNextOut extends DETransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output.setTypeAtLeast(input);
-	nextOut = new TypedIOPort(this, "nextOut");
+        nextOut = new TypedIOPort(this, "nextOut");
         nextOut.setTypeAtLeast(input);
-	nextOut.setOutput(true);
+        nextOut.setOutput(true);
         trigger = new TypedIOPort(this, "trigger", true, false);
         // Leave type undeclared.
         _queue = new FIFOQueue();
@@ -134,8 +134,8 @@ public class QueueWithNextOut extends DETransformer {
         if (input.hasToken(0)) {
             _queue.put(input.get(0));
             if (_queue.size() == 1) {
-	        // Queue was empty, new item is next item.
-		// Send it without removing it from the queue.
+                // Queue was empty, new item is next item.
+                // Send it without removing it from the queue.
                 nextOut.send(0, (Token)_queue.get(0));
             }
         }
@@ -146,8 +146,8 @@ public class QueueWithNextOut extends DETransformer {
                 output.send(0, (Token)_queue.take());
             }
             if (_queue.size() > 0) {
-		// If queue still has token(s), send the
-		// next token while keeping a copy in the queue.
+                // If queue still has token(s), send the
+                // next token while keeping a copy in the queue.
                 nextOut.send(0, (Token)_queue.get(0));
             }
         }
