@@ -61,13 +61,13 @@ test NamedObj-1.1 {Get information about an instance of NamedObj} {
 } {{
   class:         pt.kernel.NamedObj
   fields:        
-  methods:       {addParameter pt.data.Parameter} clone {clone pt.kernel
-    .Workspace} {description int} {equals java.lang.Object}
-     getClass getContainer getFullName getName {getParamete
-    r java.lang.String} getParameters hashCode notify notif
-    yAll {removeParameter java.lang.String} {setName java.l
-    ang.String} toString wait {wait long} {wait long int} w
-    orkspace
+  methods:       {addParameter pt.kernel.Nameable} clone {clone pt.kerne
+    l.Workspace} {description int} {equals java.lang.Object
+    } getClass getContainer getFullName getName {getParamet
+    er java.lang.String} getParameters hashCode notify noti
+    fyAll {removeParameter java.lang.String} {setName java.
+    lang.String} toString wait {wait long} {wait long int} 
+    workspace
     
   constructors:  pt.kernel.NamedObj {pt.kernel.NamedObj java.lang.String
     } {pt.kernel.NamedObj pt.kernel.Workspace java.lang.Str

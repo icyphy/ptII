@@ -66,23 +66,23 @@ test CompositeEntity-1.1 {Get information about an instance \
 } {{
   class:         pt.kernel.CompositeEntity
   fields:        
-  methods:       {addParameter pt.data.Parameter} {allowLevelCrossingCon
-    nect boolean} clone {clone pt.kernel.Workspace} {connec
-    t pt.kernel.ComponentPort pt.kernel.ComponentPort} {con
-    nect pt.kernel.ComponentPort pt.kernel.ComponentPort ja
-    va.lang.String} connectedPorts {deepContains pt.kernel.
-    ComponentEntity} deepGetEntities {description int} {equ
-    als java.lang.Object} getClass getContainer getEntities
-     {getEntity java.lang.String} getFullName getName {getP
-    arameter java.lang.String} getParameters {getPort java.
-    lang.String} getPorts {getRelation java.lang.String} ge
-    tRelations hashCode isAtomic linkedRelations {newPort j
-    ava.lang.String} {newRelation java.lang.String} notify 
-    notifyAll numEntities numRelations removeAllEntities re
-    moveAllPorts removeAllRelations {removeParameter java.l
-    ang.String} {setContainer pt.kernel.CompositeEntity} {s
-    etName java.lang.String} toString wait {wait long} {wai
-    t long int} workspace
+  methods:       {addParameter pt.kernel.Nameable} {allowLevelCrossingCo
+    nnect boolean} clone {clone pt.kernel.Workspace} {conne
+    ct pt.kernel.ComponentPort pt.kernel.ComponentPort} {co
+    nnect pt.kernel.ComponentPort pt.kernel.ComponentPort j
+    ava.lang.String} connectedPorts {deepContains pt.kernel
+    .ComponentEntity} deepGetEntities {description int} {eq
+    uals java.lang.Object} getClass getContainer getEntitie
+    s {getEntity java.lang.String} getFullName getName {get
+    Parameter java.lang.String} getParameters {getPort java
+    .lang.String} getPorts {getRelation java.lang.String} g
+    etRelations hashCode isAtomic linkedRelations {newPort 
+    java.lang.String} {newRelation java.lang.String} notify
+     notifyAll numEntities numRelations removeAllEntities r
+    emoveAllPorts removeAllRelations {removeParameter java.
+    lang.String} {setContainer pt.kernel.CompositeEntity} {
+    setName java.lang.String} toString wait {wait long} {wa
+    it long int} workspace
     
   constructors:  pt.kernel.CompositeEntity {pt.kernel.CompositeEntity pt
     .kernel.CompositeEntity java.lang.String} {pt.kernel.Co

@@ -62,16 +62,16 @@ test ComponentEntity-1.1 {Get information about an instance of ComponentEntity} 
 } {{
   class:         pt.kernel.ComponentEntity
   fields:        
-  methods:       {addParameter pt.data.Parameter} clone {clone pt.kernel
-    .Workspace} connectedPorts {description int} {equals ja
-    va.lang.Object} getClass getContainer getFullName getNa
-    me {getParameter java.lang.String} getParameters {getPo
-    rt java.lang.String} getPorts hashCode isAtomic linkedR
-    elations {newPort java.lang.String} notify notifyAll re
-    moveAllPorts {removeParameter java.lang.String} {setCon
-    tainer pt.kernel.CompositeEntity} {setName java.lang.St
-    ring} toString wait {wait long} {wait long int} workspa
-    ce
+  methods:       {addParameter pt.kernel.Nameable} clone {clone pt.kerne
+    l.Workspace} connectedPorts {description int} {equals j
+    ava.lang.Object} getClass getContainer getFullName getN
+    ame {getParameter java.lang.String} getParameters {getP
+    ort java.lang.String} getPorts hashCode isAtomic linked
+    Relations {newPort java.lang.String} notify notifyAll r
+    emoveAllPorts {removeParameter java.lang.String} {setCo
+    ntainer pt.kernel.CompositeEntity} {setName java.lang.S
+    tring} toString wait {wait long} {wait long int} worksp
+    ace
     
   constructors:  pt.kernel.ComponentEntity {pt.kernel.ComponentEntity pt
     .kernel.CompositeEntity java.lang.String} {pt.kernel.Co

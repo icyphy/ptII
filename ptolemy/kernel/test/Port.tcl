@@ -67,16 +67,16 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       {addParameter pt.data.Parameter} clone {clone pt.kernel
-    .Workspace} connectedPorts {description int} {equals ja
-    va.lang.Object} getClass getContainer getFullName getNa
-    me {getParameter java.lang.String} getParameters hashCo
-    de {isLinked pt.kernel.Relation} isOpaque {link pt.kern
-    el.Relation} linkedRelations notify notifyAll numLinks 
-    {removeParameter java.lang.String} {setContainer pt.ker
-    nel.Entity} {setName java.lang.String} toString {unlink
-     pt.kernel.Relation} unlinkAll wait {wait long} {wait l
-    ong int} workspace
+  methods:       {addParameter pt.kernel.Nameable} clone {clone pt.kerne
+    l.Workspace} connectedPorts {description int} {equals j
+    ava.lang.Object} getClass getContainer getFullName getN
+    ame {getParameter java.lang.String} getParameters hashC
+    ode {isLinked pt.kernel.Relation} isOpaque {link pt.ker
+    nel.Relation} linkedRelations notify notifyAll numLinks
+     {removeParameter java.lang.String} {setContainer pt.ke
+    rnel.Entity} {setName java.lang.String} toString {unlin
+    k pt.kernel.Relation} unlinkAll wait {wait long} {wait 
+    long int} workspace
     
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
     ng.String} {pt.kernel.Port pt.kernel.Workspace}

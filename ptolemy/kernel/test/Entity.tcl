@@ -67,15 +67,15 @@ test Entity-1.1 {Get information about an instance of Entity} {
 } {{
   class:         pt.kernel.Entity
   fields:        
-  methods:       {addParameter pt.data.Parameter} clone {clone pt.kernel
-    .Workspace} connectedPorts {description int} {equals ja
-    va.lang.Object} getClass getContainer getFullName getNa
-    me {getParameter java.lang.String} getParameters {getPo
-    rt java.lang.String} getPorts hashCode linkedRelations 
-    {newPort java.lang.String} notify notifyAll removeAllPo
-    rts {removeParameter java.lang.String} {setName java.la
-    ng.String} toString wait {wait long} {wait long int} wo
-    rkspace
+  methods:       {addParameter pt.kernel.Nameable} clone {clone pt.kerne
+    l.Workspace} connectedPorts {description int} {equals j
+    ava.lang.Object} getClass getContainer getFullName getN
+    ame {getParameter java.lang.String} getParameters {getP
+    ort java.lang.String} getPorts hashCode linkedRelations
+     {newPort java.lang.String} notify notifyAll removeAllP
+    orts {removeParameter java.lang.String} {setName java.l
+    ang.String} toString wait {wait long} {wait long int} w
+    orkspace
     
   constructors:  pt.kernel.Entity {pt.kernel.Entity java.lang.String} {p
     t.kernel.Entity pt.kernel.Workspace java.lang.String}

@@ -66,19 +66,19 @@ test ComponentPort-1.1 {Get information about an instance of ComponentPort} {
 } {{
   class:         pt.kernel.ComponentPort
   fields:        
-  methods:       {addParameter pt.data.Parameter} clone {clone pt.kernel
-    .Workspace} connectedPorts deepConnectedPorts deepInsid
-    ePorts {description int} {equals java.lang.Object} getC
-    lass getContainer getFullName getName {getParameter jav
-    a.lang.String} getParameters hashCode insidePorts insid
-    eRelations {isDeeplyConnected pt.kernel.ComponentPort} 
-    {isInsideLinked pt.kernel.Relation} {isLinked pt.kernel
-    .Relation} isOpaque {liberalLink pt.kernel.ComponentRel
-    ation} {link pt.kernel.Relation} linkedRelations notify
-     notifyAll numInsideLinks numLinks {removeParameter jav
-    a.lang.String} {setContainer pt.kernel.Entity} {setName
-     java.lang.String} toString {unlink pt.kernel.Relation}
-     unlinkAll wait {wait long} {wait long int} workspace
+  methods:       {addParameter pt.kernel.Nameable} clone {clone pt.kerne
+    l.Workspace} connectedPorts deepConnectedPorts deepInsi
+    dePorts {description int} {equals java.lang.Object} get
+    Class getContainer getFullName getName {getParameter ja
+    va.lang.String} getParameters hashCode insidePorts insi
+    deRelations {isDeeplyConnected pt.kernel.ComponentPort}
+     {isInsideLinked pt.kernel.Relation} {isLinked pt.kerne
+    l.Relation} isOpaque {liberalLink pt.kernel.ComponentRe
+    lation} {link pt.kernel.Relation} linkedRelations notif
+    y notifyAll numInsideLinks numLinks {removeParameter ja
+    va.lang.String} {setContainer pt.kernel.Entity} {setNam
+    e java.lang.String} toString {unlink pt.kernel.Relation
+    } unlinkAll wait {wait long} {wait long int} workspace
     
   constructors:  pt.kernel.ComponentPort {pt.kernel.ComponentPort pt.ker
     nel.ComponentEntity java.lang.String} {pt.kernel.Compon
