@@ -7,12 +7,6 @@
 </head>
 <body>
 <h1>Programming Style for Ptolemy II</h1>
-Places to go
-<menu>
-<li> <a href="reviews.htm">Code Reviews</a>
-<li> <a href="testing.htm">Testing</a>
-</menu>
-
 <p>
 The following programming style is followed in the Ptolemy II project.
 Please submit comments or suggestions to eal@eecs.berkeley.edu.
@@ -39,10 +33,10 @@ people stop working on the code when it "works."  This is like stopping
 work on a paper when what it says is correct, and not worrying at all
 about how it is said.  PROOFREAD YOUR CODE AFTER YOU'VE GOT IT WORKING.
  <p>
-<a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> is a script that will indicate problems with your <CODE>.java</CODE>
-files.  To run it, type
+<a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> is a script that will indicate certain
+problems with your code. To run it, type
 <pre>
-$PTII/util/testsuite/chkjava *.java
+   $PTII/util/testsuite/chkjava *.java
 </pre>
  <p>You should also spell check your code with <CODE>spell *.java</CODE>.
 See also the <a href="reviews.htm">Reviews</a> and
@@ -50,7 +44,7 @@ See also the <a href="reviews.htm">Reviews</a> and
 
 <h2><a name="indentation">Indentation</a></h2>
 
-Tabs are 8 space characters.
+Tabs are 8 space characters, not the tab character.
 The reason for this is that code becomes unreadable when the Tab
 character is interpreted differently by different viewers.
 Do not override this in your text editor.

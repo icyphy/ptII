@@ -7,17 +7,18 @@
 </head>
 <body>
 <h1><A NAME="java">Ptolemy II Package Design</A></h1>
-Places to go
-<menu>
-<li> <A HREF="../codeDoc/packages.html" target="main">Java Classes</A>
-<li> <a href="directories.htm">Directory Structure</a>
-</menu>
-
+<p>
 Ptolemy II uses the Java package system to group classes.
-
+</p>
 <menu>
+<li> Packages are (roughly) small enough that the UML static structure
+diagram for the package fits on one page.  Larger packages are possible
+when there is a compelling reason to keep classes together, or when
+the classes have such a regular structure that their architecture is
+easily grasped.
 
-<li> Bidirectional dependencies should be avoided.  If two packages
+<li> Bidirectional dependencies between packages should be avoided.
+If two packages
 are dependent upon each other, it makes it hard to determine which
 package to compile first.  Below are the possibilities
 	<menu>
@@ -31,10 +32,8 @@ package to compile first.  Below are the possibilities
 directory hierarchy.  For example <CODE>ptolemy.kernel.util</CODE> is a
 subpackage of <CODE>ptolemy.kernel</CODE>.  The makefiles are structured so
 that we run make in the subdirectories first so in general, it is best
-if parent packages depend on their subpackages.
+if subpackages do not depend on the parent package (the reverse is OK).
 
 </menu>
-
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
 </html>
