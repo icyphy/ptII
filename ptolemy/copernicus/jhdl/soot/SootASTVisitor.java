@@ -29,29 +29,34 @@
 
 package ptolemy.copernicus.jhdl.soot;
 
+import java.util.*;
+
+import ptolemy.copernicus.jhdl.util.*;
+
 import soot.toolkits.graph.*;
 import soot.*;
 import soot.jimple.*;
-import ptolemy.copernicus.jhdl.util.*;
 
-import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SootASTVisitor
 /**
-This class traverses the syntax tree of a Soot Jimple Block. This class
-will iterate over all Stmt Units within the Block and traverse the
-syntax of each Stmt. A unique method is available for each syntatic
-unit within the syntax tree. Leaf methods return a null to indicate
-that the corresponding syntax object has not been processed.
 
-Custom visitors of this class should extend the appropriate leaf
-methods and return a non-null object to indicate that the syntax
-object has been properly processed.
+This class traverses the syntax tree of a Soot Jimple Block. This
+class will iterate over all Stmt Units within the Block and traverse
+the syntax of each Stmt. A unique method is called to process each
+syntatic unit within the syntax tree. Leaf methods return a null to
+indicate that the corresponding syntax object has not been processed.
+<b>
+Custom visitors of this class that extend this base class should
+extend the appropriate leaf methods and return a non-null object to
+indicate that the syntax object has been properly processed.
 
 @author Mike Wirthlin
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 2.0 
+@see SootASTException
+
 */
 
 public class SootASTVisitor {

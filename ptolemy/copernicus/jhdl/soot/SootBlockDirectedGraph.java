@@ -29,18 +29,22 @@
 
 package ptolemy.copernicus.jhdl.soot;
 
-import ptolemy.copernicus.jhdl.util.*;
+import java.util.*;
 
+import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
+
 import soot.toolkits.graph.Block;
 import soot.*;
 import soot.jimple.*;
 
-import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 ////
 /**
+ * 
+ * Is this class necessary? 
+ *
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0

@@ -103,13 +103,13 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
     }
 
     public Value processUnopExpr(UnopExpr expr, Value op) {
-        if (expr instanceof JHDLNotExpr)
-            return processJHDLNotExpr((JHDLNotExpr) expr, op);
+        if (expr instanceof BooleanNotExpr)
+            return processBooleanNotExpr((BooleanNotExpr) expr, op);
         else
             return super.processUnopExpr(expr, op);
     }
 
-    public Value processJHDLNotExpr(JHDLNotExpr expr, Value op) {
+    public Value processBooleanNotExpr(BooleanNotExpr expr, Value op) {
         _graph.addEdge(_valueMap.getValueNode(op),
                 _valueMap.getValueNode(expr));
         return expr;

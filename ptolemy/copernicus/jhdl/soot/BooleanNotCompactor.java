@@ -79,11 +79,11 @@ import soot.toolkits.graph.Block;
  * A Not expression in Java (i.e. the ! operator) is implemented as
  * an IfStmt in which constant Boolean values are assigned to the
  * corresponding value. This method will scan through the chain
- * of units and convert such Not expressions into JHDLNotExpr
+ * of units and convert such Not expressions into BooleanNotExpr
  * objects. This simplifies the control-flow analysis by removing
  * this control flow construct with a dataflow expression.
  *
- * @see ptolemy.copernicus.jhdl.soot.JHDLNotExpr
+ * @see ptolemy.copernicus.jhdl.soot.BooleanNotExpr
  *
  * @author Mike Wirthlin
  * @version $Id$
@@ -177,9 +177,9 @@ public class BooleanNotCompactor {
         System.out.println("if="+ifCondition);
         Value v = null;
         if (ifCondition instanceof CompoundBooleanExpression)
-            v = new JHDLNotExpr( ifCondition );
+            v = new BooleanNotExpr( ifCondition );
         else
-            v = new JHDLNotExpr(ifCondition.getOp1());
+            v = new BooleanNotExpr(ifCondition.getOp1());
         AssignStmt a = new JAssignStmt(falseAssignValue,v);
         System.out.println(a);
         Unit preceeding = (Unit) chain.getPredOf(root);

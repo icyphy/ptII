@@ -35,13 +35,13 @@ import soot.util.*;
 import soot.jimple.internal.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// JHDLNotExpr
+//// BooleanNotExpr
 /**
  *
  * A Not expression in Java (i.e. the ! operator) is implemented as
  * an IfStmt in which constant Boolean values are assigned to the
  * corresponding value. This method will scan through the chain
- * of units and convert such Not expressions into JHDLNotExpr
+ * of units and convert such Not expressions into BooleanNotExpr
  * objects. This simplifies the control-flow analysis by removing
  * this control flow construct with a dataflow expression.
  *
@@ -53,18 +53,18 @@ import soot.jimple.internal.*;
  * @version $Id$
  * @since Ptolemy II 2.0
 */
-public class JHDLNotExpr implements UnopExpr {
+public class BooleanNotExpr implements UnopExpr {
 
     /*
-      public JHDLNotExpr(CompoundBooleanExpression op) {
+      public BooleanNotExpr(CompoundBooleanExpression op) {
       super(Jimple.v().newConditionExprBox(op));
       }
 
-      public JHDLNotExpr(Value op) {
+      public BooleanNotExpr(Value op) {
       super(Jimple.v().newImmediateBox(op));
       }
     */
-    public JHDLNotExpr(Value op) {
+    public BooleanNotExpr(Value op) {
         this.op = op;
     }
 
@@ -74,14 +74,14 @@ public class JHDLNotExpr implements UnopExpr {
     public java.util.List getUseBoxes() { return null; }
 
     public Object clone() {
-        return new JHDLNotExpr(Jimple.cloneIfNecessary(getOp()));
+        return new BooleanNotExpr(Jimple.cloneIfNecessary(getOp()));
     }
     /** Compares the specified object with this one for structural equality. */
     public boolean equivTo(Object o)
     {
-        if (o instanceof JHDLNotExpr)
+        if (o instanceof BooleanNotExpr)
             {
-                return getOpBox().getValue().equivTo(((JHDLNotExpr)o).getOpBox().getValue());
+                return getOpBox().getValue().equivTo(((BooleanNotExpr)o).getOpBox().getValue());
             }
         return false;
     }

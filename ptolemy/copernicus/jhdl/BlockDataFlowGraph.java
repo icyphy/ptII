@@ -111,7 +111,7 @@ import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
 import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
 
-import ptolemy.copernicus.jhdl.soot.JHDLNotExpr;
+import ptolemy.copernicus.jhdl.soot.BooleanNotExpr;
 import ptolemy.copernicus.jhdl.soot.CompoundBooleanExpression;
 import ptolemy.copernicus.jhdl.soot.ConditionalControlCompactor;
 
@@ -311,7 +311,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
     protected Node _processUnopExpr(UnopExpr expr)
             throws JHDLUnsupportedException {
         if (expr instanceof NegExpr ||
-                expr instanceof JHDLNotExpr){
+                expr instanceof BooleanNotExpr){
 
             Node n = addNodeWeight(expr);
             Value rightValue=expr.getOp();

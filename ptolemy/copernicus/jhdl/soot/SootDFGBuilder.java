@@ -29,22 +29,29 @@
 
 package ptolemy.copernicus.jhdl.soot;
 
+import java.util.*;
+
 import ptolemy.copernicus.jhdl.util.*;
+import ptolemy.graph.*;
 
 import soot.toolkits.graph.Block;
 import soot.*;
 import soot.jimple.*;
 
-import ptolemy.graph.*;
-
-import java.util.*;
-
 //////////////////////////////////////////////////////////////////////////
 //// SootDFGBuilder
 /**
+ * 
+ * This class extends the SootASTVisitor to generate a directed graph
+ * from a Soot Block object. Specifically, this class will generate a
+ * SootBlockDirectedGraph (which extends
+ * Ptolemy.graph.DirectedGraph). 
+ *
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
+@see SootBlockDirectedGraph
+
 */
 
 public class SootDFGBuilder extends SootASTVisitor {

@@ -276,7 +276,7 @@ public class ModelGraph2Entity {
         Object nweight = node.getWeight();
 
 	JHDLUnOpActor actor = null;
-        if (nweight instanceof JHDLNotExpr) {
+        if (nweight instanceof BooleanNotExpr) {
 	    actor = new JHDLUnOpActor(_entity,JHDLUnOpActor.NOT);
         } else
             _unsupportedOperation(nweight);

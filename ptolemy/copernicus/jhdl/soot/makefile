@@ -47,6 +47,7 @@ JSRCS = \
 	AbstractCompoundExpression.java \
 	BinaryMux.java \
 	BooleanNotCompactor.java \
+	BooleanNotExpr.java \
 	CompoundAndExpression.java \
 	CompoundBooleanExpression.java \
 	CompoundOrExpression.java \
@@ -58,7 +59,6 @@ JSRCS = \
 	IntervalBlockDirectedGraph.java \
 	IntervalChain.java \
 	IntervalDFG.java \
-	JHDLNotExpr.java \
 	SootASTException.java \
 	SootASTVisitor.java \
 	SootBlockDirectedGraph.java \

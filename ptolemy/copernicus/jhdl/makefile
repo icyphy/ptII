@@ -46,22 +46,11 @@ DIRS =		util circuit soot test
 
 # Keep this list alphabetized.
 JSRCS = \
-	ActorDataFlowAnalysis.java \
-	BDFGToJHDLCircuit.java \
 	BlockDataFlowGraph.java \
-	CircuitAnalysis.java \
-	CircuitCreator.java \
 	CircuitTransformer.java \
-	InlinePrimitivePortTransformer.java \
-	Inliner.java \
-	JHDLTransformer.java \
 	Main.java \
-	Predefined.java \
-	RegisterDelay.java \
 	RequiredBlockDataFlowGraph.java \
-	SDFGToJHDLCircuit.java \
 
-#	DGToJHDLCircuit.java \
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \

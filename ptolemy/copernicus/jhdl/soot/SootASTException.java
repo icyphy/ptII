@@ -41,6 +41,7 @@ SootASTVisitor class.
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
+@see SootASTVisitor
 */
 
 public class SootASTException extends IllegalActionException {
