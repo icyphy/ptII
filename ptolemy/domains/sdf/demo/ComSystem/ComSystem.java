@@ -103,7 +103,7 @@ public class ComSystem extends SDFApplet {
             // the available space.
             plotter.place(getContentPane());
 
-            plotter.plot.setBackground(_getBackground());
+            plotter.plot.setBackground(getBackground());
             plotter.plot.setGrid(false);
             plotter.plot.setTitle("Eye Diagram");
             plotter.plot.setXRange(0.0, 32.0);
