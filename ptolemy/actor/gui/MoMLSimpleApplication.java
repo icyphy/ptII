@@ -83,7 +83,12 @@ public class MoMLSimpleApplication implements ChangeListener {
     public MoMLSimpleApplication(String xmlFilename) throws Exception {
         MoMLParser parser = new MoMLParser();
 
-	// Filter out any graphical classes
+        // The test suite calls MoMLSimpleApplication multiple times,
+        // and the list of filters is static, so we reset it each time
+        // so as to avoid adding filters every time we run an auto test.
+        parser.setMoMLFilters(null);
+
+	// Filter out any graphical classes.
 	parser.addMoMLFilter(new FilterBackwardCompatibility());
 	parser.addMoMLFilter(new FilterOutGraphicalClasses());
 
