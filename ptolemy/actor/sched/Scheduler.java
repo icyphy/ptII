@@ -344,11 +344,15 @@ public class Scheduler extends Attribute {
      *  @return A Schedule of the deeply contained opaque entities
      *  in the firing order.
      *  @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable. Not thrown in this base class, but may be needed
-     *  by the derived scheduler.
+     *  schedulable. Not thrown in this base class, but may be thrown
+     *  by derived classes.
+     *  @exception IllegalActionException If the scheduling algorithm
+     *  throws it. Not thrown un this base class, but may be thrown 
+     *  by derived classes.
      *  @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      */
-    protected Schedule _getSchedule() throws NotSchedulableException {
+    protected Schedule _getSchedule() throws IllegalActionException,
+            NotSchedulableException {
 	StaticSchedulingDirector director =
             (StaticSchedulingDirector)getContainer();
         CompositeActor compositeActor =
