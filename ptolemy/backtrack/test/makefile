@@ -98,6 +98,7 @@ transform:
 	# The transformed code is in 
 	# package ptolemy.backtrack.test.ptolemy.backtrack.test.test1.
 	for x in $(DIRS); do \
+	  rm -f ptolemy/backtrack/test/$$x/*.java; \
 	  "$(JAVA)" \
 	    -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)" \
 	    ptolemy.backtrack.ast.Transformer \
