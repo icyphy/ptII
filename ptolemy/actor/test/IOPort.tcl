@@ -546,3 +546,64 @@ test IOPort-11.1 {Check librialLink on transparent multiport and inferred width}
     list [$p0 getWidth] [$p1 getWidth] [$p2 getWidth]
 } {3 3 3}
 
+test IOPort-11.2 {Check librialLink: link a linked relation from inside } {
+    set e0 [java::new pt.kernel.CompositeEntity]
+    set p0 [java::new pt.actors.IOPort $e0 P0 false true]
+    $p0 makeMultiport true
+    set r1 [java::new pt.actors.IORelation $e0 R1]
+    $r1 setWidth 0
+    $p0 link $r1
+    catch {$p0 link $r1} msg1
+    list $msg1
+} {{}}
+
+test IOPort-11.3 {Check librialLink multi-*-relation from inside } {
+    set e0 [java::new pt.kernel.CompositeEntity]
+    set p0 [java::new pt.actors.IOPort $e0 P0 false true]
+    $p0 makeMultiport true
+    set r1 [java::new pt.actors.IORelation $e0 R1]
+    $r1 setWidth 0
+    $p0 link $r1
+    set r2 [java::new pt.actors.IORelation $e0 R2]
+    $r2 setWidth 0
+    catch {$p0 link $r2} msg1
+    list $msg1
+} {{pt.kernel.IllegalActionException: ..P0 and ..R2: Attempt to link a second bus relation with unspecified width to the inside of a port.}}
+
+test IOPort-11.4 {Check librialLink multi-*-relation from outside } {
+    set e0 [java::new pt.kernel.CompositeEntity]
+    set p0 [java::new pt.actors.IOPort $e0 P0 false true]
+    $p0 makeMultiport true
+    # inside relation, fixed width
+    set r1 [java::new pt.actors.IORelation $e0 R1]
+    $r1 setWidth 3
+    $p0 link $r1
+    # ourside relation, *
+    set r2 [java::new pt.actors.IORelation]
+    $r2 setName R2
+    $r2 setWidth 0
+    $p0 link $r2
+    set r3 [java::new pt.actors.IORelation]
+    $r3 setName R3
+    $r3 setWidth 0
+    catch {$p0 link $r3} msg1
+    list $msg1
+} {{pt.kernel.IllegalActionException: ..P0 and .R3: Attempt to link a second bus relation with unspecified width to the outside of a port.}}
+
+test IOPort-11.5 {Check librialLink *-relation from both inside and outside } {
+    set e0 [java::new pt.kernel.CompositeEntity]
+    set p0 [java::new pt.actors.IOPort $e0 P0 false true]
+    $p0 makeMultiport true
+    # inside relation, *
+    set r1 [java::new pt.actors.IORelation $e0 R1]
+    $r1 setWidth 0
+    $p0 link $r1
+    # ourside relation, *
+    set r2 [java::new pt.actors.IORelation]
+    $r2 setName R2
+    $r2 setWidth 0
+    catch {$p0 link $r2} msg1
+    list $msg1
+} {{}}
+
+

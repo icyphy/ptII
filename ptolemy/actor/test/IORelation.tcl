@@ -241,6 +241,35 @@ test IORelation-3.12 {Test getWidth of a port with inferred relation width} {
     list [$p1 getWidth] [$r1 getWidth] [$p2 getWidth]
 } {1 1 1}
 
+test IORelation-3.13 {Resolve width through three levels} {
+    # E0 contains E1 contains E2
+    set e0 [java::new pt.kernel.CompositeEntity]
+    $e1 setName E0
+    set p0 [java::new pt.actors.IOPort $e0 P0]
+    $p0 makeMultiport true
+    set e1 [java::new pt.kernel.CompositeEntity $e0 E1]
+    set p1 [java::new pt.actors.IOPort $e1 P1]
+    $p1 makeMultiport true
+    set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
+    set p2 [java::new pt.actors.IOPort $e2 P2]
+    $p2 makeMultiport true
+    set r0 [java::new pt.actors.IORelation]
+    $r0 setName R0
+    $r0 setWidth 0
+    set r1 [java::new pt.actors.IORelation $e0 R1]
+    $r1 setWidth 0
+    set r2 [java::new pt.actors.IORelation $e1 R2]
+    $r2 setWidth 0
+    $p2 link $r2
+    $p1 link $r1
+    $p1 link $r2
+    $p0 link $r1
+    $p0 link $r0
+    $r0 setWidth 3
+    list [$p0 getWidth] [$p1 getWidth] [$p2 getWidth] \
+         [$r0 getWidth] [$r1 getWidth] [$r2 getWidth]
+} {3 3 3 3 3 3}
+
 ######################################################################
 ####
 # Build the elaborate test system from the design doc.
