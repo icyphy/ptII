@@ -34,7 +34,6 @@ import java.util.Iterator;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 
@@ -106,40 +105,6 @@ public class ComponentEntity extends Entity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is a new entity with the same ports as the original, but
-     *  no connections.
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If cloned ports cannot have
-     *   as their container the cloned entity (this should not occur), or
-     *   if one of the attributes cannot be cloned.
-     *  @return A new ComponentEntity.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ComponentEntity newObject = (ComponentEntity)super.clone(workspace);
-        newObject._container = null;
-        
-        // If this is the top level of a clone, then duplicate the
-        // deferTo relationship in the cloned object.
-        if (!_beingClonedByContainer) {
-            MoMLInfo info = getMoMLInfo();
-            if (info.deferTo != null) {
-                newObject.setDeferMoMLDefinitionTo(info.deferTo);
-            }
-        }
-        return newObject;
-    }
-
-    /** Get the container entity.
-     *  @return The container, which is an instance of CompositeEntity.
-     */
-    public Nameable getContainer() {
-        return _container;
-    }
 
     /** Return true if the entity is atomic.
      *  An atomic entity is one that cannot have components.
@@ -221,7 +186,7 @@ public class ComponentEntity extends Entity {
      *   collides with a name already in the container.
      *  @see #isClassElement()
      */
-    public void setContainer(CompositeEntity container)
+    public void setContainer(Prototype container)
             throws IllegalActionException, NameDuplicationException {
 
         if (container != null && _workspace != container.workspace()) {
@@ -241,12 +206,13 @@ public class ComponentEntity extends Entity {
             // Do this first, because it may throw an exception, and we have
             // not yet changed any state.
             if (container != null) {
-                container._addEntity(this);
+                // checkContainer() above ensures that this cast is valid.
+                ((CompositeEntity)container)._addEntity(this);
                 if (previousContainer == null) {
                     _workspace.remove(this);
                 }
             }
-            _container = container;
+            super.setContainer(container);
             if (previousContainer != null) {
                 // This is safe now because it does not throw an exception.
                 previousContainer._removeEntity(this);
@@ -258,7 +224,8 @@ public class ComponentEntity extends Entity {
                     port.unlinkAll();
                 }
             } else {
-                container._finishedAddEntity(this);
+                // checkContainer() above ensures that this cast is valid.
+                ((CompositeEntity)container)._finishedAddEntity(this);
 
                 // We have successfully set a new container for this
                 // object. Mark it modified to ensure MoML export.
@@ -326,45 +293,19 @@ public class ComponentEntity extends Entity {
         }
         super._addPort(port);
     }
-
-    /** Check that the specified container is of a suitable class for
-     *  this entity.  In this base class, this method returns immediately
-     *  without doing anything.  Derived classes may override it to constrain
-     *  the container.
+        
+    /** Check the specified container.
      *  @param container The proposed container.
-     *  @exception IllegalActionException If the container is not of
-     *   an acceptable class.  Not thrown in this base class.
+     *  @exception IllegalActionException If the container is not an
+     *   instnance of CompositeEntity.
      */
-    protected void _checkContainer(CompositeEntity container)
-            throws IllegalActionException {}
-
-    /** Clone the object into the specified workspace, but with
-     *  an indication that the clone is being requested by the clone()
-     *  method of a container.
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If cloned ports cannot have
-     *   as their container the cloned entity (this should not occur), or
-     *   if one of the attributes cannot be cloned.
-     *  @return A new ComponentEntity.
-     */
-    protected Object _cloneFromContainer(Workspace workspace)
-            throws CloneNotSupportedException {
-        try {
-            _beingClonedByContainer = true;
-            return clone(workspace);
-        } finally {
-            _beingClonedByContainer = false;
+    protected void _checkContainer(Prototype container)
+            throws IllegalActionException {
+        if (container != null && !(container instanceof CompositeEntity)) {
+            throw new IllegalActionException(this, container,
+            "Component entity can only be contained by a CompositeEntity");
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-    
-    /** Indicator that this object is being cloned by a container.
-     *  This is so that only the top-level of a cloned tree defers
-     *  its MoML definition to another actor.
-     */
-    protected boolean _beingClonedByContainer = false;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -377,10 +318,4 @@ public class ComponentEntity extends Entity {
                 "style=\"fill:blue\"/>\n" +
                 "</svg>\n");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** @serial The entity that contains this entity. */
-    private CompositeEntity _container;
 }

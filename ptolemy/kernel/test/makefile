@@ -60,6 +60,7 @@ JSIMPLE_TESTS = \
 	CompositeEntity.tcl \
 	Entity.tcl \
 	Port.tcl \
+	Prototype.tcl \
 	Relation.tcl
 
 # Graphical Java tests that use Tcl.

@@ -78,7 +78,7 @@ public class Port extends NamedObj {
      */
     public Port() {
         super();
-        getMoMLInfo().elementName = "port";
+        _elementName = "port";
     }
 
     /** Construct a port in the specified workspace with an empty
@@ -91,7 +91,7 @@ public class Port extends NamedObj {
      */
     public Port(Workspace workspace) {
         super(workspace);
-        getMoMLInfo().elementName = "port";
+        _elementName = "port";
     }
 
     /** Construct a port with the given name contained by the specified
@@ -112,7 +112,7 @@ public class Port extends NamedObj {
     public Port(Entity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
-        getMoMLInfo().elementName = "port";
+        _elementName = "port";
         setContainer(container);
     }
 

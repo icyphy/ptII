@@ -68,7 +68,7 @@ public class Relation extends NamedObj {
      */
     public Relation() {
         super();
-        getMoMLInfo().elementName = "relation";
+        _elementName = "relation";
     }
 
     /** Construct a relation in the default workspace with the given name.
@@ -80,7 +80,7 @@ public class Relation extends NamedObj {
      */
     public Relation(String name) throws IllegalActionException {
         super(name);
-        getMoMLInfo().elementName = "relation";
+        _elementName = "relation";
     }
 
     /** Construct a relation in the given workspace with an empty string
@@ -92,7 +92,7 @@ public class Relation extends NamedObj {
      */
     public Relation(Workspace workspace) {
         super(workspace);
-        getMoMLInfo().elementName = "relation";
+        _elementName = "relation";
     }
 
     /** Construct a relation in the given workspace with the given name.
@@ -107,7 +107,7 @@ public class Relation extends NamedObj {
     public Relation(Workspace workspace, String name)
             throws IllegalActionException {
         super(workspace, name);
-        getMoMLInfo().elementName = "relation";
+        _elementName = "relation";
     }
 
     ///////////////////////////////////////////////////////////////////

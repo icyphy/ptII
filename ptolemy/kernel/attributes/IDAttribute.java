@@ -34,21 +34,20 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Prototype;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// IDAttribute
 /**
-This attribute identifies the containing model.
-It provides a user interface to key properties of the containing
-model, including its name and base class. If the name is changed in
+This attribute identifies the containing model, showing its name
+and author information. If the name is changed in
 this attribute, then the name of the container will be changed to match.
 <p>
 @author Edward A. Lee
@@ -56,9 +55,6 @@ this attribute, then the name of the container will be changed to match.
 @since Ptolemy II 2.0
 */
 public class IDAttribute extends SingletonAttribute {
-    
-    // FIXME: Add author, date, version
-    // FIXME: Provide a mechanism to look inside a base class.
 
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -83,17 +79,18 @@ public class IDAttribute extends SingletonAttribute {
         // of this parameter.
         this.name.setPersistent(false);
         
-        String momlElement = container.getMoMLInfo().elementName;
+        boolean isClass = false;
+        if (container instanceof Prototype) {
+            isClass = ((Prototype)container).isClassDefinition();
+        }
+        
         String className = container.getMoMLInfo().className;
         String superclass = container.getMoMLInfo().superclass;
         String baseClassValue = null;
-        String isClassValue;
-        if (momlElement.equals("class")) {
+        if (isClass) {
             baseClassValue = superclass;
-            isClassValue = "true";
         } else {
             baseClassValue = className;
-            isClassValue = "false";
         }
 
         baseClass = new StringAttribute(this, "baseClass");
@@ -102,10 +99,7 @@ public class IDAttribute extends SingletonAttribute {
         // is set already, generally.
         baseClass.setPersistent(false);
         
-        isClass = new StringAttribute(this, "isClass");
-        isClass.setExpression(isClassValue);
-        // This should not be persistent.
-        isClass.setPersistent(false);
+        // FIXME: Need to make baseClass unmodifiable. How?
         
         author = new StringAttribute(this, "author");
         String userName = System.getProperty("user.name");
@@ -159,30 +153,6 @@ public class IDAttribute extends SingletonAttribute {
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
                 "Cannot change the name of the container to match.");
-            }
-        } else if (attribute == baseClass) {
-            // FIXME: How to change the base class?
-        } else if (attribute == isClass) {
-            String isClassValue = isClass.getExpression();
-            NamedObj container = (NamedObj)getContainer();
-            boolean containerIsClass
-                    = container.getMoMLInfo().elementName.equals("class");
-            if (isClassValue.equals("true")) {
-                if (!containerIsClass) {
-                    // Change the container from an entity to a class.
-                    container.getMoMLInfo().elementName = "class";
-                    container.getMoMLInfo().superclass
-                            = container.getMoMLInfo().className;
-                }
-            } else if (isClassValue.equals("false")) {
-                if (containerIsClass) {
-                    // Change the container from a class to an entity.
-                    // NOTE: Assume here that the class name is still valid.
-                    container.getMoMLInfo().elementName = "entity";
-                }
-            } else {
-                throw new IllegalActionException(this,
-                "Unrecognized value for isClass: should be true or false.");
             }
         } else {
             super.attributeChanged(attribute);

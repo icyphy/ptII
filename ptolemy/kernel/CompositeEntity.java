@@ -25,7 +25,8 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (bart@eecs.berkeley.edu)
+@AcceptedRating Yellow (bart@eecs.berkeley.edu)
+ FIXME: Need to review instantiate().
 */
 
 package ptolemy.kernel;
@@ -210,7 +211,7 @@ public class CompositeEntity extends ComponentEntity {
             if (_containedEntities != null) {
                 Iterator entities = _containedEntities.elementList().iterator();
                 while (entities.hasNext()) {
-                    NamedObj entity = (NamedObj)entities.next();
+                    ComponentEntity entity = (ComponentEntity)entities.next();
                     if (entity.isClassDefinition()) {
                         result.add(entity);
                     }
@@ -271,7 +272,7 @@ public class CompositeEntity extends ComponentEntity {
             ComponentEntity classDefinition
                     = (ComponentEntity)classes.next();
             ComponentEntity newSubentity = (ComponentEntity)classDefinition
-                    ._cloneFromContainer(workspace);
+                    .clone(workspace);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally.  If they do, throw a
             // CloneNotSupportedException.
@@ -290,7 +291,7 @@ public class CompositeEntity extends ComponentEntity {
             ComponentEntity entity
                     = (ComponentEntity)entities.next();
             ComponentEntity newSubentity = (ComponentEntity)entity
-                ._cloneFromContainer(workspace);
+                     .clone(workspace);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally.  If they do, throw a
             // CloneNotSupportedException.
@@ -518,7 +519,7 @@ public class CompositeEntity extends ComponentEntity {
             if (_containedEntities != null) {
                 Iterator entities = _containedEntities.elementList().iterator();
                 while (entities.hasNext()) {
-                    NamedObj entity = (NamedObj)entities.next();
+                    ComponentEntity entity = (ComponentEntity)entities.next();
                     if (!entity.isClassDefinition()) {
                         result.add(entity);
                     }
@@ -547,7 +548,7 @@ public class CompositeEntity extends ComponentEntity {
             List result = new LinkedList();
             Iterator entities = _containedEntities.elementList().iterator();
             while (entities.hasNext()) {
-                NamedObj entity = (NamedObj)entities.next();
+                ComponentEntity entity = (ComponentEntity)entities.next();
                 if (filter.isInstance(entity) && !entity.isClassDefinition()) {
                     result.add(entity);
                 }
@@ -883,6 +884,33 @@ public class CompositeEntity extends ComponentEntity {
         return Collections.enumeration(relationList());
     }
 
+    /** Create an instance by cloning this composite and then adjusting
+     *  the deferral relationships in the clone.  Specifically, any
+     *  deeply contained class definitions in the clone become subclasses
+     *  of the corresponding class definition in this prototype.
+     *  Any deeply contained instances instances of classes that
+     *  are deeply contained by this prototype become instances of
+     *  the corresponding new subclasses in the clone.
+     *  @param container The container for the instance.
+     *  @param name The name for the clone.
+     *  @return A new instance that is a clone of this prototype
+     *   with adjusted deferral relationships.
+     *  @throws CloneNotSupportedException If this prototype
+     *   cannot be cloned.
+     *  @throws IllegalActionException If this object is not a
+     *   class definition or the proposed container
+     *   is not acceptable.
+     *  @throws NameDuplicationException If the name collides with
+     *   an object already in the container.
+     */
+    public Prototype instantiate(Prototype container, String name)
+            throws CloneNotSupportedException,
+            IllegalActionException, NameDuplicationException {
+        CompositeEntity clone = (CompositeEntity)super.instantiate(container, name);
+        clone._adjustDeferrals(this, clone);
+        return clone;
+    }
+
     /** Return false since CompositeEntities are not atomic.
      *  Note that this will return false even if there are no contained
      *  entities or relations.  Derived classes may not override this.
@@ -1038,13 +1066,16 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** Return a name that is guaranteed to not be the name of
-     *  any contained attribute, port, entity, or relation.
-     *  In derived classes, this should be
-     *  overridden so that the returned name is guaranteed to not conflict
-     *  with any contained object. In this implementation, the argument
+     *  any contained attribute, port, class, entity, or relation.
+     *  In this implementation, the argument
      *  is stripped of any numeric suffix, and then a numeric suffix
      *  is appended and incremented until a name is found that does not
-     *  conflict with a contained attribute, port, entity, or relation.
+     *  conflict with a contained attribute, port, class, entity, or relation.
+     *  If this composite entity or any composite entity that it contains
+     *  defers its MoML definition (i.e., it is an instance of a class or
+     *  a subclass), then the prefix gets appended with "_<i>n</i>_",
+     *  where <i>n</i> is the depth of this deferral. That is, if the object
+     *  deferred to also defers, then <i>n</i> is incremented.
      *  @param prefix A prefix for the name.
      *  @return A unique name.
      */
@@ -1054,6 +1085,10 @@ public class CompositeEntity extends ComponentEntity {
         }
         prefix = _stripNumericSuffix(prefix);
         String candidate = prefix;
+        int depth = maximumDeferralDepth();
+        if (depth > 0) {
+            prefix = prefix + "_" + depth + "_";
+        }
         int uniqueNameIndex = 2;
         while (getAttribute(candidate) != null
                 || getPort(candidate) != null
@@ -1140,7 +1175,23 @@ public class CompositeEntity extends ComponentEntity {
         }
         _containedEntities.append(entity);
     }
-
+    
+    /** Add a relation to this container. This method should not be used
+     *  directly.  Call the setContainer() method of the relation instead.
+     *  This method does not set
+     *  the container of the relation to refer to this container.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *  @param relation Relation to contain.
+     *  @exception IllegalActionException If the relation has no name.
+     *  @exception NameDuplicationException If the name collides with a name
+     *   already on the contained relations list.
+     */
+    protected void _addRelation(ComponentRelation relation)
+            throws IllegalActionException, NameDuplicationException {
+        _containedRelations.append(relation);
+    }
+        
     /** Return an iterator over contained objects. In this class,
      *  this is an iterator over attributes, ports, entities, and
      *  relations, in that order.
@@ -1160,22 +1211,6 @@ public class CompositeEntity extends ComponentEntity {
      *  @param entity The contained entity.
      */
     protected void _finishedAddEntity(ComponentEntity entity) {
-    }
-
-    /** Add a relation to this container. This method should not be used
-     *  directly.  Call the setContainer() method of the relation instead.
-     *  This method does not set
-     *  the container of the relation to refer to this container.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *  @param relation Relation to contain.
-     *  @exception IllegalActionException If the relation has no name.
-     *  @exception NameDuplicationException If the name collides with a name
-     *   already on the contained relations list.
-     */
-    protected void _addRelation(ComponentRelation relation)
-            throws IllegalActionException, NameDuplicationException {
-        _containedRelations.append(relation);
     }
 
     /** Return a description of the object.  The level of detail depends
@@ -1352,6 +1387,38 @@ public class CompositeEntity extends ComponentEntity {
                 "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>" +
                 "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" +
                 "</svg>\n");
+    }
+
+    /** Adjust the deferral relationships in the specified clone.
+     *  Specifically, if this object defers to something that is
+     *  deeply contained by the specified prototype, then find
+     *  the corresponding object in the specified clone and defer
+     *  to it instead. This method also calls the same method
+     *  on all contained class definitions and entities.
+     *  @param prototype The object that was cloned.
+     *  @param clone The clone.
+     *  @throws IllegalActionException If the clone does not contain
+     *   a corresponding object to defer to.
+     */
+    protected void _adjustDeferrals(
+            CompositeEntity prototype, CompositeEntity clone) {
+        super._adjustDeferrals(prototype, clone);
+        
+        // Adjust the contained class definitions.
+        Iterator classes = classDefinitionList().iterator();
+        while (classes.hasNext()) {
+            ComponentEntity classDefinition
+                    = (ComponentEntity)classes.next();
+            classDefinition._adjustDeferrals(prototype, clone);
+        }
+
+        // Clone the contained entities.
+        Iterator entities = entityList().iterator();
+        while (entities.hasNext()) {
+            ComponentEntity entity
+                    = (ComponentEntity)entities.next();
+            entity._adjustDeferrals(prototype, clone);
+        }         
     }
 
     ///////////////////////////////////////////////////////////////////

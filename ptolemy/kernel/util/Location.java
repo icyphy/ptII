@@ -151,7 +151,7 @@ public class Location extends SingletonAttribute
 
         output.write(_getIndentPrefix(depth)
                 + "<"
-                + getMoMLInfo().elementName
+                + _elementName
                 + " name=\""
                 + name
                 + "\" class=\""
@@ -161,7 +161,7 @@ public class Location extends SingletonAttribute
                 + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"
-                + getMoMLInfo().elementName + ">\n");
+                + _elementName + ">\n");
     }
 
     /** Get the value of the attribute that has been set by setExpression()

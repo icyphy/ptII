@@ -83,7 +83,7 @@ to a topology from multiple threads.  The workspace is immutable
 @see ptolemy.kernel.Port
 @see ptolemy.kernel.Relation
 */
-public class Entity extends NamedObj {
+public class Entity extends Prototype {
 
     /** Construct an entity in the default workspace with an empty string
      *  as its name.
