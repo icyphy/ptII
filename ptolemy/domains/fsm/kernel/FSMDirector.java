@@ -75,34 +75,45 @@ import ptolemy.kernel.util.Workspace;
    current state. The preemptive transitions from the current state of the mode
    controller are examined. If there is more than one transition enabled, an
    exception is thrown. If there is exactly one preemptive transition enabled
-   then it is chosen and the choice actions contained by the transition are
-   executed. The refinement of the current state is not fired. Any output token
-   produced by the mode controller is transferred to the output ports of the
-   modal model and the input ports of the mode controller.
+   then it is chosen. The choice actions contained by the transition are 
+   executed. Any output token produced by the mode controller is transferred to 
+   both the output ports of the modal model and the input ports of the mode 
+   controller. Then the refinements associated with the enabled transition are
+   executed. Any output token produced by the refinements is transferred to
+   both the output ports of the modal model and the input ports of the mode
+   controller. The refinements of the current state will not be fired. 
    <p>
    If no preemptive transition is enabled, the refinements of the current state
    are fired. Any output token produced by the refinements is transferred to
-   the output ports of the modal model and the input ports of the mode
+   both the output ports of the modal model and the input ports of the mode
    controller. After this, the non-preemptive transitions from the current
    state of the mode controller are examined. If there is more than one
    transition enabled, an exception is thrown. If there is exactly one
    non-preemptive transition enabled then it is chosen and the choice actions
    contained by the transition are executed. Any output token produced by the
    mode controller is transferred to the output ports of the modal model and
-   the input ports of the mode controller.
+   the input ports of the mode controller. Then, the refinements of the 
+   enabled transition are executed. Any output token produced by the refinements 
+   is transferred to both the output ports of the modal model and the input 
+   ports of the mode controller. 
    <p>
    At the end of one firing, the modal model transfer its outputs to outside
    domain. The mode controller does not change state during successive firings
    in one iteration in order to support outside domains that iterate to a fixed
-   point. When the modal model is postfired, the chosen transition of the latest
-   firing is committed. The commit actions contained by the transition are executed and
-   the current state of the mode controller is set to the destination state of
-   the transition.
+   point.
+   
+   FIXME: this is not content with what was imiplemented.... in particular, 
+   refinements can not be postfired during firing! 
+   <p>
+   When the modal model is postfired, the chosen transition of the latest
+   firing is committed. The commit actions contained by the transition are 
+   executed and the current state of the mode controller is set to the 
+   destination state of the transition.
 
    @author Xiaojun Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.4
-   @Pt.ProposedRating red (hyzheng)
+   @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating red (hyzheng)
    @see FSMActor
 */
@@ -166,7 +177,7 @@ public class FSMDirector extends Director
      *  container of this director.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If thrown by the superclass
-     *   attributeChanged() method.
+     *  attributeChanged() method.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -182,7 +193,7 @@ public class FSMDirector extends Director
      *  @param workspace The workspace for the new director.
      *  @return A new director.
      *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
+     *  an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
@@ -193,51 +204,44 @@ public class FSMDirector extends Director
         return newObject;
     }
 
-    /** Set the values of input variables in the mode controller. Examine
+    /** Fire the model model for one iteration.
+     *  <p>
+     *  Set the values of input variables in the mode controller. Examine
      *  the preemptive outgoing transitions of its current state. Throw an
      *  exception if there is more than one transition enabled. If there
      *  is exactly one preemptive transition enabled then it is chosen and
-     *  the choice actions contained by the transition are executed. The
-     *  refinement of the current state of the mode controller is not fired.
+     *  the choice actions and transition refinements contained by the enabled 
+     *  transition are executed. The refinement of the current state of the 
+     *  mode controller is not fired. 
+     *  <p>
      *  If no preemptive transition is enabled and the refinement is ready
      *  to fire in the current iteration, fire the refinement. The
      *  non-preemptive transitions from the current state of the mode
      *  controller are examined. If there is more than one transition
      *  enabled, an exception is thrown. If there is exactly one
      *  non-preemptive transition enabled then it is chosen and the choice
-     *  actions contained by the transition are executed.
+     *  actions and transition refinements contained by the transition are 
+     *  executed.
+     *  <p> 
+     *  If any tokens are produced during this iteration, they are sent to 
+     *  both the output ports of the model model but also the input ports of
+     *  the mode controller.
      *  @exception IllegalActionException If there is more than one
      *   transition enabled, or there is no controller, or thrown by any
      *   choice action.
      */
     public void fire() throws IllegalActionException {
-        if (_debugging) {
-            _debug(getFullName(), "fire at time: " + getModelTime());
-        }
         FSMActor ctrl = getController();
-        ctrl._readInputs();
-        if (_debugging) {
-            _debug(getFullName(), " find FSMActor " + ctrl.getName());
+        if (_debugging && _verbose) {
+            _debug(getFullName(), " find FSMActor " + ctrl.getName()
+                    + " at time: " + getModelTime());
         }
+
+        ctrl._readInputs();
         State st = ctrl.currentState();
-        Transition tr =
-            ctrl._chooseTransition(st.preemptiveTransitionList());
 
+        Transition tr = ctrl._chooseTransition(st.preemptiveTransitionList());
         _enabledTransition = tr;
-
-        // Note, I modified the firing order of transitions and
-        // refinements of preemptive transitions. See comments inserted
-        // below. Hyzheng 01/25/2004.
-
-        // FIXME: I added several
-        //  ctrl._readOutputsFromRefinement();
-        //  statements in the following code. There is a semantics issue.
-        //  For state semantics, it does not matter how many times we
-        //  read output from refinements, because only the last one counts.
-        //  For event semantics, things are complicated if several events
-        //  are generated at different phases. I think the right solution
-        //  is to record all the tokens. Hyzheng 01/25/2004.
-
         if (tr != null) {
             // First execute the refinemtns of transition
             Actor[] actors = tr.getRefinement();
@@ -250,43 +254,9 @@ public class FSMDirector extends Director
                     }
                 }
             }
-
             ctrl._readOutputsFromRefinement();
-
-            // Second, execute the output actions.
-            Iterator actions = tr.choiceActionList().iterator();
-            while (actions.hasNext()) {
-                Action action = (Action)actions.next();
-                action.execute();
-            }
-
-            ctrl._readOutputsFromRefinement();
-
-            // Finally, execute the refinements of the destination state.
-            // FIXME: do we need to execute those? Maybe we should only
-            // execute the transitions and set the current state into the
-            // destination state. The refinements will be executed at next
-            // iteration.
-            actors = tr.destinationState().getRefinement();
-            if (actors != null) {
-                for (int i = 0; i < actors.length; ++i) {
-                    if (_stopRequested) break;
-                    if (actors[i].prefire()) {
-                        actors[i].fire();
-                        actors[i].postfire();
-                    }
-                }
-            }
-
-            ctrl._readOutputsFromRefinement();
-
             return;
         }
-
-        // For nonpreemptive transitions, we execute the model
-        // in the following order. First, the state refinements,
-        // then, the transition refinements, finally, the actions
-        // associated with the transition.
 
         Actor[] actors = st.getRefinement();
         if (actors != null) {
@@ -303,12 +273,10 @@ public class FSMDirector extends Director
                 }
             }
         }
-
         ctrl._readOutputsFromRefinement();
 
         tr = ctrl._chooseTransition(st.nonpreemptiveTransitionList());
         _enabledTransition = tr;
-
         if (tr != null) {
             actors = tr.getRefinement();
             if (actors != null) {
@@ -325,46 +293,47 @@ public class FSMDirector extends Director
                         actors[i].postfire();
                     }
                 }
-
-                ctrl._readOutputsFromRefinement();
-
-                //execute the output actions
-                Iterator actions = tr.choiceActionList().iterator();
-                while (actions.hasNext()) {
-                    Action action = (Action)actions.next();
-                    action.execute();
-                }
-
                 ctrl._readOutputsFromRefinement();
             }
         }
         return;
     }
 
-    /** Schedule a firing of the given actor at the given time. This
-     *  is delegated to the executive director by scheduling with it
+    /** Schedule a firing of the given actor at the given time. 
+     *  <p> 
+     *  If there exists an executive director, this method delegates to 
+     *  the fireAt() method of the executive director by requesting 
      *  a firing of the container of this director at the given time.
      *  The actor should be either the mode controller or the refinement
-     *  of one of its states. For both cases firing the actor happens
-     *  when the container of this director is fired at the given time.
+     *  of one of its states. For both cases, the actor is only fired 
+     *  when the container of this director reaches the given time.
      *  In the second case, if the actor is not the refinement of the
-     *  state of the mode controller when the execution reaches the
+     *  current state of the mode controller when the execution reaches the
      *  given time, the firing is ignored.
+     * 
+     *  FIXME: the last sentence does not make sense: how does the upper level
+     *  director knows which refinement requests a refiring? I guess what really
+     *  happens is that the modal model gets fired anyway, but there may be 
+     *  nothing interesting... For example, a DE refinement simply returns 
+     *  false in its prefire() method. 
+     * 
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
      *  @exception IllegalActionException If thrown in scheduling
-     *   a firing of the container of this director at the given
-     *   time with the executive director.
+     *  a firing of the container of this director at the given
+     *  time with the executive director.
      */
     public void fireAt(Actor actor, Time time)
             throws IllegalActionException {
         // FIXME: Changed by liuj, not yet reviewed.
+        // Note that the actor parameter is ignored, because it does not
+        // matter which actor requests firing. 
         Nameable container = getContainer();
         if (container instanceof Actor) {
-            Actor cont = (Actor)container;
-            Director executiveDirector = cont.getExecutiveDirector();
+            Actor modalModel = (Actor)container;
+            Director executiveDirector = modalModel.getExecutiveDirector();
             if (executiveDirector != null) {
-                executiveDirector.fireAt(cont, time);
+                executiveDirector.fireAt(modalModel, time);
             } else {
                 setModelTime(time);
             }
@@ -412,20 +381,20 @@ public class FSMDirector extends Director
         }
     }
 
-    /**
-     * Return the change context being made explicit.  In this case,
-     * the change context returned is the composite actor controlled
-     * by this director.
+    /** Return the explicit change context.  In this case,
+     *  the change context returned is the composite actor controlled
+     *  by this director.
+     *  @return The explicit change context.
      */
     public Entity getContext() {
         return (Entity)getContainer();
     }
 
     /** Return a list of variables that are modified in a modal model.
-     * The variables are assumed to have a change context of the
-     * container of this director.  This class returns all variables
-     * that are assigned in the actions of transitions.
-     * @return A list of variables.
+     *  The variables are assumed to have a change context of the
+     *  container of this director.  This class returns all variables
+     *  that are assigned in the actions of transitions.
+     *  @return A list of variables.
      */
     public List getModifiedVariables() throws IllegalActionException {
         List list = new LinkedList();
@@ -477,6 +446,8 @@ public class FSMDirector extends Director
      *  current state of the mode controller. If the refinement does not
      *  provide this, return that given by the superclass.
      *  @return The time of the next iteration.
+     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  {@link #getModelNextIterationTime}
      */
     public double getNextIterationTime() {
         return getModelNextIterationTime().getDoubleValue();
@@ -510,32 +481,46 @@ public class FSMDirector extends Director
                 return super.getModelNextIterationTime();
             }
         } catch (IllegalActionException ex) {
-            // No mode controller, return that given by the superclass.
+            // No mode controller or refinement can be found, 
+            // return whatever given by the superclass.
+            // Ignore the IllegalActionException here.
         }
-
         return super.getModelNextIterationTime();
     }
 
-    /** Handle a model error by checking if there is any enabled
-     *  non-preemptive transitions. If there is some one, the model
-     *  error is ignored. Otherwise, the model error (exception) will
-     *  be passed to higher level in hierarchy.
+    /** Return true if the model errors are handled. Otherwise, return false 
+     *  and the model errors are passed to the higher level in hierarchy. 
+     *  <p>
+     *  In this method, model errors including 
+     *  multipleEnabledTransitionException and InvariantViolationException 
+     *  are handled.  
+     *  <p> 
+     *  In the current design, if multiple enabled transitions are detected,
+     *  an exception will be thrown. For future designs, different ways to 
+     *  handle this situation will be introduced here.
+     *  <p> 
+     *  When an invariant is violated, this method checks whetehr there exits 
+     *  an enabled (non-preemptive) transition. If there is one, the model
+     *  error is ignored and this director will handle the enabled transition
+     *  later. Otherwise, an exception will be thrown.    
      *
      *  @param context The context where the model error happens.
      *  @param exception An exception that represents the model error.
-     *  @return True if the error has been handled, or nothing if the
-     *  model error is thrown to higher level.
-     *  @exception IllegalActionException The model error exception.
+     *  @return True if the error has been handled, false if the
+     *  model error is passed to the higher level.
+     *  @exception IllegalActionException If multiple enabled transition is 
+     *  detected, or mode controller can not be found, or can not read 
+     *  outputs from refinements.
      */
     public boolean handleModelError(
             NamedObj context,
             IllegalActionException exception)
             throws IllegalActionException {
 
-        // If the exception is a MultipleEnabledTransitionsException
-        // exception, handle it by refining the step size.
+        // NOTE: Besides throwing exception directly, we can handle 
+        // multiple enabled transitions in different ways...
+        // For example, try refining the step size.
         if (exception instanceof MultipleEnabledTransitionsException) {
-            // FIXME: handle the multiple enabled transitions
             throw exception;
         }
 
@@ -543,26 +528,24 @@ public class FSMDirector extends Director
         // exception, check if any transition is enabled.
         if (exception instanceof InvariantViolationException) {
 
-            FSMActor fsm = getController();
-            fsm._readOutputsFromRefinement();
-            State st = fsm.currentState();
-            Transition tr = fsm._chooseTransition(st.nonpreemptiveTransitionList());
+            FSMActor controller = getController();
+            controller._readOutputsFromRefinement();
+            State st = controller.currentState();
+            Transition tr = 
+                controller._checkTransition(st.nonpreemptiveTransitionList());
 
             if (tr == null) {
                 ModelErrorHandler container = getContainer();
                 if (container != null) {
-
-                    //The following statement leads to dead loop
-                    // because the container will call this method again.
-                    //return container.handleModelError(context, exception);
-
+                    // We can not call the handleModelError() method of the
+                    // super class, because the container will call this
+                    // method again and it will lead to a dead loop.
+                    // return container.handleModelError(context, exception);
                     throw exception;
                 }
             }
-
-            if (_debugging) {
-                _debug("ModelError: " + exception.getMessage()
-                        + " is handled and discarded.");
+            if (_debugging && _verbose) {
+                _debug("ModelError " + exception.getMessage() + " is handled.");
             }
             return true;
         }
@@ -571,22 +554,13 @@ public class FSMDirector extends Director
         return false;
     }
 
-    /** Initialize the mode controller and all the refinements. Set the
-     *  current time to 0.0 or the time of the executive director.
-     *  If the container is not an instance of CompositeActor, do nothing.
-     *  This method should typically be invoked once per execution, after
-     *  the preinitialization phase, but before any iteration.  It may be
-     *  invoked in the middle of an execution, if reinitialization is
-     *  desired.  Since type resolution has been completed and the
-     *  current time is set, the initialize() method of a contained
-     *  actor may produce output or schedule events.  If stop() is
-     *  called during this methods execution, then stop initializing
-     *  actors immediately.  This method is
-     *  <i>not</i> synchronized on the workspace, so the caller should
-     *  be.
+    /** Initialize the mode controller and all the refinements by calling the
+     *  initialize() method in the super class. Build the local maps for 
+     *  receivers.
      *
-     *  @exception IllegalActionException If the initialize() method of
-     *   one of the associated actors throws it.
+     *  @exception IllegalActionException If thrown by the initialize() method 
+     *  of the super class, or can not find mode controller, or can not find
+     *  refinement of the current state. 
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -621,44 +595,35 @@ public class FSMDirector extends Director
     }
 
     /** Return true if the mode controller wishes to be scheduled for
-     *  another iteration. Postfire the refinement of the current state
-     *  of the mode controller if it is ready to fire in the current
-     *  iteration. Execute the commit actions contained by the last
+     *  another iteration. Execute the commit actions contained by the last
      *  chosen transition of the mode controller and set its current
      *  state to the destination state of the transition.
-     *  If this director is at the top level, it will return the
-     *  postfire() value of the current refinement.
      *  @return True if the mode controller wishes to be scheduled for
-     *   another iteration.
+     *  another iteration.
      *  @exception IllegalActionException If thrown by any commit action
-     *   or there is no controller.
+     *  or there is no controller.
      */
     public boolean postfire() throws IllegalActionException {
-        // FIXME: Changed by liuj, not yet reviewed.
-        if (_debugging) {
+        if (_debugging && _verbose) {
             _debug(getFullName(),
                     "postfire called at time: " + getModelTime());
         }
+        
         FSMActor controller = getController();
         boolean result = controller.postfire();
 
-        // FIXME: the method comments say the refinement will postfired.
-        // However, that is not true.
-        // Note: we differ the usage of FSMDirector and HSDirector.
-        // I will try to come up with an abstract director and three
-        // concrete directors for hybrid systems, events semantics domain,
-        // and HDF domain. Hyzheng 01/25/2004.
         _currentLocalReceiverMap =
             (Map)_localReceiverMaps.get(controller.currentState());
 
         // Note, we increment the workspace version such that the
-        // io dependency will be reconstructed. This design is based
+        // function dependencies will be reconstructed. This design is based
         // on that each time one transition happens, the new refinement
         // takes place of the modal model for execution, consequently,
         // the model structure changes.
         if (_enabledTransition != null) {
             ((NamedObj) getContainer()).workspace().incrVersion();
         }
+        
         return result && !_stopRequested;
     }
 
@@ -666,17 +631,18 @@ public class FSMDirector extends Director
      *  If this model is not at the top level and the current
      *  time of this director lags behind that of the executive director,
      *  update the current time to that of the executive director. Record
-     *  whether the refinement of the current state of the mode controller
-     *  is ready to fire.
+     *  whether the refinements of the current state of the mode controller
+     *  are ready to fire.
      *  @exception IllegalActionException If there is no controller.
-     *  FIXME: Changed by liuj, not yet reviewed.
      */
     public boolean prefire() throws IllegalActionException {
+        // FIXME: Changed by liuj, not yet reviewed.
         if (_debugging) {
             _debug(getFullName(),
                     "prefire called at time: "+getModelTime());
         }
         // Clear the inside receivers of all output ports of the container.
+        // FIXME: why here? should this happen at the postfire() method?
         CompositeActor actor = (CompositeActor)getContainer();
         Iterator outputPorts = actor.outputPortList().iterator();
         while (outputPorts.hasNext()) {
@@ -698,7 +664,6 @@ public class FSMDirector extends Director
         }
         // Set the current time based on the enclosing class.
         super.prefire();
-        _firstFire = true;
         return getController().prefire();
     }
 
@@ -706,13 +671,12 @@ public class FSMDirector extends Director
      *  error handler.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace, or
-     *   if the protected method _checkContainer() throws it, or if
-     *   a contained Settable becomes invalid and the error handler
-     *   throws it.
+     *  recursive containment structure, or if this entity and container are 
+     *  not in the same workspace, or if the protected method _checkContainer() 
+     *  throws it, or if a contained Settable becomes invalid and the error 
+     *  handler throws it.
      *  @exception NameDuplicationException If the name of this entity
-     *   collides with a name already in the container.
+     *  collides with a name already in the container.
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
@@ -730,9 +694,9 @@ public class FSMDirector extends Director
      *
      *  @param newTime The new current simulation time.
      *  @exception IllegalActionException Not thrown in this base class.
-     *  FIXME: Changed by liuj, not yet reviewed.
      */
     public void setModelTime(Time newTime)
+    // FIXME: Changed by liuj, not yet reviewed.
         throws IllegalActionException {
         _currentTime = newTime;
     }
@@ -748,7 +712,7 @@ public class FSMDirector extends Director
      *  @param port The input port to transfer tokens from.
      *  @return True if at least one data token is transferred.
      *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
+     *  input port.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
@@ -801,42 +765,16 @@ public class FSMDirector extends Director
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    // Map from input ports of the modal model to the local receivers
-    // for the current state.
-    protected Map _currentLocalReceiverMap = null;
-
-    // The list of enabled actors that refines the current state.
-    protected List _enabledRefinements;
-
-    // cached enabled transition.
-    protected Transition _enabledTransition = null;
-
-    // Flag that is set to true for the first fire in an iteration.
-    protected boolean _firstFire;
-
-    // True if the refinement of the current state of the mode controller
-    // is ready to fire in an iteration.
-    protected boolean _fireRefinement = false;
-
-    // Stores for each state of the mode controller the map from input
-    // ports of the modal model to the local receivers when the mode
-    // controller is in that state.
-    protected Map _localReceiverMaps = new HashMap();
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    // FIXME: Alphabetize the following, and add javadoc comments.
-
-    // Build for each state of the mode controller the map from input
-    // ports of the modal model to the local receivers when the mode
-    // controller is in that state.
-    // This method is read-synchronized on the workspace.
-    // @exception IllegalActionException If there is no mode controller.
-    protected void _buildLocalReceiverMaps()
-            throws IllegalActionException {
+    /** Build for each state of the mode controller the map from input
+     *  ports of the modal model to the local receivers when the mode
+     *  controller is in that state.
+     *  This method is read-synchronized on the workspace.
+     *  @exception IllegalActionException If there is no mode controller,
+     *  or can not find refinements for states.
+     */
+    protected void _buildLocalReceiverMaps() throws IllegalActionException {
         try {
             workspace().getReadAccess();
             FSMActor controller = getController();
@@ -936,8 +874,9 @@ public class FSMDirector extends Director
      */
     protected Transition _chooseTransition(List transitionList)
             throws IllegalActionException {
-        if (_controller != null) {
-            return _controller._chooseTransition(transitionList);
+        FSMActor controller = getController();
+        if (controller != null) {
+            return controller._chooseTransition(transitionList);
         } else {
             throw new IllegalActionException(this, "No controller!");
         }
@@ -961,25 +900,39 @@ public class FSMDirector extends Director
 
     /** Return the last chosen transition.
      *  @return The last chosen transition, or null if there has been none.
+     *  @exception IllegalActionException If there is no controller.
      */
-    protected Transition _getLastChosenTransition() {
-        if (_controller != null) {
-            return _controller._lastChosenTransition;
+    protected Transition _getLastChosenTransition() 
+        throws IllegalActionException {
+        FSMActor controller = getController();
+        if (controller != null) {
+            return controller._lastChosenTransition;
         } else {
             return null;
         }
     }
 
-    /** Set the current state of this actor.
-     *  @param state The state to set.
-     *  @exception IllegalActionException If there is no controller.
+    /** Set the value of the shadow variables for input ports of the controller
+     *  actor.
+     *  @exception IllegalActionException If a shadow variable cannot take
+     *   the token read from its corresponding channel (should not occur).
      */
-    protected void _setCurrentState(State state)
-            throws IllegalActionException {
-        if (_controller != null) {
-            _controller._currentState = state;
-        } else {
-            throw new IllegalActionException(this, "No controller!");
+    protected void _readInputs() throws IllegalActionException {
+        FSMActor controller = getController();
+        if (controller != null) {
+            controller._readInputs();
+        }
+    }
+
+    /** Set the value of the shadow variables for input ports of the controller
+     *  actor that are defined by output ports of the refinement.
+     *  @exception IllegalActionException If a shadow variable cannot take
+     *   the token read from its corresponding channel (should not occur).
+     */
+    protected void _readOutputsFromRefinement() throws IllegalActionException {
+        FSMActor controller = getController();
+        if (controller != null) {
+            controller._readOutputsFromRefinement();
         }
     }
 
@@ -991,34 +944,45 @@ public class FSMDirector extends Director
      *   for one of the states is not valid, or if there is no controller.
      */
     protected void _setCurrentConnectionMap() throws IllegalActionException {
-        if (_controller != null) {
-            _controller._setCurrentConnectionMap();
+        FSMActor controller = getController();
+        if (controller != null) {
+            controller._setCurrentConnectionMap();
         } else {
             throw new IllegalActionException(this, "No controller!");
         }
     }
 
-    /** Set the value of the shadow variables for input ports of the controller
-     *  actor that are defined by output ports of the refinement.
-     *  @exception IllegalActionException If a shadow variable cannot take
-     *   the token read from its corresponding channel (should not occur).
+    /** Set the current state of this actor.
+     *  @param state The state to set.
+     *  @exception IllegalActionException If there is no controller.
      */
-    protected void _readOutputsFromRefinement() throws IllegalActionException {
-        if (_controller != null) {
-            _controller._readOutputsFromRefinement();
+    protected void _setCurrentState(State state)
+            throws IllegalActionException {
+        FSMActor controller = getController();
+        if (controller != null) {
+            controller._currentState = state;
+        } else {
+            throw new IllegalActionException(this, "No controller!");
         }
     }
 
-    /** Set the value of the shadow variables for input ports of the controller
-     *  actor.
-     *  @exception IllegalActionException If a shadow variable cannot take
-     *   the token read from its corresponding channel (should not occur).
-     */
-    protected void _readInputs() throws IllegalActionException {
-        if (_controller != null) {
-            _controller._readInputs();
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    // Map from input ports of the modal model to the local receivers
+    // for the current state.
+    protected Map _currentLocalReceiverMap = null;
+
+    // The list of enabled actors that refines the current state.
+    protected List _enabledRefinements;
+
+    // cached enabled transition.
+    protected Transition _enabledTransition = null;
+
+    // Stores for each state of the mode controller the map from input
+    // ports of the modal model to the local receivers when the mode
+    // controller is in that state.
+    protected Map _localReceiverMaps = new HashMap();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
