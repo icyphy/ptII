@@ -56,6 +56,7 @@ JSRCS = \
 	CSPMultiSink.java \
 	CSPMultiSource.java \
 	CSPPausingSource.java \
+	CSPSieve.java \
 	CSPSink.java \
 	CSPSource.java \
 	Customer.java \
