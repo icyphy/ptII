@@ -136,11 +136,7 @@ public class VariableFIR extends FIR {
         if (attribute == interpolation
                 || attribute == decimation
                 || attribute == blockSize) {
-    
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-            }
+
             _reinitializeNeeded = true;
         }
     }

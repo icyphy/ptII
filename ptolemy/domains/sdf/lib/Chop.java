@@ -201,11 +201,6 @@ public class Chop extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid numberToRead: " + _numberToRead);
             }
-            
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-            }
         } else if (attribute == numberToWrite) {
             _numberToWrite = ((IntToken)numberToWrite.getToken()).intValue();
             if (_numberToWrite <= 0) {
@@ -213,11 +208,6 @@ public class Chop extends SDFTransformer {
                         "Invalid numberToWrite: " + _numberToRead);
             }
             _buffer = new Token[_numberToWrite];
-        
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-            }
         } else if (attribute == offset) {
             _offsetValue = ((IntToken)offset.getToken()).intValue();
         } else if (attribute == usePastInputs) {

@@ -120,10 +120,6 @@ public class Repeat extends SDFTransformer {
                         "The value of blockSize must be positive, but "
                         + "was set to " + count);
 
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-            }
         } else {
             super.attributeChanged(attribute);
         }

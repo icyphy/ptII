@@ -183,10 +183,6 @@ public class FIR extends SDFTransformer {
                         + ". Must be positive.");
             }
 
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-            }
             _reinitializeNeeded = true;
         } else if (attribute == decimation) {
             IntToken token = (IntToken)(decimation.getToken());
@@ -197,10 +193,6 @@ public class FIR extends SDFTransformer {
                         + ". Must be positive.");
             }
 
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-            }
             _reinitializeNeeded = true;
         } else if (attribute == decimationPhase) {
             IntToken token = (IntToken)(decimationPhase.getToken());

@@ -116,11 +116,6 @@ public class DoubleToMatrix extends SDFConverter {
                 throw new IllegalActionException(this,
                         "Number of rows and columns is required to be positive.");
             }
-
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-            }
         } else {
             super.attributeChanged(attribute);
         }

@@ -138,10 +138,6 @@ public class VariableLattice extends Lattice {
                         "Invalid blockSize: " + _blockSizeValue);
             }
 
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-            }
         } else {
             super.attributeChanged(attribute);
         }

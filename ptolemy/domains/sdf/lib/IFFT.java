@@ -117,10 +117,6 @@ public class IFFT extends SDFTransformer {
             _inComplexArray = new Complex[_transformSize];
             _outTokenArray = new ComplexToken[_transformSize];
 
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-            }
         } else {
             super.attributeChanged(attribute);
         }

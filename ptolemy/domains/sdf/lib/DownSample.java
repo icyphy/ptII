@@ -121,11 +121,6 @@ public class DownSample extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid factor: " + factorValue);
             }
-
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-            }
         } else if (attribute == phase) {
             int phaseValue = ((IntToken)phase.getToken()).intValue();
             if (phaseValue < 0) {

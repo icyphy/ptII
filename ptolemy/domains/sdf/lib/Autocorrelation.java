@@ -223,10 +223,6 @@ public class Autocorrelation extends SDFTransformer {
                 _outputs = new Token[_lengthOfOutput];
             }
 
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-            }
         } else {
             super.attributeChanged(attribute);
         }
