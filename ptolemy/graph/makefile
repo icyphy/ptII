@@ -81,7 +81,7 @@ EXTRA_SRCS =    $(JSRCS)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't list 'demo' here, or running 'make sources' will also run the demos
-MISC_FILES =    analysis mapping sched test
+MISC_FILES =    analysis mapping sched test readme.txt
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
