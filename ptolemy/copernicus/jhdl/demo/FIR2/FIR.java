@@ -251,26 +251,26 @@ public class FIR extends TypedAtomicActor {
 
     // FIXME: State update should occur in postfire.
 
-    public void fire() throws IllegalActionException {
-	int a,b,c,d;
+//      public void fire() throws IllegalActionException {
+//  	int a,b,c,d;
 
-	a=3;
-	b=a*4;
+//  	a=3;
+//  	b=a*4;
 	
-	a=2;
-	c=a+5;
-	d=b-c;
+//  	a=2;
+//  	c=a+5;
+//  	d=b-c;
 
-	if (d > 8){
-	    d=a*a;
-	}
-    }
+//  	if (d > 8){
+//  	    d=a*a;
+//  	}
+//      }
     
     /** Consume the inputs and produce the outputs of the FIR filter.
      *  @exception IllegalActionException If parameter values are invalid,
      *   or if there is no director, or if runtime type conflicts occur.
      */
-    /*
+    
     public void fire() throws IllegalActionException {
 
         // Phase keeps track of which phase of the filter coefficients
@@ -395,7 +395,7 @@ public class FIR extends TypedAtomicActor {
 
 	output.send(0, _outToken);
     }
-    */
+    
     
     /** Return false if the input does not have enough tokens to fire.
      *  Otherwise, return what the superclass returns.
