@@ -59,7 +59,7 @@ public class ExtendedMath {
      *  The returned value is positive.
      *  FIXME: Is the range of the argument correct?
      */
-    public static final double acosh(double x) {
+    public static final double acosh(final double x) {
         if (x < 1) {
             throw new IllegalArgumentException("ExtendedMath.acosh: Argument "
                     + "is required to be greater than 1.  Got " + x);
@@ -70,7 +70,7 @@ public class ExtendedMath {
     /** Return the inverse hyperbolic sine of the argument.
      *  FIXME: What is the assumed range of the argument?
      */
-    public static final double asinh(double x) {
+    public static final double asinh(final double x) {
         double result;
         if (x<0) {
             result = -Math.log( -x+Math.sqrt(x*x+1) );
@@ -84,37 +84,31 @@ public class ExtendedMath {
     /** Return the hyperbolic cosine of the argument.
      *  FIXME: What is the assumed range of the argument?
      */
-    public static final double cosh(double x) {
+    public static final double cosh(final double x) {
         return (Math.exp(x) + Math.exp(-x))/2;
     }
 
-    /** Return the base-10 logarithm of the argument.
-     *  @param x A double.
-     *  @return A double.
-     */
-    public static final double log10(double x) {
+    /** Return the base-10 logarithm of the argument. */
+    public static final double log10(final double x) {
         return Math.log(x) * _ONEOVERLN10;
     }
 
-    /** Return the base-2 logarithm of the argument.
-     *  @param x A double.
-     *  @return A double.
-     */
-    public static final double log2(double x) {
+    /** Return the base-2 logarithm of the argument. */
+    public static final double log2(final double x) {
         return Math.log(x) * _ONEOVERLN2;
     }
 
     /** Return the hyperbolic sine of the argument.
      *  FIXME: What is the assumed range of the argument?
      */
-    public static final double sinh(double x) {
+    public static final double sinh(final double x) {
         return (Math.exp(x) - Math.exp(-x))/2;
     }
 
     /** If the argument is less than zero, return -1, otherwise
      *  return 1.
      */
-    public static final int sgn(double x) {
+    public static final int sgn(final double x) {
         if (x<0) return -1;
         else return 1;
     }

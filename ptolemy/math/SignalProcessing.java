@@ -87,7 +87,7 @@ public class SignalProcessing {
         // The result is assumed initialized to zero.
         for (int i = 0; i < array1.length; i++) {
             for (int j = 0; j < array2.length; j++) {
-                result[i+j] += array1[i] * array2[j];
+                result[i + j] += array1[i] * array2[j];
             }
         }
         return result;
@@ -228,28 +228,28 @@ public class SignalProcessing {
      *  @param x An array of doubles.
      *  @param n An integer sepcifying the downsampling factor.
      *  @return A new array of doubles of length = floor(L / n), where
-     *  L is the size of the input array. 
+     *  L is the size of the input array.
      */
     public static final double[] downsample(double[] x, int n) {
         return downsample(x, n, 0);
     }
-   
+
     /** Return a new array that is formed by taking every nth sample
      *  starting at startIndex, and discarding the samples in between.
      *  @param x An array of doubles.
      *  @param n An integer specifying the downsampling factor.
-     *  @param startIndex An integer specifying the index of sample at 
-     *  which to start downsampling. This integer must be between 0 and 
+     *  @param startIndex An integer specifying the index of sample at
+     *  which to start downsampling. This integer must be between 0 and
      *  L - 1, where L is the size of the input array.
-     *  @return A new array of doubles of length = 
-     *  floor((L - startIndex) / n), 
-     *  where L is the size of the input array. 
+     *  @return A new array of doubles of length =
+     *  floor((L - startIndex) / n),
+     *  where L is the size of the input array.
      */
-    public static final double[] downsample(double[] x, int n, 
+    public static final double[] downsample(double[] x, int n,
      int startIndex) {
         int length = (x.length - startIndex) / n;
         double[] retval = new double[length];
-        
+
         int destIndex;
         int srcIndex = startIndex;
 
@@ -259,7 +259,7 @@ public class SignalProcessing {
         }
 
         return retval;
-    }   
+    }
 
     /** Return a new array of doubles that is the inverse, normalized
      *  DCT of the input array of doubles.
@@ -1014,7 +1014,7 @@ public class SignalProcessing {
         }
 
         return retval;
-    } 
+    }
 
     /** Modify the specified array to unwrap the angles.
      *  That is, if the difference between successive values is greater than
@@ -1444,7 +1444,7 @@ public class SignalProcessing {
                     (_onePlus * Math.sin(onePlusTime) -
                             _oneMinusFZCOverFourExcess * oneOverTime *
                             Math.cos(oneMinusTime) +
-                            _fzcOverFourExcess * squareTime * 
+                            _fzcOverFourExcess * squareTime *
                             Math.sin(oneMinusTime));
             }
             return _fourExcessOverPISqrtFZC *
@@ -1490,7 +1490,7 @@ public class SignalProcessing {
 
         // Zero pad the array if necessary
 
-        if (x.length < size) {           
+        if (x.length < size) {
            x = inverse ? DoubleArrayMath.padMiddle(x, size) :
                          DoubleArrayMath.resize(x, size);           
         }

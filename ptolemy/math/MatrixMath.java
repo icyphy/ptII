@@ -754,14 +754,14 @@ public class MatrixMath {
             double[][] matrix1,
             double[][] matrix2) {
         int rows = _rows(matrix1);
-        int columns = _columns(matrix2);
+        int columns = _columns(matrix1);
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
             throw new IllegalArgumentException(
                     "ptolemy.math.MatrixMath." + caller + "() : one matrix " +
                     _dimensionString(matrix1) +
                     " is not the same size as another matrix " +
-                    _dimensionString(matrix2));
+                    _dimensionString(matrix2) + ".");
         }
     }
 
