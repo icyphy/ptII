@@ -56,7 +56,7 @@ import java.util.Enumeration;
 @author Steve Neuendorffer
 @version $Id$
 */
-public class DTDirector extends StaticSchedulingDirector {
+public class DTDirector extends SDFDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name.
@@ -132,9 +132,14 @@ public class DTDirector extends StaticSchedulingDirector {
     public boolean prefire() throws IllegalActionException {
 	CompositeActor c = getContainer();
 	Director ed = c.getExecutiveDirector();
-	if(ed = null) return true;
-	if(ed.getCurrentTime()>_nextFiringTime) return true;
-        return false;
+	boolean iterate;
+	if(ed = null)
+	    iterate=_advanceTime(_nextFiringTime);
+	    return true;
+	else {
+	    iterate=_advanceTime(ed.getCurrentTime());
+	}
+        return iterate;
     }
 
     public boolean postfire() throws IllegalActionException {
@@ -193,6 +198,26 @@ public class DTDirector extends StaticSchedulingDirector {
                 actor.fire();
                 actor.postfire();
             }
+	    Enumeration outports = container.outputPorts();
+	    int portcount = 0;
+	    while(outports.hasMoreElements()) {
+		IOPort p = outports.nextElement();
+		// container is opaque, so each element of r[] is of length 1
+		Receivers r[][] = p.getInsideReceivers();
+		for(int i = 0; i<r.length(); i++) {
+		   while(r[i][0].hasToken()) {
+		       _waitingtokens[portcount][i].insertLast(r[i][0].get());
+		       count++;
+		   }
+		}
+		portcount++;
+	    }
+
+
+	    
+	    
+
+
         }
         _iteration++;
     }
@@ -265,7 +290,7 @@ public class DTDirector extends StaticSchedulingDirector {
 	if(firenow) {
 	    Parameter p = (Parameter) getAttribute("Iteration Time");
 	    DoubleToken t = (DoubleToken) p.getToken();
-	    _nextfiringtime = _currenttime + t.doubleValue();
+	    _nextfiringtime = _nextfiringtime + t.doubleValue();
 	}
 	
 	return firenow;
@@ -276,6 +301,12 @@ public class DTDirector extends StaticSchedulingDirector {
 
     private int _iteration;
     private Parameter _parameteriterations;
+    // after every firing, _waitingtokens[port][channel] 
+    // contains all the tokens produced
+    // for the channel of the given port.
+    private LinkedList _waitingtokens[][] = new LinkedList[r.length()];
+	
+    //    private HashedMap _currenttime;
 
     // Support for mutations.
     // private LinkedList _pendingMutations = null;
