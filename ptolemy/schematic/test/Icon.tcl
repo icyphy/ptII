@@ -61,16 +61,13 @@ test Icon-2.1 {Constructor tests} {
     set e2 [java::new ptolemy.schematic.Icon $attributes $entitytype]
     list [$e0 toString] [$e1 toString] [$e2 toString]
 } {{<icon name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 </icon>
 } {<icon name1="value1" name2="value2" name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 </icon>
 } {<icon name1="value1" name2="value2" name="">
-<entitytype name="testentitytype">
-</entitytype>
+<entitytype name="testentitytype"></entitytype>
 </icon>
 }}
 
@@ -86,16 +83,13 @@ test Icon-3.1 {addChildElement tests} {
     $e0 addChildElement $e1
     list [$e0 toString] [$e1 toString]
 } {{<icon name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 <icon name1="value1" name2="value2" name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 </icon>
 </icon>
 } {<icon name1="value1" name2="value2" name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 </icon>
 }}
 
@@ -108,12 +102,10 @@ test Icon-3.2 {removeChildElement tests} {
     $e0 removeChildElement $e1
     list [$e0 toString] [$e1 toString]
 } {{<icon name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 </icon>
 } {<icon name1="value1" name2="value2" name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 </icon>
 }}
 
@@ -169,8 +161,7 @@ test Icon-5.1 {setAttribute tests} {
     $e0 setAttribute name2 value2
     $e0 toString
 } {<icon name1="value1" name2="value2" name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 </icon>
 }
 
@@ -183,8 +174,7 @@ test Icon-6.2 {removeAttribute tests} {
     $e0 removeAttribute name1
     $e0 toString
 } {<icon name2="value2" name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 </icon>
 }
 
@@ -221,8 +211,7 @@ test Icon-8.1 {setPCData tests} {
     $e0 setPCData "hello this is a test\n"
     $e0 toString
 } {<icon name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 hello this is a test
 </icon>
 }
@@ -236,8 +225,7 @@ test Icon-8.2 {setPCData tests} {
     $e0 appendPCData " of appending\n"
     $e0 toString
 } {<icon name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 hello this is a test of appending
 </icon>
 }
@@ -252,8 +240,7 @@ test Icon-8.3 {setPCData tests} {
     $e0 setPCData "and resetting PCData\n"    
     $e0 toString
 } {<icon name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 and resetting PCData
 </icon>
 }
@@ -269,10 +256,8 @@ test Icon-9.1 {addGraphic tests} {
     $e0 addGraphic $g0
     $e0 toString
 } {<icon name="">
-<entitytype>
-</entitytype>
-<graphic format="test">
-A test Graphic string
+<entitytype name=""></entitytype>
+<graphic format="test">A test Graphic string
 </graphic>
 </icon>
 }
@@ -293,14 +278,11 @@ test Icon-9.3 {getGraphic tests} {
     set g1 [$e0 getGraphic test]
     list [$e0 toString] [$g1 toString]
 } {{<icon name="">
-<entitytype>
-</entitytype>
-<graphic format="test">
-A test Graphic string
+<entitytype name=""></entitytype>
+<graphic format="test">A test Graphic string
 </graphic>
 </icon>
-} {<graphic format="test">
-A test Graphic string
+} {<graphic format="test">A test Graphic string
 </graphic>
 }}
 
@@ -313,8 +295,7 @@ test Icon-9.4 {graphicFormats tests} {
     set genum [$e0 graphicFormats]
     set s [$genum nextElement]
     list [$s toString] [$genum hasMoreElements]
-} {{<graphic format="test">
-A test Graphic string
+} {{<graphic format="test">A test Graphic string
 </graphic>
 } 0}
    
@@ -328,15 +309,12 @@ test Icon-9.5 {removeGraphic tests} {
     set genum [$e0 graphicFormats]
     list $s [$e0 toString] [$genum hasMoreElements]
 } {{<icon name="">
-<entitytype>
-</entitytype>
-<graphic format="test">
-A test Graphic string
+<entitytype name=""></entitytype>
+<graphic format="test">A test Graphic string
 </graphic>
 </icon>
 } {<icon name="">
-<entitytype>
-</entitytype>
+<entitytype name=""></entitytype>
 </icon>
 } 0}
 
