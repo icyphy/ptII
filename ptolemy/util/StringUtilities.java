@@ -777,13 +777,13 @@ public class StringUtilities {
     // a HSIF moml file
     // vergil ../hsif/demo/SwimmingPool/SwimmingPool.xml
     /** Maximum length in characters of a long string before
-     *  {@link #ellipse(String, int)} truncates and add a
+     *  {@link #ellipsis(String, int)} truncates and add a
      *  trailing . . .
      */
     public static final int ELLIPSIS_LENGTH_LONG = 2000;
 
     /** Maximum length in characters of a short string before
-     *  {@link #ellipse(String, int)} truncates and add a
+     *  {@link #ellipsis(String, int)} truncates and add a
      *  trailing . . .
      */
     public static final int ELLIPSIS_LENGTH_SHORT = 400;
