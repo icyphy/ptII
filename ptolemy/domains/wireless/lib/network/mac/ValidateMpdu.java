@@ -31,17 +31,13 @@
 
 package ptolemy.domains.wireless.lib.network.mac;
 
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.IntToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -68,13 +64,12 @@ public class ValidateMpdu extends MACActorBase {
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *  If the name argument is null, then the name is set to the empty =
-string.
+     *  If the name argument is null, then the name is set to the empty
+     *  string.
      *  This constructor write-synchronizes on the workspace.
      *  @param container The container.
      *  @param name The name of the actor.
-     *  @exception IllegalActionException If the container is incompatib=
-le
+     *  @exception IllegalActionException If the container is incompatible
      *   with this actor.
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
@@ -119,89 +114,90 @@ le
 
     public void fire() throws IllegalActionException {
         super.fire();
-	int UseIfs;
+	    int UseIfs;
         // perform the actions/computation done in the handleMessage()
         // method
-	int kind=whoTimeout();	// check if a timer times out and which
+	    int kind=whoTimeout();	// check if a timer times out and which
         double currentTime =getDirector().getCurrentTime();
-	switch(_currentState)
+	    switch(_currentState)
 	    {
-	    case Rx_Idle:
-		if (kind==RtsTimeout)
+	        case Rx_Idle:
+		    if (kind==RtsTimeout)
 		    { // send RtsTimeout message to ChannelState process
-			Token[] values ={
-			  new IntToken(RtsTimeout)};			       
-			RecordToken msgout =new RecordToken(RtsTimeoutMsgFields, values);
-			toChannelState.send(0, msgout);
-		    } 
-
-		else if  (fromPHYLayer.hasToken(0)) 
-		    {
-			RecordToken msg= (RecordToken)fromPHYLayer.get(0);
-			if (((IntToken)msg.get("kind")).intValue()==RxStart)
+			    Token[] values ={
+			          new IntToken(RtsTimeout)};			       
+			    RecordToken msgout =new RecordToken(RtsTimeoutMsgFields, values);
+			    toChannelState.send(0, msgout);
+		    } else if  (fromPHYLayer.hasToken(0)) {
+			    RecordToken msg= (RecordToken)fromPHYLayer.get(0);
+			    if (((IntToken)msg.get("kind")).intValue()==RxStart)
 			    {
-				_rxRate=((IntToken)msg.get("rxRate")).intValue();
-				// cancel the RTS timer
-				cancelTimer(_timer);
-				_currentState=Rx_Frame;
+                    if (_debugging) {
+                        _debug("the msg token received from PHY is : " +
+                               msg.toString());
+                    }
+                    IntToken t = (IntToken)msg.get("rxRate");
+				    _rxRate= t.intValue();
+				    // cancel the RTS timer
+				    cancelTimer(_timer);
+				    _currentState=Rx_Frame;
 			    }
 		    }
-		break;
+		    break;
 
-	    case Rx_Frame:
-		if (fromPHYLayer.hasToken(0) )
+	        case Rx_Frame:
+		    if (fromPHYLayer.hasToken(0) )
 		    {
-		    RecordToken msg= (RecordToken)fromPHYLayer.get(0);
-		    switch(((IntToken)msg.get("kind")).intValue())
-			{
-			case RxEnd:
-			    _endRx=currentTime-_D1*1e-6;
-			    if ( ((IntToken)msg.get("status")).intValue()==NoError)
-				{
-				// if the received message is RTS, set RtsTimeout timer
-				if (((IntToken)_pdu.get("Type")).intValue()==ControlType 
-				    && ((IntToken)_pdu.get("Subtype")).intValue()==Rts)
+		        RecordToken msg= (RecordToken)fromPHYLayer.get(0);
+		        switch(((IntToken)msg.get("kind")).intValue())
+			    {
+			        case RxEnd:
+			        _endRx=currentTime-_D1*1e-6;
+			        if ( ((IntToken)msg.get("status")).intValue()==NoError)
 				    {
-					_dRts=2*_aSifsTime+2*_aSlotTime+_sAckCtsLng/_rxRate+
-					    _aPreambleLength+_aPlcpHeaderLength;
-					_timer=setTimer(RtsTimeout, currentTime +_dRts*1e-6);
+				        // if the received message is RTS, set RtsTimeout timer
+				        if (((IntToken)_pdu.get("Type")).intValue()==ControlType 
+				            && ((IntToken)_pdu.get("Subtype")).intValue()==Rts)
+				        {
+                            _dRts=2*_aSifsTime+2*_aSlotTime+_sAckCtsLng/_rxRate+
+					        _aPreambleLength+_aPlcpHeaderLength;
+					        _timer=setTimer(RtsTimeout, currentTime +_dRts*1e-6);
+				        }
+				        // working with record tokens to represent messages
+				        Token[] RxMpduvalues ={
+				                new IntToken(RxMpdu),
+				                _pdu,
+				               new DoubleToken(_endRx),
+				               new IntToken(_rxRate)};
+				        RecordToken msgout = 
+                                new RecordToken(RxMpduMsgFields, RxMpduvalues);
+				        // forward the packet to FilterMpdu process 
+				        toFilterMpdu.send(0, msgout);
+				        // use DIFS as IFS for normal packets
+				        UseIfs=UseDifs;
+				    } else {
+				        // use EIFS as IFS if a packet is corrupted 
+				        UseIfs=UseEifs;
 				    }
-				// working with record tokens to represent messages
-				Token[] RxMpduvalues ={
-				    new IntToken(RxMpdu),
-				    _pdu,
-				    new DoubleToken(_endRx),
-				    new IntToken(_rxRate)};
-				RecordToken msgout =new RecordToken(RxMpduMsgFields, RxMpduvalues);
-				// forward the packet to FilterMpdu process 
-				toFilterMpdu.send(0, msgout);
-				// use DIFS as IFS for normal packets
-				UseIfs=UseDifs;
-				}
-			    else
-				{
-				// use EIFS as IFS if a packet is corrupted 
-				UseIfs=UseEifs;
-				}
 
-			    // send UseIfs message to ChannelState process
-			    Token[] Ifsvalues ={
-				    new IntToken(UseIfs),
-				    new DoubleToken(_endRx)};
-			    RecordToken msgout =new RecordToken(UseIfsMsgFields, Ifsvalues);
-			    toChannelState.send(0, msgout);
+			        // send UseIfs message to ChannelState process
+			        Token[] Ifsvalues ={
+				            new IntToken(UseIfs),
+				            new DoubleToken(_endRx)};
+			        RecordToken msgout =new RecordToken(UseIfsMsgFields, Ifsvalues);
+			        toChannelState.send(0, msgout);
 
-			    // go back to Rx_Idle state
-			    _currentState=Rx_Idle;
-			    break;
+			        // go back to Rx_Idle state
+			        _currentState=Rx_Idle;
+			        break;
 
-			case RxData:
-			    // store the packet and process it after RxEnd is received
-			    _pdu=msg;
-			    break;
-			}
+			        case RxData:
+			        // store the packet and process it after RxEnd is received
+			        _pdu=msg;
+			        break;
+			    }
 		    }
-		break;
+		    break;
 	   }
     }
 
@@ -211,15 +207,16 @@ le
     public void initialize() throws IllegalActionException {
         super.initialize();
         _D1=_aRxRfDelay+_aRxPlcpDelay;
+        _currentState = Rx_Idle;
     }
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
- 
-    private int _dRts,_rxRate;
-    private double _endRx;
+    private int _dRts;
+    private int _rxRate;
+    private double _endRx = 0.0;
     private RecordToken _pdu; 
     private Timer _timer;  
     private int _D1;
@@ -228,7 +225,7 @@ le
     private static final int Rx_Idle=0;
     private static final int Rx_Frame=1;
 
-    private int _currentState=0;
+    private int _currentState=Rx_Idle;
 
 
 }
