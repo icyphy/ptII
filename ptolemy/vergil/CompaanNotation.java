@@ -123,7 +123,7 @@ public class CompaanNotation extends Attribute implements VisualNotation {
 	    EditorIcon icon = (EditorIcon)n.getSemanticObject();
 	    figure = (CompositeFigure)icon.createFigure();
 	    Rectangle2D bounds = figure.getBounds();
-	    Entity entity = icon.getContainer();
+	    Entity entity = (Entity)icon.getContainer();
 	    // Insert code to find color here.
 
 	    figure.setBackgroundFigure(new BasicRectangle(0, 0, 
