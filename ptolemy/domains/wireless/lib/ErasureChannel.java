@@ -37,6 +37,7 @@ import ptolemy.data.LongToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.WirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
@@ -55,6 +56,22 @@ call to the transmit() method, for each receiver in range,
 with the specified probability, the tranmission to that
 receiver will not occur.  Whether a transmission occurs to a particular
 receiver is independent of whether it occurs to any other receiver.
+<p>
+For convenience, a variable named "distance" is available and
+equal to the distance between the transmitter and the receiver
+when the <i>lossProbability</i> is evaluated.  Thus, the 
+loss probability can be given as an expression that depends
+on this distance.
+<p>
+The distance between the transmitter and receiver is determined
+by the protected method _distanceBetween(), which is also used
+to set the value of the <i>distance</i> variable that can be
+used in the expression for loss probability.
+In this base class, that method uses
+the _location attribute of the transmit and receive actors,
+which corresponds to the position of the icon in the Vergil
+visual editor.  Subclasses may override this protected method
+to provide some other notion of distance.
 
 @author Edward A. Lee
 @version $Id$
@@ -81,6 +98,9 @@ public class ErasureChannel extends WirelessChannel {
         
         seed = new Parameter(this, "seed", new LongToken(0));
         seed.setTypeEquals(BaseType.LONG);
+        
+        _distance = new Variable(this, "distance");
+        _distance.setExpression("Infinity");
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -155,11 +175,19 @@ public class ErasureChannel extends WirelessChannel {
             WirelessReceiver receiver, 
             RecordToken properties)
             throws IllegalActionException {
+        // Get the distance and set the "distance" variable.
+        WirelessIOPort destination = (WirelessIOPort)receiver.getContainer();
+        double distance = _distanceBetween(sender, destination);
+        _distance.setToken(new DoubleToken(distance));
+
         double experiment = _random.nextDouble();
         double probability = ((DoubleToken)lossProbability.getToken())
                 .doubleValue();
-        // Make sure a probability of 1.0 is truly a sure thing.
-        if (probability == 1.0 || experiment >= probability) {
+        if (_debugging) {
+            _debug(" **** loss probability is: " + probability);
+        }
+        // Make sure a probability of 1.0 is truly a sure loss.
+        if (probability < 1.0 && experiment >= probability) {
             super._transmitTo(token, sender, receiver, properties);
         } else {
             if (_debugging) {
@@ -172,5 +200,13 @@ public class ErasureChannel extends WirelessChannel {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** A variable that is set to the distance between the transmitter
+     *  and the receiver before the
+     *  <i>powerLossFactor</i> expression is evaluated.
+     */
+    protected Variable _distance;
+
+    /** A random number generator.
+     */
     protected Random _random = new Random();
 }

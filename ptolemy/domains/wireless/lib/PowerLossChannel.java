@@ -35,7 +35,6 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
@@ -67,9 +66,8 @@ signal-to-interference ratio, for example.
 <p>
 The default value of <i>powerLossFactor</i> is
 <pre>
-   efficiency / (PI * distance * distance).
+   efficiency / (4 * PI * distance * distance).
 </pre>
-FIXME: Check this.
 This assumes that the transmit power is uniformly distributed
 on a sphere of radius <i>distance</i>. The result of multiplying
 this by a transmit power is a power density (power per unit area).
@@ -100,15 +98,8 @@ The default value for <i>range</i> is Infinity, which
 indicates that by default, there is no range limit.
 <p>
 Any receiver that is within the specified range when transmit()
-is called will receive the transmission.  The distance between
-the transmitter and receiver is determined by the protected
-method _distanceBetween(), which is also used to set the value
-of the <i>distance</i> variable used to calculate the power loss.
-In this base class, that method uses
-the _location attribute of the transmit and receive actors,
-which corresponds to the position of the icon in the Vergil
-visual editor.  Subclasses may override this protected method
-to provide some other notion of distance.
+is called will receive the transmission, unless the <i>lossProbability</i>
+parameter is set to greater than zero.
 
 @author Edward A. Lee
 @version $Id$
@@ -143,18 +134,14 @@ public class PowerLossChannel extends LimitedRangeChannel {
         // Setting an upper bound allows the addition of fields.
         defaultProperties.setTypeAtMost(type);
 
-        _distance = new Variable(this, "distance");
-        _distance.setExpression("Infinity");
-
         efficiency = new Parameter(this, "efficiency");
         efficiency.setTypeEquals(BaseType.DOUBLE);
         efficiency.setExpression("1.0");
         
         powerLossFactor = new Parameter(this, "powerLossFactor");
         powerLossFactor.setTypeEquals(BaseType.DOUBLE);
-        // FIXME: Check this formula.
         powerLossFactor.setExpression(
-                "efficiency / (PI * distance * distance)");
+                "efficiency / (4 * PI * distance * distance)");
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -208,11 +195,6 @@ public class PowerLossChannel extends LimitedRangeChannel {
         // Get the transmit power.
         ScalarToken transmitPower = (ScalarToken)merged.get("power");
         
-        // Get the distance and set the "distance" variable.
-        WirelessIOPort destination = (WirelessIOPort)receiver.getContainer();
-        double distance = _distanceBetween(sender, destination);
-        _distance.setToken(new DoubleToken(distance));
-        
         // Evaluate the power loss factor, which will have been updated
         // with the new value of "distance."
         double powerLossFactorValue
@@ -238,13 +220,4 @@ public class PowerLossChannel extends LimitedRangeChannel {
         }
         return result;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** A variable that is set to the distance between the transmitter
-     *  and the receiver before the
-     *  <i>powerLossFactor</i> expression is evaluated.
-     */
-    protected Variable _distance;
 }

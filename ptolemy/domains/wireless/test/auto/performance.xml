@@ -38,7 +38,9 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">11/17/03: 38.4 seconds
 11/18/03: 28.9 seconds (with flawed caching)
-11/18/03: 37.1 seconds (with caching in public methods)</text></svg></configure>
+11/18/03: 37.1 seconds (with caching in public methods)
+11/24/03: 38.0 seconds (with cache overhead only)
+11/24/03: 32.8 seconds (with elaborate caching)</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -75,13 +77,13 @@
         </property>
     </property>
     <entity name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
+        <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=400.0}">
+        </property>
         <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
         <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="Infinity">
-        </property>
-        <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=400.0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 45.0">
         </property>
