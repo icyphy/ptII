@@ -83,40 +83,37 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// IterateOverArray
 /**
-This actor iterates a contained actors over input arrays.
+This actor iterates the contained actor over input arrays.
 Each input port expects an array. When this actor fires,
 an array is read on each input port that has one, and its
-contents are provided sequentially to the contained actors
+contents are provided sequentially to the contained actor
 with connected ports.  This actor then iterates the
-contained actors in the order in which they appear
-in the actor list (which is the order in which they were
-created) repeatedly until either there are no more
+contained actor until either there are no more
 input data for the actor or the prefire() method of the actor
-returns false. If postfire() of any actor returns false,
-then postfire() of this director will return false, requesting
+returns false. If postfire() of the actor returns false,
+then postfire() of this actor will return false, requesting
 a halt to execution of the model.  The outputs from the
-contained actors are collected into arrays that are
+contained actor are collected into arrays that are
 produced on the outputs of this actor.
 <p>
-Normally, this actor is expected to contain only a single actor,
-which can, of course, be a composite actor. To make it easier to
-use, it reacts to a "drop" of an actor on it by replicating the
-ports and parameters of that actor. Moreover, when you interactively
-add ports or change the properties of ports of this actor
-(whether a port is an input or output, for example), then the
-same changes are mirrored in the contained actor.
+To make this actor easier to use, it reacts to a "drop"
+of an actor on it by replicating the ports and parameters
+of that actor. The dropped actor can, of course, be a
+composite actor. When you interactively add ports or change
+the properties of ports of this actor (whether a port is an
+input or output, for example), then the same changes are
+mirrored in the contained actor.
 <p>
 A special variable named "iterationCount" can be used in
 any expression setting the value of a parameter of this actor
 or its contents. This variable has an integer value that
 starts at 1 during the first iteration of the contained
-actor(s) and is incremented by 1 on each firing. Typically,
-it's final value will be the size of the input array(s),
-assuming that the inside actors consume one token on each
-firing.
+actor(s) and is incremented by 1 on each firing. If the
+inside actors consume one token on each firing, then
+its final value will be the size of the input array(s).
 <p>
 This actor is properly viewed as a "higher-order component" in
-that its contained actor is parameter that specifies how to
+that its contained actor is a parameter that specifies how to
 operate on input arrays.  It is inspired by the higher-order
 functions of functional languages, but unlike those, the
 contained actor need not be functional. That is, it can have
@@ -125,6 +122,9 @@ state.
 FIXME: When dropping a contained object onto this actor, or
 when adding or removing ports, undo does not work properly
 to reverse the changes.
+<p>
+FIXME: There should be an option to reset between
+firings of the inside actor.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
@@ -175,13 +175,10 @@ public class IterateOverArray extends TypedCompositeActor
     ////                         public methods                    ////
 
     /** React to the dropping of an object onto this object by
-     *  adjusting the ports and parameters to match the contained
+     *  removing any previously contained entity and adjusting
+     *  the ports and parameters to match the new contained
      *  entity, if necessary. This is called when a user interface
      *  drops an object into an object implementing this interface.
-     *  The call actually occurs when the change request is queued,
-     *  so the listener (which implements this method) should react
-     *  from with a change request itself, so as to ensure that
-     *  the reaction occurs after the drop has been completed.
      */
     public void dropped() {
 
@@ -487,7 +484,9 @@ public class IterateOverArray extends TypedCompositeActor
     }
 
     /** Override the base class to return a specialized port and to
-     *  create a port on the inside model, if there is one.
+     *  create a port on the inside entity, if there is one.
+     *  @param name The name of the port to create.
+     *  @param return A new instance of IteratePort, an inner class.
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
@@ -495,7 +494,7 @@ public class IterateOverArray extends TypedCompositeActor
             IteratePort port = new IteratePort(this, name);
             // Create and connect a matching inside port on contained entities.
             Iterator entities = entityList().iterator();
-            while(entities.hasNext()) {
+            while (entities.hasNext()) {
                 Entity insideEntity = (Entity)entities.next();
                 Port insidePort = insideEntity.getPort(name);
                 if (insidePort == null) {
@@ -515,27 +514,22 @@ public class IterateOverArray extends TypedCompositeActor
             workspace().doneWriting();
         }
     }
-
-    /** Set type constraints, create Receivers and invoke the
-     *  preinitialize() method of its local director.
-     *  @exception IllegalActionException If there is no director, or if
-     *   the director's preinitialize() method throws it.
+    
+    /** Override the base class to ensure that the ports of this
+     *  actor all have array types.
+     *  @return A list of instances of Inequality.
+     *  @exception IllegalActionException If the typeConstraintList
+     *  of one of the deeply contained objects throws it.
+     *  @see ptolemy.graph.Inequality
      */
-    public void preinitialize() throws IllegalActionException {
-
-        // NOTE: It would have been nice to do this in _addPort, but
-        // this doesn't work because _addPort() is called in the constructor
-        // of the port, and the port is not fully constructed!
-
-        // FIXME: This doesn't support mutations because this
-        // is only done in preinitialize().
+    public List typeConstraintList() throws IllegalActionException {
         Iterator ports = portList().iterator();
         while(ports.hasNext()) {
             TypedIOPort port = (TypedIOPort)ports.next();
             ArrayType arrayType = new ArrayType(BaseType.UNKNOWN);
             ((TypedIOPort)port).setTypeEquals(arrayType);
         }
-        super.preinitialize();
+        return super.typeConstraintList();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -544,7 +538,9 @@ public class IterateOverArray extends TypedCompositeActor
     /** Check types from a source port to a group of destination ports,
      *  assuming the source port is connected to all the ports in the
      *  group of destination ports.  Return a list of instances of
-     *  Inequality that have type conflicts.
+     *  Inequality that have type conflicts.  This overrides the base
+     *  class so that if one of the ports belongs to this IterateOverArray
+     *  actor, then its element type is compared against the inside port.
      *  @param sourcePort The source port.
      *  @param destinationPortList A list of destination ports.
      *  @return A list of instances of Inequality indicating the
@@ -609,8 +605,8 @@ public class IterateOverArray extends TypedCompositeActor
         return result;
     }
 
-    /** Override the base class to remove the associated port and the
-     *  link to it, if there is one.
+    /** Override the base class to remove the associated port on the
+     *  inside entity and the link to it, if there is one.
      *  @param port The port being removed from this entity.
      */
     protected void _removePort(Port port) {
@@ -621,7 +617,7 @@ public class IterateOverArray extends TypedCompositeActor
 
         // The cast is safe because all my ports are instances of IOPort.
         Iterator relations = ((IOPort)port).insideRelationList().iterator();
-        while(relations.hasNext()) {
+        while (relations.hasNext()) {
             ComponentRelation relation = (ComponentRelation)relations.next();
             try {
                 relation.setContainer(null);
@@ -631,7 +627,7 @@ public class IterateOverArray extends TypedCompositeActor
         }
 
         Iterator entities = entityList().iterator();
-        while(entities.hasNext()) {
+        while (entities.hasNext()) {
             Entity insideEntity = (Entity)entities.next();
             Port insidePort = insideEntity.getPort(port.getName());
             if (insidePort != null) {
@@ -779,15 +775,13 @@ public class IterateOverArray extends TypedCompositeActor
             setPersistent(false);
         }
 
-        /** Invoke iterations on each of the deeply contained actors of the
+        /** Invoke iterations on each of the contained actor of the
          *  container of this director repeatedly until either it runs out
-         *  of input data or prefire() returns false. If postfire() of any
+         *  of input data or prefire() returns false. If postfire() of the
          *  actor returns false, then set a flag indicating to postfire() of
-         *  this director to return false.  The contained
-         *  actors are iterated in the order reported by the entityList()
-         *  method of the container.
-         *  @exception IllegalActionException If any called method of one
-         *  of the associated actors throws it.
+         *  this director to return false.
+         *  @exception IllegalActionException If any called method of
+         *  of the contained actor throws it.
          */
         public void fire() throws IllegalActionException {
             CompositeActor container = (CompositeActor)getContainer();
@@ -902,7 +896,7 @@ public class IterateOverArray extends TypedCompositeActor
         }
 
         /** Override the base class to return the logical AND of
-         *  what the base class postfire() method return and the
+         *  what the base class postfire() method returns and the
          *  flag set in fire().  As a result, this will return
          *  false if any contained actor returned false in its
          *  postfire() method.
