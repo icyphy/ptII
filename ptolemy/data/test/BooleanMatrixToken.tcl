@@ -114,5 +114,5 @@ test BooleanMatrixToken-4.0 {Test hashCode} {
 test BooleanMatrixToken-2.7 {Test createArray} {
     set array [java::call ptolemy.data.MatrixToken createArray [$p one]]
     $array toString
-} {{1.0, 0.0, 0.0, 1.0}}
+} {{true, false, false, true}}
 
