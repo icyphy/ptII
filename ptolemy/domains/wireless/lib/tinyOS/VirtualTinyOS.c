@@ -4,6 +4,9 @@
 Authors: Yang
 Version $$
 */
+#ifdef __GNUC__
+typedef long long __int64;
+#endif
 
 #include <jni.h>
 #include "VirtualTinyOS.h"
