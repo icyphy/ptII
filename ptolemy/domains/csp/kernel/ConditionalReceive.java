@@ -232,7 +232,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  the loop that calls this method; otherwise return false.
      * @param parent The csp actor that contains this conditional
      *  receive.
-     * @param rcvr The cspreceiver through which a rendezvous attempt is
+     * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
     protected boolean arriveAfterCondSend(CSPReceiver rcvr, CSPActor parent) 
@@ -260,7 +260,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  wait (via a while loop) until it successfully rendezvouses or dies.
      * @param parent The csp actor that contains this conditional
      *  receive.
-     * @param rcvr The cspreceiver through which a rendezvous attempt is
+     * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
     protected void arriveAfterPut(CSPReceiver rcvr, CSPActor parent) 
@@ -285,7 +285,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  conditionalsend attempt is made by another branch.
      * @param parent The csp actor that contains this conditional
      *  receive.
-     * @param rcvr The cspreceiver through which a rendezvous attempt is
+     * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
     protected void arriveFirst(CSPReceiver rcvr, CSPActor parent) 

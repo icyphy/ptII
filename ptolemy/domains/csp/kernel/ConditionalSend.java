@@ -228,7 +228,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
     /**
      * @param parent The csp actor that contains this conditional
      *  receive.
-     * @param rcvr The cspreceiver through which a rendezvous attempt is
+     * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
     protected boolean arriveAfterCondRec(CSPReceiver rcvr, CSPActor parent ) 
@@ -262,7 +262,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
     /**
      * @param parent The csp actor that contains this conditional
      *  receive.
-     * @param rcvr The cspreceiver through which a rendezvous attempt is
+     * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
     protected void arriveAfterGet(CSPReceiver rcvr, CSPActor parent ) 
@@ -290,7 +290,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
     /**
      * @param parent The csp actor that contains this conditional
      *  receive.
-     * @param rcvr The cspreceiver through which a rendezvous attempt is
+     * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
     protected void arriveFirst(CSPReceiver rcvr, CSPActor parent ) 
