@@ -1,4 +1,4 @@
-/* ASTPtFunctionNode represent function nodes in the parse tree
+/* ASTPtFunctionNode represents function nodes in the parse tree
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -34,6 +34,8 @@ package ptolemy.data.expr;
 
 import ptolemy.data.*;
 import java.lang.reflect.*;
+import java.util.Enumeration;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtFunctionNode
@@ -42,23 +44,23 @@ The parse tree created from the expression string consists of a
 hierarchy of node objects. This class represents function nodes in
 the parse tree.
 <p>
-Currently the functions supported are precisely those
-in the java.lang.Math package. However, it is relatively straightforward
-to extend this node to allow references to other functions. This
-provides a straightforward mechanism to extend the functionality of
-the parser by adding extra functions that the parser can call. One
-example might be tcl(...) which would pass the string to a tcl
-interpreter to evaluate and return the result. This is also the mechanism
-by which files can be read into a parameter, probably via a readFile(...)
-method.
+A function node is created when a function call is parsed. This node 
+will search for the function, using refla]ection, in the classes 
+registered for this purpose with the parser. Thus to add to the lsit 
+of functions available to the expression, it is only necessary to 
+create a new class with the functions defined in it and register 
+it with the parser. By default only java.lang.Math and 
+ptolemy.data.expr.UtilityFunctions are searched for a given function.
 <p>
-FIXME: need to define a basic set of functions, and implement them.
+FIXME: need to add in ComplexToken when it is written.
 <p>
 @author Neil Smyth
 @version $Id$
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token
+@see ptolemy.data.expr.UtilityFunctions;
+@see java.lang.Math;
 */
 public class ASTPtFunctionNode extends ASTPtRootNode {
     protected String funcName;
@@ -70,55 +72,82 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         Object[] argValues = new Object[args];
         // Note: Java makes a distinction between the class objects
         // for double & Double...
-        try {
-            for (int i = 0; i<args; i++) {
-                if (childTokens[i] instanceof DoubleToken) {
-                    argValues[i] = new Double(((ScalarToken)childTokens[i]).doubleValue());
-                    argTypes[i] = Double.TYPE;
-                } else if (childTokens[i] instanceof IntToken) {
-                    argValues[i] = new Integer(((ScalarToken)childTokens[i]).intValue());
-                    argTypes[i] = Integer.TYPE;
-                } else if (childTokens[i] instanceof LongToken) {
-                    argValues[i] = new Long(((ScalarToken)childTokens[i]).longValue());
-                    argTypes[i] = Long.TYPE;
-                } else {
-                    String str = "invalid argument type, valid types are: ";
-                    str = str + "int, long, double, complex and String";
-                    throw new IllegalArgumentException(str);
-                }
+        for (int i = 0; i<args; i++) {
+            ptolemy.data.Token child = childTokens[i];
+            if (child instanceof DoubleToken) {
+                argValues[i] = new Double(((DoubleToken)child).getValue());
+                argTypes[i] = Double.TYPE;
+            } else if (child instanceof IntToken) {
+                argValues[i] = new Integer(((IntToken)child).getValue());
+                argTypes[i] = Integer.TYPE;
+            } else if (child instanceof LongToken) {
+                argValues[i] = new Long(((LongToken)child).getValue());
+                argTypes[i] = Long.TYPE;
+            } else if (child instanceof StringToken) {
+                argValues[i] = new Long(((StringToken)child).getValue());
+                argTypes[i] = argValues[i].getClass();
+            } else if (child instanceof BooleanToken) {
+                argValues[i] = new Boolean(((BooleanToken)child).getValue());
+                argTypes[i] = Boolean.TYPE;
+            } else {
+                throw new IllegalArgumentException("FunctionNode: "+
+                        "Invalid argument  type, valid types are: " +
+                        "boolean, complex, double, int, long  and String");
             }
-            // Currently this method only looks in java.lang.Math for
-            // the invoked function, but this will be extended
-            Class destClass = Class.forName("java.lang.Math");
-            Method m = destClass.getMethod(funcName, argTypes);
-            Object result = m.invoke(destClass, argValues);
-            if (result instanceof Double) {
-                return new DoubleToken(((Double)result).doubleValue());
-            } else if (result instanceof Integer) {
-                return new IntToken(((Integer)result).intValue());
-                /*  } else if (result instanceof Float) {
-                    return new ptolemy.data.FloatToken(((Float)result).floatValue()); */
-            } else if (result instanceof Long) {
-                return new LongToken(((Long)result).longValue());
-            } else  {
-                String str = "result of  function not of a supported type, ";
-                str = str + "ie float, int, double, or long";
-                throw new IllegalArgumentException(str);
-            }
-        } catch (Exception ex) {
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i<args; i++) {
-                if (i == 0) {
-                    sb.append(argValues[i].toString());
-                } else {
-                    sb.append(", " + argValues[i].toString());
-                }
-            }
-            String str = "Function " + funcName + "(" + sb;
-            str = str + ") cannot be executed with given arguments";
-            throw new IllegalArgumentException(str + ": " + ex.getMessage());
         }
+        // Now have the arguments converted, look through all the 
+        // classes registered with the parser for the appropriate function.
+        Enumeration allClasses = PtParser.getRegisteredClasses().elements();
+        boolean foundMethod = false;
+        Object result = null;
+        while (allClasses.hasMoreElements()) {
+            Class nextClass = (Class)allClasses.nextElement();
+            try {
+                Method m = nextClass.getMethod(funcName, argTypes);
+                result = m.invoke(nextClass, argValues);
+                foundMethod = true;
+            } catch (Exception  ex) {
+                // FIXME: a lot of exceptions get caught here, perhaps 
+                // want to specify each of them seperately?
+                System.out.println("Method " + funcName + " not found in " +
+                        nextClass.getName());
+            }
+            if (foundMethod) {
+                System.out.println("Method " + funcName + " found in " +
+                        nextClass.getName());
+                if (result instanceof Double) {
+                    return new DoubleToken(((Double)result).doubleValue());
+                } else if (result instanceof Integer) {
+                    return new IntToken(((Integer)result).intValue());
+                } else if (result instanceof Long) {
+                    return new LongToken(((Long)result).longValue());
+                } else if (result instanceof Long) {
+                    return new LongToken(((Long)result).longValue());
+                } else if (result instanceof String) {
+                    return new StringToken((String)result);
+                } else if (result instanceof Boolean) {
+                    return new BooleanToken(((Boolean)result).booleanValue());
+                } else  {
+                    throw new IllegalArgumentException("FunctionNode: "+
+                        "result of function " + funcName + " not a valid type"+
+                        ": boolean, complex, double, int, long  and String");
+                }
+            }
+        }
+        // If reach here it means the function was not found on the 
+        // search path.
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i<args; i++) {
+            if (i == 0) {
+                sb.append(argValues[i].toString());
+            } else {
+                sb.append(", " + argValues[i].toString());
+            }
+        }
+        throw new IllegalArgumentException("Function " + funcName + "(" + sb +
+                ") cannot be executed with given arguments.");
     }
+    
 
 
     public ASTPtFunctionNode(int id) {
