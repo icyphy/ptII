@@ -172,7 +172,7 @@ public final class ArrayMath {
                     array[i] == Double.NaN ||
                     array[i] == Double.POSITIVE_INFINITY) {
                 result[i] = top;
-            } else if (array[i] < top ||
+            } else if (array[i] < bottom ||
                     array[i] == -Double.NaN ||
                     array[i] == Double.NEGATIVE_INFINITY) {
                 result[i] = bottom;
@@ -199,7 +199,7 @@ public final class ArrayMath {
                     array[i] == Double.POSITIVE_INFINITY) {
                 array[i] = top;
             }
-            if (array[i] < top ||
+            if (array[i] < bottom ||
                     array[i] == -Double.NaN ||
                     array[i] == Double.NEGATIVE_INFINITY) {
                 array[i] = bottom;
