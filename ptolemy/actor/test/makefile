@@ -53,7 +53,8 @@ JSIMPLE_TESTS = \
 	CompositeActor.tcl \
 	Director.tcl \
 	IOPort.tcl \
-	IORelation.tcl
+	IORelation.tcl \
+	StaticSchedulingDirector.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
