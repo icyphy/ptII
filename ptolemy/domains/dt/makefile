@@ -59,7 +59,8 @@ MISC_FILES =	kernel
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	demo \
+	doc 
 
 all: jclass
 install: jclass
