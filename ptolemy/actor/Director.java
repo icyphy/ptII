@@ -446,11 +446,9 @@ public class Director extends NamedObj implements Executable {
     public void requestChange(ChangeRequest change)
 	throws ChangeFailedException {
         CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Manager manager = container.getManager();
-            if (manager != null) {
-                manager.requestChange(change);
-            }
+        if (container != null) {
+	    CompositeEntity entity = (CompositeEntity)container.getContainer();
+	    entity.requestChange(change);
         }
     }
 

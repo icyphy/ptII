@@ -31,6 +31,7 @@
 package ptolemy.actor;
 
 import ptolemy.kernel.*;
+import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 
 import java.util.Iterator;
@@ -628,6 +629,33 @@ public class CompositeActor extends CompositeEntity implements Actor {
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Queue a change request.
+     *  If the actor has a director, then request that the director
+     *  execute the change.  If the composite actor does not have a director,
+     *  then defer to the superclass to execute the change immediately.
+     *  @param change The requested change.
+     *  @exception ChangeFailedException If the change request fails.
+     */
+    public void requestChange(ChangeRequest change) 
+	throws ChangeFailedException {
+	CompositeEntity container = (CompositeEntity) getContainer();
+	if(container == null) {
+	    Manager manager = getManager();
+	    if(manager == null) {
+		super.requestChange(change);
+	    } else {
+		manager.requestChange(change);
+	    }
+	} else {
+	    Director director = getDirector();
+	    if(director == null) {
+		super.requestChange(change);
+	    } else {
+		director.requestChange(change);
+	    }
+	}
     }
 
     /** Override the base class to ensure that the proposed container

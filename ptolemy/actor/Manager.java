@@ -195,16 +195,11 @@ public class Manager extends NamedObj implements Runnable {
      *  via the requestChange() method.
      *  If the listener is already in the list, do not add it again.
      *  @param listener The listener to add.
+     *  @deprecated use addChangeListener on the toplevel composite actor 
+     *  instead.
      */
     public void addChangeListener(ChangeListener listener) {
-        if (_changeListeners == null) {
-            _changeListeners = new LinkedList();
-        } else {
-            if (_changeListeners.contains(listener)) {
-                return;
-            }
-        }
-        _changeListeners.add(listener);
+	((CompositeActor)getContainer()).addChangeListener(listener);
     }
 
     /** Add a listener to be notified when the model execution changes state.
@@ -515,12 +510,10 @@ public class Manager extends NamedObj implements Runnable {
     /** Remove a change listener. If the specified listener is not
      *  on the list, do nothing.
      *  @param listener The listener to remove.
+     *  @deprecated use method in CompsiteActor instead.
      */
     public void removeChangeListener(ChangeListener listener) {
-        if (_changeListeners == null) {
-            return;
-        }
-        _changeListeners.remove(listener);
+	((CompositeActor)getContainer()).removeChangeListener(listener);
     }
 
     /** Remove a listener from the list of listeners that are notified
@@ -549,30 +542,26 @@ public class Manager extends NamedObj implements Runnable {
      *  @exception ChangeFailedException If the model is idle and the
      *  change request fails.
      */
-    public void requestChange(ChangeRequest change)
-            throws ChangeFailedException {
+    public void requestChange(ChangeRequest change) 
+	throws ChangeFailedException {
+	// If the model is idle (i.e., initialize() has not yet been
+	// invoked), then process the change request right now.
 	if (_state == IDLE) {
-            change.execute();
+	    change.execute();
+	    _notifyChangeListeners(change);
+	} else {
+	    // Otherwise, we must be executing, so queue the request
+	    // to happen later.
+	    // Create the list of requests if it doesn't already exist
+	    if (_changeRequests == null) {
+		_changeRequests = new LinkedList();
+	    }
+	    _changeRequests.add(change);
 
-            // Inform all listeners. Of course, this won't happen
-            // if the change request failed.
-            if (_changeListeners != null) {
-                Iterator listeners = _changeListeners.iterator();
-                while(listeners.hasNext()) {
-                    ChangeListener listener
-                            = (ChangeListener)listeners.next();
-                    change.notify(listener);
-                }
-            }
-        } else {
-            // Create the list of requests if it doesn't already exist
-            if (_changeRequests == null) {
-                _changeRequests = new LinkedList();
-            }
-            _changeRequests.add(change);
-            CompositeActor container = (CompositeActor) getContainer();
-            // Request that firing stop, in case it is of long duration.
-            container.stopFire();
+	    // Request that the toplevel composite stop executing.
+	    // This is mainly for use with process oriented domains.
+	    CompositeActor container = (CompositeActor) getContainer();
+	    container.stopFire();
 	}
     }
 
@@ -854,6 +843,15 @@ public class Manager extends NamedObj implements Runnable {
         return _writeAccessNeeded;
     }
 
+    /** Notify all change listeners that the given request has completed
+     *  without throwing an exception.  The notification is deferred to
+     *  the containing actor, which has had all the change listeners attached
+     *  to it.
+     */
+    protected void _notifyChangeListeners(ChangeRequest request) {
+	((CompositeActor)getContainer())._notifyChangeListeners(request);
+    }
+
     /** Process the queued change requests that have been added with
      *  requestChange(). Registered change
      *  listeners are informed of each change in a series of calls
@@ -892,14 +890,7 @@ public class Manager extends NamedObj implements Runnable {
 
                 // Inform all listeners. Of course, this won't happen
                 // if the change request failed
-                if (_changeListeners != null) {
-                    Iterator listeners = _changeListeners.iterator();
-                    while(listeners.hasNext()) {
-                        ChangeListener listener
-                            = (ChangeListener)listeners.next();
-                        request.notify(listener);
-                    }
-                }
+		_notifyChangeListeners(request);
             }
         }
     }
@@ -920,9 +911,6 @@ public class Manager extends NamedObj implements Runnable {
 
     // A list of actors with pending initialization.
     private List _actorsToInitialize = new LinkedList();
-
-    // A list of change listeners.
-    private List _changeListeners;
 
     // A list of pending changes.
     private List _changeRequests;
