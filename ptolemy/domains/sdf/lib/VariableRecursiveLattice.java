@@ -36,6 +36,7 @@ import ptolemy.actor.lib.RecursiveLattice;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -79,9 +80,19 @@ public class VariableRecursiveLattice extends RecursiveLattice {
 
         newCoefficients = new TypedIOPort(this, "newCoefficients");
         newCoefficients.setInput(true);
-
         newCoefficients.setTypeSameAs(reflectionCoefficients);
+
         output.setTypeSameAs(input);
+
+        input_tokenConsumptionRate =
+            new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
+        input_tokenConsumptionRate.setExpression("blockSize");
+
+        output_tokenProductionRate =
+            new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate.setTypeEquals(BaseType.INT);
+        output_tokenProductionRate.setExpression("blockSize");
 
         // The reflectionCoefficients parameter is no longer
         // of any use, so it is hidden.
@@ -100,6 +111,14 @@ public class VariableRecursiveLattice extends RecursiveLattice {
      *  of doubles.
      */
     public TypedIOPort newCoefficients;
+
+    /** The number of tokens consumed from the input port.
+     */
+    public Parameter input_tokenConsumptionRate;
+
+    /** The number of tokens produced from the output port.
+     */
+    public Parameter output_tokenProductionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -120,37 +139,13 @@ public class VariableRecursiveLattice extends RecursiveLattice {
                 throw new IllegalActionException(this,
                         "Invalid blockSize: " + _blockSizeValue);
             }
-            // NOTE: The base class is not an SDF actor, so we have
-            // to manually add these port parameter.
-            IntToken rate = new IntToken(_blockSizeValue);
-            try {
-                Parameter tokenConsumptionRate = (Parameter)
-                    input.getAttribute("tokenConsumptionRate");
-                if (tokenConsumptionRate == null) {
-                    tokenConsumptionRate = new Parameter(input,
-                            "tokenConsumptionRate");
-                }
-                tokenConsumptionRate.setToken(rate);
-
-                Parameter tokenProductionRate = (Parameter)
-                    output.getAttribute("tokenProductionRate");
-                if (tokenProductionRate == null) {
-                    tokenProductionRate = new Parameter(output,
-                            "tokenProductionRate");
-                }
-                tokenProductionRate.setToken(rate);
-            } catch (NameDuplicationException ex) {
-                throw new InternalErrorException(
-                        "Unexpected name duplication.");
-            }
-
+         
             Director director = getDirector();
             if (director != null) {
                 director.invalidateSchedule();
             }
-        } else {
-            super.attributeChanged(attribute);
         }
+        super.attributeChanged(attribute);
     }
 
     /** Clone the actor into the specified workspace. This calls the
