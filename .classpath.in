@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="src" path="config"/>
-    <classpathentry excluding="cm/" kind="src" path="ptolemy/copernicus/c/test"/>
     <classpathentry
          excluding="**/CVS/|**/codeDoc/|config/|ptolemy/copernicus/c/test/|ptolemy/copernicus/c/test/cm/|doc/coding/templates/|ptolemy/apps/agilent/|ptolemy/apps/anytimecontrol/|ptolemy/apps/charon/|ptolemy/apps/crazyboard/|ptolemy/apps/etherealSting/|ptolemy/apps/fullscreen/|ptolemy/apps/giotto/|ptolemy/apps/ia/|ptolemy/apps/kurt/|ptolemy/apps/jmf/|ptolemy/apps/kvm/|ptolemy/apps/lego/|ptolemy/apps/lejos/|ptolemy/apps/midp/|ptolemy/apps/mobileCoding/|ptolemy/apps/pendulum/|ptolemy/apps/rijndael/|ptolemy/apps/robot/|ptolemy/apps/security/|ptolemy/apps/sobel/|ptolemy/apps/softwalls/|ptolemy/apps/soot/|ptolemy/apps/throttle/|ptolemy/apps/tini/|ptolemy/apps/transmission/|ptolemy/apps/vergil/|ptolemy/apps/waba/|ptolemy/apps/webstart/|ptolemy/apps/xsl/|ptolemy/domains/ct/demo/Saber/|ptolemy/domains/gr/lib/experimental/|ptolemy/domains/pdf/|ptolemy/plot/servlet/|vendors/@ECLIPSE_EXCLUDING_SRC@"
          kind="src" path=""/>
