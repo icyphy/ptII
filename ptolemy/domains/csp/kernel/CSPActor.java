@@ -394,11 +394,11 @@ public class CSPActor extends AtomicActor {
 
     /** Default implementation for actors inheriting from this
      *  class. It simply prints out a message that the actor is
-     *  wrapping up. FIXME: only used for debugging.
-     */
+     *  wrapping up. 
     public void wrapup() {
         System.out.println("CSPActor: " + getName() + " wrapping up.");
     }
+     */
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
