@@ -1,9 +1,0 @@
-    if (yym>0) {
-      try {
-         yyval = (parserval) (val_peek(yym-1).clone());
-      } catch (CloneNotSupportedException e) {
-         yyerror("clone not supported");
-      }
-    } else {
-      yyval = new parserval(0);
-    }
