@@ -524,7 +524,7 @@ public abstract class GraphFrame extends PtolemyFrame
      *  @exception IOException If the write fails.
      */
     protected void _writeFile(File file) throws IOException {
-        if (_saveAsFlag) {
+        if (_saveAsFlag && getModel().getContainer() != null) {
             java.io.FileWriter fout = new java.io.FileWriter(file);
             getModel().exportMoML(fout);
             fout.close();
