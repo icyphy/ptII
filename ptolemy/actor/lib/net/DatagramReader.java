@@ -38,7 +38,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.ByteToken;
+import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -791,7 +791,8 @@ public class DatagramReader extends TypedAtomicActor {
             if (!useDefaultOutput) {
                 Token[] dataTokens = new Token[bytesAvailable];
                 for (int j = 0; j < bytesAvailable; j++) {
-                    dataTokens[j] = new IntToken(ByteToken.unsignedConvert(dataBytes[j]));
+                    dataTokens[j] = new IntToken(UnsignedByteToken
+                            .unsignedConvert(dataBytes[j]));
                 }
                 _outputToken = new ArrayToken(dataTokens);
                   
