@@ -68,12 +68,12 @@ public class IconLibrary extends XMLElement{
      */
     public IconLibrary() {
         super("iconlibrary");
-        sublibraries = (HashedMap) new HashedMap();
-        icons = (HashedMap) new HashedMap();
-        header = new XMLElement("header");
-        addChildElement(header);
-        description = new XMLElement("description");
-        header.addChildElement(description);
+        _sublibraries = (HashedMap) new HashedMap();
+        _icons = (HashedMap) new HashedMap();
+        _header = new XMLElement("header");
+        addChildElement(_header);
+        _description = new XMLElement("description");
+        _header.addChildElement(_description);
         setName("");
         setVersion("");
 
@@ -87,12 +87,12 @@ public class IconLibrary extends XMLElement{
      */
     public IconLibrary(HashedMap attributes) {
         super("iconlibrary", attributes);        
-        sublibraries = (HashedMap) new HashedMap();
-        icons = (HashedMap) new HashedMap();
-        header = new XMLElement("header");
-        addChildElement(header);
-        description = new XMLElement("description");
-        header.addChildElement(description);
+        _sublibraries = (HashedMap) new HashedMap();
+        _icons = (HashedMap) new HashedMap();
+        _header = new XMLElement("header");
+        addChildElement(_header);
+        _description = new XMLElement("description");
+        _header.addChildElement(_description);
         if(!hasAttribute("name")) setName("");
         if(!hasAttribute("version")) setVersion("");
    }
@@ -102,7 +102,7 @@ public class IconLibrary extends XMLElement{
      */
     public void addIcon(Icon i) {
         addChildElement(i);
-        icons.putAt(i.getName(),i);
+        _icons.putAt(i.getName(),i);
     }
 
     /** 
@@ -111,22 +111,22 @@ public class IconLibrary extends XMLElement{
     public void addSubLibrary(String name) {
         XMLElement e = new XMLElement("sublibrary");
         e.setPCData(name);
-        header.addChildElement(e);
-        sublibraries.putAt(name, e);
+        _header.addChildElement(e);
+        _sublibraries.putAt(name, e);
     }
     
     /**
      * Test if the library contains an Icon with the given name
      */
     public boolean containsIcon(String name) {
-        return icons.includesKey(name);
+        return _icons.includesKey(name);
     }
 
     /**
      * Test if the library contains the sublibrary
      */
     public boolean containsSubLibrary(String name) {
-        return sublibraries.includesKey(name);
+        return _sublibraries.includesKey(name);
     }
     
     /** 
@@ -134,14 +134,14 @@ public class IconLibrary extends XMLElement{
      * type signature
      */
     public Icon getIcon(EntityType e) {
-        return (Icon) icons.at(e);
+        return (Icon) _icons.at(e);
     }
 
     /** 
      * Return a long description string of the the Icons in thie Library.
      */
     public String getDescription() {
-        return description.getPCData();
+        return _description.getPCData();
     }
 
     /**
@@ -163,33 +163,33 @@ public class IconLibrary extends XMLElement{
      * @return an enumeration of Icon
      */
     public Enumeration icons() {
-        if(icons==null) return null;
-        return icons.elements();
+        if(_icons==null) return null;
+        return _icons.elements();
     }
     
    /**
      * Remove an icon from this IconLibrary
      */
     public void removeIcon(String name) {
-        XMLElement e = (XMLElement) icons.at(name);
+        XMLElement e = (XMLElement) _icons.at(name);
         removeChildElement(e);
-        sublibraries.removeAt(name);
+        _sublibraries.removeAt(name);
     }
 
     /**
      * Remove a sublibrary from this IconLibrary
      */
     public void removeSubLibrary(String name) {
-        XMLElement e = (XMLElement) sublibraries.at(name);
-        header.removeChildElement(e);
-        sublibraries.removeAt(name);
+        XMLElement e = (XMLElement) _sublibraries.at(name);
+        _header.removeChildElement(e);
+        _sublibraries.removeAt(name);
     }
 
     /** 
      * Set the string that contains the long description of this library.
      */
     public void setDescription(String s) {
-        description.setPCData(s);
+        _description.setPCData(s);
     }
     
     /** 
@@ -212,7 +212,7 @@ public class IconLibrary extends XMLElement{
      * @return an Enumeration of Strings
      */
     public Enumeration subLibraries() {
-        return sublibraries.keys();
+        return _sublibraries.keys();
     }
 
     /**
@@ -226,35 +226,35 @@ public class IconLibrary extends XMLElement{
     void applySemanticsToChild(XMLElement e) {
         if(e instanceof Icon) {
             // if it's an Icon, then just add it to the list of icons.
-            icons.putAt(
+            _icons.putAt(
                     ((Icon) e).getName(), e);
         } else if(e.getElementType().equals("sublibrary")) {
             // if it's a sublibrary, then add it to the list of sublibraries.
             String filename = e.getPCData();
-            sublibraries.putAt(filename,e);
+            _sublibraries.putAt(filename,e);
         } else if(e.getElementType().equals("header")) {
             /* Remove the old header and swap in the new one.
                if the new header does not contain a description, then 
                keep the old description */
-            if(!e.hasChildElement(description)) {
-                header.removeChildElement(description);
-                e.addChildElement(description);
+            if(!e.hasChildElement(_description)) {
+                _header.removeChildElement(_description);
+                e.addChildElement(_description);
             }
-            removeChildElement(header);
-            header = e;
+            removeChildElement(_header);
+            _header = e;
         } else if(e.getElementType().equals("description")) {
             // if it's a description, then replace the old description that
             // was in the header. Remember that the description is not
             // a child element of this object, but we have to applySemantics
             // to it because header doesn't have it's own object.
-            header.removeChildElement(description);
-            description = e;
+            _header.removeChildElement(_description);
+            _description = e;
         }    
     }
 
-    private XMLElement description;
-    private XMLElement header;
-    private HashedMap sublibraries;
-    private HashedMap icons;
+    private XMLElement _description;
+    private XMLElement _header;
+    private HashedMap _sublibraries;
+    private HashedMap _icons;
 }
 
