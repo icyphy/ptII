@@ -335,6 +335,9 @@ public class MoMLChangeRequest extends ChangeRequest {
         // definition to the context in which we just applied the change,
         // unless propagation has been turned off.
         if (!_enablePropagation) {
+            if (_DEBUG) {
+                System.out.println("+++++++ Propagation is not enabled");
+            }            
             return;
         }
 
@@ -345,6 +348,11 @@ public class MoMLChangeRequest extends ChangeRequest {
         
         if (_propagator == null) {
             _propagator = this;
+        }
+        
+        // FIXME: debug
+        if (getDescription().equals("<class name=\"cABC\"><property name=\"p\" value=\"2\"/></class>")) {
+            System.out.println("--------------- handle for debugger.");
         }
 
         String relativeName = null;
@@ -371,8 +379,12 @@ public class MoMLChangeRequest extends ChangeRequest {
                         
                         if (_DEBUG) {
                             System.out.println("+++++++ Propagating to "
-                                    + other.getFullName());
+                                    + other.getFullName()
+                                    + " based on deferredFrom entry in "
+                                    + context.getFullName());
                         }
+                        
+                        NamedObj trueContext = other;
 
                         // It is possible for there to be multiple deferral
                         // paths to the same context.  This ensures that
@@ -397,8 +409,7 @@ public class MoMLChangeRequest extends ChangeRequest {
                                 // or port classes, this code will have to
                                 // check them in addition to the call to
                                 // getEntity().
-                                ComponentEntity trueContext
-                                        = ((CompositeEntity)other)
+                                trueContext = ((CompositeEntity)other)
                                         .getEntity(relativeName);
                                 if (trueContext != null) {
                                     if (_propagator._propagatedContexts
@@ -407,7 +418,9 @@ public class MoMLChangeRequest extends ChangeRequest {
                                         if (_DEBUG) {
                                             System.out.println(
                                                     "------- Cancelling propagation to "
-                                                    + other.getFullName());
+                                                    + other.getFullName()
+                                                    + " because true context has been processed: "
+                                                    + trueContext.getFullName());
                                         }
                                         continue;
                                     }
@@ -432,18 +445,13 @@ public class MoMLChangeRequest extends ChangeRequest {
                         // Create new MoML for the new context, if it is different.
                         String moml = getDescription();
                         
-                        if (context != _context) {
-                            String elementName = _context.getMoMLElementName();
-                            // Surround the MoML with an appropriate context.
-                            moml = "<"
-                                    + elementName
-                                    + " name=\""
-                                    + relativeName
-                                    + "\">"
-                                    + getDescription()
-                                    + "</"
-                                    + elementName
-                                    + ">";
+                        if (_DEBUG) {
+                            System.out.println("* Queueing change request "
+                                    + moml
+                                    + " in context "
+                                    + other.getFullName()
+                                    + " with propagator "
+                                    + _propagator);
                         }
                         // Make the request by queueing a new change request.
                         // This needs to be done because we have no assurance
@@ -452,7 +460,7 @@ public class MoMLChangeRequest extends ChangeRequest {
                         // execute.
                         MoMLChangeRequest newChange = new MoMLChangeRequest(
                                 getSource(),
-                                other,              // context
+                                trueContext,        // context
                                 moml,               // MoML code
                                 _base,
                                 _propagator);
@@ -486,6 +494,12 @@ public class MoMLChangeRequest extends ChangeRequest {
      */
     protected boolean _isShadowed(Attribute attribute) {
         if (attribute.isModifiedFromClass()) {
+            if (_DEBUG) {
+                System.out.println(
+                        "===> Attribute will not change because"
+                        + " it has been modified from the class: "
+                        + attribute.getFullName());
+            }
             return true;
         }
         
@@ -512,6 +526,7 @@ public class MoMLChangeRequest extends ChangeRequest {
         while(context != null
                 && context != _context
                 && !_context.deepContains(context)) {
+                    
             if (!(context instanceof Prototype)) {
                 // This level can't possibly defer.
                 // Continue to the next level up.
@@ -560,7 +575,9 @@ public class MoMLChangeRequest extends ChangeRequest {
                 if (possibleShadow.isModifiedFromClass()) {
                     if (_DEBUG) {
                         System.out.println(
-                                "===> Is shadowed by "
+                                "===> Attribute "
+                                + attribute.getFullName()
+                                + " is shadowed by "
                                 + possibleShadow.getFullName());
                     }
                     return true;
@@ -568,10 +585,17 @@ public class MoMLChangeRequest extends ChangeRequest {
                 // Check whether this deferred to object is shadowed.
                 if (_DEBUG) {
                     System.out.println(
-                            "===> Checking there is a shadow for "
+                            "===> Checking whether there is a shadow for "
                             + possibleShadow.getFullName());
                 }
                 if (_isShadowed(possibleShadow)) {
+                    if (_DEBUG) {
+                        System.out.println(
+                                "===> Attribute "
+                                + attribute.getFullName()
+                                + " is shadowed by "
+                                + possibleShadow.getFullName());
+                    }
                     return true;
                 }
             }
@@ -581,6 +605,12 @@ public class MoMLChangeRequest extends ChangeRequest {
             // Continue with the next level up the hierarchy.
         }
         // Have searched all the paths and haven't found a shadow.
+        if (_DEBUG) {
+            System.out.println(
+                    "===> Attribute "
+                    + attribute.getFullName()
+                    + " is not shadowed.");
+        }
         return false;
     }
     

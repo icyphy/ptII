@@ -793,3 +793,165 @@ test MoMLChangeRequest-7.2 {test propagation of changes} {
     }}
 } relations {
 }}
+
+######################################################################
+####
+# Deep deferrals
+
+set header {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
+
+set body {
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <class name="cA" extends="ptolemy.actor.CompositeActor">
+        <class name="cAB" extends="ptolemy.actor.CompositeActor">
+            <class name="cABC" extends="ptolemy.actor.CompositeActor">
+               <property name="p" class="ptolemy.data.expr.Parameter" value="1"/>
+            </class>
+            <entity name="iABC" class="cABC"/>
+        </class>
+        <entity name="iAB" class="cAB"/>
+    </class>
+    <class name="cD" extends="cA">
+    </class>
+</entity>
+}
+
+set moml "$header $body"
+test MoMLChangeRequest-8.0 {test construction of inner class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+
+	set cccpA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cA.cAB.cABC.p}]]
+	set ccipA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cA.cAB.iABC.p}]]
+	set cicpA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cA.iAB.cABC.p}]]
+	set ciipA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cA.iAB.iABC.p}]]
+	set cccpD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cD.cAB.cABC.p}]]
+	set ccipD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cD.cAB.iABC.p}]]
+	set cicpD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cD.iAB.cABC.p}]]
+	set ciipD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cD.iAB.iABC.p}]]
+
+	list \
+	[$cccpA getExpression] \
+	[$ccipA getExpression] \
+	[$cicpA getExpression] \
+	[$ciipA getExpression] \
+	[$cccpD getExpression] \
+	[$ccipD getExpression] \
+	[$cicpD getExpression] \
+	[$ciipD getExpression] \
+} {1 1 1 1 1 1 1 1}
+
+test MoMLChangeRequest-8.2 {test propagation of change from master class} {
+    set toplevel [java::cast ptolemy.actor.CompositeActor $toplevel]
+    set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cA.cAB.cABC"]]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $context $context {
+        <property name="p" value="2"/>
+    }]
+    $context requestChange $change
+    
+	list \
+	[$cccpA getExpression] \
+	[$ccipA getExpression] \
+	[$cicpA getExpression] \
+	[$ciipA getExpression] \
+	[$cccpD getExpression] \
+	[$ccipD getExpression] \
+	[$cicpD getExpression] \
+	[$ciipD getExpression] \
+} {2 2 2 2 2 2 2 2}
+
+######################################################################
+####
+# more Deep deferrals
+
+set body {
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <class name="cA" extends="ptolemy.actor.CompositeActor">
+        <class name="cAB" extends="ptolemy.actor.CompositeActor">
+            <class name="cABC" extends="ptolemy.actor.CompositeActor">
+               <property name="p" class="ptolemy.data.expr.Parameter" value="1"/>
+            </class>
+            <entity name="iABC" class="cABC"/>
+        </class>
+        <entity name="iAB" class="cAB"/>
+    </class>
+    <class name="cD" extends="cA">
+    </class>
+    <entity name="iA" class="cA"/>
+    <entity name="iD" class="cD"/>
+</entity>
+}
+
+set moml "$header $body"
+test MoMLChangeRequest-9.0 {test construction of inner class} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    set iABCp [$toplevel getAttribute {iA.iAB.iABC.p}]
+    $iABCp getFullName
+} {.top.iA.iAB.iABC.p}
+
+test MoMLChangeRequest-9.1 {test values of all instances} {
+	set cccpA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cA.cAB.cABC.p}]]
+	set ccipA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cA.cAB.iABC.p}]]
+	set cicpA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cA.iAB.cABC.p}]]
+	set ciipA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cA.iAB.iABC.p}]]
+	set cccpD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cD.cAB.cABC.p}]]
+	set ccipD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cD.cAB.iABC.p}]]
+	set cicpD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cD.iAB.cABC.p}]]
+	set ciipD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {cD.iAB.iABC.p}]]
+	set iccpA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iA.cAB.cABC.p}]]
+	set icipA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iA.cAB.iABC.p}]]
+	set iicpA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iA.iAB.cABC.p}]]
+	set iiipA [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iA.iAB.iABC.p}]]
+	set iccpD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iD.cAB.cABC.p}]]
+	set icipD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iD.cAB.iABC.p}]]
+	set iicpD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iD.iAB.cABC.p}]]
+	set iiipD [java::cast ptolemy.kernel.util.Settable [$toplevel getAttribute {iD.iAB.iABC.p}]]
+
+	list \
+	[$cccpA getExpression] \
+	[$ccipA getExpression] \
+	[$cicpA getExpression] \
+	[$ciipA getExpression] \
+	[$cccpD getExpression] \
+	[$ccipD getExpression] \
+	[$cicpD getExpression] \
+	[$ciipD getExpression] \
+	[$iccpA getExpression] \
+	[$icipA getExpression] \
+	[$iicpA getExpression] \
+	[$iiipA getExpression] \
+	[$iccpD getExpression] \
+	[$icipD getExpression] \
+	[$iicpD getExpression] \
+	[$iiipD getExpression] \
+} {1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}
+
+test MoMLChangeRequest-9.2 {test propagation of change from master class} {
+    set toplevel [java::cast ptolemy.actor.CompositeActor $toplevel]
+    set context [java::cast ptolemy.actor.CompositeActor [$toplevel getEntity "cA.cAB.cABC"]]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $context $context {
+        <property name="p" value="2"/>
+    }]
+    $context requestChange $change
+
+	list \
+	[$cccpA getExpression] \
+	[$ccipA getExpression] \
+	[$cicpA getExpression] \
+	[$ciipA getExpression] \
+	[$cccpD getExpression] \
+	[$ccipD getExpression] \
+	[$cicpD getExpression] \
+	[$ciipD getExpression] \
+	[$iccpA getExpression] \
+	[$icipA getExpression] \
+	[$iicpA getExpression] \
+	[$iiipA getExpression] \
+	[$iccpD getExpression] \
+	[$icipD getExpression] \
+	[$iicpD getExpression] \
+	[$iiipD getExpression] \
+} {2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2}
