@@ -43,7 +43,7 @@ import java.util.Random;
 @version $Id$
 
 */
-public class CSPMultiSink extends CSPActor implements Runnable {
+public class CSPMultiSink extends CSPActor {
   public CSPMultiSink(String name, CSPReceiver[] recs ) {
     super();
     setName(name);

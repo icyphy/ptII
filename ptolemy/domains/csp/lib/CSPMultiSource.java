@@ -43,7 +43,7 @@ import java.util.Random;
 @version $Id$
 
 */
-public class CSPMultiSource extends CSPActor implements Runnable {
+public class CSPMultiSource extends CSPActor {
   public CSPMultiSource(String name, CSPReceiver[] recs ) {
     super();
     setName(name);
