@@ -31,7 +31,8 @@
 
 ME =		ptolemy/codegen
 
-DIRS =		data saveasjava test
+# $PTSOOT_DIR is set to soot by configure in $PTII/mk/ptII.mk if soot was found
+DIRS =		data saveasjava $(PTSOOT_DIR) test
 
 # Root of the Java directory
 ROOT =		../..
