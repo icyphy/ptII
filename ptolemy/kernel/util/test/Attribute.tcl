@@ -1,6 +1,6 @@
 # Tests for the Attribute class
 #
-# @Author: Edward A. Lee, Jie Liu
+# @Author: Edward A. Lee, Jie Liu, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -90,8 +90,9 @@ test Attribute-3.2 {Test for NameDuplicationException on setName} {
     set p2 [java::new ptolemy.kernel.util.Attribute $n P2]
     catch {$p2 setName P1} msg
     list $msg
-} {{ptolemy.kernel.util.NameDuplicationException: .N:
+} {{ptolemy.kernel.util.NameDuplicationException: Object name: .N:
 already contains an attribute with the name P1.}}
+
 ######################################################################
 ####
 #
@@ -175,7 +176,7 @@ test Attribute-8.2 {setContainer, different workspace} {
     # Builds on 8.1 above
     catch {$b setContainer $c} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: . and .N.C:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: <Unnamed Object> and .N.C:
 Cannot set container because workspaces are different.}}
 
 test Attribute-8.3 {setContainer, then setContainer again} {

@@ -90,8 +90,9 @@ test InvalidStateException-5.1 {Create a InvalidStateException with a \
     set pe [java::new {ptolemy.kernel.util.InvalidStateException \
 	    ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{.:
+} {{Object name: <Unnamed Object>:
 Detail String}}
+
 
 ######################################################################
 ####
@@ -102,7 +103,7 @@ test InvalidStateException-5.2 {Create a InvalidStateException with a \
     set pe [java::new {ptolemy.kernel.util.InvalidStateException \
 	    ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{.My NamedObj:
+} {{Object name: .My NamedObj:
 Detail String}}
 
 ######################################################################
@@ -115,7 +116,7 @@ test InvalidStateException-7.1 {Create a InvalidStateException with an \
     set pe [java::new ptolemy.kernel.util.InvalidStateException $n1 $n2 \
 	    "Detail Message"]
     list [$pe getMessage]
-} {{. and .:
+} {{Object names: <Unnamed Object> and <Unnamed Object>:
 Detail Message}}
 
 ######################################################################
@@ -128,7 +129,7 @@ test InvalidStateException-7.2 {Create a InvalidStateException with a \
     set pe [java::new ptolemy.kernel.util.InvalidStateException $n1 $n2 \
 	    "Detail Message"]
     list [$pe getMessage]
-} {{.NamedObj 1 and .:
+} {{Object names: .NamedObj 1 and <Unnamed Object>:
 Detail Message}}
 
 ######################################################################
@@ -141,7 +142,7 @@ test InvalidStateException-7.3 {Create a InvalidStateException with an \
     set pe [java::new ptolemy.kernel.util.InvalidStateException $n1 $n2 \
 	    "Detail Message"]
     list [$pe getMessage]
-} {{. and .NamedObj 2:
+} {{Object names: <Unnamed Object> and .NamedObj 2:
 Detail Message}}
 
 ######################################################################
@@ -154,7 +155,7 @@ test InvalidStateException-7.4 {Create a InvalidStateException with a \
     set pe [java::new ptolemy.kernel.util.InvalidStateException \
 	    $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{.NamedObj 1 and .NamedObj 2:
+} {{Object names: .NamedObj 1 and .NamedObj 2:
 Detail Message}}
 
 ######################################################################
@@ -174,9 +175,8 @@ test InvalidStateException-8.1 {Create a InvalidStateException with a \
 	    [$dir elements] \
 	    "Detail Message"]
     list [$pe getMessage]
-} {{.n3, .n2, .n1:
+} {{Object names: .n3, .n2, .n1:
 Detail Message}}
-
 
 
 ######################################################################
@@ -196,7 +196,7 @@ test InvalidStateException-10.1 {Create a InvalidStateException with a \
 	    [java::call java.util.Collections enumeration $ll ] \
 	    [java::null]]
     list [$pe getMessage]
-} {{.NamedObj 1, .NamedObj 2, .NamedObj 3}}
+} {{Object names: .NamedObj 1, .NamedObj 2, .NamedObj 3}}
 
 test InvalidStateException-10.2 {Create a InvalidStateException with a \
 	Enumeration of NamedObjs and a detail message} {
@@ -212,7 +212,7 @@ test InvalidStateException-10.2 {Create a InvalidStateException with a \
 	    [java::call java.util.Collections enumeration $ll ] \
 	    "Detail Message"]
     list [$pe getMessage]
-} {{.NamedObj 1, .NamedObj 2, .NamedObj 3:
+} {{Object names: .NamedObj 1, .NamedObj 2, .NamedObj 3:
 Detail Message}}
 
 test InvalidStateException-10.3 {Create a InvalidStateException with a \
@@ -229,7 +229,7 @@ test InvalidStateException-10.3 {Create a InvalidStateException with a \
 	    [java::call java.util.Collections enumeration $ll ] \
 	    "Detail Message"]
     list [$pe getMessage]
-} {{.NamedObj 1, <Object of class java.lang.Object>, .NamedObj 3:
+} {{Object names: .NamedObj 1, <Object of class java.lang.Object>, .NamedObj 3:
 Detail Message}}
 
 test InvalidStateException-11.1 {Create a InvalidStateException with a \
@@ -245,4 +245,4 @@ test InvalidStateException-11.1 {Create a InvalidStateException with a \
 	    java.util.Collection java.lang.String} \
 	    $ll [java::null]]
     list [$pe getMessage]
-} {{.NamedObj 1, .NamedObj 2, .NamedObj 3}}
+} {{Object names: .NamedObj 1, .NamedObj 2, .NamedObj 3}}
