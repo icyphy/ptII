@@ -71,10 +71,6 @@
 
   </entity>
 
-  <entity name="UnsignedByteArrayToString"
-          class="ptolemy.actor.lib.conversions.UnsignedByteArrayToString">
-  </entity>
-
   <entity name="IntToBits"
           class="ptolemy.domains.sdf.lib.IntToBits">
   </entity>
@@ -120,6 +116,10 @@
 
   <entity name="TokenToExpression"
           class="ptolemy.actor.lib.conversions.TokenToExpression">
+  </entity>
+
+  <entity name="UnsignedByteArrayToString"
+          class="ptolemy.actor.lib.conversions.UnsignedByteArrayToString">
   </entity>
 
       </group>
