@@ -300,6 +300,8 @@ public class Main extends KernelMain {
     public static void main(String[] args)
             throws IllegalActionException, NameDuplicationException {
 
+        long startTime = System.currentTimeMillis();
+
 	Main main = new Main(args);
 
 	// Parse the model.
@@ -312,6 +314,9 @@ public class Main extends KernelMain {
 	main.addTransforms();
 	    
 	main.generateCode(args); 
+
+        // Print out memory usage info
+	System.out.println(ptolemy.actor.Manager.timeAndMemory(startTime));
     }
     
     private boolean _isDeep = false;
