@@ -90,19 +90,21 @@ test DoubleArrayStat-1.3 {entropy bad p} {
 } {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.entropy() : Negative probability encountered.}}
 
 ####################################################################
-test DoubleArrayStat-1.1 {min} {
+test DoubleArrayStat-1.4.1 {min} {
     set r [java::call ptolemy.math.DoubleArrayStat min $a2]
     list $r
 } -36.21
 
 ####################################################################
-test DoubleArrayStat-1.2 {min with weird array} {
+test DoubleArrayStat-1.4.2 {min with array with NaN in it} {
+    # 20.11.27 of the Java Language Spec says that If either value 
+    # passed to Math.min() is NaN, the the result is NaN
     set r [java::call ptolemy.math.DoubleArrayStat min $a3]
     list $r
-} -Infinity
+} NaN
 
 ####################################################################
-test DoubleArrayStat-1.3 {min of empty aray} {
+test DoubleArrayStat-1.4.3 {min of empty aray} {
     catch {set r [java::call ptolemy.math.DoubleArrayStat min $a0]} errMsg
     list $errMsg
 } {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.min() : input array has length 0.}}
