@@ -68,6 +68,7 @@ JSRCS = \
 	ASTPtRootNode.java \
 	ASTPtSumNode.java \
 	ASTPtUnaryNode.java \
+	CachedMethod.java \
 	ConcreteMatrixToken.java \
 	ConcreteScalarToken.java \
 	Constants.java \
