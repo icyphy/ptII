@@ -200,7 +200,12 @@ public class DirectedGraph extends Graph {
         if ( !_modified) {
             return _tranClosure;
         }
+
         int size = numNodes();
+        if (size == 0) {          // graph empty
+            throw new InvalidStateException("graph empty.");
+        }
+
         _tranClosure = new boolean[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
