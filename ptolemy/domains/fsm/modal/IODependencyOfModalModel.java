@@ -64,7 +64,7 @@ public class IODependencyOfModalModel extends IODependencyOfCompositeActor {
         LinkedList entities = new LinkedList();
         try {
             Actor[] actors = 
-                ((ModalModel)_container)._getController().currentState().getRefinement();
+                ((ModalModel)_container).getController().currentState().getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     entities.add(actors[i]);

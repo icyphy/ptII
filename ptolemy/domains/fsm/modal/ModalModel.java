@@ -227,6 +227,12 @@ public class ModalModel extends CTCompositeActor {
         return _ioDependency;
     }
 
+    /** Get the FSM controller.
+     */
+    public FSMActor getController() {
+       return _controller;
+    }
+
     /** Create a new director for use in this composite.  This base
      *  class returns an instance of FSMDirector, but derived classes
      *  may return a subclass.  Note that this method is called in the
@@ -308,15 +314,6 @@ public class ModalModel extends CTCompositeActor {
         } finally {
             _workspace.doneWriting();
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods               ////
-
-    /** Get the FSM controller.
-     */
-    protected FSMActor _getController() {
-       return _controller;
     }
 
     ///////////////////////////////////////////////////////////////////
