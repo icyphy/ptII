@@ -108,7 +108,7 @@ public class LocalZenoApplet extends DDEApplet {
 	final Graph finalGraph = _graph;
 
         try {
-	    SwingUtilities.invokeAndWait(new Runnable (){
+	    SwingUtilities.invokeAndWait(new Runnable() {
 		public void run() {
 		    displayGraph(_jgraph, finalGraph);
 		}
@@ -421,7 +421,7 @@ public class LocalZenoApplet extends DDEApplet {
 	 * Create a new basic controller with default
 	 * node and edge interactors.
 	 */
-	public LocalZenoGraphController () {
+	public LocalZenoGraphController() {
 	    // The interactors attached to nodes and edges
 	    setNodeController(new NodeController(this));
 	    setEdgeController(new EdgeController(this));
@@ -436,7 +436,7 @@ public class LocalZenoApplet extends DDEApplet {
 	 * the controller does not yet have a reference to its pane
 	 * at that time.
 	 */
-	protected void initializeInteraction () {
+	protected void initializeInteraction() {
 	    GraphPane pane = getGraphPane();
 
 	    // Create and set up the selection dragger
@@ -506,7 +506,7 @@ public class LocalZenoApplet extends DDEApplet {
 
             // Color the graph
             try {
-                SwingUtilities.invokeAndWait(new Runnable () {
+                SwingUtilities.invokeAndWait(new Runnable() {
                     public void run() {
                         switch (state) {
                         case 1:
