@@ -612,10 +612,20 @@ case `basename "$0"` in
 	help="Invoke the Ptolemy II User Interface, for example: \
               $0 \
               or \
-              $0 $PTII_CLEAN/ptolemy/moml/demo/modulation.xml"
+              $0 $PTII_CLEAN/ptolemy/moml/demo/modulation.xml
+              $0 -single    bring up a singleWindow interface"
 	javastartupclass=ptolemy.vergil.VergilApplication
+
+        # Single Window Interface
+	SINGLE_WINDOW_JARS=
+	if [ "$1" = "-single" ]; then
+	    shift
+	    SINGLE_WINDOW_JARS=${CLASSPATHSEPARATOR}${PTII}/lib/singleWindow.jar${CLASSPATHSEPARATOR}${PTII}/lib/xml-apis.jar${CLASSPATHSEPARATOR}${PTII}/lib/xercesImpl.jar
+	    javastartupclass=ptolemy.vergil.SingleWindowApplication
+        fi
+
 	javasourcedir=ptolemy/vergil
-	jarfile="$ALL_JAR"
+	jarfile="$ALL_JAR${SINGLE_WINDOW_JARS}"
 	javaflag="$ALL_JFLAG"
 	;;
 esac
