@@ -120,30 +120,24 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	Workspace workspace = getContainer().workspace();
 	BasePNDirector director = ((BasePNDirector)((Actor)(getContainer().getContainer())).getDirector());
         Token result = null;
-	//System.out.println(getContainer().getFullName() +" in receiver.get");
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
-                //System.out.println(getContainer().getFullName()+" Reading block");
 
                 //Only for listeners. Keep it before informRB
                 _readblockedactor = (Actor)getContainer().getContainer();
                 director._informOfReadBlock(this);
-                //System.out.println("After the readblocking.. I am "+getContainer().getFullName());
                 _readpending = true;
                 while (_readpending && !_terminate) {
-                    //System.out.println("Waiting in the workspace");
                     workspace.wait(this);
                 }
             }
 
-            //System.out.println("Halfway thru receiver.get()");
             if (_terminate) {
                 throw new TerminateProcessException("");
             } else {
                 result = super.get();
                 //Check if pending write to the Queue;
                 if (_writepending) {
-                    //System.out.println(getContainer().getFullName()+" being unblocked");
                     director._informOfWriteUnblock(this);
                     //FIXME: For listeners alone. Keep it after informOfWriteU
                     _writeblockedactor = null;
@@ -154,7 +148,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             }
             
             while (_pause) {
-                //System.out.println(" Actually pausing");
                 director.increasePausedCount();
                 workspace.wait(this);
             }
@@ -164,14 +157,12 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     public Actor getReadBlockedActor() {
         if (_readblockedactor == null) {
-            System.out.println("*********************************");
         }
         return _readblockedactor;
     }
 
     public Actor getWriteBlockedActor() {
         if (_writeblockedactor == null) {
-            System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
         }
         return _writeblockedactor;
     }
@@ -227,12 +218,9 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     public void put(Token token) {
 	Workspace workspace = getContainer().workspace();
 	BasePNDirector director = (BasePNDirector)((Actor)(getContainer().getContainer())).getDirector();
-	//System.out.println("putting token in PNQueueReceiver and pause = "+_pause);
-
         synchronized(this) {
             if (!super.hasRoom()) {
                 _writepending = true;
-                //System.out.println(getContainer().getFullName()+" being writeblocked");
 
                 //FIXME: Only for listeners!!
                 _writeblockedactor = 
@@ -240,7 +228,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
                 director._informOfWriteBlock(this);
                 while (!_terminate && !super.hasRoom()) {
-                    //System.out.println(getContainer().getFullName()+" waiting on write");
                     while(_writepending) {
                         workspace.wait(this);
                     }
@@ -262,7 +249,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 }
             }
             while (_pause) {
-                //System.out.println("Pausing in puuuuuuuuuut");
                 director.increasePausedCount();
                 workspace.wait(this);
             }
@@ -308,7 +294,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public synchronized void setFinish() {
 	_terminate = true;
-        //System.out.println("Terminating a receiver");
 	notifyAll();
     }
 
