@@ -34,8 +34,8 @@ import java.io.*;
 import ptolemy.actor.*;
 import java.text.MessageFormat;
 import java.util.Enumeration;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.domains.sdf.lib.vq.*;
+//import ptolemy.domains.sdf.kernel.*;
+//import ptolemy.domains.sdf.lib.vq.*;
 import ptolemy.media.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -55,6 +55,15 @@ public final class ImageDisplay extends AtomicActor {
         super(container,name);
         _port_image = new IOPort(this, "image", true, false);
     }
+
+    public ImageDisplay(CompositeActor container, String name, Picture pan) 
+            throws IllegalActionException, NameDuplicationException {
+        super(container,name);
+        _port_image = new IOPort(this, "image", true, false);
+        _panel = pan;
+    }
+
+
 
     public void initialize() throws IllegalActionException {
         _frame = null;
@@ -77,33 +86,37 @@ public final class ImageDisplay extends AtomicActor {
             _oldxsize = xsize;
             _oldysize = ysize;
             _RGBbuffer = new int[xsize*ysize];
-            if(_frame != null) {
-                _frame.dispose();
+            if (_panel == null) {
+                if(_frame != null) {
+                    _frame.dispose();
+                }
+                _frame = new _PictureFrame("ImageDisplay", xsize, ysize);
+                _frame._picture.setImage(_RGBbuffer);
+                
+                System.out.println("new buffer with rows = "+ysize+" and col = "+xsize);
+                _panel = _frame._picture;
+            } 
+            
+            //        System.out.println("xsize = "+xsize);
+            // System.out.println("ysize = "+ysize);
+            
+            // convert the B/W image to a packed RGB image
+            int i, j, index = 0;
+            for(j = 0; j<ysize; j++) {
+                for(i = 0; i < xsize; i++, index++) {
+                    int tem = 0;
+                    if (frame[j][i] == 0) tem = 255;
+                    else tem = 0;
+                    _RGBbuffer[index] = (255 << 24) |
+                        ((tem & 255) << 16) | 
+                        ((tem & 255) << 8) | 
+                        (tem & 255);
+                }  
             }
-            _frame = new _PictureFrame("ImageDisplay", xsize, ysize);
-            _frame._picture.setImage(_RGBbuffer);
-
-            System.out.println("new buffer with rows = "+ysize+" and col = "+xsize);
-        }     
-
-        //        System.out.println("xsize = "+xsize);
-        // System.out.println("ysize = "+ysize);
-       
-        // convert the B/W image to a packed RGB image
-        int i, j, index = 0;
-        for(j = 0; j<ysize; j++) {
-            for(i = 0; i < xsize; i++, index++) {
-                int tem = 0;
-                if (frame[j][i] == 0) tem = 255;
-                else tem = 0;
-                _RGBbuffer[index] = (255 << 24) |
-                    ((tem & 255) << 16) | 
-                    ((tem & 255) << 8) | 
-                    (tem & 255);
-            }  
+            //_frame._picture.displayImage();
+            _panel.displayImage();
+            
         }
-        _frame._picture.displayImage();
-
     }
 
     private class _PictureFrame extends Frame {
@@ -120,7 +133,7 @@ public final class ImageDisplay extends AtomicActor {
      
     }
 
-
+    private Picture _panel;
     private _PictureFrame _frame;
     private IOPort _port_image;
     private int _oldxsize, _oldysize;
