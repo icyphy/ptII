@@ -5,12 +5,15 @@
 # $Id$
 # Usage: fixapplets file.html [...]
 
-# 1)Get the current parameters
+
 
 for file in $@
 do
+        # 1)Get the current parameters, create a new .htm file with
+        # those parameters.
 	awk '
  BEGIN {
+	    # applet parameters that go inside <applet ... >
 	    appletParamNames["codebase"] = 1
 	    appletParamNames["code"] = 1
 	    appletParamNames["archive"] = 1
@@ -19,10 +22,10 @@ do
 	}
  $1 ~ /<OBJECT/ { sawObject = 1}
  sawObject == 0 { print $0 }
- $1 ~ /<EMBED/ { sawEmbed = 1
-		 paramCount = 0
-		 appletParamCount = 0
-	       }
+ $1 ~ /<EMBED/  { sawEmbed = 1
+		  paramCount = 0
+		  appletParamCount = 0
+	        }
  $1 ~ /<NOEMBED/    {
 			sawNoEmbed = 1
 			alternateHTML = ""    
@@ -35,10 +38,14 @@ do
 			split($1, n, "=")
 			split($0, f, "=")
 
-
+			# Look for applet parameters
 			sawAppletParam = 0
 			for (appletParamName in appletParamNames) {
 			    if (n[1] == appletParamName) {
+			        if (n[1] == "code" \
+				    && f[2] ~ /.class/ ) {
+				    f[2] = substr(f[2], 0, length(f[2])- 7)
+				}				
 				sawAppletParam = 1
 				appletParams[appletParamName] = f[2]
 				lastAppletParam = appletParamName
@@ -75,16 +82,66 @@ do
 		    }
 		    print ">"
 		    for (i = 0; i < paramCount; i++) {
-			printf("<param name = %s value = %s>\n", paramName[i], paramValue[i])
+			printf("<param name = %s value = %s>", paramName[i], paramValue[i])
 		    }
-		    print alternateHTML
+		    if (alternateHTML ~ /No JDK 1.3 support for applet!/) {_
+			print "No Java Plug-in support for applet, see <a href=\"http://java.sun.com/products/plugin/\"><code>http://java.sun.com/products/plugin/</code></a>"
+		    } else {
+			print alternateHTML
+		    }
 		    print "</applet>"
 		}
 
- ' $file > foo.htm
+ ' $file > fixapplets.htm
 
-c:/j2sdk1.4.0/bin/java -jar c:/j2sdk1.4.0/lib/htmlconverter.jar  -progress -template -log c:/tmp/foo.log templates/extend.tpl -f foo.htm 
+	
+	# 2) Run the HTMLConverter that is part of the jdk on
+	# the html file.
 
-diff $file foo.htm
+	# The HTMLConverter writes files to a temporary directory,
+	# so we delete it and create it
+	CURRENT_DIRECTORY=`pwd | sed 's@/cygdrive/\([a-z]\)@\1:@'`
+	rm -rf htmlconverter_bak
+	mkdir htmlconverter_bak
+
+	$PTII/bin/htmlconverter \
+	    -backup $CURRENT_DIRECTORY/htmlconverter_bak \
+	    fixapplets.htm
+
+	# 3) Add trailing back slashes
+
+awk '$NF ~ /document.writeln/ {
+      sawWriteln = 1
+     }
+$NF ~ /);$/ {
+      sawWriteln = 0
+     }
+
+     {
+      if (sawWriteln == 1) {
+           if (substr($NF,length($NF),1) == "\\") {
+               print $0
+           } else {
+               if ( $0 ~ /^<PARAM/) {
+                    print "	    " $0 " \\"
+               } else {
+                    print $0 " \\"
+               }
+           }
+      } else {
+           print $0
+      }
+    }
+    ' fixapplets.htm |
+    sed -e 's/CODEBASE/codebase/' \
+	-e 's/CODE/code/' \
+	-e 's/ARCHIVE/archive/' \
+	-e 's/WIDTH/width/' \
+	-e 's/HEIGHT/height/' \
+	-e 's/<PARAM NAME = /<PARAM NAME=/' \
+	-e 's/VALUE = /VALUE=/' \
+	> fixapplets2.htm
+
+diff $file fixapplets2.htm
 
 done
