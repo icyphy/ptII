@@ -96,6 +96,10 @@ OPTIONAL_FILES = \
 	'GraphPalette$$PaletteController.class' \
 	'JDesignTree$$1.class' \
 	'JDesignTree$$DesignTreeDragGestureListener.class' \
+	'MoveAction$$1.class' \
+	'MoveAction$$2.class' \
+	'MoveAction$$3.class' \
+	'MoveAction$$MoveType.class' \
 	'VisibleParameterEditorFactory$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

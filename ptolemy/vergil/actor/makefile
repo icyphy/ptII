@@ -96,6 +96,7 @@ OPTIONAL_FILES = \
 	'ActorGraphFrame$$InstantiateEntityAction.class' \
 	'ActorGraphFrame$$LayoutAction.class' \
 	'ActorGraphFrame$$SaveInLibraryAction.class' \
+	'ActorGraphFrame$$InstantiateAttributeAction.class' \
 	'ActorGraphModel$$1.class' \
 	'ActorGraphModel$$2.class' \
 	'ActorGraphModel$$ExternalPortModel.class' \

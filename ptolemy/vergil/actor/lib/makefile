@@ -69,7 +69,8 @@ OPTIONAL_FILES = \
 	demo \
 	$(PTCLASSJAR) \
 	'VisualModelReference$$1.class' \
-	'VisualModelReference$$2.class'
+	'VisualModelReference$$2.class' \
+	'VisualModelReference$$3.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

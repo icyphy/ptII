@@ -122,7 +122,12 @@ OPTIONAL_FILES = \
 	'RunnableGraphController$$RunModelAction.class' \
 	'RunnableGraphController$$StopModelAction.class' \
 	'WithIconGraphController$$1.class' \
-	'WithIconGraphController$$NewPortAction.class'
+	'WithIconGraphController$$NewPortAction.class' \
+	'BasicGraphFrame$$5.class' \
+	'BasicGraphFrame$$6.class' \
+	'BasicGraphFrame$$MoveToBackAction.class' \
+	'BasicGraphFrame$$MoveToFrontAction.class' \
+	'LocatableNodeDragInteractor$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
