@@ -237,7 +237,7 @@ codeDoc.jar:
 vergil_docs: $(VERGIL_DOCS)
 $(VERGIL_DOCS): javahtml.awk
 
-# Version of main.htm without links
+# Version of main.htm without links with targets
 # Convert <a href="foobar" target="body">bif</a> -> bif
 # and the convert Ptolemy Project web page to
 #     <a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web page</a>
