@@ -63,7 +63,7 @@ $Id$
 
 public class InequalitySolver {
 
-    /** Constructs an inequality solver.
+    /** Construct an inequality solver.
      *  @param cpo the CPO over which the inequalities are defined.
      */
     public InequalitySolver(CPO cpo) {
@@ -73,28 +73,7 @@ public class InequalitySolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Adds all of the inequalities in the specified
-     *  <code>Enumeration</code> to the set of constraints.
-     *  @param ineqs an <code>Enumeration</code> of
-     *   <code>Inequalities</code>
-     *  @exception IllegalArgumentException the specified
-     *   <code>Enumeration</code> contains an Object that is not an
-     *   <code>Inequality</code>.
-     */
-    public void addInequalities(Enumeration ineqs) {
-	while (ineqs.hasMoreElements()) {
-	    Object element = ineqs.nextElement();
-	    if ( !(element instanceof Inequality)) {
-		throw new IllegalArgumentException(
-			"InequalitySolver.addInequalities: the specified " +
-			"Enumeration contains an Object that is not an " +
-			"Inequality.");
-	    }
-	    addInequality((Inequality)element);
-	}
-    }
-
-    /** Adds an <code>Inequality</code> to the set of constraints.
+    /** Add an <code>Inequality</code> to the set of constraints.
      *  @param ineq an <code>Inequality</code>
      */
     public void addInequality(Inequality ineq) {
@@ -116,7 +95,7 @@ public class InequalitySolver {
         }
     }
 
-    /** Returns an Enumeration of the variables whose current values are
+    /** Return an Enumeration of the variables whose current values are
      *  the bottom of the underlining CPO. If none of the variables have
      *  its current value set to the bottom, an empty Enumeration is
      *  returned.
@@ -142,156 +121,69 @@ public class InequalitySolver {
 	return result.elements();
     }
 
-    /** Solves the set of inequalities and updates the variables.
-     *  If the set of inequalities is definite (see the paper refered in
-     *  the class document), this method can always determine satisfiability.
-     *  In this case, it returns <code>true</code> if the set of constraints
-     *  is satisfiable, and the variables are set to the least or
-     *  greatest solution depending on the <code>least</code> argument.
-     *  If the set of inequalities is not definite, this method will return
-     *  <code>false</code> if the inequalities are not satisfiable, but 
-     *  may not return <code>true</code> if satisfiable.
-     *  @param least if <code>true</code>, this method will try to
-     *   find the least solution; otherwise, this method will try to find
-     *   the greatest solution.
+    /** Solve the set of inequalities for the least solution.
+     *  If the set of inequalities is definite (when solving for the least
+     *  solution, definite means that the greater terms of all the
+     *  inequalities are either a constant of a single variable.),
+     *  this method can always determine satisfiability. In this case, if
+     *  the set of inequalities is satisfiable, this method returns
+     *  <code>true</code>, and the variables are set to the least solution.
+     *  If the set of inequalities is not satisfiable, this method returns
+     *  <code>false</code>.
+     *  <p>
+     *  If the set of inequalities is not definite, this method cannot
+     *  always determine satisfiability. In this case, if the set of
+     *  inequalities is satisfiable, this method may or may not return
+     *  <code>true</code>. If this method returns <code>true</code>,
+     *  the variables are set to the least solution. If the set of
+     *  inequalities is not satisfiable, this method returns
+     *  <code>false</code>.
+     *  <p>
+     *  In any case, if this method returns <code>false</code>, the
+     *  variables are set to the least solution for the subset of
+     *  inequalities whose greater terms are a single variable.
+     *  See the paper refered in the class document for details.
      *  @return <code>true</code> if a solution for the inequalities is found,
      *   <code>false</code> otherwise.
      *  @exception InvalidStateException the CPO over which the
      *   inequalities are defined is not a lattice.
      */
-    public boolean solve(boolean least) {
- 
-        // initialize all variables
-	Object init = least ? _cpo.bottom() : _cpo.top();
-	if (init == null) {
-	    throw new InvalidStateException("InequalitySolver.solve: " +
-                    "The underlining CPO is not a lattice.");
-	}
-
-	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
-	    InequalityTerm variable = (InequalityTerm)e.nextElement();
-	    try {
-	        variable.setValue(init);
-	    } catch (IllegalActionException ex) {
-		throw new RuntimeException("InequalitySolver.solve: " +
-			"Cannot set variable value(when Initialize variable). "
-			+ ex.getMessage());
-	    }
-	}
-
-	// initialize _NS(not satisfied) list; set _inCvar and _inserted flags. 
-
-        // Not Satisfied list.  Each entry is an Integer storing index to
-	// _Ilist.
-    	// Note: removal in jdk1.2 LinkedList is not an O(1) operation, but
-    	// an O(n) operation, where n is the number of elements in list.
-    	// If the size of _NS is large, writing our own linked list class
-    	// with a Cell class might be better.
-    	LinkedList _NS = new LinkedList();
-
-	for (int i = 0; i < _Ilist.size(); i++) {
-	    Info info = (Info)_Ilist.elementAt(i);
-	    info._inCvar = least ? info._ineq.greaterTerm().isSettable()
-                : info._ineq.lesserTerm().isSettable();
-
-	    if (info._inCvar) {
-	    	if (info._ineq.satisfied(_cpo)) {
-		    info._inserted = false;
-		} else { 	// insert to _NS
-		    // FIXME: restore this line for jdk1.2
-                    //                  _NS.addLast(new Integer(i));
-
-		    // FIXME: delete this line for jdk1.2
-                    _NS.insertLast(new Integer(i));
-
-		    info._inserted = true;
-		}
-	    }
-	}
-
-	// solve the inequalities
-        while (_NS.size() > 0) {
-
-	    // FIXME: restore this line for jdk1.2
-            //            int index = ((Integer)(_NS.removeFirst())).intValue();
-
-	    // FIXME: delete the following 2 lines for jdk1.2
-            int index = ((Integer)(_NS.first())).intValue();
-            _NS.removeFirst();
-	    // end last FIXME
-
-            Info info = (Info)(_Ilist.elementAt(index));
-            info._inserted = false;
-            Object value = null;
-	    InequalityTerm updateTerm = null;
-	    if (least) {
-		updateTerm = info._ineq.greaterTerm();
-	        value = _cpo.lub(info._ineq.lesserTerm().getValue(),
-                        updateTerm.getValue());
-	    } else {
-		updateTerm = info._ineq.lesserTerm();
-	        value = _cpo.glb(updateTerm.getValue(),
-                        info._ineq.greaterTerm().getValue());
-	    }
-
-            if (value == null) {
-                throw new InvalidStateException("The CPO over which " +
-                        "the inequalities are defined is not a lattice.");
-            }
-
-	    try {
-		updateTerm.setValue(value);
-	    } catch (IllegalActionException ex) {
-		throw new RuntimeException("InequalitySolver.solve: " +
-			"Can't set variable value(when update variable). " +
-			ex.getMessage());
-	    }
-            
-            // insert or drop the inequalities affected
-            Vector affected = (Vector)_Clist.get(updateTerm);
-            for (int i = 0; i < affected.size(); i++) {
-                Integer index1Wrap = (Integer)(affected.elementAt(i));
-                int index1 = index1Wrap.intValue();
-		Info affectedInfo = (Info)_Ilist.elementAt(index1);
-                if (index1 != index && affectedInfo._inCvar) {
-                    if (affectedInfo._ineq.satisfied(_cpo)) {    // drop
-                        if (affectedInfo._inserted) {
-
-			    // FIXME: restore this line for jdk1.2
-                            //                            _NS.remove(index1Wrap);
-
-			    // FIXME: delete this line for jdk1.2
-                            _NS.removeOneOf(index1Wrap);
-
-                        }
-                    } else {                        // insert
-                        if ( !affectedInfo._inserted) {
-
-			    // FIXME: restore this line for jdk1.2
-                            //                            _NS.addFirst(index1Wrap);
-
-			    // FIXME: delete this line for jdk1.2
-                            _NS.insertFirst(index1Wrap);
-
-                        }
-                    }
-                }
-            }
-        }
-        
-        // check if the inequalities in Ccnst are satisfied
-        for (int i = 0; i < _Ilist.size(); i++) {
-	    Info info = (Info)_Ilist.elementAt(i);
-	    if ( !info._inCvar) {
-                if ( !info._ineq.satisfied(_cpo)) {
-                    return false;
-		}
-            }
-        }
-        return true;
+    public boolean solveLeast() {
+	return _solve(true);
     }
 
-    /** Returns an Enumeration of the variables whose current values are
+    /** Solve the set of inequalities for the greatest solution.
+     *  If the set of inequalities is definite (when solving for the greatest
+     *  solution, definite means that the lesser terms of all the
+     *  inequalities are either a constant of a single variable.),
+     *  this method can always determine satisfiability. In this case, if
+     *  the set of inequalities is satisfiable, this method returns
+     *  <code>true</code>, and the variables are set to the greatest solution.
+     *  If the set of inequalities is not satisfiable, this method returns
+     *  <code>false</code>.
+     *  <p>
+     *  If the set of inequalities is not definite, this method cannot
+     *  always determine satisfiability. In this case, if the set of
+     *  inequalities is satisfiable, this method may or may not return
+     *  <code>true</code>. If this method returns <code>true</code>,
+     *  the variables are set to the greatest solution. If the set of
+     *  inequalities is not satisfiable, this method returns
+     *  <code>false</code>.
+     *  <p>
+     *  In any case, if this method returns <code>false</code>, the
+     *  variables are set to the greatest solution for the subset of
+     *  inequalities whose lesser terms are a single variable.
+     *  See the paper refered in the class document for details.
+     *  @return <code>true</code> if a solution for the inequalities is found,
+     *   <code>false</code> otherwise.
+     *  @exception InvalidStateException the CPO over which the
+     *   inequalities are defined is not a lattice.
+     */
+    public boolean solveGreatest() {
+	return _solve(false);
+    }
+
+    /** Return an Enumeration of the variables whose current values are
      *  the top of the underlining CPO. If none of the variables have
      *  the current value set to the top, an empty Enumeration is returned.
      *  @return an Enumeration of InequalityTerms
@@ -315,7 +207,7 @@ public class InequalitySolver {
 	return result.elements();
     }
 
-    /** Returns an <code>Enumeration</code> of <code>Inequalities</code>
+    /** Return an <code>Enumeration</code> of <code>Inequalities</code>
      *  that are not satisfied with the current value of variables.
      *  If all the inequalities are satisfied, an empty
      *  <code>Enumeration</code> is returned.
@@ -352,7 +244,146 @@ public class InequalitySolver {
 	// If this ineq. is in _NS
         private boolean _inserted = false;
     }
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          private methods                  ////
+
+    // The solver used by solveLeast() and solveGreatest().
+    // If the argument is true, solve for the least solution;
+    // otherwise, solve for the greatest solution.
+    private boolean _solve(boolean least) {
+ 
+        // initialize all variables
+	Object init = least ? _cpo.bottom() : _cpo.top();
+	if (init == null) {
+	    throw new InvalidStateException("InequalitySolver.solve: " +
+                    "The underlining CPO is not a lattice.");
+	}
+
+	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
+	    InequalityTerm variable = (InequalityTerm)e.nextElement();
+	    try {
+	        variable.setValue(init);
+	    } catch (IllegalActionException ex) {
+		throw new RuntimeException("InequalitySolver.solve: " +
+			"Cannot set variable value(when Initialize variable). "
+			+ ex.getMessage());
+	    }
+	}
+
+	// initialize _NS(not satisfied) list; set _inCvar and _inserted flags. 
+
+        // Not Satisfied list.  Each entry is an Integer storing index to
+	// _Ilist.
+    	// Note: removal in jdk1.2 LinkedList is not an O(1) operation, but
+    	// an O(n) operation, where n is the number of elements in list.
+    	// If the size of _NS is large, writing our own linked list class
+    	// with a Cell class might be better.
+    	LinkedList _NS = new LinkedList();
+
+	for (int i = 0; i < _Ilist.size(); i++) {
+	    Info info = (Info)_Ilist.elementAt(i);
+	    info._inCvar = least ? info._ineq.getGreaterTerm().isSettable()
+                : info._ineq.getLesserTerm().isSettable();
+
+	    if (info._inCvar) {
+	    	if (info._ineq.satisfied(_cpo)) {
+		    info._inserted = false;
+		} else { 	// insert to _NS
+		    // FIXME: restore this line for jdk1.2
+                    //                  _NS.addLast(new Integer(i));
+
+		    // FIXME: delete this line for jdk1.2
+                    _NS.insertLast(new Integer(i));
+
+		    info._inserted = true;
+		}
+	    }
+	}
+
+	// solve the inequalities
+        while (_NS.size() > 0) {
+
+	    // FIXME: restore this line for jdk1.2
+            //            int index = ((Integer)(_NS.removeFirst())).intValue();
+
+	    // FIXME: delete the following 2 lines for jdk1.2
+            int index = ((Integer)(_NS.first())).intValue();
+            _NS.removeFirst();
+	    // end last FIXME
+
+            Info info = (Info)(_Ilist.elementAt(index));
+            info._inserted = false;
+            Object value = null;
+	    InequalityTerm updateTerm = null;
+	    if (least) {
+		updateTerm = info._ineq.getGreaterTerm();
+	        value = _cpo.leastUpperBound(
+				info._ineq.getLesserTerm().getValue(),
+                        	updateTerm.getValue());
+	    } else {
+		updateTerm = info._ineq.getLesserTerm();
+	        value = _cpo.greatestLowerBound(updateTerm.getValue(),
+                        	info._ineq.getGreaterTerm().getValue());
+	    }
+
+            if (value == null) {
+                throw new InvalidStateException("The CPO over which " +
+                        "the inequalities are defined is not a lattice.");
+            }
+
+	    try {
+		updateTerm.setValue(value);
+	    } catch (IllegalActionException ex) {
+		throw new RuntimeException("InequalitySolver.solve: " +
+			"Can't set variable value(when update variable). " +
+			ex.getMessage());
+	    }
+            
+            // insert or drop the inequalities affected
+            Vector affected = (Vector)_Clist.get(updateTerm);
+            for (int i = 0; i < affected.size(); i++) {
+                Integer index1Wrap = (Integer)(affected.elementAt(i));
+                int index1 = index1Wrap.intValue();
+		Info affectedInfo = (Info)_Ilist.elementAt(index1);
+                if (index1 != index && affectedInfo._inCvar) {
+                    if (affectedInfo._ineq.satisfied(_cpo)) {    // drop
+                        if (affectedInfo._inserted) {
+
+			    // FIXME: restore this line for jdk1.2
+                            //                            _NS.remove(index1Wrap);
+
+			    // FIXME: delete this line for jdk1.2
+                            _NS.removeOneOf(index1Wrap);
+
+                        }
+                    } else {                        // insert
+                        if ( !affectedInfo._inserted) {
+
+			    // FIXME: restore this line for jdk1.2
+                            //                _NS.addFirst(index1Wrap);
+
+			    // FIXME: delete this line for jdk1.2
+                            _NS.insertFirst(index1Wrap);
+
+                        }
+                    }
+                }
+            }
+        }
+        
+        // check if the inequalities in Ccnst are satisfied
+        for (int i = 0; i < _Ilist.size(); i++) {
+	    Info info = (Info)_Ilist.elementAt(i);
+	    if ( !info._inCvar) {
+                if ( !info._ineq.satisfied(_cpo)) {
+                    return false;
+		}
+            }
+        }
+        return true;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
