@@ -69,8 +69,23 @@ test UtilityFunctions-1.0 {Check readFile method} {
 
 ######################################################################
 ####
+# 
+test UtilityFunctions-1.1 {Check readFile method on a file that does not exist} {
+    # To be honest, I think that if the file cannot be read,
+    # we should throw something.
+    set parser [java::new ptolemy.data.expr.PtParser]
+    
+    set tree [$parser generateParseTree "readFile(\"not a file\")"]
+
+    #$tree displayParseTree " "
+    set res [$tree evaluateParseTree]
+    $res toString
+} {}
+
+######################################################################
+####
 # result is 50 as the string for the re-invoked parser is 3+43+4 !
-test UtilityFunctions-1.0 {Check recurive calls to the parser with eval method} {
+test UtilityFunctions-3.0 {Check recurive calls to the parser with eval method} {
     set parser [java::new ptolemy.data.expr.PtParser]
     
     set tree [$parser generateParseTree "eval(\"3 + 4\" + \"3 + 4\")"]
@@ -81,4 +96,27 @@ test UtilityFunctions-1.0 {Check recurive calls to the parser with eval method} 
 
     list $value
 } {50}
+
+######################################################################
+####
+test UtilityFunctions-4.0 {Test env} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root [ $p1 {generateParseTree String} "env(\"file.separator\")"]
+    set res  [ $root evaluateParseTree ]
+    set fileSeparator [$res toString]
+    set results "not ok"
+    if { "$fileSeparator" == "/" || "$fileSeparator" == "\\"} {
+	set results "ok"
+    }
+    list $results
+} {ok}
+
+######################################################################
+####
+test UtilityFunctions-4.1 {Test env on a parameter that does not exist} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root [ $p1 {generateParseTree String} "env(\"not a parameter\")"]
+    set res  [ $root evaluateParseTree ]
+    $res toString
+} {}
 
