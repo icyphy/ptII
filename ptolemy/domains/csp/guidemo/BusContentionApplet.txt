@@ -16,6 +16,21 @@ The following applet uses the Ptolemy II CSP domain to model resource
 contention. The model serves as an example of how the CSP model of
 computation can deal with determinacy using time.
 <P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<applet name="BusContentionApplet"
+   archive="ptolemy/domains/csp/guidemo/BusContentionDemo.jar, diva/diva.jar,
+	ptolemy/domains/csp/csp.jar, ptolemy/ptsupport.jar"
+   code=ptolemy.domains.csp.guidemo.BusContentionApplet.class
+   codebase=../../../..
+   width=500 height=20>
+<param name="background" value="#faf0e6">
+<I>If you were able to run applets, you would have a demo here.</I>
+</applet>
+</center>
+<B>Applet Description:</B>
+<P>
 The applet consists of a controller, three processors and a memory block. 
 At randomly selected points in time, each processor can request permission 
 from the controller to access the memory. The processors each have priorities 
@@ -40,20 +55,6 @@ processor is in state 1 and is awaiting the controller to give it permission
 to access memory. The color green indicates that a processor has been granted 
 permission to access memory. The color red indicates that the processor has
 been denied memory access. 
-<P>
- <!-- All of the controls of the applet should be visible when the
-applet is displayed on a XGA screen-->
-<center>
-<applet name="BusContentionApplet"
-   archive="ptolemy/domains/csp/guidemo/BusContentionDemo.jar, diva/diva.jar,
-	ptolemy/domains/csp/csp.jar, ptolemy/ptsupport.jar"
-   code=ptolemy.domains.csp.guidemo.BusContentionApplet.class
-   codebase=../../../..
-   width=500 height=100>
-<param name="background" value="#faf0e6">
-<I>If you were able to run applets, you would have a demo here.</I>
-</applet>
-</center>
 <P>
 This applet consists of four types of actors:
 <UL>
