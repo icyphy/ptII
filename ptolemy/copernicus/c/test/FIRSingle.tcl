@@ -67,14 +67,11 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     
     # Check if the FIRSingle.out directory exists.
     if {[file isdirectory FIRSingle.out]} {
-        cd FIRSingle.out
         # Remove all files generated in the previous run.
-        exec "rm *"
-        cd ..
-        # Now back in c/test directory.
+	file delete -force [glob -nocomplain FIRSingle.out/*]
     } else {
         # Create the FIRSingle.out directory.
-        exec mkdir FIRSingle.out
+	file mkdir FIRSingle.out
     }
 
 
@@ -90,7 +87,7 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     exec javac FIRSingle.java
 
     # Generate the code using singleClass compilation mode.
-    exec java ptolemy.copernicus.c.JavaToC $classpath \
+    exec java -classpath $classpath ptolemy.copernicus.c.JavaToC $classpath \
             -singleClass FIRSingle
 
     # NOTE: JavaToC expects the class file to be converted (in this case
@@ -117,8 +114,7 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     exec gcc -c ../../runtime/pccg_runtime.c
 
     # Link the .o files into the executable.
-    # We use the double quotes so that we can use the * wildcard.
-    exec "gcc -o firSingle *.o"
+    eval exec gcc -o firSingle [glob *.o]
 
     # Run the executable.
     exec firSingle
@@ -133,6 +129,5 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
 0.000000
 0.000000
 0.000000
-0.000000
-}
+0.000000}
 
