@@ -79,7 +79,7 @@ public class FiltApplet extends Applet implements Runnable {
             newManager();
         }
 
-        show();
+        setVisible(true);
 
         try {
             type = getParameter("type");
@@ -127,7 +127,7 @@ public class FiltApplet extends Applet implements Runnable {
         
         
         if (type.equals("IIR")) { // IIR filter
-             manager().newFilter(1, "Filter Applet");
+             manager().newFilter(FilterView.APPLETMODE, "Filter Applet");
              IIRsetPanel = manager().getView("IIRFilterParameterView").getPanel();
              this.add(IIRsetPanel);
         } else if (type.equals("Blank")) { // Blank filter
@@ -154,10 +154,10 @@ public class FiltApplet extends Applet implements Runnable {
 
 System.out.println("before show");
 
-        freqPanel.show();
-        impulsPanel.show();
-        polezeroPanel.show();
-        transferPanel.show();
+        freqPanel.setVisible(true);
+        impulsPanel.setVisible(true);
+        polezeroPanel.setVisible(true);
+        transferPanel.setVisible(true);
         super.init();
     }
 
@@ -200,18 +200,6 @@ System.out.println("before show");
         super.start();
     }
 
-    /**
-     * Close all the pop window, and delete filter
-     * doesn't really quit the applet
-     */
-    public boolean action(Event evt, Object arg){
-        if (evt.target == _quit){
-             manager().deletefilter();
-             return true;
-        }
-        return false;
-    }
-
     /** Stop the plot.
      */
     public void stop () {
@@ -240,11 +228,11 @@ System.out.println("before show");
 
     public static void main(String[] args){
           Frame f = new Frame("Filter Applet");
-          f.resize(1000, 800);
+          f.setSize(1000, 800);
           FiltApplet fa = new FiltApplet(); 
           f.add(fa);
-          f.show(); 
-          fa.show();
+          f.setVisible(true); 
+          fa.setVisible(true);
           fa.init();
           fa.start(); 
     }
