@@ -25,8 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
-Review changeRequest / changeListener code.
+@AcceptedRating Green (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -36,7 +35,6 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.ChangeRequest;
 import ptolemy.kernel.event.ChangeListener;
-import ptolemy.kernel.event.ChangeFailedException;
 import ptolemy.data.type.TypeLattice;
 
 import java.util.Enumeration;
@@ -65,12 +63,12 @@ method will return when execution has completed.  Any exceptions that
 occur will be thrown by the execute method to the calling thread, and will
 not be reported to any execution listeners.  The run() method also
 initiates synchronous execution of a model, but additionally catches all
-exceptions and passes them to the notifyListenersOfException method
+exceptions and passes them to the notifyListenersOfException() method
 <i>without throwing them to the calling thread</i>.
 The startRun() method, unlike the previous two
 techniques, begins <i>asynchronous</i> execution of a model.   This method
 starts a new thread for execution of the model and then returns immediately.
-Exceptions are reported using the notifyListenersOfException method.
+Exceptions are reported using the notifyListenersOfException() method.
 <p>
 In addition, execution can be manually driven, one phase at a time, using the
 methods initialize(), iterate() and wrapup().  This is most useful for
@@ -87,7 +85,7 @@ or type of a parameter.  Collectively, such changes are called
 cannot safely occur at arbitrary points in the execution of
 a model.  Models can queue mutations with a composite actor or with
 the manager using the requestChange() method.  The composite actor
-simply delegates the request to its container, so the request propogates
+simply delegates the request to its container, so the request propagates
 up the hierarchy until it gets to
 the manager, which performs the change at the earliest
 opportunity.  In this implementation of Manager, the changes are
@@ -95,7 +93,8 @@ executed between iterations.
 <p>
 A service is also provided whereby an object can be registered with the
 composite actor as a change listener.  A change listener is informed when
-mutations that are requested via requestChange() are executed.
+mutations that are requested via requestChange() are executed successfully,
+or when they fail with an exception.
 <p>
 Manager can optimize the performance of an execution by making
 the workspace <i>write protected</i> during an iteration, if all
@@ -398,7 +397,7 @@ public class Manager extends NamedObj implements Runnable {
      *
      *  @return True if postfire() returns true.
      *  @exception KernelException If the model throws it, or if there
-     *   is no container, or if one of the requested changes fails.
+     *   is no container.
      */
     public boolean iterate() throws KernelException {
         if (_container == null) {
@@ -513,29 +512,20 @@ public class Manager extends NamedObj implements Runnable {
         _executionListeners.remove(listener);
     }
 
-    /** Queue a change request.
-     *  The indicated change will be executed at the next opportunity
-     *  between top-level iterations of the model. For the
-     *  benefit of process-oriented domains, which may not have finite
-     *  iterations, this method also calls stopFire() on the top-level
-     *  composite actor, requesting that directors in such domains
-     *  return from their fire() method as soon as practical.
-     *  When the model is idle (initialize() has not yet been
-     *  invoked), carry out the change request before returning. That is,
-     *  this method will block until the change request has been
-     *  processed. An exception is thrown by this method if the change 
-     *  request fails, but this can only occur when the model is idle.
+    /** Queue a change request, or if the model is idle, execute it
+     *  immediately.  If the request is queued, then it will be executed
+     *  at the next opportunity, between top-level iterations of the model.
+     *  <p>
+     *  NOTE: This method should be not be called directly.
+     *  Instead, call the requestChange() method of the composite actor
+     *  associated with this manager.  This will ensure proper error reporting.
      *  @param change The requested change.
-     *  @exception ChangeFailedException If the model is idle and the
-     *  change request fails.
      */
-    public void requestChange(ChangeRequest change) 
-	throws ChangeFailedException {
+    public void requestChange(ChangeRequest change) {
 	// If the model is idle (i.e., initialize() has not yet been
 	// invoked), then process the change request right now.
 	if (_state == IDLE) {
 	    change.execute();
-	    _notifyChangeListeners(change);
 	} else {
 	    // Otherwise, we must be executing, so queue the request
 	    // to happen later.
@@ -544,11 +534,6 @@ public class Manager extends NamedObj implements Runnable {
 		_changeRequests = new LinkedList();
 	    }
 	    _changeRequests.add(change);
-
-	    // Request that the toplevel composite stop executing.
-	    // This is mainly for use with process oriented domains.
-	    CompositeActor container = (CompositeActor) getContainer();
-	    container.stopFire();
 	}
     }
 
@@ -658,7 +643,7 @@ public class Manager extends NamedObj implements Runnable {
     /** Execute the model, catching all exceptions. Use this method to
      *  execute the model within the calling thread, but to not throw
      *  exceptions.  Instead, the exception is handled using the
-     *  <code>notifyListenersOfException</code> method.  Except for its
+     *  notifyListenersOfException() method.  Except for its
      *  exception handling, this method has exactly the same behavior
      *  as execute().
      */
@@ -675,7 +660,7 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Start an execution in another thread and return.  Any exceptions
      *  that occur during the execution of the model are handled by
-     *  the <code>notifyListenersOfException</code> method.
+     *  the notifyListenersOfException() method.
      *  @exception IllegalActionException If the model is already running,
      *  e.g. the state is not IDLE.
      */
@@ -830,22 +815,10 @@ public class Manager extends NamedObj implements Runnable {
         return _writeAccessNeeded;
     }
 
-    /** Notify all change listeners that the given request has completed
-     *  without throwing an exception.  The notification is deferred to
-     *  the containing actor, which has had all the change listeners attached
-     *  to it.
-     */
-    protected void _notifyChangeListeners(ChangeRequest request) {
-	((CompositeActor)getContainer()).notifyChangeListeners(request);
-    }
-
     /** Process the queued change requests that have been added with
-     *  requestChange(). Registered change
-     *  listeners are informed of each change in a series of calls
-     *  after successful completion of each request. If any queued
-     *  request itself makes requests using requestChange(), then those
-     *  requests are processed in the same way
-     *  after the first batch is completed.  If any
+     *  requestChange(). If any queued request itself makes requests
+     *  using requestChange(), then those requests are processed in
+     *  the same way after the first batch is completed.  If any
      *  request fails with an exception, then the change list is cleared,
      *  and no further requests are processed.
      *  Note that change requests processed successfully
@@ -853,10 +826,8 @@ public class Manager extends NamedObj implements Runnable {
      *
      *  @exception IllegalActionException If any of the pending requests have
      *   already been implemented.
-     *  @exception ChangeFailedException If any of the requests fails.
      */
-    protected void _processChangeRequests()
-            throws IllegalActionException, ChangeFailedException {
+    protected void _processChangeRequests() throws IllegalActionException {
         while (_changeRequests != null) {
             _setState(MUTATING);
 
@@ -874,10 +845,6 @@ public class Manager extends NamedObj implements Runnable {
             while (enum.hasNext()) {
                 ChangeRequest request = (ChangeRequest)enum.next();
                 request.execute();
-
-                // Inform all listeners. Of course, this won't happen
-                // if the change request failed
-		_notifyChangeListeners(request);
             }
         }
     }

@@ -131,12 +131,12 @@ public class CompositeEntity extends ComponentEntity {
 
     /** Add a change listener.  If there is a container, then
      *  delegate to the container.  Otherwise, add the listener
-     *  to the list of change listeners in this entity.  
-     *  Each listener will be notified of the execution of each 
-     *  change request that is executed via the requestChange() method
-     *  at this level of the hierarchy.  Note that in this base class
-     *  implementation, only the toplevel composite entity executes changes,
-     *  which is why this method delegates to the container if there is one.
+     *  to the list of change listeners in this entity. Each listener
+     *  will be notified of the execution (or failure) of each 
+     *  change request that is executed via the requestChange() method.
+     *  Note that in this implementation, only the toplevel composite
+     *  entity executes changes, which is why this method delegates
+     *  to the container if there is one.
      *  <p>
      *  If the listener is already in the list, do not add it again.
      *  @param listener The listener to add.
@@ -146,14 +146,9 @@ public class CompositeEntity extends ComponentEntity {
 	if(container != null) {
             container.addChangeListener(listener);
         } else {
-            if (_changeListeners == null) {
-                _changeListeners = new LinkedList();
-            } else {
-                if (_changeListeners.contains(listener)) {
-                    return;
-                }
+            if (!_changeListeners.contains(listener)) {
+                _changeListeners.add(listener);
             }
-            _changeListeners.add(listener);
         }
     }
 
@@ -192,6 +187,7 @@ public class CompositeEntity extends ComponentEntity {
 
         newentity._containedEntities = new NamedList(newentity);
         newentity._containedRelations = new NamedList(newentity);
+        newentity._changeListeners = new LinkedList();
 
         // Clone the contained relations.
         Iterator relations = relationList().iterator();
@@ -772,27 +768,6 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    /** Notify all change listeners registered with this composite 
-     *  that the given request has completed without throwing an exception.
-     *  If there is a container, this request is delegated to the container.
-     *  If no change listeners have been added, then do nothing.
-     *  @param request The change request that has been executed.
-     */
-    public void notifyChangeListeners(ChangeRequest request) {
-	CompositeEntity container = (CompositeEntity) getContainer();
-	if(container != null) {
-            container.notifyChangeListeners(request);
-        } else {
-            if (_changeListeners != null) {
-                Iterator listeners = _changeListeners.iterator();
-                while(listeners.hasNext()) {
-                    ChangeListener listener = (ChangeListener)listeners.next();
-                    request.notify(listener);
-                }
-            }
-	}
-    }
-
     /** Return the number of contained entities.
      *  This method is read-synchronized on the workspace.
      *  @return The number of entities.
@@ -902,9 +877,6 @@ public class CompositeEntity extends ComponentEntity {
 	if(container != null) {
             container.removeChangeListener(listener);
         } else {
-            if (_changeListeners == null) {
-                return;
-            }
             _changeListeners.remove(listener);
         }
     }
@@ -916,17 +888,15 @@ public class CompositeEntity extends ComponentEntity {
      *  In other words, the request will get passed up to the toplevel 
      *  composite entity and then executed.  Subclasses should override
      *  this to queue the change request and execute it at an appropriate time.
-     *  An exception is thrown by this method if the change 
-     *  request is executed and fails.
+     *  Change listeners will be notified of success (or failure) or the
+     *  request.
      *  @param change The requested change.
-     *  @exception ChangeFailedException If the change request fails.
      */
-    public void requestChange(ChangeRequest change) 
-	throws ChangeFailedException {
+    public void requestChange(ChangeRequest change) {
 	CompositeEntity container = (CompositeEntity) getContainer();
 	if(container == null) {
+            change.setListeners(_changeListeners);
 	    change.execute();
-	    notifyChangeListeners(change);
 	} else {
 	    container.requestChange(change);
 	}
@@ -1100,10 +1070,13 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
-    // A list of change listeners.
-    private List _changeListeners;
+    /** A list of change listeners. */
+    protected List _changeListeners = new LinkedList();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** @serial List of contained entities. */
     private NamedList _containedEntities = new NamedList(this);

@@ -25,8 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
-Review changeRequest / changeListener code.
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -631,22 +630,30 @@ public class CompositeActor extends CompositeEntity implements Actor {
     }
 
     /** Queue a change request.  Defer the change request to the container
-     *  of this entity.  If the entity has no container, then defer to its
-     *  Manager.  If the entity has no manager then execute the request 
-     *  immediately.
+     *  of this entity, if there is one.  If there is none, then delegate
+     *  to the Manager.  If the entity has no manager then execute the request 
+     *  immediately.  Any listeners that have been registered using
+     *  addChangeListener() will be notified of success (or failure) of
+     *  the request.
+     *  <p>
+     *  For the benefit of process-oriented domains, which may not have finite
+     *  iterations, this method also calls stopFire() on the top-level
+     *  composite actor, requesting that directors in such domains
+     *  return from their fire() method (concluding the current
+     *  iteration) as soon as practical, at which time the specified
+     *  change will be executed.
      *  @param change The requested change.
-     *  @exception ChangeFailedException If the change request fails.
      */
-    public void requestChange(ChangeRequest change) 
-	throws ChangeFailedException {
+    public void requestChange(ChangeRequest change) {
 	CompositeEntity container = (CompositeEntity) getContainer();
 	if(container == null) {
+            change.setListeners(_changeListeners);
 	    Manager manager = getManager();
 	    if(manager == null) {
 		change.execute();
-		notifyChangeListeners(change);
 	    } else {
 		manager.requestChange(change);
+                stopFire();
 	    }
 	} else {
 	    container.requestChange(change);
@@ -964,7 +971,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // A listener for reporting failed change requests.
+    private ChangeListener _changeListener;
+
+    // The director for this composite actor.
     private Director _director;
+
+    // The manager for this composite actor.
     private Manager _manager;
 
     // Cached lists of input and output ports.
