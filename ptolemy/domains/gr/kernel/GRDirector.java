@@ -1,4 +1,4 @@
-/* Three Dimensional (DD3D) domain director with data-driven semantics
+/* Three Dimensional (GR) domain director with data-driven semantics
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -112,9 +112,9 @@ public class GRDirector extends StaticSchedulingDirector {
     }
     
     
-    /** Advance time to the next requested firing time.  The 3D domain is not
+    /** Advance time to the next requested firing time.  The GR domain is not
      *  a timed domain, so this function is quite meaningless.  However, it is
-     *  implemented in order to get timed domains to work inside the 3D domain.
+     *  implemented in order to get timed domains to work inside the GR domain.
      *  @param actor, The actor to be fired.
      *  @param time, The next time when the actor should be fired.
      */ 
@@ -122,6 +122,23 @@ public class GRDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         setCurrentTime(time);
     }
+    
+    /** Return the current time.  If the caller i  The GR domain is not
+     *  a timed domain, so this function is quite meaningless.  However, it is
+     *  implemented in order to get timed domains to work inside the GR domain.
+     *  @param actor, The actor to be fired.
+     */ 
+    public double getCurrentTime() {
+        if (_pseudoTimeEnabled == true) {
+            return _insideDirector.getCurrentTime();
+        } else return super.getCurrentTime();
+    }
+
+
+    private boolean _pseudoTimeEnabled = false;
+    private Director _insideDirector;
+
+
 
     
     /** Return maximum value for type double. Since the 3D domain is not a timed
@@ -179,7 +196,19 @@ public class GRDirector extends StaticSchedulingDirector {
 
                 if(_debugging)
                     _debug("Firing " + ((Nameable)actor).getFullName());
-                actor.fire();
+                if (actor instanceof CompositeActor) {
+		            CompositeActor compositeActor = (CompositeActor) actor;
+		            Director  insideDirector = compositeActor.getDirector();
+		            
+		            _insideDirector = insideDirector;
+   		            _pseudoTimeEnabled = true;
+		            actor.fire();
+		            _pseudoTimeEnabled = false;               
+		            
+                } else {
+                    actor.fire();
+                }
+                
                 
                 _postfirereturns = actor.postfire();
             }
@@ -222,7 +251,7 @@ public class GRDirector extends StaticSchedulingDirector {
         super.invalidateSchedule();
     }
     
-    /** Return a new receiver consistent with the DD3D domain.
+    /** Return a new receiver consistent with the GR domain.
      *  This function is called when a connection between an output port
      *  of an actor and an input port of another actor is made in Vergil.
      *  This function is also called during the preinitialize() stage of
@@ -449,7 +478,7 @@ public class GRDirector extends StaticSchedulingDirector {
         Scheduler currentScheduler = getScheduler();
         if (currentScheduler== null) 
             throw new IllegalActionException("Attempted to fire " +
-                    "DD3D system with no scheduler");
+                    "GR system with no scheduler");
         Enumeration allActorsScheduled = currentScheduler.schedule();
         
         
@@ -457,11 +486,11 @@ public class GRDirector extends StaticSchedulingDirector {
         while (allActorsScheduled.hasMoreElements()) {
             Actor actor = (Actor) allActorsScheduled.nextElement();
             String name = ((Nameable)actor).getFullName();
-            _DD3DActor dd3dActor = (_DD3DActor) _allActorsTable.get(actor);
-            if (dd3dActor==null) {
-              _allActorsTable.put(actor, new _DD3DActor(actor));
-              dd3dActor = (_DD3DActor) _allActorsTable.get(actor);
-              _actorTable.add(dd3dActor);
+            _GRActor grActor = (_GRActor) _allActorsTable.get(actor);
+            if (grActor==null) {
+              _allActorsTable.put(actor, new _GRActor(actor));
+              grActor = (_GRActor) _allActorsTable.get(actor);
+              _actorTable.add(grActor);
             }
             actorsInSchedule++;
         }
@@ -469,9 +498,9 @@ public class GRDirector extends StaticSchedulingDirector {
         // include the container as an actor.  This is needed for TypedCompositeActors
         String name = getContainer().getFullName();
         Actor actor = (Actor) getContainer();
-        _allActorsTable.put(actor, new _DD3DActor((Actor)getContainer()));
-        _DD3DActor dd3dActor = (_DD3DActor) _allActorsTable.get(actor);
-        _actorTable.add(dd3dActor);
+        _allActorsTable.put(actor, new _GRActor((Actor)getContainer()));
+        _GRActor grActor = (_GRActor) _allActorsTable.get(actor);
+        _actorTable.add(grActor);
         
         _displayActorTable();
         ListIterator receiverIterator = _receiverTable.listIterator();
@@ -495,7 +524,7 @@ public class GRDirector extends StaticSchedulingDirector {
         while(outports.hasNext()) {
             IOPort port = (IOPort)outports.next();
             
-            _outputPortTable.add(new DD3DIOPort(port));
+            _outputPortTable.add(new _GRIOPort(port));
         }
         
     }
@@ -514,7 +543,7 @@ public class GRDirector extends StaticSchedulingDirector {
          debug.println("---------------------------------------");
          ListIterator actorIterator = _actorTable.listIterator();
          while(actorIterator.hasNext()) {
-            _DD3DActor currentActor = (_DD3DActor) actorIterator.next();
+            _GRActor currentActor = (_GRActor) actorIterator.next();
             String actorName = ((Nameable) currentActor._actor).getName();
             
             debug.print(" initial_tokens? "+currentActor._shouldGenerateInitialTokens);
@@ -618,10 +647,10 @@ public class GRDirector extends StaticSchedulingDirector {
         
         Iterator outputPorts = _outputPortTable.iterator();
         while(outputPorts.hasNext()) {
-            DD3DIOPort dd3dport = (DD3DIOPort) outputPorts.next();
+            _GRIOPort grport = (_GRIOPort) outputPorts.next();
         
-            if (dd3dport._shouldTransferOutputs) {
-                outsideDirector.transferOutputs(dd3dport._port);
+            if (grport._shouldTransferOutputs) {
+                outsideDirector.transferOutputs(grport._port);
             }
         }
     }
@@ -704,10 +733,10 @@ public class GRDirector extends StaticSchedulingDirector {
         ListIterator actorIterator = _actorTable.listIterator();
         
         while(actorIterator.hasNext()) {
-            _DD3DActor currentActor = (_DD3DActor) actorIterator.next();
+            _GRActor currentActor = (_GRActor) actorIterator.next();
             if (currentActor._actor instanceof GRActor) {
-                GRActor dd3DActor = (GRActor) currentActor._actor;
-                dd3DActor.makeLive();
+                GRActor grActor = (GRActor) currentActor._actor;
+                grActor.makeLive();
             }
         }
     }
@@ -779,10 +808,10 @@ public class GRDirector extends StaticSchedulingDirector {
             //period = new Parameter(this,"period",new DoubleToken(1.0));
             _reset();
             iterations.setToken(new IntToken(0));
-            debug = new GRDebug(true);
+            debug = new GRDebug(false);
     	} catch (Exception e) {
     	    throw new InternalErrorException(
-                    "unable to initialize DD3D Director:\n" +
+                    "unable to initialize GR Director:\n" +
                     e.getMessage());
     	}
     }
@@ -843,28 +872,28 @@ public class GRDirector extends StaticSchedulingDirector {
     ////                         inner classes                     ////
     
     // Inner class to cache important variables for contained actors 
-    private class _DD3DActor {
+    private class _GRActor {
     	private Actor    _actor;
         private boolean  _shouldGenerateInitialTokens;
    
     	/* Construct the information on the contained Actor
     	 * @param a The actor  
     	 */	
-    	public _DD3DActor(Actor actor) {
+    	public _GRActor(Actor actor) {
     		_actor = actor;
             _shouldGenerateInitialTokens = false;
     	}
     }
     
     // Inner class to cache important variables for container output ports 
-    private class DD3DIOPort {
+    private class _GRIOPort {
         private IOPort _port;
         private boolean _shouldTransferOutputs;
         
         /*  Construct the information on the output port
          *  @param p The port
          */
-        public DD3DIOPort(IOPort port) {
+        public _GRIOPort(IOPort port) {
             _port = port;
             _shouldTransferOutputs = false;
         }
