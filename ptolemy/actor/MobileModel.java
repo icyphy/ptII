@@ -1,4 +1,4 @@
-/* Modal models.
+/* A composite actor that apply models dynamically.
 
  Copyright (c) 1999-2002 The Regents of the University of California.
  All rights reserved.
@@ -30,10 +30,11 @@
 package ptolemy.actor;
 
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.Const;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.StringToken;
-import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
+import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
@@ -44,12 +45,11 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Entity;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.moml.filter.BackwardCompatibility;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.net.URL;
 import java.io.IOException;
 import java.io.Writer;
 
@@ -60,18 +60,21 @@ This actor extends the TypedCompositeActor. It contains another model
 that is defined as a Ptolemy composite actor to its inputs. Rather than
 specified before executing, the inside model can be dynamically changed
 either locally or remotely. Currently, the model that dynamically applied
-to this actor is specified by a URL string.
-//FIXME: should factor the parser part out to another actor that takes
-//a moml string or URL string and output an ActorToken. and have the
-//second input take an actor token...
-//Fixme2:maybe should have this actor have a prameter to specify whether
+to this actor is specified by a moml string from the <i>modelString<i>
+input.
+
+Currently, it only accepts models with one input and one output, and
+requires the model name its input port as "input", output port as "output".
+
+//Fixme:maybe should have this actor have a prameter to specify whether
 //merge the change to the old inside model or not.
+
 @author Yang Zhao
 @version $Id:
 */
 public class MobileModel extends TypedCompositeActor{
 
-    /** Construct a model manager in the specified workspace with
+    /** Construct an actor in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
      *  use the default workspace.
@@ -83,12 +86,15 @@ public class MobileModel extends TypedCompositeActor{
         input = new TypedIOPort(this, "input", true, false);
         modelString = new TypedIOPort(this, "modelString", true, false);
         modelString.setTypeEquals(BaseType.STRING);
+        defaultValue = new Parameter(this, "defaultValue",
+                new IntToken(0));
         output = new TypedIOPort(this, "output", false, true);
+        output.setTypeAtLeast(defaultValue);
         new Director(this, "director");
         getMoMLInfo().className = "ptolemy.actor.MobileModel";
     }
 
-    /** Construct a model manager with a name and a container.
+    /** Construct an actor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  @param container The container.
@@ -104,7 +110,10 @@ public class MobileModel extends TypedCompositeActor{
         input = new TypedIOPort(this, "input", true, false);
         modelString = new TypedIOPort(this, "modelString", true, false);
         modelString.setTypeEquals(BaseType.STRING);
+        defaultValue = new Parameter(this, "defaultValue",
+                new IntToken(0));
         output = new TypedIOPort(this, "output", false, true);
+        output.setTypeAtLeast(defaultValue);
         new Director(this, "director");
         getMoMLInfo().className = "ptolemy.actor.MobileModel";
     }
@@ -114,6 +123,8 @@ public class MobileModel extends TypedCompositeActor{
     //public Parameter modelURL;
 
     public TypedIOPort input, modelString, output;
+
+    public Parameter defaultValue;
 
     public MoMLParser parser;
 
@@ -136,10 +147,16 @@ public class MobileModel extends TypedCompositeActor{
             parser = new MoMLParser();
             parser.setMoMLFilters(BackwardCompatibility.allFilters());
             parser.addMoMLFilter(new RemoveGraphicalClasses());
-        }catch (Exception ex) {
+            //when no model applied, output the default value.
+            Const constActor = new Const(this, "Const");
+            constActor.value.setExpression(defaultValue.getToken().toString());
+            connect(input, constActor.trigger);
+            connect(constActor.output, output);
+
+       }catch (Exception ex) {
             throw new IllegalActionException(this, ex.getMessage());
         }
-        connect(input, output);
+        //connect(input, output);
         super.initialize();
     }
 
@@ -154,14 +171,17 @@ public class MobileModel extends TypedCompositeActor{
         if (_debugging) {
             _debug("Invoking fire");
         }
-        if (modelString.hasToken(0)) {
-            try {
-                StringToken str = (StringToken) modelString.get(0);
-                URL url = new URL(str.stringValue());
-                _model = (CompositeActor) parser.parse(null, url.openStream());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new IllegalActionException(this, ex.getMessage());
+        for (int i = 0; i < modelString.getWidth(); i++) {
+            if (modelString.hasToken(i)) {
+                try {
+                    StringToken str = (StringToken) modelString.get(0);
+                    //URL url = new URL(str.stringValue());
+                    _model = (CompositeActor) parser.parse(str.stringValue());
+                    break;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    throw new IllegalActionException(this, ex.getMessage());
+                }
             }
         }
         super.fire();
@@ -282,13 +302,15 @@ public class MobileModel extends TypedCompositeActor{
         Iterator entities = actor.entityList().iterator();
         while (entities.hasNext()) {
             Entity entity = (Entity) entities.next();
-            delete.append("<deleteEntity name=\"" + entity.getName() + "\" class=\"" + entity.getClass().getName() + "\"/>");
+            delete.append("<deleteEntity name=\"" + entity.getName()
+                    + "\" class=\"" + entity.getClass().getName() + "\"/>");
             //System.out.println("the name of the entity is: " + entity.getName());
         }
         Iterator relations = actor.relationList().iterator();
         while (relations.hasNext()) {
             IORelation relation = (IORelation) relations.next();
-            delete.append("<deleteRelation name=\"" + relation.getName() + "\" class=\"ptolemy.actor.TypedIORelation\"/>");
+            delete.append("<deleteRelation name=\"" + relation.getName()
+                    + "\" class=\"ptolemy.actor.TypedIORelation\"/>");
             //System.out.println("the name of the relations is: " + relation.getName());
         }
         delete.append("</group>");
