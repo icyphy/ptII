@@ -569,7 +569,7 @@ public final class FieldRecord {
      *   are deleted from the record.
      *  @return The old value to be assigned back to the field.
      */
-    public double restore(float current, long timestamp, boolean trim) {
+    public float restore(float current, long timestamp, boolean trim) {
         Iterator recordIter = iterator(0);
         Record record = _findRecord(recordIter, timestamp, trim);
         if (record == null)
@@ -613,7 +613,7 @@ public final class FieldRecord {
      *   are deleted from the record.
      *  @return The old value to be assigned back to the field.
      */
-    public double restore(long current, long timestamp, boolean trim) {
+    public long restore(long current, long timestamp, boolean trim) {
         Iterator recordIter = iterator(0);
         Record record = _findRecord(recordIter, timestamp, trim);
         if (record == null)
@@ -656,7 +656,7 @@ public final class FieldRecord {
      *   are deleted from the record.
      *  @return The old value to be assigned back to the field.
      */
-    public double restore(short current, long timestamp, boolean trim) {
+    public short restore(short current, long timestamp, boolean trim) {
         Iterator recordIter = iterator(0);
         Record record = _findRecord(recordIter, timestamp, trim);
         if (record == null)
