@@ -8,6 +8,9 @@
       <group>
 <doc>Continuous-time actors</doc>
 
+<entity name="ContinuousSinewave"
+        class="ptolemy.domains.ct.lib.ContinuousSinewave"/>
+
 <entity name="CTCompositeActor"
         class="ptolemy.domains.ct.kernel.CTCompositeActor"/>
 

@@ -233,7 +233,9 @@ public class EventSource extends TypedAtomicActor
 
         _nextOutputTime = _offsets[0] + _cycleStartTime;
         // Schedule the first firing.
-        getDirector().fireAt(this, _nextOutputTime);
+        // The null argument prevents the triple firing that the
+        // director would otherwise do.
+        getDirector().fireAt(null, _nextOutputTime);
     }
 
     /** Update the state of the actor and schedule the next firing,
@@ -260,8 +262,12 @@ public class EventSource extends TypedAtomicActor
                         + _offsets[_phase] + " must be less than the "
                         + "period, which is " + periodValue);
             }
-            _nextOutputTime = _cycleStartTime + _offsets[_phase];
-            director.fireAt(this, _nextOutputTime);
+            if (hasCurrentEvent()) {
+                _nextOutputTime = _cycleStartTime + _offsets[_phase];
+                // The null argument prevents the triple firing that the
+                // director would otherwise do.
+                director.fireAt(null, _nextOutputTime);
+            }
         }
         return true;
     }

@@ -8,10 +8,10 @@
   <configure>
     <?moml
       <group>
-        <entity name="ZeroOrderHold"
-                class="ptolemy.domains.ct.lib.ZeroOrderHold"/>
         <entity name="FirstOrderHold"
                 class="ptolemy.domains.ct.lib.FirstOrderHold"/>
+        <entity name="ZeroOrderHold"
+                class="ptolemy.domains.ct.lib.ZeroOrderHold"/>
       </group>
     ?>
   </configure>
