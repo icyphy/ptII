@@ -339,8 +339,8 @@ public class DEDirector extends Director {
                 if (next.timeStamp() > getCurrentTime()) break;
                 else if (next.timeStamp() < getCurrentTime()) {
                     throw new InternalErrorException(
-                            "fire(): the next event has smaller time stamp than" +
-                            " the current time!");
+                            "fire(): the next event has smaller time stamp" +
+                            " than the current time!");
                 }
             } catch (IllegalActionException e) {
                 // The queue is empty. Proceed to postfire().
