@@ -131,11 +131,12 @@ test TimedPNDirector-6.1 {Test an application} {
 ####
 #    
 test TimedPNDirector-7.1 {Test a mutation} {
-    set b1 [java::new ptolemy.actor.CompositeActor]
+    set ws [java::new ptolemy.kernel.util.Workspace "ws"]
+    set b1 [java::new ptolemy.actor.CompositeActor $ws]
     $b1 setName b1
-    set m2 [java::new ptolemy.actor.Manager $w m2]
+    set m2 [java::new ptolemy.actor.Manager $ws m2]
     $b1 setManager $m2
-    set d5 [java::new ptolemy.domains.pn.kernel.TimedPNDirector $w "local"]
+    set d5 [java::new ptolemy.domains.pn.kernel.TimedPNDirector $ws "local"]
     $b1 setDirector $d5
     set r1 [java::new ptolemy.domains.pn.lib.PNRamp $b1 r1]
     $r1 setParam "Initial Value"  2
@@ -155,7 +156,7 @@ test TimedPNDirector-7.1 {Test a mutation} {
     $m2 run
     
     enumToFullNames [$b1 deepGetEntities]
-} {.b1.r1 .b1.2_sieve .b1.s1 .b1.3_sieve .b1.5_sieve .b1.7_sieve .b1.11_sieve .b1.13_sieve .b1.17_sieve .b1.19_sieve .b1.23_sieve .b1.29_sieve .b1.31_sieve .b1.37_sieve .b1.41_sieve .b1.43_sieve .b1.47_sieve .b1.53_sieve .b1.59_sieve .b1.61_sieve .b1.67_sieve .b1.71_sieve .b1.73_sieve .b1.79_sieve .b1.83_sieve .b1.89_sieve .b1.97_sieve} 
+} {ws.b1.r1 ws.b1.2_sieve ws.b1.s1 ws.b1.3_sieve ws.b1.5_sieve ws.b1.7_sieve ws.b1.11_sieve ws.b1.13_sieve ws.b1.17_sieve ws.b1.19_sieve ws.b1.23_sieve ws.b1.29_sieve ws.b1.31_sieve ws.b1.37_sieve ws.b1.41_sieve ws.b1.43_sieve ws.b1.47_sieve ws.b1.53_sieve ws.b1.59_sieve ws.b1.61_sieve ws.b1.67_sieve ws.b1.71_sieve ws.b1.73_sieve ws.b1.79_sieve ws.b1.83_sieve ws.b1.89_sieve ws.b1.97_sieve}
 
 
 
