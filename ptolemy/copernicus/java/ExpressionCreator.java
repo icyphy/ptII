@@ -52,6 +52,7 @@ import java.util.*;
 
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
+import ptolemy.util.StringUtilities;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.Expression;
 import ptolemy.moml.*;
