@@ -954,7 +954,7 @@ test MoMLParser-1.18.3 {test illegal deletion in instatiation of a class} {
     $parser reset
     catch {set toplevel [$parser parse $moml]} msg
     string range $msg 0 52
-} {com.microstar.xml.XmlException: XML element "deleteEn}
+} {ptolemy.kernel.util.IllegalActionException: Cannot de}
 
 ######################################################################
 ####
@@ -976,7 +976,7 @@ test MoMLParser-1.18.4 {test illegal deletion in instatiation of a class} {
     $parser reset
     catch {set toplevel [$parser parse $moml]} msg
     string range $msg 0 52
-} {com.microstar.xml.XmlException: XML element "deletePo}
+} {ptolemy.kernel.util.IllegalActionException: Cannot de}
 
 ######################################################################
 ####
@@ -999,7 +999,7 @@ test MoMLParser-1.18.5 {test illegal deletion in instatiation of a class} {
     $parser reset
     catch {set toplevel [$parser parse $moml]} msg
     string range $msg 0 52
-} {com.microstar.xml.XmlException: XML element "deletePr}
+} {ptolemy.kernel.util.IllegalActionException: Cannot de}
 
 ######################################################################
 ####
@@ -1021,7 +1021,7 @@ test MoMLParser-1.18.6 {test illegal deletion in instatiation of a class} {
     $parser reset
     catch {set toplevel [$parser parse $moml]} msg
     string range $msg 0 52
-} {com.microstar.xml.XmlException: XML element "deleteRe}
+} {ptolemy.kernel.util.IllegalActionException: Cannot de}
 
 ######################################################################
 ####

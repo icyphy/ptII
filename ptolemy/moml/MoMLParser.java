@@ -76,6 +76,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Singleton;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
@@ -818,6 +819,40 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         }
                     }
                 }
+                // Process delete requests that have accumulated in
+                // this element.
+                if (_deleteRequests != null) {
+                    Iterator requests = _deleteRequests.iterator();
+                    while (requests.hasNext()) {
+                        DeleteRequest request = (DeleteRequest)requests.next();
+                        // Be sure to use the handler if these fail so that
+                        // we continue to the next link requests.
+                        try {
+                            request.execute();
+                        } catch (Exception ex) {
+                            if (_handler != null) {
+                                int reply = _handler.handleError(
+                                        request.toString(), _current, ex);
+                                if (reply == ErrorHandler.CONTINUE) {
+                                    continue;
+                                } else if (reply == ErrorHandler.CANCEL) {
+                                    // NOTE: Since we have to throw an XmlException for
+                                    // the exception to be properly handled, we communicate
+                                    // that it is a user cancellation with the special
+                                    // string pattern "*** Canceled." in the message.
+                                    throw new XmlException(
+                                            "*** Canceled.",
+                                            _currentExternalEntity(),
+                                            _parser.getLineNumber(),
+                                            _parser.getColumnNumber());
+                                }
+                            } else {
+                                // No handler.  Throw the original exception.
+                                throw ex;
+                            }
+                        }
+                    }
+                }
                 try {
                     _current = (NamedObj)_containers.pop();
                     _namespace = (String)_namespaces.pop();
@@ -833,6 +868,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 } catch (EmptyStackException ex) {
                     // We are back at the top level.
                     _linkRequests = null;
+                }
+                try {
+                    _deleteRequests = (List)_deleteRequestStack.pop();
+                } catch (EmptyStackException ex) {
+                    // We are back at the top level.
+                    _deleteRequests = null;
                 }
             } else if (
                     elementName.equals("property")
@@ -1385,6 +1426,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _configureNesting = 0;
         _containers = new Stack();
         _linkRequestStack = new Stack();
+        _deleteRequestStack = new Stack();
         _current = null;
         _docNesting = 0;
         _externalEntities = new Stack();
@@ -1708,11 +1750,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 + className);
                     }
                 }
-                // NOTE: The entity may be at the top level.
+                // NOTE: The entity may be at the top level, in
+                // which case _deleteRequests is null.
+                if (_deleteRequests != null) {
+                    _deleteRequestStack.push(_deleteRequests);
+                }
+                _deleteRequests = new LinkedList();
+
+                // NOTE: The entity may be at the top level, in
+                // which case _linkRequests is null.
                 if (_linkRequests != null) {
                     _linkRequestStack.push(_linkRequests);
                 }
                 _linkRequests = new LinkedList();
+                
                 if (_current != null) {
                     _pushContext();
                 } else if (_toplevel == null) {
@@ -1807,11 +1858,24 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _checkForNull(entityName,
                         "No name for element \"deleteEntity\"");
 
-                // NOTE: this also takes care of creating the undo
-                // MoML that is needed. This is because the deletion has side
-                // effects so it's not enough to generate the MoML after
-                // the entity is deleted.
-                _deleteEntity(entityName);
+                // Link is stored and processed last, but before deletions.
+                DeleteRequest request = new DeleteRequest(
+                        _DELETE_ENTITY,
+                        entityName,
+                        null);
+                // Only defer if we are in a class, entity, or model context,
+                // which is equivalent to the _current being an instance of
+                // Prototype.
+                if (_deleteRequests != null && _current instanceof Prototype) {
+                    _deleteRequests.add(request);
+                } else {
+                    // Very likely, the context is null, in which
+                    // case the following will throw an exception.
+                    // We defer to it in case somehow a link request
+                    // is being made at the top level with a non-null
+                    // context (e.g. via a change request).
+                    request.execute();
+                }
                 
                 // NOTE: deleteEntity is not supposed to have anything
                 // inside it, so we do not push the context.
@@ -1826,11 +1890,24 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // The entity attribute is optional.
                 String entityName = (String)_attributes.get("entity");
 
-                // NOTE: this also takes care of creating the undo
-                // MoML that is needed. This is because the deletion has side
-                // effects so it's not enough to generate the MoML after
-                // the port is deleted.
-                _deletePort(portName, entityName);
+                // Link is stored and processed last, but before deletions.
+                DeleteRequest request = new DeleteRequest(
+                        _DELETE_PORT,
+                        portName,
+                        entityName);
+                // Only defer if we are in a class, entity, or model context,
+                // which is equivalent to the _current being an instance of
+                // Prototype.
+                if (_deleteRequests != null && _current instanceof Prototype) {
+                    _deleteRequests.add(request);
+                } else {
+                    // Very likely, the context is null, in which
+                    // case the following will throw an exception.
+                    // We defer to it in case somehow a link request
+                    // is being made at the top level with a non-null
+                    // context (e.g. via a change request).
+                    request.execute();
+                }
                 
                 // NOTE: deletePort is not supposed to have anything
                 // inside it, so we do not push the context.
@@ -1842,7 +1919,25 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 String propName = (String)_attributes.get("name");
                 _checkForNull(propName,
                         "No name for element \"deleteProperty\"");
-                _deleteProperty(propName);
+
+                // Link is stored and processed last, but before deletions.
+                DeleteRequest request = new DeleteRequest(
+                        _DELETE_PROPERTY,
+                        propName,
+                        null);
+                // Only defer if we are in a class, entity, or model context,
+                // which is equivalent to the _current being an instance of
+                // Prototype.
+                if (_deleteRequests != null && _current instanceof Prototype) {
+                    _deleteRequests.add(request);
+                } else {
+                    // Very likely, the context is null, in which
+                    // case the following will throw an exception.
+                    // We defer to it in case somehow a link request
+                    // is being made at the top level with a non-null
+                    // context (e.g. via a change request).
+                    request.execute();
+                }
                 
                 // NOTE: deleteProperty is not supposed to have anything
                 // inside it, so we do not push the context.
@@ -1855,11 +1950,24 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _checkForNull(relationName,
                         "No name for element \"deleteRelation\"");
 
-                // NOTE: this also takes care of creating the undo
-                // MoML that is needed. This is because the deletion has side
-                // effects so it's not enough to generate the MoML after
-                // the relation is deleted.
-                _deleteRelation(relationName);
+                // Link is stored and processed last, but before deletions.
+                DeleteRequest request = new DeleteRequest(
+                        _DELETE_RELATION,
+                        relationName,
+                        null);
+                // Only defer if we are in a class, entity, or model context,
+                // which is equivalent to the _current being an instance of
+                // Prototype.
+                if (_deleteRequests != null && _current instanceof Prototype) {
+                    _deleteRequests.add(request);
+                } else {
+                    // Very likely, the context is null, in which
+                    // case the following will throw an exception.
+                    // We defer to it in case somehow a link request
+                    // is being made at the top level with a non-null
+                    // context (e.g. via a change request).
+                    request.execute();
+                }
                 
                 // NOTE: deleteRelation is not supposed to have anything
                 // inside it, so we do not push the context.
@@ -1938,7 +2046,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 + className);
                     }
                 }
-                // NOTE: The entity may be at the top level.
+                // NOTE: The entity may be at the top level, in
+                // which case _deleteRequests is null.
+                if (_deleteRequests != null) {
+                    _deleteRequestStack.push(_deleteRequests);
+                }
+                _deleteRequests = new LinkedList();
+
+                // NOTE: The entity may be at the top level, in
+                // which case _linkRequests is null.
                 if (_linkRequests != null) {
                     _linkRequestStack.push(_linkRequests);
                 }
@@ -2079,7 +2195,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 String insertInsideAtSpec =
                     (String)_attributes.get("insertInsideAt");
 
-                // Link is stored and processed last.
+                // Link is stored and processed last, but before deletions.
                 LinkRequest request = new LinkRequest(
                         portName,
                         relationName,
@@ -2222,7 +2338,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // If this object is a derived object, then its I/O status
                         // cannot be changed.  EAL 1/04.
                         if (alreadyExisted
-                                &&  ioport.isDerived()) {
+                                &&  ioport.isDerived()
+                                && !_propagating) {
                             if (ioport.isInput() != isInput
                                     || ioport.isOutput() != isOutput) {
                                 throw new IllegalActionException(ioport,
@@ -2371,10 +2488,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 if (_current != null) {
                     String oldName = _current.getName();
 
-                    // NOTE: Added to ensure that derived objects aren't changed.
-                    // EAL 1/04.
+                    // Ensure that derived objects aren't changed.
                     if (!oldName.equals(newName)
-                            && _current.isDerived()) {
+                            && _current.isDerived()
+                            && !_propagating) {
                         throw new IllegalActionException(_current,
                                 "Cannot change the name to "
                                 + newName
@@ -2755,6 +2872,17 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     protected String _currentExternalEntity() {
         return (String)_externalEntities.peek();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                package friendly methods                   ////
+    
+    /** Set a flag indicating that we are propagating (if the argument
+     *  is true). This disables checks for disallowed actions on
+     *  derived objects.
+     */
+    void _setPropagating(boolean propagating) {
+        _propagating = propagating;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -3262,7 +3390,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _parser.getLineNumber(),
                 _parser.getColumnNumber());
     }
-
+    
     /** Delete the entity after verifying that it is contained (deeply)
      *  by the current environment.  If no object is found, then do
      *  nothing and return null.  This is because deletion of a class
@@ -3281,7 +3409,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         // Ensure that derived objects aren't changed.
-        if (toDelete.isDerived()) {
+        if (toDelete.isDerived() && !_propagating) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This entity is part of the class definition.");
         }
@@ -3377,7 +3505,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         // Ensure that derived objects aren't changed.
-        if (toDelete.isDerived()) {
+        if (toDelete.isDerived() && !_propagating) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This port is part of the class definition.");
         }
@@ -3458,7 +3586,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             return null;
         }
         // Ensure that derived objects aren't changed.
-        if (toDelete.isDerived()) {
+        if (toDelete.isDerived() && !_propagating) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This attribute is part of the class definition.");
         }
@@ -3520,7 +3648,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             return null;
         }
 
-        if (toDelete.isDerived()) {
+        if (toDelete.isDerived() && !_propagating) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This relation is part of the class definition.");
         }
@@ -3726,7 +3854,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Return the MoML commands to undo deleting the specified entity
-     *  from the current context.
+     *  from the current context.  Unless the container implements
+     *  the marker interface HandlesInternalLinks, this will generate
+     *  undo MoML that takes care of re-creating any links that get
+     *  broken as a result of deleting the specified entity.
      *  @param toDelete The component to delete.
      */
     private String _getUndoForDeleteEntity(ComponentEntity toDelete)
@@ -3738,6 +3869,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Add in the description.
         moml.append(toDelete.exportMoML());
+        
+        CompositeEntity container = (CompositeEntity)toDelete.getContainer();
+        if (container instanceof HandlesInternalLinks) {
+            return moml.toString();
+        }
 
         // Now create the undo that will recreate any links
         // the are deleted as a side effect.
@@ -3747,7 +3883,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         filter.add(toDelete);
 
         // The parent container can do the filtering and generate the MoML.
-        CompositeEntity container = (CompositeEntity)toDelete.getContainer();
         moml.append(container.exportLinks(0, filter));
 
         // Finally move back to context if needed
@@ -3757,7 +3892,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Return the MoML commands to undo deleting the specified port
-     *  from the current context.
+     *  from the current context. Unless the container implements
+     *  the marker interface HandlesInternalLinks, this will generate
+     *  undo MoML that takes care of re-creating any inside links that get
+     *  broken as a result of deleting the specified port. Unless the
+     *  container of the container implements HandlesInternalLinks,
+     *  this will also generate undo to recreate the outside links.
      *  @param toDelete The component to delete.
      */
     private String _getUndoForDeletePort(Port toDelete)
@@ -3770,19 +3910,22 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Add in the description.
         moml.append(toDelete.exportMoML());
 
+        NamedObj container = toDelete.getContainer();
+
         // Now create the undo that will recreate any links
         // the are deleted as a side effect.
         ArrayList filter = new ArrayList(toDelete.linkedRelationList());
-        if (toDelete instanceof ComponentPort) {
-            filter.addAll(((ComponentPort)toDelete).insideRelationList());
-        }
-        filter.add(toDelete);
-
-        NamedObj container = toDelete.getContainer();
-
-        // Generate the undo MoML for the inside links, if there are any.
-        if (container instanceof CompositeEntity) {
-            moml.append(((CompositeEntity)container).exportLinks(0, filter));
+        if (container != null
+                && !(container instanceof HandlesInternalLinks)) {
+            if (toDelete instanceof ComponentPort) {
+                filter.addAll(((ComponentPort)toDelete).insideRelationList());
+            }
+            filter.add(toDelete);
+    
+            // Generate the undo MoML for the inside links, if there are any.
+            if (container instanceof CompositeEntity) {
+                moml.append(((CompositeEntity)container).exportLinks(0, filter));
+            }
         }
 
         // Move back to context if needed.
@@ -3793,7 +3936,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // an absolute context.
         if (container != null) {
             NamedObj containerContainer = container.getContainer();
-            if (containerContainer instanceof CompositeEntity) {
+            if (containerContainer instanceof CompositeEntity
+                    && !(containerContainer instanceof HandlesInternalLinks)) {
                 // Set the context to the container's container.
                 moml.append(UndoContext.moveContextStart(_current, container));
                 moml.append(((CompositeEntity)containerContainer)
@@ -3805,7 +3949,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Return the MoML commands to undo deleting the specified relation
-     *  from the current context.
+     *  from the current context. Unless the container implements
+     *  the marker interface HandlesInternalLinks, this will generate
+     *  undo MoML that takes care of re-creating any links that get
+     *  broken as a result of deleting the specified relation.
      *  @param toDelete The component to delete.
      */
     private String _getUndoForDeleteRelation(ComponentRelation toDelete)
@@ -3818,6 +3965,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Add in the description.
         moml.append(toDelete.exportMoML());
 
+        CompositeEntity container = (CompositeEntity)toDelete.getContainer();
+
+        if (container instanceof HandlesInternalLinks) {
+            return moml.toString();
+        }
         // NOTE: cannot use the relationlist as returned as it is
         // unmodifiable and we need to add in the relation being deleted.
         ArrayList filter = new ArrayList(toDelete.linkedPortList());
@@ -3825,7 +3977,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // The parent container can do the filtering and generate the
         // MoML.
-        CompositeEntity container = (CompositeEntity)toDelete.getContainer();
         moml.append(container.exportLinks(0, filter));
 
         // Move back to context if needed.
@@ -3874,9 +4025,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 newValue = false;
             }
             // If this object is a derived object, then its I/O status
-            // cannot be changed.  EAL 1/04.
+            // cannot be changed.
             if (_current.isDerived()
-                    && ((IOPort)_current).isMultiport() != newValue) {
+                    && ((IOPort)_current).isMultiport() != newValue
+                    && !_propagating) {
                 throw new IllegalActionException(_current,
                         "Cannot change whether this port is " +
                         "a multiport. That property is fixed by " +
@@ -3926,9 +4078,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 newValue = false;
             }
             // If this object is a derived object, then its I/O status
-            // cannot be changed.  EAL 1/04.
+            // cannot be changed.
             if (_current.isDerived()
-                    && ((IOPort)_current).isOutput() != newValue) {
+                    && ((IOPort)_current).isOutput() != newValue
+                    && !_propagating) {
                 throw new IllegalActionException(_current,
                         "Cannot change whether this port is " +
                         "an output. That property is fixed by " +
@@ -3980,9 +4133,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 newValue = false;
             }
             // If this object is a derived object, then its I/O status
-            // cannot be changed.  EAL 1/04.
+            // cannot be changed.
             if (_current.isDerived()
-                    && ((IOPort)_current).isInput() != newValue) {
+                    && ((IOPort)_current).isInput() != newValue
+                    && !_propagating) {
                 throw new IllegalActionException(_current,
                         "Cannot change whether this port is " +
                         "an input. That property is fixed by " +
@@ -4095,7 +4249,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     Iterator heritage = heritageList.iterator();
                     while (heritage.hasNext()) {
                         NamedObj derived = (NamedObj)heritage.next();
-                        if (derived.getAttribute(propertyName) != null) {
+                        Attribute other = derived.getAttribute(propertyName);
+                        if (other != null && !(other instanceof Singleton)) {
                             throw new IllegalActionException(_current,
                                     "Cannot create attribute because a subclass or instance "
                                     + "contains an attribute with the same name: "
@@ -4531,11 +4686,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             relation = (ComponentRelation)tmpRelation;
         }
 
-        // NOTE: Added to ensure that derived objects aren't changed.
-        // EAL 1/04. We have to prohit adding links between class
+        // Ensure that derived objects aren't changed.
+        // We have to prohit adding links between class
         // elements because this operation cannot be undone, and
         // it will not be persistent.
-        if (_isLinkInClass(context, port, relation)) {
+        if (_isLinkInClass(context, port, relation) && !_propagating) {
             throw new IllegalActionException(port,
                     "Cannot link a port to a relation when both" +
                     " are part of the class definition.");
@@ -4701,9 +4856,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     relationName + "\" in " + context.getFullName());
             ComponentRelation relation = (ComponentRelation)tmpRelation;
 
-            // NOTE: Added to ensure that derived objects aren't changed.
-            // EAL 1/04.
-            if (_isLinkInClass(context, port, relation)) {
+            // Ensure that derived objects aren't changed.
+            if (_isLinkInClass(context, port, relation) && !_propagating) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -4753,12 +4907,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // index is given.
             int index = Integer.parseInt(indexSpec);
 
-            // NOTE: Added to ensure that derived objects aren't changed.
-            // EAL 1/04.  Unfortunately, getting the relation is fairly
+            // Ensure that derived objects aren't changed.
+            // Unfortunately, getting the relation is fairly
             // expensive.
             List relationList = port.linkedRelationList();
             Relation relation = (Relation)relationList.get(index);
-            if (_isLinkInClass(context, port, relation)) {
+            if (_isLinkInClass(context, port, relation) && !_propagating) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -4797,12 +4951,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // insideIndex is given.
             int index = Integer.parseInt(insideIndexSpec);
 
-            // NOTE: Added to ensure that derived objects aren't changed.
-            // EAL 1/04.  Unfortunately, getting the relation is fairly
+            // Ensure that derived objects aren't changed.
+            // Unfortunately, getting the relation is fairly
             // expensive.
             List relationList = port.insideRelationList();
             Relation relation = (Relation)relationList.get(index);
-            if (_isLinkInClass(context, port, relation)) {
+            if (_isLinkInClass(context, port, relation) && !_propagating) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -5165,6 +5319,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The default namespace.
     private static String _DEFAULT_NAMESPACE = "";
+    
+    // Indentification of what is being deleted for the _delete() method.
+    private static int _DELETE_ENTITY = 0;
+    private static int _DELETE_PORT = 1;
+    private static int _DELETE_PROPERTY = 2;
+    private static int _DELETE_RELATION = 3;
+    
+    // List of delete requests.
+    private List _deleteRequests;
+
+    // Stack of lists of delete requests.
+    private Stack _deleteRequestStack = new Stack();
 
     // Count of doc tags so that they can nest.
     private int _docNesting = 0;
@@ -5215,6 +5381,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // Status of the deferral of the top-level.
     private boolean _previousDeferStatus = false;
+    
+    // Flag indicating that we are in a propagation
+    // and therefore the parser should not disallow changes because
+    // the objects are derived.
+    private boolean _propagating = false;
 
     // If greater than zero, skipping an element.
     private int _skipElement = 0;
@@ -5262,6 +5433,38 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    // FIXME: Need deferrals for all the deleteXXX elements as well!
+    // Those need to be executed after link and unlink requests.
+    // But this is only needed within class, entity, and model elements.
+    
+    // Class to record a deletion request.
+    // The first argument to the constructor should be one of
+    // _DELETE_ENTITY, _DELETE_PORT, _DELETE_PROPERTY, or _DELETE_RELATION.
+    // The second should be the name of the object to delete.
+    // The third (optional) argument should be the name of the context,
+    // or null to use the current context (only valid for _DELETE_PORT).
+    private class DeleteRequest {
+        public DeleteRequest(int type, String name, String context) {
+            _type = type;
+            _name = name;
+            _context = context;
+        }
+        public NamedObj execute() throws Exception {
+            if (_type == _DELETE_ENTITY) {
+                return _deleteEntity(_name);
+            } else if (_type == _DELETE_PORT) {
+                return _deletePort(_name, _context);
+            } else if (_type == _DELETE_PROPERTY) {
+                return _deleteProperty(_name);
+            } else {
+                return _deleteRelation(_name);
+            }
+        }
+        private int _type;
+        private String _name;
+        private String _context;
+    }
 
     // Class that records a link request.
     private class LinkRequest {

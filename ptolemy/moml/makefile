@@ -57,6 +57,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS =	Documentation.java \
 	EntityLibrary.java \
 	ErrorHandler.java \
+	HandlesInternalLinks.java \
 	ImportAttribute.java \
 	LibraryAttribute.java \
 	MoMLAttribute.java \
