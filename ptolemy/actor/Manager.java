@@ -324,56 +324,60 @@ public final class Manager extends NamedObj {
             if ( !(container instanceof TypedCompositeActor)) {
                 return;
             }
+
+	    LinkedList conflicts = new LinkedList();
+	    conflicts.appendElements(
+			((TypedCompositeActor)container).checkTypes());
+
             Enumeration constraints =
-                ((TypedCompositeActor)container).typeConstraints();
+                	((TypedCompositeActor)container).typeConstraints();
 
-            InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
-	    while (constraints.hasMoreElements()) {
-                Object ineq = constraints.nextElement();
-                solver.addInequality((Inequality)ineq);
+	    if (constraints.hasMoreElements()) {
+                InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
+	        while (constraints.hasMoreElements()) {
+                    Inequality ineq = (Inequality)constraints.nextElement();
+                    solver.addInequality(ineq);
+	        }
+
+                // find the least solution (most specific types)
+                boolean resolved = solver.solveLeast();
+                if ( !resolved) {
+		    Enumeration unsatisfied = solver.unsatisfiedInequalities();
+		    while (unsatisfied.hasMoreElements()) {
+		        Inequality ineq =
+				 (Inequality)unsatisfied.nextElement();
+		        TypeTerm term = (TypeTerm)ineq.getLesserTerm();
+		        TypedIOPort port = term.getPort();
+		        if (port != null) {
+			    conflicts.insertLast(port);
+		        }
+		        term = (TypeTerm)ineq.getGreaterTerm();
+		        port = term.getPort();
+		        if (port != null) {
+			    conflicts.insertLast(port);
+		        }
+		    }
+                }
+
+	        // check if any resolved type is NaT, or abstract, or interface
+	        Enumeration var = solver.variables();
+	        while (var.hasMoreElements()) {
+		    TypeTerm term = (TypeTerm)var.nextElement();
+		    TypedIOPort port = term.getPort();
+		    Class type = port.getResolvedType();
+		    if ( !TypeCPO.isInstantiableType(type)) {
+		        conflicts.insertLast(port);
+		    }
+	        }
 	    }
 
-            // find the greatest solution (most general types)
-            boolean resolved = solver.solveLeast();
-            if ( !resolved) {
-		Enumeration unsatisfied = solver.unsatisfiedInequalities();
-		// exception only contains info. on first unsatisfied ineq.
-		if (unsatisfied.hasMoreElements()) {
-		    Inequality ineq = (Inequality)unsatisfied.nextElement();
-		    TypeTerm term = (TypeTerm)ineq.getLesserTerm();
-		    TypedIOPort arg1 = term.getPort();
-		    term = (TypeTerm)ineq.getGreaterTerm();
-		    TypedIOPort arg2 = term.getPort();
-                    throw new TypeConflictException(arg1, arg2,
-					"cannot satisfy constraint.");
-		}
-            }
-
-	    // check if any resolved type is NaT
-	    Enumeration nats = solver.bottomVariables();
-	    if (nats.hasMoreElements()) {
-		TypeTerm term = (TypeTerm)nats.nextElement();
-		TypedIOPort port = term.getPort();
-		throw new TypeConflictException(port, "port resolved to NaT.");
+	    if (conflicts.size() > 0) {
+		throw new TypeConflictException(conflicts.elements(),
+		    "Type conflicts occurred in " + container.getFullName());
 	    }
-
-	    // check if any resolved to abstract class, but is not CPO top.
-	    Class top = (Class)TypeCPO.cpo().top();
-	    Enumeration abs = solver.variables();
-	    while (abs.hasMoreElements()) {
-		TypeTerm term = (TypeTerm)abs.nextElement();
-		TypedIOPort port = term.getPort();
-		Class type = port.getResolvedType();
-		if (type.isInterface()) {
-		    throw new TypeConflictException(port, "port resolved " +
-			"to an abstract type.");
-		}
-		int mod = type.getModifiers();
-		if (Modifier.isAbstract(mod) && !type.equals(top)) {
-		    throw new TypeConflictException(port, "port resolved " +
-			"to an abstract class other than the hierarchy top.");
-		}
-	    }
+	} catch (IllegalActionException iae) {
+	    // this should not happen.
+	    throw new InternalErrorException(iae.getMessage());
 	} finally {
 	    workspace().doneWriting();
 	}
