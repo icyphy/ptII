@@ -1558,8 +1558,7 @@ void convertConstCharToString( src_in)
     char *src_in;
 {
     char *p = src_in;
-    printf("convertConstChar: %s\n", src_in);
-    p = strstr(p, "const char *");
+    p = strstr(p, "const char*");
 
     while(p != NULL) {
         *p++ = 'S'; // c
@@ -1575,7 +1574,6 @@ void convertConstCharToString( src_in)
         *p++ = ' '; // *
         p = strstr(p, "const char");
     }
-    printf("convertConstChar2: %s\n", src_in);
 }
 
 void genMethod( fp, src)
