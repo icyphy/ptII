@@ -34,15 +34,16 @@ import ptolemy.gui.CancelException;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import javax.swing.JFrame;
+import ptolemy.moml.URLAttribute;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JFrame;
 
 //////////////////////////////////////////////////////////////////////////
 //// Effigy

@@ -531,6 +531,24 @@ public abstract class Top extends JFrame {
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             _file = fileDialog.getSelectedFile();
+            if (_file.exists()) {
+                // Ask for confirmation before overwriting a file.
+                String query = "Overwrite " + _file.getName() + "?";
+                // Show a MODAL dialog
+                int selected = JOptionPane.showOptionDialog(
+                        this,
+                        query,
+                        "Save Changes?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, 
+                        null,
+                        null,
+                        null);
+        
+                if (selected == 1) {
+                    return false;
+                }
+            }
             setTitle(getName());
             _directory = fileDialog.getCurrentDirectory();
             return _save();

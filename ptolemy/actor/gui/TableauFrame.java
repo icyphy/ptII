@@ -49,6 +49,7 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 //////////////////////////////////////////////////////////////////////////
@@ -410,6 +411,26 @@ public abstract class TableauFrame extends Top {
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
+
+            if (file.exists()) {
+                // Ask for confirmation before overwriting a file.
+                String query = "Overwrite " + file.getName() + "?";
+                // Show a MODAL dialog
+                int selected = JOptionPane.showOptionDialog(
+                        this,
+                        query,
+                        "Save Changes?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, 
+                        null,
+                        null,
+                        null);
+        
+                if (selected == 1) {
+                    return false;
+                }
+            }
+
 	    _directory = fileDialog.getCurrentDirectory();
             try {
                 _writeFile(file);

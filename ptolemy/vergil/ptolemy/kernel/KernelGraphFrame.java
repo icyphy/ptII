@@ -43,6 +43,7 @@ import ptolemy.moml.Locatable;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.URLAttribute;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.ptolemy.EditorDropTarget;
 import ptolemy.vergil.icon.IconEditor;

@@ -27,7 +27,7 @@
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.gui;
+package ptolemy.moml;
 
 import ptolemy.kernel.util.*;
 

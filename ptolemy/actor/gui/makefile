@@ -85,8 +85,7 @@ JSRCS = \
 	TextEditorTableau.java \
 	TextEffigy.java \
 	Tableau.java \
-	TableauFactory.java \
-	URLAttribute.java
+	TableauFactory.java
 
 EXTRA_SRCS =	$(JSRCS)
 

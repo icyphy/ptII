@@ -41,9 +41,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.gui.MessageHandler;
 
-// FIXME: This needs to be moved to the MoML package
-import ptolemy.actor.gui.URLAttribute;
-
 // Java imports.
 import java.awt.Container;
 import java.util.EmptyStackException;

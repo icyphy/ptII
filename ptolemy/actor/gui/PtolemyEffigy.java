@@ -35,6 +35,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.*;
 import ptolemy.gui.MessageHandler;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.URLAttribute;
 
 import java.awt.Dimension;
 import java.io.File;
