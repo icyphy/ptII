@@ -187,7 +187,7 @@ import ptolemy.util.FileUtilities;
    @see ParameterPort
    @author Edward A. Lee
    @version $Id$
-   @since Ptolemy II 3.0
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
