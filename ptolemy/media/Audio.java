@@ -385,7 +385,7 @@ public class Audio {
             + "format code = " + format + "\n"
             + "sampleRate = " + sampleRate + "\n"
             + "number of channels = " + numChannels + "\n"
-            + "info field = " + new String(info);
+            + "info field = " + new String(info).trim();
     }
 
     /** Write the audio data to an output stream in the Sun audio format.
