@@ -146,7 +146,7 @@ public class Director extends NamedObj implements Executable {
      * will be notified of each change in the topology that
      * happens when the Director decide it is safe to make
      * topology changes. Change requests are queued by using
-     * the queueToploguChangeRequest() method.
+     * the queueToplogyChangeRequest() method.
      *
      *  @param listener The TopologyListener to add.
      */
