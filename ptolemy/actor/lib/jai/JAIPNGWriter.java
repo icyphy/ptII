@@ -32,11 +32,11 @@ import ptolemy.actor.lib.Sink;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -86,7 +86,7 @@ public class JAIPNGWriter extends Sink {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
 
-        fileName = new FileAttribute(this, "fileName");
+        fileName = new FileParameter(this, "fileName");
 
         confirmOverwrite = new Parameter(this, "confirmOverwrite");
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
@@ -112,7 +112,7 @@ public class JAIPNGWriter extends Sink {
      *  any form accepted by FileAttribute.
      *  @see FileAttribute
      */
-    public FileAttribute fileName;
+    public FileParameter fileName;
 
     public Parameter adam7Interlacing;
 

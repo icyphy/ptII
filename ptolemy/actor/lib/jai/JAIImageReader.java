@@ -75,7 +75,7 @@ public class JAIImageReader extends Source {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");
-        fileOrURL.setExpression("$CLASSPATH\\doc\\img\\PtolemyII.jpg");
+        fileOrURL.setExpression("$PTII/doc/img/PtolemyII.jpg");
     }
 
     ///////////////////////////////////////////////////////////////////
