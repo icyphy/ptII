@@ -118,7 +118,7 @@ public class ImageEditorIcon extends EditorIcon implements ImageObserver {
     /** This method, which is required by the ImageObserver interface,
      *  is called if something has changed in a background loading of
      *  the image.
-     *  @param img The image being observed.
+     *  @param image The image being observed.
      *  @param infoflags The bitwise inclusive OR of the following flags:
      *   WIDTH, HEIGHT, PROPERTIES, SOMEBITS, FRAMEBITS, ALLBITS, ERROR,
      *   ABORT.
