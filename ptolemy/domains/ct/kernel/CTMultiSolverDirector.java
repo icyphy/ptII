@@ -842,7 +842,7 @@ public class CTMultiSolverDirector extends CTDirector {
         //FIXME: output constraints are different from the state constraints.
         if (refinedStep < getTimeResolution()) {
             throw new IllegalActionException(this,
-                    "the refined step size is less than the minimum time resolution, " +
+                    "The refined step size is less than the minimum time resolution, " +
                     "at time " +
                     getCurrentTime());
         }
