@@ -46,4 +46,10 @@ public class CancelException extends Exception {
     public CancelException() {
         super("Operation canceled by the user");
     }
+
+    /** Construct an exception with the specified message.
+     */
+    public CancelException(String message) {
+        super(message);
+    }
 }
