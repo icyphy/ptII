@@ -117,7 +117,12 @@ public class ParameterPort extends TypedIOPort {
     public Token get(int channelIndex)
             throws NoTokenException, IllegalActionException {
         Token token = super.get(channelIndex);
-        _parameter.setCurrentValue(token);
+        try {
+            _parameter._alreadyReadPort = true;
+            _parameter.setCurrentValue(token);
+        } finally {
+            _parameter._alreadyReadPort = false;
+        }
         return token;
     }
 
@@ -138,7 +143,12 @@ public class ParameterPort extends TypedIOPort {
     public Token[] get(int channelIndex, int vectorLength)
             throws NoTokenException, IllegalActionException {
         Token[] retArray = super.get(channelIndex, vectorLength);
-        _parameter.setToken(retArray[vectorLength-1]);
+        try {
+            _parameter._alreadyReadPort = true;
+            _parameter.setToken(retArray[vectorLength-1]);
+        } finally {
+            _parameter._alreadyReadPort = false;
+        }
         return retArray;
     }
 

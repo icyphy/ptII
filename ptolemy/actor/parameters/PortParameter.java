@@ -39,7 +39,10 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
+
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// PortParameter
@@ -63,6 +66,12 @@ to see whether an input has arrived at the associated port
 since the last setExpression() or setToken(), and if so, returns a token
 read from that port.  Also, any call to get() on the associated
 port will result in the value of this parameter being updated.
+<p>
+When using this parameter in an actor, care must be exercised
+to read its value only once per firing by calling getToken().
+Each time getToken() is called, a new token will be consumed from
+the associated port (if there is a token).  This may result in
+consuming tokens that were intended for subsequent firings.
 <p>
 If this is actor is placed in a container that does not implement
 the TypedActor interface, then no associated port is created,
@@ -203,10 +212,20 @@ public class PortParameter extends Parameter {
      *   data from the associated port throws it.
      */
     public ptolemy.data.Token getToken() throws IllegalActionException {
-        if (_port != null && _port.getWidth() > 0 && _port.hasToken(0)) {
-            _port.get(0);
+        try {
+            // Avoid reading more than once within a call to getToken().
+            if (!_alreadyReadPort) {
+                _alreadyReadPort = true;
+                if (_port != null
+                        && _port.getWidth() > 0
+                        && _port.hasToken(0)) {
+                    _port.get(0);
+                }
+            }
+            return super.getToken();
+        } finally {
+            _alreadyReadPort = false;
         }
-        return super.getToken();
     }
 
     /** Set the container of this parameter and its associated port.
@@ -238,7 +257,8 @@ public class PortParameter extends Parameter {
     }
 
     /** Set the current value of this parameter and notify the container and
-     *  and value listeners.  This does not erase the current expression,
+     *  and value listeners.  Force evaluation of the value listeners.
+     *  This does not erase the current expression,
      *  but does update the value that will be returned by getToken().
      *  If the type of this variable has been set with
      *  setTypeEquals(), then convert the specified token into that
@@ -259,8 +279,16 @@ public class PortParameter extends Parameter {
         if (_debugging) {
             _debug("setCurrentValue: " + token);
         }
-        _setTokenAndNotify(token);
-        setUnknown(false);
+        try {
+            // Need to force evaluation of all dependents now.
+            // Otherwise, they will trigger another read of the associated
+            // port when they get around to being evaluated.
+            _forceEvaluationOfListeners = true;
+            _setTokenAndNotify(token);
+            setUnknown(false);
+        } finally {
+            _forceEvaluationOfListeners = false;
+        }
     }
 
     /** Set the expression of this variable, and override the base class
@@ -326,14 +354,18 @@ public class PortParameter extends Parameter {
      */
     public void setToken(ptolemy.data.Token token)
             throws IllegalActionException {
-        // Clear all pending inputs.
-        try {
-            while (_port != null && _port.getWidth() > 0 && _port.hasToken(0)) {
-                _port.get(0);
+        if (!_alreadyReadPort) {
+            // Clear all pending inputs.
+            try {
+                while (_port != null
+                        && _port.getWidth() > 0
+                        && _port.hasToken(0)) {
+                    _port.get(0);
+                }
+            } catch (IllegalActionException ex) {
+                // Ignore, since this will only occur if the port is not
+                // operational yet.
             }
-        } catch (IllegalActionException ex) {
-            // Ignore, since this will only occur if the port is not
-            // operational yet.
         }
         super.setToken(token);
     }
@@ -356,6 +388,34 @@ public class PortParameter extends Parameter {
         }
     }
 
+    /** Override the base class so that if this called as a result of
+     *  of a call to setCurrentValue(), then the value listeners are
+     *  all forced to be evaluated.  Otherwise, it behaves just like
+     *  the base class.
+     */
+    protected void _notifyValueListeners() {
+        if (!_forceEvaluationOfListeners) {
+            super._notifyValueListeners();
+        } else {
+            if (_valueListeners != null) {
+                Iterator listeners = _valueListeners.iterator();
+                while (listeners.hasNext()) {
+                    ValueListener listener = (ValueListener)listeners.next();
+                    listener.valueChanged(this);
+                    if (listener instanceof Variable) {
+                        try {
+                            ((Variable)listener).getToken();
+                            // FIXME: Do we have to notify the listeners
+                            // of the listeners?
+                        } catch (IllegalActionException ex) {
+                            throw new InternalErrorException(ex);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /** Set the container.  This should only be called by the associated
      *  parameter.
      *  @param entity The container.
@@ -375,9 +435,19 @@ public class PortParameter extends Parameter {
     /** The associated port. */
     protected ParameterPort _port;
 
+    /** Flag used to prevent multiple readings of input within one
+     *  call to getToken(), or when the port sets the current value
+     *  and value listeners are notified.  This variable is accessed
+     *  by the associated port.
+     */
+    protected boolean _alreadyReadPort = false;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     // Indicator that we are in the midst of setting the name.
     private boolean _settingName = false;
+
+    // Indicator to force evaluation of value listeners.
+    private boolean _forceEvaluationOfListeners = false;
 }
