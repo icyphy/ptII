@@ -1,0 +1,201 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MultimodeTest" class="ptolemy.actor.TypedCompositeActor">
+    <doc>This model demonstrates the hierarchical composition of the
+FSM and Giotto domains.</doc>
+    <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
+            <doc>Number of iterations in an execution.</doc>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="68.0, 37.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[491, 350]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[162, 177]">
+    </property>
+    <entity name="ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="155.0, 93.3203125">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="dualMode" class="ptolemy.actor.TypedCompositeActor">
+        <property name="modal" class="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="controller">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="122.0, 88.0">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="260.0, 92.203125">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="230.0, 138.0">
+            </property>
+        </port>
+        <port name="mode" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.moml.Location" value="460.0, 168.0">
+            </property>
+        </port>
+        <port name="output1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.moml.Location" value="230.0, 189.0">
+            </property>
+        </port>
+        <port name="output2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.moml.Location" value="378.0, 280.0">
+            </property>
+        </port>
+        <entity name="controller" class="ptolemy.domains.giotto.demo.Multimode.Controller">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
+            </property>
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[628, 205]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="361.0, 164.0">
+            </property>
+        </entity>
+        <entity name="mode0" class="ptolemy.domains.giotto.demo.Multimode.OneMode">
+            <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+                <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+                </property>
+                <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="74.0, 34.0">
+                </property>
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[381, 145]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+            </property>
+            <property name="ramp2Frequency" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="138.0, 239.0">
+            </property>
+        </entity>
+        <entity name="mode1" class="ptolemy.domains.giotto.demo.Multimode.OneMode">
+            <property name="giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+                <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
+                </property>
+                <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="74.0, 34.0">
+                </property>
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[381, 145]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+            </property>
+            <property name="ramp2Frequency" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="120.0, 315.0">
+            </property>
+        </entity>
+        <relation name="r1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="r2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="r3" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="203.0, 224.0">
+            </vertex>
+        </relation>
+        <relation name="r4" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="298.0, 280.0">
+            </vertex>
+        </relation>
+        <link port="in" relation="r1"/>
+        <link port="mode" relation="r2"/>
+        <link port="output1" relation="r3"/>
+        <link port="output2" relation="r4"/>
+        <link port="controller.in" relation="r1"/>
+        <link port="controller.refIn1" relation="r3"/>
+        <link port="controller.refIn2" relation="r4"/>
+        <link port="controller.out" relation="r2"/>
+        <link port="mode0.output1" relation="r3"/>
+        <link port="mode0.output2" relation="r4"/>
+        <link port="mode1.output1" relation="r3"/>
+        <link port="mode1.output2" relation="r4"/>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1,1,1,1,0,0,0,0,1,1,1,1,0,0,0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="397.125, 32.1328125">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="NonStrictTest8" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,1,2,3,5,7,9,11,12,13,14,15,17,19,21,23,24,25}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="400.0703125, 152.1328125">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="NonStrictTest9" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="400.0703125, 92.1328125">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ramp.output" relation="r1"/>
+    <link port="dualMode.in" relation="r1"/>
+    <link port="dualMode.mode" relation="relation"/>
+    <link port="dualMode.output1" relation="relation11"/>
+    <link port="dualMode.output2" relation="relation10"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="NonStrictTest8.input" relation="relation10"/>
+    <link port="NonStrictTest9.input" relation="relation11"/>
+</entity>
