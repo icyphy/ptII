@@ -155,6 +155,7 @@ public class ViewScreen extends GRActor implements Placeable {
 
 
     public void place(Container container) {
+        System.out.println("place vs");
         GraphicsConfiguration config =
             SimpleUniverse.getPreferredConfiguration();
 
@@ -209,6 +210,14 @@ public class ViewScreen extends GRActor implements Placeable {
             _canvas.stopRenderer();
         }
     }
+    
+    public Canvas3D getCanvas() {
+        return _canvas;
+    }
+    
+    public BranchGroup getBranchGroup() {
+        return branchRoot;
+    }
 
 
     public void initialize() throws IllegalActionException {
@@ -221,12 +230,12 @@ public class ViewScreen extends GRActor implements Placeable {
             _frame.setVisible(true);
         }
         if (simpleUniverse == null) simpleUniverse = new SimpleUniverse(_canvas);
-        Enumeration e = simpleUniverse.getLocale().getAllBranchGraphs();
+        Enumeration branches = simpleUniverse.getLocale().getAllBranchGraphs();
 
-        while (e.hasMoreElements()) {
-            BranchGroup bg = (BranchGroup) e.nextElement();
-            if (bg.getCapability(BranchGroup.ALLOW_DETACH)) {
-                simpleUniverse.getLocale().removeBranchGraph(bg);
+        while (branches.hasMoreElements()) {
+            BranchGroup branchGroup = (BranchGroup) branches.nextElement();
+            if (branchGroup.getCapability(BranchGroup.ALLOW_DETACH)) {
+                simpleUniverse.getLocale().removeBranchGraph(branchGroup);
             }
         }
 

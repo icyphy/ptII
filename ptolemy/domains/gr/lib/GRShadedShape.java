@@ -54,7 +54,7 @@ the shininess of the object.
 
 @author C. Fong
 */
-public class GRShadedShape extends GRActor {
+abstract public class GRShadedShape extends GRActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -72,7 +72,7 @@ public class GRShadedShape extends GRActor {
         sceneGraphOut.setOutput(true);
         sceneGraphOut.setTypeEquals(BaseType.OBJECT);
         rgbColor = new Parameter(this,"RGB color",
-                new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
+                   new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
 
         shininess = new Parameter(this,"shininess",new DoubleToken(0.0));
 
@@ -107,6 +107,7 @@ public class GRShadedShape extends GRActor {
      *  the scene graph
      */
     public TypedIOPort sceneGraphOut;
+    
 
     /** The red, green, and blue color components of the 3D shape
      */
@@ -114,7 +115,7 @@ public class GRShadedShape extends GRActor {
 
     /** The shininess of the 3D shape.
      *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is ??FIXME
+     *  The default value of this parameter is DoubleToken ??FIXME
      */
     public Parameter shininess;
 
