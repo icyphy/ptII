@@ -67,21 +67,11 @@ public class EditParametersFactory extends MenuItemFactory {
 	Action action = new AbstractAction(name) {
 	    public void actionPerformed(ActionEvent e) {	    
 		// Create a dialog for configuring the object.
-		try {
-		    Configurer panel = new Configurer(target);
-		    // FIXME: First argument below should be a parent window
-		    // (a JFrame).
-		    ComponentDialog dialog = new ComponentDialog(
-			null,
-			"Edit parameters for " + target.getName(),
-			panel);
-		    if (!(dialog.buttonPressed().equals("OK"))) {
-			// Restore original parameter values.
-			panel.restore();
-		    }
-		} catch (IllegalActionException ex) {
-		    ExceptionHandler.show("Edit Parameters failed", ex);
-		}
+                // FIXME: First argument below should be a parent window
+                // (a JFrame).
+                EditParametersDialog dialog = new EditParametersDialog(
+                        null,
+                        target);
 	    }
 	};
 	return menu.add(action, name);
