@@ -365,19 +365,6 @@ public class Scheduler extends Attribute {
 	return schedule;
     }
 
-    /** Make this scheduler the scheduler of the specified director, and
-     *  register it as a topology listener of the director.
-     *  This method should not be called directly.  Instead, call the
-     *  setScheduler() method of the StaticSchedulingDirector class
-     *  (or a derived class).
-     */
-    protected void _makeSchedulerOf(StaticSchedulingDirector director) {
-        _container = director;
-        if (director != null) {
-            workspace().remove(this);
-        }
-    }
-
     /** Return the scheduling sequence. In this base class, it returns
      *  the containees of the CompositeActor in the order of
      *  construction.  (Same as calling
