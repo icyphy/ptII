@@ -201,7 +201,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  auxiliary variables have never been created.
      *
      *  @return The auxiliary variables in a double array.
-     *  @see @see #setAuxVariables
+     *  @see #setAuxVariables
      */
     public double[] getAuxVariables() {
         return _auxVariables;
