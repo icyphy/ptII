@@ -169,6 +169,7 @@ OTHER_FILES_TO_BE_JARED = \
 	array.xml \
 	booleanflowcontrol.xml \
 	communications.xml \
+	esoteric.xml \
 	filtering.xml \
 	flowcontrol.xml \
 	math.xml \
