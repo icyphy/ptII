@@ -48,7 +48,10 @@ PTPACKAGE = 	kernel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = RTOSDirector.java \
+JSRCS = \
+	RTOSDirector.java \
+	RTOSEvent.java \
+	RTOSEventComparator.java \
 	RTOSReceiver.java
 
 EXTRA_SRCS =	$(JSRCS)

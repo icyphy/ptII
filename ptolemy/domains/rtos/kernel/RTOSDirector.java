@@ -35,19 +35,28 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.CancelException;
+import ptolemy.actor.util.CalendarQueue;
 
 import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.HashMap;
 
+//FIXME: -- Need to support use real time (for pure event).
+//       -- Need to fully support disabled actors.
+//       -- Need to implement transferInput and transfer time.
+
+
 
 //////////////////////////////////////////////////////////////////////////
 //// RTOSDirector
 /**
+FIXME: Need to update documents.
+
 A director that implements a priority-based nonpreemptive scheduling
 model of computation. This model of computation is sometimes seen in
 real-time operating systems.
@@ -76,7 +85,7 @@ and the actor will be fired when the timer expires.
 @version $Id$
 */
 
-public class RTOSDirector extends DEDirector {
+public class RTOSDirector extends Director {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -120,6 +129,27 @@ public class RTOSDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
+    /** Indicating whether the execution of the actors are preemptive.
+     *  The default value is false, of type boolean.
+     */
+    public Parameter preemptive;
+
+    /** The default execution time of a task. If an actor (or its ports)
+     *  does not specify its execution time, then this number will
+     *  be used. The default value is 0.0, of type double. Note that
+     *  using 0.0 as the task execution time indicates that the
+     *  task is implemented as hardware.
+     */
+    public Parameter defaultTaskExecutionTime;
+
+    /** The stop time of the model.  This parameter must contain a
+     *  DoubleToken.  The value defaults to Double.MAX_VALUE.
+     */
+    public Parameter stopTime;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+    
     /** Update the director parameters when the attributes are changed.
      *  If the change is <i>stopTime</i>, check whether it is less than
      *  zero. If it is, throw an exception. Note that the changes of
@@ -137,48 +167,55 @@ public class RTOSDirector extends DEDirector {
                 throw new IllegalActionException(this,
                         " stopTime cannot be less than 0.");
             }
+        } else if (attribute == defaultTaskExecutionTime) {
+            if (((DoubleToken)defaultTaskExecutionTime.getToken())
+                    .doubleValue() < 0.0) {
+                throw new IllegalActionException(this,
+                        " task execution time cannot be less than 0.");
+            }
+        } else if (attribute == preemptive) {
+            _preemptive = ((BooleanToken)preemptive.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /** Return the real elapsed time from the start of execution and
-     *  the time that this method is called.
-     *  @return The real execution time so far.
+    /** Return the time, at which the current actor being fired
+     *  finishes its execution. 
+     *  @return The fire end time of the current actor.
      */
     public double getCurrentTime() {
-        double elaps = (double)(System.currentTimeMillis() - _startingTime);
-        return elaps/1000.0;
+        return _currentTime;
     }
 
-    /** Override the super class such that this method does nothing.
-     *  @param newTime Do nothing.
-     */
-    public void setCurrentTime(double newTime) throws IllegalActionException {
-    }
-
-    /** Record the real time that the execution starts, and then
-     *  initialize the execution.
+    /** Request a refire from the executive director.
+     *  
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        long stop =
-            (long)(((DoubleToken)stopTime.getToken()).doubleValue()*1000.0);
-        _terminate = false;
-        if (_actorTimers == null) {
-            _actorTimers = new HashMap();
-        } else {
-            _actorTimers.clear();
-        }
-
-        // Start the timer that counts the termination time.
-        TerminationTask task = new TerminationTask(this);
-        _terminationTimer = new Timer();
-        _startingTime = System.currentTimeMillis();
-        _terminationTimer.schedule(task, stop);
-
+        
         super.initialize();
+        // FIXME:
+        // Request a firing to the outer director if the queue is not empty.
+        //if (_isEmbedded() && !_eventQueue.isEmpty()) {
+        //    _requestFiring();
+        //}
+    }
+    
+    /** Disable the specified actor.  All events destined to this actor
+     *  will be ignored. If the argument is null, then do nothing.
+     *  @param actor The actor to disable.
+     */
+    protected void _disableActor(Actor actor) {
+        if (actor != null) {
+            if(_debugging) _debug("Actor ", ((Nameable)actor).getName(),
+                    " is disabled.");
+            if (_disabledActors == null) {
+                _disabledActors = new HashSet();
+            }
+            _disabledActors.add(actor);
+        }
     }
 
     /** Dequeue the event with the highest priority, and execute
@@ -187,59 +224,84 @@ public class RTOSDirector extends DEDirector {
      *  these events are dequeued, too. The actor will get
      *  all the dequeued events.
      *  @exception IllegalActionException If the firing actor throws it.
+     *
+     *
+     *  Compare the current time to the time stamp of the first
+     *  event in the pure event queue. If they are euqal, then
+     *  dequeue the events at the current time from the pure event
+     *  queue, and fire the destination actors.
+     *  If the current time is less than the time stamp of the
+     *  first event in the pure event queue, then look at the 
+     *  event queue. In particular, let current time be <i>Tc<i>,
+     *  the actor to be triggered
+     *  by the first events in the event queue be <B>A</b>, and
+     *  <B>A</B> has WCET <i>Ta</i>. Further, let the time stamp
+     *  of the first event in the pure event
+     *  queue be <i>Tp</i>.
+     *  And the  behavior may be different depending on 
+     *  the preemptive parameter. 
+     *  <p>
+     *  
+     *   
      */
     public void fire() throws IllegalActionException {
-        _stopRequested = false;
-        Actor actorToFire = _dequeueEvents();
-        if (actorToFire == null) {
-            // There is nothing more to do.
-            if (_debugging) _debug("No more events on the event queue.");
-            _noMoreActorsToFire = true;
-            return;
-        }
-        if (_debugging) {
-            _debug("Found actor to fire: "
-                    + ((NamedObj)actorToFire).getFullName());
-        }
-        // It is possible that the next event to be processed is on
-        // an inside receiver of an output port of an opaque composite
-        // actor containing this director.  In this case, we simply
-        // return, giving the outside domain a chance to react to
-        // event.
-        if (actorToFire == getContainer()) {
-            return;
-        }
-        if (((Nameable)actorToFire).getContainer() == null) {
-            if (_debugging) _debug(
-                    "Actor has no container. Disabling actor.");
-            _disableActor(actorToFire);
-        } else {
-            // Synchronize so that multiple firing don't step on one
-            // another, and particularly, don't step on the firings
-            // triggered by timers.
-            synchronized(actorToFire) {
-                if (!actorToFire.prefire()) {
-                    if (_debugging) _debug("Prefire returned false.");
+        // First look at the pure event queue.
+        double nextPureEventTime = ((DoubleToken)stopTime.getToken()).
+                doubleValue();
+        while (!_pureEventQueue.isEmpty()) {
+            DEEvent pureEvent = (DEEvent)_pureEventQueue.get();
+            double timeStamp = pureEvent.timeStamp();
+            if (timeStamp < getCurrentTime()) {
+                if (_preemptive) {
+                    throw new IllegalActionException(this, 
+                            "missed an external input message.");
                 } else {
-                    actorToFire.fire();
-                    if (!actorToFire.postfire()) {
-                        if (_debugging) _debug("Postfire returned false:",
-                                ((Nameable)actorToFire).getName());
-                        // Actor requests that it not be fired again.
-                        _disableActor(actorToFire);
-                    }
+                    _firePureEvent(_pureEventQueue.take());
                 }
+            } else if (timeStamp == getCurrentTime()) {
+                 _firePureEvent(_pureEventQueue.take());
+            } else {
+                // All pure event are in the future.
+                // Get the time for the next pure event.
+                // It will be used under preemptive execution.
+                nextPureEventTime = timeStamp;
+                break;
             }
         }
-        Thread.currentThread().yield();
+        // Then we process RTOS events. Fire one actor at a time.
+        // Dequeue all events with the same priority.
+        if (!_eventQueue.isEmpty()) {
+            RTOSEvent event = (RTOSEvent)_eventQueue.get();
+            double processingTime = event.processingTime();
+            if (!_preemptive || ((getCurrentTime() + processingTime) 
+                    <= nextPureEventTime)) {
+                // Put the event back to its receiver.
+                if(_debugging) _debug(getName(),
+                        "put trigger event to",
+                        ((NamedObj)event.actor()).getName());
+                _eventQueue.take();
+                event.receiver()._triggerEvent(event.token());
+                // FIXME: Need to put all the tokens at the same time?
+                Actor actor = event.actor();
+                if (actor.prefire()) {
+                    setCurrentTime(getCurrentTime() + event.processingTime());
+                    actor.fire();
+                    actor.postfire();
+                }
+            } else {
+                // Preemptive execution and the execution is preempted by
+                // a pure event.
+                event.preemptAfter(nextPureEventTime - getCurrentTime());
+                setCurrentTime(nextPureEventTime);
+            }
+        } else {
+            // All RTOS events are processed. It is save to move to the
+            // next pure event.
+            setCurrentTime(nextPureEventTime);
+        }
     }
-
-
-    /** Set up a time for the request firing at the future time.
-     *  The actor will be fired when the timer expires.
-     *  If the requested time is later than the stop time, do nothing.
-     *  If the requested time is less than the current time,
-     *  then fire the actor immediately.
+    
+    /** Insert pure event.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
      *  @exception IllegalActionException If the firing of the actor
@@ -247,6 +309,7 @@ public class RTOSDirector extends DEDirector {
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
+
         // ignore requests that are later than the stop time.
         if (_debugging) {
             _debug("+ requesting firing of "
@@ -255,19 +318,9 @@ public class RTOSDirector extends DEDirector {
                    + time);
         }
         if (time <= ((DoubleToken)stopTime.getToken()).doubleValue()) {
-            long requestTime = (long)(time*1000.0) + _startingTime;
-
-            ActorTask actorTask = new ActorTask(actor);
-            Timer timer = new Timer();
-            _actorTimers.put(actor, timer);
-            try {
-                timer.schedule(actorTask, requestTime -
-                        System.currentTimeMillis());
-                if (_debugging) _debug("Started timer.");
-            } catch (IllegalArgumentException ex) {
-                _debug("Missed the real time deadline. Execute the task.");
-                actorTask.run();
-            }
+            // create a DE pure event.
+            DEEvent pureEvent = new DEEvent(actor, time, 0, 0);
+            _pureEventQueue.put(pureEvent);
         }
     }
 
@@ -275,48 +328,58 @@ public class RTOSDirector extends DEDirector {
      *  @return a new RTOSReceiver.
      */
     public Receiver newReceiver() {
-        if(_debugging) _debug("Creating new DE receiver.");
+        if(_debugging) _debug("Creating new RTOS receiver.");
 	return new RTOSReceiver();
     }
 
-    /** Return false if the stop time has reached or the stop request is
-     *  made, otherwise, return true.
+    /** Inaddition to the preinitialization implemented in the super
+     *  class, create the pure event queue.
+     *  @exception IllegalActionException If thrown by the super class.
+     */
+    public void preinitialize() throws IllegalActionException {
+        _eventQueue = new CalendarQueue(new RTOSEventComparator(), 16, 2);
+        _pureEventQueue =  new DECQEventQueue(2, 2, true);
+        
+        _disabledActors = null;
+        //_noMoreActorsToFire = false;
+
+        // Add debug listeners.
+        if (_debugListeners != null) {
+            Iterator listeners = _debugListeners.iterator();
+            while (listeners.hasNext()) {
+                DebugListener listener = (DebugListener)listeners.next();
+                _pureEventQueue.addDebugListener(listener);
+            }
+        }
+        super.preinitialize();
+    }
+
+    /** Test for the current time, if is not embedded.
      *  @return Whether the stop time has reached.
      */
     public boolean postfire() throws IllegalActionException {
-        return super.postfire() && !_terminate;;
-    }
+        if(_debugging) _debug("Finish one iteration at time:" + 
+                getCurrentTime());
+        if (getCurrentTime() >= ((DoubleToken)stopTime.getToken()).
+                doubleValue()) {
+            return false;
+        }
+        if (_eventQueue.isEmpty() && _pureEventQueue.isEmpty()) {
+            return false;
+        }
+        return true;
 
-    /** Cancel pending timers in additional to warping up actors.
+    }
+    
+    /** Override the default implementation. Time is allowed to go backward.
+     *  @param newTime Do nothing.
      */
-    public void wrapup() throws IllegalActionException {
-        if (_actorTimers != null && !_actorTimers.isEmpty()) {
-            Iterator timers = _actorTimers.values().iterator();
-            while(timers.hasNext()) {
-                Timer next = (Timer)timers.next();
-                next.cancel();
-                // System.out.println("Cancel timer");
-            }
-            _actorTimers.clear();
-        }
-        if (_terminationTimer != null) {
-            _terminationTimer.cancel();
-        }
-        super.wrapup();
+    public void setCurrentTime(double newTime) throws IllegalActionException {
+        _currentTime = newTime;
     }
-
 
     ////////////////////////////////////////////////////////////////////////
     ////                    protected methods                           ////
-
-    /** Override the base class to throw an exception, since
-     *  pure events are not supported in this domain.
-     */
-    protected void _enqueueEvent(Actor actor, double priority)
-            throws IllegalActionException {
-        throw new IllegalActionException(this, (NamedObj)actor,
-                "Pure events are not supported in this domain.");
-    }
 
     /** Put an event into the event queue with the specified destination
      *  receiver, token, and priority.
@@ -325,53 +388,49 @@ public class RTOSDirector extends DEDirector {
      *  @param time The time stamp of the event.
      *  @exception IllegalActionException If the delay is negative.
      */
-    protected void _enqueueEvent(DEReceiver receiver, Token token,
-            double time) throws IllegalActionException {
+    protected void _enqueueEvent(RTOSEvent event) {
 
         if (_eventQueue == null) return;
-        int microstep = 0;
-        Actor destination = (Actor)(receiver.getContainer()).getContainer();
-        int depth = _getDepth(destination);
         if(_debugging) _debug("enqueue event: to",
-                receiver.getContainer().getFullName()
-                + " ("
-                + token.toString()
-                + ") ",
-                "time = "+ time + " microstep = "+ microstep + " depth = "
-                + depth);
-        _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));
-    }
-
-    /** Override this method in the super class to throw an excption.
-     *  Events in this domain must have a priority. The default priority
-     *  is defined and used in RTOSReceiver.
-     *
-     *  @param receiver The destination receiver.
-     *  @param token The token destined for that receiver.
-     *  @exception IllegalActionException Always thrown.
-     */
-    protected void _enqueueEvent(DEReceiver receiver, Token token)
-            throws IllegalActionException {
-        throw new IllegalActionException(this,
-                (NamedObj)receiver.getContainer(),
-                "IOPort must have priorities.");
+                event.toString());
+        _eventQueue.put(event);
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                    private methods                           ////
+
+
+    // Execute the destination actor of a pure event.
+    private void _firePureEvent(DEEvent event) throws IllegalActionException {
+        double time = getCurrentTime();
+        setCurrentTime(event.timeStamp());
+        Actor actor = event.actor();
+        if (actor != null) {
+            if (actor.prefire()) {
+                actor.fire();
+                if(!actor.postfire()) {
+                    // FIXME: add the actor to the dead actor list.
+                }
+            }
+        }
+        setCurrentTime(time);
+    }
 
     // Remove useless parameters inherited from DEDirector, and set
     // different defaults.
     private void _initParameters() {
         try {
 
-            stopWhenQueueIsEmpty.setToken(new BooleanToken(false));
-
-            getAttribute("startTime").setContainer(null);
-            getAttribute("synchronizeToRealTime").setContainer(null);
-            getAttribute("isCQAdaptive").setContainer(null);
-            getAttribute("minBinCount").setContainer(null);
-            getAttribute("binCountFactor").setContainer(null);
+            stopTime = new Parameter(this, "stopTime",
+                    new DoubleToken(Double.MAX_VALUE));
+	    stopTime.setTypeEquals(BaseType.DOUBLE);
+            preemptive = new Parameter(this, "preemptive", 
+                    new BooleanToken(false));
+            preemptive.setTypeEquals(BaseType.BOOLEAN);
+            defaultTaskExecutionTime = new Parameter(this, 
+                    "defaultTaskExecutionTime", new DoubleToken(0.0));
+            defaultTaskExecutionTime.setTypeEquals(BaseType.DOUBLE);
+            
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName() +
                     "fail to initialize parameters.");
@@ -381,89 +440,42 @@ public class RTOSDirector extends DEDirector {
         }
     }
 
+    // Return true if this director is embedded inside an opaque composite
+    // actor contained by another composite actor.
+    private boolean _isEmbedded() {
+        return (getContainer() != null &&
+                getContainer().getContainer() != null);
+    }
+
+    // Request that the container of this director be refired in the future.
+    // This method is used when the director is embedded inside an opaque
+    // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
+    // If the queue is empty, then throw an InvalidStateException
+    private void _requestFiring() throws IllegalActionException {
+        DEEvent nextEvent = _pureEventQueue.get();
+
+        if (_debugging) _debug("Request refiring of composite actor.",
+                getContainer.getName(), "at " + nextEvent.timeStamp());
+        // Enqueue a refire for the container of this director.
+        ((CompositeActor)getContainer()).getExecutiveDirector().fireAt(
+                (Actor)getContainer(), nextEvent.timeStamp());
+    }
+    
 
     ////////////////////////////////////////////////////////////////////////
     ////                    private variables                           ////
 
-    // A Hash map for all pending timers.
-    private HashMap _actorTimers;
+    // The RTOS event queue.
+    private CalendarQueue _eventQueue;
 
-    // starting time as the system clock time
-    private long _startingTime;
+    // The pure event queue.
+    // Time in this queue is absolute, and not affected by the execution
+    // of other tasks.
+    private DECQEventQueue _pureEventQueue; 
 
-    // Indicate that the execution is requested to be terminated.
-    private boolean _terminate;
+    // local cache of the parameter
+    private boolean _preemptive = false;
 
-    // The termination task timer.
-    private Timer _terminationTimer;
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         inner class                            ////
-
-    // The task that schedule a firing of an actor in the future time.
-    // This task is supposed to be used by the Timer. When the Timer
-    // expires, this task will be executed.
-    private class ActorTask extends TimerTask {
-        public ActorTask(Actor actor) {
-            _actor = actor;
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                      public methods                       ////
-
-        /** iterate the actor for one iteration when the timer expires.
-         */
-        public void run() {
-            if (_actor != null) {
-                try {
-                    // remove the time from the map first.
-                    _actorTimers.remove(_actor);
-                    if (_debugging) {
-                        _debug("Timer expired.  Invoking "
-                                + ((Nameable)_actor).getFullName());
-                    }
-                    // Synchronize on the actor so that an invocation
-                    // of the actor doesn't step on a prior invocation.
-                    synchronized(_actor) {
-                        _actor.iterate(1);
-                    }
-                } catch (IllegalActionException ex) {
-                    throw new InvalidStateException((NamedObj)_actor,
-                            ex.getMessage());
-                }
-            }
-        }
-        ///////////////////////////////////////////////////////////////////
-        ////                      private variables                    ////
-
-        private Actor _actor;
-    }
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         inner class                            ////
-
-    // The task that terminates the execution.
-    // This task is supposed to be used with the Timer. When the Timer
-    // expires, this task will be executed.
-    private class TerminationTask extends TimerTask {
-        public TerminationTask(Director director) {
-            _director = director;
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                      public methods                       ////
-
-        /** iterate the actor for one iteration when the timer expires.
-         */
-        public void run() {
-            if (_director != null) {
-                _terminate = true;
-                _director.stopFire();
-            }
-        }
-        ///////////////////////////////////////////////////////////////////
-        ////                      private variables                    ////
-
-        private Director _director;
-    }
+    // disabled actors list.
+    private Set _disabledActors = null;
 }
