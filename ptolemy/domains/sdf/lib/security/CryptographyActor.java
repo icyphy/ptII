@@ -75,16 +75,19 @@ be specified in the <i>provider</i> parameter.  This class takes care
 of basic initialization of the subclasses. The <i>keySize</i> also
 allows implementations of algorithms using various key sizes.
 
-<p>This class and its subclasses rely on the Java Cryptography Extension (JCE)
-and Java Cryptography Architecture(JCA).
+<p>This actor relies on the Java Cryptography Architecture (JCA) and Java
+Cryptography Extension (JCE).
+
+<br>Information about JCA can be found at
+<a href="http://java.sun.com/products/jca/" target="_top">http://java.sun.com/products/jca/">.
+Information about JCE can be found at
+<a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
 
 @author Rakesh Reddy, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
 */
 public class CryptographyActor extends TypedAtomicActor {
-
-    // TODO: add link talking about basics of crypto or create a readme.txt
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

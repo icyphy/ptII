@@ -62,6 +62,11 @@ the data input with the given key.
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
+<br>Information about JCA can be found at
+<a href="http://java.sun.com/products/jca/" target="_top">http://java.sun.com/products/jca/">.
+Information about JCE can be found at
+<a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
+
 @author Rakesh Reddy, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1

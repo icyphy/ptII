@@ -62,8 +62,13 @@ specified in the <i>provider</i> parameter.  This actor creates
 a private key to sign data and a public key which is sent on the
 <i>keyOut</i> port to verify the signature.
 
-This actor relies on the Java Cryptography Architecture (JCA) and Java
+<p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
+
+<br>Information about JCA can be found at
+<a href="http://java.sun.com/products/jca/" target="_top">http://java.sun.com/products/jca/">.
+Information about JCE can be found at
+<a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
 
 @author Rakesh Reddy, Christopher Hylands Brooks
 @version $Id$
@@ -71,7 +76,6 @@ Cryptography Extension (JCE).
 */
 public class SignatureSigner extends SignatureActor {
 
-    // TODO: include sources of information on JCE cipher and algorithms
     // TODO: Use cipher streaming to allow for easier file input reading.
 
     /** Construct an actor with the given container and name.
