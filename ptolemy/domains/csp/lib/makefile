@@ -55,7 +55,7 @@ JSRCS = \
 	CSPBuffer.java \
 	CSPChopstick.java \
 	CSPContentionAlarm.java \
-	CSPManager.java \
+	CSPController.java \
 	CSPMemory.java \
 	CSPMultiSink.java \
 	CSPMultiSource.java \
