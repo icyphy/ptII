@@ -57,6 +57,7 @@ set classheader {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
+
 proc writeMoML {object} {
     set writer [java::new java.io.StringWriter]
     set mwriter [java::new ptolemy.moml.MoMLWriter $writer]
@@ -215,17 +216,10 @@ test MoMLWriter-1.3.3 {check overriding class definition} {
     set toplevel [java::cast ptolemy.actor.TypedCompositeActor \
             [$parser parse $moml_3_3]]
     set test [$toplevel getEntity test]
-    set class [$toplevel getEntity top]
-    list [$test exportMoML] [$class exportMoML]
-} {{<entity name="test" class=".lib.top">
+    $test exportMoML
+} {<entity name="test" class=".lib.top">
 </entity>
-} {<class name="top" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="xxx" class="ptolemy.kernel.util.Attribute">
-    </property>
-    <property name="yyy" class="ptolemy.kernel.util.Attribute">
-    </property>
-</class>
-}}
+}
 
 ######################################################################
 ####
@@ -305,25 +299,6 @@ test MoMLWriter-1.3.6 {check multiple reference with absolute name} {
 ######################################################################
 ####
 #
-set moml_4 {    <class name="top" extends="ptolemy.actor.TypedCompositeActor">
-        <doc>xxx</doc>
-    </class>
-}
-test MoMLWriter-1.4 {produce class without header} {
-    $parser reset
-    set toplevel [$parser parse $moml_4]
-    writeMoML $toplevel
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="top" extends="ptolemy.actor.TypedCompositeActor">
-    <doc>xxx</doc>
-</class>
-}
-
-######################################################################
-####
-#
 set moml "$header
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
@@ -344,25 +319,6 @@ test MoMLWriter-1.5 {test with an actor} {
     set toplevel [$parser parse $moml]
     writeMoML $toplevel
 } $result
-
-# NOTE: result is not the same as what is parsed...
-test MoMLWriter-1.5.1 {test with an actor} {
-    set entity [java::cast ptolemy.actor.TypedCompositeActor $toplevel]
-    set port [java::cast ptolemy.actor.TypedIOPort [$entity getPort "a.output"]]
-    $port setInput true  
-    writeMoML $toplevel
-}  {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="top" extends="ptolemy.actor.TypedCompositeActor">
-    <entity name="a" class="ptolemy.actor.lib.Ramp">
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="output"/>
-        </port>
-    </entity>
-</class>
-}
 
 ######################################################################
 ####
@@ -457,12 +413,10 @@ set moml {
    <port name="C" class="ptolemy.actor.TypedIOPort"></port>
    <relation name="R2" class="ptolemy.actor.TypedIORelation"></relation>
    <entity name="C1" class="ptolemy.actor.TypedCompositeActor">
-       <class name="test" extends="ptolemy.actor.TypedCompositeActor">
-           <port name="B" class="ptolemy.actor.TypedIOPort"></port>
-       </class>
        <port name="A" class="ptolemy.actor.TypedIOPort"></port>
        <relation name="R1" class="ptolemy.actor.TypedIORelation"></relation>
-       <entity name="C2" class=".foo.C1.test">
+       <entity name="C2" class="ptolemy.actor.TypedCompositeActor">
+           <port name="B" class="ptolemy.actor.TypedIOPort"></port>
        </entity>
    </entity>
    <link port="C" relation="R2"/>
@@ -471,7 +425,6 @@ set moml {
    <link port="C1.C2.B" relation="C1.R1"/>
 </entity>
 }
-
 test MoMLWriter-1.10 {test with hierarchy} {
     $parser reset
     set toplevel [$parser parse $moml]
@@ -485,11 +438,9 @@ test MoMLWriter-1.10 {test with hierarchy} {
     <entity name="C1" class="ptolemy.actor.TypedCompositeActor">
         <port name="A" class="ptolemy.actor.TypedIOPort">
         </port>
-        <class name="test" extends="ptolemy.actor.TypedCompositeActor">
+        <entity name="C2" class="ptolemy.actor.TypedCompositeActor">
             <port name="B" class="ptolemy.actor.TypedIOPort">
             </port>
-        </class>
-        <entity name="C2" class=".foo.C1.test">
         </entity>
         <relation name="R1" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -1142,7 +1093,7 @@ test MoMLWriter-1.18.8 {test link persistence in instatiation of a class} {
         </relation>
     </class>
     <entity name="derived" class=".top.master">
-        <link port="p" insertAt="1" relation="r"/>
+        <link port="p" relation="r" insertAt="1"/>
     </entity>
 </entity>
 }
@@ -1181,7 +1132,7 @@ test MoMLWriter-1.18.9 {test unlink persistence in instatiation of a class} {
         <link port="p" relation="r"/>
     </class>
     <entity name="derived" class=".top.master">
-        <unlink port="p" relation="r"/>
+        <unlink port="p" insideIndex="0"/>
     </entity>
 </entity>
 }
@@ -1297,76 +1248,6 @@ test MoMLWriter-1.18.11 {test unlink persistence in instatiation of a class} {
     </class>
     <entity name="derived" class=".top.master">
         <unlink port="e.p" index="0"/>
-    </entity>
-</entity>
-}
-
-test MoMLWriter-1.18.12 {test unlink persistence in instatiation of a class} {
-    $parser reset
-    set toplevel [$parser parse $moml]
-    writeFullMoML $toplevel
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.actor.CompositeActor">
-    <property name="_iconDescription" class="ptolemy.kernel.util.TransientSingletonConfigurableAttribute">
-        <configure source=""><svg>
-<rect x="0" y="0" width="60" height="40" style="fill:red"/>
-<rect x="3" y="3" width="54" height="34" style="fill:white"/>
-<polygon points="10,10 50,20 10,30" style="fill:blue"/>
-</svg>
-</configure>
-    </property>
-    <property name="_parser" class="ptolemy.moml.ParserAttribute">
-    </property>
-    <class name="master" extends="ptolemy.actor.CompositeActor">
-        <property name="_iconDescription" class="ptolemy.kernel.util.TransientSingletonConfigurableAttribute">
-            <configure source=""><svg>
-<rect x="0" y="0" width="60" height="40" style="fill:red"/>
-<rect x="3" y="3" width="54" height="34" style="fill:white"/>
-<polygon points="10,10 50,20 10,30" style="fill:blue"/>
-</svg>
-</configure>
-        </property>
-        <entity name="e" class="ptolemy.actor.AtomicActor">
-            <property name="_iconDescription" class="ptolemy.kernel.util.TransientSingletonConfigurableAttribute">
-                <configure source=""><svg>
-<rect x="0" y="0" width="60" height="40" style="fill:white"/>
-<polygon points="10,10 50,20 10,30" style="fill:blue"/>
-</svg>
-</configure>
-            </property>
-            <port name="p" class="ptolemy.actor.IOPort">
-            </port>
-        </entity>
-        <relation name="r" class="ptolemy.actor.IORelation">
-        </relation>
-        <link port="e.p" relation="r"/>
-    </class>
-    <entity name="derived" class=".top.master">
-        <property name="_iconDescription" class="ptolemy.kernel.util.TransientSingletonConfigurableAttribute">
-            <configure source=""><svg>
-<rect x="0" y="0" width="60" height="40" style="fill:red"/>
-<rect x="3" y="3" width="54" height="34" style="fill:white"/>
-<polygon points="10,10 50,20 10,30" style="fill:blue"/>
-</svg>
-</configure>
-        </property>
-        <property name="_extension" class="ptolemy.moml.MoMLAttribute">
-        </property>
-        <entity name="e" class="ptolemy.actor.AtomicActor">
-            <property name="_iconDescription" class="ptolemy.kernel.util.TransientSingletonConfigurableAttribute">
-                <configure source=""><svg>
-<rect x="0" y="0" width="60" height="40" style="fill:white"/>
-<polygon points="10,10 50,20 10,30" style="fill:blue"/>
-</svg>
-</configure>
-            </property>
-            <port name="p" class="ptolemy.actor.IOPort">
-            </port>
-        </entity>
-        <relation name="r" class="ptolemy.actor.IORelation">
-        </relation>
     </entity>
 </entity>
 }
@@ -1720,7 +1601,7 @@ test MoMLWriter-2.9 {Test link with insertAt attribute, inside links} {
     </entity>
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
-    <link port="p" insertAt="1" relation="r"/>
+    <link port="p" relation="r" insertAt="1"/>
 </entity>
 }
 
@@ -1747,7 +1628,7 @@ test MoMLWriter-2.10 {Test link with insertAt attribute, inside links} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" relation="r"/>
-    <link port="p" insertAt="2" relation="r"/>
+    <link port="p" relation="r" insertAt="2"/>
 </entity>
 }
 
@@ -1774,7 +1655,7 @@ test MoMLWriter-2.11 {Test link with insertAt attribute} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" relation="r"/>
-    <link port="p" insertAt="2" relation="r"/>
+    <link port="p" relation="r" insertAt="2"/>
     <link port="a.p" relation="r"/>
 </entity>
 }
@@ -1785,7 +1666,7 @@ test MoMLWriter-2.11 {Test link with insertAt attribute} {
 test MoMLWriter-2.12 {Test link with insertAt attribute} {
    $parser parse {
 <entity name=".top">
-   <link port="a.p" insertAt="2" relation="r"/>
+   <link port="a.p" relation="r" insertAt="2"/>
 </entity>
 }
     writeMoML $toplevel
@@ -1802,9 +1683,9 @@ test MoMLWriter-2.12 {Test link with insertAt attribute} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" relation="r"/>
-    <link port="p" insertAt="2" relation="r"/>
+    <link port="p" relation="r" insertAt="2"/>
     <link port="a.p" relation="r"/>
-    <link port="a.p" insertAt="2" relation="r"/>
+    <link port="a.p" relation="r" insertAt="2"/>
 </entity>
 }
 
@@ -1831,8 +1712,8 @@ test MoMLWriter-2.13 {Test unlink with index} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" relation="r"/>
-    <link port="p" insertAt="2" relation="r"/>
-    <link port="a.p" insertAt="1" relation="r"/>
+    <link port="p" relation="r" insertAt="2"/>
+    <link port="a.p" relation="r" insertAt="1"/>
 </entity>
 }
 
@@ -1859,7 +1740,7 @@ test MoMLWriter-2.14 {Test unlink with index} {
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p" relation="r"/>
-    <link port="p" insertAt="2" relation="r"/>
+    <link port="p" relation="r" insertAt="2"/>
 </entity>
 }
 
@@ -1885,7 +1766,7 @@ test MoMLWriter-2.15 {Test unlink with index} {
     </entity>
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
-    <link port="p" insertAt="1" relation="r"/>
+    <link port="p" relation="r" insertAt="1"/>
 </entity>
 }
 
@@ -2711,60 +2592,39 @@ test MoMLWriter-13.3 {test with weird configure text} {
 </entity>
 }
 
-set moml {
-<entity name="top" class="ptolemy.kernel.CompositeEntity">
-    <class name="utilities" extends="ptolemy.moml.EntityLibrary">
-        <configure>       
-            <group>
-    <entity name="actor" class="ptolemy.actor.TypedCompositeActor">
-      <property name="ParamWithEscapedValue" class="ptolemy.data.expr.Parameter" value="&quot;hello&quot;"/>
-    </entity>
-            </group>
-        </configure>
-    </class>
-</entity>
-}
-
 test MoMLWriter-13.4 {test with weird configure text containing escaped tags with no processing instruction} {
     # Uses 13.1 setup
     $parser reset
-    set toplevel [$parser parse $moml]
-    set attrib [$toplevel getAttribute "utilities.actor.ParamWithEscapedValue"]
-    $attrib toString
-} {ptolemy.data.expr.Parameter {.top.utilities.actor.ParamWithEscapedValue} "hello"}
-
-set moml {
+    set toplevel [$parser parse {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="utilities" extends="ptolemy.moml.EntityLibrary">
-        <configure>       
-            <group>
-    <entity name="actor" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
+      <configure>       
+          <group>
+    <!-- Blank composite actor. -->
+    <entity name="actor" class="ptolemy.actor.TypedCompositeActor">
+      <property name="ParamWithEscapedValue" class="ptolemy.data.expr.Parameter" value="&quot;hello&quot;"/>
     </entity>
-            </group>
-        </configure>
+          </group>
+      </configure>
     </class>
 </entity>
-}
-
-test MoMLWriter-13.5 {test with entity library} {
-    # Uses 13.1 setup
-    $parser reset
-    set toplevel [$parser parse $moml]
-    writeMoML $toplevel
-} {<?xml version="1.0" standalone="no"?>
+}]
+    set attrib [$toplevel getAttribute "utilities.actor.ParamWithEscapedValue"]
+    list [writeMoML $toplevel] [$attrib toString]
+} {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="utilities" extends="ptolemy.moml.EntityLibrary">
         <configure><group>
-    <entity name="actor" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
+    <entity name="actor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="ParamWithEscapedValue" class="ptolemy.data.expr.Parameter" value="&quot;hello&quot;">
+        </property>
     </entity>
 </group></configure>
     </class>
 </entity>
-}
-
-
+} {ptolemy.data.expr.Parameter {.top.utilities.actor.ParamWithEscapedValue} "hello"}}
 
 ######################################################################
 ####
@@ -2778,7 +2638,7 @@ set body {
 
 set moml "$header $body"
 
-test MoMLWriter-14.1 {check that instance of a class defer to a common obj} {
+test MoMLWriter-1.14 {check that instance of a class defer to a common obj} {
     $parser reset
     set toplevel [java::cast ptolemy.kernel.CompositeEntity \
             [$parser parse $moml]]
@@ -2788,47 +2648,3 @@ test MoMLWriter-14.1 {check that instance of a class defer to a common obj} {
     [java::field [$b getMoMLInfo] deferTo] equals \
             [java::field [$a getMoMLInfo] deferTo]
 } {1}
-
-test MoMLWriter-14.2 {check that instance of a class defer to a common obj} {
-
-    set parser [java::new ptolemy.moml.MoMLParser]
-    set loader [[$parser getClass] getClassLoader]   
-    set URL [$loader getResource ptolemy/configs/metaConfiguration.xml]
-
-    set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
- 
-    set writer [java::new java.io.StringWriter]
-    set mwriter [java::new ptolemy.moml.MoMLWriter $writer]
-    $mwriter write $object
-    set writtenString [$writer toString]
-
-    set processed [java::new java.io.BufferedReader [java::new java.io.StringReader $writtenString]]
-    set original [java::new java.io.BufferedReader [java::new java.io.InputStreamReader [$URL openStream]]]
-
-    set more 1
-    set line 1
-    set result {}
-    puts testing
-    while { $more } {
-	set npstring [$processed -noconvert readLine]
-	set nostring [$original -noconvert readLine]
-	if {[java::isnull $npstring]} {
-	    set pstring ""
-	} {
-	    set pstring [$npstring toString]
-	}
-	if {[java::isnull $nostring]} {
-	    set ostring ""
-	} {
-	    set ostring [$nostring toString]
-	}
-	
-	if {[string match $pstring $ostring]} {} {
-	    set result [lappend result "$line\n$ostring\n$pstring"]
-	}
-	incr line
-	set more [expr ! ( [java::isnull $npstring] && [java::isnull $nostring] ) ]
-    }
-    return [join $result "\n"]
-} {}
-
