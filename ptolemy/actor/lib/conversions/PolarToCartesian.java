@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -105,22 +105,27 @@ public class PolarToCartesian extends TypedAtomicActor {
      *  and angle) and output a double token on each of the two output ports
      *  (x and y). The output is a Cartesian representation of the components
      *  given at the inputs in polar form. The angle is in radians.
-     *  If either input has no token, then do nothing.
-     *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (magnitude.hasToken(0) && angle.hasToken(0)) {
-            double magnitudeValue
-                = ((DoubleToken)(magnitude.get(0))).doubleValue();
-            double angleValue
-                = ((DoubleToken) (angle.get(0))).doubleValue();
+        double magnitudeValue
+            = ((DoubleToken)(magnitude.get(0))).doubleValue();
+        double angleValue
+            = ((DoubleToken) (angle.get(0))).doubleValue();
 
-            double xValue = magnitudeValue * Math.cos(angleValue);
-            double yValue = magnitudeValue * Math.sin(angleValue);
+        double xValue = magnitudeValue * Math.cos(angleValue);
+        double yValue = magnitudeValue * Math.sin(angleValue);
 
-            x.send(0, new DoubleToken (xValue));
-            y.send(0, new DoubleToken (yValue));
-        }
+        x.send(0, new DoubleToken (xValue));
+        y.send(0, new DoubleToken (yValue));
+    }
+
+    /** Return false if either of the input ports has no token, otherwise
+     *  return what the superclass returns (presumably true).
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if ( (!magnitude.hasToken(0)) || (!angle.hasToken(0)) ) return false;
+        return super.prefire();
     }
 }

@@ -127,7 +127,9 @@ public class Round extends Transformer {
         }
     }
 
-    /** This computes the specified rounded value of the input.
+    /** This computes the specified rounded value of the input. The rounding
+     *  function can be selected from a pulldown list in Vergil, which in 
+     *  turn modifies the StringAttribute parameter called "function"
      *  This consumes and produces at most one token for each firing.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.

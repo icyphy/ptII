@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (kienhuis@eecs.berkeley.edu) */
+@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu) */
 
 package ptolemy.actor.lib.conversions;
 
@@ -147,19 +147,26 @@ public class DoubleToFix extends Transformer {
      */
     public void fire() throws IllegalActionException {
         FixToken result = null;
-	if (input.hasToken(0)) {
-    	    DoubleToken in = (DoubleToken)input.get(0);
-            switch( _quantization ) {
-            case 1:
-                result = new FixToken(
-                        Quantizer.truncate(in.doubleValue(), _precision));
-                break;
-            default:
-                result = new FixToken(
-                        Quantizer.round(in.doubleValue(), _precision));
-            }
-            output.send(0, result);
+        DoubleToken in = (DoubleToken)input.get(0);
+        switch( _quantization ) {
+        case 1:
+            result = new FixToken(
+                    Quantizer.truncate(in.doubleValue(), _precision));
+            break;
+        default:
+            result = new FixToken(
+                    Quantizer.round(in.doubleValue(), _precision));
         }
+        output.send(0, result);
+    }
+
+    /** Return false if the input port has no token, otherwise return
+     *  what the superclass returns (presumably true).
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (!input.hasToken(0)) return false;
+        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
