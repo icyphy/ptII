@@ -1088,12 +1088,12 @@ remote6nuke:
 
 # untarthe remote dist.  Usually this is run on the remote machine
 remote6ptiidist: $(REMOTE6PTIIDIST)
-$(REMOTE6PTIIDIST): $(PTII_FULL)
-	@echo "#"
-	@echo "# Now untaring on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	(cd $(REMOTE6HOME); $(TAR) -zxf $(PTII_SRC))
+#$(REMOTE6PTIIDIST): $(PTII_FULL)
+#	@echo "#"
+#	@echo "# Now untaring on `hostname`"
+#	@echo "#"
+#	@echo "$@ `date`"
+#	(cd $(REMOTE6HOME); $(TAR) -zxf $(PTII_SRC))
 
 remote6configure:
 	@echo "#"
@@ -1145,10 +1145,10 @@ remote6buildjsall:
 	fi
 
 remote6autojsall:
-	@-if [ "x$(JSALLDIRS)" != "x" ]; then \
-		set `$(JSALLDIRS) | grep /auto/`; \
+	-if [ "x$(JSALLDIRS)" != "x" ]; then \
+		set $(JSALLDIRS); \
 		for x do \
-		    if [ -w $$x/test ] ; then \
+		    if [ -w $$x/test/auto ] ; then \
 			( cd $$x/test ; \
 			echo making jstest_jsimple in $$x/test ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
@@ -1157,7 +1157,6 @@ remote6autojsall:
 		    fi ; \
 		done ; \
 	fi
-
 	jssummary -HTML -PROGRESS \
 		-OUTFILE=$(JSOUTDIR)/coverage.html
 	jsreport -HTML -PROGRESS -RECURSIVE \
