@@ -313,23 +313,6 @@ public class GeneratorTableau extends Tableau {
 				}
 				isApplet = true;
 			    } else if (codeGenerator.equals(options
-                                    .sootC.
-                                    getExpression())){
-
-				// FIXME: we should disable the compile
-				// button.
-				exec.updateStatusBar("Starting c "
-                                        + "code generation");
-				// FIXME: How come the status bar
-				// does not get updated?
-				ptolemy.copernicus.c
-				    .Main.generate((CompositeActor)model,
-                                            directoryName);
-				exec.updateStatusBar("C Code generation "
-                                        + "complete.");
-				decompile = true;
-
-			    } else if (codeGenerator.equals(options
                                     .sootDeep.
                                     getExpression())){
 
