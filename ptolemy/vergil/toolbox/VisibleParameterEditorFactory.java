@@ -79,7 +79,7 @@ public class VisibleParameterEditorFactory extends EditorFactory {
      */
     public void createEditor(final NamedObj object, Frame parent) {
         ComponentDialog dialog = new ComponentDialog(
-                parent, "Edit Parameter " + object.getName(), 
+                parent, "Edit Parameter " + object.getName(),
                 createEditorPane());
 
         // If we were canceled, then restore the old value.
@@ -119,17 +119,17 @@ public class VisibleParameterEditorFactory extends EditorFactory {
         NamedObj object = (NamedObj)getContainer();
         PtolemyQuery query = new PtolemyQuery(object);
         query.setTextWidth(25);
-        
+
         if(object instanceof Settable) {
             Settable parameter = (Settable)object;
             _oldExpression = parameter.getExpression();
             query.addStyledEntry(parameter);
             return query;
         } else {
-            return new JLabel(object.getName() + 
+            return new JLabel(object.getName() +
                     " is not a settable attribute!");
         }
     }
-    
+
     String _oldExpression = "";
 }

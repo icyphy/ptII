@@ -80,7 +80,7 @@ public class EditParametersFactory implements MenuItemFactory {
     ////                         public methods                    ////
 
     /** Add an item to the given context menu that will configure the
-     *  parameters on the given target.    
+     *  parameters on the given target.
      *  @param menu The context menu.
      *  @param object The object whose parameters are being configured.
      */
