@@ -1,28 +1,28 @@
 /* Verify the signature of the input data.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -43,37 +43,37 @@ import java.security.PublicKey;
 //////////////////////////////////////////////////////////////////////////
 //// SignatureVerifier
 /**
-Verify the signature of the input data.
+   Verify the signature of the input data.
 
-<p>In cryptography, digital signatures can be used to verify that the
-data was not modified in transit.  However, the data itself is passed
-in clear text.
+   <p>In cryptography, digital signatures can be used to verify that the
+   data was not modified in transit.  However, the data itself is passed
+   in clear text.
 
-<p>The <i>provider</i> and <i>signatureAlgorithm</i> parameters should
-be set to the values used to generate the publicKey.  See {@link
-PublicKeyReader} and {@link SignatureActor} for possible values.
+   <p>The <i>provider</i> and <i>signatureAlgorithm</i> parameters should
+   be set to the values used to generate the publicKey.  See {@link
+   PublicKeyReader} and {@link SignatureActor} for possible values.
 
-<p>The <i>provider</i> and <i>signatureAlgorithm</i> parameters should
-be set to the same value as the corresponding parameter in the
-SignatureSigner actor.
+   <p>The <i>provider</i> and <i>signatureAlgorithm</i> parameters should
+   be set to the same value as the corresponding parameter in the
+   SignatureSigner actor.
 
-<p>This actor reads a KeyToken public key from the
-<i>publicKey</i> port and then reads unsigned byte arrays from
-the <i>signature</i> port and verifies the signature of
-each unsigned byte array that appears on the <i>input</i> port.
-If the signature is valid, then the unsigned byte array
-data on the <i>input</i> port is passed to the <i>output</i> port.
-If the signature is not valid, then an exception is thrown.
+   <p>This actor reads a KeyToken public key from the
+   <i>publicKey</i> port and then reads unsigned byte arrays from
+   the <i>signature</i> port and verifies the signature of
+   each unsigned byte array that appears on the <i>input</i> port.
+   If the signature is valid, then the unsigned byte array
+   data on the <i>input</i> port is passed to the <i>output</i> port.
+   If the signature is not valid, then an exception is thrown.
 
-<p>This actor relies on the Java Cryptography Architecture (JCA) and Java
-Cryptography Extension (JCE).  See the
-{@link ptolemy.actor.lib.security.CryptographyActor} documentation for
-resources about JCA and JCE.
+   <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
+   Cryptography Extension (JCE).  See the
+   {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
+   resources about JCA and JCE.
 
-@see PublicKeyReader
-@author Christopher Hylands Brooks, Contributor: Rakesh Reddy
-@version $Id$
-@since Ptolemy II 3.1
+   @see PublicKeyReader
+   @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
+   @version $Id$
+   @since Ptolemy II 3.1
 */
 public class SignatureVerifier extends SignatureActor {
 
@@ -139,7 +139,7 @@ public class SignatureVerifier extends SignatureActor {
             try {
                 _signature.initVerify(_publicKey);
                 _signature.update(ArrayToken.arrayTokenToUnsignedByteArray(
-                        inputToken));
+                                          inputToken));
                 if (!_signature.verify(signatureData)) {
                     throw new IllegalActionException(this,
                             "Signature verification failed, "

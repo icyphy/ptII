@@ -1,28 +1,28 @@
 /* A class modeling a sensor that transmits location information.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (pjb2e@eecs.berkeley.edu)
@@ -54,29 +54,29 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 //// Sensor
 
 /**
-This is a wireless sensor node that senses evaders in the sensor
-field. The sensors in the field communicate with each other to
-construct a spanning tree from the root node (where the evader is close
-to) to nodes that are one hop from the root node and so on. When a
-sensor detects the evader, it sets itself as the root
-and broadcast a message to its neighbor nodes. The message includes
-the time when the evader is detected, the location and the depth,
-zero for the root node, of the sensor. If a sensor receives
-a message from another sensor, it checks whether the root node
-has been changed from last time (by check the detected time),
-or whether there is a shorter path to the root node. If so, it
-records the detected time, updates the information of its parent
-node (location and depth in the tree) and broadcast a message,
-include the detected time, its location and depth in the tree, to
-it neighbot nodes. By doing this in a sensor network, a spaning
-tree is constructed distributedly and sensors are indexed according
-to how far it is from the root node. With the evader moving, it may
-be detected by another sensor, and the tree changes dynamically.
+   This is a wireless sensor node that senses evaders in the sensor
+   field. The sensors in the field communicate with each other to
+   construct a spanning tree from the root node (where the evader is close
+   to) to nodes that are one hop from the root node and so on. When a
+   sensor detects the evader, it sets itself as the root
+   and broadcast a message to its neighbor nodes. The message includes
+   the time when the evader is detected, the location and the depth,
+   zero for the root node, of the sensor. If a sensor receives
+   a message from another sensor, it checks whether the root node
+   has been changed from last time (by check the detected time),
+   or whether there is a shorter path to the root node. If so, it
+   records the detected time, updates the information of its parent
+   node (location and depth in the tree) and broadcast a message,
+   include the detected time, its location and depth in the tree, to
+   it neighbot nodes. By doing this in a sensor network, a spaning
+   tree is constructed distributedly and sensors are indexed according
+   to how far it is from the root node. With the evader moving, it may
+   be detected by another sensor, and the tree changes dynamically.
 
 
-@author Yang Zhao
-@version $ $
-@since Ptolemy II 4.0
+   @author Yang Zhao
+   @version $ $
+   @since Ptolemy II 4.0
 */
 public class Sensor extends TypedAtomicActor {
 
@@ -192,8 +192,8 @@ public class Sensor extends TypedAtomicActor {
     /** The transmition range of the sensor. The icon for this sensor
      *  node includes a circle with this as its radius. This is a
      *  double and default to 50.0.
-      */
-     public Parameter range;
+     */
+    public Parameter range;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -269,17 +269,17 @@ public class Sensor extends TypedAtomicActor {
             DoubleToken time =(DoubleToken) inputToken.get("time");
             IntToken d = (IntToken) inputToken.get("depth");
             if (time.doubleValue() > _timeValue ||
-                (time.doubleValue() == _timeValue
-                 && d.intValue() < _parentDepth)) {
+                    (time.doubleValue() == _timeValue
+                            && d.intValue() < _parentDepth)) {
                 //the root node may have been changed
                 //or there is a shorter path.
                 ArrayToken locationArray =
-                        (ArrayToken)inputToken.get("location");
+                    (ArrayToken)inputToken.get("location");
                 int length = locationArray.length();
                 _parentLocation = new DoubleToken[length];
                 for (int i = 0; i < length ; i++) {
                     _parentLocation[i] =
-                            (DoubleToken) locationArray.getElement(i);
+                        (DoubleToken) locationArray.getElement(i);
                 }
                 _timeValue = time.doubleValue();
                 _parentDepth = d.intValue();
@@ -331,7 +331,7 @@ public class Sensor extends TypedAtomicActor {
                 "_location", Location.class);
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
-            "Cannot find a _location attribute of class Location.");
+                    "Cannot find a _location attribute of class Location.");
         }
         return locationAttribute.getLocation();
     }

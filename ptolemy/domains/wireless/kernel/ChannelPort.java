@@ -1,28 +1,28 @@
 /* A port for mediate type constraints between senders and receivers.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
@@ -42,22 +42,22 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ChannelPort
 /**
-This port is used in a channel to mediate type constraints between
-senders and receivers on a wireless channel. The way it works is by
-pretending that it receives data from the sender and sends data to
-the receiver. It does not actually get involved in the transmission
-of data (that is handled by the transmit() method of the channel).
-This port is always both an input and an output.  This port is not
-persistent and is always hidden in a user interface.
-<p>
-NOTE: Someday, perhaps
-this port will be augmented to mediate the communication and
-facilitate the construction of channel models as composite
-actors instead of atomic actors).
+   This port is used in a channel to mediate type constraints between
+   senders and receivers on a wireless channel. The way it works is by
+   pretending that it receives data from the sender and sends data to
+   the receiver. It does not actually get involved in the transmission
+   of data (that is handled by the transmit() method of the channel).
+   This port is always both an input and an output.  This port is not
+   persistent and is always hidden in a user interface.
+   <p>
+   NOTE: Someday, perhaps
+   this port will be augmented to mediate the communication and
+   facilitate the construction of channel models as composite
+   actors instead of atomic actors).
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 
 public class ChannelPort extends WirelessIOPort {

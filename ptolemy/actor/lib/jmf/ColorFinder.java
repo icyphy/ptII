@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -46,11 +46,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ColorFinder
 /**
-An actor that searches for a color in a Buffer.
+   An actor that searches for a color in a Buffer.
 
-@author Paul Yang, David Lee, James Yeh
-@version $Id$
-@since Ptolemy II 3.0
+   @author Paul Yang, David Lee, James Yeh
+   @version $Id$
+   @since Ptolemy II 3.0
 */
 public class ColorFinder extends TypedAtomicActor {
 

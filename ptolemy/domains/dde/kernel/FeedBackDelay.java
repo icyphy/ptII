@@ -1,28 +1,28 @@
 /* FeedBackDelay actors are used to add delay to feedback topologies.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (davisj@eecs.berkeley.edu)
 @AcceptedRating Red (yuhong@eecs.berkeley.edu)
@@ -46,39 +46,39 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// FeedBackDelay
 /**
-FeedBackDelay actors are used to add delay to feedback topologies.
-If a FeedBackDelay actor consumes a token (real or Null), it has the
-option of producing an equivalent token on the output with an
-incremented time stamp value. Alternatively, the FeedBackDelay actor
-will simply produce the token without altering the time stamp.
-<P>
-Two parameters - <I>nullDelay</I> and <I>realDelay</I> - are
-available for determining whether an FeedBackDelay actor
-increments the time stamp of produced output tokens. The default
-value of nullDelay (realDelay) is true (false). If the nullDelay
-(realDelay) parameter is set to true, then the time stamps of
-NullTokens (real tokens) will be incremented as they pass through
-this actor.
-<P>
-The delay value that is applied (given that one of the above
-parameters is true) is determined by the setDelay() and getDelay()
-methods. More elaborate delay values can be made available by
-overriding the getDelay() method in derived classes.
-<P>
-FeedBackDelay actors are effective for preventing Zeno conditions
-involving cycles of null tokens. If a DDE model has a feedback
-topology, a FeedBackDelay actor should be added into the feedback loop.
-<P>
-The delay value of a FeedBackDelay actor must be wisely chosen. The
-delay value should be smaller than any other successive time stamp
-increment found in a given DDE model. This means that if a particular
-model might have any two time stamps with time difference delta, then
-the delay value should be smaller than delta.
+   FeedBackDelay actors are used to add delay to feedback topologies.
+   If a FeedBackDelay actor consumes a token (real or Null), it has the
+   option of producing an equivalent token on the output with an
+   incremented time stamp value. Alternatively, the FeedBackDelay actor
+   will simply produce the token without altering the time stamp.
+   <P>
+   Two parameters - <I>nullDelay</I> and <I>realDelay</I> - are
+   available for determining whether an FeedBackDelay actor
+   increments the time stamp of produced output tokens. The default
+   value of nullDelay (realDelay) is true (false). If the nullDelay
+   (realDelay) parameter is set to true, then the time stamps of
+   NullTokens (real tokens) will be incremented as they pass through
+   this actor.
+   <P>
+   The delay value that is applied (given that one of the above
+   parameters is true) is determined by the setDelay() and getDelay()
+   methods. More elaborate delay values can be made available by
+   overriding the getDelay() method in derived classes.
+   <P>
+   FeedBackDelay actors are effective for preventing Zeno conditions
+   involving cycles of null tokens. If a DDE model has a feedback
+   topology, a FeedBackDelay actor should be added into the feedback loop.
+   <P>
+   The delay value of a FeedBackDelay actor must be wisely chosen. The
+   delay value should be smaller than any other successive time stamp
+   increment found in a given DDE model. This means that if a particular
+   model might have any two time stamps with time difference delta, then
+   the delay value should be smaller than delta.
 
-@author John S. Davis II
-@version $Id$
-@since Ptolemy II 0.4
-@see ptolemy.domains.dde.kernel.NullToken
+   @author John S. Davis II
+   @version $Id$
+   @since Ptolemy II 0.4
+   @see ptolemy.domains.dde.kernel.NullToken
 */
 public class FeedBackDelay extends DDEActor {
 

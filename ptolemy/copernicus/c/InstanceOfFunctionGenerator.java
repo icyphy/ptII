@@ -1,29 +1,29 @@
 /* A class that generates code that performs lookup operations to implement
    the "instanceof" operator.
 
- Copyright (c) 2003-2004 The University of Maryland.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The University of Maryland.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (ankush@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
+   @ProposedRating Red (ankush@eng.umd.edu)
+   @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.copernicus.c;
@@ -35,14 +35,14 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// InstanceOfFunctionGenerator
 /**
-A class that generates code that performs lookup operations to implement
-the "instanceof" operator. It generates a function for each class C that
-takes the argument as the hashNumber corresponding to some class/interface
-A and returns 1 if C is an instance of A.
+   A class that generates code that performs lookup operations to implement
+   the "instanceof" operator. It generates a function for each class C that
+   takes the argument as the hashNumber corresponding to some class/interface
+   A and returns 1 if C is an instance of A.
 
-@author Ankush Varma
-@version $Id$
-@since Ptolemy II 2.0
+   @author Ankush Varma
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class InstanceOfFunctionGenerator {
 
@@ -124,7 +124,7 @@ public class InstanceOfFunctionGenerator {
     private String _generateMethodDeclaration(SootClass source) {
         StringBuffer code = new StringBuffer();
         code.append(_comment("Method that provides \"instanceof\" lookups for "
-                + source.getName())
+                            + source.getName())
                 + _comment("Returns 1 if the given number corresponds "
                         + "to an implemented interface or a superclass."));
         String methodName = "instanceOf";

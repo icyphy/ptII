@@ -1,28 +1,28 @@
 /* A tableau for controlling code generation.
 
- Copyright (c) 2000-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2000-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -75,11 +75,11 @@ import ptolemy.util.MessageHandler;
 //////////////////////////////////////////////////////////////////////////
 //// GeneratorTableau
 /**
-A tableau that creates a new control panel for code generation.
+   A tableau that creates a new control panel for code generation.
 
-@author Shuvra Bhattacharyya, Edward A. Lee, Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0
+   @author Shuvra Bhattacharyya, Edward A. Lee, Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class GeneratorTableau extends Tableau {
 
@@ -168,7 +168,7 @@ public class GeneratorTableau extends Tableau {
             caveatsPanel.setBorder(
                     BorderFactory.createEmptyBorder(5, 0, 0, 0));
             caveatsPanel.setLayout(new BoxLayout(caveatsPanel,
-                    BoxLayout.X_AXIS));
+                                           BoxLayout.X_AXIS));
             JTextArea messageArea = new JTextArea(
                     "NOTE: This is a highly preliminary "
                     + "code generator facility, with many "
@@ -350,7 +350,7 @@ public class GeneratorTableau extends Tableau {
 
                             // FIXME: Above is asynchronous: Do in listener?
                             exec.updateStatusBar("Code generation "
-                                        + "complete.");
+                                    + "complete.");
                         } catch (Exception ex) {
                             MessageHandler.error("Code generation failed.",
                                     ex);
@@ -442,12 +442,12 @@ public class GeneratorTableau extends Tableau {
             // Generate the command to run copernicus.
             results.add(
                     Copernicus.substitute(
-                           "ptolemy/copernicus/gui/compileCommandTemplate.txt",
-                           generatorAttribute));
+                            "ptolemy/copernicus/gui/compileCommandTemplate.txt",
+                            generatorAttribute));
 
             // Replace the original modelPath.
             generatorAttribute.sanityCheckAndUpdateParameters(
-                   ((GeneratorFrame)getFrame()).getEffigy().uri.getURI().toString());
+                    ((GeneratorFrame)getFrame()).getEffigy().uri.getURI().toString());
 
         } catch (Exception ex) {
             throw new InternalErrorException(model, ex,

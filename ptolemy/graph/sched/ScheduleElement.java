@@ -1,28 +1,28 @@
 /* An abstract base class for a schedule element.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating red (shahrooz@eng.umd.edu)
 @AcceptedRating red (ssb@eng.umd.edu)
@@ -37,32 +37,32 @@ import java.util.Map;
 //////////////////////////////////////////////////////////////////////////
 //// ScheduleElement
 /**
-This is an abstract base class for a schedule element. Instances of the
-Schedule and Firing subclasses are used to construct a schedule(static or
-dynamic).
-A Schedule can be thought of as a structure that consists of an iteration
-count and a list of ScheduleElements. A ScheduleElement can be a
-Firing, or another Schedule. It is usually required that,
-all of the lowest-level ScheduleElements are Firings. It is
-up to the scheduler to enforce this, however. The Schedule class is a
-ScheduleElement that is a schedule. Schedules are created by schedule analyses.
-The Firing class is a ScheduleElement that contains a Firing element. Therefore,
-the top-level ScheduleElement must be an instance of Schedule, and all
-of the lowest-level elements must each be instances of Firing.
-<p>
-This base class implements the getIterationCount() and setIterationCount()
-methods, which return and set the iteration count for this schedule element.
-A default value of 1 is used for the iteration count.
+   This is an abstract base class for a schedule element. Instances of the
+   Schedule and Firing subclasses are used to construct a schedule(static or
+   dynamic).
+   A Schedule can be thought of as a structure that consists of an iteration
+   count and a list of ScheduleElements. A ScheduleElement can be a
+   Firing, or another Schedule. It is usually required that,
+   all of the lowest-level ScheduleElements are Firings. It is
+   up to the scheduler to enforce this, however. The Schedule class is a
+   ScheduleElement that is a schedule. Schedules are created by schedule analyses.
+   The Firing class is a ScheduleElement that contains a Firing element. Therefore,
+   the top-level ScheduleElement must be an instance of Schedule, and all
+   of the lowest-level elements must each be instances of Firing.
+   <p>
+   This base class implements the getIterationCount() and setIterationCount()
+   methods, which return and set the iteration count for this schedule element.
+   A default value of 1 is used for the iteration count.
 
-@author Shahrooz Shahparnia, Mingyung Ko
-University of Maryland at College Park, based on a file by
-Brian K. Vogel, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 4.0
-@see ptolemy.graph.sched.Firing
-@see ptolemy.graph.sched.Schedule
-@see ptolemy.graph.sched.ScheduleElement
-@see ptolemy.graph.sched.ScheduleAnalysis
+   @author Shahrooz Shahparnia, Mingyung Ko
+   University of Maryland at College Park, based on a file by
+   Brian K. Vogel, Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
+   @see ptolemy.graph.sched.Firing
+   @see ptolemy.graph.sched.Schedule
+   @see ptolemy.graph.sched.ScheduleElement
+   @see ptolemy.graph.sched.ScheduleAnalysis
 */
 
 public abstract class ScheduleElement {
@@ -117,7 +117,7 @@ public abstract class ScheduleElement {
      *  underlying schedule structure is modified while the iterator
      *  is active.
      */
-     public abstract Iterator firingElementIterator();
+    public abstract Iterator firingElementIterator();
 
     /** Return the firing invocation sequence in the form
      *  of a sequence of firings. All of the lowest-level nodes

@@ -1,35 +1,35 @@
 /*
-A class that extracts ordered lists of method declarations
-with an ordering convention that facilitates translation
-of methods into function pointers (e.g., for C code generation).
+  A class that extracts ordered lists of method declarations
+  with an ordering convention that facilitates translation
+  of methods into function pointers (e.g., for C code generation).
 
-Copyright (c) 2001-2004 The University of Maryland.
-All rights reserved.
+  Copyright (c) 2001-2004 The University of Maryland.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the above
+  copyright notice and the following two paragraphs appear in all copies
+  of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
 
-@ProposedRating Red (ssb@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
+  @ProposedRating Red (ssb@eng.umd.edu)
+  @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.copernicus.c;
@@ -42,57 +42,57 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /** A class that extracts ordered lists of method declarations
-   with an ordering convention that facilitates translation
-   of methods into function pointers (e.g., for C code generation).
-   <p>
-   Specifically, the class extracts the class initializer method
-   (if present); the list of constructors;
-   the list of all new public
-   and protected methods that are defined
-   for a given class (i.e., new method definitions, excluding definitions
-   that override methods in superclasses); the list of
-   inherited methods; and the list of
-   private methods.  For sub-classes, overridden methods in the
-   inherited methods list are replaced with the overriding definitions.
-   Thus, the inherited methods list is the list of 'active' definitions
-   in the current scope whose declarations originated in superclasses.
-   <p>
-   For example, consider the following class/method combinations:
-   <p>
-   class C1(base class), public methods m1, m2, m3; private method p1
-   <br>
-   class C2(extends C1), public methods m4, m5(overrides m2)
-   <br>
-   class C3 (extends C2), public methods m6, m7; private methods p1, p2
-   <p>
-   Then the inherited methods list generated for C3 is
-   <p>
-       m1, m5, m3, m4;
-   <p>
-   the private list generated for C3 is
-   <p>
-       p1, p2;
-   <p>
-   the inherited methods list generated for C2 is
-   <p>
-       m1, m5, m3;
-   <p>
-   and the new methods list generated for C2 is
-   <p>
-       m4.
-   <p>
-   If function pointers are declared according to these orderings
-   in the translated type definitions associated with C1, C2, and C3,
-   then virtual functions can be implemented correctly.
-   <p>
-   The lists constructed by this class are lists of method declarations.
-   That is, each element is of type SootMethod.
+    with an ordering convention that facilitates translation
+    of methods into function pointers (e.g., for C code generation).
+    <p>
+    Specifically, the class extracts the class initializer method
+    (if present); the list of constructors;
+    the list of all new public
+    and protected methods that are defined
+    for a given class (i.e., new method definitions, excluding definitions
+    that override methods in superclasses); the list of
+    inherited methods; and the list of
+    private methods.  For sub-classes, overridden methods in the
+    inherited methods list are replaced with the overriding definitions.
+    Thus, the inherited methods list is the list of 'active' definitions
+    in the current scope whose declarations originated in superclasses.
+    <p>
+    For example, consider the following class/method combinations:
+    <p>
+    class C1(base class), public methods m1, m2, m3; private method p1
+    <br>
+    class C2(extends C1), public methods m4, m5(overrides m2)
+    <br>
+    class C3 (extends C2), public methods m6, m7; private methods p1, p2
+    <p>
+    Then the inherited methods list generated for C3 is
+    <p>
+    m1, m5, m3, m4;
+    <p>
+    the private list generated for C3 is
+    <p>
+    p1, p2;
+    <p>
+    the inherited methods list generated for C2 is
+    <p>
+    m1, m5, m3;
+    <p>
+    and the new methods list generated for C2 is
+    <p>
+    m4.
+    <p>
+    If function pointers are declared according to these orderings
+    in the translated type definitions associated with C1, C2, and C3,
+    then virtual functions can be implemented correctly.
+    <p>
+    The lists constructed by this class are lists of method declarations.
+    That is, each element is of type SootMethod.
 
-   @author Shuvra S. Bhattacharyya
-   @version $Id$
-   @since Ptolemy II 2.0
+    @author Shuvra S. Bhattacharyya
+    @version $Id$
+    @since Ptolemy II 2.0
 
- */
+*/
 
 public class MethodListGenerator {
 
@@ -216,7 +216,7 @@ public class MethodListGenerator {
                         SootMethod inheritedMethod = (SootMethod)(
                                 inheritedMethods.next());
                         if (method.getSubSignature().equals(
-                                inheritedMethod.getSubSignature())) {
+                                    inheritedMethod.getSubSignature())) {
                             found = true;
                         } else {
                             inheritedMethodIndex++;

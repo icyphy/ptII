@@ -146,7 +146,7 @@ public final class SimpleCharStream
         int i;
         try {
             if ((i = inputStream.read(buffer, maxNextCharInd,
-                    available - maxNextCharInd)) == -1)
+                         available - maxNextCharInd)) == -1)
                 {
                     inputStream.close();
                     throw new java.io.IOException();

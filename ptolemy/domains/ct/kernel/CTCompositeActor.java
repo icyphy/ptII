@@ -1,28 +1,28 @@
 /* Composite Actor in the CT domain.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (chf@eecs.berkeley.edu)
 
@@ -40,31 +40,31 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// CTCompositeActor
 /**
-Composite actor in the CT domain. This class is derived from
-TypedCompositeActor and implements the CTStepSizeControlActor interface.
-Normally, in the CT domain, opaque composite actors are not fired
-in every iteration. They are only fired in discrete iterations,
-when there is a possibility of events. Actors that implement
-the CTStepSizeControlActor interface, however, such as this one,
-are fired in every iteration.
-<p>
-The key task of this actor is to implement step-size control methods.
-If the director of this composite actor is an instance of
-CTTransparentDirector, then the CTStepSizeControlActor calls
-will be delegated to its local director. Otherwise, they return
-default values.
-<P>
-This composite actor should be used when a CT subsystem needs to transfer
-its step size control information to the outer domain. Typical usage
-includes CT inside CT or CT inside FSM inside CT.  If you construct
-a modal model, then by default, refinements of the modes are actors
-like this one that implement the CTStepSizeControlActor interface.
+   Composite actor in the CT domain. This class is derived from
+   TypedCompositeActor and implements the CTStepSizeControlActor interface.
+   Normally, in the CT domain, opaque composite actors are not fired
+   in every iteration. They are only fired in discrete iterations,
+   when there is a possibility of events. Actors that implement
+   the CTStepSizeControlActor interface, however, such as this one,
+   are fired in every iteration.
+   <p>
+   The key task of this actor is to implement step-size control methods.
+   If the director of this composite actor is an instance of
+   CTTransparentDirector, then the CTStepSizeControlActor calls
+   will be delegated to its local director. Otherwise, they return
+   default values.
+   <P>
+   This composite actor should be used when a CT subsystem needs to transfer
+   its step size control information to the outer domain. Typical usage
+   includes CT inside CT or CT inside FSM inside CT.  If you construct
+   a modal model, then by default, refinements of the modes are actors
+   like this one that implement the CTStepSizeControlActor interface.
 
-@author  Jie Liu
-@version $Id$
-@since Ptolemy II 0.2
-@see CTStepSizeControlActor
-@see CTTransparentDirector
+   @author  Jie Liu
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see CTStepSizeControlActor
+   @see CTTransparentDirector
 */
 public class CTCompositeActor extends TypedCompositeActor
     implements CTEventGenerator, CTStepSizeControlActor {

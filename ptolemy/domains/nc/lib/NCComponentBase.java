@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -45,16 +45,16 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// NCComponentBase
 /**
-Base class for nesC component classes.  These are classes with source
-code defined in a .nc file intended for use with TinyOS to program
-the Berkeley Motes.  This class provides a parameter <i>source</i>
-that is used to identify the nesC source file. It works in conjunction
-with the NCComponent MoML class, which attaches a tableau factory
-so that look inside will open the nesC source file.
+   Base class for nesC component classes.  These are classes with source
+   code defined in a .nc file intended for use with TinyOS to program
+   the Berkeley Motes.  This class provides a parameter <i>source</i>
+   that is used to identify the nesC source file. It works in conjunction
+   with the NCComponent MoML class, which attaches a tableau factory
+   so that look inside will open the nesC source file.
 
-@author Elaine Cheong, Edward A. Lee, Yang Zhao
-@version $Id$
-@since Ptolemy II 4.0
+   @author Elaine Cheong, Edward A. Lee, Yang Zhao
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class NCComponentBase extends AtomicActor {
 
@@ -71,7 +71,7 @@ public class NCComponentBase extends AtomicActor {
             _init();
         } catch (KernelException e) {
             throw new InternalErrorException(
-            "Error constructing parameters of NCComponentBase.");
+                    "Error constructing parameters of NCComponentBase.");
         }
     }
 

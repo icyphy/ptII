@@ -1,28 +1,28 @@
 /* Base class for graph controllers for objects that can have icons.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -61,13 +61,13 @@ import diva.gui.toolbox.FigureIcon;
 //////////////////////////////////////////////////////////////////////////
 //// WithIconGraphController
 /**
-A base class for Ptolemy II graph controllers for objects that can have
-icons. This adds to the base class the context menu items "Edit Custom Icon"
-and "Remove Custom Icon".  This also adds a port controller.
+   A base class for Ptolemy II graph controllers for objects that can have
+   icons. This adds to the base class the context menu items "Edit Custom Icon"
+   and "Remove Custom Icon".  This also adds a port controller.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public abstract class WithIconGraphController extends BasicGraphController {
 
@@ -132,14 +132,14 @@ public abstract class WithIconGraphController extends BasicGraphController {
 
     /** The edit custom icon action. */
     protected static EditIconAction _editIconAction
-            = new EditIconAction();
+    = new EditIconAction();
 
     /** The port controller. */
     protected NamedObjController _portController;
 
     /** The remove custom icon action. */
     protected static RemoveIconAction _removeIconAction
-            = new RemoveIconAction();
+    = new RemoveIconAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -252,8 +252,8 @@ public abstract class WithIconGraphController extends BasicGraphController {
             final NamedObj toplevel = graphModel.getPtolemyModel();
             if (!(toplevel instanceof Entity)) {
                 throw new InternalErrorException(
-                "Cannot invoke NewPortAction on an object " +
-                "that is not an instance of Entity.");
+                        "Cannot invoke NewPortAction on an object " +
+                        "that is not an instance of Entity.");
             }
             final String portName = toplevel.uniqueName("port");
             final String locationName = "_location";
@@ -277,26 +277,26 @@ public abstract class WithIconGraphController extends BasicGraphController {
 
             MoMLChangeRequest request =
                 new MoMLChangeRequest(this, toplevel, moml.toString()) {
-                        protected void _execute() throws Exception {
-                            super._execute();
+                    protected void _execute() throws Exception {
+                        super._execute();
 
-                            // Set the location of the icon.
-                            // Note that this really needs to be done after
-                            // the change request has succeeded, which is why
-                            // it is done here.  When the graph controller
-                            // gets around to handling this, it will draw
-                            // the icon at this location.
-                            // NOTE: The cast is safe because it is checked
-                            // above, and presumably a reasonable GUI would
-                            // provide no mechanism for creating a port on
-                            // something that is not an entity.
-                            NamedObj newObject =
-                                ((Entity)toplevel).getPort(portName);
-                            Location location =
-                                (Location) newObject.getAttribute(locationName);
-                            location.setLocation(point);
-                        }
-                    };
+                        // Set the location of the icon.
+                        // Note that this really needs to be done after
+                        // the change request has succeeded, which is why
+                        // it is done here.  When the graph controller
+                        // gets around to handling this, it will draw
+                        // the icon at this location.
+                        // NOTE: The cast is safe because it is checked
+                        // above, and presumably a reasonable GUI would
+                        // provide no mechanism for creating a port on
+                        // something that is not an entity.
+                        NamedObj newObject =
+                            ((Entity)toplevel).getPort(portName);
+                        Location location =
+                            (Location) newObject.getAttribute(locationName);
+                        location.setLocation(point);
+                    }
+                };
             request.setUndoable(true);
             toplevel.requestChange(request);
             try {

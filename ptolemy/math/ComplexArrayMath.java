@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (ctsay@eecs.berkeley.edu)
 @AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
@@ -35,16 +35,16 @@ package ptolemy.math;
 //////////////////////////////////////////////////////////////////////////
 //// ComplexArrayMath
 /**
-This class a provides a library for mathematical operations on arrays of
-complex numbers, in particular arrays of instances of class
-ptolemy.math.Complex.
-Unless explicitly noted otherwise, all array arguments are assumed to be
-non-null. If a null array is passed to a method, a NullPointerException
-will be thrown in the method or called methods.
+   This class a provides a library for mathematical operations on arrays of
+   complex numbers, in particular arrays of instances of class
+   ptolemy.math.Complex.
+   Unless explicitly noted otherwise, all array arguments are assumed to be
+   non-null. If a null array is passed to a method, a NullPointerException
+   will be thrown in the method or called methods.
 
-@author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
-@version $Id$
-@since Ptolemy II 0.3
+   @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
+   @version $Id$
+   @since Ptolemy II 0.3
 */
 public class ComplexArrayMath {
 
@@ -646,7 +646,7 @@ public class ComplexArrayMath {
             if (roots.length > 1) {
                 for (int i = 1; i < roots.length; i++) {
                     Complex[] factor =
-                    {new Complex(1), roots[i].negate()};
+                        {new Complex(1), roots[i].negate()};
                     result = SignalProcessing.convolve(result, factor);
                 }
             }

@@ -1,28 +1,28 @@
 /* The controller for the 2-D helicopter.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
@@ -44,57 +44,57 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ControllerActor
 /**
-The controller for the helicopter. It has the form:
-<pre><code>
-    +-         -+         +-    +-  -+ -+
-    | dddTm/dttt|         |     | Vx |  |
-    |           | = inv(K)|-b + |    |  |
-    |    dA/dt  |         |     | Vz |  |
-    +-         -+         +-    +-  -+ -+
-</code></pre>
-where
-<pre><code>
-          [kInv11 kInv12]
-inv(K) =  [             ]
-          [kInv21 kInv22]
-and
-kInv11 = ((MM*TM*Sin[th])/(Iy*m) + (hM*TM^2*Cos[a]*Sin[th])/(Iy*m))/
+   The controller for the helicopter. It has the form:
+   <pre><code>
+   +-         -+         +-    +-  -+ -+
+   | dddTm/dttt|         |     | Vx |  |
+   |           | = inv(K)|-b + |    |  |
+   |    dA/dt  |         |     | Vz |  |
+   +-         -+         +-    +-  -+ -+
+   </code></pre>
+   where
+   <pre><code>
+   [kInv11 kInv12]
+   inv(K) =  [             ]
+   [kInv21 kInv22]
+   and
+   kInv11 = ((MM*TM*Sin[th])/(Iy*m) + (hM*TM^2*Cos[a]*Sin[th])/(Iy*m))/
    ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
-     (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
+   (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
 
-kInv12 = (-((MM*TM*Cos[th])/(Iy*m)) - (hM*TM^2*Cos[a]*Cos[th])/(Iy*m))/
+   kInv12 = (-((MM*TM*Cos[th])/(Iy*m)) - (hM*TM^2*Cos[a]*Cos[th])/(Iy*m))/
    ((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
-     (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
+   (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2))
 
-kInv21 = Cos[th]/
+   kInv21 = Cos[th]/
    (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
-       (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
+   (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
 
-kInv22 = Sin[th]/
+   kInv22 = Sin[th]/
    (m*((MM*TM*Cos[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Cos[th]^2)/(Iy*m^2) +
-       (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
+   (MM*TM*Sin[th]^2)/(Iy*m^2) + (hM*TM^2*Cos[a]*Sin[th]^2)/(Iy*m^2)))
 
-    [b1]
-b = [  ]
-    [b2]
+   [b1]
+   b = [  ]
+   [b2]
 
-b1 = (3*DDotTM*Dotth*Cos[th])/m - (Dotth^3*TM*Cos[th])/m +
+   b1 = (3*DDotTM*Dotth*Cos[th])/m - (Dotth^3*TM*Cos[th])/m +
    (DotTM*hM*TM*Cos[th]*Sin[a])/(Iy*m) +
    (3*DotTM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) -
    (3*Dotth^2*DotTM*Sin[th])/m -
    (3*Dotth*TM*(a*MM + hM*TM*Sin[a])*Sin[th])/(Iy*m)
 
-b2 = (3*Dotth^2*DotTM*Cos[th])/m +
+   b2 = (3*Dotth^2*DotTM*Cos[th])/m +
    (3*Dotth*TM*Cos[th]*(a*MM + hM*TM*Sin[a]))/(Iy*m) +
    (3*DDotTM*Dotth*Sin[th])/m - (Dotth^3*TM*Sin[th])/m +
    (DotTM*hM*TM*Sin[a]*Sin[th])/(Iy*m) +
    (3*DotTM*(a*MM + hM*TM*Sin[a])*Sin[th])/(Iy*m)
-</pre>
-The input of the actors are Tm, DTm, DDTm, A, Th, DTh, Vx, and Vz
-The outputs are DDDTm, and DA
-@author  Jie Liu
-@version $Id$
-@since Ptolemy II 0.4
+   </pre>
+   The input of the actors are Tm, DTm, DDTm, A, Th, DTh, Vx, and Vz
+   The outputs are DDDTm, and DA
+   @author  Jie Liu
+   @version $Id$
+   @since Ptolemy II 0.4
 
 */
 public class ControllerActor extends TypedAtomicActor

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -45,23 +45,23 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIPhase
 /**
-Output the phase of a complex image.  This actor assumes that the
-image inputted has an even number of bands, where each pair of bands
-(0 and 1, 2 and 3, etc.) correspond to a real-imaginary pair.
+   Output the phase of a complex image.  This actor assumes that the
+   image inputted has an even number of bands, where each pair of bands
+   (0 and 1, 2 and 3, etc.) correspond to a real-imaginary pair.
 
-<p>The output of this actor may not be suitable for display because of the
-high resolution of the data.  To display or save the output of this
-image, use the {@link JAIDataConvert} actor to cast the data to an appropriate
-type (for instance, byte).  For images with non-floating point data,
-the theoretical output range of -pi to pi, gets mapped to 0 to
-MAX_VALUE, where MAX_VALUE is the largest representable number of the
-data type.  If the input is floating point data, then it returns the
-value given by java.lang.math.atan2().
+   <p>The output of this actor may not be suitable for display because of the
+   high resolution of the data.  To display or save the output of this
+   image, use the {@link JAIDataConvert} actor to cast the data to an appropriate
+   type (for instance, byte).  For images with non-floating point data,
+   the theoretical output range of -pi to pi, gets mapped to 0 to
+   MAX_VALUE, where MAX_VALUE is the largest representable number of the
+   data type.  If the input is floating point data, then it returns the
+   value given by java.lang.math.atan2().
 
-@see JAIDataConvert
-@author James Yeh
-@version $Id$
-@since Ptolemy II 3.1p
+   @see JAIDataConvert
+   @author James Yeh
+   @version $Id$
+   @since Ptolemy II 3.1p
 */
 public class JAIPhase extends Transformer {
 

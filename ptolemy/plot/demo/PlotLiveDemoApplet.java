@@ -24,8 +24,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating red (eal@eecs.berkeley.edu)
 @AcceptedRating red (cxh@eecs.berkeley.edu)
 */
@@ -39,11 +39,11 @@ import ptolemy.plot.PlotLiveApplet;
 //// PlotLiveDemoApplet
 
 /**
-An Applet that demonstrates the PlotLiveDemo class.
+   An Applet that demonstrates the PlotLiveDemo class.
 
-@author Edward A. Lee, Christopher Hylands
-@version $Id$
-@since Ptolemy II 0.2
+   @author Edward A. Lee, Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class PlotLiveDemoApplet extends PlotLiveApplet {
 

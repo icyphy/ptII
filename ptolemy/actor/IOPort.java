@@ -1,28 +1,28 @@
 /* A port supporting message passing.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
@@ -31,9 +31,9 @@ Review broadcast/get/send/hasRoom/hasToken.
 Review setInput/setOutput/setMultiport.
 Review isKnown/broadcastClear/sendClear.
 createReceivers creates inside receivers based solely on insideWidth, and
-   outsideReceivers based solely on outside width.
+outsideReceivers based solely on outside width.
 connectionsChanged: no longer validates the attributes of this port.  This is
-   now done in Manager.initialize().
+now done in Manager.initialize().
 Review sendInside, getInside, getWidthInside, transferInputs/Outputs, etc.
 */
 
@@ -65,63 +65,63 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// IOPort
 /**
-This class supports exchanging data between entities via message passing.
-It can serve as an input port, an output port, or both. If it is an
-input port, then it contains some number of receivers, which are
-responsible for receiving data from remote entities. If it is an
-output port, then it can send data to remote receivers.
-<p>
-Its receivers are created by a director.  It must therefore be
-contained by an actor that has a director.  If it is not, then
-any attempt to read data or list the receivers will trigger
-an exception.
-<p>
-If this port is at the boundary of an composite actor,
-then it can have both inside and outside links, with corresponding
-inside and outside receivers if it opaque. The inside links are to relations
-inside the opaque composite actor, whereas the outside links are
-to relations outside. If it is not specified, then a link is an
-outside link.
-<p>
-The port has a <i>width</i>, which by default is constrained to
-be either zero or one.
-The width is the sum of the widths of the linked relations.
-A port with a width greater than one behaves as a bus interface,
-so if the width is <i>w</i>, then the port can simultaneously
-handle <i>w</i> distinct input or output channels of data.
-<p>
-In general, an input port might have more than one receiver for
-each channel.  This occurs particularly for transparent input ports,
-which treat the receivers of the ports linked on the inside as its own.
-This might also occur for opaque ports in some derived classes.
-Each receiver in the group is sent the same data. Thus, an input port in
-general will have <i>w</i> distinct groups of receivers, and can receive
-<i>w</i> distinct channels.
-<p>
-By default, the maximum width of the port is one, so only one
-channel is handled. A port that allows a width greater than one
-is called a <i>multiport</i>. Calling setMultiport() with a
-<i>true</i> argument converts the port to a multiport.
-<p>
-The width of the port is not set directly. It is the sum of the
-widths of the relations that the port is linked to on the outside.
-The sum of the widths of the relations linked on the inside can be
-more or less than the width.  If it is more, then the excess inside relations
-will be treated as if they are unconnected.  If it is less, then the
-excess outside relations will be treated as if they are unconnected.
-<p>
-An IOPort can only link to instances of IORelation. Derived classes
-may further constrain links to a subclass of IORelation.  To do this,
-they should override the protected methods _checkLink() and _checkLiberalLink()
-to throw an exception if their arguments are not of the appropriate
-type.  Similarly, an IOPort can only be contained by a class
-derived from ComponentEntity and implementing the Actor interface.
-Subclasses may further constrain the containers by overriding
-the protected method _checkContainer().
+   This class supports exchanging data between entities via message passing.
+   It can serve as an input port, an output port, or both. If it is an
+   input port, then it contains some number of receivers, which are
+   responsible for receiving data from remote entities. If it is an
+   output port, then it can send data to remote receivers.
+   <p>
+   Its receivers are created by a director.  It must therefore be
+   contained by an actor that has a director.  If it is not, then
+   any attempt to read data or list the receivers will trigger
+   an exception.
+   <p>
+   If this port is at the boundary of an composite actor,
+   then it can have both inside and outside links, with corresponding
+   inside and outside receivers if it opaque. The inside links are to relations
+   inside the opaque composite actor, whereas the outside links are
+   to relations outside. If it is not specified, then a link is an
+   outside link.
+   <p>
+   The port has a <i>width</i>, which by default is constrained to
+   be either zero or one.
+   The width is the sum of the widths of the linked relations.
+   A port with a width greater than one behaves as a bus interface,
+   so if the width is <i>w</i>, then the port can simultaneously
+   handle <i>w</i> distinct input or output channels of data.
+   <p>
+   In general, an input port might have more than one receiver for
+   each channel.  This occurs particularly for transparent input ports,
+   which treat the receivers of the ports linked on the inside as its own.
+   This might also occur for opaque ports in some derived classes.
+   Each receiver in the group is sent the same data. Thus, an input port in
+   general will have <i>w</i> distinct groups of receivers, and can receive
+   <i>w</i> distinct channels.
+   <p>
+   By default, the maximum width of the port is one, so only one
+   channel is handled. A port that allows a width greater than one
+   is called a <i>multiport</i>. Calling setMultiport() with a
+   <i>true</i> argument converts the port to a multiport.
+   <p>
+   The width of the port is not set directly. It is the sum of the
+   widths of the relations that the port is linked to on the outside.
+   The sum of the widths of the relations linked on the inside can be
+   more or less than the width.  If it is more, then the excess inside relations
+   will be treated as if they are unconnected.  If it is less, then the
+   excess outside relations will be treated as if they are unconnected.
+   <p>
+   An IOPort can only link to instances of IORelation. Derived classes
+   may further constrain links to a subclass of IORelation.  To do this,
+   they should override the protected methods _checkLink() and _checkLiberalLink()
+   to throw an exception if their arguments are not of the appropriate
+   type.  Similarly, an IOPort can only be contained by a class
+   derived from ComponentEntity and implementing the Actor interface.
+   Subclasses may further constrain the containers by overriding
+   the protected method _checkContainer().
 
-@author Edward A. Lee, Jie Liu, Neil Smyth, Lukito Muliadi
-@version $Id$
-@since Ptolemy II 0.2
+   @author Edward A. Lee, Jie Liu, Neil Smyth, Lukito Muliadi
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class IOPort extends ComponentPort {
 
@@ -1632,7 +1632,7 @@ public class IOPort extends ComponentPort {
             _workspace.getReadAccess();
             Nameable container = getContainer();
             if (!(container instanceof CompositeActor && isInput()
-                    && isOpaque())) {
+                        && isOpaque())) {
                 // Return an empty list, since this port cannot send data
                 // to the inside.
                 return new LinkedList();
@@ -1673,7 +1673,7 @@ public class IOPort extends ComponentPort {
             _workspace.getReadAccess();
             Nameable container = getContainer();
             if (!(container instanceof CompositeActor && isOutput()
-                    && isOpaque())) {
+                        && isOpaque())) {
                 // Return an empty list, since this port cannot receive data
                 // from the inside.
                 return new LinkedList();

@@ -1,28 +1,28 @@
 /* The type of base token classes.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (yuhong@eecs.berkeley.edu)
 @AcceptedRating Red
@@ -55,12 +55,12 @@ import java.util.Map;
 //////////////////////////////////////////////////////////////////////////
 //// BaseType
 /**
-The type of base token classes. This class provides a type safe
-enumeration of base types.
+   The type of base token classes. This class provides a type safe
+   enumeration of base types.
 
-@author Yuhong Xiong, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 0.4
+   @author Yuhong Xiong, Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.4
 */
 
 public abstract class BaseType implements Type, Serializable {
@@ -374,19 +374,19 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final ObjectType OBJECT = new ObjectType();
 
-         /** The XmlToken data type */
-        public static class XmlTokenType extends BaseType {
-                private XmlTokenType() {
-                        super(XMLToken.class, "xmltoken");
-                }
-                public Token convert(Token t) throws IllegalActionException {
-                        return XMLToken.convert(t);
-                }
-                public int getTypeHash() {
-                        return 8;
-                }
+    /** The XmlToken data type */
+    public static class XmlTokenType extends BaseType {
+        private XmlTokenType() {
+            super(XMLToken.class, "xmltoken");
         }
-        public static final XmlTokenType XMLTOKEN = new XmlTokenType();
+        public Token convert(Token t) throws IllegalActionException {
+            return XMLToken.convert(t);
+        }
+        public int getTypeHash() {
+            return 8;
+        }
+    }
+    public static final XmlTokenType XMLTOKEN = new XmlTokenType();
 
     /** The scalar data type: The least upper bound of all the scalar types. */
     public static class ScalarType extends BaseType {

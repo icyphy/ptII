@@ -1,28 +1,28 @@
 /* Filter actors for port class changes.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (hyzheng@eecs.berkeley.edu)
 @AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 
@@ -40,14 +40,14 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// PortClassChanges
 /** When this class is registered with the MoMLParser.setMoMLFilter()
-method, it will cause MoMLParser to filter so that models from
-earlier releases will run in the current release.
+    method, it will cause MoMLParser to filter so that models from
+    earlier releases will run in the current release.
 
-<p>This class will filter for actors that have had port name changes
+    <p>This class will filter for actors that have had port name changes
 
-@author Haiyang Zheng
-@version $Id$
-@since Ptolemy II 4.0
+    @author Haiyang Zheng
+    @version $Id$
+    @since Ptolemy II 4.0
 */
 public class PortClassChanges implements MoMLFilter {
 
@@ -109,7 +109,7 @@ public class PortClassChanges implements MoMLFilter {
                 _portMap = (HashMap) _actorsWithPortClassChanges
                     .get(attributeValue);
             } else if ( _foundPort && _lastNameSeen.equals(_portName)
-                && _classMap.containsKey(attributeValue)) {
+                    && _classMap.containsKey(attributeValue)) {
                 // We found the port.
                 // We use the new class to replace the old class.
                 String newClass = (String)_classMap.get(attributeValue);
@@ -164,7 +164,7 @@ public class PortClassChanges implements MoMLFilter {
                     String oldClass = (String) classChanges.next();
                     String newClass = (String) classMap.get(oldClass);
                     results.append("\t\t" + oldClass
-                        + "\t -> " + newClass + "\n");
+                            + "\t -> " + newClass + "\n");
                 }
             }
         }
@@ -203,20 +203,20 @@ public class PortClassChanges implements MoMLFilter {
         // Actors with port class changes.
         _actorsWithPortClassChanges = new HashMap();
 
-       // VariableDelay: delay is now a ParameterPort,
+        // VariableDelay: delay is now a ParameterPort,
         // not a DEIOPort.
         HashMap variableDelayPorts = new HashMap();
         HashMap portChanges = new HashMap();
 
         variableDelayPorts.put(
-            "ptolemy.domains.de.kernel.DEIOPort",
-            "ptolemy.actor.parameters.ParameterPort");
+                "ptolemy.domains.de.kernel.DEIOPort",
+                "ptolemy.actor.parameters.ParameterPort");
 
         portChanges.put("delay", variableDelayPorts);
 
         _actorsWithPortClassChanges
             .put("ptolemy.domains.de.lib.VariableDelay",
-                portChanges);
+                    portChanges);
 
     }
 }

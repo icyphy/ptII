@@ -1,28 +1,28 @@
 /* A CT director that utilizes multiple ODE solvers.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Green (chf@eecs.berkeley.edu)
 
@@ -51,50 +51,50 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// CTMultiSolverDirector
 /**
-A CTDirector that uses multiple ODE solvers. The reason for switching
-solvers is that when abrupt changes in signals or actor functions
-(also called breakpoints) occur, the state of the system
-has to be recalculated.
-At these points, a special ODE solver, called the "breakpointODESolver"
-is used. The simulation is executed as if the breakpoint is a new
-starting point. Typically, breakpointODESolvers do not advance time.
-<P>
-This director handles both predictable breakpoints, which are breakpoints
-that are registered in the breakpoint table, and unpredictable breakpoints,
-which are breakpoints that are not known before hand.
-<P>
-This director can only be a top-level director. For a CT domain inside
-an opaque composite actor, use CTMixedSignalDirector (if the outer
-domain is discrete) or CTEmbeddedDirector (if the outer domain is
-a CT domain or a HS domain.)
-<P>
-This director recognizes actors that implement the CTStepSizeControlActor
-interface. To adjust step sizes, it polls such actors.  If all are
-content with the current step size, then it attempts to raise the
-step size.  If any is not content, then it reduces the step size.
-If there are no such actors, then it leaves the step size where it is.
-<P>
-This director has two more parameters than the CTDirector base
-class.<BR>
-<UL>
-<LI><I>ODESolver</I>: This is the name of the normal ODE solver
-used in nonbreakpoint iterations.
-<LI><I>breakpointODESolver</I>: This is the name of the ODE solver that
-is used in the iterations just after the breakpoint. The breakpoint
-ODE solvers should not require history information (this property
-is called self-start). The default is
-"ptolemy.domains.ct.kernel.solver.DerivativeResolver"
-If there are Dirac impulses in the system, the
-"ptolemy.domains.ct.kernel.solver.ImpulseBESolver" may give
-a better result.
-<LI>All other parameters are maintained by the CTDirector base class. And the
-two solvers share them.
-<UL>
+   A CTDirector that uses multiple ODE solvers. The reason for switching
+   solvers is that when abrupt changes in signals or actor functions
+   (also called breakpoints) occur, the state of the system
+   has to be recalculated.
+   At these points, a special ODE solver, called the "breakpointODESolver"
+   is used. The simulation is executed as if the breakpoint is a new
+   starting point. Typically, breakpointODESolvers do not advance time.
+   <P>
+   This director handles both predictable breakpoints, which are breakpoints
+   that are registered in the breakpoint table, and unpredictable breakpoints,
+   which are breakpoints that are not known before hand.
+   <P>
+   This director can only be a top-level director. For a CT domain inside
+   an opaque composite actor, use CTMixedSignalDirector (if the outer
+   domain is discrete) or CTEmbeddedDirector (if the outer domain is
+   a CT domain or a HS domain.)
+   <P>
+   This director recognizes actors that implement the CTStepSizeControlActor
+   interface. To adjust step sizes, it polls such actors.  If all are
+   content with the current step size, then it attempts to raise the
+   step size.  If any is not content, then it reduces the step size.
+   If there are no such actors, then it leaves the step size where it is.
+   <P>
+   This director has two more parameters than the CTDirector base
+   class.<BR>
+   <UL>
+   <LI><I>ODESolver</I>: This is the name of the normal ODE solver
+   used in nonbreakpoint iterations.
+   <LI><I>breakpointODESolver</I>: This is the name of the ODE solver that
+   is used in the iterations just after the breakpoint. The breakpoint
+   ODE solvers should not require history information (this property
+   is called self-start). The default is
+   "ptolemy.domains.ct.kernel.solver.DerivativeResolver"
+   If there are Dirac impulses in the system, the
+   "ptolemy.domains.ct.kernel.solver.ImpulseBESolver" may give
+   a better result.
+   <LI>All other parameters are maintained by the CTDirector base class. And the
+   two solvers share them.
+   <UL>
 
-@author  Jie Liu
-@version $Id$
-@since Ptolemy II 0.2
-@see ptolemy.domains.ct.kernel.CTDirector
+   @author  Jie Liu
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see ptolemy.domains.ct.kernel.CTDirector
 */
 public class CTMultiSolverDirector extends CTDirector {
     /** Construct a director in the default workspace with an empty string

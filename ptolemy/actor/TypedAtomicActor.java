@@ -1,28 +1,28 @@
 /* An executable entity whose ports have types.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (cxh@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
@@ -48,27 +48,27 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// TypedAtomicActor
 /**
-A TypedAtomicActor is an AtomicActor whose ports and parameters have types.
-<p>
-The typeConstraintList() method returns the type constraints among
-the contained ports and parameters.  This base class provides a default
-implementation of this method, which should be suitable for most of the
-derived classes.
-<p>
-Derived classes may constrain the container by overriding
-_checkContainer(). The Ports of TypedAtomicActors are constrained to be
-TypedIOPorts.  Derived classes may further constrain the ports by
-overriding the public method newPort() to create a port of the
-appropriate subclass, and the protected method _addPort() to throw an
-exception if its argument is a port that is not of the appropriate
-subclass.
+   A TypedAtomicActor is an AtomicActor whose ports and parameters have types.
+   <p>
+   The typeConstraintList() method returns the type constraints among
+   the contained ports and parameters.  This base class provides a default
+   implementation of this method, which should be suitable for most of the
+   derived classes.
+   <p>
+   Derived classes may constrain the container by overriding
+   _checkContainer(). The Ports of TypedAtomicActors are constrained to be
+   TypedIOPorts.  Derived classes may further constrain the ports by
+   overriding the public method newPort() to create a port of the
+   appropriate subclass, and the protected method _addPort() to throw an
+   exception if its argument is a port that is not of the appropriate
+   subclass.
 
-@author Yuhong Xiong
-@version $Id$
-@since Ptolemy II 0.2
-@see ptolemy.actor.AtomicActor
-@see ptolemy.actor.TypedCompositeActor
-@see ptolemy.actor.TypedIOPort
+   @author Yuhong Xiong
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see ptolemy.actor.AtomicActor
+   @see ptolemy.actor.TypedCompositeActor
+   @see ptolemy.actor.TypedIOPort
 */
 public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
@@ -140,13 +140,13 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  call super.clone(workspace).
      *  @exception CloneNotSupportedException Always thrown.
      */
-     public Object clone() throws CloneNotSupportedException {
-         throw new CloneNotSupportedException("clone() is not supported "
-                 + "in actors, call clone(Workspace workspace) instead. "
-                 + "Sometimes actors are mistakenly written to have a "
-                 + "clone() method instead of a "
-                  + "clone(Workspace workspace) method.");
-     }
+    public Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException("clone() is not supported "
+                + "in actors, call clone(Workspace workspace) instead. "
+                + "Sometimes actors are mistakenly written to have a "
+                + "clone() method instead of a "
+                + "clone(Workspace workspace) method.");
+    }
 
 
     /** Create a new TypedIOPort with the specified name.

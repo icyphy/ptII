@@ -1,28 +1,28 @@
 /* A timed input/output port used in the DDE domain.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (davisj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -42,31 +42,31 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// DDEIOPort
 /**
-A DDEIOPort is a timed input/output port used in the DDE domain.
-DDEIOPorts are used to send tokens between actors, and in so
-doing, associate time with the tokens as they are placed in
-DDEReceivers.
-<P>
-DDEIOPorts are not necessary to facilitate communication between
-actors executing in a DDE model; standard TypedIOPorts are sufficient
-for most communication. DDEIOPorts become useful when the time stamp
-to be associated with an outgoing token is greater than the current
-time of the sending actor.
-<P>
-The designers of models that incorporate DDEIOPorts should be careful
-to make sure that output time stamp ordering information is correct.
-Since the output time stamp of a token being sent through a DDEIOPort
-can be greater then the sending actor's current time, it is possible
-on a subsequent token production to create an outgoing token with
-a time stamp that is greater than the current time but less then the
-previously produced time stamp. In such cases, an
-IllegalArgumentException will be thrown.
+   A DDEIOPort is a timed input/output port used in the DDE domain.
+   DDEIOPorts are used to send tokens between actors, and in so
+   doing, associate time with the tokens as they are placed in
+   DDEReceivers.
+   <P>
+   DDEIOPorts are not necessary to facilitate communication between
+   actors executing in a DDE model; standard TypedIOPorts are sufficient
+   for most communication. DDEIOPorts become useful when the time stamp
+   to be associated with an outgoing token is greater than the current
+   time of the sending actor.
+   <P>
+   The designers of models that incorporate DDEIOPorts should be careful
+   to make sure that output time stamp ordering information is correct.
+   Since the output time stamp of a token being sent through a DDEIOPort
+   can be greater then the sending actor's current time, it is possible
+   on a subsequent token production to create an outgoing token with
+   a time stamp that is greater than the current time but less then the
+   previously produced time stamp. In such cases, an
+   IllegalArgumentException will be thrown.
 
 
-@author John S. Davis II
-@version $Id$
-@since Ptolemy II 0.3
-@see ptolemy.domains.dde.kernel.DDEReceiver
+   @author John S. Davis II
+   @version $Id$
+   @since Ptolemy II 0.3
+   @see ptolemy.domains.dde.kernel.DDEReceiver
 */
 
 public class DDEIOPort extends TypedIOPort {

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -38,26 +38,26 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// BarGraph
 /**
-A bar graph plotter.  This plotter contains an instance of the Plot
-class from the Ptolemy plot package as a public member. Data at
-the input, which can consist of any number of channels, are plotted
-on this instance.  Each input channel is plotted as a separate data set.
-Each input token is an array of doubles.
-<p>
-The <i>iterationsPerUpdate</i> parameter can be used to fine tune
-the display.  It can be quite expensive to generate the display, and
-by default, this actor generates it on every firing.  If
-<i>iterationsPerUpdate</i> is set to some integer greater than
-one, then it specifies how many iterations should be executed
-between updates. Thus, if <i>iterationsPerUpdate</i> = 2, then every
-second time this actor fires, it will update the display. That is,
-it will update its display on the first firing, the third, the
-fifth, etc. It will, however, consume its inputs on every firing.
-The plot is always updated in the wrapup() method.
+   A bar graph plotter.  This plotter contains an instance of the Plot
+   class from the Ptolemy plot package as a public member. Data at
+   the input, which can consist of any number of channels, are plotted
+   on this instance.  Each input channel is plotted as a separate data set.
+   Each input token is an array of doubles.
+   <p>
+   The <i>iterationsPerUpdate</i> parameter can be used to fine tune
+   the display.  It can be quite expensive to generate the display, and
+   by default, this actor generates it on every firing.  If
+   <i>iterationsPerUpdate</i> is set to some integer greater than
+   one, then it specifies how many iterations should be executed
+   between updates. Thus, if <i>iterationsPerUpdate</i> = 2, then every
+   second time this actor fires, it will update the display. That is,
+   it will update its display on the first firing, the third, the
+   fifth, etc. It will, however, consume its inputs on every firing.
+   The plot is always updated in the wrapup() method.
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class BarGraph extends ArrayPlotter {
 

@@ -1,28 +1,28 @@
 /* An actor that wrap a Saber subsystem
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 
@@ -43,16 +43,16 @@ import java.io.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTSaberSubsystem
 /**
-A subsystem implements and simulates in Saber. This is basically a tool
-interface. The basic actor has no input no output. The ports can be added
-by addPort or set the port's container to this actor.
-For each input port, there is one parameter, the varName.
-For each output port, there is one parameter, the nodeId.
-<P>
-Note: This actor is still under modification, and is lack of test,
-please avoid using it.
-@author Jie Liu, William Wu
-@version $Id$
+   A subsystem implements and simulates in Saber. This is basically a tool
+   interface. The basic actor has no input no output. The ports can be added
+   by addPort or set the port's container to this actor.
+   For each input port, there is one parameter, the varName.
+   For each output port, there is one parameter, the nodeId.
+   <P>
+   Note: This actor is still under modification, and is lack of test,
+   please avoid using it.
+   @author Jie Liu, William Wu
+   @version $Id$
 */
 
 public class SaberSubsystem extends TypedAtomicActor
@@ -202,7 +202,7 @@ public class SaberSubsystem extends TypedAtomicActor
                                     line.length());
                             _debug(getFullName() + " gets var value: "+pd);
                             _outtoken[outindex] = new DoubleToken(pd);
-                                //po.broadcast(_outtoken[outindex]);
+                            //po.broadcast(_outtoken[outindex]);
                             _outpvalue.put(po, _outtoken[outindex]);
                             outindex ++;
                         }
@@ -458,29 +458,29 @@ public class SaberSubsystem extends TypedAtomicActor
                 locn = text.indexOf('n', begpt);
                 if ((locn > begpt) && (locn <= endpt)) {
                     number = new Double(text.substring(begpt,
-                            locn)).doubleValue();
+                                                locn)).doubleValue();
                     number *= 0.001*0.001*0.001;
                 } else {
                     locn = text.indexOf('p', begpt);
                     if ((locn > begpt) && (locn <= endpt)) {
                         number = new Double(text.substring(begpt,
-                                locn)).doubleValue();
+                                                    locn)).doubleValue();
                         number *= 0.001*0.001*0.001*0.001;
                     } else {
                         locn = text.indexOf('f', begpt);
                         if ((locn > begpt) && (locn <= endpt)) {
                             number = new Double(text.substring(begpt,
-                                    locn)).doubleValue();
+                                                        locn)).doubleValue();
                             number *= 0.001*0.001*0.001*0.001*0.001;
                         } else {
                             locn = text.indexOf('a', begpt);
                             if ((locn > begpt) && (locn <= endpt)) {
                                 number = new Double(text.substring(begpt,
-                                        locn)).doubleValue();
+                                                            locn)).doubleValue();
                                 number *= 1e-18;
                             } else {
                                 number = new Double(text.substring(begpt,
-                                        endpt)).doubleValue();
+                                                            endpt)).doubleValue();
                             }
                         }
                     }

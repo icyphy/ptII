@@ -1,28 +1,28 @@
 /* Abstract base class for tokens that contain a scalar.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @Pt.AcceptedRating Red (yuhong@eecs.berkeley.edu)
@@ -37,26 +37,26 @@ import java.util.HashMap;
 //////////////////////////////////////////////////////////////////////////
 //// UnitUtilities.
 /**
-A set of manipulation routines that are useful for factoring most of
-the difficulty of dealing with units out of individual token classes.
-Furthermore, having these as static methods which do not depend on
-token classes can improve generated code.  Generally, the methods in this
-class manipulate arrays of integers, where each index in the array
-corresponds to a different category of units, and the value of each
-element in the array corresponds to the factor in that unit.
-Generally, multiplying two tokens adds adds their units, dividing two
-tokens subtracts their units, and adding and subtracting tokens assert that
-the units are the same.
+   A set of manipulation routines that are useful for factoring most of
+   the difficulty of dealing with units out of individual token classes.
+   Furthermore, having these as static methods which do not depend on
+   token classes can improve generated code.  Generally, the methods in this
+   class manipulate arrays of integers, where each index in the array
+   corresponds to a different category of units, and the value of each
+   element in the array corresponds to the factor in that unit.
+   Generally, multiplying two tokens adds adds their units, dividing two
+   tokens subtracts their units, and adding and subtracting tokens assert that
+   the units are the same.
 
-<p> Note that a null units array is considered to be a 'unitless'
-value to reduce memory allocation for tokens that have no units.  In
-other words, the exponent associated with each unit category is zero.
-In general, the methods in this class return null whenever a unitless
-unit array is encountered.
+   <p> Note that a null units array is considered to be a 'unitless'
+   value to reduce memory allocation for tokens that have no units.  In
+   other words, the exponent associated with each unit category is zero.
+   In general, the methods in this class return null whenever a unitless
+   unit array is encountered.
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 0.2
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class UnitUtilities {
 

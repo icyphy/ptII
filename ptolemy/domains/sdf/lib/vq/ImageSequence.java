@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @AcceptedRating Red
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 */
@@ -47,32 +47,32 @@ import java.net.URL;
 //////////////////////////////////////////////////////////////////////////
 //// ImageSequence
 /**
-Load a sequence of binary images from files, and create a sequence of
-IntMatrixTokens from them.  The data is assumed to row scanned, starting
-at the top row.  Each byte of the binary file is assumed to be the
-greyscale intensity of a single pixel in the image.
-<p>
-The files to be loaded are specified as relative URLs from the base URL path.
-Usually the base path should be set to the root ptolemy classpath.
-The file names are created by replacing *'s in the filename with consecutive
-integers (using zero padding).  For example, specifying a URLtemplate of
-"missa***.qcf" and a starting frame of
-zero, will create the names:
-<ul>
-<li>missa000.qcf
-<li>missa001.qcf
-<li>missa002.qcf
-<li>...
-</ul>
-The name manufacturing algorithm is not especially robust, so
-debug listeners attached to this actor will receive a list of the file names.
+   Load a sequence of binary images from files, and create a sequence of
+   IntMatrixTokens from them.  The data is assumed to row scanned, starting
+   at the top row.  Each byte of the binary file is assumed to be the
+   greyscale intensity of a single pixel in the image.
+   <p>
+   The files to be loaded are specified as relative URLs from the base URL path.
+   Usually the base path should be set to the root ptolemy classpath.
+   The file names are created by replacing *'s in the filename with consecutive
+   integers (using zero padding).  For example, specifying a URLtemplate of
+   "missa***.qcf" and a starting frame of
+   zero, will create the names:
+   <ul>
+   <li>missa000.qcf
+   <li>missa001.qcf
+   <li>missa002.qcf
+   <li>...
+   </ul>
+   The name manufacturing algorithm is not especially robust, so
+   debug listeners attached to this actor will receive a list of the file names.
 
-This actor could be greatly expanded to use the Java Advanced Imaging API
-for loading images.
+   This actor could be greatly expanded to use the Java Advanced Imaging API
+   for loading images.
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 0.2
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class ImageSequence extends Source {
 

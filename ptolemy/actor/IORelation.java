@@ -1,28 +1,28 @@
 /* Relation supporting message passing.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (davisj@eecs.berkeley.edu)
@@ -55,35 +55,35 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// IORelation
 /**
-This class mediates connections between ports that can send data to
-one another via message passing. One purpose of this relation is to
-ensure that IOPorts are only connected to IOPorts. A second purpose
-is to support the notion of a <i>width</i> to represent something
-like a bus. By default an IORelation is not a bus, which means that
-its width can only be zero or one. Calling setWidth() with
-an argument larger than one makes the relation a bus of fixed width.
-Calling setWidth() with an argument of zero makes the relation
-a bus with indeterminate width, in which case the width will be
-inferred (if possible) from the context.  The actual width of an IORelation
-can never be less than one.
-<p>
-Instances of IORelation can only be linked to instances of IOPort.
-Derived classes may further constrain this to subclasses of IOPort.
-Such derived classes should override the protected method _checkPort()
-to throw an exception.
-<p>
-To link a IOPort to a IORelation, use the link() or
-liberalLink() method in the IOPort class.  To remove a link,
-use the unlink() method.
-<p>
-The container for instances of this class can only be instances of
-CompositeActor.  Derived classes may wish to further constrain the
-container to subclasses of ComponentEntity.  To do this, they should
-override the _checkContainer() method.
+   This class mediates connections between ports that can send data to
+   one another via message passing. One purpose of this relation is to
+   ensure that IOPorts are only connected to IOPorts. A second purpose
+   is to support the notion of a <i>width</i> to represent something
+   like a bus. By default an IORelation is not a bus, which means that
+   its width can only be zero or one. Calling setWidth() with
+   an argument larger than one makes the relation a bus of fixed width.
+   Calling setWidth() with an argument of zero makes the relation
+   a bus with indeterminate width, in which case the width will be
+   inferred (if possible) from the context.  The actual width of an IORelation
+   can never be less than one.
+   <p>
+   Instances of IORelation can only be linked to instances of IOPort.
+   Derived classes may further constrain this to subclasses of IOPort.
+   Such derived classes should override the protected method _checkPort()
+   to throw an exception.
+   <p>
+   To link a IOPort to a IORelation, use the link() or
+   liberalLink() method in the IOPort class.  To remove a link,
+   use the unlink() method.
+   <p>
+   The container for instances of this class can only be instances of
+   CompositeActor.  Derived classes may wish to further constrain the
+   container to subclasses of ComponentEntity.  To do this, they should
+   override the _checkContainer() method.
 
-@author Edward A. Lee, Jie Liu
-@version $Id$
-@since Ptolemy II 0.2
+   @author Edward A. Lee, Jie Liu
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class IORelation extends ComponentRelation {
 

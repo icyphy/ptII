@@ -1,28 +1,28 @@
 /* An applet that shows resolved types in a vergil graph.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -46,21 +46,21 @@ import ptolemy.moml.MoMLChangeRequest;
 //////////////////////////////////////////////////////////////////////////
 //// TypeAnimatorApplet
 /**
-An applet that demonstrates the Ptolemy II type system.
-This applet identifies attributes whose names match entity names,
-followed by an underscore, followed by a port name.
-If that attribute has an icon (i.e. it is a visible attribute),
-then the icon is set to a text string that gives the type of
-the port.
-<p>
-To use this applet, create an MoML file with the model that you
-want to animate, and insert visible attributes in it.  Rename
-these so that the name has the form "entityname_portname",
-to illustrate the port of the specified entity.
+   An applet that demonstrates the Ptolemy II type system.
+   This applet identifies attributes whose names match entity names,
+   followed by an underscore, followed by a port name.
+   If that attribute has an icon (i.e. it is a visible attribute),
+   then the icon is set to a text string that gives the type of
+   the port.
+   <p>
+   To use this applet, create an MoML file with the model that you
+   want to animate, and insert visible attributes in it.  Rename
+   these so that the name has the form "entityname_portname",
+   to illustrate the port of the specified entity.
 
-@author Edward A. Lee and Yuhong Xiong
-@version $Id$
-@since Ptolemy II 1.0
+   @author Edward A. Lee and Yuhong Xiong
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 
 public class TypeAnimatorApplet extends MoMLViewerApplet {
@@ -160,7 +160,7 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
                     + port.getType()
                     + "</text></svg></configure></property>";
                 label.requestChange(new MoMLChangeRequest(
-                        this, label, moml));
+                                            this, label, moml));
             }
         }
     }

@@ -26,8 +26,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating red (eal@eecs.berkeley.edu)
 @AcceptedRating red (cxh@eecs.berkeley.edu)
 */
@@ -54,349 +54,349 @@ import java.util.Vector;
 //// PxgraphParser
 
 /**
-This class provides backwards compatibility with an older plotting
-program, pxgraph.  It provides two methods, one for parsing command-line
-arguments, and one for reading binary data from a file. In pxgraph,
-the binary files have no format information; all format information
-is provided by command line arguments.
-<p>
-Below we describe the <code>pxgraph</code> arguments.  The
-text is based on the <code>xgraph</code> Unix man page written
-by David Harrison (University of California).
-To see the command line options, you can type
-<code>pxgraph -help</code>.
-<p>
-The <code>pxgraph</code> program draws a graph on a display given data
-read from either data files or from standard input if no
-files are specified. It can display up to 64 independent
-data sets using different colors and/or line styles for each
-set. It annotates the graph with a title, axis labels,
-grid lines or tick marks, grid labels, and a legend. There
-are options to control the appearance of most components of
-the graph.
-<p>
-The input format is similar to <code>graph(<i>1G</i>)</code> but differs
-slightly. The data consists of a number of <I>data</I> <I>sets</I>. Data
-sets are separated by a blank line. A new data set is also
-assumed at the start of each input file. A data set consists
-of an ordered list of points of the form <code><i>directive</i>
-X Y</code>.
+   This class provides backwards compatibility with an older plotting
+   program, pxgraph.  It provides two methods, one for parsing command-line
+   arguments, and one for reading binary data from a file. In pxgraph,
+   the binary files have no format information; all format information
+   is provided by command line arguments.
+   <p>
+   Below we describe the <code>pxgraph</code> arguments.  The
+   text is based on the <code>xgraph</code> Unix man page written
+   by David Harrison (University of California).
+   To see the command line options, you can type
+   <code>pxgraph -help</code>.
+   <p>
+   The <code>pxgraph</code> program draws a graph on a display given data
+   read from either data files or from standard input if no
+   files are specified. It can display up to 64 independent
+   data sets using different colors and/or line styles for each
+   set. It annotates the graph with a title, axis labels,
+   grid lines or tick marks, grid labels, and a legend. There
+   are options to control the appearance of most components of
+   the graph.
+   <p>
+   The input format is similar to <code>graph(<i>1G</i>)</code> but differs
+   slightly. The data consists of a number of <I>data</I> <I>sets</I>. Data
+   sets are separated by a blank line. A new data set is also
+   assumed at the start of each input file. A data set consists
+   of an ordered list of points of the form <code><i>directive</i>
+   X Y</code>.
 
-The directive is either <code>draw</code> or <code>move</code> and can
-be omitted (Note that with binary data files, you must have a directive,
-the above statement only applies to ascii format data files). If the
-directive is <code>draw</code>, a line will be drawn
-between the previous point and the current point (if a line
-graph is chosen). Specifying a <code>move</code> directive tells
-xgraph not to draw a line between the points. If the directive
-is omitted, <code>draw</code> is assumed for all points in a data
-set except the first point where <code>move</code> is assumed. The
-<code>move</code> directive is used most often to allow discontinuous
-data in a data set.
+   The directive is either <code>draw</code> or <code>move</code> and can
+   be omitted (Note that with binary data files, you must have a directive,
+   the above statement only applies to ascii format data files). If the
+   directive is <code>draw</code>, a line will be drawn
+   between the previous point and the current point (if a line
+   graph is chosen). Specifying a <code>move</code> directive tells
+   xgraph not to draw a line between the points. If the directive
+   is omitted, <code>draw</code> is assumed for all points in a data
+   set except the first point where <code>move</code> is assumed. The
+   <code>move</code> directive is used most often to allow discontinuous
+   data in a data set.
 
-After <code>pxgraph</code> has read the data, it will create a new window
-to graphically display the data.
+   After <code>pxgraph</code> has read the data, it will create a new window
+   to graphically display the data.
 
-Once the window has been opened, all of the data sets will
-be displayed graphically (subject to the options explained
-below) with a legend in the upper right corner of the
-screen. To zoom in on a portion of the graph, depress a
-mouse button in the window and sweep out a region. <code>pxgraph</code>
-will then the window will be redrawn with just that portion of
-the graph. <code>pxgraph</code> also presents four control buttons in
-the lower left corner of each window: <code>Exit</code>,
-<code>Print</code>, <code>HTML</code> and <code>About</code>.
-<p>The <code>Exit</code> button will exit the process.  You can also
-type <code>Control-D</code>, <code>Control-C</code> or <code>q</code>
-to exit.
-<p>The <code>Print</code> button brings up a print dialog window.
-<p>The <code>About</code> button brings up a message about
-<code>pxgraph</code>.
-<p>The <code>HTML</code> button prints an HTML file to stdout that
-can be used to display the file with applet <code>Plot</code> classes
-(Experimental).
-<p>
-<code>pxgraph</code> accepts a large number of command line options.
-A list of these options is given below.
-<p>
+   Once the window has been opened, all of the data sets will
+   be displayed graphically (subject to the options explained
+   below) with a legend in the upper right corner of the
+   screen. To zoom in on a portion of the graph, depress a
+   mouse button in the window and sweep out a region. <code>pxgraph</code>
+   will then the window will be redrawn with just that portion of
+   the graph. <code>pxgraph</code> also presents four control buttons in
+   the lower left corner of each window: <code>Exit</code>,
+   <code>Print</code>, <code>HTML</code> and <code>About</code>.
+   <p>The <code>Exit</code> button will exit the process.  You can also
+   type <code>Control-D</code>, <code>Control-C</code> or <code>q</code>
+   to exit.
+   <p>The <code>Print</code> button brings up a print dialog window.
+   <p>The <code>About</code> button brings up a message about
+   <code>pxgraph</code>.
+   <p>The <code>HTML</code> button prints an HTML file to stdout that
+   can be used to display the file with applet <code>Plot</code> classes
+   (Experimental).
+   <p>
+   <code>pxgraph</code> accepts a large number of command line options.
+   A list of these options is given below.
+   <p>
 
-<dl>
-<dt><code>=<i>W</i>x<i>H</i>+<i>X</i>+<i>Y</i></code>
-<dd>Specifies the initial size and location of the pxgraph
-window.
+   <dl>
+   <dt><code>=<i>W</i>x<i>H</i>+<i>X</i>+<i>Y</i></code>
+   <dd>Specifies the initial size and location of the pxgraph
+   window.
 
-<dt> <code>-<i>&lt;digit&gt; &lt;name&gt;</i></code>
-<dd> These options specify the data
-set name for the corresponding data set. The digit
-should be in the range 0 to 63. This name will be
-used in the legend.
+   <dt> <code>-<i>&lt;digit&gt; &lt;name&gt;</i></code>
+   <dd> These options specify the data
+   set name for the corresponding data set. The digit
+   should be in the range 0 to 63. This name will be
+   used in the legend.
 
-<dt><code>-bar</code>
-<dd>Specifies that vertical bars should be drawn from the
-data points to a base point which can be specified with
-<code>-brb</code>.
-Usually, the <code>-nl</code> flag is used with this option.
-The point itself is located at the center of the bar.
+   <dt><code>-bar</code>
+   <dd>Specifies that vertical bars should be drawn from the
+   data points to a base point which can be specified with
+   <code>-brb</code>.
+   Usually, the <code>-nl</code> flag is used with this option.
+   The point itself is located at the center of the bar.
 
-<dt><code>-bb</code>
-<dd>Draw a bounding box around the data region. This is
-very useful if you prefer to see tick marks rather than
-grid lines (see <code>-tk</code>).
-<b>Ignored in the Java version because the plotting area is a different
-color than the border where the axes are labeled.</b>
+   <dt><code>-bb</code>
+   <dd>Draw a bounding box around the data region. This is
+   very useful if you prefer to see tick marks rather than
+   grid lines (see <code>-tk</code>).
+   <b>Ignored in the Java version because the plotting area is a different
+   color than the border where the axes are labeled.</b>
 
-<dt><code>-bd</code> <code><i>&lt;color&gt;</i></code>
-<dd>This specifies the border color of the <code>pxgraph</code> window.
-<b>Unsupported in the Java version.</b>
+   <dt><code>-bd</code> <code><i>&lt;color&gt;</i></code>
+   <dd>This specifies the border color of the <code>pxgraph</code> window.
+   <b>Unsupported in the Java version.</b>
 
-<dt><code>-bg</code> <code><i>&lt;color&gt;</i></code>
-<dd>Background color of the area where the labels and legend are rendered.
-<b>In the Java version, this argument takes hexadecimal color values
-(<code>fffff</code>), not color names.</b>  Note that the background
-of the data plotting region is always white because the dataset colors
-were designed for a white background.
+   <dt><code>-bg</code> <code><i>&lt;color&gt;</i></code>
+   <dd>Background color of the area where the labels and legend are rendered.
+   <b>In the Java version, this argument takes hexadecimal color values
+   (<code>fffff</code>), not color names.</b>  Note that the background
+   of the data plotting region is always white because the dataset colors
+   were designed for a white background.
 
-<dt><a name="-bigendian flag"><code>-bigendian</code></a>
-<dd>Data files are in big-endian, or network binary format.
-See the <code>-binary</code> command line argument documentation
-below for details about the format.
-If you are on a little-endian machine, such as a machine
-with an Intel x86 chip, and you would like to read a binary
-format file, created on a big-endian machine, such as a Sun SPARC,
-use the <code>-bigendian</code> flag.
+   <dt><a name="-bigendian flag"><code>-bigendian</code></a>
+   <dd>Data files are in big-endian, or network binary format.
+   See the <code>-binary</code> command line argument documentation
+   below for details about the format.
+   If you are on a little-endian machine, such as a machine
+   with an Intel x86 chip, and you would like to read a binary
+   format file, created on a big-endian machine, such as a Sun SPARC,
+   use the <code>-bigendian</code> flag.
 
-<dt><a name="-binary flag"><code>-binary</code></a>
-<dd>Data files are in a binary format.
-The endian-ism of the data depends on which of the two
-subformats below are chosen.
-The <code>-binary</code>
-argument is the primary difference between <code>xgraph</code>
-and <code>pxgraph</code>.  The
-<A HREF="http://ptolemy.eecs.berkeley.edu">Ptolemy Project</A> software
-makes extensive use of <code>-binary</code>.
-<br>There are two binary formats, both of which use 4 byte floats.
-<ol>
-<li>If the first byte of the data file is not a <code>d</code>, then
-we assume that the file contains 4 byte floats in big-endian ordering
-with no plot commands.
-<li>If the first byte of the data file is a <code>d</code>, then
-we assume that the plot commands are encoded as single characters,
-and the numeric data is a 4 byte float encoded in the
-native endian format of the machine that the java interpreter is
-running on.
- <br>The commands are encoded as follows:
-  <dl>
-  <dt> <code>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
-  <dd> Draw a X, Y point
-  <dt> <code>e</code>
-  <dd> End of dataset
-  <dt> <code>n <I>&lt;dataset name&gt;</I>&#92n</code>
-  <dd> New dataset name, ends in <code>&#92n</code>
-  <dt> <code>m <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
-  <dd> Move to a X, Y point.
-  </dl>
-</ol>
- <br>To view a binary plot file under unix, we can use the
-<code>od</code> command.  Note that the first character is a <code>d</code>
-followed by eight bytes of data consisting of two floats of four bytes.
-<pre>
-cxh@carson 324% od -c data/integrator1.plt
-0000000   d  \0  \0  \0  \0  \0  \0  \0  \0   d   ? 200  \0  \0   ? 200
-0000020  \0  \0   d   @  \0  \0  \0   @   , 314 315   d   @   @  \0  \0
-</pre>
-For further information about endian-ism, see the
-<code>-bigendian</code> and <code>-littleendian</code> command
-line argument documentation.
+   <dt><a name="-binary flag"><code>-binary</code></a>
+   <dd>Data files are in a binary format.
+   The endian-ism of the data depends on which of the two
+   subformats below are chosen.
+   The <code>-binary</code>
+   argument is the primary difference between <code>xgraph</code>
+   and <code>pxgraph</code>.  The
+   <A HREF="http://ptolemy.eecs.berkeley.edu">Ptolemy Project</A> software
+   makes extensive use of <code>-binary</code>.
+   <br>There are two binary formats, both of which use 4 byte floats.
+   <ol>
+   <li>If the first byte of the data file is not a <code>d</code>, then
+   we assume that the file contains 4 byte floats in big-endian ordering
+   with no plot commands.
+   <li>If the first byte of the data file is a <code>d</code>, then
+   we assume that the plot commands are encoded as single characters,
+   and the numeric data is a 4 byte float encoded in the
+   native endian format of the machine that the java interpreter is
+   running on.
+   <br>The commands are encoded as follows:
+   <dl>
+   <dt> <code>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
+   <dd> Draw a X, Y point
+   <dt> <code>e</code>
+   <dd> End of dataset
+   <dt> <code>n <I>&lt;dataset name&gt;</I>&#92n</code>
+   <dd> New dataset name, ends in <code>&#92n</code>
+   <dt> <code>m <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
+   <dd> Move to a X, Y point.
+   </dl>
+   </ol>
+   <br>To view a binary plot file under unix, we can use the
+   <code>od</code> command.  Note that the first character is a <code>d</code>
+   followed by eight bytes of data consisting of two floats of four bytes.
+   <pre>
+   cxh@carson 324% od -c data/integrator1.plt
+   0000000   d  \0  \0  \0  \0  \0  \0  \0  \0   d   ? 200  \0  \0   ? 200
+   0000020  \0  \0   d   @  \0  \0  \0   @   , 314 315   d   @   @  \0  \0
+   </pre>
+   For further information about endian-ism, see the
+   <code>-bigendian</code> and <code>-littleendian</code> command
+   line argument documentation.
 
-<dt><code>-brb</code> <code><i>&lt;base&gt;</i></code>
-<dd>This specifies the base for a bar graph. By default,
-the base is zero.
-<b>Unsupported in the Java version.</b>
+   <dt><code>-brb</code> <code><i>&lt;base&gt;</i></code>
+   <dd>This specifies the base for a bar graph. By default,
+   the base is zero.
+   <b>Unsupported in the Java version.</b>
 
-<dt><code>-brw</code> <code><i>&lt;width&gt;</i></code>
-<dd>This specifies the width of bars in a bar graph. The
-amount is specified in the user units. By default,
-a bar one pixel wide is drawn.
+   <dt><code>-brw</code> <code><i>&lt;width&gt;</i></code>
+   <dd>This specifies the width of bars in a bar graph. The
+   amount is specified in the user units. By default,
+   a bar one pixel wide is drawn.
 
-<dt><code>-bw</code> <code><i>&lt;size&gt;</i></code>
-<dd>Border width (in pixels) of the <code>pxgraph</code> window.
-<b>Unsupported in the Java version.</b>
+   <dt><code>-bw</code> <code><i>&lt;size&gt;</i></code>
+   <dd>Border width (in pixels) of the <code>pxgraph</code> window.
+   <b>Unsupported in the Java version.</b>
 
-<dt><code>-db</code>
-<dd>Causes xgraph to run in synchronous mode and prints out
-the values of all known defaults.
+   <dt><code>-db</code>
+   <dd>Causes xgraph to run in synchronous mode and prints out
+   the values of all known defaults.
 
-<dt><code>-fg</code> <code><i>&lt;color&gt;</i></code>
-<dd>Foreground color. This color is used to draw all text
-and the normal grid lines in the window.
-<b>In the Java version, this argument takes hexadecimal color values
-(<code>fffff</code>), not color names.</b>
+   <dt><code>-fg</code> <code><i>&lt;color&gt;</i></code>
+   <dd>Foreground color. This color is used to draw all text
+   and the normal grid lines in the window.
+   <b>In the Java version, this argument takes hexadecimal color values
+   (<code>fffff</code>), not color names.</b>
 
-<dt><code>-gw</code> <dd>
-Width, in pixels, of normal grid lines.
-<b>Unsupported in the Java version.</b>
+   <dt><code>-gw</code> <dd>
+   Width, in pixels, of normal grid lines.
+   <b>Unsupported in the Java version.</b>
 
-<dt><code>-gs</code> <dd>
-Line style pattern of normal grid lines.
+   <dt><code>-gs</code> <dd>
+   Line style pattern of normal grid lines.
 
-<dt><code>-impulses</code> <dd>
-Draw a line from any plotted point down to the x axis.
-(This argument is not present in the X11 <code>pxgraph</code>,
-but it is similar to <code>-nl -bar</code>).
+   <dt><code>-impulses</code> <dd>
+   Draw a line from any plotted point down to the x axis.
+   (This argument is not present in the X11 <code>pxgraph</code>,
+   but it is similar to <code>-nl -bar</code>).
 
-<dt><code>-lf</code> <code><i>&lt;fontname&gt;</i></code>
-<dd>Label font. All axis labels and grid labels are drawn
-using this font.
-<b>Note that the Java version does not use X11 style font specification.</b>
-In the Java version, fonts may be specified as
-<menu>
-<li><code><i>fontname</i></code>, where
-<code><i>fontname</i></code> is one of <code>helvetica</code>,
- <code>TimesRoman</code>, <code>Courier</code>,  <code>Dialog</code>,
-<code>DialogInput</code>, <code>ZapfDingbats</code>.
+   <dt><code>-lf</code> <code><i>&lt;fontname&gt;</i></code>
+   <dd>Label font. All axis labels and grid labels are drawn
+   using this font.
+   <b>Note that the Java version does not use X11 style font specification.</b>
+   In the Java version, fonts may be specified as
+   <menu>
+   <li><code><i>fontname</i></code>, where
+   <code><i>fontname</i></code> is one of <code>helvetica</code>,
+   <code>TimesRoman</code>, <code>Courier</code>,  <code>Dialog</code>,
+   <code>DialogInput</code>, <code>ZapfDingbats</code>.
 
-<li><code><i>fontname</i>-<i>style</i></code>, where
-<code><i>style</i></code> is one of
-<code>PLAIN</code>, <code>ITALIC</code>, <code>BOLD</code>,
- i.e. <code>helvetica-ITALIC</code>
-<li><code><i>fontname</i>-<i>size</i></code>, or
-<li><code><i>fontname</i>-<i>style</i>-<i>size</i></code>, where
-<code><i>size</i></code> is an integer font size in points.
-</menu>
-The default is <code>helvetica-PLAIN-12</code>.
+   <li><code><i>fontname</i>-<i>style</i></code>, where
+   <code><i>style</i></code> is one of
+   <code>PLAIN</code>, <code>ITALIC</code>, <code>BOLD</code>,
+   i.e. <code>helvetica-ITALIC</code>
+   <li><code><i>fontname</i>-<i>size</i></code>, or
+   <li><code><i>fontname</i>-<i>style</i>-<i>size</i></code>, where
+   <code><i>size</i></code> is an integer font size in points.
+   </menu>
+   The default is <code>helvetica-PLAIN-12</code>.
 
-<dt><a name="-littleendian"><code>-littleendian</code></a>
-<dd>Data files are in little-endian, or x86 binary format.
-See the <code>-binary</code> command line argument documentation
-above for details about the format.
-If you are on a big-endian machine, such as a Sun Sparc,
-and you would like to read a binary
-format file created on a little-endian machine, such as Intel x86
-machine, then use the <code>-littleendian</code> flag.
+   <dt><a name="-littleendian"><code>-littleendian</code></a>
+   <dd>Data files are in little-endian, or x86 binary format.
+   See the <code>-binary</code> command line argument documentation
+   above for details about the format.
+   If you are on a big-endian machine, such as a Sun Sparc,
+   and you would like to read a binary
+   format file created on a little-endian machine, such as Intel x86
+   machine, then use the <code>-littleendian</code> flag.
 
-<dt><code>-lnx</code> <dd>
-Specifies a logarithmic X axis. Grid labels represent
-powers of ten.  If <code>-lnx</code> is present, then
-x values must be greater than zero.
+   <dt><code>-lnx</code> <dd>
+   Specifies a logarithmic X axis. Grid labels represent
+   powers of ten.  If <code>-lnx</code> is present, then
+   x values must be greater than zero.
 
-<dt><code>-lny</code> <dd>
-Specifies a logarithmic Y axis. Grid labels represent
-powers of ten.   If <code>-lny</code> is present, then
-y values must be greater than zero.
+   <dt><code>-lny</code> <dd>
+   Specifies a logarithmic Y axis. Grid labels represent
+   powers of ten.   If <code>-lny</code> is present, then
+   y values must be greater than zero.
 
-<dt><code>-lw</code> <code><i>width</i></code> <dd>
-Specifies the width of the data lines in pixels. The
-default is zero.
-<b>Unsupported in the Java version.</b>
+   <dt><code>-lw</code> <code><i>width</i></code> <dd>
+   Specifies the width of the data lines in pixels. The
+   default is zero.
+   <b>Unsupported in the Java version.</b>
 
-<dt><code>-lx</code> <code><i>&lt;xl,xh&gt;</i></code> <dd>
-This option limits the range of the X axis to the
-specified interval. This (along with <code>-ly</code>) can be used
-to zoom in on a particularly interesting portion of a
-larger graph.
+   <dt><code>-lx</code> <code><i>&lt;xl,xh&gt;</i></code> <dd>
+   This option limits the range of the X axis to the
+   specified interval. This (along with <code>-ly</code>) can be used
+   to zoom in on a particularly interesting portion of a
+   larger graph.
 
-<dt><code>-ly</code> <code><i>&lt;yl,yh&gt;</i></code> <dd>
-This option limits the range of the Y axis to the
-specified interval.
+   <dt><code>-ly</code> <code><i>&lt;yl,yh&gt;</i></code> <dd>
+   This option limits the range of the Y axis to the
+   specified interval.
 
-<dt><code>-m</code> <dd>
-Mark each data point with a distinctive marker. There
-are eight distinctive markers used by xgraph. These
-markers are assigned uniquely to each different line
-style on black and white machines and varies with each
-color on color machines.
+   <dt><code>-m</code> <dd>
+   Mark each data point with a distinctive marker. There
+   are eight distinctive markers used by xgraph. These
+   markers are assigned uniquely to each different line
+   style on black and white machines and varies with each
+   color on color machines.
 
-<dt><code>-M</code>
-<dd>Similar to <code>-m</code> but markers are assigned uniquely to each
-eight consecutive data sets (this corresponds to each
-different line style on color machines).
+   <dt><code>-M</code>
+   <dd>Similar to <code>-m</code> but markers are assigned uniquely to each
+   eight consecutive data sets (this corresponds to each
+   different line style on color machines).
 
-<dt><code>-nl</code>
-<dd>Turn off drawing lines. When used with <code>-m</code>,
-<code>-M</code>, <code>-p</code>, or <code>-P</code> this can be used
-to produce scatter plots. When used with -bar, it can be used to
-produce standard bar graphs.
+   <dt><code>-nl</code>
+   <dd>Turn off drawing lines. When used with <code>-m</code>,
+   <code>-M</code>, <code>-p</code>, or <code>-P</code> this can be used
+   to produce scatter plots. When used with -bar, it can be used to
+   produce standard bar graphs.
 
-<dt><code>-o</code> <code><i>output filename</i></code>
-<dd>The name of the file to place the print output in.  Currently
-defaults to <code>/tmp/t.ps</code>.  See also the
-<code>-print</code> option.
+   <dt><code>-o</code> <code><i>output filename</i></code>
+   <dd>The name of the file to place the print output in.  Currently
+   defaults to <code>/tmp/t.ps</code>.  See also the
+   <code>-print</code> option.
 
-<dt><code>-p</code>
-<dd>Marks each data point with a small marker (pixel
-sized). This is usually used with the -nl option for
-scatter plots.
+   <dt><code>-p</code>
+   <dd>Marks each data point with a small marker (pixel
+   sized). This is usually used with the -nl option for
+   scatter plots.
 
-<dt><code>-P</code>
-<dd>Similar to <code>-p</code> but marks each pixel with a large dot.
+   <dt><code>-P</code>
+   <dd>Similar to <code>-p</code> but marks each pixel with a large dot.
 
-<dt><code>-print</code>
-<dd>Bring up the print dialog immediately upon startup.  Unfortunately,
-there is no way to automatically print in JDK1.1, the user must hit
-the <code>Ok</code> button.  See also the <code>-o</code> option.
+   <dt><code>-print</code>
+   <dd>Bring up the print dialog immediately upon startup.  Unfortunately,
+   there is no way to automatically print in JDK1.1, the user must hit
+   the <code>Ok</code> button.  See also the <code>-o</code> option.
 
-<dt><code>-rv</code>
-<dd>Reverse video. On black and white displays, this will
-invert the foreground and background colors. The
-behaviour on color displays is undefined.
+   <dt><code>-rv</code>
+   <dd>Reverse video. On black and white displays, this will
+   invert the foreground and background colors. The
+   behaviour on color displays is undefined.
 
-<dt><code>-t</code> <code><i>&lt;string&gt;</i></code>
-<dd>Title of the plot. This string is centered at the top
-of the graph.
+   <dt><code>-t</code> <code><i>&lt;string&gt;</i></code>
+   <dd>Title of the plot. This string is centered at the top
+   of the graph.
 
-<dt><code>-tf</code> <code><i>&lt;fontname&gt;</i></code>
-<dd>Title font. This is the name of the font to use for
-the graph title.  See the <code>-lf</code> description above
-for how to specify fonts.
-The default is <code>helvetica-BOLD-14</code>
+   <dt><code>-tf</code> <code><i>&lt;fontname&gt;</i></code>
+   <dd>Title font. This is the name of the font to use for
+   the graph title.  See the <code>-lf</code> description above
+   for how to specify fonts.
+   The default is <code>helvetica-BOLD-14</code>
 
-<dt><code>-tk</code>
-<dd>This option causes <code>pxgraph</code> to draw tick marks rather
-than full grid lines. The <code>-bb</code> option is also useful
-when viewing graphs with tick marks only.
+   <dt><code>-tk</code>
+   <dd>This option causes <code>pxgraph</code> to draw tick marks rather
+   than full grid lines. The <code>-bb</code> option is also useful
+   when viewing graphs with tick marks only.
 
-<dt><code>-x</code>  <code><i>&lt;unitname&gt;</i></code>
-<dd>This is the unit name for the X axis. Its default is "X".
+   <dt><code>-x</code>  <code><i>&lt;unitname&gt;</i></code>
+   <dd>This is the unit name for the X axis. Its default is "X".
 
-<dt><code>-y</code> <code><i>&lt;unitname&gt;</i></code>
-<dd>This is the unit name for the Y axis. Its default is "Y".
+   <dt><code>-y</code> <code><i>&lt;unitname&gt;</i></code>
+   <dd>This is the unit name for the Y axis. Its default is "Y".
 
-<dt><code>-zg</code> <code><i>&lt;color&gt;</i></code>
-<dd>This is the color used to draw the zero grid line.
-<b>Unsupported in the Java version.</b>
+   <dt><code>-zg</code> <code><i>&lt;color&gt;</i></code>
+   <dd>This is the color used to draw the zero grid line.
+   <b>Unsupported in the Java version.</b>
 
-<dt><code>-zw</code> <code><i>&lt;width&gt;</i></code>
-<dd>This is the width of the zero grid line in pixels.
-<b>Unsupported in the Java version.</b>
-</dl>
+   <dt><code>-zw</code> <code><i>&lt;width&gt;</i></code>
+   <dd>This is the width of the zero grid line in pixels.
+   <b>Unsupported in the Java version.</b>
+   </dl>
 
-<h2><a name="pxgraph script compatibility issues">Compatibility Issues</a></h2>
-Various compatibility issues are documented above in <b>bold</b>.
-Below are some other issues:
-<ol>
-<li>The original <code>xgraph</code> program allowed many formatting
-directives inside the file.  This version only supports
-<code>draw</code> and <code>move</code>.
-<li>This original <code>xgraph</code> program allowed blank lines
-to separate datasets.  This version does not.  Instead, use the
-<code>move <i>X</i> <i>Y</i></code> directive.
-<li>This version does not support X resources.
-<li>The Java version of <code>pxgraph</code> takes longer to start up
-than the X11 version.  This is an inherent problem with standalone
-Java applications.  One guess is that most of the startup time comes
-from paging in the shared libraries.
+   <h2><a name="pxgraph script compatibility issues">Compatibility Issues</a></h2>
+   Various compatibility issues are documented above in <b>bold</b>.
+   Below are some other issues:
+   <ol>
+   <li>The original <code>xgraph</code> program allowed many formatting
+   directives inside the file.  This version only supports
+   <code>draw</code> and <code>move</code>.
+   <li>This original <code>xgraph</code> program allowed blank lines
+   to separate datasets.  This version does not.  Instead, use the
+   <code>move <i>X</i> <i>Y</i></code> directive.
+   <li>This version does not support X resources.
+   <li>The Java version of <code>pxgraph</code> takes longer to start up
+   than the X11 version.  This is an inherent problem with standalone
+   Java applications.  One guess is that most of the startup time comes
+   from paging in the shared libraries.
 
-</ol>
+   </ol>
 
-<p>
-For further information about this tool, see the
-<a href="http://ptolemy.eecs.berkeley.edu/java/ptplot">Java Plot Website</a>.
+   <p>
+   For further information about this tool, see the
+   <a href="http://ptolemy.eecs.berkeley.edu/java/ptplot">Java Plot Website</a>.
 
-@author Edward A. Lee and Christopher Hylands
-@version $Id$
-@since Ptolemy II 0.4
-@see PxgraphApplication
-@see PxgraphApplet
+   @author Edward A. Lee and Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 0.4
+   @see PxgraphApplication
+   @see PxgraphApplet
 */
 public class PxgraphParser {
 
@@ -420,8 +420,8 @@ public class PxgraphParser {
      */
     public int parseArgs(String args[]) throws CmdLineArgException,
             FileNotFoundException, IOException {
-                return parseArgs(args, null);
-            }
+        return parseArgs(args, null);
+    }
 
     /** Parse pxgraph style command-line arguments, using the specified
      *  base URL for any relative URL references.
@@ -437,279 +437,279 @@ public class PxgraphParser {
      */
     public int parseArgs(String args[], URL base) throws CmdLineArgException,
             FileNotFoundException, IOException {
-                int i = 0, j, argumentsRead = 0;
+        int i = 0, j, argumentsRead = 0;
 
-                // If we see both -nl and -bar, assume we do a stem plot.
-                boolean sawbararg = false;  // Saw -bar arg.
-                boolean sawnlarg = false;   // Saw -nl arg.
-                String savedmarks = "none"; // Save _marks in case we have -P -bar -nl.
-                _binary = false;     // Read a binary xgraph file.
+        // If we see both -nl and -bar, assume we do a stem plot.
+        boolean sawbararg = false;  // Saw -bar arg.
+        boolean sawnlarg = false;   // Saw -nl arg.
+        String savedmarks = "none"; // Save _marks in case we have -P -bar -nl.
+        _binary = false;     // Read a binary xgraph file.
 
-                int width = 400, height = 400;
+        int width = 400, height = 400;
 
-                String arg;
-                String unsupportedOptions[] = {
-                    "-bd", "-brb", "-bw", "-gw", "-lw", "-zg", "-zw"
-                };
+        String arg;
+        String unsupportedOptions[] = {
+            "-bd", "-brb", "-bw", "-gw", "-lw", "-zg", "-zw"
+        };
 
-                while ( args != null && i < args.length && (args[i].startsWith("-") ||
+        while ( args != null && i < args.length && (args[i].startsWith("-") ||
                         args[i].startsWith("=")) ) {
-                    arg = args[i++];
+            arg = args[i++];
 
-                    if (arg.startsWith("-")) {
-                        // Search for unsupported options that take arguments
-                        boolean badarg = false;
-                        for (j = 0; j < unsupportedOptions.length; j++) {
-                            if (arg.equals(unsupportedOptions[j])) {
-                                System.err.println("Warning: pxgraph: " + arg +
-                                        " is not supported");
-                                i++;
-                                badarg = true;
-                            }
+            if (arg.startsWith("-")) {
+                // Search for unsupported options that take arguments
+                boolean badarg = false;
+                for (j = 0; j < unsupportedOptions.length; j++) {
+                    if (arg.equals(unsupportedOptions[j])) {
+                        System.err.println("Warning: pxgraph: " + arg +
+                                " is not supported");
+                        i++;
+                        badarg = true;
+                    }
+                }
+                if (badarg) continue;
+
+                if (arg.equals("-bb")) {
+                    // We ignore -bb because the Java version of pxgraph plot
+                    // region is a different color from the surrounding region.
+                    continue;
+                } else if (arg.equals("-bg")) {
+                    _plot.setBackground(Plot.getColorByName(args[i++]));
+                    continue;
+                } else if (arg.equals("-brw")) {
+                    // -brw <width> BarWidth Bars:
+                    // We default the baroffset to 0 here if the value does
+                    // not include a comma.
+                    double[] spec = _parseDoubles(args[i++]);
+                    if (spec.length == 1) {
+                        _plot.setBars(spec[0], 0);
+                    } else {
+                        _plot.setBars(spec[0], spec[1]);
+                    }
+                    continue;
+                } else if (arg.equals("-lf")) {
+                    // -lf <labelfont>
+                    _plot.setLabelFont(args[i++]);
+                    continue;
+                } else if (arg.equals("-lx")) {
+                    double[] spec = _parseDoubles(args[i++]);
+                    if (spec.length == 1) {
+                        throw new
+                            CmdLineArgException("Failed to parse `"+arg+"'");
+                    } else {
+                        _plot.setXRange(spec[0], spec[1]);
+                    }
+                    continue;
+                } else if (arg.equals("-ly")) {
+                    double[] spec = _parseDoubles(args[i++]);
+                    if (spec.length == 1) {
+                        throw new
+                            CmdLineArgException("Failed to parse `"+arg+"'");
+                    } else {
+                        _plot.setYRange(spec[0], spec[1]);
+                    }
+                    continue;
+                } else if (arg.equals("-t")) {
+                    // -t <title> TitleText "An X Graph"
+                    String title =  args[i++];
+                    _plot.setTitle(title);
+                    continue;
+                } else if (arg.equals("-tf")) {
+                    // -tf <titlefont>
+                    _plot.setTitleFont(args[i++]);
+                    continue;
+                } else if (arg.equals("-x")) {
+                    // -x <unitName> XUnitText XLabel:
+                    _plot.setXLabel(args[i++]);
+                    continue;
+                } else if (arg.equals("-y")) {
+                    // -y <unitName> YUnitText YLabel:
+                    _plot.setYLabel(args[i++]);
+                    continue;
+                } else if (arg.equals("-bar")) {
+                    //-bar BarGraph Bars: on Marks: none Lines: off
+                    // If we saw the -nl arg, then assume impulses
+                    sawbararg = true;
+                    if (sawnlarg) {
+                        _plot.setImpulses(true);
+                    } else {
+                        _plot.setBars(true);
+                        _plot.setMarksStyle("none");
+                    }
+                    _plot.setConnected(false);
+                    continue;
+                } else if (arg.equals("-binary")) {
+                    _binary = true;
+                    _endian = _NATIVE_ENDIAN;
+                    continue;
+                } else if (arg.equals("-bigendian")) {
+                    _binary = true;
+                    _endian = _BIG_ENDIAN;
+                    continue;
+                } else if (arg.equals("-littleendian")) {
+                    _binary = true;
+                    _endian = _LITTLE_ENDIAN;
+                    continue;
+                } else if (arg.equals("-db")) {
+                    _debug = 10;
+                    continue;
+                } else if (arg.equals("-debug")) {
+                    // -debug is not in the original X11 pxgraph.
+                    _debug = (int)Integer.valueOf(args[i++]).intValue();
+                    continue;
+                } else if (arg.equals("-fg")) {
+                    _plot.setForeground(PlotBox.getColorByName(args[i++]));
+                    continue;
+                } else if (arg.equals("-help")) {
+                    // -help is not in the original X11 pxgraph.
+                    //_help();
+                    continue;
+                } else if (arg.equals("-impulses")) {
+                    // -impulses is not in the original X11 pxgraph.
+                    _plot.setImpulses(true);
+                    _plot.setConnected(false);
+                    continue;
+                } else if (arg.equals("-lnx")) {
+                    _plot.setXLog(true);
+                    continue;
+                } else if (arg.equals("-lny")) {
+                    _plot.setYLog(true);
+                    continue;
+                } else if (arg.equals("-m")) {
+                    // -m Markers Marks: various
+                    _plot.setMarksStyle("various");
+                    savedmarks = "various";
+                    continue;
+                } else if (arg.equals("-M")) {
+                    // -M StyleMarkers Marks: various
+                    _plot.setMarksStyle("various");
+                    savedmarks = "various";
+                    continue;
+                } else if (arg.equals("-nl")) {
+                    // -nl NoLines Lines: off
+                    // If we saw the -bar arg, then assume impulses
+                    sawnlarg = true;
+                    if (sawbararg) {
+                        // Restore the _marks in case we did -P -bar -nl
+                        _plot.setMarksStyle(savedmarks);
+                        _plot.setBars(false);
+                        _plot.setImpulses(true);
+                    }
+                    _plot.setConnected(false);
+                    continue;
+                } else if (arg.equals("-o")) {
+                    // -o <output filename>
+                    // _outputFile =  args[i++];
+                    i++;
+                    continue;
+                } else if (arg.equals("-p")) {
+                    // -p PixelMarkers Marks: points
+                    _plot.setMarksStyle("points");
+                    savedmarks = "points";
+                    continue;
+                } else if (arg.equals("-P")) {
+                    // -P LargePixel Marks: dots\n
+                    _plot.setMarksStyle("dots");
+                    savedmarks = "dots";
+                    continue;
+                } else if (arg.equals("-print")) {
+                    // -print is not in the original X11 pxgraph.
+                    continue;
+                } else if (arg.equals("-rv")) {
+                    _plot.setBackground(PlotBox.getColorByName("black"));
+                    _plot.setForeground(PlotBox.getColorByName("white"));
+                    continue;
+                } else if (arg.equals("-test")) {
+                    // -test is not in the original X11 pxgraph.
+                    //_test = true;
+                    continue;
+                } else if (arg.equals("-tk")) {
+                    _plot.setGrid(false);
+                    continue;
+                } else if (arg.equals("-v") || arg.equals("-version")) {
+                    // -version is not in the original X11 pxgraph.
+                    //_version();
+                    continue;
+                } else if (arg.length() > 1  && arg.charAt(0) == '-') {
+                    // Process '-<digit> <datasetname>'
+                    try {
+                        Integer datasetnumberint = new
+                            Integer(arg.substring(1));
+                        int datasetnumber = datasetnumberint.intValue();
+                        if (datasetnumber >= 0) {
+                            _plot.addLegend(datasetnumber, args[i++]);
+                            continue;
                         }
-                        if (badarg) continue;
-
-                        if (arg.equals("-bb")) {
-                            // We ignore -bb because the Java version of pxgraph plot
-                            // region is a different color from the surrounding region.
-                            continue;
-                        } else if (arg.equals("-bg")) {
-                            _plot.setBackground(Plot.getColorByName(args[i++]));
-                            continue;
-                        } else if (arg.equals("-brw")) {
-                            // -brw <width> BarWidth Bars:
-                            // We default the baroffset to 0 here if the value does
-                            // not include a comma.
-                            double[] spec = _parseDoubles(args[i++]);
-                            if (spec.length == 1) {
-                                _plot.setBars(spec[0], 0);
+                    } catch (NumberFormatException e) {}
+                }
+            } else {
+                if (arg.startsWith("=")) {
+                    // Process =WxH+X+Y
+                    width = (int)Integer.valueOf(arg.substring(1,
+                                                         arg.indexOf('x'))).intValue();
+                    int plusIndex = arg.indexOf('+');
+                    int minusIndex = arg.indexOf('-');
+                    if (plusIndex != -1 || minusIndex != -1) {
+                        // =WxH+X+Y, =WxH-X+Y, =WxH-X-Y, =WxH+X-Y
+                        if ( plusIndex != -1 && minusIndex != -1) {
+                            // =WxH-X+Y or =WxH+X-Y
+                            int index = minusIndex;
+                            if (plusIndex < minusIndex) {
+                                index = plusIndex;
+                            }
+                            height = Integer.valueOf(arg.substring(
+                                                             arg.indexOf('x')+1,
+                                                             index)).intValue();
+                        } else {
+                            if (plusIndex != -1) {
+                                // =WxH+X+Y
+                                height = Integer.valueOf(arg.substring(
+                                                                 arg.indexOf('x')+1,
+                                                                 plusIndex)).intValue();
                             } else {
-                                _plot.setBars(spec[0], spec[1]);
+                                // =WxH-X-Y
+                                height = Integer.valueOf(arg.substring(
+                                                                 arg.indexOf('x')+1,
+                                                                 minusIndex)).intValue();
                             }
-                            continue;
-                        } else if (arg.equals("-lf")) {
-                            // -lf <labelfont>
-                            _plot.setLabelFont(args[i++]);
-                            continue;
-                        } else if (arg.equals("-lx")) {
-                            double[] spec = _parseDoubles(args[i++]);
-                            if (spec.length == 1) {
-                                throw new
-                                    CmdLineArgException("Failed to parse `"+arg+"'");
-                            } else {
-                                _plot.setXRange(spec[0], spec[1]);
-                            }
-                            continue;
-                        } else if (arg.equals("-ly")) {
-                            double[] spec = _parseDoubles(args[i++]);
-                            if (spec.length == 1) {
-                                throw new
-                                    CmdLineArgException("Failed to parse `"+arg+"'");
-                            } else {
-                                _plot.setYRange(spec[0], spec[1]);
-                            }
-                            continue;
-                        } else if (arg.equals("-t")) {
-                            // -t <title> TitleText "An X Graph"
-                            String title =  args[i++];
-                            _plot.setTitle(title);
-                            continue;
-                        } else if (arg.equals("-tf")) {
-                            // -tf <titlefont>
-                            _plot.setTitleFont(args[i++]);
-                            continue;
-                        } else if (arg.equals("-x")) {
-                            // -x <unitName> XUnitText XLabel:
-                            _plot.setXLabel(args[i++]);
-                            continue;
-                        } else if (arg.equals("-y")) {
-                            // -y <unitName> YUnitText YLabel:
-                            _plot.setYLabel(args[i++]);
-                            continue;
-                        } else if (arg.equals("-bar")) {
-                            //-bar BarGraph Bars: on Marks: none Lines: off
-                            // If we saw the -nl arg, then assume impulses
-                            sawbararg = true;
-                            if (sawnlarg) {
-                                _plot.setImpulses(true);
-                            } else {
-                                _plot.setBars(true);
-                                _plot.setMarksStyle("none");
-                            }
-                            _plot.setConnected(false);
-                            continue;
-                        } else if (arg.equals("-binary")) {
-                            _binary = true;
-                            _endian = _NATIVE_ENDIAN;
-                            continue;
-                        } else if (arg.equals("-bigendian")) {
-                            _binary = true;
-                            _endian = _BIG_ENDIAN;
-                            continue;
-                        } else if (arg.equals("-littleendian")) {
-                            _binary = true;
-                            _endian = _LITTLE_ENDIAN;
-                            continue;
-                        } else if (arg.equals("-db")) {
-                            _debug = 10;
-                            continue;
-                        } else if (arg.equals("-debug")) {
-                            // -debug is not in the original X11 pxgraph.
-                            _debug = (int)Integer.valueOf(args[i++]).intValue();
-                            continue;
-                        } else if (arg.equals("-fg")) {
-                            _plot.setForeground(PlotBox.getColorByName(args[i++]));
-                            continue;
-                        } else if (arg.equals("-help")) {
-                            // -help is not in the original X11 pxgraph.
-                            //_help();
-                            continue;
-                        } else if (arg.equals("-impulses")) {
-                            // -impulses is not in the original X11 pxgraph.
-                            _plot.setImpulses(true);
-                            _plot.setConnected(false);
-                            continue;
-                        } else if (arg.equals("-lnx")) {
-                            _plot.setXLog(true);
-                            continue;
-                        } else if (arg.equals("-lny")) {
-                            _plot.setYLog(true);
-                            continue;
-                        } else if (arg.equals("-m")) {
-                            // -m Markers Marks: various
-                            _plot.setMarksStyle("various");
-                            savedmarks = "various";
-                            continue;
-                        } else if (arg.equals("-M")) {
-                            // -M StyleMarkers Marks: various
-                            _plot.setMarksStyle("various");
-                            savedmarks = "various";
-                            continue;
-                        } else if (arg.equals("-nl")) {
-                            // -nl NoLines Lines: off
-                            // If we saw the -bar arg, then assume impulses
-                            sawnlarg = true;
-                            if (sawbararg) {
-                                // Restore the _marks in case we did -P -bar -nl
-                                _plot.setMarksStyle(savedmarks);
-                                _plot.setBars(false);
-                                _plot.setImpulses(true);
-                            }
-                            _plot.setConnected(false);
-                            continue;
-                        } else if (arg.equals("-o")) {
-                            // -o <output filename>
-                            // _outputFile =  args[i++];
-                            i++;
-                            continue;
-                        } else if (arg.equals("-p")) {
-                            // -p PixelMarkers Marks: points
-                            _plot.setMarksStyle("points");
-                            savedmarks = "points";
-                            continue;
-                        } else if (arg.equals("-P")) {
-                            // -P LargePixel Marks: dots\n
-                            _plot.setMarksStyle("dots");
-                            savedmarks = "dots";
-                            continue;
-                        } else if (arg.equals("-print")) {
-                            // -print is not in the original X11 pxgraph.
-                            continue;
-                        } else if (arg.equals("-rv")) {
-                            _plot.setBackground(PlotBox.getColorByName("black"));
-                            _plot.setForeground(PlotBox.getColorByName("white"));
-                            continue;
-                        } else if (arg.equals("-test")) {
-                            // -test is not in the original X11 pxgraph.
-                            //_test = true;
-                            continue;
-                        } else if (arg.equals("-tk")) {
-                            _plot.setGrid(false);
-                            continue;
-                        } else if (arg.equals("-v") || arg.equals("-version")) {
-                            // -version is not in the original X11 pxgraph.
-                            //_version();
-                            continue;
-                        } else if (arg.length() > 1  && arg.charAt(0) == '-') {
-                            // Process '-<digit> <datasetname>'
-                            try {
-                                Integer datasetnumberint = new
-                                    Integer(arg.substring(1));
-                                int datasetnumber = datasetnumberint.intValue();
-                                if (datasetnumber >= 0) {
-                                    _plot.addLegend(datasetnumber, args[i++]);
-                                    continue;
-                                }
-                            } catch (NumberFormatException e) {}
                         }
                     } else {
-                        if (arg.startsWith("=")) {
-                            // Process =WxH+X+Y
-                            width = (int)Integer.valueOf(arg.substring(1,
-                                    arg.indexOf('x'))).intValue();
-                            int plusIndex = arg.indexOf('+');
-                            int minusIndex = arg.indexOf('-');
-                            if (plusIndex != -1 || minusIndex != -1) {
-                                // =WxH+X+Y, =WxH-X+Y, =WxH-X-Y, =WxH+X-Y
-                                if ( plusIndex != -1 && minusIndex != -1) {
-                                    // =WxH-X+Y or =WxH+X-Y
-                                    int index = minusIndex;
-                                    if (plusIndex < minusIndex) {
-                                        index = plusIndex;
-                                    }
-                                    height = Integer.valueOf(arg.substring(
-                                            arg.indexOf('x')+1,
-                                            index)).intValue();
-                                } else {
-                                    if (plusIndex != -1) {
-                                // =WxH+X+Y
-                                        height = Integer.valueOf(arg.substring(
-                                                arg.indexOf('x')+1,
-                                                plusIndex)).intValue();
-                                    } else {
-                                // =WxH-X-Y
-                                        height = Integer.valueOf(arg.substring(
-                                                arg.indexOf('x')+1,
-                                                minusIndex)).intValue();
-                                    }
-                                }
-                            } else {
-                                if (arg.length() > arg.indexOf('x')) {
-                                    // =WxH
-                                    height = Integer.valueOf(arg.substring(
-                                            arg.indexOf('x')+1,
-                                            arg.length())).intValue();
-                                }
-                            }
-                            // FIXME: it is unclear what X and Y in =WxH+X+Y mean
-                            // in a non-toplevel window, so we don't process
-                            // those here.  See Pxgraph.java for how to process
-                            // X and Y for a toplevel window.
-                            continue;
+                        if (arg.length() > arg.indexOf('x')) {
+                            // =WxH
+                            height = Integer.valueOf(arg.substring(
+                                                             arg.indexOf('x')+1,
+                                                             arg.length())).intValue();
                         }
                     }
-                    // If we got to here, then we failed to parse the arg
-                    throw new
-                        CmdLineArgException("Failed to parse `" + arg + "'");
+                    // FIXME: it is unclear what X and Y in =WxH+X+Y mean
+                    // in a non-toplevel window, so we don't process
+                    // those here.  See Pxgraph.java for how to process
+                    // X and Y for a toplevel window.
+                    continue;
                 }
-                argumentsRead = i++;
-
-                _plot.setSize(width, height);
-
-                for (i = argumentsRead; i < args.length; i++) {
-
-                    // Have a filename.  First attempt to open it as a URL.
-                    InputStream instream;
-                    try {
-                        URL inurl = new URL(base, args[i]);
-                        instream = inurl.openStream();
-                    } catch (MalformedURLException ex) {
-                        instream = new FileInputStream(args[i]);
-                    }
-                    read(instream);
-                }
-                return argumentsRead;
             }
+            // If we got to here, then we failed to parse the arg
+            throw new
+                CmdLineArgException("Failed to parse `" + arg + "'");
+        }
+        argumentsRead = i++;
+
+        _plot.setSize(width, height);
+
+        for (i = argumentsRead; i < args.length; i++) {
+
+            // Have a filename.  First attempt to open it as a URL.
+            InputStream instream;
+            try {
+                URL inurl = new URL(base, args[i]);
+                instream = inurl.openStream();
+            } catch (MalformedURLException ex) {
+                instream = new FileInputStream(args[i]);
+            }
+            read(instream);
+        }
+        return argumentsRead;
+    }
 
     /** Split a string containing pxgraph-compatible command-line arguments
      *  into an array and call parseArgs() on the array.  This is used
@@ -728,89 +728,89 @@ public class PxgraphParser {
      */
     public int parsePxgraphargs(String pxgraphargs, URL base)
             throws CmdLineArgException, FileNotFoundException, IOException {
-                // We convert the String to a Stream and then use a StreamTokenizer
-                // to parse the arguments into a Vector and then copy
-                // the vector into an array of Strings.  We use a Vector
-                // so that we can handle an arbitrary number of arguments
+        // We convert the String to a Stream and then use a StreamTokenizer
+        // to parse the arguments into a Vector and then copy
+        // the vector into an array of Strings.  We use a Vector
+        // so that we can handle an arbitrary number of arguments
 
-                Vector argvector = new Vector();
-                boolean prependdash = false; // true if we need to add a -
+        Vector argvector = new Vector();
+        boolean prependdash = false; // true if we need to add a -
 
-                StringReader pin = new StringReader(pxgraphargs);
+        StringReader pin = new StringReader(pxgraphargs);
 
-                try {
-                    StreamTokenizer stoken = new StreamTokenizer(pin);
+        try {
+            StreamTokenizer stoken = new StreamTokenizer(pin);
 
-                    // We don't want to parse numbers specially, so we reset
-                    // the syntax and then add back what we want.
-                    stoken.resetSyntax();
-                    stoken.whitespaceChars(0, ' ');
-                    stoken.wordChars('(', '~');
-                    stoken.quoteChar('"');
-                    stoken.quoteChar('\'');
-                    int c;
-                    String partialarg = null;
-                out:
-                    while (true) {
-                        c = stoken.nextToken();
-                        //System.out.print(c + " "+stoken.ttype+" "+stoken.sval+" ");
-                        switch (stoken.ttype) {        // same as value of 'c'
-                        case StreamTokenizer.TT_EOF:
-                            break out;
-                        case StreamTokenizer.TT_WORD:
-                            //System.out.println("Word: " + stoken.sval);
-                            if (prependdash) {
-                                prependdash = false;
-                                if (partialarg == null)
-                                    argvector.addElement(new String("-"+stoken.sval));
-                                else
-                                    argvector.addElement(new String("-" + partialarg +
-                                            stoken.sval));
-                            } else {
-                                if (partialarg == null)
-                                    argvector.addElement(new String(stoken.sval));
-                                else
-                                    argvector.addElement(new String(partialarg +
-                                            stoken.sval));
-                            }
-                            partialarg = null;
-                            break;
-                        case '-':
-                            prependdash = true;
-                            break;
-                        case '#':
-                        case '$':
-                        case '%':
-                        case '&':
-                            // The above chars can be part of a URL.  For example
-                            // perl scripts use &.  However, we cannot include
-                            // them in the wordChars() range of chars, since
-                            // the single quote is between them and the rest of the
-                            // chars. So we have to process them by hand.
-                            partialarg = ((String)argvector.lastElement()) + (char)c;
-                            argvector.removeElementAt(argvector.size()-1);
-                            break;
-                        case '"':
-                        case '\'':
-                            //System.out.println("String: " + stoken.sval);
+            // We don't want to parse numbers specially, so we reset
+            // the syntax and then add back what we want.
+            stoken.resetSyntax();
+            stoken.whitespaceChars(0, ' ');
+            stoken.wordChars('(', '~');
+            stoken.quoteChar('"');
+            stoken.quoteChar('\'');
+            int c;
+            String partialarg = null;
+            out:
+            while (true) {
+                c = stoken.nextToken();
+                //System.out.print(c + " "+stoken.ttype+" "+stoken.sval+" ");
+                switch (stoken.ttype) {        // same as value of 'c'
+                case StreamTokenizer.TT_EOF:
+                    break out;
+                case StreamTokenizer.TT_WORD:
+                    //System.out.println("Word: " + stoken.sval);
+                    if (prependdash) {
+                        prependdash = false;
+                        if (partialarg == null)
+                            argvector.addElement(new String("-"+stoken.sval));
+                        else
+                            argvector.addElement(new String("-" + partialarg +
+                                                         stoken.sval));
+                    } else {
+                        if (partialarg == null)
                             argvector.addElement(new String(stoken.sval));
-                            break;
-                        default:
-                            throw new IOException("Failed to parse: '"+ (char)c +
-                                    "' in `" + pxgraphargs + "'");
-                        }
+                        else
+                            argvector.addElement(new String(partialarg +
+                                                         stoken.sval));
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    partialarg = null;
+                    break;
+                case '-':
+                    prependdash = true;
+                    break;
+                case '#':
+                case '$':
+                case '%':
+                case '&':
+                    // The above chars can be part of a URL.  For example
+                    // perl scripts use &.  However, we cannot include
+                    // them in the wordChars() range of chars, since
+                    // the single quote is between them and the rest of the
+                    // chars. So we have to process them by hand.
+                    partialarg = ((String)argvector.lastElement()) + (char)c;
+                    argvector.removeElementAt(argvector.size()-1);
+                    break;
+                case '"':
+                case '\'':
+                    //System.out.println("String: " + stoken.sval);
+                    argvector.addElement(new String(stoken.sval));
+                    break;
+                default:
+                    throw new IOException("Failed to parse: '"+ (char)c +
+                            "' in `" + pxgraphargs + "'");
                 }
-
-                // Create a array
-                String args[] = new String[argvector.size()];
-                for (int i = 0; i < argvector.size(); i++) {
-                    args[i] = (String)argvector.elementAt(i);
-                }
-                return parseArgs(args, base);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Create a array
+        String args[] = new String[argvector.size()];
+        for (int i = 0; i < argvector.size(); i++) {
+            args[i] = (String)argvector.elementAt(i);
+        }
+        return parseArgs(args, base);
+    }
 
     /** Read a pxgraph-compatible binary or ASCII encoded file.
      *  @param inputStream The input stream.

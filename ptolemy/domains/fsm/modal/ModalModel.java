@@ -1,28 +1,28 @@
 /* Modal models.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
@@ -52,60 +52,60 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ModalModel
 /**
-This is a typed composite actor designed to be a modal model.
-Inside the modal model is a finite-state machine controller, and
-inside each state in the FSM is a refinement model. To use this
-actor, just drag it into a model, and look inside to start constructing
-the controller.  You may add ports to get inputs and outputs, and
-add states to the controller.  You may add one or more refinements
-to a state (each of these refinements will be executed when this
-actor is executed).  Each refinement is required to have its own
-director, so you will need to choose a director.
-<p>
-The controller is a finite-state machine (FSM), which consists of
-states and transitions.  One of the states is an initial state.
-When this actor executes, if the current state has a refinement,
-then that refinement is executed.  Then the guards on all the outgoing
-transitions of the current state are evaluated, and if one of those
-guards is true, then the transition is taken.  Taking the transition
-means that the actions associated with the transition are executed
-(which can result in producing outputs), and the new current state is
-the state at the destination of the transition.  It is an error if
-more than one of the guards evaluates to true.
-<p>
-To add a state, click on a state button in the toolbar, or drag
-in a state from the library at the left.  To add a transition,
-position the mouse over the source state, hold the control button,
-and drag to the destination state.  The destination state may be
-the same state, in which case the transition is used simply to
-execute its actions.
-<p>
-Adding or removing ports in this actor results in the same ports appearing
-or disappearing in the FSM controller and in each of the refinements.
-Similarly, adding or removing ports in the controller or in the
-refinements results in this actor and the other refinements
-reflecting the same change to the ports.  That is, this actor,
-the controller, and the refinments all contain the same ports.
-<p>
-There is one subtlety regarding ports however.  If you add an
-output port to a refinement, then the corresponding port in the
-controller will be both an input and an output.  The reason for
-this is that the controller can access the results of executing
-a refinement in order to choose a transition.
-<p>
-This class is designed to work closely with ModalController and
-Refinement, since changes to ports can be initiated in this class
-or in those. It works with continuous-time as well as discrete-time
-models.
-<p>
-This class also fulfills the CTEventGenerator interfact so that
-it can report events generated inside.
+   This is a typed composite actor designed to be a modal model.
+   Inside the modal model is a finite-state machine controller, and
+   inside each state in the FSM is a refinement model. To use this
+   actor, just drag it into a model, and look inside to start constructing
+   the controller.  You may add ports to get inputs and outputs, and
+   add states to the controller.  You may add one or more refinements
+   to a state (each of these refinements will be executed when this
+   actor is executed).  Each refinement is required to have its own
+   director, so you will need to choose a director.
+   <p>
+   The controller is a finite-state machine (FSM), which consists of
+   states and transitions.  One of the states is an initial state.
+   When this actor executes, if the current state has a refinement,
+   then that refinement is executed.  Then the guards on all the outgoing
+   transitions of the current state are evaluated, and if one of those
+   guards is true, then the transition is taken.  Taking the transition
+   means that the actions associated with the transition are executed
+   (which can result in producing outputs), and the new current state is
+   the state at the destination of the transition.  It is an error if
+   more than one of the guards evaluates to true.
+   <p>
+   To add a state, click on a state button in the toolbar, or drag
+   in a state from the library at the left.  To add a transition,
+   position the mouse over the source state, hold the control button,
+   and drag to the destination state.  The destination state may be
+   the same state, in which case the transition is used simply to
+   execute its actions.
+   <p>
+   Adding or removing ports in this actor results in the same ports appearing
+   or disappearing in the FSM controller and in each of the refinements.
+   Similarly, adding or removing ports in the controller or in the
+   refinements results in this actor and the other refinements
+   reflecting the same change to the ports.  That is, this actor,
+   the controller, and the refinments all contain the same ports.
+   <p>
+   There is one subtlety regarding ports however.  If you add an
+   output port to a refinement, then the corresponding port in the
+   controller will be both an input and an output.  The reason for
+   this is that the controller can access the results of executing
+   a refinement in order to choose a transition.
+   <p>
+   This class is designed to work closely with ModalController and
+   Refinement, since changes to ports can be initiated in this class
+   or in those. It works with continuous-time as well as discrete-time
+   models.
+   <p>
+   This class also fulfills the CTEventGenerator interfact so that
+   it can report events generated inside.
 
-@see ModalController
-@see Refinement
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
+   @see ModalController
+   @see Refinement
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class ModalModel extends CTCompositeActor {
 
@@ -187,8 +187,8 @@ public class ModalModel extends CTCompositeActor {
                 _controller.setHDFFSMActor(true);
                 _directorChanged = true;
             } else if (_directorChanged &&
-              (directorClass.equals(modalDirectorClassNames[0])
-              || (directorClass.equals(modalDirectorClassNames[1])))) {
+                    (directorClass.equals(modalDirectorClassNames[0])
+                            || (directorClass.equals(modalDirectorClassNames[1])))) {
                 _controller.setHDFFSMActor(false);
             }
         }
@@ -226,7 +226,7 @@ public class ModalModel extends CTCompositeActor {
     /** Get the FSM controller.
      */
     public FSMActor getController() {
-       return _controller;
+        return _controller;
     }
 
     /** Create a new director for use in this composite.  This base
@@ -382,14 +382,14 @@ public class ModalModel extends CTCompositeActor {
         // NOTE This library will be described in the exported MoML
         // file, so when that is encountered, it will match this.
         // Configure the controller so it has the appropriate library.
-//        LibraryAttribute attribute = new LibraryAttribute(
-//                _controller, "_library");
-//        CompositeEntity library = new CompositeEntity(new Workspace("Library"));
-//        library.setName("state library");
-//        attribute.setLibrary(library);
-//        State state = new State(library, "state");
-//        new Attribute(state, "_centerName");
-//        new HierarchicalStateControllerFactory(state, "_controllerFactory");
+        //        LibraryAttribute attribute = new LibraryAttribute(
+        //                _controller, "_library");
+        //        CompositeEntity library = new CompositeEntity(new Workspace("Library"));
+        //        library.setName("state library");
+        //        attribute.setLibrary(library);
+        //        State state = new State(library, "state");
+        //        new Attribute(state, "_centerName");
+        //        new HierarchicalStateControllerFactory(state, "_controllerFactory");
 
         // Import utilities file (including annotations, etc.)
         // Do this as a MoML change request so we can easily read the library
@@ -399,10 +399,10 @@ public class ModalModel extends CTCompositeActor {
         // This should be OK, since the library is in its own workspace,
         // and modifying the library cannot possibly affect the executing
         // model.
-//        String moml = "<input source=\"ptolemy/configs/basicUtilitiesFSM.xml\"/>";
-//        MoMLChangeRequest request = new MoMLChangeRequest(
-//                this, library, moml);
-//        library.requestChange(request);
+        //        String moml = "<input source=\"ptolemy/configs/basicUtilitiesFSM.xml\"/>";
+        //        MoMLChangeRequest request = new MoMLChangeRequest(
+        //                this, library, moml);
+        //        library.requestChange(request);
 
         // Putting this attribute in causes look inside to be handled
         // by it.

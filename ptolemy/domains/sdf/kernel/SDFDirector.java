@@ -1,27 +1,27 @@
 /* Director for the synchronous dataflow model of computation.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Green (neuendor@eecs.berkeley.edu)
@@ -53,74 +53,74 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// SDFDirector
 /**
-Director for the synchronous dataflow (SDF) model of computation.
+   Director for the synchronous dataflow (SDF) model of computation.
 
-<h1>SDF overview</h1>
-The Synchronous Dataflow(SDF) domain supports the efficient
-execution of Dataflow graphs that
-lack control structures.   Dataflow graphs that contain control structures
-should be executed using the Process Networks(PN) domain instead.
-SDF allows efficient execution, with very little overhead at runtime.  It
-requires that the rates on the ports of all actors be known before hand.
-SDF also requires that the rates on the ports not change during
-execution.  In addition, in some cases (namely systems with feedback) delays,
-which are represented by initial tokens on relations must be explicitly
-noted.  SDF uses this rate and delay information to determine
-the execution sequence of the actors before execution begins.
-<h2>Schedule Properties</h2>
-<ul>
-<li>The number of tokens accumulated on every relation is bounded, given
-an infinite number of executions of the schedule.
-<li>Deadlock will never occur, given an infinite number of executions of
-the schedule.
-</ul>
-<h1>Class comments</h1>
-An SDFDirector is the class that controls execution of actors under the
-SDF domain.  By default, actor scheduling is handled by the SDFScheduler
-class.  Furthermore, the newReceiver method creates Receivers of type
-SDFReceiver, which extends QueueReceiver to support optimized gets
-and puts of arrays of tokens.
-<p>
-Actors are assumed to consume and produce exactly one token per channel on
-each firing.  Actors that do not follow this convention should set
-the appropriate parameters on input and output ports to declare the number
-of tokens they produce or consume.  See the
-@link ptolemy.domains.sdf.kernel.SDFScheduler for more information.
-The @link ptolemy.domains.sdf.lib.SampleDelay actor is usually used
-in a model to specify the delay across a relation.
-<p>
-The <i>allowDisconnectedGraphs</i> parameter of this director determines
-whether disconnected graphs are permitted.
-A model may have two or more graphs of actors that
-are not connected.  The schedule can jump from one graph to
-another among the disconnected graphs. There is nothing to
-force the scheduler to finish executing all actors on one
-graph before firing actors on another graph. However, the
-order of execution within an graph should be correct.
-Usually, disconnected graphs in an SDF model indicates an
-error.
-The default value of the allowDisconnectedGraphs parameter is a
-BooleanToken with the value false.
-<p>
-The <i>iterations</i> parameter of this director corresponds to a
-limit on the number of times the director will fire its hierarchy
-before it returns false in postfire.  If this number is not greater
-than zero, then no limit is set and postfire will always return true.
-The default value of the iterations parameter is an IntToken with value zero.
-<p>
-The <i>vectorizationFactor</i> parameter of this director sets the number
-of times that the basic schedule is executed during each firing of this
-director.  This might allow the director to execute the model more efficiently,
-by combining multiple firings of each actor.  The default value of the
-vectorizationFactor parameter is an IntToken with value one.
+   <h1>SDF overview</h1>
+   The Synchronous Dataflow(SDF) domain supports the efficient
+   execution of Dataflow graphs that
+   lack control structures.   Dataflow graphs that contain control structures
+   should be executed using the Process Networks(PN) domain instead.
+   SDF allows efficient execution, with very little overhead at runtime.  It
+   requires that the rates on the ports of all actors be known before hand.
+   SDF also requires that the rates on the ports not change during
+   execution.  In addition, in some cases (namely systems with feedback) delays,
+   which are represented by initial tokens on relations must be explicitly
+   noted.  SDF uses this rate and delay information to determine
+   the execution sequence of the actors before execution begins.
+   <h2>Schedule Properties</h2>
+   <ul>
+   <li>The number of tokens accumulated on every relation is bounded, given
+   an infinite number of executions of the schedule.
+   <li>Deadlock will never occur, given an infinite number of executions of
+   the schedule.
+   </ul>
+   <h1>Class comments</h1>
+   An SDFDirector is the class that controls execution of actors under the
+   SDF domain.  By default, actor scheduling is handled by the SDFScheduler
+   class.  Furthermore, the newReceiver method creates Receivers of type
+   SDFReceiver, which extends QueueReceiver to support optimized gets
+   and puts of arrays of tokens.
+   <p>
+   Actors are assumed to consume and produce exactly one token per channel on
+   each firing.  Actors that do not follow this convention should set
+   the appropriate parameters on input and output ports to declare the number
+   of tokens they produce or consume.  See the
+   @link ptolemy.domains.sdf.kernel.SDFScheduler for more information.
+   The @link ptolemy.domains.sdf.lib.SampleDelay actor is usually used
+   in a model to specify the delay across a relation.
+   <p>
+   The <i>allowDisconnectedGraphs</i> parameter of this director determines
+   whether disconnected graphs are permitted.
+   A model may have two or more graphs of actors that
+   are not connected.  The schedule can jump from one graph to
+   another among the disconnected graphs. There is nothing to
+   force the scheduler to finish executing all actors on one
+   graph before firing actors on another graph. However, the
+   order of execution within an graph should be correct.
+   Usually, disconnected graphs in an SDF model indicates an
+   error.
+   The default value of the allowDisconnectedGraphs parameter is a
+   BooleanToken with the value false.
+   <p>
+   The <i>iterations</i> parameter of this director corresponds to a
+   limit on the number of times the director will fire its hierarchy
+   before it returns false in postfire.  If this number is not greater
+   than zero, then no limit is set and postfire will always return true.
+   The default value of the iterations parameter is an IntToken with value zero.
+   <p>
+   The <i>vectorizationFactor</i> parameter of this director sets the number
+   of times that the basic schedule is executed during each firing of this
+   director.  This might allow the director to execute the model more efficiently,
+   by combining multiple firings of each actor.  The default value of the
+   vectorizationFactor parameter is an IntToken with value one.
 
 
-@see ptolemy.domains.sdf.kernel.SDFScheduler
-@see ptolemy.domains.sdf.kernel.SDFReceiver
+   @see ptolemy.domains.sdf.kernel.SDFScheduler
+   @see ptolemy.domains.sdf.kernel.SDFReceiver
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 0.2
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class SDFDirector extends StaticSchedulingDirector {
 

@@ -1,28 +1,28 @@
 /* A class that replaces HS port methods.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -68,36 +68,36 @@ import soot.util.Chain;
 //////////////////////////////////////////////////////////////////////////
 //// HSPortInliner
 /**
-A class that inlines methods on ports for HS models.
+   A class that inlines methods on ports for HS models.
 
-This class creates a set of appropriately sized circular buffers for
-each channel in a particular composite actor.  These buffers are
-referred to by static fields of the model.  Inside each actor in the
-composite, an array of integer indexes into the circular buffer is
-generated for each port.  Port method invocations where the channel
-index can be statically determined are replaced with references to the
-appropriate buffer in the model, and an index update instructions for
-the appropriate index in the actor.
+   This class creates a set of appropriately sized circular buffers for
+   each channel in a particular composite actor.  These buffers are
+   referred to by static fields of the model.  Inside each actor in the
+   composite, an array of integer indexes into the circular buffer is
+   generated for each port.  Port method invocations where the channel
+   index can be statically determined are replaced with references to the
+   appropriate buffer in the model, and an index update instructions for
+   the appropriate index in the actor.
 
-In cases where the channel cannot be statically determined for a given
-invocation point, e.g. a for loop over all of the channels of a
-trigger input port to read and discard the data, a second reference to
-each buffer exists in the actors.  These references are in a array
-that can be indexed by the channel of a port, and are called "buffer
-references".
+   In cases where the channel cannot be statically determined for a given
+   invocation point, e.g. a for loop over all of the channels of a
+   trigger input port to read and discard the data, a second reference to
+   each buffer exists in the actors.  These references are in a array
+   that can be indexed by the channel of a port, and are called "buffer
+   references".
 
-Additionally, index fields and buffer references are also created for
-each port in the model for handling "inside" port methods...
+   Additionally, index fields and buffer references are also created for
+   each port in the model for handling "inside" port methods...
 
-FIXME: currently we try to speed things up if the buffersize is only
-one by removing the index update overhead.  Note that there are other
-optimizations that can be made here (for instance, if we can
-statically determine all the channel references (which is trivially
-true if there is only one channel), then there is no need to have the
-index or portbuffer arrays.
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
+   FIXME: currently we try to speed things up if the buffersize is only
+   one by removing the index update overhead.  Note that there are other
+   optimizations that can be made here (for instance, if we can
+   statically determine all the channel references (which is trivially
+   true if there is only one channel), then there is no need to have the
+   index or portbuffer arrays.
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class HSPortInliner implements PortInliner {
     /** Construct a new transformer
@@ -340,8 +340,8 @@ public class HSPortInliner implements PortInliner {
 
                     // Note: reverse order!
                     clinitUnits.addFirst(Jimple.v().newAssignStmt(
-                            Jimple.v().newStaticFieldRef(field),
-                            NullConstant.v()));
+                                                 Jimple.v().newStaticFieldRef(field),
+                                                 NullConstant.v()));
                 }
             }
         }
@@ -358,28 +358,28 @@ public class HSPortInliner implements PortInliner {
         // Convert the type, if we need to.
         if (typeLocal != null) {
             list.add(Jimple.v().newAssignStmt(
-                    tokenLocal,
-                    Jimple.v().newInterfaceInvokeExpr(
-                            typeLocal,
-                            PtolemyUtilities.typeConvertMethod,
-                            inputTokenLocal)));
+                             tokenLocal,
+                             Jimple.v().newInterfaceInvokeExpr(
+                                     typeLocal,
+                                     PtolemyUtilities.typeConvertMethod,
+                                     inputTokenLocal)));
 
 
             list.add(Jimple.v().newAssignStmt(
-                    outputTokenLocal,
-                    Jimple.v().newCastExpr(
-                            tokenLocal,
-                            outputTokenLocal.getType())));
+                             outputTokenLocal,
+                             Jimple.v().newCastExpr(
+                                     tokenLocal,
+                                     outputTokenLocal.getType())));
             // store the converted token.
             list.add(Jimple.v().newAssignStmt(
-                    Jimple.v().newArrayRef(bufferLocal,
-                            indexLocal),
-                    outputTokenLocal));
+                             Jimple.v().newArrayRef(bufferLocal,
+                                     indexLocal),
+                             outputTokenLocal));
         } else {
             list.add(Jimple.v().newAssignStmt(
-                    Jimple.v().newArrayRef(bufferLocal,
-                            indexLocal),
-                    inputTokenLocal));
+                             Jimple.v().newArrayRef(bufferLocal,
+                                     indexLocal),
+                             inputTokenLocal));
         }
         return list;
     }
@@ -396,23 +396,23 @@ public class HSPortInliner implements PortInliner {
         }
         // increment the position.
         list.add(Jimple.v().newAssignStmt(
-                indexLocal,
-                Jimple.v().newAddExpr(
-                        indexLocal,
-                        IntConstant.v(1))));
+                         indexLocal,
+                         Jimple.v().newAddExpr(
+                                 indexLocal,
+                                 IntConstant.v(1))));
 
         // wrap around.
         list.add(Jimple.v().newAssignStmt(
-                indexLocal,
-                Jimple.v().newRemExpr(
-                        indexLocal,
-                        bufferSizeValue)));
+                         indexLocal,
+                         Jimple.v().newRemExpr(
+                                 indexLocal,
+                                 bufferSizeValue)));
 
         // store back.
         list.add(Jimple.v().newAssignStmt(
-                Jimple.v().newArrayRef(indexArrayLocal,
-                        channelValue),
-                indexLocal));
+                         Jimple.v().newArrayRef(indexArrayLocal,
+                                 channelValue),
+                         indexLocal));
         return list;
     }
 

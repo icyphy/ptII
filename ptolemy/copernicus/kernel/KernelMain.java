@@ -1,31 +1,31 @@
 /* Abstract base class that provides common main() functionality
-to be used by various backends.
+   to be used by various backends.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2001-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
+   @ProposedRating Red (cxh@eecs.berkeley.edu)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.copernicus.kernel;
@@ -70,17 +70,17 @@ import com.microstar.xml.XmlException;
 //////////////////////////////////////////////////////////////////////////
 //// Main
 /**
-Base class that provides common functionality to be used by various
-code generators.  Particular code generators should extend this class
-and generally override the addTransforms method to instantiate the
-correct transforms and the _parseArgs method to extract arguments.
-These subclasses should be not be instantiated directly, but will
-instead be instantiated by the Copernicus class according to a
-selected code generator.
+   Base class that provides common functionality to be used by various
+   code generators.  Particular code generators should extend this class
+   and generally override the addTransforms method to instantiate the
+   correct transforms and the _parseArgs method to extract arguments.
+   These subclasses should be not be instantiated directly, but will
+   instead be instantiated by the Copernicus class according to a
+   selected code generator.
 
-@author Stephen Neuendorffer, Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0 */
+   @author Stephen Neuendorffer, Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.0 */
 public abstract class KernelMain {
 
     ///////////////////////////////////////////////////////////////////
@@ -127,31 +127,31 @@ public abstract class KernelMain {
     public void compile(String modelName, CompositeActor toplevel,
             GeneratorAttribute attribute) throws Exception {
         //  try {
-            long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
 
-            // Create instance classes for the actors.
-            initialize(toplevel);
+        // Create instance classes for the actors.
+        initialize(toplevel);
 
-            // Parse any copernicus args.
-            String[] sootArgs = _parseArgs(attribute);
+        // Parse any copernicus args.
+        String[] sootArgs = _parseArgs(attribute);
 
-            // Add Transforms to the Scene.
-            addTransforms();
+        // Add Transforms to the Scene.
+        addTransforms();
 
-            // Execute the transforms.
-            generateCode(sootArgs);
+        // Execute the transforms.
+        generateCode(sootArgs);
 
-            // Print out memory usage info
-            System.out.println(modelName + " "
-                    + ptolemy.actor.Manager.timeAndMemory(startTime));
+        // Print out memory usage info
+        System.out.println(modelName + " "
+                + ptolemy.actor.Manager.timeAndMemory(startTime));
 
-//         } catch (Exception ex) {
-//             System.err.println("Code generation of '" + modelName
-//                     + "' failed:");
-// //             ex.printStackTrace(System.err);
-// //             System.err.flush();
-// //             System.exit(2);
-//         }
+        //         } catch (Exception ex) {
+        //             System.err.println("Code generation of '" + modelName
+        //                     + "' failed:");
+        // //             ex.printStackTrace(System.err);
+        // //             System.err.flush();
+        // //             System.exit(2);
+        //         }
     }
 
     /** Call soot.Main.main(), which does command line argument
@@ -162,17 +162,17 @@ public abstract class KernelMain {
      *  to soot.Main.main().
      */
     public void generateCode(String[] args) {
-//         // This is rather ugly.  The moml Class is not a Java class, so
-//         // soot won't recognize it.  However, if we give soot nothing, then
-//         // it won't run.  Note that later we will call setLibraryClass() on
-//         // this class so that we don't actually generate code for it.
-//         args[0] = "java.lang.Object";
+        //         // This is rather ugly.  The moml Class is not a Java class, so
+        //         // soot won't recognize it.  However, if we give soot nothing, then
+        //         // it won't run.  Note that later we will call setLibraryClass() on
+        //         // this class so that we don't actually generate code for it.
+        //         args[0] = "java.lang.Object";
 
-//         // As of soot 2.0.1, this is all that is required.
-//         //        soot.Main.main(args);
-//         if (!Options.v().parse(args))
-//             throw new KernelRuntimeException(
-//                     "Option parse error");
+        //         // As of soot 2.0.1, this is all that is required.
+        //         //        soot.Main.main(args);
+        //         if (!Options.v().parse(args))
+        //             throw new KernelRuntimeException(
+        //                     "Option parse error");
 
         PackManager.v().getPack("wjtp").apply();
 

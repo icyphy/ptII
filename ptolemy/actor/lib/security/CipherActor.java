@@ -1,28 +1,28 @@
 /* A base class for actors that encrypt and decrypt data.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
@@ -44,38 +44,38 @@ import javax.crypto.Cipher;
 //////////////////////////////////////////////////////////////////////////
 //// CipherActor
 /**
-A base class for actors that encrypt and decrypt data.
+   A base class for actors that encrypt and decrypt data.
 
-<p>Cipher actors are any actors which perform encryption or
-decryption based on the Java Cryptography Extension (JCE).
-See the
-{@link ptolemy.actor.lib.security.CryptographyActor} documentation for
-resources about JCA and JCE.
+   <p>Cipher actors are any actors which perform encryption or
+   decryption based on the Java Cryptography Extension (JCE).
+   See the
+   {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
+   resources about JCA and JCE.
 
-<p> Actors extending this class take in an unsigned byte array at the
-<i>input</i>, process the data based on the <i>algorithm</i> parameter
-and send a unsigned byte array to the <i>output</i>.  The algorithms
-that may be implemented are limited to those that are implemented
-by "providers" following the JCE specifications and installed in the
-machine being run. The mode and padding of the algorithm can also be
-specified in the <i>mode</i> and <i>padding</i> parameters.
-In case a provider specific instance of an algorithm is needed,
-the provider may also be specified in the <i>provider</i> parameter.
-The <i>keySize</i> parameter allows implementations of algorithms
-using various key sizes.
+   <p> Actors extending this class take in an unsigned byte array at the
+   <i>input</i>, process the data based on the <i>algorithm</i> parameter
+   and send a unsigned byte array to the <i>output</i>.  The algorithms
+   that may be implemented are limited to those that are implemented
+   by "providers" following the JCE specifications and installed in the
+   machine being run. The mode and padding of the algorithm can also be
+   specified in the <i>mode</i> and <i>padding</i> parameters.
+   In case a provider specific instance of an algorithm is needed,
+   the provider may also be specified in the <i>provider</i> parameter.
+   The <i>keySize</i> parameter allows implementations of algorithms
+   using various key sizes.
 
-<p>Concrete actors derived from this base class must implement the
-{@link ptolemy.actor.lib.security.CryptographyActor#_process(byte[])} method.
-The initialize() method of this actor sets _cipher to the
-value of javax.crypt.Cipher.getInstance() with an argument that is
-created from the values of the <i>algorithm</i>, <i>padding</i> and
-<i>keySize</i> parameters. Derived classes should call _cipher.init()
-with the value of the key in their fire() method.  The_process() method
-in a derived class usually calls _cipher.doFinal().
+   <p>Concrete actors derived from this base class must implement the
+   {@link ptolemy.actor.lib.security.CryptographyActor#_process(byte[])} method.
+   The initialize() method of this actor sets _cipher to the
+   value of javax.crypt.Cipher.getInstance() with an argument that is
+   created from the values of the <i>algorithm</i>, <i>padding</i> and
+   <i>keySize</i> parameters. Derived classes should call _cipher.init()
+   with the value of the key in their fire() method.  The_process() method
+   in a derived class usually calls _cipher.doFinal().
 
-@author Christopher Hylands Brooks, Contributor: Rakesh Reddy
-@version $Id$
-@since Ptolemy II 3.1
+   @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
+   @version $Id$
+   @since Ptolemy II 3.1
 */
 abstract public class CipherActor extends CryptographyActor {
 

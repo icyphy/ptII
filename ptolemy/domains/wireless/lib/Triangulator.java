@@ -1,28 +1,28 @@
 /* Triangulate to identify the origin of a signal.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@.eecs.berkeley.edu)
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
@@ -47,54 +47,54 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Triangulator
 /**
-Given inputs that represent the location of a sensor and the time at
-which those sensors detect an event, this actor outputs the location
-of the source of the event.  It uses the specified
-<i>signalPropagationSpeed</i> and triangulates.
-<p>
-The input is a record with two fields named "location" and "time".
-The location field is an array of doubles, and the time is a double.
-In the current implementation, the actor assumes a two-dimensional space,
-so the location field is assumed to be an array with two doubles,
-which represent the horizontal (east-west) and vertical (north-south)
-location of the sensor.  The time field is assumed to be
-a double representing the time at which the event was detected by
-the sensor.
-<p>
-The triangulation algorithm requires three distinct sensor inputs
-for the same event in order to be able to calculate the location
-of the origin of the event.  Suppose that the event occurred at
-time <i>t</i> and location <i>x</i>.  Suppose that three sensors
-at locations <i>y1</i>, <i>y2</i>, and <i>y3</i> have each detected
-events at times <i>t1</i>, <i>t2</i>, and <i>t3</i>, respectively.
-Then this actor looks for a solution for <i>x</i> and <i>t</i>
-in the following equations:
-<quote>
-distance(<i>x</i>, <i>y1</i>)/<i>v</i> = <i>t1</i> - <i>t</i>,
-<br>
-distance(<i>x</i>, <i>y2</i>)/<i>v</i> = <i>t2</i> - <i>t</i>,
-<br>
-distance(<i>x</i>, <i>y3</i>)/<i>v</i> = <i>t3</i> - <i>t</i>,
-<br>
-</quote>
-where <i>v</i> is the value of <i>propagationSpeed</i>.
-If such a solution is found, then the output <i>x</i> is produced.
-<p>
-Since three distinct observations are required, this actor will
-produce no output until it has received three distinct observations.
-The observations are distinct if the sensor locations are distinct.
-If the three observations yield no solution, then this actor
-will produce no output.  However, it is possible for the three
-observations to come from distinct events, in which case the output
-may be erroneous.  To guard against this, this actor provides a
-<i>timeWindow</i> parameter.  The times of the three observations
-must be within the value of <i>timeWindow</i>, or no output will
-be produced. The output is an array of doubles, which in this
-implementation represent the X and Y locations of the event.
+   Given inputs that represent the location of a sensor and the time at
+   which those sensors detect an event, this actor outputs the location
+   of the source of the event.  It uses the specified
+   <i>signalPropagationSpeed</i> and triangulates.
+   <p>
+   The input is a record with two fields named "location" and "time".
+   The location field is an array of doubles, and the time is a double.
+   In the current implementation, the actor assumes a two-dimensional space,
+   so the location field is assumed to be an array with two doubles,
+   which represent the horizontal (east-west) and vertical (north-south)
+   location of the sensor.  The time field is assumed to be
+   a double representing the time at which the event was detected by
+   the sensor.
+   <p>
+   The triangulation algorithm requires three distinct sensor inputs
+   for the same event in order to be able to calculate the location
+   of the origin of the event.  Suppose that the event occurred at
+   time <i>t</i> and location <i>x</i>.  Suppose that three sensors
+   at locations <i>y1</i>, <i>y2</i>, and <i>y3</i> have each detected
+   events at times <i>t1</i>, <i>t2</i>, and <i>t3</i>, respectively.
+   Then this actor looks for a solution for <i>x</i> and <i>t</i>
+   in the following equations:
+   <quote>
+   distance(<i>x</i>, <i>y1</i>)/<i>v</i> = <i>t1</i> - <i>t</i>,
+   <br>
+   distance(<i>x</i>, <i>y2</i>)/<i>v</i> = <i>t2</i> - <i>t</i>,
+   <br>
+   distance(<i>x</i>, <i>y3</i>)/<i>v</i> = <i>t3</i> - <i>t</i>,
+   <br>
+   </quote>
+   where <i>v</i> is the value of <i>propagationSpeed</i>.
+   If such a solution is found, then the output <i>x</i> is produced.
+   <p>
+   Since three distinct observations are required, this actor will
+   produce no output until it has received three distinct observations.
+   The observations are distinct if the sensor locations are distinct.
+   If the three observations yield no solution, then this actor
+   will produce no output.  However, it is possible for the three
+   observations to come from distinct events, in which case the output
+   may be erroneous.  To guard against this, this actor provides a
+   <i>timeWindow</i> parameter.  The times of the three observations
+   must be within the value of <i>timeWindow</i>, or no output will
+   be produced. The output is an array of doubles, which in this
+   implementation represent the X and Y locations of the event.
 
-@author Xiaojun Liu, Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   @author Xiaojun Liu, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 
 public class Triangulator extends TypedAtomicActor {
@@ -314,13 +314,13 @@ public class Triangulator extends TypedAtomicActor {
         }
         double tdiff1 =
             Math.abs(_distance(x1, y1,
-                    result[0], result[1])/v - (t1 - result[2]));
+                             result[0], result[1])/v - (t1 - result[2]));
         double tdiff2 =
             Math.abs(_distance(x2, y2,
-                    result[0], result[1])/v - (t2 - result[2]));
+                             result[0], result[1])/v - (t2 - result[2]));
         double tdiff3 =
             Math.abs(_distance(x3, y3,
-                    result[0], result[1])/v - (t3 - result[2]));
+                             result[0], result[1])/v - (t3 - result[2]));
         // FIXME: make the check threshold a parameter?
         if (tdiff1 > 1e-5 || tdiff2 > 1e-5 || tdiff3 > 1e-5) {
             return false;
@@ -420,7 +420,7 @@ public class Triangulator extends TypedAtomicActor {
                 result[0] = m_inv_b[0] * result[2] + m_inv_c[0];
                 result[1] = m_inv_b[1] * result[2] + m_inv_c[1];
                 if (_checkResult(result, x1, y1, t1, x2, y2, t2,
-                        x3, y3, t3, v)) {
+                            x3, y3, t3, v)) {
                     return result;
                 } else {
                     result[0] = Double.NEGATIVE_INFINITY;

@@ -1,28 +1,28 @@
 /* A drag interactor for locatable nodes
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -52,20 +52,20 @@ import diva.graph.NodeDragInteractor;
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeDragInteractor
 /**
-An interaction role that drags nodes that have locatable objects
-as semantic objects.  When the node is dragged, this interactor
-updates the location in the locatable object with the new location of the
-figure.
-<p>
-The dragging of a selection is undoable, and is based on the difference
-between the point where the mouse was pressed and where the mouse was
-released. This information is used to create MoML to undo the move if
-requested.
+   An interaction role that drags nodes that have locatable objects
+   as semantic objects.  When the node is dragged, this interactor
+   updates the location in the locatable object with the new location of the
+   figure.
+   <p>
+   The dragging of a selection is undoable, and is based on the difference
+   between the point where the mouse was pressed and where the mouse was
+   released. This information is used to create MoML to undo the move if
+   requested.
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
- */
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.0
+*/
 public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
     /** Create a new interactor contained within the given controller.
@@ -117,18 +117,18 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         if (transform[0] == 0.0 && transform[1] == 0.0) return;
 
         BasicGraphController graphController
-                = (BasicGraphController)_controller.getController();
+            = (BasicGraphController)_controller.getController();
         BasicGraphFrame frame
-                = graphController.getFrame();
+            = graphController.getFrame();
 
         SelectionModel model
-                = graphController.getSelectionModel();
+            = graphController.getSelectionModel();
         AbstractBasicGraphModel graphModel
-                = (AbstractBasicGraphModel)graphController.getGraphModel();
+            = (AbstractBasicGraphModel)graphController.getGraphModel();
         Object selection[]
-                = model.getSelectionAsArray();
+            = model.getSelectionAsArray();
         Object userObjects[]
-                = new Object[selection.length];
+            = new Object[selection.length];
         // First get the user objects from the selection.
         for (int i = 0; i < selection.length; i++) {
             userObjects[i] = ((Figure)selection[i]).getUserObject();
@@ -143,7 +143,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 if (graphModel.isEdge(userObject) ||
                         graphModel.isNode(userObject)) {
                     NamedObj actual
-                            = (NamedObj)graphModel.getSemanticObject(userObject);
+                        = (NamedObj)graphModel.getSemanticObject(userObject);
                     if (actual != null) {
                         namedObjSet.add(actual);
                     } else {
@@ -197,7 +197,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             // in an element refering to the container
             String containingElementName = element.getElementName();
             String elementToMove = "<" + containingElementName + " name=\"" +
-                    element.getName() + "\" >\n";
+                element.getName() + "\" >\n";
             moml.append(elementToMove);
             undoMoml.append(elementToMove);
 

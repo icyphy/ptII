@@ -1,28 +1,28 @@
 /* An attribute that references a library to use with the container.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (janneck@eecs.berkeley.edu)
@@ -44,28 +44,28 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// LibraryAttribute
 /**
-This class is a configurable singleton attribute that associates a
-component library with a model.  By convention, it is typically named
-"_library".  A visual editor that opens a model containing this attribute
-will offer the contents of its library as the component library for editing
-the model.  "Singleton" means that if this attribute is placed in a model,
-it will replace any previous singleton attribute that has the same name.
-"Configurable" means that the contents of the library can be set in
-a configure element in MoML, or via the configure() method.
-The library can also be set by calling setLibrary(); this will override
-any library specified by configure.
-<p>
-When creating a library to associate with this attribute, the
-library should be created in the same workspace as this attribute
-(as returned by the workspace() method).  Normally, it will have no
-container.  The text specified in the configure element (or a call
-to the configure() method) is not parsed until the getLibrary()
-method is called.  Thus, the overhead of creating the library is
-avoided if the library is not used.
+   This class is a configurable singleton attribute that associates a
+   component library with a model.  By convention, it is typically named
+   "_library".  A visual editor that opens a model containing this attribute
+   will offer the contents of its library as the component library for editing
+   the model.  "Singleton" means that if this attribute is placed in a model,
+   it will replace any previous singleton attribute that has the same name.
+   "Configurable" means that the contents of the library can be set in
+   a configure element in MoML, or via the configure() method.
+   The library can also be set by calling setLibrary(); this will override
+   any library specified by configure.
+   <p>
+   When creating a library to associate with this attribute, the
+   library should be created in the same workspace as this attribute
+   (as returned by the workspace() method).  Normally, it will have no
+   container.  The text specified in the configure element (or a call
+   to the configure() method) is not parsed until the getLibrary()
+   method is called.  Thus, the overhead of creating the library is
+   avoided if the library is not used.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 
 public class LibraryAttribute extends ConfigurableAttribute {

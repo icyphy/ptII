@@ -1,28 +1,28 @@
 /*
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -57,15 +57,15 @@ import soot.jimple.*;
  *
  * TODO: implement circuit conditionals!
  *
-@author Mike Wirthlin
-@version $Id$
-@since Ptolemy II 2.0
+ @author Mike Wirthlin
+ @version $Id$
+ @since Ptolemy II 2.0
 */
 public class JHDLBinOpActor extends JHDLAtomicActor {
 
     JHDLBinOpActor(CompositeEntity container, int operation)
-        throws IllegalActionException, NameDuplicationException {
-         super(container);
+            throws IllegalActionException, NameDuplicationException {
+        super(container);
         input1 = new JHDLIOPort(this, "input1");
         input2 = new JHDLIOPort(this, "input2");
         output = new JHDLIOPort(this, "output");
@@ -82,8 +82,8 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
         if (input1.isResolved() && input2.isResolved()) {
             if (input1.getSignalWidth() != input2.getSignalWidth()) {
                 System.out.println("Binop input1/input2 signal mismatch: "+
-                                   input1.getSignalWidth() + " vs. "+
-                                   input2.getSignalWidth());
+                        input1.getSignalWidth() + " vs. "+
+                        input2.getSignalWidth());
                 return false;
             }
             if (output.isResolved()) {
@@ -136,12 +136,12 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
         case MULT:
             Wire allbits = cell.wire(64);
             new arrayMult(cell,       // parent
-                          input1Wire,       // x
-                          input2Wire,       // y
-                          null,        // clk_en
-                          allbits,     // pout
-                          true,        // signed
-                          0);          // pipedepth
+                    input1Wire,       // x
+                    input2Wire,       // y
+                    null,        // clk_en
+                    allbits,     // pout
+                    true,        // signed
+                    0);          // pipedepth
             binOpWire = allbits.range(31,0);
             break;
         }

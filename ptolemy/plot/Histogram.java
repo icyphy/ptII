@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
@@ -41,82 +41,82 @@ import java.util.Vector;
 //////////////////////////////////////////////////////////////////////////
 //// Histogram
 /**
-A histogram plotter.  The plot can be configured and data can
-be provided either through a file with commands or through direct
-invocation of the public methods of the class.  To read a file or a
-URL, use the read() method.
-<p>
-When calling the public methods, in most cases the changes will not
-be visible until paint() has been called.  To request that this
-be done, call repaint().  One exception is addPoint(), which
-makes the affect of the new point visible immediately (or nearly
-immediately) if the plot is visible on the screen.
-<p>
-The ASCII format for the file file contains any number commands,
-one per line.  Unrecognized commands and commands with syntax
-errors are ignored.  Comments are denoted by a line starting with a
-pound sign "#".  The recognized commands include those supported by
-the base class, plus a few more.  The commands are case
-insensitive, but are usually capitalized.  The number of data sets
-to be plotted does not need to be specified.  Data sets are added as needed.
-Each dataset is identified with a color (see the base class).
-<P>
-The appearance of the histogram can be altered by the following commands:
-<pre>
-Bars: <i>width</i>
-Bars: <i>width, offset</i>
-</pre>
-The <i>width</i> is a real number specifying the width of the bars
-as a fraction of the bin width.  It usually has a value less than
-or equal to one,
-and defaults to 0.5.  The <i>offset</i> is a real number
-specifying how much the bar of the <i>i </i><sup>th</sup> data set
-is offset from the previous one.  This allows bars to "peek out"
-from behind the ones in front.  It defaults to 0.15.
-Note that the frontmost data set will be the first one.
-<p>
-The width of each bin of the histogram can be specified using:
-<pre>
-BinWidth: <i>width</i>
-</pre>
-This is given in whatever units the data has.
-By default, each bin is centered at <i>x</i> = <i>nw</i>,
-where <i>w</i> is the width of the bin and <i>n</i> is an integer.
-That bin represents values in the range (<i>x - w/2, x + w/2</i>).
-The alignment of the bins can be changed with the following command:
-<pre>
-BinOffset: <i>offset</i>
-</pre>
-If this method is used with argument <i>o</i>, then each bin is
-centered at <i>x = nw + o</i>, and represents values in the range
-(<i>x - w/2 + o, x + w/2 + o</i>).  So for example, if <i>o = w/2</i>,
-then each bin represents values from <i>nw</i> to
-(<i>n</i> + 1)<i>w</i> for some integer <i>n</i>.
-The default offset is 0.5, half the default bin width.
-<p>
-To specify data to be plotted, start a data set with the following command:
-<pre>
-DataSet: <i>string</i>
-</pre>
-Here, <i>string</i> is a label that will appear in the legend.
-It is not necessary to enclose the string in quotation marks.
-To start a new dataset without giving it a name, use:
-<pre>
-DataSet:
-</pre>
-In this case, no item will appear in the legend.
-New datasets are plotted <i>behind</i> the previous ones.
-The data itself is given by a sequence of numbers, one per line.
-The numbers are specified as
-strings that can be parsed by the Double parser in Java.
-It is also possible to specify the numbers using all the formats
-accepted by the Plot class, so that the same data may be plotted by
-both classes.  The <i>x</i> data is ignored, and only the <i>y</i>
-data is used to calculate the histogram.
+   A histogram plotter.  The plot can be configured and data can
+   be provided either through a file with commands or through direct
+   invocation of the public methods of the class.  To read a file or a
+   URL, use the read() method.
+   <p>
+   When calling the public methods, in most cases the changes will not
+   be visible until paint() has been called.  To request that this
+   be done, call repaint().  One exception is addPoint(), which
+   makes the affect of the new point visible immediately (or nearly
+   immediately) if the plot is visible on the screen.
+   <p>
+   The ASCII format for the file file contains any number commands,
+   one per line.  Unrecognized commands and commands with syntax
+   errors are ignored.  Comments are denoted by a line starting with a
+   pound sign "#".  The recognized commands include those supported by
+   the base class, plus a few more.  The commands are case
+   insensitive, but are usually capitalized.  The number of data sets
+   to be plotted does not need to be specified.  Data sets are added as needed.
+   Each dataset is identified with a color (see the base class).
+   <P>
+   The appearance of the histogram can be altered by the following commands:
+   <pre>
+   Bars: <i>width</i>
+   Bars: <i>width, offset</i>
+   </pre>
+   The <i>width</i> is a real number specifying the width of the bars
+   as a fraction of the bin width.  It usually has a value less than
+   or equal to one,
+   and defaults to 0.5.  The <i>offset</i> is a real number
+   specifying how much the bar of the <i>i </i><sup>th</sup> data set
+   is offset from the previous one.  This allows bars to "peek out"
+   from behind the ones in front.  It defaults to 0.15.
+   Note that the frontmost data set will be the first one.
+   <p>
+   The width of each bin of the histogram can be specified using:
+   <pre>
+   BinWidth: <i>width</i>
+   </pre>
+   This is given in whatever units the data has.
+   By default, each bin is centered at <i>x</i> = <i>nw</i>,
+   where <i>w</i> is the width of the bin and <i>n</i> is an integer.
+   That bin represents values in the range (<i>x - w/2, x + w/2</i>).
+   The alignment of the bins can be changed with the following command:
+   <pre>
+   BinOffset: <i>offset</i>
+   </pre>
+   If this method is used with argument <i>o</i>, then each bin is
+   centered at <i>x = nw + o</i>, and represents values in the range
+   (<i>x - w/2 + o, x + w/2 + o</i>).  So for example, if <i>o = w/2</i>,
+   then each bin represents values from <i>nw</i> to
+   (<i>n</i> + 1)<i>w</i> for some integer <i>n</i>.
+   The default offset is 0.5, half the default bin width.
+   <p>
+   To specify data to be plotted, start a data set with the following command:
+   <pre>
+   DataSet: <i>string</i>
+   </pre>
+   Here, <i>string</i> is a label that will appear in the legend.
+   It is not necessary to enclose the string in quotation marks.
+   To start a new dataset without giving it a name, use:
+   <pre>
+   DataSet:
+   </pre>
+   In this case, no item will appear in the legend.
+   New datasets are plotted <i>behind</i> the previous ones.
+   The data itself is given by a sequence of numbers, one per line.
+   The numbers are specified as
+   strings that can be parsed by the Double parser in Java.
+   It is also possible to specify the numbers using all the formats
+   accepted by the Plot class, so that the same data may be plotted by
+   both classes.  The <i>x</i> data is ignored, and only the <i>y</i>
+   data is used to calculate the histogram.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.3
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.3
 */
 public class Histogram extends PlotBox {
 
@@ -172,8 +172,8 @@ public class Histogram extends PlotBox {
      */
     public synchronized void addPoint(int dataset, double x, double y,
             boolean connected) {
-                addPoint(dataset, y);
-            }
+        addPoint(dataset, y);
+    }
 
     /** Clear the plot of all data points.  If the argument is true, then
      *  reset all parameters to their initial conditions, including
@@ -443,37 +443,37 @@ public class Histogram extends PlotBox {
      */
     protected void _drawBar(Graphics graphics, int dataset,
             long xpos, long ypos, boolean clip) {
-                if (clip) {
-                    if (ypos < _uly) {
-                        ypos = _uly;
-                    } if (ypos > _lry) {
-                        ypos = _lry;
-                    }
-                }
-                if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
-                    // left x position of bar.
-                    int barlx = (int)(xpos - _barwidth *_binWidth * _xscale/2 +
-                            dataset * _baroffset *_binWidth * _xscale);
-                    // right x position of bar
-                    int barrx = (int)(barlx + _barwidth *_binWidth * _xscale);
-                    if (barlx < _ulx) barlx = _ulx;
-                    if (barrx > _lrx) barrx = _lrx;
-                    // Make sure that a bar is always at least one pixel wide.
-                    if (barlx >= barrx) barrx = barlx+1;
-                    // The y position of the zero line.
-                    long zeroypos = _lry - (long) ((0-_yMin) * _yscale);
-                    if (_lry < zeroypos) zeroypos = _lry;
-                    if (_uly > zeroypos) zeroypos = _uly;
-
-                    if (_yMin >= 0 || ypos <= zeroypos) {
-                        graphics.fillRect(barlx, (int)ypos,
-                                barrx - barlx, (int)(zeroypos - ypos));
-                    } else {
-                        graphics.fillRect(barlx, (int)zeroypos,
-                                barrx - barlx, (int)(ypos - zeroypos));
-                    }
-                }
+        if (clip) {
+            if (ypos < _uly) {
+                ypos = _uly;
+            } if (ypos > _lry) {
+                ypos = _lry;
             }
+        }
+        if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
+            // left x position of bar.
+            int barlx = (int)(xpos - _barwidth *_binWidth * _xscale/2 +
+                    dataset * _baroffset *_binWidth * _xscale);
+            // right x position of bar
+            int barrx = (int)(barlx + _barwidth *_binWidth * _xscale);
+            if (barlx < _ulx) barlx = _ulx;
+            if (barrx > _lrx) barrx = _lrx;
+            // Make sure that a bar is always at least one pixel wide.
+            if (barlx >= barrx) barrx = barlx+1;
+            // The y position of the zero line.
+            long zeroypos = _lry - (long) ((0-_yMin) * _yscale);
+            if (_lry < zeroypos) zeroypos = _lry;
+            if (_uly > zeroypos) zeroypos = _uly;
+
+            if (_yMin >= 0 || ypos <= zeroypos) {
+                graphics.fillRect(barlx, (int)ypos,
+                        barrx - barlx, (int)(zeroypos - ypos));
+            } else {
+                graphics.fillRect(barlx, (int)zeroypos,
+                        barrx - barlx, (int)(ypos - zeroypos));
+            }
+        }
+    }
 
     /** Draw the axes and then plot the histogram. If the second
      *  argument is true, clear the display first.
@@ -490,25 +490,25 @@ public class Histogram extends PlotBox {
      */
     protected synchronized void _drawPlot(Graphics graphics,
             boolean clearfirst) {
-                // We must call PlotBox._drawPlot() before calling _drawPlotPoint
-                // so that _xscale and _yscale are set.
-                super._drawPlot(graphics, clearfirst);
+        // We must call PlotBox._drawPlot() before calling _drawPlotPoint
+        // so that _xscale and _yscale are set.
+        super._drawPlot(graphics, clearfirst);
 
-                _showing = true;
+        _showing = true;
 
-                // Plot the histograms in reverse order so that the first colors
-                // appear on top.
-                for (int dataset = _points.size() - 1; dataset >= 0 ; dataset--) {
-                    Hashtable data = (Hashtable)_histogram.elementAt(dataset);
-                    Enumeration keys = data.keys();
-                    while (keys.hasMoreElements()) {
-                        Integer bin = (Integer)keys.nextElement();
-                        Integer count = (Integer)data.get(bin);
-                        _drawPlotPoint(graphics, dataset,
-                                bin.intValue(), count.intValue());
-                    }
-                }
+        // Plot the histograms in reverse order so that the first colors
+        // appear on top.
+        for (int dataset = _points.size() - 1; dataset >= 0 ; dataset--) {
+            Hashtable data = (Hashtable)_histogram.elementAt(dataset);
+            Enumeration keys = data.keys();
+            while (keys.hasMoreElements()) {
+                Integer bin = (Integer)keys.nextElement();
+                Integer count = (Integer)data.get(bin);
+                _drawPlotPoint(graphics, dataset,
+                        bin.intValue(), count.intValue());
             }
+        }
+    }
 
     /** Parse a line that gives plotting information. Return true if
      *  the line is recognized.  Lines with syntax errors are ignored.
@@ -536,62 +536,62 @@ public class Histogram extends PlotBox {
                 return true;
             } else if (lcLine.startsWith("bars:") ||
                     lcLine.startsWith("bargraph:")) {
-                        // The PlotML code uses barGraph, but the older style
-                        // uses bars
-                        int comma = line.indexOf(",", 5);
-                        String barwidth;
-                        String baroffset = null;
-                        if (comma > 0) {
-                            barwidth = (line.substring(5, comma)).trim();
-                            baroffset = (line.substring(comma+1)).trim();
-                        } else {
-                            barwidth = (line.substring(5)).trim();
-                        }
-                        try {
-                            Double bwidth = new Double(barwidth);
-                            double boffset = _baroffset;
-                            if (baroffset != null) {
-                                boffset = (new Double(baroffset)).doubleValue();
-                            }
-                            setBars(bwidth.doubleValue(), boffset);
-                        } catch (NumberFormatException e) {
-                            // ignore if format is bogus.
-                        }
-                        return true;
-                    } else if (lcLine.startsWith("binwidth:")) {
-                        String binwidth = (line.substring(9)).trim();
-                        try {
-                            Double bwidth = new Double(binwidth);
-                            setBinWidth(bwidth.doubleValue());
-                        } catch (NumberFormatException e) {
-                            // ignore if format is bogus.
-                        }
-                        return true;
-                    } else if (lcLine.startsWith("binoffset:")) {
-                        String binoffset = (line.substring(10)).trim();
-                        try {
-                            Double boffset = new Double(binoffset);
-                            setBinOffset(boffset.doubleValue());
-                        } catch (NumberFormatException e) {
-                            // ignore if format is bogus.
-                        }
-                        return true;
-                    } else if (lcLine.startsWith("numsets:")) {
-                        // Obsolete field... ignore.
-                        return true;
-                    } else if (line.startsWith("move:")) {
-                        // deal with 'move: 1 2' and 'move:2 2'
-                        line = line.substring(5, line.length()).trim();
-                    } else if (line.startsWith("move")) {
-                        // deal with 'move 1 2' and 'move2 2'
-                        line = line.substring(4, line.length()).trim();
-                    } else if (line.startsWith("draw:")) {
-                        // a connected point, if connect is enabled.
-                        line = line.substring(5, line.length()).trim();
-                    } else if (line.startsWith("draw")) {
-                        // a connected point, if connect is enabled.
-                        line = line.substring(4, line.length()).trim();
+                // The PlotML code uses barGraph, but the older style
+                // uses bars
+                int comma = line.indexOf(",", 5);
+                String barwidth;
+                String baroffset = null;
+                if (comma > 0) {
+                    barwidth = (line.substring(5, comma)).trim();
+                    baroffset = (line.substring(comma+1)).trim();
+                } else {
+                    barwidth = (line.substring(5)).trim();
+                }
+                try {
+                    Double bwidth = new Double(barwidth);
+                    double boffset = _baroffset;
+                    if (baroffset != null) {
+                        boffset = (new Double(baroffset)).doubleValue();
                     }
+                    setBars(bwidth.doubleValue(), boffset);
+                } catch (NumberFormatException e) {
+                    // ignore if format is bogus.
+                }
+                return true;
+            } else if (lcLine.startsWith("binwidth:")) {
+                String binwidth = (line.substring(9)).trim();
+                try {
+                    Double bwidth = new Double(binwidth);
+                    setBinWidth(bwidth.doubleValue());
+                } catch (NumberFormatException e) {
+                    // ignore if format is bogus.
+                }
+                return true;
+            } else if (lcLine.startsWith("binoffset:")) {
+                String binoffset = (line.substring(10)).trim();
+                try {
+                    Double boffset = new Double(binoffset);
+                    setBinOffset(boffset.doubleValue());
+                } catch (NumberFormatException e) {
+                    // ignore if format is bogus.
+                }
+                return true;
+            } else if (lcLine.startsWith("numsets:")) {
+                // Obsolete field... ignore.
+                return true;
+            } else if (line.startsWith("move:")) {
+                // deal with 'move: 1 2' and 'move:2 2'
+                line = line.substring(5, line.length()).trim();
+            } else if (line.startsWith("move")) {
+                // deal with 'move 1 2' and 'move2 2'
+                line = line.substring(4, line.length()).trim();
+            } else if (line.startsWith("draw:")) {
+                // a connected point, if connect is enabled.
+                line = line.substring(5, line.length()).trim();
+            } else if (line.startsWith("draw")) {
+                // a connected point, if connect is enabled.
+                line = line.substring(4, line.length()).trim();
+            }
             line = line.trim();
 
             // Handle Plot formats
@@ -742,46 +742,46 @@ public class Histogram extends PlotBox {
      */
     private void _drawPlotPoint(Graphics graphics,
             int dataset, int bin, int count) {
-                // Set the color
-                if (_usecolor) {
-                    int color = dataset % _colors.length;
-                    graphics.setColor(_colors[color]);
-                } else {
-                    graphics.setColor(_foreground);
-                }
+        // Set the color
+        if (_usecolor) {
+            int color = dataset % _colors.length;
+            graphics.setColor(_colors[color]);
+        } else {
+            graphics.setColor(_foreground);
+        }
 
-                double y = (double)count;
-                double x = _binWidth*bin + _binOffset;
+        double y = (double)count;
+        double x = _binWidth*bin + _binOffset;
 
-                if (_xlog) {
-                    if (x <= 0.0) {
-                        System.err.println("Can't plot non-positive X values "+
-                                "when the logarithmic X axis value is specified: " +
-                                x);
-                        return;
-                    }
-                    x = Math.log(x)*_LOG10SCALE;
-                }
-                if (_ylog) {
-                    if (y <= 0.0) {
-                        System.err.println("Can't plot non-positive Y values "+
-                                "when the logarithmic Y axis value is specified: " +
-                                y);
-                        return;
-                    }
-                    y = Math.log(y)*_LOG10SCALE;
-                }
-
-                // Use long here because these numbers can be quite large
-                // (when we are zoomed out a lot).
-                long ypos = _lry - (long)((y - _yMin) * _yscale);
-                long xpos = _ulx + (long)((x - _xMin) * _xscale);
-
-                _drawBar(graphics, dataset, xpos, ypos, true);
-
-                // Restore the color, in case the box gets redrawn.
-                graphics.setColor(_foreground);
+        if (_xlog) {
+            if (x <= 0.0) {
+                System.err.println("Can't plot non-positive X values "+
+                        "when the logarithmic X axis value is specified: " +
+                        x);
+                return;
             }
+            x = Math.log(x)*_LOG10SCALE;
+        }
+        if (_ylog) {
+            if (y <= 0.0) {
+                System.err.println("Can't plot non-positive Y values "+
+                        "when the logarithmic Y axis value is specified: " +
+                        y);
+                return;
+            }
+            y = Math.log(y)*_LOG10SCALE;
+        }
+
+        // Use long here because these numbers can be quite large
+        // (when we are zoomed out a lot).
+        long ypos = _lry - (long)((y - _yMin) * _yscale);
+        long xpos = _ulx + (long)((x - _xMin) * _xscale);
+
+        _drawBar(graphics, dataset, xpos, ypos, true);
+
+        // Restore the color, in case the box gets redrawn.
+        graphics.setColor(_foreground);
+    }
 
     /* Rescale so that the data that is currently plotted just fits.
      * This simply calls the base class.

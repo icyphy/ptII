@@ -1,32 +1,32 @@
 /* An attribute that causes look inside to open a text editor to
    edit a file or URL specified by an attribute in the container.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (ptolemy@eecs.berkeley.edu)
+   @ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @AcceptedRating Red (ptolemy@eecs.berkeley.edu)
 
 */
 
@@ -49,21 +49,21 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// FileEditorTableauFactory
 /**
-This class is an attribute that creates a text editor to edit a specified
-file or URL given by an attribute in the container of this attribute.
-It is similar to TextEditorTableauFactory, but instead of editing an
-attribute in the container, it edits a file or URL referenced by that
-attribute.  The file or URL must be given in the container by an
-instance of FileParameter.
+   This class is an attribute that creates a text editor to edit a specified
+   file or URL given by an attribute in the container of this attribute.
+   It is similar to TextEditorTableauFactory, but instead of editing an
+   attribute in the container, it edits a file or URL referenced by that
+   attribute.  The file or URL must be given in the container by an
+   instance of FileParameter.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
-@see TextEditorTableauFactory
-@see FileParameter
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
+   @see TextEditorTableauFactory
+   @see FileParameter
 */
 public class FileEditorTableauFactory
-        extends TableauFactory {
+    extends TableauFactory {
 
     /** Create a factory with the given name and container.
      *  @param container The container.
@@ -74,7 +74,7 @@ public class FileEditorTableauFactory
      *   an attribute already in the container.
      */
     public FileEditorTableauFactory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
@@ -112,8 +112,8 @@ public class FileEditorTableauFactory
             object.getAttribute(attributeName.getExpression());
         if (!(attribute instanceof FileParameter)) {
             throw new IllegalActionException(
-                object,
-                "Expected "
+                    object,
+                    "Expected "
                     + object.getFullName()
                     + " to contain a FileParameter named "
                     + attributeName.getExpression()

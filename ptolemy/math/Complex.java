@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -36,30 +36,30 @@ package ptolemy.math;
 import java.io.Serializable;
 
 /** This class provides a complex data type and a library of functions that
-operate on and return complex numbers.  An instance of the class is
-immutable, meaning that its value is set in the constructor and
-cannot then be modified.  This is similar to the Java built-in classes
-like Double, Integer, etc.
-<p>
-Although this code is written from scratch, I looked at several designs
-and borrowed elements from each of them:
-<ul>
-<li> The ComplexSubset class in Ptolemy 0.x, written by Joe Buck,
-     which borrowed design elements from the cfront and libg++
-     Complex classes.
-<li> Version 1.0 of the Complex class by Alma services, dated Fri
-     29-Aug-97, written by Sandy Anderson and Priyantha Jayanetti,
-     and obtained from the <a href="http://www.netlib.org/">
-     Netlib Repository</a>.
-<li> The Complex class in JNL, a Java Numerical Library, dated 1997,
-     by Visual Numerics, Inc.  This was used for interface design only,
-     to compare the choice of method names and method templates.
-<li> Matlab, which was used to validate the results in the test
-     suite, and influenced some of the method name choices.
-</ul>
-@author Edward A. Lee, Jeff Tsay, Steve Neuendorffer, Adam Cataldo
-@version $Id$
-@since Ptolemy II 0.2
+    operate on and return complex numbers.  An instance of the class is
+    immutable, meaning that its value is set in the constructor and
+    cannot then be modified.  This is similar to the Java built-in classes
+    like Double, Integer, etc.
+    <p>
+    Although this code is written from scratch, I looked at several designs
+    and borrowed elements from each of them:
+    <ul>
+    <li> The ComplexSubset class in Ptolemy 0.x, written by Joe Buck,
+    which borrowed design elements from the cfront and libg++
+    Complex classes.
+    <li> Version 1.0 of the Complex class by Alma services, dated Fri
+    29-Aug-97, written by Sandy Anderson and Priyantha Jayanetti,
+    and obtained from the <a href="http://www.netlib.org/">
+    Netlib Repository</a>.
+    <li> The Complex class in JNL, a Java Numerical Library, dated 1997,
+    by Visual Numerics, Inc.  This was used for interface design only,
+    to compare the choice of method names and method templates.
+    <li> Matlab, which was used to validate the results in the test
+    suite, and influenced some of the method name choices.
+    </ul>
+    @author Edward A. Lee, Jeff Tsay, Steve Neuendorffer, Adam Cataldo
+    @version $Id$
+    @since Ptolemy II 0.2
 */
 public class Complex implements Cloneable, Serializable {
 

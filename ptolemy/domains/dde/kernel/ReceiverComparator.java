@@ -1,28 +1,28 @@
 /* A ReceiverComparator is used to sort receivers controlled by a time keeper.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (davisj@eecs.berkeley.edu)
 @AcceptedRating Green (kienhuis@eecs.berkeley.edu)
@@ -36,26 +36,26 @@ import java.util.Comparator;
 //////////////////////////////////////////////////////////////////////////
 //// ReceiverComparator
 /**
-A ReceiverComparator is used to sort receivers controlled by a time keeper.
-Receivers are sorted according to ReceiverTime and priority using the
-compare() method. First receivers are sorted according to ReceiverTime.
-ReceiverTimes are partitioned into three categories: nonnegative times,
-PrioritizedTimedQueue.IGNORE times and PrioritizedTimedQueue.INACTIVE
-times. Nonnegative times precede IGNORE times precede INACTIVE times.
-Within the nonnegative time category, smaller times precede larger
-times. The IGNORE and INACTIVE categories each consist of a single
-value so within these categories comparison results in equality.
+   A ReceiverComparator is used to sort receivers controlled by a time keeper.
+   Receivers are sorted according to ReceiverTime and priority using the
+   compare() method. First receivers are sorted according to ReceiverTime.
+   ReceiverTimes are partitioned into three categories: nonnegative times,
+   PrioritizedTimedQueue.IGNORE times and PrioritizedTimedQueue.INACTIVE
+   times. Nonnegative times precede IGNORE times precede INACTIVE times.
+   Within the nonnegative time category, smaller times precede larger
+   times. The IGNORE and INACTIVE categories each consist of a single
+   value so within these categories comparison results in equality.
 
-<p>If it is determined that two receivers are equivalent according to
-ReceiverTime, then comparison is made according to the receiver priority.
-A larger receiver priority will precede a smaller receiver priority.
-If it is determined that two receivers are equivalent according to
-ReceiverTime and priority, then the compare() method returns 0.
+   <p>If it is determined that two receivers are equivalent according to
+   ReceiverTime, then comparison is made according to the receiver priority.
+   A larger receiver priority will precede a smaller receiver priority.
+   If it is determined that two receivers are equivalent according to
+   ReceiverTime and priority, then the compare() method returns 0.
 
-@author John S. Davis II
-@version $Id$
-@since Ptolemy II 2.0
-@see ptolemy.domains.dde.kernel.DDEThread
+   @author John S. Davis II
+   @version $Id$
+   @since Ptolemy II 2.0
+   @see ptolemy.domains.dde.kernel.DDEThread
 */
 public class ReceiverComparator implements Comparator {
 

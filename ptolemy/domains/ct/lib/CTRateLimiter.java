@@ -1,28 +1,28 @@
 /* The rate limiter in the CT domain.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -42,40 +42,40 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CTRateLimiter
 /**
-This actor limits the first derivative of the input signal (u).
-The output (y) changes no faster than the specified limit. The derivative
-is calculated using this equation:
-<pre>
-        u(k) - y(k-1)
-rate = --------------
-        t(k) - t(k-1)
-</pre>
-where u(k) and t(k) are the current input and time, and y(k-1) and t(k-1)
-are the output and time at the previous step. The output is determined
-by comparing rate to the <i>risingSlewRate</i> and
-<i>fallingSlewRate</i> parameters.
-<ul>
-<li>If rate is greater than <i>risingSlewRate</i>, the output is
-<pre>
-y(k) = (t(k)-t(k-1))*risingSlewRate + y(k-1)
-</pre>
-<li>If rate is less than <i>fallingSlewRate</i>, the output is
-<pre>
-y(k) = (t(k)-t(k-1))*fallingSlewRate + y(k-1)
-<li>Otherwise, just output the input.
-<P>
-This actor works as a (continuous) nonlinear function. It does not
-control integration step sizes. Notice that this actor does not try
-to find the time instant that the input rate reaches the rising slew rate
-or falling slew rate. As a consequence, this may cause some ODE solvers
-not converging under some circumstances.
+   This actor limits the first derivative of the input signal (u).
+   The output (y) changes no faster than the specified limit. The derivative
+   is calculated using this equation:
+   <pre>
+   u(k) - y(k-1)
+   rate = --------------
+   t(k) - t(k-1)
+   </pre>
+   where u(k) and t(k) are the current input and time, and y(k-1) and t(k-1)
+   are the output and time at the previous step. The output is determined
+   by comparing rate to the <i>risingSlewRate</i> and
+   <i>fallingSlewRate</i> parameters.
+   <ul>
+   <li>If rate is greater than <i>risingSlewRate</i>, the output is
+   <pre>
+   y(k) = (t(k)-t(k-1))*risingSlewRate + y(k-1)
+   </pre>
+   <li>If rate is less than <i>fallingSlewRate</i>, the output is
+   <pre>
+   y(k) = (t(k)-t(k-1))*fallingSlewRate + y(k-1)
+   <li>Otherwise, just output the input.
+   <P>
+   This actor works as a (continuous) nonlinear function. It does not
+   control integration step sizes. Notice that this actor does not try
+   to find the time instant that the input rate reaches the rising slew rate
+   or falling slew rate. As a consequence, this may cause some ODE solvers
+   not converging under some circumstances.
 
-FIXME: This actor should implement the CTStateful interface to support
-rollback.
+   FIXME: This actor should implement the CTStateful interface to support
+   rollback.
 
-@author Jie Liu
-@version $Id$
-@since Ptolemy II 1.0
+   @author Jie Liu
+   @version $Id$
+   @since Ptolemy II 1.0
 
 */
 public class CTRateLimiter extends Transformer {
@@ -131,7 +131,7 @@ public class CTRateLimiter extends Transformer {
                 output.send(0, _newToken);
             } else {
                 double valueDifference = ((DoubleToken)_newToken.subtract(
-                        _lastToken)).doubleValue();
+                                                  _lastToken)).doubleValue();
                 double timeDifference = currentTime - _lastTime;
                 double rate = valueDifference / timeDifference;
                 double risingRate = ((DoubleToken)risingSlewRate.getToken())
@@ -140,10 +140,10 @@ public class CTRateLimiter extends Transformer {
                     .doubleValue();
                 if (rate > risingRate) {
                     _newToken = (new DoubleToken(timeDifference*
-                            risingRate)).add(_lastToken);
+                                         risingRate)).add(_lastToken);
                 } else if (rate < fallingRate) {
                     _newToken = (new DoubleToken(timeDifference*
-                            fallingRate)).add(_lastToken);
+                                         fallingRate)).add(_lastToken);
                 }
                 output.send(0, _newToken);
             }

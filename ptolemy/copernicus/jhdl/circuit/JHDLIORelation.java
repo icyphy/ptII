@@ -1,28 +1,28 @@
 /*
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -51,9 +51,9 @@ import soot.jimple.*;
  * This class represents a "Wire" in JHDL. It has a signal width and
  * provides signal width resolution functionality.
  *
-@author Mike Wirthlin
-@version $Id$
-@since Ptolemy II 2.0
+ @author Mike Wirthlin
+ @version $Id$
+ @since Ptolemy II 2.0
 */
 public class JHDLIORelation extends IORelation implements Signal {
 
@@ -73,7 +73,7 @@ public class JHDLIORelation extends IORelation implements Signal {
     }
 
     public JHDLIORelation(CompositeEntity container, String name,
-                             int width)
+            int width)
             throws IllegalActionException, NameDuplicationException {
         super(container,name);
         _portWidth = width;
@@ -98,21 +98,21 @@ public class JHDLIORelation extends IORelation implements Signal {
     // - Input ports are resolved by the container
     // - Relations are resolved bythe output ports
     /*
-    public boolean resolve() {
+      public boolean resolve() {
 
-        if (isResolved()) {
-            return isResolved();
-        }
+      if (isResolved()) {
+      return isResolved();
+      }
 
-        // Output ports set the signal width
-        for (Iterator i = linkedPortList().iterator();i.hasNext();) {
-            JHDLIOPort port = (JHDLIOPort) i.next();
-            if (port.isOutput()) {
-                setSignalWidth(port.getSignalWidth());
-            }
-        }
-        return isResolved();
-    }
+      // Output ports set the signal width
+      for (Iterator i = linkedPortList().iterator();i.hasNext();) {
+      JHDLIOPort port = (JHDLIOPort) i.next();
+      if (port.isOutput()) {
+      setSignalWidth(port.getSignalWidth());
+      }
+      }
+      return isResolved();
+      }
     */
 
     public Wire getJHDLWire() {
@@ -122,7 +122,7 @@ public class JHDLIORelation extends IORelation implements Signal {
     public Wire buildJHDLWire(Logic parent) {
         _wire = parent.wire(getSignalWidth(),getName());
         System.out.println("Creating JHDL Wire for relation "+this+" wire="+
-                           _wire);
+                _wire);
         return _wire;
     }
 

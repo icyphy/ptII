@@ -1,28 +1,28 @@
 /* Send commands to an x10 network.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (ptolemy@ptolemy.eecs.berkeley.edu)
 @AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
@@ -42,12 +42,12 @@ import x10.Command;
 //////////////////////////////////////////////////////////////////////////
 //// Sender
 /**
-Add broadcast functionality to the X10 interface. Derived classes need to
-implement logic for sending commands.
+   Add broadcast functionality to the X10 interface. Derived classes need to
+   implement logic for sending commands.
 
-@author Colin Cochran (contributor: Edward A. Lee)
-@version $Id$
-@since Ptolemy II 3.1
+   @author Colin Cochran (contributor: Edward A. Lee)
+   @version $Id$
+   @since Ptolemy II 3.1
 */
 
 public class Sender extends X10Interface {
@@ -65,14 +65,14 @@ public class Sender extends X10Interface {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-                // Create input ports and port parameters.
-            houseCode = new StringParameter(this, "houseCode");
+        // Create input ports and port parameters.
+        houseCode = new StringParameter(this, "houseCode");
         unitCode = new StringParameter(this, "unitCode");
 
-            // The default value for the house code is A while the default value
+        // The default value for the house code is A while the default value
         // for the unit code is 1. This is the normal x10 default address
         // value for most x10 devices.
-                houseCode.setExpression("A");
+        houseCode.setExpression("A");
         unitCode.setExpression("1");
     }
 

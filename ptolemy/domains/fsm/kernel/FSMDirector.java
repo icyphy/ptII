@@ -1,28 +1,28 @@
 /* An FSMDirector governs the execution of a modal model.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (liuxj@eecs.berkeley.edu)
 @AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
 */
@@ -64,40 +64,40 @@ import java.util.Map;
 //////////////////////////////////////////////////////////////////////////
 //// FSMDirector
 /**
-An FSMDirector governs the execution of a modal model. A modal model is
-a TypedCompositeActor with a FSMDirector as local director. The mode
-control logic is captured by a mode controller, an instance of FSMActor
-contained by the composite actor. Each state of the mode controller
-represents a mode of operation and can be refined by a TypedActor contained
-by the same composite actor.
-<p>
-When a modal model is fired, this director first transfers the input tokens
-from the outside domain to the mode controller and the refinement of its
-current state. The preemptive transitions from the current state of the mode
-controller are examined. If there is more than one transition enabled, an
-exception is thrown. If there is exactly one preemptive transition enabled
-then it is chosen and the choice actions contained by the transition are
-executed. The refinement of the current state is not fired. Any output token
-produced by the mode controller is transferred to the outside domain. If no
-preemptive transition is enabled, the refinement of the current state is
-fired. The non-preemptive transitions from the current state of the mode
-controller are examined. If there is more than one transition enabled, an
-exception is thrown. If there is exactly one non-preemptive transition
-enabled then it is chosen and the choice actions contained by the transition
-are executed. Any output token produced by the mode controller or the
-refinement is transferred to the outside domain.
-<p>
-The mode controller does not change state during successive firings in one
-iteration in order to support outside domains that iterate to a fixed point.
-When the modal model is postfired, the chosen transition of the latest firing
-is committed. The commit actions contained by the transition are executed and
-the current state of the mode controller is set to the destination state of
-the transition.
+   An FSMDirector governs the execution of a modal model. A modal model is
+   a TypedCompositeActor with a FSMDirector as local director. The mode
+   control logic is captured by a mode controller, an instance of FSMActor
+   contained by the composite actor. Each state of the mode controller
+   represents a mode of operation and can be refined by a TypedActor contained
+   by the same composite actor.
+   <p>
+   When a modal model is fired, this director first transfers the input tokens
+   from the outside domain to the mode controller and the refinement of its
+   current state. The preemptive transitions from the current state of the mode
+   controller are examined. If there is more than one transition enabled, an
+   exception is thrown. If there is exactly one preemptive transition enabled
+   then it is chosen and the choice actions contained by the transition are
+   executed. The refinement of the current state is not fired. Any output token
+   produced by the mode controller is transferred to the outside domain. If no
+   preemptive transition is enabled, the refinement of the current state is
+   fired. The non-preemptive transitions from the current state of the mode
+   controller are examined. If there is more than one transition enabled, an
+   exception is thrown. If there is exactly one non-preemptive transition
+   enabled then it is chosen and the choice actions contained by the transition
+   are executed. Any output token produced by the mode controller or the
+   refinement is transferred to the outside domain.
+   <p>
+   The mode controller does not change state during successive firings in one
+   iteration in order to support outside domains that iterate to a fixed point.
+   When the modal model is postfired, the chosen transition of the latest firing
+   is committed. The commit actions contained by the transition are executed and
+   the current state of the mode controller is set to the destination state of
+   the transition.
 
-@author Xiaojun Liu
-@version $Id$
-@since Ptolemy II 0.4
-@see FSMActor
+   @author Xiaojun Liu
+   @version $Id$
+   @since Ptolemy II 0.4
+   @see FSMActor
 */
 public class FSMDirector extends Director
     implements ModelErrorHandler, ExplicitChangeContext {
@@ -546,7 +546,7 @@ public class FSMDirector extends Director
 
             if (_debugging) {
                 _debug("ModelError: " + exception.getMessage()
-                     + " is handled and discarded.");
+                        + " is handled and discarded.");
             }
             return true;
         }

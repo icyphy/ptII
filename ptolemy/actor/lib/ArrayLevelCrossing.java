@@ -1,31 +1,31 @@
 /* An actor that finds the index of the first item in an array to
    cross a specified threshold.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
+   @ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -49,24 +49,24 @@ import ptolemy.kernel.util.SingletonAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayLevelCrossing
 /**
-Search an array from the specified starting index and report the index of
-the first item in the array that is below or above the specified threshold.
-If there is no such item, then -1 is returned.
-The threshold can be absolute or relative to the value at the starting
-index.  If it is relative, it can be given on a linear scale or in decibels.
-If the threshold is relative and we are looking for values above the threshold,
-then values that are above the value at the starting index by more than the
-threshold are reported.
-If the threshold is relative and we are looking for values below the threshold,
-then values that are below the value at the starting index by more than the
-threshold are reported.
-<p>
-This actor is a generalization of Matlab code developed by John Signorotti of
-Southwest Research Institute. The original function was called UFDipSearch.
+   Search an array from the specified starting index and report the index of
+   the first item in the array that is below or above the specified threshold.
+   If there is no such item, then -1 is returned.
+   The threshold can be absolute or relative to the value at the starting
+   index.  If it is relative, it can be given on a linear scale or in decibels.
+   If the threshold is relative and we are looking for values above the threshold,
+   then values that are above the value at the starting index by more than the
+   threshold are reported.
+   If the threshold is relative and we are looking for values below the threshold,
+   then values that are below the value at the starting index by more than the
+   threshold are reported.
+   <p>
+   This actor is a generalization of Matlab code developed by John Signorotti of
+   Southwest Research Institute. The original function was called UFDipSearch.
 
-@author Edward A. Lee, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 4.0
+   @author Edward A. Lee, Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class ArrayLevelCrossing extends TypedAtomicActor {
 
@@ -79,7 +79,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
      *   actor with this name.
      */
     public ArrayLevelCrossing(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         start = new PortParameter(this, "start");
@@ -180,7 +180,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
 
             if (startValue >= inputSize || startValue < 0) {
                 throw new IllegalActionException(this,
-                "start is out of range: " + startValue);
+                        "start is out of range: " + startValue);
             }
 
             int increment = -1;
@@ -189,15 +189,15 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
             }
 
             double reference = ((DoubleToken)inputArray.getElement(startValue))
-                    .doubleValue();
+                .doubleValue();
 
             double thresholdValue = ((DoubleToken)threshold.getToken())
-                    .doubleValue();
+                .doubleValue();
 
             String scaleValue = scale.stringValue();
 
             boolean aboveValue = ((BooleanToken)above.getToken())
-                    .booleanValue();
+                .booleanValue();
 
             if (scaleValue.equals("relative amplitude decibels")) {
                 if (aboveValue) {
@@ -223,15 +223,15 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
             int bin = -1;
             for (int i = startValue; i < inputSize && i >= 0; i += increment) {
                 double currentValue
-                        = ((DoubleToken)inputArray.getElement(i))
-                        .doubleValue();
+                    = ((DoubleToken)inputArray.getElement(i))
+                    .doubleValue();
                 if (aboveValue) {
                     // Searching for values above the threshold.
                     if (currentValue > thresholdValue) {
                         bin = i;
                         break;
                     }
-               } else {
+                } else {
                     // Searching for values below the threshold.
                     if (currentValue < thresholdValue) {
                         bin = i;

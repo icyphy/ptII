@@ -1,28 +1,28 @@
 /* Main for shallow code generation.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -52,15 +52,15 @@ import soot.toolkits.scalar.UnusedLocalEliminator;
 //////////////////////////////////////////////////////////////////////////
 //// Main
 /**
-Read in a MoML model and generate a Java class that creates the
-same model.  (i.e. shallow code generation)
-No attempt is made to analyze actor code.  This is primarily
-useful for using the Java compiler to find bugs, and removing
-MoML from shipped code.
+   Read in a MoML model and generate a Java class that creates the
+   same model.  (i.e. shallow code generation)
+   No attempt is made to analyze actor code.  This is primarily
+   useful for using the Java compiler to find bugs, and removing
+   MoML from shipped code.
 
-@author Stephen Neuendorffer, Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0
+   @author Stephen Neuendorffer, Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class Main extends KernelMain {
 
@@ -92,13 +92,13 @@ public class Main extends KernelMain {
                 ShallowModelTransformer.v(_toplevel),
                 "targetPackage:" + _targetPackage);
 
-       addTransform(pack, "wjtp.ls7",
-                        new TransformerAdapter(LocalSplitter.v()));
+        addTransform(pack, "wjtp.ls7",
+                new TransformerAdapter(LocalSplitter.v()));
 
-       addTransform(pack, "wjtp.ta5",
-               new TransformerAdapter(TypeAssigner.v()));
-       addTransform(pack, "wjtp.ib3",
-               InvocationBinder.v());
+        addTransform(pack, "wjtp.ta5",
+                new TransformerAdapter(TypeAssigner.v()));
+        addTransform(pack, "wjtp.ib3",
+                InvocationBinder.v());
 
         // Run the standard soot optimizations.  We explicitly specify
         // this instead of using soot's -O flag so that we can
@@ -109,7 +109,7 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.gt",
                 GrimpTransformer.v());
         /*   */
-       // This snapshot should be last...
+        // This snapshot should be last...
         addTransform(pack, "wjtp.finalSnapshotJimple",
                 JimpleWriter.v(),
                 "outDir:" + _outputDirectory);

@@ -1,28 +1,28 @@
 /* An actor that simulates a preemptable task.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (celaine@eecs.berkeley.edu)
 @AcceptedRating Yellow (celaine@eecs.berkeley.edu)
@@ -47,27 +47,27 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// PreemptableTask
 /**
-This actor simulates a preemptable task.  The <i>executionTime</i>
-parameter specifies the time it takes to execute the task.  Tokens
-received on the <i>input</i> port correspond to invocations of the
-task.
+   This actor simulates a preemptable task.  The <i>executionTime</i>
+   parameter specifies the time it takes to execute the task.  Tokens
+   received on the <i>input</i> port correspond to invocations of the
+   task.
 
-When a token is received on the <i>input</i> port, the token is stored
-in the actor and the actor is scheduled to fire at
-<i>executionTime</i> time units later.  When the <i>interrupt</i> port
-receives a token, and the value is true, this task is "preempted."
-Later, when the value of the token on the <i>interrupt</i> port
-becomes false, the elapsed time is calculated and added to the
-execution time of the task.  The actor is scheduled to fire at this
-new execution time.  The saved token is emitted when the new execution
-time has passed.  Subsequent input tokens are queued until the actor
-is done processing the current input token, in which case the actor is
-scheduled to fire at the current time to respond to the next task
-invocation in the queue.
+   When a token is received on the <i>input</i> port, the token is stored
+   in the actor and the actor is scheduled to fire at
+   <i>executionTime</i> time units later.  When the <i>interrupt</i> port
+   receives a token, and the value is true, this task is "preempted."
+   Later, when the value of the token on the <i>interrupt</i> port
+   becomes false, the elapsed time is calculated and added to the
+   execution time of the task.  The actor is scheduled to fire at this
+   new execution time.  The saved token is emitted when the new execution
+   time has passed.  Subsequent input tokens are queued until the actor
+   is done processing the current input token, in which case the actor is
+   scheduled to fire at the current time to respond to the next task
+   invocation in the queue.
 
-@author Elaine Cheong and Yang Zhao and Xiaojun Liu
-@version $Id$
-@since Ptolemy II 2.0
+   @author Elaine Cheong and Yang Zhao and Xiaojun Liu
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 
 public class PreemptableTask extends DETransformer {

@@ -1,29 +1,29 @@
 /*  A file that generates code for the C structure corresponding to a
-   class.
+    class.
 
- Copyright (c) 2003-2004 The University of Maryland.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+    Copyright (c) 2003-2004 The University of Maryland.
+    All rights reserved.
+    Permission is hereby granted, without written agreement and without
+    license or royalty fees, to use, copy, modify, and distribute this
+    software and its documentation for any purpose, provided that the above
+    copyright notice and the following two paragraphs appear in all copies
+    of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+    IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+    FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+    ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+    THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+    THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+    MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+    PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+    MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+    ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (<your email address>)
-@AcceptedRating Red (ssb@eng.umd.edu)
+    @ProposedRating Red (<your email address>)
+    @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.copernicus.c;
@@ -44,11 +44,11 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// ClassStructureGenerator
 /**
-A file that generates code for the C structure corresponding to a class.
+   A file that generates code for the C structure corresponding to a class.
 
-@author Ankush Varma
-@version $Id$
-@since Ptolemy II 2.0
+   @author Ankush Varma
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class  ClassStructureGenerator extends CodeGenerator {
 
@@ -72,7 +72,7 @@ public class  ClassStructureGenerator extends CodeGenerator {
 
         // Structure that implements the class.
         code.append(_comment("Structure that implements Class " +
-                className));
+                            className));
         code.append("struct " + CNames.classNameOf(source) +
                 "{\n\n");
 
@@ -180,7 +180,7 @@ public class  ClassStructureGenerator extends CodeGenerator {
             code.append(" ");
         } else {
             code.append(_comment("Placeholder for pointer to superclass"
-                    + " structure"));
+                                + " structure"));
             code.append(_indent(1));
             code.append("void *");
         }
@@ -199,7 +199,7 @@ public class  ClassStructureGenerator extends CodeGenerator {
             code.append(_indent(1) + _openComment);
         }
         code.append(_indent(1) + CNames.classNameOf(
-                Scene.v().getSootClass("java.lang.Object")) +
+                            Scene.v().getSootClass("java.lang.Object")) +
                 " array_class;\n");
         if (Context.getSingleClassMode()) {
             code.append(_indent(1) + _closeComment);
@@ -212,7 +212,7 @@ public class  ClassStructureGenerator extends CodeGenerator {
 
         // Generate function that resolves the "instanceof" operator.
         code.append(_indent(1) + _comment("Function for handling the "
-                + "\"instanceof\" operator."));
+                            + "\"instanceof\" operator."));
         code.append(_indent(1) + "short (*instanceOf)"
                 + "(PCCG_CLASS_PTR, long int);\n\n");
 
@@ -282,7 +282,7 @@ public class  ClassStructureGenerator extends CodeGenerator {
                 methodCode.append(indent);
 
                 methodCode.append(CNames.typeNameOf(method
-                        .getReturnType()));
+                                          .getReturnType()));
 
                 methodCode.append(" (*");
                 methodCode.append(CNames.methodNameOf(method));

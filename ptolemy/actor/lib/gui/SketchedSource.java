@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
@@ -57,27 +57,27 @@ import java.awt.Container;
 //////////////////////////////////////////////////////////////////////////
 //// SketchedSource
 /**
-This actor is a plotter that also produces as its output a
-signal that has been sketched by the user on the screen.
-The <i>length</i> parameter specifies the
-number of samples in the sketched signal.  The <i>periodic</i>
-parameter, if true, specifies that the signal should be repeated.
-If this parameter is false, then the sketched signal is produced
-exactly once, at the beginning of the execution of the model.  If
-<i>periodic</i> is true and the sketch is modified during
-execution of the model, then the modification appears in the next
-cycle after the modification has been completed.  In
-other words, the change does not appear mid-cycle.
-<p>
-This actor is also a plotter, and will plot the input signals
-on the same plot as the sketched signal.  It can be used in a
-feedback loop where the output affects the input. The first batch
-of outputs is produced in the initialize() method, so it can
-be put in a feedback loop in a dataflow model.
+   This actor is a plotter that also produces as its output a
+   signal that has been sketched by the user on the screen.
+   The <i>length</i> parameter specifies the
+   number of samples in the sketched signal.  The <i>periodic</i>
+   parameter, if true, specifies that the signal should be repeated.
+   If this parameter is false, then the sketched signal is produced
+   exactly once, at the beginning of the execution of the model.  If
+   <i>periodic</i> is true and the sketch is modified during
+   execution of the model, then the modification appears in the next
+   cycle after the modification has been completed.  In
+   other words, the change does not appear mid-cycle.
+   <p>
+   This actor is also a plotter, and will plot the input signals
+   on the same plot as the sketched signal.  It can be used in a
+   feedback loop where the output affects the input. The first batch
+   of outputs is produced in the initialize() method, so it can
+   be put in a feedback loop in a dataflow model.
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class SketchedSource extends SequencePlotter implements EditListener {
 

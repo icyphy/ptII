@@ -1,32 +1,32 @@
 /* Rotate a two-dimensional figure based on the angle and anchor
    point provided by the user.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Green (ismael@eecs.berkeley.edu)
-@AcceptedRating Yellow (chf@eecs.berkeley.edu)
+   @ProposedRating Green (ismael@eecs.berkeley.edu)
+   @AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.gr.lib;
@@ -51,20 +51,20 @@ import diva.canvas.Figure;
 //// Rotate2D
 
 /**
-Rotate a two-dimensional figure based on the angle, and anchor point
-provided by the user.  The angle, step, and anchor points can either
-be preset in the parameter edit window, or updated dynamically through
-the actor's ports.  The angle can be specified in radians or degrees
-by selecting the angle type in the parameter edit window.  Angles
-increase clockwise beginning at the positive X-axis in a Cartesian
-plane.  If the <i>accumulate</i> parameter defined in the base class
-is set to true, any changes to the angle of rotation will be relative
-to the figure's current orientation.  Otherwise, the angle specified
-will be relative to the positive X-axis.
+   Rotate a two-dimensional figure based on the angle, and anchor point
+   provided by the user.  The angle, step, and anchor points can either
+   be preset in the parameter edit window, or updated dynamically through
+   the actor's ports.  The angle can be specified in radians or degrees
+   by selecting the angle type in the parameter edit window.  Angles
+   increase clockwise beginning at the positive X-axis in a Cartesian
+   plane.  If the <i>accumulate</i> parameter defined in the base class
+   is set to true, any changes to the angle of rotation will be relative
+   to the figure's current orientation.  Otherwise, the angle specified
+   will be relative to the positive X-axis.
 
-@author Ismael M. Sarmiento, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 4.0
+   @author Ismael M. Sarmiento, Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class Rotate2D extends GRTransform2D {
 

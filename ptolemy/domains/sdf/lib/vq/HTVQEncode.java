@@ -1,30 +1,30 @@
 /*
-@Copyright (c) 1998-2004 The Regents of the University of California.
-All rights reserved.
+  @Copyright (c) 1998-2004 The Regents of the University of California.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the
+  above copyright notice and the following two paragraphs appear in all
+  copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
-@AcceptedRating Red
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+  PT_COPYRIGHT_VERSION 2
+  COPYRIGHTENDKEY
+  @AcceptedRating Red
+  @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -49,72 +49,72 @@ import java.net.URL;
 //////////////////////////////////////////////////////////////////////////
 //// HTVQEncode
 /**
-This actor encodes a matrix using Hierarchical Table-Lookup Vector
-Quantization.   The matrix must be of dimensions that are amenable to this
-method. (i.e. 2x1, 2x2, 4x2, 4x4, etc.) Instead of performing a
-full-search vector quantization during execution, all the optimal encoding
-vectors are calculated before hand and stored in a lookup table. (This is
-known as Table-lookup Vector Quantization).  However, for large vector sizes
-the lookup tables are unmanageably large.   This actor approximates a
-full search VQ by storing the lookup tables hierarchically.
-The encoding is broken up into stages, and at each stage a number of 2x1
-table lookup VQs are performed. For example,
-starting with a 4x2 vector in the first stage, codebook 0 (which operates
-on raw pixels) is used 4 times, resulting in a 2x2 vector of codewords.
-In the second stage, codebook 1 is used twice, resulting in a 2x1 vector.
-Lastly, a single 2x1 VQ using codebook 2 (which operates on codewords
-representing 2x2 vectors) returns a single codeword for the 4x2 vector.
-<p>
-The input is an IntMatrixToken corresponding to the block to be encoded.
-The values in this matrix are assumed to be between 0 and 255.  The output
-is an IntToken with value between 0 and 255.  Integers are used here because
-of the minimal byte support in Ptolemy or JAVA.
-The size of the input matrix should be the same as the parameters blockHeight
-and blockWidth.
-<p>
-The codebook is specified as a binary file that will be read during
-initialization.  This file actually contains five sets of codebooks and
-lookups tables.  The first set is for 2x1 blocks, the second is for 2x2
-blocks, etc.  (Thus the supplied codebook is only sufficient for block sizes
-up to 8x4 pixels.) In each set, the codebook precedes the lookup-tables.
-The codebook consists of all 256 codevectors, row scanned from top to bottom.
-The lookup table consists of 64K entries (one for each pair of codewords from
-the previous stage).  Each entry in the lookup table is an 8-bit codeword.
-<p>
-<pre>
-Stage 0: 2x1 block size
-codebook = 256 blocks x 2 bytes = 512 bytes
-lookup tables = 65536 entries x 1 byte = 65536 bytes
-Stage 1: 2x2 block size
-codebook = 256 blocks x 4 bytes = 1024 bytes
-lookup tables = 65536 entries x 1 byte = 65536 bytes
-Stage 2: 4x2 block size
-codebook = 256 blocks x 8 bytes = 2048 bytes
-lookup tables = 65536 entries x 1 byte = 65536 bytes
-Stage 3: 4x4 block size
-codebook = 256 blocks x 16 bytes = 4096 bytes
-lookup tables = 65536 entries x 1 byte = 65536 bytes
-Stage 4: 8x4 block size
-codebook = 256 blocks x 32 bytes = 8192 bytes
-lookup tables = 65536 entries x 1 byte = 65536 bytes
-</pre>
-<br>
-The supplied codebook was trained using images from the
-USC image archive and is suitable for most general applications.
-<br>
-For more information here are some interesting references: <br>
-A. Gersho and R. M. Gray, <i>Vector Quantization and Signal Compression</i>.
-Kluwer Academic Publishers, Boston, 1992.  <br>
-P. C. Chang, J. May, R. M. Gray, "Hierarchical Vector Quantizers with
-Table Lookup Encoders," <i> International Conference on Acoustics Speech
-and Signal Processing</i>, pp. 1452-1455, 1985. <br>
-M. Vishwanath and P. Chou, "An Efficient Algorithm for Hierarchical
-Compression of Video," <i>International Conference on Image Processing</i>,
-vol. 3, pp. 275-279, Nov. 1994. <br>
+   This actor encodes a matrix using Hierarchical Table-Lookup Vector
+   Quantization.   The matrix must be of dimensions that are amenable to this
+   method. (i.e. 2x1, 2x2, 4x2, 4x4, etc.) Instead of performing a
+   full-search vector quantization during execution, all the optimal encoding
+   vectors are calculated before hand and stored in a lookup table. (This is
+   known as Table-lookup Vector Quantization).  However, for large vector sizes
+   the lookup tables are unmanageably large.   This actor approximates a
+   full search VQ by storing the lookup tables hierarchically.
+   The encoding is broken up into stages, and at each stage a number of 2x1
+   table lookup VQs are performed. For example,
+   starting with a 4x2 vector in the first stage, codebook 0 (which operates
+   on raw pixels) is used 4 times, resulting in a 2x2 vector of codewords.
+   In the second stage, codebook 1 is used twice, resulting in a 2x1 vector.
+   Lastly, a single 2x1 VQ using codebook 2 (which operates on codewords
+   representing 2x2 vectors) returns a single codeword for the 4x2 vector.
+   <p>
+   The input is an IntMatrixToken corresponding to the block to be encoded.
+   The values in this matrix are assumed to be between 0 and 255.  The output
+   is an IntToken with value between 0 and 255.  Integers are used here because
+   of the minimal byte support in Ptolemy or JAVA.
+   The size of the input matrix should be the same as the parameters blockHeight
+   and blockWidth.
+   <p>
+   The codebook is specified as a binary file that will be read during
+   initialization.  This file actually contains five sets of codebooks and
+   lookups tables.  The first set is for 2x1 blocks, the second is for 2x2
+   blocks, etc.  (Thus the supplied codebook is only sufficient for block sizes
+   up to 8x4 pixels.) In each set, the codebook precedes the lookup-tables.
+   The codebook consists of all 256 codevectors, row scanned from top to bottom.
+   The lookup table consists of 64K entries (one for each pair of codewords from
+   the previous stage).  Each entry in the lookup table is an 8-bit codeword.
+   <p>
+   <pre>
+   Stage 0: 2x1 block size
+   codebook = 256 blocks x 2 bytes = 512 bytes
+   lookup tables = 65536 entries x 1 byte = 65536 bytes
+   Stage 1: 2x2 block size
+   codebook = 256 blocks x 4 bytes = 1024 bytes
+   lookup tables = 65536 entries x 1 byte = 65536 bytes
+   Stage 2: 4x2 block size
+   codebook = 256 blocks x 8 bytes = 2048 bytes
+   lookup tables = 65536 entries x 1 byte = 65536 bytes
+   Stage 3: 4x4 block size
+   codebook = 256 blocks x 16 bytes = 4096 bytes
+   lookup tables = 65536 entries x 1 byte = 65536 bytes
+   Stage 4: 8x4 block size
+   codebook = 256 blocks x 32 bytes = 8192 bytes
+   lookup tables = 65536 entries x 1 byte = 65536 bytes
+   </pre>
+   <br>
+   The supplied codebook was trained using images from the
+   USC image archive and is suitable for most general applications.
+   <br>
+   For more information here are some interesting references: <br>
+   A. Gersho and R. M. Gray, <i>Vector Quantization and Signal Compression</i>.
+   Kluwer Academic Publishers, Boston, 1992.  <br>
+   P. C. Chang, J. May, R. M. Gray, "Hierarchical Vector Quantizers with
+   Table Lookup Encoders," <i> International Conference on Acoustics Speech
+   and Signal Processing</i>, pp. 1452-1455, 1985. <br>
+   M. Vishwanath and P. Chou, "An Efficient Algorithm for Hierarchical
+   Compression of Video," <i>International Conference on Image Processing</i>,
+   vol. 3, pp. 275-279, Nov. 1994. <br>
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 0.2
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 
 public class HTVQEncode extends Transformer {
@@ -206,7 +206,7 @@ public class HTVQEncode extends Transformer {
         for (j = 0; j < _blockCount; j++) {
             _codewords[j] = new IntToken(
                     _encode(IntegerMatrixMath.fromMatrixToArray(
-                            ((IntMatrixToken)_blocks[j]).intMatrix()),
+                                    ((IntMatrixToken)_blocks[j]).intMatrix()),
                             _blockWidth * _blockHeight));
         }
 

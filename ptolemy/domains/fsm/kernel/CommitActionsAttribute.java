@@ -1,28 +1,28 @@
 /* An action that sends outputs or sets variable values.
 
- Copyright (c) 2000-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2000-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
 */
@@ -49,67 +49,67 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// CommitActionsAttribute
 /**
-An action that sends outputs to one or more ports, or sets the values
-of variables either in the containing FSMActor or in a state refinement.
-This action is contained by a transition,
-and is evaluated whenever that transition is taken.  The evaluation
-is done in the postfire() method of the FSMActor that contains the
-transition (hereafter called "the FSM actor").
-To specify an action that is executed earlier, in the fire()
-method, when the transition is enabled rather than taken,
-use the class OutputActionsAttribute.
-<p>
-The value of this attribute is a semicolon separated list of commands,
-where each command gives a destination and a value.
-The actions are given by calling setExpression() with
-a string of the form:
-<pre>
-     <i>command</i>; <i>command</i>; ...
-</pre>
-where each <i>command</i> has the form:
-<pre>
-     <i>destination</i> = <i>expression</i>
-</pre>
-where <i>destination</i> is either
-<pre>
-     <i>portName</i>
-</pre>
-or
-<pre>
-     <i>portName</i>(<i>channelNumber</i>)
-</pre>
-or
-<pre>
-     <i>variableName</i>
-</pre>
-Here, <i>portName</i> is the name of a port of the FSM actor,
-If no <i>channelNumber</i> is given, then the value
-is broadcast to all channels of the port.
-Also, <i>variableName</i> is either a variable or parameter of
-the FSM actor, or a variable or parameter of a refinement state.
-To give a variable of a refinement state, use a dotted name,
-as follows:
-<pre>
-     <i>refinementStateName</i>.<i>variableName</i>
-</pre>
-If destination name is given where there is both a port and a variable
-with that name, then the port will be used.
-<p>
-The <i>expression</i> is a string giving an expression in the usual
-Ptolemy II expression language.  The expression may include references
-to variables and parameters contained by the FSM actor.
+   An action that sends outputs to one or more ports, or sets the values
+   of variables either in the containing FSMActor or in a state refinement.
+   This action is contained by a transition,
+   and is evaluated whenever that transition is taken.  The evaluation
+   is done in the postfire() method of the FSMActor that contains the
+   transition (hereafter called "the FSM actor").
+   To specify an action that is executed earlier, in the fire()
+   method, when the transition is enabled rather than taken,
+   use the class OutputActionsAttribute.
+   <p>
+   The value of this attribute is a semicolon separated list of commands,
+   where each command gives a destination and a value.
+   The actions are given by calling setExpression() with
+   a string of the form:
+   <pre>
+   <i>command</i>; <i>command</i>; ...
+   </pre>
+   where each <i>command</i> has the form:
+   <pre>
+   <i>destination</i> = <i>expression</i>
+   </pre>
+   where <i>destination</i> is either
+   <pre>
+   <i>portName</i>
+   </pre>
+   or
+   <pre>
+   <i>portName</i>(<i>channelNumber</i>)
+   </pre>
+   or
+   <pre>
+   <i>variableName</i>
+   </pre>
+   Here, <i>portName</i> is the name of a port of the FSM actor,
+   If no <i>channelNumber</i> is given, then the value
+   is broadcast to all channels of the port.
+   Also, <i>variableName</i> is either a variable or parameter of
+   the FSM actor, or a variable or parameter of a refinement state.
+   To give a variable of a refinement state, use a dotted name,
+   as follows:
+   <pre>
+   <i>refinementStateName</i>.<i>variableName</i>
+   </pre>
+   If destination name is given where there is both a port and a variable
+   with that name, then the port will be used.
+   <p>
+   The <i>expression</i> is a string giving an expression in the usual
+   Ptolemy II expression language.  The expression may include references
+   to variables and parameters contained by the FSM actor.
 
-@author Xiaojun Liu and Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
-@see CommitActionsAttribute
-@see Transition
-@see FSMActor
+   @author Xiaojun Liu and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
+   @see CommitActionsAttribute
+   @see Transition
+   @see FSMActor
 */
 public class CommitActionsAttribute
     extends AbstractActionsAttribute implements CommitAction {
 
-   /** Construct an action in the specified workspace with an empty
+    /** Construct an action in the specified workspace with an empty
      *  string as a name.
      *  The object is added to the directory of the workspace.
      *  Increment the version number of the workspace.

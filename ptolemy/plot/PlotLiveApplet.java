@@ -24,8 +24,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
@@ -34,13 +34,13 @@ package ptolemy.plot;
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveApplet
 /**
-An Applet for the PlotLive class.  Derived classes should redefine
-newPlot() to return a concrete instance of PlotLive.
+   An Applet for the PlotLive class.  Derived classes should redefine
+   newPlot() to return a concrete instance of PlotLive.
 
-@author Edward A. Lee, Christopher Hylands
-@version $Id$
-@since Ptolemy II 0.2
- */
+   @author Edward A. Lee, Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 0.2
+*/
 public class PlotLiveApplet extends PlotApplet {
 
     /** Return a string describing this applet.

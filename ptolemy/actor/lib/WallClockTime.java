@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -40,25 +40,25 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
-Upon firing, this actor outputs the elapsed real time in seconds
-since the invocation of its initialize() method.  The output type is double.
-The resolution of time depends on the implementation of the Java
-virtual machine, but with Sun's JDK 1.3 under Windows 2000, it is
-10 milliseconds.
-<p>
-Note that relying on the data produced by this actor is tricky
-in domains where you do not have precise control over the
-scheduling, since the output reflects the wall-clock time at
-which this actor is fired, which may or may not be indicative
-of the times at which other actors fire.  So that you can get
-more control over the schedule, the input provided at the
-<i>trigger</i> port is passed through to the <i>passThrough</i>
-output port.  This can be used to ensure that this actor
-fires before another downstream actor.
+   Upon firing, this actor outputs the elapsed real time in seconds
+   since the invocation of its initialize() method.  The output type is double.
+   The resolution of time depends on the implementation of the Java
+   virtual machine, but with Sun's JDK 1.3 under Windows 2000, it is
+   10 milliseconds.
+   <p>
+   Note that relying on the data produced by this actor is tricky
+   in domains where you do not have precise control over the
+   scheduling, since the output reflects the wall-clock time at
+   which this actor is fired, which may or may not be indicative
+   of the times at which other actors fire.  So that you can get
+   more control over the schedule, the input provided at the
+   <i>trigger</i> port is passed through to the <i>passThrough</i>
+   output port.  This can be used to ensure that this actor
+   fires before another downstream actor.
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class WallClockTime extends Source {
 
@@ -99,7 +99,7 @@ public class WallClockTime extends Source {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-        throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
 
         WallClockTime newObject = (WallClockTime)super.clone(workspace);
         newObject.passThrough.setTypeAtLeast(newObject.trigger);

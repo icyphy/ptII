@@ -1,28 +1,28 @@
 /* An actor that provides the channel status.
 
- Copyright (c) 2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (pjb2e@eecs.berkeley.edu)
@@ -43,20 +43,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// MACActorBase
 
 /**
-This is a base class designed for the MAC actors. Since these actors
-largely share a set of parameters, we would like to declare them here
-to avoid repeatly do the same amount of work in every MAC actor.
-FIXME: Currently, the parameters in this actor are extracted from
-the ChannelState component...
+   This is a base class designed for the MAC actors. Since these actors
+   largely share a set of parameters, we would like to declare them here
+   to avoid repeatly do the same amount of work in every MAC actor.
+   FIXME: Currently, the parameters in this actor are extracted from
+   the ChannelState component...
 
-This actor also defines a set of constant that are widely used in
-the OMNET c++ classes.
+   This actor also defines a set of constant that are widely used in
+   the OMNET c++ classes.
 
-Based on this, it is relatively easy to translate a OMNET class
-to a actor here.
-@author Yang Zhao
-@version MACActorBase.java,v 1.8 2004/04/12 15:30:36 cxh Exp
-@since Ptolemy II 4.0
+   Based on this, it is relatively easy to translate a OMNET class
+   to a actor here.
+   @author Yang Zhao
+   @version MACActorBase.java,v 1.8 2004/04/12 15:30:36 cxh Exp
+   @since Ptolemy II 4.0
 */
 
 public class MACActorBase extends NetworkActorBase {
@@ -106,33 +106,33 @@ public class MACActorBase extends NetworkActorBase {
         aSlotTime.setTypeEquals(BaseType.INT);
         aSlotTime.setExpression("9");
 
-            aRxRfDelay = new Parameter(this, "aRxRfDelay");
-            aRxRfDelay.setTypeEquals(BaseType.INT);
-            aRxRfDelay.setExpression("1");
+        aRxRfDelay = new Parameter(this, "aRxRfDelay");
+        aRxRfDelay.setTypeEquals(BaseType.INT);
+        aRxRfDelay.setExpression("1");
 
-            aRxPlcpDelay = new Parameter(this, "aRxPlcpDelay");
-            aRxPlcpDelay.setTypeEquals(BaseType.INT);
-            aRxPlcpDelay.setExpression("1");
+        aRxPlcpDelay = new Parameter(this, "aRxPlcpDelay");
+        aRxPlcpDelay.setTypeEquals(BaseType.INT);
+        aRxPlcpDelay.setExpression("1");
 
-            aCWmin = new Parameter(this, " aCWmin");
-            aCWmin.setTypeEquals(BaseType.INT);
-            aCWmin.setExpression("15");
+        aCWmin = new Parameter(this, " aCWmin");
+        aCWmin.setTypeEquals(BaseType.INT);
+        aCWmin.setExpression("15");
 
-            aCWmax= new Parameter(this, "aCWmax");
-            aCWmax.setTypeEquals(BaseType.INT);
-            aCWmax.setExpression("1023");
+        aCWmax= new Parameter(this, "aCWmax");
+        aCWmax.setTypeEquals(BaseType.INT);
+        aCWmax.setExpression("1023");
 
-            dot11ShortRetryLimit= new Parameter(this, "dot11ShortRetryLimit");
-            dot11ShortRetryLimit.setTypeEquals(BaseType.INT);
-            dot11ShortRetryLimit.setExpression("6");
+        dot11ShortRetryLimit= new Parameter(this, "dot11ShortRetryLimit");
+        dot11ShortRetryLimit.setTypeEquals(BaseType.INT);
+        dot11ShortRetryLimit.setExpression("6");
 
-            dot11LongRetryLimit= new Parameter(this, "dot11LongRetryLimit");
-            dot11LongRetryLimit.setTypeEquals(BaseType.INT);
-            dot11LongRetryLimit.setExpression("6");
+        dot11LongRetryLimit= new Parameter(this, "dot11LongRetryLimit");
+        dot11LongRetryLimit.setTypeEquals(BaseType.INT);
+        dot11LongRetryLimit.setExpression("6");
 
-            dotllRTSThreshold= new Parameter(this, "dotllRTSThreshold");
-            dotllRTSThreshold.setTypeEquals(BaseType.INT);
-            dotllRTSThreshold.setExpression("1");
+        dotllRTSThreshold= new Parameter(this, "dotllRTSThreshold");
+        dotllRTSThreshold.setTypeEquals(BaseType.INT);
+        dotllRTSThreshold.setExpression("1");
 
 
     }
@@ -235,9 +235,9 @@ public class MACActorBase extends NetworkActorBase {
                     aSifsTime.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "aSifsTime is required to be positive. "
-                + "Attempt to set it to: "
-                + temp);
+                        "aSifsTime is required to be positive. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _aSifsTime = temp;
             }
@@ -247,9 +247,9 @@ public class MACActorBase extends NetworkActorBase {
                     aPreambleLength.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "preamble Length is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "preamble Length is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _aPreambleLength = temp;
             }
@@ -258,9 +258,9 @@ public class MACActorBase extends NetworkActorBase {
                     aPlcpHeaderLength.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "PLCPHeader Length is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "PLCPHeader Length is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _aPlcpHeaderLength = temp;
             }
@@ -269,9 +269,9 @@ public class MACActorBase extends NetworkActorBase {
                     aRxTxTurnaroundTime.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "aRxTxTurnaroundTime is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "aRxTxTurnaroundTime is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _aRxTxTurnaroundTime = temp;
             }
@@ -280,9 +280,9 @@ public class MACActorBase extends NetworkActorBase {
                     sAckCtsLng.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "sAckCtsLng is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "sAckCtsLng is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _sAckCtsLng = temp;
             }
@@ -291,9 +291,9 @@ public class MACActorBase extends NetworkActorBase {
                     mBrate.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "mBrate is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "mBrate is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _mBrate = temp;
             }
@@ -302,9 +302,9 @@ public class MACActorBase extends NetworkActorBase {
                     aSlotTime.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "aSlotTime is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "aSlotTime is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _aSlotTime = temp;
             }
@@ -313,9 +313,9 @@ public class MACActorBase extends NetworkActorBase {
                     aRxRfDelay.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "aRxRfDelay is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "aRxRfDelay is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _aRxRfDelay = temp;
             }
@@ -324,20 +324,20 @@ public class MACActorBase extends NetworkActorBase {
                     aRxPlcpDelay.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "aRxPlcpDelay is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "aRxPlcpDelay is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _aRxPlcpDelay = temp;
             }
         } else if (attribute == aCWmin) {
             temp = ((IntToken)
-                   aCWmin .getToken()).intValue();
+                    aCWmin .getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "aCWmin is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "aCWmin is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _aCWmin = temp;
             }
@@ -346,9 +346,9 @@ public class MACActorBase extends NetworkActorBase {
                     aCWmax.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "aCWmax is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "aCWmax is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _aCWmax = temp;
             }
@@ -357,9 +357,9 @@ public class MACActorBase extends NetworkActorBase {
                     dot11ShortRetryLimit.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "dot11ShortRetryLimit is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "dot11ShortRetryLimit is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _dot11ShortRetryLimit = temp;
             }
@@ -368,9 +368,9 @@ public class MACActorBase extends NetworkActorBase {
                     dot11LongRetryLimit.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "dot11LongRetryLimit is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "dot11LongRetryLimit is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _dot11LongRetryLimit = temp;
             }
@@ -379,9 +379,9 @@ public class MACActorBase extends NetworkActorBase {
                     dotllRTSThreshold.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                "dotllRTSThreshold is required to be nonnegative. "
-                + "Attempt to set it to: "
-                + temp);
+                        "dotllRTSThreshold is required to be nonnegative. "
+                        + "Attempt to set it to: "
+                        + temp);
             } else {
                 _dotllRTSThreshold = temp;
             }
@@ -419,11 +419,11 @@ public class MACActorBase extends NetworkActorBase {
     protected static final String[] UseIfsMsgFields ={"kind", "tRxEnd"};
     protected static final String[] RxEndMsgFields ={"kind", "status"};
     protected static final String[] RxIndicateMessageFields =
-            {"kind", "pdu", "endRx", "rxRate"};
+    {"kind", "pdu", "endRx", "rxRate"};
     protected static final String[] NeedAckMessageFields =
-            {"kind", "ackto", "endRx", "rxRate", "dAck"};
+    {"kind", "ackto", "endRx", "rxRate", "dAck"};
     protected static final String[] SetNavMessageFields =
-            {"kind", "tRef", "dNav", "src"};
+    {"kind", "tRef", "dNav", "src"};
 
     protected static final String[] CSMsgFields={"kind"};
 
@@ -432,17 +432,17 @@ public class MACActorBase extends NetworkActorBase {
     protected static final String[] TxConfirmMsgFields = {"kind"};
 
     protected static final String[] DataPacket = {"protocolVer", "Type", "Subtype",
-            "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
-            "orderBit", "FCS", "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4",
-            "payload","Length"};
+                                                  "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
+                                                  "orderBit", "FCS", "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4",
+                                                  "payload","Length"};
 
     protected static final String[] AckPacket = {"protocolVer", "Type", "Subtype",
-            "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
-            "orderBit", "FCS", "durId", "RA","Length"};
+                                                 "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
+                                                 "orderBit", "FCS", "durId", "RA","Length"};
 
     protected static final String[] RtsPacket = {"protocolVer", "Type", "Subtype",
-            "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
-            "orderBit", "FCS", "durId", "RA", "TA","Length"};
+                                                 "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
+                                                 "orderBit", "FCS", "durId", "RA", "TA","Length"};
 
     protected static final String[] BackoffDoneMsgFields = {"kind","cnt"};
     protected static final String[] getBackoffMsgFields = {"kind","ccw", "cnt"};

@@ -1,28 +1,28 @@
 /* An interface used by the expression parser for identifier lookup.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (liuxj@eecs.berkeley.edu)
 @AcceptedRating Red (liuxj@eecs.berkeley.edu)
@@ -42,13 +42,13 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// ModelScope
 /**
-An abstract class that is useful for implementing expression language
-scopes for Ptolemy models.
+   An abstract class that is useful for implementing expression language
+   scopes for Ptolemy models.
 
-@author Xiaojun Liu, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 2.1
-@see ptolemy.data.expr.PtParser
+   @author Xiaojun Liu, Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.1
+   @see ptolemy.data.expr.PtParser
 */
 
 public abstract class ModelScope implements ParserScope {
@@ -63,7 +63,7 @@ public abstract class ModelScope implements ParserScope {
         variableList.remove(exclude);
         Set nameSet = new HashSet();
         for (Iterator variables = variableList.iterator();
-            variables.hasNext();) {
+             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
             nameSet.add(variable.getName());
         }
@@ -84,7 +84,7 @@ public abstract class ModelScope implements ParserScope {
             // It would be nice if ScopeExtender and NamedObj were common in
             // some way to avoid this cast.
             nameSet.addAll(getAllScopedVariableNames(exclude,
-                    (NamedObj)extender));
+                                   (NamedObj)extender));
         }
         return nameSet;
     }

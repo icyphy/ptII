@@ -1,28 +1,28 @@
 /* Output X10 commands detected on the X10 network.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                                                PT_COPYRIGHT_VERSION_2
-                                                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@ptolemy.eecs.berkeley.edu)
 @AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
@@ -49,42 +49,42 @@ import x10.Command;
 
 public class Listener extends Receiver {
 
-        /** Construct an actor with the given container and name.
-         *  @param container The container.
-         *  @param name The name of this actor.
-         *  @exception IllegalActionException If the actor cannot be contained
-         *   by the proposed container.
-         *  @exception NameDuplicationException If the container already has an
-         *   actor with this name.
-         */
-        public Listener(CompositeEntity container, String name)
-                        throws NameDuplicationException, IllegalActionException  {
-                super(container, name);
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public Listener(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException  {
+        super(container, name);
 
-                // Create output port.
-                receivedCommand = new TypedIOPort(this, "receivedCommand", false, true);
-                receivedCommand.setTypeEquals(BaseType.STRING);
-        }
+        // Create output port.
+        receivedCommand = new TypedIOPort(this, "receivedCommand", false, true);
+        receivedCommand.setTypeEquals(BaseType.STRING);
+    }
 
-        ///////////////////////////////////////////////////////////////////
-        ////                     ports and parameters                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
 
-        /** Port on which to output the command received as a string.
-         */
-        public TypedIOPort receivedCommand;
+    /** Port on which to output the command received as a string.
+     */
+    public TypedIOPort receivedCommand;
 
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Output any received command as a string. If no command has been
      *  received, then output an empty string. If there are additional
      *  commands pending, then request another firing at the current
      *  time before returning.
-         *  @exception IllegalActionException If super class throws and exception.
-         *  @exception InterruptedException If the thread is interupted by another.
-         */
-        public void fire() throws IllegalActionException {
-                super.fire();
+     *  @exception IllegalActionException If super class throws and exception.
+     *  @exception InterruptedException If the thread is interupted by another.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
 
         // Check whether a command is ready.
         if (_commandReady()) {

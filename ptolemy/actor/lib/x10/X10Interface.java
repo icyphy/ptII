@@ -1,30 +1,30 @@
 /* This class creates an x10 inteface device which can send and receive
    x10 commands to and from an x10 network.
 
-Copyright (c) 2003-2003 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+   Copyright (c) 2003-2003 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-ProposedRating Green (ptolemy@ptolemy.eecs.berkeley.edu)
-AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
+   ProposedRating Green (ptolemy@ptolemy.eecs.berkeley.edu)
+   AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.x10;
@@ -47,55 +47,55 @@ import x10.Controller;
 //////////////////////////////////////////////////////////////////////////
 //// X10Interface
 /**
-This class abstracts X10-interface devices for X10 communication via the
-serial port. Currently, this class supports the following X10 serial port
-models for communication with a host computer:
-<ul>
-<li> "CM11A" serial module (wired)
-<li> "CM17A" serial module (wireless)
-</ul>
-Note that the wireless serial module is unidirectional, only sending
-commands to the X10 network, and not receiving from it.  Thus, the
-Listener, CommandSensor, and LevelSensor actors will not work with it.
-For instructions concerning the physical setup of these devices, refer to
-their respective manuals.
-<p>
-This actor requires that the Java comm API be installed.
-The comm API comes from <a href="http://java.sun.com/products/javacomm/" target="_top">http://java.sun.com/products/javacomm/</a>
+   This class abstracts X10-interface devices for X10 communication via the
+   serial port. Currently, this class supports the following X10 serial port
+   models for communication with a host computer:
+   <ul>
+   <li> "CM11A" serial module (wired)
+   <li> "CM17A" serial module (wireless)
+   </ul>
+   Note that the wireless serial module is unidirectional, only sending
+   commands to the X10 network, and not receiving from it.  Thus, the
+   Listener, CommandSensor, and LevelSensor actors will not work with it.
+   For instructions concerning the physical setup of these devices, refer to
+   their respective manuals.
+   <p>
+   This actor requires that the Java comm API be installed.
+   The comm API comes from <a href="http://java.sun.com/products/javacomm/" target="_top">http://java.sun.com/products/javacomm/</a>
 
-To install the comm API on a Windows machine:
-<ul>
-<li> place the win32com.dll in $JDK\jre\bin directory.
-<li> make sure the win32com.dll is executable.
-<li> Place the comm.jar in $JDK\jre\lib\ext.
-<li> Place the javax.comm.properties in $JDK\jre\lib .
-</ul>
-where $JDK is the location of your Java development kit.
-<p>
-If the <i>x10Interface</i> or <i>serialPortName</i> parameters are changed
-after preinitialize() is called, the changes will not take effect until
-the next execution of the model.
-<p>
-Derived classes must implement send and receive functionality.
-Furthermore, this class requires the x10 library (jar), which can
-be obtained from
-<a href="http://x10.homelinux.org/download.html">http://x10.homelinux.org/download.html</a>.
-Unzip the file tjx10p-11.zip (Version 1.1) and install it in
-$PTII/vendors/misc/x10. Then re-run configure in $PTII and rebuild to
-compile the actors in the x10 library.
-The configure script looks for the library in tjx10p-11/lib/x10.jar.
+   To install the comm API on a Windows machine:
+   <ul>
+   <li> place the win32com.dll in $JDK\jre\bin directory.
+   <li> make sure the win32com.dll is executable.
+   <li> Place the comm.jar in $JDK\jre\lib\ext.
+   <li> Place the javax.comm.properties in $JDK\jre\lib .
+   </ul>
+   where $JDK is the location of your Java development kit.
+   <p>
+   If the <i>x10Interface</i> or <i>serialPortName</i> parameters are changed
+   after preinitialize() is called, the changes will not take effect until
+   the next execution of the model.
+   <p>
+   Derived classes must implement send and receive functionality.
+   Furthermore, this class requires the x10 library (jar), which can
+   be obtained from
+   <a href="http://x10.homelinux.org/download.html">http://x10.homelinux.org/download.html</a>.
+   Unzip the file tjx10p-11.zip (Version 1.1) and install it in
+   $PTII/vendors/misc/x10. Then re-run configure in $PTII and rebuild to
+   compile the actors in the x10 library.
+   The configure script looks for the library in tjx10p-11/lib/x10.jar.
 
-<p>After installing the serial communication and X10 packages,
-rerun configure:
-<pre>
-cd $PTII
-./configure
-</pre>
+   <p>After installing the serial communication and X10 packages,
+   rerun configure:
+   <pre>
+   cd $PTII
+   ./configure
+   </pre>
 
 
-@author Colin Cochran and Edward A. Lee
-@version $Id$
-@since Ptolemy II 3.2
+   @author Colin Cochran and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 3.2
 */
 public class X10Interface extends TypedAtomicActor {
 
@@ -138,7 +138,7 @@ public class X10Interface extends TypedAtomicActor {
         String defaultChoice = null;
         while (ports.hasMoreElements()) {
             CommPortIdentifier identifier =
-                    (CommPortIdentifier) ports.nextElement();
+                (CommPortIdentifier) ports.nextElement();
             if (identifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                 String value = identifier.getName();
                 serialPortName.addChoice(value);
@@ -197,9 +197,9 @@ public class X10Interface extends TypedAtomicActor {
             _interface = _openInterface(_portName, _controllerName);
         } catch (IOException ex) {
             throw new IllegalActionException(
-                this,
-                ex,
-                "Failed to open X10 controller.");
+                    this,
+                    ex,
+                    "Failed to open X10 controller.");
         }
     }
 
@@ -216,8 +216,8 @@ public class X10Interface extends TypedAtomicActor {
     ////                         protected variables               ////
 
     /** This is the interface object used for sending and receiving x10
-      * commands.
-      */
+     * commands.
+     */
     protected Controller _interface;
 
     ///////////////////////////////////////////////////////////////////
@@ -232,13 +232,13 @@ public class X10Interface extends TypedAtomicActor {
             // If the port is not in the HashMap, then opening it failed.
             if (_serialNameToController.containsKey(portName)) {
                 _serialNameToUserCount.put(
-                    portName,
-                    new Integer(
-                        ((Integer) _serialNameToUserCount.get(portName))
-                            .intValue()
-                            - 1));
+                        portName,
+                        new Integer(
+                                ((Integer) _serialNameToUserCount.get(portName))
+                                .intValue()
+                                - 1));
                 if (((Integer) _serialNameToUserCount.get(portName)).intValue()
-                    == 0) {
+                        == 0) {
                     // FIXME: Unfortunately, the x10 API takes down the controller
                     // in the finalize() method of the CM11ASerialController or
                     // CM17ASerialController.  However, there is no way to
@@ -249,8 +249,8 @@ public class X10Interface extends TypedAtomicActor {
                     // connection open.  We should probably change this in the
                     // source code for the X10 API.
                     /*
-                     _serialToController.remove(portName);
-                     _serialUsers.remove(portName);
+                      _serialToController.remove(portName);
+                      _serialUsers.remove(portName);
                     */
                 }
             }
@@ -263,28 +263,28 @@ public class X10Interface extends TypedAtomicActor {
      *  @throws IOException If the serial port cannot be opened.
      */
     private static Controller _openInterface(
-        String portName,
-        String controller)
-        throws IOException {
+            String portName,
+            String controller)
+            throws IOException {
 
         synchronized (_serialNameToController) {
             if (!_serialNameToController.containsKey(portName)) {
                 if (controller.equals("CM11A")) {
                     _serialNameToController.put(
-                        portName,
-                        new CM11ASerialController(portName));
+                            portName,
+                            new CM11ASerialController(portName));
                 } else if (controller.equals("CM17A")) {
                     _serialNameToController.put(
-                        portName,
-                        new CM17ASerialController(portName));
+                            portName,
+                            new CM17ASerialController(portName));
                 }
                 _serialNameToUserCount.put(portName, new Integer(1));
             } else {
                 _serialNameToUserCount.put(
-                    portName,
-                    new Integer(
-                        1
-                            + ((Integer) _serialNameToUserCount.get(portName))
+                        portName,
+                        new Integer(
+                                1
+                                + ((Integer) _serialNameToUserCount.get(portName))
                                 .intValue()));
             }
             return ((Controller) _serialNameToController.get(portName));

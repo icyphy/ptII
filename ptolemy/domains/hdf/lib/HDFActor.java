@@ -1,28 +1,28 @@
 /* A prototype actor that shows how rate can be changed during execution.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (zhouye@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -52,18 +52,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// HDFActor
 /**
-This actor is a prototype actor that show how rate can be changed and the
-schedule can be re-computed correctly. The consumption rate of the input
-port and the production rate of the output port are same, both set by the
-portParameter <i>rate</i>. At the end of each iteration, the actor takes
-the most recent tokens from its port, according to which the director that
-contains it (which should be HDFDirector) will re-compute the schedule.
-Tokens received by the portParameter <i>rate</i> during other postfires will
-be ignored. The schedule cannot be changed in the middle of one iteration.
-<p>
-@author Rachel Zhou
-@version $Id$
-@since Ptolemy II 3.1
+   This actor is a prototype actor that show how rate can be changed and the
+   schedule can be re-computed correctly. The consumption rate of the input
+   port and the production rate of the output port are same, both set by the
+   portParameter <i>rate</i>. At the end of each iteration, the actor takes
+   the most recent tokens from its port, according to which the director that
+   contains it (which should be HDFDirector) will re-compute the schedule.
+   Tokens received by the portParameter <i>rate</i> during other postfires will
+   be ignored. The schedule cannot be changed in the middle of one iteration.
+   <p>
+   @author Rachel Zhou
+   @version $Id$
+   @since Ptolemy II 3.1
 */
 public class HDFActor extends Transformer {
 
@@ -129,8 +129,8 @@ public class HDFActor extends Transformer {
             Scheduler scheduler =
                 ((SDFDirector)director).getScheduler();
             //_firingCount =
-              //  ((HDFDirector)director).getDirectorFiringsPerIteration()
-                //    * ((SDFScheduler)scheduler).getFiringCount(this);
+            //  ((HDFDirector)director).getDirectorFiringsPerIteration()
+            //    * ((SDFScheduler)scheduler).getFiringCount(this);
 
         }
         Token[] inputToken = (Token[])input.get(0, _rateValue);
@@ -153,18 +153,18 @@ public class HDFActor extends Transformer {
                 _requestChange = false;
                 ChangeRequest request =
                     new ChangeRequest(this, "change rates") {
-                    protected void _execute() throws KernelException {
-                        Director director = getDirector();
-                       ((HDFDirector)director).invalidateSchedule();
-                       int rateValue = ((IntToken)rate.getToken()).intValue();
-                       _rateValue = rateValue;
-                       _outputRate.setToken(new IntToken(_rateValue));
-                       _inputRate.setToken(new IntToken(_rateValue));
-                    _requestChange = true;
-                    }
-               };
-               request.setPersistent(false);
-               container.requestChange(request);
+                        protected void _execute() throws KernelException {
+                            Director director = getDirector();
+                            ((HDFDirector)director).invalidateSchedule();
+                            int rateValue = ((IntToken)rate.getToken()).intValue();
+                            _rateValue = rateValue;
+                            _outputRate.setToken(new IntToken(_rateValue));
+                            _inputRate.setToken(new IntToken(_rateValue));
+                            _requestChange = true;
+                        }
+                    };
+                request.setPersistent(false);
+                container.requestChange(request);
             } else {
                 _outputRate.setToken(new IntToken(_rateValue));
                 _inputRate.setToken(new IntToken(_rateValue));

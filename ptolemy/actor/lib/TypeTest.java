@@ -1,28 +1,28 @@
 /* An actor for testing type resolution.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (ssachs@eecs.berkeley.edu)
@@ -49,42 +49,42 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// TypeTest
 /**
-An actor that can be used for regression test of the type resolution
-system.  During the initialize phase, after type resolution has been
-performed, this actor compares resolved types in the model with types
-stored in several parameters.  If the types are the same, then the
-actor does nothing.  However, if the types are different, then the
-actor throws an exception.  Hence, as with the Test actor, this actor
-can be easily used to build automatically executed tests of the type
-system from within Vergil.
+   An actor that can be used for regression test of the type resolution
+   system.  During the initialize phase, after type resolution has been
+   performed, this actor compares resolved types in the model with types
+   stored in several parameters.  If the types are the same, then the
+   actor does nothing.  However, if the types are different, then the
+   actor throws an exception.  Hence, as with the Test actor, this actor
+   can be easily used to build automatically executed tests of the type
+   system from within Vergil.
 
-<p> The types expected by this actor are stored in two parameters,
-each parameter contains a record of record of strings.  The outer
-record contains labels corresponding to the names of actors in the
-same level of hierarchy as this actor.  The inner record contains
-labels corresponding to the names of typeable objects in the
-appropriate actor.  The strings in the record correspond to string
-representations of the types of the typeable objects.  For the
-<i>portTypes</i> parameter, the typeable objects are assumed to be
-ports, and for the <i>parameterTypes</i> parameter, the objects are
-assumed to be parameters.
+   <p> The types expected by this actor are stored in two parameters,
+   each parameter contains a record of record of strings.  The outer
+   record contains labels corresponding to the names of actors in the
+   same level of hierarchy as this actor.  The inner record contains
+   labels corresponding to the names of typeable objects in the
+   appropriate actor.  The strings in the record correspond to string
+   representations of the types of the typeable objects.  For the
+   <i>portTypes</i> parameter, the typeable objects are assumed to be
+   ports, and for the <i>parameterTypes</i> parameter, the objects are
+   assumed to be parameters.
 
-<p> Note that this actor only tests type resolution at one level of
-opaque hierarchy.  Hierarchical models should include multiple
-instances of this actor.  Since filling in the types manually is
-difficult, this actor includes a training mode, similar to the
-NonStrictTest actor.  This mode automatically fills in the type
-parameters.  Also note that it is not necessary to specify the types
-of all typeable objects.  Any objects for which no type is specified
-are not checked.
+   <p> Note that this actor only tests type resolution at one level of
+   opaque hierarchy.  Hierarchical models should include multiple
+   instances of this actor.  Since filling in the types manually is
+   difficult, this actor includes a training mode, similar to the
+   NonStrictTest actor.  This mode automatically fills in the type
+   parameters.  Also note that it is not necessary to specify the types
+   of all typeable objects.  Any objects for which no type is specified
+   are not checked.
 
-<p> During runtime, this actor consumes and ignores any input tokens.
-This makes it very easy to add this actor to an existing model without
-changing the behavior of the model.
+   <p> During runtime, this actor consumes and ignores any input tokens.
+   This makes it very easy to add this actor to an existing model without
+   changing the behavior of the model.
 
-@author Steve Neuendorffer
-@version $Id$
-@see ptolemy.actor.lib.Test
+   @author Steve Neuendorffer
+   @version $Id$
+   @see ptolemy.actor.lib.Test
 */
 
 public class TypeTest extends Discard {
@@ -256,7 +256,7 @@ public class TypeTest extends Discard {
                         }
                         StringToken actualValue =
                             (StringToken)((RecordToken)actualPortTypes.get(
-                                    actorName)).get(name);
+                                                  actorName)).get(name);
                         if (!value.equals(actualValue)) {
                             throw new IllegalActionException(this,
                                     "Type of port " +

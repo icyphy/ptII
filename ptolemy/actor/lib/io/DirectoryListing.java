@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
@@ -60,18 +60,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// DirectoryListing
 /**
-Given a URL or directory name, this actor produces an array of file names
-in that directory that match an (optional) pattern.  The file names that
-are returned are absolute. The pattern is
-a regular expression. For a reference on regular expression syntax see:
-<a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
-http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
-<p>
-FIXME: Useful options would be to output only files or only directories.
+   Given a URL or directory name, this actor produces an array of file names
+   in that directory that match an (optional) pattern.  The file names that
+   are returned are absolute. The pattern is
+   a regular expression. For a reference on regular expression syntax see:
+   <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
+   http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
+   <p>
+   FIXME: Useful options would be to output only files or only directories.
 
-@author  Christopher Hylands, Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   @author  Christopher Hylands, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class DirectoryListing extends Source implements FilenameFilter {
 
@@ -168,7 +168,7 @@ public class DirectoryListing extends Source implements FilenameFilter {
         if (sourceURL == null) {
             // Nothing to read
             throw new IllegalActionException(this,
-            "directoryOrURL is empty.");
+                    "directoryOrURL is empty.");
         }
 
         if (sourceURL.getProtocol().equals("file")) {
@@ -197,7 +197,7 @@ public class DirectoryListing extends Source implements FilenameFilter {
                 _readURL(sourceURL);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                "Error reading the URL \'" + directoryOrURL + "\'.");
+                        "Error reading the URL \'" + directoryOrURL + "\'.");
             }
         }
     }
@@ -222,8 +222,8 @@ public class DirectoryListing extends Source implements FilenameFilter {
                     + urlConnection.getContentType());
         }
         BufferedReader in =
-                new BufferedReader(
-                new InputStreamReader(urlConnection.getInputStream()));
+            new BufferedReader(
+                    new InputStreamReader(urlConnection.getInputStream()));
         if (!contentType.startsWith("text/plain")
                 && !urlConnection.getURL().toString().endsWith("/")) {
             // text/plain urls need not end with /, but
@@ -275,7 +275,7 @@ public class DirectoryListing extends Source implements FilenameFilter {
                                     } else {
                                         if (accept(null, target)) {
                                             resultsList.add(new StringToken(
-                                                    directoryOrURL + target));
+                                                                    directoryOrURL + target));
                                         }
                                         sawHREF = false;
                                     }

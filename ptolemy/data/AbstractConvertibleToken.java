@@ -1,28 +1,28 @@
 /* Base class for data capsules.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red
@@ -39,30 +39,30 @@ import java.io.Serializable;
 //////////////////////////////////////////////////////////////////////////
 //// AbstractConvertibleToken
 /**
-The Token base class provides a very general interface for building
-new data types.  However, in many ways, the interface is rather complex
-in order to allow consistent implementation of Token operations that
-operate on tokens that are defined in different classes.  In particular,
-this requires the duplicate operation and operationReverse methods.
+   The Token base class provides a very general interface for building
+   new data types.  However, in many ways, the interface is rather complex
+   in order to allow consistent implementation of Token operations that
+   operate on tokens that are defined in different classes.  In particular,
+   this requires the duplicate operation and operationReverse methods.
 
-<p> This base class is intended to make it easy to implement tokens
-that perform operations on other data types.  In most (but not all)
-cases, these operations to be performed only on types that can be
-losslessly converted to this type (or vice versa).  The operations are
-implemented to first perform the conversion to the same type, and then
-perform the operation.  This class provides a base class
-implementation of the operation methods which performs the appropriate
-conversion, and then defers to a protected _operation method if the
-type of the argument of the operation is less than or equal to this
-type.  If the argument type is greater than this type, then the
-appropriate method is called on that type.  If the types are
-incomparable, then this class throws an exception. The protected
-methods should be overridden in derived classes to provide
-type-specific operations.
+   <p> This base class is intended to make it easy to implement tokens
+   that perform operations on other data types.  In most (but not all)
+   cases, these operations to be performed only on types that can be
+   losslessly converted to this type (or vice versa).  The operations are
+   implemented to first perform the conversion to the same type, and then
+   perform the operation.  This class provides a base class
+   implementation of the operation methods which performs the appropriate
+   conversion, and then defers to a protected _operation method if the
+   type of the argument of the operation is less than or equal to this
+   type.  If the argument type is greater than this type, then the
+   appropriate method is called on that type.  If the types are
+   incomparable, then this class throws an exception. The protected
+   methods should be overridden in derived classes to provide
+   type-specific operations.
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 2.1
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.1
 
 */
 public abstract class AbstractConvertibleToken extends Token

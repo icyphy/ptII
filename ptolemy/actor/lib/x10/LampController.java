@@ -1,28 +1,28 @@
 /* A LampController actor sends X10-light-module commands to the X10 network.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@ptolemy.eecs.berkeley.edu)
 @AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
@@ -92,24 +92,24 @@ public class LampController extends Sender {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-   /** When provided with an integer between 0 and 100, inclusive,
-    *  on this port, this actor will issue an X10 BRIGHT command.
-    */
+    /** When provided with an integer between 0 and 100, inclusive,
+     *  on this port, this actor will issue an X10 BRIGHT command.
+     */
     public TypedIOPort bright;
 
-   /** When provided with an integer between 0 and 100, inclusive,
-    *  on this port, this actor will issue an X10 DIM command.
-    */
+    /** When provided with an integer between 0 and 100, inclusive,
+     *  on this port, this actor will issue an X10 DIM command.
+     */
     public TypedIOPort dim;
 
-   /** When provided with a true token on this input port,
-    *  this actor will send an ON X10 command.
-    */
+    /** When provided with a true token on this input port,
+     *  this actor will send an ON X10 command.
+     */
     public TypedIOPort on;
 
-   /** When provided with a true token on this input port,
-    *  this actor will send an OFF X10 command.
-    */
+    /** When provided with a true token on this input port,
+     *  this actor will send an OFF X10 command.
+     */
     public TypedIOPort off;
 
     ///////////////////////////////////////////////////////////////////
@@ -129,7 +129,7 @@ public class LampController extends Sender {
         // Must call super fire here to get the destination for this command.
         super.fire();
 
-                int brightLevel = -1;
+        int brightLevel = -1;
         int dimLevel = -1;
         if (bright.getWidth() > 0 && bright.hasToken(0)) {
             brightLevel = ((IntToken)bright.get(0)).intValue();
@@ -143,11 +143,11 @@ public class LampController extends Sender {
 
         if (brightLevel >= 0 && brightLevel <= 100) {
             _transmit(new Command((_destination), x10.Command.BRIGHT,
-                    brightLevel));
+                              brightLevel));
         }
         if (dimLevel >= 0 && dimLevel <= 100) {
             _transmit(new Command((_destination), x10.Command.DIM,
-                    dimLevel));
+                              dimLevel));
         }
         if (isOn) {
             _transmit(new Command((_destination), x10.Command.ON));

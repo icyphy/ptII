@@ -1,28 +1,28 @@
 /* Maximum profit to cost ratio analyzer which uses Parhi's algorithm for
-iteration bound.
+   iteration bound.
 
- Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (shahrooz@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
+   @ProposedRating Red (shahrooz@eng.umd.edu)
+   @AcceptedRating Red (ssb@eng.umd.edu)
 
 */
 
@@ -49,22 +49,22 @@ import ptolemy.graph.mapping.ToIntMapping;
 //////////////////////////////////////////////////////////////////////////
 //// ParhiMaximumProfitToCostRatioStrategy
 /**
-Maximum profit to cost ratio analyzer which uses Parhi's algorithm for
-iteration bound.
-<p>
-For details about the algorithm, please refer to:
-<p>
-K. Ito and K. K. Parhi. Determining the minimum iteration period of an
-algorithm. Journal of VLSI Signal Processing, 11(3):229-244, December 1995
-<p>
-@see ptolemy.graph.analysis.MaximumProfitToCostRatioAnalysis
-@since Ptolemy II 4.0
-@author Shahrooz Shahparnia
-@version $Id$
+   Maximum profit to cost ratio analyzer which uses Parhi's algorithm for
+   iteration bound.
+   <p>
+   For details about the algorithm, please refer to:
+   <p>
+   K. Ito and K. K. Parhi. Determining the minimum iteration period of an
+   algorithm. Journal of VLSI Signal Processing, 11(3):229-244, December 1995
+   <p>
+   @see ptolemy.graph.analysis.MaximumProfitToCostRatioAnalysis
+   @since Ptolemy II 4.0
+   @author Shahrooz Shahparnia
+   @version $Id$
 */
 
 public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
-        implements MaximumProfitToCostRatioAnalyzer {
+    implements MaximumProfitToCostRatioAnalyzer {
 
     /** Construct an instance of this class.
      *
@@ -98,9 +98,9 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
      *
      *  @return Return the maximum profit to cost ratio of the given graph.
      */
-     public double maximumRatio() {
+    public double maximumRatio() {
         return ((Double)(_result())).doubleValue();
-     }
+    }
 
     /** Return a description of the analyzer.
      *
@@ -108,7 +108,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
      */
     public String toString() {
         return "All pair shortest path analyzer"
-                + " based on Parhi's algorithm.";
+            + " based on Parhi's algorithm.";
     }
 
     /** Check for compatibility between the analysis and the given
@@ -123,7 +123,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
         boolean result = false;
         if (graph() instanceof DirectedGraph) {
             CycleExistenceAnalyzer analyzer = new
-                    FloydWarshallCycleExistenceStrategy(graph());
+                FloydWarshallCycleExistenceStrategy(graph());
             result = analyzer.hasCycle();
         }
         return result;
@@ -150,7 +150,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
         // Build a new graph with the delays as nodes added to the previous
         // graph.
         DirectedGraph graphPlusDelaysAsNodes = (DirectedGraph)
-               originalGraph.cloneAs(new DirectedGraph());
+            originalGraph.cloneAs(new DirectedGraph());
         Object[] edges = graphPlusDelaysAsNodes.edges().toArray();
         HashMap edgeProfitsMap = new HashMap();
         for (int j = 0; j < edges.length; j++) {
@@ -164,7 +164,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                 int delays = _edgeCosts.toInt(edge);
                 for (int i = 0; i < delays; i++) {
                     Node addedNode = graphPlusDelaysAsNodes
-                            .addNodeWeight(new String("D" + j + i));
+                        .addNodeWeight(new String("D" + j + i));
                     _delayNodeList.add(addedNode);
                     Edge addedEdge = graphPlusDelaysAsNodes.addEdge(source,
                             addedNode);
@@ -172,7 +172,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                     source = addedNode;
                 }
                 Edge lastAddedEdge =
-                        graphPlusDelaysAsNodes.addEdge(source, sink);
+                    graphPlusDelaysAsNodes.addEdge(source, sink);
                 edgeProfitsMap.put(lastAddedEdge,
                         new Double(_edgeProfits.toDouble(edge)));
             } else {
@@ -186,10 +186,10 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
         // compute the first order longest path matrix
         HashMap predecessorMap = new HashMap();
         for (Iterator delayNodes = _delayNodeList.iterator();
-            delayNodes.hasNext();) {
+             delayNodes.hasNext();) {
             Node delayNode = (Node)delayNodes.next();
             DirectedGraph thisRoundGraph =
-                    (DirectedGraph)graphPlusDelaysAsNodes.clone();
+                (DirectedGraph)graphPlusDelaysAsNodes.clone();
             HashMap delayGraphProfitMap = new HashMap();
             for (int j = 0; j < edges.length; j++) {
                 Edge edge = (Edge)edges[j];
@@ -234,7 +234,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
         HashMap delayGraphEdgeProfits = new HashMap();
 
         for (int i = 0; i < _delayNodeList.size(); i++) {
-                    delayGraph.addNode((Node)_delayNodeList.get(i));
+            delayGraph.addNode((Node)_delayNodeList.get(i));
         }
         for (int i = 0; i < _delayNodeList.size(); i++) {
             for (int j = 0; j < _delayNodeList.size(); j++) {
@@ -242,7 +242,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                 Node sink = (Node)_delayNodeList.get(j);
                 if (_firstOrderLongestPathMatrix[i][j] >= 0) {
                     if (!(source == sink &&
-                        _firstOrderLongestPathMatrix[i][j] == 0)) {
+                                _firstOrderLongestPathMatrix[i][j] == 0)) {
                         Edge addedEdge = delayGraph.addEdge(source, sink);
                         delayGraphEdgeProfits.put(addedEdge,
                                 new Double(_firstOrderLongestPathMatrix[i][j]));
@@ -298,7 +298,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
     private double _computeMCM(DirectedGraph graph,
             ToDoubleMapping edgeLength) {
         CycleMeanAnalyzer cycleMean =
-                new KarpCycleMeanStrategy(graph, edgeLength);
+            new KarpCycleMeanStrategy(graph, edgeLength);
         double result = cycleMean.maximumCycleMean();
         _delayCycle = cycleMean.cycle();
         return result;
@@ -311,15 +311,15 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
     private double[][] _makeFirstOrderLongestPathMatrix(HashMap D,
             DirectedGraph graph, HashMap predecessorMap) {
         _firstOrderLongestPathMatrix =
-                new double[_delayNodeList.size()][_delayNodeList.size()];
+            new double[_delayNodeList.size()][_delayNodeList.size()];
         for (int i = 0; i < _delayNodeList.size() ; i++) {
             for (int j = 0; j < _delayNodeList.size() ; j++) {
                 Node column = (Node)_delayNodeList.get(i);
                 Node row = (Node)_delayNodeList.get(j);
                 double value = 0;
                 double[] distances = (double[])
-                        ((SingleSourceLongestPathAnalysis)
-                        (D.get(column))).distance();
+                    ((SingleSourceLongestPathAnalysis)
+                            (D.get(column))).distance();
                 Node predecessor = (Node)(predecessorMap.get(row));
 
                 if (i != j || _delayNodeList.contains(predecessor)) {

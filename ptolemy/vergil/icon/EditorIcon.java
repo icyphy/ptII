@@ -1,28 +1,28 @@
 /* An Icon is the graphical representation of an entity or attribute.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -60,49 +60,49 @@ import diva.gui.toolbox.FigureIcon;
 //////////////////////////////////////////////////////////////////////////
 //// EditorIcon
 /**
-An icon is the visual representation of an entity or attribute.
-The visual representation is a Diva Figure. This class is an attribute
-that serves as a factory for such figures. This base class creates the
-figure by composing the figures of any contained attributes that have
-icons.  If there are no such contained attributes, then it creates a
-default figure that is a white rectangle. This class also provides
-a facility for generating a Swing icon (i.e. an instance of
-javax.swing.Icon) from that figure (the createIcon() method).
-<p>
-The icon consists of a background figure, created by the
-createBackgroundFigure() method, and a decorated version, created
-by the createFigure() method.  The decorated version has, in this
-base class, a label showing the name of the entity, unless the entity
-contains an attribute called "_hideName".  The swing icon created
-by createIcon() does not include the decorations, but rather is only
-the background figure.
-<p>
-Derived classes may simply populate this attribute with other
-visible attributes (attributes that contain icons), or they can
-override the createBackgroundFigure() method.  This will affect
-both the Diva Figure and the Swing Icon representations.
-Derived classes can also create the figure or the icon in a
-different way entirely (for example, starting with a Swing
-icon and creating the figure using a SwingWrapper) by overriding
-both createBackgroundFigure() and createIcon(). However, the
-icon editor provided by EditIconFrame and EditIconTableau
-will only show (and allow editing) of those icon components
-created by populating this attribute with other visible
-attributes.
-<p>
-This attribute contains another attribute that is an
-instance of EditIconTableau. This has the effect that
-an instance of Configuration, when it attempts to open
-an instance of this class, will use EditIconTableau,
-which in turn uses EditIconFrame to provide an icon
-editor.
+   An icon is the visual representation of an entity or attribute.
+   The visual representation is a Diva Figure. This class is an attribute
+   that serves as a factory for such figures. This base class creates the
+   figure by composing the figures of any contained attributes that have
+   icons.  If there are no such contained attributes, then it creates a
+   default figure that is a white rectangle. This class also provides
+   a facility for generating a Swing icon (i.e. an instance of
+   javax.swing.Icon) from that figure (the createIcon() method).
+   <p>
+   The icon consists of a background figure, created by the
+   createBackgroundFigure() method, and a decorated version, created
+   by the createFigure() method.  The decorated version has, in this
+   base class, a label showing the name of the entity, unless the entity
+   contains an attribute called "_hideName".  The swing icon created
+   by createIcon() does not include the decorations, but rather is only
+   the background figure.
+   <p>
+   Derived classes may simply populate this attribute with other
+   visible attributes (attributes that contain icons), or they can
+   override the createBackgroundFigure() method.  This will affect
+   both the Diva Figure and the Swing Icon representations.
+   Derived classes can also create the figure or the icon in a
+   different way entirely (for example, starting with a Swing
+   icon and creating the figure using a SwingWrapper) by overriding
+   both createBackgroundFigure() and createIcon(). However, the
+   icon editor provided by EditIconFrame and EditIconTableau
+   will only show (and allow editing) of those icon components
+   created by populating this attribute with other visible
+   attributes.
+   <p>
+   This attribute contains another attribute that is an
+   instance of EditIconTableau. This has the effect that
+   an instance of Configuration, when it attempts to open
+   an instance of this class, will use EditIconTableau,
+   which in turn uses EditIconFrame to provide an icon
+   editor.
 
-@author Steve Neuendorffer, John Reekie, Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
-@see EditIconFrame
-@see EditIconTableau
-@see ptolemy.actor.gui.Configuration
+   @author Steve Neuendorffer, John Reekie, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
+   @see EditIconFrame
+   @see EditIconTableau
+   @see ptolemy.actor.gui.Configuration
 */
 public class EditorIcon extends Attribute {
 
@@ -188,7 +188,7 @@ public class EditorIcon extends Attribute {
             // "visible attribute" containing an attribute named "_icon"
             // that actually has the icon.
             Iterator subIcons =
-                    attribute.attributeList(EditorIcon.class).iterator();
+                attribute.attributeList(EditorIcon.class).iterator();
             while (subIcons.hasNext()) {
                 EditorIcon subIcon = (EditorIcon) subIcons.next();
                 if (figure == null) {
@@ -221,7 +221,7 @@ public class EditorIcon extends Attribute {
                             "_location", Locatable.class);
                     if (location != null) {
                         double[] locationValue = location.getLocation();
-                         CanvasUtilities.translateTo(
+                        CanvasUtilities.translateTo(
                                 subFigure, locationValue[0], locationValue[1]);
                     }
                 } catch (IllegalActionException e) {
@@ -286,7 +286,7 @@ public class EditorIcon extends Attribute {
 
     /** Create a new Swing icon.  In this base class, this icon is created
      *  from the background figure returned by createBackgroundFigure().
-   *  Note that the background figure does NOT include a label for the name.
+     *  Note that the background figure does NOT include a label for the name.
      *  This method might be suitable, for example, for creating a small icon
      *  for use in a library.
      *  @return A new Swing Icon.
@@ -422,7 +422,7 @@ public class EditorIcon extends Attribute {
           }
           MoMLChangeRequest request = new MoMLChangeRequest(
           this, context, moml.toString());
-        context.requestChange(request);
+          context.requestChange(request);
         */
 
         return new BasicRectangle(-30, -20, 60, 40, Color.white, 1);

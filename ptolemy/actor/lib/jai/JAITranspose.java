@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -48,19 +48,19 @@ import javax.media.jai.operator.TransposeType;
 //// JAITranspose
 
 /**
- Transpose a RenderedOp.  The user can choose among six different
- transpositions.
+   Transpose a RenderedOp.  The user can choose among six different
+   transpositions.
 
- <i>flip antidiagonal</i> flips an image along the antidiagonal.
- <i>flip diagonal</i> flips an image along the diagonal.
- <i>flip horizontal</i> flips an image along the horizontal.
- <i>flip vertical</i> flips an image along the vertical.
- <i>rotate 90</i>, <i>rotate 180</i>, <i>rotate 270</i>, rotate an image
- 90, 180, and 270 degrees respectively.
+   <i>flip antidiagonal</i> flips an image along the antidiagonal.
+   <i>flip diagonal</i> flips an image along the diagonal.
+   <i>flip horizontal</i> flips an image along the horizontal.
+   <i>flip vertical</i> flips an image along the vertical.
+   <i>rotate 90</i>, <i>rotate 180</i>, <i>rotate 270</i>, rotate an image
+   90, 180, and 270 degrees respectively.
 
- @author James Yeh
- @version $Id$
- @since Ptolemy II 3.0
+   @author James Yeh
+   @version $Id$
+   @since Ptolemy II 3.0
 */
 
 public class JAITranspose extends Transformer {

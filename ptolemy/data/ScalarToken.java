@@ -1,28 +1,28 @@
 /* Abstract base class for tokens that contain a scalar.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Green (yuhong@eecs.berkeley.edu)
@@ -44,34 +44,34 @@ import java.util.Arrays;
 //////////////////////////////////////////////////////////////////////////
 //// ScalarToken
 /**
-Abstract base class for tokens that contain a scalar.  This base class
-extends the Token class to properly implement type conversion and the
-units portion of the standard operations for scalar tokens.  It also
-adds methods for querying the natural ordering between scalars.
+   Abstract base class for tokens that contain a scalar.  This base class
+   extends the Token class to properly implement type conversion and the
+   units portion of the standard operations for scalar tokens.  It also
+   adds methods for querying the natural ordering between scalars.
 
-<p> This class has a number of protected abstract methods that subclasses
-must implement.  These methods need only implement the numerical
-portion of the operation between two tokens of the same type.  This
-base class will handle the conversion of tokens from different types
-to the same type before calling the protected method, and the proper
-computation of the units of the returned token afterwards.
+   <p> This class has a number of protected abstract methods that subclasses
+   must implement.  These methods need only implement the numerical
+   portion of the operation between two tokens of the same type.  This
+   base class will handle the conversion of tokens from different types
+   to the same type before calling the protected method, and the proper
+   computation of the units of the returned token afterwards.
 
-<p> In general, any instance of a scalar token may be optionally
-associated with a set of units.  In the arithmetic methods add(),
-modulo(), and subtract(), the two operands must have the same
-units. Otherwise, an exception will be thrown. In the methods
-multiply() and divide(), the units of the resulting token will be
-computed automatically.  IMPORTANT: The protected methods implemented
-in derived classes are expected to return a new token in the case of
-multiply and divide.  This new token will automatically have its units
-set correctly by this base class implementation.  Certain cases, such
-as multiplication by one, cannot be optimized to simply return an the
-input token without performing the multiplication, since the units of
-the result may be different than the units of either input token.
+   <p> In general, any instance of a scalar token may be optionally
+   associated with a set of units.  In the arithmetic methods add(),
+   modulo(), and subtract(), the two operands must have the same
+   units. Otherwise, an exception will be thrown. In the methods
+   multiply() and divide(), the units of the resulting token will be
+   computed automatically.  IMPORTANT: The protected methods implemented
+   in derived classes are expected to return a new token in the case of
+   multiply and divide.  This new token will automatically have its units
+   set correctly by this base class implementation.  Certain cases, such
+   as multiplication by one, cannot be optimized to simply return an the
+   input token without performing the multiplication, since the units of
+   the result may be different than the units of either input token.
 
-@author Yuhong Xiong, Mudit Goel, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 0.2
+   @author Yuhong Xiong, Mudit Goel, Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public abstract class ScalarToken extends Token
     implements BitwiseOperationToken {

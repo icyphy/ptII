@@ -1,28 +1,28 @@
 /* An actor that rotates the input 3D shape
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (chf@eecs.berkeley.edu)
 @AcceptedRating Red (chf@eecs.berkeley.edu)
@@ -51,18 +51,18 @@ import javax.vecmath.Vector3d;
 //// Rotate3D
 
 /** Conceptually, this actor takes 3D geometry in its input and produces
-a rotated version in its output. In reality, this actor encapsulates a
-Java3D TransformGroup which is converted into a node in the resulting
-Java3D scene graph. This actor will only have meaning in the GR domain.
+    a rotated version in its output. In reality, this actor encapsulates a
+    Java3D TransformGroup which is converted into a node in the resulting
+    Java3D scene graph. This actor will only have meaning in the GR domain.
 
-The parameters <i>axisDirectionX</i>,<i>axisDirectionY</i>, and
-<i>axisDirectionZ</i> determine the direction of the axis of rotation.
-The parameters <i>baseX</i>, <i>baseY</i>, and <i>baseZ</i> determine
-the pivot point for axis of the rotation. The parameter <i>initialAngle</i>
-determines the initial angle of rotation.
-@author C. Fong
-@version $Id$
-@since Ptolemy II 1.0
+    The parameters <i>axisDirectionX</i>,<i>axisDirectionY</i>, and
+    <i>axisDirectionZ</i> determine the direction of the axis of rotation.
+    The parameters <i>baseX</i>, <i>baseY</i>, and <i>baseZ</i> determine
+    the pivot point for axis of the rotation. The parameter <i>initialAngle</i>
+    determines the initial angle of rotation.
+    @author C. Fong
+    @version $Id$
+    @since Ptolemy II 1.0
 */
 public class Rotate3D extends GRTransform {
 
@@ -158,10 +158,10 @@ public class Rotate3D extends GRTransform {
                 if (_isAccumulating()) {
                     _accumulatedAngle = in + _accumulatedAngle;
                     quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
-                            _accumulatedAngle));
+                                     _accumulatedAngle));
                 } else {
                     quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
-                            in + originalAngle));
+                                     in + originalAngle));
                 }
                 _rotation.set(quat);
                 _middleRotate.setTransform(_rotation);
@@ -228,7 +228,7 @@ public class Rotate3D extends GRTransform {
 
         Transform3D bottomTransform = new Transform3D();
         bottomTransform.setTranslation(new Vector3d(-_baseX,
-                -_baseY, -_baseZ));
+                                               -_baseY, -_baseZ));
         _bottomTranslate.setTransform(bottomTransform);
         _topTranslate.addChild(_middleRotate);
         _middleRotate.addChild(_bottomTranslate);

@@ -26,8 +26,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating red (eal@eecs.berkeley.edu)
 @AcceptedRating red (cxh@eecs.berkeley.edu)
 */
@@ -50,19 +50,19 @@ import com.microstar.xml.XmlException;
 //// PlotMLApplication
 
 /**
-An application that can plot data in PlotML format from a URL or
-from files specified on the command line.
-To compile and run this application, do the following:
-<pre>
-    javac -classpath ../.. PlotMLApplication.java
-    java -classpath ../.. ptolemy.plot.plotml.PlotMLApplication
-</pre>
+   An application that can plot data in PlotML format from a URL or
+   from files specified on the command line.
+   To compile and run this application, do the following:
+   <pre>
+   javac -classpath ../.. PlotMLApplication.java
+   java -classpath ../.. ptolemy.plot.plotml.PlotMLApplication
+   </pre>
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
-@see PlotBox
-@see Plot
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
+   @see PlotBox
+   @see Plot
 */
 public class PlotMLApplication extends PlotApplication {
 

@@ -25,8 +25,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (ankush@eng.umd.edu)
 @AcceptedRating Red (ankush@eng.umd.edu)
@@ -44,16 +44,16 @@ import java.util.Iterator;
 
 
 /**
-    A class that handles generation and management of Java methods that are
-    over-ridden by pre-defined C code. The class allows conventional java
-    methods to be replaced with pre-defined C code. This may be done for
-    platform-specificness, correctness or performance considerations. Note
-    that "overridden" here means that the code for a method is replaced
-    with either dummy or user-defined C code. It does not refer to
-    overriding methods by inheritance in java.
+   A class that handles generation and management of Java methods that are
+   over-ridden by pre-defined C code. The class allows conventional java
+   methods to be replaced with pre-defined C code. This may be done for
+   platform-specificness, correctness or performance considerations. Note
+   that "overridden" here means that the code for a method is replaced
+   with either dummy or user-defined C code. It does not refer to
+   overriding methods by inheritance in java.
 
-    @author Ankush Varma
-    @version $Id$
+   @author Ankush Varma
+   @version $Id$
 */
 
 public class OverriddenMethodGenerator {
@@ -68,7 +68,7 @@ public class OverriddenMethodGenerator {
      */
     public static String fileContainingCodeFor(SootMethod method) {
         String fileName = getOverriddenBodyLib()
-                + CNames.functionNameOf(method) + ".c";
+            + CNames.functionNameOf(method) + ".c";
 
         return fileName;
     }
@@ -109,27 +109,27 @@ public class OverriddenMethodGenerator {
         ///////////// Methods replaced with dummy code ////////////
         // Methods ovverriden for speed
         /*
-        _forceOverriddenMethods.add("<java.lang.String: java.lang.String "
-                + "valueOf(java.lang.Object)>");
-        _forceOverriddenMethods.add("<java.util.WeakHashMap: boolean "
-                + "eq(java.lang.Object,java.lang.Object)>");
-        _forceOverriddenMethods.add("<java.util.TreeMap: int "
-                + "compare(java.lang.Object,java.lang.Object)>");
-        _forceOverriddenMethods.add("<java.text.AttributedString: boolean "
-                + "valuesMatch(java.lang.Object,java.lang.Object)>");
-        _forceOverriddenMethods.add("<java.util.Vector: int "
-                + "indexOf(java.lang.Object,int)>");
+          _forceOverriddenMethods.add("<java.lang.String: java.lang.String "
+          + "valueOf(java.lang.Object)>");
+          _forceOverriddenMethods.add("<java.util.WeakHashMap: boolean "
+          + "eq(java.lang.Object,java.lang.Object)>");
+          _forceOverriddenMethods.add("<java.util.TreeMap: int "
+          + "compare(java.lang.Object,java.lang.Object)>");
+          _forceOverriddenMethods.add("<java.text.AttributedString: boolean "
+          + "valuesMatch(java.lang.Object,java.lang.Object)>");
+          _forceOverriddenMethods.add("<java.util.Vector: int "
+          + "indexOf(java.lang.Object,int)>");
 
 
         */
         // End Speed.
 
         /*
-        _forceOverriddenMethods.add(
-                "<java.util.ResourceBundle: java.lang.Object "
-                + "loadBundle(java.lang.ClassLoader,java.lang.String)>");
-        // Overridden it throws a warning for an unused variable.
-        */
+          _forceOverriddenMethods.add(
+          "<java.util.ResourceBundle: java.lang.Object "
+          + "loadBundle(java.lang.ClassLoader,java.lang.String)>");
+          // Overridden it throws a warning for an unused variable.
+          */
 
         _forceOverriddenMethods.add("<java.util.Locale: void <clinit>()>");
         // Overridden because called and used the result from an

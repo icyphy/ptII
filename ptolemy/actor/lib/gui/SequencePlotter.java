@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
@@ -45,20 +45,20 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// SequencePlotter
 /**
-A sequence plotter.  This plotter contains an instance of the Plot
-class from the Ptolemy plot package as a public member. Data at
-the input, which can consist of any number of channels, are plotted
-on this instance.  Each channel is plotted as a separate data set.
-The horizontal axis represents the count of the iterations, scaled
-by the <i>xUnit</i> parameter.  The horizontal increment between
-samples is given by the <i>xUnit</i> parameter.
-Its default value is 1.0. The horizontal value
-of the first sample is given by the <i>xInit</i> parameter.
-Its default value is 0.0. The input is of type DoubleToken.
+   A sequence plotter.  This plotter contains an instance of the Plot
+   class from the Ptolemy plot package as a public member. Data at
+   the input, which can consist of any number of channels, are plotted
+   on this instance.  Each channel is plotted as a separate data set.
+   The horizontal axis represents the count of the iterations, scaled
+   by the <i>xUnit</i> parameter.  The horizontal increment between
+   samples is given by the <i>xUnit</i> parameter.
+   Its default value is 1.0. The horizontal value
+   of the first sample is given by the <i>xInit</i> parameter.
+   Its default value is 0.0. The input is of type DoubleToken.
 
-@author  Edward A. Lee, Bart Kienhuis
-@version $Id$
-@since Ptolemy II 1.0
+   @author  Edward A. Lee, Bart Kienhuis
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class SequencePlotter extends Plotter implements SequenceActor {
 

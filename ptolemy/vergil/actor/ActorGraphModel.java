@@ -1,28 +1,28 @@
 /* A graph model for basic ptolemy models.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -73,35 +73,35 @@ import diva.util.NullIterator;
 //////////////////////////////////////////////////////////////////////////
 //// ActorGraphModel
 /**
-This class represents one level of hierarchy of a Ptolemy II model.
-The graph model represents attributes, ports, entities and relations
-as nodes.  Entities and attributes are represented in the model by the
-icon that is used to visually depict them.  Relations are represented
-in the model by its vertices (which are visual elements that generally
-exist in multiple places in a visual rendition).  Ports represent
-themselves in the model.
-<p>
-In the terminology of diva, the graph elements are "nodes" (icons,
-vertices, and ports), and the "edges" link them.  Edges
-are represented in the model by instances of the Link class.
-Edges may link a port and a vertex, or a port and another port.
-For visual simplicity, both types of edges are represented by
-an instance of the Link class.  If an edge is placed between a port
-and a vertex then the Link represents a Ptolemy II link between
-the port and the vertex's Relation.  However, if an edge is placed between
-two ports, then it represents a relation (with no vertex) and links from
-the relation to each port (in Ptolemy II, this is called a "connection").
-<p>
-This model uses a ptolemy change listener to detect changes to the model
-that do not originate from this model.  These changes are propagated
-as structure changed graph events to all graphListeners registered with this
-model.  This mechanism allows a graph visualization of a ptolemy model to
-remain synchronized with the state of a mutating model.
+   This class represents one level of hierarchy of a Ptolemy II model.
+   The graph model represents attributes, ports, entities and relations
+   as nodes.  Entities and attributes are represented in the model by the
+   icon that is used to visually depict them.  Relations are represented
+   in the model by its vertices (which are visual elements that generally
+   exist in multiple places in a visual rendition).  Ports represent
+   themselves in the model.
+   <p>
+   In the terminology of diva, the graph elements are "nodes" (icons,
+   vertices, and ports), and the "edges" link them.  Edges
+   are represented in the model by instances of the Link class.
+   Edges may link a port and a vertex, or a port and another port.
+   For visual simplicity, both types of edges are represented by
+   an instance of the Link class.  If an edge is placed between a port
+   and a vertex then the Link represents a Ptolemy II link between
+   the port and the vertex's Relation.  However, if an edge is placed between
+   two ports, then it represents a relation (with no vertex) and links from
+   the relation to each port (in Ptolemy II, this is called a "connection").
+   <p>
+   This model uses a ptolemy change listener to detect changes to the model
+   that do not originate from this model.  These changes are propagated
+   as structure changed graph events to all graphListeners registered with this
+   model.  This mechanism allows a graph visualization of a ptolemy model to
+   remain synchronized with the state of a mutating model.
 
-@author Steve Neuendorffer, Contributor: Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
- */
+   @author Steve Neuendorffer, Contributor: Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
+*/
 public class ActorGraphModel extends AbstractBasicGraphModel {
 
     /** Construct a new graph model whose root is the given composite entity.
@@ -360,7 +360,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         NamedObj ptolemyModel = getPtolemyModel();
         if (ptolemyModel instanceof CompositeEntity) {
             Iterator relations = ((CompositeEntity)ptolemyModel)
-                    .relationList().iterator();
+                .relationList().iterator();
             while (relations.hasNext()) {
                 _updateLinks((ComponentRelation)relations.next());
             }
@@ -485,7 +485,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     Iterator heritage = heritageList.iterator();
                     while (heritage.hasNext()) {
                         ComponentRelation inherited
-                                = (ComponentRelation)heritage.next();
+                            = (ComponentRelation)heritage.next();
                         new Vertex(inherited, name);
                     }
 
@@ -660,7 +660,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     /** The model for an icon that contains ports.
      */
     public class IconModel extends NamedObjNodeModel
-            implements CompositeNodeModel {
+        implements CompositeNodeModel {
 
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. The returned string assumes that the context is
@@ -672,7 +672,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             NamedObj container = (NamedObj)deleteObj.getContainer();;
 
             String moml = "<deleteEntity name=\""
-                    + deleteObj.getName() + "\"/>\n";
+                + deleteObj.getName() + "\"/>\n";
             return moml;
         }
 
@@ -750,12 +750,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             NamedObj container = (NamedObj)deleteObj.getContainer();;
 
             String moml = "<" + elementName + " name=\""
-                    + deleteObj.getName() + "\"/>\n";
+                + deleteObj.getName() + "\"/>\n";
 
 
             // Note: The source is NOT the graph model.
             MoMLChangeRequest request
-                    = new MoMLChangeRequest(this, container, moml);
+                = new MoMLChangeRequest(this, container, moml);
             request.setUndoable(true);
             container.requestChange(request);
         }
@@ -1051,8 +1051,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 link.setHead(null);
                 link.setTail(null);
                 dispatchGraphEvent(new GraphEvent(
-                        ActorGraphModel.this,
-                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
+                                           ActorGraphModel.this,
+                                           GraphEvent.STRUCTURE_CHANGED, getRoot()));
             }
 
             moml.append("</group>\n");
@@ -1071,35 +1071,35 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 new MoMLChangeRequest(ActorGraphModel.this,
                         container,
                         moml.toString()) {
-                        protected void _execute() throws Exception {
-                            // If nonEmptyMoML is false, then the MoML code is empty.
-                            // Do not execute it, as this will put spurious empty
-                            // junk on the undo stack.
-                            if (nonEmptyMoML) {
-                                super._execute();
-                            }
-                            link.setHead(newLinkHead);
-                            if (relationNameToAdd != null) {
-                                ComponentRelation relation =
-                                    (ComponentRelation)container.getRelation(
-                                            relationNameToAdd);
-                                if (relation == null)
-                                    throw new InternalErrorException(
-                                            "Tried to find relation with name "
-                                            + relationNameToAdd
-                                            + " in context "
-                                            + container);
-                                link.setRelation(relation);
-                            } else {
-                                link.setRelation(null);
-                            }
+                    protected void _execute() throws Exception {
+                        // If nonEmptyMoML is false, then the MoML code is empty.
+                        // Do not execute it, as this will put spurious empty
+                        // junk on the undo stack.
+                        if (nonEmptyMoML) {
+                            super._execute();
                         }
-                    };
+                        link.setHead(newLinkHead);
+                        if (relationNameToAdd != null) {
+                            ComponentRelation relation =
+                                (ComponentRelation)container.getRelation(
+                                        relationNameToAdd);
+                            if (relation == null)
+                                throw new InternalErrorException(
+                                        "Tried to find relation with name "
+                                        + relationNameToAdd
+                                        + " in context "
+                                        + container);
+                            link.setRelation(relation);
+                        } else {
+                            link.setRelation(null);
+                        }
+                    }
+                };
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new LinkChangeListener(link,
-                    container,
-                    failmoml));
+                                              container,
+                                              failmoml));
 
             request.setUndoable(true);
             container.requestChange(request);
@@ -1128,7 +1128,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             // Make the request in the context of the container.
             // JDK1.2.2 fails to compile the next line.
             final CompositeEntity container
-                    = (CompositeEntity)getPtolemyModel();
+                = (CompositeEntity)getPtolemyModel();
 
             String relationName = "";
 
@@ -1151,8 +1151,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 link.setHead(null);
                 link.setTail(null);
                 dispatchGraphEvent(new GraphEvent(
-                        ActorGraphModel.this,
-                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
+                                           ActorGraphModel.this,
+                                           GraphEvent.STRUCTURE_CHANGED, getRoot()));
             }
 
             moml.append("</group>\n");
@@ -1171,35 +1171,35 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 new MoMLChangeRequest(ActorGraphModel.this,
                         container,
                         moml.toString()) {
-                        protected void _execute() throws Exception {
-                            // If nonEmptyMoML is false, then the MoML code is empty.
-                            // Do not execute it, as this will put spurious empty
-                            // junk on the undo stack.
-                            if (nonEmptyMoML) {
-                                super._execute();
-                            }
-                            link.setTail(newLinkTail);
-                            if (relationNameToAdd != null) {
-                                ComponentRelation relation =
-                                    (ComponentRelation)container.getRelation(
-                                            relationNameToAdd);
-                                if (relation == null)
-                                    throw new InternalErrorException(
-                                            "Tried to find relation with name "
-                                            + relationNameToAdd
-                                            + " in context "
-                                            + container);
-                                link.setRelation(relation);
-                            } else {
-                                link.setRelation(null);
-                            }
+                    protected void _execute() throws Exception {
+                        // If nonEmptyMoML is false, then the MoML code is empty.
+                        // Do not execute it, as this will put spurious empty
+                        // junk on the undo stack.
+                        if (nonEmptyMoML) {
+                            super._execute();
                         }
-                    };
+                        link.setTail(newLinkTail);
+                        if (relationNameToAdd != null) {
+                            ComponentRelation relation =
+                                (ComponentRelation)container.getRelation(
+                                        relationNameToAdd);
+                            if (relation == null)
+                                throw new InternalErrorException(
+                                        "Tried to find relation with name "
+                                        + relationNameToAdd
+                                        + " in context "
+                                        + container);
+                            link.setRelation(relation);
+                        } else {
+                            link.setRelation(null);
+                        }
+                    }
+                };
 
             // Handle what happens if the mutation fails.
             request.addChangeListener(new LinkChangeListener(link,
-                    container,
-                    failmoml));
+                                              container,
+                                              failmoml));
 
             request.setUndoable(true);
             container.requestChange(request);
@@ -1240,8 +1240,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 // modification to the linkset HAS to occur in the swing
                 // thread.
                 if (GraphUtilities.isPartiallyContainedEdge(_link,
-                        getRoot(),
-                        ActorGraphModel.this)) {
+                            getRoot(),
+                            ActorGraphModel.this)) {
                     _linkSet.add(_link);
                 } else {
                     _linkSet.remove(_link);
@@ -1277,7 +1277,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             NamedObj container = (NamedObj)deleteObj.getContainer();;
 
             String moml = "<deletePort name=\""
-                    + deleteObj.getName(container) + "\"/>\n";
+                + deleteObj.getName(container) + "\"/>\n";
             return moml;
         }
 
@@ -1305,9 +1305,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                         Location inheritedLocation = new Location(inherited, "_location");
                     }
                     return location;
-                 } catch (Exception e) {
-                     throw new InternalErrorException("Failed to create " +
-                             "location, even though one does not exist:" +
+                } catch (Exception e) {
+                    throw new InternalErrorException("Failed to create " +
+                            "location, even though one does not exist:" +
                             e.getMessage());
                 }
             }
@@ -1377,12 +1377,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
             // Delete the port.
             String moml = "<deletePort name=\""
-                    + port.getName()
-                    + "\"/>\n";
+                + port.getName()
+                + "\"/>\n";
 
             // Note: The source is NOT the graph model.
             MoMLChangeRequest request
-                    = new MoMLChangeRequest(this, container, moml);
+                = new MoMLChangeRequest(this, container, moml);
             request.setUndoable(true);
             container.requestChange(request);
         }
@@ -1400,12 +1400,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          */
         public String getDeleteNodeMoML(Object node) {
             ComponentRelation deleteObj
-                    = (ComponentRelation)((Vertex)node).getContainer();
+                = (ComponentRelation)((Vertex)node).getContainer();
             NamedObj container = (NamedObj)deleteObj.getContainer();;
 
             String moml = "<deleteRelation name=\""
-                    + deleteObj.getName()
-                    + "\"/>\n";
+                + deleteObj.getName()
+                + "\"/>\n";
             return moml;
         }
 
@@ -1489,12 +1489,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
             // Delete the relation.
             String moml = "<deleteRelation name=\""
-                    + relation.getName()
-                    + "\"/>\n";
+                + relation.getName()
+                + "\"/>\n";
 
             // Note: The source is NOT the graph mode.
             MoMLChangeRequest request
-                    = new MoMLChangeRequest(this, container, moml.toString());
+                = new MoMLChangeRequest(this, container, moml.toString());
             request.setUndoable(true);
             container.requestChange(request);
         }

@@ -1,24 +1,24 @@
 /* Conversion of Ptolemy II models to generic weighted graphs.
 
- Copyright (c) 2001-2004 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The University of Maryland. All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
@@ -43,19 +43,19 @@ import java.lang.String;
 ///////////////////////////////////////////////////////////////////////
 //// GraphReader
 /** This class provides methods for converting Ptolemy II models
-into generic graph representations. Portions of
-this code are based on examples from [1].
+    into generic graph representations. Portions of
+    this code are based on examples from [1].
 
-<p>
-References<br>
-[1] J. Davis et al., <em>Heterogeneous
-concurrent modeling and design in Java</em>, Technical report,
-Electronics Research Laboratory, University of California at Berkeley,
-March 2001.
+    <p>
+    References<br>
+    [1] J. Davis et al., <em>Heterogeneous
+    concurrent modeling and design in Java</em>, Technical report,
+    Electronics Research Laboratory, University of California at Berkeley,
+    March 2001.
 
-@author Shuvra S. Bhattacharyya, Chia-Jui Hsu
-@version $Id$
-@since Ptolemy II 2.0
+    @author Shuvra S. Bhattacharyya, Chia-Jui Hsu
+    @version $Id$
+    @since Ptolemy II 2.0
 */
 public class GraphReader {
 
@@ -114,7 +114,7 @@ public class GraphReader {
             while (outPorts.hasNext()) {
                 IOPort outPort = (IOPort)(outPorts.next());
                 Iterator inPorts =
-                        outPort.deepConnectedInPortList().iterator();
+                    outPort.deepConnectedInPortList().iterator();
                 while (inPorts.hasNext()) {
                     IOPort inPort = (IOPort)(inPorts.next());
                     Actor sink = (Actor)(inPort.getContainer());
@@ -123,9 +123,9 @@ public class GraphReader {
                                 + source + " to " + sink);
 
                         Edge newEdge =
-                                graph.addEdge((Node)(_actorMap.get(source)),
-                                (Node)(_actorMap.get(sink)),
-                                _computeEdgeWeight(outPort, inPort));
+                            graph.addEdge((Node)(_actorMap.get(source)),
+                                    (Node)(_actorMap.get(sink)),
+                                    _computeEdgeWeight(outPort, inPort));
                         _processNewEdge(graph, newEdge, outPort, inPort);
                     }
                 }

@@ -25,8 +25,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (ssb@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
@@ -121,7 +121,7 @@ public class CodeFileGenerator extends CodeGenerator {
                     && RequiredFileGenerator.isRequired(method)) {
                 if (count++ == 0) {
                     bodyCode.append(_comment("Prototypes for functions that "
-                            + "implement private methods"));
+                                            + "implement private methods"));
                 }
                 bodyCode.append(_generateMethodHeader(method) + ";\n");
             }
@@ -195,7 +195,7 @@ public class CodeFileGenerator extends CodeGenerator {
             while (stringConstants.hasNext()) {
                 code.append("static " + typeName + " "
                         + _context.getIdentifier((String)(stringConstants.
-                                next()))
+                                                         next()))
                         + ";\n");
             }
         }
@@ -217,7 +217,7 @@ public class CodeFileGenerator extends CodeGenerator {
         final String argumentName = "class";
         final String argumentReference = argumentName + "->";
         code.append(_comment("Function that initializes structure for Class "
-                + source.getName()));
+                            + source.getName()));
         code.append("void " + CNames.initializerNameOf(source) + "("
                 + CNames.classNameOf(source) + " " + argumentName
                 + ") {\n");
@@ -226,24 +226,24 @@ public class CodeFileGenerator extends CodeGenerator {
         if (!_context.getSingleClassMode()) {
             code.append(_indent(1) + "/* Inherited Methods */\n");
             code.append(_generateMethodPointerInitialization(
-                    MethodListGenerator.getInheritedMethods(source)
-                    , argumentReference));
+                                MethodListGenerator.getInheritedMethods(source)
+                                , argumentReference));
         }
         // New methods.
         code.append(_indent(1) + "/* New Methods */\n");
         code.append(_generateMethodPointerInitialization(
-                MethodListGenerator.getNewMethods(source)
-                , argumentReference));
+                            MethodListGenerator.getNewMethods(source)
+                            , argumentReference));
         // Constructors.
         code.append(_indent(1) + "/* Constructors */\n");
         code.append(_generateMethodPointerInitialization(
-                MethodListGenerator.getConstructors(source)
-                , argumentReference));
+                            MethodListGenerator.getConstructors(source)
+                            , argumentReference));
         // Private methods.
         code.append(_indent(1) + "/* Private Methods */\n");
         code.append(_generateMethodPointerInitialization(
-                MethodListGenerator.getPrivateMethods(source)
-                , argumentReference));
+                            MethodListGenerator.getPrivateMethods(source)
+                            , argumentReference));
 
         Iterator stringConstants = _context.getStringConstants();
 
@@ -302,7 +302,7 @@ public class CodeFileGenerator extends CodeGenerator {
             // If the superclass is not required, comment it out and
             // replace it with a null.
             if (!RequiredFileGenerator.isRequired(source
-                    .getSuperclass())) {
+                        .getSuperclass())) {
                 code.append("/* "
                         +   "&"
                         + CNames.classStructureNameOf(source.getSuperclass())
@@ -310,7 +310,7 @@ public class CodeFileGenerator extends CodeGenerator {
             }
             else {
                 code.append("&" + CNames.classStructureNameOf(
-                        source.getSuperclass()));
+                                    source.getSuperclass()));
                 _updateRequiredTypes(source.getSuperclass().getType());
             }
 

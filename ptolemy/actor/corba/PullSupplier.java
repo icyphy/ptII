@@ -1,28 +1,28 @@
 /* An actor that sends data in response to a pull request.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (janneck@eecs.berkeley.edu)
@@ -46,25 +46,25 @@ import java.lang.Object;
 //////////////////////////////////////////////////////////////////////////
 //// PullPublisher
 /**
-An actor that send data to a remote consumer when there is pull request.
+   An actor that send data to a remote consumer when there is pull request.
 
- Specify the ORB initial property with the<i>ORBInitProperties<i>
- paremerter, for example:
- "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
- where "xyz.eecs.berkeley.edu" is the machine runing name server, and
- "1050" is the port for name service.
+   Specify the ORB initial property with the<i>ORBInitProperties<i>
+   paremerter, for example:
+   "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
+   where "xyz.eecs.berkeley.edu" is the machine runing name server, and
+   "1050" is the port for name service.
 
- Specify the name of the supplier with <i>SupplierName<i>, which is
- registed on the name server.
+   Specify the name of the supplier with <i>SupplierName<i>, which is
+   registed on the name server.
 
- This actor can only be used in the CI domain currently. It is an
- active actor, and has an seperate thread to guard its execution.
- when the manage thread call its prefire, it will wait if there is
- no pull request, otherwise it pull data from its providers, and
- send the data to satisfy the request.
-@author Yang Zhao
-@version $Id$
-@since Ptolemy II 1.0
+   This actor can only be used in the CI domain currently. It is an
+   active actor, and has an seperate thread to guard its execution.
+   when the manage thread call its prefire, it will wait if there is
+   no pull request, otherwise it pull data from its providers, and
+   send the data to satisfy the request.
+   @author Yang Zhao
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 
 public class PullSupplier extends Sink {
@@ -81,7 +81,7 @@ public class PullSupplier extends Sink {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-            ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+        ORBInitProperties  = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         supplierName = new Parameter(this, "supplierName");
         supplierName.setToken(new StringToken(""));
@@ -167,25 +167,25 @@ public class PullSupplier extends Sink {
                         e.getMessage());
             }
         }
-         if (_debugging) {
+        if (_debugging) {
             _debug(getName(), "_pullIsWaiting = " + _pullIsWaiting);
         }
-         if (_pullIsWaiting) {
-             boolean b = input.hasToken(0);
-             if (_debugging) {
+        if (_pullIsWaiting) {
+            boolean b = input.hasToken(0);
+            if (_debugging) {
                 _debug(getName(), "hasToken = " + b);
             }
-             return b;
+            return b;
         }
         return false;
-     }
+    }
 
     /** Request that execution of the current iteration stop as soon
      *  as possible. Wake up the waiting if there is any.
      */
-     public void stop() {
+    public void stop() {
         if (_prefireIsWaiting) {
-             synchronized( _lock) {
+            synchronized( _lock) {
                 _lock.notifyAll();
             }
             _prefireIsWaiting = false;
@@ -244,7 +244,7 @@ public class PullSupplier extends Sink {
     //An instance of pullSupplier this actor create and registered.
     private pullSupplier _supplier;
 
-     // The flag for indicating whether there is pull request waiting.
+    // The flag for indicating whether there is pull request waiting.
     private boolean _pullIsWaiting;
 
     // The indicator for the last read token from its input.
@@ -270,7 +270,7 @@ public class PullSupplier extends Sink {
          * Construct a pullSupplier.
          */
         public pullSupplier() {
-         super();
+            super();
         }
 
         /**
@@ -286,7 +286,7 @@ public class PullSupplier extends Sink {
 
                 if (_lastReadToken == null) {
                     if (_debugging) {
-                            _debug(getName(), "no token to return, so pull will wait.");
+                        _debug(getName(), "no token to return, so pull will wait.");
                     }
                     synchronized(_pullThread) {
                         if (_debugging) {

@@ -1,27 +1,27 @@
 /* Director for the Synchronous Reactive model of computation.
 
- Copyright (c) 2000-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2000-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Green (pwhitake@eecs.berkeley.edu)
@@ -63,68 +63,68 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// SRDirector
 /**
-A director for the Synchronous Reactive (SR) model of computation.  In SR,
-both computation and communication are considered to happen instantaneously.
-In models with cycles, this introduces interesting issues involving
-instantaneous feedback.
-<p>
-SR is an untimed domain, so it has no notion of the passage of time.
-Computation happens in a series of instants.  An instant is one iteration of
-the director.  If SR is embedded inside a timed domain, the SR director will
-inherit the current time of the outside director.
-<p>
-In SR, each iteration begins with the values on all channels being unknown.
-To ensure that an iteration converges to final values in finite time, it is
-required that values change only from unknown to known, and never the other
-way around.  Once a value is set (or cleared), it must not
-change again in the course of the iteration.
-<p>
-An actor is considered <i>ready to fire</i> if sufficient known inputs are
-available.  In a sense, an actor firing is triggered by these known inputs,
-because the director only fires an actor if it is ready to fire.  Unless an
-actor contains an attribute called "_nonStrictMarker", it is assumed to be a
-strict actor, meaning that it requires all of its inputs to be known before
-it is fired.  This is very important since once an actor defines a particular
-output, it is not allowed to change that value in a subsequent firing in the
-course of the iteration.  A nonstrict actor can fire even if no inputs are
-known, and may fire any number of times in the course of an iteration.  Thus,
-a nonstrict actor can be used to produce an initial token in a cyclic graph.
-Since strict actors are only fired if all of their inputs are known, a given
-strict actor is only fired once in a given iteration.  An actor <i>has
-completed firing</i> if it has defined all of its outputs.
-<p>
-An actor is considered <i>allowed to fire</i> if its prefire()
-method has returned true.  An actor is considered <i>allowed to iterate</i>
-if its postfire() method has not returned false.
-<p>
-A scheduler returns an ordering of the actors.  SR semantics do not
-require any specific ordering of actor firings, but a particular ordering
-may be desirable in an attempt to reduce the computation time required for
-a given iteration to converge.  If the scheduler is an SRRandomizedScheduler,
-in the course of an iteration, the director cycles through the schedule
-repeatedly, firing those actors that are allowed to fire and ready to fire.
-If the scheduler is an SROptimizedScheduler, the director makes only one pass
-through the schedule, since it guarantees the convergence of the iteration.
-<p>
-For an actor to be valid in the SR domain, its prefire() method must be
-monotonic.  In other words, once the prefire() method of an actor returns
-true in a given iteration, this method must not return false if it were to be
-called again in the same iteration.  It is only possible for the number of
-known inputs of an actor to increase in a given iteration, so, for example,
-if the prefire() method of an actor returns true and then more inputs become
-known, the method must return true if it were to be called again.  If this
-were not the case, the behavior of the model would be nondeterministic since
-the execution results would depend on the order of the schedule.
-<p>
-An iteration <i>has converged</i> if both the total number of known outputs
-and the number of actors that are allowed to fire have converged.  In other
-words, the system is executed until the values in the model reach a
-<i>fixed-point</i>.  Further execution would not result in more defined
-values, and the iteration has converged.
+   A director for the Synchronous Reactive (SR) model of computation.  In SR,
+   both computation and communication are considered to happen instantaneously.
+   In models with cycles, this introduces interesting issues involving
+   instantaneous feedback.
+   <p>
+   SR is an untimed domain, so it has no notion of the passage of time.
+   Computation happens in a series of instants.  An instant is one iteration of
+   the director.  If SR is embedded inside a timed domain, the SR director will
+   inherit the current time of the outside director.
+   <p>
+   In SR, each iteration begins with the values on all channels being unknown.
+   To ensure that an iteration converges to final values in finite time, it is
+   required that values change only from unknown to known, and never the other
+   way around.  Once a value is set (or cleared), it must not
+   change again in the course of the iteration.
+   <p>
+   An actor is considered <i>ready to fire</i> if sufficient known inputs are
+   available.  In a sense, an actor firing is triggered by these known inputs,
+   because the director only fires an actor if it is ready to fire.  Unless an
+   actor contains an attribute called "_nonStrictMarker", it is assumed to be a
+   strict actor, meaning that it requires all of its inputs to be known before
+   it is fired.  This is very important since once an actor defines a particular
+   output, it is not allowed to change that value in a subsequent firing in the
+   course of the iteration.  A nonstrict actor can fire even if no inputs are
+   known, and may fire any number of times in the course of an iteration.  Thus,
+   a nonstrict actor can be used to produce an initial token in a cyclic graph.
+   Since strict actors are only fired if all of their inputs are known, a given
+   strict actor is only fired once in a given iteration.  An actor <i>has
+   completed firing</i> if it has defined all of its outputs.
+   <p>
+   An actor is considered <i>allowed to fire</i> if its prefire()
+   method has returned true.  An actor is considered <i>allowed to iterate</i>
+   if its postfire() method has not returned false.
+   <p>
+   A scheduler returns an ordering of the actors.  SR semantics do not
+   require any specific ordering of actor firings, but a particular ordering
+   may be desirable in an attempt to reduce the computation time required for
+   a given iteration to converge.  If the scheduler is an SRRandomizedScheduler,
+   in the course of an iteration, the director cycles through the schedule
+   repeatedly, firing those actors that are allowed to fire and ready to fire.
+   If the scheduler is an SROptimizedScheduler, the director makes only one pass
+   through the schedule, since it guarantees the convergence of the iteration.
+   <p>
+   For an actor to be valid in the SR domain, its prefire() method must be
+   monotonic.  In other words, once the prefire() method of an actor returns
+   true in a given iteration, this method must not return false if it were to be
+   called again in the same iteration.  It is only possible for the number of
+   known inputs of an actor to increase in a given iteration, so, for example,
+   if the prefire() method of an actor returns true and then more inputs become
+   known, the method must return true if it were to be called again.  If this
+   were not the case, the behavior of the model would be nondeterministic since
+   the execution results would depend on the order of the schedule.
+   <p>
+   An iteration <i>has converged</i> if both the total number of known outputs
+   and the number of actors that are allowed to fire have converged.  In other
+   words, the system is executed until the values in the model reach a
+   <i>fixed-point</i>.  Further execution would not result in more defined
+   values, and the iteration has converged.
 
-@author Paul Whitaker
-@version $Id$
-@since Ptolemy II 2.0
+   @author Paul Whitaker
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class SRDirector extends StaticSchedulingDirector {
 
@@ -675,8 +675,8 @@ public class SRDirector extends StaticSchedulingDirector {
         try {
             String schedulerClassName =
                 "ptolemy.domains.sr.kernel.SROptimizedScheduler";
-//            String schedulerClassName =
-//                "ptolemy.domains.sr.kernel.SRRandomizedScheduler";
+            //            String schedulerClassName =
+            //                "ptolemy.domains.sr.kernel.SRRandomizedScheduler";
             scheduler = new Parameter(
                     this, "scheduler", new StringToken(schedulerClassName));
             scheduler.setTypeEquals(BaseType.STRING);
@@ -867,7 +867,7 @@ public class SRDirector extends StaticSchedulingDirector {
         if (name.equals("ptolemy.domains.sr.kernel.SRRandomizedScheduler")) {
             return true;
         } else if (name.equals(
-                "ptolemy.domains.sr.kernel.SROptimizedScheduler")) {
+                           "ptolemy.domains.sr.kernel.SROptimizedScheduler")) {
             return true;
         }
         return false;

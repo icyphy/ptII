@@ -1,28 +1,28 @@
 /* Abstract base class for tokens that contain a 2-D matrix.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
@@ -44,15 +44,15 @@ import ptolemy.math.Complex;
 //////////////////////////////////////////////////////////////////////////
 //// MatrixToken
 /**
-Abstract base class for tokens that contain a 2-D matrix.
-This class defines methods for type conversion among different matrix
-tokens. The implementation in this base class just throws an exception.
-Derived classes should override those methods where the corresponding
-conversion can be achieved without loss of information.
+   Abstract base class for tokens that contain a 2-D matrix.
+   This class defines methods for type conversion among different matrix
+   tokens. The implementation in this base class just throws an exception.
+   Derived classes should override those methods where the corresponding
+   conversion can be achieved without loss of information.
 
-@author Yuhong Xiong, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 0.2
+   @author Yuhong Xiong, Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public abstract class MatrixToken extends Token {
 
@@ -698,11 +698,11 @@ public abstract class MatrixToken extends Token {
             throws IllegalActionException {
 
         /*
-          // If the rightArgument is a complex token, throw an error
-          // message as modulo can't be operated.
-          if (rightArgument instanceof ComplexToken)
-          throw new IllegalActionException(
-          notSupportedMessage("modulo", this, rightArgument));
+        // If the rightArgument is a complex token, throw an error
+        // message as modulo can't be operated.
+        if (rightArgument instanceof ComplexToken)
+        throw new IllegalActionException(
+        notSupportedMessage("modulo", this, rightArgument));
         */
 
         // Get the corresponding element type for this matrix type,
@@ -710,11 +710,11 @@ public abstract class MatrixToken extends Token {
         Type elementType = getElementType();
 
         /*
-          // If this is a complex array, throw an error message as modulo
-          // can't be performed on it
-          if (elementType == BaseType.COMPLEX)
-          throw new IllegalActionException(
-          notSupportedMessage("modulo", this, rightArgument));
+        // If this is a complex array, throw an error message as modulo
+        // can't be performed on it
+        if (elementType == BaseType.COMPLEX)
+        throw new IllegalActionException(
+        notSupportedMessage("modulo", this, rightArgument));
         */
 
         int typeInfo = TypeLattice.compare(elementType, rightArgument);

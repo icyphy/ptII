@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
@@ -39,16 +39,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// TokenToExpression
 /**
-This actor reads a token from the input port and outputs a string token
-whose value is an expression that can be parsed to yield the input token.
-For example, if the input is itself a string token, the output will be a
-new string token whose value is the value of the input string token surrounded
-by double quotation marks. The input data type is undeclared, so this actor
-can accept any input.
+   This actor reads a token from the input port and outputs a string token
+   whose value is an expression that can be parsed to yield the input token.
+   For example, if the input is itself a string token, the output will be a
+   new string token whose value is the value of the input string token surrounded
+   by double quotation marks. The input data type is undeclared, so this actor
+   can accept any input.
 
-@author  Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 2.1
+   @author  Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.1
 */
 public class TokenToExpression extends Converter {
 

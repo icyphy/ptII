@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
@@ -42,34 +42,34 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// SequenceScope
 /**
-A sequence plotter for sequences that are potentially infinitely long.
-This plotter contains an instance of the Plot
-class from the Ptolemy plot package as a public member. Data at
-the input, which can consist of any number of channels, are plotted
-on this instance.  Each channel is plotted as a separate data set.
-The horizontal axis represents the count of the iterations, modulo
-the <i>width</i> parameter, scaled by the <i>xUnit</i> parameter.
-The <i>width</i> parameter must be an integer that gives the width
-of the plot in number of samples. It defaults to 10.
-If the <i>persistence</i> parameter is positive, then it specifies
-the number of points that are remembered. It also defaults to 10.
-Any points older than these are erased and forgotten.
-The horizontal increment between samples is given by the
-<i>xUnit</i> parameter. Its default value is 1.0. The horizontal value
-of the first sample is given by the <i>xInit</i> parameter.
-Its default value is 0.0. The input is of type DoubleToken.
-<p>
-Note that this actor uses XOR drawing mode, which is fast, but
-will produce sometimes very annoying artifacts. In particular,
-when lines or points overlap, they will erase each other (if they
-are from the same data set) or produce some other color (if
-they are from distinct data sets).  To avoid these artifacts,
-use ArrayPlotter.
+   A sequence plotter for sequences that are potentially infinitely long.
+   This plotter contains an instance of the Plot
+   class from the Ptolemy plot package as a public member. Data at
+   the input, which can consist of any number of channels, are plotted
+   on this instance.  Each channel is plotted as a separate data set.
+   The horizontal axis represents the count of the iterations, modulo
+   the <i>width</i> parameter, scaled by the <i>xUnit</i> parameter.
+   The <i>width</i> parameter must be an integer that gives the width
+   of the plot in number of samples. It defaults to 10.
+   If the <i>persistence</i> parameter is positive, then it specifies
+   the number of points that are remembered. It also defaults to 10.
+   Any points older than these are erased and forgotten.
+   The horizontal increment between samples is given by the
+   <i>xUnit</i> parameter. Its default value is 1.0. The horizontal value
+   of the first sample is given by the <i>xInit</i> parameter.
+   Its default value is 0.0. The input is of type DoubleToken.
+   <p>
+   Note that this actor uses XOR drawing mode, which is fast, but
+   will produce sometimes very annoying artifacts. In particular,
+   when lines or points overlap, they will erase each other (if they
+   are from the same data set) or produce some other color (if
+   they are from distinct data sets).  To avoid these artifacts,
+   use ArrayPlotter.
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
-@see ArrayPlotter
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
+   @see ArrayPlotter
 */
 public class SequenceScope extends SequencePlotter {
 

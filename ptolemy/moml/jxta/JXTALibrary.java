@@ -1,31 +1,31 @@
 /* A hierarchical library of components specified in MoML.
 
- Copyright (c) 2002-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2002-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
- @ProposedRating Red (ellen_zh@eecs.berkeley.edu)
- @AcceptedRating Red (cxheecs.berkeley.edu)
+@ProposedRating Red (ellen_zh@eecs.berkeley.edu)
+@AcceptedRating Red (cxheecs.berkeley.edu)
 */
 
 package ptolemy.moml.jxta;
@@ -95,53 +95,53 @@ import net.jxta.resolver.ResolverService;
 //////////////////////////////////////////////////////////////////////////
 //// JXTALibrary
 /**
-This class provides a hierarchical library of components discovered from
-remote peers.
+   This class provides a hierarchical library of components discovered from
+   remote peers.
 
-<p>It starts as  a JXTA peer. After started,  it notisfies other peers
-via  remote publish its  advertisement, and  it discovers  other peers
-through getRemoteAdvertisement().
+   <p>It starts as  a JXTA peer. After started,  it notisfies other peers
+   via  remote publish its  advertisement, and  it discovers  other peers
+   through getRemoteAdvertisement().
 
-<p>The DiscoveryListener listens to the discovered events. One can
-implements the discoveryEvent method to do what he/she want. In this
-class, it sends out a query message to peers that have been
-discovered.
+   <p>The DiscoveryListener listens to the discovered events. One can
+   implements the discoveryEvent method to do what he/she want. In this
+   class, it sends out a query message to peers that have been
+   discovered.
 
-<p>The QueryHandler deals with query message and response message sent
-by the resolverService. One can implements the processQuery method to
-deal with query message, and implements the processResponse method to
-deal with response message. In this class, A query message asks remote
-peer for actors, and when a peer gets such a query message, it will
-send a response message to answer what it has.
+   <p>The QueryHandler deals with query message and response message sent
+   by the resolverService. One can implements the processQuery method to
+   deal with query message, and implements the processResponse method to
+   deal with response message. In this class, A query message asks remote
+   peer for actors, and when a peer gets such a query message, it will
+   send a response message to answer what it has.
 
-<p>The pipeService can be used to exchange messages between peers. We
-can wrap a class file into a message to send it to a peer which wants
-this class.  (FIXME: secure problems need to be considered at some
-point!) In this class, the processResponse method will creat an
-inputPipe for receiving actor classes, and send an inputPipe
-advertisement to the peer that has the actor.  The current JXTA java
-binding implementation dosen't support publish an advertisement to a
-specific peer, however we probably wouldn't like to publish an
-inputPipe to the whole group. So in this class, we use the
-resolverService to wrap the pipeAdvertisement in a query message to
-send it to the speicific peer.
+   <p>The pipeService can be used to exchange messages between peers. We
+   can wrap a class file into a message to send it to a peer which wants
+   this class.  (FIXME: secure problems need to be considered at some
+   point!) In this class, the processResponse method will creat an
+   inputPipe for receiving actor classes, and send an inputPipe
+   advertisement to the peer that has the actor.  The current JXTA java
+   binding implementation dosen't support publish an advertisement to a
+   specific peer, however we probably wouldn't like to publish an
+   inputPipe to the whole group. So in this class, we use the
+   resolverService to wrap the pipeAdvertisement in a query message to
+   send it to the speicific peer.
 
-<p>The pipeMsgListener listens to input pipe messages. One can
-implements the pipeMsgEvent method to deal with the received
-message. In this class, we use the jave classLoader to define a class
-from the bytes received, and create a new instance of this class. Then
-a moml change request is issued.
+   <p>The pipeMsgListener listens to input pipe messages. One can
+   implements the pipeMsgEvent method to deal with the received
+   message. In this class, we use the jave classLoader to define a class
+   from the bytes received, and create a new instance of this class. Then
+   a moml change request is issued.
 
-<p>A file: discoverdActors.xml is used to record discoved
-classes. These classes will be loaded when we start vergil next
-time. (FIXME: we need to check the version of the class file we cached
-to decide whether we need to get the file again when is discovered!)
+   <p>A file: discoverdActors.xml is used to record discoved
+   classes. These classes will be loaded when we start vergil next
+   time. (FIXME: we need to check the version of the class file we cached
+   to decide whether we need to get the file again when is discovered!)
 
-<p>NOTE: this class is still very preliminary......
+   <p>NOTE: this class is still very preliminary......
 
-@author Yang Zhao, Xiaojun Liu
-@version $Id$
-@since Ptolemy II 2.1
+   @author Yang Zhao, Xiaojun Liu
+   @version $Id$
+   @since Ptolemy II 2.1
 */
 public class JXTALibrary extends EntityLibrary
     implements ChangeListener, QueryHandler,
@@ -557,7 +557,7 @@ public class JXTALibrary extends EntityLibrary
         try {
             BufferedReader fileReader =
                 new BufferedReader(new FileReader(_configDir +
-                        "/" + pipeAdvFile));
+                                           "/" + pipeAdvFile));
             String newline = System.getProperty("line.separator");
             queryTextBuffer = queryTextBuffer.append("<PtolemyInputPipe>\n");
             //String peerID = (_group.getPeerID()).toString();

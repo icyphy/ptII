@@ -1,28 +1,28 @@
 /* A DE-extended domain director.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (hyzheng@eecs.berkeley.edu)
 @AcceptedRating Red (hyzheng@eecs.berkeley.edu)
@@ -57,34 +57,34 @@ import ptolemy.kernel.util.Workspace;
 //// DEEDirector
 
 /**
-This director extends DE director and handles hierarchical DE models.
-<p>
-This director uses FunctionDependencies, which specify the input and output
-relations of an actor, to do topological sort and scheduling. This director
-excludes the models with cyclic loops in the graph composed of IO ports
-of actors, and throws an exception complaining that no valid schedules
-can be found.
-<p>
-Note that the pure events are treated differently in DEDirector and this
-director. In DEDirector, the pure event has the same depth with the actor
-requesting refiring. This may delay the event passing when the event has
-to pass across hierarchy boundary. The current solution is to make the pure
-events highest priority (0) and they will be processed at the very beginning
-of each iteration. For simultaneous pure events, they will be processed
-based on the order they are inserted into the event queue, which reflects
-the topological order of the actors producing these pure events.
-<p>
-Another interesting point was pointed out by Steve, that the equivalence
-of the send method of Delay actor and the fireAt method of general actor
-on breaking the loop. A simple but intuitive example is an opaque composite
-actor with a Delay actor embedded inside.
+   This director extends DE director and handles hierarchical DE models.
+   <p>
+   This director uses FunctionDependencies, which specify the input and output
+   relations of an actor, to do topological sort and scheduling. This director
+   excludes the models with cyclic loops in the graph composed of IO ports
+   of actors, and throws an exception complaining that no valid schedules
+   can be found.
+   <p>
+   Note that the pure events are treated differently in DEDirector and this
+   director. In DEDirector, the pure event has the same depth with the actor
+   requesting refiring. This may delay the event passing when the event has
+   to pass across hierarchy boundary. The current solution is to make the pure
+   events highest priority (0) and they will be processed at the very beginning
+   of each iteration. For simultaneous pure events, they will be processed
+   based on the order they are inserted into the event queue, which reflects
+   the topological order of the actors producing these pure events.
+   <p>
+   Another interesting point was pointed out by Steve, that the equivalence
+   of the send method of Delay actor and the fireAt method of general actor
+   on breaking the loop. A simple but intuitive example is an opaque composite
+   actor with a Delay actor embedded inside.
 
-@author Haiyang Zheng
-@version $Id$
-@since Ptolemy II 4.0
-@see DEReceiver
-@see ptolemy.actor.util.CalendarQueue
- */
+   @author Haiyang Zheng
+   @version $Id$
+   @since Ptolemy II 4.0
+   @see DEReceiver
+   @see ptolemy.actor.util.CalendarQueue
+*/
 public class DEEDirector extends DEDirector {
 
     /** Construct a director in the default workspace with an empty string
@@ -102,7 +102,7 @@ public class DEEDirector extends DEDirector {
      */
     public DEEDirector(Workspace workspace) {
         super(workspace);
-   }
+    }
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -120,7 +120,7 @@ public class DEEDirector extends DEDirector {
     public DEEDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-   }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -243,7 +243,7 @@ public class DEEDirector extends DEDirector {
                                 break;
                             }
                             long timeToWait = (long)((currentTime -
-                                    elapsedTimeInSeconds)*1000.0);
+                                                             elapsedTimeInSeconds)*1000.0);
                             if (timeToWait > 0) {
                                 if (_debugging) {
                                     _debug("Waiting for real time to pass: "
@@ -325,7 +325,7 @@ public class DEEDirector extends DEDirector {
                 // Consider the multi-input atomic actors, e.g. the
                 // BooleanSelect and Inhibit.
                 if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY ||
-                        nextEvent.isSimultaneousWith(currentEvent))
+                            nextEvent.isSimultaneousWith(currentEvent))
                         && nextEvent.actor() == currentEvent.actor()) {
                     // Consume the event from the queue.
 
@@ -462,11 +462,11 @@ public class DEEDirector extends DEDirector {
         int depth = _getDepth(destination);
 
         if (_debugging) _debug("enqueue event: to",
-        receiver.getContainer().getFullName() + " ("+token.toString()+") ",
-        "time = "+ getCurrentTime() + " microstep = "+ (_microstep + 1) + " depth = "
-        + depth);
+                receiver.getContainer().getFullName() + " ("+token.toString()+") ",
+                "time = "+ getCurrentTime() + " microstep = "+ (_microstep + 1) + " depth = "
+                + depth);
         _eventQueue.put(new DEEvent(receiver, token,
-                getCurrentTime(), _microstep + 1, depth));
+                                getCurrentTime(), _microstep + 1, depth));
     }
 
     /** Return the depth of an ioPort.
@@ -502,12 +502,12 @@ public class DEEDirector extends DEDirector {
         // director. If there is no such attribute, construct one.
         FunctionDependency functionDependency = castContainer.getFunctionDependencies();
 
-//        Since the functionDependency is synchronized to workspace,
-//        there is no need to invalidate functionDependency here.
-//        // The functionDependency attribute is used to construct
-//        // the schedule. If the schedule needs recalculation,
-//        // the functionDependency also needs recalculation.
-//        functionDependency.invalidate();
+        //        Since the functionDependency is synchronized to workspace,
+        //        there is no need to invalidate functionDependency here.
+        //        // The functionDependency attribute is used to construct
+        //        // the schedule. If the schedule needs recalculation,
+        //        // the functionDependency also needs recalculation.
+        //        functionDependency.invalidate();
 
         // FIXME: The following may be a very costly test.
         // -- from the comments of former implementation.
@@ -521,7 +521,7 @@ public class DEEDirector extends DEDirector {
                 if (cycleNodes[i] instanceof Nameable) {
                     if (i > 0) names.append(", ");
                     names.append(((Nameable)cycleNodes[i])
-                        .getContainer().getFullName());
+                            .getContainer().getFullName());
                 }
             }
             throw new IllegalActionException(this.getContainer(),

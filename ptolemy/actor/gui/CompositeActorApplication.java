@@ -1,32 +1,32 @@
 /* A Ptolemy application that instantiates class names given on the command
    line.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 1999-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (vogel@eecs.berkeley.edu)
+   @ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -52,40 +52,40 @@ import java.util.List;
 /////////////////////////////////////////////////////////////////
 //// CompositeActorApplication
 /**
-This application creates one or more Ptolemy II models given a
-classname on the command line, and then executes those models, each in
-its own thread.  Each specified class should be derived from
-CompositeActor, and should have a constructor that takes a single
-argument, an instance of Workspace.  If the model does not contain
-a manager, then one will be created for it. The model is displayed using
-an instance of ModelFrame, which provides controls for executing
-the model and setting its top-level and director parameters.
-<p>
-The command-line arguments can also set parameter values for any
-parameter in the models, with the name given relative to the top-level
-entity.  For example, to specify the iteration count in an SDF model,
-you can invoke this on the command line as follows:
-<pre>
-    CLASSPATH=$PTII
-    export CLASSPATH
-    java ptolemy.actor.gui.CompositeActorApplication \
-        -director.iterations 1000 \
-        -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
-</pre>
-This assumes that the model given by the specified class name has a director
-named "director" with a parameter named "iterations".  If more than
-one model is given on the command line, then the parameter values will
-be set for all models that have such a parameter.
-<p>
-This class keeps count the number of open windows.  The waitForFinish
-method can then be used to determine when all of the windows opened by
-this class have been closed.  The main() method exits the application
-when all windows have been closed.
+   This application creates one or more Ptolemy II models given a
+   classname on the command line, and then executes those models, each in
+   its own thread.  Each specified class should be derived from
+   CompositeActor, and should have a constructor that takes a single
+   argument, an instance of Workspace.  If the model does not contain
+   a manager, then one will be created for it. The model is displayed using
+   an instance of ModelFrame, which provides controls for executing
+   the model and setting its top-level and director parameters.
+   <p>
+   The command-line arguments can also set parameter values for any
+   parameter in the models, with the name given relative to the top-level
+   entity.  For example, to specify the iteration count in an SDF model,
+   you can invoke this on the command line as follows:
+   <pre>
+   CLASSPATH=$PTII
+   export CLASSPATH
+   java ptolemy.actor.gui.CompositeActorApplication \
+   -director.iterations 1000 \
+   -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
+   </pre>
+   This assumes that the model given by the specified class name has a director
+   named "director" with a parameter named "iterations".  If more than
+   one model is given on the command line, then the parameter values will
+   be set for all models that have such a parameter.
+   <p>
+   This class keeps count the number of open windows.  The waitForFinish
+   method can then be used to determine when all of the windows opened by
+   this class have been closed.  The main() method exits the application
+   when all windows have been closed.
 
-@see ModelFrame
-@author Edward A. Lee, Brian K. Vogel, and Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 0.4
+   @see ModelFrame
+   @author Edward A. Lee, Brian K. Vogel, and Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.4
 */
 public class CompositeActorApplication {
 

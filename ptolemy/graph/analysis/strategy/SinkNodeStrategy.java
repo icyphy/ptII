@@ -1,24 +1,24 @@
 /* Computation of sink nodes in a graph.
 
- Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Red (ssb@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
@@ -40,20 +40,20 @@ import ptolemy.graph.analysis.analyzer.SinkNodeAnalyzer;
 //////////////////////////////////////////////////////////////////////////
 //// SinkNodeStrategy
 /**
-Computation of sink nodes in a graph.
-The collection returned cannot be modified.
-<p>
-This analysis requires <em>O</em>(<em>N</em>) time, where <em>N</em> is the
-number of nodes in the graph.
-<p>
-@see ptolemy.graph.analysis.SinkNodeAnalysis
-@since Ptolemy II 4.0
-@author Ming Yung Ko, Shahrooz Shahparnia
-@version $Id$
+   Computation of sink nodes in a graph.
+   The collection returned cannot be modified.
+   <p>
+   This analysis requires <em>O</em>(<em>N</em>) time, where <em>N</em> is the
+   number of nodes in the graph.
+   <p>
+   @see ptolemy.graph.analysis.SinkNodeAnalysis
+   @since Ptolemy II 4.0
+   @author Ming Yung Ko, Shahrooz Shahparnia
+   @version $Id$
 */
 
 public class SinkNodeStrategy extends CachedStrategy
-        implements SinkNodeAnalyzer {
+    implements SinkNodeAnalyzer {
 
     /** Construct a sink node analysis for a given graph.
      *  @param graph The given graph.
@@ -69,9 +69,9 @@ public class SinkNodeStrategy extends CachedStrategy
      *  a collection. Each element of the collection is a {@link Node}.
      *  @return The sink nodes.
      */
-     public List nodes() {
+    public List nodes() {
         return (List)_result();
-     }
+    }
 
     /** Return a description of sink nodes.
      *
@@ -79,7 +79,7 @@ public class SinkNodeStrategy extends CachedStrategy
      */
     public String toString() {
         String result = "Sink node analysis for the following graph.\n"
-                + graph().toString();
+            + graph().toString();
         result += "The sink nodes are:\n" + _result();
         return result;
     }

@@ -22,11 +22,11 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+ @ProposedRating Yellow (eal@eecs.berkeley.edu)
+ @AcceptedRating Red (pjb2e@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib.network.mac;
@@ -47,22 +47,22 @@ import ptolemy.kernel.util.Workspace;
 //// DataPump
 
 /**
-This actor works in the Transmission block in IEEE 802.11 Mac. For every
-TxRequest from the Protocol_Control block, this actor sends a PhyTxStart
-request to the physical layer. Upon receiving the PhyTxStart confirmation,
-it sends data to the physical layer. After the data has been sent, it sends
-PhyTxEnd request to the physical layer and sends TxConfirm to the source of
-the original TxRequest after receiving PhyTxEnd confirmation from the
-physical layer.
-<p>
-Both TxCoordination and RxCoordination in the Protocol_Control can send
-TxRequest and require TxConfirm. This actor uses a pair of input and output
-ports to tell the source of the TxRequest and the destination of the
-TxConfirm.
+   This actor works in the Transmission block in IEEE 802.11 Mac. For every
+   TxRequest from the Protocol_Control block, this actor sends a PhyTxStart
+   request to the physical layer. Upon receiving the PhyTxStart confirmation,
+   it sends data to the physical layer. After the data has been sent, it sends
+   PhyTxEnd request to the physical layer and sends TxConfirm to the source of
+   the original TxRequest after receiving PhyTxEnd confirmation from the
+   physical layer.
+   <p>
+   Both TxCoordination and RxCoordination in the Protocol_Control can send
+   TxRequest and require TxConfirm. This actor uses a pair of input and output
+   ports to tell the source of the TxRequest and the destination of the
+   TxConfirm.
 
-@author Yang Zhao, Charlie Zhong and Xiaojun Liu
-@version DataPump.java,v 1.4 2004/04/12 15:30:36 cxh Exp
-@since Ptolemy II 4.0
+   @author Yang Zhao, Charlie Zhong and Xiaojun Liu
+   @version DataPump.java,v 1.4 2004/04/12 15:30:36 cxh Exp
+   @since Ptolemy II 4.0
 */
 public class DataPump extends MACActorBase {
 
@@ -188,85 +188,85 @@ public class DataPump extends MACActorBase {
             _messageType = ((IntToken)
                     _inputMessage.get("kind")).intValue();
             switch (_state) {
-                case Tx_Idle:
-                            //_getMsgType();
-                    switch(_messageType) {
-                        case TxRequest:
-                            //Note: in OMNET++, the phy layer are strangely put
-                            // in the channel module. The "channel" field are used
-                            // for specifying a channel. We don't need it here. Yang
-                            //channel = _inputMessage.get("channel").intValue();
+            case Tx_Idle:
+                //_getMsgType();
+                switch(_messageType) {
+                case TxRequest:
+                    //Note: in OMNET++, the phy layer are strangely put
+                    // in the channel module. The "channel" field are used
+                    // for specifying a channel. We don't need it here. Yang
+                    //channel = _inputMessage.get("channel").intValue();
 
 
-                            _pdu = (RecordToken)(_inputMessage.get("pdu"));
-                            _toBackoff(Busy);
-                            int length = ((IntToken)_pdu.get("Length")).intValue();
-                            int rate = ((IntToken)_inputMessage.get("rate")).intValue();
-                            Token[] value = {new IntToken(TxStart),
-                                             new IntToken(length),
-                                             new IntToken(rate)};
-                            toPhysical.send(0, new RecordToken(TxStartMsgFields, value));
-                            _state = Wait_TxStart;
+                    _pdu = (RecordToken)(_inputMessage.get("pdu"));
+                    _toBackoff(Busy);
+                    int length = ((IntToken)_pdu.get("Length")).intValue();
+                    int rate = ((IntToken)_inputMessage.get("rate")).intValue();
+                    Token[] value = {new IntToken(TxStart),
+                                     new IntToken(length),
+                                     new IntToken(rate)};
+                    toPhysical.send(0, new RecordToken(TxStartMsgFields, value));
+                    _state = Wait_TxStart;
 
-                        break;
+                    break;
 
-                        case Idle:
-                        case Slot:
-                        case Busy:
-                          _toBackoff(_messageType);
-                        break;
-                    }
+                case Idle:
+                case Slot:
+                case Busy:
+                    _toBackoff(_messageType);
+                    break;
+                }
                 break;
 
-                case Wait_TxStart:
-                    if (_messageType == TxStartConfirm) {
-                        int pduType = ((IntToken) _pdu.get("Type")).intValue();
-                        int pduSubtype = ((IntToken) _pdu.get("Subtype")).intValue();
-                        String pduName = " ";
-                        switch(pduType) {
-                            case ControlType:
-                              switch(pduSubtype)
-                              {
-                              case Ack:
+            case Wait_TxStart:
+                if (_messageType == TxStartConfirm) {
+                    int pduType = ((IntToken) _pdu.get("Type")).intValue();
+                    int pduSubtype = ((IntToken) _pdu.get("Subtype")).intValue();
+                    String pduName = " ";
+                    switch(pduType) {
+                    case ControlType:
+                        switch(pduSubtype)
+                            {
+                            case Ack:
                                 pduName = "ACK";
-                              break;
+                                break;
 
-                              case Cts:
+                            case Cts:
                                 pduName ="CTS";
-                              break;
+                                break;
 
-                              case Rts:
+                            case Rts:
                                 pduName = "RTS";
-                              break;
-                              }
-                            break;
+                                break;
+                            }
+                        break;
 
-                            case DataType:
-                              if (pduSubtype==Data)
-                                pduName = "Data";
-                            break;
-                        }
-                       String[] labels = {"kind", "name"};
-                       Token[] values = {new IntToken(TxData), new StringToken( pduName)};
-
-                       RecordToken mergeToPdu = new RecordToken(labels, values);
-                       RecordToken newPdu = RecordToken.merge(mergeToPdu, _pdu);
-                       toPhysical.send(0, newPdu);
-                       _state = Wait_TxEnd;
-
+                    case DataType:
+                        if (pduSubtype==Data)
+                            pduName = "Data";
+                        break;
                     }
+                    String[] labels = {"kind", "name"};
+                    Token[] values = {new IntToken(TxData), new StringToken( pduName)};
+
+                    RecordToken mergeToPdu = new RecordToken(labels, values);
+                    RecordToken newPdu = RecordToken.merge(mergeToPdu, _pdu);
+                    toPhysical.send(0, newPdu);
+                    _state = Wait_TxEnd;
+
+                }
                 break;
 
-                case Wait_TxEnd:
-                  if (_messageType == TxEnd) {
-                      Token[] value = {new IntToken(TxConfirm)};
-                      RecordToken confirm = new RecordToken(TxConfirmMsgFields, value);
-                      if (_source == FromProtocolTx)
-                          toProtocolTx.send(0, confirm);
-                      else
-                          toProtocolRx.send(0, confirm);
-                      _state = Tx_Idle;
-                  }
+            case Wait_TxEnd:
+                if (_messageType == TxEnd) {
+                    Token[] value = {new IntToken(TxConfirm)};
+                    RecordToken confirm = new RecordToken(TxConfirmMsgFields, value);
+                    if (_source == FromProtocolTx)
+                        toProtocolTx.send(0, confirm);
+                    else
+                        toProtocolRx.send(0, confirm);
+                    _state = Tx_Idle;
+                }
                 break;
             }
             _inputMessage = null;
@@ -297,19 +297,19 @@ public class DataPump extends MACActorBase {
         forwardCs.send(0, t);
     }
 
- /**   private void _getMsgType() throws IllegalActionException {
+    /**   private void _getMsgType() throws IllegalActionException {
 
-            if (channelStatus.hasToken(0)) {
-            _inputMessage = (RecordToken) channelStatus.get(0);
-        } else if (fromFilterMpdu.hasToken(0)) {
-            _inputMessage = (RecordToken) fromFilterMpdu.get(0);
-            }
-        if (_inputMessage != null) {
-            _messageType = ((IntToken)
-            _inputMessage.get("kind")).intValue();
-        }
+    if (channelStatus.hasToken(0)) {
+    _inputMessage = (RecordToken) channelStatus.get(0);
+    } else if (fromFilterMpdu.hasToken(0)) {
+    _inputMessage = (RecordToken) fromFilterMpdu.get(0);
     }
-*/
+    if (_inputMessage != null) {
+    _messageType = ((IntToken)
+    _inputMessage.get("kind")).intValue();
+    }
+    }
+    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

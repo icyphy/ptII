@@ -1,28 +1,28 @@
 /* A static scheduler for the continuous time domain.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (johnr@eecs.berkeley.edu)
@@ -65,79 +65,79 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// CTScheduler
 /**
-Static scheduler for the CT domain.
-A CT (sub)system can be mathematically represented as:<Br>
-<pre>
-<pre>    dx/dt = f(x, u, t)<Br>
-<pre>    y = g(x, u, t)<BR>
-</pre></pre></pre>
-where x is the state of the system, u is the input, y is the output,
-f() is the state transition map and g() is the output map.
-<P>
-The system is built using actors. That is, all the functions, f() and g(),
-are built up by chains of actors.  For higher order systems,
-x is a vector, built using more than one integrator.
-In general, actors that have the functionality of integration
-from their inputs to their outputs are called <I>dynamic actors</I>.
-Other actors are called <I>arithmetic actors</I>.
-<P>
-In order to interact with discrete domains, some actors in the
-CT domain are able to convert continuous waveforms to discrete events,
-and vice versa. An actor that has continuous input and discrete
-output is call an <I>event generator</I>; an actor that has
-discrete input and continuous output is called a
-<I>waveform generator</I>.
-<P>
-The interaction with some discrete domains requires that the
-CT simulation be able to remember its state and roll-back
-to the remembered state when needed. This in turn requires
-that all actors which have internal states should be able
-to remember and restore their states. These actors are called
-<I>stateful actors</I>.
-<P>
-In the continuous time simulation, time progresses in a discrete way.
-The distance between consecutive simulation time points is called the
-<I>integration step size</I> or step size, for short. Some actors
-need to be able to control the step sizes in the simulation. These actors
-are called <I>step size control actors</I>. Examples of step size
-control actors include integrators, which control the
-accuracy and speed of numerical ODE solutions, and some event
-generators, which detect events.
-<P>
-To help with scheduling, the actors are partitioned into several clusters:
-the <I>arithmetic actors</I>, the <I>dynamic actors</I>,
-the <I>step size control actors</I>, the <I>sink actors</I>,
-the <I>stateful actors</I>, the <I> event generators</I>,
-and the <I> waveform generators</I>.
-This scheduler uses the clustered information and the system topology,
-to provide the firing sequences for evaluating f() and g().
-It also provides a firing order for all the dynamic actors.
-The firing sequence for evaluating f() is
-called the <I> state transition schedule</I>; the firing
-sequence for evaluating g() is called the <I>output schedule</I>;
-and the firing sequence for dynamic actors is called the
-<I>dynamic actor schedule</I>.
-<P>
-The state transition schedule is the actors in the f() function sorted
-in the topological order, such that, after the integrators emit their
-state x, a chain of firings according to the schedule evaluates the
-f() function and returns tokens corresponding to dx/dt to the
-integrators.
-<P>
-The output schedule is the actors in the g() function sorted in
-their topological order.
-<P>
-The dynamic actor schedule is a list of dynamic actors in their reverse
-topological order.
-<P>
-If there are loops of arithmetic actors or loops of integrators,
-then the (sub)system are not schedulable, and a NotSchedulableException
-will be thrown if schedules are requested.
+   Static scheduler for the CT domain.
+   A CT (sub)system can be mathematically represented as:<Br>
+   <pre>
+   <pre>    dx/dt = f(x, u, t)<Br>
+   <pre>    y = g(x, u, t)<BR>
+   </pre></pre></pre>
+   where x is the state of the system, u is the input, y is the output,
+   f() is the state transition map and g() is the output map.
+   <P>
+   The system is built using actors. That is, all the functions, f() and g(),
+   are built up by chains of actors.  For higher order systems,
+   x is a vector, built using more than one integrator.
+   In general, actors that have the functionality of integration
+   from their inputs to their outputs are called <I>dynamic actors</I>.
+   Other actors are called <I>arithmetic actors</I>.
+   <P>
+   In order to interact with discrete domains, some actors in the
+   CT domain are able to convert continuous waveforms to discrete events,
+   and vice versa. An actor that has continuous input and discrete
+   output is call an <I>event generator</I>; an actor that has
+   discrete input and continuous output is called a
+   <I>waveform generator</I>.
+   <P>
+   The interaction with some discrete domains requires that the
+   CT simulation be able to remember its state and roll-back
+   to the remembered state when needed. This in turn requires
+   that all actors which have internal states should be able
+   to remember and restore their states. These actors are called
+   <I>stateful actors</I>.
+   <P>
+   In the continuous time simulation, time progresses in a discrete way.
+   The distance between consecutive simulation time points is called the
+   <I>integration step size</I> or step size, for short. Some actors
+   need to be able to control the step sizes in the simulation. These actors
+   are called <I>step size control actors</I>. Examples of step size
+   control actors include integrators, which control the
+   accuracy and speed of numerical ODE solutions, and some event
+   generators, which detect events.
+   <P>
+   To help with scheduling, the actors are partitioned into several clusters:
+   the <I>arithmetic actors</I>, the <I>dynamic actors</I>,
+   the <I>step size control actors</I>, the <I>sink actors</I>,
+   the <I>stateful actors</I>, the <I> event generators</I>,
+   and the <I> waveform generators</I>.
+   This scheduler uses the clustered information and the system topology,
+   to provide the firing sequences for evaluating f() and g().
+   It also provides a firing order for all the dynamic actors.
+   The firing sequence for evaluating f() is
+   called the <I> state transition schedule</I>; the firing
+   sequence for evaluating g() is called the <I>output schedule</I>;
+   and the firing sequence for dynamic actors is called the
+   <I>dynamic actor schedule</I>.
+   <P>
+   The state transition schedule is the actors in the f() function sorted
+   in the topological order, such that, after the integrators emit their
+   state x, a chain of firings according to the schedule evaluates the
+   f() function and returns tokens corresponding to dx/dt to the
+   integrators.
+   <P>
+   The output schedule is the actors in the g() function sorted in
+   their topological order.
+   <P>
+   The dynamic actor schedule is a list of dynamic actors in their reverse
+   topological order.
+   <P>
+   If there are loops of arithmetic actors or loops of integrators,
+   then the (sub)system are not schedulable, and a NotSchedulableException
+   will be thrown if schedules are requested.
 
-@author Jie Liu
-@version $Id$
-@since Ptolemy II 0.2
-@see ptolemy.actor.sched.Scheduler
+   @author Jie Liu
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see ptolemy.actor.sched.Scheduler
 */
 
 public class CTScheduler extends Scheduler {
@@ -267,7 +267,7 @@ public class CTScheduler extends Scheduler {
                 // executive directors, but its tested this way, so we
                 // leave it alone.
                 if ((actor.getExecutiveDirector()
-                        == pre.getExecutiveDirector()) &&
+                            == pre.getExecutiveDirector()) &&
                         !predecessors.contains(pre)) {
                     predecessors.addLast(pre);
                 }
@@ -312,7 +312,7 @@ public class CTScheduler extends Scheduler {
                 // executive directors, but its tested this way, so we
                 // leave it alone.
                 if ((actor.getExecutiveDirector()
-                        == post.getExecutiveDirector()) &&
+                            == post.getExecutiveDirector()) &&
                         !successors.contains(post)) {
                     successors.addLast(post);
                 }
@@ -636,11 +636,11 @@ public class CTScheduler extends Scheduler {
             // the sinkActors, not in the outputSSCActors.
             // The following code adds it into the continuousActor list.
             if ((actor instanceof CompositeActor) &&
-                (actor instanceof CTStepSizeControlActor)) {
-                    if (!continuousActors.contains(actor)) {
-                        continuousActors.add(actor);
-                    }
+                    (actor instanceof CTStepSizeControlActor)) {
+                if (!continuousActors.contains(actor)) {
+                    continuousActors.add(actor);
                 }
+            }
         }
 
         // Actors remain in the continuousActors list are real continuous
@@ -851,20 +851,20 @@ public class CTScheduler extends Scheduler {
             (CompositeActor)director.getContainer();
 
         ChangeRequest request = new ChangeRequest(this, "Record signal types") {
-            protected void _execute() throws KernelException {
-                Iterator entities = container.deepEntityList().iterator();
-                while (entities.hasNext()) {
-                    Entity entity = (Entity)entities.next();
-                    for (Iterator ports = entity.portList().iterator();
-                         ports.hasNext();) {
-                        IOPort port = (IOPort)ports.next();
-                        String typeString =
+                protected void _execute() throws KernelException {
+                    Iterator entities = container.deepEntityList().iterator();
+                    while (entities.hasNext()) {
+                        Entity entity = (Entity)entities.next();
+                        for (Iterator ports = entity.portList().iterator();
+                             ports.hasNext();) {
+                            IOPort port = (IOPort)ports.next();
+                            String typeString =
                                 typeMap.getType(port).toString();
-                        _setOrCreate(port, "resolvedSignalType", typeString);
+                            _setOrCreate(port, "resolvedSignalType", typeString);
+                        }
                     }
                 }
-            }
-        };
+            };
         // Indicate that the change is non-persistent, so that
         // the UI doesn't prompt to save.
         request.setPersistent(false);
@@ -900,9 +900,9 @@ public class CTScheduler extends Scheduler {
             // it may be an event generator, or a state transition
             // actor.
             if ((actor instanceof CTCompositeActor) ||
-                (!(actor instanceof CTDynamicActor) &&
-                    !(actor instanceof CTEventGenerator))
-                     ) {
+                    (!(actor instanceof CTDynamicActor) &&
+                            !(actor instanceof CTEventGenerator))
+                ) {
                 // Find the successors of the actor
                 Iterator successors = successorList(actor).iterator();
                 while (successors.hasNext()) {
@@ -1018,7 +1018,7 @@ public class CTScheduler extends Scheduler {
                 // If it is an input port,
                 // set the signal type to all the receivers in the port.
                 if (((port.getContainer() != CTScheduler.this.getContainer()
-                        .getContainer()) && port.isInput())) {
+                             .getContainer()) && port.isInput())) {
                     Receiver[][] receivers = port.getReceivers();
                     for (int i = 0; i < receivers.length; i++) {
                         for (int j = 0; j < receivers[i].length; j++) {
@@ -1028,7 +1028,7 @@ public class CTScheduler extends Scheduler {
                     }
                 }
                 if ((port.getContainer() == CTScheduler.this.getContainer()
-                        .getContainer()) &&  port.isOutput()) {
+                            .getContainer()) &&  port.isOutput()) {
                     Receiver[][] receivers = port.getInsideReceivers();
                     for (int i = 0; i < receivers.length; i++) {
                         for (int j = 0; j < receivers[i].length; j++) {

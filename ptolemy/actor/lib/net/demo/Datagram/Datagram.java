@@ -1,28 +1,28 @@
 /* An app actor for demonstrating the Datagram actors.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
 @AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
@@ -50,21 +50,21 @@ import java.io.IOException;
 //////////////////////////////////////////////////////////////////////////
 //// Datagram
 /**
-This actor copies, to the system clipboard, the contents of any token
-received at its <i>input</i> port.  It pastes, from the system
-clipboard to the <i>output</i> port, whenever it receives a token at
-the <i>trigger</i>.  If both inputs receive tokens during the same
-firing, the paste is done before the copy.  This ordering insures that
-the contents of the clipboard are not lost in the event of a
-simultaneous copy-paste operation.
+   This actor copies, to the system clipboard, the contents of any token
+   received at its <i>input</i> port.  It pastes, from the system
+   clipboard to the <i>output</i> port, whenever it receives a token at
+   the <i>trigger</i>.  If both inputs receive tokens during the same
+   firing, the paste is done before the copy.  This ordering insures that
+   the contents of the clipboard are not lost in the event of a
+   simultaneous copy-paste operation.
 
-<p> NOTE: This actor has been tested only with an 8-bit character set
-as the Java default character set.  Results are not known for systems
-configured for 16-bit Unicode characters.
+   <p> NOTE: This actor has been tested only with an 8-bit character set
+   as the Java default character set.  Results are not known for systems
+   configured for 16-bit Unicode characters.
 
-@author Winthrop Williams
-@version $Id$
-@since Ptolemy II 2.0
+   @author Winthrop Williams
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 
 public class Datagram extends TypedAtomicActor
@@ -128,7 +128,7 @@ public class Datagram extends TypedAtomicActor
             Transferable transferable = clipboard.getContents(this);
             try {
                 output.broadcast(new StringToken( (String)transferable
-                        .getTransferData(DataFlavor.stringFlavor) ));
+                                         .getTransferData(DataFlavor.stringFlavor) ));
                 // NullPointerException also possible //
                 // Ignore this for now, allowing exception to go uncaught.
             } catch (IOException ex) {

@@ -26,8 +26,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating red (eal@eecs.berkeley.edu)
 @AcceptedRating red (cxh@eecs.berkeley.edu)
 */
@@ -42,18 +42,18 @@ import javax.swing.JOptionPane;
 //// HistogramMLApplication
 
 /**
-An application that can histogram data in PlotML format from a URL or
-from files specified on the command line.
-To compile and run this application, do the following:
-<pre>
-    javac -classpath ../../.. HistogramMLApplication.java
-    java -classpath ../../.. ptolemy.plot.plotml.HistogramMLApplication
-</pre>
+   An application that can histogram data in PlotML format from a URL or
+   from files specified on the command line.
+   To compile and run this application, do the following:
+   <pre>
+   javac -classpath ../../.. HistogramMLApplication.java
+   java -classpath ../../.. ptolemy.plot.plotml.HistogramMLApplication
+   </pre>
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
-@see Histogram
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
+   @see Histogram
 */
 public class HistogramMLApplication extends PlotMLApplication {
 

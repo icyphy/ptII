@@ -1,28 +1,28 @@
 /* A transformer that replaces port communication in an SDF model
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -63,13 +63,13 @@ import soot.toolkits.scalar.UnitValueBoxPair;
 //////////////////////////////////////////////////////////////////////////
 //// ReplaceComplexParameters
 /**
-A Transformer that replaces complex parameters and attributes with a
-'simpler' parameter with normal parameter semantics.  This relies on
-fields for ports and attributes.
+   A Transformer that replaces complex parameters and attributes with a
+   'simpler' parameter with normal parameter semantics.  This relies on
+   fields for ports and attributes.
 
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 4.0
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class ReplaceComplexParameters extends SceneTransformer
     implements HasPhaseOptions {
@@ -146,8 +146,8 @@ public class ReplaceComplexParameters extends SceneTransformer
             Entity entity, SootClass entityClass) {
         // Loop over all the attributes of the actor
         for (Iterator attributes =
-                entity.attributeList(Attribute.class).iterator();
-            attributes.hasNext();) {
+                 entity.attributeList(Attribute.class).iterator();
+             attributes.hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
 
             // Ignore attributes that are ignorable.
@@ -156,17 +156,17 @@ public class ReplaceComplexParameters extends SceneTransformer
             }
 
             // PortParameters are handled specially.
-           //  if (attribute instanceof PortParameter) {
-//                 continue;
-//             }
+            //  if (attribute instanceof PortParameter) {
+            //                 continue;
+            //             }
 
             // If we have an attribute that derives from
             // stringAttribute, or Parameter then we need to grab some
             // code for it. (i.e. FileAttribute, and FileParameter)
             if ((attribute instanceof StringAttribute &&
-                    !attribute.getClass().equals(StringAttribute.class)) ||
-               (attribute instanceof Parameter &&
-                    !attribute.getClass().equals(Parameter.class))) {
+                        !attribute.getClass().equals(StringAttribute.class)) ||
+                    (attribute instanceof Parameter &&
+                            !attribute.getClass().equals(Parameter.class))) {
                 String className = attribute.getClass().getName();
 
                 SootClass attributeClass =
@@ -268,18 +268,18 @@ public class ReplaceComplexParameters extends SceneTransformer
                     // to the field based on it's parameter types.
                     theClass.removeField(oldField);
                     theClass.addField(oldField);
-               //  } else if (refClass.getName()
-//                         .startsWith(oldClass.getName())) {
-//                     SootClass changeClass =
-//                         _getInnerClassCopy(oldClass,
-//                                 refClass,
-//                                 newClass);
-//                     oldField.setType(RefType.v(changeClass));
-//                     // we have to do this seemingly useless
-//                     // thing, since the scene caches a pointer
-//                     // to the field based on it's parameter types.
-//                     theClass.removeField(oldField);
-//                     theClass.addField(oldField);
+                    //  } else if (refClass.getName()
+                    //                         .startsWith(oldClass.getName())) {
+                    //                     SootClass changeClass =
+                    //                         _getInnerClassCopy(oldClass,
+                    //                                 refClass,
+                    //                                 newClass);
+                    //                     oldField.setType(RefType.v(changeClass));
+                    //                     // we have to do this seemingly useless
+                    //                     // thing, since the scene caches a pointer
+                    //                     // to the field based on it's parameter types.
+                    //                     theClass.removeField(oldField);
+                    //                     theClass.addField(oldField);
                 }
             }
         }
@@ -289,30 +289,30 @@ public class ReplaceComplexParameters extends SceneTransformer
             SootMethod newMethod = (SootMethod)methods.next();
             //   System.out.println("newMethod = " + newMethod.getSignature());
 
-//             Type returnType = newMethod.getReturnType();
-//             if (returnType instanceof RefType &&
-//                     ((RefType)returnType).getSootClass() == oldClass) {
-//                 newMethod.setReturnType(RefType.v(newClass));
-//             }
-//             List paramTypes = new LinkedList();
-//             for (Iterator oldParamTypes =
-//                      newMethod.getParameterTypes().iterator();
-//                  oldParamTypes.hasNext();) {
-//                 Type type = (Type)oldParamTypes.next();
-//                 if (type instanceof RefType &&
-//                         ((RefType)type).getSootClass() == oldClass) {
-//                     paramTypes.add(RefType.v(newClass));
-//                 } else {
-//                     paramTypes.add(type);
-//                 }
-//             }
-//             newMethod.setParameterTypes(paramTypes);
+            //             Type returnType = newMethod.getReturnType();
+            //             if (returnType instanceof RefType &&
+            //                     ((RefType)returnType).getSootClass() == oldClass) {
+            //                 newMethod.setReturnType(RefType.v(newClass));
+            //             }
+            //             List paramTypes = new LinkedList();
+            //             for (Iterator oldParamTypes =
+            //                      newMethod.getParameterTypes().iterator();
+            //                  oldParamTypes.hasNext();) {
+            //                 Type type = (Type)oldParamTypes.next();
+            //                 if (type instanceof RefType &&
+            //                         ((RefType)type).getSootClass() == oldClass) {
+            //                     paramTypes.add(RefType.v(newClass));
+            //                 } else {
+            //                     paramTypes.add(type);
+            //                 }
+            //             }
+            //             newMethod.setParameterTypes(paramTypes);
 
-//             // we have to do this seemingly useless
-//             // thing, since the scene caches a pointer
-//             // to the method based on it's parameter types.
-//             theClass.removeMethod(newMethod);
-//             theClass.addMethod(newMethod);
+            //             // we have to do this seemingly useless
+            //             // thing, since the scene caches a pointer
+            //             // to the method based on it's parameter types.
+            //             theClass.removeMethod(newMethod);
+            //             theClass.addMethod(newMethod);
 
             Body newBody = newMethod.retrieveActiveBody();
             // Analyze what object each local points to.
@@ -349,25 +349,25 @@ public class ReplaceComplexParameters extends SceneTransformer
                         // Fix references to fields
                         InstanceFieldRef r = (InstanceFieldRef)value;
                         if (object != analysis.getObject((Local)r.getBase())) {
-                         //    System.out.println("object = " + object);
-//                             System.out.println("analysis object = " + analysis.getObject((Local)r.getBase()));
-//                             System.out.println("not equal!");
+                            //    System.out.println("object = " + object);
+                            //                             System.out.println("analysis object = " + analysis.getObject((Local)r.getBase()));
+                            //                             System.out.println("not equal!");
                             continue;
                         }
                         if (SootUtilities.derivesFrom(oldClass, r.getField().getDeclaringClass()) &&
-                            newClass.declaresFieldByName(r.getField().getName())) {
+                                newClass.declaresFieldByName(r.getField().getName())) {
                             r.setField(newClass.getFieldByName(
                                                r.getField().getName()));
                             //   System.out.println("fieldRef = " +
                             //              box.getValue());
-                  //       } else if (r.getField().getDeclaringClass().getName()
-//                                 .startsWith(oldClass.getName())) {
-//                             SootClass changeClass =
-//                                 _getInnerClassCopy(oldClass,
-//                                         r.getField().getDeclaringClass(),
-//                                         newClass);
-//                             r.setField(changeClass.getFieldByName(
-//                                     r.getField().getName()));
+                            //       } else if (r.getField().getDeclaringClass().getName()
+                            //                                 .startsWith(oldClass.getName())) {
+                            //                             SootClass changeClass =
+                            //                                 _getInnerClassCopy(oldClass,
+                            //                                         r.getField().getDeclaringClass(),
+                            //                                         newClass);
+                            //                             r.setField(changeClass.getFieldByName(
+                            //                                     r.getField().getName()));
                         }
                     } else if (value instanceof CastExpr) {
                         // Fix casts
@@ -390,40 +390,40 @@ public class ReplaceComplexParameters extends SceneTransformer
                                 r.setCastType(RefType.v(newClass));
                                 //    System.out.println("newValue = " +
                                 //        box.getValue());
-//                             } else if (refClass.getName().startsWith(
-//                                     oldClass.getName())) {
-//                                 SootClass changeClass =
-//                                     _getInnerClassCopy(oldClass,
-//                                             refClass, newClass);
-//                                 r.setCastType(RefType.v(changeClass));
+                                //                             } else if (refClass.getName().startsWith(
+                                //                                     oldClass.getName())) {
+                                //                                 SootClass changeClass =
+                                //                                     _getInnerClassCopy(oldClass,
+                                //                                             refClass, newClass);
+                                //                                 r.setCastType(RefType.v(changeClass));
                             }
                         }
-                                //     } else if (value instanceof ThisRef) {
-//                         // Fix references to 'this'
-//                         ThisRef r = (ThisRef)value;
-//                         Type type = r.getType();
-//                         if (type instanceof RefType &&
-//                                 ((RefType)type).getSootClass() == oldClass) {
-//                             box.setValue(Jimple.v().newThisRef(
-//                                     RefType.v(newClass)));
-//                         }
-//                     } else if (value instanceof ParameterRef) {
-//                         // Fix references to a parameter
-//                         ParameterRef r = (ParameterRef)value;
-//                         Type type = r.getType();
-//                         if (type instanceof RefType &&
-//                                 ((RefType)type).getSootClass() == oldClass) {
-//                             box.setValue(Jimple.v().newParameterRef(
-//                                     RefType.v(newClass), r.getIndex()));
-//                         }
+                        //     } else if (value instanceof ThisRef) {
+                        //                         // Fix references to 'this'
+                        //                         ThisRef r = (ThisRef)value;
+                        //                         Type type = r.getType();
+                        //                         if (type instanceof RefType &&
+                        //                                 ((RefType)type).getSootClass() == oldClass) {
+                        //                             box.setValue(Jimple.v().newThisRef(
+                        //                                     RefType.v(newClass)));
+                        //                         }
+                        //                     } else if (value instanceof ParameterRef) {
+                        //                         // Fix references to a parameter
+                        //                         ParameterRef r = (ParameterRef)value;
+                        //                         Type type = r.getType();
+                        //                         if (type instanceof RefType &&
+                        //                                 ((RefType)type).getSootClass() == oldClass) {
+                        //                             box.setValue(Jimple.v().newParameterRef(
+                        //                                     RefType.v(newClass), r.getIndex()));
+                        //                         }
                     } else if (value instanceof InstanceInvokeExpr) {
                         // Fix up the method invokes.
                         InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                         try {
                             if (object != analysis.getObject((Local)r.getBase())) {
-//                                 System.out.println("object = " + object);
-//                                 System.out.println("analysis object = " + analysis.getObject((Local)r.getBase()));
-//                                 System.out.println("not equal!");
+                                //                                 System.out.println("object = " + object);
+                                //                                 System.out.println("analysis object = " + analysis.getObject((Local)r.getBase()));
+                                //                                 System.out.println("not equal!");
 
                                 continue;
                             }
@@ -441,13 +441,13 @@ public class ReplaceComplexParameters extends SceneTransformer
                                 r.setMethod(replacementMethod);
                             }
                             //                         } else if (r.getMethod().getDeclaringClass().getName().
-//                                 startsWith(oldClass.getName())) {
-//                             SootClass changeClass =
-//                                 _getInnerClassCopy(oldClass,
-//                                         r.getMethod().getDeclaringClass(),
-//                                         newClass);
-//                             r.setMethod(changeClass.getMethod(
-//                                     r.getMethod().getSubSignature()));
+                            //                                 startsWith(oldClass.getName())) {
+                            //                             SootClass changeClass =
+                            //                                 _getInnerClassCopy(oldClass,
+                            //                                         r.getMethod().getDeclaringClass(),
+                            //                                         newClass);
+                            //                             r.setMethod(changeClass.getMethod(
+                            //                                     r.getMethod().getSubSignature()));
                         }
                     } else if (value instanceof NewExpr) {
                         // Fix up the object creations.
@@ -470,13 +470,13 @@ public class ReplaceComplexParameters extends SceneTransformer
                             r.setBaseType(RefType.v(newClass));
                             //   System.out.println("newValue = " +
                             //           box.getValue());
-//                         } else if (r.getBaseType().getSootClass().getName().
-//                                 startsWith(oldClass.getName())) {
-//                             SootClass changeClass =
-//                                 _getInnerClassCopy(oldClass,
-//                                         r.getBaseType().getSootClass(),
-//                                         newClass);
-//                             r.setBaseType(RefType.v(changeClass));
+                            //                         } else if (r.getBaseType().getSootClass().getName().
+                            //                                 startsWith(oldClass.getName())) {
+                            //                             SootClass changeClass =
+                            //                                 _getInnerClassCopy(oldClass,
+                            //                                         r.getBaseType().getSootClass(),
+                            //                                         newClass);
+                            //                             r.setBaseType(RefType.v(changeClass));
                         }
                     }
                     //    System.out.println("value = " + value);

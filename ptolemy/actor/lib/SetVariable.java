@@ -1,28 +1,28 @@
 /* Set the value of a variable contained by the container.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (yuhong@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -53,29 +53,29 @@ import java.util.ArrayList;
 //////////////////////////////////////////////////////////////////////////
 //// SetVariable
 /**
-Set the value of a variable contained by the container.
-The change to the value of the variable is implemented in a
-change request, and consequently will not take hold until the
-end of the current iteration.  This helps ensure that users
-of value of the variable will see changes to the value
-deterministically (independent of the schedule of execution
-of the actors).
-<p>
-Note that the variable name is observed during preinitialize().
-If it is changed after that, the change will not take effect
-until the next time the model is executed.
-<p>
-The variable can be either any attribute that implements
-the Settable interface. If it is in addition an instance of
-Variable, then the input token is used directly to set the
-value, and the type of the variable is constrained to be
-the same as the type of the input. Otherwise, then input
-token is converted to a string and the setExpression() method
-on the variable is used to set the value.
+   Set the value of a variable contained by the container.
+   The change to the value of the variable is implemented in a
+   change request, and consequently will not take hold until the
+   end of the current iteration.  This helps ensure that users
+   of value of the variable will see changes to the value
+   deterministically (independent of the schedule of execution
+   of the actors).
+   <p>
+   Note that the variable name is observed during preinitialize().
+   If it is changed after that, the change will not take effect
+   until the next time the model is executed.
+   <p>
+   The variable can be either any attribute that implements
+   the Settable interface. If it is in addition an instance of
+   Variable, then the input token is used directly to set the
+   value, and the type of the variable is constrained to be
+   the same as the type of the input. Otherwise, then input
+   token is converted to a string and the setExpression() method
+   on the variable is used to set the value.
 
-@author Edward A. Lee, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 4.0
+   @author Edward A. Lee, Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class SetVariable extends TypedAtomicActor
     implements ChangeListener, ExplicitChangeContext {
@@ -89,7 +89,7 @@ public class SetVariable extends TypedAtomicActor
      *   actor with this name.
      */
     public SetVariable(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -157,12 +157,12 @@ public class SetVariable extends TypedAtomicActor
                 attribute = new Variable(this, variableNameValue);
             } catch (NameDuplicationException ex) {
                 throw new IllegalActionException(
-                    this, ex,
-                    "Existing attribute that is not an attribute " +
-                    "with specified name: "
-                    + variableNameValue
-                    + ". It is: "
-                    + container.getAttribute(variableNameValue));
+                        this, ex,
+                        "Existing attribute that is not an attribute " +
+                        "with specified name: "
+                        + variableNameValue
+                        + ". It is: "
+                        + container.getAttribute(variableNameValue));
             }
         }
         return attribute;

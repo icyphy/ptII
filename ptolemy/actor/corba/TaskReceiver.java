@@ -1,28 +1,28 @@
 /* An actor that receives data from a remote coordinator.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (janneck@eecs.berkeley.edu)
@@ -55,28 +55,28 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// TaskReceiver
 /**
- An actor that register itself to a romote data provide that implements the
- Coordinator inteface and receives data from it.
+   An actor that register itself to a romote data provide that implements the
+   Coordinator inteface and receives data from it.
 
- Specify the ORB initial property with the<i>ORBInitProperties<i>
- paremerter, for example:
- "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
- where "xyz.eecs.berkeley.edu" is the machine runing name server, and
- "1050" is the port for name service.
+   Specify the ORB initial property with the<i>ORBInitProperties<i>
+   paremerter, for example:
+   "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
+   where "xyz.eecs.berkeley.edu" is the machine runing name server, and
+   "1050" is the port for name service.
 
- Specify the name of the coordiantor with <i>coordinatorName<i>, which is
- registed on the name server.
+   Specify the name of the coordiantor with <i>coordinatorName<i>, which is
+   registed on the name server.
 
- Specify whether the actor blocks when it haven't receive data with
- the <i>blocking<i> parameter.
+   Specify whether the actor blocks when it haven't receive data with
+   the <i>blocking<i> parameter.
 
- Specify the name of this client with <i>thisClientName<i>.
+   Specify the name of this client with <i>thisClientName<i>.
 
- See TaskCoordinator.java for the implementation of the coordinator.
+   See TaskCoordinator.java for the implementation of the coordinator.
 
-@author Yang Zhao
-@version $$
-@since Ptolemy II 3.0
+   @author Yang Zhao
+   @version $$
+   @since Ptolemy II 3.0
 */
 
 public class TaskReceiver extends Source {
@@ -93,7 +93,7 @@ public class TaskReceiver extends Source {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-            ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+        ORBInitProperties  = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         coordinatorName = new Parameter(this, "coordinatorName");
         coordinatorName.setToken(new StringToken("TaskCoordinator"));
@@ -146,7 +146,7 @@ public class TaskReceiver extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-     /** If the attribute is <i>blocking</i> update the local
+    /** If the attribute is <i>blocking</i> update the local
      *  cache of the parameter value, else if the attribute is
      *  <i>defaultToken<i> update the type of the output token to
      *  the be the same type of defaultToken, otherwise pass the
@@ -245,7 +245,7 @@ public class TaskReceiver extends Source {
      *  as possible. Wake up the waiting if there is any and unregister
      *  the Client object from the coordinator.
      */
-     public void stop() {
+    public void stop() {
         if (_coordinator!= null) {
             try {
                 _coordinator.unregister(((StringToken)thisClientName.getToken()).
@@ -264,7 +264,7 @@ public class TaskReceiver extends Source {
             }
         }
         if (_fireIsWaiting) {
-             synchronized( _lock) {
+            synchronized( _lock) {
                 _lock.notifyAll();
             }
             _fireIsWaiting = false;
@@ -296,13 +296,13 @@ public class TaskReceiver extends Source {
                     (coordinatorName.getToken()).toString());
             NameComponent path[] = {namecomp};
             _coordinator =
-                   ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper
-                   .narrow(ncRef.resolve(path));
+                ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper
+                .narrow(ncRef.resolve(path));
             _client = new Client();
             _orb.connect(_client);
             if (_coordinator != null) {
                 _coordinator.register(((StringToken)thisClientName.getToken()).
-                stringValue(), _client);
+                        stringValue(), _client);
             }
             //registe the consumer with the given name
         } catch (UserException ex) {
@@ -356,7 +356,7 @@ public class TaskReceiver extends Source {
          * Construct a pushConsumer.
          */
         public Client() {
-         super();
+            super();
         }
 
         /**
@@ -372,29 +372,29 @@ public class TaskReceiver extends Source {
                 _debug("got pushed data");
             }
             //try {
-                synchronized(_lock) {
-                    // Variable variable = new Variable();
-                    if (_debugging) {
-                        _debug("got pushed data:\n" + data.extract_string());
-                    }
-                   // variable.setExpression( data.extract_string());
-                   ////String string = variable.getExpression();
-                   //_lastReadToken = variable.getToken();
-                    _lastReadToken = new StringToken(data.extract_string());
-                    if (_debugging) {
-                       _debug(getName(), " receive data:\n" + _lastReadToken.toString());
-                    }
-                   if (_fireIsWaiting) {
-                       _lock.notifyAll();
-                   }else {
-                       try {
+            synchronized(_lock) {
+                // Variable variable = new Variable();
+                if (_debugging) {
+                    _debug("got pushed data:\n" + data.extract_string());
+                }
+                // variable.setExpression( data.extract_string());
+                ////String string = variable.getExpression();
+                //_lastReadToken = variable.getToken();
+                _lastReadToken = new StringToken(data.extract_string());
+                if (_debugging) {
+                    _debug(getName(), " receive data:\n" + _lastReadToken.toString());
+                }
+                if (_fireIsWaiting) {
+                    _lock.notifyAll();
+                }else {
+                    try {
                         getDirector().fireAtCurrentTime(
                                 TaskReceiver.this);
-                        } catch (IllegalActionException ex) {
-                            throw new CorbaIllegalActionException("failed in dealing with director.");
-                        }
-                   }
+                    } catch (IllegalActionException ex) {
+                        throw new CorbaIllegalActionException("failed in dealing with director.");
+                    }
                 }
+            }
 
             //} catch (IllegalActionException e) {
             //    throw new CorbaIllegalActionException("failed to construct.");

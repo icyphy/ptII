@@ -1,28 +1,28 @@
 /* An icon that displays specified text.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -52,11 +52,11 @@ import diva.gui.toolbox.FigureIcon;
 //////////////////////////////////////////////////////////////////////////
 //// TextIcon
 /**
-An icon that displays specified text.
+   An icon that displays specified text.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class TextIcon extends DynamicEditorIcon {
 
@@ -156,14 +156,14 @@ public class TextIcon extends DynamicEditorIcon {
         // is also called in the Swing thread, there is no possibility of
         // conflict here in adding the figure to the list of live figures.
         Runnable doSet = new Runnable() {
-            public void run() {
-                Iterator figures = _liveFigureIterator();
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((LabelFigure)figure).setFillPaint(_textColor);
+                public void run() {
+                    Iterator figures = _liveFigureIterator();
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((LabelFigure)figure).setFillPaint(_textColor);
+                    }
                 }
-            }
-        };
+            };
         SwingUtilities.invokeLater(doSet);
     }
 
@@ -181,14 +181,14 @@ public class TextIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
-            public void run() {
-                Iterator figures = _liveFigureIterator();
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((LabelFigure)figure).setFont(_font);
+                public void run() {
+                    Iterator figures = _liveFigureIterator();
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((LabelFigure)figure).setFont(_font);
+                    }
                 }
-            }
-        };
+            };
         SwingUtilities.invokeLater(doSet);
     }
 
@@ -206,14 +206,14 @@ public class TextIcon extends DynamicEditorIcon {
         // conflict here where that method is trying to add to the _figures
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
-            public void run() {
-                Iterator figures = _liveFigureIterator();
-                while (figures.hasNext()) {
-                    Object figure = figures.next();
-                    ((LabelFigure)figure).setString(_text);
+                public void run() {
+                    Iterator figures = _liveFigureIterator();
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((LabelFigure)figure).setString(_text);
+                    }
                 }
-            }
-        };
+            };
         Top.deferIfNecessary(doSet);
     }
 
@@ -223,7 +223,7 @@ public class TextIcon extends DynamicEditorIcon {
     // Default text.
     private String _DEFAULT_TEXT = "Double click to edit text.";
 
-     // The font to use.
+    // The font to use.
     private Font _font = new Font("SansSerif", Font.PLAIN, 12);
 
     // Default text.

@@ -26,8 +26,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
@@ -46,18 +46,18 @@ import javax.swing.JApplet;
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplet
 /**
-An Applet that can plot data from a URL.
-The URL should be specified using the dataurl applet parameter.
-The formatting commands are included in the file with the
-the data.
-If no URL is given, then a sample plot is generated.
+   An Applet that can plot data from a URL.
+   The URL should be specified using the dataurl applet parameter.
+   The formatting commands are included in the file with the
+   the data.
+   If no URL is given, then a sample plot is generated.
 
-@author Edward A. Lee, Christopher Hylands, Contributor: Roger Robins
-@version $Id$
-@since Ptolemy II 0.2
-@see PlotBox
-@see Plot
- */
+   @author Edward A. Lee, Christopher Hylands, Contributor: Roger Robins
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see PlotBox
+   @see Plot
+*/
 public class PlotApplet extends JApplet {
 
     /** Construct a Plot applet */
@@ -102,54 +102,54 @@ public class PlotApplet extends JApplet {
             if (_plot == null) {
                 _plot = newPlot();
             }
-        getContentPane().add(plot(), BorderLayout.NORTH);
+            getContentPane().add(plot(), BorderLayout.NORTH);
 
-        // Process the width and height applet parameters
-        int width, height;
-        String widthspec = getParameter("width");
-        if (widthspec != null) width = Integer.parseInt(widthspec);
-        else width = 400;
+            // Process the width and height applet parameters
+            int width, height;
+            String widthspec = getParameter("width");
+            if (widthspec != null) width = Integer.parseInt(widthspec);
+            else width = 400;
 
-        String heightspec = getParameter("height");
-        if (heightspec != null) height = Integer.parseInt(heightspec);
-        else height = 400;
+            String heightspec = getParameter("height");
+            if (heightspec != null) height = Integer.parseInt(heightspec);
+            else height = 400;
 
-        _setPlotSize(width, height);
-        plot().setButtons(true);
+            _setPlotSize(width, height);
+            plot().setButtons(true);
 
-        // Process the background parameter.
-        Color background = Color.white;
-        String colorspec = getParameter("background");
-        if (colorspec != null) background = PlotBox.getColorByName(colorspec);
-        setBackground(background);
-        plot().setBackground(background);
-        getContentPane().setBackground(background);
+            // Process the background parameter.
+            Color background = Color.white;
+            String colorspec = getParameter("background");
+            if (colorspec != null) background = PlotBox.getColorByName(colorspec);
+            setBackground(background);
+            plot().setBackground(background);
+            getContentPane().setBackground(background);
 
-        // Process the foreground parameter.
-        Color foreground = Color.black;
-        colorspec = getParameter("foreground");
-        if (colorspec != null) foreground = PlotBox.getColorByName(colorspec);
-        setForeground(foreground);
-        plot().setForeground(foreground);
-        plot().setVisible(true);
+            // Process the foreground parameter.
+            Color foreground = Color.black;
+            colorspec = getParameter("foreground");
+            if (colorspec != null) foreground = PlotBox.getColorByName(colorspec);
+            setForeground(foreground);
+            plot().setForeground(foreground);
+            plot().setVisible(true);
 
-        // Process the dataurl parameter.
-        String dataurlspec = getParameter("dataurl");
-        if (dataurlspec != null) {
-            try {
-                showStatus("Reading data");
-                URL dataurl = new URL(getDocumentBase(), dataurlspec);
-                InputStream in = dataurl.openStream();
-                _read(in);
-                showStatus("Done");
-            } catch (MalformedURLException e) {
-                System.err.println(e.toString());
-            } catch (FileNotFoundException e) {
-                System.err.println("PlotApplet: file not found: " +e);
-            } catch (IOException e) {
-                System.err.println("PlotApplet: error reading input file: " +e);
+            // Process the dataurl parameter.
+            String dataurlspec = getParameter("dataurl");
+            if (dataurlspec != null) {
+                try {
+                    showStatus("Reading data");
+                    URL dataurl = new URL(getDocumentBase(), dataurlspec);
+                    InputStream in = dataurl.openStream();
+                    _read(in);
+                    showStatus("Done");
+                } catch (MalformedURLException e) {
+                    System.err.println(e.toString());
+                } catch (FileNotFoundException e) {
+                    System.err.println("PlotApplet: file not found: " +e);
+                } catch (IOException e) {
+                    System.err.println("PlotApplet: error reading input file: " +e);
+                }
             }
-        }
         }
     }
 

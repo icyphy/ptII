@@ -1,28 +1,28 @@
 /* Check the dining philosopher model.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (yuhong@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
@@ -44,24 +44,24 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// Check
 /**
-Check the dining philosopher model.
-Construct the interface automata model for the dining philosopher demo
-and check for deadlock.
-The primitive components in the model are: CSPReceiver, ConditionalSend,
-ConditionalBranchController, Philosopher, and Chopstick. It is assumed
-that the MoML files for these models are in the current directory.
-<p>
-The number of philosophers around the dining table can be controlled on
-the command line. The usage is:
-<pre>
-java ptolemy.domains.csp.demo.DiningPhilosophers.checkDeadlock.Check <numberOfPhilosophers> <useSimple>
-</pre>
-The useSimple argument is either "simple" or "full", indicating if the simple
-or the full conditional send model is used. This argument is optional. The
-default is simple.
+   Check the dining philosopher model.
+   Construct the interface automata model for the dining philosopher demo
+   and check for deadlock.
+   The primitive components in the model are: CSPReceiver, ConditionalSend,
+   ConditionalBranchController, Philosopher, and Chopstick. It is assumed
+   that the MoML files for these models are in the current directory.
+   <p>
+   The number of philosophers around the dining table can be controlled on
+   the command line. The usage is:
+   <pre>
+   java ptolemy.domains.csp.demo.DiningPhilosophers.checkDeadlock.Check <numberOfPhilosophers> <useSimple>
+   </pre>
+   The useSimple argument is either "simple" or "full", indicating if the simple
+   or the full conditional send model is used. This argument is optional. The
+   default is simple.
 
-@author Yuhong Xiong
-@version $Id$
+   @author Yuhong Xiong
+   @version $Id$
 */
 
 public class Check {

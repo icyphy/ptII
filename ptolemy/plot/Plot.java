@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
@@ -62,153 +62,153 @@ import javax.swing.JComponent;
 //////////////////////////////////////////////////////////////////////////
 //// Plot
 /**
-A flexible signal plotter.  The plot can be configured and data can
-be provided either through a file with commands or through direct
-invocation of the public methods of the class.
-<p>
-When calling the public methods, in most cases the changes will not
-be visible until paintComponent() is called.  To request that this
-be done, call repaint().  One exception is addPoint(), which
-makes the new point visible immediately if the plot is visible on
-the screen and addPoint() is called from the event dispatching thread.
-<p>
-This base class supports a simple file syntax that has largely been
-replaced by the XML-based PlotML syntax.  To read a file or a
-URL in this older syntax, use the read() method.
-This older syntax contains any number commands,
-one per line.  Unrecognized commands and commands with syntax
-errors are ignored.  Comments are denoted by a line starting with a
-pound sign "#".  The recognized commands include those supported by
-the base class, plus a few more.  The commands are case
-insensitive, but are usually capitalized.  The number of data sets
-to be plotted does not need to be specified.  Data sets are added as needed.
-Each dataset can be optionally identified with
-color (see the base class) or with unique marks.  The style of
-marks used to denote a data point is defined by one of the following
-commands:
-<pre>
-Marks: none
-Marks: points
-Marks: dots
-Marks: various
-Marks: pixels
-</pre>
-Here, "points" are small dots, while "dots" are larger.  If "various"
-is specified, then unique marks are used for the first ten data sets,
-and then recycled. If "pixels" are specified, then each point is
-drawn as one pixel.
-Using no marks is useful when lines connect the points in a plot,
-which is done by default.  However, if persistence is set, then you
-may want to choose "pixels" because the lines may overlap, resulting
-in annoying gaps in the drawn line.
-If the above directive appears before any DataSet directive, then it
-specifies the default for all data sets.  If it appears after a DataSet
-directive, then it applies only to that data set.
-<p>
-To disable connecting lines, use:
-<pre>
-Lines: off
-</pre>
-To reenable them, use
-<pre>
-Lines: on
-</pre>
-You can also specify "impulses", which are lines drawn from a plotted point
-down to the x axis.  Plots with impulses are often called "stem plots."
-These are off by default, but can be turned on with the
-command:
-<pre>
-Impulses: on
-</pre>
-or back off with the command
-<pre>
-Impulses: off
-</pre>
-If that command appears before any DataSet directive, then the command
-applies to all data sets.  Otherwise, it applies only to the current data
-set.
-To create a bar graph, turn off lines and use any of the following commands:
-<pre>
-Bars: on
-Bars: <i>width</i>
-Bars: <i>width, offset</i>
-</pre>
-The <i>width</i> is a real number specifying the width of the bars
-in the units of the x axis.  The <i>offset</i> is a real number
-specifying how much the bar of the <i>i</i><sup>th</sup> data set
-is offset from the previous one.  This allows bars to "peek out"
-from behind the ones in front.  Note that the frontmost data set
-will be the first one.  To turn off bars, use
-<pre>
-Bars: off
-</pre>
-To specify data to be plotted, start a data set with the following command:
-<pre>
-DataSet: <i>string</i>
-</pre>
-Here, <i>string</i> is a label that will appear in the legend.
-It is not necessary to enclose the string in quotation marks.
-To start a new dataset without giving it a name, use:
-<pre>
-DataSet:
-</pre>
-In this case, no item will appear in the legend.
-New datasets are plotted <i>behind</i> the previous ones.
-If the following directive occurs:
-<pre>
-ReuseDataSets: on
-</pre>
-Then datasets with the same name will be merged.  This makes it
-easier to combine multiple datafiles that contain the same datasets
-into one file.  By default, this capability is turned off, so
-datasets with the same name are not merged.
-The data itself is given by a sequence of commands with one of the
-following forms:
-<pre>
-<i>x</i>, <i>y</i>
-draw: <i>x</i>, <i>y</i>
-move: <i>x</i>, <i>y</i>
-<i>x</i>, <i>y</i>, <i>yLowErrorBar</i>, <i>yHighErrorBar</i>
-draw: <i>x</i>, <i>y</i>, <i>yLowErrorBar</i>, <i>yHighErrorBar</i>
-move: <i>x</i>, <i>y</i>, <i>yLowErrorBar</i>, <i>yHighErrorBar</i>
-</pre>
-The "draw" command is optional, so the first two forms are equivalent.
-The "move" command causes a break in connected points, if lines are
-being drawn between points. The numbers <i>x</i> and <i>y</i> are
-arbitrary numbers as supported by the Double parser in Java.
-If there are four numbers, then the last two numbers are assumed to
-be the lower and upper values for error bars.
-The numbers can be separated by commas, spaces or tabs.
-<p>Some of the methods, such as those that add points a plot, are
-executed in the event thread, possibly some time after they are called.
-If they are called from a thread different from the event thread,
-then the order in which changes to the plot take effect may be
-surprising.  We recommend that any code you write that changes
-the plot in visible ways be executed in the event thread. You
-can accomplish this using the following template:
-<pre>
-         Runnable doAction = new Runnable() {
-             public void run() {
-                ... make changes here (e.g. setMarksStyle()) ...
-            }
-         };
-         plot.deferIfNecessary(doAction);
-</pre>
-<p>
-This plotter has some <A NAME="ptplot limitations">limitations</a>:
-<ul>
-<li> If you zoom in far enough, the plot becomes unreliable.
-     In particular, if the total extent of the plot is more than
-     2<sup>32</sup> times extent of the visible area, quantization
-     errors can result in displaying points or lines.
-     Note that 2<sup>32</sup> is over 4 billion.
-<li> The limitations of the log axis facility are listed in
-     the <code>_gridInit()</code> method in the PlotBox class.
-</ul>
+   A flexible signal plotter.  The plot can be configured and data can
+   be provided either through a file with commands or through direct
+   invocation of the public methods of the class.
+   <p>
+   When calling the public methods, in most cases the changes will not
+   be visible until paintComponent() is called.  To request that this
+   be done, call repaint().  One exception is addPoint(), which
+   makes the new point visible immediately if the plot is visible on
+   the screen and addPoint() is called from the event dispatching thread.
+   <p>
+   This base class supports a simple file syntax that has largely been
+   replaced by the XML-based PlotML syntax.  To read a file or a
+   URL in this older syntax, use the read() method.
+   This older syntax contains any number commands,
+   one per line.  Unrecognized commands and commands with syntax
+   errors are ignored.  Comments are denoted by a line starting with a
+   pound sign "#".  The recognized commands include those supported by
+   the base class, plus a few more.  The commands are case
+   insensitive, but are usually capitalized.  The number of data sets
+   to be plotted does not need to be specified.  Data sets are added as needed.
+   Each dataset can be optionally identified with
+   color (see the base class) or with unique marks.  The style of
+   marks used to denote a data point is defined by one of the following
+   commands:
+   <pre>
+   Marks: none
+   Marks: points
+   Marks: dots
+   Marks: various
+   Marks: pixels
+   </pre>
+   Here, "points" are small dots, while "dots" are larger.  If "various"
+   is specified, then unique marks are used for the first ten data sets,
+   and then recycled. If "pixels" are specified, then each point is
+   drawn as one pixel.
+   Using no marks is useful when lines connect the points in a plot,
+   which is done by default.  However, if persistence is set, then you
+   may want to choose "pixels" because the lines may overlap, resulting
+   in annoying gaps in the drawn line.
+   If the above directive appears before any DataSet directive, then it
+   specifies the default for all data sets.  If it appears after a DataSet
+   directive, then it applies only to that data set.
+   <p>
+   To disable connecting lines, use:
+   <pre>
+   Lines: off
+   </pre>
+   To reenable them, use
+   <pre>
+   Lines: on
+   </pre>
+   You can also specify "impulses", which are lines drawn from a plotted point
+   down to the x axis.  Plots with impulses are often called "stem plots."
+   These are off by default, but can be turned on with the
+   command:
+   <pre>
+   Impulses: on
+   </pre>
+   or back off with the command
+   <pre>
+   Impulses: off
+   </pre>
+   If that command appears before any DataSet directive, then the command
+   applies to all data sets.  Otherwise, it applies only to the current data
+   set.
+   To create a bar graph, turn off lines and use any of the following commands:
+   <pre>
+   Bars: on
+   Bars: <i>width</i>
+   Bars: <i>width, offset</i>
+   </pre>
+   The <i>width</i> is a real number specifying the width of the bars
+   in the units of the x axis.  The <i>offset</i> is a real number
+   specifying how much the bar of the <i>i</i><sup>th</sup> data set
+   is offset from the previous one.  This allows bars to "peek out"
+   from behind the ones in front.  Note that the frontmost data set
+   will be the first one.  To turn off bars, use
+   <pre>
+   Bars: off
+   </pre>
+   To specify data to be plotted, start a data set with the following command:
+   <pre>
+   DataSet: <i>string</i>
+   </pre>
+   Here, <i>string</i> is a label that will appear in the legend.
+   It is not necessary to enclose the string in quotation marks.
+   To start a new dataset without giving it a name, use:
+   <pre>
+   DataSet:
+   </pre>
+   In this case, no item will appear in the legend.
+   New datasets are plotted <i>behind</i> the previous ones.
+   If the following directive occurs:
+   <pre>
+   ReuseDataSets: on
+   </pre>
+   Then datasets with the same name will be merged.  This makes it
+   easier to combine multiple datafiles that contain the same datasets
+   into one file.  By default, this capability is turned off, so
+   datasets with the same name are not merged.
+   The data itself is given by a sequence of commands with one of the
+   following forms:
+   <pre>
+   <i>x</i>, <i>y</i>
+   draw: <i>x</i>, <i>y</i>
+   move: <i>x</i>, <i>y</i>
+   <i>x</i>, <i>y</i>, <i>yLowErrorBar</i>, <i>yHighErrorBar</i>
+   draw: <i>x</i>, <i>y</i>, <i>yLowErrorBar</i>, <i>yHighErrorBar</i>
+   move: <i>x</i>, <i>y</i>, <i>yLowErrorBar</i>, <i>yHighErrorBar</i>
+   </pre>
+   The "draw" command is optional, so the first two forms are equivalent.
+   The "move" command causes a break in connected points, if lines are
+   being drawn between points. The numbers <i>x</i> and <i>y</i> are
+   arbitrary numbers as supported by the Double parser in Java.
+   If there are four numbers, then the last two numbers are assumed to
+   be the lower and upper values for error bars.
+   The numbers can be separated by commas, spaces or tabs.
+   <p>Some of the methods, such as those that add points a plot, are
+   executed in the event thread, possibly some time after they are called.
+   If they are called from a thread different from the event thread,
+   then the order in which changes to the plot take effect may be
+   surprising.  We recommend that any code you write that changes
+   the plot in visible ways be executed in the event thread. You
+   can accomplish this using the following template:
+   <pre>
+   Runnable doAction = new Runnable() {
+   public void run() {
+   ... make changes here (e.g. setMarksStyle()) ...
+   }
+   };
+   plot.deferIfNecessary(doAction);
+   </pre>
+   <p>
+   This plotter has some <A NAME="ptplot limitations">limitations</a>:
+   <ul>
+   <li> If you zoom in far enough, the plot becomes unreliable.
+   In particular, if the total extent of the plot is more than
+   2<sup>32</sup> times extent of the visible area, quantization
+   errors can result in displaying points or lines.
+   Note that 2<sup>32</sup> is over 4 billion.
+   <li> The limitations of the log axis facility are listed in
+   the <code>_gridInit()</code> method in the PlotBox class.
+   </ul>
 
-@author Edward A. Lee, Christopher Hylands
-@version $Id$
-@since Ptolemy II 0.2
+   @author Edward A. Lee, Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class Plot extends PlotBox {
 
@@ -1069,9 +1069,9 @@ public class Plot extends PlotBox {
         if (clip) {
             // Rule out impossible cases.
             if (!((endx <= _ulx && startx <= _ulx) ||
-                    (endx >= _lrx && startx >= _lrx) ||
-                    (endy <= _uly && starty <= _uly) ||
-                    (endy >= _lry && starty >= _lry))) {
+                        (endx >= _lrx && startx >= _lrx) ||
+                        (endy <= _uly && starty <= _uly) ||
+                        (endy >= _lry && starty >= _lry))) {
                 // If the end point is out of x range, adjust
                 // end point to boundary.
                 // The integer arithmetic has to be done with longs so as
@@ -1079,11 +1079,11 @@ public class Plot extends PlotBox {
                 if (startx != endx) {
                     if (endx < _ulx) {
                         endy = (int)(endy + ((long)(starty - endy) *
-                                (_ulx - endx))/(startx - endx));
+                                             (_ulx - endx))/(startx - endx));
                         endx = _ulx;
                     } else if (endx > _lrx) {
                         endy = (int)(endy + ((long)(starty - endy) *
-                                (_lrx - endx))/(startx - endx));
+                                             (_lrx - endx))/(startx - endx));
                         endx = _lrx;
                     }
                 }
@@ -1093,11 +1093,11 @@ public class Plot extends PlotBox {
                 if (starty != endy) {
                     if (endy < _uly) {
                         endx = (int)(endx + ((long)(startx - endx) *
-                                (_uly - endy))/(starty - endy));
+                                             (_uly - endy))/(starty - endy));
                         endy = _uly;
                     } else if (endy > _lry) {
                         endx = (int)(endx + ((long)(startx - endx) *
-                                (_lry - endy))/(starty - endy));
+                                             (_lry - endy))/(starty - endy));
                         endy = _lry;
                     }
                 }
@@ -1106,22 +1106,22 @@ public class Plot extends PlotBox {
                 if (startx != endx) {
                     if (startx < _ulx) {
                         starty = (int)(starty + ((long)(endy - starty) *
-                                (_ulx - startx))/(endx - startx));
+                                               (_ulx - startx))/(endx - startx));
                         startx = _ulx;
                     } else if (startx > _lrx) {
                         starty = (int)(starty + ((long)(endy - starty) *
-                                (_lrx - startx))/(endx - startx));
+                                               (_lrx - startx))/(endx - startx));
                         startx = _lrx;
                     }
                 }
                 if (starty != endy) {
                     if (starty < _uly) {
                         startx = (int)(startx + ((long)(endx - startx) *
-                                (_uly - starty))/(endy - starty));
+                                               (_uly - starty))/(endy - starty));
                         starty = _uly;
                     } else if (starty > _lry) {
                         startx = (int)(startx + ((long)(endx - startx) *
-                                (_lry - starty))/(endy - starty));
+                                               (_lry - starty))/(endy - starty));
                         starty = _lry;
                     }
                 }
@@ -1534,7 +1534,7 @@ public class Plot extends PlotBox {
                             // We have more numbers, assume that this is
                             // an error bar
                             String yl = (line.substring(0,
-                                    fieldsplit3)).trim();
+                                                 fieldsplit3)).trim();
                             String yh = (line.substring(fieldsplit3+1)).trim();
                             Double yLowEB = new Double(yl);
                             Double yHighEB = new Double(yh);
@@ -1587,7 +1587,7 @@ public class Plot extends PlotBox {
                 ((Graphics2D)graphics).setStroke(_lineStroke2);
             } else {
                 ((Graphics2D)graphics).setStroke(new BasicStroke(
-                        width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+                                                         width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
             }
         }
     }

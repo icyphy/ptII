@@ -1,28 +1,28 @@
 /* Computation of transitive closure of a directed graph using the
-Floyd-Warshall algorithm.
+   Floyd-Warshall algorithm.
 
- Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (shahrooz@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
+   @ProposedRating Red (shahrooz@eng.umd.edu)
+   @AcceptedRating Red (ssb@eng.umd.edu)
 
 */
 
@@ -39,22 +39,22 @@ import ptolemy.graph.analysis.analyzer.TransitiveClosureAnalyzer;
 //////////////////////////////////////////////////////////////////////////
 //// FloydWarshallTransitiveClosureStrategy
 /**
-Computation of transitive closure of a directed graph using the
-Floyd-Warshall algorithm described in:
-Thomas H. Cormen, Charles E. Leiserson and Ronald L. Rivest:
-Introduction to Algorithms. Cambridge: MIT Press, 1990.
-<p>
-The complexity of this algorithm is O(N^3), where N is the number of nodes.
-<p>
-@see ptolemy.graph.Graph#nodeLabel
-@see ptolemy.graph.analysis.TransitiveClosureAnalysis
-@since Ptolemy II 4.0
-@author Shahrooz Shahparnia based on an initial implementation by Ming Yung Ko.
-@version $Id$
+   Computation of transitive closure of a directed graph using the
+   Floyd-Warshall algorithm described in:
+   Thomas H. Cormen, Charles E. Leiserson and Ronald L. Rivest:
+   Introduction to Algorithms. Cambridge: MIT Press, 1990.
+   <p>
+   The complexity of this algorithm is O(N^3), where N is the number of nodes.
+   <p>
+   @see ptolemy.graph.Graph#nodeLabel
+   @see ptolemy.graph.analysis.TransitiveClosureAnalysis
+   @since Ptolemy II 4.0
+   @author Shahrooz Shahparnia based on an initial implementation by Ming Yung Ko.
+   @version $Id$
 */
 
 public class FloydWarshallTransitiveClosureStrategy
-        extends FloydWarshallStrategy implements TransitiveClosureAnalyzer {
+    extends FloydWarshallStrategy implements TransitiveClosureAnalyzer {
 
     /** Construct a transitive closure analysis for a given directed graph.
      *  @param graph The given directed graph.
@@ -75,7 +75,7 @@ public class FloydWarshallTransitiveClosureStrategy
      */
     public boolean pathExistence(Node startNode, Node endNode) {
         return _transitiveClosure[graph().nodeLabel(startNode)]
-                [graph().nodeLabel(endNode)];
+            [graph().nodeLabel(endNode)];
     }
 
     /** Return a description of the analyzer.
@@ -84,7 +84,7 @@ public class FloydWarshallTransitiveClosureStrategy
      */
     public String toString() {
         return "Transitive closure analyzer"
-                + " based on the Floyd-Warshall algorithm.";
+            + " based on the Floyd-Warshall algorithm.";
     }
 
     /** Compute the transitive closure of the graph under analysis in the
@@ -129,10 +129,10 @@ public class FloydWarshallTransitiveClosureStrategy
             }
             Node node = graph().node(i);
             Iterator outputEdges =
-                    ((DirectedGraph)graph()).outputEdges(node).iterator();
+                ((DirectedGraph)graph()).outputEdges(node).iterator();
             while (outputEdges.hasNext()) {
                 int sinkLabel = ((DirectedGraph)graph()).
-                        nodeLabel(((Edge)outputEdges.next()).sink());
+                    nodeLabel(((Edge)outputEdges.next()).sink());
                 _transitiveClosure[i][sinkLabel] = true;
             }
         }
@@ -146,7 +146,7 @@ public class FloydWarshallTransitiveClosureStrategy
      */
     protected void _floydWarshallComputation(int k, int i, int j) {
         _transitiveClosure[i][j] |= _transitiveClosure[i][k] &
-                _transitiveClosure[k][j];
+            _transitiveClosure[k][j];
     }
 
 

@@ -22,11 +22,11 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+ @ProposedRating Yellow (eal@eecs.berkeley.edu)
+ @AcceptedRating Red (pjb2e@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib.network.mac;
@@ -145,7 +145,7 @@ public class Backoff extends MACActorBase {
         int ct = 0;
         Director director = getDirector();
         _currentTime = director.getCurrentTime();
-            int kind=whoTimeout();
+        int kind=whoTimeout();
         // if a timer is processed, should not consume the message token
         // kind = -1 means no timer event.
         if (kind == -1) {
@@ -162,71 +162,71 @@ public class Backoff extends MACActorBase {
         }
 
         switch (_state) {
-            case No_Backoff:
-              switch (_messageType) {
-                  case Backoff:
-                      mBkIP = true;
-                      _cnt = ((IntToken)_inputMessage.get("cnt")).intValue();
-                      if (_cnt<0) {
-                          int ccw = ((IntToken)_inputMessage.get("ccw")).intValue();
-                          _slotCnt = _generateRandom(ccw);
-                      } else
-                          _slotCnt = _cnt;
-                      if (_status == Idle)
-                           _startBackoff();
-                      else {
-                          _cnt = 1; //backoff done will return with -1; another backoff will follow
-                          _state = Channel_Busy;
-                      }
-                  break;
-                  case Idle:
-                      _status=Idle;
-                  break;
-
-                  case Busy:
-                      _status=Busy;
-                  break;
-              }
-            break;
-
-            case Channel_Busy:
-              switch(_messageType) {
-                  // modify standard here
-                  case Idle:
+        case No_Backoff:
+            switch (_messageType) {
+            case Backoff:
+                mBkIP = true;
+                _cnt = ((IntToken)_inputMessage.get("cnt")).intValue();
+                if (_cnt<0) {
+                    int ccw = ((IntToken)_inputMessage.get("ccw")).intValue();
+                    _slotCnt = _generateRandom(ccw);
+                } else
+                    _slotCnt = _cnt;
+                if (_status == Idle)
                     _startBackoff();
-                      break;
-                  // end modification
+                else {
+                    _cnt = 1; //backoff done will return with -1; another backoff will follow
+                    _state = Channel_Busy;
+                }
+                break;
+            case Idle:
+                _status=Idle;
+                break;
 
-                  case Cancel:
-                    _backoffDone(_slotCnt);
-                  break;
-              }
+            case Busy:
+                _status=Busy;
+                break;
+            }
             break;
 
-            case Channel_Idle:
-              // modify standard here
-              if (kind == BackoffTimeOut)
-              {
-                  if (_cnt == 0)
-                      ct = -2;
-                  else
-                      ct = -1;
-                  _backoffDone(ct);
-              }
-              switch(_messageType) {
-              // modify standard here
-                  case Busy:
-                      _slotCnt -= (int)((_currentTime - _backoffStartTime)*1e6/_aSlotTime);
-                      cancelTimer(_BackoffTimer);
-                      _state = Channel_Busy;
-                      _status=Busy;
-                  break;
-                  // end modification
+        case Channel_Busy:
+            switch(_messageType) {
+                // modify standard here
+            case Idle:
+                _startBackoff();
+                break;
+                // end modification
 
-                  case Cancel:
-                      _backoffDone(_slotCnt);
-                  break;
-              }
+            case Cancel:
+                _backoffDone(_slotCnt);
+                break;
+            }
+            break;
+
+        case Channel_Idle:
+            // modify standard here
+            if (kind == BackoffTimeOut)
+                {
+                    if (_cnt == 0)
+                        ct = -2;
+                    else
+                        ct = -1;
+                    _backoffDone(ct);
+                }
+            switch(_messageType) {
+                // modify standard here
+            case Busy:
+                _slotCnt -= (int)((_currentTime - _backoffStartTime)*1e6/_aSlotTime);
+                cancelTimer(_BackoffTimer);
+                _state = Channel_Busy;
+                _status=Busy;
+                break;
+                // end modification
+
+            case Cancel:
+                _backoffDone(_slotCnt);
+                break;
+            }
             break;
         }
         _inputMessage = null;

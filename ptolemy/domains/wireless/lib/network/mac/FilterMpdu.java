@@ -24,11 +24,11 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+ @ProposedRating Yellow (eal@eecs.berkeley.edu)
+ @AcceptedRating Red (pjb2e@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib.network.mac;
@@ -48,12 +48,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// FilterMPDU
 /**
-Filter the received MPDU (MAC Protocol Data Unit) packets.
-The code is based on a OMNET model created by Charlie Zhong.
+   Filter the received MPDU (MAC Protocol Data Unit) packets.
+   The code is based on a OMNET model created by Charlie Zhong.
 
-@author Xiaojun Liu
-@version FilterMpdu.java,v 1.6 2004/04/12 15:30:36 cxh Exp
-@since Ptolemy II 4.0
+   @author Xiaojun Liu
+   @version FilterMpdu.java,v 1.6 2004/04/12 15:30:36 cxh Exp
+   @since Ptolemy II 4.0
 */
 public class FilterMpdu extends MACActorBase {
 
@@ -130,13 +130,13 @@ public class FilterMpdu extends MACActorBase {
                 RecordToken msgout = new RecordToken(
                         RxIndicateMessageFields,
                         new Token[] {
-                                new IntToken(RxIndicate),
-                                //TODO: how to implement this?
-                                //msgout->pdu=pdu->copyEncapMsg();
-                                pdu,
-                                msg.get("endRx"),
-                                msg.get("rxRate")
-                                });
+                            new IntToken(RxIndicate),
+                            //TODO: how to implement this?
+                            //msgout->pdu=pdu->copyEncapMsg();
+                            pdu,
+                            msg.get("endRx"),
+                            msg.get("rxRate")
+                        });
                 // send RxIndicate message to the ProtocolControl block
                 toProtocolControl.send(0, msgout);
                 if (_debugging) _debug("FILTER: Sent RxIndicate");
@@ -148,13 +148,13 @@ public class FilterMpdu extends MACActorBase {
                     RecordToken msgout = new RecordToken(
                             RxIndicateMessageFields,
                             new Token[] {
-                                    new IntToken(RxIndicate),
-                                    //TODO: how to implement this?
-                                    //msgout->pdu=pdu->copyEncapMsg();
-                                    pdu,
-                                    msg.get("endRx"),
-                                    msg.get("rxRate")
-                                    });
+                                new IntToken(RxIndicate),
+                                //TODO: how to implement this?
+                                //msgout->pdu=pdu->copyEncapMsg();
+                                pdu,
+                                msg.get("endRx"),
+                                msg.get("rxRate")
+                            });
                     // only if it is not a duplicate packet, will it be forwarded
                     toProtocolControl.send(0, msgout);
                     if (_debugging) _debug("FILTER: Sent RxIndicate");
@@ -164,11 +164,11 @@ public class FilterMpdu extends MACActorBase {
                     RecordToken msgout = new RecordToken(
                             NeedAckMessageFields,
                             new Token[] {
-                                    new IntToken(NeedAck),
-                                    pdu.get("Addr2"),
-                                    msg.get("endRx"),
-                                    msg.get("rxRate"),
-                                    new IntToken(dAck)});
+                                new IntToken(NeedAck),
+                                pdu.get("Addr2"),
+                                msg.get("endRx"),
+                                msg.get("rxRate"),
+                                new IntToken(dAck)});
                     // if it is a data packet, an Ack is needed
                     toProtocolControl.send(0, msgout);
                     if (_debugging) _debug("FILTER: Sent NeedAck");
@@ -186,12 +186,12 @@ public class FilterMpdu extends MACActorBase {
                     RecordToken msgout = new RecordToken(
                             SetNavMessageFields,
                             new Token[] {
-                                    new IntToken(SetNav),
-                                    msg.get("endRx"),
-                                    new IntToken(dNav),
-                                    new IntToken(src)});
+                                new IntToken(SetNav),
+                                msg.get("endRx"),
+                                new IntToken(dNav),
+                                new IntToken(src)});
                     //TODO: send(msgout, toChannelstateGateId+msgin->channel);
-                     // ask the ChannelState process to make reservation
+                    // ask the ChannelState process to make reservation
                     toChannelState.send(0, msgout);
                 }
             } // end of RTS
@@ -235,16 +235,16 @@ public class FilterMpdu extends MACActorBase {
             // if both Addr2 and SeqNum match, use this entry
             // but overwite its FragNum
             if (addr == tuple[0] && seqNum == tuple[1])
-            {
-                tuple[2]=fragNum;
-                return;
-            }
+                {
+                    tuple[2]=fragNum;
+                    return;
+                }
         }
         // only if no entry is found, will we add a new one
         int[] tuple = new int[] {
-                intFieldValue(pdu, "Addr2"),
-                intFieldValue(pdu, "SeqNum"),
-                intFieldValue(pdu, "FragNum")};
+            intFieldValue(pdu, "Addr2"),
+            intFieldValue(pdu, "SeqNum"),
+            intFieldValue(pdu, "FragNum")};
         if (_tupleCache.size() == _TUPLE_CACHE_SIZE)
             _tupleCache.removeLast();
         _tupleCache.addFirst(tuple);

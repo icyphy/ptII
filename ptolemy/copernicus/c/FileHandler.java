@@ -44,9 +44,9 @@ import java.io.Serializable;
 
 /** A class that takes care of common File I/O functions.
 
-   @author Ankush Varma
-   @version $Id$
-   @since Ptolemy II 2.0
+@author Ankush Varma
+@version $Id$
+@since Ptolemy II 2.0
 */
 
 public class FileHandler {

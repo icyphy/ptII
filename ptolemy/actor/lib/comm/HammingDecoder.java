@@ -1,28 +1,28 @@
 /* Hamming Decoder.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -44,28 +44,28 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// HammingDecoder
 /**
-Decode a (<i>n</i>, <i>k</i>) Hamming code, where <i>n</i> is specified by
-parameter <i>codedRate</i> and <i>k</i> is specified by parameter
-<i>uncodedRate</i>.
-<p>
-The Hamming code can correct one-bit error.
-To encode a Hamming code, the HammingCoder consumes <i>k</i> information bits
-during each firing and consider them as a row vector <i><u>X</u></i>. Its
-Hamming code is <i><u>Y</u></i> = <i><u>X</u></i> * G.
-<p>
-If there is no error in <i><u>Y</u></i>,
-<i><u>Y</u></i> * H<sup>T</sup> should be a zero vector of length <i>n - k</i>.
-Otherwise <i><u>S</u></i> =  <i><u>Y</u></i> * H<sup>T</sup> is called the
-syndrome. Let <i><u>S</u></i> be the i-th column of H. The HammingDecoder
-declares there is an error at the i-th element of <i><u>Y</i></u>.
-<p>
-For more information on Hamming codes, see HammingCoder and Proakis, Digital
-Communications, Fourth Edition, McGraw-Hill, 2001, pp. 448-450.
-<p>
-@author Rachel Zhou
-@version $Id$
-@since Ptolemy II 3.0
-@see HammingCoder
+   Decode a (<i>n</i>, <i>k</i>) Hamming code, where <i>n</i> is specified by
+   parameter <i>codedRate</i> and <i>k</i> is specified by parameter
+   <i>uncodedRate</i>.
+   <p>
+   The Hamming code can correct one-bit error.
+   To encode a Hamming code, the HammingCoder consumes <i>k</i> information bits
+   during each firing and consider them as a row vector <i><u>X</u></i>. Its
+   Hamming code is <i><u>Y</u></i> = <i><u>X</u></i> * G.
+   <p>
+   If there is no error in <i><u>Y</u></i>,
+   <i><u>Y</u></i> * H<sup>T</sup> should be a zero vector of length <i>n - k</i>.
+   Otherwise <i><u>S</u></i> =  <i><u>Y</u></i> * H<sup>T</sup> is called the
+   syndrome. Let <i><u>S</u></i> be the i-th column of H. The HammingDecoder
+   declares there is an error at the i-th element of <i><u>Y</i></u>.
+   <p>
+   For more information on Hamming codes, see HammingCoder and Proakis, Digital
+   Communications, Fourth Edition, McGraw-Hill, 2001, pp. 448-450.
+   <p>
+   @author Rachel Zhou
+   @version $Id$
+   @since Ptolemy II 3.0
+   @see HammingCoder
 */
 
 public class HammingDecoder extends Transformer {

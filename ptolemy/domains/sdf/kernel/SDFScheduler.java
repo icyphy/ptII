@@ -1,28 +1,28 @@
 /* A Scheduler for the SDF domain
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Green (neuendor@eecs.berkeley.edu)
@@ -184,7 +184,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         SDFDirector director = (SDFDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
         for (Iterator ports = model.portList().iterator();
-            ports.hasNext();) {
+             ports.hasNext();) {
             IOPort port = (IOPort) ports.next();
             if (!(port instanceof ParameterPort)) {
                 if (port.isInput()) {
@@ -228,7 +228,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @throws IllegalActionException If any called method throws it.
      */
     public void setContainerRates(Map externalRates)
-        throws NotSchedulableException, IllegalActionException  {
+            throws NotSchedulableException, IllegalActionException  {
         _saveContainerRates(externalRates);
     }
 
@@ -240,11 +240,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     public void valueChanged(Settable settable) {
         // FIXME: causes
         //for (Iterator variables = _rateVariables.iterator();
-//             variables.hasNext();) {
-//             Variable variable = (Variable)variables.next();
-//             variable.removeValueListener(this);
-//         }
-//        System.out.println("rate value changed: " + settable.getFullName());
+        //             variables.hasNext();) {
+        //             Variable variable = (Variable)variables.next();
+        //             variable.removeValueListener(this);
+        //         }
+        //        System.out.println("rate value changed: " + settable.getFullName());
         //   _rateVariables.clear();
         setValid(false);
     }
@@ -705,7 +705,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         Entity changeContext =
             analysis.getChangeContext(variable);
         if (!(changeContext == model ||
-                   changeContext.deepContains(model))) {
+                    changeContext.deepContains(model))) {
             throw new IllegalActionException(variable,
                     "The SDF rate parameter changes during " +
                     "execution of the schedule!");
@@ -722,10 +722,10 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     (SDFDirector)getContainer());
         Entity scheduleChangeContext = (Entity)toplevel();
         for (Iterator entities = model.deepEntityList().iterator();
-            entities.hasNext();) {
+             entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             for (Iterator ports = entity.portList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 Port port = (Port) ports.next();
                 Set set = analysis.getNotConstVariables(port);
                 Variable variable;

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
@@ -70,21 +70,21 @@ import ptolemy.plot.plotml.PlotMLParser;
 //////////////////////////////////////////////////////////////////////////
 //// PlotterBase
 /**
-Base class for plotters.  This class contains an instance of the
-PlotBox class from the Ptolemy plot package as a public member,
-although which subclass of PlotBox is created is left to derived classes.
-It provides a parameter that determines whether to fill the plot
-when wrapup is invoked. It also has a <i>legend</i> parameter,
-which gives a comma-separated list of labels to attach to
-each dataset.  Normally, the number of elements in this list
-should equal the number of input channels, although this
-is not enforced.
+   Base class for plotters.  This class contains an instance of the
+   PlotBox class from the Ptolemy plot package as a public member,
+   although which subclass of PlotBox is created is left to derived classes.
+   It provides a parameter that determines whether to fill the plot
+   when wrapup is invoked. It also has a <i>legend</i> parameter,
+   which gives a comma-separated list of labels to attach to
+   each dataset.  Normally, the number of elements in this list
+   should equal the number of input channels, although this
+   is not enforced.
 
-@see ptolemy.plot.PlotBox
+   @see ptolemy.plot.PlotBox
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.1
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.1
 */
 public class PlotterBase extends TypedAtomicActor
     implements Configurable, Placeable {

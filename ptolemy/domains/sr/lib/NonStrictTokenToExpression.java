@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (hyzheng@eecs.berkeley.edu)
 @AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 */
@@ -40,15 +40,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// NonStrictTokenToExpression
 /**
-This actor is a non-strict version of the TokenToExpression actor.
-When its input is unknown, it ouptuts "unknown". When its input is
-known but has no token, it outputs "absent". Otherwise, it
-does the same thing as TokenToExpression actor does.
+   This actor is a non-strict version of the TokenToExpression actor.
+   When its input is unknown, it ouptuts "unknown". When its input is
+   known but has no token, it outputs "absent". Otherwise, it
+   does the same thing as TokenToExpression actor does.
 
-@author Haiyang Zheng
-@version $Id$
-@since Ptolemy II 4.0
-@see ptolemy.actor.lib.conversions.TokenToExpression
+   @author Haiyang Zheng
+   @version $Id$
+   @since Ptolemy II 4.0
+   @see ptolemy.actor.lib.conversions.TokenToExpression
 */
 public class NonStrictTokenToExpression extends TokenToExpression {
 

@@ -1,28 +1,28 @@
 /* An actor that sends its <i>data</i> input as a UDP datagram packet.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (winthrop@eecs.berkeley.edu)
 @AcceptedRating Yellow (winthrop@eecs.berkeley.edu)
@@ -55,31 +55,31 @@ import java.net.UnknownHostException;
 //////////////////////////////////////////////////////////////////////////
 //// DatagramWriter
 /**
-This actor sends its input as a Datagram over the network using the
-UDP protocol.  Before being sent, the data is optionally encoded as a
-text string representing the value being sent.  When this option is
-selected, any Ptolemy data type may be represented.
-See the <i>encoding</i> parameter.
+   This actor sends its input as a Datagram over the network using the
+   UDP protocol.  Before being sent, the data is optionally encoded as a
+   text string representing the value being sent.  When this option is
+   selected, any Ptolemy data type may be represented.
+   See the <i>encoding</i> parameter.
 
-<p>The address and socket number towards which the datagram is sent
-are given by the optional inputs <i>remoteAddress</i> and
-<i>remoteSocketNumber</i>.  However, unless/until token(s) arrive at
-these inputs, default values, given by <i>defaultRemoteAddress</i> and
-<i>defaultRemoteSocketNumber</i> are used.  Note that some IP
-addresses are special broadcast addresses.  An address such as
-"128.32.239.255" broadcasts to any IP addresses on the "128.23.239.X"
-subnet.  This only works on your own subnet.
+   <p>The address and socket number towards which the datagram is sent
+   are given by the optional inputs <i>remoteAddress</i> and
+   <i>remoteSocketNumber</i>.  However, unless/until token(s) arrive at
+   these inputs, default values, given by <i>defaultRemoteAddress</i> and
+   <i>defaultRemoteSocketNumber</i> are used.  Note that some IP
+   addresses are special broadcast addresses.  An address such as
+   "128.32.239.255" broadcasts to any IP addresses on the "128.23.239.X"
+   subnet.  This only works on your own subnet.
 
-<p>Each instance of this actor needs to allocate a local socket from
-which to transmit datagrams.  Initially, the local socket number is
-set to 4003, just to pick a number.  The socket is not allocated
-until the model is run.
+   <p>Each instance of this actor needs to allocate a local socket from
+   which to transmit datagrams.  Initially, the local socket number is
+   set to 4003, just to pick a number.  The socket is not allocated
+   until the model is run.
 
-@author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
-(Based on TiltSensor actor written by
- Chamberlain Fong, Xiaojun Liu, Edward Lee)
-@version $Id$
-@since Ptolemy II 2.0
+   @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
+   (Based on TiltSensor actor written by
+   Chamberlain Fong, Xiaojun Liu, Edward Lee)
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class DatagramWriter extends TypedAtomicActor {
 

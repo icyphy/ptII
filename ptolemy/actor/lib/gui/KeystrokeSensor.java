@@ -1,28 +1,28 @@
 /* An actor which detects Control-C and Control-V events
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
 @AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
@@ -53,30 +53,30 @@ import javax.swing.KeyStroke;
 //////////////////////////////////////////////////////////////////////////
 //// KeystrokeSensor
 /**
-Detect when the user types Control-C (for Copy) or Control-V (for Paste)
-and produce an event on the corresponding output.
+   Detect when the user types Control-C (for Copy) or Control-V (for Paste)
+   and produce an event on the corresponding output.
 
-<p>When this actor is preinitialized, it pops up a new JFrame window on
-the desktop, usually in the upper left hand corner of the screen.
-When this JFrame has the focus (such as when it has been clicked on)
-it is capable of sensing keystrokes.
+   <p>When this actor is preinitialized, it pops up a new JFrame window on
+   the desktop, usually in the upper left hand corner of the screen.
+   When this JFrame has the focus (such as when it has been clicked on)
+   it is capable of sensing keystrokes.
 
-<p>Only two keystrokes are sensed, control-C (for copy) and control-V
-(for paste).  This actor is designed to work with SystemClipboard.java.
+   <p>Only two keystrokes are sensed, control-C (for copy) and control-V
+   (for paste).  This actor is designed to work with SystemClipboard.java.
 
-<p>The actor contains a private inner class which generates the JFrame.
-This frame sets up call-backs which react to the keystrokes.  When
-called back, these in turn call the director's fireAtCurrentTime()
-method.  This causes the director to call fire() on the actor.  The
-actor then broadcasts tokens from one or both outputs depending on
-which keystroke(s) have occurred since the actor was last fired.
+   <p>The actor contains a private inner class which generates the JFrame.
+   This frame sets up call-backs which react to the keystrokes.  When
+   called back, these in turn call the director's fireAtCurrentTime()
+   method.  This causes the director to call fire() on the actor.  The
+   actor then broadcasts tokens from one or both outputs depending on
+   which keystroke(s) have occurred since the actor was last fired.
 
-<p>NOTE: This actor only works in DE due to its reliance on the
-director's fireAtCurrentTime() method.
+   <p>NOTE: This actor only works in DE due to its reliance on the
+   director's fireAtCurrentTime() method.
 
-@author Winthrop Williams
-@version $Id$
-@since Ptolemy II 2.0
+   @author Winthrop Williams
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class KeystrokeSensor extends TypedAtomicActor {
 

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating red (eal@eecs.berkeley.edu)
 @AcceptedRating red (cxh@eecs.berkeley.edu)
 */
@@ -45,13 +45,13 @@ import javax.swing.JPanel;
 //////////////////////////////////////////////////////////////////////////
 //// EditablePlotMLApplet
 /**
-This applet reads a URL giving a PlotML file for a plot and places
-the data into an editable plot.
+   This applet reads a URL giving a PlotML file for a plot and places
+   the data into an editable plot.
 
-@see EditablePlot
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
+   @see EditablePlot
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
 */
 public class EditablePlotMLApplet extends PlotMLApplet {
 

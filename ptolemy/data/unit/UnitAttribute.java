@@ -1,28 +1,28 @@
 /* UnitAttribute used to specify either a Unit Expression or Unit Equations.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_3
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_3
+COPYRIGHTENDKEY
 @Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
 @Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
@@ -44,12 +44,12 @@ import ptolemy.util.StringUtilities;
 ///////////////////////////////////////////////////////////////////////////
 //// UnitAttribute
 /**
-This class is used to implement the Unit Attribute. A UnitsAttribute is either
-a UnitExpr, or a vector of UnitConstraints.
+   This class is used to implement the Unit Attribute. A UnitsAttribute is either
+   a UnitExpr, or a vector of UnitConstraints.
 
-@author Rowland R Johnson
-@version $Id$
-@since Ptolemy II 4.0
+   @author Rowland R Johnson
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class UnitAttribute extends Attribute implements Settable {
     /** Construct a UnitsAttribute with no specific name, or container.
@@ -59,7 +59,7 @@ public class UnitAttribute extends Attribute implements Settable {
      *  an attribute already in the container.
      */
     public UnitAttribute()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -72,7 +72,7 @@ public class UnitAttribute extends Attribute implements Settable {
      *  an attribute already in the container.
      */
     public UnitAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -99,7 +99,7 @@ public class UnitAttribute extends Attribute implements Settable {
      *  @see ptolemy.kernel.util.NamedObj#exportMoML(Writer, int, String)
      */
     public void exportMoML(Writer output, int depth, String name)
-        throws IOException {
+            throws IOException {
         String value = getExpression();
         String valueTerm = "";
         if (value != null && !value.equals("")) {
@@ -107,7 +107,7 @@ public class UnitAttribute extends Attribute implements Settable {
                 " value=\"" + StringUtilities.escapeForXML(value) + "\"";
         }
         output.write(
-            _getIndentPrefix(depth)
+                _getIndentPrefix(depth)
                 + "<"
                 + _elementName
                 + " name=\""
@@ -127,14 +127,14 @@ public class UnitAttribute extends Attribute implements Settable {
      */
     public String getExpression() {
         switch (_type) {
-            case _EXPRESSION :
-                {
-                    return getUnitExpr().descriptiveForm();
-                }
-            case _CONSTRAINTS :
-                {
-                    return getUnitConstraints().descriptiveForm();
-                }
+        case _EXPRESSION :
+            {
+                return getUnitExpr().descriptiveForm();
+            }
+        case _CONSTRAINTS :
+            {
+                return getUnitConstraints().descriptiveForm();
+            }
         }
         return null;
     }
@@ -181,7 +181,7 @@ public class UnitAttribute extends Attribute implements Settable {
      * @see ptolemy.kernel.util.Settable#setExpression(java.lang.String)
      */
     public void setExpression(String expression)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             if (getName().equals("_unitConstraints")) {
                 Vector uEquations =
@@ -189,7 +189,7 @@ public class UnitAttribute extends Attribute implements Settable {
                 UnitConstraints uConstraints = new UnitConstraints();
                 for (int i = 0; i < uEquations.size(); i++) {
                     uConstraints.addConstraint(
-                        (UnitEquation) (uEquations.elementAt(i)));
+                            (UnitEquation) (uEquations.elementAt(i)));
                 }
                 setUnitConstraints(uConstraints);
             }
@@ -200,9 +200,9 @@ public class UnitAttribute extends Attribute implements Settable {
             }
         } catch (ParseException ex) {
             throw new IllegalActionException(
-                this,
-                ex,
-                "Can't parse the expression " + expression);
+                    this,
+                    ex,
+                    "Can't parse the expression " + expression);
         }
     }
 

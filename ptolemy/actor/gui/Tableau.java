@@ -1,28 +1,28 @@
 /* An object that represents a graphical view of a ptolemy model.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
@@ -48,21 +48,21 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// Tableau
 /**
-A tableau is a visual representation of a Ptolemy II model in a top-level
-window.  This class represents such a top level window.  The top-level
-is always a frame, which is a window with a border and title bar. The
-window itself is specified by the setFrame() method, and accessed by
-the getFrame() method.  An instance of this class will be contained
-by the instance of Effigy that represents the model that is depicted
-in the top-level window.
-<p>
-By convention, the constructor for a tableau does not (necessarily)
-make the associated frame visible.  To do that, call show().
+   A tableau is a visual representation of a Ptolemy II model in a top-level
+   window.  This class represents such a top level window.  The top-level
+   is always a frame, which is a window with a border and title bar. The
+   window itself is specified by the setFrame() method, and accessed by
+   the getFrame() method.  An instance of this class will be contained
+   by the instance of Effigy that represents the model that is depicted
+   in the top-level window.
+   <p>
+   By convention, the constructor for a tableau does not (necessarily)
+   make the associated frame visible.  To do that, call show().
 
-@author Steve Neuendorffer and Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
-@see Effigy
+   @author Steve Neuendorffer and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
+   @see Effigy
 */
 public class Tableau extends CompositeEntity {
 
@@ -74,7 +74,7 @@ public class Tableau extends CompositeEntity {
      *   created an attribute with name "size" (should not occur).
      */
     public Tableau(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
 
         size = new SizeAttribute(this, "size");
@@ -89,7 +89,7 @@ public class Tableau extends CompositeEntity {
      *   an entity already in the container.
      */
     public Tableau(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         size = new SizeAttribute(this, "size");
@@ -114,7 +114,7 @@ public class Tableau extends CompositeEntity {
      *   class throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == size && _frame != null) {
             size.setSize(_frame);
         } else {
@@ -131,7 +131,7 @@ public class Tableau extends CompositeEntity {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-        throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         Tableau newObject = (Tableau) super.clone(workspace);
         newObject._frame = null;
         return newObject;
@@ -150,7 +150,7 @@ public class Tableau extends CompositeEntity {
             if (!((TableauFrame) frame)._close())
                 return false;
         } else if (
-            (this instanceof DialogTableau)
+                (this instanceof DialogTableau)
                 && (frame instanceof PortConfigurerDialog)) {
             if (!((PortConfigurerDialog) frame).close()) {
                 return false;
@@ -184,7 +184,7 @@ public class Tableau extends CompositeEntity {
             Effigy effigy = (Effigy) getContainer();
             // Abbreviate the title to 80 chars for use on the Mac.
             return StringUtilities.abbreviate(
-                effigy.identifier.getExpression());
+                    effigy.identifier.getExpression());
         } else {
             return _title;
         }
@@ -225,7 +225,7 @@ public class Tableau extends CompositeEntity {
      *   an attribute with the name of this attribute.
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (container == null) {
             Effigy oldContainer = (Effigy) getContainer();
             super.setContainer(container);
@@ -246,9 +246,9 @@ public class Tableau extends CompositeEntity {
             super.setContainer(container);
         } else {
             throw new IllegalActionException(
-                this,
-                container,
-                "The container can only be set to an " + "instance of Effigy");
+                    this,
+                    container,
+                    "The container can only be set to an " + "instance of Effigy");
         }
     }
 
@@ -284,22 +284,22 @@ public class Tableau extends CompositeEntity {
 
         // Set up a listener for window closing events.
         frame.addWindowListener(new WindowAdapter() {
-            // This is invoked if the window
-            // is disposed by the _close() method of Top.
-            public void windowClosed(WindowEvent e) {
-                try {
-                    (Tableau.this).setContainer(null);
-                } catch (KernelException ex) {
+                // This is invoked if the window
+                // is disposed by the _close() method of Top.
+                public void windowClosed(WindowEvent e) {
                     try {
-                        MessageHandler.warning("Cannot remove tableau: " + ex);
-                    } catch (CancelException exception) {
+                        (Tableau.this).setContainer(null);
+                    } catch (KernelException ex) {
+                        try {
+                            MessageHandler.warning("Cannot remove tableau: " + ex);
+                        } catch (CancelException exception) {
+                        }
                     }
                 }
-            }
-            // NOTE: We do not want to do the same in windowClosing()
-            // because this will override saving if modified as implemented
-            // in Top.
-        });
+                // NOTE: We do not want to do the same in windowClosing()
+                // because this will override saving if modified as implemented
+                // in Top.
+            });
     }
 
     /** Specify whether the window associated with this tableau

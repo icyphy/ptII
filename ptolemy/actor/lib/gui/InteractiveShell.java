@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -62,29 +62,29 @@ import javax.swing.SwingUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// InteractiveShell
 /**
-This actor creates a command shell on the screen, sending commands
-that are typed by the user to its output port, and reporting strings
-received at its input by displaying them.  Each time it fires, it
-reads the input, displays it, then displays a command prompt
-(which by default is "&gt;&gt"), and waits for a command to be
-typed.  The command is terminated by an enter or return character,
-which then results in the command being produced on the output.
-In a typical use of this actor, it will be preceded by a SampleDelay
-actor which will provide an initial welcome message or instructions.
-The output will then be routed to some subsystem for processing,
-and the result will be fed back to the input.
-<p>
-Note that because of complexities in Swing, if you resize the display
-window, then, unlike the plotters, the new size will not be persistent.
-That is, if you save the model and then re-open it, the new size is
-forgotten.  The position, however, is persistent.
+   This actor creates a command shell on the screen, sending commands
+   that are typed by the user to its output port, and reporting strings
+   received at its input by displaying them.  Each time it fires, it
+   reads the input, displays it, then displays a command prompt
+   (which by default is "&gt;&gt"), and waits for a command to be
+   typed.  The command is terminated by an enter or return character,
+   which then results in the command being produced on the output.
+   In a typical use of this actor, it will be preceded by a SampleDelay
+   actor which will provide an initial welcome message or instructions.
+   The output will then be routed to some subsystem for processing,
+   and the result will be fed back to the input.
+   <p>
+   Note that because of complexities in Swing, if you resize the display
+   window, then, unlike the plotters, the new size will not be persistent.
+   That is, if you save the model and then re-open it, the new size is
+   forgotten.  The position, however, is persistent.
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class InteractiveShell extends TypedAtomicActor
-         implements Placeable, ShellInterpreter {
+    implements Placeable, ShellInterpreter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

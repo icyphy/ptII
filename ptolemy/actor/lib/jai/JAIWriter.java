@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -60,21 +60,21 @@ import com.sun.media.jai.codec.ImageEncodeParam;
 //////////////////////////////////////////////////////////////////////////
 //// JAIWriter
 /**
-An abstract class that provides support for writing JAIImages
-Write a javax.media.jai.RenderedOp to a specified JPEG file.
+   An abstract class that provides support for writing JAIImages
+   Write a javax.media.jai.RenderedOp to a specified JPEG file.
 
-<p>Derived classes should have a postfire() method that
-creates a new _imageEncodeParameters, performs any setup
-on _imageEncodeParameters and then calls super.postfire()
+   <p>Derived classes should have a postfire() method that
+   creates a new _imageEncodeParameters, performs any setup
+   on _imageEncodeParameters and then calls super.postfire()
 
-<p>
-The file is specified by the <i>fileName</i> attribute
-using any form acceptable to FileParameter.
-<p>
-If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
-then this actor will overwrite the specified file if it exists
-without asking.  If <i>true</i> (the default), then if the file
-exists, then this actor will ask for confirmation before overwriting.
+   <p>
+   The file is specified by the <i>fileName</i> attribute
+   using any form acceptable to FileParameter.
+   <p>
+   If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
+   then this actor will overwrite the specified file if it exists
+   without asking.  If <i>true</i> (the default), then if the file
+   exists, then this actor will ask for confirmation before overwriting.
 
 
    @see FileParameter
@@ -216,8 +216,8 @@ public abstract class JAIWriter extends Sink {
     protected RenderedOp _image;
 
     /** The name of the encoder in a format suitable for
-      * com.sun.media.jai.codec.ImageCodec, for example "BMP", or "JPG".
-      */
+     * com.sun.media.jai.codec.ImageCodec, for example "BMP", or "JPG".
+     */
     protected String _imageEncoderName;
 
     /** The encoder parameters.  Derived classes usually instantiate

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -48,32 +48,32 @@ import javax.media.jai.operator.DFTDescriptor;
 //////////////////////////////////////////////////////////////////////////
 //// JAIIDFT
 /**
-Calculate the inverse discrete Fourier transform of an image.  If the
-input is complex, there are two options.  One is to set the dataNature
-parameter to <i>complexToReal</i> (the default).  The output would have
-half the bands of the input (bands 0 and 1 get transformed into band 0,
-bands 2 and 3 would get transformed into band 1, etc.), and could be
-display or saved after passing through a {@link JAIDataConvert} actor.
+   Calculate the inverse discrete Fourier transform of an image.  If the
+   input is complex, there are two options.  One is to set the dataNature
+   parameter to <i>complexToReal</i> (the default).  The output would have
+   half the bands of the input (bands 0 and 1 get transformed into band 0,
+   bands 2 and 3 would get transformed into band 1, etc.), and could be
+   display or saved after passing through a {@link JAIDataConvert} actor.
 
-<p>The other option would be to set it to <i>complexToComplex</i>, in which
-case the output would have the same number of bands as the input.
+   <p>The other option would be to set it to <i>complexToComplex</i>, in which
+   case the output would have the same number of bands as the input.
 
-<p>If the input is real, the only option is to set the dataNature parameter
-to <i>realToComplex</i>.  An alternative to this would be to create a
-complex image from this real image by using the real image as a magnitude
-image, and creating a phase image of all 0's, and making a complex image
-using the JAIPolarToComplex actor.
+   <p>If the input is real, the only option is to set the dataNature parameter
+   to <i>realToComplex</i>.  An alternative to this would be to create a
+   complex image from this real image by using the real image as a magnitude
+   image, and creating a phase image of all 0's, and making a complex image
+   using the JAIPolarToComplex actor.
 
-<p>The data of the output is of a high resolution (doubles), not suitable
-for displaying or saving.  To display or save the output of this image,
-use the JAIDataConvert Actor to cast the data to an appropriate type
-(for instance, byte).
+   <p>The data of the output is of a high resolution (doubles), not suitable
+   for displaying or saving.  To display or save the output of this image,
+   use the JAIDataConvert Actor to cast the data to an appropriate type
+   (for instance, byte).
 
-@see JAIDataConvert
-@see JAIDFT
-@author James Yeh
-@version $Id$
-@since Ptolemy II 3.1
+   @see JAIDataConvert
+   @see JAIDFT
+   @author James Yeh
+   @version $Id$
+   @since Ptolemy II 3.1
 */
 public class JAIIDFT extends Transformer {
 

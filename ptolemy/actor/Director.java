@@ -1,28 +1,28 @@
 /* A Director governs the execution of a CompositeActor.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
@@ -52,50 +52,50 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// Director
 /**
-A Director governs the execution within a CompositeActor.  A composite actor
-that contains a director is said to be <i>opaque</i>, and the execution model
-within the composite actor is determined by the contained director.   This
-director is called the <i>local director</i> of a composite actor.
-A composite actor is also aware of the director of its container,
-which is referred to as its <i>executive director</i>.
-A director may also be contained by a CompositeEntity that is not a
-CompositeActor, in which case it acts like any other entity within
-that composite.
-<p>
-A top-level composite actor is generally associated with a <i>manager</i>
-as well as a local director.  The Manager has overall responsibility for
-executing the application, and is often associated with a GUI.   Top-level
-composite actors have no executive director and getExecutiveDirector() will
-return null.
-<p>
-A local director is responsible for invoking the actors contained by the
-composite.  If there is no local director, then the executive director
-is given the responsibility.  The getDirector() method of CompositeActor,
-therefore, returns the local director, if there is one, and otherwise
-returns the executive director.  Thus, it returns whichever director
-is responsible for executing the contained actors, or null if there is none.
-Whatever it returns is called simply the <i>director</i> (vs. local
-director or executive director).
-<p>
-A director implements the action methods (preinitialize(),
-initialize(), prefire(), fire(), postfire(), iterate(),
-and wrapup()).  In this base class, default implementations
-are provided that may or may not be useful in specific domains.   In general,
-these methods will perform domain-dependent actions, and then call the
-respective methods in all contained actors.
-<p>
-The director also provides methods to optimize the iteration portion of an
-execution. This is done by setting the workspace to be read-only during
-an iteration. In this base class, the default implementation results in
-a read/write workspace. Derived classes (e.g. domain specific
-directors) should override the _writeAccessRequired() method to report
-that write access is not required. If none of the directors in a simulation
-require write access, then it is safe to set the workspace to be read-only,
-which will result in faster execution.
+   A Director governs the execution within a CompositeActor.  A composite actor
+   that contains a director is said to be <i>opaque</i>, and the execution model
+   within the composite actor is determined by the contained director.   This
+   director is called the <i>local director</i> of a composite actor.
+   A composite actor is also aware of the director of its container,
+   which is referred to as its <i>executive director</i>.
+   A director may also be contained by a CompositeEntity that is not a
+   CompositeActor, in which case it acts like any other entity within
+   that composite.
+   <p>
+   A top-level composite actor is generally associated with a <i>manager</i>
+   as well as a local director.  The Manager has overall responsibility for
+   executing the application, and is often associated with a GUI.   Top-level
+   composite actors have no executive director and getExecutiveDirector() will
+   return null.
+   <p>
+   A local director is responsible for invoking the actors contained by the
+   composite.  If there is no local director, then the executive director
+   is given the responsibility.  The getDirector() method of CompositeActor,
+   therefore, returns the local director, if there is one, and otherwise
+   returns the executive director.  Thus, it returns whichever director
+   is responsible for executing the contained actors, or null if there is none.
+   Whatever it returns is called simply the <i>director</i> (vs. local
+   director or executive director).
+   <p>
+   A director implements the action methods (preinitialize(),
+   initialize(), prefire(), fire(), postfire(), iterate(),
+   and wrapup()).  In this base class, default implementations
+   are provided that may or may not be useful in specific domains.   In general,
+   these methods will perform domain-dependent actions, and then call the
+   respective methods in all contained actors.
+   <p>
+   The director also provides methods to optimize the iteration portion of an
+   execution. This is done by setting the workspace to be read-only during
+   an iteration. In this base class, the default implementation results in
+   a read/write workspace. Derived classes (e.g. domain specific
+   directors) should override the _writeAccessRequired() method to report
+   that write access is not required. If none of the directors in a simulation
+   require write access, then it is safe to set the workspace to be read-only,
+   which will result in faster execution.
 
-@author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
-@version $Id$
-@since Ptolemy II 0.2
+   @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class Director extends Attribute implements Executable {
 
@@ -263,8 +263,8 @@ public class Director extends Attribute implements Executable {
                 Actor actor = (Actor)actors.next();
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                            FiringEvent.BEFORE_ITERATE,
-                            iterationCount));
+                                   FiringEvent.BEFORE_ITERATE,
+                                   iterationCount));
                 }
                 if (actor.iterate(1) == Actor.STOP_ITERATING) {
                     if (_debugging) {
@@ -275,8 +275,8 @@ public class Director extends Attribute implements Executable {
                 }
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                            FiringEvent.AFTER_ITERATE,
-                            iterationCount));
+                                   FiringEvent.AFTER_ITERATE,
+                                   iterationCount));
                 }
             }
         }

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (ssb@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
@@ -35,7 +35,7 @@ import java.util.*;
 //// InstanceOfTest
 /**
 
- A simple class for testing that the instanceof operator works.
+A simple class for testing that the instanceof operator works.
 
 @author Ankush Varma
 @version $Id$

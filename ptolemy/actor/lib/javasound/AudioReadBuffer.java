@@ -1,32 +1,32 @@
 /* An actor that reads a sound file into a buffer and outputs the
    audio sample at the specified location in the buffer.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 1998-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red (vogel@eecs.berkeley.edu)
+   @ProposedRating Red (vogel@eecs.berkeley.edu)
+   @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
@@ -54,61 +54,61 @@ import ptolemy.media.javasound.SoundReader;
 /////////////////////////////////////////////////////////////////
 //// AudioReadBuffer
 /**
-This actor reads a sound file into a buffer and outputs the the
-sample value at the specified buffer element. The sound file
-is read from the URL specified by the <i>sourceURL</i>
-parameter.  Although the sound file must be specified
-as a URL, it is still possible to specify files on the local
-file system.
-<p>
-In each iteration, an IntToken is read from the input port, if
-there is a token available. This token specifies the address of
-the buffer element to read from. The address is zero-based, so
-address 0 corresponds to the first element and addres
-<i>bufferLength</i> -1 corresponds to the last element. The sample
-value at the specified buffer location is converted to a DoubleToken
-and sent to the output port.
-<p>
-If an element outside of the valid address range is specified, then
-a DoubleToken with value 0.0 is output. If the the specified address
-is greater than <i>bufferLength</i> -1, then this actor will return
-false in postfire.
-<p>
-This actor does not currently support multichannel sound files, so
-if a stereo sound file is specified, only the left channel will be
-used. This limitation may be lifted in a future version of this actor.
-<p>
-The audio samples that are read from the file are
-converted to DoubleTokens that may range from [-1.0, 1.0].
-Thus, the output type of this actor is DoubleToken.
-<p>
-<b>Usage</b>
-<p>
-The <i>sourceURL</i> parameter should be set to the name of the file,
-specified as a fully qualified URL. It is possible to load a file
-from the local file system by using the prefix "file://" instead of
-"http://". Relative file paths are allowed. To specify a file
-relative to the current directory, use "../" or "./". For example,
-if the current directory contains a file called "test.wav", then
-<i>sourceURL</i> should be set to "file:./test.wav". If the parent
-directory contains a file called "test.wav", then <i>sourceURL</i>
-should be set to "file:../test.wav". To reference the file
-test.wav, located at "/tmp/test.wav", <i>sourceURL</i>
-should be set to "file:///tmp/test.wav" The default value is
-"file:///tmp/test.wav".
-<p>
-There are security issues involved with accessing files and audio
-resources in applets. Applets are only allowed access to files
-specified by a URL and located on the machine from which the
-applet is loaded. The .java.policy file may be modified to grant
-applets more privileges.
-<p>FIXME: This actor should extend AudioReadBuffer?
-<p>
-Note: Requires Java 2 v1.3.0 or later.
-@author Brian K. Vogel
-@version $Id$
-@since Ptolemy II 2.0
-@see ptolemy.media.javasound.LiveSound
+   This actor reads a sound file into a buffer and outputs the the
+   sample value at the specified buffer element. The sound file
+   is read from the URL specified by the <i>sourceURL</i>
+   parameter.  Although the sound file must be specified
+   as a URL, it is still possible to specify files on the local
+   file system.
+   <p>
+   In each iteration, an IntToken is read from the input port, if
+   there is a token available. This token specifies the address of
+   the buffer element to read from. The address is zero-based, so
+   address 0 corresponds to the first element and addres
+   <i>bufferLength</i> -1 corresponds to the last element. The sample
+   value at the specified buffer location is converted to a DoubleToken
+   and sent to the output port.
+   <p>
+   If an element outside of the valid address range is specified, then
+   a DoubleToken with value 0.0 is output. If the the specified address
+   is greater than <i>bufferLength</i> -1, then this actor will return
+   false in postfire.
+   <p>
+   This actor does not currently support multichannel sound files, so
+   if a stereo sound file is specified, only the left channel will be
+   used. This limitation may be lifted in a future version of this actor.
+   <p>
+   The audio samples that are read from the file are
+   converted to DoubleTokens that may range from [-1.0, 1.0].
+   Thus, the output type of this actor is DoubleToken.
+   <p>
+   <b>Usage</b>
+   <p>
+   The <i>sourceURL</i> parameter should be set to the name of the file,
+   specified as a fully qualified URL. It is possible to load a file
+   from the local file system by using the prefix "file://" instead of
+   "http://". Relative file paths are allowed. To specify a file
+   relative to the current directory, use "../" or "./". For example,
+   if the current directory contains a file called "test.wav", then
+   <i>sourceURL</i> should be set to "file:./test.wav". If the parent
+   directory contains a file called "test.wav", then <i>sourceURL</i>
+   should be set to "file:../test.wav". To reference the file
+   test.wav, located at "/tmp/test.wav", <i>sourceURL</i>
+   should be set to "file:///tmp/test.wav" The default value is
+   "file:///tmp/test.wav".
+   <p>
+   There are security issues involved with accessing files and audio
+   resources in applets. Applets are only allowed access to files
+   specified by a URL and located on the machine from which the
+   applet is loaded. The .java.policy file may be modified to grant
+   applets more privileges.
+   <p>FIXME: This actor should extend AudioReadBuffer?
+   <p>
+   Note: Requires Java 2 v1.3.0 or later.
+   @author Brian K. Vogel
+   @version $Id$
+   @since Ptolemy II 2.0
+   @see ptolemy.media.javasound.LiveSound
 */
 public class AudioReadBuffer extends Transformer {
 

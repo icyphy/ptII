@@ -38,9 +38,9 @@ import java.util.Iterator;
 
 /** A class that maintains context information for C code generation.
 
-   @author Shuvra S. Bhattacharyya
-   @version $Id$
-   @since Ptolemy II 2.0
+@author Shuvra S. Bhattacharyya
+@version $Id$
+@since Ptolemy II 2.0
 */
 
 

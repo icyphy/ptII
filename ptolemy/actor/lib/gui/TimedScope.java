@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
@@ -42,25 +42,25 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// TimedScope
 /**
-A signal plotter that plots in an oscilloscope style, meaning that the
-horizontal axis is wrapped and that there is finite persistence.  This
-plotter contains an instance of the Plot class from the Ptolemy plot
-package as a public member.  Data at the input, which can consist of
-any number of channels, are plotted on this instance.  Each channel is
-plotted as a separate data set.  The input is of type DoubleToken.
+   A signal plotter that plots in an oscilloscope style, meaning that the
+   horizontal axis is wrapped and that there is finite persistence.  This
+   plotter contains an instance of the Plot class from the Ptolemy plot
+   package as a public member.  Data at the input, which can consist of
+   any number of channels, are plotted on this instance.  Each channel is
+   plotted as a separate data set.  The input is of type DoubleToken.
 
-<p>The horizontal axis represents time.  The <i>width</i> parameter is
-a double that gives the width of the plot. The horizontal axis will be
-labeled from 0.0 to <i>width</i>.  It defaults to 10.0.
+   <p>The horizontal axis represents time.  The <i>width</i> parameter is
+   a double that gives the width of the plot. The horizontal axis will be
+   labeled from 0.0 to <i>width</i>.  It defaults to 10.0.
 
-<p>If the <i>persistence</i> parameter is positive, then it specifies
-the amount of time into the past that points are shown.  It also
-defaults to 10.0, so any point older than 10.0 time units is erased and
-forgotten.
+   <p>If the <i>persistence</i> parameter is positive, then it specifies
+   the amount of time into the past that points are shown.  It also
+   defaults to 10.0, so any point older than 10.0 time units is erased and
+   forgotten.
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class TimedScope extends TimedPlotter {
 

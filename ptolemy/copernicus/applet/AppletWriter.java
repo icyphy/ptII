@@ -1,28 +1,28 @@
 /* A transformer that writes an applet version of the model.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -69,19 +69,19 @@ import java.util.Map;
 import java.util.Set;
 
 /**
-A transformer that writes an applet version of a model.
-For a model called Foo, we generate Foo/makefile, Foo/Foo.xml,
-Foo/Foo.htm Foo/FooVergil.htm in the directory named by the
-outDir parameter.
+   A transformer that writes an applet version of a model.
+   For a model called Foo, we generate Foo/makefile, Foo/Foo.xml,
+   Foo/Foo.htm Foo/FooVergil.htm in the directory named by the
+   outDir parameter.
 
-<p>Potential future enhancements
-<menu>
-<li> Optionally copy the necessary jar files to the target directory.
-<li> Pull out the top level annotation and add the text to the web page.
-</menu>
-@author Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0
+   <p>Potential future enhancements
+   <menu>
+   <li> Optionally copy the necessary jar files to the target directory.
+   <li> Pull out the top level annotation and add the text to the web page.
+   </menu>
+   @author Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
@@ -298,7 +298,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     + "vergil layout information: "
                     + ex.getMessage());
             System.out.println("AppletWriter: about to write '"
-                     + newModelFileName + "'");
+                    + newModelFileName + "'");
             try {
                 Writer modelFileWriter =
                     new BufferedWriter(
@@ -530,7 +530,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         + ".jar";
 
                     if (_copyPotentialJarFile(jarFileName,
-                        className, jarFilesThatHaveBeenRequired)) {
+                                className, jarFilesThatHaveBeenRequired)) {
 
                     } else {
                         String warning = "Looking up '" + className
@@ -572,20 +572,20 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     }
                 }
 
-//                 System.out.println("AppletWriter: "
-//                         + "\n\tclassResource:    " + classResource
-//                         + "\n\t_outputDirectory: " + _outputDirectory
-//                         + "\n\tclassName:        " + className
-//                         + "\n\tclassMap.get():   "
-//                         + (String)classMap.get(className));
-//                 jarFilesThatHaveBeenRequired
-//                     .add((String)classMap.get(className));
-//                 if (_codeBase.equals(".")) {
-//                     // If the codeBase is equal to the current directory,
-//                     // we copy the jar file.
-//                     _copyFile(classResource, _outputDirectory,
-//                             (String)classMap.get(className));
-//                 }
+                //                 System.out.println("AppletWriter: "
+                //                         + "\n\tclassResource:    " + classResource
+                //                         + "\n\t_outputDirectory: " + _outputDirectory
+                //                         + "\n\tclassName:        " + className
+                //                         + "\n\tclassMap.get():   "
+                //                         + (String)classMap.get(className));
+                //                 jarFilesThatHaveBeenRequired
+                //                     .add((String)classMap.get(className));
+                //                 if (_codeBase.equals(".")) {
+                //                     // If the codeBase is equal to the current directory,
+                //                     // we copy the jar file.
+                //                     _copyFile(classResource, _outputDirectory,
+                //                             (String)classMap.get(className));
+                //                 }
             }
         }
 

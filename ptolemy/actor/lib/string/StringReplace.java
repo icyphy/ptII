@@ -1,32 +1,32 @@
 /* Replace an instance of a string with another input string according
-to a regular expression.
+   to a regular expression.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Green (djstone@eecs.berkeley.edu)
-@AcceptedRating Green (net@ptolemy.eecs.berkeley.edu)
+   @ProposedRating Green (djstone@eecs.berkeley.edu)
+   @AcceptedRating Green (net@ptolemy.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.string;
@@ -50,20 +50,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// StringReplace
 /**
-On each firing, look for instances of the pattern specified by <i>pattern</i>
-in <i>stringToEdit</i> and replace them with the string given by
-<i>replacement</i>.  If <i>replaceAll</i> is true, then replace
-all instances that match <i>pattern</i>.  Otherwise, replace only
-the first instance that matches.  If there is no match, then the
-output is the string provided by <i>stringToEdit</i>, unchanged.
-The <i>pattern</i> is given by a regular expression.
-For a reference on regular expression syntax see:
-<a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
-http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>
+   On each firing, look for instances of the pattern specified by <i>pattern</i>
+   in <i>stringToEdit</i> and replace them with the string given by
+   <i>replacement</i>.  If <i>replaceAll</i> is true, then replace
+   all instances that match <i>pattern</i>.  Otherwise, replace only
+   the first instance that matches.  If there is no match, then the
+   output is the string provided by <i>stringToEdit</i>, unchanged.
+   The <i>pattern</i> is given by a regular expression.
+   For a reference on regular expression syntax see:
+   <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
+   http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>
 
-@author Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee
-@version $Id$
-@since Ptolemy II 3.0.3
+   @author Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 3.0.3
 */
 
 public class StringReplace extends TypedAtomicActor {

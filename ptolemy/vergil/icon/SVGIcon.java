@@ -1,28 +1,28 @@
 /* An icon whose description is represented in SVG
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -61,12 +61,12 @@ import diva.util.xml.XmlReader;
 //////////////////////////////////////////////////////////////////////////
 //// SVGIcon
 /**
-This class is intended to eventually replace XMLIcon, however,
-the current version doesn't work very well, so it isn't used.
+   This class is intended to eventually replace XMLIcon, however,
+   the current version doesn't work very well, so it isn't used.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class SVGIcon extends EditorIcon implements ValueListener {
 
@@ -188,8 +188,8 @@ public class SVGIcon extends EditorIcon implements ValueListener {
     private void _bindToContainer(NamedObj container) {
         // Get the description.
         ConfigurableAttribute description
-                = (ConfigurableAttribute)container.getAttribute(
-                "_iconDescription");
+            = (ConfigurableAttribute)container.getAttribute(
+                    "_iconDescription");
         // If the description has changed...
         if (_description != description) {
             if (_description != null) {
@@ -208,8 +208,8 @@ public class SVGIcon extends EditorIcon implements ValueListener {
         }
         // Get the icon description.
         description
-                = (ConfigurableAttribute)container.getAttribute(
-                "_smallIconDescription");
+            = (ConfigurableAttribute)container.getAttribute(
+                    "_smallIconDescription");
         // If the description has changed...
         if (_smallIconDescription != description) {
             if (_smallIconDescription != null) {
@@ -251,12 +251,12 @@ public class SVGIcon extends EditorIcon implements ValueListener {
         try {
             if (type.equals("rect")) {
                 RectangleAttribute attribute
-                        = new RectangleAttribute(this, uniqueName("rect"));
+                    = new RectangleAttribute(this, uniqueName("rect"));
 
                 _processFilledShapeAttributeAttributes(attribute, attributes);
             } else if (type.equals("circle")) {
                 EllipseAttribute attribute
-                        = new EllipseAttribute(this, uniqueName("rect"));
+                    = new EllipseAttribute(this, uniqueName("rect"));
 
                 // Rename the attributes.
                 attributes.put("x", _getAttribute(attributes, "cx", "0.0"));
@@ -269,116 +269,116 @@ public class SVGIcon extends EditorIcon implements ValueListener {
                 attributes.put("height", widthString);
 
                 _processFilledShapeAttributeAttributes(attribute, attributes);
-    /* FIXME
-            } else if (type.equals("ellipse")) {
-                double cx, cy, rx, ry;
-                cx = _getDouble(attributes, "cx", 0);
-                cy = _getDouble(attributes, "cy", 0);
-                rx = _getDouble(attributes, "rx");
-                ry = _getDouble(attributes, "ry");
+                /* FIXME
+                   } else if (type.equals("ellipse")) {
+                   double cx, cy, rx, ry;
+                   cx = _getDouble(attributes, "cx", 0);
+                   cy = _getDouble(attributes, "cy", 0);
+                   rx = _getDouble(attributes, "rx");
+                   ry = _getDouble(attributes, "ry");
 
-                PaintedShape ps = new PaintedShape(new Ellipse2D.Double(
-                        cx - rx, cy - ry, 2 * rx, 2 * ry));
-                processPaintedShapeAttributes(ps, attributes);
-                return ps;
+                   PaintedShape ps = new PaintedShape(new Ellipse2D.Double(
+                   cx - rx, cy - ry, 2 * rx, 2 * ry));
+                   processPaintedShapeAttributes(ps, attributes);
+                   return ps;
 
-            } else if (type.equals("line")) {
-                double x1, y1, x2, y2;
-                x1 = _getDouble(attributes, "x1", 0);
-                y1 = _getDouble(attributes, "y1", 0);
-                x2 = _getDouble(attributes, "x2", 0);
-                y2 = _getDouble(attributes, "y2", 0);
-                Line2D line = new Line2D.Double(x1, y1, x2, y2);
-                PaintedPath pp = new PaintedPath(line);
-                processPaintedPathAttributes(pp, attributes);
-                return pp;
-            } else if (type.equals("polyline")) {
-                double coords[] =
-                    parseCoordString((String)attributes.get("points"));
-                Polyline2D poly = new Polyline2D.Double();
-                poly.moveTo(coords[0], coords[1]);
-                for (int i = 2; i < coords.length; i += 2) {
-                    poly.lineTo(coords[i], coords[i+1]);
-                }
-                PaintedPath pp = new PaintedPath(poly);
-                processPaintedPathAttributes(pp, attributes);
-                return pp;
-            } else if (type.equals("polygon")) {
-                double coords[] =
-                    parseCoordString((String)attributes.get("points"));
-                Polygon2D poly = new Polygon2D.Double();
-                poly.moveTo(coords[0], coords[1]);
-                for (int i = 2; i < coords.length; i += 2) {
-                    poly.lineTo(coords[i], coords[i+1]);
-                }
-                poly.closePath();
+                   } else if (type.equals("line")) {
+                   double x1, y1, x2, y2;
+                   x1 = _getDouble(attributes, "x1", 0);
+                   y1 = _getDouble(attributes, "y1", 0);
+                   x2 = _getDouble(attributes, "x2", 0);
+                   y2 = _getDouble(attributes, "y2", 0);
+                   Line2D line = new Line2D.Double(x1, y1, x2, y2);
+                   PaintedPath pp = new PaintedPath(line);
+                   processPaintedPathAttributes(pp, attributes);
+                   return pp;
+                   } else if (type.equals("polyline")) {
+                   double coords[] =
+                   parseCoordString((String)attributes.get("points"));
+                   Polyline2D poly = new Polyline2D.Double();
+                   poly.moveTo(coords[0], coords[1]);
+                   for (int i = 2; i < coords.length; i += 2) {
+                   poly.lineTo(coords[i], coords[i+1]);
+                   }
+                   PaintedPath pp = new PaintedPath(poly);
+                   processPaintedPathAttributes(pp, attributes);
+                   return pp;
+                   } else if (type.equals("polygon")) {
+                   double coords[] =
+                   parseCoordString((String)attributes.get("points"));
+                   Polygon2D poly = new Polygon2D.Double();
+                   poly.moveTo(coords[0], coords[1]);
+                   for (int i = 2; i < coords.length; i += 2) {
+                   poly.lineTo(coords[i], coords[i+1]);
+                   }
+                   poly.closePath();
 
-                PaintedShape ps = new PaintedShape(poly);
-                processPaintedShapeAttributes(ps, attributes);
-                return ps;
+                   PaintedShape ps = new PaintedShape(poly);
+                   processPaintedShapeAttributes(ps, attributes);
+                   return ps;
 
-            } else if (type.equals("text")) {
-                double x, y;
-                x = _getDouble(attributes, "x", 0);
-                y = _getDouble(attributes, "y", 0);
-                PaintedString string = new PaintedString(content);
-                processPaintedStringAttributes(string, attributes);
-                string.translate(x, y);
-                return string;
-            } else if (type.equals("image")) {
-                double x, y, width, height;
-                x = _getDouble(attributes, "x", 0);
-                y = _getDouble(attributes, "y", 0);
-                width = _getDouble(attributes, "width");
-                height = _getDouble(attributes, "height");
-                Rectangle2D bounds = new Rectangle2D.Double(x, y, width, height);
-                String link = (String)attributes.get("xlink:href");
-                // First try as a system resource.
-                URL url = ClassLoader.getSystemResource(link);
-                try {
-                    if (url == null) {
-                        // Web Start needs this.
-                        if (_refClass == null) {
-                            try {
-                                _refClass =
-                                    Class.forName("diva.canvas.toolbox.SVGParser");
-                            } catch (ClassNotFoundException ex) {
-                                throw new RuntimeException("Could not find " +
-                                        "diva.canvas.toolbox.SVGParser");
-                            }
-                        }
-                        url = _refClass.getClassLoader().getResource(link);
-                    }
+                   } else if (type.equals("text")) {
+                   double x, y;
+                   x = _getDouble(attributes, "x", 0);
+                   y = _getDouble(attributes, "y", 0);
+                   PaintedString string = new PaintedString(content);
+                   processPaintedStringAttributes(string, attributes);
+                   string.translate(x, y);
+                   return string;
+                   } else if (type.equals("image")) {
+                   double x, y, width, height;
+                   x = _getDouble(attributes, "x", 0);
+                   y = _getDouble(attributes, "y", 0);
+                   width = _getDouble(attributes, "width");
+                   height = _getDouble(attributes, "height");
+                   Rectangle2D bounds = new Rectangle2D.Double(x, y, width, height);
+                   String link = (String)attributes.get("xlink:href");
+                   // First try as a system resource.
+                   URL url = ClassLoader.getSystemResource(link);
+                   try {
+                   if (url == null) {
+                   // Web Start needs this.
+                   if (_refClass == null) {
+                   try {
+                   _refClass =
+                   Class.forName("diva.canvas.toolbox.SVGParser");
+                   } catch (ClassNotFoundException ex) {
+                   throw new RuntimeException("Could not find " +
+                   "diva.canvas.toolbox.SVGParser");
+                   }
+                   }
+                   url = _refClass.getClassLoader().getResource(link);
+                   }
 
-                    // Try as a regular URL.
-                    if (url == null) {
-                        url = new URL(link);
-                    }
-                    Toolkit tk = Toolkit.getDefaultToolkit();
-                    Image img = tk.getImage(url);
-                    PaintedImage image = new PaintedImage(img, bounds);
-                    // Wait until the image has been completely loaded,
-                    // unless an error occurred.
-                    while (true) {
-                        if (tk.prepareImage(img, -1, -1, image)) {
-                            // The image was fully prepared, so return the
-                            // created image.
-                            break;
-                        }
-                        int bitflags = tk.checkImage(img, -1, -1, image);
-                        if ((bitflags &
-                                (ImageObserver.ABORT | ImageObserver.ERROR)) != 0) {
-                            // There was an error if either flag is set,
-                            // so return null.
-                            return null;
-                        }
-                        Thread.yield();
-                    }
-                    return image;
-                } catch (java.net.MalformedURLException ex) {
-                    return null;
-                }
-    */
+                   // Try as a regular URL.
+                   if (url == null) {
+                   url = new URL(link);
+                   }
+                   Toolkit tk = Toolkit.getDefaultToolkit();
+                   Image img = tk.getImage(url);
+                   PaintedImage image = new PaintedImage(img, bounds);
+                   // Wait until the image has been completely loaded,
+                   // unless an error occurred.
+                   while (true) {
+                   if (tk.prepareImage(img, -1, -1, image)) {
+                   // The image was fully prepared, so return the
+                   // created image.
+                   break;
+                   }
+                   int bitflags = tk.checkImage(img, -1, -1, image);
+                   if ((bitflags &
+                   (ImageObserver.ABORT | ImageObserver.ERROR)) != 0) {
+                   // There was an error if either flag is set,
+                   // so return null.
+                   return null;
+                   }
+                   Thread.yield();
+                   }
+                   return image;
+                   } catch (java.net.MalformedURLException ex) {
+                   return null;
+                   }
+                */
             }
         } catch (KernelException e) {
             throw new InternalErrorException(e);
@@ -458,13 +458,13 @@ public class SVGIcon extends EditorIcon implements ValueListener {
                 String name = string.substring(0, index);
                 String value = string.substring(index + 1);
                 /* FIXME: Figure out how to do this. See SVGParser.
-                if (name.equals("fill")) {
-                    ps.fillPaint = lookupColor(value);
-                } else if (name.equals("stroke")) {
-                    ps.strokePaint = lookupColor(value);
-                } else if (name.equals("stroke-width")) {
-                    ps.setLineWidth(Float.parseFloat(value));
-                }
+                   if (name.equals("fill")) {
+                   ps.fillPaint = lookupColor(value);
+                   } else if (name.equals("stroke")) {
+                   ps.strokePaint = lookupColor(value);
+                   } else if (name.equals("stroke-width")) {
+                   ps.setLineWidth(Float.parseFloat(value));
+                   }
                 */
             }
         }
@@ -488,13 +488,13 @@ public class SVGIcon extends EditorIcon implements ValueListener {
                 String name = string.substring(0, index);
                 String value = string.substring(index + 1);
                 /* FIXME: Figure out how to do this. See SVGParser.
-                if (name.equals("fill")) {
-                    ps.fillPaint = lookupColor(value);
-                } else if (name.equals("stroke")) {
-                    ps.strokePaint = lookupColor(value);
-                } else if (name.equals("stroke-width")) {
-                    ps.setLineWidth(Float.parseFloat(value));
-                }
+                   if (name.equals("fill")) {
+                   ps.fillPaint = lookupColor(value);
+                   } else if (name.equals("stroke")) {
+                   ps.strokePaint = lookupColor(value);
+                   } else if (name.equals("stroke-width")) {
+                   ps.setLineWidth(Float.parseFloat(value));
+                   }
                 */
             }
         }

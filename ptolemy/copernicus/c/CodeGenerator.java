@@ -24,8 +24,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (ssb@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
@@ -45,9 +45,9 @@ import java.util.Iterator;
 
 /** A base class for C code generators in Ptolemy II.
 
-   @author Shuvra S. Bhattacharyya
-   @version $Id$
-   @since Ptolemy II 2.0
+@author Shuvra S. Bhattacharyya
+@version $Id$
+@since Ptolemy II 2.0
 
 */
 
@@ -120,7 +120,7 @@ public abstract class CodeGenerator {
         Iterator includeFiles = _context.getIncludeFiles();
         if (includeFiles.hasNext()) {
             headerCode.append(_comment("System, runtime and "
-                    +"CSwitch-generated include files"));
+                                      +"CSwitch-generated include files"));
         }
         while (includeFiles.hasNext()) {
             headerCode.append("#include ");

@@ -1,28 +1,28 @@
 /* Base class for data capsules.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
@@ -35,29 +35,29 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// AbstractNotConvertibleToken
 /**
-The Token base class provides a very general interface for building
-new data types.  However, in many ways, the interface is rather
-complex in order to allow operations between tokens that are defined
-in different classes.  In particular, this requires the duplicate
-operation() and operationReverse() methods.
+   The Token base class provides a very general interface for building
+   new data types.  However, in many ways, the interface is rather
+   complex in order to allow operations between tokens that are defined
+   in different classes.  In particular, this requires the duplicate
+   operation() and operationReverse() methods.
 
-<p> This base class is intended to make it easy to implement tokens
-where operations are only defined for other tokens that are defined in
-the same class.  In these cases, the operation() and
-operationReverse() method can share the same code.  This class
-implements these methods to ensure that the argument of each operation
-is actually an instance of the correct class.  The implementation then
-defers to a protected _operation() method.  These protected methods
-should be overridden in derived classes to provide type-specific
-operations.
+   <p> This base class is intended to make it easy to implement tokens
+   where operations are only defined for other tokens that are defined in
+   the same class.  In these cases, the operation() and
+   operationReverse() method can share the same code.  This class
+   implements these methods to ensure that the argument of each operation
+   is actually an instance of the correct class.  The implementation then
+   defers to a protected _operation() method.  These protected methods
+   should be overridden in derived classes to provide type-specific
+   operations.
 
-<p> This class is used a base class for ArrayToken and RecordToken.
-Note that these classes actually represent tokens having different
-types in the type lattice.
+   <p> This class is used a base class for ArrayToken and RecordToken.
+   Note that these classes actually represent tokens having different
+   types in the type lattice.
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 2.1
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.1
 */
 public abstract class AbstractNotConvertibleToken extends Token {
 

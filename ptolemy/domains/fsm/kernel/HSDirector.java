@@ -1,31 +1,31 @@
 /* An HSDirector governs the execution of the discrete dynamics of a
    hybrid system model.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 1999-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (liuxj@eecs.berkeley.edu)
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
+   @ProposedRating Red (liuxj@eecs.berkeley.edu)
+   @AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -54,18 +54,18 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// HSDirector
 /**
-An HSDirector governs the execution of the discrete dynamics of a hybrid
-system model.
-<p>
-<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/99/hybridsimu/">
-Hierarchical Hybrid System Simulation</a> describes how hybrid system models
-are built and simulated in Ptolemy II.
-<p>
-Note: this class is still under development.
+   An HSDirector governs the execution of the discrete dynamics of a hybrid
+   system model.
+   <p>
+   <a href="http://ptolemy.eecs.berkeley.edu/publications/papers/99/hybridsimu/">
+   Hierarchical Hybrid System Simulation</a> describes how hybrid system models
+   are built and simulated in Ptolemy II.
+   <p>
+   Note: this class is still under development.
 
-@author Xiaojun Liu
-@version $Id$
-@since Ptolemy II 1.0
+   @author Xiaojun Liu
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
@@ -395,7 +395,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         // executed.
         // This is not necessary. hyzheng 08/14/2003
         // Transition tr = _ctrl._chooseTransition(_st.outgoingPort.linkedRelationList());
-         Transition tr = _enabledTransition;
+        Transition tr = _enabledTransition;
 
         // If there is one transition enabled, the HSDirector requests
         // fire again at the same time to see whether the next state
@@ -443,7 +443,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 Actor refinement = (Actor)refinements.next();
                 if (refinement instanceof CTStepSizeControlActor) {
                     result = Math.min(result, ((CTStepSizeControlActor)
-                            refinement).predictedStepSize());
+                                              refinement).predictedStepSize());
                 }
             }
         }
@@ -465,23 +465,23 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @exception IllegalActionException If parent class throws it or the
      *  immediately upper director is neither a CTDirector nor a HSDirector.
      */
-//    public void preinitialize() throws IllegalActionException {
-//        super.preinitialize();
-//        Nameable container = getContainer();
-//        if (container instanceof CompositeActor) {
-//            CompositeActor compositeActor = (CompositeActor)container;
-//            if (!(compositeActor.getExecutiveDirector() instanceof CTDirector
-//                  || compositeActor.getExecutiveDirector() instanceof
-//                  CTTransparentDirector)) {
-//                throw new IllegalActionException("HSDirector is designed for " +
-//                    "a modal model embedded inside a CT model or another " +
-//                    "modal model with a HSDirector. If the modal " +
-//                    "model is embedded inside other domains, like DE or SDF, " +
-//                    "use FSMDirector instead. Right click the modal model and " +
-//                    "configure the directorClass parameter.");
-//            }
-//        }
-//    }
+    //    public void preinitialize() throws IllegalActionException {
+    //        super.preinitialize();
+    //        Nameable container = getContainer();
+    //        if (container instanceof CompositeActor) {
+    //            CompositeActor compositeActor = (CompositeActor)container;
+    //            if (!(compositeActor.getExecutiveDirector() instanceof CTDirector
+    //                  || compositeActor.getExecutiveDirector() instanceof
+    //                  CTTransparentDirector)) {
+    //                throw new IllegalActionException("HSDirector is designed for " +
+    //                    "a modal model embedded inside a CT model or another " +
+    //                    "modal model with a HSDirector. If the modal " +
+    //                    "model is embedded inside other domains, like DE or SDF, " +
+    //                    "use FSMDirector instead. Right click the modal model and " +
+    //                    "configure the directorClass parameter.");
+    //            }
+    //        }
+    //    }
 
     /** Return the step size refined by all the enabled refinements,
      *  which are refinements that returned true
@@ -503,7 +503,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 Actor refinement = (Actor)refinements.next();
                 if (refinement instanceof CTStepSizeControlActor) {
                     result = Math.min(result, ((CTStepSizeControlActor)
-                            refinement).refinedStepSize());
+                                              refinement).refinedStepSize());
                 }
             }
         }

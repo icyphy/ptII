@@ -1,32 +1,32 @@
 /* A Ptolemy application that instantiates classnames given on the command
    line.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 1999-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (vogel@eecs.berkeley.edu)
+   @ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.copernicus.java;
@@ -42,17 +42,17 @@ import ptolemy.kernel.util.IllegalActionException;
 /////////////////////////////////////////////////////////////////
 //// CommandLineTemplate
 /**
-This class is similar to CompositeActorApplication, except that it
-does not parse command line elements.   It is used as
-a template for generating a command line interface for code generated
-from a ptolemy model.
-<p>
-In this case, parsing the command line is not necessary because
-parameter values and the class values are fixed by the code generator.
+   This class is similar to CompositeActorApplication, except that it
+   does not parse command line elements.   It is used as
+   a template for generating a command line interface for code generated
+   from a ptolemy model.
+   <p>
+   In this case, parsing the command line is not necessary because
+   parameter values and the class values are fixed by the code generator.
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class CommandLineTemplate {
 
@@ -294,7 +294,7 @@ public class CommandLineTemplate {
         buffer.append(freeMemory);
         buffer.append("K (");
         buffer.append(Math.round( (((double)freeMemory)/((double)totalMemory))
-                * 100.0));
+                              * 100.0));
         buffer.append("%)");
     }
 

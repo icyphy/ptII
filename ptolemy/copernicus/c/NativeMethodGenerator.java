@@ -24,8 +24,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (ankush@eng.umd.edu)
 @AcceptedRating Red (ankush@eng.umd.edu)
@@ -108,8 +108,8 @@ public class NativeMethodGenerator {
 
         // Add a #include if the method body exists.
         if (FileHandler.exists(Options.v().get("runtimeDir")
-                + "/native_bodies/"
-                + fileContainingCodeFor(method))) {
+                    + "/native_bodies/"
+                    + fileContainingCodeFor(method))) {
 
             code.append(_indent(1) + "#include \"native_bodies/"
                     + fileContainingCodeFor(method)

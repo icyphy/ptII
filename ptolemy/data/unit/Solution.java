@@ -1,28 +1,28 @@
 /* Class for representing a solution.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_3
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_3
+COPYRIGHTENDKEY
 @Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
 @Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
@@ -42,71 +42,71 @@ import ptolemy.moml.MoMLChangeRequest;
 //////////////////////////////////////////////////////////////////////////
 //// Solution
 /** An instance of this class contains a "solution" of Unit constraints.
-In essence, the solution represents the constraints between a set of Unit
-variables, and a set of Units.
-The table below illustrates this.
-<TABLE BORDER = "1">
- <TR>
-  <TH></TH>
-  <TH>V1</TH>
-  <TH>V2</TH>
-  <TH>...</TH>
-  <TH>Vl</TH>
-  <TH></TH>
-</TR>
+    In essence, the solution represents the constraints between a set of Unit
+    variables, and a set of Units.
+    The table below illustrates this.
+    <TABLE BORDER = "1">
+    <TR>
+    <TH></TH>
+    <TH>V1</TH>
+    <TH>V2</TH>
+    <TH>...</TH>
+    <TH>Vl</TH>
+    <TH></TH>
+    </TR>
 
- <TR>
-  <TD>C1</TD>
-  <TD>P11</TD>
-  <TD>P12</TD>
-  <TD>...</TD>
-  <TD>P1l</TD>
-  <TD>U1</TD>
-</TR>
+    <TR>
+    <TD>C1</TD>
+    <TD>P11</TD>
+    <TD>P12</TD>
+    <TD>...</TD>
+    <TD>P1l</TD>
+    <TD>U1</TD>
+    </TR>
 
- <TR>
-   <TD>C2</TD>
-  <TD>P21</TD>
-  <TD>P22</TD>
-  <TD>...</TD>
-  <TD>P2l</TD>
-  <TD>U2</TD>
-</TR>
+    <TR>
+    <TD>C2</TD>
+    <TD>P21</TD>
+    <TD>P22</TD>
+    <TD>...</TD>
+    <TD>P2l</TD>
+    <TD>U2</TD>
+    </TR>
 
- <TR>
-   <TD>:</TD>
-  <TD>:</TD>
-  <TD>:</TD>
-  <TD>...</TD>
-  <TD>:</TD>
-  <TD>:</TD>
-</TR>
+    <TR>
+    <TD>:</TD>
+    <TD>:</TD>
+    <TD>:</TD>
+    <TD>...</TD>
+    <TD>:</TD>
+    <TD>:</TD>
+    </TR>
 
- <TR>
-   <TD>Ck</TD>
-  <TD>Pk1</TD>
-  <TD>Pk2</TD>
-  <TD>...</TD>
-  <TD>Pkl</TD>
-  <TD>Uk</TD>
-</TR>
-</TABLE>
-Here, the columns V1, V2, ..., Vl represent l variables.
-The columns C1, C2, ..., Ck represent k constraints.
-The U1, U2, ..., Uk on the right represent Units.
-The meaning of the ith row is that V1^Pi1 + V2^pi2 + .. +Vk^pik = Uk.
-<p>
-Generally, this class is used by creating an instance that is derived from the
-Units specifications of a model.
-Then, a method is invoked that results in other instances being created that are
-a transformations of the original instance. These transformed instances are
-equivalent, in a sense, to the original instance. The difference is that they
-provide a different perspective than that of the original instance. In
-particular, some of the transformed instances can be used to highlight
-inconsistencies not apparent in the original instance.
-@author Rowland R Johnson
-@version $Id$
-@since Ptolemy II 4.0
+    <TR>
+    <TD>Ck</TD>
+    <TD>Pk1</TD>
+    <TD>Pk2</TD>
+    <TD>...</TD>
+    <TD>Pkl</TD>
+    <TD>Uk</TD>
+    </TR>
+    </TABLE>
+    Here, the columns V1, V2, ..., Vl represent l variables.
+    The columns C1, C2, ..., Ck represent k constraints.
+    The U1, U2, ..., Uk on the right represent Units.
+    The meaning of the ith row is that V1^Pi1 + V2^pi2 + .. +Vk^pik = Uk.
+    <p>
+    Generally, this class is used by creating an instance that is derived from the
+    Units specifications of a model.
+    Then, a method is invoked that results in other instances being created that are
+    a transformations of the original instance. These transformed instances are
+    equivalent, in a sense, to the original instance. The difference is that they
+    provide a different perspective than that of the original instance. In
+    particular, some of the transformed instances can be used to highlight
+    inconsistencies not apparent in the original instance.
+    @author Rowland R Johnson
+    @version $Id$
+    @since Ptolemy II 4.0
 */
 public class Solution {
 
@@ -129,10 +129,10 @@ public class Solution {
      * a constraint to canonical form.
      */
     public Solution(
-        TypedCompositeActor model,
-        String[] vLabels,
-        Vector constraints)
-        throws IllegalActionException {
+            TypedCompositeActor model,
+            String[] vLabels,
+            Vector constraints)
+            throws IllegalActionException {
         _numConstraints = constraints.size();
         _variables = vLabels;
         _model = model;
@@ -146,22 +146,22 @@ public class Solution {
             _done[i] = false;
         }
         for (int constraintNum = 0;
-            constraintNum < _numConstraints;
-            constraintNum++) {
+             constraintNum < _numConstraints;
+             constraintNum++) {
             UnitEquation constraint =
                 (UnitEquation) (constraints.elementAt(constraintNum));
             UnitEquation canonicalEquation = constraint.canonicalize();
             Vector rightUTerms = canonicalEquation.getRhs().getUTerms();
             if (rightUTerms.size() != 1) {
                 throw new IllegalActionException(
-                    "canonicalEquation "
+                        "canonicalEquation "
                         + canonicalEquation
                         + " has nonsingular RHS");
             }
             UnitTerm rhsUterm = (UnitTerm) (rightUTerms.elementAt(0));
             if (!rhsUterm.isUnit()) {
                 throw new IllegalActionException(
-                    "canonicalEquation "
+                        "canonicalEquation "
                         + canonicalEquation
                         + " has nonUnit RHS");
             }
@@ -172,7 +172,7 @@ public class Solution {
                 UnitTerm leftUTerm = (UnitTerm) (leftUTerms.elementAt(i));
                 if (leftUTerm == null) {
                     throw new IllegalActionException(
-                        "canonicalEquation "
+                            "canonicalEquation "
                             + canonicalEquation
                             + " has nonVar LHS");
                 }
@@ -209,7 +209,7 @@ public class Solution {
             }
 
             moml.append(
-                "<port name=\""
+                    "<port name=\""
                     + _variables[j]
                     + "\">"
                     + " <property name=\"_color\" "
@@ -225,8 +225,8 @@ public class Solution {
                     + "</port>");
         }
         for (int constraintNum = 0;
-            constraintNum < _numConstraints;
-            constraintNum++) {
+             constraintNum < _numConstraints;
+             constraintNum++) {
             NamedObj source = _source[constraintNum];
             String expression = _vectorA[constraintNum].descriptiveForm();
 
@@ -239,7 +239,7 @@ public class Solution {
                 IOPort port = (IOPort) source;
                 ComponentEntity actor = (ComponentEntity) (port.getContainer());
                 moml.append(
-                    "<entity name=\""
+                        "<entity name=\""
                         + actor.getName()
                         + "\">"
                         + "<port name=\""
@@ -259,7 +259,7 @@ public class Solution {
             } else if (source instanceof IORelation) {
                 IORelation relation = (IORelation) source;
                 moml.append(
-                    "<relation name=\""
+                        "<relation name=\""
                         + relation.getName()
                         + "\" class=\"ptolemy.actor.TypedIORelation\">"
                         + "<property name=\"_color\" "
@@ -348,22 +348,22 @@ public class Solution {
      */
     public String getStateDesc() {
         switch (_solveState) {
-            case _NOTRUN :
-                {
-                    return "NotRun";
-                }
-            case _NONUNIQUE :
-                {
-                    return "No Unique Solution";
-                }
-            case _INCONSISTENT :
-                {
-                    return "Inconsistent";
-                }
-            case _CONSISTENT :
-                {
-                    return "Consistent";
-                }
+        case _NOTRUN :
+            {
+                return "NotRun";
+            }
+        case _NONUNIQUE :
+            {
+                return "No Unique Solution";
+            }
+        case _INCONSISTENT :
+            {
+                return "Inconsistent";
+            }
+        case _CONSISTENT :
+            {
+                return "Consistent";
+            }
         }
         return null;
     }
@@ -389,8 +389,8 @@ public class Solution {
                 Solution s = copy();
                 Vector results =
                     s._partialSolveRecursively(
-                        1,
-                        (Index) (branchPoints.elementAt(i)));
+                            1,
+                            (Index) (branchPoints.elementAt(i)));
                 solutions.addAll(results);
             }
         } else {
@@ -429,7 +429,7 @@ public class Solution {
                         numNonZeroP++;
                 }
                 if (numNonZeroP == 0
-                    && !_vectorA[i].equals(UnitLibrary.Identity)) {
+                        && !_vectorA[i].equals(UnitLibrary.Identity)) {
                     _solveState = _INCONSISTENT;
                     Unit factor = _vectorA[i].invert();
                     String uString = factor.descriptiveForm();
@@ -445,7 +445,7 @@ public class Solution {
                     return;
                 }
                 if (numNonZeroP > 1
-                    && _vectorA[i].equals(UnitLibrary.Identity)) {
+                        && _vectorA[i].equals(UnitLibrary.Identity)) {
                     _solveState = _NONUNIQUE;
                     _stateDescription = "NonUnique";
                     return;
@@ -502,13 +502,13 @@ public class Solution {
                     numNonZeroP++;
             }
             if (numNonZeroP == 0
-                && !_vectorA[i].equals(UnitLibrary.Identity)) {
+                    && !_vectorA[i].equals(UnitLibrary.Identity)) {
                 Unit factor = _vectorA[i].invert();
                 String uString = factor.descriptiveForm();
                 _constraintConsistent[i] = false;
                 _constraintExplanations[i] += uString;
             } else if (
-                numNonZeroP > 1 && _vectorA[i].equals(UnitLibrary.Identity)) {
+                    numNonZeroP > 1 && _vectorA[i].equals(UnitLibrary.Identity)) {
                 _constraintConsistent[i] = false;
             }
         }
@@ -565,9 +565,9 @@ public class Solution {
     }
 
     /**
-    * @param k
-    * @param l
-    */
+     * @param k
+     * @param l
+     */
     private void _eliminate(Index g) {
         int k = g.getK();
         int l = g.getL();
@@ -693,14 +693,14 @@ public class Solution {
         retv.append("Header\nVariables\n");
         for (int j = 0; j < _numVariables; j++) {
             retv.append(
-                "   " + _vNumFormat.format(j) + " " + _variables[j] + "\n");
+                    "   " + _vNumFormat.format(j) + " " + _variables[j] + "\n");
         }
         retv.append("\n");
         retv.append("ConstrNum  Source\n");
         for (int i = 0; i < _numConstraints; i++) {
             NamedObj source = _source[i];
             retv.append(
-                ""
+                    ""
                     + _vNumFormat.format(i)
                     + "         "
                     + source.toString()
@@ -713,7 +713,7 @@ public class Solution {
     private Vector _partialSolveRecursively(int level, Index g) {
         Vector retv = new Vector();
         _debug(
-            "\nSolver._eliminateRecursively level "
+                "\nSolver._eliminateRecursively level "
                 + level
                 + " BrancPoint "
                 + g
@@ -739,8 +739,8 @@ public class Solution {
                 Solution s = copy();
                 Vector results =
                     s._partialSolveRecursively(
-                        level + 1,
-                        (Index) (branchPoints.elementAt(gi)));
+                            level + 1,
+                            (Index) (branchPoints.elementAt(gi)));
                 if (results != null) {
                     retv.addAll(results);
                 }
@@ -749,12 +749,12 @@ public class Solution {
             _analyzeState();
             if (_debug) {
                 System.out.println(
-                    "Solver.solve final level " + level + _state());
+                        "Solver.solve final level " + level + _state());
                 Solution s = this;
                 int ll = level;
                 while (s != null) {
                     System.out.print(
-                        "Solver.backtrace level " + ll-- +"\n" + s._state());
+                            "Solver.backtrace level " + ll-- +"\n" + s._state());
                     s = s._upper;
                 }
             }
@@ -788,7 +788,7 @@ public class Solution {
                 retv.append("" + _pFormat.format(_arrayP[i][j]) + " ");
             }
             retv.append(
-                "" + _vectorA[i] + " " + _vectorA[i].descriptiveForm() + "\n");
+                    "" + _vectorA[i] + " " + _vectorA[i].descriptiveForm() + "\n");
         }
         if (_branchPoint == null) {
             retv.append("BranchPoint = null\n");

@@ -1,28 +1,28 @@
 /* A standalone plot application.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
@@ -44,67 +44,67 @@ import javax.swing.UIManager;
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplication
 /**
-PlotApplication is a versatile two-dimensional data plotter application.
-It can read files compatible with the Ptolemy plot
-file format (currently only ASCII).  For a description of the file
-format, see the Plot and PlotBox classes.
-Command-line options include:
-<dl>
+   PlotApplication is a versatile two-dimensional data plotter application.
+   It can read files compatible with the Ptolemy plot
+   file format (currently only ASCII).  For a description of the file
+   format, see the Plot and PlotBox classes.
+   Command-line options include:
+   <dl>
 
-<dt><code>-help</code></a>
-<dt>Print the usage, including all command-line options
-    that exist for backward compatibility and then exit.
-    The help menu choice will display the same information.
-<dt><code>-test</code></a>
-<dt>Display the plot, then exit after 2 seconds.
+   <dt><code>-help</code></a>
+   <dt>Print the usage, including all command-line options
+   that exist for backward compatibility and then exit.
+   The help menu choice will display the same information.
+   <dt><code>-test</code></a>
+   <dt>Display the plot, then exit after 2 seconds.
 
-<dt><code>-version</code></a>
-<dt>Print the program version and then exit.
-    While ptplot is running,
-    the version menu choice will display the same information.
-<dt><code>-</code></a>
-<dt>Read the plot data from standard in.
-</dl>
+   <dt><code>-version</code></a>
+   <dt>Print the program version and then exit.
+   While ptplot is running,
+   the version menu choice will display the same information.
+   <dt><code>-</code></a>
+   <dt>Read the plot data from standard in.
+   </dl>
 
-<p>
-For compatibility with historical applications, this application has
-a limited ability to read pxgraph files.  The command line arguments
-must be used, and the options that are understood are exactly those
-of the pxgraph application, plus some more to allow for cross-platform
-reading.  It is not possible to read pxgraph files
-using the "Open" menu command (because of the cross-platform problems).
-The additional command-line arguments are:
-<dl>
+   <p>
+   For compatibility with historical applications, this application has
+   a limited ability to read pxgraph files.  The command line arguments
+   must be used, and the options that are understood are exactly those
+   of the pxgraph application, plus some more to allow for cross-platform
+   reading.  It is not possible to read pxgraph files
+   using the "Open" menu command (because of the cross-platform problems).
+   The additional command-line arguments are:
+   <dl>
 
-<dt><code>-bigendian</code></a>
-<dt>Data files are in big-endian, or network binary format.
-If you are on a little-endian machine, such as a machine
-with an Intel x86 chip, and you would like to read a binary
-format file created on a big-endian machine, such as a Sun SPARC,
-use the <code>-bigendian</code> flag.
+   <dt><code>-bigendian</code></a>
+   <dt>Data files are in big-endian, or network binary format.
+   If you are on a little-endian machine, such as a machine
+   with an Intel x86 chip, and you would like to read a binary
+   format file created on a big-endian machine, such as a Sun SPARC,
+   use the <code>-bigendian</code> flag.
 
-<dt><code>-littleendian</code></a>
-<dt>Data files are in little-endian, or x86 binary format.
-If you are on a big-endian machine, such as a Sun Sparc,
-and you would like to read a binary
-format file created on a little-endian machine, such as Intel x86
-machine, then use the <code>-littleendian</code> flag.
-</dl>
-<p>
-To compile and run this application, do the following:
-<pre>
-    javac -classpath ../.. PlotApplication.java
-    java -classpath ../.. ptolemy.plot.PlotApplication
-</pre>
-<p>
-This assumes a particular directory structure.  If this is not what you
-have, then alter the above accordingly.
+   <dt><code>-littleendian</code></a>
+   <dt>Data files are in little-endian, or x86 binary format.
+   If you are on a big-endian machine, such as a Sun Sparc,
+   and you would like to read a binary
+   format file created on a little-endian machine, such as Intel x86
+   machine, then use the <code>-littleendian</code> flag.
+   </dl>
+   <p>
+   To compile and run this application, do the following:
+   <pre>
+   javac -classpath ../.. PlotApplication.java
+   java -classpath ../.. ptolemy.plot.PlotApplication
+   </pre>
+   <p>
+   This assumes a particular directory structure.  If this is not what you
+   have, then alter the above accordingly.
 
-@see Plot
-@see PlotBox
-@author Christopher Hylands and Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
+   @see Plot
+   @see PlotBox
+   @author Christopher Hylands and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class PlotApplication extends PlotFrame {
 

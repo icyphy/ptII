@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -49,15 +49,15 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIBandSelect
 /**
-Copy bands of an image to another image.  The number of bands to copy
-is indicated by the length of the array.  The band to copy is indicated
-by each value of the array.  For instance, if the user wants to
-duplicate each band of a three band image, the value of the array
-parameter should be {0, 0, 1, 1, 2, 2}.
+   Copy bands of an image to another image.  The number of bands to copy
+   is indicated by the length of the array.  The band to copy is indicated
+   by each value of the array.  For instance, if the user wants to
+   duplicate each band of a three band image, the value of the array
+   parameter should be {0, 0, 1, 1, 2, 2}.
 
-@author James Yeh
-@version $Id$
-@since Ptolemy II 3.0
+   @author James Yeh
+   @version $Id$
+   @since Ptolemy II 3.0
 */
 public class JAIBandSelect extends Transformer {
 

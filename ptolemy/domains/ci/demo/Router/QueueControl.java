@@ -1,28 +1,28 @@
 /* An actor that distribute its input data to different output ports.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
@@ -43,27 +43,27 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// QueueControl
 /**
-An actor that distribute its input data to different outputs.
-Its output ports <i>queue1<i> and <i>queue2<i> is connected
-to two <i>queue<i> actors respectively. The lengh of the two
-queue are fed back to its input ports <i>q1Length<i> and
-<i>q2Length<i>. The input token at <i>input<i> is distributed
-according to the following policy: if the total length of queue1
-and queue2 is less than threshold1, specified by the <i>minMark</i>
-parameter, the input token is send to <i>queue1<i> if queue1's
-length is less than queue2's, otherwise send to <i>queue2<i>; if
-the total length is greater than threshold1 but less than
-threshold2, specified by the <i>minMark</i> parameter, the
-input token may be dropped randomly(with a probability
-proportional to the amount larger than threshold1) or
-send to queues shorter; if the total length is greater than
-threshold2, then drop the input token. If the input token is
-dropped, it is send to the <i>dropped<i> output so that it can
-be catched or monitored when necessary.
+   An actor that distribute its input data to different outputs.
+   Its output ports <i>queue1<i> and <i>queue2<i> is connected
+   to two <i>queue<i> actors respectively. The lengh of the two
+   queue are fed back to its input ports <i>q1Length<i> and
+   <i>q2Length<i>. The input token at <i>input<i> is distributed
+   according to the following policy: if the total length of queue1
+   and queue2 is less than threshold1, specified by the <i>minMark</i>
+   parameter, the input token is send to <i>queue1<i> if queue1's
+   length is less than queue2's, otherwise send to <i>queue2<i>; if
+   the total length is greater than threshold1 but less than
+   threshold2, specified by the <i>minMark</i> parameter, the
+   input token may be dropped randomly(with a probability
+   proportional to the amount larger than threshold1) or
+   send to queues shorter; if the total length is greater than
+   threshold2, then drop the input token. If the input token is
+   dropped, it is send to the <i>dropped<i> output so that it can
+   be catched or monitored when necessary.
 
-@author Xiaojun Liu
-@version $Id$
-@since Ptolemy II 1.0
+   @author Xiaojun Liu
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 
 public class QueueControl extends TypedAtomicActor {

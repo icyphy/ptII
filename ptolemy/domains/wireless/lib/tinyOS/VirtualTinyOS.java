@@ -1,35 +1,35 @@
 /* An actor that evaluates matlab expressions with input ports
    providing variables
 
- Copyright (c) 2004 The Regents of the University of California and
- Research in Motion Limited.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2004 The Regents of the University of California and
+   Research in Motion Limited.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
- LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
- INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
- SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
- OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+   LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+   INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+   SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+   OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
- SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
- BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
- LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+   SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+   THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+   PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+   BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+   LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Yellow (zkemenczy@rim.net)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @ProposedRating Yellow (zkemenczy@rim.net)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib.tinyOS;
@@ -50,11 +50,11 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// VirtualTinyOS
 /** Provide a virtual enviorment to run tinyOS code directly...
-FIXME: this class hasn't been fully implemented.
-FIXME: add more doc here.
-@author Yang Zhao, Xiaojun Liu
-@version $ $
-@since Ptolemy II 4.0
+    FIXME: this class hasn't been fully implemented.
+    FIXME: add more doc here.
+    @author Yang Zhao, Xiaojun Liu
+    @version $ $
+    @since Ptolemy II 4.0
 */
 public class VirtualTinyOS extends TypedAtomicActor {
 
@@ -135,13 +135,13 @@ public class VirtualTinyOS extends TypedAtomicActor {
         //If there is a timer component, we handel the timer interupt here.
         if (_hasTimer && director.getCurrentTime()>= _scheduledTime) {
 
-               if (_debugging) {
-                   _debug("Called native method to trigger the time event");
-               }
-               // signal a timer interupt here to the application.
-               triggerTimerEvent();
-               _scheduledTime = _scheduledTime + _timerPeriod;
-               director.fireAt(this, _scheduledTime);
+            if (_debugging) {
+                _debug("Called native method to trigger the time event");
+            }
+            // signal a timer interupt here to the application.
+            triggerTimerEvent();
+            _scheduledTime = _scheduledTime + _timerPeriod;
+            director.fireAt(this, _scheduledTime);
         } else if (_hasLed) {
             if (_debugging) {
                 _debug("LED Blinking");
@@ -173,13 +173,13 @@ public class VirtualTinyOS extends TypedAtomicActor {
                 e.printStackTrace();
             }
         }
-     }
+    }
 
     public int triggerTimerEvent() {
-         System.out.println("about to call the native method to signal an event");
-         int r = signalTimerEvent();
-         System.out.println("return from the native method");
-         return r;
+        System.out.println("about to call the native method to signal an event");
+        int r = signalTimerEvent();
+        System.out.println("return from the native method");
+        return r;
     }
 
     // A callback method for the application to notify this of the timer settings.

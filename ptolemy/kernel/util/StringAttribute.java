@@ -1,28 +1,28 @@
 /* An attribute that has a string value.
 
- Copyright (c) 2000-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2000-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
@@ -39,32 +39,32 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// StringAttribute
 /**
-An attribute that has a string value.
-Use setExpression() to define the value, as in for example
-<pre>
-    attribute.setExpression("xxx");
-</pre>
-<p>The default value of the string contained by this attribute is the empty
-string.
+   An attribute that has a string value.
+   Use setExpression() to define the value, as in for example
+   <pre>
+   attribute.setExpression("xxx");
+   </pre>
+   <p>The default value of the string contained by this attribute is the empty
+   string.
 
-<p>By default, an instance of this class is fully visible in
-a user interface.  The visibility is indicated to the user
-interface when the user interface calls the getVisibility() method
-of this class and the value Settable.FULL is returned to the userInterface.
+   <p>By default, an instance of this class is fully visible in
+   a user interface.  The visibility is indicated to the user
+   interface when the user interface calls the getVisibility() method
+   of this class and the value Settable.FULL is returned to the userInterface.
 
-<p>Note that the string value within StringAttribute cannot reference
-other StringAttributes or Parameters, so if an actor has a public
-StringAttribute, then one cannot make the value of that attribute
-dependent on a value higher in the hierarchy.  Usually, actors have
-public ptolemy.data.expr.Parameters instead of public StringAttributes
-so that the value can reference other parameters.  The primary reason
-to use StringAttribute is if you want a string that will not be parsed
-and you do not want to type a leading a trailing double quote.
+   <p>Note that the string value within StringAttribute cannot reference
+   other StringAttributes or Parameters, so if an actor has a public
+   StringAttribute, then one cannot make the value of that attribute
+   dependent on a value higher in the hierarchy.  Usually, actors have
+   public ptolemy.data.expr.Parameters instead of public StringAttributes
+   so that the value can reference other parameters.  The primary reason
+   to use StringAttribute is if you want a string that will not be parsed
+   and you do not want to type a leading a trailing double quote.
 
-@see Settable#FULL
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @see Settable#FULL
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class StringAttribute extends Attribute implements Settable {
 

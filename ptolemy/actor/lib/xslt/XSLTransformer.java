@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
@@ -51,20 +51,20 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// XSLTTransformer
 /**
-This actor reads an XSLT file and apply it to a dom tree. The file or
-URL is specified using any form acceptable to the FileParameter class.
+   This actor reads an XSLT file and apply it to a dom tree. The file or
+   URL is specified using any form acceptable to the FileParameter class.
 
-<p>Currently, this actor requires the
-<a href="http://saxon.sourceforge.net/">Saxon</a> XSLT processor
-so as to ensure reproducible results.  This restriction may
-be relaxed in later versions of this actor.
+   <p>Currently, this actor requires the
+   <a href="http://saxon.sourceforge.net/">Saxon</a> XSLT processor
+   so as to ensure reproducible results.  This restriction may
+   be relaxed in later versions of this actor.
 
-<p>FIXME: what should the type of the input/output ports be???.
+   <p>FIXME: what should the type of the input/output ports be???.
 
-@see ptolemy.actor.lib.javasound.AudioReader
-@author  Yang Zhao, Christopher Hylands Brooks
-@version $Id$
-@since Ptolemy II 3.1
+   @see ptolemy.actor.lib.javasound.AudioReader
+   @author  Yang Zhao, Christopher Hylands Brooks
+   @version $Id$
+   @since Ptolemy II 3.1
 */
 public class XSLTransformer extends Transformer{
 
@@ -155,7 +155,7 @@ public class XSLTransformer extends Transformer{
                             output.broadcast(outputToken);
                             if (_debugging) {
                                 _debug("--- change request string token "
-                                       + "send out. \n");
+                                        + "send out. \n");
                             }
                         }
                     } catch (TransformerException ex) {

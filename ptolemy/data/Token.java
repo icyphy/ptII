@@ -1,28 +1,28 @@
 /* Base class for data capsules.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
@@ -41,47 +41,47 @@ import java.io.Serializable;
 //////////////////////////////////////////////////////////////////////////
 //// Token
 /**
-Token is the base class for data capsules.  Tokens are immutable,
-meaning that their value cannot change after construction.  They have
-a set of polymorphic methods providing a set of basic arithmetic and
-logical operations.  Generally, derived classes should override the
-methods to implement type specific operations that make sense for a
-given type.  For operations that are non-sensical for a given type,
-such as division of matrices, the implementation of this base class
-can be used, which simply throws an exception.
+   Token is the base class for data capsules.  Tokens are immutable,
+   meaning that their value cannot change after construction.  They have
+   a set of polymorphic methods providing a set of basic arithmetic and
+   logical operations.  Generally, derived classes should override the
+   methods to implement type specific operations that make sense for a
+   given type.  For operations that are non-sensical for a given type,
+   such as division of matrices, the implementation of this base class
+   can be used, which simply throws an exception.
 
-<p> Generally, it is painful to implement both the operation and
-operationReverse methods of this class.  It is also painful to
-implement tokens that are automatically converted to other tokens in a
-consistent fashion.  As such, there are several subclasses of this
-class that implement these methods and provide a somewhat nicer
-abstraction.  The ScalarToken derived class is useful for many types
-that are losslessly convertible to other types and may be associated
-with units, such as IntToken.  The MatrixToken derived class is useful
-for implementing matrices of ScalarTokens, such as IntMatrixToken.
-The AbstractNotConvertible derived class is useful for implementing
-tokens that are not losslessly convertible to a token in implemented
-in another class, such as ArrayToken.  Lastly,
-AbstractConvertibleToken is useful for implementing tokens that are
-losslessly convertible to a token in another class, but don't have
-units, such as BooleanToken.
+   <p> Generally, it is painful to implement both the operation and
+   operationReverse methods of this class.  It is also painful to
+   implement tokens that are automatically converted to other tokens in a
+   consistent fashion.  As such, there are several subclasses of this
+   class that implement these methods and provide a somewhat nicer
+   abstraction.  The ScalarToken derived class is useful for many types
+   that are losslessly convertible to other types and may be associated
+   with units, such as IntToken.  The MatrixToken derived class is useful
+   for implementing matrices of ScalarTokens, such as IntMatrixToken.
+   The AbstractNotConvertible derived class is useful for implementing
+   tokens that are not losslessly convertible to a token in implemented
+   in another class, such as ArrayToken.  Lastly,
+   AbstractConvertibleToken is useful for implementing tokens that are
+   losslessly convertible to a token in another class, but don't have
+   units, such as BooleanToken.
 
-<p> Instances of this base class *should not* be used to represent
-pure events, i.e., to indicate that an event is present. To represent
-pure events, it is better to use the EventToken class.  The reasoning
-is that the type BaseType.GENERAL is reserved to represent types which
-the type system cannot represent exactly.  Using the EventToken class,
-and the type BaseType.EVENT allows typesafe use of pure events.
+   <p> Instances of this base class *should not* be used to represent
+   pure events, i.e., to indicate that an event is present. To represent
+   pure events, it is better to use the EventToken class.  The reasoning
+   is that the type BaseType.GENERAL is reserved to represent types which
+   the type system cannot represent exactly.  Using the EventToken class,
+   and the type BaseType.EVENT allows typesafe use of pure events.
 
-@author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Hylands,
-Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 0.2
+   @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Hylands,
+   Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.2
 
-@see ScalarToken
-@see AbstractConvertibleToken
-@see AbstractNotConvertibleToken
-@see MatrixToken
+   @see ScalarToken
+   @see AbstractConvertibleToken
+   @see AbstractNotConvertibleToken
+   @see MatrixToken
 */
 public class Token implements Serializable {
 

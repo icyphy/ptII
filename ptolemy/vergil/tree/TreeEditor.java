@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
@@ -40,11 +40,11 @@ import javax.swing.JFrame;
 //////////////////////////////////////////////////////////////////////////
 //// TreeEditor
 /**
-An application that shows the elements of a Ptolemy II model in a JTree.
+   An application that shows the elements of a Ptolemy II model in a JTree.
 
-@author Edward Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author Edward Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class TreeEditor extends JFrame {
 

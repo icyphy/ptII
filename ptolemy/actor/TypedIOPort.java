@@ -1,28 +1,28 @@
 /* An IOPort with a type.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (yuhong@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
@@ -58,53 +58,53 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// TypedIOPort
 /**
-An IOPort with a type. This class implements the Typeable interface.
-The type is represented by an instance of Type in data.type package.
-It can be declared by calling setTypeEquals(). If this method is not
-called, or called with a BaseType.UNKNOWN argument, the type of this port
-will be set by type resolution using the type constraints. The type
-constraints on this port can be specified using the methods defined in
-the Typeable interface.
+   An IOPort with a type. This class implements the Typeable interface.
+   The type is represented by an instance of Type in data.type package.
+   It can be declared by calling setTypeEquals(). If this method is not
+   called, or called with a BaseType.UNKNOWN argument, the type of this port
+   will be set by type resolution using the type constraints. The type
+   constraints on this port can be specified using the methods defined in
+   the Typeable interface.
 
-<p>This class keeps a list of TypeListeners. Whenever the type
-changes, this class will generate an instance of TypeEvent and pass it
-to the listeners by calling their typeChanged() method. A TypeListener
-register its interest in the type change event of this port by calling
-addTypeListener(), and can be removed from the listener list by calling
-the removeTypeListener().
+   <p>This class keeps a list of TypeListeners. Whenever the type
+   changes, this class will generate an instance of TypeEvent and pass it
+   to the listeners by calling their typeChanged() method. A TypeListener
+   register its interest in the type change event of this port by calling
+   addTypeListener(), and can be removed from the listener list by calling
+   the removeTypeListener().
 
-<p>A TypedIOPort can only link to instances of TypedIORelation. Derived
-classes may further constrain links to a subclass of TypedIORelation.
-To do this, they should override the protected methods _link() and
-_linkInside() to throw an exception if their arguments are not of the
-appropriate type.  Similarly, an TypeIOPort can only be contained by a
-class derived from ComponentEntity and implementing the TypedActor
-interface.  Subclasses may further constrain the containers by overriding
-_checkContainer().
+   <p>A TypedIOPort can only link to instances of TypedIORelation. Derived
+   classes may further constrain links to a subclass of TypedIORelation.
+   To do this, they should override the protected methods _link() and
+   _linkInside() to throw an exception if their arguments are not of the
+   appropriate type.  Similarly, an TypeIOPort can only be contained by a
+   class derived from ComponentEntity and implementing the TypedActor
+   interface.  Subclasses may further constrain the containers by overriding
+   _checkContainer().
 
-<p>Note that actors that call some of the setType<i>XXX</i> methods
-may also need to have a clone() method.  Although the base classes
-neatly handle most aspects of the clone operation, there are
-subtleties involved with cloning type constraints. Absolute type
-constraints on ports and parameters are carried automatically into the
-clone, so clone() methods should never call setTypeEquals(). However,
-relative type constraints of the other setType<i>XXX</I>() methods are
-not cloned automatically because of the difficulty of ensuring that
-the other object being referred to in a relative constraint is the
-intended one.
-<p> For example the Ramp actor constructor calls:
-<pre>
-output.setTypeAtLeast(init);
-</pre>
-so the clone() method of the Ramp actor calls:
-<pre>
-newObject.output.setTypeAtLeast(newObject.init);
-</pre>
+   <p>Note that actors that call some of the setType<i>XXX</i> methods
+   may also need to have a clone() method.  Although the base classes
+   neatly handle most aspects of the clone operation, there are
+   subtleties involved with cloning type constraints. Absolute type
+   constraints on ports and parameters are carried automatically into the
+   clone, so clone() methods should never call setTypeEquals(). However,
+   relative type constraints of the other setType<i>XXX</I>() methods are
+   not cloned automatically because of the difficulty of ensuring that
+   the other object being referred to in a relative constraint is the
+   intended one.
+   <p> For example the Ramp actor constructor calls:
+   <pre>
+   output.setTypeAtLeast(init);
+   </pre>
+   so the clone() method of the Ramp actor calls:
+   <pre>
+   newObject.output.setTypeAtLeast(newObject.init);
+   </pre>
 
 
-@author Yuhong Xiong, Lukito Muliadi
-@version $Id$
-@since Ptolemy II 0.2
+   @author Yuhong Xiong, Lukito Muliadi
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 
 public class TypedIOPort extends IOPort implements Typeable {

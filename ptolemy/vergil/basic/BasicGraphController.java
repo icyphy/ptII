@@ -1,28 +1,28 @@
 /* Base class for graph controllers in Ptolemy.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -70,16 +70,16 @@ import diva.gui.toolbox.MenuCreator;
 //////////////////////////////////////////////////////////////////////////
 //// BasicGraphController
 /**
-A base class for Ptolemy II graph controllers. This extends the base
-class with an association with a configuration. The configuration is
-central to a Ptolemy GUI, and is used by derived classes to perform
-various functions such as opening models or their documentation.
-The class also provides a strategy pattern interface for a controller
-to add commands to the menu or toolbar of the frame it is controlling.
+   A base class for Ptolemy II graph controllers. This extends the base
+   class with an association with a configuration. The configuration is
+   central to a Ptolemy GUI, and is used by derived classes to perform
+   various functions such as opening models or their documentation.
+   The class also provides a strategy pattern interface for a controller
+   to add commands to the menu or toolbar of the frame it is controlling.
 
-@author Steve Neuendorffer and Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
+   @author Steve Neuendorffer and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public abstract class BasicGraphController extends AbstractGraphController
     implements DebugListener, ValueListener {
@@ -370,7 +370,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** The configure action. */
     protected static ConfigureAction _configureAction
-            = new ConfigureAction("Configure");
+    = new ConfigureAction("Configure");
 
     /** The interactor for creating context sensitive menus on the
      *  graph itself.
@@ -382,7 +382,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** The open base class action. */
     protected OpenBaseClassAction _openBaseClassAction
-            = new OpenBaseClassAction();
+    = new OpenBaseClassAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -458,10 +458,10 @@ public abstract class BasicGraphController extends AbstractGraphController
                 // Assume its base class is a Java class and open the source
                 // code.
                 String sourceFileName
-                        = StringUtilities.objectToSourceFileName(target);
+                    = StringUtilities.objectToSourceFileName(target);
                 URL sourceURL
-                        = target.getClass().getClassLoader()
-                        .getResource(sourceFileName);
+                    = target.getClass().getClassLoader()
+                    .getResource(sourceFileName);
                 _configuration.openModel(
                         null, sourceURL, sourceURL.toExternalForm());
             } catch (Exception ex) {
@@ -475,7 +475,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** Factory for context menus. */
     public static class SchematicContextMenuFactory
-            extends PtolemyMenuFactory {
+        extends PtolemyMenuFactory {
 
         /** Create a new context menu factory associated with the
          *  specified controller.

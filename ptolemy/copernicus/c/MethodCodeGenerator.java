@@ -1,29 +1,29 @@
 /* Class that encapsulates functionality for generating C code deom a
    SootMethod.
 
- Copyright (c) 2002-2004 The University of Maryland.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2002-2004 The University of Maryland.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (<your email address>)
-@AcceptedRating Red (ssb@eng.umd.edu)
+   @ProposedRating Red (<your email address>)
+   @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.copernicus.c;
@@ -51,9 +51,9 @@ import java.util.Iterator;
 /** Class that encapsulates functionality for generating C code from a
     SootMethod.
 
-@author Ankush Varma
-@version $Id$
-@since  Ptolemy II 2.0
+    @author Ankush Varma
+    @version $Id$
+    @since  Ptolemy II 2.0
 */
 public class MethodCodeGenerator {
 
@@ -96,7 +96,7 @@ public class MethodCodeGenerator {
 
             // Generate the method head.
             code.append(_generateMethodDeclaration(method
-                    , parameterAndThisLocals, thisLocalName));
+                                , parameterAndThisLocals, thisLocalName));
 
             // Generate declarations for variables used for
             // exception-catching.
@@ -105,7 +105,7 @@ public class MethodCodeGenerator {
             code.append(_generateLocal(method, parameterAndThisLocals));
 
             code.append(_generateMethodBody(method, visitor, tracker
-                    , thisLocalName));
+                                , thisLocalName));
 
             String description = "Function that implements Method "
                 + method.getSignature();
@@ -352,7 +352,7 @@ public class MethodCodeGenerator {
         }
 
         code.append("\n" + _generateMethodUnitCode(tracker, visitor
-                , method, visitor.indentLevel));
+                            , method, visitor.indentLevel));
 
         code.append(_generateEpilogue(tracker, visitor));
 

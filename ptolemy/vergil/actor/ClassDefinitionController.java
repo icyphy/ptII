@@ -1,28 +1,28 @@
 /* The node controller for class definitions.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -64,21 +64,21 @@ import diva.util.Filter;
 //////////////////////////////////////////////////////////////////////////
 //// ClassDefinitionController
 /**
-This class provides interaction with nodes that represent Ptolemy II
-classes.  This extends the base class by providing mechanisms in the
-context menu for creating an instance, creating a subclass,
-and converting to an instance.
-<p>
-NOTE: There should be only one instance of this class associated with
-a given GraphController. This is because this controller listens for
-changes to the graph and re-renders the ports of any actor instance
-in the graph when the graph changes. If there is more than one instance,
-this rendering will be done twice, which can result in bugs like port
-labels appearing twice.
+   This class provides interaction with nodes that represent Ptolemy II
+   classes.  This extends the base class by providing mechanisms in the
+   context menu for creating an instance, creating a subclass,
+   and converting to an instance.
+   <p>
+   NOTE: There should be only one instance of this class associated with
+   a given GraphController. This is because this controller listens for
+   changes to the graph and re-renders the ports of any actor instance
+   in the graph when the graph changes. If there is more than one instance,
+   this rendering will be done twice, which can result in bugs like port
+   labels appearing twice.
 
-@author Edward A. Lee and Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 4.0
+   @author Edward A. Lee and Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class ClassDefinitionController extends ActorController {
 
@@ -143,10 +143,10 @@ public class ClassDefinitionController extends ActorController {
         controller.addGraphViewListener(
                 new IncrementalLayoutListener(
                         new IncrLayoutAdapter(layout) {
-                                public void nodeDrawn(Object node) {
-                                    layout(node);
-                                }
-                            }, portFilter));
+                            public void nodeDrawn(Object node) {
+                                layout(node);
+                            }
+                        }, portFilter));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -173,17 +173,17 @@ public class ClassDefinitionController extends ActorController {
     /** The action that handles converting a class to an instance.
      */
     protected ConvertToInstanceAction _convertToInstanceAction
-            = new ConvertToInstanceAction("Convert to Instance");
+    = new ConvertToInstanceAction("Convert to Instance");
 
     /** The action that handles creating an instance from a class.
      */
     protected CreateInstanceAction _createInstanceAction
-            = new CreateInstanceAction("Create Instance");
+    = new CreateInstanceAction("Create Instance");
 
     /** The action that handles creating a subclass from a class.
      */
     protected CreateSubclassAction _createSubclassAction
-            = new CreateSubclassAction("Create Subclass");
+    = new CreateSubclassAction("Create Subclass");
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -221,7 +221,7 @@ public class ClassDefinitionController extends ActorController {
             }
         } else {
             throw new InternalErrorException(
-            "Expected target to be a class definition");
+                    "Expected target to be a class definition");
         }
         moml.append("</group>");
         MoMLChangeRequest request = new MoMLChangeRequest(
@@ -295,8 +295,8 @@ public class ClassDefinitionController extends ActorController {
                 return;
             }
             String moml = "<entity name=\""
-                    + object.getName()
-                    + "\"/>";
+                + object.getName()
+                + "\"/>";
             MoMLChangeRequest request = new MoMLChangeRequest(
                     this, container, moml);
             container.requestChange(request);

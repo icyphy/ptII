@@ -1,35 +1,35 @@
 /* An actor that evaluates matlab expressions with input ports
    providing variables
 
- Copyright (c) 1998-2004 The Regents of the University of California and
- Research in Motion Limited.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 1998-2004 The Regents of the University of California and
+   Research in Motion Limited.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
- LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
- INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
- SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
- OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+   LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+   INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+   SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+   OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
- SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
- BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
- LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+   SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+   THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+   PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+   BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+   LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Yellow (zkemenczy@rim.net)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @ProposedRating Yellow (zkemenczy@rim.net)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.matlab;
@@ -60,68 +60,68 @@ import ptolemy.matlab.Engine.ConversionParameters;
 //////////////////////////////////////////////////////////////////////////
 //// Expression
 /**
-On each firing send an expression for evaluation to a matlab {@link
-Engine}. The expression is any valid matlab expression, e.g.:
+   On each firing send an expression for evaluation to a matlab {@link
+   Engine}. The expression is any valid matlab expression, e.g.:
 
-<pre>
-[out1, out2, ... ] = SomeMatlabFunctionOrExpression( in1, in2, ... );...
-</pre>
+   <pre>
+   [out1, out2, ... ] = SomeMatlabFunctionOrExpression( in1, in2, ... );...
+   </pre>
 
-The expression may include references to the input port names, current
-time (<i>time</i>), and a count of the firing (<i>iteration</i>). This
-is similar to <a
-href="../../ptolemy/actor/lib/Expression.html">Expression</a>.
-To refer to parameters in scope, use $name or ${name} within
-the expression.
-<p>
+   The expression may include references to the input port names, current
+   time (<i>time</i>), and a count of the firing (<i>iteration</i>). This
+   is similar to <a
+   href="../../ptolemy/actor/lib/Expression.html">Expression</a>.
+   To refer to parameters in scope, use $name or ${name} within
+   the expression.
+   <p>
 
-The matlab engine is opened (started) during prefire() by the first
-matlab Expression actor. Subsequent open()s simply increment a use
-count.<p>
+   The matlab engine is opened (started) during prefire() by the first
+   matlab Expression actor. Subsequent open()s simply increment a use
+   count.<p>
 
-At the start of fire(), <i>clear variables;clear globals</i> commands are
-sent to matlab to clear its workspace. This helps detect errors where the
-matlab expression refers to a matlab variable not initialized from the
-input ports of this actor instance.<p>
+   At the start of fire(), <i>clear variables;clear globals</i> commands are
+   sent to matlab to clear its workspace. This helps detect errors where the
+   matlab expression refers to a matlab variable not initialized from the
+   input ports of this actor instance.<p>
 
-After the evaluation of the matlab expression is complete, the fire()
-method iterates through names of output ports and converts matlab
-variables with corresponding names to Tokens that are sent to the
-corresponding output ports. Incorrect expressions are usually first
-detected at this point by not finding the expected variables. If an
-output port variable is not found in the matlab {@link Engine}, an
-exception is thrown. The exception description string contains the last
-stdout of the matlab engine that usually describes the error.<p>
+   After the evaluation of the matlab expression is complete, the fire()
+   method iterates through names of output ports and converts matlab
+   variables with corresponding names to Tokens that are sent to the
+   corresponding output ports. Incorrect expressions are usually first
+   detected at this point by not finding the expected variables. If an
+   output port variable is not found in the matlab {@link Engine}, an
+   exception is thrown. The exception description string contains the last
+   stdout of the matlab engine that usually describes the error.<p>
 
-The {@link #get1x1asScalars} and {@link #getIntegerMatrices} control
-data conversion (see {@link Engine} and
-{@link Engine.ConversionParameters}).<p>
+   The {@link #get1x1asScalars} and {@link #getIntegerMatrices} control
+   data conversion (see {@link Engine} and
+   {@link Engine.ConversionParameters}).<p>
 
-A Parameter named <i>packageDirectories</i> may be added to this actor
-to augment the search path of the matlab engine during the firing of this
-actor. The value of this parameter should evaluate to a StringToken,
-e.g.:
+   A Parameter named <i>packageDirectories</i> may be added to this actor
+   to augment the search path of the matlab engine during the firing of this
+   actor. The value of this parameter should evaluate to a StringToken,
+   e.g.:
 
-<pre>
-    "path1, path2, ..."
-</pre>
+   <pre>
+   "path1, path2, ..."
+   </pre>
 
-containing a comma-separated list of paths to be prepended to the matlab
-engine search path before <i>expression</i> is evaluated. The list may
-contain paths relative to the directory in which ptolemy was started,
-or any directory listed in the current classpath (in that order, first
-match wins). See {@link ptolemy.data.expr.UtilityFunctions#findFile(String)}.
-After evaluation, the previous search path is restored.<p>
+   containing a comma-separated list of paths to be prepended to the matlab
+   engine search path before <i>expression</i> is evaluated. The list may
+   contain paths relative to the directory in which ptolemy was started,
+   or any directory listed in the current classpath (in that order, first
+   match wins). See {@link ptolemy.data.expr.UtilityFunctions#findFile(String)}.
+   After evaluation, the previous search path is restored.<p>
 
-A Parameter named <i>_debugging</i> may be used to turn on debug print
-statements to stdout from {@link Engine} and the ptmatlab JNI. An IntToken
-with a value of 1 turns on Engine debug statements, a value of 2 adds
-ptmatlab debug statements as well.  A value of 0 or the absence of the
-<i>_debugging</i> parameter yields normal operation.<p>
+   A Parameter named <i>_debugging</i> may be used to turn on debug print
+   statements to stdout from {@link Engine} and the ptmatlab JNI. An IntToken
+   with a value of 1 turns on Engine debug statements, a value of 2 adds
+   ptmatlab debug statements as well.  A value of 0 or the absence of the
+   <i>_debugging</i> parameter yields normal operation.<p>
 
-@author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited
-@version $Id$
-@since Ptolemy II 2.0
+   @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class Expression extends TypedAtomicActor {
 

@@ -1,28 +1,28 @@
 /* A top-level dialog window for editing Unit constraints.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @Pt.ProposedRating Yellow (rowland@eecs.berkeley.edu)
 @Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
@@ -55,9 +55,9 @@ import ptolemy.moml.MoMLChangeRequest;
 //////////////////////////////////////////////////////////////////////////
 //// UnitConstraintsDialog
 /**
-@author Rowland R Johnson
-@version $Id$
-@since Ptolemy II 4.0
+   @author Rowland R Johnson
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class UnitConstraintsDialog
     extends PtolemyDialog
@@ -82,16 +82,16 @@ public class UnitConstraintsDialog
      *            help is not supported).
      */
     public UnitConstraintsDialog(
-        DialogTableau tableau,
-        Frame owner,
-        Entity target,
-        Configuration configuration) {
+            DialogTableau tableau,
+            Frame owner,
+            Entity target,
+            Configuration configuration) {
         super(
-            "Configure units for " + target.getName(),
-            tableau,
-            owner,
-            target,
-            configuration);
+                "Configure units for " + target.getName(),
+                tableau,
+                owner,
+                target,
+                configuration);
         Vector _constraintExpression = new Vector();
         UnitAttribute _unitConstraints =
             (UnitAttribute) target.getAttribute("_unitConstraints");
@@ -198,10 +198,10 @@ public class UnitConstraintsDialog
         String expr = _unitsTableModel.toString();
         String moml =
             "<property name=\"_unitConstraints\" "
-                + "class = \"ptolemy.data.unit.UnitAttribute\" "
-                + "value = \""
-                + expr
-                + "\"/>";
+            + "class = \"ptolemy.data.unit.UnitAttribute\" "
+            + "value = \""
+            + expr
+            + "\"/>";
 
         MoMLChangeRequest request =
             new MoMLChangeRequest(this, getTarget(), moml, null);
@@ -237,7 +237,7 @@ public class UnitConstraintsDialog
     protected URL _getHelpURL() {
         URL helpURL =
             getClass().getClassLoader().getResource(
-                "ptolemy/actor/gui/doc/unitConstraintsDialog.htm");
+                    "ptolemy/actor/gui/doc/unitConstraintsDialog.htm");
         return helpURL;
     }
 
@@ -274,11 +274,11 @@ public class UnitConstraintsDialog
     //// private variables ////
     private JButton _addButton, _applyButton, _commitButton, _removeButton;
     private ListSelectionListener _rowSelectionListener =
-        new ListSelectionListener() {
+    new ListSelectionListener() {
 
-            ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
         //// inner class ////
-    public void valueChanged(ListSelectionEvent e) {
+        public void valueChanged(ListSelectionEvent e) {
             if (e.getValueIsAdjusting())
                 return;
             //Ignore extra messages.

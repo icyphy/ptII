@@ -1,28 +1,28 @@
 /* An attribute with a reference to a polygon.
 
- Copyright (c) 2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -47,16 +47,16 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// ResizablePolygonAttribute
 /**
-This is an attribute that is rendered as a polygon.  The <i>vertices</i>
-parameter is an array of doubles that specify the vertices of the polygon
-in the form {x1, y1, x2, y2, ... }.
-The <i>width</i> and <i>height</i> parameters, somewhat awkwardly,
-are used to specify the overall width and height. The polygon will be
-scaled to fit the specified width and height.
-<p>
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   This is an attribute that is rendered as a polygon.  The <i>vertices</i>
+   parameter is an array of doubles that specify the vertices of the polygon
+   in the form {x1, y1, x2, y2, ... }.
+   The <i>width</i> and <i>height</i> parameters, somewhat awkwardly,
+   are used to specify the overall width and height. The polygon will be
+   scaled to fit the specified width and height.
+   <p>
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class ResizablePolygonAttribute extends FilledShapeAttribute {
 
@@ -74,7 +74,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      *   an attribute already in the container.
      */
     public ResizablePolygonAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         vertices = new Parameter(this, "vertices");
@@ -110,7 +110,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
             int length = verticesValue.length();
             if (length/2 != (length + 1)/2)  {
                 throw new IllegalActionException(this,
-                "Length of the vertices array is required to be even.");
+                        "Length of the vertices array is required to be even.");
             }
             try {
                 // Prevent redundant actions here... When we evaluate the
@@ -121,7 +121,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
                 _inAttributeChanged = true;
                 double widthValue = ((DoubleToken) width.getToken()).doubleValue();
                 double heightValue =
-                        ((DoubleToken) height.getToken()).doubleValue();
+                    ((DoubleToken) height.getToken()).doubleValue();
                 _widthValue = widthValue;
                 _heightValue = heightValue;
                 _icon.setShape(_newShape());

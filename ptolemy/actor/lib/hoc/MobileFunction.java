@@ -1,28 +1,28 @@
 /* An actor that apply dynamically defined functions to its input.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
@@ -43,19 +43,19 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// MobileFunction
 /**
-This actor extends the TypedAtomicActor. It applies a function to its inputs
-and outputs the results. But rather than has the function specified
-statically, this actor allows dynamic change to the function, which means
-the computation of this actor can be changed during executing. Its second
-input accept a function token for the new function's definition. The
-function token can be given by actors in the local model or remote actors.
+   This actor extends the TypedAtomicActor. It applies a function to its inputs
+   and outputs the results. But rather than has the function specified
+   statically, this actor allows dynamic change to the function, which means
+   the computation of this actor can be changed during executing. Its second
+   input accept a function token for the new function's definition. The
+   function token can be given by actors in the local model or remote actors.
 
-Currently, it only accept functions that has one argument. The return type
-of the function needs to be less than the output type of this actor.
+   Currently, it only accept functions that has one argument. The return type
+   of the function needs to be less than the output type of this actor.
 
-@author Yang Zhao
-@version $Id$
-@since Ptolemy II 4.0
+   @author Yang Zhao
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class MobileFunction extends TypedAtomicActor{
 
@@ -109,7 +109,7 @@ public class MobileFunction extends TypedAtomicActor{
      *  currently there is not cast supported in the FunctionType class.
      *  we'll fix this later.
      */
-   public TypedIOPort function;
+    public TypedIOPort function;
 
     /** The output port.
      *  Note: Due to the same reason above, the type of the output can't be
@@ -139,9 +139,9 @@ public class MobileFunction extends TypedAtomicActor{
             if (_function == null) {
                 output.broadcast(input.get(0));
             } else {
-        // FIXME: it now only considers one input port for data and the
-        // function only has one argument.  how to resolve type and type
-        // signature?
+                // FIXME: it now only considers one input port for data and the
+                // function only has one argument.  how to resolve type and type
+                // signature?
                 Token in = input.get(0);
                 Token [] argList = new Token [] {in};
                 Token t = _function.apply(argList);
@@ -175,7 +175,7 @@ public class MobileFunction extends TypedAtomicActor{
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-     /** The most recently updated function to this actor.
+    /** The most recently updated function to this actor.
      *
      */
     private FunctionToken _function;

@@ -1,28 +1,28 @@
 /* A transformer that reports library methods used.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -46,11 +46,11 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// LibraryUsageReporter
 /**
-A Transformer that reports reachable methods in the Java libraries.
+   A Transformer that reports reachable methods in the Java libraries.
 
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.0
 
 */
 public class LibraryUsageReporter extends SceneTransformer
@@ -115,8 +115,8 @@ public class LibraryUsageReporter extends SceneTransformer
                     public boolean want(Edge e) {
                         SootMethod target = e.tgt();
                         return e.isExplicit() && (target.isStatic() ||
-                            createableClasses.contains(
-                                    target.getDeclaringClass()));
+                                createableClasses.contains(
+                                        target.getDeclaringClass()));
                     }
                 });
         Set necessaryClasses = new HashSet();
@@ -134,43 +134,43 @@ public class LibraryUsageReporter extends SceneTransformer
                 necessaryClasses.add(declaringClass);
             }
             if (method.isConcrete())
-            for (Iterator units =
-                     method.retrieveActiveBody().getUnits().iterator();
-                 units.hasNext();) {
-                Unit unit = (Unit)units.next();
-                for (Iterator boxes = unit.getUseBoxes().iterator();
-                     boxes.hasNext();) {
-                    ValueBox box = (ValueBox)boxes.next();
-                    Value value = box.getValue();
-                    if (value instanceof CastExpr) {
-                        CastExpr expr = (CastExpr)value;
-                        Type castType = expr.getCastType();
-                        if (castType instanceof RefType) {
-                            SootClass castClass =
-                                ((RefType)castType).getSootClass();
-                            necessaryClasses.addAll(
-                                    hierarchy.getSuperclassesOfIncluding(
-                                            castClass));
-                            _addAllInterfaces(necessaryClasses,
-                                    castClass);
-                         }
-                    } else if (value instanceof InstanceOfExpr) {
-                        InstanceOfExpr expr = (InstanceOfExpr)value;
-                        Type checkType = expr.getCheckType();
-                        if (checkType instanceof RefType) {
-                            SootClass checkClass =
-                                ((RefType)checkType).getSootClass();
-                            if (!checkClass.isInterface()) {
+                for (Iterator units =
+                         method.retrieveActiveBody().getUnits().iterator();
+                     units.hasNext();) {
+                    Unit unit = (Unit)units.next();
+                    for (Iterator boxes = unit.getUseBoxes().iterator();
+                         boxes.hasNext();) {
+                        ValueBox box = (ValueBox)boxes.next();
+                        Value value = box.getValue();
+                        if (value instanceof CastExpr) {
+                            CastExpr expr = (CastExpr)value;
+                            Type castType = expr.getCastType();
+                            if (castType instanceof RefType) {
+                                SootClass castClass =
+                                    ((RefType)castType).getSootClass();
                                 necessaryClasses.addAll(
                                         hierarchy.getSuperclassesOfIncluding(
-                                                checkClass));
+                                                castClass));
+                                _addAllInterfaces(necessaryClasses,
+                                        castClass);
                             }
-                            _addAllInterfaces(necessaryClasses,
-                                    checkClass);
+                        } else if (value instanceof InstanceOfExpr) {
+                            InstanceOfExpr expr = (InstanceOfExpr)value;
+                            Type checkType = expr.getCheckType();
+                            if (checkType instanceof RefType) {
+                                SootClass checkClass =
+                                    ((RefType)checkType).getSootClass();
+                                if (!checkClass.isInterface()) {
+                                    necessaryClasses.addAll(
+                                            hierarchy.getSuperclassesOfIncluding(
+                                                    checkClass));
+                                }
+                                _addAllInterfaces(necessaryClasses,
+                                        checkClass);
+                            }
                         }
                     }
                 }
-            }
 
         }
 
@@ -204,7 +204,7 @@ public class LibraryUsageReporter extends SceneTransformer
 
     private void _addAllInterfaces(Set classSet, SootClass theClass) {
         for (Iterator i = theClass.getInterfaces().iterator();
-            i.hasNext();) {
+             i.hasNext();) {
             SootClass theInterface = (SootClass)i.next();
             classSet.add(theInterface);
             _addAllInterfaces(classSet, theInterface);

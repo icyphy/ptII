@@ -1,30 +1,30 @@
 /* Assemble input port channels into output bus.
 
- Copyright (c) 2002-2004 The Regents of the University of California and
- Research in Motion Limited.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2002-2004 The Regents of the University of California and
+Research in Motion Limited.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
- LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
- INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
- SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
- OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
- SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
- BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
- LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (zkemenczy@rim.net)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -47,22 +47,22 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// BusAssembler
 /**
-Aggregate all input relation channels into one output "bus" relation.
-The width of the output port (bus relation) is set to the sum of the
-input port widths. During the fire method, the input port channels are
-scanned sequentially for tokens with the output channel index
-incremented for each input channel scanned. If an input channel has a
-token, it is copied to the corresponding output channel.<p>
+   Aggregate all input relation channels into one output "bus" relation.
+   The width of the output port (bus relation) is set to the sum of the
+   input port widths. During the fire method, the input port channels are
+   scanned sequentially for tokens with the output channel index
+   incremented for each input channel scanned. If an input channel has a
+   token, it is copied to the corresponding output channel.<p>
 
-Note: The width of a single relation (e.g. connected to an input port)
-may be controlled by adding a <em>width</em> parameter with an IntToken
-value
-representing the desired relation width<p>
+   Note: The width of a single relation (e.g. connected to an input port)
+   may be controlled by adding a <em>width</em> parameter with an IntToken
+   value
+   representing the desired relation width<p>
 
-@author Zoltan Kemenczy, Research in Motion Limited
-@version $Id$
-@since Ptolemy II 2.1
-@see ptolemy.actor.IORelation
+   @author Zoltan Kemenczy, Research in Motion Limited
+   @version $Id$
+   @since Ptolemy II 2.1
+   @see ptolemy.actor.IORelation
 */
 
 public class BusAssembler extends TypedAtomicActor {

@@ -1,32 +1,32 @@
 /* An actor that produces a copy of the most recent input each time
    the trigger input receives an event.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 1998-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (eal@eecs.berkeley.edu)
+   @ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @AcceptedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -46,35 +46,35 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// Sampler
 /**
-Output the most recent input token when the <i>trigger</i> port
-receives a token.  If no token has been received on the <i>input</i>
-port when a token is received on the <i>trigger</i> port, then the
-value of the <i>initialValue</i> parameter is produced.  If, however,
-the <i>initialValue</i> parameter contains no value, then no output is
-produced.  The inputs can be of any token type, and the output is
-constrained to be of a type at least that of the input.
+   Output the most recent input token when the <i>trigger</i> port
+   receives a token.  If no token has been received on the <i>input</i>
+   port when a token is received on the <i>trigger</i> port, then the
+   value of the <i>initialValue</i> parameter is produced.  If, however,
+   the <i>initialValue</i> parameter contains no value, then no output is
+   produced.  The inputs can be of any token type, and the output is
+   constrained to be of a type at least that of the input.
 
-<p> Both the <i>input</i> port and the <i>output</i> port are multiports.
-Generally, their widths should match. Otherwise, if the width of the
-<i>input</i> is greater than the width of the <i>output</i>, the extra
-input tokens will not appear on any output, although they will be
-consumed from the input port. If the width of the <i>output</i> is
-greater than that of the <i>input</i>, then the last few channels of
-the <i>output</i> will never emit tokens.
+   <p> Both the <i>input</i> port and the <i>output</i> port are multiports.
+   Generally, their widths should match. Otherwise, if the width of the
+   <i>input</i> is greater than the width of the <i>output</i>, the extra
+   input tokens will not appear on any output, although they will be
+   consumed from the input port. If the width of the <i>output</i> is
+   greater than that of the <i>input</i>, then the last few channels of
+   the <i>output</i> will never emit tokens.
 
-<p> Note: If the width of the input changes during execution, then the
-most recent inputs are forgotten, as if the execution of the model
-were starting over.
+   <p> Note: If the width of the input changes during execution, then the
+   most recent inputs are forgotten, as if the execution of the model
+   were starting over.
 
-<p> This actor is similar to the Inhibit actor in that it modifies a
-stream of events based on the presence or absence of events from
-another input.  This actor reacts to the presence of the other event,
-whereas Inhibit reacts to the absence of it.
+   <p> This actor is similar to the Inhibit actor in that it modifies a
+   stream of events based on the presence or absence of events from
+   another input.  This actor reacts to the presence of the other event,
+   whereas Inhibit reacts to the absence of it.
 
-@author Jie Liu, Edward A. Lee, Steve Neuendorffer, Elaine Cheong
-@version $Id$
-@since Ptolemy II 0.3
-@see ptolemy.domains.de.lib.Inhibit
+   @author Jie Liu, Edward A. Lee, Steve Neuendorffer, Elaine Cheong
+   @version $Id$
+   @since Ptolemy II 0.3
+   @see ptolemy.domains.de.lib.Inhibit
 */
 
 public class Sampler extends DETransformer {

@@ -1,32 +1,32 @@
 /* A director that implements a priority-driven multitasking model of
-computation.
+   computation.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2001-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
+   @ProposedRating Yellow (liuj@eecs.berkeley.edu)
+   @AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.tm.kernel;
@@ -61,78 +61,78 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// TMDirector
 /**
-A director that implements a priority-driven multitasking
-model of computation. This model of computation is usually seen in
-real-time operating systems.
-<P>
-Each actor in this domain is called a task. A task is eligible to
-execute if there is an event that triggers it. Source actors may trigger
-themselves by calling fireAt(time, actor) on this director. This call
-is treated as an interrupt that happens at that particular time.
-A task can have a priority and an execution time, specified by (adding)
-<i>priority</i> and <i>executionTime</i> parameters. The <i>priority</i>
-parameter takes an integer value, and the <i>executionTime</i>
-parameter takes a double value. These parameters may also be specified
-on a per input port basis, if the actor reacts differently
-to input events at different ports. If these parameters are not
-specified, then the default priority value is the java.Thread.NORM
-on the JVM, and the default execution time is 0.
-<P>
-This domain assumes there is a single resource, say CPU, shared by
-the execution of all actors. At one particular time, only
-one of the tasks can get the resource and execute. If the execution
-is preemptable (by setting the <i>preemptive</i> parameter of
-this director to true), then the execution of one task
-may be preempted by another eligible task with a higher priority.
-Otherwise, the higher priority task has to wait until the current
-task finishes its execution.
-<P>
-The priority-driven execution is achieved by using an event
-dispatcher, which sorts and dispatches events that trigger
-the execution of tasks. The events being dispatched are called
-TM events (implemented by the TMEvent class).
-An TM event has a priority and a remaining processing time,
-among other properties. The priority of the event
-is inherited from its destination port, which may further inherit
-its priority from the actor that contains the port. Whenever an
-event is produced by an actor, it is queued with the event dispatcher.
-At any time, the event with the highest priority is dequeued,
-and delivered into its destination receiver. The director then starts
-the execution of the destination actor (by calling its prefire()
-method). After that, the director tracks how much time remained
-for the task to finish processing the event.
+   A director that implements a priority-driven multitasking
+   model of computation. This model of computation is usually seen in
+   real-time operating systems.
+   <P>
+   Each actor in this domain is called a task. A task is eligible to
+   execute if there is an event that triggers it. Source actors may trigger
+   themselves by calling fireAt(time, actor) on this director. This call
+   is treated as an interrupt that happens at that particular time.
+   A task can have a priority and an execution time, specified by (adding)
+   <i>priority</i> and <i>executionTime</i> parameters. The <i>priority</i>
+   parameter takes an integer value, and the <i>executionTime</i>
+   parameter takes a double value. These parameters may also be specified
+   on a per input port basis, if the actor reacts differently
+   to input events at different ports. If these parameters are not
+   specified, then the default priority value is the java.Thread.NORM
+   on the JVM, and the default execution time is 0.
+   <P>
+   This domain assumes there is a single resource, say CPU, shared by
+   the execution of all actors. At one particular time, only
+   one of the tasks can get the resource and execute. If the execution
+   is preemptable (by setting the <i>preemptive</i> parameter of
+   this director to true), then the execution of one task
+   may be preempted by another eligible task with a higher priority.
+   Otherwise, the higher priority task has to wait until the current
+   task finishes its execution.
+   <P>
+   The priority-driven execution is achieved by using an event
+   dispatcher, which sorts and dispatches events that trigger
+   the execution of tasks. The events being dispatched are called
+   TM events (implemented by the TMEvent class).
+   An TM event has a priority and a remaining processing time,
+   among other properties. The priority of the event
+   is inherited from its destination port, which may further inherit
+   its priority from the actor that contains the port. Whenever an
+   event is produced by an actor, it is queued with the event dispatcher.
+   At any time, the event with the highest priority is dequeued,
+   and delivered into its destination receiver. The director then starts
+   the execution of the destination actor (by calling its prefire()
+   method). After that, the director tracks how much time remained
+   for the task to finish processing the event.
 
-<P>
-The events, called interrupt events, produced by calling fireAt()
-on this director are treated differently. These events carry
-a time stamp, and are queued with another queue which sorts these
-events in their chronological order. When the modeling time reaches
-an interrupt event time, (regardless whether there is a task
-executing),
-the interrupt event is processed. And the corresponding
-source actor is fired, which may in turn produce some TM events.
-If one of these TM events has a higher priority than the event
-being processed by the current task, and the execution is preemptive,
-then the current tasks is stalled, and the task triggered by the
-highest priority event is started. Note that, a task is always
-granted the resource that is specified by the <i>executionTime</i>,
-no matter whether it has been preempted.
-When that amount of time is elapsed, the fire() method of the actor
-will be called, and the actor is expected to produce its output, if
-there is any.
-<P>
-The TM domain can be nested with other (timed) domains. In that
-case, the inputs from the outside domain are treated as interrupts
-that happen at the (outside) current time.
-<p>
-This director supports executions that synchronize to real time.
-To enable such an execution, set the <i>synchronizeToRealTime</i>
-parameter to true.
+   <P>
+   The events, called interrupt events, produced by calling fireAt()
+   on this director are treated differently. These events carry
+   a time stamp, and are queued with another queue which sorts these
+   events in their chronological order. When the modeling time reaches
+   an interrupt event time, (regardless whether there is a task
+   executing),
+   the interrupt event is processed. And the corresponding
+   source actor is fired, which may in turn produce some TM events.
+   If one of these TM events has a higher priority than the event
+   being processed by the current task, and the execution is preemptive,
+   then the current tasks is stalled, and the task triggered by the
+   highest priority event is started. Note that, a task is always
+   granted the resource that is specified by the <i>executionTime</i>,
+   no matter whether it has been preempted.
+   When that amount of time is elapsed, the fire() method of the actor
+   will be called, and the actor is expected to produce its output, if
+   there is any.
+   <P>
+   The TM domain can be nested with other (timed) domains. In that
+   case, the inputs from the outside domain are treated as interrupts
+   that happen at the (outside) current time.
+   <p>
+   This director supports executions that synchronize to real time.
+   To enable such an execution, set the <i>synchronizeToRealTime</i>
+   parameter to true.
 
-@author  Jie Liu, Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
-@see ptolemy.domains.de.kernel.DEEvent
+   @author  Jie Liu, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
+   @see ptolemy.domains.de.kernel.DEEvent
 */
 public class TMDirector extends Director {
 
@@ -391,8 +391,8 @@ public class TMDirector extends Director {
                         if (!_preemptive) {
                             event = (TMEvent)_eventQueue.take();
                             event.startProcessing();
-                                // Set it priority to 0 so it won't
-                                // be preempted.
+                            // Set it priority to 0 so it won't
+                            // be preempted.
                             event.setPriority(0);
                             _eventQueue.put(event);
                         } else {
@@ -525,7 +525,7 @@ public class TMDirector extends Director {
             double elapsedTimeInSeconds = ((double)elapsedTime)/1000.0;
             if (Math.abs(_outsideTime - elapsedTimeInSeconds) > 1e-3) {
                 long timeToWait = (long)((_outsideTime -
-                        elapsedTimeInSeconds)*1000.0);
+                                                 elapsedTimeInSeconds)*1000.0);
                 if (timeToWait > 0) {
                     if (_debugging) {
                         _debug("Waiting for real time to pass: "

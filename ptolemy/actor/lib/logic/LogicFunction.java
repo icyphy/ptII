@@ -1,28 +1,28 @@
 /* An actor that performs a specified logic operation on the input.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Green (pwhitake@eecs.berkeley.edu)
@@ -47,35 +47,35 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// LogicFunction
 /**
-Produce an output token on each firing with a value that is
-equal to the specified logic operator of the input(s).
-The functions are:
-<ul>
-<li> <b>and</b>: The logical and operator.
-This is the default function for this actor.
-<li> <b>or</b>: The logical or operator.
-<li> <b>xor</b>: The logical xor operator.
-<li> <b>nand</b>: The logical nand operator.
-Equivalent to the negation of <i>and</i>.
-<li> <b>nor</b>: The logical nor operator.
-Equivalent to the negation of <i>or</i>.
-<li> <b>xnor</b>: The logical xnor operator.
-Equivalent to the negation of <i>xor</i>.
-</ul>
-<p>
-NOTE: All operators have
-a single input port, which is a multiport, and a single output port, which
-is not a multiport.  All ports have type boolean.
-<p>
-This actor does not require that each input
-channel have a token upon firing.  As long as one channel contains a
-token, output will be produced.  If no input tokens are available at
-all, then no output is produced.  At most one token is consumed
-on each input channel.
+   Produce an output token on each firing with a value that is
+   equal to the specified logic operator of the input(s).
+   The functions are:
+   <ul>
+   <li> <b>and</b>: The logical and operator.
+   This is the default function for this actor.
+   <li> <b>or</b>: The logical or operator.
+   <li> <b>xor</b>: The logical xor operator.
+   <li> <b>nand</b>: The logical nand operator.
+   Equivalent to the negation of <i>and</i>.
+   <li> <b>nor</b>: The logical nor operator.
+   Equivalent to the negation of <i>or</i>.
+   <li> <b>xnor</b>: The logical xnor operator.
+   Equivalent to the negation of <i>xor</i>.
+   </ul>
+   <p>
+   NOTE: All operators have
+   a single input port, which is a multiport, and a single output port, which
+   is not a multiport.  All ports have type boolean.
+   <p>
+   This actor does not require that each input
+   channel have a token upon firing.  As long as one channel contains a
+   token, output will be produced.  If no input tokens are available at
+   all, then no output is produced.  At most one token is consumed
+   on each input channel.
 
-@author Paul Whitaker
-@version $Id$
-@since Ptolemy II 1.0
+   @author Paul Whitaker
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class LogicFunction extends Transformer {
 

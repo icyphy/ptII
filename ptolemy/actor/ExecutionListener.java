@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Green (bart@eecs.berkeley.edu)
@@ -33,24 +33,24 @@ package ptolemy.actor;
 //////////////////////////////////////////////////////////////////////////
 //// ExecutionListener
 /**
-An ExecutionListener listens for events that are issued
-during the execution of a model by a Manager.   In general, an
-object that implements this interface will probably be a front end such
-as an applet, a GUI, or a command-line interpreter,
-or an object that is communicating with a front end. Most of the
-events that are reported are state changes in the manager.
-<p>
-Some execution events happen in response to an asynchronous request.
-For example, when the pause() method of a manager is called, a flag is set, and
-at the end of the next toplevel iteration, the manager will notice the flag
-and pause execution. In such cases, the execution listeners are not notified
-when the request occurs, but only when the execution thread has actually
-been suspended.
+   An ExecutionListener listens for events that are issued
+   during the execution of a model by a Manager.   In general, an
+   object that implements this interface will probably be a front end such
+   as an applet, a GUI, or a command-line interpreter,
+   or an object that is communicating with a front end. Most of the
+   events that are reported are state changes in the manager.
+   <p>
+   Some execution events happen in response to an asynchronous request.
+   For example, when the pause() method of a manager is called, a flag is set, and
+   at the end of the next toplevel iteration, the manager will notice the flag
+   and pause execution. In such cases, the execution listeners are not notified
+   when the request occurs, but only when the execution thread has actually
+   been suspended.
 
-@author Steve Neuendorffer, Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
-@see Manager
+   @author Steve Neuendorffer, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see Manager
 */
 
 public interface ExecutionListener {

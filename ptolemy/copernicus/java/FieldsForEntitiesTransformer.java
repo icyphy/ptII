@@ -1,28 +1,28 @@
 /* Make all references to attributes point to attribute fields
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -71,16 +71,16 @@ import soot.toolkits.scalar.SimpleLocalDefs;
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForEntitiesTransformer
 /**
-A transformer that is responsible for replacing references to
-entities.  Any calls to the getContainer(), and getEntity() methods
-are replaced with a field reference to the field of the appropriate
-class.
+   A transformer that is responsible for replacing references to
+   entities.  Any calls to the getContainer(), and getEntity() methods
+   are replaced with a field reference to the field of the appropriate
+   class.
 
-FIXME: deal with this also?
+   FIXME: deal with this also?
 
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class FieldsForEntitiesTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
@@ -151,7 +151,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
             if (isContained(entity, sourceEntity)) {
                 Entity entityContainer = getEntityContainerOfObject(entity);
                 SootClass entityContainerClass =
-                ModelTransformer.getClassForActor(entityContainer);
+                    ModelTransformer.getClassForActor(entityContainer);
                 Local entityContainerLocal = getLocalReferenceForEntity(
                         entityContainer, sourceClass, local, body, unit, options);
                 String fieldName = ModelTransformer.getFieldNameForEntity(
@@ -193,8 +193,8 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
             NamedObj sourceObject =
                 ModelTransformer.getObjectForClass(sourceClass);
             Entity container = (Entity)sourceObject.getContainer();
-//             System.out.println("sourceObject = " + sourceObject);
-//             System.out.println("container = " + container);
+            //             System.out.println("sourceObject = " + sourceObject);
+            //             System.out.println("container = " + container);
             SootClass containerClass =
                 ModelTransformer.getClassForActor(container);
             RefType type = RefType.v(containerClass);
@@ -209,19 +209,19 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
                             Jimple.v().newInstanceFieldRef(
                                     local, field)),
                     unit);
-//   Local containerLocal = Jimple.v().newLocal("container",
-//                                 RefType.v(PtolemyUtilities.entityClass));
-//             body.getLocals().add(containerLocal);
-//             body.getUnits().insertBefore(
-//                     Jimple.v().newAssignStmt(
-//                             containerLocal,
-//                             Jimple.v().newInterfaceInvokeExpr(
-//                                     local, PtolemyUtilities.getContainerMethod)),
-//                     unit);
+            //   Local containerLocal = Jimple.v().newLocal("container",
+            //                                 RefType.v(PtolemyUtilities.entityClass));
+            //             body.getLocals().add(containerLocal);
+            //             body.getUnits().insertBefore(
+            //                     Jimple.v().newAssignStmt(
+            //                             containerLocal,
+            //                             Jimple.v().newInterfaceInvokeExpr(
+            //                                     local, PtolemyUtilities.getContainerMethod)),
+            //                     unit);
             return containerLocal;
         }
-//         throw new RuntimeException(
-//                 "Failed to find field for entity " + entity);
+        //         throw new RuntimeException(
+        //                 "Failed to find field for entity " + entity);
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -233,26 +233,26 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
         _debug = PhaseOptions.getBoolean(options, "debug");
 
         for (Iterator classes =
-                ModelTransformer.actorClassList().iterator();
-            classes.hasNext();) {
+                 ModelTransformer.actorClassList().iterator();
+             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _createContainerField(theClass);
         }
         for (Iterator classes =
-                ModelTransformer.attributeClassList().iterator();
-            classes.hasNext();) {
+                 ModelTransformer.attributeClassList().iterator();
+             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _createContainerField(theClass);
         }
         for (Iterator classes =
-                ModelTransformer.actorClassList().iterator();
-            classes.hasNext();) {
+                 ModelTransformer.actorClassList().iterator();
+             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _replaceEntityCalls(theClass);
         }
         for (Iterator classes =
-                ModelTransformer.attributeClassList().iterator();
-            classes.hasNext();) {
+                 ModelTransformer.attributeClassList().iterator();
+             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _replaceEntityCalls(theClass);
         }
@@ -262,8 +262,8 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
         NamedObj correspondingObject =
             ModelTransformer.getObjectForClass(theClass);
         // Create a field referencing the container, for all but the top level.
-    //     System.out.println("theClass = " + theClass);
-//         System.out.println("object = " + correspondingObject);
+        //     System.out.println("theClass = " + theClass);
+        //         System.out.println("object = " + correspondingObject);
         if (!correspondingObject.equals(_model)) {
             Entity container = (Entity)correspondingObject.getContainer();
             SootClass containerClass =
@@ -354,7 +354,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
                         box.setValue(newFieldRef);
                         if (_debug) System.out.println("replacing " + unit);
                     } else if (r.getMethod().equals(
-                            PtolemyUtilities.toplevelMethod)) {
+                                       PtolemyUtilities.toplevelMethod)) {
                         // Replace with reference to the toplevel
                         Value newFieldRef = getLocalReferenceForEntity(
                                 _model, theClass,
@@ -362,7 +362,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
                         box.setValue(newFieldRef);
                         if (_debug) System.out.println("replacing " + unit);
                     } else if (r.getMethod().getSubSignature().equals(
-                            PtolemyUtilities.getEntityMethod.getSubSignature())) {
+                                       PtolemyUtilities.getEntityMethod.getSubSignature())) {
                         Value nameValue = r.getArg(0);
                         if (Evaluator.isValueConstantValued(nameValue)) {
                             StringConstant nameConstant =
@@ -418,32 +418,32 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
                     body.getThisLocal(), body, unit, _options);
         }
 
-    //       DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
-//             System.out.println("stmt = " + stmt);
-//             FieldRef ref = (FieldRef) stmt.getRightOp();
-//             SootField field = ref.getField();
-//             ValueTag tag = (ValueTag) field.getTag("_CGValue");
-//             if (tag == null) {
-//                 return NullConstant.v();
-//             }
-//             object = (NamedObj)tag.getObject();
-//             CompositeEntity container = (CompositeEntity)object.getContainer();
-//             return ModelTransformer.getFieldRefForEntity(container);
+        //       DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
+        //             System.out.println("stmt = " + stmt);
+        //             FieldRef ref = (FieldRef) stmt.getRightOp();
+        //             SootField field = ref.getField();
+        //             ValueTag tag = (ValueTag) field.getTag("_CGValue");
+        //             if (tag == null) {
+        //                 return NullConstant.v();
+        //             }
+        //             object = (NamedObj)tag.getObject();
+        //             CompositeEntity container = (CompositeEntity)object.getContainer();
+        //             return ModelTransformer.getFieldRefForEntity(container);
 
-            //            throw new RuntimeException("unimplemented case");
-            //   // Walk back and get the definition of the field.
-            //             DefinitionStmt definition =
-            //                 _getFieldDef(baseLocal, unit, localDefs);
-            //             InstanceFieldRef fieldRef = (InstanceFieldRef)
-            //                 definition.getRightOp();
-            //             SootField baseField = fieldRef.getField();
-            //             System.out.println("baseField = " + baseField);
-            //             return _getContainerMethodReplacementFieldRef(
-            //                     (Local)fieldRef.getBase(),
-            //                     baseField.getName() + "." + name, definition,
-            //                     localDefs);
-            //             //baseField.getDeclaringClass().getFieldByName(
-            //             //    baseField.getName() + "_" + name);
+        //            throw new RuntimeException("unimplemented case");
+        //   // Walk back and get the definition of the field.
+        //             DefinitionStmt definition =
+        //                 _getFieldDef(baseLocal, unit, localDefs);
+        //             InstanceFieldRef fieldRef = (InstanceFieldRef)
+        //                 definition.getRightOp();
+        //             SootField baseField = fieldRef.getField();
+        //             System.out.println("baseField = " + baseField);
+        //             return _getContainerMethodReplacementFieldRef(
+        //                     (Local)fieldRef.getBase(),
+        //                     baseField.getName() + "." + name, definition,
+        //                     localDefs);
+        //             //baseField.getDeclaringClass().getFieldByName(
+        //             //    baseField.getName() + "_" + name);
     }
 
     private Value _getEntityMethodReplacementValue(

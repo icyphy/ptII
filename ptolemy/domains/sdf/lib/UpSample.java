@@ -1,28 +1,28 @@
 /* Upsample a signal by a specified amount.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (eal@eecs.berkeley.edu)
@@ -42,32 +42,32 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// UpSample
 /**
-This actor upsamples an input stream by an integer factor by inserting
-tokens with value zero.  The upsample factor is given by the
-<i>factor</i> parameter. On each firing, this actor reads one
-token from the input produces <i>factor</i> tokens on the output
-port.  All but one of these is a zero-valued token of the same type
-as the input.  The remaining one is the token read from the input.
-The position of this remaining one is determined by the <i>phase</i>
-parameter.  This parameter has a value between 0 and <i>factor</i>-1.
-If it is 0, then the input token is the last output token.
-If it is <i>factor</i>-1, then it is the first output, followed
-by zeros. Thus, if this actor is followed by the DownSample
-actor with the same <i>factor</i> and <i>phase</i>, the combination
-has no effect.
-<p>
-By default, <i>factor</i> is 2, and <i>phase</i> is the expression
-"factor-1".  This means that by default, the input token that is read
-is the first one produced at the output.
-<p>
-This actor is data polymorphic. It can accept any token
-type on the input that supports the zero() method,
-and it sends output tokens of that type.
+   This actor upsamples an input stream by an integer factor by inserting
+   tokens with value zero.  The upsample factor is given by the
+   <i>factor</i> parameter. On each firing, this actor reads one
+   token from the input produces <i>factor</i> tokens on the output
+   port.  All but one of these is a zero-valued token of the same type
+   as the input.  The remaining one is the token read from the input.
+   The position of this remaining one is determined by the <i>phase</i>
+   parameter.  This parameter has a value between 0 and <i>factor</i>-1.
+   If it is 0, then the input token is the last output token.
+   If it is <i>factor</i>-1, then it is the first output, followed
+   by zeros. Thus, if this actor is followed by the DownSample
+   actor with the same <i>factor</i> and <i>phase</i>, the combination
+   has no effect.
+   <p>
+   By default, <i>factor</i> is 2, and <i>phase</i> is the expression
+   "factor-1".  This means that by default, the input token that is read
+   is the first one produced at the output.
+   <p>
+   This actor is data polymorphic. It can accept any token
+   type on the input that supports the zero() method,
+   and it sends output tokens of that type.
 
-@see DownSample
-@author Steve Neuendorffer, Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @see DownSample
+   @author Steve Neuendorffer, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 
 public class UpSample extends SDFTransformer {

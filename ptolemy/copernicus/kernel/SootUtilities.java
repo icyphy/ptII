@@ -1,28 +1,28 @@
 /* Utilities to use with Soot
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -111,11 +111,11 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// SootUtilities
 /**
-This class consists of static utility methods for use with Soot
+   This class consists of static utility methods for use with Soot
 
-@author Stephen Neuendorffer, Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0
+   @author Stephen Neuendorffer, Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class SootUtilities {
 
@@ -448,7 +448,7 @@ public class SootUtilities {
                         FieldRef r = (FieldRef)value;
                         if (r.getField().getDeclaringClass() == oldClass) {
                             r.setField(newClass.getFieldByName(
-                                    r.getField().getName()));
+                                               r.getField().getName()));
                             //   System.out.println("fieldRef = " +
                             //              box.getValue());
                         } else if (r.getField().getDeclaringClass().getName()
@@ -458,7 +458,7 @@ public class SootUtilities {
                                         r.getField().getDeclaringClass(),
                                         newClass);
                             r.setField(changeClass.getFieldByName(
-                                    r.getField().getName()));
+                                               r.getField().getName()));
                         }
                     } else if (value instanceof CastExpr) {
                         // Fix casts
@@ -472,7 +472,7 @@ public class SootUtilities {
                                 //    System.out.println("newValue = " +
                                 //        box.getValue());
                             } else if (refClass.getName().startsWith(
-                                    oldClass.getName())) {
+                                               oldClass.getName())) {
                                 SootClass changeClass =
                                     _getInnerClassCopy(oldClass,
                                             refClass, newClass);
@@ -486,7 +486,7 @@ public class SootUtilities {
                         if (type instanceof RefType &&
                                 ((RefType)type).getSootClass() == oldClass) {
                             box.setValue(Jimple.v().newThisRef(
-                                    RefType.v(newClass)));
+                                                 RefType.v(newClass)));
                         }
                     } else if (value instanceof ParameterRef) {
                         // Fix references to a parameter
@@ -495,14 +495,14 @@ public class SootUtilities {
                         if (type instanceof RefType &&
                                 ((RefType)type).getSootClass() == oldClass) {
                             box.setValue(Jimple.v().newParameterRef(
-                                    RefType.v(newClass), r.getIndex()));
+                                                 RefType.v(newClass), r.getIndex()));
                         }
                     } else if (value instanceof InvokeExpr) {
                         // Fix up the method invokes.
                         InvokeExpr r = (InvokeExpr)value;
                         if (r.getMethod().getDeclaringClass() == oldClass) {
                             r.setMethod(newClass.getMethod(
-                                    r.getMethod().getSubSignature()));
+                                                r.getMethod().getSubSignature()));
                         } else if (r.getMethod().getDeclaringClass().getName().
                                 startsWith(oldClass.getName())) {
                             SootClass changeClass =
@@ -510,7 +510,7 @@ public class SootUtilities {
                                         r.getMethod().getDeclaringClass(),
                                         newClass);
                             r.setMethod(changeClass.getMethod(
-                                    r.getMethod().getSubSignature()));
+                                                r.getMethod().getSubSignature()));
                         }
                     } else if (value instanceof NewExpr) {
                         // Fix up the object creations.
@@ -816,7 +816,7 @@ public class SootUtilities {
             (InvokeExpr)constructorStmt.getInvokeExpr();
         Stmt insertStmt =
             Jimple.v().newInvokeStmt(Jimple.v().newStaticInvokeExpr(
-                    staticConstructorMethod, constructorExpr.getArgs()));
+                                             staticConstructorMethod, constructorExpr.getArgs()));
         clinitUnits.insertBefore(insertStmt, insertPoint);
 
         // Loop through the class and make all the non-static method static.
@@ -867,7 +867,7 @@ public class SootUtilities {
                     if (local == thisLocal) {
                         System.out.println("fixing invoke = " + expr);
                         box.setValue(Jimple.v().newStaticInvokeExpr(
-                                expr.getMethod(), expr.getArgs()));
+                                             expr.getMethod(), expr.getArgs()));
                     }
                 } else if (box.getValue() instanceof InstanceFieldRef) {
                     InstanceFieldRef expr =
@@ -876,7 +876,7 @@ public class SootUtilities {
                     if (local == thisLocal) {
                         System.out.println("fixing field = " + expr);
                         box.setValue(Jimple.v().newStaticFieldRef(
-                                expr.getField()));
+                                             expr.getField()));
                     }
                 }
             }
@@ -1240,7 +1240,7 @@ public class SootUtilities {
                         // This is inefficient.  Full type merging is
                         // expensive and unnecessary.
                         isEqual = (parameterType == argumentType.merge(
-                                parameterType, Scene.v()));
+                                           parameterType, Scene.v()));
                     }
                     if (!isEqual) break;
                 }
@@ -1426,7 +1426,7 @@ public class SootUtilities {
                     if (expr.getField() == field) {
                         System.out.println("fixing field = " + expr);
                         box.setValue(Jimple.v().newStaticFieldRef(
-                                expr.getField()));
+                                             expr.getField()));
                     }
                 }
             }
@@ -1636,7 +1636,7 @@ public class SootUtilities {
                 DefinitionStmt iteratorDefinition = ((DefinitionStmt)unit);
 
                 if (!(iteratorDefinition.getRightOp()
-                        instanceof InterfaceInvokeExpr) ||
+                            instanceof InterfaceInvokeExpr) ||
                         !((InterfaceInvokeExpr)iteratorDefinition
                                 .getRightOp()).getMethod().getName()
                         .equals("iterator")) {

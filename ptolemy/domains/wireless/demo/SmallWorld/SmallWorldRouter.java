@@ -1,28 +1,28 @@
 /* A actor that routes a message via a short path.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (pjb2e@eecs.berkeley.edu)
@@ -63,31 +63,31 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 //// SmallWorldRouter
 
 /**
-This actor implements a routing algrithm to route a message to the destination
-via a short path based only on local information. It assumes that it knows which
-nodes are in range and the location of that node. It also assumes that the
-location of the destination is known. Based on this information, it finds the
-node that is closest to the destination from its connected node set.
-<p>
-We assume that the actor are connected to nodes inside a particular range,
-specified by the <i>sureRange<i> parameter, for sure. Outside this range,
-it may connected to a node with probability propotional to the r-th inverse power
-of the distance between them. Whether it is connected to a particular
-node is independent of whether it is connected to any other node.
-<p>
-For convenience, a variable named "distance" is available and
-equal to the distance between this actor and other actors. The
-loss probability can be given as an expression that depends
-on this distance.
-<p>
-The distance between the transmitter and receiver is determined
-by the protected method _distanceBetween(), which is also used
-to set the value of the <i>distance</i> variable that can be
-used in the expression for loss probability.
+   This actor implements a routing algrithm to route a message to the destination
+   via a short path based only on local information. It assumes that it knows which
+   nodes are in range and the location of that node. It also assumes that the
+   location of the destination is known. Based on this information, it finds the
+   node that is closest to the destination from its connected node set.
+   <p>
+   We assume that the actor are connected to nodes inside a particular range,
+   specified by the <i>sureRange<i> parameter, for sure. Outside this range,
+   it may connected to a node with probability propotional to the r-th inverse power
+   of the distance between them. Whether it is connected to a particular
+   node is independent of whether it is connected to any other node.
+   <p>
+   For convenience, a variable named "distance" is available and
+   equal to the distance between this actor and other actors. The
+   loss probability can be given as an expression that depends
+   on this distance.
+   <p>
+   The distance between the transmitter and receiver is determined
+   by the protected method _distanceBetween(), which is also used
+   to set the value of the <i>distance</i> variable that can be
+   used in the expression for loss probability.
 
-@author Yang Zhao
-@version $ $
-@since Ptolemy II 4.0
+   @author Yang Zhao
+   @version $ $
+   @since Ptolemy II 4.0
 */
 public class SmallWorldRouter extends TypedAtomicActor {
 
@@ -285,13 +285,13 @@ public class SmallWorldRouter extends TypedAtomicActor {
             RecordToken in = (RecordToken)input.get(0);
             double data = ((DoubleToken)in.get("data")).doubleValue();
             String destination = ((StringToken)in.get("destination"))
-                    .stringValue();
+                .stringValue();
             String routeTo = ((StringToken)in.get("routeTo")).stringValue();
             int hops = ((IntToken)in.get("hops")).intValue();
             /*System.out.println(getName() + " receive a event with : " + "\n"
-                             + "destination = " + destination + "\n"
-                             + "routeTo = " + routeTo + "\n"
-                             + "hops = " + hops);
+              + "destination = " + destination + "\n"
+              + "routeTo = " + routeTo + "\n"
+              + "hops = " + hops);
             */
 
             if (getName().equals(destination)) {
@@ -329,7 +329,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 while (nodes.hasNext()) {
                     Entity node = (Entity) nodes.next();
                     Locatable location = (Locatable)node.getAttribute(
-                                        "_location", Locatable.class);
+                            "_location", Locatable.class);
                     if (location == null) {
                         throw new IllegalActionException(
                                 "Cannot determine location for node "
@@ -376,9 +376,9 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 director.fireAt(this, time);
                 if (multi) {
                     Token[] values2 = {new DoubleToken(data),
-                                      new StringToken(destination),
-                                      new StringToken(to2),
-                                      new IntToken(hops+1)};
+                                       new StringToken(destination),
+                                       new StringToken(to2),
+                                       new IntToken(hops+1)};
                     if (_receptions == null) {
                         _receptions = new HashMap();
                     }
@@ -404,9 +404,9 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 }
             }
             //if (_isRed) {
-                //Set color back to white.
-                _circle2.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
-                //_isRed = false;
+            //Set color back to white.
+            _circle2.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
+            //_isRed = false;
             //}
         }
     }
@@ -490,7 +490,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
             double experiment = _random.nextDouble();
             double probability = ((DoubleToken)lossProbability.getToken())
-                    .doubleValue();
+                .doubleValue();
             if (_debugging) {
                 _debug(" **** loss probability is: " + probability);
             }

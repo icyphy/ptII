@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -55,25 +55,25 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIAffineTransform
 /**
-Compute an affine transformation on an image.  The parameter
-affineMatrix must be a two by three matrix.  If the matrix is
-<pre>
- a b c
- d e f
-</pre>
-the input (x', y') and output (x, y) is determined by the following two
-equations.
-<pre>
- x = a*x' + b*y' + c;
- y = d*x' + e*y' + f;
-</pre>
-Note that the c and f terms do not show up when the output is directly
-displayed.  The c and f terms are translation terms, and only show up
-when operated on with another image.
+   Compute an affine transformation on an image.  The parameter
+   affineMatrix must be a two by three matrix.  If the matrix is
+   <pre>
+   a b c
+   d e f
+   </pre>
+   the input (x', y') and output (x, y) is determined by the following two
+   equations.
+   <pre>
+   x = a*x' + b*y' + c;
+   y = d*x' + e*y' + f;
+   </pre>
+   Note that the c and f terms do not show up when the output is directly
+   displayed.  The c and f terms are translation terms, and only show up
+   when operated on with another image.
 
-@author James Yeh
-@version $Id$
-@since Ptolemy II 3.0
+   @author James Yeh
+   @version $Id$
+   @since Ptolemy II 3.0
 */
 public class JAIAffineTransform extends Transformer {
 

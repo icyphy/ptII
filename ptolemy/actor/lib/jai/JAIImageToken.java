@@ -1,28 +1,28 @@
 /* A token that contains a javax.media.jai.RenderedOp.
 
- Copyright (c) 2002-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2002-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -47,13 +47,13 @@ import javax.media.jai.RenderedOp;
 //// JAIImageToken
 
 /**
- A token that contains a javax.media.jai.RenderedOp.  This token is used
- when dealing with images in the Java Advanced Imaging (JAI) library.
- Because it extends ImageToken, it can be used with the standard image
- processing tools by simply calling asAWTImage().
- @author James Yeh
- @version $Id$
- @since Ptolemy II 3.0
+   A token that contains a javax.media.jai.RenderedOp.  This token is used
+   when dealing with images in the Java Advanced Imaging (JAI) library.
+   Because it extends ImageToken, it can be used with the standard image
+   processing tools by simply calling asAWTImage().
+   @author James Yeh
+   @version $Id$
+   @since Ptolemy II 3.0
 */
 public class JAIImageToken extends ImageToken {
 
@@ -182,15 +182,15 @@ public class JAIImageToken extends ImageToken {
 
     // Create a ParameterBlock containing two RenderedOp's, the first
     // being the internal Image, the second being from an ImageToken.
-//     private ParameterBlock _parameterize(RenderedOp left, ImageToken right) {
-//         ParameterBlock parameters = new ParameterBlock();
-//         parameters.addSource(right.asAWTImage());
-//         RenderedOp rightOp = JAI.create("awtImage", parameters);
-//         parameters = new ParameterBlock();
-//         parameters.addSource(left);
-//         parameters.addSource(rightOp);
-//         return parameters;
-//     }
+    //     private ParameterBlock _parameterize(RenderedOp left, ImageToken right) {
+    //         ParameterBlock parameters = new ParameterBlock();
+    //         parameters.addSource(right.asAWTImage());
+    //         RenderedOp rightOp = JAI.create("awtImage", parameters);
+    //         parameters = new ParameterBlock();
+    //         parameters.addSource(left);
+    //         parameters.addSource(rightOp);
+    //         return parameters;
+    //     }
 
     // Create a ParameterBlock containing two RenderedOp's, the first
     // being the internal Image, the second being from a JAIImageToken.
@@ -203,13 +203,13 @@ public class JAIImageToken extends ImageToken {
 
     // Create a ParameterBlock containing one RenderedOp and one double,
     // the first being the internal Image, the second from a ScalarToken.
-//     private ParameterBlock _parameterize(RenderedOp left, ScalarToken right)
-//             throws IllegalActionException {
-//         ParameterBlock parameters = new ParameterBlock();
-//         parameters.addSource(left);
-//         parameters.add(right.doubleValue());
-//         return parameters;
-//     }
+    //     private ParameterBlock _parameterize(RenderedOp left, ScalarToken right)
+    //             throws IllegalActionException {
+    //         ParameterBlock parameters = new ParameterBlock();
+    //         parameters.addSource(left);
+    //         parameters.add(right.doubleValue());
+    //         return parameters;
+    //     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

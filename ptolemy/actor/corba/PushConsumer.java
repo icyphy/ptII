@@ -1,28 +1,28 @@
 /* An actor that receive data from a remote publisher.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (janneck@eecs.berkeley.edu)
@@ -56,24 +56,24 @@ import org.omg.CosNaming.NamingContextHelper;
 //////////////////////////////////////////////////////////////////////////
 //// PushConsumer
 /**
- An actor that receives data from a remote publisher.
- Specify the ORB initial property with the<i>ORBInitProperties<i>
- paremerter, for example:
- "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
- where "xyz.eecs.berkeley.edu" is the machine runing name server, and
- "1050" is the port for name service.
+   An actor that receives data from a remote publisher.
+   Specify the ORB initial property with the<i>ORBInitProperties<i>
+   paremerter, for example:
+   "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
+   where "xyz.eecs.berkeley.edu" is the machine runing name server, and
+   "1050" is the port for name service.
 
- Specify the name of the consumer with <i>ConsumerName<i>, which is
- registed on the name server.
+   Specify the name of the consumer with <i>ConsumerName<i>, which is
+   registed on the name server.
 
- If the <i>blocking<i> paremerter is true, then wait until there is
- token received, otherwise, send a default value specified by the
- <i>defaultToken<i> paremerter. Notice that the type of the output port
- is determined by the type of this parameter.
+   If the <i>blocking<i> paremerter is true, then wait until there is
+   token received, otherwise, send a default value specified by the
+   <i>defaultToken<i> paremerter. Notice that the type of the output port
+   is determined by the type of this parameter.
 
-@author Yang Zhao
-@version $Id$
-@since Ptolemy II 1.0
+   @author Yang Zhao
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 
 public class PushConsumer extends Source {
@@ -90,7 +90,7 @@ public class PushConsumer extends Source {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-            ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+        ORBInitProperties  = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         consumerName = new Parameter(this, "consumerName");
         consumerName.setToken(new StringToken(""));
@@ -135,7 +135,7 @@ public class PushConsumer extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-     /** If the attribute is <i>blocking</i> update the local
+    /** If the attribute is <i>blocking</i> update the local
      *  cache of the parameter value, otherwise pass the call to
      *  the super class.
      *  @param attribute The attribute that changed.
@@ -226,10 +226,10 @@ public class PushConsumer extends Source {
     /** Request that execution of the current iteration stop as soon
      *  as possible. Wake up the waiting if there is any.
      */
-     public void stop() {
+    public void stop() {
 
         if (_fireIsWaiting) {
-             synchronized( _lock) {
+            synchronized( _lock) {
                 _lock.notifyAll();
             }
             _fireIsWaiting = false;
@@ -306,7 +306,7 @@ public class PushConsumer extends Source {
          * Construct a pushConsumer.
          */
         public pushConsumer() {
-         super();
+            super();
         }
 
         /**
@@ -322,36 +322,36 @@ public class PushConsumer extends Source {
                 _debug("got pushed data");
             }
             //try {
-                synchronized(_lock) {
-                    // Variable variable = new Variable();
-                    if (_debugging) {
-                        _debug("got pushed data:\n" + data.extract_string());
-                    }
-                    //FIXME: This was designed to be able to receive
-                    //differnt kinds of tokens. But after some change was
-                    //made in StringUtil, the string seems not substituted
-                    //properly, and it gets error when call variable.getToken.
-                    //So I modified it here to only deal with sting tokens
-                    //and use it to receive moml strings for the mobile model.
+            synchronized(_lock) {
+                // Variable variable = new Variable();
+                if (_debugging) {
+                    _debug("got pushed data:\n" + data.extract_string());
+                }
+                //FIXME: This was designed to be able to receive
+                //differnt kinds of tokens. But after some change was
+                //made in StringUtil, the string seems not substituted
+                //properly, and it gets error when call variable.getToken.
+                //So I modified it here to only deal with sting tokens
+                //and use it to receive moml strings for the mobile model.
 
-                    //variable.setExpression( data.extract_string());
-                   ////String string = variable.getExpression();
-                   //_lastReadToken = variable.getToken();
-                    _lastReadToken = new StringToken(data.extract_string());
-                    if (_debugging) {
-                       _debug(getName(), " receive data:\n" + _lastReadToken.toString());
-                    }
-                   if (_fireIsWaiting) {
-                       _lock.notifyAll();
-                   }else {
-                       try {
+                //variable.setExpression( data.extract_string());
+                ////String string = variable.getExpression();
+                //_lastReadToken = variable.getToken();
+                _lastReadToken = new StringToken(data.extract_string());
+                if (_debugging) {
+                    _debug(getName(), " receive data:\n" + _lastReadToken.toString());
+                }
+                if (_fireIsWaiting) {
+                    _lock.notifyAll();
+                }else {
+                    try {
                         getDirector().fireAtCurrentTime(
                                 PushConsumer.this);
-                        } catch (IllegalActionException ex) {
-                            throw new CorbaIllegalActionException("failed in dealing with director.");
-                        }
-                   }
+                    } catch (IllegalActionException ex) {
+                        throw new CorbaIllegalActionException("failed in dealing with director.");
+                    }
                 }
+            }
 
             //} catch (IllegalActionException e) {
             //    throw new CorbaIllegalActionException("failed to construct.");

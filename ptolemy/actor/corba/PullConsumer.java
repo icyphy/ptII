@@ -1,28 +1,28 @@
 /* An actor that sends request to the data supplier for data.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (janneck@eecs.berkeley.edu)
@@ -51,25 +51,25 @@ import java.lang.Object;
 //////////////////////////////////////////////////////////////////////////
 //// Publisher
 /**
- An actor that sends pull request to a remote publisher and asks for data.
+   An actor that sends pull request to a remote publisher and asks for data.
 
- Specify the ORB initial property with the<i>ORBInitProperties<i>
- paremerter, for example:
- "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
- where "xyz.eecs.berkeley.edu" is the machine runing name server, and
- "1050" is the port for name service.
+   Specify the ORB initial property with the<i>ORBInitProperties<i>
+   paremerter, for example:
+   "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
+   where "xyz.eecs.berkeley.edu" is the machine runing name server, and
+   "1050" is the port for name service.
 
- Specify the name of the supplier with <i>remoteSupplierName<i>, which is
- the supplier it wants to request data from.
+   Specify the name of the supplier with <i>remoteSupplierName<i>, which is
+   the supplier it wants to request data from.
 
- If the <i>blocking<i> paremerter is true, then wait until there is
- token received, otherwise, send a default value specified by the
- <i>defaultToken<i> paremerter. Notice that the type of the output port
- is determined by the type of this parameter.
+   If the <i>blocking<i> paremerter is true, then wait until there is
+   token received, otherwise, send a default value specified by the
+   <i>defaultToken<i> paremerter. Notice that the type of the output port
+   is determined by the type of this parameter.
 
-@author Yang Zhao
-@version $Id$
-@since Ptolemy II 1.0
+   @author Yang Zhao
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 
 public class PullConsumer extends Source {
@@ -86,7 +86,7 @@ public class PullConsumer extends Source {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-            ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+        ORBInitProperties  = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         remoteSupplierName = new Parameter(this, "remoteSupplierName");
         remoteSupplierName.setToken(new StringToken(""));
@@ -112,18 +112,18 @@ public class PullConsumer extends Source {
     /** Indicate whether the actor blocks when it haven't receive
      *  data. The default value is false of
      *  type BooleanToken.
-    */
-   public Parameter blocking;
+     */
+    public Parameter blocking;
 
-   /** The default token. If the actor is nonblocking
-    *  and there is no new token received after the last fire()
-    *  method call, then this
-    *  token will be output when the fire() method is called.
-    *  The default value is 0.0. And the default type is
-    *  double. Notice that the type of the output port
-    *  is determined by the type of this parameter.
-    */
-   public Parameter defaultToken;
+    /** The default token. If the actor is nonblocking
+     *  and there is no new token received after the last fire()
+     *  method call, then this
+     *  token will be output when the fire() method is called.
+     *  The default value is 0.0. And the default type is
+     *  double. Notice that the type of the output port
+     *  is determined by the type of this parameter.
+     */
+    public Parameter defaultToken;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -233,10 +233,10 @@ public class PullConsumer extends Source {
     /** Request that execution of the current iteration stop as soon
      *  as possible. Wake up the waiting if there is any.
      */
-     public void stop() {
+    public void stop() {
 
         if (_fireIsWaiting) {
-             synchronized( _fire) {
+            synchronized( _fire) {
                 _fire.notifyAll();
             }
             _fireIsWaiting = false;
@@ -322,7 +322,7 @@ public class PullConsumer extends Source {
 
     private Token _defaultToken;
 
-///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                        private inner class                ////
 
     private class DataReadingThread extends Thread {

@@ -1,28 +1,28 @@
 /* A simple graph view for Ptolemy models
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -141,13 +141,13 @@ import diva.util.java2d.ShapeUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// BasicGraphFrame
 /**
-A simple graph view for ptolemy models.  This represents a level of the
-hierarchy of a ptolemy model as a diva graph.  Cut, copy and paste operations
-are supported using MoML.
+   A simple graph view for ptolemy models.  This represents a level of the
+   hierarchy of a ptolemy model as a diva graph.  Cut, copy and paste operations
+   are supported using MoML.
 
-@author  Steve Neuendorffer, Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
+   @author  Steve Neuendorffer, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public abstract class BasicGraphFrame extends PtolemyFrame
     implements Printable, ClipboardOwner, ChangeListener {
@@ -445,11 +445,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     while (!(headOK && tailOK) && objects.hasNext()) {
                         Object object = objects.next();
                         if (!headOK && GraphUtilities.isContainedNode(head,
-                                object, graphModel)) {
+                                    object, graphModel)) {
                             headOK = true;
                         }
                         if (!tailOK && GraphUtilities.isContainedNode(tail,
-                                object, graphModel)) {
+                                    object, graphModel)) {
                             tailOK = true;
                         }
                     }
@@ -522,7 +522,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 // This is an internal error because a reasonable GUI should not
                 // provide access to this functionality.
                 throw new InternalErrorException(
-                "Cannot create hierarchy if the container is not a CompositeEntity.");
+                        "Cannot create hierarchy if the container is not a CompositeEntity.");
             }
             final String name = container.uniqueName("typed composite actor");
             final TypedCompositeActor compositeActor = new TypedCompositeActor(
@@ -566,11 +566,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         while (!(headOK && tailOK) && objects.hasNext()) {
                             Object object = objects.next();
                             if (!headOK && GraphUtilities.isContainedNode(head,
-                                    object, graphModel)) {
+                                        object, graphModel)) {
                                 headOK = true;
                             }
                             if (!tailOK && GraphUtilities.isContainedNode(tail,
-                                    object, graphModel)) {
+                                        object, graphModel)) {
                                 tailOK = true;
                             }
                         }
@@ -771,7 +771,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     protected void _execute() throws Exception {
                         super._execute();
                         NamedObj newObject = ((CompositeEntity)container)
-                                .getEntity(name);
+                            .getEntity(name);
                         //_setLocation(compositeActor, point);
                     }
                 };
@@ -800,11 +800,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
         GraphPane graphPane = _jgraph.getGraphPane();
         GraphController controller
-                = (GraphController)graphPane.getGraphController();
+            = (GraphController)graphPane.getGraphController();
         SelectionModel model = controller.getSelectionModel();
 
         AbstractBasicGraphModel graphModel
-                = (AbstractBasicGraphModel)controller.getGraphModel();
+            = (AbstractBasicGraphModel)controller.getGraphModel();
         Object selection[] = model.getSelectionAsArray();
 
         // First collect selected objects into the userObjects array
@@ -829,7 +829,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             Object userObject = userObjects[i];
             if (graphModel.isEdge(userObject)) {
                 NamedObj actual
-                        = (NamedObj)graphModel.getSemanticObject(userObject);
+                    = (NamedObj)graphModel.getSemanticObject(userObject);
                 // If there is no semantic object, then this edge is
                 // not fully connected, so we can't go through MoML.
                 if (actual == null) {
@@ -876,7 +876,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             // Finally create and request the change
             NamedObj container = graphModel.getPtolemyModel();
             MoMLChangeRequest change
-                    = new MoMLChangeRequest(this, container, moml.toString());
+                = new MoMLChangeRequest(this, container, moml.toString());
             change.setUndoable(true);
             container.requestChange(change);
         }
@@ -1075,7 +1075,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         try {
             NamedObj toplevel = (NamedObj)model.getRoot();
             RedoChangeRequest change =
-                    new RedoChangeRequest(this, toplevel);
+                new RedoChangeRequest(this, toplevel);
             toplevel.requestChange(change);
         }
         catch (Exception ex) {
@@ -1301,7 +1301,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         Configuration configuration = getConfiguration();
         if (configuration != null) {
             CompositeEntity result = (CompositeEntity)
-                    configuration.getEntity("actor library");
+                configuration.getEntity("actor library");
             if (result == null) {
                 // Create an empty library by default.
                 result = new CompositeEntity(workspace);
@@ -1411,7 +1411,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             // Also record zoom and pan state.
             JCanvas canvas = _jgraph.getGraphPane().getCanvas();
             AffineTransform current =
-                    canvas.getCanvasPane().getTransformContext().getTransform();
+                canvas.getCanvasPane().getTransformContext().getTransform();
             // We assume the scaling in the X and Y directions are the same.
             double scale = current.getScaleX();
             Parameter zoom = (Parameter)getModel().getAttribute(
@@ -1535,9 +1535,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         } finally {
             graphModel.setDispatchEnabled(true);
             graphModel.dispatchGraphEvent(new GraphEvent(
-                    this,
-                    GraphEvent.STRUCTURE_CHANGED,
-                    graphModel.getRoot()));
+                                                  this,
+                                                  GraphEvent.STRUCTURE_CHANGED,
+                                                  graphModel.getRoot()));
         }
     }
 

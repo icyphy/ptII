@@ -1,32 +1,32 @@
 /* An actor that computes a specified String comparison function on
- the two String inputs.
+   the two String inputs.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Green (kapokasa@ptolemy.eecs.berkeley.edu)
-@AcceptedRating Green (net@ptolemy.eecs.berkeley.edu)
+   @ProposedRating Green (kapokasa@ptolemy.eecs.berkeley.edu)
+   @AcceptedRating Green (net@ptolemy.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.string;
@@ -48,24 +48,24 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// StringCompare
 /**
- Compare two strings specified either as inputs or parameters. The output
- is either true or false, depending on whether the comparison function is
- satisfied. The comparison functions are:
- <ul>
- <li> <b>equals</b>: Output true if the strings are equal (Default).
- <li> <b>startsWith</b>: Output true if <i>firstString</i> starts with
-      <i>secondString</i>.
- <li> <b>endsWith</b>: Output true if <i>firstString</i> ends with
-      <i>secondString</i>.
- <li> <b>contains</b>: Output true if <i>firstString</i> contains
-      <i>secondString</i>.
- </ul>
- The strings to be compared will be taken from the inputs if they are
- available, and otherwise will be taken from the corresponding parameters.
+   Compare two strings specified either as inputs or parameters. The output
+   is either true or false, depending on whether the comparison function is
+   satisfied. The comparison functions are:
+   <ul>
+   <li> <b>equals</b>: Output true if the strings are equal (Default).
+   <li> <b>startsWith</b>: Output true if <i>firstString</i> starts with
+   <i>secondString</i>.
+   <li> <b>endsWith</b>: Output true if <i>firstString</i> ends with
+   <i>secondString</i>.
+   <li> <b>contains</b>: Output true if <i>firstString</i> contains
+   <i>secondString</i>.
+   </ul>
+   The strings to be compared will be taken from the inputs if they are
+   available, and otherwise will be taken from the corresponding parameters.
 
-@author Vinay Krishnan, Daniel L&aacute;zaro Cuadrado (contributor: Edward A. Lee)
-@version $Id$
-@since Ptolemy II 3.0.3
+   @author Vinay Krishnan, Daniel L&aacute;zaro Cuadrado (contributor: Edward A. Lee)
+   @version $Id$
+   @since Ptolemy II 3.0.3
 */
 
 public class StringCompare extends TypedAtomicActor {

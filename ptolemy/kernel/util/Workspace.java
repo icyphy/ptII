@@ -1,28 +1,28 @@
 /* An object for synchronization and version tracking of groups of objects.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuxj@eecs.berkeley.edu)
 @AcceptedRating Red (liuxj@eecs.berkeley.edu)
@@ -52,62 +52,62 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// Workspace
 /**
-An instance of Workspace is used for synchronization and version tracking
-of interdependent groups of objects.  These objects are said to be in the
-workspace. This is not the same as the <i>container</i> association
-in Ptolemy II.  A workspace is never returned by a getContainer() method.
-<p>
-The workspace provides a rudimentary directory service that can
-be used to keep track of the objects within it.  It is not required to use
-it in order to use the workspace for synchronization. Items are added
-to the directory by calling add().
-The names of the items in the directory are not required to be unique.
-<p>
-When reading the state of objects in the workspace, a thread must
-ensure that no other thread is simultaneously modifying the objects in the
-workspace.  To read-synchronize on its workspace, it uses the following
-code in a method:
-<pre>
-    try {
-        _workspace.getReadAccess();
-        // ... code that reads
-    } finally {
-        _workspace.doneReading();
-    }
-</pre>
-We assume that the _workspace variable references the workspace, as for example
-in the NamedObj class. The getReadAccess() method suspends the thread if
-another thread is currently modifying the workspace, and otherwise
-returns immediately. Note that multiple readers can simultaneously have
-read access. The finally clause is executed even if
-an exception occurs.  This is essential because without the call
-to doneReading(), the workspace will never again allow any thread
-to modify it.  It believes there is still a thread reading it.
-Any number of threads can simultaneously read the workspace.
-<p>
-To make changes in the workspace, a thread must write-synchronize
-using the following code:
-<pre>
-    try {
-        _workspace.getWriteAccess();
-        // ... code that writes
-    } finally {
-        _workspace.doneWriting();
-    }
-</pre>
-Only one thread can be writing to the workspace at a time, and
-while the write permission is held, no thread can read the workspace.
-Again, the call to doneWriting() is essential, or the workspace
-will remain permanently locked to either reading or writing.
-<p>
-Note that it is not necessary to obtain a write lock just to add
-an item to the workspace directory.  The methods for accessing
-the directory are all synchronized, so there is no risk of any
-thread reading an inconsistent state.
+   An instance of Workspace is used for synchronization and version tracking
+   of interdependent groups of objects.  These objects are said to be in the
+   workspace. This is not the same as the <i>container</i> association
+   in Ptolemy II.  A workspace is never returned by a getContainer() method.
+   <p>
+   The workspace provides a rudimentary directory service that can
+   be used to keep track of the objects within it.  It is not required to use
+   it in order to use the workspace for synchronization. Items are added
+   to the directory by calling add().
+   The names of the items in the directory are not required to be unique.
+   <p>
+   When reading the state of objects in the workspace, a thread must
+   ensure that no other thread is simultaneously modifying the objects in the
+   workspace.  To read-synchronize on its workspace, it uses the following
+   code in a method:
+   <pre>
+   try {
+   _workspace.getReadAccess();
+   // ... code that reads
+   } finally {
+   _workspace.doneReading();
+   }
+   </pre>
+   We assume that the _workspace variable references the workspace, as for example
+   in the NamedObj class. The getReadAccess() method suspends the thread if
+   another thread is currently modifying the workspace, and otherwise
+   returns immediately. Note that multiple readers can simultaneously have
+   read access. The finally clause is executed even if
+   an exception occurs.  This is essential because without the call
+   to doneReading(), the workspace will never again allow any thread
+   to modify it.  It believes there is still a thread reading it.
+   Any number of threads can simultaneously read the workspace.
+   <p>
+   To make changes in the workspace, a thread must write-synchronize
+   using the following code:
+   <pre>
+   try {
+   _workspace.getWriteAccess();
+   // ... code that writes
+   } finally {
+   _workspace.doneWriting();
+   }
+   </pre>
+   Only one thread can be writing to the workspace at a time, and
+   while the write permission is held, no thread can read the workspace.
+   Again, the call to doneWriting() is essential, or the workspace
+   will remain permanently locked to either reading or writing.
+   <p>
+   Note that it is not necessary to obtain a write lock just to add
+   an item to the workspace directory.  The methods for accessing
+   the directory are all synchronized, so there is no risk of any
+   thread reading an inconsistent state.
 
-@author Edward A. Lee, Mudit Goel, Lukito Muliadi, Xiaojun Liu
-@version $Id$
-@since Ptolemy II 0.2
+   @author Edward A. Lee, Mudit Goel, Lukito Muliadi, Xiaojun Liu
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 
 public final class Workspace implements Nameable, Serializable {

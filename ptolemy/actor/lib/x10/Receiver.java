@@ -1,28 +1,28 @@
 /* Receive x10 commands propagating through an x10 network.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (ptolemy@ptolemy.eecs.berkeley.edu)
 @AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
@@ -137,7 +137,7 @@ public class Receiver extends X10Interface {
                     }
                 } catch (InterruptedException ex) {
                     throw new IllegalActionException(this, ex,
-                    "Thread interrupted while waiting for X10 data.");
+                            "Thread interrupted while waiting for X10 data.");
                 }
             }
             if (_commandReady()) {
@@ -145,7 +145,7 @@ public class Receiver extends X10Interface {
             }
         }
         boolean discardOldDataValue
-                = ((BooleanToken)discardOldData.getToken()).booleanValue();
+            = ((BooleanToken)discardOldData.getToken()).booleanValue();
         if (discardOldDataValue) {
             while (_commandQueue.size() > 1) {
                 if (_debugging) {
@@ -165,15 +165,15 @@ public class Receiver extends X10Interface {
         }
     }
 
-        /** Begin listening for X10 commands.
+    /** Begin listening for X10 commands.
      *  @exception IllegalActionException If the super class throws it.
      */
-        public void initialize() throws IllegalActionException {
-                super.initialize();
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _interface.addUnitListener(_listener);
         _stopFireRequested = false;
         _fireAtCurrentTimeCalled = false;
-        }
+    }
 
     /** Override the base class to stop waiting for input data.
      */
@@ -199,8 +199,8 @@ public class Receiver extends X10Interface {
         }
     }
 
-        ///////////////////////////////////////////////////////////////////
-        ////                         protected methods                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Remove and then return the first command from the command queue.
      *  @return The first command in the command queue, or null if there
@@ -251,18 +251,18 @@ public class Receiver extends X10Interface {
         }
 
         String commandString = "<" + command.getHouseCode()
-                + command.getUnitCode() + "-" + functionString + "-"
-                + command.getLevel() + ">";
+            + command.getUnitCode() + "-" + functionString + "-"
+            + command.getLevel() + ">";
 
         return commandString;
     }
 
-        ///////////////////////////////////////////////////////////////////
-        ////                       private variables                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
 
-        /** This is a linked list that stores any and all received commands from
+    /** This is a linked list that stores any and all received commands from
      *  a registered </i>CommandListener<i>.
-         */
+     */
     private LinkedList _commandQueue = new LinkedList();
 
     /** Indicator that fireAtCurrentTime() has been called and not yet
@@ -270,9 +270,9 @@ public class Receiver extends X10Interface {
      */
     private boolean _fireAtCurrentTimeCalled = false;
 
-        /** This is the </i>UnitListener<i> that will be listening for commands
+    /** This is the </i>UnitListener<i> that will be listening for commands
      *  from the x10 network
-         */
+     */
     private CommandListener _listener = new CommandListener();
 
     // Indicator that stopFire() has been called.
@@ -281,12 +281,12 @@ public class Receiver extends X10Interface {
     ///////////////////////////////////////////////////////////////////
     ////                        private inner class                ////
 
-   /** This is an implementation of the <i>UnitListener</i> interface. One
-    *  callback function exists for each instruction. Refer to the x10 API
-    *  for additional information concerning the <i>UntiListener</i> class:
-    *  <a href="http://x10.homelinux.org/docs/">
-    *  http://x10.homelinux.org/docs/</a>
-    */
+    /** This is an implementation of the <i>UnitListener</i> interface. One
+     *  callback function exists for each instruction. Refer to the x10 API
+     *  for additional information concerning the <i>UntiListener</i> class:
+     *  <a href="http://x10.homelinux.org/docs/">
+     *  http://x10.homelinux.org/docs/</a>
+     */
     private class CommandListener implements UnitListener {
 
         ///////////////////////////////////////////////////////////////////
@@ -317,7 +317,7 @@ public class Receiver extends X10Interface {
         ///////////////////////////////////////////////////////////////////
         ///                       private methods                      ////
 
-       /** Append a received command onto the </i>commandQueue<i>.
+        /** Append a received command onto the </i>commandQueue<i>.
          * @return void
          */
         private void _appendCommand (UnitEvent event) {
@@ -333,7 +333,7 @@ public class Receiver extends X10Interface {
                     getDirector().fireAtCurrentTime(Receiver.this);
                 } catch (IllegalActionException ex) {
                     throw new KernelRuntimeException(Receiver.this, null, ex,
-                    "fireAtCurrentTime() failed.");
+                            "fireAtCurrentTime() failed.");
                 }
             }
             synchronized (Receiver.this) {

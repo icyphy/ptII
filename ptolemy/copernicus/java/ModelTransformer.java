@@ -1,28 +1,28 @@
 /* A transformer that creates a class for the toplevel of a model
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -110,23 +110,23 @@ import soot.util.Chain;
 //////////////////////////////////////////////////////////////////////////
 //// ModelTransformer
 /**
-A transformer that creates a class to represent the model specified in
-the constructor.  This transformer creates instance classes for each
-actor in the model, and generates code for composite actors that
-instantiates singleton instances of those classes.  Additionally code
-is generated in composite actor classes to create links and relations
-between actors.
+   A transformer that creates a class to represent the model specified in
+   the constructor.  This transformer creates instance classes for each
+   actor in the model, and generates code for composite actors that
+   instantiates singleton instances of those classes.  Additionally code
+   is generated in composite actor classes to create links and relations
+   between actors.
 
-<p> The class generates code for composite actors itself.  For atomic
-actors, it defers to various implementations of the AtomicActorCreator
-class.  This allows customized code to be generated for various atomic
-actors.  By default, this class defers to a GenericAtomicActorCreator.
-That creator simply copies the existing actor specification code and
-specializes it.
+   <p> The class generates code for composite actors itself.  For atomic
+   actors, it defers to various implementations of the AtomicActorCreator
+   class.  This allows customized code to be generated for various atomic
+   actors.  By default, this class defers to a GenericAtomicActorCreator.
+   That creator simply copies the existing actor specification code and
+   specializes it.
 
-@author Stephen Neuendorffer, Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0
+   @author Stephen Neuendorffer, Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class ModelTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
@@ -456,11 +456,11 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 // Record the name of the created port.
                 // NOTE: we assume that this is only a TypedIOPort, which
                 // contains no other objects!
-             //    Port classPort =
-//                     (Port)_findDeferredInstance(port);
-           //      updateCreatedSet(entity.getFullName() + "."
-//                         + port.getName(),
-//                         classPort, classPort, createdSet);
+                //    Port classPort =
+                //                     (Port)_findDeferredInstance(port);
+                //      updateCreatedSet(entity.getFullName() + "."
+                //                         + port.getName(),
+                //                         classPort, classPort, createdSet);
                 createdSet.add(entity.getFullName() + "."
                         + port.getName());
                 // Then assign to portLocal.
@@ -917,7 +917,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 if (value instanceof SpecialInvokeExpr) {
                     SpecialInvokeExpr r = (SpecialInvokeExpr)value;
                     if (PtolemyUtilities.executableInterface.declaresMethod(
-                            r.getMethod().getSubSignature())) {
+                                r.getMethod().getSubSignature())) {
                         boolean isNonVoidMethod =
                             r.getMethod().getName().equals("prefire") ||
                             r.getMethod().getName().equals("postfire");
@@ -960,7 +960,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             method.setActiveBody(body);
             body.insertIdentityStmts();
             body.getUnits().add(Jimple.v().newReturnStmt(
-                    IntConstant.v(1)));
+                                        IntConstant.v(1)));
         }
         if (!theClass.declaresMethodByName("fire")) {
             SootMethod method = new SootMethod("fire",
@@ -979,7 +979,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             method.setActiveBody(body);
             body.insertIdentityStmts();
             body.getUnits().add(Jimple.v().newReturnStmt(
-                    IntConstant.v(1)));
+                                        IntConstant.v(1)));
         }
         if (!theClass.declaresMethodByName("wrapup")) {
             SootMethod method = new SootMethod("wrapup",
@@ -1034,7 +1034,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                     if (type instanceof RefType) {
                         SootClass typeClass = ((RefType)type).getSootClass();
                         if (SootUtilities.derivesFrom(typeClass,
-                                   PtolemyUtilities.namedObjClass)) {
+                                    PtolemyUtilities.namedObjClass)) {
                             hasDangerousType = true;
                         }
                     }
@@ -1046,7 +1046,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                     if (type instanceof RefType) {
                         SootClass typeClass = ((RefType)type).getSootClass();
                         if (SootUtilities.derivesFrom(typeClass,
-                                   PtolemyUtilities.namedObjClass)) {
+                                    PtolemyUtilities.namedObjClass)) {
                             hasDangerousType = true;
                         }
                     }
@@ -1313,9 +1313,9 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 Local local = PtolemyUtilities.createNamedObjAndLocal(
                         body, className,
                         entityLocal, port.getName());
-//                 updateCreatedSet(entity.getFullName() + "."
-//                         + port.getName(),
-//                         port, port, createdSet);
+                //                 updateCreatedSet(entity.getFullName() + "."
+                //                         + port.getName(),
+                //                         port, port, createdSet);
                 createdSet.add(entity.getFullName() + "."
                         + port.getName());
                 // Then assign to portLocal.
@@ -1404,10 +1404,10 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 Local relationLocal = (Local)_relationLocalMap.get(relation);
                 // call the _insertLink method with the current index.
                 body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(portLocal,
-                                PtolemyUtilities.insertLinkMethod,
-                                IntConstant.v(index),
-                                relationLocal)));
+                                            Jimple.v().newVirtualInvokeExpr(portLocal,
+                                                    PtolemyUtilities.insertLinkMethod,
+                                                    IntConstant.v(index),
+                                                    relationLocal)));
 
             }
         }
@@ -1467,10 +1467,10 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
 
                     // Call the _insertLink method with the current index.
                     body.getUnits().add(Jimple.v().newInvokeStmt(
-                            Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    PtolemyUtilities.insertLinkMethod,
-                                    IntConstant.v(index),
-                                    relationLocal)));
+                                                Jimple.v().newVirtualInvokeExpr(portLocal,
+                                                        PtolemyUtilities.insertLinkMethod,
+                                                        IntConstant.v(index),
+                                                        relationLocal)));
                 }
 
             }
@@ -1492,9 +1492,9 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                         thisLocal, relation.getName());
             _relationLocalMap.put(relation, local);
 
-//             SootUtilities.createAndSetFieldFromLocal(body,
-//                     local, modelClass, PtolemyUtilities.relationType,
-//                     fieldName);
+            //             SootUtilities.createAndSetFieldFromLocal(body,
+            //                     local, modelClass, PtolemyUtilities.relationType,
+            //                     fieldName);
         }
     }
 
@@ -1543,7 +1543,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                     boolean match = true;
                     for (int j = 0; j < parameterTypes.length; j++) {
                         if (!(parameterTypes[j].isInstance(
-                                _reflectionArguments[j]))) {
+                                      _reflectionArguments[j]))) {
                             match = false;
                             break;
                         }

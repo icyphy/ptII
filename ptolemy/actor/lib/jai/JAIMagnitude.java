@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -45,19 +45,19 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIMagnitude
 /**
-Output the magnitude of a complex image.  This actor assumes that the
-image inputted has an even number of bands, where each pair of bands
-(0 and 1, 2 and 3, etc.) correspond to a real-imaginary pair.
+   Output the magnitude of a complex image.  This actor assumes that the
+   image inputted has an even number of bands, where each pair of bands
+   (0 and 1, 2 and 3, etc.) correspond to a real-imaginary pair.
 
-<p> The output of this actor may not be suitable for display because of the
-high resolution of the data.  To display or save the output of this
-image, use the {@link JAIDataConvert} actor to cast the data to an appropriate
-type (for instance, byte).
+   <p> The output of this actor may not be suitable for display because of the
+   high resolution of the data.  To display or save the output of this
+   image, use the {@link JAIDataConvert} actor to cast the data to an appropriate
+   type (for instance, byte).
 
-@see JAIDataConvert
-@author James Yeh
-@version $Id$
-@since Ptolemy II 3.1
+   @see JAIDataConvert
+   @author James Yeh
+   @version $Id$
+   @since Ptolemy II 3.1
 */
 public class JAIMagnitude extends Transformer {
 

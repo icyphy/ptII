@@ -1,28 +1,28 @@
 /* The abstract base class of the ODE solvers.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Green (yuhong@eecs.berkeley.edu)
@@ -40,44 +40,44 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ODESolver
 /**
-Abstract base class for ODE solvers. The key method for the class is
-resolveState(), which executes the integration method for one
-step. This method does not consider any breakpoints. In general,
-resolveState() will resolve the integrators' new states.
-Step size control (including error control) is performed by the
-director, but solvers may provide support for it.
-How the states are resolved and how the errors are controlled are
-solver dependent.  Derived classes
-may implement these methods according to individual ODE
-solving algorithms.
-<P>
-The behavior of integrators also changes
-when changing the ODE solver, so this class provides some methods
-for the integrators too, including the fire() method and the step size
-control related methods. Here we use the strategy and delegation design
-patterns. CTBaseIntegrator delegated its corresponding
-methods to this class. And subclasses of this class provide concrete
-implementations of these methods.
-<P>
-An integer called "round" is used to indicate the number of firing rounds
-within one iteration. For some integration methods, (i.e. the so called
-explicit methods) the round of firings are fixed.
-For some others (i.e. implicit methods), the round could be an arbitrary
-positive integer.
-<P>
-A round counter is a counter
-for the number of fire() rounds in one iteration to help the actors that
-may behave differently under different rounds. The round can be got by
-the getRound() method. The incrementRound() method will increase the
-counter by one, and resetRound() will always reset the counter to 0.
-<P>
-Conceptually, ODE solvers do not maintain simulation parameters,
-like step sizes and error tolerance.
-They get these parameters from the director. So the same set of parameters
-are shared by all the solvers in a simulation.
-@author Jie Liu
-@version $Id$
-@since Ptolemy II 0.2
+   Abstract base class for ODE solvers. The key method for the class is
+   resolveState(), which executes the integration method for one
+   step. This method does not consider any breakpoints. In general,
+   resolveState() will resolve the integrators' new states.
+   Step size control (including error control) is performed by the
+   director, but solvers may provide support for it.
+   How the states are resolved and how the errors are controlled are
+   solver dependent.  Derived classes
+   may implement these methods according to individual ODE
+   solving algorithms.
+   <P>
+   The behavior of integrators also changes
+   when changing the ODE solver, so this class provides some methods
+   for the integrators too, including the fire() method and the step size
+   control related methods. Here we use the strategy and delegation design
+   patterns. CTBaseIntegrator delegated its corresponding
+   methods to this class. And subclasses of this class provide concrete
+   implementations of these methods.
+   <P>
+   An integer called "round" is used to indicate the number of firing rounds
+   within one iteration. For some integration methods, (i.e. the so called
+   explicit methods) the round of firings are fixed.
+   For some others (i.e. implicit methods), the round could be an arbitrary
+   positive integer.
+   <P>
+   A round counter is a counter
+   for the number of fire() rounds in one iteration to help the actors that
+   may behave differently under different rounds. The round can be got by
+   the getRound() method. The incrementRound() method will increase the
+   counter by one, and resetRound() will always reset the counter to 0.
+   <P>
+   Conceptually, ODE solvers do not maintain simulation parameters,
+   like step sizes and error tolerance.
+   They get these parameters from the director. So the same set of parameters
+   are shared by all the solvers in a simulation.
+   @author Jie Liu
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public abstract class ODESolver extends NamedObj {
 

@@ -1,28 +1,28 @@
 /* A FIFO queue receiver with variable capacity and optional history.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Green (neuendor@eecs.berkeley.edu)
@@ -44,21 +44,21 @@ import java.util.NoSuchElementException;
 //////////////////////////////////////////////////////////////////////////
 //// SDFReceiver
 /**
-A first-in, first-out (FIFO) queue receiver with variable capacity and
-optional history. Tokens are put into the receiver with the put() method,
-and removed from the receiver with the get() method. The token removed is
-the one placed in the receiver before any other (i.e. the "oldest", although
-this has nothing to do with time in the model.
-By default, the capacity is unbounded, but
-it can be set to any nonnegative size. If the history capacity is greater
-than zero (or infinite, indicated by a capacity of INFINITE_CAPACITY),
-then tokens removed from the receiver are stored in a history queue rather
-than simply removed. By default, the history capacity is zero.
+   A first-in, first-out (FIFO) queue receiver with variable capacity and
+   optional history. Tokens are put into the receiver with the put() method,
+   and removed from the receiver with the get() method. The token removed is
+   the one placed in the receiver before any other (i.e. the "oldest", although
+   this has nothing to do with time in the model.
+   By default, the capacity is unbounded, but
+   it can be set to any nonnegative size. If the history capacity is greater
+   than zero (or infinite, indicated by a capacity of INFINITE_CAPACITY),
+   then tokens removed from the receiver are stored in a history queue rather
+   than simply removed. By default, the history capacity is zero.
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 0.2
-@see ArrayFIFOQueue
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see ArrayFIFOQueue
 */
 public class SDFReceiver extends AbstractReceiver {
 

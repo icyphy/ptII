@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (mudit@eecs.berkeley.edu)
 @AcceptedRating Red
@@ -33,20 +33,20 @@ package ptolemy.domains.pn.kernel.event;
 //////////////////////////////////////////////////////////////////////////
 //// PNProcessListener
 /**
-An PNProcessListener is able to receive PNProcessEvents that are issued
-during the execution of a process by a ProcessThread or director in PN.
-In general, an object that implements this interface will probably be a front
-end such as a execution visualization tool for
-the Ptolemy II system, or an object that is communicating with a front end.
-The events are issued only when the event actually occurs, not when it is
-requested.   For example: A process receives a call to pause(), but the
-process may pause some time after the pause was requested. The processPaused()
-method will not be called until the process actually pauses and corresponding
-thread is suspended.
+   An PNProcessListener is able to receive PNProcessEvents that are issued
+   during the execution of a process by a ProcessThread or director in PN.
+   In general, an object that implements this interface will probably be a front
+   end such as a execution visualization tool for
+   the Ptolemy II system, or an object that is communicating with a front end.
+   The events are issued only when the event actually occurs, not when it is
+   requested.   For example: A process receives a call to pause(), but the
+   process may pause some time after the pause was requested. The processPaused()
+   method will not be called until the process actually pauses and corresponding
+   thread is suspended.
 
-@author Mudit Goel
-@version $Id$
-@since Ptolemy II 0.3
+   @author Mudit Goel
+   @version $Id$
+   @since Ptolemy II 0.3
 */
 
 public interface PNProcessListener {

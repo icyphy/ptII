@@ -1,28 +1,28 @@
 /* Eliminate all references to named objects
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -134,7 +134,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                             SootField field = fieldRef.getField();
                             // Turn off debugging..
                             if (field.getSubSignature().equals(
-                                    PtolemyUtilities.debuggingField.getSubSignature())) {
+                                        PtolemyUtilities.debuggingField.getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
@@ -154,10 +154,10 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                             // remove attachText
                             InvokeExpr expr = (InvokeExpr)value;
                             if (expr.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.attachTextMethod.getSubSignature())) {
+                                        PtolemyUtilities.attachTextMethod.getSubSignature())) {
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.setNameMethod.getSubSignature())) {
+                                               PtolemyUtilities.setNameMethod.getSubSignature())) {
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getName().equals("_debug")) {
                                 body.getUnits().remove(unit);
@@ -173,7 +173,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                             // InlineParameterTransformer and
                             // InlinePortTransformer
                             if (expr.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.getFullNameMethod.getSubSignature())) {
+                                        PtolemyUtilities.getFullNameMethod.getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
@@ -184,7 +184,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                                 }
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.getNameMethod.getSubSignature())) {
+                                               PtolemyUtilities.getNameMethod.getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
@@ -195,7 +195,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                                 }
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.findEffigyMethod.getSubSignature())) {
+                                               PtolemyUtilities.findEffigyMethod.getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
@@ -205,7 +205,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                                 }
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.getModelURIMethod.getSubSignature())) {
+                                               PtolemyUtilities.getModelURIMethod.getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     SootClass uriClass = Scene.v().loadClassAndSupport("java.net.URI");
                                     RefType type = RefType.v(uriClass);
@@ -229,7 +229,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                                 }
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.handleModelErrorMethod.getSubSignature())) {
+                                               PtolemyUtilities.handleModelErrorMethod.getSubSignature())) {
                                 // Replace handleModelError with a throw clause.
                                 body.getUnits().insertBefore(
                                         Jimple.v().newThrowStmt(expr.getArg(1)),
@@ -251,7 +251,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
 
             SootClass theClass = (SootClass) i.next();
             if (SootUtilities.derivesFrom(theClass,
-                    PtolemyUtilities.actorClass) ||
+                        PtolemyUtilities.actorClass) ||
                     SootUtilities.derivesFrom(theClass,
                             PtolemyUtilities.compositeActorClass) ||
                     SootUtilities.derivesFrom(theClass,
@@ -313,9 +313,9 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
 
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                        (Local)expr.getBase(),
-                                        PtolemyUtilities.objectConstructor,
-                                        Collections.EMPTY_LIST));
+                                                     (Local)expr.getBase(),
+                                                     PtolemyUtilities.objectConstructor,
+                                                     Collections.EMPTY_LIST));
                             }
                         }
                     } else if (unit instanceof IdentityStmt) {
@@ -390,8 +390,8 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                                     modifiedConstructorClassList.contains(
                                             declaringClass)) {
                                 // System.out.println(
-//                                         "replacing constructor invocation = "
-//                                         + unit + " in method " + method);
+                                //                                         "replacing constructor invocation = "
+                                //                                         + unit + " in method " + method);
                                 SootMethod newConstructor =
                                     declaringClass.getMethodByName("<init>");
                                 if (newConstructor.getParameterCount() == 1) {
@@ -476,26 +476,26 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                     }
                 }
                 // If any arguments are removable, then remove the method.
-              //   for (Iterator params = method.getParameterTypes().iterator();
-//                      params.hasNext();) {
-//                     Type type = (Type)params.next();
-//                     if (_isRemovableType(type)) {
-//                         System.out.println("removing method with removable parameters = " + method);
-//                         theClass.removeMethod(method);
-//                         break;
-//                     }
-//                 }
+                //   for (Iterator params = method.getParameterTypes().iterator();
+                //                      params.hasNext();) {
+                //                     Type type = (Type)params.next();
+                //                     if (_isRemovableType(type)) {
+                //                         System.out.println("removing method with removable parameters = " + method);
+                //                         theClass.removeMethod(method);
+                //                         break;
+                //                     }
+                //                 }
             }
         }/*
           */
 
-       // Remove all the interfaces that it implements??
+        // Remove all the interfaces that it implements??
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
              i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             for (Iterator interfaces = theClass.getInterfaces().snapshotIterator();
-                interfaces.hasNext();) {
+                 interfaces.hasNext();) {
                 SootClass theInterface = (SootClass)interfaces.next();
                 if (theInterface.equals(PtolemyUtilities.inequalityTermClass)) {
                     theClass.getInterfaces().remove(theInterface);
@@ -512,7 +512,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
             RefType refType = (RefType)type;
             SootClass refClass = refType.getSootClass();
             if (SootUtilities.derivesFrom(refClass,
-                    PtolemyUtilities.attributeClass) ||
+                        PtolemyUtilities.attributeClass) ||
                     SootUtilities.derivesFrom(refClass,
                             PtolemyUtilities.managerClass) ||
                     SootUtilities.derivesFrom(refClass,

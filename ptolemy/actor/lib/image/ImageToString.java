@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -44,11 +44,11 @@ import java.awt.Image;
 //////////////////////////////////////////////////////////////////////////
 //// ImageToString
 /**
-This actor reads an ObjectToken that is a java.awt.Image from the input
-and writes information about the image to the output as a StringToken.
+   This actor reads an ObjectToken that is a java.awt.Image from the input
+   and writes information about the image to the output as a StringToken.
 
-@author  Christopher Hylands
-@version $Id$
+   @author  Christopher Hylands
+   @version $Id$
 */
 public class ImageToString extends Transformer {
 

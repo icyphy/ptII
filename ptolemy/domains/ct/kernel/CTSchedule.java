@@ -1,28 +1,28 @@
 /* Static schedule for CT domain.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 
@@ -41,38 +41,38 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// CTSchedule
 /**
-A schedule for CT models. This class overrides the base class and uses
-an ArrayList implementation for the first level of the schedule, so
-that accessing subschedules takes constant time. A CT schedule is an
-array of LinkedList. The array always has length X, consisting of the
-following entries in that order (in a type-safe enumeration),
-<pre>
-DISCRETE_ACTORS
-DYNAMIC_ACTORS
-EVENT_GENERATORS
-OUTPUT_ACTORS
-OUTPUT_STEP_SIZE_CONTROL_ACTORS
-STATE_TRANSITION_ACTORS
-STATEFUL_ACTORS
-STATE_STEP_SIZE_CONTROL_ACTORS
-WAVEFORM_GENERATORS
-</pre>
-Each entry is a Schedule. Actors
-in the schedule are ordered according to the order they should be
-executed.
-<P>
-A typical use of the schedule is to get one of the subschedules.
-For example, to schedule the CT execution and get the iterator for
-dynamic actor schedule,
-(assume we have a CTScheduler called scheduler) do:
-<pre>
-CTSchedule schedule = scheduler.getSchedule();
-Iterator dynamicActorIterator =
-        schedule.get(CTSchedule.DYNAMIC_ACTOR_SCHEDULE).actorIterator();
-</pre>
-@author  Jie Liu
-@version $Id$
-@since Ptolemy II 2.0
+   A schedule for CT models. This class overrides the base class and uses
+   an ArrayList implementation for the first level of the schedule, so
+   that accessing subschedules takes constant time. A CT schedule is an
+   array of LinkedList. The array always has length X, consisting of the
+   following entries in that order (in a type-safe enumeration),
+   <pre>
+   DISCRETE_ACTORS
+   DYNAMIC_ACTORS
+   EVENT_GENERATORS
+   OUTPUT_ACTORS
+   OUTPUT_STEP_SIZE_CONTROL_ACTORS
+   STATE_TRANSITION_ACTORS
+   STATEFUL_ACTORS
+   STATE_STEP_SIZE_CONTROL_ACTORS
+   WAVEFORM_GENERATORS
+   </pre>
+   Each entry is a Schedule. Actors
+   in the schedule are ordered according to the order they should be
+   executed.
+   <P>
+   A typical use of the schedule is to get one of the subschedules.
+   For example, to schedule the CT execution and get the iterator for
+   dynamic actor schedule,
+   (assume we have a CTScheduler called scheduler) do:
+   <pre>
+   CTSchedule schedule = scheduler.getSchedule();
+   Iterator dynamicActorIterator =
+   schedule.get(CTSchedule.DYNAMIC_ACTOR_SCHEDULE).actorIterator();
+   </pre>
+   @author  Jie Liu
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class CTSchedule extends Schedule {
 

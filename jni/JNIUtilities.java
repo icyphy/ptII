@@ -52,145 +52,145 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// JNIUtilities
 /**
-A collection of utilities for generating Java Native Interface (JNI) classes.
+   A collection of utilities for generating Java Native Interface (JNI) classes.
 
-<p>For information about JNI, see
-<a href="http://java.sun.com/docs/books/tutorial/native1.1/concepts/index.html"><code>http://java.sun.com/docs/books/tutorial/native1.1/concepts/index.html</code></a>
+   <p>For information about JNI, see
+   <a href="http://java.sun.com/docs/books/tutorial/native1.1/concepts/index.html"><code>http://java.sun.com/docs/books/tutorial/native1.1/concepts/index.html</code></a>
 
-<p>For information about how to create shared libraries under Windows using
-Cygwin, see
-<a href="http://cygwin.com/cygwin-ug-net/dll.html" target="_top"><code>http://cygwin.com/cygwin-ug-net/dll.html</code></a>
+   <p>For information about how to create shared libraries under Windows using
+   Cygwin, see
+   <a href="http://cygwin.com/cygwin-ug-net/dll.html" target="_top"><code>http://cygwin.com/cygwin-ug-net/dll.html</code></a>
 
-<p>For information about using JNI with Cygwin, see
- <a href="http://www.inonit.com/cygwin/jni/helloWorld/c.html" target="_top"><code>http://www.inonit.com/cygwin/jni/helloWorld/c.html</code></a>
+   <p>For information about using JNI with Cygwin, see
+   <a href="http://www.inonit.com/cygwin/jni/helloWorld/c.html" target="_top"><code>http://www.inonit.com/cygwin/jni/helloWorld/c.html</code></a>
 
-<h2>How to call an actor that calls C code that returns a double</h2>
-In this example, we call a C method called <code>meaningOfLife()</code>
-that returns a double.
-<ol>
+   <h2>How to call an actor that calls C code that returns a double</h2>
+   In this example, we call a C method called <code>meaningOfLife()</code>
+   that returns a double.
+   <ol>
 
-<li> Create the C file called <code>meaningOfLife.c</code> that contains
-<pre>
-// Return the answer to "the meaning of life, the universe, and everything"
-double meaningOfLife() {
-  return 42.0;
-}
-</pre>
+   <li> Create the C file called <code>meaningOfLife.c</code> that contains
+   <pre>
+   // Return the answer to "the meaning of life, the universe, and everything"
+   double meaningOfLife() {
+   return 42.0;
+   }
+   </pre>
 
-<li> Create <code>meaningOfLife.h</code> that contains
-<pre>
-extern "C" double meaningOfLife();
-</pre>
+   <li> Create <code>meaningOfLife.h</code> that contains
+   <pre>
+   extern "C" double meaningOfLife();
+   </pre>
 
-<li> Compile and create the shared library.  Under Windows, we
-create a <code>.dll</code>
-<pre>
-gcc -shared -o meaningOfLife.dll meaningOfLife.c
-</pre>
+   <li> Compile and create the shared library.  Under Windows, we
+   create a <code>.dll</code>
+   <pre>
+   gcc -shared -o meaningOfLife.dll meaningOfLife.c
+   </pre>
 
-<li> Set the CLASSPATH to include the current directory
-<pre>
-CLASSPATH=.
-export CLASSPATH
-</pre>
+   <li> Set the CLASSPATH to include the current directory
+   <pre>
+   CLASSPATH=.
+   export CLASSPATH
+   </pre>
 
-<li> Start up Vergil with the JNI interface enabled.
-<pre>
-$PTII/bin/vergil -jni
-</pre>
-Note that the <code>-jni</code> option may go away in the future
-if we merge the jni facility into the main tree
+   <li> Start up Vergil with the JNI interface enabled.
+   <pre>
+   $PTII/bin/vergil -jni
+   </pre>
+   Note that the <code>-jni</code> option may go away in the future
+   if we merge the jni facility into the main tree
 
-<li> Create a new model with File -> New -> Graph Editor
-<li> Drag in the JNIActor from the jni folder
-<li> Right click on the actor and select Configure Arguments.
-<li> Fill in the form as follows
-<dl>
-<dt><code><b>Name:</b></code>
-<dd><code>output</code>
-<dt><code><b>C or C++ type:</b></code>
-<dd><code>double</code>
-<dt><code><b>Kind:</b></code>
-<dd><code>return</code>
-</dl>
+   <li> Create a new model with File -> New -> Graph Editor
+   <li> Drag in the JNIActor from the jni folder
+   <li> Right click on the actor and select Configure Arguments.
+   <li> Fill in the form as follows
+   <dl>
+   <dt><code><b>Name:</b></code>
+   <dd><code>output</code>
+   <dt><code><b>C or C++ type:</b></code>
+   <dd><code>double</code>
+   <dt><code><b>Kind:</b></code>
+   <dd><code>return</code>
+   </dl>
 
-<li> Select Ok and then Commit to close
-the argument configurer
-<li> Right Click on the actor to edit
-the parameters
-<dl>
-<dt><code><b>libraryDirectory</b></code>
-<dd><code>""</code>
-<dt><code><b>nativeFunction:</b></code>
-<dd><code>"meaningOfLife"</code>
-<dt><code><b>nativeLibrary</b></code>
-<dd><code>"meaningOfLife"</code>
+   <li> Select Ok and then Commit to close
+   the argument configurer
+   <li> Right Click on the actor to edit
+   the parameters
+   <dl>
+   <dt><code><b>libraryDirectory</b></code>
+   <dd><code>""</code>
+   <dt><code><b>nativeFunction:</b></code>
+   <dd><code>"meaningOfLife"</code>
+   <dt><code><b>nativeLibrary</b></code>
+   <dd><code>"meaningOfLife"</code>
 
-</dl>
-<li> Select Commit to close the Edit Parameters window
-<li> Select JNI from the menu and
-then select Generate C Interface
-<li> FIXME: Copy the dlls into a directory that is in the path
-<pre>
-cp meaningOfLife.dll $PTII/bin
-cp jni/jnimeaningOfLife/JnijnimeaningOfLife.dll $PTII/bin
-</pre>
-<li> Save the model.
-<br>FIXME: Because of an apparent bug, it is necessary
-to save the model for the port we just created to appear
-<li> Add a Display actor from the Sink folder in the
-Actor Library and connect the input of the Display actor
-to the output of the meaningOfLife Actor
-<li> FIXME: Because of a bug in the Ptolemy interface to the JNI
-actor, you must specify the type of the output of the meaningOfLife
-actor by right clicking on the actor and selecting
-Configure Ports and then entering double for
-output type
-<li> Drag in a SDF director and set the number of iterations to 1.
-<li> Select Run
-<li> The answer to "the meaning of life, the universe, and everything"
-should appear in the Display actor.
-</ol>
-If you get an error like:
-<pre>
-/cygdrive/c/Program Files/j2sdk1.4.1_01/include/win32/jni_md.h:16: syntax error before `;'
-</pre>
-Then see
-<a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt" target="_top"><code>http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt</code></a>
-<br>You might need to edit jni_md.h, the above URL says
-<blockquote>
-GCC doesn't have a __int64 built-in, and this patch basically uses
-"long long" instead.
+   </dl>
+   <li> Select Commit to close the Edit Parameters window
+   <li> Select JNI from the menu and
+   then select Generate C Interface
+   <li> FIXME: Copy the dlls into a directory that is in the path
+   <pre>
+   cp meaningOfLife.dll $PTII/bin
+   cp jni/jnimeaningOfLife/JnijnimeaningOfLife.dll $PTII/bin
+   </pre>
+   <li> Save the model.
+   <br>FIXME: Because of an apparent bug, it is necessary
+   to save the model for the port we just created to appear
+   <li> Add a Display actor from the Sink folder in the
+   Actor Library and connect the input of the Display actor
+   to the output of the meaningOfLife Actor
+   <li> FIXME: Because of a bug in the Ptolemy interface to the JNI
+   actor, you must specify the type of the output of the meaningOfLife
+   actor by right clicking on the actor and selecting
+   Configure Ports and then entering double for
+   output type
+   <li> Drag in a SDF director and set the number of iterations to 1.
+   <li> Select Run
+   <li> The answer to "the meaning of life, the universe, and everything"
+   should appear in the Display actor.
+   </ol>
+   If you get an error like:
+   <pre>
+   /cygdrive/c/Program Files/j2sdk1.4.1_01/include/win32/jni_md.h:16: syntax error before `;'
+   </pre>
+   Then see
+   <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt" target="_top"><code>http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt</code></a>
+   <br>You might need to edit jni_md.h, the above URL says
+   <blockquote>
+   GCC doesn't have a __int64 built-in, and this patch basically uses
+   "long long" instead.
 
-<ol>
-<li> Edit the file <jdk_root>/include/win32/jni_md.h, Where <jdk_root>
+   <ol>
+   <li> Edit the file <jdk_root>/include/win32/jni_md.h, Where <jdk_root>
    is the installation root (eg., c:/jdk1.1.7A).
 
-<li> Replace the segment:
-</ol>
+   <li> Replace the segment:
+   </ol>
 
-<pre>
-    typedef long jint;
-    typedef __int64 jlong;
-</pre>
-with:
-<pre>
-    typedef long jint;
-    #ifdef __GNUC__
-    typedef long long jlong;
-    #else
-    typedef __int64 jlong;
-    #endif
-    typedef signed char jbyte;
-</pre>
-<blockquote>
-
-
+   <pre>
+   typedef long jint;
+   typedef __int64 jlong;
+   </pre>
+   with:
+   <pre>
+   typedef long jint;
+   #ifdef __GNUC__
+   typedef long long jlong;
+   #else
+   typedef __int64 jlong;
+   #endif
+   typedef signed char jbyte;
+   </pre>
+   <blockquote>
 
 
-@author Vincent Arnould (vincent.arnould@thalesgroup.com), contributor Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.3
+
+
+   @author Vincent Arnould (vincent.arnould@thalesgroup.com), contributor Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.3
 */
 public class JNIUtilities {
 
@@ -360,7 +360,7 @@ public class JNIUtilities {
             throws IllegalActionException {
         String nativeLibrary =
             (((StringToken) ((Parameter) actor
-                    .getAttribute("nativeLibrary"))
+                      .getAttribute("nativeLibrary"))
                     .getToken())
                     .toString());
         return nativeLibrary.substring(1, nativeLibrary.length() - 1);
@@ -574,7 +574,7 @@ public class JNIUtilities {
         }
 
         if (!(_getArgumentsOut(actor, "").equals("")
-                && _getArgumentsInOut(actor, "").equals(""))) {
+                    && _getArgumentsInOut(actor, "").equals(""))) {
             results.append(_indent1 + "// envoi des sorties dans l'environnement JAVA / PTOLEMY II\n"
                     + _indent1 + "jclass cls = env->GetObjectClass(jobj);\n"
                     + _indent1 + "jmethodID mid = env->GetMethodID(cls, "
@@ -1464,8 +1464,8 @@ public class JNIUtilities {
     private static String _getLibraryDirectory(GenericJNIActor actor)
             throws IllegalActionException {
         String libraryDirectory = (((StringToken) ((Parameter) actor
-                .getAttribute("libraryDirectory"))
-                .getToken())
+                                            .getAttribute("libraryDirectory"))
+                                           .getToken())
                 .toString());
         return libraryDirectory.substring(1, libraryDirectory.length() - 1);
     }
@@ -1476,7 +1476,7 @@ public class JNIUtilities {
             throws IllegalActionException {
         String nativeFunction =
             (((StringToken) ((Parameter) actor
-                    .getAttribute("nativeFunction"))
+                      .getAttribute("nativeFunction"))
                     .getToken())
                     .toString());
         return nativeFunction.substring(1, nativeFunction.length() - 1);

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -225,8 +225,8 @@ public class MovieReader extends Source implements ControllerListener {
      */
     public boolean postfire() throws IllegalActionException {
         if (_playerOpen == false) {
-           _dataSource.disconnect();
-           return false;
+            _dataSource.disconnect();
+            return false;
         } else {
             _frame = _frameGrabbingControl.grabFrame();
             _framePositioningControl.skip(1);

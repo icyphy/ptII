@@ -1,28 +1,28 @@
 /* Execute a command in a subprocess.
 
- Copyright (c) 2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (cxh@eecs.berkeley.edu) 2/5/04
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu) 2/24/04
@@ -67,37 +67,37 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// Execute
 /**
-Execute a command as a separately running subprocess.
+   Execute a command as a separately running subprocess.
 
-<p>This actor uses java.lang.Runtime.exec() to invoke a subprocess
-named be the <i>command</i> parameter in a <i>directory</i> with an
-<i>environment</i>.  Data from the <i>input</i> port (if any) is
-passed to the input of the subprocess.  The subprocess is run until it
-exits and then contents of the output and error streams of the
-subprocess (if any) are passed to the <i>output</i> and <i>error</i>
-ports.
+   <p>This actor uses java.lang.Runtime.exec() to invoke a subprocess
+   named be the <i>command</i> parameter in a <i>directory</i> with an
+   <i>environment</i>.  Data from the <i>input</i> port (if any) is
+   passed to the input of the subprocess.  The subprocess is run until it
+   exits and then contents of the output and error streams of the
+   subprocess (if any) are passed to the <i>output</i> and <i>error</i>
+   ports.
 
-<p>If the subprocess generates no data on the output or error stream,
-then the data on the corresponding port(s) will consist of the empty string.
+   <p>If the subprocess generates no data on the output or error stream,
+   then the data on the corresponding port(s) will consist of the empty string.
 
-<p>A much more interesting actor could be written using a
-Kahn Process Network.  This actor would generate output asynchronously
-as the process was executing.
+   <p>A much more interesting actor could be written using a
+   Kahn Process Network.  This actor would generate output asynchronously
+   as the process was executing.
 
-<p>Currently, there appears to be no way to get the subprocess to
-exit by passing it input. For example, if the <i>command</i> is set
-to the <code>cat</code> command, and we pass in a Const with the
-value <code>\04</code>, then the cat subprocess does <b>not</b> interpret
-this as the end of file marker and exit.
+   <p>Currently, there appears to be no way to get the subprocess to
+   exit by passing it input. For example, if the <i>command</i> is set
+   to the <code>cat</code> command, and we pass in a Const with the
+   value <code>\04</code>, then the cat subprocess does <b>not</b> interpret
+   this as the end of file marker and exit.
 
-<p>For information about Runtime.exec(), see:
-<a href="http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html" target="_top">http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
-and
-<a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a>
+   <p>For information about Runtime.exec(), see:
+   <a href="http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html" target="_top">http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
+   and
+   <a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a>
 
-@author Christopher Hylands Brooks, Contributor: Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   @author Christopher Hylands Brooks, Contributor: Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class Exec extends TypedAtomicActor {
 
@@ -406,10 +406,10 @@ public class Exec extends TypedAtomicActor {
                 for (int i = 0; i < environmentTokens.length(); i++) {
                     StringToken nameToken= (StringToken)
                         (((RecordToken) environmentTokens.getElement(i))
-                        .get("name"));
+                                .get("name"));
                     StringToken valueToken= (StringToken)
                         (((RecordToken) environmentTokens.getElement(i))
-                        .get("value"));
+                                .get("value"));
                     environmentArray[i] = nameToken.stringValue()
                         + "=" + valueToken.stringValue();
 

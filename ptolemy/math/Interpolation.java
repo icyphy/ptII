@@ -1,28 +1,28 @@
 /* An interpolator for a specified array of indexes and values.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
 @AcceptedRating red (cxh@eecs.berkeley.edu)
@@ -34,32 +34,32 @@ package ptolemy.math;
 //////////////////////////////////////////////////////////////////////////
 //// Interpolation
 /**
-This class provides algorithms to do interpolation. Currently, zero,
-first, and third order interpolations are supported. These are the
-interpolation orders most often used in practice. zero order interpolation
-holds the last reference value; first order does linear interpolation;
-and third order interpolation is based on the Hermite curves in chapter
-11 of "Computer Graphic, Principles and Practice", by Foley, van Dam, Feiner
-and Hughes, 2nd ed. in C, 1996.
-<p>
-The setValues() method specifies the reference values as a double
-array. setIndexes() specifies the indexes of those values as an
-int array. These two arrays must have the same length, and the indexes
-must be increasing and non-negative; otherwise an exception will be thrown.
-The values are periodic if a positive period is set by setPeriod(). In
-this case, the period must be greater than the largest index, and
-values within the index range 0 to (period-1) are repeated indefinitely.
-If the period is zero, the values are not periodic, and the values
-outside the range of the indexes are considered to be 0.0.
-The interpolation order is set by setOrder().
-<p>
-The default reference values are {1.0, 0.0} and the indexes are {0, 1}.
-The default period is 2 and the order is 0.
-<p>
+   This class provides algorithms to do interpolation. Currently, zero,
+   first, and third order interpolations are supported. These are the
+   interpolation orders most often used in practice. zero order interpolation
+   holds the last reference value; first order does linear interpolation;
+   and third order interpolation is based on the Hermite curves in chapter
+   11 of "Computer Graphic, Principles and Practice", by Foley, van Dam, Feiner
+   and Hughes, 2nd ed. in C, 1996.
+   <p>
+   The setValues() method specifies the reference values as a double
+   array. setIndexes() specifies the indexes of those values as an
+   int array. These two arrays must have the same length, and the indexes
+   must be increasing and non-negative; otherwise an exception will be thrown.
+   The values are periodic if a positive period is set by setPeriod(). In
+   this case, the period must be greater than the largest index, and
+   values within the index range 0 to (period-1) are repeated indefinitely.
+   If the period is zero, the values are not periodic, and the values
+   outside the range of the indexes are considered to be 0.0.
+   The interpolation order is set by setOrder().
+   <p>
+   The default reference values are {1.0, 0.0} and the indexes are {0, 1}.
+   The default period is 2 and the order is 0.
+   <p>
 
-@author Sarah Packman, Yuhong Xiong
-@version $Id$
-@since Ptolemy II 0.4
+   @author Sarah Packman, Yuhong Xiong
+   @version $Id$
+   @since Ptolemy II 0.4
 */
 
 public class Interpolation {

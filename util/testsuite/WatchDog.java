@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
@@ -38,12 +38,12 @@ import java.util.TimerTask;
 //////////////////////////////////////////////////////////////////////////
 //// WatchDog
 /** This class creates a Timer that calls System.exit() after
-a certain amount of time.
+    a certain amount of time.
 
- @author Christopher Hylands
- @version $Id$
- @since Ptolemy II 2.2
- */
+    @author Christopher Hylands
+    @version $Id$
+    @since Ptolemy II 2.2
+*/
 public class WatchDog {
     /** Create a timer that will go off after timeToDie milliseconds.
      */
@@ -93,11 +93,11 @@ public class WatchDog {
                         watchDogWentOff = true;
                         if (_exitOnTimeOut) {
                             System.out.println("The string below is so that "
-                                + "the nightly build will notice");
+                                    + "the nightly build will notice");
                             System.out.println("Failed: 666  Total Tests: 0 "
-                                + "((Passed: 0, Newly Passed: 0)  "
-                                + "Known Failed: 0) "
-                                + "util.testsuite.WatchDog went off");
+                                    + "((Passed: 0, Newly Passed: 0)  "
+                                    + "Known Failed: 0) "
+                                    + "util.testsuite.WatchDog went off");
                             // Do not pass go, do not collect $200
                             System.exit(4);
                         }

@@ -1,27 +1,27 @@
 /* Director for the Giotto model of computation.
 
- Copyright (c) 2000-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2000-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (cm@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
@@ -65,24 +65,24 @@ import java.util.ListIterator;
 //////////////////////////////////////////////////////////////////////////
 //// GiottoDirector
 /**
-This class implements a director for the Giotto model of computation
-without Giotto modes. Schedules are generated according to the Giotto
-semantics. The GiottoScheduler class contains methods to compute the
-schedules. The GiottoReceiver class implements the data flow between
-actors using double-buffering.
-<p>
-If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
-then the director will not process events until the real time elapsed
-since the model started matches the time stamp of the event.
-This ensures that the director does not get ahead of real time,
-but, of course, it does not ensure that the director keeps up with
-real time.
+   This class implements a director for the Giotto model of computation
+   without Giotto modes. Schedules are generated according to the Giotto
+   semantics. The GiottoScheduler class contains methods to compute the
+   schedules. The GiottoReceiver class implements the data flow between
+   actors using double-buffering.
+   <p>
+   If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
+   then the director will not process events until the real time elapsed
+   since the model started matches the time stamp of the event.
+   This ensures that the director does not get ahead of real time,
+   but, of course, it does not ensure that the director keeps up with
+   real time.
 
-@author  Christoph Meyer Kirsch, Edward A. Lee and Haiyang Zheng
-@version $Id$
-@since Ptolemy II 1.0
-@see GiottoScheduler
-@see GiottoReceiver
+   @author  Christoph Meyer Kirsch, Edward A. Lee and Haiyang Zheng
+   @version $Id$
+   @since Ptolemy II 1.0
+   @see GiottoScheduler
+   @see GiottoReceiver
 */
 public class GiottoDirector extends StaticSchedulingDirector {
 

@@ -1,28 +1,28 @@
 /* A base class for actions with semicolon delimited lists of commands.
 
- Copyright (c) 2000-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2000-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
 */
@@ -61,38 +61,38 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// AbstractActionsAttribute
 /**
-A base class for actions with semicolon delimited lists of commands.
-<p>
-The value of this attribute is a semicolon separated list of commands,
-where each command gives a destination to send data to and a value
-to send. The actions are given by calling setExpression() with
-a string of the form:
-<pre>
-     <i>command</i>; <i>command</i>; ...
-</pre>
-where each <i>command</i> has the form:
-<pre>
-     <i>destination</i> = <i>expression</i>
-</pre>
-where <i>destination</i> is either
-<pre>
-     <i>name</i>
-</pre>
-or
-<pre>
-     <i>name</i>(<i>number</i>)
-</pre>
-<p>
-The <i>expression</i> is a string giving an expression in the usual
-Ptolemy II expression language.  The expression may include references
-to variables and parameters contained by the FSM actor.
+   A base class for actions with semicolon delimited lists of commands.
+   <p>
+   The value of this attribute is a semicolon separated list of commands,
+   where each command gives a destination to send data to and a value
+   to send. The actions are given by calling setExpression() with
+   a string of the form:
+   <pre>
+   <i>command</i>; <i>command</i>; ...
+   </pre>
+   where each <i>command</i> has the form:
+   <pre>
+   <i>destination</i> = <i>expression</i>
+   </pre>
+   where <i>destination</i> is either
+   <pre>
+   <i>name</i>
+   </pre>
+   or
+   <pre>
+   <i>name</i>(<i>number</i>)
+   </pre>
+   <p>
+   The <i>expression</i> is a string giving an expression in the usual
+   Ptolemy II expression language.  The expression may include references
+   to variables and parameters contained by the FSM actor.
 
-@author Xiaojun Liu and Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
-@see CommitActionsAttribute
-@see Transition
-@see FSMActor
+   @author Xiaojun Liu and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
+   @see CommitActionsAttribute
+   @see Transition
+   @see FSMActor
 */
 public abstract class AbstractActionsAttribute extends Action
     implements HasTypeConstraints {

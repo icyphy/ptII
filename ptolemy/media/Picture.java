@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -41,13 +41,13 @@ import java.awt.image.MemoryImageSource;
 //// Picture
 
 /** A component that displays an image.  The image can be updated
-in real time to create videos.  It can be monochrome or color.
-To use it, simply create it, populate it with pixels using one or more
-of the set methods, and call displayImage().
+    in real time to create videos.  It can be monochrome or color.
+    To use it, simply create it, populate it with pixels using one or more
+    of the set methods, and call displayImage().
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
+    @author Edward A. Lee
+    @version $Id$
+    @since Ptolemy II 0.2
 */
 public class Picture extends Canvas {
 

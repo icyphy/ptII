@@ -1,28 +1,28 @@
 /* An actor that disassembles a DoubleMatrixToken to a multiport output.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (celaine@eecs.berkeley.edu)
 @AcceptedRating Yellow (celaine@eecs.berkeley.edu)
@@ -39,26 +39,26 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// VectorDisassembler
 /**
-An actor that disassembles a DoubleMatrixToken to a multiport output.
-<p>On each firing, read one column vector (i.e. a DoubleMatrixToken with
-one column) from the <i>input</i> port and send out individual
-DoubleTokens to each channel of the <i>output</i> port.  If the width
-of the <i>output</i> port (say, <i>n</i>) is less than the number of
-rows (say, <i>m</i>) in the input token, then the first <i>n<i>
-elements in the vector will be sent, and the remaining tokens are
-discarded.  If <i>n</i> is greater than <i>m<i>, then the last
-<i>n-m</i> channels of the output port will never send tokens out.
-This class throws an exception if the input is not a column vector.
+   An actor that disassembles a DoubleMatrixToken to a multiport output.
+   <p>On each firing, read one column vector (i.e. a DoubleMatrixToken with
+   one column) from the <i>input</i> port and send out individual
+   DoubleTokens to each channel of the <i>output</i> port.  If the width
+   of the <i>output</i> port (say, <i>n</i>) is less than the number of
+   rows (say, <i>m</i>) in the input token, then the first <i>n<i>
+   elements in the vector will be sent, and the remaining tokens are
+   discarded.  If <i>n</i> is greater than <i>m<i>, then the last
+   <i>n-m</i> channels of the output port will never send tokens out.
+   This class throws an exception if the input is not a column vector.
 
-<p>For sequential domains like SDF, the combination of
-domains.sdf.lib.MatrixToDouble and a Distributor is equivalent to this
-actor.  However, that combination will not work in CT, so we need this
-actor.
+   <p>For sequential domains like SDF, the combination of
+   domains.sdf.lib.MatrixToDouble and a Distributor is equivalent to this
+   actor.  However, that combination will not work in CT, so we need this
+   actor.
 
-@author Jie Liu, Elaine Cheong
-@version $Id$
-@since Ptolemy II 2.0
-@see VectorAssembler
+   @author Jie Liu, Elaine Cheong
+   @version $Id$
+   @since Ptolemy II 2.0
+   @see VectorAssembler
 */
 public class VectorDisassembler extends Transformer {
 

@@ -1,28 +1,28 @@
 /* An event in the Ptolemy II DE domain.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Green (liuxj@eecs.berkeley.edu)
@@ -39,30 +39,30 @@ import ptolemy.kernel.util.NamedObj;
 //// DEEvent
 
 /**
-This class defines the structure of events in Ptolemy II DE domain.
-Conceptually, an event in the Ptolemy II DE domain contains
-a token and a tag.  In addition, the event has a destination,
-which is an actor and possibly a receiver (for non-pure events).
-A pure event has no destination receiver and no token, so methods
-for accessing those return null.
-The tag consists of a time stamp, a microstep, and a depth.
-The microstep represents the phase of execution
-when processing simultaneous events in directed loops, or when an
-actor schedules itself for firing later at the current time
-(using fireAt()).
-The depth is the index of the destination actor in a topological
-sort.  A larger value of depth represents a lower priority when
-processing events.
-<p>
-The time stamp, microstep, and depth are compared in that order by the
-compareTo() method from the Comparable interface.
-<p>
-@author Lukito Muliadi, Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
-@see DEReceiver
-@see ptolemy.actor.util.CalendarQueue
-@see DEDirector
+   This class defines the structure of events in Ptolemy II DE domain.
+   Conceptually, an event in the Ptolemy II DE domain contains
+   a token and a tag.  In addition, the event has a destination,
+   which is an actor and possibly a receiver (for non-pure events).
+   A pure event has no destination receiver and no token, so methods
+   for accessing those return null.
+   The tag consists of a time stamp, a microstep, and a depth.
+   The microstep represents the phase of execution
+   when processing simultaneous events in directed loops, or when an
+   actor schedules itself for firing later at the current time
+   (using fireAt()).
+   The depth is the index of the destination actor in a topological
+   sort.  A larger value of depth represents a lower priority when
+   processing events.
+   <p>
+   The time stamp, microstep, and depth are compared in that order by the
+   compareTo() method from the Comparable interface.
+   <p>
+   @author Lukito Muliadi, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see DEReceiver
+   @see ptolemy.actor.util.CalendarQueue
+   @see DEDirector
 */
 public final class DEEvent implements Comparable {
 

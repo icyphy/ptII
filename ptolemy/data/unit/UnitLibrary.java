@@ -1,28 +1,28 @@
 /* The Unit Library
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_3
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_3
+COPYRIGHTENDKEY
 @Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
 @Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
@@ -42,14 +42,14 @@ import java.util.Vector;
 //////////////////////////////////////////////////////////////////////////
 //// UnitLibrary
 /** A Library containing definitions of commonly used units.
-Currently, the Unit library is static in the sense that it is loaded when the
-system starts and is hard-wired to a particular Unit System (the System
-International Unit System). However, it should be easy to change the
-architecture so that multiple Unit Systems can be accommodated, and loaded
-on-the-fly.
-@author Rowland R Johnson
-@version $Id$
-@since Ptolemy II 4.0
+    Currently, the Unit library is static in the sense that it is loaded when the
+    system starts and is hard-wired to a particular Unit System (the System
+    International Unit System). However, it should be easy to change the
+    architecture so that multiple Unit Systems can be accommodated, and loaded
+    on-the-fly.
+    @author Rowland R Johnson
+    @version $Id$
+    @since Ptolemy II 4.0
 */
 public class UnitLibrary {
 
@@ -214,9 +214,9 @@ public class UnitLibrary {
             us = (UnitSystem) (container.getAttribute("SI"));
         } catch (Throwable throwable) {
             throw new InternalErrorException(
-                null,
-                throwable,
-                "Failed to initialize statics in UnitLibrary");
+                    null,
+                    throwable,
+                    "Failed to initialize statics in UnitLibrary");
         }
         // Initialize the Library.
         _unitsLibrary = new Vector();

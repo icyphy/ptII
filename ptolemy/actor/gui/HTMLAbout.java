@@ -1,28 +1,28 @@
 /* Utility methods to handle HTML Viewer about: calls
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -53,15 +53,15 @@ import javax.swing.event.HyperlinkEvent;
 //////////////////////////////////////////////////////////////////////////
 //// HTMLAbout
 /**
-This class contains static methods that are called
-by when HTMLViewer.hyperlinkUpdate() is invoked on a hyperlink
-that starts with <code>about:</code>.  This facility is primarily
-used for testing.
+   This class contains static methods that are called
+   by when HTMLViewer.hyperlinkUpdate() is invoked on a hyperlink
+   that starts with <code>about:</code>.  This facility is primarily
+   used for testing.
 
-@author Christopher Hylands
-@version $Id$
-@since Ptolemy II 3.0
-@see HTMLViewer#hyperlinkUpdate(HyperlinkEvent)
+   @author Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 3.0
+   @see HTMLViewer#hyperlinkUpdate(HyperlinkEvent)
 */
 public class HTMLAbout {
     // This class is separate from HTMLViewer because this class
@@ -178,12 +178,12 @@ public class HTMLAbout {
                     + " </ul>\n");
         }
 
-//             + "<li><a href=\"about:runAllDemos\"><code>about:runAllDemos</code></a>"
-//             + "Run all the demonstrations.\n"
-//             + "<li><a href=\"about:runAllDemos#ptolemy/configs/doc/demosPtiny.htm\">"
-//             + "<code>about:runAllDemosdemos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
-//             + "\nRun all the .xml files in\n"
-//             + "<code>ptolemy/configs/doc/completeDemosPtiny.htm</code>.\n"
+        //             + "<li><a href=\"about:runAllDemos\"><code>about:runAllDemos</code></a>"
+        //             + "Run all the demonstrations.\n"
+        //             + "<li><a href=\"about:runAllDemos#ptolemy/configs/doc/demosPtiny.htm\">"
+        //             + "<code>about:runAllDemosdemos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
+        //             + "\nRun all the .xml files in\n"
+        //             + "<code>ptolemy/configs/doc/completeDemosPtiny.htm</code>.\n"
 
         if (_configurationExists("visualsense")) {
             needCloser = true;
@@ -339,8 +339,8 @@ public class HTMLAbout {
     private static List  _getModelURLs(URL demosURL) throws IOException {
 
         BufferedReader in = new BufferedReader(
-                                new InputStreamReader(
-                                demosURL.openStream()));
+                new InputStreamReader(
+                        demosURL.openStream()));
 
         StringBuffer demosBuffer = new StringBuffer();
 

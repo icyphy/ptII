@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
 @AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
@@ -52,11 +52,11 @@ import javax.swing.SwingUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// EventButton
 /**
-Output a Token in response to a click of a button.
+   Output a Token in response to a click of a button.
 
-@author  Winthrop Williams, closely follows EventButton.java by Paul Whitaker
-@version $Id$
-@since Ptolemy II 2.0
+   @author  Winthrop Williams, closely follows EventButton.java by Paul Whitaker
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class EventButton extends Source implements Placeable {
 

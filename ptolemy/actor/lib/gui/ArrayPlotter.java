@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -48,32 +48,32 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayPlotter
 /**
-A plotter that plots a sequence of arrays of doubles.
-This plotter contains an instance of the Plot
-class from the Ptolemy plot package as a public member. Data at
-the input, which can consist of any number of channels, are plotted
-on this instance.  Each input channel is plotted as a separate data set.
-Each input token is an array of doubles.
-<p>
-The <i>iterationsPerUpdate</i> parameter can be used to fine tune
-the display.  It can be quite expensive to generate the display, and
-by default, this actor generates it on every firing.  If
-<i>iterationsPerUpdate</i> is set to some integer greater than
-one, then it specifies how many iterations should be executed
-between updates. Thus, if <i>iterationsPerUpdate</i> = 2, then every
-second time this actor fires, it will update the display. That is,
-it will update its display on the first firing, the third, the
-fifth, etc. It will, however, consume its inputs on every firing.
-The plot is always updated in the wrapup() method.
-<p>
-Note that this can be used to generate live plots, like SequenceScope,
-but it has fewer drawing artifacts than SequenceScope since it does
-not use XOR drawing mode.
+   A plotter that plots a sequence of arrays of doubles.
+   This plotter contains an instance of the Plot
+   class from the Ptolemy plot package as a public member. Data at
+   the input, which can consist of any number of channels, are plotted
+   on this instance.  Each input channel is plotted as a separate data set.
+   Each input token is an array of doubles.
+   <p>
+   The <i>iterationsPerUpdate</i> parameter can be used to fine tune
+   the display.  It can be quite expensive to generate the display, and
+   by default, this actor generates it on every firing.  If
+   <i>iterationsPerUpdate</i> is set to some integer greater than
+   one, then it specifies how many iterations should be executed
+   between updates. Thus, if <i>iterationsPerUpdate</i> = 2, then every
+   second time this actor fires, it will update the display. That is,
+   it will update its display on the first firing, the third, the
+   fifth, etc. It will, however, consume its inputs on every firing.
+   The plot is always updated in the wrapup() method.
+   <p>
+   Note that this can be used to generate live plots, like SequenceScope,
+   but it has fewer drawing artifacts than SequenceScope since it does
+   not use XOR drawing mode.
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 3.0
-@see SequenceScope
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 3.0
+   @see SequenceScope
 */
 public class ArrayPlotter extends Plotter implements SequenceActor {
 
@@ -196,7 +196,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
         }
         _iteration++;
         if (_iteration == ((IntToken)iterationsPerUpdate
-                .getToken()).intValue()) {
+                    .getToken()).intValue()) {
             _iteration = 0;
         }
         return super.postfire();
@@ -210,7 +210,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
     public void wrapup() throws IllegalActionException {
         if (_tokens != null) {
             for (int i = _tokens.length - 1; i >= 0; i--) {
-                    double xValue = _xInit;
+                double xValue = _xInit;
                 if (_tokens[i] != null) {
                     Token[] currentArray = _tokens[i].arrayValue();
                     // NOTE: We assume the superclass ensures this cast is safe.

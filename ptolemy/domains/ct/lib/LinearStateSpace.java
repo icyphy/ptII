@@ -1,28 +1,28 @@
 /* Linear state space model in the CT domain.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -52,37 +52,37 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// LinearStateSpace
 /**
-Linear state space model in the CT domain.
+   Linear state space model in the CT domain.
 
-<p>The State-Space model implements a system whose behavior is defined by:
-<pre>
-    dx/dt = Ax + Bu
-        y = Cx + Du
-     x(0) = x0
-</pre>
-where x is the state vector, u is the input vector, and y is the output
-vector. The matrix coefficients must have the following characteristics:
-<pre>
-A must be an n-by-n matrix, where n is the number of states.
-B must be an n-by-m matrix, where m is the number of inputs.
-C must be an r-by-n matrix, where r is the number of outputs.
-D must be an r-by-m matrix.
-</pre>
-The actor accepts <i>m</i> inputs and generates <i>r</i> outputs
-through a multi-input port and a multi-output port. The widths of the
-ports must match the number of rows and columns in corresponding
-matrices, otherwise, an exception will be thrown.
-<P>
-This actor works like a higher-order function. It is opaque after
-construction or the change of parameters. Upon preinitialization,
-the actor will create a subsystem using integrators, adders, and
-scales. After that, the actor becomes transparent, and the director
-takes over the control of the actors contained by this actor.
+   <p>The State-Space model implements a system whose behavior is defined by:
+   <pre>
+   dx/dt = Ax + Bu
+   y = Cx + Du
+   x(0) = x0
+   </pre>
+   where x is the state vector, u is the input vector, and y is the output
+   vector. The matrix coefficients must have the following characteristics:
+   <pre>
+   A must be an n-by-n matrix, where n is the number of states.
+   B must be an n-by-m matrix, where m is the number of inputs.
+   C must be an r-by-n matrix, where r is the number of outputs.
+   D must be an r-by-m matrix.
+   </pre>
+   The actor accepts <i>m</i> inputs and generates <i>r</i> outputs
+   through a multi-input port and a multi-output port. The widths of the
+   ports must match the number of rows and columns in corresponding
+   matrices, otherwise, an exception will be thrown.
+   <P>
+   This actor works like a higher-order function. It is opaque after
+   construction or the change of parameters. Upon preinitialization,
+   the actor will create a subsystem using integrators, adders, and
+   scales. After that, the actor becomes transparent, and the director
+   takes over the control of the actors contained by this actor.
 
-@author Jie Liu
-@version $Id$
-@since Ptolemy II 1.0
-@see ptolemy.domains.ct.kernel.CTBaseIntegrator
+   @author Jie Liu
+   @version $Id$
+   @since Ptolemy II 1.0
+   @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
 public class LinearStateSpace extends TypedCompositeActor {
 

@@ -1,28 +1,28 @@
 /* Graphics (GR) domain director with synchronous/reactive semantics
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating yellow (chf@eecs.berkeley.edu)
 @AcceptedRating yellow (vogel@eecs.berkeley.edu)
@@ -57,26 +57,26 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// GRDirector
 /**
-GR is a domain for displaying three-dimensional graphics in Ptolemy
-II.  GR is an untimed domain in where actors are connected in an
-acyclic directed graph.  Actors are fired according to a simple
-topological sort of the graph.  Nodes in the graph that have no
-descendants are assumed to be consumers of data produced by the rest
-of the model.
+   GR is a domain for displaying three-dimensional graphics in Ptolemy
+   II.  GR is an untimed domain in where actors are connected in an
+   acyclic directed graph.  Actors are fired according to a simple
+   topological sort of the graph.  Nodes in the graph that have no
+   descendants are assumed to be consumers of data produced by the rest
+   of the model.
 
-<p>The basic idea behind the GR domain is to arrange geometry and
-transform actors in a directed acyclic graph to represent the location
-and orientation of objects in a scene. This topology of connected GR
-actors form what is commonly called a scene graph in computer graphics
-literature.  The GR director converts the GR scene graph into a Java3D
-representation for rendering on the computer screen.
+   <p>The basic idea behind the GR domain is to arrange geometry and
+   transform actors in a directed acyclic graph to represent the location
+   and orientation of objects in a scene. This topology of connected GR
+   actors form what is commonly called a scene graph in computer graphics
+   literature.  The GR director converts the GR scene graph into a Java3D
+   representation for rendering on the computer screen.
 
-@see GRReceiver
-@see GRActor
+   @see GRReceiver
+   @see GRActor
 
-@author C. Fong, Steve Neuendorffer, Contributor: Christopher Hylands
-@version $Id$
-@since Ptolemy II 1.0
+   @author C. Fong, Steve Neuendorffer, Contributor: Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class GRDirector extends StaticSchedulingDirector {
 
@@ -208,12 +208,12 @@ public class GRDirector extends StaticSchedulingDirector {
             // will be called.
             if (_debugging) {
                 _debug(new FiringEvent(this, actor,
-                        FiringEvent.BEFORE_PREFIRE, 1));
+                               FiringEvent.BEFORE_PREFIRE, 1));
             }
             boolean flag = actor.prefire();
             if (_debugging) {
                 _debug(new FiringEvent(this, actor,
-                        FiringEvent.AFTER_PREFIRE, 1));
+                               FiringEvent.AFTER_PREFIRE, 1));
             }
             if (flag) {
                 if (actor instanceof CompositeActor) {
@@ -225,19 +225,19 @@ public class GRDirector extends StaticSchedulingDirector {
                 }
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                            FiringEvent.BEFORE_FIRE, 1));
+                                   FiringEvent.BEFORE_FIRE, 1));
                 }
                 actor.fire();
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                            FiringEvent.AFTER_FIRE, 1));
+                                   FiringEvent.AFTER_FIRE, 1));
                     _debug(new FiringEvent(this, actor,
-                            FiringEvent.BEFORE_POSTFIRE, 1));
+                                   FiringEvent.BEFORE_POSTFIRE, 1));
                 }
                 actor.postfire();
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                            FiringEvent.AFTER_POSTFIRE, 1));
+                                   FiringEvent.AFTER_POSTFIRE, 1));
                 }
                 // Make sure we reset the pseudotime flag.
                 _pseudoTimeEnabled = false;

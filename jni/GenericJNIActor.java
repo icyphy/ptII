@@ -1,31 +1,31 @@
 /** An actor able to call a C function
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
- @ProposedRating Red (vincent.arnould@thalesgroup.com)
- @AcceptedRating Red (vincent.arnould@thalesgroup.com)
+@ProposedRating Red (vincent.arnould@thalesgroup.com)
+@AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 
 package jni;
@@ -65,22 +65,22 @@ import java.util.Vector;
 //////////////////////////////////////////////////////////////////////////
 ///// JNIActor
 /**
-Use the Java Native Interface to execute a native method.
-To use this actor, first configure the arguments of the native method
-by right clicking on the actor and selecting 'Configure Arguments', then
-configure the library name and location, then create the JNI
-files.
+   Use the Java Native Interface to execute a native method.
+   To use this actor, first configure the arguments of the native method
+   by right clicking on the actor and selecting 'Configure Arguments', then
+   configure the library name and location, then create the JNI
+   files.
 
-<p>Note that under Windows, your path needs to include the directory
-named by the libraryDirectory Parameter.
+   <p>Note that under Windows, your path needs to include the directory
+   named by the libraryDirectory Parameter.
 
-For further details, see {@link JNIUtilities}.
+   For further details, see {@link JNIUtilities}.
 
 
-@author Vincent Arnould (vincent.arnould@thalesgroup.com), Contributor: Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.2
-@see JNIUtilities
+   @author Vincent Arnould (vincent.arnould@thalesgroup.com), Contributor: Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.2
+   @see JNIUtilities
 */
 public class GenericJNIActor extends TypedAtomicActor {
     /** Construct an entity in the default workspace with an empty string
@@ -344,18 +344,18 @@ public class GenericJNIActor extends TypedAtomicActor {
                     .getParameterTypes()[args.size()].toString();
                 if (typ.equals("boolean")) {
                     args.add(new Boolean((boolean)
-                            ((BooleanToken) tok).booleanValue()));
+                                     ((BooleanToken) tok).booleanValue()));
                 } else if (typ.equals("int")) {
                     args.add(new Integer((int)((IntToken) tok).intValue()));
                 } else if (typ.equals("double")) {
                     args.add(new Double((double)((DoubleToken) tok)
-                            .doubleValue()));
+                                     .doubleValue()));
                 } else if (typ.equals("class [I")) {
                     int siz = ((ArrayToken) tok).arrayValue().length;
                     int[] tab = new int[siz];
                     for (int j = 0; j < siz; j++) {
                         tab[j] = (int) ((IntToken) (((ArrayToken) tok)
-                                .arrayValue()[j]))
+                                                .arrayValue()[j]))
                             .intValue();
                     }
                     //(int[])((ArrayToken)tok).arrayValue();
@@ -463,16 +463,16 @@ public class GenericJNIActor extends TypedAtomicActor {
                 }
                 if (typ.equals("boolean")) {
                     port.send(0, (Token) new BooleanToken(((Boolean) ret)
-                            .booleanValue()));
+                                      .booleanValue()));
                 } else if (typ.equals("double")) {
                     port.send(0, (Token) new DoubleToken(((Double) ret)
-                            .doubleValue()));
+                                      .doubleValue()));
                 } else if (typ.equals("int")) {
                     port.send(0, (Token) new IntToken(((Integer) ret)
-                            .intValue()));
+                                      .intValue()));
                 } else if (typ.equals("char")) {
                     port.send(0, (Token) new UnsignedByteToken(((Byte) ret)
-                            .byteValue()));
+                                      .byteValue()));
                 } else {
                     System.out.println("The return type is not convertible "
                             + "with Ptolemy II types.");
@@ -533,7 +533,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                 } else if (typ.equals("char")) {
                     try {
                         port.send(0, (Token) new UnsignedByteToken((char)field
-                                .getChar(obj)));
+                                          .getChar(obj)));
                     } catch (IllegalAccessException ex) {
                         throw new IllegalActionException(this, ex,
                                 "Type '" + typ + "' is not castable");
@@ -556,7 +556,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                         for (int j = 0; j<((double[])field.get(obj)).length;
                              j++) {
                             toks[j] = new DoubleToken(((double[])field
-                                    .get(obj))[j]);
+                                                              .get(obj))[j]);
                         }
                         port.send(0, new ArrayToken(toks));
                     } catch (IllegalAccessException ex) {

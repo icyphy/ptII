@@ -1,28 +1,28 @@
 /* The edge controller for links.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
 @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -65,13 +65,13 @@ import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 //////////////////////////////////////////////////////////////////////////
 //// LinkController
 /**
-This class provides interaction techniques for edges that are to be connected
-between ports and relations.  Standard interaction techniques for an
-undirected edge are allowed.
+   This class provides interaction techniques for edges that are to be connected
+   between ports and relations.  Standard interaction techniques for an
+   undirected edge are allowed.
 
-@author Steve Neuendorffer, Contributor: Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
+   @author Steve Neuendorffer, Contributor: Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class LinkController extends BasicEdgeController {
 
@@ -108,7 +108,7 @@ public class LinkController extends BasicEdgeController {
         // Derived classes can add menu items to it.
         _menuFactory = new PtolemyMenuFactory(controller);
         _menuFactory.addMenuItemFactory(
-            new MenuActionFactory(_configureAction));
+                new MenuActionFactory(_configureAction));
         _menuCreator.setMenuFactory(_menuFactory);
 
         // Add a double click interactor.
@@ -139,7 +139,7 @@ public class LinkController extends BasicEdgeController {
 
     /** The configure action, which handles edit parameters requests. */
     protected static ConfigureAction _configureAction =
-        new ConfigureAction("Configure");
+    new ConfigureAction("Configure");
 
     /** The menu creator. */
     protected MenuCreator _menuCreator;
@@ -158,7 +158,7 @@ public class LinkController extends BasicEdgeController {
             if (object instanceof Vertex)
                 return super.acceptHead(c, f);
             if (object instanceof Locatable
-                && ((Locatable) object).getContainer() instanceof Port)
+                    && ((Locatable) object).getContainer() instanceof Port)
                 return super.acceptHead(c, f);
             return false;
         }
@@ -170,7 +170,7 @@ public class LinkController extends BasicEdgeController {
             if (object instanceof Vertex)
                 return super.acceptTail(c, f);
             if (object instanceof Locatable
-                && ((Locatable) object).getContainer() instanceof Port)
+                    && ((Locatable) object).getContainer() instanceof Port)
                 return super.acceptHead(c, f);
             return false;
         }
@@ -216,7 +216,7 @@ public class LinkController extends BasicEdgeController {
                     }
                     StringAttribute _explAttr =
                         (StringAttribute) (relation
-                            .getAttribute("_explanation"));
+                                .getAttribute("_explanation"));
                     if (_explAttr != null) {
                         c.setToolTipText(_explAttr.getExpression());
                     }
@@ -241,15 +241,15 @@ public class LinkController extends BasicEdgeController {
             ActorGraphModel model =
                 (ActorGraphModel) getController().getGraphModel();
             switch (evt.getEnd()) {
-                case ConnectorEvent.HEAD_END :
-                    model.getLinkModel().setHead(edge, node);
-                    break;
-                case ConnectorEvent.TAIL_END :
-                    model.getLinkModel().setTail(edge, node);
-                    break;
-                default :
-                    throw new IllegalStateException(
-                          "Cannot handle both ends of an edge being dragged.");
+            case ConnectorEvent.HEAD_END :
+                model.getLinkModel().setHead(edge, node);
+                break;
+            case ConnectorEvent.TAIL_END :
+                model.getLinkModel().setTail(edge, node);
+                break;
+            default :
+                throw new IllegalStateException(
+                        "Cannot handle both ends of an edge being dragged.");
             }
 
             // Set the width correctly, so we know whether or not it

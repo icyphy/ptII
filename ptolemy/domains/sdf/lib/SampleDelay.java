@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
@@ -44,19 +44,19 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// SampleDelay
 /**
-This actor outputs a set of initial tokens during the initialize()
-method, and subsequently passes the input tokens to the output.
-It is used to break dependency cycles in directed loops of SDF models.
-This actor declares an initial production parameter in its output port
-that is used by the SDF scheduler to properly schedule the model, and
-the initial outputs permit the computation to get started. The
-default value for the <i>initialOutputs</i> parameter causes a
-single integer token with value zero to be produced in
-initialize().
+   This actor outputs a set of initial tokens during the initialize()
+   method, and subsequently passes the input tokens to the output.
+   It is used to break dependency cycles in directed loops of SDF models.
+   This actor declares an initial production parameter in its output port
+   that is used by the SDF scheduler to properly schedule the model, and
+   the initial outputs permit the computation to get started. The
+   default value for the <i>initialOutputs</i> parameter causes a
+   single integer token with value zero to be produced in
+   initialize().
 
-@author Steve Neuendorffer, Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author Steve Neuendorffer, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 
 public class SampleDelay extends SDFTransformer {

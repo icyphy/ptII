@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -61,20 +61,20 @@ import javax.media.jai.TiledImage;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToJAI
 /**
-Converts a DoubleMatrix to a JAIImageToken.  This JAIImageToken is a
-single-banded grayscale image.  To assemble multiple band's into one
-image, use the BandCombine operator on each image and add them
-together.
+   Converts a DoubleMatrix to a JAIImageToken.  This JAIImageToken is a
+   single-banded grayscale image.  To assemble multiple band's into one
+   image, use the BandCombine operator on each image and add them
+   together.
 
-<p> If the data was previously normalized, then the data can be rescaled
-to whichever non-floating data type is chosen.
+   <p> If the data was previously normalized, then the data can be rescaled
+   to whichever non-floating data type is chosen.
 
-@see JAIBandCombine
-@see JAIDataConvert
-@see JAIToDoubleMatrix
-@author James Yeh
-@version $Id$
-@since Ptolemy II 3.1
+   @see JAIBandCombine
+   @see JAIDataConvert
+   @see JAIToDoubleMatrix
+   @author James Yeh
+   @version $Id$
+   @since Ptolemy II 3.1
 */
 public class DoubleMatrixToJAI extends Transformer {
 

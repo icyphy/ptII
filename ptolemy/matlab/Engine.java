@@ -1,31 +1,31 @@
 /* Matlab Engine Interface
 
- Copyright (c) 1998-2004 The Regents of the University of California and
- Research in Motion Limited.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California and
+Research in Motion Limited.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
- LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
- INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
- SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
- OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
- SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
- BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
- LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (zkemenczy@rim.net)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -52,119 +52,119 @@ import ptolemy.math.Complex;
 //////////////////////////////////////////////////////////////////////////
 //// Engine
 /**
-Provides a java API to the matlab environment. It uses an intermediary
-C++ language layer (ptmatlab) that converts between the java environment
-using the Java Native Interface and the matlab environment using the
-matlab engine API and associated mx-functions.<p>
+   Provides a java API to the matlab environment. It uses an intermediary
+   C++ language layer (ptmatlab) that converts between the java environment
+   using the Java Native Interface and the matlab environment using the
+   matlab engine API and associated mx-functions.<p>
 
-The intermediary layer is built as a DLL on Windows systems
-(ptmatlab.dll).  This shared library is placed into the $PTII/bin
-directory (that should be in the user's path) when this package is
-built. Ptmatlab depends on matlab's engine API shared libraries (libeng
-and libmx) that should also be installed in the user's path (usually the
-case when matlab is installed and matlab's bin directory is added to the
-path).<p>
+   The intermediary layer is built as a DLL on Windows systems
+   (ptmatlab.dll).  This shared library is placed into the $PTII/bin
+   directory (that should be in the user's path) when this package is
+   built. Ptmatlab depends on matlab's engine API shared libraries (libeng
+   and libmx) that should also be installed in the user's path (usually the
+   case when matlab is installed and matlab's bin directory is added to the
+   path).<p>
 
-The bulk of the work done by this class is the conversion between
- PtolemyII Tokens and matlab variables ("mxArrays").<p>
+   The bulk of the work done by this class is the conversion between
+   PtolemyII Tokens and matlab variables ("mxArrays").<p>
 
-{@link #get(long[] eng, String name)} and
-{@link ptolemy.matlab.Engine#get(long[], String,
-Engine.ConversionParameters)} convert a matlab engine mxArray
-(ma) variable to a Ptolemy II Token. Recursion is used if ma is a struct
-or cell. The type of the Token returned is determined according to
-the following table:
+   {@link #get(long[] eng, String name)} and
+   {@link ptolemy.matlab.Engine#get(long[], String,
+   Engine.ConversionParameters)} convert a matlab engine mxArray
+   (ma) variable to a Ptolemy II Token. Recursion is used if ma is a struct
+   or cell. The type of the Token returned is determined according to
+   the following table:
 
-<table border="1">
-<caption><em>Conversion from matlab to PtolemyII types (get())
-</em></caption>
-<tr><th>Matlab Type<th>PtolemyII Token
-<tr>
-<td>'double'
-<td>Double, if mxArray dimension is 1x1 and
-{@link Engine.ConversionParameters#getScalarMatrices} is true,
-DoubleMatrix otherwise.
-Complex, if mxArray is mxCOMPLEX, 1x1, and
-{@link Engine.ConversionParameters#getScalarMatrices} is true,
-ComplexMatrix otherwise.<br>
-<em>Note:</em>
-If {@link Engine.ConversionParameters#getIntMatrices} is true and
-all matrix double values can be cast to integers without loss of
-precision then an IntToken or IntTokenMatrix is returned.
-<tr>
-<td>'struct'
-<td>RecordToken, if mxArray dimension 1x1, ArrayToken of ArrayTokens
-of RecordTokens {{RecordToken,...}, {...}} ("two-dimensional" ArrayToken)
-otherwise.
-<tr>
-<td>'cell'
-<td>ArrayToken of whatever Tokens the cell elements resolve to through
-recursion of _convertMxArrayToToken(). In the special case of a cell
-array of doubles, an {int} is always returned if all cell double
-values can be losslessly converted to integers.
-Note that PtolemyII is more
-restrictive here in that it requires all array elements to be of the
-same type (not all matlab cell variables may be converted to PtolemyII
-ArrayTokens).
-<tr>
-<td>'char'
-<td>StringToken, if the mxArray is 1xn, ArrayToken of StringTokens
-otherwise.
-</table>
-<p>
-{@link #put(long[] eng, String name, Token t)} converts a PtolemyII
-Token to a matlab engine mxArray. Recursion is used if t is a
-RecordToken or ArrayToken. The type of mxArray created is determined
-according to the following table.
+   <table border="1">
+   <caption><em>Conversion from matlab to PtolemyII types (get())
+   </em></caption>
+   <tr><th>Matlab Type<th>PtolemyII Token
+   <tr>
+   <td>'double'
+   <td>Double, if mxArray dimension is 1x1 and
+   {@link Engine.ConversionParameters#getScalarMatrices} is true,
+   DoubleMatrix otherwise.
+   Complex, if mxArray is mxCOMPLEX, 1x1, and
+   {@link Engine.ConversionParameters#getScalarMatrices} is true,
+   ComplexMatrix otherwise.<br>
+   <em>Note:</em>
+   If {@link Engine.ConversionParameters#getIntMatrices} is true and
+   all matrix double values can be cast to integers without loss of
+   precision then an IntToken or IntTokenMatrix is returned.
+   <tr>
+   <td>'struct'
+   <td>RecordToken, if mxArray dimension 1x1, ArrayToken of ArrayTokens
+   of RecordTokens {{RecordToken,...}, {...}} ("two-dimensional" ArrayToken)
+   otherwise.
+   <tr>
+   <td>'cell'
+   <td>ArrayToken of whatever Tokens the cell elements resolve to through
+   recursion of _convertMxArrayToToken(). In the special case of a cell
+   array of doubles, an {int} is always returned if all cell double
+   values can be losslessly converted to integers.
+   Note that PtolemyII is more
+   restrictive here in that it requires all array elements to be of the
+   same type (not all matlab cell variables may be converted to PtolemyII
+   ArrayTokens).
+   <tr>
+   <td>'char'
+   <td>StringToken, if the mxArray is 1xn, ArrayToken of StringTokens
+   otherwise.
+   </table>
+   <p>
+   {@link #put(long[] eng, String name, Token t)} converts a PtolemyII
+   Token to a matlab engine mxArray. Recursion is used if t is a
+   RecordToken or ArrayToken. The type of mxArray created is determined
+   according to the following table.
 
-<table border="1">
-<caption><em>Conversion from PtolemyII to matlab types (put())
-</em></caption>
-<tr><th>PtolemyII Token<th>Matlab type
-<tr>
-<td>ArrayToken
-<td>'cell', 1xn, elements are determined by recursing this method
-on ArrayToken elements.
-<tr>
-<td>RecordToken
-<td>'struct', 1x1, fields are determined by recursing this method on
-RecordToken fields
-<tr>
-<td>StringToken
-<td>'char', 1xn
-<tr>
-<td>ComplexMatrixToken
-<td>'double', mxCOMPLEX, nxm
-<tr>
-<td>MatrixToken
-<td>'double', mxREAL, nxm
-<tr>
-<td>ComplexToken
-<td>'double', mxCOMPLEX, 1x1
-<tr>
-<td>ScalarToken
-<td>'double', mxREAL, 1x1
-</table>
-<p>
-Debug statements to stdout are enabled by calling {@link
-#setDebugging} with a byte parameter > 0. 1 enables basic tracing,
-2 includes traces from the dll as well.
+   <table border="1">
+   <caption><em>Conversion from PtolemyII to matlab types (put())
+   </em></caption>
+   <tr><th>PtolemyII Token<th>Matlab type
+   <tr>
+   <td>ArrayToken
+   <td>'cell', 1xn, elements are determined by recursing this method
+   on ArrayToken elements.
+   <tr>
+   <td>RecordToken
+   <td>'struct', 1x1, fields are determined by recursing this method on
+   RecordToken fields
+   <tr>
+   <td>StringToken
+   <td>'char', 1xn
+   <tr>
+   <td>ComplexMatrixToken
+   <td>'double', mxCOMPLEX, nxm
+   <tr>
+   <td>MatrixToken
+   <td>'double', mxREAL, nxm
+   <tr>
+   <td>ComplexToken
+   <td>'double', mxCOMPLEX, 1x1
+   <tr>
+   <td>ScalarToken
+   <td>'double', mxREAL, 1x1
+   </table>
+   <p>
+   Debug statements to stdout are enabled by calling {@link
+   #setDebugging} with a byte parameter > 0. 1 enables basic tracing,
+   2 includes traces from the dll as well.
 
-<p>{@link #evalString(long[] eng, String)} send a string to the matlab
-engine for evaluation.
+   <p>{@link #evalString(long[] eng, String)} send a string to the matlab
+   engine for evaluation.
 
-{@link #open} and {@link #close} are used to open / close the
-connection to the matlab engine.<p>
+   {@link #open} and {@link #close} are used to open / close the
+   connection to the matlab engine.<p>
 
-All callers share the same matlab engine and its workspace.
-Methods of Engine synchronize on the static {@link #semaphore} to
-prevent overlapping calls to the same method from different threads.
-Use Engine. {@link #semaphore} to synchronize across multiple method
-calls if needed.<p>
+   All callers share the same matlab engine and its workspace.
+   Methods of Engine synchronize on the static {@link #semaphore} to
+   prevent overlapping calls to the same method from different threads.
+   Use Engine. {@link #semaphore} to synchronize across multiple method
+   calls if needed.<p>
 
-@author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited.
-@version $Id$
-@since Ptolemy II 2.0
+   @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited.
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class Engine {
     /** Load the "ptmatlab" native interface. Use a classpath-relative

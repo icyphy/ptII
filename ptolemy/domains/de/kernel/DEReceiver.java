@@ -1,28 +1,28 @@
 /* Discrete Event (DE) domain receiver.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
@@ -46,29 +46,29 @@ import java.util.LinkedList;
 //// DEReceiver
 
 /** An implementation of the ptolemy.actor.Receiver interface for the
-DE domain.  Tokens that are put into this receiver logically have time
-stamps. If the time stamp is not explicitly given using the setDelay()
-method, then it is assumed to be the current time (which is maintained
-by the director).  The put() method sends the specified token to the
-director, which returns it to this receiver (via the protected method
-_triggerEvent()) when current time matches the time stamp of the
-token. The get() method returns only tokens that the director has so
-returned. Thus, when a token is put into the receiver using put(), it
-does not become immediately available to the get() method.
+    DE domain.  Tokens that are put into this receiver logically have time
+    stamps. If the time stamp is not explicitly given using the setDelay()
+    method, then it is assumed to be the current time (which is maintained
+    by the director).  The put() method sends the specified token to the
+    director, which returns it to this receiver (via the protected method
+    _triggerEvent()) when current time matches the time stamp of the
+    token. The get() method returns only tokens that the director has so
+    returned. Thus, when a token is put into the receiver using put(), it
+    does not become immediately available to the get() method.
 
-<p>By default, the time stamp of a token is the current time of the
-director when put() is called. To specify a time stamp in the future,
-call setDelay() prior to calling put(). This should be done in a
-synchronized manner, since there could be multiple thread running in
-this domain.
+    <p>By default, the time stamp of a token is the current time of the
+    director when put() is called. To specify a time stamp in the future,
+    call setDelay() prior to calling put(). This should be done in a
+    synchronized manner, since there could be multiple thread running in
+    this domain.
 
-<p>Before firing an actor, the director is expected to put at least one
-token into at least one of the receivers contained by the actor.
+    <p>Before firing an actor, the director is expected to put at least one
+    token into at least one of the receivers contained by the actor.
 
-@author Lukito Muliadi, Edward A. Lee, Jie Liu
-@version $Id$
-@since Ptolemy II 0.2
- */
+    @author Lukito Muliadi, Edward A. Lee, Jie Liu
+    @version $Id$
+    @since Ptolemy II 0.2
+*/
 public class DEReceiver extends AbstractReceiver {
 
     /** Construct an empty DEReceiver with no container.

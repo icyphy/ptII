@@ -26,8 +26,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating red (eal@eecs.berkeley.edu)
 @AcceptedRating red (cxh@eecs.berkeley.edu)
 */
@@ -50,34 +50,34 @@ import com.microstar.xml.XmlException;
 //// PlotMLFrame
 
 /**
-PlotMLFrame is a versatile two-dimensional data plotter that runs as
-part of an application, but in its own window. It can read files
-in the PlotML format and, for backward compatibility, the old Ptolemy
-plot file format.
-An application can also interact directly with the contained Plot
-object, which is visible as a public member, by invoking its methods.
-<p>
-An application that uses this class should set up the handling of
-window-closing events.  Presumably, the application will exit when
-all windows have been closed. This is done with code something like:
-<pre>
-    plotFrameInstance.addWindowListener(new WindowAdapter() {
-        public void windowClosing(WindowEvent e) {
-            // Handle the event
-        }
-    });
-</pre>
-<p>
-PlotMLFrame contains an instance of PlotBox. PlotBox is the base class for
-classes with drawing capability, e.g. Plot, LogicAnalyzer. If not
-specified in the constructor, the default is to contain a Plot object. This
-field is set once in the constructor and immutable afterwards.
+   PlotMLFrame is a versatile two-dimensional data plotter that runs as
+   part of an application, but in its own window. It can read files
+   in the PlotML format and, for backward compatibility, the old Ptolemy
+   plot file format.
+   An application can also interact directly with the contained Plot
+   object, which is visible as a public member, by invoking its methods.
+   <p>
+   An application that uses this class should set up the handling of
+   window-closing events.  Presumably, the application will exit when
+   all windows have been closed. This is done with code something like:
+   <pre>
+   plotFrameInstance.addWindowListener(new WindowAdapter() {
+   public void windowClosing(WindowEvent e) {
+   // Handle the event
+   }
+   });
+   </pre>
+   <p>
+   PlotMLFrame contains an instance of PlotBox. PlotBox is the base class for
+   classes with drawing capability, e.g. Plot, LogicAnalyzer. If not
+   specified in the constructor, the default is to contain a Plot object. This
+   field is set once in the constructor and immutable afterwards.
 
-@see Plot
-@see PlotBox
-@author Christopher Hylands and Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
+   @see Plot
+   @see PlotBox
+   @author Christopher Hylands and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
 */
 public class PlotMLFrame extends PlotFrame {
 

@@ -50,32 +50,32 @@ import ptolemy.kernel.util.Settable;
 //////////////////////////////////////////////////////////////////////////
 //// ComputeHistogram
 /**
-Compute a histogram.
-<p>
-The output array consists of a set of vertical bars, each representing
-a histogram bin.  The height of the bar is the count of the number
-of inputs that have been observed that fall within that bin.
-The <i>n</i>-th bin represents values in the range
-(<i>x</i> - <i>w</i>/2 + <i>o</i>, <i>x</i> + <i>w</i>/2 + <i>o</i>),
-where <i>w</i> is the value of the <i>binWidth</i> parameter,
-and <i>o</i> is the value of the <i>binOffset</i> parameter.
-So for example, if <i>o = w/2</i>,
-then each bin represents values from <i>nw</i> to
-(<i>n</i> + 1)<i>w</i> for some integer <i>n</i>.
-The default offset is 0.5, half the default bin width, which is 1.0.
-<p>
-This actor has a <i>legend</i> parameter,
-which gives a comma-separated list of labels to attach to
-each dataset.  Normally, the number of elements in this list
-should equal the number of input channels, although this
-is not enforced.
+   Compute a histogram.
+   <p>
+   The output array consists of a set of vertical bars, each representing
+   a histogram bin.  The height of the bar is the count of the number
+   of inputs that have been observed that fall within that bin.
+   The <i>n</i>-th bin represents values in the range
+   (<i>x</i> - <i>w</i>/2 + <i>o</i>, <i>x</i> + <i>w</i>/2 + <i>o</i>),
+   where <i>w</i> is the value of the <i>binWidth</i> parameter,
+   and <i>o</i> is the value of the <i>binOffset</i> parameter.
+   So for example, if <i>o = w/2</i>,
+   then each bin represents values from <i>nw</i> to
+   (<i>n</i> + 1)<i>w</i> for some integer <i>n</i>.
+   The default offset is 0.5, half the default bin width, which is 1.0.
+   <p>
+   This actor has a <i>legend</i> parameter,
+   which gives a comma-separated list of labels to attach to
+   each dataset.  Normally, the number of elements in this list
+   should equal the number of input channels, although this
+   is not enforced.
 
-@see ptolemy.plot.Histogram
+   @see ptolemy.plot.Histogram
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 4.0
- */
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
+*/
 public class ComputeHistogram extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
@@ -113,7 +113,7 @@ public class ComputeHistogram extends TypedAtomicActor {
         inputCount.setTypeEquals(BaseType.INT);
 
         input_tokenConsumptionRate =
-                new Parameter(input, "tokenConsumptionRate");
+            new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("inputCount");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);

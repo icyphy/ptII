@@ -1,28 +1,28 @@
 /* A top-level dialog window for editing Unit constraints.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @Pt.ProposedRating Yellow (rowland@eecs.berkeley.edu)
 @Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
@@ -76,9 +76,9 @@ import diva.graph.JGraph;
 //////////////////////////////////////////////////////////////////////////
 //// UnitSolverDialog
 /**
-@author Rowland R Johnson
-@version $Id$
-@since Ptolemy II 4.0
+   @author Rowland R Johnson
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class UnitSolverDialog
     extends PtolemyDialog
@@ -92,21 +92,21 @@ public class UnitSolverDialog
      * @param configuration The configuration to use to open the help screen.
      */
     public UnitSolverDialog(
-        DialogTableau dialogTableau,
-        Frame owner,
-        Entity target,
-        Configuration configuration) {
+            DialogTableau dialogTableau,
+            Frame owner,
+            Entity target,
+            Configuration configuration) {
         super(
-            "Solve units for " + target.getName(),
-            dialogTableau,
-            owner,
-            target,
-            configuration);
+                "Solve units for " + target.getName(),
+                dialogTableau,
+                owner,
+                target,
+                configuration);
         _tableau = ((TableauFrame) owner).getTableau();
 
         _model =
             ((TypedCompositeActor) (((PtolemyEffigy) (_tableau.getContainer()))
-                .getModel()));
+                    .getModel()));
         BasicGraphFrame parent = (BasicGraphFrame) (_tableau.getFrame());
         JGraph jGraph = parent.getJGraph();
         GraphPane graphPane = jGraph.getGraphPane();
@@ -132,11 +132,11 @@ public class UnitSolverDialog
 
         JPanel fullSolverPanel = new JPanel();
         fullSolverPanel.setLayout(
-            new BoxLayout(fullSolverPanel, BoxLayout.Y_AXIS));
+                new BoxLayout(fullSolverPanel, BoxLayout.Y_AXIS));
         fullSolverPanel.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Full Solver"),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createTitledBorder("Full Solver"),
+                        BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         _runFullSolverButton.addActionListener(this);
         fullSolverPanel.add(_runFullSolverButton);
         _fullSolutionResult.setOpaque(true);
@@ -146,9 +146,9 @@ public class UnitSolverDialog
         JPanel membersPanel = new JPanel();
         membersPanel.setLayout(new BoxLayout(membersPanel, BoxLayout.Y_AXIS));
         membersPanel.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Members"),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createTitledBorder("Members"),
+                        BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         _setToSelected.setEnabled(false);
         membersPanel.add(_setToSelected);
         _setToSelected.addActionListener(this);
@@ -162,9 +162,9 @@ public class UnitSolverDialog
 
         JPanel minimalSpanPanel = new JPanel(new BorderLayout());
         minimalSpanPanel.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Minimal Spanning Solver"),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createTitledBorder("Minimal Spanning Solver"),
+                        BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         minimalSpanPanel.add(_runMinimalSpanSolverButton, BorderLayout.NORTH);
         _runMinimalSpanSolverButton.addActionListener(this);
         _solutionsListModel = new SolutionListModel();
@@ -242,7 +242,7 @@ public class UnitSolverDialog
                 String portDeletes = _deletesIfNecessary(port);
                 if (portDeletes != null) {
                     moml.append(
-                        "<port name=\""
+                            "<port name=\""
                             + port.getName()
                             + "\">"
                             + portDeletes
@@ -258,7 +258,7 @@ public class UnitSolverDialog
             String relationDeletes = _deletesIfNecessary(relation);
             if (relationDeletes != null) {
                 moml.append(
-                    "<relation name=\""
+                        "<relation name=\""
                         + relation.getName()
                         + "\">"
                         + relationDeletes
@@ -338,7 +338,7 @@ public class UnitSolverDialog
     protected URL _getHelpURL() {
         URL helpURL =
             getClass().getClassLoader().getResource(
-                "ptolemy/actor/gui/doc/unitConstraintsSolver.htm");
+                    "ptolemy/actor/gui/doc/unitConstraintsSolver.htm");
         return helpURL;
     }
 
@@ -355,7 +355,7 @@ public class UnitSolverDialog
         if (color != null && explanation != null) {
             retv =
                 "<deleteProperty name=\"_color\"/>"
-                    + "<deleteProperty name=\"_explanation\"/>";
+                + "<deleteProperty name=\"_explanation\"/>";
         } else if (color != null && explanation == null) {
         } else if (color == null && explanation != null) {
         }
@@ -401,7 +401,7 @@ public class UnitSolverDialog
                     NamedObj actual =
                         (NamedObj) _graphModel.getSemanticObject(userObject);
                     if ((actual instanceof Relation)
-                        && (!relations.contains(actual))) {
+                            && (!relations.contains(actual))) {
                         relations.add(actual);
                     }
                 }
@@ -428,8 +428,8 @@ public class UnitSolverDialog
     }
 
     /**
-    *
-    */
+     *
+     */
     private void _showMembers() {
         _selectionModel.clearSelection();
         Iterator nodes = _graphModel.nodes(_model);

@@ -26,8 +26,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating red (eal@eecs.berkeley.edu)
 @AcceptedRating red (cxh@eecs.berkeley.edu)
 */
@@ -47,14 +47,14 @@ import com.microstar.xml.XmlException;
 //// PlotMLApplet
 
 /**
-An Applet that can plot data in PlotML format from a URL.
-The URL should be specified using the dataurl applet parameter.
+   An Applet that can plot data in PlotML format from a URL.
+   The URL should be specified using the dataurl applet parameter.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
-@see ptolemy.plot.PlotBox
-@see ptolemy.plot.Plot
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
+   @see ptolemy.plot.PlotBox
+   @see ptolemy.plot.Plot
 */
 public class PlotMLApplet extends PlotApplet {
 

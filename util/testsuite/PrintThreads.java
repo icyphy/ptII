@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
@@ -48,17 +48,17 @@ import javax.swing.SwingUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// PrintThreads
 /** PrintThreads prints all the Threads in the current JVM.
- This class will work in both applications and applets.
- When run in an applet, this class attempts to gracefully handle
- the various security restrictions concerning getting the parent
- of a ThreadGroup.
- The output includes the number of threads and whether the current thread
- is the Swing Event Dispatch Thread.
+    This class will work in both applications and applets.
+    When run in an applet, this class attempts to gracefully handle
+    the various security restrictions concerning getting the parent
+    of a ThreadGroup.
+    The output includes the number of threads and whether the current thread
+    is the Swing Event Dispatch Thread.
 
- @author Christopher Hylands, based on code from Fusion Systems Group
- @version $Id$
- @since Ptolemy II 1.0
- */
+    @author Christopher Hylands, based on code from Fusion Systems Group
+    @version $Id$
+    @since Ptolemy II 1.0
+*/
 public class PrintThreads {
 
     ///////////////////////////////////////////////////////////////////

@@ -1,26 +1,26 @@
 /*
-Copyright (c) 2003-2004 THALES.
-All rights reserved.
+  Copyright (c) 2003-2004 THALES.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the
+  above copyright notice and the following two paragraphs appear in all
+  copies of this software.
 
-IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
-OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+  SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+  OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+  THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+  BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+  UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Yellow (jerome.blanc@thalesgroup.com)
-@AcceptedRating
+  @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+  @AcceptedRating
 */
 package thales.actor.gui;
 
@@ -55,13 +55,13 @@ import thales.vergil.navigable.NavigationTreeModel;
 //////////////////////////////////////////////////////////////////////////
 //// NavigableEffigy
 /**
-An effigy for navigable models.
+   An effigy for navigable models.
 
 
-@author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
-@version $Id$
-@since Ptolemy II 3.1
- */
+   @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
+   @version $Id$
+   @since Ptolemy II 3.1
+*/
 public class NavigableEffigy extends PtolemyEffigy {
 
     private NavigationTreeModel _navigModel = null;
@@ -199,14 +199,14 @@ public class NavigableEffigy extends PtolemyEffigy {
                 URL input)
                 throws Exception {
             if (input == null) {
-                                // Create a blank effigy.
-                                // Use the strategy pattern so derived classes can
-                                // override this.
+                // Create a blank effigy.
+                // Use the strategy pattern so derived classes can
+                // override this.
                 PtolemyEffigy effigy =
                     _newEffigy(container, container.uniqueName("effigy"));
 
-                                // If this factory contains an entity called "blank", then
-                                // clone that.
+                // If this factory contains an entity called "blank", then
+                // clone that.
                 NamedObj entity = getEntity("blank");
                 NamedObj newModel;
                 if (entity != null) {
@@ -215,11 +215,11 @@ public class NavigableEffigy extends PtolemyEffigy {
                     newModel = new TypedCompositeActor(new Workspace());
                 }
 
-                                // The model should have a parser associated with it
-                                // so that undo works.
+                // The model should have a parser associated with it
+                // so that undo works.
 
-                                // Checking to see if there already is a _parser attribute
-                                // might be overkill, but it is safer.
+                // Checking to see if there already is a _parser attribute
+                // might be overkill, but it is safer.
                 ParserAttribute parserAttribute =
                     (ParserAttribute) newModel.getAttribute(
                             "_parser",
@@ -237,19 +237,19 @@ public class NavigableEffigy extends PtolemyEffigy {
                     parserAttribute.setParser(parser);
                 }
 
-                                // The name might be "blank" which is confusing.
-                                // Set it to an empty string.  On Save As, this will
-                                // be changed to match the file name.
+                // The name might be "blank" which is confusing.
+                // Set it to an empty string.  On Save As, this will
+                // be changed to match the file name.
                 newModel.setName("");
                 effigy.setModel(newModel);
 
-                                // THALES MODIF
+                // THALES MODIF
                 new Attribute(newModel, "_navigable");
                 if (!modelIsValid(newModel)) {
                     effigy.setContainer(null);
                     effigy = null;
                 }
-                                //END THALES MODIF
+                //END THALES MODIF
 
                 return effigy;
             } else {
@@ -258,7 +258,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                     return null;
                 }
 
-                                // THALES MODIF
+                // THALES MODIF
                 if (checkFile(input)) {
 
                     // Create a blank effigy.
@@ -445,7 +445,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                         }
                     }
                 }
-                                //END THALES MODIF
+                //END THALES MODIF
                 return null;
             }
         }

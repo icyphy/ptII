@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -36,12 +36,12 @@ import ptolemy.plot.HistogramApplet;
 //////////////////////////////////////////////////////////////////////////
 //// HistogramDemo
 /**
-A Histogram demo.  Data can be given in ASCII format at a URL.
-If none is given, then a sample histogram is generated.
+   A Histogram demo.  Data can be given in ASCII format at a URL.
+   If none is given, then a sample histogram is generated.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
 */
 public class HistogramDemo extends HistogramApplet {
 

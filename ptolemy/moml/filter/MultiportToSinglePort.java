@@ -1,28 +1,28 @@
 /* Filter to convert specific multiports of an actor to a single port.
 
- Copyright (c) 2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -40,37 +40,37 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// MultiportToSinglePort
 /** A filter to convert specific multiports of specific
-actors to a single ports.
+    actors to a single ports.
 
-<p>When this class is registered with the MoMLParser.setMoMLFilter()
-method, it will cause will cause MoMLParser to filter so that models from
-earlier releases will run in the current release.
+    <p>When this class is registered with the MoMLParser.setMoMLFilter()
+    method, it will cause will cause MoMLParser to filter so that models from
+    earlier releases will run in the current release.
 
-<p>The Autocorrelation actor changed between PtolemyII 2.x and 3.x
-such that the output port is no longer a multiport.
+    <p>The Autocorrelation actor changed between PtolemyII 2.x and 3.x
+    such that the output port is no longer a multiport.
 
-<pre>
-        // Autocorrelation
-        _actorsWithMultiPortToSinglePortChanges
-            .put("ptolemy.actor.lib.Autocorrelation, "output")
+    <pre>
+    // Autocorrelation
+    _actorsWithMultiPortToSinglePortChanges
+    .put("ptolemy.actor.lib.Autocorrelation, "output")
 
-</pre>
+    </pre>
 
-<p>The _actorsWithMultiPortToSinglePortChanges HashMap contains Strings
-that name classes such as Autocorrelation that have multiports that should
-be single ports.  The HashMap maps classnames to port names.
+    <p>The _actorsWithMultiPortToSinglePortChanges HashMap contains Strings
+    that name classes such as Autocorrelation that have multiports that should
+    be single ports.  The HashMap maps classnames to port names.
 
 
-<p> Conceptually, how the code works is that when we see a class while
-parsing, we check to see if the class is in
-_actorsWithMultiPortToSinglePortChanges.
+    <p> Conceptually, how the code works is that when we see a class while
+    parsing, we check to see if the class is in
+    _actorsWithMultiPortToSinglePortChanges.
 
-If the class was present in the HashMap, then as we go through the
-code, we look for the named port and remove the multiport declaration
+    If the class was present in the HashMap, then as we go through the
+    code, we look for the named port and remove the multiport declaration
 
-@author Christopher Hylands Brooks, Contributor: Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+    @author Christopher Hylands Brooks, Contributor: Edward A. Lee
+    @version $Id$
+    @since Ptolemy II 4.0
 */
 public class MultiportToSinglePort implements MoMLFilter {
 
@@ -141,21 +141,21 @@ public class MultiportToSinglePort implements MoMLFilter {
                 _portName =
                     (String) _actorsWithMultiPortToSinglePortChanges
                     .get(attributeValue);
-//             } else if (_currentlyProcessingActorWithPropertyClassChanges
-//                     && _foundChange) {
+                //             } else if (_currentlyProcessingActorWithPropertyClassChanges
+                //                     && _foundChange) {
 
-//                 // We found a property class to change, and now we
-//                 // found the class itself that needs changing.
+                //                 // We found a property class to change, and now we
+                //                 // found the class itself that needs changing.
 
-//                 // Only return the new class once, but we might
-//                 // have other properties that need changing
-//                 //_currentlyProcessingActorWithPropertyClassChanges = false;
+                //                 // Only return the new class once, but we might
+                //                 // have other properties that need changing
+                //                 //_currentlyProcessingActorWithPropertyClassChanges = false;
 
-//                 if (!attributeValue.equals(_newClass)) {
-//                     MoMLParser.setModified(true);
-//                 }
-//                 _foundChange = false;
-//                 return attributeValue;
+                //                 if (!attributeValue.equals(_newClass)) {
+                //                     MoMLParser.setModified(true);
+                //                 }
+                //                 _foundChange = false;
+                //                 return attributeValue;
             } else if (  _currentlyProcessingActorWithPropertyClassChanges
                     && container != null
                     && !container.getFullName()

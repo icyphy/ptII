@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
@@ -50,29 +50,29 @@ import ptolemy.util.MessageHandler;
 //////////////////////////////////////////////////////////////////////////
 //// LineWriter
 /**
-This actor reads string-valued input tokens and writes them,
-one line at a time, to a specified file.  It does not
-include any enclosing quotation marks in the output.
-If you need the enclosing quotation marks, use ExpressionWriter.
-<p>
-The file is specified by the <i>fileName</i> attribute
-using any form acceptable to FileParameter.
-<p>
-If the <i>append</i> attribute has value <i>true</i>,
-then the file will be appended to. If it has value <i>false</i>,
-then if the file exists, the user will be queried for permission
-to overwrite, and if granted, the file will be overwritten.
-<p>
-If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
-then this actor will overwrite the specified file if it exists
-without asking.  If <i>true</i> (the default), then if the file
-exists, then this actor will ask for confirmation before overwriting.
+   This actor reads string-valued input tokens and writes them,
+   one line at a time, to a specified file.  It does not
+   include any enclosing quotation marks in the output.
+   If you need the enclosing quotation marks, use ExpressionWriter.
+   <p>
+   The file is specified by the <i>fileName</i> attribute
+   using any form acceptable to FileParameter.
+   <p>
+   If the <i>append</i> attribute has value <i>true</i>,
+   then the file will be appended to. If it has value <i>false</i>,
+   then if the file exists, the user will be queried for permission
+   to overwrite, and if granted, the file will be overwritten.
+   <p>
+   If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
+   then this actor will overwrite the specified file if it exists
+   without asking.  If <i>true</i> (the default), then if the file
+   exists, then this actor will ask for confirmation before overwriting.
 
-@see FileParameter
-@see ExpressionWriter
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.2
+   @see FileParameter
+   @see ExpressionWriter
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.2
 */
 public class LineWriter extends Sink {
 
@@ -200,7 +200,7 @@ public class LineWriter extends Sink {
                     // FIXME: This should be called in the event thread!
                     // There is a chance of deadlock since it is not.
                     if (!MessageHandler.yesNoQuestion(
-                            "OK to overwrite " + file + "?")) {
+                                "OK to overwrite " + file + "?")) {
                         throw new IllegalActionException(this,
                                 "Please select another file name.");
                     }

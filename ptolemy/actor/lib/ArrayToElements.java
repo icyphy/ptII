@@ -1,28 +1,28 @@
 /* An actor that disassemble an ArrayToken to a multiport output.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (zhouye@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -45,23 +45,23 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToElements
 /**
-An actor that disassembles an ArrayToken to a multiport output.
-<p>On each firing, this actor reads an ArrayToken frome the input
-port and send out each element token to each channel of the output
-port. If the width of the output port (say, <i>n</i>) is less than
-the number of elements in the array (say <i>m</i>), then the first
-<i>n</i> elements in the array will be sent, and the remaining
-tokens are discarded. If <i>n</i> is greater than <i>m</i>, then
-the last <i>n-m</i> channels of the output port will never send
-tokens out.
-<p>
-This actor is polymorphic. It can accept ArrayTokens with any element
-type and send out tokens corresponding to that type.
-<p>
+   An actor that disassembles an ArrayToken to a multiport output.
+   <p>On each firing, this actor reads an ArrayToken frome the input
+   port and send out each element token to each channel of the output
+   port. If the width of the output port (say, <i>n</i>) is less than
+   the number of elements in the array (say <i>m</i>), then the first
+   <i>n</i> elements in the array will be sent, and the remaining
+   tokens are discarded. If <i>n</i> is greater than <i>m</i>, then
+   the last <i>n-m</i> channels of the output port will never send
+   tokens out.
+   <p>
+   This actor is polymorphic. It can accept ArrayTokens with any element
+   type and send out tokens corresponding to that type.
+   <p>
 
-@author Rachel Zhou
-@version $Id$
-@since Ptolemy II 4.0
+   @author Rachel Zhou
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 
 public class ArrayToElements extends Transformer {
@@ -87,9 +87,9 @@ public class ArrayToElements extends Transformer {
 
         // Set the icon.
         _attachText("_iconDescription", "<svg>\n" +
-            "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-            + "style=\"fill:white\"/>\n" +
-            "</svg>\n");
+                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                + "style=\"fill:white\"/>\n" +
+                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

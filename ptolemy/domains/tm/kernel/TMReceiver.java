@@ -1,28 +1,28 @@
 /* TM domain Receiver.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (janneck@eecs.berkeley.edu)
@@ -48,32 +48,32 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// TMReceiver
 /**
-The receiver for the TM domain. This receiver contains a FIFO queue.
-Upon receiving a token, it creates a TMEvent. The properties of the
-TM events are:
-<ul>
-<li> The destination receiver is this receiver.
-<li> The destination actor is the container's container of this receiver.
-<li> The token is the received token.
-<li> The priority is the value of the parameter with name <i>priority</i>
-of the container of this receiver. If the container does not has a
-parameter with that name, then look at the actor. If none of them
-has the parameter, then use the default priority value, which is
-java.Thread.NORMAL_PRIORITY.
-<li> The flag <i>hasStarted</i> is false.
-<li> The processing time is obtained from the container or the container's
-container of this receiver, similar to the way obtaining the priority
-value. If none of them has the parameter, then use the default value 0.
-<ul>
-The event is then queued with the director, so it is not immediately
-available by the get() method. Later, the director may make the
-token available again by calling the _triggerEvent() method.
-See the TMDirector class for the event dispatching mechanism.
+   The receiver for the TM domain. This receiver contains a FIFO queue.
+   Upon receiving a token, it creates a TMEvent. The properties of the
+   TM events are:
+   <ul>
+   <li> The destination receiver is this receiver.
+   <li> The destination actor is the container's container of this receiver.
+   <li> The token is the received token.
+   <li> The priority is the value of the parameter with name <i>priority</i>
+   of the container of this receiver. If the container does not has a
+   parameter with that name, then look at the actor. If none of them
+   has the parameter, then use the default priority value, which is
+   java.Thread.NORMAL_PRIORITY.
+   <li> The flag <i>hasStarted</i> is false.
+   <li> The processing time is obtained from the container or the container's
+   container of this receiver, similar to the way obtaining the priority
+   value. If none of them has the parameter, then use the default value 0.
+   <ul>
+   The event is then queued with the director, so it is not immediately
+   available by the get() method. Later, the director may make the
+   token available again by calling the _triggerEvent() method.
+   See the TMDirector class for the event dispatching mechanism.
 
-@author Edward A. Lee, Jie Liu
-@version $Id$
-@since Ptolemy II 2.0
-@see ptolemy.domains.tm.kernel.TMDirector
+   @author Edward A. Lee, Jie Liu
+   @version $Id$
+   @since Ptolemy II 2.0
+   @see ptolemy.domains.tm.kernel.TMDirector
 */
 public class TMReceiver extends AbstractReceiver {
 
@@ -92,10 +92,10 @@ public class TMReceiver extends AbstractReceiver {
     ////                         public methods                    ////
 
     /** Clear this receiver of any contained tokens.
-      */
-     public void clear() {
-         _tokens.clear();
-     }
+     */
+    public void clear() {
+        _tokens.clear();
+    }
 
     /** Get a token from the receiver.  The token returned is one that
      *  was put in the receiver that is ready for process.
@@ -245,7 +245,7 @@ public class TMReceiver extends AbstractReceiver {
                 }
             }
             getDirector()._enqueueEvent(new TMEvent(this, token,
-                    priorityValue, -1.0));
+                                                priorityValue, -1.0));
 
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex, null);

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -60,20 +60,20 @@ import com.sun.media.jai.codec.PNGEncodeParam;
 //////////////////////////////////////////////////////////////////////////
 //// JAIPNGWriter
 /**
-Write a javax.media.jai.RenderedOp to a specified PNG file.
+   Write a javax.media.jai.RenderedOp to a specified PNG file.
 
-<p>The file is specified by the <i>fileName</i> attribute
-using any form acceptable to FileAttribute.
+   <p>The file is specified by the <i>fileName</i> attribute
+   using any form acceptable to FileAttribute.
 
-<p>If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
-then this actor will overwrite the specified file if it exists without
-asking.  If <i>true</i> (the default), then if the file exists, then
-this actor will ask for confirmation before overwriting.
+   <p>If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
+   then this actor will overwrite the specified file if it exists without
+   asking.  If <i>true</i> (the default), then if the file exists, then
+   this actor will ask for confirmation before overwriting.
 
-@see ptolemy.kernel.attributes.FileAttribute
-@author James Yeh, Christopher Hylands Brooks
-@version $Id$
-@since Ptolemy II 4.0
+   @see ptolemy.kernel.attributes.FileAttribute
+   @author James Yeh, Christopher Hylands Brooks
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 
 public class JAIPNGWriter extends JAIWriter {

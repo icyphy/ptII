@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -54,27 +54,27 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIBorder
 /**
-Adds a border to an image.  The amount to pad must be specified for all
-four sides.  There are five different borders to choose from.
-<p>
-Constant - A constant border adds constant values to the sides of the
-image.  The user may specify either one constant to be applied to all
-bands, or one constant for each band.
-<p>
-Copy - This border copys the edges of the original image, and uses it
-to fill in the border values.
-<p>
-Reflect - This border reflects the edge of the image, and keeps
-flipping until it reaches the edge of the new image.
-<p>
-Wrap - This border periodically repeats the image and clamps the size
-to only include what is specified.
-<p>
-Zero - This border fills in the borders with zeros in each band.
+   Adds a border to an image.  The amount to pad must be specified for all
+   four sides.  There are five different borders to choose from.
+   <p>
+   Constant - A constant border adds constant values to the sides of the
+   image.  The user may specify either one constant to be applied to all
+   bands, or one constant for each band.
+   <p>
+   Copy - This border copys the edges of the original image, and uses it
+   to fill in the border values.
+   <p>
+   Reflect - This border reflects the edge of the image, and keeps
+   flipping until it reaches the edge of the new image.
+   <p>
+   Wrap - This border periodically repeats the image and clamps the size
+   to only include what is specified.
+   <p>
+   Zero - This border fills in the borders with zeros in each band.
 
-@author James Yeh
-@version $Id$
-@since Ptolemy II 3.0
+   @author James Yeh
+   @version $Id$
+   @since Ptolemy II 3.0
 */
 
 public class JAIBorder extends Transformer {
@@ -201,19 +201,19 @@ public class JAIBorder extends Transformer {
             break;
         case _BORDER_COPY:
             parameters.add(BorderExtender.createInstance(
-                    BorderExtender.BORDER_COPY));
+                                   BorderExtender.BORDER_COPY));
             break;
         case _BORDER_REFLECT:
             parameters.add(BorderExtender.createInstance(
-                    BorderExtender.BORDER_REFLECT));
+                                   BorderExtender.BORDER_REFLECT));
             break;
         case _BORDER_WRAP:
             parameters.add(BorderExtender.createInstance(
-                    BorderExtender.BORDER_WRAP));
+                                   BorderExtender.BORDER_WRAP));
             break;
         case _BORDER_ZERO:
             parameters.add(BorderExtender.createInstance(
-                    BorderExtender.BORDER_ZERO));
+                                   BorderExtender.BORDER_ZERO));
             break;
         default:
             throw new IllegalActionException("Could not assign border");

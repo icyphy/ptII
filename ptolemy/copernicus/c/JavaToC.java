@@ -25,8 +25,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (ssb@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
@@ -42,14 +42,14 @@ import java.io.IOException;
 //////////////////////////////////////////////////////////////////////////
 //// JavaToC
 /** An application that converts a Java class (from a class file) into  C
-   source files (a .h file and a .c file) that implement the class.
-   The C conversion capability is highly experimental and rudimentary
-   at this point, with only a limited set of Java language features
-   supported. We are actively extending the set of supported features.
+    source files (a .h file and a .c file) that implement the class.
+    The C conversion capability is highly experimental and rudimentary
+    at this point, with only a limited set of Java language features
+    supported. We are actively extending the set of supported features.
 
-   @author Shuvra S. Bhattacharyya, Ankush Varma
-   @version $Id$
-   @since Ptolemy II 2.0
+    @author Shuvra S. Bhattacharyya, Ankush Varma
+    @version $Id$
+    @since Ptolemy II 2.0
 */
 
 public class JavaToC {
@@ -117,7 +117,7 @@ public class JavaToC {
         if (!generateSingleClass) {
             // Generate other required files.
             RequiredFileGenerator
-                    .generateTransitiveClosureOf(classPath, className);
+                .generateTransitiveClosureOf(classPath, className);
 
             // Generate the makefile.
             MakeFileGenerator.generateMakeFile(classPath, className);

@@ -1,28 +1,28 @@
 /* An actor that asynchronously reads datagram packets.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
 @AcceptedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
@@ -58,138 +58,138 @@ import java.net.UnknownHostException;
 //////////////////////////////////////////////////////////////////////////
 //// DatagramReader
 /**
-This actor reads datagram packets via a separate thread.  The thread
-responds to datagrams whenever they arrive, giving the actor the ability
-to read the datagrams asynchronously.
+   This actor reads datagram packets via a separate thread.  The thread
+   responds to datagrams whenever they arrive, giving the actor the ability
+   to read the datagrams asynchronously.
 
-Datagrams are connectionless, open-loop internet communications.  Each
-datagram packet contains data plus a return address.  The return
-address consists of an IP address and a socket number.  Datagrams use
-the UDP protocol under which no reply or confirmation is expected.
-This is in contrast to TCP which expects confirmations and attempts to
-deliver packets in order to the layer above TCP.  This can result in
-long delays in the delivery of information across the network.  Because
-UDP makes no such attempts, it never hangs and does not need to be timed out.
+   Datagrams are connectionless, open-loop internet communications.  Each
+   datagram packet contains data plus a return address.  The return
+   address consists of an IP address and a socket number.  Datagrams use
+   the UDP protocol under which no reply or confirmation is expected.
+   This is in contrast to TCP which expects confirmations and attempts to
+   deliver packets in order to the layer above TCP.  This can result in
+   long delays in the delivery of information across the network.  Because
+   UDP makes no such attempts, it never hangs and does not need to be timed out.
 
-<p>NOTE: This actor has been developed to work in the Discrete Event
-(DE) and Synchronous Data Flow (SDF) domains.  Use elsewhere with
-caution.
+   <p>NOTE: This actor has been developed to work in the Discrete Event
+   (DE) and Synchronous Data Flow (SDF) domains.  Use elsewhere with
+   caution.
 
-<p> <p>The simplest scenario has the thread constantly stalled
-awaiting a packet.  When a packet arrives, the thread quickly queues
-it in one of the buffers of the actor, calls the
-getDirector().fireAtCurrentTime(), and then stalls again awaiting the
-next packet.  By stalling again and again, the thread keeps the actor
-aware at all times of incoming packets.  This is particularly
-important if packets come in more quickly than the model can process
-them.  Depending on the domain (e.g. DE) in which this actor is used,
-the director may respond to the fireAtCurrentTime() call of the thread by
-calling the fire() method of the actor.  In this case, fire() then
-broadcasts the data received, along with the return address and return
-socket number from which the datagram originated.
+   <p> <p>The simplest scenario has the thread constantly stalled
+   awaiting a packet.  When a packet arrives, the thread quickly queues
+   it in one of the buffers of the actor, calls the
+   getDirector().fireAtCurrentTime(), and then stalls again awaiting the
+   next packet.  By stalling again and again, the thread keeps the actor
+   aware at all times of incoming packets.  This is particularly
+   important if packets come in more quickly than the model can process
+   them.  Depending on the domain (e.g. DE) in which this actor is used,
+   the director may respond to the fireAtCurrentTime() call of the thread by
+   calling the fire() method of the actor.  In this case, fire() then
+   broadcasts the data received, along with the return address and return
+   socket number from which the datagram originated.
 
-<p>The data portion of the packet is broadcast at the <i>output</i> port.
-The type of the output is always an array of bytes.
+   <p>The data portion of the packet is broadcast at the <i>output</i> port.
+   The type of the output is always an array of bytes.
 
-<p>The return address and socket number are broadcast as String and int
-respectively.  These tell where the received datagram originated from.
+   <p>The return address and socket number are broadcast as String and int
+   respectively.  These tell where the received datagram originated from.
 
-<p>The behavior of the actor under less simple scenarios is governed by
-parameters of this actor.  Additional packet(s) can arrive while the
-director is getting around to calling fire().  Conversely, the
-director may make extra calls to fire(), even before any datagrams
-have come in.  I call these the eager packet and eager director
-scenarios respectively.
+   <p>The behavior of the actor under less simple scenarios is governed by
+   parameters of this actor.  Additional packet(s) can arrive while the
+   director is getting around to calling fire().  Conversely, the
+   director may make extra calls to fire(), even before any datagrams
+   have come in.  I call these the eager packet and eager director
+   scenarios respectively.
 
-<p>Background: There are two packet buffers.  The thread and the fire()
-method share these buffers and maintain consistency via synchronization
-on the object <i>_syncFireAndThread</i>.  This synchronization prevents
-conflicts when accessing the shared buffers and when accessing the
-count of queued packets.
+   <p>Background: There are two packet buffers.  The thread and the fire()
+   method share these buffers and maintain consistency via synchronization
+   on the object <i>_syncFireAndThread</i>.  This synchronization prevents
+   conflicts when accessing the shared buffers and when accessing the
+   count of queued packets.
 
-<p>The <i>overwrite</i> parameter applies to the eager packet
-scenario.  Setting this parameter to true is useful in cases where it
-is possible for data to come in too fast for the model to process.
-This setting alleviates data gluts without undue loss of data when the
-model is able to keep up.  When <i>overwrite</i> is set to true (the
-default), the actor discards the packet already received in
-favor of the new packet.  If false, the new packet is queued behind the
-existing one.  In the latter case, both buffers are now full.  The
-thread then waits for fire() to consume a queued packet before it
-stalls again awaiting the next.  In all other cases (<i>overwrite</i>
-true or no queued packets) the thread immediately stalls to await the
-next packet.
+   <p>The <i>overwrite</i> parameter applies to the eager packet
+   scenario.  Setting this parameter to true is useful in cases where it
+   is possible for data to come in too fast for the model to process.
+   This setting alleviates data gluts without undue loss of data when the
+   model is able to keep up.  When <i>overwrite</i> is set to true (the
+   default), the actor discards the packet already received in
+   favor of the new packet.  If false, the new packet is queued behind the
+   existing one.  In the latter case, both buffers are now full.  The
+   thread then waits for fire() to consume a queued packet before it
+   stalls again awaiting the next.  In all other cases (<i>overwrite</i>
+   true or no queued packets) the thread immediately stalls to await the
+   next packet.
 
-<p>The <i>blockAwaitingDatagram</i> parameter applies to the eager
-director case.  This case comes up most often in SDF, where an actor
-is expected to block in fire until an output can be produced.  If
-true, a call to fire() will block unless or until a datagram has
-arrived.  If false, then fire() returns without waiting, using the
-<i>defaultOutput</i> parameter in place of real data.  The
-<i>returnAddress</i> and <i>returnSocketNumber</i> ports have default
-outputs as well, but they are not parameter-programmable.
+   <p>The <i>blockAwaitingDatagram</i> parameter applies to the eager
+   director case.  This case comes up most often in SDF, where an actor
+   is expected to block in fire until an output can be produced.  If
+   true, a call to fire() will block unless or until a datagram has
+   arrived.  If false, then fire() returns without waiting, using the
+   <i>defaultOutput</i> parameter in place of real data.  The
+   <i>returnAddress</i> and <i>returnSocketNumber</i> ports have default
+   outputs as well, but they are not parameter-programmable.
 
-<p>
-<p>NOTE: This actor has a parameter <i>localSocketNumber</i> for the port
-number assigned to its local datagram socket.  Initially, the local
-socket number is set to 4004.  There is no particular reason for choosing
-this number, except that is noticeable in the code and in Vergil, thus
-encouraging you to change it to any desired value in the range 0..65535.
-Note that socket numbers 0..1023 are generally reserved and numbers 1024 and
-above are generally available.
+   <p>
+   <p>NOTE: This actor has a parameter <i>localSocketNumber</i> for the port
+   number assigned to its local datagram socket.  Initially, the local
+   socket number is set to 4004.  There is no particular reason for choosing
+   this number, except that is noticeable in the code and in Vergil, thus
+   encouraging you to change it to any desired value in the range 0..65535.
+   Note that socket numbers 0..1023 are generally reserved and numbers 1024 and
+   above are generally available.
 
-<p>Some commonly used port numbers (a.k.a. socket numbers) are shown below:
-<pre>
-Well-known Ports
-(Commonly Used Ports)
+   <p>Some commonly used port numbers (a.k.a. socket numbers) are shown below:
+   <pre>
+   Well-known Ports
+   (Commonly Used Ports)
    7        (Echo)
-  21        (FTP)
-  23        (TELNET)
-  25        (SMTP)
-  53        (DNS)
-  79        (finger)
-  80        (HTTP)
- 110        (POP3)
- 119        (NNTP)
- 161        (SNMP)
- 162        (SNMP Trap)
-</pre>
-Reference:  http://192.168.1.1/Forward.htm
-(A webpage hosted from within the Linksys BEFSR41 Cable/DSL Router)
+   21        (FTP)
+   23        (TELNET)
+   25        (SMTP)
+   53        (DNS)
+   79        (finger)
+   80        (HTTP)
+   110        (POP3)
+   119        (NNTP)
+   161        (SNMP)
+   162        (SNMP Trap)
+   </pre>
+   Reference:  http://192.168.1.1/Forward.htm
+   (A webpage hosted from within the Linksys BEFSR41 Cable/DSL Router)
 
-<p>NOTE: This actor can also be configured to handle multicase datagram
-socket. A MulticastSocket is a DatagramSocket with additional capabilities
-to join groups of other multicast hosts on the internet. A multicast group
-is specified by a class D IP address and a standard UDP port number.
-When one member sends a packet to a multicast group, all recipients
-subscribing to that host and port receive the packet.
-Currently, The parameter <i>defaultReturnAddress</i> is overloaded to specify
-a multicast datagram IP address. When the return address is a multicast IP
-address, The parameter <i>localSocketNumber</i> is used to specify the
-UDP port number for the multicast group. A multicast IP address
-ranges from 224.0.0.0 to 239.255.255.255, inclusive. To send a packet to the
-group, the sender can be either a DatagramSocket or a MulticastSocket. The
-only difference is that MulticastSocket allows you to control the time-to-live
-of the datagram. Don't use 224.0.0.1 ~ 224.255.255.255 when the live time of
-is specified larger than 1.
+   <p>NOTE: This actor can also be configured to handle multicase datagram
+   socket. A MulticastSocket is a DatagramSocket with additional capabilities
+   to join groups of other multicast hosts on the internet. A multicast group
+   is specified by a class D IP address and a standard UDP port number.
+   When one member sends a packet to a multicast group, all recipients
+   subscribing to that host and port receive the packet.
+   Currently, The parameter <i>defaultReturnAddress</i> is overloaded to specify
+   a multicast datagram IP address. When the return address is a multicast IP
+   address, The parameter <i>localSocketNumber</i> is used to specify the
+   UDP port number for the multicast group. A multicast IP address
+   ranges from 224.0.0.0 to 239.255.255.255, inclusive. To send a packet to the
+   group, the sender can be either a DatagramSocket or a MulticastSocket. The
+   only difference is that MulticastSocket allows you to control the time-to-live
+   of the datagram. Don't use 224.0.0.1 ~ 224.255.255.255 when the live time of
+   is specified larger than 1.
 
-<p>FIXME: we might not want to overload the <i>defaultReturnAddress</i> and
-the <i>localSocketNumber</i> parameter...
+   <p>FIXME: we might not want to overload the <i>defaultReturnAddress</i> and
+   the <i>localSocketNumber</i> parameter...
 
-<p>Another useful tidbit is the command 'netstat'.  This works in a
-DOS prompt and also in the UNIX-like Bash shell.  In either shell,
-enter 'netstat -an'.  This command shows current port allocations!  Ports
-allocated to Ptolemy models are shown along with other port allocations.
-Other useful network commands include 'ping' and 'tracert'.
-Both TCP and UDP (datagram) ports are shown by netstat.
-FIXME: Find out whether a TCP port using a specific number blocks a
-UDP port from using that same number.
+   <p>Another useful tidbit is the command 'netstat'.  This works in a
+   DOS prompt and also in the UNIX-like Bash shell.  In either shell,
+   enter 'netstat -an'.  This command shows current port allocations!  Ports
+   allocated to Ptolemy models are shown along with other port allocations.
+   Other useful network commands include 'ping' and 'tracert'.
+   Both TCP and UDP (datagram) ports are shown by netstat.
+   FIXME: Find out whether a TCP port using a specific number blocks a
+   UDP port from using that same number.
 
-@author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward Lee
-(Based on TiltSensor actor written
+   @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward Lee
+   (Based on TiltSensor actor written
    by Chamberlain Fong, Xiaojun Liu, Edward Lee)
-@version $Id$
-@since Ptolemy II 2.0 */
+   @version $Id$
+   @since Ptolemy II 2.0 */
 public class DatagramReader extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
@@ -449,36 +449,36 @@ public class DatagramReader extends TypedAtomicActor {
                 //Note: don't use 224.0.0.1 ~ 224.255.255.255 when the live time
                 //of the socket is specified larger than 1.
                 if (_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
-                                        _defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
-                                        _multiCast = true;
-                                        try {
-                                                _address = InetAddress.getByName(_defaultReturnAddress);
-                                        }
-                                        catch (UnknownHostException ex) {
-                                                throw new IllegalActionException(this, ex,
-                                                                "The default remote "
-                                                                + "address specifies an unknown host");
-                                        }
-                                        if (_multicastSocket != null) {
-                                                try {
-                                                        _multicastSocket.joinGroup(_address);
-                                                } catch (IOException exp) {
-                                                        throw new IllegalActionException("can't join the multicast group" + exp);
-                                                }
-                                        }
-                                } else {
-                                        //FIXME: what should it do when change from multicast to unicast...
-                                        _multiCast = false;
-                                        if (_multicastSocket != null) {
-                                                try {
-                                                        _multicastSocket.leaveGroup(_address);
-                                                } catch (IOException exp) {
-                                                        throw new IllegalActionException("get an err " +
-                                                                "when disconnect from the multicast group?" + exp);
-                                                }
-                                        }
-                                }
+                        _defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
+                    _multiCast = true;
+                    try {
+                        _address = InetAddress.getByName(_defaultReturnAddress);
+                    }
+                    catch (UnknownHostException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "The default remote "
+                                + "address specifies an unknown host");
+                    }
+                    if (_multicastSocket != null) {
+                        try {
+                            _multicastSocket.joinGroup(_address);
+                        } catch (IOException exp) {
+                            throw new IllegalActionException("can't join the multicast group" + exp);
                         }
+                    }
+                } else {
+                    //FIXME: what should it do when change from multicast to unicast...
+                    _multiCast = false;
+                    if (_multicastSocket != null) {
+                        try {
+                            _multicastSocket.leaveGroup(_address);
+                        } catch (IOException exp) {
+                            throw new IllegalActionException("get an err " +
+                                                                "when disconnect from the multicast group?" + exp);
+                        }
+                    }
+                }
+            }
 
         } else if (attribute == defaultReturnSocketNumber) {
             synchronized(_syncDefaultOutputs) {
@@ -554,43 +554,43 @@ public class DatagramReader extends TypedAtomicActor {
                     }
                     int newSocketNumber = ((IntToken)
                             (localSocketNumber.getToken())).intValue();
-                                        if (_multicastSocket != null &&
-                                                        newSocketNumber != _multicastSocket.getLocalPort()) {
-                                                synchronized(_syncSocket) {
-                                                        if (_inReceive) {
-                                                                // Wait for receive to finish, if it
-                                                                // does not take very long that is.
-                                                                try {
-                                                                        _syncSocket.wait((long)444);
-                                                                } catch (InterruptedException ex) {
-                                                                        throw new IllegalActionException(this, ex,
-                                                                                        "Interrupted while waiting");
-                                                                }
-                                                                // Either I've been notified that receive()
-                                                                // has completed, or the timeout has occurred.
-                                                                // It does not matter which.  Either way I am
-                                                                // now ready to close and re-open the socket.
-                                                        }
-                                                        _multicastSocket.close();
-                                                        try {
-                                                                _multicastSocket = new MulticastSocket(newSocketNumber);
-                                                        }
-                                                        catch (Exception ex) {
-                                                                throw new InternalErrorException(this, ex,
-                                                                                "Couldn't open new socket number "
-                                                                                + newSocketNumber);
+                    if (_multicastSocket != null &&
+                            newSocketNumber != _multicastSocket.getLocalPort()) {
+                        synchronized(_syncSocket) {
+                            if (_inReceive) {
+                                // Wait for receive to finish, if it
+                                // does not take very long that is.
+                                try {
+                                    _syncSocket.wait((long)444);
+                                } catch (InterruptedException ex) {
+                                    throw new IllegalActionException(this, ex,
+                                            "Interrupted while waiting");
+                                }
+                                // Either I've been notified that receive()
+                                // has completed, or the timeout has occurred.
+                                // It does not matter which.  Either way I am
+                                // now ready to close and re-open the socket.
+                            }
+                            _multicastSocket.close();
+                            try {
+                                _multicastSocket = new MulticastSocket(newSocketNumber);
+                            }
+                            catch (Exception ex) {
+                                throw new InternalErrorException(this, ex,
+                                        "Couldn't open new socket number "
+                                        + newSocketNumber);
 
-                                                        }
-                                                        if (_address != null) {
-                                                                try {
-                                                                        _multicastSocket.joinGroup(_address);
-                                                                } catch (IOException exp) {
-                                                                        throw new IllegalActionException("can't join the multicast group" + exp);
-                                                                }
-                                                        }
-                                                }
-                                        } else if (_socket != null &&
-                                                        newSocketNumber != _socket.getLocalPort()) {
+                            }
+                            if (_address != null) {
+                                try {
+                                    _multicastSocket.joinGroup(_address);
+                                } catch (IOException exp) {
+                                    throw new IllegalActionException("can't join the multicast group" + exp);
+                                }
+                            }
+                        }
+                    } else if (_socket != null &&
+                            newSocketNumber != _socket.getLocalPort()) {
                         synchronized(_syncSocket) {
                             if (_inReceive) {
                                 // Wait for receive to finish, if it
@@ -763,9 +763,9 @@ public class DatagramReader extends TypedAtomicActor {
                     // Ensure that any change to the default output parameters
                     // occurs atomically with respect to its use here.
                     returnAddress.broadcast(new StringToken(
-                            _defaultReturnAddress));
+                                                    _defaultReturnAddress));
                     returnSocketNumber.broadcast(new IntToken(
-                            _defaultReturnSocketNumber));
+                                                         _defaultReturnSocketNumber));
                     output.broadcast(_defaultOutputToken);
                 }
             }
@@ -787,71 +787,71 @@ public class DatagramReader extends TypedAtomicActor {
 
         // Reset private variables
         _packetsAlreadyAwaitingFire = 0;
-                _defaultReturnAddress = ((StringToken)
-                                                                defaultReturnAddress.getToken()).stringValue();
-                //check whether is ip multicase datagram.
-                if (_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
-                                _defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
-                        _multiCast = true;
-                } else {
-                        _multiCast = false;
-                }
-                int portNumber = ((IntToken)(localSocketNumber.getToken())).intValue();
-                if (portNumber < 0 || portNumber > 65535) {
-                        throw new IllegalActionException(this, localSocketNumber
-                                        + " is outside the required 0..65535 range");
-                }
-                if (_debugging) _debug(this + "portNumber = " + portNumber);
+        _defaultReturnAddress = ((StringToken)
+                defaultReturnAddress.getToken()).stringValue();
+        //check whether is ip multicase datagram.
+        if (_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
+                _defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
+            _multiCast = true;
+        } else {
+            _multiCast = false;
+        }
+        int portNumber = ((IntToken)(localSocketNumber.getToken())).intValue();
+        if (portNumber < 0 || portNumber > 65535) {
+            throw new IllegalActionException(this, localSocketNumber
+                    + " is outside the required 0..65535 range");
+        }
+        if (_debugging) _debug(this + "portNumber = " + portNumber);
 
-                if (_multiCast == true) {
+        if (_multiCast == true) {
 
-                // Allocate a new multicast socket.
-                try {
-                    if (_debugging) {
-                        _debug("Trying to create a new multicast socket on port " + portNumber);
-                    }
-                                _multicastSocket = new MulticastSocket(portNumber);
-                    if (_debugging) {
-                        _debug("Multicast Socket created successfully!");
-                    }
+            // Allocate a new multicast socket.
+            try {
+                if (_debugging) {
+                    _debug("Trying to create a new multicast socket on port " + portNumber);
                 }
-                catch (Exception ex) {
-                    throw new IllegalActionException(this, ex,
-                            "Failed to create a new multicast socket on port " + portNumber);
+                _multicastSocket = new MulticastSocket(portNumber);
+                if (_debugging) {
+                    _debug("Multicast Socket created successfully!");
+                }
+            }
+            catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to create a new multicast socket on port " + portNumber);
 
+            }
+            String address =
+                ((StringToken)defaultReturnAddress.getToken()).stringValue();
+            try {
+                _address = InetAddress.getByName(address);
+            }
+            catch (UnknownHostException ex) {
+                throw new IllegalActionException(this, ex,
+                        "The default remote "
+                        + "address specifies an unknown host");
+            }
+            try {
+                _multicastSocket.joinGroup(_address);
+            } catch (IOException exp) {
+                throw new IllegalActionException("can't join the multicast group" + exp);
+            }
+        } else {
+            // Allocate a new socket.
+            try {
+                if (_debugging) {
+                    _debug("Trying to create a new socket on port " + portNumber);
                 }
-                        String address =
-                                ((StringToken)defaultReturnAddress.getToken()).stringValue();
-                        try {
-                                _address = InetAddress.getByName(address);
-                        }
-                        catch (UnknownHostException ex) {
-                                throw new IllegalActionException(this, ex,
-                                                "The default remote "
-                                                + "address specifies an unknown host");
-                        }
-                        try {
-                                _multicastSocket.joinGroup(_address);
-                        } catch (IOException exp) {
-                                throw new IllegalActionException("can't join the multicast group" + exp);
-                        }
-                } else {
-                        // Allocate a new socket.
-                        try {
-                                if (_debugging) {
-                                        _debug("Trying to create a new socket on port " + portNumber);
-                                }
-                                _socket = new DatagramSocket(portNumber);
-                                if (_debugging) {
-                                        _debug("Socket created successfully!");
-                                }
-                        }
-                        catch (Exception ex) {
-                                throw new IllegalActionException(this, ex,
-                                                "Failed to create a new socket on port " + portNumber);
+                _socket = new DatagramSocket(portNumber);
+                if (_debugging) {
+                    _debug("Socket created successfully!");
+                }
+            }
+            catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to create a new socket on port " + portNumber);
 
-                        }
-                }
+            }
+        }
         // Set flag so that thread will [Set and] get platform's buffer length.
         _ChangeRequestedToPlatformBufferLength = 1;
 
@@ -976,18 +976,18 @@ public class DatagramReader extends TypedAtomicActor {
         }
     }
 
-        /** Request that execution of the current iteration stop as soon
-         *  as possible. Wake up the manager thread if it is blocking on
-         *  fire() of this actor.
-         */
-        public void stop() {
-                super.stop();
-                synchronized(_syncFireAndThread) {
-                        if (_fireIsWaiting) {
-                                _syncFireAndThread.notifyAll();
-                        }
-                }
+    /** Request that execution of the current iteration stop as soon
+     *  as possible. Wake up the manager thread if it is blocking on
+     *  fire() of this actor.
+     */
+    public void stop() {
+        super.stop();
+        synchronized(_syncFireAndThread) {
+            if (_fireIsWaiting) {
+                _syncFireAndThread.notifyAll();
+            }
         }
+    }
 
     /** Release resources acquired in the initialize() method,
      *  specifically the evaluation variable, the DatagramSocket, and
@@ -1020,8 +1020,8 @@ public class DatagramReader extends TypedAtomicActor {
             _socket.close();
             _socket = null;
         }else if (_multicastSocket != null) {
-                _multicastSocket.close();
-                _multicastSocket = null;
+            _multicastSocket.close();
+            _multicastSocket = null;
         }
         else {
             if (_debugging) {
@@ -1123,13 +1123,13 @@ public class DatagramReader extends TypedAtomicActor {
                             // (in bytes).
                             if (((BooleanToken)setPlatformBufferLength.getToken()).booleanValue()) {
                                 if (_multiCast) {
-                                               _multicastSocket.setReceiveBufferSize(
-                                        ((IntToken)platformBufferLength.getToken())
-                                        .intValue());
+                                    _multicastSocket.setReceiveBufferSize(
+                                            ((IntToken)platformBufferLength.getToken())
+                                            .intValue());
                                 } else {
-                                                                        _socket.setReceiveBufferSize(
-                                                                                ((IntToken)platformBufferLength.getToken())
-                                                                                .intValue());
+                                    _socket.setReceiveBufferSize(
+                                            ((IntToken)platformBufferLength.getToken())
+                                            .intValue());
                                 }
                             }
                             // Get.
@@ -1189,63 +1189,63 @@ public class DatagramReader extends TypedAtomicActor {
                     // receive a datagram no bigger than the last one.
                     _receivePacket.setLength(_actorBufferLength);
                     if (_multiCast) {
-                                                try {
-                                                        // NOTE: The following call may block.
-                                                        _multicastSocket.receive(_receivePacket);
-                                                        // A packet was successfully received!
-                                                        synchronized(_syncSocket) {
-                                                                _inReceive = false;
-                                                                _syncSocket.notifyAll();
-                                                        }
-                                                } catch (IOException ex) {
-                                                        // _inReceive is still true!  Will retry
-                                                        // receive().  Don't retry, however, until
-                                                        // attributeChanged() is done changing the
-                                                        // <i>localSocketNumber</i>
-                                                        synchronized(_syncSocket) {
-                                                                //   System.out.println("foo");
-                                                        }
-                                                } catch (NullPointerException ex) {
-                                                        if (_debugging) {
-                                                                _debug("--!!--" + (_socket == null));
-                                                        }
-                                                        return;
-                                                        // -> --!!--true
-                                                        //System.out.println(ex.toString());
-                                                        // -> java.lang.NullPointerException
-                                                        //throw new RuntimeException("-null ptr-");
-                                                        // -> java.lang.RuntimeException: -null ptr-
-                                                        //     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
-                                                }
-                    }else {
-                            try {
-                                // NOTE: The following call may block.
-                                _socket.receive(_receivePacket);
-                                // A packet was successfully received!
-                                synchronized(_syncSocket) {
-                                    _inReceive = false;
-                                    _syncSocket.notifyAll();
-                                }
-                            } catch (IOException ex) {
-                                // _inReceive is still true!  Will retry
-                                // receive().  Don't retry, however, until
-                                // attributeChanged() is done changing the
-                                // <i>localSocketNumber</i>
-                                synchronized(_syncSocket) {
-                                    //   System.out.println("foo");
-                                }
-                            } catch (NullPointerException ex) {
-                                if (_debugging) {
-                                    _debug("--!!--" + (_socket == null));
-                                }
-                                return;
-                                // -> --!!--true
-                                //System.out.println(ex.toString());
-                                // -> java.lang.NullPointerException
-                                //throw new RuntimeException("-null ptr-");
-                                // -> java.lang.RuntimeException: -null ptr-
-                                //     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
+                        try {
+                            // NOTE: The following call may block.
+                            _multicastSocket.receive(_receivePacket);
+                            // A packet was successfully received!
+                            synchronized(_syncSocket) {
+                                _inReceive = false;
+                                _syncSocket.notifyAll();
                             }
+                        } catch (IOException ex) {
+                            // _inReceive is still true!  Will retry
+                            // receive().  Don't retry, however, until
+                            // attributeChanged() is done changing the
+                            // <i>localSocketNumber</i>
+                            synchronized(_syncSocket) {
+                                //   System.out.println("foo");
+                            }
+                        } catch (NullPointerException ex) {
+                            if (_debugging) {
+                                _debug("--!!--" + (_socket == null));
+                            }
+                            return;
+                            // -> --!!--true
+                            //System.out.println(ex.toString());
+                            // -> java.lang.NullPointerException
+                            //throw new RuntimeException("-null ptr-");
+                            // -> java.lang.RuntimeException: -null ptr-
+                            //     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
+                        }
+                    }else {
+                        try {
+                            // NOTE: The following call may block.
+                            _socket.receive(_receivePacket);
+                            // A packet was successfully received!
+                            synchronized(_syncSocket) {
+                                _inReceive = false;
+                                _syncSocket.notifyAll();
+                            }
+                        } catch (IOException ex) {
+                            // _inReceive is still true!  Will retry
+                            // receive().  Don't retry, however, until
+                            // attributeChanged() is done changing the
+                            // <i>localSocketNumber</i>
+                            synchronized(_syncSocket) {
+                                //   System.out.println("foo");
+                            }
+                        } catch (NullPointerException ex) {
+                            if (_debugging) {
+                                _debug("--!!--" + (_socket == null));
+                            }
+                            return;
+                            // -> --!!--true
+                            //System.out.println(ex.toString());
+                            // -> java.lang.NullPointerException
+                            //throw new RuntimeException("-null ptr-");
+                            // -> java.lang.RuntimeException: -null ptr-
+                            //     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
+                        }
                     }
                 }
 

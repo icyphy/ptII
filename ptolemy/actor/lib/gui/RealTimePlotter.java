@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -42,18 +42,18 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// RealTimePlotter
 /**
-This plotter plots input data as a function of elapsed real time in seconds.
-Elapsed time is set to zero when the initialize() method is invoked.
-The resolution of time depends on the implementation of the Java
-virtual machine, but with Sun's JDK 1.3 under Windows 2000, it is
-10 milliseconds.
+   This plotter plots input data as a function of elapsed real time in seconds.
+   Elapsed time is set to zero when the initialize() method is invoked.
+   The resolution of time depends on the implementation of the Java
+   virtual machine, but with Sun's JDK 1.3 under Windows 2000, it is
+   10 milliseconds.
 
-<p>This plotter contains an instance of the Plot class from the
-Ptolemy plot package as a public member.
+   <p>This plotter contains an instance of the Plot class from the
+   Ptolemy plot package as a public member.
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class RealTimePlotter extends Plotter {
 

@@ -1,27 +1,27 @@
 /* A visitor for parse trees of the expression language.
 
- Copyright (c) 1998-2004 The Regents of the University of California
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
- LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
- INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
- SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
- OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
- SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
- BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
- LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
@@ -52,16 +52,16 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeEvaluator
 /**
-This class evaluates a parse tree given a reference to its root node.
-It implements a visitor that visits the parse tree in depth-first order,
-evaluating each node and storing the result as a token in the node.
-Two exceptions are logic nodes and the ternary if node (the ? : construct),
-which do not necessarily evaluate all children nodes.
+   This class evaluates a parse tree given a reference to its root node.
+   It implements a visitor that visits the parse tree in depth-first order,
+   evaluating each node and storing the result as a token in the node.
+   Two exceptions are logic nodes and the ternary if node (the ? : construct),
+   which do not necessarily evaluate all children nodes.
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 2.1
-@see ptolemy.data.expr.ASTPtRootNode
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.1
+   @see ptolemy.data.expr.ASTPtRootNode
 */
 
 public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
@@ -601,9 +601,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 // of columns.
                 for (int i = 1; i < node.getRowCount(); ++i) {
                     if (columnCount != MatrixToken.determineSequenceLength(
-                            (ScalarToken)tokens[3*i],
-                            (ScalarToken)tokens[3*i+1],
-                            (ScalarToken)tokens[3*i+2])) {
+                                (ScalarToken)tokens[3*i],
+                                (ScalarToken)tokens[3*i+1],
+                                (ScalarToken)tokens[3*i+2])) {
                         throw new IllegalActionException("Matrix "
                                 + "should have the same number of columns "
                                 + "for all rows.");
@@ -818,7 +818,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             result = leftToken.isEqualTo(rightToken).not();
         } else {
             if (!((leftToken instanceof ScalarToken) &&
-                    (rightToken instanceof ScalarToken))) {
+                        (rightToken instanceof ScalarToken))) {
                 throw new IllegalActionException(
                         "The " + operator.image +
                         " operator can only be applied between scalars.");

@@ -1,28 +1,28 @@
 /* A transformer that inlines method calls on an SDF director.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -91,15 +91,15 @@ import soot.util.Chain;
 //////////////////////////////////////////////////////////////////////////
 //// InlineDirectorTransformer
 /**
-A transformer that inlines an SDF director.  This transformer synthesizes
-methods that properly implement the executable interface inside the class
-representing the model.  The resulting class includes code to properly
-initialize the instance classes for the actors and fire them in the
-order of the SDF schedule.
+   A transformer that inlines an SDF director.  This transformer synthesizes
+   methods that properly implement the executable interface inside the class
+   representing the model.  The resulting class includes code to properly
+   initialize the instance classes for the actors and fire them in the
+   order of the SDF schedule.
 
-@author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0
+   @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class InlineDirectorTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
@@ -198,8 +198,8 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                     ValueBox box = (ValueBox)unit.getInvokeExprBox();
                     InvokeExpr r = (InvokeExpr)box.getValue();
                     if (r.getMethod().getSubSignature().equals(
-                            PtolemyUtilities.invalidateResolvedTypesMethod
-                            .getSubSignature())) {
+                                PtolemyUtilities.invalidateResolvedTypesMethod
+                                .getSubSignature())) {
                         // Remove calls to invalidateResolvedTypes()
                         body.getUnits().remove(unit);
                     }
@@ -568,7 +568,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                         insertPoint);
 
                 Local initialValueLocal = Jimple.v().newLocal("initialValueAttribute",
-                PtolemyUtilities.attributeType);
+                        PtolemyUtilities.attributeType);
                 body.getLocals().add(initialValueLocal);
                 Local initialValueVariableLocal = Jimple.v().newLocal("initialValueVariable",
                         RefType.v(PtolemyUtilities.variableClass));
@@ -664,10 +664,10 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
-//             ModelTransformer.initializeAttributesBefore(body, insertPoint,
-//                     model, body.getThisLocal(),
-//                     model, body.getThisLocal(),
-//                     modelClass);
+            //             ModelTransformer.initializeAttributesBefore(body, insertPoint,
+            //                     model, body.getThisLocal(),
+            //                     model, body.getThisLocal(),
+            //                     modelClass);
 
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
@@ -725,11 +725,11 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                             theClass, "initialize");
                 // Set the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
                         insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                initializeMethod)),
+                                           Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                   initializeMethod)),
                         insertPoint);
             }
             //           units.add(Jimple.v().newReturnVoidStmt());
@@ -1068,11 +1068,11 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                             theClass, "wrapup");
                 // Set the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
                         insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                wrapupMethod)),
+                                           Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                   wrapupMethod)),
                         insertPoint);
             }
             //           units.insertBefore(Jimple.v().newReturnVoidStmt(),
@@ -1114,10 +1114,10 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
-//             ModelTransformer.initializeAttributesBefore(body, insertPoint,
-//                     model, body.getThisLocal(),
-//                     model, body.getThisLocal(),
-//                     modelClass);
+            //             ModelTransformer.initializeAttributesBefore(body, insertPoint,
+            //                     model, body.getThisLocal(),
+            //                     model, body.getThisLocal(),
+            //                     modelClass);
 
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
@@ -1136,7 +1136,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 body.getLocals().add(actorLocal);
                 // Get the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
                         insertPoint);
                 units.insertBefore(
                         Jimple.v().newInvokeStmt(
@@ -1173,11 +1173,11 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                             theClass, "initialize");
                 // Set the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
                         insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                initializeMethod)),
+                                           Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                   initializeMethod)),
                         insertPoint);
             }
             //           units.add(Jimple.v().newReturnVoidStmt());
@@ -1210,11 +1210,11 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                         theClass, "prefire");
 
             units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                    Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                       Jimple.v().newInstanceFieldRef(thisLocal, field)),
                     insertPoint);
             units.insertBefore(Jimple.v().newAssignStmt(prefireReturnsLocal,
-                    Jimple.v().newVirtualInvokeExpr(actorLocal,
-                            actorPrefireMethod)),
+                                       Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                               actorPrefireMethod)),
                     insertPoint);
 
             units.insertBefore(Jimple.v().newReturnStmt(prefireReturnsLocal),
@@ -1456,11 +1456,11 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                         theClass, "postfire");
 
             units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                    Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                       Jimple.v().newInstanceFieldRef(thisLocal, field)),
                     insertPoint);
             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                    Jimple.v().newVirtualInvokeExpr(actorLocal,
-                            actorPostfireMethod)),
+                                       Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                               actorPostfireMethod)),
                     insertPoint);
 
             units.insertBefore(Jimple.v().newReturnStmt(postfireReturnsLocal),
@@ -1496,11 +1496,11 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                             theClass, "wrapup");
                 // Set the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
                         insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                wrapupMethod)),
+                                           Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                   wrapupMethod)),
                         insertPoint);
             }
             //           units.insertBefore(Jimple.v().newReturnVoidStmt(),
@@ -1548,20 +1548,20 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
             // Initialize the postfire flag.
             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                    IntConstant.v(1)),
+                                       IntConstant.v(1)),
                     insertPoint);
             units.insertBefore(Jimple.v().newAssignStmt(
-                    Jimple.v().newInstanceFieldRef(
-                            thisLocal, postfireReturnsField),
-                    postfireReturnsLocal),
+                                       Jimple.v().newInstanceFieldRef(
+                                               thisLocal, postfireReturnsField),
+                                       postfireReturnsLocal),
                     insertPoint);
 
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
-//             ModelTransformer.initializeAttributesBefore(body, insertPoint,
-//                     model, body.getThisLocal(),
-//                     model, body.getThisLocal(),
-//                     modelClass);
+            //             ModelTransformer.initializeAttributesBefore(body, insertPoint,
+            //                     model, body.getThisLocal(),
+            //                     model, body.getThisLocal(),
+            //                     modelClass);
 
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
@@ -1580,11 +1580,11 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 body.getLocals().add(actorLocal);
                 // Get the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
                         insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                preinitializeMethod)),
+                                           Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                   preinitializeMethod)),
                         insertPoint);
             }
             //            units.insertBefore(Jimple.v().newReturnVoidStmt(),
@@ -1631,11 +1631,11 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                             theClass, "initialize");
                 // Set the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
                         insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                initializeMethod)),
+                                           Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                   initializeMethod)),
                         insertPoint);
             }
             //            units.insertBefore(Jimple.v().newReturnVoidStmt(),insertPoint);
@@ -1654,7 +1654,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             Local prefireReturnsLocal = Jimple.v().newLocal("preReturns", BooleanType.v());
             body.getLocals().add(prefireReturnsLocal);
             units.insertBefore(Jimple.v().newAssignStmt(prefireReturnsLocal,
-                    IntConstant.v(1)),
+                                       IntConstant.v(1)),
                     insertPoint);
             units.insertBefore(Jimple.v().newReturnStmt(prefireReturnsLocal),
                     insertPoint);
@@ -1801,8 +1801,8 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             body.getLocals().add(localPostfireReturnsLocal);
 
             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                    Jimple.v().newInstanceFieldRef(thisLocal,
-                            postfireReturnsField)),
+                                       Jimple.v().newInstanceFieldRef(thisLocal,
+                                               postfireReturnsField)),
                     insertPoint);
 
             // Execute the schedule
@@ -1837,7 +1837,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
                 // Set the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
                         insertPoint);
 
                 // The threshold at which it is better to generate loops,
@@ -1849,21 +1849,21 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 if (firingCount < threshold) {
                     for (int i = 0; i < firingCount; i++) {
                         units.insertBefore(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                        actorPrefireMethod)),
+                                                   Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                           actorPrefireMethod)),
                                 insertPoint);
                         units.insertBefore(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                        actorFireMethod)),
+                                                   Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                           actorFireMethod)),
                                 insertPoint);
                         units.insertBefore(Jimple.v().newAssignStmt(
-                                localPostfireReturnsLocal,
-                                Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                        actorPostfireMethod)),
+                                                   localPostfireReturnsLocal,
+                                                   Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                           actorPostfireMethod)),
                                 insertPoint);
                         units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                Jimple.v().newAndExpr(postfireReturnsLocal,
-                                        localPostfireReturnsLocal)),
+                                                   Jimple.v().newAndExpr(postfireReturnsLocal,
+                                                           localPostfireReturnsLocal)),
                                 insertPoint);
 
 
@@ -1879,18 +1879,18 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                     // The list of body instructions.
                     List bodyList = new LinkedList();
                     bodyList.add(Jimple.v().newInvokeStmt(
-                            Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                    actorPrefireMethod)));
+                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                 actorPrefireMethod)));
                     bodyList.add(Jimple.v().newInvokeStmt(
-                            Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                    actorFireMethod)));
+                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                 actorFireMethod)));
                     bodyList.add(Jimple.v().newAssignStmt(
-                            localPostfireReturnsLocal,
-                            Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                    actorPostfireMethod)));
+                                         localPostfireReturnsLocal,
+                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                 actorPostfireMethod)));
                     bodyList.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                            Jimple.v().newAndExpr(postfireReturnsLocal,
-                                    localPostfireReturnsLocal)));
+                                         Jimple.v().newAndExpr(postfireReturnsLocal,
+                                                 localPostfireReturnsLocal)));
                     // Increment the index.
                     bodyList.add(
                             Jimple.v().newAssignStmt(
@@ -1994,9 +1994,9 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
             // Return.
             units.insertBefore(Jimple.v().newAssignStmt(
-                    Jimple.v().newInstanceFieldRef(thisLocal,
-                            postfireReturnsField),
-                    postfireReturnsLocal),
+                                       Jimple.v().newInstanceFieldRef(thisLocal,
+                                               postfireReturnsField),
+                                       postfireReturnsLocal),
                     insertPoint);
             //       units.insertBefore(Jimple.v().newReturnVoidStmt(),
             //              insertPoint);
@@ -2019,8 +2019,8 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 Jimple.v().newLocal("postfireReturns", BooleanType.v());
             body.getLocals().add(postfireReturnsLocal);
             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                    Jimple.v().newInstanceFieldRef(thisLocal,
-                            postfireReturnsField)),
+                                       Jimple.v().newInstanceFieldRef(thisLocal,
+                                               postfireReturnsField)),
                     insertPoint);
 
             // If we need to keep track of the number of iterations, then...
@@ -2099,11 +2099,11 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                             theClass, "wrapup");
                 // Set the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
                         insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                wrapupMethod)),
+                                           Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                                   wrapupMethod)),
                         insertPoint);
             }
             //       units.insertBefore(Jimple.v().newReturnVoidStmt(),

@@ -1,29 +1,29 @@
 /* Class that uses the Soot Framework to find out which methods/classes
    are really needed for code generation.
 
- Copyright (c) 2002-2004 The University of Maryland.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2002-2004 The University of Maryland.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (ankush@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
+   @ProposedRating Red (ankush@eng.umd.edu)
+   @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.copernicus.c;
@@ -70,11 +70,11 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CallGraphPruner
 /**
-Class that uses the Soot Framework to find out which methods/classes
-are really needed for code generation.
+   Class that uses the Soot Framework to find out which methods/classes
+   are really needed for code generation.
 
-@author Ankush Varma
-@version $Id$
+   @author Ankush Varma
+   @version $Id$
 */
 
 public class CallGraphPruner {
@@ -105,11 +105,11 @@ public class CallGraphPruner {
 
         SparkOptions sparkOptions = new SparkOptions(sootOptions);
         /*
-        PAG analyzer = new PAG(sparkOptions);
+          PAG analyzer = new PAG(sparkOptions);
 
-        CallGraphBuilder builder = new CallGraphBuilder(analyzer);
-        CallGraph callGraph = builder.getCallGraph();
-        Scene.v().setCallGraph(callGraph);
+          CallGraphBuilder builder = new CallGraphBuilder(analyzer);
+          CallGraph callGraph = builder.getCallGraph();
+          Scene.v().setCallGraph(callGraph);
         */
 
         // Set entry points for call graph. The default entry points lead to
@@ -297,7 +297,7 @@ public class CallGraphPruner {
      * implementing a method in <i>methods </i>.
      */
     protected HashSet _getMethodsRequiredByInheritance(Collection
-        classSet, Collection methodSet) {
+            classSet, Collection methodSet) {
         HashSet requiredMethodSet = new HashSet();
 
         Iterator classes = classSet.iterator();
@@ -310,7 +310,7 @@ public class CallGraphPruner {
             // interfaces.
             Collection allParents = AnalysisUtilities.getAllInterfacesOf(source);
             if (!source.isInterface()) {
-                     allParents.addAll(hierarchy.getSuperclassesOf(source));
+                allParents.addAll(hierarchy.getSuperclassesOf(source));
             }
 
             while (methods.hasNext()) {
@@ -318,7 +318,7 @@ public class CallGraphPruner {
                 String subSignature = method.getSubSignature();
 
                 if (source.declaresMethod(subSignature)
-                    && allParents.contains(method.getDeclaringClass())
+                        && allParents.contains(method.getDeclaringClass())
                     ) {
                     requiredMethodSet.add(source.getMethod(subSignature));
                 }
@@ -366,7 +366,7 @@ public class CallGraphPruner {
                     }
 
                     // Add directly called methods.
-                                        if (!leaf && stmt.containsInvokeExpr()) {
+                    if (!leaf && stmt.containsInvokeExpr()) {
                         SootMethod m = ((InvokeExpr)stmt.getInvokeExpr())
                             .getMethod();
                         nodes.add(m);
@@ -433,8 +433,8 @@ public class CallGraphPruner {
                     else {
                         _gray.removeFirst();
                         System.out.println(
-                            "CallGraphPruner._growTree: "
-                            + "Removed an undeclared method\n");
+                                "CallGraphPruner._growTree: "
+                                + "Removed an undeclared method\n");
                     }
                 }
                 else if (node instanceof SootField) {
@@ -451,7 +451,7 @@ public class CallGraphPruner {
             //        _reachableMethods));
         }
 
-     }
+    }
 
     /** Figures out if a the targets of a method need to be computed.
      * Computation terminates at a "leaf" method. All native and
@@ -603,7 +603,7 @@ public class CallGraphPruner {
 
     /** Set all classes in the Scene that are not overridden as library
         classes.
-      */
+    */
     private void _setUnOverriddenClassesAsLibrary() {
         if (_verbose) {
             System.out.println(

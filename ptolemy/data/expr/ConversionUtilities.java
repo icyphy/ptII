@@ -1,28 +1,28 @@
 /* Utilities to convert between java types and Token types
 
- Copyright (c) 1998-2004 The Regents of the University of California and
- Research in Motion Limited.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California and
+Research in Motion Limited.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
- LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
- INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
- SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
- OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
- SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
- BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
- LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -60,53 +60,53 @@ import ptolemy.math.FixPoint;
 //////////////////////////////////////////////////////////////////////////
 //// ConversionUtilities
 /**
-This class contains a series of static methods that facilitate the
-runtime conversion of tokens to and from Java representations that are
-not tokens.  One might call this "marshaling and unmarshaling" of
-tokens.  Primarily this facility is used by the expression language to
-properly type references to Java methods, and later invoke those
-methods during expression evaluation.  Generally speaking this is
-somewhat nasty from an Object-oriented point of view.  The nastiness
-is fairly well encapsulated in this class.  The mapping is summarized
-in the following table:
+   This class contains a series of static methods that facilitate the
+   runtime conversion of tokens to and from Java representations that are
+   not tokens.  One might call this "marshaling and unmarshaling" of
+   tokens.  Primarily this facility is used by the expression language to
+   properly type references to Java methods, and later invoke those
+   methods during expression evaluation.  Generally speaking this is
+   somewhat nasty from an Object-oriented point of view.  The nastiness
+   is fairly well encapsulated in this class.  The mapping is summarized
+   in the following table:
 
-<p>
-<pre>
-     Token type               Java type
-     ---------------------------------------------------
-     IntToken                 int
-     DoubleToken              double
-     LongToken                long
-     StringToken              java.lang.String
-     BooleanToken             boolean
-     ComplexToken             ptolemy.math.Complex
-     FixToken                 ptolemy.math.FixPoint
-     FixMatrixToken           ptolemy.math.FixPoint[][]
-     IntMatrixToken           int[][]
-     DoubleMatrixToken        double[][]
-     ComplexMatrixToken       ptolemy.math.Complex[][]
-     LongMatrixToken          long[][]
-     BooleanMatrixToken       boolean[][]
-     ArrayToken(FixToken)     ptolemy.math.FixPoint[]
-     ArrayToken(IntToken)     int[]
-     ArrayToken(LongToken)    long[]
-     ArrayToken(DoubleToken)  double[]
-     ArrayToken(ComplexToken) ptolemy.math.Complex[]
-     ArrayToken(StringToken)  java.lang.String[]
-     ArrayToken(BooleanToken) boolean[]
-     ArrayToken  (*)          Token[]
-     ---------------------------------------------------
-     (*) Only when converting from java to Token types
-</pre>
+   <p>
+   <pre>
+   Token type               Java type
+   ---------------------------------------------------
+   IntToken                 int
+   DoubleToken              double
+   LongToken                long
+   StringToken              java.lang.String
+   BooleanToken             boolean
+   ComplexToken             ptolemy.math.Complex
+   FixToken                 ptolemy.math.FixPoint
+   FixMatrixToken           ptolemy.math.FixPoint[][]
+   IntMatrixToken           int[][]
+   DoubleMatrixToken        double[][]
+   ComplexMatrixToken       ptolemy.math.Complex[][]
+   LongMatrixToken          long[][]
+   BooleanMatrixToken       boolean[][]
+   ArrayToken(FixToken)     ptolemy.math.FixPoint[]
+   ArrayToken(IntToken)     int[]
+   ArrayToken(LongToken)    long[]
+   ArrayToken(DoubleToken)  double[]
+   ArrayToken(ComplexToken) ptolemy.math.Complex[]
+   ArrayToken(StringToken)  java.lang.String[]
+   ArrayToken(BooleanToken) boolean[]
+   ArrayToken  (*)          Token[]
+   ---------------------------------------------------
+   (*) Only when converting from java to Token types
+   </pre>
 
-@author Neil Smyth, Edward A. Lee, Steve Neuendorffer
-@author Zoltan Kemenczy, Research in Motion Limited
-@version $Id$
-@see ptolemy.data.expr.ASTPtRootNode
-@see ptolemy.data.expr.PtParser
-@see ptolemy.data.Token
-@see ptolemy.data.expr.UtilityFunctions
-@see java.lang.Math
+   @author Neil Smyth, Edward A. Lee, Steve Neuendorffer
+   @author Zoltan Kemenczy, Research in Motion Limited
+   @version $Id$
+   @see ptolemy.data.expr.ASTPtRootNode
+   @see ptolemy.data.expr.PtParser
+   @see ptolemy.data.Token
+   @see ptolemy.data.expr.UtilityFunctions
+   @see java.lang.Math
 */
 public class ConversionUtilities {
 
@@ -238,11 +238,11 @@ public class ConversionUtilities {
             if (tokenClass.equals(ptolemy.data.Token.class)) {
                 return BaseType.GENERAL;
             } else if (ptolemy.data.ArrayToken.class.isAssignableFrom(
-                    tokenClass)) {
+                               tokenClass)) {
                 Type type = new ArrayType(BaseType.GENERAL);
                 return type;
             } else if (ptolemy.data.RecordToken.class.isAssignableFrom(
-                    tokenClass)) {
+                               tokenClass)) {
                 Type type = new RecordType(new String[0], new Type[0]);
                 return type;
             } else if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
@@ -286,14 +286,14 @@ public class ConversionUtilities {
             } else if (tokenClass.equals(Class.forName("[[D"))) {
                 return BaseType.DOUBLE_MATRIX;
             } else if (tokenClass.equals(
-                    Class.forName("[[Lptolemy.math.Complex;"))) {
+                               Class.forName("[[Lptolemy.math.Complex;"))) {
                 return BaseType.COMPLEX_MATRIX;
             }  else if (tokenClass.equals(
-                    Class.forName("[[Lptolemy.math.FixPoint;"))) {
+                                Class.forName("[[Lptolemy.math.FixPoint;"))) {
                 return BaseType.FIX_MATRIX;
             } else if (tokenClass.isArray()) {
                 return new ArrayType(convertJavaTypeToTokenType(
-                        tokenClass.getComponentType()));
+                                             tokenClass.getComponentType()));
 
             } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
                 return BaseType.OBJECT;

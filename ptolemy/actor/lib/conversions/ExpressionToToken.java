@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
@@ -49,15 +49,15 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionToToken
 /**
-This actor reads a string expression from the input port and outputs
-the token resulting from the evaluation.  The type of the output port
-defaults to general, meaning that the only output will be a pure
-event.  In order to usefully use this class, the type of the output
-port must be set to the type of the expression that is expected.
+   This actor reads a string expression from the input port and outputs
+   the token resulting from the evaluation.  The type of the output port
+   defaults to general, meaning that the only output will be a pure
+   event.  In order to usefully use this class, the type of the output
+   port must be set to the type of the expression that is expected.
 
-@author  Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 2.1
+   @author  Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.1
 */
 public class ExpressionToToken extends Converter {
 

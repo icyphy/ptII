@@ -1,28 +1,28 @@
 /* A differential system in the CT domain.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -55,45 +55,45 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// DifferentialSystem
 /**
-A differential system in the CT domain.
+   A differential system in the CT domain.
 
-<p>The differential system  model implements a system whose behavior
-is defined by:
-<pre>
-    dx/dt = f(x, u, t)
-        y = g(x, u, t)
-     x(0) = x0
-</pre>
-where x is the state vector, u is the input vector, and y is the output
-vector, t is the time. Users must give the name of the variables
-by filling in parameters
-<P>
-The actor, upon creation, has no input and no output. Upon filling
-in the names in the <i>inputVariableNames</i> and
-<i>outputVariableNames</i> parameters, the ports will be created.
-The name of the state variables are manually added by filling in
-the <i>stateVariableNames</i> parameter.
-<P>
-The state equations and output maps must be manually created by users.
-If there are <i>n</i> state variables <i>x</i><sub>1</sub>, ...
-<i>x</i><sub>n</sub>,
-then users must create <i>n</i> additional parameters, one
-for each state equation. And the parameters must be named as:
-"<i>x</i><sub>1</sub>_dot", ..., "<i>x</i><sub>n</sub>_dot" respectively.
-Similarly, if the output ports have name <i>y</i><sub>1</sub>, ...,
-<i>y</i><sub>r</sub>, then users must create additional <i>r</i>
-parameters for output maps. These parameters should be named
-"<i>y</i><sub>1</sub>", ... "<i>y</i><sub>r</sub>" respectively.
-<P>
-This actor works like a higher-order function. Upon preinitialization,
-the actor will create a subsystem using integrators and expressions.
-After that, the actor becomes transparent, and the director
-takes over the control of the actors contained by this actor.
+   <p>The differential system  model implements a system whose behavior
+   is defined by:
+   <pre>
+   dx/dt = f(x, u, t)
+   y = g(x, u, t)
+   x(0) = x0
+   </pre>
+   where x is the state vector, u is the input vector, and y is the output
+   vector, t is the time. Users must give the name of the variables
+   by filling in parameters
+   <P>
+   The actor, upon creation, has no input and no output. Upon filling
+   in the names in the <i>inputVariableNames</i> and
+   <i>outputVariableNames</i> parameters, the ports will be created.
+   The name of the state variables are manually added by filling in
+   the <i>stateVariableNames</i> parameter.
+   <P>
+   The state equations and output maps must be manually created by users.
+   If there are <i>n</i> state variables <i>x</i><sub>1</sub>, ...
+   <i>x</i><sub>n</sub>,
+   then users must create <i>n</i> additional parameters, one
+   for each state equation. And the parameters must be named as:
+   "<i>x</i><sub>1</sub>_dot", ..., "<i>x</i><sub>n</sub>_dot" respectively.
+   Similarly, if the output ports have name <i>y</i><sub>1</sub>, ...,
+   <i>y</i><sub>r</sub>, then users must create additional <i>r</i>
+   parameters for output maps. These parameters should be named
+   "<i>y</i><sub>1</sub>", ... "<i>y</i><sub>r</sub>" respectively.
+   <P>
+   This actor works like a higher-order function. Upon preinitialization,
+   the actor will create a subsystem using integrators and expressions.
+   After that, the actor becomes transparent, and the director
+   takes over the control of the actors contained by this actor.
 
-@author Jie Liu
-@version $Id$
-@since Ptolemy II 1.0
-@see ptolemy.domains.ct.kernel.CTBaseIntegrator
+   @author Jie Liu
+   @version $Id$
+   @since Ptolemy II 1.0
+   @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
 public class DifferentialSystem extends TypedCompositeActor {
 
@@ -240,7 +240,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                     stringValue().trim();
                 integrators[i] = new Integrator(this, states[i]);
                 integrators[i].initialState
-                        .setExpression("initialStates(0," + i + ")");
+                    .setExpression("initialStates(0," + i + ")");
                 stateRelations[i] = new TypedIORelation(this,
                         "relation_" + states[i]);
 
@@ -248,8 +248,8 @@ public class DifferentialSystem extends TypedCompositeActor {
                 // One Expression per integrator.
                 equations[i] = new Expression(this, states[i] + "_dot");
                 equations[i].expression.setExpression(((StringToken)
-                        ((Parameter)getAttribute(states[i] + "_dot")).
-                        getToken()).stringValue());
+                                                              ((Parameter)getAttribute(states[i] + "_dot")).
+                                                              getToken()).stringValue());
                 //FIXME: Why should I set type here?
                 equations[i].output.setTypeEquals(BaseType.DOUBLE);
                 connect(equations[i].output, integrators[i].input);
@@ -277,8 +277,8 @@ public class DifferentialSystem extends TypedCompositeActor {
                         outputs[outIndex]);
 
                 maps[outIndex].expression.setExpression(((StringToken)
-                        ((Parameter)getAttribute(outputs[outIndex])).
-                        getToken()).stringValue());
+                                                                ((Parameter)getAttribute(outputs[outIndex])).
+                                                                getToken()).stringValue());
                 maps[outIndex].output.setTypeEquals(BaseType.DOUBLE);
                 connect(maps[outIndex].output,
                         (TypedIOPort)getPort(outputs[outIndex]));
@@ -316,14 +316,14 @@ public class DifferentialSystem extends TypedCompositeActor {
                     port.link(stateRelations[k]);
                 }
                 /*
-                  // One port for each input variable.
+                // One port for each input variable.
 
-                  for (int k = 0; k < m; k++) {
-                  TypedIOPort port = new TypedIOPort(maps[l], inputs[k],
-                  true, false);
-                  port.setTypeEquals(BaseType.DOUBLE);
-                  port.link(inputRelations[k]);
-                  }
+                for (int k = 0; k < m; k++) {
+                TypedIOPort port = new TypedIOPort(maps[l], inputs[k],
+                true, false);
+                port.setTypeEquals(BaseType.DOUBLE);
+                port.link(inputRelations[k]);
+                }
                 */
             }
             _opaque = false;

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -58,16 +58,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// PlaySound
 
 /**
-This actor plays audio from a file or URL when it fires.
-If the input has value <i>true</i>, then the sound is played.
-If it has value <i>false</i>, then the sound is stopped.
-If the input is not connected, or the actor fires with no input,
-then the sound is played when it fires.
-It requires the Java Media Framework.
+   This actor plays audio from a file or URL when it fires.
+   If the input has value <i>true</i>, then the sound is played.
+   If it has value <i>false</i>, then the sound is stopped.
+   If the input is not connected, or the actor fires with no input,
+   then the sound is played when it fires.
+   It requires the Java Media Framework.
 
-@author  Edward Lee
-@version $Id$
-@since Ptolemy II 3.0
+   @author  Edward Lee
+   @version $Id$
+   @since Ptolemy II 3.0
 */
 public class PlaySound extends TypedAtomicActor implements ControllerListener {
 

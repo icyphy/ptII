@@ -1,28 +1,28 @@
 /* A transformer that tried to statically evaluate object == object
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -50,11 +50,11 @@ import soot.jimple.JimpleBody;
 import java.util.*;
 
 /**
-A transformer that remove unnecessary casts and instanceof checks.
-Note that this relies on properly inferred Java types to operate properly.
-If you create code that has types which are too specific (relative to the
-inferred types) then this transformer will likely create code that is no
-longer verifiable.
+   A transformer that remove unnecessary casts and instanceof checks.
+   Note that this relies on properly inferred Java types to operate properly.
+   If you create code that has types which are too specific (relative to the
+   inferred types) then this transformer will likely create code that is no
+   longer verifiable.
 
 */
 
@@ -119,9 +119,9 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
 
                     Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
-                  //   if (debug) System.out.println("checking cast in " + unit);
-//                     if (debug) System.out.println("op = " + op);
-//                     if (debug) System.out.println("opType = " + opType);
+                    //   if (debug) System.out.println("checking cast in " + unit);
+                    //                     if (debug) System.out.println("op = " + op);
+                    //                     if (debug) System.out.println("opType = " + opType);
                     replaceCast(box, hierarchy,
                             castType, op, opType, debug);
 
@@ -200,9 +200,9 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
         if (checkClass.isInterface()) {
             if (opClass.isInterface()) {
                 if (hierarchy.isInterfaceSubinterfaceOf(
-                        opClass, checkClass) ||
+                            opClass, checkClass) ||
                         opClass.equals(checkClass)) {
-                                // Then we know the instanceof will be true.
+                    // Then we know the instanceof will be true.
                     if (debug) System.out.println("Replacing " +
                             box.getValue() + " with true.");
                     box.setValue(IntConstant.v(1));
@@ -222,10 +222,10 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     // replace with false.
                     boolean foundOne = false;
                     for (Iterator implementors = implementorList.iterator();
-                        implementors.hasNext() && !foundOne;) {
+                         implementors.hasNext() && !foundOne;) {
                         SootClass implementor = (SootClass)implementors.next();
                         if (hierarchy.getSuperclassesOf(implementor).contains(
-                                   opClass)) {
+                                    opClass)) {
                             foundOne = true;
                         }
                     }
@@ -241,7 +241,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                 //???
             } else {
                 if (hierarchy.isClassSuperclassOfIncluding(
-                        checkClass, opClass)) {
+                            checkClass, opClass)) {
                     // Then we know the instanceof will be true.
                     if (debug) System.out.println("Replacing " +
                             box.getValue() + " with true.");
@@ -302,7 +302,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
         if (checkClass.isInterface()) {
             if (opClass.isInterface()) {
                 if (hierarchy.isInterfaceSubinterfaceOf(
-                        opClass, checkClass) ||
+                            opClass, checkClass) ||
                         opClass.equals(checkClass)) {
                     // Then we know the instanceof will be true.
                     if (debug) System.out.println("Replacing " +
@@ -328,13 +328,13 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                 //???
             } else {
                 if (hierarchy.isClassSuperclassOfIncluding(
-                        checkClass, opClass)) {
+                            checkClass, opClass)) {
                     // Then we know the instanceof will be true.
                     if (debug) System.out.println("Replacing " +
                             "with assignment.");
                     box.setValue(op);
                 } else if (!hierarchy.isClassSuperclassOfIncluding(
-                        opClass, checkClass)) {
+                                   opClass, checkClass)) {
                     // Then we know the instanceof will be false,
                     // because no subclass of opClass can suddenly
                     // become a subclass of checkClass.

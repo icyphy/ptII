@@ -1,28 +1,28 @@
 /* An Prototype is a named object that can be either a class or an instance.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -49,16 +49,16 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// Prototype
 /**
-An Prototype is a named object that can be either a class definition
-or not.  If it is a class definition, then "instances" of that class
-definition can be created by the instantiate() method.
-It supports a deferral and propagation mechanism. That is, changes
-to the prototype propagate automatically to "instances" that
-were created from the prototype.
+   An Prototype is a named object that can be either a class definition
+   or not.  If it is a class definition, then "instances" of that class
+   definition can be created by the instantiate() method.
+   It supports a deferral and propagation mechanism. That is, changes
+   to the prototype propagate automatically to "instances" that
+   were created from the prototype.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class Prototype extends NamedObj implements Instantiable {
 
@@ -283,7 +283,7 @@ public class Prototype extends NamedObj implements Instantiable {
             IllegalActionException, NameDuplicationException {
         if (!isClassDefinition()) {
             throw new IllegalActionException(this,
-            "Cannot instantiate an object that is not a class definition");
+                    "Cannot instantiate an object that is not a class definition");
         }
         // Use the workspace of the container, if there is one,
         // or the workspace of this object, if there isn't.
@@ -373,7 +373,7 @@ public class Prototype extends NamedObj implements Instantiable {
     public void setParent(Instantiable parent) throws IllegalActionException {
         if (parent != null && !(parent instanceof Prototype)) {
             throw new IllegalActionException(this,
-            "Parent of a Prototype must also be a Prototype.");
+                    "Parent of a Prototype must also be a Prototype.");
         }
         try {
             _workspace.getWriteAccess();
@@ -432,7 +432,7 @@ public class Prototype extends NamedObj implements Instantiable {
                 ComponentEntity revisedDefersTo = clone.getEntity(relativeName);
                 if (revisedDefersTo == null) {
                     throw new InternalErrorException(
-                    "Clone is not identical to the prototype!");
+                            "Clone is not identical to the prototype!");
                 }
                 try {
                     setParent(revisedDefersTo);

@@ -1,28 +1,28 @@
 /* An actor that coornidator a set of clients to work for some tasks.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (janneck@eecs.berkeley.edu)
@@ -53,25 +53,25 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// PushSupplier
 /**
- An actor that coordiantor a set of clients connecting to it to work together
- to finish some tasks.
+   An actor that coordiantor a set of clients connecting to it to work together
+   to finish some tasks.
 
- It has an inner class that implements the Coordinator interface defined in
- Coordinator.idl. The clients connect to this need to implement the Client
- interface defined in Coordinator.idl also.
+   It has an inner class that implements the Coordinator interface defined in
+   Coordinator.idl. The clients connect to this need to implement the Client
+   interface defined in Coordinator.idl also.
 
- Specify the ORB initial property with the<i>ORBInitProperties<i>
- paremerter, for example:
- "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
- where "xyz.eecs.berkeley.edu" is the machine runing name server, and
- "1050" is the port for name service.
+   Specify the ORB initial property with the<i>ORBInitProperties<i>
+   paremerter, for example:
+   "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
+   where "xyz.eecs.berkeley.edu" is the machine runing name server, and
+   "1050" is the port for name service.
 
- Specify the name of the coordinator with <i>coordiatorName<i> that it wants
- to register to the name service.
+   Specify the name of the coordinator with <i>coordiatorName<i> that it wants
+   to register to the name service.
 
-@author Yang Zhao
-@version
-@since Ptolemy II 3.0
+   @author Yang Zhao
+   @version
+   @since Ptolemy II 3.0
 */
 
 public class TaskCoordinator extends Transformer {
@@ -88,7 +88,7 @@ public class TaskCoordinator extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-            ORBInitProperties  = new Parameter(this, "ORBInitProperties");
+        ORBInitProperties  = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
         coordinatorName = new Parameter(this, "coordinatorName");
         coordinatorName.setToken(new StringToken("TaskCoordinator"));
@@ -210,9 +210,9 @@ public class TaskCoordinator extends Transformer {
     /** Request that execution of the current iteration stop as soon
      *  as possible. Wake up the waiting if there is any.
      */
-     public void stop() {
+    public void stop() {
         if (_fireIsWaiting) {
-             synchronized( _lock1) {
+            synchronized( _lock1) {
                 _lock1.notifyAll();
             }
             _fireIsWaiting = false;
@@ -297,7 +297,7 @@ public class TaskCoordinator extends Transformer {
             //FIXME: this only works for string result data.
             _resultToken = new StringToken(data.extract_string());
             if (_debugging) {
-               _debug(getName(), " receive data:\n" + _resultToken.toString());
+                _debug(getName(), " receive data:\n" + _resultToken.toString());
             }
             synchronized(_lock2) {
                 _debug(getName(), "get synchronized object lock2.");
@@ -306,10 +306,10 @@ public class TaskCoordinator extends Transformer {
                     _availableClients.add(client);
                     _debug(getName(), "free the client back to be available.");
                     if (_fireIsWaiting) {
-                       synchronized(_lock1) {
-                           _debug(getName(), "get synchronized object lock1.");
-                           _lock1.notifyAll();
-                       }
+                        synchronized(_lock1) {
+                            _debug(getName(), "get synchronized object lock1.");
+                            _lock1.notifyAll();
+                        }
                     }
                 }
             }

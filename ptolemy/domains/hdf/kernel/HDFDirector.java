@@ -1,27 +1,27 @@
 /* Director for the heterochronous dataflow model of computation.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (zhouye@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -60,52 +60,52 @@ import java.util.Map;
 ////////////////////////////////////////////////////////////////////
 //// HDFDirector
 /**
-The heterochronous dataflow (HDF) domain implements the HDF model
-of computation [1]. The HDF model of computation is a generalization
-of synchronous dataflow (SDF). In SDF, the set of port rates of an
-actor (called the type signature) are constant. In HDF, however,
-an actor has a finite number of type signatures which are allowed
-to change between iterations of the HDF schedule.
-<p>
-An HDF actor has an initial type signature when execution begins.
-The balance equations can then be solved to find a
-periodic schedule, as in SDF. Unlike SDF, an HDF actor is allowed to
-change its type signature after an iteration of the schedule.
-If a port rate change occurs, a new schedule
-corresponding to the new ports rates must then be obtained.
-<p>
-Since an HDF actor has a finite number of type signatures, it
-may be useful to use an FSM to control when type signature changes
-may occur. The HDFFSMDirector may be used to compose HDF with
- hierarchical FSMs according to the *charts [1] semantics.
-<p>
-Since an HDF actor has a finite number of possible type
-signatures, the number of possible schedules is also finite.
-As a result of this finite state space, deadlock and bounded
-channel lengths are decidable in HDF. In principle, all possible
-schedules could be computed at compile time. However, the number
-of schedules can be exponential in the number of actors, so this
-may not be practical.
-<p>
-This director makes use of an HDF scheduler that computes the
-schedules dynamically, and caches them. The size of the cache
-can be set by the <i>scheduleCacheSize</i> parameter. The default
-value of this parameter is 100.
-<p>
-<b>References</b>
-<p>
-<OL>
-<LI>
-A. Girault, B. Lee, and E. A. Lee,
-``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">
-Hierarchical Finite State Machines with Multiple Concurrency Models</A>,
-'' April 13, 1998.</LI>
-</ol>
+   The heterochronous dataflow (HDF) domain implements the HDF model
+   of computation [1]. The HDF model of computation is a generalization
+   of synchronous dataflow (SDF). In SDF, the set of port rates of an
+   actor (called the type signature) are constant. In HDF, however,
+   an actor has a finite number of type signatures which are allowed
+   to change between iterations of the HDF schedule.
+   <p>
+   An HDF actor has an initial type signature when execution begins.
+   The balance equations can then be solved to find a
+   periodic schedule, as in SDF. Unlike SDF, an HDF actor is allowed to
+   change its type signature after an iteration of the schedule.
+   If a port rate change occurs, a new schedule
+   corresponding to the new ports rates must then be obtained.
+   <p>
+   Since an HDF actor has a finite number of type signatures, it
+   may be useful to use an FSM to control when type signature changes
+   may occur. The HDFFSMDirector may be used to compose HDF with
+   hierarchical FSMs according to the *charts [1] semantics.
+   <p>
+   Since an HDF actor has a finite number of possible type
+   signatures, the number of possible schedules is also finite.
+   As a result of this finite state space, deadlock and bounded
+   channel lengths are decidable in HDF. In principle, all possible
+   schedules could be computed at compile time. However, the number
+   of schedules can be exponential in the number of actors, so this
+   may not be practical.
+   <p>
+   This director makes use of an HDF scheduler that computes the
+   schedules dynamically, and caches them. The size of the cache
+   can be set by the <i>scheduleCacheSize</i> parameter. The default
+   value of this parameter is 100.
+   <p>
+   <b>References</b>
+   <p>
+   <OL>
+   <LI>
+   A. Girault, B. Lee, and E. A. Lee,
+   ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">
+   Hierarchical Finite State Machines with Multiple Concurrency Models</A>,
+   '' April 13, 1998.</LI>
+   </ol>
 
-@see HDFFSMDirector
+   @see HDFFSMDirector
 
-@author Brian K. Vogel and Rachel Zhou
-@version $Id$
+   @author Brian K. Vogel and Rachel Zhou
+   @version $Id$
 */
 public class HDFDirector extends SDFDirector {
 
@@ -283,10 +283,10 @@ public class HDFDirector extends SDFDirector {
         CompositeActor container = (CompositeActor)getContainer();
         ChangeRequest request =
             new ChangeRequest(this, "reschedule") {
-            protected void _execute() throws KernelException {
-                getSchedule();
-            }
-        };
+                protected void _execute() throws KernelException {
+                    getSchedule();
+                }
+            };
         request.setPersistent(false);
         container.requestChange(request);
         return super.postfire();

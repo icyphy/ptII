@@ -26,8 +26,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating red (eal@eecs.berkeley.edu)
 @AcceptedRating red (cxh@eecs.berkeley.edu)
 */
@@ -51,22 +51,22 @@ import javax.swing.KeyStroke;
 //// EditablePlotMLApplication
 
 /**
-An application that can plot data in PlotML format from a URL or
-from files specified on the command line, and can then permit the
-user to edit the plot.
-To compile and run this application, do the following:
-<pre>
-    javac -classpath ../../.. EditablePlotMLApplication.java
-    java -classpath ../../.. ptolemy.plot.plotml.EditablePlotMLApplication
-</pre>
-Initially, none of the data sets is editable. Use the Edit menu's
-Edit Dataset item to make a data set editable.
+   An application that can plot data in PlotML format from a URL or
+   from files specified on the command line, and can then permit the
+   user to edit the plot.
+   To compile and run this application, do the following:
+   <pre>
+   javac -classpath ../../.. EditablePlotMLApplication.java
+   java -classpath ../../.. ptolemy.plot.plotml.EditablePlotMLApplication
+   </pre>
+   Initially, none of the data sets is editable. Use the Edit menu's
+   Edit Dataset item to make a data set editable.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
-@see ptolemy.plot.PlotBox
-@see ptolemy.plot.Plot
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
+   @see ptolemy.plot.PlotBox
+   @see ptolemy.plot.Plot
 */
 public class EditablePlotMLApplication extends PlotMLApplication {
 

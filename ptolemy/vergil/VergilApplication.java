@@ -1,28 +1,28 @@
 /* An application for editing ptolemy models visually.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
@@ -61,38 +61,38 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 //////////////////////////////////////////////////////////////////////////
 //// VergilApplication
 /**
-This application opens run control panels for models specified on the
-command line.
-<p>
-The exact facilities that are available are determined by an optional
-command line argument that names a directory in ptolemy/configs that
-contains a configuration.xml file.  For example, if we call vergil
--ptiny, then we will use ptolemy/configs/ptiny/configuration.xml and
-ptolemy/configs/ptiny/intro.htm.  The default configuration is
-ptolemy/configs/full/configuration.xml, which is loaded before any
-other command-line arguments are processed.
+   This application opens run control panels for models specified on the
+   command line.
+   <p>
+   The exact facilities that are available are determined by an optional
+   command line argument that names a directory in ptolemy/configs that
+   contains a configuration.xml file.  For example, if we call vergil
+   -ptiny, then we will use ptolemy/configs/ptiny/configuration.xml and
+   ptolemy/configs/ptiny/intro.htm.  The default configuration is
+   ptolemy/configs/full/configuration.xml, which is loaded before any
+   other command-line arguments are processed.
 
-<p>This application also takes an optional command line argument pair
-<code>-conf <i>configurationFile.xml</i></code> that names a configuration
-to be read.  For example,
-<pre>
-$PTII/bin/vergil -conf ptolemy/configs/ptiny/configuration.xml
-<pre>
-and
-<pre>
-$PTII/bin/vergil -ptiny
-</pre>
-are equivalent
-<p>
-If there are no command-line arguments at all, then the configuration
-file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
+   <p>This application also takes an optional command line argument pair
+   <code>-conf <i>configurationFile.xml</i></code> that names a configuration
+   to be read.  For example,
+   <pre>
+   $PTII/bin/vergil -conf ptolemy/configs/ptiny/configuration.xml
+   <pre>
+   and
+   <pre>
+   $PTII/bin/vergil -ptiny
+   </pre>
+   are equivalent
+   <p>
+   If there are no command-line arguments at all, then the configuration
+   file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
 
-@author Edward A. Lee, Steve Neuendorffer, Christopher Hylands
-@version $Id$
-@since Ptolemy II 1.0
-@see ptolemy.actor.gui.ModelFrame
-@see ptolemy.actor.gui.RunTableau
-@see ptolemy.actor.gui.PtExecuteApplication
+   @author Edward A. Lee, Steve Neuendorffer, Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 1.0
+   @see ptolemy.actor.gui.ModelFrame
+   @see ptolemy.actor.gui.RunTableau
+   @see ptolemy.actor.gui.PtExecuteApplication
 */
 public class VergilApplication extends MoMLApplication {
 
@@ -218,11 +218,11 @@ public class VergilApplication extends MoMLApplication {
 
             ChangeRequest request =
                 new ChangeRequest(configuration, file.toURL().toString()) {
-                        protected void _execute() throws Exception {
-                            userLibrary.setContainer(libraryContainer);
-                            finalLibraryEffigy.setContainer(directory);
-                        }
-                    };
+                    protected void _execute() throws Exception {
+                        userLibrary.setContainer(libraryContainer);
+                        finalLibraryEffigy.setContainer(directory);
+                    }
+                };
 
             libraryContainer.requestChange(request);
             request.waitForCompletion();
@@ -279,7 +279,7 @@ public class VergilApplication extends MoMLApplication {
                     "_hideUserLibrary",
                     Parameter.class);
         if (hideUserLibraryAttribute == null
-            || hideUserLibraryAttribute.getExpression().equals("false")) {
+                || hideUserLibraryAttribute.getExpression().equals("false")) {
 
             // Read the user's vergilUserLibrary.xml file
             //

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -55,10 +55,10 @@ import ptolemy.util.MessageHandler;
 //// ShellTextArea
 
 /**
-A text area supporting shell-style interactions.
+   A text area supporting shell-style interactions.
 
-@author John Reekie, Christopher Hylands, Edward A. Lee
-@version $Id$
+   @author John Reekie, Christopher Hylands, Edward A. Lee
+   @version $Id$
 */
 public class ShellTextArea extends JPanel {
 
@@ -83,7 +83,7 @@ public class ShellTextArea extends JPanel {
         add(jScrollPane);
 
         setBorder(BorderFactory.createTitledBorder(BorderFactory
-                .createLineBorder(Color.black), ""));
+                          .createLineBorder(Color.black), ""));
 
         // Event handling
         _jTextArea.addKeyListener(new ShellKeyListener());

@@ -1,28 +1,28 @@
 /* An actor that converts an IntToken to 32 consecutive BooleanTokens.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
@@ -42,21 +42,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////
 /// IntToBits
 /**
-This actor converts an IntToken into a sequence of Boolean tokens.
-The number of Boolean tokens is specified by the <i>numberOfBits</i>
-parameter. It should be a positive integer not bigger than 32.
-The most significant bit (the sign bit) is the first boolean
-token send out. It is "false" if the input integer is non-negative,
-otherwise it is "true". The least significant bit is the last boolean
-token send out.
+   This actor converts an IntToken into a sequence of Boolean tokens.
+   The number of Boolean tokens is specified by the <i>numberOfBits</i>
+   parameter. It should be a positive integer not bigger than 32.
+   The most significant bit (the sign bit) is the first boolean
+   token send out. It is "false" if the input integer is non-negative,
+   otherwise it is "true". The least significant bit is the last boolean
+   token send out.
 
-Let <i>k</i> denotes the value of the <i>numberOfBits</i> parameter.
-An exception is thrown if the input integer is smaller than
--2<sup><i>k</i></sup> or greater 2<sup><i>k</i></sup> - 1.
+   Let <i>k</i> denotes the value of the <i>numberOfBits</i> parameter.
+   An exception is thrown if the input integer is smaller than
+   -2<sup><i>k</i></sup> or greater 2<sup><i>k</i></sup> - 1.
 
-@author Michael Leung
-@version $Id$
-@since Ptolemy II 0.4
+   @author Michael Leung
+   @version $Id$
+   @since Ptolemy II 0.4
 */
 
 public class IntToBits extends SDFConverter {
@@ -131,14 +131,14 @@ public class IntToBits extends SDFConverter {
         if (integer < 0) {
             if (integer < - (1 << (rate - 1)))
                 throw new IllegalActionException(this,
-                   "integer is out of range.");
+                        "integer is out of range.");
             bits[0] = new BooleanToken(true);
             //integer = (int)(2147483648L + integer);
             integer = (int)((1 << (rate - 1)) + integer);
         } else {
             if (integer > (1 << (rate - 1)) - 1 )
                 throw new IllegalActionException(this,
-                    "integer is out of range.");
+                        "integer is out of range.");
             bits[0] = new BooleanToken(false);
         }
 

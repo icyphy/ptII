@@ -1,28 +1,28 @@
 /* An actor that provides the common functions to all wireless network models.
 
- Copyright (c) 2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (pjb2e@eecs.berkeley.edu)
@@ -45,15 +45,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// NetWorkActorBase
 
 /**
-This is a base class designed for the Network actors.
+   This is a base class designed for the Network actors.
 
-Currently, it mainly contains several methods for dealing with timers
-that are widely used in the OMNET c++ classes.
+   Currently, it mainly contains several methods for dealing with timers
+   that are widely used in the OMNET c++ classes.
 
 
-@author Yang Zhao, Charlie Zhong
-@version $Id$
-@since Ptolemy II 4.0
+   @author Yang Zhao, Charlie Zhong
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 
 public class NetworkActorBase extends TypedAtomicActor {
@@ -85,18 +85,18 @@ public class NetworkActorBase extends TypedAtomicActor {
 
     // messages from higher layers
     protected static final String[] PCRequestMsgFields = {"kind", "fromMACAddr",
-            "toMACAddr", "range", "angle", "num_nb", "xpos","ypos", "Length"};
+                                                          "toMACAddr", "range", "angle", "num_nb", "xpos","ypos", "Length"};
 
     protected static final String[] PCResponseMsgFields = {"kind", "fromMACAddr",
-            "toMACAddr","xpos","ypos","range","Length"};
+                                                           "toMACAddr","xpos","ypos","range","Length"};
 
     protected static final String[] StartRspMsgFields = {"kind","range"};
 
     protected static final String[] cNetwInterestMessageFields = {"kind","cost",
-            "hop_distance","fromMACAddr","toMACAddr","hopcount","arrivalTime", "Length"};
+                                                                  "hop_distance","fromMACAddr","toMACAddr","hopcount","arrivalTime", "Length"};
 
     protected static final String[] cNetwDataMessageFields = {"kind","fromMACAddr",
-            "toMACAddr","hopcount","arrivalTime","payload","Length"};
+                                                              "toMACAddr","hopcount","arrivalTime","payload","Length"};
 
 
 
@@ -134,13 +134,13 @@ public class NetworkActorBase extends TypedAtomicActor {
     protected Timer setTimer(int kind, double expirationTime)
             throws IllegalActionException {
 
-            Timer timer=new Timer();
-            timer.kind=kind;
-            timer.expirationTime=expirationTime;
-            // put all timers of this object into a queue
-            _timersSet.add(timer);
-            getDirector().fireAt(this, expirationTime);
-            return timer;
+        Timer timer=new Timer();
+        timer.kind=kind;
+        timer.expirationTime=expirationTime;
+        // put all timers of this object into a queue
+        _timersSet.add(timer);
+        getDirector().fireAt(this, expirationTime);
+        return timer;
     }
 
     /** Remove the timer that matches with the <i>timerToCancel<i> argument
@@ -152,11 +152,11 @@ public class NetworkActorBase extends TypedAtomicActor {
         // iterate through the queue to find the timer to be canceled
         while (timers.hasNext()) {
             Timer timer = (Timer) timers.next();
-                if (timer==timerToCancel) {
-                    _timersSet.remove(timer);
+            if (timer==timerToCancel) {
+                _timersSet.remove(timer);
                 break;
             }
-            }
+        }
     }
 
     /** Get the timer with expiration time that matches the current time.
@@ -174,15 +174,15 @@ public class NetworkActorBase extends TypedAtomicActor {
         Iterator timers = _timersSet.iterator();
         while (timers.hasNext()) {
             Timer timer = (Timer) timers.next();
-                if (timer.expirationTime==getDirector().getCurrentTime())
-                    {
-                        // remove it from the set no matter that
-                        // it will be processed or ignored
-                        timers.remove();
-                        return timer.kind;
-                    }
-            }
-            return -1;
+            if (timer.expirationTime==getDirector().getCurrentTime())
+                {
+                    // remove it from the set no matter that
+                    // it will be processed or ignored
+                    timers.remove();
+                    return timer.kind;
+                }
+        }
+        return -1;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -194,7 +194,7 @@ public class NetworkActorBase extends TypedAtomicActor {
     ////                         inner classes                     ////
     protected class Timer {
 
-            public int kind;
+        public int kind;
         public double expirationTime;
     }
 

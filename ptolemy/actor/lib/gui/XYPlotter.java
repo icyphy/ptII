@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
@@ -42,23 +42,23 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// XYPlotter
 /**
-An XY plotter.  This plotter contains an instance of the Plot class
-from the Ptolemy plot package as a public member.
-Data at <i>inputX</i> and <i>inputY</i> are plotted on this instance.
-Both <i>inputX</i> and <i>inputY</i> are multiports with type DOUBLE.
-When plotted, the first channel of <i>inputX</i> and the first channel
-of <i>inputY</i> are together considered the first signal,
-then the second channel of <i>inputX</i> and the second channel
-of <i>inputY</i> are considered the second signal, and so on.
-This requires that <i>inputX</i> and
-<i>inputY</i> have the same width. The actor
-assumes that there is at least one token available on each channel
-when it fires. The horizontal axis is given by the value of the
-input from <i>inputX</i> and vertical axis is given by <i>inputY</i>.
+   An XY plotter.  This plotter contains an instance of the Plot class
+   from the Ptolemy plot package as a public member.
+   Data at <i>inputX</i> and <i>inputY</i> are plotted on this instance.
+   Both <i>inputX</i> and <i>inputY</i> are multiports with type DOUBLE.
+   When plotted, the first channel of <i>inputX</i> and the first channel
+   of <i>inputY</i> are together considered the first signal,
+   then the second channel of <i>inputX</i> and the second channel
+   of <i>inputY</i> are considered the second signal, and so on.
+   This requires that <i>inputX</i> and
+   <i>inputY</i> have the same width. The actor
+   assumes that there is at least one token available on each channel
+   when it fires. The horizontal axis is given by the value of the
+   input from <i>inputX</i> and vertical axis is given by <i>inputY</i>.
 
-@author Jie Liu
-@version $Id$
-@since Ptolemy II 1.0
+   @author Jie Liu
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class XYPlotter extends Plotter {
 

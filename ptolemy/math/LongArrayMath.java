@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (ctsay@eecs.berkeley.edu)
 @AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
@@ -35,14 +35,14 @@ package ptolemy.math;
 //////////////////////////////////////////////////////////////////////////
 //// LongArrayMath
 /**
-This class provides a library for mathematical operations on long arrays.
-Unless explicitly noted otherwise, all array arguments are assumed to be
-non-null. If a null array is passed to a method, a NullPointerException
-will be thrown in the method or called methods.
+   This class provides a library for mathematical operations on long arrays.
+   Unless explicitly noted otherwise, all array arguments are assumed to be
+   non-null. If a null array is passed to a method, a NullPointerException
+   will be thrown in the method or called methods.
 
-@author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
-@version $Id$
-@since Ptolemy II 1.0
+   @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class LongArrayMath {
 

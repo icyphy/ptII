@@ -41,7 +41,7 @@ public class CSPIn extends CSPActor {
                 branches[i] = new ConditionalReceive(!hasRead[i], _ports[i], 0, i, this.getConditionalBranchController());
             }
             int successfulBranch = chooseBranch(branches);
-             System.out.println("CSPIn chooseBranch returns:" + successfulBranch);
+            System.out.println("CSPIn chooseBranch returns:" + successfulBranch);
             if (successfulBranch != -1) {
                 if (result == null)
                     result = branches[successfulBranch].getToken();
@@ -56,7 +56,7 @@ public class CSPIn extends CSPActor {
         }
     }
 
-public boolean postfire() {
+    public boolean postfire() {
         return true;
     }
 

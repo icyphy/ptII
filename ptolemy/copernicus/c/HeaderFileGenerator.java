@@ -25,8 +25,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (ssb@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
@@ -41,11 +41,11 @@ import java.util.Iterator;
 
 
 /** A C code generator for generating "header files" (.h files) that implement
-  Java classes.
+    Java classes.
 
-  @author Shuvra S. Bhattacharyya, Ankush Varma
-  @version $Id$
-  @since Ptolemy II 2.0
+    @author Shuvra S. Bhattacharyya, Ankush Varma
+    @version $Id$
+    @since Ptolemy II 2.0
 
 */
 
@@ -149,7 +149,7 @@ public class HeaderFileGenerator extends CodeGenerator {
 
         if (source.hasSuperclass()) {
             if (RequiredFileGenerator.isRequired(source
-                    .getSuperclass())) {
+                        .getSuperclass())) {
                 _updateRequiredTypes(source.getSuperclass().getType());
             }
         }
@@ -191,7 +191,7 @@ public class HeaderFileGenerator extends CodeGenerator {
             String fileName = new String((String)includeFiles.next());
 
             fileName = CNames.sanitize(fileName.substring(0
-                    , fileName.length()-3))
+                                               , fileName.length()-3))
                 + StubFileGenerator.stubFileNameSuffix() + "\"";
 
             headerCode.append(fileName);
@@ -216,7 +216,7 @@ public class HeaderFileGenerator extends CodeGenerator {
             String fileName = new String((String)requiredTypes.next());
 
             fileName = CNames.sanitize(fileName.substring(0
-                    , fileName.length()-2))
+                                               , fileName.length()-2))
                 + StubFileGenerator.stubFileNameSuffix() + "\"";
 
             headerCode.append(fileName);

@@ -1,28 +1,28 @@
 /* A continuous clock source.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (hyzheng@eecs.berkeley.edu)
 @AcceptedRating Red (hyzheng@eecs.berkeley.edu)
@@ -42,36 +42,36 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousClock
 /**
-This is a clock source used in continuous time domain.
-It extends the clock actor in ptolemy/actor/lib directory
-but overrides the fire() method and postfire() method.
-<p>
-The actor uses the fireAt() method of the director to request
-firings at the beginning of each period plus each of the offsets,
-which are treated as breakpoints. At each breakpoint,
-the actor produces two outputs, one at t_minus phase and the other
-one at t_plus phase. The time does not advance at these two phases.
-For example, with the default settings, at time 1.0, the actor
-produces 0 at t_minus phase and 1 at t_plus phase. Note, at
-the breakpoint, we treat the output of this actor as any
-value between 0 and 1.
-<p>
-There is a defaultValue parameter which is used as output after the
-clock reachs the number of cycles. In the triggered continuous clock which
-extends this class, the defaultValue parameter is also used as output before
-the clock starts. The default value is 0.
-<p>
-The clock has a stopTime parameter and a numberOfCycles parameter. If the
-stopTime is a positive double, the whole model will stop execution when the
-stop time is reached. If the numberOfCycles is set to a positive integer,
-the clock will continue outputting the value of the defaultValue parameter
-after the number of cycles are reached.
-<p>
-@see ptolemy.actor.lib.Clock
+   This is a clock source used in continuous time domain.
+   It extends the clock actor in ptolemy/actor/lib directory
+   but overrides the fire() method and postfire() method.
+   <p>
+   The actor uses the fireAt() method of the director to request
+   firings at the beginning of each period plus each of the offsets,
+   which are treated as breakpoints. At each breakpoint,
+   the actor produces two outputs, one at t_minus phase and the other
+   one at t_plus phase. The time does not advance at these two phases.
+   For example, with the default settings, at time 1.0, the actor
+   produces 0 at t_minus phase and 1 at t_plus phase. Note, at
+   the breakpoint, we treat the output of this actor as any
+   value between 0 and 1.
+   <p>
+   There is a defaultValue parameter which is used as output after the
+   clock reachs the number of cycles. In the triggered continuous clock which
+   extends this class, the defaultValue parameter is also used as output before
+   the clock starts. The default value is 0.
+   <p>
+   The clock has a stopTime parameter and a numberOfCycles parameter. If the
+   stopTime is a positive double, the whole model will stop execution when the
+   stop time is reached. If the numberOfCycles is set to a positive integer,
+   the clock will continue outputting the value of the defaultValue parameter
+   after the number of cycles are reached.
+   <p>
+   @see ptolemy.actor.lib.Clock
 
-@author Edward A. Lee, Haiyang Zheng
-@version $Id$
-@since Ptolemy II 2.2
+   @author Edward A. Lee, Haiyang Zheng
+   @version $Id$
+   @since Ptolemy II 2.2
 */
 
 public class ContinuousClock extends Clock {
@@ -86,9 +86,9 @@ public class ContinuousClock extends Clock {
      */
     public ContinuousClock(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
-           super(container, name);
-           defaultValue = new Parameter(this, "defaultValue");
-           defaultValue.setExpression("0");
+        super(container, name);
+        defaultValue = new Parameter(this, "defaultValue");
+        defaultValue.setExpression("0");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -242,7 +242,7 @@ public class ContinuousClock extends Clock {
     public void preinitialize() throws IllegalActionException {
         if (!(getDirector() instanceof CTDirector)) {
             throw new IllegalActionException("ContinuousClock can only" +
-                " be used inside CT domain.");
+                    " be used inside CT domain.");
         }
         super.preinitialize();
     }

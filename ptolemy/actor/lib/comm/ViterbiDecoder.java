@@ -1,28 +1,28 @@
 /* Viterbi Decoder.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -51,62 +51,62 @@ import ptolemy.math.Complex;
 //////////////////////////////////////////////////////////////////////////
 //// ViterbiDecoder
 /**
-The Viterbi algorithm is an optimal way to decode convolutional and
-trellis codes. The code is specified jointly by the <i>uncodedRate</i>
-and <i>polynomialArray</i> parameters.  To get a <i>k</i>/<i>n</i>
-code, set <i>uncodedRate</i> to <i>k</i> and give <i>n</i> integers
-in <i>polynomialArray</i>.  See ConvolutionalCoder for details about
-the meaning of these parameters. On each firing, this actor will
-read <i>n</i> inputs and produce <i>k</i> outputs.
-<p>
-The decoder finds the most likely data sequence given noisy inputs
-by searching all possibilities and computing the distance
-between the codewords they produce and the observed noisy data.
-The sequence yielding the minimum distance is the decoded output.
-<p>
-There are two choices offered in this actor to compute the distance.
-If it the parameter <i>softDecoding</i> is set to be false, the input
-port will accept boolean tokens and compute the Hamming distance.
-If the parameter <i>softDecoding</i> is set to be true, the input port
-will accept double tokens and compute the Euclidean distance.
-The parameter <i>constellation</i> should be a double array of length 2.
-The first element specifies the amplitude of "false" input. The second
-element specifies the amplitude of "true" input.  At this time,
-this actor can only handle binary antipodal constellations, but
-we expect to generalize this.
-<p>
-Soft decoding has lower probability of decoding error than hard decoding.
-But distance computation for hard decoding is easier, since it is based
-on bit operations. Moreover, hard decoding can be used when there is no
-direct observation of the noisy data, but only observations of a bit
-sequence that may have errors in it.  With hard decoding, this
-actor serves the role of correcting errors.  With soft decoding, it
-serves the role of reducing the likelyhood of errors.
-<p>
-There is some delay between the reading of input data and the
-production of decoded output data.  That delay, which is called
-the <i>trace-back depth</i> or <i>truncation depth</i> of the
-decoder, is controlled by the
-<i>delay</i> parameter, which is required to be a positive integer.
-On the first <i>delay</i> firings of this actor, the outputs will
-be <i>false</i>.  On each firing, the number of outputs produced
-is <i>uncodedRate</i>, so the output will have a prefix of
-<i>delay</i>*<i>uncodedRate</i> false-valued tokens before any
-decoded bits are produced.  Larger values of <i>delay</i> generally
-reduce the probability of error.  A good rule of thumb is to set
-<i>delay</i> to five times the highest order of all polynomials, provided
-that the convolutional code is a one that has good distance properties.
-<p>
-For more information on convolutional codes and Viterbi decoder,
-see the ConvolutionalCoder actor and
-Proakis, <i>Digital Communications</i>, Fourth Edition, McGraw-Hill,
-2001, pp. 471-477 and pp. 482-485,
-or Barry, Lee and Messerschmitt, <i>Digital Communication</i>, Third Edition,
-Kluwer, 2004.
-<p>
-@author Rachel Zhou, contributor: Edward A. Lee
-@version $Id$
-@since Ptolemy II 3.0
+   The Viterbi algorithm is an optimal way to decode convolutional and
+   trellis codes. The code is specified jointly by the <i>uncodedRate</i>
+   and <i>polynomialArray</i> parameters.  To get a <i>k</i>/<i>n</i>
+   code, set <i>uncodedRate</i> to <i>k</i> and give <i>n</i> integers
+   in <i>polynomialArray</i>.  See ConvolutionalCoder for details about
+   the meaning of these parameters. On each firing, this actor will
+   read <i>n</i> inputs and produce <i>k</i> outputs.
+   <p>
+   The decoder finds the most likely data sequence given noisy inputs
+   by searching all possibilities and computing the distance
+   between the codewords they produce and the observed noisy data.
+   The sequence yielding the minimum distance is the decoded output.
+   <p>
+   There are two choices offered in this actor to compute the distance.
+   If it the parameter <i>softDecoding</i> is set to be false, the input
+   port will accept boolean tokens and compute the Hamming distance.
+   If the parameter <i>softDecoding</i> is set to be true, the input port
+   will accept double tokens and compute the Euclidean distance.
+   The parameter <i>constellation</i> should be a double array of length 2.
+   The first element specifies the amplitude of "false" input. The second
+   element specifies the amplitude of "true" input.  At this time,
+   this actor can only handle binary antipodal constellations, but
+   we expect to generalize this.
+   <p>
+   Soft decoding has lower probability of decoding error than hard decoding.
+   But distance computation for hard decoding is easier, since it is based
+   on bit operations. Moreover, hard decoding can be used when there is no
+   direct observation of the noisy data, but only observations of a bit
+   sequence that may have errors in it.  With hard decoding, this
+   actor serves the role of correcting errors.  With soft decoding, it
+   serves the role of reducing the likelyhood of errors.
+   <p>
+   There is some delay between the reading of input data and the
+   production of decoded output data.  That delay, which is called
+   the <i>trace-back depth</i> or <i>truncation depth</i> of the
+   decoder, is controlled by the
+   <i>delay</i> parameter, which is required to be a positive integer.
+   On the first <i>delay</i> firings of this actor, the outputs will
+   be <i>false</i>.  On each firing, the number of outputs produced
+   is <i>uncodedRate</i>, so the output will have a prefix of
+   <i>delay</i>*<i>uncodedRate</i> false-valued tokens before any
+   decoded bits are produced.  Larger values of <i>delay</i> generally
+   reduce the probability of error.  A good rule of thumb is to set
+   <i>delay</i> to five times the highest order of all polynomials, provided
+   that the convolutional code is a one that has good distance properties.
+   <p>
+   For more information on convolutional codes and Viterbi decoder,
+   see the ConvolutionalCoder actor and
+   Proakis, <i>Digital Communications</i>, Fourth Edition, McGraw-Hill,
+   2001, pp. 471-477 and pp. 482-485,
+   or Barry, Lee and Messerschmitt, <i>Digital Communication</i>, Third Edition,
+   Kluwer, 2004.
+   <p>
+   @author Rachel Zhou, contributor: Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 3.0
 */
 public class ViterbiDecoder extends Transformer {
 
@@ -231,24 +231,24 @@ public class ViterbiDecoder extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         /*if (attribute == mode) {
-            String modeName = mode.getExpression();
-            if (modeName.equals("Hard Decoding")) {
-                //_mode = _HARD;
-                //_type.setExpression("boolean");
-            } else if (modeName.equals("Soft Decoding")) {
-                //_mode = _SOFT;
-                //_type.setExpression("double");
-                //constellation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-            } else if (modeName.equals("Trellis Decoding")) {
-                //_mode = _TRELLIS;
-                //_type.setExpression("complex");
-                //constellation.setTypeEquals(new ArrayType(BaseType.COMPLEX));
-            }
-            else {
-                throw new IllegalActionException(this,
-                    "Unrecognized interpolation type: " + modeName);
-            }
-        } else */
+          String modeName = mode.getExpression();
+          if (modeName.equals("Hard Decoding")) {
+          //_mode = _HARD;
+          //_type.setExpression("boolean");
+          } else if (modeName.equals("Soft Decoding")) {
+          //_mode = _SOFT;
+          //_type.setExpression("double");
+          //constellation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+          } else if (modeName.equals("Trellis Decoding")) {
+          //_mode = _TRELLIS;
+          //_type.setExpression("complex");
+          //constellation.setTypeEquals(new ArrayType(BaseType.COMPLEX));
+          }
+          else {
+          throw new IllegalActionException(this,
+          "Unrecognized interpolation type: " + modeName);
+          }
+          } else */
         if (attribute == softDecoding ||
                 attribute == trellisDecoding) {
             _trellisMode =
@@ -348,7 +348,7 @@ public class ViterbiDecoder extends Transformer {
             ArrayToken ampToken = ((ArrayToken)constellation.getToken());
             if (ampToken.length() != 1 << constellationOrder) {
                 throw new IllegalActionException(this,
-                "Invalid amplitudes for soft decoding!");
+                        "Invalid amplitudes for soft decoding!");
             }
             for (int i = 0; i < ampToken.length(); i++ ) {
                 _constellation[i] =
@@ -464,22 +464,22 @@ public class ViterbiDecoder extends Transformer {
                 if (_mode == _TRELLIS) {
                     Complex y = ((ComplexToken)inputToken[0]).complexValue();
                     d = _computeTrellisDistance(y, _constellation,
-                        _truthTable[state][colIndex][0]);
+                            _truthTable[state][colIndex][0]);
                 } else if (_mode == _SOFT) {
                     double[] y = new double[inputRate];
                     for (int i = 0; i < inputRate; i++) {
                         y[i] = ((DoubleToken)inputToken[i]).doubleValue();
                     }
                     d = _computeSoftDistance(y, _falseAmp, _trueAmp,
-                        _truthTable[state][colIndex][0], inputRate);
+                            _truthTable[state][colIndex][0], inputRate);
                 } else {
                     boolean[] y = new boolean[_maskNumber];
                     for (int i = 0; i < _maskNumber; i++) {
                         y[i] = ((BooleanToken)inputToken[i]).booleanValue();
                     }
                     d = (double)(_computeHardDistance(y,
-                            _truthTable[state][colIndex][0],
-                            _maskNumber));
+                                         _truthTable[state][colIndex][0],
+                                         _maskNumber));
                 }
                 // The previous state for that possibility.
                 int oldState = _truthTable[state][colIndex][1];
@@ -626,10 +626,10 @@ public class ViterbiDecoder extends Transformer {
             double falseAmp, double trueAmp, int truthValue,
             int inputRate) throws IllegalActionException {
         /*if (trellisMode) {
-            Complex truthComplex = constellation[truthValue];
-            Complex z = truthComplex.subtract(y[0].complexValue());
-            return z.magnitudeSquared();
-        } else {*/
+          Complex truthComplex = constellation[truthValue];
+          Complex z = truthComplex.subtract(y[0].complexValue());
+          return z.magnitudeSquared();
+          } else {*/
         double distance = 0.0;
         double truthAmp;
         for (int i = 0; i < inputRate; i ++) {
@@ -661,10 +661,10 @@ public class ViterbiDecoder extends Transformer {
      */
     private double _computeTrellisDistance(Complex y,
             Complex[] constellation, int truthValue) {
-         Complex truthComplex = constellation[truthValue];
-         //Complex z = y;
-         Complex v = truthComplex.subtract(y);
-         return v.magnitudeSquared();
+        Complex truthComplex = constellation[truthValue];
+        //Complex z = y;
+        Complex v = truthComplex.subtract(y);
+        return v.magnitudeSquared();
     }
 
     /** Convert an integer to its binary form. The bits

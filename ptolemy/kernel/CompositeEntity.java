@@ -1,33 +1,33 @@
 /* A CompositeEntity is a cluster in a clustered graph.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (bart@eecs.berkeley.edu)
- FIXME: Need to review instantiate().
- FIXME: Need to review _getDeferralDepth().
+FIXME: Need to review instantiate().
+FIXME: Need to review _getDeferralDepth().
 */
 
 package ptolemy.kernel;
@@ -56,47 +56,47 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// CompositeEntity
 /**
-A CompositeEntity is a cluster in a clustered graph.
-I.e., it is a non-atomic entity, in that
-it can contain other entities and relations.  It supports transparent ports,
-where, in effect, the port of a contained entity is represented by a port
-of this entity. Methods that "deeply" traverse the topology
-see right through transparent ports.
-It may be opaque, in which case its ports are opaque and methods
-that "deeply" traverse the topology do not see through them.
-For instance, deepEntityList() returns the opaque entities
-directly or indirectly contained by this entity.
-<p>
-To add an entity or relation to this composite, call its setContainer() method
-with this composite as an argument.  To remove it, call its setContainer()
-method with a null argument (or another container). The entity must be
-an instance of ComponentEntity and the relation of ComponentRelation or
-an exception is thrown.  Derived classes may further constrain these
-to subclasses.  To do that, they should override the protected methods
-_addEntity() and _addRelation() and the public member newRelation().
-<p>
-A CompositeEntity may be contained by another CompositeEntity.
-To set that up, call the setContainer() method of the inside entity.
-Derived classes may further constrain the container to be
-a subclass of CompositeEntity.  To do this, they should override
-setContainer() to throw an exception.  Recursive containment
-structures, where an entity directly or indirectly contains itself,
-are disallowed, and an exception is thrown on an attempt to set up
-such a structure.
-<p>
-A CompositeEntity can contain instances of ComponentPort.  By default
-these ports will be transparent, although subclasses of CompositeEntity
-can make them opaque by overriding the isOpaque() method to return
-<i>true</i>. Derived classes may further constrain the ports to a
-subclass of ComponentPort.
-To do this, they should override the public method newPort() to create
-a port of the appropriate subclass, and the protected method _addPort()
-to throw an exception if its argument is a port that is not of the
-appropriate subclass.
+   A CompositeEntity is a cluster in a clustered graph.
+   I.e., it is a non-atomic entity, in that
+   it can contain other entities and relations.  It supports transparent ports,
+   where, in effect, the port of a contained entity is represented by a port
+   of this entity. Methods that "deeply" traverse the topology
+   see right through transparent ports.
+   It may be opaque, in which case its ports are opaque and methods
+   that "deeply" traverse the topology do not see through them.
+   For instance, deepEntityList() returns the opaque entities
+   directly or indirectly contained by this entity.
+   <p>
+   To add an entity or relation to this composite, call its setContainer() method
+   with this composite as an argument.  To remove it, call its setContainer()
+   method with a null argument (or another container). The entity must be
+   an instance of ComponentEntity and the relation of ComponentRelation or
+   an exception is thrown.  Derived classes may further constrain these
+   to subclasses.  To do that, they should override the protected methods
+   _addEntity() and _addRelation() and the public member newRelation().
+   <p>
+   A CompositeEntity may be contained by another CompositeEntity.
+   To set that up, call the setContainer() method of the inside entity.
+   Derived classes may further constrain the container to be
+   a subclass of CompositeEntity.  To do this, they should override
+   setContainer() to throw an exception.  Recursive containment
+   structures, where an entity directly or indirectly contains itself,
+   are disallowed, and an exception is thrown on an attempt to set up
+   such a structure.
+   <p>
+   A CompositeEntity can contain instances of ComponentPort.  By default
+   these ports will be transparent, although subclasses of CompositeEntity
+   can make them opaque by overriding the isOpaque() method to return
+   <i>true</i>. Derived classes may further constrain the ports to a
+   subclass of ComponentPort.
+   To do this, they should override the public method newPort() to create
+   a port of the appropriate subclass, and the protected method _addPort()
+   to throw an exception if its argument is a port that is not of the
+   appropriate subclass.
 
-@author John S. Davis II, Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
+   @author John S. Davis II, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class CompositeEntity extends ComponentEntity {
 
@@ -273,9 +273,9 @@ public class CompositeEntity extends ComponentEntity {
         Iterator classes = classDefinitionList().iterator();
         while (classes.hasNext()) {
             ComponentEntity classDefinition
-                    = (ComponentEntity)classes.next();
+                = (ComponentEntity)classes.next();
             ComponentEntity newSubentity = (ComponentEntity)classDefinition
-                    .clone(workspace);
+                .clone(workspace);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally.  If they do, throw a
             // CloneNotSupportedException.
@@ -292,9 +292,9 @@ public class CompositeEntity extends ComponentEntity {
         Iterator entities = entityList().iterator();
         while (entities.hasNext()) {
             ComponentEntity entity
-                    = (ComponentEntity)entities.next();
+                = (ComponentEntity)entities.next();
             ComponentEntity newSubentity = (ComponentEntity)entity
-                     .clone(workspace);
+                .clone(workspace);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally.  If they do, throw a
             // CloneNotSupportedException.
@@ -625,8 +625,8 @@ public class CompositeEntity extends ComponentEntity {
                 }
                 // Apply filter.
                 if (filter == null || (filter.contains(relation)
-                        && (filter.contains(port)
-                        ||  filter.contains(port.getContainer())))) {
+                            && (filter.contains(port)
+                                    ||  filter.contains(port.getContainer())))) {
 
                     // In order to support level-crossing links, consider the
                     // possibility that the relation is not contained by this.
@@ -1240,7 +1240,7 @@ public class CompositeEntity extends ComponentEntity {
         Iterator classes = classDefinitionList().iterator();
         while (classes.hasNext()) {
             ComponentEntity classDefinition
-                    = (ComponentEntity)classes.next();
+                = (ComponentEntity)classes.next();
             classDefinition._adjustDeferrals(prototype, clone);
         }
 
@@ -1248,7 +1248,7 @@ public class CompositeEntity extends ComponentEntity {
         Iterator entities = entityList().iterator();
         while (entities.hasNext()) {
             ComponentEntity entity
-                    = (ComponentEntity)entities.next();
+                = (ComponentEntity)entities.next();
             entity._adjustDeferrals(prototype, clone);
         }
     }
@@ -1404,7 +1404,7 @@ public class CompositeEntity extends ComponentEntity {
             // of definedObject to figure out how to look it up.
             if (definedObject instanceof ComponentEntity) {
                 ComponentEntity definition
-                        = ((CompositeEntity)deferTo).getEntity(relativeName);
+                    = ((CompositeEntity)deferTo).getEntity(relativeName);
                 if (definition != null
                         && definedObject.exportMoML()
                         .equals(definition.exportMoML())) {
@@ -1412,7 +1412,7 @@ public class CompositeEntity extends ComponentEntity {
                 }
             } else if (definedObject instanceof ComponentRelation) {
                 ComponentRelation definition
-                        = ((CompositeEntity)deferTo).getRelation(relativeName);
+                    = ((CompositeEntity)deferTo).getRelation(relativeName);
                 if (definition != null
                         && definedObject.exportMoML()
                         .equals(definition.exportMoML())) {
@@ -1504,7 +1504,7 @@ public class CompositeEntity extends ComponentEntity {
      *  then relations.
      */
     protected class ContainedObjectsIterator
-            extends Entity.ContainedObjectsIterator {
+        extends Entity.ContainedObjectsIterator {
 
         /** Return true if the iteration has more elements.
          *  In this class, this returns true if there are more

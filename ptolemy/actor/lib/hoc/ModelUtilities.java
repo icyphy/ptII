@@ -1,28 +1,28 @@
 /* Utilities that manipulate a model.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
@@ -48,13 +48,13 @@ import ptolemy.moml.MoMLParser;
 //////////////////////////////////////////////////////////////////////////
 //// ModelUtilities
 /**
-A collection of utilities for manipulating a Ptolemy model.
-FIXME: Currently there is only one major operation for invoke
-the execution of a model. We may add more later.
+   A collection of utilities for manipulating a Ptolemy model.
+   FIXME: Currently there is only one major operation for invoke
+   the execution of a model. We may add more later.
 
-@author Yang Zhao
-@version $Id$
-@since Ptolemy II 4.0
+   @author Yang Zhao
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class ModelUtilities {
 
@@ -83,8 +83,8 @@ public class ModelUtilities {
      * or failed to execute the model.
      */
     public static synchronized RecordToken executeModel
-            (URL url, RecordToken args, String[] resultLabels)
-             throws IllegalActionException {
+    (URL url, RecordToken args, String[] resultLabels)
+            throws IllegalActionException {
         if (url != null) {
             MoMLParser parser = new MoMLParser();
             NamedObj model;
@@ -92,9 +92,9 @@ public class ModelUtilities {
                 model = parser.parse(null, url);
             } catch (Exception ex) {
                 throw new IllegalActionException(
-                    ex +
-                    "Failed to pass the model URL." +
-                    url.toString());
+                        ex +
+                        "Failed to pass the model URL." +
+                        url.toString());
             }
             if (model instanceof CompositeActor) {
                 return executeModel((CompositeActor)model, args, resultLabels);
@@ -123,7 +123,7 @@ public class ModelUtilities {
      * @exception IllegalActionException If failed to execute the model.
      */
     public static synchronized RecordToken executeModel
-            (CompositeActor model, RecordToken args,
+    (CompositeActor model, RecordToken args,
             String[] resultLabels) throws IllegalActionException {
         Manager manager = model.getManager();
         if (manager == null) {
@@ -137,22 +137,22 @@ public class ModelUtilities {
             manager.execute();
         } catch (KernelException ex) {
             throw new IllegalActionException(ex+
-            "Execution failed.");
+                    "Execution failed.");
         }
         return _getResult(model, resultLabels);
     }
-///////////////////////////////////////////////////////////////////
-////                        private methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
 
-/** Iterate over the labelSet of the <i>args<i> argument and
- *  check whether the specified model has Attribute with the
- *  same name of a label. If so, set the value of the attribute
- *  to be the value of that record field.
- *  @exception IllegalActionException If reading the ports or
- *   setting the parameters causes it.
- */
+    /** Iterate over the labelSet of the <i>args<i> argument and
+     *  check whether the specified model has Attribute with the
+     *  same name of a label. If so, set the value of the attribute
+     *  to be the value of that record field.
+     *  @exception IllegalActionException If reading the ports or
+     *   setting the parameters causes it.
+     */
     private static void _setAttribute(CompositeActor model,
-        RecordToken args) throws IllegalActionException {
+            RecordToken args) throws IllegalActionException {
         Object[] labels = args.labelSet().toArray();
         int length = args.length();
         //String[] labels = new String[length];
@@ -173,28 +173,28 @@ public class ModelUtilities {
         }
     }
 
-/** Iterate over the resultLabels and
- *  check whether the specified model has Attribute with the
- *  same name of a label. If so, get the value of the attribute
- *  and return a record token with labels equal to resultLabels
- *  and values equal to the corresponding attribute value.
- *  @param model The model executed.
- *  @param resultLabels Labels of the returned result.
- *  @return The execution result.
- *  @exception IllegalActionException If reading the ports or
- *   setting the parameters causes it.
- */
-private static RecordToken _getResult(CompositeActor model,
-        String[] resultLabels) throws IllegalActionException {
-    Token[] value = new Token[resultLabels.length];
-    for (int i = 0; i < resultLabels.length; i++) {
-        String label = resultLabels[i];
-        Attribute attribute = model.getAttribute(label);
-        if (attribute instanceof Variable) {
-            value[i] =((Variable) attribute).getToken();
+    /** Iterate over the resultLabels and
+     *  check whether the specified model has Attribute with the
+     *  same name of a label. If so, get the value of the attribute
+     *  and return a record token with labels equal to resultLabels
+     *  and values equal to the corresponding attribute value.
+     *  @param model The model executed.
+     *  @param resultLabels Labels of the returned result.
+     *  @return The execution result.
+     *  @exception IllegalActionException If reading the ports or
+     *   setting the parameters causes it.
+     */
+    private static RecordToken _getResult(CompositeActor model,
+            String[] resultLabels) throws IllegalActionException {
+        Token[] value = new Token[resultLabels.length];
+        for (int i = 0; i < resultLabels.length; i++) {
+            String label = resultLabels[i];
+            Attribute attribute = model.getAttribute(label);
+            if (attribute instanceof Variable) {
+                value[i] =((Variable) attribute).getToken();
+            }
         }
+        return new RecordToken(resultLabels, value);
     }
-    return new RecordToken(resultLabels, value);
-}
 
 }

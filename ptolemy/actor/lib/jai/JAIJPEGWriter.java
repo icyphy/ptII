@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -148,7 +148,7 @@ public class JAIJPEGWriter extends JAIWriter {
                 ((BooleanToken)writeJFIFHeader.getToken()).booleanValue());
         jpegEncodeParameters.setQuality(0.01f * quality.getCurrentValue());
         jpegEncodeParameters.setRestartInterval(((IntToken)restartInterval
-                .getToken()).intValue());
+                                                        .getToken()).intValue());
 
         _imageEncodeParam = jpegEncodeParameters;
         return super.postfire();

@@ -1,28 +1,28 @@
 /* Attribute that contains attributes that identify the containing model.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -48,15 +48,15 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// IDAttribute
 /**
-This attribute identifies the containing model, showing its name, base
-class, last modified date, and author information. Of these, only the
-author information is editable.  For the others, they are inferred
-from the model.  Unfortunately, if they change, the display will
-not be updated, however, until the model is re-opened.
-<p>
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   This attribute identifies the containing model, showing its name, base
+   class, last modified date, and author information. Of these, only the
+   author information is editable.  For the others, they are inferred
+   from the model.  Unfortunately, if they change, the display will
+   not be updated, however, until the model is re-opened.
+   <p>
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class IDAttribute extends SingletonAttribute {
 
@@ -104,7 +104,7 @@ public class IDAttribute extends SingletonAttribute {
         baseClass.setVisibility(Settable.NOT_EDITABLE);
 
         URIAttribute modelURI = (URIAttribute)container.getAttribute(
-               "_uri", URIAttribute.class);
+                "_uri", URIAttribute.class);
         if (modelURI != null) {
             StringAttribute definedIn = new StringAttribute(this, "definedIn");
             definedIn.setExpression(modelURI.getURI().toString());
@@ -171,7 +171,7 @@ public class IDAttribute extends SingletonAttribute {
                 container.setName(name.getExpression());
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
-                "Cannot change the name of the container to match.");
+                        "Cannot change the name of the container to match.");
             }
         } else {
             super.attributeChanged(attribute);

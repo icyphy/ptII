@@ -1,28 +1,28 @@
 /* A tableau representing a text window.
 
- Copyright (c) 2000-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2000-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -42,17 +42,17 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// TextEditorTableau
 /**
-A tableau representing a text window. The constructor of this
-class creates the window. The text window itself is an instance
-of TextEditor, and can be accessed using the getFrame() method.
-As with other tableaux, this is an entity that is contained by
-an effigy of a model.
-There can be any number of instances of this class in an effigy.
+   A tableau representing a text window. The constructor of this
+   class creates the window. The text window itself is an instance
+   of TextEditor, and can be accessed using the getFrame() method.
+   As with other tableaux, this is an entity that is contained by
+   an effigy of a model.
+   There can be any number of instances of this class in an effigy.
 
-@author  Steve Neuendorffer and Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
-@see Effigy
+   @author  Steve Neuendorffer and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
+   @see Effigy
 */
 public class TextEditorTableau extends Tableau {
 
@@ -65,7 +65,7 @@ public class TextEditorTableau extends Tableau {
      *   attribute already in the container.
      */
     public TextEditorTableau(TextEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 
         this(container, name, null);
     }
@@ -80,10 +80,10 @@ public class TextEditorTableau extends Tableau {
      *   attribute already in the container.
      */
     public TextEditorTableau(
-        TextEffigy container,
-        String name,
-        TextEditor editor)
-        throws IllegalActionException, NameDuplicationException {
+            TextEffigy container,
+            String name,
+            TextEditor editor)
+            throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
         String title = "Unnamed";
@@ -131,7 +131,7 @@ public class TextEditorTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
             String editorPreference = ".";
@@ -157,18 +157,18 @@ public class TextEditorTableau extends Tableau {
                 }
                 _tableauConstructor =
                     tableauClass.getConstructor(
-                        new Class[] { TextEffigy.class, String.class });
+                            new Class[] { TextEffigy.class, String.class });
                 _newTextEffigyText =
                     effigyClass.getMethod(
-                        "newTextEffigy",
-                        new Class[] { CompositeEntity.class, String.class });
+                            "newTextEffigy",
+                            new Class[] { CompositeEntity.class, String.class });
                 _newTextEffigyURL =
                     effigyClass.getMethod(
-                        "newTextEffigy",
-                        new Class[] {
-                            CompositeEntity.class,
-                            URL.class,
-                            URL.class });
+                            "newTextEffigy",
+                            new Class[] {
+                                CompositeEntity.class,
+                                URL.class,
+                                URL.class });
 
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
@@ -212,7 +212,7 @@ public class TextEditorTableau extends Tableau {
                 if (tableau == null) {
                     tableau =
                         (TextEditorTableau) _tableauConstructor.newInstance(
-                            new Object[] { effigy, "textTableau" });
+                                new Object[] { effigy, "textTableau" });
                 }
                 tableau.setEditable(effigy.isModifiable());
                 return tableau;
@@ -243,8 +243,8 @@ public class TextEditorTableau extends Tableau {
                         ((PtolemyEffigy) effigy).getModel().exportMoML();
                     textEffigy =
                         (TextEffigy) _newTextEffigyText.invoke(
-                            null,
-                            new Object[] { effigy, moml });
+                                null,
+                                new Object[] { effigy, moml });
                     // FIXME: Eventually, it would be nice that this be
                     // editable if the PtolemyEffigy is modifiable.
                     // But this requires having an "apply" button.
@@ -254,8 +254,8 @@ public class TextEditorTableau extends Tableau {
                     // The View Source choice of the HTMLViewer runs this code.
                     textEffigy =
                         (TextEffigy) _newTextEffigyURL.invoke(
-                            null,
-                            new Object[] { effigy, url, url });
+                                null,
+                                new Object[] { effigy, url, url });
                     textEffigy.setName("textEffigy");
                 }
                 TextEditorTableau textTableau =

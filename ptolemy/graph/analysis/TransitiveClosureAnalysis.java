@@ -1,24 +1,24 @@
 /* An analysis for the computation of transitive closure of a directed graph.
 
- Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2002-2004 The University of Maryland. All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Red (shahrooz@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
@@ -36,22 +36,22 @@ import ptolemy.graph.analysis.strategy.FloydWarshallTransitiveClosureStrategy;
 //////////////////////////////////////////////////////////////////////////
 //// TransitiveClosureAnalysis
 /**
-An analysis for the computation of transitive closure of a directed graph.
-While there is a path directed from node X to Y in the given graph,
-there is an edge from X to Y in the transformed graph. Generally, transitive
-closure is expressed in terms of square matrix with graph node labels as
-indices.
-<p>
-The {@link #transitiveClosureMatrix()} method returns the transitive closure of
-the graph in the form of a two dimensional array. The first dimension represents
-source node label while the second one represents sink node label.
-Assume i and j are labels of two nodes. Matrix[i][j] is true if there is a path
-on the graph from "i" to "j".
-<p>
-@see ptolemy.graph.Graph#nodeLabel
-@since Ptolemy II 2.0
-@author Shahrooz Shahparnia
-@version $Id$
+   An analysis for the computation of transitive closure of a directed graph.
+   While there is a path directed from node X to Y in the given graph,
+   there is an edge from X to Y in the transformed graph. Generally, transitive
+   closure is expressed in terms of square matrix with graph node labels as
+   indices.
+   <p>
+   The {@link #transitiveClosureMatrix()} method returns the transitive closure of
+   the graph in the form of a two dimensional array. The first dimension represents
+   source node label while the second one represents sink node label.
+   Assume i and j are labels of two nodes. Matrix[i][j] is true if there is a path
+   on the graph from "i" to "j".
+   <p>
+   @see ptolemy.graph.Graph#nodeLabel
+   @since Ptolemy II 2.0
+   @author Shahrooz Shahparnia
+   @version $Id$
 */
 
 public class TransitiveClosureAnalysis extends Analysis {
@@ -87,7 +87,7 @@ public class TransitiveClosureAnalysis extends Analysis {
      */
     public boolean pathExistence(Node startNode, Node endNode) {
         return ((TransitiveClosureAnalyzer)analyzer())
-                .pathExistence(startNode, endNode);
+            .pathExistence(startNode, endNode);
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -97,7 +97,7 @@ public class TransitiveClosureAnalysis extends Analysis {
      */
     public String toString() {
         return "Transitive closure analysis using the following analyzer:\n"
-                + analyzer().toString();
+            + analyzer().toString();
     }
 
     /** Compute the transitive closure of the graph under analysis in the
@@ -109,7 +109,7 @@ public class TransitiveClosureAnalysis extends Analysis {
      */
     public boolean[][] transitiveClosureMatrix() {
         return ((TransitiveClosureAnalyzer)analyzer())
-                .transitiveClosureMatrix();
+            .transitiveClosureMatrix();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

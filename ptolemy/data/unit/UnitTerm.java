@@ -1,28 +1,28 @@
 /* UnitTerm
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_3
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_3
+COPYRIGHTENDKEY
 @Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
 @Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
@@ -33,15 +33,15 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// UnitTerm
 /** UnitTerm represents a term in a Unit Expression.
-A UnitTerm has 1) an exponent and 2) an element.
-The element
-can be either 1) a Unit, 2) a variable, or 3) a
-Unit Expression. These choices for element are mutually exclusive.
-UnitTerms are usually constructed as a result of parsing a Unit Expression.
+    A UnitTerm has 1) an exponent and 2) an element.
+    The element
+    can be either 1) a Unit, 2) a variable, or 3) a
+    Unit Expression. These choices for element are mutually exclusive.
+    UnitTerms are usually constructed as a result of parsing a Unit Expression.
 
-@author Rowland R Johnson
-@version $Id$
-@since Ptolemy II 4.0
+    @author Rowland R Johnson
+    @version $Id$
+    @since Ptolemy II 4.0
 */
 public class UnitTerm implements UnitPresentation {
 
@@ -84,21 +84,21 @@ public class UnitTerm implements UnitPresentation {
     public String descriptiveForm() {
         String retv = null;
         switch (_type) {
-            case _VARIABLE :
-                {
-                    retv = "$" + _variable;
-                    break;
-                }
-            case _UNIT :
-                {
-                    retv = _unit.descriptiveForm();
-                    break;
-                }
-            case _UNITEXPR :
-                {
-                    retv = "(" + _unitExpr.descriptiveForm() + ")";
-                    break;
-                }
+        case _VARIABLE :
+            {
+                retv = "$" + _variable;
+                break;
+            }
+        case _UNIT :
+            {
+                retv = _unit.descriptiveForm();
+                break;
+            }
+        case _UNITEXPR :
+            {
+                retv = "(" + _unitExpr.descriptiveForm() + ")";
+                break;
+            }
         }
         if (getExponent() != 1) {
             retv += "^" + getExponent();
@@ -146,17 +146,17 @@ public class UnitTerm implements UnitPresentation {
     public UnitTerm invert() {
         UnitTerm retv = copy();
         switch (_type) {
-            case _VARIABLE :
-            case _UNIT :
-                {
-                    retv.setExponent(-getExponent());
-                    break;
-                }
-            case _UNITEXPR :
-                {
-                    retv.setUnitExpr(_unitExpr.invert());
-                    break;
-                }
+        case _VARIABLE :
+        case _UNIT :
+            {
+                retv.setExponent(-getExponent());
+                break;
+            }
+        case _UNITEXPR :
+            {
+                retv.setUnitExpr(_unitExpr.invert());
+                break;
+            }
         }
         return retv;
     }
@@ -169,8 +169,8 @@ public class UnitTerm implements UnitPresentation {
     }
 
     /** True is this is a UnitExpr.
-                 * @return True is this is a UnitExpr.
-                 */
+     * @return True is this is a UnitExpr.
+     */
     public boolean isUnitExpr() {
         return (_type == _UNITEXPR);
     }
@@ -221,21 +221,21 @@ public class UnitTerm implements UnitPresentation {
     public String toString() {
         String retv = null;
         switch (_type) {
-            case _VARIABLE :
-                {
-                    retv = _variable;
-                    break;
-                }
-            case _UNIT :
-                {
-                    retv = _unit.toString();
-                    break;
-                }
-            case _UNITEXPR :
-                {
-                    retv = "(" + _unitExpr.toString() + ")";
-                    break;
-                }
+        case _VARIABLE :
+            {
+                retv = _variable;
+                break;
+            }
+        case _UNIT :
+            {
+                retv = _unit.toString();
+                break;
+            }
+        case _UNITEXPR :
+            {
+                retv = "(" + _unitExpr.toString() + ")";
+                break;
+            }
         }
         if (getExponent() != 1) {
             retv += "^" + getExponent();
@@ -248,7 +248,7 @@ public class UnitTerm implements UnitPresentation {
      * @return The result of visiting the UnitTerm.
      */
     public Object visit(EquationVisitor visitor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         return visitor._visitUnitTerm(this);
     }
 

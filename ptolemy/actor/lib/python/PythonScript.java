@@ -1,28 +1,28 @@
 /* An actor that executes a Python script.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (liuxj@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
@@ -57,86 +57,86 @@ import org.python.util.PythonInterpreter;
 //////////////////////////////////////////////////////////////////////////
 //// PythonScript
 /**
-An actor of this class executes a Python script.  There are two versions
-of this actor provided in the Vergil libraries.  The one called
-"PythonActor" has an input port and an output port; to view or edit
-its Python script, look inside the actor.  The second version is
-called "PythonScript" and has no ports; to view or edit its Python
-script, select Configure (or double click on the icon).
-<p>
-Upon creation, this actor has no ports, and no parameters other than
-{@link #script script}; The <i>script</i> parameter has visibility
-EXPERT, and therefore does not normally show up in a configure dialog
-for the actor.  To make the script visible and editable, you have two
-options. Including an instance of an attribute of class
-TextEditorConfigureFactory (with its <i>attributeName</i> parameter
-set to <i>script</i>) results in behavior like that of the Vergil
-"PythonScript." That is, to edit the script, you Configure the actor.
-If instead you include an instance of TextEditorTableauFactory,
-then to edit the script you look inside the actor.  Use the latter
-if you wish to add additional attributes to the actor and hide the
-script from the users.  Use the former if the script is the main
-means by which users interact with the actor.
-<p>
-Upon creation, this actor has no ports, and no parameters other than
-{@link #script script}; The <i>script</i> parameter has visibility
-EXPERT, and therefore does not normally show up in a configure dialog
-for the actor.  To make the script visible and editable, you have two
-options. Including an instance of an attribute of class
-TextEditorConfigureFactory (with its <i>attributeName</i> parameter
-set to <i>script</i>) results in behavior like that of the Vergil
-"PythonScript." That is, to edit the script, you Configure the actor.
-If instead you include an instance of TextEditorTableauFactory,
-then to edit the script you look inside the actor.  Use the latter
-if you wish to add additional attributes to the actor and hide the
-script from the users.  Use the former if the script is the main
-means by which users interact with the actor.
-<p>
-The functionality of an actor of this type is given by a Python script.
-As an example, a simplified version of the
-{@link ptolemy.actor.lib.Scale Scale}
-actor can be implemented by the following script:
-<pre>
-1.  class Main :
-2.    "scale"
-3.    def fire(self) :
-4.      if not self.input.hasToken(0) :
-5.        return
-6.      s = self.scale.getToken()
-7.      t = self.input.get(0)
-8.      self.output.broadcast(s.multiply(t))
-</pre>
-Line 1 defines a Python class Main. This name is fixed. An instance of this
-class is created when the actor is initialized. Line 2 is a description of
-the purpose of the script. Lines 3-8 define the fire() method, which is
-called by the {@link #fire() fire()} method of this actor. In the method body,
-<i>input</i> and <i>output</i> are ports that have to have been
-added to the actor, and <i>scale</i> is a parameter that has to have been
-added to the actor (these can be added in the XML that defines the
-actor instance in an actor library). The Main class can provide other
-methods in the {@link ptolemy.actor.Executable Executable} interface
-as needed.
-<p>
-In the script, use <code>self.actor</code> to access the actor. For example,
-<code>self.actor.getDirector()</code> returns the current director of the
-actor. For debugging, use <code>self.actor.debug(someMessage)</code>. The
-final message sent to the debug listeners of the actor will have the string
-"From script: " inserted at the beginning. To avoid generating the debug
-message when there are no listeners, use:
-<pre>
-  if self.actor.isDebugging() :
-    self.actor.debug(someMessage)
-</pre>
-<p>
-This class relies on Jython, which is a Java implementation of Python.
-Follow the links below for more information about the Python language,
-licensing, downloads, etc.
+   An actor of this class executes a Python script.  There are two versions
+   of this actor provided in the Vergil libraries.  The one called
+   "PythonActor" has an input port and an output port; to view or edit
+   its Python script, look inside the actor.  The second version is
+   called "PythonScript" and has no ports; to view or edit its Python
+   script, select Configure (or double click on the icon).
+   <p>
+   Upon creation, this actor has no ports, and no parameters other than
+   {@link #script script}; The <i>script</i> parameter has visibility
+   EXPERT, and therefore does not normally show up in a configure dialog
+   for the actor.  To make the script visible and editable, you have two
+   options. Including an instance of an attribute of class
+   TextEditorConfigureFactory (with its <i>attributeName</i> parameter
+   set to <i>script</i>) results in behavior like that of the Vergil
+   "PythonScript." That is, to edit the script, you Configure the actor.
+   If instead you include an instance of TextEditorTableauFactory,
+   then to edit the script you look inside the actor.  Use the latter
+   if you wish to add additional attributes to the actor and hide the
+   script from the users.  Use the former if the script is the main
+   means by which users interact with the actor.
+   <p>
+   Upon creation, this actor has no ports, and no parameters other than
+   {@link #script script}; The <i>script</i> parameter has visibility
+   EXPERT, and therefore does not normally show up in a configure dialog
+   for the actor.  To make the script visible and editable, you have two
+   options. Including an instance of an attribute of class
+   TextEditorConfigureFactory (with its <i>attributeName</i> parameter
+   set to <i>script</i>) results in behavior like that of the Vergil
+   "PythonScript." That is, to edit the script, you Configure the actor.
+   If instead you include an instance of TextEditorTableauFactory,
+   then to edit the script you look inside the actor.  Use the latter
+   if you wish to add additional attributes to the actor and hide the
+   script from the users.  Use the former if the script is the main
+   means by which users interact with the actor.
+   <p>
+   The functionality of an actor of this type is given by a Python script.
+   As an example, a simplified version of the
+   {@link ptolemy.actor.lib.Scale Scale}
+   actor can be implemented by the following script:
+   <pre>
+   1.  class Main :
+   2.    "scale"
+   3.    def fire(self) :
+   4.      if not self.input.hasToken(0) :
+   5.        return
+   6.      s = self.scale.getToken()
+   7.      t = self.input.get(0)
+   8.      self.output.broadcast(s.multiply(t))
+   </pre>
+   Line 1 defines a Python class Main. This name is fixed. An instance of this
+   class is created when the actor is initialized. Line 2 is a description of
+   the purpose of the script. Lines 3-8 define the fire() method, which is
+   called by the {@link #fire() fire()} method of this actor. In the method body,
+   <i>input</i> and <i>output</i> are ports that have to have been
+   added to the actor, and <i>scale</i> is a parameter that has to have been
+   added to the actor (these can be added in the XML that defines the
+   actor instance in an actor library). The Main class can provide other
+   methods in the {@link ptolemy.actor.Executable Executable} interface
+   as needed.
+   <p>
+   In the script, use <code>self.actor</code> to access the actor. For example,
+   <code>self.actor.getDirector()</code> returns the current director of the
+   actor. For debugging, use <code>self.actor.debug(someMessage)</code>. The
+   final message sent to the debug listeners of the actor will have the string
+   "From script: " inserted at the beginning. To avoid generating the debug
+   message when there are no listeners, use:
+   <pre>
+   if self.actor.isDebugging() :
+   self.actor.debug(someMessage)
+   </pre>
+   <p>
+   This class relies on Jython, which is a Java implementation of Python.
+   Follow the links below for more information about the Python language,
+   licensing, downloads, etc.
 
-@author Xiaojun Liu
-@version $Id$
-@since Ptolemy II 2.3
-@see <a href="http://www.python.org" target="_top">Python</a>
-@see <a href="http://www.jython.org" target="_top">Jython</a>
+   @author Xiaojun Liu
+   @version $Id$
+   @since Ptolemy II 2.3
+   @see <a href="http://www.python.org" target="_top">Python</a>
+   @see <a href="http://www.jython.org" target="_top">Jython</a>
 */
 public class PythonScript extends TypedAtomicActor {
 
@@ -152,7 +152,7 @@ public class PythonScript extends TypedAtomicActor {
      *   by the proposed container.
      */
     public PythonScript(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         script = new StringAttribute(this, "script");
         // Set the visibility to expert, as casual users should
@@ -171,7 +171,7 @@ public class PythonScript extends TypedAtomicActor {
         //     return
         //
         script.setExpression(
-            "# This is a template.\n"
+                "# This is a template.\n"
                 + "class Main :\n"
                 + "  \"description here\"\n"
                 + "  def fire(self) :\n"
@@ -182,8 +182,8 @@ public class PythonScript extends TypedAtomicActor {
                 + "    # self.output.broadcast(token)\n"
                 + "    return\n\n");
         _attachText(
-            "_iconDescription",
-            "<svg>\n"
+                "_iconDescription",
+                "<svg>\n"
                 + "<rect x=\"-30\" y=\"-15\" "
                 + "width=\"60\" height=\"30\" "
                 + "style=\"fill:black\"/>\n"
@@ -211,7 +211,7 @@ public class PythonScript extends TypedAtomicActor {
      *   the script.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == script) {
             _evaluateScript();
         } else {
@@ -371,8 +371,8 @@ public class PythonScript extends TypedAtomicActor {
         PyObject object = _class.__call__();
         if (object == null) {
             throw new IllegalActionException(
-                this,
-                "Error in creating an instance of the Main class "
+                    this,
+                    "Error in creating an instance of the Main class "
                     + "defined in the script.");
         }
         // set up access to this actor
@@ -388,15 +388,15 @@ public class PythonScript extends TypedAtomicActor {
             String mangledName = _mangleName(attribute.getName());
             if (_debugging) {
                 _debug(
-                    "set up reference to attribute \""
+                        "set up reference to attribute \""
                         + attribute.getName()
                         + "\" as \""
                         + mangledName
                         + "\"");
             }
             object.__setattr__(
-                new PyString(mangledName),
-                new PyJavaInstance(attribute));
+                    new PyString(mangledName),
+                    new PyJavaInstance(attribute));
         }
         Iterator ports = portList().iterator();
         while (ports.hasNext()) {
@@ -404,15 +404,15 @@ public class PythonScript extends TypedAtomicActor {
             String mangledName = _mangleName(port.getName());
             if (_debugging) {
                 _debug(
-                    "set up reference to port \""
+                        "set up reference to port \""
                         + port.getName()
                         + "\" as \""
                         + mangledName
                         + "\"");
             }
             object.__setattr__(
-                new PyString(mangledName),
-                new PyJavaInstance(port));
+                    new PyString(mangledName),
+                    new PyJavaInstance(port));
         }
 
         // populate the method map
@@ -454,13 +454,13 @@ public class PythonScript extends TypedAtomicActor {
                 _class = (PyClass) _interpreter.get(_CLASS_NAME);
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(
-                    this,
-                    "The script does not define a Main class.");
+                        this,
+                        "The script does not define a Main class.");
             }
             if (_class == null) {
                 throw new IllegalActionException(
-                    this,
-                    "The script does not define a Main class.");
+                        this,
+                        "The script does not define a Main class.");
             }
         }
     }
@@ -472,7 +472,7 @@ public class PythonScript extends TypedAtomicActor {
      *  error in calling the method.
      */
     private PyObject _invokeMethod(String methodName, Object[] args)
-        throws IllegalActionException {
+            throws IllegalActionException {
         PyMethod method = (PyMethod) _methodMap.get(methodName);
         PyObject returnValue = null;
         if (method != null) {
@@ -491,7 +491,7 @@ public class PythonScript extends TypedAtomicActor {
                 }
             } catch (Exception ex) {
                 String messagePrefix =
-                        "Error in invoking the " + methodName + " method:\n";
+                    "Error in invoking the " + methodName + " method:\n";
                 if (ex instanceof PyException) {
                     _reportScriptError((PyException)ex, messagePrefix);
                 } else {
@@ -593,19 +593,19 @@ public class PythonScript extends TypedAtomicActor {
 
             // Properties that are accessible via an applet.
             String[] propertyNames = {"file.separator",
-                              "line.separator",
-                              "path.separator",
-                              "java.class.version",
-                              "java.vendor",
-                              "java.vendor.url",
-                              "java.version",
-                              "os.name",
-                              "os.arch",
-                              "os.version"};
+                                      "line.separator",
+                                      "path.separator",
+                                      "java.class.version",
+                                      "java.vendor",
+                                      "java.vendor.url",
+                                      "java.version",
+                                      "os.name",
+                                      "os.arch",
+                                      "os.version"};
             Properties preProperties = new Properties();
             for (int i = 0; i < propertyNames.length; i++) {
-                     preProperties.setProperty(propertyNames[i],
-                             System.getProperty(propertyNames[i]));
+                preProperties.setProperty(propertyNames[i],
+                        System.getProperty(propertyNames[i]));
             }
 
             PySystemState.initialize(preProperties, null, new String[] {""});
@@ -616,13 +616,13 @@ public class PythonScript extends TypedAtomicActor {
             String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
             _interpreter.exec("import sys\n");
             _interpreter.exec(
-                "sys.path.append('" + ptIIDir + "/vendors/jython/Lib')");
+                    "sys.path.append('" + ptIIDir + "/vendors/jython/Lib')");
         } catch (Exception ex) {
         }
 
         String className = "ptolemy.kernel.util.NamedObj";
         String classResource =
-                    ClassUtilities.lookupClassAsResource(className);
+            ClassUtilities.lookupClassAsResource(className);
         if (classResource != null) {
             //System.out.println("PythonScript: className: " + classResource);
             File classFile = new File(classResource);
@@ -648,15 +648,15 @@ public class PythonScript extends TypedAtomicActor {
     // Listed here are all methods of the Executable interface, except
     // iterate().
     private static final String[] _METHOD_NAMES =
-        {
-            "fire",
-            "initialize",
-            "postfire",
-            "prefire",
-            "preinitialize",
-            "stop",
-            "stopFire",
-            "terminate",
-            "wrapup" };
+    {
+        "fire",
+        "initialize",
+        "postfire",
+        "prefire",
+        "preinitialize",
+        "stop",
+        "stopFire",
+        "terminate",
+        "wrapup" };
 
 }

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
@@ -47,27 +47,27 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// Plotter
 /**
-Base class for plotters.  This class contains an instance of the
-Plot class from the Ptolemy plot package as a public member.
-It provides a parameter that determines whether to fill the plot
-when wrapup is invoked. It also has a <i>legend</i> parameter,
-which gives a comma-separated list of labels to attach to
-each dataset.  Normally, the number of elements in this list
-should equal the number of input channels, although this
-is not enforced.
-<p>
-This actor also provides a parameter
-<i>startingDataset</i>, which specifies the starting point
-for the number of the dataset to use to create the plots.
-This defaults to zero, but will typically be set to a positive
-number when more than one instance of a plotter actor shares
-the same plot object.
+   Base class for plotters.  This class contains an instance of the
+   Plot class from the Ptolemy plot package as a public member.
+   It provides a parameter that determines whether to fill the plot
+   when wrapup is invoked. It also has a <i>legend</i> parameter,
+   which gives a comma-separated list of labels to attach to
+   each dataset.  Normally, the number of elements in this list
+   should equal the number of input channels, although this
+   is not enforced.
+   <p>
+   This actor also provides a parameter
+   <i>startingDataset</i>, which specifies the starting point
+   for the number of the dataset to use to create the plots.
+   This defaults to zero, but will typically be set to a positive
+   number when more than one instance of a plotter actor shares
+   the same plot object.
 
-@see ptolemy.plot.Plot
+   @see ptolemy.plot.Plot
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class Plotter extends PlotterBase {
 

@@ -163,7 +163,7 @@ public class MatlabUtilities {
                             //previousPath = matlabEngine.get
                             //    (engine, "previousPath_");
                             previousPath = (ptolemy.data.Token)
-                                    _engineGet.invoke(matlabEngine,
+                                _engineGet.invoke(matlabEngine,
                                         new Object[] {
                                             _engine, "previousPath_"
                                         });

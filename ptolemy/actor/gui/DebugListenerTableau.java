@@ -1,28 +1,28 @@
 /* A tableau representing a debug listener window.
 
- Copyright (c) 2000-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2000-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -42,20 +42,20 @@ import java.awt.event.WindowEvent;
 //////////////////////////////////////////////////////////////////////////
 //// DebugListenerTableau
 /**
-A tableau representing a debug listener window. The constructor of this
-class creates the window.  You must then attached any object implementing
-the Debuggable interface using the setDebuggable() method.
-Once attached, the window will display any debug messages produced by
-that object.  The listener window itself is an instance of the inner class
-DebugListenerFrame, which extends TextEditor, and can be
-accessed using the getFrame() method. As with other tableaux,
-this is an entity that is contained by an effigy of the model.
-There can be any number of instances of this class in an effigy.
+   A tableau representing a debug listener window. The constructor of this
+   class creates the window.  You must then attached any object implementing
+   the Debuggable interface using the setDebuggable() method.
+   Once attached, the window will display any debug messages produced by
+   that object.  The listener window itself is an instance of the inner class
+   DebugListenerFrame, which extends TextEditor, and can be
+   accessed using the getFrame() method. As with other tableaux,
+   this is an entity that is contained by an effigy of the model.
+   There can be any number of instances of this class in an effigy.
 
-@author  Steve Neuendorffer and Edward A. Lee, Elaine Cheong
-@version $Id$
-@since Ptolemy II 1.0
-@see Effigy
+   @author  Steve Neuendorffer and Edward A. Lee, Elaine Cheong
+   @version $Id$
+   @since Ptolemy II 1.0
+   @see Effigy
 */
 public class DebugListenerTableau extends Tableau {
 

@@ -1,28 +1,28 @@
 /* CachedMethod provides methods for reflecting methods based on token types.
 
-  Copyright (c) 1998-2004 The Regents of the University of California and
-  Research in Motion Limited.
-  All rights reserved.
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the above
-  copyright notice and the following two paragraphs appear in all copies
-  of this software.
+Copyright (c) 1998-2004 The Regents of the University of California and
+Research in Motion Limited.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
-  LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
-  INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
-  SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
-  OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
-  SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-  PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-  BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
-  LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
@@ -48,106 +48,106 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// CachedMethod
 /**
-An instance of this class represents a method or function that is
-invoked by the Ptolemy II expression evaluator.  Instances of this
-class are returned by the static findMethod() method, and can be
-invoked by the apply() method.  This class is used by the expression
-language to find Java methods that are bound in expressions that use
-function application, i.e. an ASTPtFunctionApplicationNode, and in method
-invocation, i.e. an ASTPtMethodNode.
+   An instance of this class represents a method or function that is
+   invoked by the Ptolemy II expression evaluator.  Instances of this
+   class are returned by the static findMethod() method, and can be
+   invoked by the apply() method.  This class is used by the expression
+   language to find Java methods that are bound in expressions that use
+   function application, i.e. an ASTPtFunctionApplicationNode, and in method
+   invocation, i.e. an ASTPtMethodNode.
 
-<p> This class is used to represent two distinct types of Java methods
-that can be invoked.  The METHOD type corresponds to an instance
-method of a java class, invoked on an object of an appropriate class
-(the <it>base class</it>).  The FUNCTION type corresponds to a static
-method of a java class.  These types corresponds to the two distinct
-expression constructs that can be used to invoke Java methods.  The
-type of construct reflected can be queried using the
-getCachedMethodType() method, which returns either {@link #FUNCTION}
-or {@link #METHOD}.  Additionally, this class can be used to represent
-Java methods that were not found.  If the CachedMethod corresponds to
-an invokeable Java method, then the isValid() method will return true.
-CachedMethods that are not valid cannot be invoked by the invoke()
-method.
+   <p> This class is used to represent two distinct types of Java methods
+   that can be invoked.  The METHOD type corresponds to an instance
+   method of a java class, invoked on an object of an appropriate class
+   (the <it>base class</it>).  The FUNCTION type corresponds to a static
+   method of a java class.  These types corresponds to the two distinct
+   expression constructs that can be used to invoke Java methods.  The
+   type of construct reflected can be queried using the
+   getCachedMethodType() method, which returns either {@link #FUNCTION}
+   or {@link #METHOD}.  Additionally, this class can be used to represent
+   Java methods that were not found.  If the CachedMethod corresponds to
+   an invokeable Java method, then the isValid() method will return true.
+   CachedMethods that are not valid cannot be invoked by the invoke()
+   method.
 
-<p> This class provides several services that distinguish it from
-Java's built-in reflection mechanism:
-<ol>
-<li> Methods are found based on name and the types of ptolemy token
+   <p> This class provides several services that distinguish it from
+   Java's built-in reflection mechanism:
+   <ol>
+   <li> Methods are found based on name and the types of ptolemy token
    arguments, represented by instances of the ptolemy.data.type.Type
    base class.
-<li> FUNCTIONS are searched for in a set of classes registered with the
+   <li> FUNCTIONS are searched for in a set of classes registered with the
    parser.
-<li> METHODS are searched for a base class, and in all superclasses of
+   <li> METHODS are searched for a base class, and in all superclasses of
    the base class.
-<li> Found methods, represented by instances of this class, are cached
+   <li> Found methods, represented by instances of this class, are cached
    and indexed to improve the speed of method lookup.  The cache is
    synchronized so that it can be safely accessed from multiple
    threads.
-<li> Allows for the possibility of several automatic conversions that
+   <li> Allows for the possibility of several automatic conversions that
    increase the applicability of single methods
-</ol>
+   </ol>
 
-<p> The automatic conversions that are allowed on the arguments of
-reflected Java methods can be particularly tricky to understand.  The
-findMethod() method is fairly aggressive about finding valid methods
-to invoke.  In particular, given a set of arguments with token types,
-the findMethod() method might return a cached method that:
+   <p> The automatic conversions that are allowed on the arguments of
+   reflected Java methods can be particularly tricky to understand.  The
+   findMethod() method is fairly aggressive about finding valid methods
+   to invoke.  In particular, given a set of arguments with token types,
+   the findMethod() method might return a cached method that:
 
-<ol>
-<li> Accepts token arguments of exactly the same type.
-<li> Accepts token arguments that are of a type that the given types can
+   <ol>
+   <li> Accepts token arguments of exactly the same type.
+   <li> Accepts token arguments that are of a type that the given types can
    be automatically converted to, as determined by the Ptolemy type
    lattice.
-<li> Accepts the corresponding Java native type of either of the first
+   <li> Accepts the corresponding Java native type of either of the first
    two cases, i.e. an IntToken argument may reflect a method that
    accepts a Java int.
-<li> Accepts a corresponding Java array type, if the argument type is an
+   <li> Accepts a corresponding Java array type, if the argument type is an
    ArrayType.
-<li> Accepts a corresponding Java array of array type, if the argument
+   <li> Accepts a corresponding Java array of array type, if the argument
    type is a MatrixType.
-</ol>
+   </ol>
 
-The underlying conversions are implemented by the {@link
-ConversionUtilities} class, which has more specific documentation the
-underlying conversions.  The inverse of the same conversions are
-performed on the results of a Java method invocation, in order to
-convert the result back into a Ptolemy token.
+   The underlying conversions are implemented by the {@link
+   ConversionUtilities} class, which has more specific documentation the
+   underlying conversions.  The inverse of the same conversions are
+   performed on the results of a Java method invocation, in order to
+   convert the result back into a Ptolemy token.
 
-<p> Since there may be many methods that match a particular function
-application or method invocation, under the above conversions, the
-findMethod() method attempts to return the most specific Java method
-that can be called.  Generally speaking, conversions are preferred in
-the above order.  If one Java method is not clearly preferable to all
-others, then the findMethod() method will throw an exception.  This
-may happen if there are multiple functions defined with varying
-argument types.
+   <p> Since there may be many methods that match a particular function
+   application or method invocation, under the above conversions, the
+   findMethod() method attempts to return the most specific Java method
+   that can be called.  Generally speaking, conversions are preferred in
+   the above order.  If one Java method is not clearly preferable to all
+   others, then the findMethod() method will throw an exception.  This
+   may happen if there are multiple functions defined with varying
+   argument types.
 
-<p> Additionally, the findMethod() method may return a CachedMethod
-that automatically "maps" arrays and matrices over a scalar function.
-The result of invoking the CachedMethod is an array or matrix of
-whatever type is returned by the original function.
+   <p> Additionally, the findMethod() method may return a CachedMethod
+   that automatically "maps" arrays and matrices over a scalar function.
+   The result of invoking the CachedMethod is an array or matrix of
+   whatever type is returned by the original function.
 
-<p> As an example of how this works, evaluation of the expression
-"fix([0.5, 0.1; 0.4, 0.3], 16, 1)" performs results in the invocation
-of the method named "fix" in the ptolemy.data.expr.FixPointFunctions
-that takes a Java double and two Java ints and returns an instance of
-ptolemy.math.FixPoint.  This function is invoked once for each element
-of the matrix (converting each DoubleToken into the corresponding
-double, and each IntToken into the corresponding int), and the results
-are packaged back into a 2x2 FixMatrixToken.
+   <p> As an example of how this works, evaluation of the expression
+   "fix([0.5, 0.1; 0.4, 0.3], 16, 1)" performs results in the invocation
+   of the method named "fix" in the ptolemy.data.expr.FixPointFunctions
+   that takes a Java double and two Java ints and returns an instance of
+   ptolemy.math.FixPoint.  This function is invoked once for each element
+   of the matrix (converting each DoubleToken into the corresponding
+   double, and each IntToken into the corresponding int), and the results
+   are packaged back into a 2x2 FixMatrixToken.
 
-<p> Additional classes to be searched for static methods can be added
-through the method registerFunctionClass() in PtParser.  This class
-assumes that new classes are added to the search path before models
-are constructed, and simply clears the internal cache and index when
-new classes are registered.
+   <p> Additional classes to be searched for static methods can be added
+   through the method registerFunctionClass() in PtParser.  This class
+   assumes that new classes are added to the search path before models
+   are constructed, and simply clears the internal cache and index when
+   new classes are registered.
 
-@author Zoltan Kemenczy, Research in Motion Limited., Steve Neuendorffer, Edward Lee
-@version $Id$
-@since Ptolemy II 2.0
-@see ptolemy.data.expr.ASTPtFunctionApplicationNode
-@see ptolemy.data.expr.PtParser
+   @author Zoltan Kemenczy, Research in Motion Limited., Steve Neuendorffer, Edward Lee
+   @version $Id$
+   @since Ptolemy II 2.0
+   @see ptolemy.data.expr.ASTPtFunctionApplicationNode
+   @see ptolemy.data.expr.PtParser
 */
 
 public class CachedMethod {
@@ -485,10 +485,10 @@ public class CachedMethod {
      */
     public ptolemy.data.Token invoke(Object[] argValues)
             throws IllegalActionException {
-    //     System.out.println("invoking " + getMethod().toString() + " on:");
-//         for (int i = 0; i < argValues.length; i++) {
-//             System.out.println("arg " + i + " = " + argValues[i]);
-//         }
+        //     System.out.println("invoking " + getMethod().toString() + " on:");
+        //         for (int i = 0; i < argValues.length; i++) {
+        //             System.out.println("arg " + i + " = " + argValues[i]);
+        //         }
 
         Object result = null;
 
@@ -752,7 +752,7 @@ public class CachedMethod {
         try {
             // Tokens can be converted to native types.
             if (formal.isAssignableFrom(ConversionUtilities
-                    .convertTokenTypeToJavaType(actual))) {
+                        .convertTokenTypeToJavaType(actual))) {
                 return NATIVE_CONVERSION;
             }
         } catch (IllegalActionException ex) {
@@ -901,7 +901,7 @@ public class CachedMethod {
         ArgumentConversion[] preferredConversions = null;
         while (allClasses.hasNext() && cachedMethod == null) {
             Class nextClass = (Class)allClasses.next();
-          //   System.out.println("Examining registered class: "
+            //   System.out.println("Examining registered class: "
             //                     + nextClass);
             try {
                 Method method = _polymorphicGetMethod
@@ -1127,7 +1127,7 @@ public class CachedMethod {
                     (TypeArgumentConversion)conversion;
                 // FIXME: compare types.
                 if (TypeLattice.compare(_conversionType,
-                        argumentConversion._conversionType)
+                            argumentConversion._conversionType)
                         == ptolemy.graph.CPO.LOWER) {
                     return true;
                 }

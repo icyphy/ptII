@@ -1,28 +1,28 @@
 /* A GR scene viewer
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (chf@eecs.berkeley.edu)
 @AcceptedRating Red (chf@eecs.berkeley.edu)
@@ -54,17 +54,17 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 //////////////////////////////////////////////////////////////////////////
 //// IconViewScreen3D
 /**
-A sink actor that renders a two-dimensional scene into an Icon.
+   A sink actor that renders a two-dimensional scene into an Icon.
 
-NOTE: This doesn't seem to be possible (using the techniques I tried)
-in the current version of Java3D without having the frame visible.
-Alternatively, we would work on embedding a Canvas3D inside Diva, but
-then we run into standard nastiness getting AWT objects to work inside
-Swing objects.
+   NOTE: This doesn't seem to be possible (using the techniques I tried)
+   in the current version of Java3D without having the frame visible.
+   Alternatively, we would work on embedding a Canvas3D inside Diva, but
+   then we run into standard nastiness getting AWT objects to work inside
+   Swing objects.
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 4.0
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class IconViewScreen3D extends ViewScreen {
 
@@ -144,7 +144,7 @@ public class IconViewScreen3D extends ViewScreen {
 
         _container.add("Center", _canvas);
         _canvas.setSize(new Dimension(horizontalDimension,
-                verticalDimension));
+                                verticalDimension));
         _simpleUniverse = new SimpleUniverse(_canvas);
         _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
     }
@@ -159,7 +159,7 @@ public class IconViewScreen3D extends ViewScreen {
         Johns Hopkins University
         Dept of Physics and Astronomy
         Baltimore MD
-     */
+    */
     private class CapturingCanvas3D extends Canvas3D  {
         public CapturingCanvas3D(
                 GraphicsConfiguration gc, boolean offscreen) {

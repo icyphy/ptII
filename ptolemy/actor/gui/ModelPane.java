@@ -1,28 +1,28 @@
 /* A panel containing controls for a Ptolemy II model.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
@@ -116,7 +116,7 @@ public class ModelPane extends JPanel implements CloseListener {
             // Add run controls.
             _controlPanel = new JPanel();
             _controlPanel.setLayout(new BoxLayout(
-                    _controlPanel, BoxLayout.Y_AXIS));
+                                            _controlPanel, BoxLayout.Y_AXIS));
             _controlPanel.setBorder(
                     BorderFactory.createEmptyBorder(5, 5, 5, 5));
             // Add a listener that requests the focus when we click
@@ -128,7 +128,7 @@ public class ModelPane extends JPanel implements CloseListener {
             if ((show & BUTTONS) != 0) {
                 _buttonPanel = new JPanel();
                 _buttonPanel.setLayout(new BoxLayout(
-                        _buttonPanel, BoxLayout.X_AXIS));
+                                               _buttonPanel, BoxLayout.X_AXIS));
                 _buttonPanel.addMouseListener(clickListener);
 
                 // Padding top and bottom...
@@ -305,7 +305,7 @@ public class ModelPane extends JPanel implements CloseListener {
                     _controlPanel.add(_parameterQuery);
                     if ((_show & DIRECTOR_PARAMETERS) != 0) {
                         _controlPanel.add(Box.createRigidArea(
-                                new Dimension(0, 15)));
+                                                  new Dimension(0, 15)));
                     }
                 }
             }
@@ -350,12 +350,12 @@ public class ModelPane extends JPanel implements CloseListener {
                 Dimension directorSize = _directorQuery.getPreferredSize();
                 if (directorSize.width > modelSize.width) {
                     _parameterQuery.setPreferredSize(new Dimension(
-                            directorSize.width,
-                            modelSize.height));
+                                                             directorSize.width,
+                                                             modelSize.height));
                 } else {
                     _directorQuery.setPreferredSize(new Dimension(
-                            modelSize.width,
-                            directorSize.height));
+                                                            modelSize.width,
+                                                            directorSize.height));
                 }
             }
 

@@ -1,28 +1,28 @@
 /* Replace method calls on parameter objects.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -103,20 +103,20 @@ import soot.toolkits.scalar.UnusedLocalEliminator;
 //////////////////////////////////////////////////////////////////////////
 //// InlineParameterTransformer
 /**
-A Transformer that is responsible for inlining the values of
-parameters and settable attributes.  The values of the parameters are
-taken from the model specified for this transformer.  This transformer
-replaces a parameter with a field that points to a properly
-initialized token that contains the value of the parameter.  Settable
-attributes other than parameters are handled similarly and are
-replaces with their expression.  This transformer also properly
-inlines code from the attribute changed method that handles the change
-of any parameter values.
+   A Transformer that is responsible for inlining the values of
+   parameters and settable attributes.  The values of the parameters are
+   taken from the model specified for this transformer.  This transformer
+   replaces a parameter with a field that points to a properly
+   initialized token that contains the value of the parameter.  Settable
+   attributes other than parameters are handled similarly and are
+   replaces with their expression.  This transformer also properly
+   inlines code from the attribute changed method that handles the change
+   of any parameter values.
 
 
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class InlineParameterTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
@@ -342,7 +342,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                     }
 
                     if (SootUtilities.derivesFrom(type.getSootClass(),
-                            PtolemyUtilities.settableClass)) {
+                                PtolemyUtilities.settableClass)) {
                         // If we are invoking a method on a
                         // variable class, then attempt to get the
                         // constant value of the variable.
@@ -356,7 +356,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         // replace the invocation with an
                         // exception throw.
                         if (attribute == null) {
-                             if (debug) System.out.println("replacing with NullPointerException!");
+                            if (debug) System.out.println("replacing with NullPointerException!");
                             Local exceptionLocal =
                                 SootUtilities.createRuntimeException(
                                         body, stmt,
@@ -370,22 +370,22 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         // Inline getType, setTypeEquals, etc...
                         if (attribute instanceof Typeable) {
                             if (PtolemyUtilities.inlineTypeableMethods(body,
-                                       stmt, box, r, (Typeable)attribute)) {
+                                        stmt, box, r, (Typeable)attribute)) {
                                 continue;
                             }
                         }
 
                         // Inline namedObj methods on the attribute.
                         if (r.getMethod().getSubSignature().equals(
-                                PtolemyUtilities.getFullNameMethod.getSubSignature())) {
+                                    PtolemyUtilities.getFullNameMethod.getSubSignature())) {
                             box.setValue(StringConstant.v(
-                                    attribute.getFullName()));
+                                                 attribute.getFullName()));
                             continue;
                         }
                         if (r.getMethod().getSubSignature().equals(
-                                PtolemyUtilities.getNameMethod.getSubSignature())) {
+                                    PtolemyUtilities.getNameMethod.getSubSignature())) {
                             box.setValue(StringConstant.v(
-                                    attribute.getName()));
+                                                 attribute.getName()));
                             continue;
                         }
 
@@ -402,8 +402,8 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         Local containerLocal = getAttributeContainerRef(
                                 container, method, (Local)r.getBase(),
                                 stmt, localDefs, localUses, stmt);
-                            // FieldsForEntitiesTransformer.getLocalReferenceForEntity(
-//                                 container, theClass, thisLocal, body, stmt, _options);
+                        // FieldsForEntitiesTransformer.getLocalReferenceForEntity(
+                        //                                 container, theClass, thisLocal, body, stmt, _options);
 
                         // For Variables, we handle get/setToken,
                         // get/setExpression different from other
@@ -414,7 +414,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                             // Match the subsignature so we catch
                             // isomorphic subclasses as well...
                             if (r.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.variableConstructorWithToken.getSubSignature())) {
+                                        PtolemyUtilities.variableConstructorWithToken.getSubSignature())) {
                                 SootClass variableClass =
                                     r.getMethod().getDeclaringClass();
                                 SootMethod constructorWithoutToken =
@@ -442,8 +442,8 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
 
                                 // Create a new two-argument constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                        (Local)r.getBase(), constructorWithoutToken,
-                                        r.getArg(0), r.getArg(1)));
+                                                     (Local)r.getBase(), constructorWithoutToken,
+                                                     r.getArg(0), r.getArg(1)));
 
                                 // Call setToken with the actual value of the parameter
 
@@ -487,7 +487,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                 }
                                 doneSomething = true;
                             } else if (r.getMethod().getName().equals("setToken") ||
-                                       r.getMethod().getName().equals("_setTokenAndNotify")) {
+                                    r.getMethod().getName().equals("_setTokenAndNotify")) {
                                 if (debug) System.out.println("Replacing setToken on Variable");
                                 // replace the entire statement
                                 // (which must be an invokeStmt anyway)
@@ -534,7 +534,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                 body.getUnits().remove(stmt);
                                 doneSomething = true;
                             } else if (r.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.getExpressionMethod.getSubSignature())) {
+                                               PtolemyUtilities.getExpressionMethod.getSubSignature())) {
                                 if (debug) System.out.println("Replacing getExpression on Variable");
                                 // First get the token out of the
                                 // field, and then insert a call to
@@ -555,7 +555,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                                 Jimple.v().newInstanceFieldRef(containerLocal, tokenField)),
                                         stmt);
                                 box.setValue(Jimple.v().newVirtualInvokeExpr(tokenLocal,
-                                        PtolemyUtilities.toStringMethod));
+                                                     PtolemyUtilities.toStringMethod));
                                 doneSomething = true;
                                 // FIXME null result => ""
                             } else if (false) {//r.getMethod().getSubSignature().equals(
@@ -623,20 +623,20 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                 }
                                 inlinee.retrieveActiveBody();
                                 SiteInliner.inlineSite(inlinee, stmt, method);
-                               //   body.getUnits().remove(stmt);
+                                //   body.getUnits().remove(stmt);
                             } else if (r.getMethod().getName().equals("setUnknown")) {
                                 // FIXME: for PortParameters.
                                 body.getUnits().remove(stmt);
                             } else if (r.getMethod().getSubSignature().equals(
-                                  PtolemyUtilities.portParameterGetPortMethod.getSubSignature())) {
-                              //   PortParameter parameter =
-//                                     (PortParameter)attribute;
-//                                 ParameterPort port = parameter.getPort();
-//                                 SootField field =
-//                                     FieldsForPortsTransformer.getPortField(
-//                                             port);
-//                                 box.setValue(Jimple.v().newInstanceFieldRef(
-//                                                      body.getThisLocal(), field));
+                                               PtolemyUtilities.portParameterGetPortMethod.getSubSignature())) {
+                                //   PortParameter parameter =
+                                //                                     (PortParameter)attribute;
+                                //                                 ParameterPort port = parameter.getPort();
+                                //                                 SootField field =
+                                //                                     FieldsForPortsTransformer.getPortField(
+                                //                                             port);
+                                //                                 box.setValue(Jimple.v().newInstanceFieldRef(
+                                //                                                      body.getThisLocal(), field));
                             } else if (r.getMethod().getName().equals("addChoice")) {
                                 // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
@@ -669,14 +669,14 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         } else {// if (false) { //FIXME
                                 // It's just settable, so handle get/setExpression
                             if (r.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.getExpressionMethod.getSubSignature())) {
+                                        PtolemyUtilities.getExpressionMethod.getSubSignature())) {
                                 if (debug) System.out.println("Replacing getExpression on Settable");
 
                                 box.setValue(Jimple.v().newInstanceFieldRef(containerLocal,
-                                        (SootField)attributeToValueFieldMap.get(attribute)));
+                                                     (SootField)attributeToValueFieldMap.get(attribute)));
                                 doneSomething = true;
                             } else if (r.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.setExpressionMethod.getSubSignature())) {
+                                               PtolemyUtilities.setExpressionMethod.getSubSignature())) {
                                 if (debug) System.out.println("Replacing setExpression on Settable");
 
                                 // Call attribute changed AFTER we set the token.
@@ -714,17 +714,17 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         }
 
                         /*
-                          // FIXME what about all the other methods???
-                          // If we have a attribute and all the args are constant valued, then
-                          if (argCount == r.getArgCount()) {
-                          // reflect and invoke the same method on our token
-                          Constant constant = SootUtilities.reflectAndInvokeMethod(attribute,
-                          r.getMethod(), argValues);
-                          System.out.println("method result  = " + constant);
+                        // FIXME what about all the other methods???
+                        // If we have a attribute and all the args are constant valued, then
+                        if (argCount == r.getArgCount()) {
+                        // reflect and invoke the same method on our token
+                        Constant constant = SootUtilities.reflectAndInvokeMethod(attribute,
+                        r.getMethod(), argValues);
+                        System.out.println("method result  = " + constant);
 
-                          // replace the method invocation.
-                          box.setValue(constant);
-                          }
+                        // replace the method invocation.
+                        box.setValue(constant);
+                        }
                         */
                     }
                 }
@@ -961,8 +961,8 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                     String expression = settable.getExpression();
                     field.addTag(new ValueTag(expression));
                 }//  else {
-//                     field = null;
-//                 }
+                //                     field = null;
+                //                 }
                 attributeToValueFieldMap.put(attribute, field);
             }
             _createTokenAndExpressionFields(theClass, context, attribute,

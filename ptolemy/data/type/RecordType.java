@@ -1,28 +1,28 @@
 /** A class representing the type of a RecordToken.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -47,33 +47,33 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// RecordType
 /**
-A class representing the type of a RecordToken.
-To set the type of a typeable object (such as a port or parameter)
-to a record with particular fields, create an instance of this
-class and call setTypeEquals() with that instance as an argument.
-<p>
-Note that a record type with more fields is a subtype of a record
-type with a subset of the fields.  For example, {x = double, y = int}
-is a subtype of {x = double}. When a record of type
-{x = double, y = int} is converted to one of type {x = double},
-the extra field is discarded. The converted record, therefore,
-will have exactly the fields in the type.
-<p>
-A consequence of this is that all record types are subtypes
-of the empty record type. Hence, to require that a typeable
-object be a record type without specifying what the fields
-are, use
-<pre>
-    typeable.setTypeAtMost(new RecordType(new String[0], new Type[0]));
-</pre>
-Note, however, that by itself this type constraint will
-not be useful because it does not, by itself, prevent the
-type from resolving to unknown (the unknown type is at the
-bottom of the type lattice, and hence satisfies this type
-constraint).
+   A class representing the type of a RecordToken.
+   To set the type of a typeable object (such as a port or parameter)
+   to a record with particular fields, create an instance of this
+   class and call setTypeEquals() with that instance as an argument.
+   <p>
+   Note that a record type with more fields is a subtype of a record
+   type with a subset of the fields.  For example, {x = double, y = int}
+   is a subtype of {x = double}. When a record of type
+   {x = double, y = int} is converted to one of type {x = double},
+   the extra field is discarded. The converted record, therefore,
+   will have exactly the fields in the type.
+   <p>
+   A consequence of this is that all record types are subtypes
+   of the empty record type. Hence, to require that a typeable
+   object be a record type without specifying what the fields
+   are, use
+   <pre>
+   typeable.setTypeAtMost(new RecordType(new String[0], new Type[0]));
+   </pre>
+   Note, however, that by itself this type constraint will
+   not be useful because it does not, by itself, prevent the
+   type from resolving to unknown (the unknown type is at the
+   bottom of the type lattice, and hence satisfies this type
+   constraint).
 
-@author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
-$Id$
+   @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
+   $Id$
 */
 
 public class RecordType extends StructuredType {

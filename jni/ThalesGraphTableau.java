@@ -55,7 +55,7 @@ import java.awt.Color;
    @see ThalesGraphFrame
    @author  Steve Neuendorffer
    @version $Id$
-   */
+*/
 public class ThalesGraphTableau extends ActorGraphTableau {
 
     /**

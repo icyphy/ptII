@@ -1,28 +1,28 @@
 /* The graph controller for vergil.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -80,19 +80,19 @@ import diva.gui.toolbox.JContextMenu;
 //////////////////////////////////////////////////////////////////////////
 //// ActorEditorGraphController
 /**
-A Graph Controller for the Ptolemy II schematic editor.  In addition to the
-interaction allowed in the viewer, this controller allows nodes to be
-dragged and dropped onto its graph.  Relations can be created by
-control-clicking on the background.  Links can be created by control-clicking
-and dragging on a port or a relation.  In addition links can be created by
-clicking and dragging on the ports that are inside an entity.
-Anything can be deleted by selecting it and pressing
-the delete key on the keyboard.
+   A Graph Controller for the Ptolemy II schematic editor.  In addition to the
+   interaction allowed in the viewer, this controller allows nodes to be
+   dragged and dropped onto its graph.  Relations can be created by
+   control-clicking on the background.  Links can be created by control-clicking
+   and dragging on a port or a relation.  In addition links can be created by
+   clicking and dragging on the ports that are inside an entity.
+   Anything can be deleted by selecting it and pressing
+   the delete key on the keyboard.
 
-@author Steve Neuendorffer, Contributor: Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
- */
+   @author Steve Neuendorffer, Contributor: Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
+*/
 public class ActorEditorGraphController extends ActorViewerGraphController {
 
     /** Create a new basic controller with default
@@ -173,9 +173,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         _attributeController = new AttributeController(this,
                 AttributeController.FULL);
         _classDefinitionController
-                = new ClassDefinitionController(this);
+            = new ClassDefinitionController(this);
         _entityController
-                = new ActorInstanceController(this);
+            = new ActorInstanceController(this);
         _entityPortController = new IOPortController(this,
                 AttributeController.FULL);
         _portController = new ExternalIOPortController(this,
@@ -502,8 +502,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             final NamedObj toplevel = graphModel.getPtolemyModel();
             if (!(toplevel instanceof CompositeEntity)) {
                 throw new InternalErrorException(
-                "Cannot invoke NewRelationAction on an object "
-                + "that is not a CompositeEntity.");
+                        "Cannot invoke NewRelationAction on an object "
+                        + "that is not a CompositeEntity.");
             }
             final String relationName = toplevel.uniqueName("relation");
             final String vertexName = "vertex1";

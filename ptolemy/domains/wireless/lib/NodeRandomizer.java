@@ -1,28 +1,28 @@
 /* An actor that randomizes the location of other actors.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (sanjeev@eecs.berkeley.edu)
@@ -57,29 +57,29 @@ import ptolemy.moml.MoMLChangeRequest;
 //////////////////////////////////////////////////////////////////////////
 //// NodeRandomizer
 /**
-This actor, when fired, randomizes the locations of all actors in the
-same container that contain an attribute named "randomize" with value
-true.  It can also optionally perform the randomization in its
-preinitialize() method. In both cases, the randomization is
-performed in a change request, so it will take effect after the
-current iteration.
-<p>
-This actor assumes that the location is represented in an object
-of class Locatable (which is an attribute that implements Settable)
-with name "_location".  This is how Vergil represents locations.
-<p>
-The <i>range</i> parameter is an array of arrays giving the range
-of possible values for each dimension of the location.  For example,
-if the location is in two dimensions, then range has the form
-{{<i>x1</i>, <i>x2</i>}, {<i>y1</i>, <i>y2</i>}},
-indicating that the X value of the location is uniformly
-distributed between <i>x1</i> and <i>x2</i>, and that the Y value is
-uniformly distributed between <i>y1</i> and <i>y2</i>.
+   This actor, when fired, randomizes the locations of all actors in the
+   same container that contain an attribute named "randomize" with value
+   true.  It can also optionally perform the randomization in its
+   preinitialize() method. In both cases, the randomization is
+   performed in a change request, so it will take effect after the
+   current iteration.
+   <p>
+   This actor assumes that the location is represented in an object
+   of class Locatable (which is an attribute that implements Settable)
+   with name "_location".  This is how Vergil represents locations.
+   <p>
+   The <i>range</i> parameter is an array of arrays giving the range
+   of possible values for each dimension of the location.  For example,
+   if the location is in two dimensions, then range has the form
+   {{<i>x1</i>, <i>x2</i>}, {<i>y1</i>, <i>y2</i>}},
+   indicating that the X value of the location is uniformly
+   distributed between <i>x1</i> and <i>x2</i>, and that the Y value is
+   uniformly distributed between <i>y1</i> and <i>y2</i>.
 
-@author Sanjeev Kohli, N. Vinay Krishnan, Cheng Tien Ee, Edward Lee and Xiaojun Liu
-@version $Id$
-@since Ptolemy II 4.0
-@see Locatable
+   @author Sanjeev Kohli, N. Vinay Krishnan, Cheng Tien Ee, Edward Lee and Xiaojun Liu
+   @version $Id$
+   @since Ptolemy II 4.0
+   @see Locatable
 */
 public class NodeRandomizer extends TypedAtomicActor {
 

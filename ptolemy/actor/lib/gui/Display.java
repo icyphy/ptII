@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
 @AcceptedRating Yellow (vogel@eecs.berkeley.edu)
 */
@@ -66,30 +66,30 @@ import javax.swing.text.BadLocationException;
 //////////////////////////////////////////////////////////////////////////
 //// Display
 /**
-Display the values of the tokens arriving on the input channels in a
-text area on the screen.  Each input token is written on a
-separate line.  The input type can be of any type.
-If the input happens to be a StringToken,
-then the surrounding quotation marks are stripped before printing
-the value of the token.  Thus, string-valued tokens can be used to
-generate arbitrary textual output, at one token per line.
-Tokens are read from the input only in
-the postfire() method, to allow them to settle in domains where they
-converge to a fixed point.
-<p>
-Note that because of complexities in Swing, if you resize the display
-window, then, unlike the plotters, the new size will not be persistent.
-That is, if you save the model and then re-open it, the new size is
-forgotten.  To control the size, you should set the <i>rowsDisplayed</i>
-and <i>columnsDisplayed</i> parameters.
-<p>
-Note that this actor internally uses JTextArea, a Java Swing object
-that is known to consume large amounts of memory. It is not advisable
-to use this actor to log large output streams.
+   Display the values of the tokens arriving on the input channels in a
+   text area on the screen.  Each input token is written on a
+   separate line.  The input type can be of any type.
+   If the input happens to be a StringToken,
+   then the surrounding quotation marks are stripped before printing
+   the value of the token.  Thus, string-valued tokens can be used to
+   generate arbitrary textual output, at one token per line.
+   Tokens are read from the input only in
+   the postfire() method, to allow them to settle in domains where they
+   converge to a fixed point.
+   <p>
+   Note that because of complexities in Swing, if you resize the display
+   window, then, unlike the plotters, the new size will not be persistent.
+   That is, if you save the model and then re-open it, the new size is
+   forgotten.  To control the size, you should set the <i>rowsDisplayed</i>
+   and <i>columnsDisplayed</i> parameters.
+   <p>
+   Note that this actor internally uses JTextArea, a Java Swing object
+   that is known to consume large amounts of memory. It is not advisable
+   to use this actor to log large output streams.
 
-@author  Yuhong Xiong, Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author  Yuhong Xiong, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class Display extends Sink implements Placeable {
 

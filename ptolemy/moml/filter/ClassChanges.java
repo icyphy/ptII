@@ -1,28 +1,28 @@
 /* Filter for simple class name changes
 
- Copyright (c) 2002-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2002-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -40,20 +40,20 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// ClassChanges
 /** When this class is registered with the MoMLParser.setMoMLFilter()
-method, it will cause MoMLParser to filter so that models from
-earlier releases will run in the current release.
+    method, it will cause MoMLParser to filter so that models from
+    earlier releases will run in the current release.
 
-<p>This class will filter moml for simple class changes where
-the context of the class name to be changed does not matter - all
-occurrences of the class name will be changed.  This class
-can be though of as a primitive form of sed.
+    <p>This class will filter moml for simple class changes where
+    the context of the class name to be changed does not matter - all
+    occurrences of the class name will be changed.  This class
+    can be though of as a primitive form of sed.
 
-<p> If a class within an actor is what has changed, use (@see
-PropertyClassChanges) instead.
+    <p> If a class within an actor is what has changed, use (@see
+    PropertyClassChanges) instead.
 
-@author Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0
+    @author Christopher Hylands
+    @version $Id$
+    @since Ptolemy II 2.0
 */
 public class ClassChanges implements MoMLFilter {
 
@@ -214,9 +214,9 @@ public class ClassChanges implements MoMLFilter {
         _classChanges.put("ptolemy.vergil.fsm.modal.TransitionRefinementPort",
                 "ptolemy.domains.fsm.modal.TransitionRefinementPort");
 
-// The following change is too aggressive.
-//        _classChanges.put("ptolemy.domains.de.kernel.DEDirector",
-//            "ptolemy.domains.de.kernel.DEEDirector");
+        // The following change is too aggressive.
+        //        _classChanges.put("ptolemy.domains.de.kernel.DEDirector",
+        //            "ptolemy.domains.de.kernel.DEEDirector");
 
     }
 

@@ -1,28 +1,28 @@
 /* Representation of a Unit
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_3
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_3
+COPYRIGHTENDKEY
 @Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
 @Pt.AcceptedRating Red (rowland@eecs.berkeley.edu)
 */
@@ -33,16 +33,16 @@ import java.util.Vector;
 //////////////////////////////////////////////////////////////////////////
 //// Unit
 /**
-Class that contains the internal representation of a Unit.
-A Unit has the mathematical notation  <b>S</b>&ltE1, E2, ..., En&gt
-where <b>S</b> is the
-<i>scale</i> and &ltE1, E2, ..., En&gt is the <i>type</i> of the Unit.
-<p>
-This class also contains methods for operating on Units, such as multiply,
-divide, etc.
-@author Rowland R Johnson
-@version $Id$
-@since Ptolemy II 4.0
+   Class that contains the internal representation of a Unit.
+   A Unit has the mathematical notation  <b>S</b>&ltE1, E2, ..., En&gt
+   where <b>S</b> is the
+   <i>scale</i> and &ltE1, E2, ..., En&gt is the <i>type</i> of the Unit.
+   <p>
+   This class also contains methods for operating on Units, such as multiply,
+   divide, etc.
+   @author Rowland R Johnson
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class Unit implements UnitPresentation {
 
@@ -123,14 +123,14 @@ public class Unit implements UnitPresentation {
             } else {
                 retv =
                     ((UnitTerm) (numerator.elementAt(0)))
-                        .getUnit()
-                        .getPrimaryLabel();
+                    .getUnit()
+                    .getPrimaryLabel();
 
                 for (int i = 1; i < numerator.size(); i++) {
                     retv += " "
                         + ((UnitTerm) (numerator.elementAt(i)))
-                            .getUnit()
-                            .getPrimaryLabel();
+                        .getUnit()
+                        .getPrimaryLabel();
                 }
             }
             if (denominator.size() > 0) {
@@ -138,8 +138,8 @@ public class Unit implements UnitPresentation {
                 for (int i = 0; i < denominator.size(); i++) {
                     retv += " "
                         + ((UnitTerm) (denominator.elementAt(i)))
-                            .getUnit()
-                            .getPrimaryLabel();
+                        .getUnit()
+                        .getPrimaryLabel();
                 }
             }
             return retv;

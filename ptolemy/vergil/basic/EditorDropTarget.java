@@ -1,28 +1,28 @@
 /* A drop target for the ptolemy editor.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -61,25 +61,25 @@ import diva.util.UserObjectContainer;
 //////////////////////////////////////////////////////////////////////////
 //// EditorDropTarget
 /**
-This class provides drag-and-drop support. When this drop target
-receives a transferable object containing a ptolemy entity, it creates
-a new instance of the object, and adds it to the given graph.
-If the drop location falls on top of an icon associated with an
-instance of NamedObj, then the object is deposited inside that
-instance (so the instance becomes its container). Otherwise,
-the object is deposited inside the model associated with the
-target graph. In either case, if the target container implements
-the DropListener interface, then it is informed of the drop by
-calling its dropped() method.
-<p>
-Sometimes, you will want to disable the feature that a drop
-onto a NamedObj results in the dropped object being placed inside
-that NamedObj.  To disable this feature, call setDropIntoEnabled()
-with a false argument.
+   This class provides drag-and-drop support. When this drop target
+   receives a transferable object containing a ptolemy entity, it creates
+   a new instance of the object, and adds it to the given graph.
+   If the drop location falls on top of an icon associated with an
+   instance of NamedObj, then the object is deposited inside that
+   instance (so the instance becomes its container). Otherwise,
+   the object is deposited inside the model associated with the
+   target graph. In either case, if the target container implements
+   the DropListener interface, then it is informed of the drop by
+   calling its dropped() method.
+   <p>
+   Sometimes, you will want to disable the feature that a drop
+   onto a NamedObj results in the dropped object being placed inside
+   that NamedObj.  To disable this feature, call setDropIntoEnabled()
+   with a false argument.
 
-@author Steve Neuendorffer and Edward A. Lee, Contributor: Michael Shilman
-@version $Id$
-@since Ptolemy II 2.0
+   @author Steve Neuendorffer and Edward A. Lee, Contributor: Michael Shilman
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class EditorDropTarget extends DropTarget {
 
@@ -236,7 +236,7 @@ public class EditorDropTarget extends DropTarget {
             // Get an iterator over objects to drop.
             Iterator iterator = null;
             if (dtde.isDataFlavorSupported(
-                    PtolemyTransferable.namedObjFlavor)) {
+                        PtolemyTransferable.namedObjFlavor)) {
                 try {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
                     iterator = (Iterator)dtde.getTransferable().getTransferData(

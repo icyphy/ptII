@@ -1,28 +1,28 @@
 /* Super block
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -302,86 +302,86 @@ public class SuperBlock implements GraphNode {
 
         boolean done=false;
 
-    OUTER: while (!done) {
+        OUTER: while (!done) {
 
-        //Iterate over all labels
-        //  get all keys in hashMap
-        for (Iterator blocks = _labels.keySet().iterator(); blocks.hasNext();) {
-            GraphNode key = (GraphNode)blocks.next();
-            Vector labelVector = (Vector)_labels.get(key);
-            // get all Labels in vector associated within given key
-            for (Iterator labels = labelVector.iterator(); labels.hasNext();) {
-                Label label = (Label)labels.next();
+            //Iterate over all labels
+            //  get all keys in hashMap
+            for (Iterator blocks = _labels.keySet().iterator(); blocks.hasNext();) {
+                GraphNode key = (GraphNode)blocks.next();
+                Vector labelVector = (Vector)_labels.get(key);
+                // get all Labels in vector associated within given key
+                for (Iterator labels = labelVector.iterator(); labels.hasNext();) {
+                    Label label = (Label)labels.next();
 
-                //Now we need to iterate over the labels again (compare all labels against each other)
-                for (Iterator blocks2 = _labels.keySet().iterator(); blocks2.hasNext();) {
-                    GraphNode key2 = (GraphNode)blocks2.next();
-                    Vector labelVector2 = (Vector)_labels.get(key2);
-                    for (Iterator labels2 = labelVector2.iterator(); labels2.hasNext();) {
+                    //Now we need to iterate over the labels again (compare all labels against each other)
+                    for (Iterator blocks2 = _labels.keySet().iterator(); blocks2.hasNext();) {
+                        GraphNode key2 = (GraphNode)blocks2.next();
+                        Vector labelVector2 = (Vector)_labels.get(key2);
+                        for (Iterator labels2 = labelVector2.iterator(); labels2.hasNext();) {
 
-                        Label label2 = (Label)labels2.next();
-                        //Do a pairwise comparison
-                        if ((label != label2) && label.canCombine(label2)) {
+                            Label label2 = (Label)labels2.next();
+                            //Do a pairwise comparison
+                            if ((label != label2) && label.canCombine(label2)) {
                                 //Combine labels
 
-                            Label lowest;
-                            GraphNode first, second;
+                                Label lowest;
+                                GraphNode first, second;
 
-                            if (label.level() <= label2.level()) {
-                                first=key;
-                                second=key2;
-                                lowest=label;
-                            } else {
-                                first=key2;
-                                second=key;
-                                lowest=label2;
-                            }
+                                if (label.level() <= label2.level()) {
+                                    first=key;
+                                    second=key2;
+                                    lowest=label;
+                                } else {
+                                    first=key2;
+                                    second=key;
+                                    lowest=label2;
+                                }
 
-                            MuxNode mux = new MuxNode(first, second, lowest);
+                                MuxNode mux = new MuxNode(first, second, lowest);
 
-                            Vector v = new Vector();
-                            v.add(lowest.getParent());
+                                Vector v = new Vector();
+                                v.add(lowest.getParent());
 
-                            _labels.put(mux, v);
-                            labelVector.remove(label);
-                            labelVector2.remove(label2);
+                                _labels.put(mux, v);
+                                labelVector.remove(label);
+                                labelVector2.remove(label2);
 
                                 //Add appropriate arcs for new mux
-                            graph.addNodeWeight(mux);
-                            graph.addEdge(first, mux,
-                                    new Boolean(lowest.branch()).toString());
-                            graph.addEdge(second, mux,
-                                    new Boolean(!lowest.branch()).toString());
-                            graph.addEdge(lowest.getSuperBlock(), mux,
-                                    ((IfStmt)lowest.getSuperBlock()._block.getTail()).getCondition().toString());
-                            graph.addEdge(mux, this);
+                                graph.addNodeWeight(mux);
+                                graph.addEdge(first, mux,
+                                        new Boolean(lowest.branch()).toString());
+                                graph.addEdge(second, mux,
+                                        new Boolean(!lowest.branch()).toString());
+                                graph.addEdge(lowest.getSuperBlock(), mux,
+                                        ((IfStmt)lowest.getSuperBlock()._block.getTail()).getCondition().toString());
+                                graph.addEdge(mux, this);
 
                                 //If labelVector is empty, remove its entry from _labels and remove
                                 //the arc from the graph
-                            if (labelVector.isEmpty()) {
-                                _labels.remove(key);
-                                Node n1=(Node)graph.node(key);
-                                Node n2=(Node)graph.node(this);
-                                graph.removeEdge((Edge)graph.neighborEdges(n1, n2).toArray()[0]);
-                            }
+                                if (labelVector.isEmpty()) {
+                                    _labels.remove(key);
+                                    Node n1=(Node)graph.node(key);
+                                    Node n2=(Node)graph.node(this);
+                                    graph.removeEdge((Edge)graph.neighborEdges(n1, n2).toArray()[0]);
+                                }
 
                                 //If labelVector2 is empty, remove its entry from _labels and remove
                                 //the arc from the graph
-                            if (labelVector2.isEmpty()) {
-                                _labels.remove(key2);
-                                Node n1=(Node)graph.node(key2);
-                                Node n2=(Node)graph.node(this);
-                                graph.removeEdge((Edge)graph.neighborEdges(n1, n2).toArray()[0]);
-                            }
-                            continue OUTER;  //Avoid a ConcurrentModificationException
-                        } // if (label ...)
-                    } // for (labels2 ...)
-                } // for (blocks2 ...)
-            } // for (labels ...)
-        }// for (blocks ...)
+                                if (labelVector2.isEmpty()) {
+                                    _labels.remove(key2);
+                                    Node n1=(Node)graph.node(key2);
+                                    Node n2=(Node)graph.node(this);
+                                    graph.removeEdge((Edge)graph.neighborEdges(n1, n2).toArray()[0]);
+                                }
+                                continue OUTER;  //Avoid a ConcurrentModificationException
+                            } // if (label ...)
+                        } // for (labels2 ...)
+                    } // for (blocks2 ...)
+                } // for (labels ...)
+            }// for (blocks ...)
 
-        done=true;
-    } // while (!done)
+            done=true;
+        } // while (!done)
 
     } //Method _shrinkLabels
 

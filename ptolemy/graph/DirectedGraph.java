@@ -1,33 +1,33 @@
 /* A directed graph and some graph algorithms.
 
-   Copyright (c) 1997-2004 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-   @AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
+@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
+@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 
- */
+*/
 
 package ptolemy.graph;
 
@@ -62,7 +62,7 @@ import ptolemy.graph.analysis.TransitiveClosureAnalysis;
    Shahrooz Shahparnia
    @version $Id$
    @since Ptolemy II 0.2
- */
+*/
 public class DirectedGraph extends Graph {
 
     /** Construct an empty directed graph.
@@ -198,7 +198,7 @@ public class DirectedGraph extends Graph {
      */
     public Object[] backwardReachableNodes(Object[] weights) {
         return weightArray(backwardReachableNodes(
-                nodes(Arrays.asList(weights))));
+                                   nodes(Arrays.asList(weights))));
     }
 
     /** Return the nodes that are in cycles. If there are multiple cycles,
@@ -707,7 +707,7 @@ public class DirectedGraph extends Graph {
     public Object[] topologicalSort(Object[] weights) throws
             GraphActionException {
         return weightArray(topologicalSort(
-                nodes(Arrays.asList(weights))));
+                                   nodes(Arrays.asList(weights))));
     }
 
     /** Return transitive closure for the graph.

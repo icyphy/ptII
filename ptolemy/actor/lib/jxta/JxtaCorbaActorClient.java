@@ -246,7 +246,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
                 IOPort p = (IOPort)ports.next();
                 _debug(getName(), " check remote port: ", p.getName());
                 if (!_remoteActor.hasPort(p.getName(),
-                        p.isInput(), p.isOutput(), p.isMultiport())) {
+                            p.isInput(), p.isOutput(), p.isMultiport())) {
                     _debug(
                             "Port: " + p.getName() +
                             " not found on the remote side" +

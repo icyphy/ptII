@@ -28,8 +28,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -42,17 +42,17 @@ package ptolemy.math;
 //////////////////////////////////////////////////////////////////////////
 //// SignalProcessing
 /**
-This class provides signal processing functions.
+   This class provides signal processing functions.
 
-The algorithms for the FFT and DCT are based on the FFCT algorithm
-described in:
+   The algorithms for the FFT and DCT are based on the FFCT algorithm
+   described in:
 
-Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with
-Reduced Number of Operations". Signal Processing 6 (1984) 267-278.
+   Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with
+   Reduced Number of Operations". Signal Processing 6 (1984) 267-278.
 
-@author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay, Elaine Cheong
-@version $Id$
-@since Ptolemy II 0.2
+   @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay, Elaine Cheong
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class SignalProcessing {
 

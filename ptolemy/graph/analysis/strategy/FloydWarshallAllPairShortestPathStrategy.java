@@ -1,28 +1,28 @@
 /* Computation of the all pair shortest path of a DirectedGraph using the
-Floyd-Warshall algorithm.
+   Floyd-Warshall algorithm.
 
- Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (shahrooz@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
+   @ProposedRating Red (shahrooz@eng.umd.edu)
+   @AcceptedRating Red (ssb@eng.umd.edu)
 
 */
 
@@ -42,26 +42,26 @@ import ptolemy.graph.mapping.ToDoubleMapping;
 //////////////////////////////////////////////////////////////////////////
 //// FloydWarshallAllPairShortestPathStrategy
 /**
-Computation of the all pair shortest path of a directed graph using the
-Floyd-Warshall algorithm. The result is in the form of two dimensional array
-(matrix).
-The first dimension is indexed by the source node label while the second one is
-indexed by the sink node label. In graphs that have multiple edges between two
-nodes obviously the edge with the minimum weight is being considered for
-the shortest path.
-The distance between a node and itself is being considered Double.MAX_VALUE,
-unless otherwise specified by a self edge for a cyclic graph.
-((double[][])result())[i][i] would be the length of the shortest cycle that
-includes the node with label "i".
-<p>
-@see ptolemy.graph.analysis.AllPairShortestPathAnalysis
-@since Ptolemy II 4.0
-@author Shahrooz Shahparnia
-@version $Id$
+   Computation of the all pair shortest path of a directed graph using the
+   Floyd-Warshall algorithm. The result is in the form of two dimensional array
+   (matrix).
+   The first dimension is indexed by the source node label while the second one is
+   indexed by the sink node label. In graphs that have multiple edges between two
+   nodes obviously the edge with the minimum weight is being considered for
+   the shortest path.
+   The distance between a node and itself is being considered Double.MAX_VALUE,
+   unless otherwise specified by a self edge for a cyclic graph.
+   ((double[][])result())[i][i] would be the length of the shortest cycle that
+   includes the node with label "i".
+   <p>
+   @see ptolemy.graph.analysis.AllPairShortestPathAnalysis
+   @since Ptolemy II 4.0
+   @author Shahrooz Shahparnia
+   @version $Id$
 */
 
 public class FloydWarshallAllPairShortestPathStrategy
-        extends FloydWarshallStrategy implements AllPairShortestPathAnalyzer {
+    extends FloydWarshallStrategy implements AllPairShortestPathAnalyzer {
 
     /** Construct an AllPairShortestPathAnalyzer which works using the
      *  Floyd-Warshall strategy.
@@ -98,8 +98,8 @@ public class FloydWarshallAllPairShortestPathStrategy
             while (nodeOnPath != startNode) {
                 int nodeOnPathLabel = graph().nodeLabel(nodeOnPath);
                 nodeOnPath =
-                        graph().node(nodeLabels[startNodeLabel]
-                        [nodeOnPathLabel]);
+                    graph().node(nodeLabels[startNodeLabel]
+                            [nodeOnPathLabel]);
                 shortestPath.add(nodeOnPath);
             }
         }
@@ -119,7 +119,7 @@ public class FloydWarshallAllPairShortestPathStrategy
         int n = graph().nodeCount();
         double[][] shortestPathResults = (double[][])_result();
         result = shortestPathResults[graph().nodeLabel(startNode)]
-                [graph().nodeLabel(endNode)];
+            [graph().nodeLabel(endNode)];
         return result;
     }
 
@@ -147,7 +147,7 @@ public class FloydWarshallAllPairShortestPathStrategy
      */
     public String toString() {
         return "All pair shortest path analyzer"
-                + " based on the Floyd-Warshall algorithm.";
+            + " based on the Floyd-Warshall algorithm.";
     }
 
     /** Check for compatibility between the analysis and the given
@@ -177,7 +177,7 @@ public class FloydWarshallAllPairShortestPathStrategy
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 _predecessors[0][i][j] = -1;
-                 if (i != j) {
+                if (i != j) {
                     _allPairShortestPath[0][i][j] = Double.MAX_VALUE;
                 } else {
                     _allPairShortestPath[0][i][j] = Double.MAX_VALUE;
@@ -185,15 +185,15 @@ public class FloydWarshallAllPairShortestPathStrategy
             }
             Node node = graph().node(i);
             Iterator outputEdges =
-                    ((DirectedGraph)graph()).outputEdges(node).iterator();
+                ((DirectedGraph)graph()).outputEdges(node).iterator();
             while (outputEdges.hasNext()) {
                 Edge edge = (Edge)outputEdges.next();
                 int sinkLabel = ((DirectedGraph)graph()).
-                        nodeLabel(edge.sink());
+                    nodeLabel(edge.sink());
                 if (_allPairShortestPath[0][i][sinkLabel] >
                         _edgeLengths.toDouble(edge)) {
                     _allPairShortestPath[0][i][sinkLabel] =
-                            _edgeLengths.toDouble(edge);
+                        _edgeLengths.toDouble(edge);
                 }
                 _predecessors[0][i][sinkLabel] = i;
             }
@@ -218,7 +218,7 @@ public class FloydWarshallAllPairShortestPathStrategy
         double b = Double.MAX_VALUE;
         double a = _allPairShortestPath[k][i][j];
         if (i != k && k != j) {
-        b = _allPairShortestPath[k][i][k]
+            b = _allPairShortestPath[k][i][k]
                 + _allPairShortestPath[k][k][j];
         } else if (i == k && k != j) {
             b = _allPairShortestPath[k][k][j];

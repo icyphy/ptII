@@ -1,28 +1,28 @@
 /* Transform Actors using Soot
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -144,9 +144,9 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                 // attribute, then get a reference to the existing attribute.
                 local = attributeLocal;
                 body.getUnits().add(Jimple.v().newAssignStmt(attributeLocal,
-                        Jimple.v().newVirtualInvokeExpr(contextLocal,
-                                PtolemyUtilities.getAttributeMethod,
-                                StringConstant.v(attributeName))));
+                                            Jimple.v().newVirtualInvokeExpr(contextLocal,
+                                                    PtolemyUtilities.getAttributeMethod,
+                                                    StringConstant.v(attributeName))));
             } else {
                 // If the class does not create the attribute,
                 // then create a new attribute with the right name.
@@ -169,23 +169,23 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
             if (attribute instanceof Settable) {
                 // cast to Settable.
                 body.getUnits().add(Jimple.v().newAssignStmt(
-                        settableLocal,
-                        Jimple.v().newCastExpr(
-                                local,
-                                PtolemyUtilities.settableType)));
+                                            settableLocal,
+                                            Jimple.v().newCastExpr(
+                                                    local,
+                                                    PtolemyUtilities.settableType)));
                 String expression = ((Settable)attribute).getExpression();
 
                 // call setExpression.
                 body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newInterfaceInvokeExpr(
-                                settableLocal,
-                                PtolemyUtilities.setExpressionMethod,
-                                StringConstant.v(expression))));
+                                            Jimple.v().newInterfaceInvokeExpr(
+                                                    settableLocal,
+                                                    PtolemyUtilities.setExpressionMethod,
+                                                    StringConstant.v(expression))));
                 // call validate to ensure that attributeChanged is called.
                 body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newInterfaceInvokeExpr(
-                                settableLocal,
-                                PtolemyUtilities.validateMethod)));
+                                            Jimple.v().newInterfaceInvokeExpr(
+                                                    settableLocal,
+                                                    PtolemyUtilities.validateMethod)));
             }
             // FIXME: configurable??
             // recurse so that we get all parameters deeply.
@@ -311,8 +311,8 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                     RefType.v(typeClass));
             body.getLocals().add(typeLocal);
             units.add(Jimple.v().newAssignStmt(typeLocal,
-                    Jimple.v().newStaticInvokeExpr(typeConstructor,
-                            StringConstant.v(type.toString()))));
+                              Jimple.v().newStaticInvokeExpr(typeConstructor,
+                                      StringConstant.v(type.toString()))));
             return typeLocal;
         } else if (type instanceof ptolemy.data.type.ArrayType) {
             // recurse
@@ -327,10 +327,10 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                     RefType.v(typeClass));
             body.getLocals().add(typeLocal);
             units.add(Jimple.v().newAssignStmt(typeLocal,
-                    Jimple.v().newNewExpr(RefType.v(typeClass))));
+                              Jimple.v().newNewExpr(RefType.v(typeClass))));
             units.add(Jimple.v().newInvokeStmt(
-                    Jimple.v().newSpecialInvokeExpr(typeLocal,
-                            typeConstructor, elementTypeLocal)));
+                              Jimple.v().newSpecialInvokeExpr(typeLocal,
+                                      typeConstructor, elementTypeLocal)));
             return typeLocal;
         }
         throw new RuntimeException("Unidentified type class = " +
@@ -384,16 +384,16 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                         PtolemyUtilities.componentEntityType);
                 body.getLocals().add(local);
                 body.getUnits().add(Jimple.v().newAssignStmt(entityLocal,
-                        Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                PtolemyUtilities.getEntityMethod,
-                                StringConstant.v(entity.getName(container)))));
+                                            Jimple.v().newVirtualInvokeExpr(containerLocal,
+                                                    PtolemyUtilities.getEntityMethod,
+                                                    StringConstant.v(entity.getName(container)))));
                 // and then cast
                 body.getUnits().add(
                         Jimple.v().newAssignStmt(local,
                                 Jimple.v().newCastExpr(entityLocal,
                                         RefType.v(className))));
             } else {
-               // Create a new local variable.
+                // Create a new local variable.
                 // The name of the local is determined automatically.
                 // The name of the NamedObj is the same as in the model.
                 // (Note that this might not be a valid Java identifier.)
@@ -460,34 +460,34 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
 
                 // First assign to temp
                 body.getUnits().add(Jimple.v().newAssignStmt(tempPortLocal,
-                        Jimple.v().newVirtualInvokeExpr(entityLocal,
-                                PtolemyUtilities.getPortMethod,
-                                StringConstant.v(port.getName()))));
+                                            Jimple.v().newVirtualInvokeExpr(entityLocal,
+                                                    PtolemyUtilities.getPortMethod,
+                                                    StringConstant.v(port.getName()))));
                 if (port instanceof TypedIOPort) {
                     TypedIOPort ioPort = (TypedIOPort)port;
                     if (ioPort.isInput()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(tempPortLocal,
-                                        PtolemyUtilities.setInputMethod,
-                                        IntConstant.v(1))));
+                                                    Jimple.v().newVirtualInvokeExpr(tempPortLocal,
+                                                            PtolemyUtilities.setInputMethod,
+                                                            IntConstant.v(1))));
                     }
                     if (ioPort.isOutput()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(tempPortLocal,
-                                        PtolemyUtilities.setOutputMethod,
-                                        IntConstant.v(1))));
+                                                    Jimple.v().newVirtualInvokeExpr(tempPortLocal,
+                                                            PtolemyUtilities.setOutputMethod,
+                                                            IntConstant.v(1))));
                     }
                     if (ioPort.isMultiport()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(tempPortLocal,
-                                        PtolemyUtilities.setMultiportMethod,
-                                        IntConstant.v(1))));
+                                                    Jimple.v().newVirtualInvokeExpr(tempPortLocal,
+                                                            PtolemyUtilities.setMultiportMethod,
+                                                            IntConstant.v(1))));
                     }
                 }
                 // and then cast to portLocal
                 body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
-                        Jimple.v().newCastExpr(tempPortLocal,
-                                RefType.v(className))));
+                                            Jimple.v().newCastExpr(tempPortLocal,
+                                                    RefType.v(className))));
             } else {
                 // If the class does not create the attribute,
                 // then create a new attribute with the right name.
@@ -502,27 +502,27 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                     TypedIOPort ioPort = (TypedIOPort)port;
                     if (ioPort.isInput()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(local,
-                                        PtolemyUtilities.setInputMethod,
-                                        IntConstant.v(1))));
+                                                    Jimple.v().newVirtualInvokeExpr(local,
+                                                            PtolemyUtilities.setInputMethod,
+                                                            IntConstant.v(1))));
                     }
                     if (ioPort.isOutput()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(local,
-                                        PtolemyUtilities.setOutputMethod,
-                                        IntConstant.v(1))));
+                                                    Jimple.v().newVirtualInvokeExpr(local,
+                                                            PtolemyUtilities.setOutputMethod,
+                                                            IntConstant.v(1))));
                     }
                     if (ioPort.isMultiport()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(local,
-                                        PtolemyUtilities.setMultiportMethod,
-                                        IntConstant.v(1))));
+                                                    Jimple.v().newVirtualInvokeExpr(local,
+                                                            PtolemyUtilities.setMultiportMethod,
+                                                            IntConstant.v(1))));
                     }
                 }
                 // and then cast to portLocal
                 body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
-                        Jimple.v().newCastExpr(local,
-                                RefType.v(className))));
+                                            Jimple.v().newCastExpr(local,
+                                                    RefType.v(className))));
 
             }
 
@@ -558,10 +558,10 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                 Local relationLocal = (Local)_relationLocalMap.get(relation);
                 // call the _insertLink method with the current index.
                 body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(portLocal,
-                                PtolemyUtilities.insertLinkMethod,
-                                IntConstant.v(index),
-                                relationLocal)));
+                                            Jimple.v().newVirtualInvokeExpr(portLocal,
+                                                    PtolemyUtilities.insertLinkMethod,
+                                                    IntConstant.v(index),
+                                                    relationLocal)));
 
             }
         }
@@ -604,10 +604,10 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
 
                     // Call the _insertLink method with the current index.
                     body.getUnits().add(Jimple.v().newInvokeStmt(
-                            Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    PtolemyUtilities.insertLinkMethod,
-                                    IntConstant.v(index),
-                                    relationLocal)));
+                                                Jimple.v().newVirtualInvokeExpr(portLocal,
+                                                        PtolemyUtilities.insertLinkMethod,
+                                                        IntConstant.v(index),
+                                                        relationLocal)));
                 }
             }
         }
@@ -657,7 +657,7 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                     if (value instanceof SpecialInvokeExpr) {
                         SpecialInvokeExpr r = (SpecialInvokeExpr)value;
                         if (PtolemyUtilities.executableInterface.declaresMethod(
-                                r.getMethod().getSubSignature())) {
+                                    r.getMethod().getSubSignature())) {
                             if (r.getMethod().getName().equals("prefire") ||
                                     r.getMethod().getName().equals("postfire")) {
                                 box.setValue(IntConstant.v(1));
@@ -719,7 +719,7 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                     boolean match = true;
                     for (int j = 0; j < parameterTypes.length; j++) {
                         if (!(parameterTypes[j].isInstance(
-                                _reflectionArguments[j]))) {
+                                      _reflectionArguments[j]))) {
                             match = false;
                             break;
                         }

@@ -1,28 +1,28 @@
 /* Sign the input data using a private key.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -76,88 +76,88 @@ resources about JCA and JCE.
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class SignatureSigner extends SignatureActor {
+    public class SignatureSigner extends SignatureActor {
 
-    /** Construct an actor with the given container and name.
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
-     */
-    public SignatureSigner(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
-        super(container, name);
+        /** Construct an actor with the given container and name.
+         *  @param container The container.
+         *  @param name The name of this actor.
+         *  @exception IllegalActionException If the actor cannot be contained
+         *   by the proposed container.
+         *  @exception NameDuplicationException If the container already has an
+         *   actor with this name.
+         */
+        public SignatureSigner(CompositeEntity container, String name)
+                throws NameDuplicationException, IllegalActionException  {
+            super(container, name);
 
-        privateKey = new TypedIOPort(this, "privateKey", true, false);
-        privateKey.setTypeEquals(KeyToken.KEY);
+            privateKey = new TypedIOPort(this, "privateKey", true, false);
+            privateKey.setTypeEquals(KeyToken.KEY);
 
-        signature = new TypedIOPort(this, "signature", false, true);
-        signature.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** The private key to be used by the SignatureVerifier actor
-     *  to verify the data on the <i>output</i> port.
-     *  The type of this input port is an ObjectToken containing
-     *  a java.security.PrivateKey.
-     */
-    public TypedIOPort privateKey;
-
-    /** The signature of the data.  The type of this output port
-     *  is unsigned byte array.  The data is read in on the <i>input</i>
-     *  port and the signature is generated on this port.  The
-     *  <i>output</i> port contains the data in clear text.
-     */
-    public TypedIOPort signature;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Create a signature for the input data and send the signature
-     *  to the signature port.  The <i>output</i> port contains the data
-     *  in clear text.
-     *
-     *  @exception IllegalActionException If calling send(), super.fire()
-     *  throws it, or if there is a problem cryptographic configuration.
-     */
-    public void fire() throws IllegalActionException {
-        // super.fire() should be called before accessing _signature
-        // so that we handle any updates of _signature made necessary
-        // by attribute changes.
-        super.fire();
-        if (privateKey.hasToken(0)) {
-            KeyToken keyToken = (KeyToken)privateKey.get(0);
-            _privateKey = (PrivateKey)keyToken.getValue();
+            signature = new TypedIOPort(this, "signature", false, true);
+            signature.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
         }
 
-        if (input.hasToken(0)) {
-            try {
-                // Process the input data to generate a signature.
-                byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(
-                        (ArrayToken)input.get(0));
+        ///////////////////////////////////////////////////////////////////
+        ////                     ports and parameters                  ////
 
-                _signature.initSign(_privateKey);
-                _signature.update(dataBytes);
+        /** The private key to be used by the SignatureVerifier actor
+         *  to verify the data on the <i>output</i> port.
+         *  The type of this input port is an ObjectToken containing
+         *  a java.security.PrivateKey.
+         */
+        public TypedIOPort privateKey;
 
-                output.send(0, ArrayToken.unsignedByteArrayToArrayToken(
-                        dataBytes));
-                signature.send(0, ArrayToken.unsignedByteArrayToArrayToken(
-                        _signature.sign()));
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
-                        "Problem sending data");
+        /** The signature of the data.  The type of this output port
+         *  is unsigned byte array.  The data is read in on the <i>input</i>
+         *  port and the signature is generated on this port.  The
+         *  <i>output</i> port contains the data in clear text.
+         */
+        public TypedIOPort signature;
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /** Create a signature for the input data and send the signature
+         *  to the signature port.  The <i>output</i> port contains the data
+         *  in clear text.
+         *
+         *  @exception IllegalActionException If calling send(), super.fire()
+         *  throws it, or if there is a problem cryptographic configuration.
+         */
+        public void fire() throws IllegalActionException {
+            // super.fire() should be called before accessing _signature
+            // so that we handle any updates of _signature made necessary
+            // by attribute changes.
+            super.fire();
+            if (privateKey.hasToken(0)) {
+                KeyToken keyToken = (KeyToken)privateKey.get(0);
+                _privateKey = (PrivateKey)keyToken.getValue();
+            }
+
+            if (input.hasToken(0)) {
+                try {
+                    // Process the input data to generate a signature.
+                    byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(
+                            (ArrayToken)input.get(0));
+
+                    _signature.initSign(_privateKey);
+                    _signature.update(dataBytes);
+
+                    output.send(0, ArrayToken.unsignedByteArrayToArrayToken(
+                                        dataBytes));
+                    signature.send(0, ArrayToken.unsignedByteArrayToArrayToken(
+                                           _signature.sign()));
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Problem sending data");
+                }
             }
         }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         private variables                 ////
+
+        /* The private key to be used for the signature.
+         */
+        private PrivateKey _privateKey = null;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /* The private key to be used for the signature.
-     */
-    private PrivateKey _privateKey = null;
-}

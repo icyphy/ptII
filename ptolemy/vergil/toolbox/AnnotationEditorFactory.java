@@ -1,28 +1,28 @@
 /* An attribute that creates an editor pane to edit the icon description.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -63,17 +63,17 @@ import diva.util.xml.XmlReader;
 //////////////////////////////////////////////////////////////////////////
 //// AnnotationEditorFactory
 /**
-If this class is contained by a visible attribute (one that has
-an attribute called "_iconDescription"), then double clicking on that
-attribute will invoke an editor for a textual annotation.
-This class is contained by visible attribute in the Vergil
-utilities library, which provides a facility for adding visual
-annotations to diagrams.
+   If this class is contained by a visible attribute (one that has
+   an attribute called "_iconDescription"), then double clicking on that
+   attribute will invoke an editor for a textual annotation.
+   This class is contained by visible attribute in the Vergil
+   utilities library, which provides a facility for adding visual
+   annotations to diagrams.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
-@deprecated Use ptolemy.vergil.kernel.attributes.TextAttribute.
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
+   @deprecated Use ptolemy.vergil.kernel.attributes.TextAttribute.
 */
 
 public class AnnotationEditorFactory extends EditorFactory {
@@ -120,7 +120,7 @@ public class AnnotationEditorFactory extends EditorFactory {
             + newText
             + "</text></svg></configure>";
         _iconDescription.requestChange(new MoMLChangeRequest(
-                this, _iconDescription, moml));
+                                               this, _iconDescription, moml));
     }
 
     /** Return a new widget for configuring the container.

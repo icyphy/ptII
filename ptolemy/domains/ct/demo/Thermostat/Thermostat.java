@@ -1,28 +1,28 @@
 /* A thermostat control demo that uses Ptolemy II CT and FSM domains.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -60,28 +60,28 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// Thermostat
 /**
-This applet shows a simple thermostat system. The temperature of the room
-is expected to be controlled between Tl and Th
-<p>
-The system has two states, heating and cooling. In the heating state,
-the temperature of the room is increased linearly, in terms of a differential
-equation:
-<pre>
-<CODE>    dx/dt = 1</CODE>
-</pre>
-In the cooling state, the temperature is dropped linearly, i.e.
-<pre>
-<CODE>    dx/dt = -1</CODE>
-</pre>
-The control rule is that if the temperature reaches Th degree, then switch
-the controller to the cooling state; if the temperature decreases to Tl degree
-then switch the controller to the heating state.
-<p>
-We use this demo to illustrate the accuracy of detecting events, and the
-ability of simulating hybrid system in Ptolemy II.
-@author Jie Liu
-@version $Id$
-@since Ptolemy II 0.3
+   This applet shows a simple thermostat system. The temperature of the room
+   is expected to be controlled between Tl and Th
+   <p>
+   The system has two states, heating and cooling. In the heating state,
+   the temperature of the room is increased linearly, in terms of a differential
+   equation:
+   <pre>
+   <CODE>    dx/dt = 1</CODE>
+   </pre>
+   In the cooling state, the temperature is dropped linearly, i.e.
+   <pre>
+   <CODE>    dx/dt = -1</CODE>
+   </pre>
+   The control rule is that if the temperature reaches Th degree, then switch
+   the controller to the cooling state; if the temperature decreases to Tl degree
+   then switch the controller to the heating state.
+   <p>
+   We use this demo to illustrate the accuracy of detecting events, and the
+   ability of simulating hybrid system in Ptolemy II.
+   @author Jie Liu
+   @version $Id$
+   @since Ptolemy II 0.3
 */
 public class Thermostat extends TypedCompositeActor{
 

@@ -2,8 +2,8 @@
 
 Some algorithms are from
 
- [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
-    Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
+[1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
+Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -27,29 +27,29 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
-package ptolemy.math;
+    package ptolemy.math;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// ComplexMatrixMath
 
 /**
-This class provides a library for mathematical operations on
-matrices of complex numbers.
-<p>
-Rows and column numbers of matrices are specified with zero-based indices.
-All calls expect matrix arguments to be non-null. In addition, all
-rows of the matrix are expected to have the same number of columns.
-@author Jeff Tsay
-@version $Id$
-@since Ptolemy II 1.0
+   This class provides a library for mathematical operations on
+   matrices of complex numbers.
+   <p>
+   Rows and column numbers of matrices are specified with zero-based indices.
+   All calls expect matrix arguments to be non-null. In addition, all
+   rows of the matrix are expected to have the same number of columns.
+   @author Jeff Tsay
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class ComplexMatrixMath {
 
@@ -1121,9 +1121,9 @@ public class ComplexMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                    if (!matrix1[i][j].isCloseTo(matrix2[i][j], maxError)) {
+                if (!matrix1[i][j].isCloseTo(matrix2[i][j], maxError)) {
                     return false;
-                    }
+                }
             }
         }
         return true;
@@ -1377,7 +1377,7 @@ public class ComplexMatrixMath {
             dotProductMatrix,
             oneOverNormSquaredArray,
             new Integer(nullity)
-                };
+        };
     }
 
     /** Return the number of rows of a matrix.

@@ -1,28 +1,28 @@
 /* An actor that computes a specified rounded value of the input.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (chf@eecs.berkeley.edu)
 @AcceptedRating Green (janneck@eecs.berkeley.edu)
@@ -48,23 +48,23 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// Round
 /**
-Produce an output token on each firing with a value that is
-equal to the specified rounded value of the input.
-The input type is DoubleToken. The output type is IntToken.
-The functions are a subset of those in the java.lang.Math class.
-They are:
-<ul>
-<li> <b>ceil</b>: Round towards positive infinity.
-<li> <b>floor</b>: Round towards negative infinity.
-<li> <b>round</b>: Round towards nearest integer.
-<li> <b>truncate</b>: Round towards zero.
-</ul>
+   Produce an output token on each firing with a value that is
+   equal to the specified rounded value of the input.
+   The input type is DoubleToken. The output type is IntToken.
+   The functions are a subset of those in the java.lang.Math class.
+   They are:
+   <ul>
+   <li> <b>ceil</b>: Round towards positive infinity.
+   <li> <b>floor</b>: Round towards negative infinity.
+   <li> <b>round</b>: Round towards nearest integer.
+   <li> <b>truncate</b>: Round towards zero.
+   </ul>
 
-If the argument is NaN, then the result is NaN.  The default is "round".
+   If the argument is NaN, then the result is NaN.  The default is "round".
 
-@author C. Fong
-@version $Id$
-@since Ptolemy II 1.0
+   @author C. Fong
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 
 public class Round extends Transformer {

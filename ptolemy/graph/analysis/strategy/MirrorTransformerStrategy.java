@@ -1,24 +1,24 @@
 /* A mirror transformer for graphs.
 
- Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Red (shahrooz@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
@@ -40,20 +40,20 @@ import ptolemy.graph.analysis.analyzer.MirrorTransformer;
 //////////////////////////////////////////////////////////////////////////
 //// MirrorTransformerStrategy
 /**
-A mirror transformer for graphs.
-<p>
-In the {@link #cloneWeight} method, users can also specify whether to clone node
-and edge weights. For non cloneable
-weights a {@link java.lang.CloneNotSupportedException} will be thrown by
-the virtual machine.
+   A mirror transformer for graphs.
+   <p>
+   In the {@link #cloneWeight} method, users can also specify whether to clone node
+   and edge weights. For non cloneable
+   weights a {@link java.lang.CloneNotSupportedException} will be thrown by
+   the virtual machine.
 
-@since Ptolemy II 4.0
-@author Shahrooz Shahparnia based on a method by Ming Yung Ko.
-@version $Id$
+   @since Ptolemy II 4.0
+   @author Shahrooz Shahparnia based on a method by Ming Yung Ko.
+   @version $Id$
 */
 
 public class MirrorTransformerStrategy extends CachedStrategy
-        implements MirrorTransformer {
+    implements MirrorTransformer {
 
     /** Construct a transformer for a given graph.
      *  @param graph The given graph.
@@ -132,7 +132,7 @@ public class MirrorTransformerStrategy extends CachedStrategy
         boolean tempCloneWeights = _cloneWeights;
         _cloneWeights = cloneWeights;
         Graph result = (Graph)_result();
-         _cloneWeights = tempCloneWeights;
+        _cloneWeights = tempCloneWeights;
         return result;
     }
 
@@ -197,7 +197,7 @@ public class MirrorTransformerStrategy extends CachedStrategy
                                here to call public clone(). */
                             Class[] argumentTypes = {};
                             Method method = oldWeight.getClass().
-                                    getMethod(nameClone, argumentTypes);
+                                getMethod(nameClone, argumentTypes);
                             mirrorWeight = method.invoke(oldWeight, null);
                         } else
                             throw new RuntimeException();
@@ -237,7 +237,7 @@ public class MirrorTransformerStrategy extends CachedStrategy
                                here to call public clone(). */
                             Class[] argumentTypes = {};
                             Method method = oldWeight.getClass().
-                                    getMethod(nameClone, argumentTypes);
+                                getMethod(nameClone, argumentTypes);
                             mirrorWeight = method.invoke(oldWeight, null);
                         } else
                             throw new RuntimeException();
@@ -250,7 +250,7 @@ public class MirrorTransformerStrategy extends CachedStrategy
                             "Can not clone the edge weight.\n");
                 }
                 mirrorEdge =
-                        new Edge(mirrorSource, mirrorSink, mirrorWeight);
+                    new Edge(mirrorSource, mirrorSink, mirrorWeight);
             }
             mirrorGraph.addEdge(mirrorEdge);
             _originalVersion.put(mirrorEdge, edge);

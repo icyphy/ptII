@@ -1,24 +1,24 @@
 /* An analysis to compute the all pair shortest path of a directed graph.
 
- Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Red (shahrooz@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
@@ -39,26 +39,26 @@ import ptolemy.graph.mapping.ToDoubleMapping;
 //////////////////////////////////////////////////////////////////////////
 //// AllPairShortestPathAnalysis
 /**
-An analysis to compute of the all pair shortest path of a directed graph.
-The result is in the form of two dimensional array (matrix).
-The first dimension is indexed by the source node label while the second one is
-indexed by the sink node label. In graphs that have multiple edges between two
-nodes obviously the edge with the minimum weight is being considered for
-the shortest path.
-<p>
-The distance between a node and itself is being considered Double.MAX_VALUE,
-unless there is a self-edge.
-<p>
-The result of {@link #shortestPathMatrix()}[i][i] would be the
-length of the shortest cycle that includes the node with label "i".
-<p>
+   An analysis to compute of the all pair shortest path of a directed graph.
+   The result is in the form of two dimensional array (matrix).
+   The first dimension is indexed by the source node label while the second one is
+   indexed by the sink node label. In graphs that have multiple edges between two
+   nodes obviously the edge with the minimum weight is being considered for
+   the shortest path.
+   <p>
+   The distance between a node and itself is being considered Double.MAX_VALUE,
+   unless there is a self-edge.
+   <p>
+   The result of {@link #shortestPathMatrix()}[i][i] would be the
+   length of the shortest cycle that includes the node with label "i".
+   <p>
 
-The default analyzer runs in O(N^3) in which N is the number of nodes.
+   The default analyzer runs in O(N^3) in which N is the number of nodes.
 
-@since Ptolemy II 4.0
-@version $Id$
-@author Shahrooz Shahparnia
-@see ptolemy.graph.Graph#nodeLabel
+   @since Ptolemy II 4.0
+   @version $Id$
+   @author Shahrooz Shahparnia
+   @see ptolemy.graph.Graph#nodeLabel
 */
 public class AllPairShortestPathAnalysis extends Analysis {
 
@@ -73,7 +73,7 @@ public class AllPairShortestPathAnalysis extends Analysis {
     public AllPairShortestPathAnalysis(Graph graph,
             ToDoubleMapping edgeLength) {
         super(new FloydWarshallAllPairShortestPathStrategy(graph,
-            edgeLength));
+                      edgeLength));
     }
 
     /** Construct an instance of this class with a given analyzer.
@@ -97,10 +97,10 @@ public class AllPairShortestPathAnalysis extends Analysis {
      */
     public List shortestPath(Node startNode, Node endNode) {
         return ((AllPairShortestPathAnalyzer)analyzer())
-                .shortestPath(startNode, endNode);
+            .shortestPath(startNode, endNode);
     }
 
-     /** Return the length of the shortest path from the node
+    /** Return the length of the shortest path from the node
      *  startNode to the node endNode.
      *
      *  @param startNode The starting node of the path.
@@ -110,7 +110,7 @@ public class AllPairShortestPathAnalysis extends Analysis {
      */
     public double shortestPathLength(Node startNode, Node endNode) {
         return ((AllPairShortestPathAnalyzer)analyzer())
-                .shortestPathLength(startNode, endNode);
+            .shortestPathLength(startNode, endNode);
     }
 
     /** Return a matrix representing the result of the all pair shortest path
@@ -136,7 +136,7 @@ public class AllPairShortestPathAnalysis extends Analysis {
      */
     public String toString() {
         return "All pair shortest path analysis using the following analyzer:\n"
-                + analyzer().toString();
+            + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

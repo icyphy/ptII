@@ -1,28 +1,28 @@
 /* An actor that identifies peaks in an array.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -51,38 +51,38 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayPeakSearch
 /**
-This actor outputs the indices and values of peaks in an input array.
-The <i>dip</i> and <i>squelch</i> parameters control the
-sensitivity to noise.  These are given either as absolute numbers or
-as relative numbers.  If they are absolute numbers, then a peak is
-detected if a rise above <i>dip</i> is detected before the peak
-and a dip below <i>dip</i> is detected after the peak.
-If they are given as relative numbers, then a peak is detected when
-a rise by a factor <i>dip</i> above the most recently seen minimum
-(if there has been one) is seen before the peak, and if a dip
-by a factor <i>dip</i> relative to the peak is seen
-after the peak.  Relative numbers can be
-either linear (a fraction) or in decibels.  This is determined by
-the value of the <i>scale</i> parameter. For example,
-if <i>dip</i> is given as 2.0 and <i>scale</i> has value "relative linear",
-then a dip must drop to half of a local peak value to be considered a dip.
-If <i>squelch</i> is given as 10.0 and <i>scale</i> has value "relative linear",
-then any peaks that lie below 1/10 of the global peak are ignored.
-Note that <i>dip</i> is relative to the most recently seen peak or valley,
-and <i>squelch</i> is relative to the global peak in the array,
-when relative values are used.
-If <i>scale</i> has value "relative amplitude decibels", then a value of
-6.0 is equivalent to the linear value 2.0.
-If <i>scale</i> has value "relative power decibels", then a value of
-3.0 is equivalent to the linear value 2.0.
-In either decibel scale, 0.0 is equivalent to 0.0 linear.
-Other parameters control how the search is conducted.
-This actor is based on Matlab code developed by John Signorotti of
-Southwest Research Institute.
+   This actor outputs the indices and values of peaks in an input array.
+   The <i>dip</i> and <i>squelch</i> parameters control the
+   sensitivity to noise.  These are given either as absolute numbers or
+   as relative numbers.  If they are absolute numbers, then a peak is
+   detected if a rise above <i>dip</i> is detected before the peak
+   and a dip below <i>dip</i> is detected after the peak.
+   If they are given as relative numbers, then a peak is detected when
+   a rise by a factor <i>dip</i> above the most recently seen minimum
+   (if there has been one) is seen before the peak, and if a dip
+   by a factor <i>dip</i> relative to the peak is seen
+   after the peak.  Relative numbers can be
+   either linear (a fraction) or in decibels.  This is determined by
+   the value of the <i>scale</i> parameter. For example,
+   if <i>dip</i> is given as 2.0 and <i>scale</i> has value "relative linear",
+   then a dip must drop to half of a local peak value to be considered a dip.
+   If <i>squelch</i> is given as 10.0 and <i>scale</i> has value "relative linear",
+   then any peaks that lie below 1/10 of the global peak are ignored.
+   Note that <i>dip</i> is relative to the most recently seen peak or valley,
+   and <i>squelch</i> is relative to the global peak in the array,
+   when relative values are used.
+   If <i>scale</i> has value "relative amplitude decibels", then a value of
+   6.0 is equivalent to the linear value 2.0.
+   If <i>scale</i> has value "relative power decibels", then a value of
+   3.0 is equivalent to the linear value 2.0.
+   In either decibel scale, 0.0 is equivalent to 0.0 linear.
+   Other parameters control how the search is conducted.
+   This actor is based on Matlab code developed by John Signorotti of
+   Southwest Research Institute.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class ArrayPeakSearch extends TypedAtomicActor {
 
@@ -95,7 +95,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *   actor with this name.
      */
     public ArrayPeakSearch(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set Parameters.
@@ -325,23 +325,23 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                 double indata = ((DoubleToken)inputArray.getElement(i)).doubleValue();
                 if (_debugging) {
                     _debug("-- Checking input with value "
-                        + indata
-                        + " at index "
-                        + i);
+                            + indata
+                            + " at index "
+                            + i);
                 }
                 if (searchValley) {
                     if (indata < localMin) {
                         localMin = indata;
                         switch(scaleIndicator) {
-                            case _RELATIVE_DB:
-                                riseThreshold = localMin * Math.pow(10.0, (dipValue/20));
-                                break;
-                            case _RELATIVE_DB_POWER:
-                                riseThreshold = localMin * Math.pow(10.0, (dipValue/10));
-                                break;
-                            case _RELATIVE_LINEAR:
-                                riseThreshold = localMin + dipValue;
-                                break;
+                        case _RELATIVE_DB:
+                            riseThreshold = localMin * Math.pow(10.0, (dipValue/20));
+                            break;
+                        case _RELATIVE_DB_POWER:
+                            riseThreshold = localMin * Math.pow(10.0, (dipValue/10));
+                            break;
+                        case _RELATIVE_LINEAR:
+                            riseThreshold = localMin + dipValue;
+                            break;
                         }
                         localMinIndex = i;
                     }
@@ -351,15 +351,15 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                     if (indata > riseThreshold && indata > squelchValue) {
                         localMax = indata;
                         switch(scaleIndicator) {
-                            case _RELATIVE_DB:
-                                dipThreshold = localMax * Math.pow(10.0, (-dipValue/20));
-                                break;
-                            case _RELATIVE_DB_POWER:
-                                dipThreshold = localMax * Math.pow(10.0, (-dipValue/10));
-                                break;
-                            case _RELATIVE_LINEAR:
-                                dipThreshold = localMax - dipValue;
-                                break;
+                        case _RELATIVE_DB:
+                            dipThreshold = localMax * Math.pow(10.0, (-dipValue/20));
+                            break;
+                        case _RELATIVE_DB_POWER:
+                            dipThreshold = localMax * Math.pow(10.0, (-dipValue/10));
+                            break;
+                        case _RELATIVE_LINEAR:
+                            dipThreshold = localMax - dipValue;
+                            break;
                         }
                         localMaxIndex = i;
                         searchValley = false;
@@ -369,15 +369,15 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                     if (indata > localMax && indata > squelchValue) {
                         localMax = indata;
                         switch(scaleIndicator) {
-                            case _RELATIVE_DB:
-                                dipThreshold = localMax * Math.pow(10.0, (-dipValue/20));
-                                break;
-                            case _RELATIVE_DB_POWER:
-                                dipThreshold = localMax * Math.pow(10.0, (-dipValue/10));
-                                break;
-                            case _RELATIVE_LINEAR:
-                                dipThreshold = localMax - dipValue;
-                                break;
+                        case _RELATIVE_DB:
+                            dipThreshold = localMax * Math.pow(10.0, (-dipValue/20));
+                            break;
+                        case _RELATIVE_DB_POWER:
+                            dipThreshold = localMax * Math.pow(10.0, (-dipValue/10));
+                            break;
+                        case _RELATIVE_LINEAR:
+                            dipThreshold = localMax - dipValue;
+                            break;
                         }
                         localMaxIndex = i;
                     }
@@ -398,15 +398,15 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                         }
                         localMin = indata;
                         switch(scaleIndicator) {
-                            case _RELATIVE_DB:
-                                riseThreshold = localMin * Math.pow(10.0, (dipValue/20));
-                                break;
-                            case _RELATIVE_DB_POWER:
-                                riseThreshold = localMin * Math.pow(10.0, (dipValue/10));
-                                break;
-                            case _RELATIVE_LINEAR:
-                                riseThreshold = localMin + dipValue;
-                                break;
+                        case _RELATIVE_DB:
+                            riseThreshold = localMin * Math.pow(10.0, (dipValue/20));
+                            break;
+                        case _RELATIVE_DB_POWER:
+                            riseThreshold = localMin * Math.pow(10.0, (dipValue/10));
+                            break;
+                        case _RELATIVE_LINEAR:
+                            riseThreshold = localMin + dipValue;
+                            break;
                         }
                         localMinIndex = i;
                         searchValley = true;
@@ -420,9 +420,9 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             }
 
             Token[] resultPeaksArray = (Token[])resultPeaks
-                    .toArray(new Token[resultPeaks.size()]);
+                .toArray(new Token[resultPeaks.size()]);
             Token[] resultIndicesArray = (Token[])resultIndices
-                    .toArray(new Token[resultIndices.size()]);
+                .toArray(new Token[resultIndices.size()]);
 
             peakValues.send(0, new ArrayToken(resultPeaksArray));
             peakIndices.send(0, new ArrayToken(resultIndicesArray));

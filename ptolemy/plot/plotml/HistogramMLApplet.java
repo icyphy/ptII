@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating red (eal@eecs.berkeley.edu)
 @AcceptedRating red (cxh@eecs.berkeley.edu)
 */
@@ -36,13 +36,13 @@ import ptolemy.plot.PlotBox;
 //////////////////////////////////////////////////////////////////////////
 //// HistogramMLApplet
 /**
-This applet reads a URL giving a PlotML file that contains data.
-It plots a histogram of that data.
+   This applet reads a URL giving a PlotML file that contains data.
+   It plots a histogram of that data.
 
-@see Histogram
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
+   @see Histogram
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
 */
 public class HistogramMLApplet extends PlotMLApplet {
 

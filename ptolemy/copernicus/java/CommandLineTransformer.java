@@ -1,28 +1,28 @@
 /* A transformer that adds the command-line interface.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -75,13 +75,13 @@ import soot.util.Chain;
 //////////////////////////////////////////////////////////////////////////
 //// CommandLineTransformer
 /**
-A transformer that adds the command-line interface.  This create a new
-class that is similar to the ptolemy.copernicus.java.CommandLineTemplate
-class that creates and executes the model being generated.
+   A transformer that adds the command-line interface.  This create a new
+   class that is similar to the ptolemy.copernicus.java.CommandLineTemplate
+   class that creates and executes the model being generated.
 
-@author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0
+   @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class CommandLineTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
@@ -183,7 +183,7 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
 
             body.getLocals().add(modelLocal);
             units.insertBefore(Jimple.v().newAssignStmt(modelLocal,
-                    Jimple.v().newNewExpr(RefType.v(modelClass))),
+                                       Jimple.v().newNewExpr(RefType.v(modelClass))),
                     insertPoint);
 
             // the arguments
@@ -191,8 +191,8 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
             SootMethod constructor =
                 SootUtilities.getMatchingMethod(modelClass, "<init>", args);
             units.insertBefore(Jimple.v().newInvokeStmt(
-                    Jimple.v().newSpecialInvokeExpr(modelLocal,
-                            constructor, args)), insertPoint);
+                                       Jimple.v().newSpecialInvokeExpr(modelLocal,
+                                               constructor, args)), insertPoint);
 
             FieldRef fieldRef =
                 Jimple.v().newInstanceFieldRef(body.getThisLocal(),
@@ -335,56 +335,56 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
 
         // Take the instance of main, and convert it to be a static class.
         /*
-          // FIXME this is currently broken.
-          {
-          // First find the constructor statement.
-          SootMethod mainMethod = mainClass.getMethodByName("main");
-          JimpleBody body = (JimpleBody)mainMethod.retrieveActiveBody();
-          Chain units = body.getUnits();
-          for (Iterator stmts = units.iterator(); stmts.hasNext();) {
-          Stmt stmt = (Stmt)stmts.next();
-          // filter out anything that is not a definition.
-          if (!(stmt instanceof DefinitionStmt)) {
-          continue;
-          }
-          DefinitionStmt newStmt = (DefinitionStmt)stmt;
-          Value value = (newStmt).getRightOp();
-          if (!(value instanceof NewExpr)) {
-          continue;
-          }
-          RefType type = ((NewExpr)value).getBaseType();
-          if (type.getSootClass() != mainClass) {
-          continue;
-          }
-          InvokeStmt constructorStmt = null;
-          // Now walk forward and find the constructor.
-          while (stmts.hasNext()) {
-          stmt = (Stmt)stmts.next();
-          if (stmt instanceof InvokeStmt &&
-          ((InvokeStmt)stmt).getInvokeExpr()
-          instanceof SpecialInvokeExpr) {
-          constructorStmt = (InvokeStmt)stmt;
-          }
-          break;
-          }
+        // FIXME this is currently broken.
+        {
+        // First find the constructor statement.
+        SootMethod mainMethod = mainClass.getMethodByName("main");
+        JimpleBody body = (JimpleBody)mainMethod.retrieveActiveBody();
+        Chain units = body.getUnits();
+        for (Iterator stmts = units.iterator(); stmts.hasNext();) {
+        Stmt stmt = (Stmt)stmts.next();
+        // filter out anything that is not a definition.
+        if (!(stmt instanceof DefinitionStmt)) {
+        continue;
+        }
+        DefinitionStmt newStmt = (DefinitionStmt)stmt;
+        Value value = (newStmt).getRightOp();
+        if (!(value instanceof NewExpr)) {
+        continue;
+        }
+        RefType type = ((NewExpr)value).getBaseType();
+        if (type.getSootClass() != mainClass) {
+        continue;
+        }
+        InvokeStmt constructorStmt = null;
+        // Now walk forward and find the constructor.
+        while (stmts.hasNext()) {
+        stmt = (Stmt)stmts.next();
+        if (stmt instanceof InvokeStmt &&
+        ((InvokeStmt)stmt).getInvokeExpr()
+        instanceof SpecialInvokeExpr) {
+        constructorStmt = (InvokeStmt)stmt;
+        }
+        break;
+        }
 
-          // Now we actually have a creation of the main object,
-          // so create a class just for that instance.
-          SootClass staticMainClass =
-          SootUtilities.createStaticClassForInstance(
-          mainClass, body, newStmt, constructorStmt,
-          PhaseOptions.getString(options, "targetPackage")
-          + ".StaticMain");
+        // Now we actually have a creation of the main object,
+        // so create a class just for that instance.
+        SootClass staticMainClass =
+        SootUtilities.createStaticClassForInstance(
+        mainClass, body, newStmt, constructorStmt,
+        PhaseOptions.getString(options, "targetPackage")
+        + ".StaticMain");
 
-          // Remove the extra Main method that we created in
-          // doing this.
-          SootMethod staticMainMethod =
-          staticMainClass.getMethodByName("main");
-          staticMainClass.removeMethod(staticMainMethod);
+        // Remove the extra Main method that we created in
+        // doing this.
+        SootMethod staticMainMethod =
+        staticMainClass.getMethodByName("main");
+        staticMainClass.removeMethod(staticMainMethod);
 
-          break;
-          }
-          }
+        break;
+        }
+        }
         */
         for (Iterator methods = mainClass.getMethods().iterator();
              methods.hasNext();) {
@@ -453,16 +453,16 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
 
         // call preinitialize
         units.insertBefore(Jimple.v().newInvokeStmt(
-                Jimple.v().newVirtualInvokeExpr(modelLocal,
-                        SootUtilities.searchForMethodByName(modelClass,
-                                "preinitialize"))),
+                                   Jimple.v().newVirtualInvokeExpr(modelLocal,
+                                           SootUtilities.searchForMethodByName(modelClass,
+                                                   "preinitialize"))),
                 unit);
 
         // call initialize on the model
         units.insertBefore(Jimple.v().newInvokeStmt(
-                Jimple.v().newVirtualInvokeExpr(modelLocal,
-                        SootUtilities.searchForMethodByName(modelClass,
-                                "initialize"))),
+                                   Jimple.v().newVirtualInvokeExpr(modelLocal,
+                                           SootUtilities.searchForMethodByName(modelClass,
+                                                   "initialize"))),
                 unit);
 
         // A jump point for the start of the iteration.
@@ -476,40 +476,40 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
 
         // call fire on the model
         units.insertBefore(Jimple.v().newInvokeStmt(
-                Jimple.v().newVirtualInvokeExpr(modelLocal,
-                        SootUtilities.searchForMethodByName(modelClass,
-                                "fire"))),
+                                   Jimple.v().newVirtualInvokeExpr(modelLocal,
+                                           SootUtilities.searchForMethodByName(modelClass,
+                                                   "fire"))),
                 unit);
 
         // call postfire on the model.
         units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                Jimple.v().newVirtualInvokeExpr(modelLocal,
-                        SootUtilities.searchForMethodByName(modelClass,
-                                "postfire"))),
+                                   Jimple.v().newVirtualInvokeExpr(modelLocal,
+                                           SootUtilities.searchForMethodByName(modelClass,
+                                                   "postfire"))),
                 unit);
 
         // If postfire returned false,
         // then we're done.
         units.insertBefore(Jimple.v().newIfStmt(
-                Jimple.v().newEqExpr(postfireReturnsLocal,
-                        IntConstant.v(0)),
-                iterationEndStmt),
+                                   Jimple.v().newEqExpr(postfireReturnsLocal,
+                                           IntConstant.v(0)),
+                                   iterationEndStmt),
                 unit);
 
         // If we need to keep track of the number of iterations, then...
         if (iterationLimit > 1) {
             // Increment the number of iterations.
             units.insertBefore(Jimple.v().newAssignStmt(iterationLocal,
-                    Jimple.v().newAddExpr(iterationLocal,
-                            IntConstant.v(1))),
+                                       Jimple.v().newAddExpr(iterationLocal,
+                                               IntConstant.v(1))),
                     unit);
 
             // If the number of iterations is greater than, or equal
             // to the limit, then we're done.
             units.insertBefore(Jimple.v().newIfStmt(
-                    Jimple.v().newGeExpr(iterationLocal,
-                            iterationLimitLocal),
-                    iterationEndStmt),
+                                       Jimple.v().newGeExpr(iterationLocal,
+                                               iterationLimitLocal),
+                                       iterationEndStmt),
                     unit);
         }
         if (iterationLimit != 1) {
@@ -523,9 +523,9 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
 
         // call wrapup on the model
         units.insertBefore(Jimple.v().newInvokeStmt(
-                Jimple.v().newVirtualInvokeExpr(modelLocal,
-                        SootUtilities.searchForMethodByName(modelClass,
-                                "wrapup"))),
+                                   Jimple.v().newVirtualInvokeExpr(modelLocal,
+                                           SootUtilities.searchForMethodByName(modelClass,
+                                                   "wrapup"))),
                 unit);
     }
 

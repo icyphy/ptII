@@ -1,28 +1,28 @@
 /* A subclass of Query supporting Ptolemy II attributes.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
@@ -75,27 +75,27 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
 /**
-This class is a query dialog box with various entries for setting
-the values of Ptolemy II attributes that implement the Settable
-interface and have visibility FULL.  One or more entries are
-associated with an attribute so that if the entry is changed, the
-attribute value is updated, and if the attribute value changes,
-the entry is updated. To change an attribute, this class queues
-a change request with a particular object called the <i>change
-handler</i>.  The change handler is specified as a constructor
-argument.
-<p>
-It is important to note that it may take
-some time before the value of a attribute is actually changed, since it
-is up to the change handler to decide when change requests are processed.
-The change handler will typically delegate change requests to the
-Manager, although this is not necessarily the case.
-<p>
-To use this class, add an entry to the query using addStyledEntry().
+   This class is a query dialog box with various entries for setting
+   the values of Ptolemy II attributes that implement the Settable
+   interface and have visibility FULL.  One or more entries are
+   associated with an attribute so that if the entry is changed, the
+   attribute value is updated, and if the attribute value changes,
+   the entry is updated. To change an attribute, this class queues
+   a change request with a particular object called the <i>change
+   handler</i>.  The change handler is specified as a constructor
+   argument.
+   <p>
+   It is important to note that it may take
+   some time before the value of a attribute is actually changed, since it
+   is up to the change handler to decide when change requests are processed.
+   The change handler will typically delegate change requests to the
+   Manager, although this is not necessarily the case.
+   <p>
+   To use this class, add an entry to the query using addStyledEntry().
 
-@author Brian K. Vogel and Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
+   @author Brian K. Vogel and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
 */
 public class PtolemyQuery extends Query
     implements QueryListener, ValueListener, ChangeListener, CloseListener {
@@ -251,7 +251,7 @@ public class PtolemyQuery extends Query
                             foundStyle = true;
                         }
                     }
-               }
+                }
                 // FIXME: Other attribute classes? TextStyle?
             } catch (IllegalActionException ex) {
                 // Ignore and create a line entry.
@@ -548,18 +548,18 @@ public class PtolemyQuery extends Query
 
                             attribute.validate();
                             /* NOTE: Earlier version:
-                               // Here, we need to handle instances of Variable
-                               // specially.  This is too bad...
-                               if (attribute instanceof Variable) {
+                            // Here, we need to handle instances of Variable
+                            // specially.  This is too bad...
+                            if (attribute instanceof Variable) {
 
-                               // Will this ever happen?  A
-                               // Variable that is not a NamedObj???
-                               // Retrieve the token to force
-                               // evaluation, so as to check the
-                               // validity of the new value.
+                            // Will this ever happen?  A
+                            // Variable that is not a NamedObj???
+                            // Retrieve the token to force
+                            // evaluation, so as to check the
+                            // validity of the new value.
 
-                               ((Variable)attribute).getToken();
-                               }
+                            ((Variable)attribute).getToken();
+                            }
                             */
                         }
                     };
@@ -717,7 +717,7 @@ public class PtolemyQuery extends Query
 
     // Background color for string mode edit boxes.
     private static Color _STRING_MODE_BACKGROUND_COLOR
-            = new Color(230, 255, 255, 255);
+    = new Color(230, 255, 255, 255);
 
     // Maps an attribute name to a list of entry names that the
     // attribute is attached to.

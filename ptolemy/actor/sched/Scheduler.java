@@ -1,28 +1,28 @@
 /* A base class for schedulers.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
@@ -49,34 +49,34 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// Scheduler
 /**
-The base class for schedulers. A scheduler schedules the execution
-order of the containees of a CompositeActor.  <p>
+   The base class for schedulers. A scheduler schedules the execution
+   order of the containees of a CompositeActor.  <p>
 
-A scheduler is contained by a StaticSchedulingDirector, and provides
-the schedule for it.  The director will use this schedule to govern
-the execution of a CompositeActor. <p>
+   A scheduler is contained by a StaticSchedulingDirector, and provides
+   the schedule for it.  The director will use this schedule to govern
+   the execution of a CompositeActor. <p>
 
-A schedule is represented by the Schedule class, and determines the
-order of the firing of the actors in a particular composite actor.  In
-this base class, the default schedule fires the deeply
-contained actors in the order of their construction.  A domain specific
-scheduler will override this to provide a different order. <p>
+   A schedule is represented by the Schedule class, and determines the
+   order of the firing of the actors in a particular composite actor.  In
+   this base class, the default schedule fires the deeply
+   contained actors in the order of their construction.  A domain specific
+   scheduler will override this to provide a different order. <p>
 
-The schedule, once constructed, is cached and reused as long as the
-schedule is still valid.  The validity of the schedule is set by the
-setValid() method.  If the current schedule is not valid, then the
-schedule will be recomputed the next time the getSchedule() method is
-called.  However, derived classes will usually override only the
-protected _getSchedule() method. <p>
+   The schedule, once constructed, is cached and reused as long as the
+   schedule is still valid.  The validity of the schedule is set by the
+   setValid() method.  If the current schedule is not valid, then the
+   schedule will be recomputed the next time the getSchedule() method is
+   called.  However, derived classes will usually override only the
+   protected _getSchedule() method. <p>
 
-The scheduler does not perform any mutations, and it does not listen
-for changes in the model.  Directors that use this scheduler should
-normally invalidate the schedule when mutations occur.
+   The scheduler does not perform any mutations, and it does not listen
+   for changes in the model.  Directors that use this scheduler should
+   normally invalidate the schedule when mutations occur.
 
-@author Jie Liu, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 0.2
-@see ptolemy.actor.sched.Schedule
+   @author Jie Liu, Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see ptolemy.actor.sched.Schedule
 */
 
 public class Scheduler extends Attribute {

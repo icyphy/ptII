@@ -1,37 +1,37 @@
 /*
-Modified 6/27/00 by Keith Seymour -- seymour@cs.utk.edu
--Increased problem size to 500x500
--Fixed matgen() random number generation.
--Updated event handling to 1.1 model.
--Modified deprecated method calls.
--Cleaned up code.
--Added PII/PIII/Win2000 options
-Modified 3/3/97 by David M. Doolin (dmd) doolin@cs.utk.edu
-Fixed error in matgen() method. Added some comments.
-Modified 2/17/97 by Paul McMahan mcmahan@cs.utk.edu
-and Shilpa Singhal singhal@cs.utk.edu
-Added support for new cgi-script which handles
-submissions
-Modified 1/22/97 by Paul McMahan mcmahan@cs.utk.edu
-Added more Mac processor options to form.
-Optimized by Jonathan Hardwick (jch@cs.cmu.edu), 3/28/96
-Compare to Linkpack.java.
-Optimizations performed:
- - added "final" modifier to performance-critical methods.
- - changed lines of the form "a[i] = a[i] + x" to "a[i] += x".
- - minimized array references using common subexpression elimination.
- - eliminated unused variables.
- - undid an unrolled loop.
- - added temporary 1D arrays to hold frequently-used columns of 2D arrays.
- - wrote my own abs() method
-See http://www.cs.cmu.edu/~jch/java/linpack.html for more details.
-Ported to Java by Reed Wade    (wade@cs.utk.edu) 2/96
-built using JDK 1.0 on solaris
-using "javac -O Linpack.java"
-Translated to C by Bonnie Toy 5/88
-    (modified on 2/25/94    to fix a problem with daxpy    for
-     unequal increments or equal increments not equal to 1.
-         Jack Dongarra)
+  Modified 6/27/00 by Keith Seymour -- seymour@cs.utk.edu
+  -Increased problem size to 500x500
+  -Fixed matgen() random number generation.
+  -Updated event handling to 1.1 model.
+  -Modified deprecated method calls.
+  -Cleaned up code.
+  -Added PII/PIII/Win2000 options
+  Modified 3/3/97 by David M. Doolin (dmd) doolin@cs.utk.edu
+  Fixed error in matgen() method. Added some comments.
+  Modified 2/17/97 by Paul McMahan mcmahan@cs.utk.edu
+  and Shilpa Singhal singhal@cs.utk.edu
+  Added support for new cgi-script which handles
+  submissions
+  Modified 1/22/97 by Paul McMahan mcmahan@cs.utk.edu
+  Added more Mac processor options to form.
+  Optimized by Jonathan Hardwick (jch@cs.cmu.edu), 3/28/96
+  Compare to Linkpack.java.
+  Optimizations performed:
+  - added "final" modifier to performance-critical methods.
+  - changed lines of the form "a[i] = a[i] + x" to "a[i] += x".
+  - minimized array references using common subexpression elimination.
+  - eliminated unused variables.
+  - undid an unrolled loop.
+  - added temporary 1D arrays to hold frequently-used columns of 2D arrays.
+  - wrote my own abs() method
+  See http://www.cs.cmu.edu/~jch/java/linpack.html for more details.
+  Ported to Java by Reed Wade    (wade@cs.utk.edu) 2/96
+  built using JDK 1.0 on solaris
+  using "javac -O Linpack.java"
+  Translated to C by Bonnie Toy 5/88
+  (modified on 2/25/94    to fix a problem with daxpy    for
+  unequal increments or equal increments not equal to 1.
+  Jack Dongarra)
 */
 
 import java.util.Date;

@@ -1,24 +1,24 @@
 /* An analyzer used for finding the longest path from a single source.
 
- Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The University of Maryland. All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Red (shahrooz@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
@@ -43,18 +43,18 @@ import ptolemy.graph.mapping.ToDoubleMapping;
 //////////////////////////////////////////////////////////////////////////
 //// AllEdgeSingleSourceLongestPathStrategy
 /**
-An analyzer used to find the longest path from a single source.
-<p>
-This algorithm runs in O(E), in which E is the number of edges.
-<p>
-@see ptolemy.graph.analysis.SingleSourceLongestPathAnalysis
-@since Ptolemy II 4.0
-@author Shahrooz Shahparnia
-@version $Id$
+   An analyzer used to find the longest path from a single source.
+   <p>
+   This algorithm runs in O(E), in which E is the number of edges.
+   <p>
+   @see ptolemy.graph.analysis.SingleSourceLongestPathAnalysis
+   @since Ptolemy II 4.0
+   @author Shahrooz Shahparnia
+   @version $Id$
 */
 
 public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
-        implements SingleSourceLongestPathAnalyzer {
+    implements SingleSourceLongestPathAnalyzer {
 
     /** Construct an instance of this analyzer.
      *
@@ -111,7 +111,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
             do {
                 pathNodes.add(predecessor);
                 predecessorsIndex =
-                        predecessors[graph().nodeLabel(predecessor)];
+                    predecessors[graph().nodeLabel(predecessor)];
                 if ((predecessorsIndex != -1)) {
                     predecessor = graph().node(predecessorsIndex);
                 } else {
@@ -152,7 +152,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      */
     public String toString() {
         return "Single source longest path analyzer"
-                + " which runs in O(E) in which E is the number of edges.";
+            + " which runs in O(E) in which E is the number of edges.";
     }
 
     /** Check for compatibility between the analysis and the given
@@ -166,7 +166,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
         boolean result = false;
         if (graph() instanceof DirectedGraph) {
             CycleExistenceAnalyzer analyzer = new
-                    FloydWarshallCycleExistenceStrategy(graph());
+                FloydWarshallCycleExistenceStrategy(graph());
             result = !analyzer.hasCycle();
         }
         return result;
@@ -186,7 +186,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
         double[] distance = new double[graph.nodeCount()];
         _predecessor = new int[graph.nodeCount()];
         for (Iterator nodes = graph.nodes().iterator();
-                nodes.hasNext();) {
+             nodes.hasNext();) {
             Node node = (Node)nodes.next();
             if (node != _startNode) {
                 //color.put(node, Color.white);
@@ -203,7 +203,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
             Collection successors = graph.successors(u);
             if (successors != null) {
                 for (Iterator successorNodes = successors.iterator();
-                        successorNodes.hasNext();) {
+                     successorNodes.hasNext();) {
                     Node v = (Node)successorNodes.next();
                     double predecessorDistance = distance[graph().nodeLabel(u)];
                     double actualDistance = distance[graph().nodeLabel(v)];
@@ -217,9 +217,9 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
                         }
                     }
                     if ((actualDistance < predecessorDistance
-                            + connectingEdgeCost)) {
+                                + connectingEdgeCost)) {
                         distance[graph.nodeLabel(v)] = predecessorDistance
-                                + connectingEdgeCost;
+                            + connectingEdgeCost;
                         _predecessor[graph.nodeLabel(v)] = graph.nodeLabel(u);
                     }
                     if (v != _startNode) {

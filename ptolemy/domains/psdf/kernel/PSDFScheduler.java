@@ -1,28 +1,28 @@
 /* A Scheduler for the PSDF domain
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
@@ -303,44 +303,44 @@ public class PSDFScheduler extends BaseSDFScheduler {
                                 + expression);
                     }
                 }
-                    // Infer init production.
+                // Infer init production.
                 // Note that this is a very simple type of inference...
                 // However, in general, we don't want to try to
                 // flatten this model...
-               //  Iterator connectedPorts =
-//                     port.insideSourcePortList().iterator();
-//                 IOPort foundOutputPort = null;
-//                 int inferredRate = 0;
-//                 while (connectedPorts.hasNext()) {
-//                     IOPort connectedPort = (IOPort) connectedPorts.next();
+                //  Iterator connectedPorts =
+                //                     port.insideSourcePortList().iterator();
+                //                 IOPort foundOutputPort = null;
+                //                 int inferredRate = 0;
+                //                 while (connectedPorts.hasNext()) {
+                //                     IOPort connectedPort = (IOPort) connectedPorts.next();
 
-//                     int newRate;
-//                     if (connectedPort.isOutput()) {
-//                         newRate =
-//                             SDFUtilities.getTokenInitProduction(connectedPort);
-//                     } else {
-//                         newRate = 0;
-//                     }
-//                     // If we've already set the rate, then check that the
-//                     // rate for any other internal port is correct.
-//                     if (foundOutputPort != null &&
-//                             newRate != inferredRate) {
-//                         throw new NotSchedulableException(
-//                                 "External output port " + port
-//                                 + " is connected on the inside to ports "
-//                                 + "with different initial production: "
-//                                 + foundOutputPort + " and "
-//                                 + connectedPort);
-//                     }
-//                     foundOutputPort = connectedPort;
-//                     inferredRate = newRate;
-//                 }
-//                 SDFUtilities._setIfNotDefined(
-//                         port, "tokenInitProduction", inferredRate);
-//                 if (_debugging && VERBOSE) {
-//                     _debug("Setting tokenInitProduction to "
-//                             + inferredRate);
-//                 }
+                //                     int newRate;
+                //                     if (connectedPort.isOutput()) {
+                //                         newRate =
+                //                             SDFUtilities.getTokenInitProduction(connectedPort);
+                //                     } else {
+                //                         newRate = 0;
+                //                     }
+                //                     // If we've already set the rate, then check that the
+                //                     // rate for any other internal port is correct.
+                //                     if (foundOutputPort != null &&
+                //                             newRate != inferredRate) {
+                //                         throw new NotSchedulableException(
+                //                                 "External output port " + port
+                //                                 + " is connected on the inside to ports "
+                //                                 + "with different initial production: "
+                //                                 + foundOutputPort + " and "
+                //                                 + connectedPort);
+                //                     }
+                //                     foundOutputPort = connectedPort;
+                //                     inferredRate = newRate;
+                //                 }
+                //                 SDFUtilities._setIfNotDefined(
+                //                         port, "tokenInitProduction", inferredRate);
+                //                 if (_debugging && VERBOSE) {
+                //                     _debug("Setting tokenInitProduction to "
+                //                             + inferredRate);
+                //                 }
             } else {
                 throw new NotSchedulableException(port,
                         "External port is neither an input and an output, "

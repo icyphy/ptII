@@ -1,28 +1,28 @@
 /* A relation supporting clustered graphs.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (johnr@eecs.berkeley.edu)
@@ -44,32 +44,32 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ComponentRelation
 /**
-This class defines a relation supporting hierarchy (clustered graphs).
-Specifically, a method is added for defining a container and for
-performing deep traversals of
-a graph. Most importantly, however, instances of this class refuse to link
-to ports that are not instances of ComponentPort.  Thus, this class
-ensures that ComponentPort instances are only connected to other
-ComponentPort instances.
-<p>
-Derived classes may wish to further constrain linked ports to a subclass
-of ComponentPort, or to disallow links under other circumstances,
-for example if the relation cannot support any more links.
-Such derived classes should override the protected method _checkPort()
-to throw an exception.
-<p>
-To link a ComponentPort to a ComponentRelation, use the link() or
-liberalLink() method in the ComponentPort class.  To remove a link,
-use the unlink() method.
-<p>
-The container for instances of this class can only be instances of
-ComponentEntity.  Derived classes may wish to further constrain the
-container to subclasses of ComponentEntity.  To do this, they should
-override the protected _checkContainer() method.
+   This class defines a relation supporting hierarchy (clustered graphs).
+   Specifically, a method is added for defining a container and for
+   performing deep traversals of
+   a graph. Most importantly, however, instances of this class refuse to link
+   to ports that are not instances of ComponentPort.  Thus, this class
+   ensures that ComponentPort instances are only connected to other
+   ComponentPort instances.
+   <p>
+   Derived classes may wish to further constrain linked ports to a subclass
+   of ComponentPort, or to disallow links under other circumstances,
+   for example if the relation cannot support any more links.
+   Such derived classes should override the protected method _checkPort()
+   to throw an exception.
+   <p>
+   To link a ComponentPort to a ComponentRelation, use the link() or
+   liberalLink() method in the ComponentPort class.  To remove a link,
+   use the unlink() method.
+   <p>
+   The container for instances of this class can only be instances of
+   ComponentEntity.  Derived classes may wish to further constrain the
+   container to subclasses of ComponentEntity.  To do this, they should
+   override the protected _checkContainer() method.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class ComponentRelation extends Relation {
 
@@ -228,7 +228,7 @@ public class ComponentRelation extends Relation {
             _workspace.getWriteAccess();
             _checkContainer(container);
             CompositeEntity previousContainer
-                    = (CompositeEntity)getContainer();
+                = (CompositeEntity)getContainer();
             if (previousContainer == container) return;
             // Do this first, because it may throw an exception.
             if (container != null) {

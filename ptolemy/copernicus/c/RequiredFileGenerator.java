@@ -1,32 +1,32 @@
 /*
-A class that generates the other required files in the
-transitive closure.
+  A class that generates the other required files in the
+  transitive closure.
 
-Copyright (c) 2001-2004 The University of Maryland.
-All rights reserved.
+  Copyright (c) 2001-2004 The University of Maryland.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the above
+  copyright notice and the following two paragraphs appear in all copies
+  of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
 
-@ProposedRating Red (ankush@eng.umd.edu)
-@AcceptedRating Red (ankush@eng.umd.edu)
+  @ProposedRating Red (ankush@eng.umd.edu)
+  @AcceptedRating Red (ankush@eng.umd.edu)
 */
 
 
@@ -49,9 +49,9 @@ import java.util.Iterator;
 /** A class that generates the other required files in the
     transitive closure.
 
-@author Ankush Varma
-@version $Id$
-@since Ptolemy II 2.0
+    @author Ankush Varma
+    @version $Id$
+    @since Ptolemy II 2.0
 */
 
 public class RequiredFileGenerator {
@@ -319,14 +319,14 @@ public class RequiredFileGenerator {
             }
 
             File dummyFile = new File(fileName.substring(0,
-                    fileName.lastIndexOf('/')));
+                                              fileName.lastIndexOf('/')));
             dummyFile.mkdirs();
         }
 
 
         // Generate the stub header file.
         if (FileHandler.exists(fileName
-                + StubFileGenerator.stubFileNameSuffix())) {
+                    + StubFileGenerator.stubFileNameSuffix())) {
             code = sGenerator.generate(sootClass);
             String name = fileName
                 + StubFileGenerator.stubFileNameSuffix();

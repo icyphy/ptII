@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
 @AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
@@ -42,16 +42,16 @@ import java.io.OutputStreamWriter;
 //////////////////////////////////////////////////////////////////////////
 //// Writer
 /**
-This actor reads tokens from any number of input channels and writes
-their string values to the specified writer.  A newline character
-is written between firings.  If the width of the input port is greater
-than one, then values read from the distinct channels are separated
-by tab characters. If no writer is specified using setWriter(), then
-this actor writes to the standard output.
+   This actor reads tokens from any number of input channels and writes
+   their string values to the specified writer.  A newline character
+   is written between firings.  If the width of the input port is greater
+   than one, then values read from the distinct channels are separated
+   by tab characters. If no writer is specified using setWriter(), then
+   this actor writes to the standard output.
 
-@author  Yuhong Xiong, Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
+   @author  Yuhong Xiong, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
 */
 public class Writer extends Sink {
 

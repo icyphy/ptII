@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (liuxj@eecs.berkeley.edu)
 @AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
@@ -58,13 +58,13 @@ import javax.swing.event.ChangeListener;
 //////////////////////////////////////////////////////////////////////////
 //// SliderSource
 /**
-The output of this actor is controlled by a slider in the run window.
-The range of the output is specified by two parameters, <i>minimum</i> and
-<i>maximum</i>. The type of these parameters and the output is integer.
+   The output of this actor is controlled by a slider in the run window.
+   The range of the output is specified by two parameters, <i>minimum</i> and
+   <i>maximum</i>. The type of these parameters and the output is integer.
 
-@author Xiaojun Liu
-@version $Id$
-@since Ptolemy II 2.0
+   @author Xiaojun Liu
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class SliderSource extends Source implements ChangeListener, Placeable {
 

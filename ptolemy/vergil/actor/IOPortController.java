@@ -1,28 +1,28 @@
 /* The node controller for ports contained in entities.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
 @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -73,20 +73,20 @@ import diva.util.java2d.ShapeUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// IOPortController
 /**
-This class provides interaction with nodes that represent Ptolemy II
-ports on an actor.  It provides a double click binding and context
-menu entry to edit the parameters of the port ("Configure") and a
-command to get documentation.
-It can have one of two access levels, FULL or PARTIAL.
-If the access level is FULL, the the context menu also
-contains a command to rename the node.
-Note that whether the port is an input or output or multiport cannot
-be controlled via this interface.  The "Configure Ports" command of
-the container should be invoked instead.
+   This class provides interaction with nodes that represent Ptolemy II
+   ports on an actor.  It provides a double click binding and context
+   menu entry to edit the parameters of the port ("Configure") and a
+   command to get documentation.
+   It can have one of two access levels, FULL or PARTIAL.
+   If the access level is FULL, the the context menu also
+   contains a command to rename the node.
+   Note that whether the port is an input or output or multiport cannot
+   be controlled via this interface.  The "Configure Ports" command of
+   the container should be invoked instead.
 
-@author Steve Neuendorffer and Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
+   @author Steve Neuendorffer and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class IOPortController extends AttributeController {
 
@@ -109,7 +109,7 @@ public class IOPortController extends AttributeController {
 
         // "Listen to Actor"
         _menuFactory.addMenuItemFactory(
-            new MenuActionFactory(new ListenToPortAction()));
+                new MenuActionFactory(new ListenToPortAction()));
 
         // Ports of entities do not use a selection interactor with
         // the same selection model as the rest of the first level figures.
@@ -129,11 +129,11 @@ public class IOPortController extends AttributeController {
     public class EntityPortRenderer implements NodeRenderer {
 
         /**  Render a visual representation of the given node. If the
-        * StringAttribute _color of the node is set then use that color to
-        * render the node. If the StringAttribute _explanation of the node is
-        * set then use it to set the tooltip.
-        * @see diva.graph.NodeRenderer#render(java.lang.Object)
-        */
+         * StringAttribute _color of the node is set then use that color to
+         * render the node. If the StringAttribute _explanation of the node is
+         * set then use it to set the tooltip.
+         * @see diva.graph.NodeRenderer#render(java.lang.Object)
+         */
         public Figure render(Object n) {
             final Port port = (Port) n;
 
@@ -199,7 +199,7 @@ public class IOPortController extends AttributeController {
                 fill = Color.lightGray;
                 lineWidth = (float) 0.0;
             } else if (
-                port instanceof IOPort && ((IOPort) port).isMultiport()) {
+                    port instanceof IOPort && ((IOPort) port).isMultiport()) {
                 fill = Color.white;
             } else {
                 fill = Color.black;
@@ -278,27 +278,27 @@ public class IOPortController extends AttributeController {
             Figure figure = new BasicFigure(shape, fill, (float) 1.5) {
 
                     // Override this because we want to show the type.
-        // It doesn't work to set it once because the type
-        // has not been resolved, and anyway, it may
-        // change.
-    public String getToolTipText() {
-                    String tipText = port.getName();
-                    StringAttribute _explAttr =
-                        (StringAttribute) (port.getAttribute("_explanation"));
-                    if (_explAttr != null) {
-                        tipText = _explAttr.getExpression();
-                    } else if (port instanceof Typeable) {
-                        try {
-                            tipText =
-                                tipText
+                    // It doesn't work to set it once because the type
+                    // has not been resolved, and anyway, it may
+                    // change.
+                    public String getToolTipText() {
+                        String tipText = port.getName();
+                        StringAttribute _explAttr =
+                            (StringAttribute) (port.getAttribute("_explanation"));
+                        if (_explAttr != null) {
+                            tipText = _explAttr.getExpression();
+                        } else if (port instanceof Typeable) {
+                            try {
+                                tipText =
+                                    tipText
                                     + ", type:"
                                     + ((Typeable) port).getType();
-                        } catch (IllegalActionException ex) {
+                            } catch (IllegalActionException ex) {
+                            }
                         }
+                        return tipText;
                     }
-                    return tipText;
-                }
-            };
+                };
             // Have to do this also, or the awt doesn't display any
             // tooltip at all.
 
@@ -320,7 +320,7 @@ public class IOPortController extends AttributeController {
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error(
-                    "Cannot listen to port without a configuration.");
+                        "Cannot listen to port without a configuration.");
                 return;
             }
 
@@ -343,14 +343,14 @@ public class IOPortController extends AttributeController {
                 // a container for this new effigy.
                 Effigy textEffigy =
                     new TextEffigy(
-                        effigy,
-                        effigy.uniqueName("debugListener" + object.getName()));
+                            effigy,
+                            effigy.uniqueName("debugListener" + object.getName()));
 
                 DebugListenerTableau debugTableau =
                     new DebugListenerTableau(
-                        textEffigy,
-                        textEffigy.uniqueName(
-                            "debugListener" + object.getName()));
+                            textEffigy,
+                            textEffigy.uniqueName(
+                                    "debugListener" + object.getName()));
                 debugTableau.setDebuggable(object);
             } catch (KernelException ex) {
                 MessageHandler.error("Failed to create debug listener.", ex);

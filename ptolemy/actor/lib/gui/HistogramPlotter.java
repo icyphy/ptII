@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
@@ -53,34 +53,34 @@ import java.net.URL;
 //////////////////////////////////////////////////////////////////////////
 //// HistogramPlotter
 /**
-A histogram plotter.  This plotter contains an instance of the Histogram
-class from the Ptolemy plot package as a public member.  A histogram
-of data at the input port, which can consist of any number of channels,
-is plotted on this instance. The input data type is double.
-<p>
-The output plot consists of a set of vertical bars, each representing
-a histogram bin.  The height of the bar is the count of the number
-of inputs that have been observed that fall within that bin.
-The <i>n</i>-th bin represents values in the range
-(<i>x</i> - <i>w</i>/2 + <i>o</i>, <i>x</i> + <i>w</i>/2 + <i>o</i>),
-where <i>w</i> is the value of the <i>binWidth</i> parameter,
-and <i>o</i> is the value of the <i>binOffset</i> parameter.
-So for example, if <i>o = w/2</i>,
-then each bin represents values from <i>nw</i> to
-(<i>n</i> + 1)<i>w</i> for some integer <i>n</i>.
-The default offset is 0.5, half the default bin width, which is 1.0.
-<p>
-This actor has a <i>legend</i> parameter,
-which gives a comma-separated list of labels to attach to
-each dataset.  Normally, the number of elements in this list
-should equal the number of input channels, although this
-is not enforced.
+   A histogram plotter.  This plotter contains an instance of the Histogram
+   class from the Ptolemy plot package as a public member.  A histogram
+   of data at the input port, which can consist of any number of channels,
+   is plotted on this instance. The input data type is double.
+   <p>
+   The output plot consists of a set of vertical bars, each representing
+   a histogram bin.  The height of the bar is the count of the number
+   of inputs that have been observed that fall within that bin.
+   The <i>n</i>-th bin represents values in the range
+   (<i>x</i> - <i>w</i>/2 + <i>o</i>, <i>x</i> + <i>w</i>/2 + <i>o</i>),
+   where <i>w</i> is the value of the <i>binWidth</i> parameter,
+   and <i>o</i> is the value of the <i>binOffset</i> parameter.
+   So for example, if <i>o = w/2</i>,
+   then each bin represents values from <i>nw</i> to
+   (<i>n</i> + 1)<i>w</i> for some integer <i>n</i>.
+   The default offset is 0.5, half the default bin width, which is 1.0.
+   <p>
+   This actor has a <i>legend</i> parameter,
+   which gives a comma-separated list of labels to attach to
+   each dataset.  Normally, the number of elements in this list
+   should equal the number of input channels, although this
+   is not enforced.
 
-@see ptolemy.plot.Histogram
+   @see ptolemy.plot.Histogram
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class HistogramPlotter extends PlotterBase
     implements Configurable, Placeable {
@@ -198,36 +198,36 @@ public class HistogramPlotter extends PlotterBase
      */
     public void configure(URL base, String source, String text)
             throws Exception {
-                if (plot instanceof Histogram) {
-                    HistogramMLParser parser = new HistogramMLParser((Histogram)plot);
-                    if (source != null && !source.trim().equals("")) {
-                        URL xmlFile = new URL(base, source);
-                        InputStream stream = xmlFile.openStream();
-                        parser.parse(base, stream);
-                        stream.close();
+        if (plot instanceof Histogram) {
+            HistogramMLParser parser = new HistogramMLParser((Histogram)plot);
+            if (source != null && !source.trim().equals("")) {
+                URL xmlFile = new URL(base, source);
+                InputStream stream = xmlFile.openStream();
+                parser.parse(base, stream);
+                stream.close();
+            }
+            if (text != null && !text.equals("")) {
+                // NOTE: Regrettably, the XML parser we are using cannot
+                // deal with having a single processing instruction at the
+                // outer level.  Thus, we have to strip it.
+                String trimmed = text.trim();
+                if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
+                    trimmed = trimmed.substring(2, trimmed.length() - 2).trim();
+                    if (trimmed.startsWith("plotml")) {
+                        trimmed = trimmed.substring(6).trim();
+                        parser.parse(base, trimmed);
                     }
-                    if (text != null && !text.equals("")) {
-                        // NOTE: Regrettably, the XML parser we are using cannot
-                        // deal with having a single processing instruction at the
-                        // outer level.  Thus, we have to strip it.
-                        String trimmed = text.trim();
-                        if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
-                            trimmed = trimmed.substring(2, trimmed.length() - 2).trim();
-                            if (trimmed.startsWith("plotml")) {
-                                trimmed = trimmed.substring(6).trim();
-                                parser.parse(base, trimmed);
-                            }
-                            // If it's not a plotml processing instruction, ignore.
-                        } else {
-                            // Data is not enclosed in a processing instruction.
-                            // Must have been given in a CDATA section.
-                            parser.parse(base, text);
-                        }
-                    }
+                    // If it's not a plotml processing instruction, ignore.
                 } else {
-                    super.configure(base, source, text);
+                    // Data is not enclosed in a processing instruction.
+                    // Must have been given in a CDATA section.
+                    parser.parse(base, text);
                 }
             }
+        } else {
+            super.configure(base, source, text);
+        }
+    }
 
     /** Return the input source that was specified the last time the configure
      *  method was called.

@@ -1,28 +1,28 @@
 /* An actor that transforms transmission properties using another model.
 
- Copyright (c) 2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (pjb2e@eecs.berkeley.edu)
@@ -56,34 +56,34 @@ import ptolemy.kernel.util.Workspace;
 //// TransmitPropertyTransformer
 
 /**
-This actor reads input tokens and sends them unmodified to the output;
-its role is not to operate on input tokens, but rather to modify the
-properties of a transmission.
+   This actor reads input tokens and sends them unmodified to the output;
+   its role is not to operate on input tokens, but rather to modify the
+   properties of a transmission.
 
-This actor implements the PropertyTransformer interface with a callback
-that can be use to modify the transmit properties of a transmission.
-It register itself and its connected wireless
-output port with the channel that the wireless output port uses.
-The channel will call its transformProperties() method for each
-transmission from the registed output port.
+   This actor implements the PropertyTransformer interface with a callback
+   that can be use to modify the transmit properties of a transmission.
+   It register itself and its connected wireless
+   output port with the channel that the wireless output port uses.
+   The channel will call its transformProperties() method for each
+   transmission from the registed output port.
 
-<p>FIXME: this is going to be changed to work like RunCompositeActor.
-This actor has a <i>modelFileOrURL</i> parameter that specify a model
-used to calculate the properties. When transformProperties() is
-called, it calls the ModelUtilities.executeModel() method to execute
-the specified model and return the (possibly) modified property to the
-channel.
+   <p>FIXME: this is going to be changed to work like RunCompositeActor.
+   This actor has a <i>modelFileOrURL</i> parameter that specify a model
+   used to calculate the properties. When transformProperties() is
+   called, it calls the ModelUtilities.executeModel() method to execute
+   the specified model and return the (possibly) modified property to the
+   channel.
 
-<p>The specified model should calculate/modify the properties based on
-the sender's location and the receiver's location. It should contains
-attributes of "SenderLocation", "ReceiverLocation" and
-"Properties". This actor will use this attributes to pass the sender
-and receiver's location and the current properties information to the
-specified model and get the new properties back from it.
+   <p>The specified model should calculate/modify the properties based on
+   the sender's location and the receiver's location. It should contains
+   attributes of "SenderLocation", "ReceiverLocation" and
+   "Properties". This actor will use this attributes to pass the sender
+   and receiver's location and the current properties information to the
+   specified model and get the new properties back from it.
 
-@author Yang Zhao, Edward Lee
-@version $Id$
-@since Ptolemy II 4.0
+   @author Yang Zhao, Edward Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class TransmitPropertyTransformer extends RunCompositeActor
     implements PropertyTransformer {

@@ -1,28 +1,28 @@
 /* A Port is an aggregation of links to relations.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (bart@eecs.berkeley.edu)
@@ -46,29 +46,29 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// Port
 /**
-A Port is the interface of an Entity to any number of Relations.
-Normally, a Port is contained by an Entity, although a port
-may exist with no container.  The role of a port is to aggregate
-a set of links to relations.  Thus, for example, to represent
-a directed graph, entities can be created with two ports, one for
-incoming arcs and one for outgoing arcs.  More generally, the arcs
-to an entity may be divided into any number of subsets, with one port
-representing each subset.
-<p>
+   A Port is the interface of an Entity to any number of Relations.
+   Normally, a Port is contained by an Entity, although a port
+   may exist with no container.  The role of a port is to aggregate
+   a set of links to relations.  Thus, for example, to represent
+   a directed graph, entities can be created with two ports, one for
+   incoming arcs and one for outgoing arcs.  More generally, the arcs
+   to an entity may be divided into any number of subsets, with one port
+   representing each subset.
+   <p>
 
-A Port can link to any instance of Relation.  Derived classes may wish
-to constrain links to a subclass of Relation.  To do this, subclasses
-should override the protected method {@link #_checkLink(Relation)} to
-throw an exception if its argument is a relation that is not of the
-appropriate subclass.  Similarly, if a subclass wishes to constrain
-the containers of the port to be of a subclass of Entity, they should
-override the protected method {@link #_checkContainer(Entity)}.
+   A Port can link to any instance of Relation.  Derived classes may wish
+   to constrain links to a subclass of Relation.  To do this, subclasses
+   should override the protected method {@link #_checkLink(Relation)} to
+   throw an exception if its argument is a relation that is not of the
+   appropriate subclass.  Similarly, if a subclass wishes to constrain
+   the containers of the port to be of a subclass of Entity, they should
+   override the protected method {@link #_checkContainer(Entity)}.
 
-@author Mudit Goel, Edward A. Lee, Jie Liu
-@version $Id$
-@since Ptolemy II 0.2
-@see Entity
-@see Relation
+   @author Mudit Goel, Edward A. Lee, Jie Liu
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see Entity
+   @see Relation
 */
 public class Port extends NamedObj {
 

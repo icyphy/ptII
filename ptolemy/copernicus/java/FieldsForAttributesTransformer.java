@@ -1,28 +1,28 @@
 /* Make all references to attributes point to attribute fields
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -78,14 +78,14 @@ import soot.toolkits.scalar.SimpleLocalDefs;
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForAttributesTransformer
 /**
-A transformer that is responsible for replacing references to attributes.
-Any calls to the getAttribute() method are replaced with a field reference to
-the field of the appropriate class that points to the correct attribute.
-Any calls to the getDirector() method are replaced with null.
+   A transformer that is responsible for replacing references to attributes.
+   Any calls to the getAttribute() method are replaced with a field reference to
+   the field of the appropriate class that points to the correct attribute.
+   Any calls to the getDirector() method are replaced with null.
 
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class FieldsForAttributesTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
@@ -163,7 +163,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
                 if (value instanceof InstanceInvokeExpr) {
                     InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                     if (r.getMethod().getSubSignature().equals(
-                            _getDirectorSig)) {
+                                _getDirectorSig)) {
                         // Replace calls to getDirector with
                         // null.  FIXME: we should be able to
                         // do better than this?
@@ -173,7 +173,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
                             box.setValue(NullConstant.v());
                         }
                     } else if (r.getMethod().getSubSignature().equals(
-                            _getAttributeSig)) {
+                                       _getAttributeSig)) {
                         if (unit instanceof InvokeStmt) {
                             body.getUnits().remove(unit);
                         } else {
@@ -259,7 +259,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
                 System.out.println(unit.getClass().toString());
                 System.out.println(box.getClass().toString());
                 box.setValue(Jimple.v().newInstanceFieldRef(
-                        local, attributeField));
+                                     local, attributeField));
             } else {
                 throw new RuntimeException(
                         "Failed to find field for attribute " + attribute.getFullName());
@@ -329,9 +329,9 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
                     attribute, container);
 
             if (!theClass.declaresFieldByName(fieldName)) {
-//                 System.out.println("Class " + theClass
-//                         + " does not declare field for attribute "
-//                         + attribute.getFullName());
+                //                 System.out.println("Class " + theClass
+                //                         + " does not declare field for attribute "
+                //                         + attribute.getFullName());
                 continue;
             }
 
@@ -348,7 +348,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
             } else {
                 SootClass fieldClass = ((RefType)type).getSootClass();
                 if (!SootUtilities.derivesFrom(fieldClass,
-                        PtolemyUtilities.attributeClass)) {
+                            PtolemyUtilities.attributeClass)) {
                     System.out.println("Class " + theClass
                             + " declares field for attribute "
                             + attribute.getFullName() + " but it has type "

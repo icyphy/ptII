@@ -1,28 +1,28 @@
 /* Launch the user's default web browser.
 
- Copyright (c) 2002-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2002-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -39,65 +39,65 @@ import java.lang.reflect.Method;
 import java.net.URL;
 
 /**
-BrowserLauncher is a class that provides one static method, openURL,
-which opens the default web browser for the current user of the system
-to the given URL.  It may support other protocols depending on the
-system -- mailto, ftp, etc. -- but that has not been rigorously tested
-and is not guaranteed to work.
+   BrowserLauncher is a class that provides one static method, openURL,
+   which opens the default web browser for the current user of the system
+   to the given URL.  It may support other protocols depending on the
+   system -- mailto, ftp, etc. -- but that has not been rigorously tested
+   and is not guaranteed to work.
 
-<p> Yes, this is platform-specific code, and yes, it may rely on
-classes on certain platforms that are not part of the standard JDK.
-What we're trying to do, though, is to take something that's
-frequently desirable but inherently platform-specific -- opening a
-default browser -- and allow programmers (you, for example) to do so
-without worrying about dropping into native code or doing anything
-else similarly evil.
+   <p> Yes, this is platform-specific code, and yes, it may rely on
+   classes on certain platforms that are not part of the standard JDK.
+   What we're trying to do, though, is to take something that's
+   frequently desirable but inherently platform-specific -- opening a
+   default browser -- and allow programmers (you, for example) to do so
+   without worrying about dropping into native code or doing anything
+   else similarly evil.
 
-<p> Anyway, this code is completely in Java and will run on all JDK
-1.1-compliant systems without modification or a need for additional
-libraries.  All classes that are required on certain platforms to
-allow this to run are dynamically loaded at runtime via reflection
-and, if not found, will not cause this to do anything other than
-returning an error when opening the browser.
+   <p> Anyway, this code is completely in Java and will run on all JDK
+   1.1-compliant systems without modification or a need for additional
+   libraries.  All classes that are required on certain platforms to
+   allow this to run are dynamically loaded at runtime via reflection
+   and, if not found, will not cause this to do anything other than
+   returning an error when opening the browser.
 
 
-<p> There are certain system requirements for this class, as it's
-running through Runtime.exec(), which is Java's way of making a
-native system call.  Currently, this requires that a Macintosh have a
-Finder which supports the GURL event, which is true for Mac OS 8.0
-and 8.1 systems that have the Internet Scripting AppleScript
-dictionary installed in the Scripting Additions folder in the
-Extensions folder (which is installed by default as far as I know
-under Mac OS 8.0 and 8.1), and for all Mac OS 8.5 and later systems.
-On Windows, it only runs under Win32 systems (Windows 95, 98, and NT
-4.0, as well as later versions of all).  On other systems, this drops
-back from the inherently platform-sensitive concept of a default
-browser and simply attempts to launch Netscape via a shell command.
+   <p> There are certain system requirements for this class, as it's
+   running through Runtime.exec(), which is Java's way of making a
+   native system call.  Currently, this requires that a Macintosh have a
+   Finder which supports the GURL event, which is true for Mac OS 8.0
+   and 8.1 systems that have the Internet Scripting AppleScript
+   dictionary installed in the Scripting Additions folder in the
+   Extensions folder (which is installed by default as far as I know
+   under Mac OS 8.0 and 8.1), and for all Mac OS 8.5 and later systems.
+   On Windows, it only runs under Win32 systems (Windows 95, 98, and NT
+   4.0, as well as later versions of all).  On other systems, this drops
+   back from the inherently platform-sensitive concept of a default
+   browser and simply attempts to launch Netscape via a shell command.
 
-<p> This code is Copyright 1999-2001 by Eric Albert (ejalbert@cs.stanford.edu)
-and may be redistributed or modified in any form without restrictions as
-long as the portion of this comment from this paragraph through the end
-of the comment is not removed.  The author requests that he be notified
-of any application, applet, or other binary that makes use of this code,
-but that is more out of curiosity than anything and is not required.  This
-software includes no warranty.  The author is not responsible for any
-loss of data or functionality or any adverse or unexpected effects of
-using this software.
+   <p> This code is Copyright 1999-2001 by Eric Albert (ejalbert@cs.stanford.edu)
+   and may be redistributed or modified in any form without restrictions as
+   long as the portion of this comment from this paragraph through the end
+   of the comment is not removed.  The author requests that he be notified
+   of any application, applet, or other binary that makes use of this code,
+   but that is more out of curiosity than anything and is not required.  This
+   software includes no warranty.  The author is not responsible for any
+   loss of data or functionality or any adverse or unexpected effects of
+   using this software.
 
-<p>
-Credits:
+   <p>
+   Credits:
 
-<br>Steven Spencer, JavaWorld magazine (<a href="http://www.javaworld.com/javaworld/javatips/jw-javatip66.html">Java//Tip 66</a>)
+   <br>Steven Spencer, JavaWorld magazine (<a href="http://www.javaworld.com/javaworld/javatips/jw-javatip66.html">Java//Tip 66</a>)
 
-<br>Thanks also to Ron B. Yeh, Eric Shapiro, Ben Engber, Paul
-Teitlebaum, Andrea Cantatore, Larry Barowski, Trevor Bedzek, Frank
-Miedrich, and Ron Rabakukk
+   <br>Thanks also to Ron B. Yeh, Eric Shapiro, Ben Engber, Paul
+   Teitlebaum, Andrea Cantatore, Larry Barowski, Trevor Bedzek, Frank
+   Miedrich, and Ron Rabakukk
 
-<p> This code is from
-<a href="http://browserlauncher.sourceforge.net/">http://browserlauncher.sourceforge.net/</a>
+   <p> This code is from
+   <a href="http://browserlauncher.sourceforge.net/">http://browserlauncher.sourceforge.net/</a>
 
-@author Eric Albert (<a href="mailto:ejalbert@cs.stanford.edu">ejalbert@cs.stanford.edu</a>)
-@version $Id$, based on 1.4b1 (Released June 20, 2001)
+   @author Eric Albert (<a href="mailto:ejalbert@cs.stanford.edu">ejalbert@cs.stanford.edu</a>)
+   @version $Id$, based on 1.4b1 (Released June 20, 2001)
 */
 public class BrowserLauncher {
 
@@ -267,8 +267,8 @@ public class BrowserLauncher {
                 byte[] urlBytes = url.getBytes();
                 int[] selectionEnd = new int[] { urlBytes.length };
                 result = ICLaunchURL(instance[0], new byte[] { 0 }, urlBytes,
-                urlBytes.length, selectionStart,
-                selectionEnd);
+                        urlBytes.length, selectionStart,
+                        selectionEnd);
                 if (result == 0) {
                     // Ignore the return value; the URL was launched
                     // successfully regardless of what happens here.

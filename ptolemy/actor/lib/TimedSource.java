@@ -1,28 +1,28 @@
 /* Base class for time-based sources.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (bilung@eecs.berkeley.edu)
@@ -42,23 +42,23 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// TimedSource
 /**
-Base class for time-based sources.  A time-based source is
-a source where the output value is a function of current time.
-For some sequence-based domains, such as SDF, actors of this type
-probably do not make sense because current time is not incremented.
-This actor has a parameter, <i>stopTime</i>, that optionally controls
-the duration for which the actor is fired.  If this number is
-<i>t</i> &gt; 0.0, then when current time reaches <i>t</i>,
-postfire() returns false. This indicates
-to the director that this actor should not be invoked again.
-The default value of <i>stopTime</i> is 0.0, which results in postfire
-always returning true.  In other words, this makes the lifetime
-infinite. Derived classes must call super.postfire() for this mechanism to
-work.
+   Base class for time-based sources.  A time-based source is
+   a source where the output value is a function of current time.
+   For some sequence-based domains, such as SDF, actors of this type
+   probably do not make sense because current time is not incremented.
+   This actor has a parameter, <i>stopTime</i>, that optionally controls
+   the duration for which the actor is fired.  If this number is
+   <i>t</i> &gt; 0.0, then when current time reaches <i>t</i>,
+   postfire() returns false. This indicates
+   to the director that this actor should not be invoked again.
+   The default value of <i>stopTime</i> is 0.0, which results in postfire
+   always returning true.  In other words, this makes the lifetime
+   infinite. Derived classes must call super.postfire() for this mechanism to
+   work.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.3
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.3
 */
 
 public class TimedSource extends Source implements TimedActor {

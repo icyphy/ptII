@@ -26,8 +26,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating red (eal@eecs.berkeley.edu)
 @AcceptedRating red (cxh@eecs.berkeley.edu)
 */
@@ -51,22 +51,22 @@ import javax.swing.JOptionPane;
 //// PxgraphApplication
 
 /**
-An application that can plot data in pxgraph format.
-To compile and run this application, do the following:
-<pre>
-    javac -classpath ../../.. PxgraphApplication.java
-    java -classpath ../../.. ptolemy.plot.compat.PxgraphApplication
-</pre>
-<p>
-This class uses the helper class PxgraphParser to parse command-line
-arguments and binary files.  See that class for documentation on
-the formats.
+   An application that can plot data in pxgraph format.
+   To compile and run this application, do the following:
+   <pre>
+   javac -classpath ../../.. PxgraphApplication.java
+   java -classpath ../../.. ptolemy.plot.compat.PxgraphApplication
+   </pre>
+   <p>
+   This class uses the helper class PxgraphParser to parse command-line
+   arguments and binary files.  See that class for documentation on
+   the formats.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
-@see PxgraphParser
-@see Plot
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
+   @see PxgraphParser
+   @see Plot
 */
 public class PxgraphApplication extends PlotApplication {
 

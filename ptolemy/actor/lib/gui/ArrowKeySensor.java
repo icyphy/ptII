@@ -1,28 +1,28 @@
 /* An actor which pops up a keystroke-sensing JFrame.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
 @AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
@@ -54,32 +54,32 @@ import javax.swing.KeyStroke;
 //////////////////////////////////////////////////////////////////////////
 //// ArrowKeySensor
 /**
-Detect when the user presses or releases an arrow key and produce an
-integer on the corresponding output.
+   Detect when the user presses or releases an arrow key and produce an
+   integer on the corresponding output.
 
-<p>When this actor is preinitialized, it pops up a new JFrame window on
-the desktop, usually in the upper left hand corner of the screen.
-When this JFrame has the focus (such as when it has been clicked on)
-it is capable of sensing keystrokes.
+   <p>When this actor is preinitialized, it pops up a new JFrame window on
+   the desktop, usually in the upper left hand corner of the screen.
+   When this JFrame has the focus (such as when it has been clicked on)
+   it is capable of sensing keystrokes.
 
-<p>This actor senses only the four non-numeric-pad arrow-key
-keystrokes.  This actor responds to key releases as well as key
-presses.  Upon each key press, the integer 1 is broadcast from the
-corresponding output.  Upon each key release, the integer 0 is output.
+   <p>This actor senses only the four non-numeric-pad arrow-key
+   keystrokes.  This actor responds to key releases as well as key
+   presses.  Upon each key press, the integer 1 is broadcast from the
+   corresponding output.  Upon each key release, the integer 0 is output.
 
-<p>This actor contains a private inner class which generated the JFrame.
-The frame sets up call-backs which react to the keystrokes.  When called,
-these call the director's fireAtCurrentTime() method.  This causes
-the director to call fire() on the actor.   The actor then broadcasts
-tokens from one or both outputs depending on which keystroke(s) have
-occurred since the actor was last fired.
+   <p>This actor contains a private inner class which generated the JFrame.
+   The frame sets up call-backs which react to the keystrokes.  When called,
+   these call the director's fireAtCurrentTime() method.  This causes
+   the director to call fire() on the actor.   The actor then broadcasts
+   tokens from one or both outputs depending on which keystroke(s) have
+   occurred since the actor was last fired.
 
-<p>NOTE: This actor only works in the DE domain due to its reliance on
-this director's fireAtCurrentTime() method.
+   <p>NOTE: This actor only works in the DE domain due to its reliance on
+   this director's fireAtCurrentTime() method.
 
-@author Winthrop Williams
-@version $Id$
-@since Ptolemy II 2.0
+   @author Winthrop Williams
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class ArrowKeySensor extends TypedAtomicActor {
 

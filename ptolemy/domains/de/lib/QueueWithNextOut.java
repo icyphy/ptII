@@ -1,28 +1,28 @@
 /* An actor that implements a queue of events.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
 @AcceptedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
@@ -41,26 +41,26 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// QueueWithNextOut
 /**
-This actor implements an event queue.  When a token is received on the
-<i>input</i> port, it is stored in the queue.
-When the <i>trigger</i> port receives a token, the oldest element in the
-queue is output.  If there is no element in the queue when a
-token is received on the <i>trigger</i> port, then no output is
-produced.  The inputs can be of any token type, and the output
-is constrained to be of a type at least that of the <i>input</i>. <p>
+   This actor implements an event queue.  When a token is received on the
+   <i>input</i> port, it is stored in the queue.
+   When the <i>trigger</i> port receives a token, the oldest element in the
+   queue is output.  If there is no element in the queue when a
+   token is received on the <i>trigger</i> port, then no output is
+   produced.  The inputs can be of any token type, and the output
+   is constrained to be of a type at least that of the <i>input</i>. <p>
 
-An additional output port, <i>nextOut</i>, has been added which allows
-the model to know what's next to come out.  This new output produces a
-token whenever the queue has been empty and a new token is queued.  It
-also produces an output whenever a token is taken from the queue and
-at least one token remains.  Otherwise, no output token is produced at
-<i>nextOut</i>.  The token produced is the oldest token remaining in
-the queue.  This output, also, is constrained to be at least that of
-<i>input</i> <p>
+   An additional output port, <i>nextOut</i>, has been added which allows
+   the model to know what's next to come out.  This new output produces a
+   token whenever the queue has been empty and a new token is queued.  It
+   also produces an output whenever a token is taken from the queue and
+   at least one token remains.  Otherwise, no output token is produced at
+   <i>nextOut</i>.  The token produced is the oldest token remaining in
+   the queue.  This output, also, is constrained to be at least that of
+   <i>input</i> <p>
 
-@author Winthrop Williams (based closely on Queue by Steve Neuendorffer)
-@version $Id$
-@since Ptolemy II 2.0
+   @author Winthrop Williams (based closely on Queue by Steve Neuendorffer)
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class QueueWithNextOut extends DETransformer {
     //FIXME: make this consistent with the queue from ptolemy classic

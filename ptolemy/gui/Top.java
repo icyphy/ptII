@@ -1,28 +1,28 @@
 /* Top-level window with a menubar and status bar.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
@@ -67,59 +67,59 @@ import javax.swing.filechooser.FileFilter;
 //////////////////////////////////////////////////////////////////////////
 //// Top
 /**
-This is a top-level window with a menubar and an optional status bar.
-Derived classes should add components to the content pane using a
-line like:
-<pre>
-    getContentPane().add(component, BorderLayout.CENTER);
-</pre>
-Derived classes may wish to modify the menus.  The File
-and Help menus are exposed as protected members.
-The File menu items in the _fileMenuItems protected array are,
-in order, Open File, Open URL, New, Save, SaveAs, Print, Close, and Exit.
-The Help menu items in the _helpMenuItems protected array are,
-in order, About and Help.
-<p>
-A derived class can use the insert() methods of JMenu
-to insert a menu item defined by an Action or a JMenuItem
-into a specified position in the menu.
-Derived classes can also insert separators using the
-insertSeparator() method of JMenu.
-In principle, derived classes can also remove menu items
-using the remove() methods of JMenu; however, we discourage this.
-A basic principle of user interface design is habituation, where
-there is considerable value in having menus that have consistent
-contents and layout throughout the application (Microsoft, for
-example, violates this principle with adaptive menus).
-<p>
-Instead of removing items from the menu, they can be disabled.
-For example, to disable the "Save" item in the File menu, do
-<pre>
-    _fileMenuItems[3].setEnabled(false);
-</pre>
-<p>
-Some menu items are provided, but are disabled by default.
-The "New" item, for example, can be enabled with
-<pre>
-    _fileMenuItems[2].setEnabled(true);
-</pre>
-A derived class that enables this menu item can populate the menu with
-submenu items.  This particular entry in the _fileMenuItems[2]
-is a JMenu, not just a JMenuItem, so it can have menu items
-added to it.
-<p>
-A derived class can add an entirely new menu (many do that).
-However, at this time, the JMenuBar interface does not support
-putting a new menu into an arbitrary position.  For this reason,
-derived classes should insert new menus into the menu bar only
-in the _addMenus() protected method.  This ensures that the File
-menu is always the rightmost menu, and the Help menu is always
-the leftmost menu.  The _addMenus() method is called when the window
-is first packed.
+   This is a top-level window with a menubar and an optional status bar.
+   Derived classes should add components to the content pane using a
+   line like:
+   <pre>
+   getContentPane().add(component, BorderLayout.CENTER);
+   </pre>
+   Derived classes may wish to modify the menus.  The File
+   and Help menus are exposed as protected members.
+   The File menu items in the _fileMenuItems protected array are,
+   in order, Open File, Open URL, New, Save, SaveAs, Print, Close, and Exit.
+   The Help menu items in the _helpMenuItems protected array are,
+   in order, About and Help.
+   <p>
+   A derived class can use the insert() methods of JMenu
+   to insert a menu item defined by an Action or a JMenuItem
+   into a specified position in the menu.
+   Derived classes can also insert separators using the
+   insertSeparator() method of JMenu.
+   In principle, derived classes can also remove menu items
+   using the remove() methods of JMenu; however, we discourage this.
+   A basic principle of user interface design is habituation, where
+   there is considerable value in having menus that have consistent
+   contents and layout throughout the application (Microsoft, for
+   example, violates this principle with adaptive menus).
+   <p>
+   Instead of removing items from the menu, they can be disabled.
+   For example, to disable the "Save" item in the File menu, do
+   <pre>
+   _fileMenuItems[3].setEnabled(false);
+   </pre>
+   <p>
+   Some menu items are provided, but are disabled by default.
+   The "New" item, for example, can be enabled with
+   <pre>
+   _fileMenuItems[2].setEnabled(true);
+   </pre>
+   A derived class that enables this menu item can populate the menu with
+   submenu items.  This particular entry in the _fileMenuItems[2]
+   is a JMenu, not just a JMenuItem, so it can have menu items
+   added to it.
+   <p>
+   A derived class can add an entirely new menu (many do that).
+   However, at this time, the JMenuBar interface does not support
+   putting a new menu into an arbitrary position.  For this reason,
+   derived classes should insert new menus into the menu bar only
+   in the _addMenus() protected method.  This ensures that the File
+   menu is always the rightmost menu, and the Help menu is always
+   the leftmost menu.  The _addMenus() method is called when the window
+   is first packed.
 
-@author Edward A. Lee and Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 1.0
+   @author Edward A. Lee and Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public abstract class Top extends JFrame {
 
@@ -174,14 +174,14 @@ public abstract class Top extends JFrame {
      */
     public void centerOnScreen() {
         Runnable doCenter = new Runnable() {
-            public void run() {
-                Toolkit tk = Toolkit.getDefaultToolkit();
-                setLocation((tk.getScreenSize().width - getSize().width)/2,
-                        (tk.getScreenSize().height - getSize().height)/2);
-                // Make this the default context for modal messages.
-                GraphicalMessageHandler.setContext(Top.this);
-            }
-        };
+                public void run() {
+                    Toolkit tk = Toolkit.getDefaultToolkit();
+                    setLocation((tk.getScreenSize().width - getSize().width)/2,
+                            (tk.getScreenSize().height - getSize().height)/2);
+                    // Make this the default context for modal messages.
+                    GraphicalMessageHandler.setContext(Top.this);
+                }
+            };
         deferIfNecessary(doCenter);
     }
 
@@ -193,10 +193,10 @@ public abstract class Top extends JFrame {
      */
     public final void close() {
         Runnable doClose = new Runnable() {
-            public void run() {
-                _close();
-            }
-        };
+                public void run() {
+                    _close();
+                }
+            };
         deferIfNecessary(doClose);
     }
 
@@ -287,12 +287,12 @@ public abstract class Top extends JFrame {
      */
     public void report(final String message) {
         Runnable doReport = new Runnable() {
-            public void run() {
-                if (_statusBar != null) {
-                    _statusBar.setMessage(message);
+                public void run() {
+                    if (_statusBar != null) {
+                        _statusBar.setMessage(message);
+                    }
                 }
-            }
-        };
+            };
         deferIfNecessary(doReport);
     }
 
@@ -307,14 +307,14 @@ public abstract class Top extends JFrame {
      */
     public void report(final String message, final Throwable throwable) {
         Runnable doReport = new Runnable() {
-            public void run() {
-                if (_statusBar != null) {
-                    _statusBar.setMessage(MessageHandler.shortDescription(throwable)
-                            + ". " + message);
+                public void run() {
+                    if (_statusBar != null) {
+                        _statusBar.setMessage(MessageHandler.shortDescription(throwable)
+                                + ". " + message);
+                    }
+                    MessageHandler.error(message, throwable);
                 }
-                MessageHandler.error(message, throwable);
-            }
-        };
+            };
         deferIfNecessary(doReport);
     }
 
@@ -326,15 +326,15 @@ public abstract class Top extends JFrame {
      */
     public void setBackground(final Color background) {
         Runnable doSet = new Runnable() {
-            public void run() {
-                Top.super.setBackground(background);
-                // This seems to be called in a base class constructor, before
-                // this variable has been set. Hence the test against null.
-                if (_statusBar != null) {
-                    _statusBar.setBackground(background);
+                public void run() {
+                    Top.super.setBackground(background);
+                    // This seems to be called in a base class constructor, before
+                    // this variable has been set. Hence the test against null.
+                    if (_statusBar != null) {
+                        _statusBar.setBackground(background);
+                    }
                 }
-            }
-        };
+            };
         deferIfNecessary(doSet);
     }
 
@@ -369,92 +369,92 @@ public abstract class Top extends JFrame {
      */
     public void pack() {
         Runnable doPack = new Runnable() {
-            public void run() {
-                if (!_menuPopulated) {
-                    _menuPopulated = true;
+                public void run() {
+                    if (!_menuPopulated) {
+                        _menuPopulated = true;
 
-                    // Set up the menus.
-                    _fileMenu.setMnemonic(KeyEvent.VK_F);
-                    _helpMenu.setMnemonic(KeyEvent.VK_H);
+                        // Set up the menus.
+                        _fileMenu.setMnemonic(KeyEvent.VK_F);
+                        _helpMenu.setMnemonic(KeyEvent.VK_H);
 
-                    // Open button = ctrl-o.
-                    _fileMenuItems[0].setAccelerator(
-                            KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+                        // Open button = ctrl-o.
+                        _fileMenuItems[0].setAccelerator(
+                                KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
 
-                    // The mnemonic isn't set in the static initializer because
-                    // JMenu doesn't have an appropriate constructor.
-                    _fileMenuItems[2].setMnemonic(KeyEvent.VK_N);
-                    // New button disabled by default.
-                    _fileMenuItems[2].setEnabled(false);
+                        // The mnemonic isn't set in the static initializer because
+                        // JMenu doesn't have an appropriate constructor.
+                        _fileMenuItems[2].setMnemonic(KeyEvent.VK_N);
+                        // New button disabled by default.
+                        _fileMenuItems[2].setEnabled(false);
 
-                    // Save button = ctrl-s.
-                    _fileMenuItems[3].setAccelerator(
-                            KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+                        // Save button = ctrl-s.
+                        _fileMenuItems[3].setAccelerator(
+                                KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
 
-                    // Print button = ctrl-p.
-                    _fileMenuItems[5].setAccelerator(
-                            KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
-                    // Print button disabled by default, unless this class implements
-                    // one of the JDK1.2 printing interfaces.
-                    if (Top.this instanceof Printable ||
-                            Top.this instanceof Pageable) {
-                        _fileMenuItems[5].setEnabled(true);
-                    } else {
-                        _fileMenuItems[5].setEnabled(false);
+                        // Print button = ctrl-p.
+                        _fileMenuItems[5].setAccelerator(
+                                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
+                        // Print button disabled by default, unless this class implements
+                        // one of the JDK1.2 printing interfaces.
+                        if (Top.this instanceof Printable ||
+                                Top.this instanceof Pageable) {
+                            _fileMenuItems[5].setEnabled(true);
+                        } else {
+                            _fileMenuItems[5].setEnabled(false);
+                        }
+
+                        // Close button = ctrl-w.
+                        _fileMenuItems[6].setAccelerator(
+                                KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
+
+                        // Construct the File menu by adding action commands
+                        // and action listeners.
+                        FileMenuListener fileMenuListener = new FileMenuListener();
+                        // Set the action command and listener for each menu item.
+                        for (int i = 0; i < _fileMenuItems.length; i++) {
+                            _fileMenuItems[i].setActionCommand(_fileMenuItems[i].getText());
+                            _fileMenuItems[i].addActionListener(fileMenuListener);
+                            _fileMenu.add(_fileMenuItems[i]);
+                        }
+                        _menubar.add(_fileMenu);
+
+                        // Construct the Help menu by adding action commands
+                        // and action listeners.
+                        HelpMenuListener helpMenuListener = new HelpMenuListener();
+                        // Set the action command and listener for each menu item.
+                        for (int i = 0; i < _helpMenuItems.length; i++) {
+                            _helpMenuItems[i].setActionCommand(
+                                    _helpMenuItems[i].getText());
+                            _helpMenuItems[i].addActionListener(helpMenuListener);
+                            _helpMenu.add(_helpMenuItems[i]);
+                        }
+
+                        // Unfortunately, at this time, Java provides no
+                        // mechanism for derived classes to insert menus
+                        // at arbitrary points in the menu bar.  Also, the
+                        // menubar ignores the alignment property of the
+                        // JMenu.  By convention, however, we want the
+                        // help menu to be the rightmost menu.  Thus, we
+                        // use a strategy pattern here, and call a
+                        // protected method that derived classes can use
+                        // to add menus.
+                        _addMenus();
+
+                        _menubar.add(_helpMenu);
+
+                        setJMenuBar(_menubar);
+
+                        // Add the status bar, if there is one.
+                        if (_statusBar != null) {
+                            getContentPane().add(_statusBar, BorderLayout.SOUTH);
+                        }
                     }
-
-                    // Close button = ctrl-w.
-                    _fileMenuItems[6].setAccelerator(
-                            KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
-
-                    // Construct the File menu by adding action commands
-                    // and action listeners.
-                    FileMenuListener fileMenuListener = new FileMenuListener();
-                    // Set the action command and listener for each menu item.
-                    for (int i = 0; i < _fileMenuItems.length; i++) {
-                        _fileMenuItems[i].setActionCommand(_fileMenuItems[i].getText());
-                        _fileMenuItems[i].addActionListener(fileMenuListener);
-                        _fileMenu.add(_fileMenuItems[i]);
-                    }
-                    _menubar.add(_fileMenu);
-
-                    // Construct the Help menu by adding action commands
-                    // and action listeners.
-                    HelpMenuListener helpMenuListener = new HelpMenuListener();
-                    // Set the action command and listener for each menu item.
-                    for (int i = 0; i < _helpMenuItems.length; i++) {
-                        _helpMenuItems[i].setActionCommand(
-                                _helpMenuItems[i].getText());
-                        _helpMenuItems[i].addActionListener(helpMenuListener);
-                        _helpMenu.add(_helpMenuItems[i]);
-                    }
-
-                    // Unfortunately, at this time, Java provides no
-                    // mechanism for derived classes to insert menus
-                    // at arbitrary points in the menu bar.  Also, the
-                    // menubar ignores the alignment property of the
-                    // JMenu.  By convention, however, we want the
-                    // help menu to be the rightmost menu.  Thus, we
-                    // use a strategy pattern here, and call a
-                    // protected method that derived classes can use
-                    // to add menus.
-                    _addMenus();
-
-                    _menubar.add(_helpMenu);
-
-                    setJMenuBar(_menubar);
-
-                    // Add the status bar, if there is one.
-                    if (_statusBar != null) {
-                        getContentPane().add(_statusBar, BorderLayout.SOUTH);
+                    Top.super.pack();
+                    if (_centering) {
+                        centerOnScreen();
                     }
                 }
-                Top.super.pack();
-                if (_centering) {
-                    centerOnScreen();
-                }
-            }
-        };
+            };
         deferIfNecessary(doPack);
     }
 
@@ -465,14 +465,14 @@ public abstract class Top extends JFrame {
      */
     public void show() {
         Runnable doShow = new Runnable() {
-            public void run() {
-                // NOTE: We used to call pack() here, but this would
-                // override any manual changes in sizing that had been
-                // made.
-                setState(Frame.NORMAL);
-                Top.super.show();
-            }
-        };
+                public void run() {
+                    // NOTE: We used to call pack() here, but this would
+                    // override any manual changes in sizing that had been
+                    // made.
+                    setState(Frame.NORMAL);
+                    Top.super.show();
+                }
+            };
         deferIfNecessary(doShow);
     }
 

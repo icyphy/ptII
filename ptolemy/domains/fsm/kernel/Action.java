@@ -1,28 +1,28 @@
 /* Abstract base class of transition action.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (liuxj@eecs.berkeley.edu)
 @AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
 */
@@ -38,29 +38,29 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// Action
 /**
-An Action is contained by a Transition in an FSMActor.
-<p>
-When the FSMActor is fired, an enabled transition among the outgoing
-transitions of the current state is chosen. The choice actions
-contained by the chosen transition are executed. An action is a choice
-action if it implements the ChoiceAction marker interface. A choice
-action may be executed more than once during an iteration in domains
-with fixed-point semantics.
-<p>
-When the FSMActor is postfired, the chosen transition of the latest firing
-of the actor is committed. The commit actions contained by the transition
-are executed and the current state of the actor is set to the destination
-state of the transition. An action is a commit action if it implements the
-CommitAction marker interface.
+   An Action is contained by a Transition in an FSMActor.
+   <p>
+   When the FSMActor is fired, an enabled transition among the outgoing
+   transitions of the current state is chosen. The choice actions
+   contained by the chosen transition are executed. An action is a choice
+   action if it implements the ChoiceAction marker interface. A choice
+   action may be executed more than once during an iteration in domains
+   with fixed-point semantics.
+   <p>
+   When the FSMActor is postfired, the chosen transition of the latest firing
+   of the actor is committed. The commit actions contained by the transition
+   are executed and the current state of the actor is set to the destination
+   state of the transition. An action is a commit action if it implements the
+   CommitAction marker interface.
 
-@author Xiaojun Liu
-@version $Id$
-@since Ptolemy II 0.4
-@see ChoiceAction
-@see CommitAction
-@see Transition
-@see FSMActor
-@see ptolemy.data.expr.Variable
+   @author Xiaojun Liu
+   @version $Id$
+   @since Ptolemy II 0.4
+   @see ChoiceAction
+   @see CommitAction
+   @see Transition
+   @see FSMActor
+   @see ptolemy.data.expr.Variable
 */
 public abstract class Action extends StringAttribute {
 

@@ -1,28 +1,28 @@
 /* Standalone application that generates code
 
- Copyright (c) 2002-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2002-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -65,67 +65,67 @@ import com.microstar.xml.XmlException;
 //////////////////////////////////////////////////////////////////////////
 //// Copernicus
 /**
-A Standalone application that generates code using the Ptolemy II code
-generation system.  This class acts a wrapper for the copernicus.*.Main
-classes by providing defaults arguments for the various backends.
+   A Standalone application that generates code using the Ptolemy II code
+   generation system.  This class acts a wrapper for the copernicus.*.Main
+   classes by providing defaults arguments for the various backends.
 
-The <i>generatorAttribute</i> Parameter names a MoML file that
-contains definitions for other Parameters and Variables that control
-the compilation and execution of the model
+   The <i>generatorAttribute</i> Parameter names a MoML file that
+   contains definitions for other Parameters and Variables that control
+   the compilation and execution of the model
 
-The default compilation arguments are read in from a file named
-compileCommandTemplate.in, variables are substituted and the compile
-command executed and then default arguments are read in from a file
-named runCommandTemplate.in.
+   The default compilation arguments are read in from a file named
+   compileCommandTemplate.in, variables are substituted and the compile
+   command executed and then default arguments are read in from a file
+   named runCommandTemplate.in.
 
-<p>For example:
-<pre>
-java -classpath $PTII ptolemy.copernicus.kernel.Copernicus foo.xml
-</pre>
-will read in the $PTII/ptolemy/copernicus/java/compileCommandTemplate.in,
-substitute in the appropriate variables and then generate code for foo.xml
+   <p>For example:
+   <pre>
+   java -classpath $PTII ptolemy.copernicus.kernel.Copernicus foo.xml
+   </pre>
+   will read in the $PTII/ptolemy/copernicus/java/compileCommandTemplate.in,
+   substitute in the appropriate variables and then generate code for foo.xml
 
-<p>The default code generator is the deep java code generator in
-$PTII/ptolemy/copernicus/java.
+   <p>The default code generator is the deep java code generator in
+   $PTII/ptolemy/copernicus/java.
 
-<p>The argument that names the xml file containing the model to generate
-code for should be a relative pathname.  The xml file argument is
-converted into a URL internally.
-If no xml file argument is specified,
-then code is generated for
-<code>$PTII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml</code>
+   <p>The argument that names the xml file containing the model to generate
+   code for should be a relative pathname.  The xml file argument is
+   converted into a URL internally.
+   If no xml file argument is specified,
+   then code is generated for
+   <code>$PTII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml</code>
 
-<p>Generating code is fairly complex, so there are many other parameters
-that can be set as the other arguments.
+   <p>Generating code is fairly complex, so there are many other parameters
+   that can be set as the other arguments.
 
-<p>The general format is
-<code>-<i>VariableName</i> <i>VariableValue</i></code>, for example:
-<code>-codeGenerator "shallow"</code>
-<p>For example:
-<pre>
-java -classpath $PTII ptolemy.copernicus.kernel.GenerateCode -codeGenerator "shallow" foo.xml
-</pre>
+   <p>The general format is
+   <code>-<i>VariableName</i> <i>VariableValue</i></code>, for example:
+   <code>-codeGenerator "shallow"</code>
+   <p>For example:
+   <pre>
+   java -classpath $PTII ptolemy.copernicus.kernel.GenerateCode -codeGenerator "shallow" foo.xml
+   </pre>
 
-<p>The initial parameters, their values and any documentation can be
-printed with
+   <p>The initial parameters, their values and any documentation can be
+   printed with
 
-<pre>
-java -classpath $PTII ptolemy.copernicus.kernel.GenerateCode -help
-</pre>
+   <pre>
+   java -classpath $PTII ptolemy.copernicus.kernel.GenerateCode -help
+   </pre>
 
-If you have rebuilt Ptolemy II from sources, and have a shell such as
-bash available, then you can use <code>$PTII/bin/copernicus</code>
-as a shortcut.  For example
-<pre>
-$PTII/bin/copernicus -codeGenerator "shallow" foo.xml
-</pre>
+   If you have rebuilt Ptolemy II from sources, and have a shell such as
+   bash available, then you can use <code>$PTII/bin/copernicus</code>
+   as a shortcut.  For example
+   <pre>
+   $PTII/bin/copernicus -codeGenerator "shallow" foo.xml
+   </pre>
 
-<p>The details of how this class works can be found in the
-{@link GeneratorAttribute} documentation.
+   <p>The details of how this class works can be found in the
+   {@link GeneratorAttribute} documentation.
 
-@author Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0
+   @author Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class Copernicus {
 
@@ -260,22 +260,22 @@ public class Copernicus {
             // MoMLParser object, but we want to be sure the type
             // constraints are cloned if we are passed in a model
             // directly without running readInModel().
-           //  CompositeActor modelClass = null;
-//             try {
-//                 modelClass = (CompositeActor)
-//                     _parser.searchForClass(_momlClassName,
-//                             model.getMoMLInfo().source);
-//             } catch (XmlException xml) {
-//                 throw new
-//                     IllegalActionException("Failed to find class '"
-//                             + _momlClassName + "' in '"
-//                             + model.getMoMLInfo().source
-//                             + "': " + xml);
-//             }
+            //  CompositeActor modelClass = null;
+            //             try {
+            //                 modelClass = (CompositeActor)
+            //                     _parser.searchForClass(_momlClassName,
+            //                             model.getMoMLInfo().source);
+            //             } catch (XmlException xml) {
+            //                 throw new
+            //                     IllegalActionException("Failed to find class '"
+            //                             + _momlClassName + "' in '"
+            //                             + model.getMoMLInfo().source
+            //                             + "': " + xml);
+            //             }
 
-           //  if (modelClass != null) {
-//                 model = modelClass;
-//             }
+            //  if (modelClass != null) {
+            //                 model = modelClass;
+            //             }
 
             // Instantiate the right code generator.
             String codeGeneratorClassName = generatorAttribute
@@ -490,7 +490,7 @@ public class Copernicus {
             }
             inputFile =
                 new BufferedReader(new InputStreamReader(inputFileURL
-                        .openStream()));
+                                           .openStream()));
         }
         return inputFile;
     }
@@ -650,13 +650,13 @@ public class Copernicus {
         }
         BufferedReader inputReader =
             new BufferedReader(new InputStreamReader(inputFileURL
-                    .openStream()));
+                                       .openStream()));
         String inputLine;
         StringBuffer output = new StringBuffer();
         String lineSeparator = System.getProperty("line.separator");
         while ( (inputLine = inputReader.readLine()) != null) {
             output.append(substitute(inputLine + lineSeparator,
-                    substituteMap));
+                                  substituteMap));
         }
         inputReader.close();
         return output.toString();
@@ -826,7 +826,7 @@ public class Copernicus {
     private String _usage() {
         StringBuffer usage =
             new StringBuffer(StringUtilities.usageString(_commandTemplate,
-                    _commandOptions, _commandFlags));
+                                     _commandOptions, _commandFlags));
 
         try {
             NamedObj namedObj = new NamedObj();

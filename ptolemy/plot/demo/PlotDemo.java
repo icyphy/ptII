@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating red (eal@eecs.berkeley.edu)
 @AcceptedRating red (cxh@eecs.berkeley.edu)
 */
@@ -36,11 +36,11 @@ import ptolemy.plot.PlotApplet;
 //////////////////////////////////////////////////////////////////////////
 //// PlotDemo
 /**
-Plot a variety of test signals.
+   Plot a variety of test signals.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class PlotDemo extends PlotApplet {
 

@@ -1,28 +1,28 @@
 /*
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -56,9 +56,9 @@ import soot.*;
  * This class will take a PortDirectedGraph (created from a Ptolemy
  * Atomic Actor) and generate a JHDLCompositeEntity.
  *
-@author Mike Wirthlin
-@version $Id$
-@since Ptolemy II 2.0
+ @author Mike Wirthlin
+ @version $Id$
+ @since Ptolemy II 2.0
 */
 public class ModelGraph2Entity {
 
@@ -137,7 +137,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _processNode(Node node)
-        throws IllegalActionException, NameDuplicationException, JHDLUnsupportedException {
+            throws IllegalActionException, NameDuplicationException, JHDLUnsupportedException {
 
         // Process Node
         Object nweight = node.getWeight();
@@ -148,12 +148,12 @@ public class ModelGraph2Entity {
             _processLocal(node);
         } else if (nweight instanceof Constant) {
             _processConstant(node);
-          } else if (nweight instanceof BinopExpr) {
-              _processBinopExpr(node);
+        } else if (nweight instanceof BinopExpr) {
+            _processBinopExpr(node);
         } else if (nweight instanceof UnopExpr) {
             _processUnopExpr(node);
-//          } else if (nweight instanceof BinaryMux) {
-//              _processBinaryMux(node);
+            //          } else if (nweight instanceof BinaryMux) {
+            //              _processBinaryMux(node);
         } else {
             _unsupportedOperation(nweight);
         }
@@ -161,8 +161,8 @@ public class ModelGraph2Entity {
 
     // No hardware (thus no port linking
     protected void _processLocal(Node node)
-        throws JHDLUnsupportedException, IllegalActionException,
-               NameDuplicationException {
+            throws JHDLUnsupportedException, IllegalActionException,
+            NameDuplicationException {
 
         // should have one input and one output. Just update the _wireMap
         // TODO: I should use the local to provide some more naming
@@ -183,7 +183,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _processConstant(Node node)
-        throws IllegalActionException, NameDuplicationException, JHDLUnsupportedException {
+            throws IllegalActionException, NameDuplicationException, JHDLUnsupportedException {
         Object weight = node.getWeight();
         if (weight instanceof IntConstant) {
             int value = ((IntConstant) weight).value;
@@ -202,7 +202,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _processBinopExpr(Node node)
-        throws IllegalActionException, NameDuplicationException, JHDLUnsupportedException {
+            throws IllegalActionException, NameDuplicationException, JHDLUnsupportedException {
 
         // get two Relations coming into this op
         JHDLIORelation r1 = null;
@@ -265,7 +265,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _processUnopExpr(Node node)
-        throws IllegalActionException, NameDuplicationException, JHDLUnsupportedException {
+            throws IllegalActionException, NameDuplicationException, JHDLUnsupportedException {
         // get nodes coming into this op
         Collection inEdges = _graph.inputEdges(node);
         if (inEdges.size() != 1)
@@ -289,14 +289,14 @@ public class ModelGraph2Entity {
     protected void _processBinaryMux(Node node)
             throws JHDLUnsupportedException {
 
-//          BinaryMux w = (BinaryMux) node.getWeight();
+        //          BinaryMux w = (BinaryMux) node.getWeight();
 
-//          Wire condition = _getWire(w.getConditionNode(_sdfg,node));
-//          Wire trueNode = _getWire(w.getTrueNode(_sdfg,node));
-//          Wire falseNode = _getWire(w.getFalseNode(_sdfg,node));
+        //          Wire condition = _getWire(w.getConditionNode(_sdfg,node));
+        //          Wire trueNode = _getWire(w.getTrueNode(_sdfg,node));
+        //          Wire falseNode = _getWire(w.getFalseNode(_sdfg,node));
 
-//          Wire output = _cell.mux(falseNode,trueNode,condition);
-//          _wireMap.put(node,output);
+        //          Wire output = _cell.mux(falseNode,trueNode,condition);
+        //          _wireMap.put(node,output);
 
     }
 
@@ -329,14 +329,14 @@ public class ModelGraph2Entity {
             try {
                 cr = (JHDLIORelation) _entity.newRelation();
             } catch (IllegalActionException ex) {
-                 _error(ex);
-             }
-             // Set mapping
-             //_setNodeOutputEdgeRelation(source,cr);
-             _setOutputRelation(n,cr);
-         }
-         return cr;
-     }
+                _error(ex);
+            }
+            // Set mapping
+            //_setNodeOutputEdgeRelation(source,cr);
+            _setOutputRelation(n,cr);
+        }
+        return cr;
+    }
 
     protected void _setOutputRelation(Node n, JHDLIORelation r) {
         _nodeRelationMap.put(n,r);
@@ -360,7 +360,7 @@ public class ModelGraph2Entity {
     }
 
     public static ActorPortDirectedGraph createGraph(AtomicActor entity,
-                                                Map options) {
+            Map options) {
         return new ActorPortDirectedGraph(entity,options);
     }
 
@@ -414,12 +414,12 @@ public class ModelGraph2Entity {
         //hw.cycle(2);
 
         //new byucc.jhdl.apps.Viewers.JL.CLIJL(testbench.getTestbench());
-              java.awt.Frame f = new SmartSchematicFrame(testbench.getTestbench());
-              f.addWindowListener(new java.awt.event.WindowAdapter() {
-                      public void windowClosing(java.awt.event.WindowEvent e) {
-                          System.exit(0);
-                      }
-                  });
+        java.awt.Frame f = new SmartSchematicFrame(testbench.getTestbench());
+        f.addWindowListener(new java.awt.event.WindowAdapter() {
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
     }
 
     public JHDLCompositeActor getEntity() { return _entity; }

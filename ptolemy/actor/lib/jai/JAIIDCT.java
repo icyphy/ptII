@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -45,22 +45,22 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIIDCT
 /**
-Calculate the inverse discrete cosine transform of an image.  The output
-image data is of a high resolution (doubles), not suitable for
-displaying or saving.  To display or save the output of this image,
-use the {@link JAIDataConvert} actor to cast the data to an appropriate type
-(for instance, byte).  The output is zero-padded in each dimension to
-the next power of two (unless it already is a power of two in which case
-nothing happens).
+   Calculate the inverse discrete cosine transform of an image.  The output
+   image data is of a high resolution (doubles), not suitable for
+   displaying or saving.  To display or save the output of this image,
+   use the {@link JAIDataConvert} actor to cast the data to an appropriate type
+   (for instance, byte).  The output is zero-padded in each dimension to
+   the next power of two (unless it already is a power of two in which case
+   nothing happens).
 
-<p>No JAIDataConvert actors should be used in between a JAIDCT and JAIIDCT
- actor, unless if loss of spectral information is okay (or even desired).
+   <p>No JAIDataConvert actors should be used in between a JAIDCT and JAIIDCT
+   actor, unless if loss of spectral information is okay (or even desired).
 
-@see JAIDataConvert
-@see JAIDCT
-@author James Yeh
-@version $Id$
-@since Ptolemy II 3.1
+   @see JAIDataConvert
+   @see JAIDCT
+   @author James Yeh
+   @version $Id$
+   @since Ptolemy II 3.1
 */
 public class JAIIDCT extends Transformer {
 

@@ -1,28 +1,28 @@
 /* A parameter that has an associated port.
 
- Copyright (c) 2002-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2002-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
@@ -49,52 +49,52 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// PortParameter
 /**
-This parameter creates an associated port that can be used to update
-the current value of the parameter. This parameter has two values,
-which may not be equal, a <i>current value</i> and a <i>persistent value</i>.
-The persistent value is returned by
-getExpression() and is set by any of three different mechanisms:
-<ul>
-<li> calling setExpression();
-<li> calling setToken(); and
-<li> specifying a value as a constructor argument.
-</ul>
-All three of these will also set the current value, which is then
-equal to the persistent value.
-The current value is returned by get getToken()
-and is set by any of three different mechanisms:
-<ul>
-<li> calling setCurrentValue();
-<li> calling update() sets the current value if there is an associated
-     port, and that port has a token to consume; and
-</ul>
-These three techniques do not change the persistent value, so after
-these are used, the persistent value and current value may be different.
-<p>
-When using this parameter in an actor, care must be exercised
-to call update() exactly once per firing prior to calling getToken().
-Each time update() is called, a new token will be consumed from
-the associated port (if the port is connected and has a token).
-If this is called multiple times in an iteration, it may result in
-consuming tokens that were intended for subsequent iterations.
-Thus, for example, update() should not be called in fire() and then
-again in postfire().  Moreover, in some domains (such as DE),
-it is essential that if a token is provided on a port, that it
-is consumed.  In DE, the actor will be repeatedly fired until
-the token is consumed.  Thus, it is an error to not call update()
-once per iteration.  For an example of an actor that uses this
-mechanism, see Ramp.
-<p>
-If this actor is placed in a container that does not implement
-the TypedActor interface, then no associated port is created,
-and it functions as an ordinary parameter.  This is useful,
-for example, if this is put in a library, where one would not
-want the associated port to appear.
+   This parameter creates an associated port that can be used to update
+   the current value of the parameter. This parameter has two values,
+   which may not be equal, a <i>current value</i> and a <i>persistent value</i>.
+   The persistent value is returned by
+   getExpression() and is set by any of three different mechanisms:
+   <ul>
+   <li> calling setExpression();
+   <li> calling setToken(); and
+   <li> specifying a value as a constructor argument.
+   </ul>
+   All three of these will also set the current value, which is then
+   equal to the persistent value.
+   The current value is returned by get getToken()
+   and is set by any of three different mechanisms:
+   <ul>
+   <li> calling setCurrentValue();
+   <li> calling update() sets the current value if there is an associated
+   port, and that port has a token to consume; and
+   </ul>
+   These three techniques do not change the persistent value, so after
+   these are used, the persistent value and current value may be different.
+   <p>
+   When using this parameter in an actor, care must be exercised
+   to call update() exactly once per firing prior to calling getToken().
+   Each time update() is called, a new token will be consumed from
+   the associated port (if the port is connected and has a token).
+   If this is called multiple times in an iteration, it may result in
+   consuming tokens that were intended for subsequent iterations.
+   Thus, for example, update() should not be called in fire() and then
+   again in postfire().  Moreover, in some domains (such as DE),
+   it is essential that if a token is provided on a port, that it
+   is consumed.  In DE, the actor will be repeatedly fired until
+   the token is consumed.  Thus, it is an error to not call update()
+   once per iteration.  For an example of an actor that uses this
+   mechanism, see Ramp.
+   <p>
+   If this actor is placed in a container that does not implement
+   the TypedActor interface, then no associated port is created,
+   and it functions as an ordinary parameter.  This is useful,
+   for example, if this is put in a library, where one would not
+   want the associated port to appear.
 
-@see ptolemy.actor.lib.Ramp
-@see ParameterPort
-@author Edward A. Lee
-@version $Id$
+   @see ptolemy.actor.lib.Ramp
+   @see ParameterPort
+   @author Edward A. Lee
+   @version $Id$
 */
 public class PortParameter extends Parameter {
 

@@ -1,28 +1,28 @@
 /* A logical equals operator.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (johnli@eecs.berkeley.edu)
@@ -41,21 +41,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Equals
 /**
-A logical equals operator.  This operator has one input
-multiport and one output port that is not a multiport. It will consume
-at most one token from each input channel, and compare the tokens
-using the isEqualTo() method of the Token class.  If all observed
-input tokens are equal, then the output will be a true-valued boolean
-token.  If there is not at least one token on the input channels,
-then no output is produced.
-The type of the input port is undeclared and will be resolved by the type
-resolution mechanism.  Note that all input channels must resolve to the
-same type.  The type of the output port is boolean.
+   A logical equals operator.  This operator has one input
+   multiport and one output port that is not a multiport. It will consume
+   at most one token from each input channel, and compare the tokens
+   using the isEqualTo() method of the Token class.  If all observed
+   input tokens are equal, then the output will be a true-valued boolean
+   token.  If there is not at least one token on the input channels,
+   then no output is produced.
+   The type of the input port is undeclared and will be resolved by the type
+   resolution mechanism.  Note that all input channels must resolve to the
+   same type.  The type of the output port is boolean.
 
-@see Token#isEqualTo(Token)
-@author John Li and Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
+   @see Token#isEqualTo(Token)
+   @author John Li and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
 */
 
 public class Equals extends Transformer {

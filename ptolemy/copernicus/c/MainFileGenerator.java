@@ -26,8 +26,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (ankush@eng.umd.edu)
 @AcceptedRating Red (ankush@eng.umd.edu)
@@ -227,7 +227,7 @@ public class MainFileGenerator extends CodeGenerator {
 
         // Call static initializers for required classes.
         if ((Options.v().getInt("pruneLevel") > 0)
-            && (!Options.v().get("target").equals("C6000"))) {
+                && (!Options.v().get("target").equals("C6000"))) {
             bodyCode.append(_indent(1) + "staticInit();\n");
         }
         else {

@@ -25,8 +25,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
@@ -37,10 +37,10 @@ import java.io.Serializable;
 //////////////////////////////////////////////////////////////////////////
 //// PlotPoint
 /**
-A simple structure for storing a plot point.
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
+   A simple structure for storing a plot point.
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class PlotPoint implements Serializable {
 

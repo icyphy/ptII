@@ -1,28 +1,28 @@
 /* Thread class for process oriented domains.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (mudit@eecs.berkeley.edu)
 @AcceptedRating Yellow (mudit@eecs.berkeley.edu)
@@ -43,41 +43,41 @@ import ptolemy.kernel.util.Workspace;
 //// ProcessThread
 
 /**
- Thread class acting as a process for process oriented domains.
- <P>
- In process oriented domains, each actor acts as a separate process and
- its execution is not centrally controlled by the director. Each process
- runs concurrently with other processes and is responsible for calling
- its execution methods.
- <P>
- This class provides the mechanism to implement the above.
- An instance of this class can be created by passing an actor as an
- argument to the constructor. This class runs as a separate thread on
- being started and calls the execution methods on the actor, repeatedly.
- In specific, it calls the prefire(), fire() and postfire() methods
- of the actor. Before termination, this calls the wrapup() method of
- the actor.
- <P>
- If an actor returns false in its postfire() methods, the
- actor is never fired again and the thread or process would terminate
- after calling wrapup() on the actor.
- <P>
- The initialize() method of the actor is not called from this class. It
- should be called before starting this thread.
- <P>
- In process oriented domains, the director needs to keep a count of the
- number of active processes in the system. This is used for detection of
- deadlocks, termination, and possibly some other reasons. For this two
- methods, _increaseActiveCount() and _decreaseActiveCount(), are defined
- in the ProcessDirector. _increaseActiveCount() is called on the director
- from the constructor of this class and the _decreaseActiveCount() method
- is called at the end of the run() method, i.e. before the thread terminates.
- <P>
+   Thread class acting as a process for process oriented domains.
+   <P>
+   In process oriented domains, each actor acts as a separate process and
+   its execution is not centrally controlled by the director. Each process
+   runs concurrently with other processes and is responsible for calling
+   its execution methods.
+   <P>
+   This class provides the mechanism to implement the above.
+   An instance of this class can be created by passing an actor as an
+   argument to the constructor. This class runs as a separate thread on
+   being started and calls the execution methods on the actor, repeatedly.
+   In specific, it calls the prefire(), fire() and postfire() methods
+   of the actor. Before termination, this calls the wrapup() method of
+   the actor.
+   <P>
+   If an actor returns false in its postfire() methods, the
+   actor is never fired again and the thread or process would terminate
+   after calling wrapup() on the actor.
+   <P>
+   The initialize() method of the actor is not called from this class. It
+   should be called before starting this thread.
+   <P>
+   In process oriented domains, the director needs to keep a count of the
+   number of active processes in the system. This is used for detection of
+   deadlocks, termination, and possibly some other reasons. For this two
+   methods, _increaseActiveCount() and _decreaseActiveCount(), are defined
+   in the ProcessDirector. _increaseActiveCount() is called on the director
+   from the constructor of this class and the _decreaseActiveCount() method
+   is called at the end of the run() method, i.e. before the thread terminates.
+   <P>
 
- @author Mudit Goel, Neil Smyth, John S. Davis II
- @version $Id$
- @since Ptolemy II 0.2
- */
+   @author Mudit Goel, Neil Smyth, John S. Davis II
+   @version $Id$
+   @since Ptolemy II 0.2
+*/
 public class ProcessThread extends PtolemyThread {
 
     /** Construct a thread to be used for the execution of the

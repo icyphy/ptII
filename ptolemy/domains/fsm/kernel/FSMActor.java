@@ -1,28 +1,28 @@
 /* An actor containing a finite state machine (FSM).
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (liuxj@eecs.berkeley.edu)
 @AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
 */
@@ -81,69 +81,69 @@ import ptolemy.util.MessageHandler;
 //////////////////////////////////////////////////////////////////////////
 //// FSMActor
 /**
-An FSMActor contains a set of states and transitions. A transition has
-a guard expression and a trigger expression. A transition is enabled and
-can be taken when its guard is true. A transition is triggered and must be
-taken when its trigger is true. A transition can contain a set of actions.
+   An FSMActor contains a set of states and transitions. A transition has
+   a guard expression and a trigger expression. A transition is enabled and
+   can be taken when its guard is true. A transition is triggered and must be
+   taken when its trigger is true. A transition can contain a set of actions.
 
-<p> When an FSMActor is fired, the outgoing transitions of the current state
-are examined. An IllegalActionException is thrown if there is more than one
-enabled transition. If there is exactly one enabled transition then it is
-chosen and the choice actions contained by the transition are executed.
-An FSMActor does not change state during successive firings in one iteration
-in order to support domains that iterate to a fixed point. When the FSMActor
-is postfired, the chosen transition of the latest firing of the actor is
-committed. The commit actions contained by the transition are executed and
-the current state of the actor is set to the destination state of the
-transition.
+   <p> When an FSMActor is fired, the outgoing transitions of the current state
+   are examined. An IllegalActionException is thrown if there is more than one
+   enabled transition. If there is exactly one enabled transition then it is
+   chosen and the choice actions contained by the transition are executed.
+   An FSMActor does not change state during successive firings in one iteration
+   in order to support domains that iterate to a fixed point. When the FSMActor
+   is postfired, the chosen transition of the latest firing of the actor is
+   committed. The commit actions contained by the transition are executed and
+   the current state of the actor is set to the destination state of the
+   transition.
 
-<p> An FSMActor enters its initial state during initialization. The
-name of the initial state is specified by the <i>initialStateName</i>
-string attribute.  When the actor reaches a final state, then the
-postfire method will return false, indicating that the actor does not
-wish to be fired again.  The <i>finalStateNames</i> string attribute
-is a comma-separated list of the names of final states.
+   <p> An FSMActor enters its initial state during initialization. The
+   name of the initial state is specified by the <i>initialStateName</i>
+   string attribute.  When the actor reaches a final state, then the
+   postfire method will return false, indicating that the actor does not
+   wish to be fired again.  The <i>finalStateNames</i> string attribute
+   is a comma-separated list of the names of final states.
 
-<p> The guards and actions of FSM transitions are specified using
-expressions.  These expressions are evaluated in the scope returned by
-getPortScope.  This scope binds identifiers for FSM ports as defined
-in the following paragraph.  These identifiers are in the scope of
-guard and action expressions prior to any variables, and may shadow
-variables with appropriately chosen names.  Given appropriately chosen
-port names, there may be conflicts between these various identifiers.
-These conflicts are detected and an exception is thrown during
-execution.
+   <p> The guards and actions of FSM transitions are specified using
+   expressions.  These expressions are evaluated in the scope returned by
+   getPortScope.  This scope binds identifiers for FSM ports as defined
+   in the following paragraph.  These identifiers are in the scope of
+   guard and action expressions prior to any variables, and may shadow
+   variables with appropriately chosen names.  Given appropriately chosen
+   port names, there may be conflicts between these various identifiers.
+   These conflicts are detected and an exception is thrown during
+   execution.
 
-<p> For every input port, the identifier
-"<i>portName</i>_<i>channelIndex</i>" refers to the last input
-received from the port on the given channel.  The type of this
-identifier is the same as the type of the port.  This token may have
-been consumed in the current firing or in a previous firing.  The
-identifier "<i>portName</i>_<i>channelIndex</i>_isPresent" is true if
-the port consumed an input on the given channel in the current firing
-of the FSM.  The type of this identifier is always boolean.  Lastly,
-the identifier "<i>portName</i>_<i>channelIndex</i>Array" refers the
-array of all tokens consumed from the port in the last firing.  This
-identifier has an array type whose element type is the type of the
-corresponding input port.  Additionally, for conciseness when
-referencing single ports, the first channel may be referred to without
-the channel index, i.e. by the identifiers "<i>portName</i>",
-"<i>portName</i>_<i>isPresent</i>", and "<i>portName</i>Array".
+   <p> For every input port, the identifier
+   "<i>portName</i>_<i>channelIndex</i>" refers to the last input
+   received from the port on the given channel.  The type of this
+   identifier is the same as the type of the port.  This token may have
+   been consumed in the current firing or in a previous firing.  The
+   identifier "<i>portName</i>_<i>channelIndex</i>_isPresent" is true if
+   the port consumed an input on the given channel in the current firing
+   of the FSM.  The type of this identifier is always boolean.  Lastly,
+   the identifier "<i>portName</i>_<i>channelIndex</i>Array" refers the
+   array of all tokens consumed from the port in the last firing.  This
+   identifier has an array type whose element type is the type of the
+   corresponding input port.  Additionally, for conciseness when
+   referencing single ports, the first channel may be referred to without
+   the channel index, i.e. by the identifiers "<i>portName</i>",
+   "<i>portName</i>_<i>isPresent</i>", and "<i>portName</i>Array".
 
-<p> An FSMActor can be used in a modal model to represent the mode
-control logic.  A state can have a TypedActor refinement. A transition
-in an FSMActor can be preemptive or non-preemptive. When a preemptive
-transition is chosen, the refinement of its source state is not
-fired. A non-preemptive transition can only be chosen after the
-refinement of its source state is fired.
+   <p> An FSMActor can be used in a modal model to represent the mode
+   control logic.  A state can have a TypedActor refinement. A transition
+   in an FSMActor can be preemptive or non-preemptive. When a preemptive
+   transition is chosen, the refinement of its source state is not
+   fired. A non-preemptive transition can only be chosen after the
+   refinement of its source state is fired.
 
-@author Xiaojun Liu
-@version $Id$
-@since Ptolemy II 0.4
-@see State
-@see Transition
-@see Action
-@see FSMDirector
+   @author Xiaojun Liu
+   @version $Id$
+   @since Ptolemy II 0.4
+   @see State
+   @see Transition
+   @see Action
+   @see FSMDirector
 */
 public class FSMActor extends CompositeEntity
     implements TypedActor, ExplicitChangeContext {
@@ -354,16 +354,16 @@ public class FSMActor extends CompositeEntity
                     //Throw an exception that in order to use refinements,
                     //a modal model has to be used.
                     MessageHandler.error("FSMActor does not " +
-                        "contain refinements, use ModalModel instead.");
+                            "contain refinements, use ModalModel instead.");
                 }
             } catch (IllegalActionException e) {
-               // FIXME: how to deal the IllegalActionException possibly
-               // thrown by the getRefinement method?
-               // Similar things happen in the _getEntities method
-               // in FunctionDependencyOfModalModel
-               MessageHandler.error("Invalid refinements.", e);
+                // FIXME: how to deal the IllegalActionException possibly
+                // thrown by the getRefinement method?
+                // Similar things happen in the _getEntities method
+                // in FunctionDependencyOfModalModel
+                MessageHandler.error("Invalid refinements.", e);
             }
-       }
+        }
         return _functionDependency;
     }
 
@@ -411,7 +411,7 @@ public class FSMActor extends CompositeEntity
                         String name = (String)names.next();
                         NamedObj object = action.getDestination(name);
                         if (object instanceof Variable &&
-                            deepContains(object)) {
+                                deepContains(object)) {
                             list.add(object);
                         }
                     }
@@ -428,7 +428,7 @@ public class FSMActor extends CompositeEntity
                         String name = (String)names.next();
                         NamedObj object = action.getDestination(name);
                         if (object instanceof Variable &&
-                            deepContains(object)) {
+                                deepContains(object)) {
                             list.add(object);
                         }
                     }
@@ -653,7 +653,7 @@ public class FSMActor extends CompositeEntity
         // Populate a map from identifier to the input port represented.
         _identifierToPort.clear();
         for (Iterator inputPorts = inputPortList().iterator();
-            inputPorts.hasNext();) {
+             inputPorts.hasNext();) {
             IOPort inPort = (IOPort)inputPorts.next();
             _setIdentifierToPort(inPort.getName(), inPort);
             _setIdentifierToPort(inPort.getName() + "_isPresent", inPort);
@@ -1052,13 +1052,13 @@ public class FSMActor extends CompositeEntity
                 Token token = port.get(channel);
                 if (_debugging) {
                     _debug("---", port.getName(),"(" + channel +
-                    ") has ", token.toString());
+                            ") has ", token.toString());
                 }
                 tokenListArray[channel].add(0, token);
             }
             if (_debugging) {
                 _debug("Total tokens available at port: "
-                    + port.getFullName() + "  ");
+                        + port.getFullName() + "  ");
             }
 
             // FIXME: The "portName_isPresent" should be true only if
@@ -1084,14 +1084,14 @@ public class FSMActor extends CompositeEntity
                         BooleanToken.FALSE);
                 if (_debugging) {
                     _debug("---", port.getName(), "("+channel+
-                        ") has no token.");
+                            ") has no token.");
                 }
             }
         } else {
             // FIXME how to deal with unknown?
-//             shadowVariables[channel][0].setUnknown(true);
-//             shadowVariables[channel][1].setUnknown(true);
-//             shadowVariables[channel][2].setUnknown(true);
+            //             shadowVariables[channel][0].setUnknown(true);
+            //             shadowVariables[channel][1].setUnknown(true);
+            //             shadowVariables[channel][2].setUnknown(true);
         }
     }
 
@@ -1250,13 +1250,13 @@ public class FSMActor extends CompositeEntity
 
         _identifierToPort = new HashMap();
         /*
-        try {
-            tokenHistorySize =
-                new Parameter(this, "tokenHistorySize", new IntToken(1));
-        } catch (Exception e) {
-            throw new InternalErrorException(
-                "cannot create default tokenHistorySize parameter:\n" + e);
-        }
+          try {
+          tokenHistorySize =
+          new Parameter(this, "tokenHistorySize", new IntToken(1));
+          } catch (Exception e) {
+          throw new InternalErrorException(
+          "cannot create default tokenHistorySize parameter:\n" + e);
+          }
         */
     }
 

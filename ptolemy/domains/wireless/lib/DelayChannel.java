@@ -1,28 +1,28 @@
 /* A channel with a specified propagation speed.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
@@ -49,26 +49,26 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// DelayChannel
 
 /**
-Model of a wireless channel with a specified propagation speed and
-loss probability. The propagation speed introduces delay that depends
-on the distance between the transmitter and receiver at the time
-that the transmitter initiates the communication. This channel model
-assumes that the duration of the message is (effectively) zero, so
-that neither the transmitter nor the receiver move during the
-transmission. It also assumes that the receiver does not move during
-propagation. I.e., it assumes that the propagation of the message is
-much faster than the node movement.
-<p>
-A speed equal to Infinity (the default) results in no
-propagation delay. If the loss probability is greater than zero then on each
-call to the transmit() method, for each receiver in range,
-with the specified probability, the transmission to that
-receiver will not occur.  Whether a transmission occurs to a particular
-receiver is independent of whether it occurs to any other receiver.
+   Model of a wireless channel with a specified propagation speed and
+   loss probability. The propagation speed introduces delay that depends
+   on the distance between the transmitter and receiver at the time
+   that the transmitter initiates the communication. This channel model
+   assumes that the duration of the message is (effectively) zero, so
+   that neither the transmitter nor the receiver move during the
+   transmission. It also assumes that the receiver does not move during
+   propagation. I.e., it assumes that the propagation of the message is
+   much faster than the node movement.
+   <p>
+   A speed equal to Infinity (the default) results in no
+   propagation delay. If the loss probability is greater than zero then on each
+   call to the transmit() method, for each receiver in range,
+   with the specified probability, the transmission to that
+   receiver will not occur.  Whether a transmission occurs to a particular
+   receiver is independent of whether it occurs to any other receiver.
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class DelayChannel extends ErasureChannel {
 

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (vogel@eecs.berkeley.edu)
 @AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
@@ -50,62 +50,62 @@ import ptolemy.media.javasound.SoundWriter;
 ///////////////////////////////////////////////////////////
 //// AudioWriter
 /**
-This actor reads audio samples from the input port and writes
-the samples to the specified sound file. Any existing file
-with the same name will be silently overwritten. The input port
-is of type DoubleToken. Each DoubleToken read from the input
-port represents one sample of the audio data and should be in
-the range [-1.0, 1.0]. Any samples that are outside of this range
-will be hard-clipped to fall within this range before they are
-written to the sound file. Single channel (mono) and two
-channel (stereo) formats are supported. For single channel
-audio, tokens are written to channel 0 of the output port. For
-stereo , tokens are written to channel 0 (left) and channel 1
-(right) of the output port.
-<p>
-The following parameters should be set to specify the format
-of the file to write. In all cases, an exception is thrown if
-an illegal parameter value is used. Note that if a parameter is
-changed while audio writing is active, all data written so far will
-be saved, and the sound file will be closed. Subsequent audio
-samples will then be written to a new sound file with the new
-parameter values.
-<p>
-<ul>
-<li><i>pathName</i> should be set to the name of the output
-file. Any existing file with the same name will be silently
-overwritten. Relative filenames are supported. The default value is
-"outfile.wav". The audio format to use is determined by the file
-extension. E.g., "outfile.wav" will create a WAV format file.
-The supported file formats are AU, WAV, and, AIFF.  For example,
-to write samples to a Sun AU format file with the name "test.au"
-in the directory "c:\tmp", this parameter should be set to the
-value c:\tmp\test.au. To write samples to a file with name "test.au"
-in the current directory, this parameter should be set to the value
-test.au.
-<li><i>channels</i> should be set to desired number of audio
-channels. Allowable values are 1 (for mono) and 2 (for stereo).
-The default value is 1.
-<li><i>sampleRate</i> should be set to desired sample rate,
-in Hz. The DoubleTokens read in by this actor will be
-interpreted as having this sample rate. Allowable values are
-8000, 11025, 22050, 44100, and 48000. The default value is 8000.
-<li><i>bitsPerSample</i> should be set to desired bit
-resolution. Allowable values are 8 and 16. The default value is 16.
-</ul>
-<p>
-There are security issues involved with accessing files and
-audio resources in applets. By default, applets are not
-allowed to write files. The .java.policy file may be modified
-to grant applets more privileges.
-<p>
-Note: Requires Java 2 v1.3.0 or later.
-@author  Brian K. Vogel
-@version  $Id$
-@since Ptolemy II 1.0
-@see AudioReader
-@see AudioCapture
-@see AudioPlayer
+   This actor reads audio samples from the input port and writes
+   the samples to the specified sound file. Any existing file
+   with the same name will be silently overwritten. The input port
+   is of type DoubleToken. Each DoubleToken read from the input
+   port represents one sample of the audio data and should be in
+   the range [-1.0, 1.0]. Any samples that are outside of this range
+   will be hard-clipped to fall within this range before they are
+   written to the sound file. Single channel (mono) and two
+   channel (stereo) formats are supported. For single channel
+   audio, tokens are written to channel 0 of the output port. For
+   stereo , tokens are written to channel 0 (left) and channel 1
+   (right) of the output port.
+   <p>
+   The following parameters should be set to specify the format
+   of the file to write. In all cases, an exception is thrown if
+   an illegal parameter value is used. Note that if a parameter is
+   changed while audio writing is active, all data written so far will
+   be saved, and the sound file will be closed. Subsequent audio
+   samples will then be written to a new sound file with the new
+   parameter values.
+   <p>
+   <ul>
+   <li><i>pathName</i> should be set to the name of the output
+   file. Any existing file with the same name will be silently
+   overwritten. Relative filenames are supported. The default value is
+   "outfile.wav". The audio format to use is determined by the file
+   extension. E.g., "outfile.wav" will create a WAV format file.
+   The supported file formats are AU, WAV, and, AIFF.  For example,
+   to write samples to a Sun AU format file with the name "test.au"
+   in the directory "c:\tmp", this parameter should be set to the
+   value c:\tmp\test.au. To write samples to a file with name "test.au"
+   in the current directory, this parameter should be set to the value
+   test.au.
+   <li><i>channels</i> should be set to desired number of audio
+   channels. Allowable values are 1 (for mono) and 2 (for stereo).
+   The default value is 1.
+   <li><i>sampleRate</i> should be set to desired sample rate,
+   in Hz. The DoubleTokens read in by this actor will be
+   interpreted as having this sample rate. Allowable values are
+   8000, 11025, 22050, 44100, and 48000. The default value is 8000.
+   <li><i>bitsPerSample</i> should be set to desired bit
+   resolution. Allowable values are 8 and 16. The default value is 16.
+   </ul>
+   <p>
+   There are security issues involved with accessing files and
+   audio resources in applets. By default, applets are not
+   allowed to write files. The .java.policy file may be modified
+   to grant applets more privileges.
+   <p>
+   Note: Requires Java 2 v1.3.0 or later.
+   @author  Brian K. Vogel
+   @version  $Id$
+   @since Ptolemy II 1.0
+   @see AudioReader
+   @see AudioCapture
+   @see AudioPlayer
 */
 public class AudioWriter extends Sink {
 

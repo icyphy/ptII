@@ -25,10 +25,10 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @ProposedRating Red (cxh@eecs.berkeley.edu)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
- */
+*/
 
 package ptolemy.graph;
 
@@ -72,7 +72,7 @@ import java.util.ListIterator;
     @author Shuvra S. Bhattacharyya
     @version $Id$
     @since Ptolemy II 2.0
- */
+*/
 
 public class LabeledList implements List {
 

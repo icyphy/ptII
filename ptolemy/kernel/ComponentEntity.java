@@ -1,28 +1,28 @@
 /* A ComponentEntity is a vertex in a clustered graph.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
@@ -45,24 +45,24 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ComponentEntity
 /**
-A ComponentEntity is a component in a CompositeEntity.
-It might itself be composite, but in this base class it is assumed to
-be atomic (meaning that it cannot contain components).
-<p>
-Derived classes may further constrain the container to be
-a subclass of CompositeEntity.  To do this, they should override
-the protected method _checkContainer() to throw an exception.
-<p>
-A ComponentEntity can contain instances of ComponentPort.  Derived
-classes may further constrain to a subclass of ComponentPort.
-To do this, they should override the public method newPort() to create
-a port of the appropriate subclass, and the protected method _addPort()
-to throw an exception if its argument is a port that is not of the
-appropriate subclass.
+   A ComponentEntity is a component in a CompositeEntity.
+   It might itself be composite, but in this base class it is assumed to
+   be atomic (meaning that it cannot contain components).
+   <p>
+   Derived classes may further constrain the container to be
+   a subclass of CompositeEntity.  To do this, they should override
+   the protected method _checkContainer() to throw an exception.
+   <p>
+   A ComponentEntity can contain instances of ComponentPort.  Derived
+   classes may further constrain to a subclass of ComponentPort.
+   To do this, they should override the public method newPort() to create
+   a port of the appropriate subclass, and the protected method _addPort()
+   to throw an exception if its argument is a port that is not of the
+   appropriate subclass.
 
-@author John S. Davis II, Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
+   @author John S. Davis II, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class ComponentEntity extends Entity {
 
@@ -171,7 +171,7 @@ public class ComponentEntity extends Entity {
                     + container.getFullName());
         }
         ComponentEntity clone = (ComponentEntity)
-                super.instantiate(container, name);
+            super.instantiate(container, name);
         clone.setContainer((CompositeEntity)container);
         return clone;
     }
@@ -378,7 +378,7 @@ public class ComponentEntity extends Entity {
             throws IllegalActionException {
         if (container != null && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
-            "Component entity can only be contained by a CompositeEntity");
+                    "Component entity can only be contained by a CompositeEntity");
         }
         // NOTE: If we don't enforce this, then undo could fail,
         // since deletions occur in the opposite order of the re-additions
@@ -437,7 +437,7 @@ public class ComponentEntity extends Entity {
                     + container.getClass().getName());
         }
         ComponentEntity candidate
-                = ((CompositeEntity)container).getEntity(relativeName);
+            = ((CompositeEntity)container).getEntity(relativeName);
         if (!getClass().isInstance(candidate)) {
             throw new InternalErrorException(
                     "Expected "

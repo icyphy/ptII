@@ -1,28 +1,28 @@
 /* An actor that produces tokens with a given probability mass function.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (ssachs@eecs.berkeley.edu)
@@ -47,23 +47,23 @@ import ptolemy.math.SignalProcessing;
 //////////////////////////////////////////////////////////////////////////
 //// DiscreteRandomSource
 /**
-An actor that produces tokens with a given probability mass function.
-<p>
-The probability mass function is a parameter, <i>pmf</i>, of this
-actor. The <i>pmf</i> must be an array that contains entries that
-are all between 0.0 and 1.1, and sum to 1.0. By default, <i>pmf</i> is
-initialized to {0.5, 0.5}.
-<p>
-Output values are selected at random from the <i>values</i> parameter,
-which contains an ArrayToken. This array must have the same length as
-<i>pmf</i>.  Thus the <i>i</i>-th token in <i>values</i> has probability
-<i>pmf</i>[<i>i</i>]. The output port has the same type as the elements of
-the <i>values</i> array.  The default <i>values</i> are {0, 1}, which are
-integers.
+   An actor that produces tokens with a given probability mass function.
+   <p>
+   The probability mass function is a parameter, <i>pmf</i>, of this
+   actor. The <i>pmf</i> must be an array that contains entries that
+   are all between 0.0 and 1.1, and sum to 1.0. By default, <i>pmf</i> is
+   initialized to {0.5, 0.5}.
+   <p>
+   Output values are selected at random from the <i>values</i> parameter,
+   which contains an ArrayToken. This array must have the same length as
+   <i>pmf</i>.  Thus the <i>i</i>-th token in <i>values</i> has probability
+   <i>pmf</i>[<i>i</i>]. The output port has the same type as the elements of
+   the <i>values</i> array.  The default <i>values</i> are {0, 1}, which are
+   integers.
 
-@author Jeff Tsay, Yuhong Xiong
-@version $Id$
-@since Ptolemy II 1.0
+   @author Jeff Tsay, Yuhong Xiong
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 
 public class DiscreteRandomSource extends RandomSource {

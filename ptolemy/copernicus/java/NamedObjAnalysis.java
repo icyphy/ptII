@@ -1,28 +1,28 @@
 /* An analysis for extracting the constructors of named objects.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -44,14 +44,14 @@ import soot.toolkits.graph.CompleteUnitGraph;
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjAnalysis
 /**
-An analysis that establishes a correspondence between each local
-variable that refers to a named obj in a method an the named object
-that it refers to.  This information is used to inline methods on
-named obj locals.
+   An analysis that establishes a correspondence between each local
+   variable that refers to a named obj in a method an the named object
+   that it refers to.  This information is used to inline methods on
+   named obj locals.
 
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 4.0
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class NamedObjAnalysis {
     public NamedObjAnalysis(SootMethod method, NamedObj thisBinding) {
@@ -64,8 +64,8 @@ public class NamedObjAnalysis {
         JimpleBody body = (JimpleBody)method.getActiveBody();
         _localToObject = new HashMap();
         if (method.isStatic()) {
-  //           System.out.println("Ignoring this binding for static method: "
-//                     + method);
+            //           System.out.println("Ignoring this binding for static method: "
+            //                     + method);
         } else {
             _set(body.getThisLocal(), thisBinding);
         }
@@ -73,7 +73,7 @@ public class NamedObjAnalysis {
         while (_notDone) {
             _notDone = false;
             for (Iterator units = body.getUnits().iterator();
-                units.hasNext();) {
+                 units.hasNext();) {
                 Unit unit = (Unit)units.next();
                 if (unit instanceof DefinitionStmt) {
                     DefinitionStmt stmt = (DefinitionStmt)unit;
@@ -128,7 +128,7 @@ public class NamedObjAnalysis {
         if (field.getType() instanceof RefType &&
                 SootUtilities.derivesFrom(
                         ((RefType)field.getType()).getSootClass(),
-                                    PtolemyUtilities.namedObjClass)) {
+                        PtolemyUtilities.namedObjClass)) {
             ValueTag tag = (ValueTag)field.getTag("_CGValue");
             if (tag == null) {
                 return _errorObject;
@@ -146,11 +146,11 @@ public class NamedObjAnalysis {
     }
 
     private void _set(Local local, NamedObj object) {
-//         System.out.println("setting local " + local +
-//                 " to value of " + object);
+        //         System.out.println("setting local " + local +
+        //                 " to value of " + object);
         Object current = _localToObject.get(local);
-//         System.out.println("current = " + current);
-         if (object == null) {
+        //         System.out.println("current = " + current);
+        if (object == null) {
             // No new information.
             return;
         } else if (current != null) {

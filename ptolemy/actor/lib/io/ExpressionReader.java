@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
@@ -39,20 +39,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionReader
 /**
-This actor reads a file or URL, one line at a time, evaluates each
-line as an expression, and outputs the token resulting from the
-evaluation. The first line in the file determines the data type
-of the output. All other lines must contain expressions that
-evaluate to the same type or a subtype, or a run-time type error will occur.
-The file or URL is specified using any form acceptable
-to FileParameter.  If an end of file is reached, then prefire() and
-postfire() will both return false.
+   This actor reads a file or URL, one line at a time, evaluates each
+   line as an expression, and outputs the token resulting from the
+   evaluation. The first line in the file determines the data type
+   of the output. All other lines must contain expressions that
+   evaluate to the same type or a subtype, or a run-time type error will occur.
+   The file or URL is specified using any form acceptable
+   to FileParameter.  If an end of file is reached, then prefire() and
+   postfire() will both return false.
 
-@see ExpressionWriter
-@see ptolemy.data.expr.FileParameter
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.2
+   @see ExpressionWriter
+   @see ptolemy.data.expr.FileParameter
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.2
 */
 public class ExpressionReader extends LineReader {
 

@@ -1,28 +1,28 @@
 /* A parameter that specifies a file or URL.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
@@ -51,82 +51,82 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// FileParameter
 /**
-This is an attribute that specifies a file or URL.  The value of this
-attribute, accessed by getExpression(), is a string that names a file
-or URL, possibly containing references to variables defined in scope
-using the syntax $ID, ${ID} or $(ID). The value returned by getToken()
-is name of the file with such references resolved.
-<p>
-If the model containing this
-attribute has been saved to a MoML file, then the file name can be
-given relative to the directory containing that MoML file.
-If the model has not been saved to a file,
-then the classpath is used for identifying relative file names.
-<p>
-Files can be given relative to a <i>base</i>, where the base is
-the URI of the first container above this one that has a URIAttribute.
-Normally, this URI specifies the file or URL containing the model
-definition. Thus, files that are referred to here can be kept in the
-same directory as the model, or in a related directory, and can
-moved together with the model.
-<p>
-The following special file names are understood:
-<ul>
-<li> System.in: Standard input.
-<li> System.out: Standard output.
-</ul>
-Note, however, that these file names cannot be converted to URLs
-using the asURL() method.
-A file name can also contain the following strings that start
-with "$", which get substituted
-with the appropriate values.
-<table>
- <tr>
-  <th>String</th>
-  <th>Description</th>
-  <th>Property</th>
- </tr>
- <tr>
-  <tr><code>$CWD</code></tr>
-  <tr>The current working directory</tr>
-  <tr><code>user.dir</code></tr>
- </tr>
- <tr>
-  <tr><code>$HOME</code></tr>
-  <tr>The user's home directory</tr>
-  <tr><code>user.home</code></tr>
- </tr>
- <tr>
-  <tr><code>$PTII</code></tr>
-  <tr>The home directory of the Ptolemy II installation</tr>
-  <tr><code>ptolemy.ptII.dir</code></tr>
- </tr>
- <tr>
-  <tr><code>$TMPDIR</code></tr>
-  <tr>The temporary directory</tr>
-  <tr><code>java.io.tmpdir</code></tr>
- </tr>
-</table>
-The above properties are normally set when a Ptolemy II application starts.
-<p>
-If a file name begins with the reference "$CLASSPATH", then when
-the file is opened for reading, the openForReading() method
-will search for the file relative to the classpath (using the
-getResource() method of the current class loader).  This will only
-work for a file that exists, and thus the openForWriting() method
-will not understand the "$CLASSPATH" string; this makes sense
-since the classpath typically has several directories, and it
-would not be obvious where to create the file.  The asURL()
-method also recognizes the "$CLASSPATH" string, but not the asFile()
-method (which is typically used when accessing a file for writing).
-NOTE: If the container of this parameter also contains a variable
-named CLASSPATH, then the value of that variable is used instead
-of the Java classpath.
-<p>
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
-@see URIAttribute
+   This is an attribute that specifies a file or URL.  The value of this
+   attribute, accessed by getExpression(), is a string that names a file
+   or URL, possibly containing references to variables defined in scope
+   using the syntax $ID, ${ID} or $(ID). The value returned by getToken()
+   is name of the file with such references resolved.
+   <p>
+   If the model containing this
+   attribute has been saved to a MoML file, then the file name can be
+   given relative to the directory containing that MoML file.
+   If the model has not been saved to a file,
+   then the classpath is used for identifying relative file names.
+   <p>
+   Files can be given relative to a <i>base</i>, where the base is
+   the URI of the first container above this one that has a URIAttribute.
+   Normally, this URI specifies the file or URL containing the model
+   definition. Thus, files that are referred to here can be kept in the
+   same directory as the model, or in a related directory, and can
+   moved together with the model.
+   <p>
+   The following special file names are understood:
+   <ul>
+   <li> System.in: Standard input.
+   <li> System.out: Standard output.
+   </ul>
+   Note, however, that these file names cannot be converted to URLs
+   using the asURL() method.
+   A file name can also contain the following strings that start
+   with "$", which get substituted
+   with the appropriate values.
+   <table>
+   <tr>
+   <th>String</th>
+   <th>Description</th>
+   <th>Property</th>
+   </tr>
+   <tr>
+   <tr><code>$CWD</code></tr>
+   <tr>The current working directory</tr>
+   <tr><code>user.dir</code></tr>
+   </tr>
+   <tr>
+   <tr><code>$HOME</code></tr>
+   <tr>The user's home directory</tr>
+   <tr><code>user.home</code></tr>
+   </tr>
+   <tr>
+   <tr><code>$PTII</code></tr>
+   <tr>The home directory of the Ptolemy II installation</tr>
+   <tr><code>ptolemy.ptII.dir</code></tr>
+   </tr>
+   <tr>
+   <tr><code>$TMPDIR</code></tr>
+   <tr>The temporary directory</tr>
+   <tr><code>java.io.tmpdir</code></tr>
+   </tr>
+   </table>
+   The above properties are normally set when a Ptolemy II application starts.
+   <p>
+   If a file name begins with the reference "$CLASSPATH", then when
+   the file is opened for reading, the openForReading() method
+   will search for the file relative to the classpath (using the
+   getResource() method of the current class loader).  This will only
+   work for a file that exists, and thus the openForWriting() method
+   will not understand the "$CLASSPATH" string; this makes sense
+   since the classpath typically has several directories, and it
+   would not be obvious where to create the file.  The asURL()
+   method also recognizes the "$CLASSPATH" string, but not the asFile()
+   method (which is typically used when accessing a file for writing).
+   NOTE: If the container of this parameter also contains a variable
+   named CLASSPATH, then the value of that variable is used instead
+   of the Java classpath.
+   <p>
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
+   @see URIAttribute
 */
 public class FileParameter extends StringParameter {
 

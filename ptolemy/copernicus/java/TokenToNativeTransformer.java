@@ -1,28 +1,28 @@
 /* A transformer that unboxes tokens
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -120,16 +120,16 @@ import soot.toolkits.scalar.UnusedLocalEliminator;
 //////////////////////////////////////////////////////////////////////////
 //// TokenToNativeTransformer
 /**
-A transformer that is responsible for unboxing tokens, i.e. replacing the
-token with the value that is contained by that token.  This transformer
-attempts to do this by replacing each token with the fields contained in
-the appropriate token class and inlining the methods that are implemented
-for that token class.  This is made more complex by the fact that tokens
-may themselves be contained by other tokens.
+   A transformer that is responsible for unboxing tokens, i.e. replacing the
+   token with the value that is contained by that token.  This transformer
+   attempts to do this by replacing each token with the fields contained in
+   the appropriate token class and inlining the methods that are implemented
+   for that token class.  This is made more complex by the fact that tokens
+   may themselves be contained by other tokens.
 
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class TokenToNativeTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
@@ -567,7 +567,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 AssignStmt stmt = (AssignStmt)unit;
                 unsafeLocalSet.add(stmt.getLeftOp());
                 unsafeLocalSet.addAll(_computeTokenLocalsDefinedFrom(
-                        localUses, stmt));
+                                              localUses, stmt));
                 if (debug) System.out.println("unsafeLocalSet = " + unsafeLocalSet);
             }
         }
@@ -595,8 +595,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
             }
 
             boolean isInlineableTokenMethod = _isLocalTokenTypeWithDepth(
-                local, typeAnalysis, unsafeLocalSet,
-                depth, debug);
+                    local, typeAnalysis, unsafeLocalSet,
+                    depth, debug);
 
             // Check if token arguments are being used.  This makes
             // sure we get methods like Scale._scaleOnRight and
@@ -717,7 +717,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 if (isInlineableTokenMethod) {
                     type = (RefType)typeAnalysis.getSpecializedSootType((Local)r.getBase());
                     if (PtolemyUtilities.getTypeDepth(
-                            typeAnalysis.getSpecializedType((Local)r.getBase())) != depth) {
+                                typeAnalysis.getSpecializedType((Local)r.getBase())) != depth) {
                         if (debug) System.out.println("skipping, type depth = " +
                                 PtolemyUtilities.getTypeDepth(
                                         typeAnalysis.getSpecializedType((Local)r.getBase())) +
@@ -757,7 +757,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
             StaticInvokeExpr r = (StaticInvokeExpr)value;
             // Inline typelattice methods.
             if (r.getMethod().getDeclaringClass().equals(
-                    PtolemyUtilities.typeLatticeClass)) {
+                        PtolemyUtilities.typeLatticeClass)) {
                 try {
                     if (debug) {
                         System.out.println("inlining typelattice method = "
@@ -783,17 +783,17 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 // little information, and is hard to get
                 // rid of any other way.
                 if (_mangleExceptionMessages && (
-                        inlinee.getName().equals("notSupportedMessage") ||
-                        inlinee.getName().equals("notSupportedConversionMessage") ||
-                        inlinee.getName().equals("notSupportedIncomparableMessage") ||
-                        inlinee.getName().equals("notSupportedIncomparableConversionMessage"))) {
+                            inlinee.getName().equals("notSupportedMessage") ||
+                            inlinee.getName().equals("notSupportedConversionMessage") ||
+                            inlinee.getName().equals("notSupportedIncomparableMessage") ||
+                            inlinee.getName().equals("notSupportedIncomparableConversionMessage"))) {
                     box.setValue(StringConstant.v("Token Exception"));
                 } else if (SootUtilities.derivesFrom(declaringClass,
-                        PtolemyUtilities.tokenClass) ||
-                           ((returnType instanceof RefType) &&
-                                   SootUtilities.derivesFrom(
-                                          ((RefType)returnType).getSootClass(),
-                                          PtolemyUtilities.tokenClass))) {
+                                   PtolemyUtilities.tokenClass) ||
+                        ((returnType instanceof RefType) &&
+                                SootUtilities.derivesFrom(
+                                        ((RefType)returnType).getSootClass(),
+                                        PtolemyUtilities.tokenClass))) {
                     // Note that we make sure to inline method like
                     // UtilityFunctions.gaussian, which returns a
                     // DoubleMatrixToken.
@@ -920,8 +920,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                                     "<java.lang.Class: java.lang.Class "
                                     + "forName(java.lang.String)>");
                             box.setValue(Jimple.v().newStaticInvokeExpr(
-                                    newGetClassMethod,
-                                    StringConstant.v("java.lang.Object")));
+                                                 newGetClassMethod,
+                                                 StringConstant.v("java.lang.Object")));
 
                         } else if (inlinee.getName().equals("getElementType")) {
                             if (debug) System.out.println("handling getElementType: " + unit);
@@ -1190,7 +1190,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 SootClass localClass = type.getSootClass();
 
                 if (!SootUtilities.derivesFrom(localClass,
-                        PtolemyUtilities.tokenClass)) {
+                            PtolemyUtilities.tokenClass)) {
                     continue;
                 }
 
@@ -1317,12 +1317,12 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                                     fieldToReplacementArrayLocal.keySet());
                             Collections.sort(replacementList,
                                     new Comparator() {
-                                            public int compare(Object o1, Object o2) {
-                                                SootField f1 = (SootField)o1;
-                                                SootField f2 = (SootField)o2;
-                                                return f1.getName().compareTo(f2.getName());
-                                            }
-                                        });
+                                        public int compare(Object o1, Object o2) {
+                                            SootField f1 = (SootField)o1;
+                                            SootField f2 = (SootField)o2;
+                                            return f1.getName().compareTo(f2.getName());
+                                        }
+                                    });
                             SootField field = (SootField)
                                 replacementList.get(replacementList.size() - 1);
                             if (debug) System.out.println("replace with  " +
@@ -1342,7 +1342,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                             RefType type = (RefType)r.getBase().getType();
                             //System.out.println("BaseType = " + type);
                             if (SootUtilities.derivesFrom(type.getSootClass(),
-                                    PtolemyUtilities.tokenClass)) {
+                                        PtolemyUtilities.tokenClass)) {
                                 if (debug) System.out.println("handling " +
                                         unit + " token operation");
 
@@ -1365,7 +1365,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                             RefType type = (RefType)r.getBase().getType();
                             //System.out.println("BaseType = " + type);
                             if (SootUtilities.derivesFrom(type.getSootClass(),
-                                    PtolemyUtilities.tokenClass)) {
+                                        PtolemyUtilities.tokenClass)) {
                                 if (debug) System.out.println("handling " +
                                         unit + " token operation");
 
@@ -1510,10 +1510,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                             boolean isBooleanTokenTrueSingleton = false;
                             boolean isBooleanTokenFalseSingleton = false;
                             if (field.getSignature().equals(
-                                    "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken TRUE>")) {
+                                        "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken TRUE>")) {
                                 isBooleanTokenTrueSingleton = true;
                             } else if (field.getSignature().equals(
-                                    "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken FALSE>")) {
+                                               "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken FALSE>")) {
                                 isBooleanTokenFalseSingleton = true;
                             }
                             if ((isBooleanTokenFalseSingleton || isBooleanTokenTrueSingleton) &&
@@ -1838,12 +1838,12 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
 
                                 if (expr instanceof EqExpr) {
                                     box.setValue(Jimple.v().newEqExpr(
-                                            isNotNullLocal,
-                                            nullValue));
+                                                         isNotNullLocal,
+                                                         nullValue));
                                 } else if (expr instanceof NeExpr) {
                                     box.setValue(Jimple.v().newNeExpr(
-                                            isNotNullLocal,
-                                            nullValue));
+                                                         isNotNullLocal,
+                                                         nullValue));
                                 }
                             }
                         } else if (op2IsToken && expr.getOp1().getType().equals(NullType.v())) {
@@ -1863,12 +1863,12 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
 
                                 if (expr instanceof EqExpr) {
                                     box.setValue(Jimple.v().newEqExpr(
-                                            isNotNullLocal,
-                                            nullValue));
+                                                         isNotNullLocal,
+                                                         nullValue));
                                 } else if (expr instanceof NeExpr) {
                                     box.setValue(Jimple.v().newNeExpr(
-                                            isNotNullLocal,
-                                            nullValue));
+                                                         isNotNullLocal,
+                                                         nullValue));
                                 }
                             }
                         }
@@ -1894,7 +1894,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 if (PtolemyUtilities.isTokenType(value.getType())) {
                     set.add(value);
                     set.addAll(_computeTokenLocalsDefinedFrom(
-                            localUses, defStmt));
+                                       localUses, defStmt));
                 }
             }
         }
@@ -2119,7 +2119,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
             // make sure that it has the
             // appropriate type
             if (PtolemyUtilities.getTypeDepth(
-                    typeAnalysis.getSpecializedType(local)) != depth) {
+                        typeAnalysis.getSpecializedType(local)) != depth) {
                 if (debug) System.out.println("skipping, type depth = " +
                         PtolemyUtilities.getTypeDepth(
                                 typeAnalysis.getSpecializedType(local)) +
@@ -2168,22 +2168,22 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
         }
         if (object instanceof CompositeEntity) {
             for (Iterator i = ((CompositeEntity)object).entityList().iterator();
-                i.hasNext();) {
+                 i.hasNext();) {
                 _checkBadTypes((NamedObj)i.next());
             }
             for (Iterator i = ((CompositeEntity)object).relationList().iterator();
-                i.hasNext();) {
+                 i.hasNext();) {
                 _checkBadTypes((NamedObj)i.next());
             }
         }
         if (object instanceof Entity) {
             for (Iterator i = ((Entity)object).portList().iterator();
-                i.hasNext();) {
+                 i.hasNext();) {
                 _checkBadTypes((NamedObj)i.next());
             }
         }
         for (Iterator i = object.attributeList().iterator();
-            i.hasNext();) {
+             i.hasNext();) {
             _checkBadTypes((NamedObj)i.next());
         }
     }

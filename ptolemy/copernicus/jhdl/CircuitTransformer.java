@@ -1,28 +1,28 @@
 /* A transformer that removes unnecessary fields from classes.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -78,10 +78,10 @@ import ptolemy.copernicus.jhdl.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// CircuitTransformer
 /**
-A transformer that removes unnecessary fields from classes.
-@author Steve Neuendorffer and Ben Warlick
-@version $Id$
-@since Ptolemy II 2.0
+   A transformer that removes unnecessary fields from classes.
+   @author Steve Neuendorffer and Ben Warlick
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class CircuitTransformer extends SceneTransformer {
     /** Construct a new transformer
@@ -124,9 +124,9 @@ public class CircuitTransformer extends SceneTransformer {
         System.out.println("\nCircuitTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-//          ModelGraph dg = new CompositeModelGraph(_model,options);
-//          PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
-//          toDotty.writeDotFile(".", _model.getName(), dg);
+        //          ModelGraph dg = new CompositeModelGraph(_model,options);
+        //          PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+        //          toDotty.writeDotFile(".", _model.getName(), dg);
 
         ptolemy.copernicus.jhdl.circuit.JHDLCompositeActor c = null;
         ptolemy.copernicus.jhdl.circuit.JHDLActorTestbench testbench = null;
@@ -160,35 +160,35 @@ public class CircuitTransformer extends SceneTransformer {
         //JHDLTestbench jtb = new JHDLTestbench(hw);
 
         /*
-        //////////////////////////////////////////////
-        // Step 1. Create a DirectedGraph that matches
-        //         the topology of the model
-        //////////////////////////////////////////////
-        DirectedGraph combinedGraph = _createModelGraph(_model);
+//////////////////////////////////////////////
+// Step 1. Create a DirectedGraph that matches
+//         the topology of the model
+//////////////////////////////////////////////
+DirectedGraph combinedGraph = _createModelGraph(_model);
 
-        //////////////////////////////////////////////
-        // Step 2. Create a DFG for each entity in the model.
-        //////////////////////////////////////////////
-        Map entityGraphMap = _createEntityGraphs(_model, options);
+//////////////////////////////////////////////
+// Step 2. Create a DFG for each entity in the model.
+//////////////////////////////////////////////
+Map entityGraphMap = _createEntityGraphs(_model, options);
 
-        //////////////////////////////////////////////
-        // Step 3. Create top-level testbench
-        //////////////////////////////////////////////
-        HWSystem hw = new HWSystem();
-        JHDLTestbench _jtb = new JHDLTestbench(hw);
+//////////////////////////////////////////////
+// Step 3. Create top-level testbench
+//////////////////////////////////////////////
+HWSystem hw = new HWSystem();
+JHDLTestbench _jtb = new JHDLTestbench(hw);
 
-        //        Cell _cell = _createTopLevelCell(_jtb,combinedGraph);
+//        Cell _cell = _createTopLevelCell(_jtb,combinedGraph);
 
-        //////////////////////////////////////////////
-        // Step 3. Insert each DFG into the top-level graph
-        //////////////////////////////////////////////
-        _insertEntityGraphs(_model,combinedGraph,entityGraphMap);
+//////////////////////////////////////////////
+// Step 3. Insert each DFG into the top-level graph
+//////////////////////////////////////////////
+_insertEntityGraphs(_model,combinedGraph,entityGraphMap);
 
-        PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
-        toDotty.writeDotFile(".", _model.getName(), combinedGraph);
+PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+toDotty.writeDotFile(".", _model.getName(), combinedGraph);
         */
 
-         System.out.println("**************************************************");
+        System.out.println("**************************************************");
         System.out.println("*** END JHDL");
         System.out.println("**************************************************");
     }
@@ -406,75 +406,75 @@ public class CircuitTransformer extends SceneTransformer {
 
         /*
 
-          List inputPortList = actor.inputPortList();
-          List outputPortList = actor.outputPortList();
+        List inputPortList = actor.inputPortList();
+        List outputPortList = actor.outputPortList();
 
-          Map inputPortNodeMap = new HashMap(inputPortList.size());
-          Map outputPortNodeMap = new HashMap(outputPortList.size());
-          // Iterate over all actor input ports and obtain top-level
-          // node associated with this port
-          for (Iterator i=inputPortList.iterator();
-          i.hasNext();) {
-          IOPort port = (IOPort) i.next();
-          // Identify the Node in the top-level graph associated
-          // with this port
-          Node portNode = graph.node(port);
-          inputPortNodeMap.put(port,portNode);
-          }
-          // Iterate over all actor output ports and obtain top-level
-          // node associated with this port
-          for (Iterator i=outputPortList.iterator();
-          i.hasNext();) {
-          IOPort port = (IOPort) i.next();
-          // Identify the Node in the top-level graph associated
-          // with this port
-          Node portNode = graph.node(port);
-          outputPortNodeMap.put(port,portNode);
-          }
+        Map inputPortNodeMap = new HashMap(inputPortList.size());
+        Map outputPortNodeMap = new HashMap(outputPortList.size());
+        // Iterate over all actor input ports and obtain top-level
+        // node associated with this port
+        for (Iterator i=inputPortList.iterator();
+        i.hasNext();) {
+        IOPort port = (IOPort) i.next();
+        // Identify the Node in the top-level graph associated
+        // with this port
+        Node portNode = graph.node(port);
+        inputPortNodeMap.put(port,portNode);
+        }
+        // Iterate over all actor output ports and obtain top-level
+        // node associated with this port
+        for (Iterator i=outputPortList.iterator();
+        i.hasNext();) {
+        IOPort port = (IOPort) i.next();
+        // Identify the Node in the top-level graph associated
+        // with this port
+        Node portNode = graph.node(port);
+        outputPortNodeMap.put(port,portNode);
+        }
 
-          // Iterate over the input ports
-          for (Iterator i=inputPortNodeMap.keySet().iterator(); i.hasNext();) {
-          IOPort inputport = (IOPort) i.next();
+        // Iterate over the input ports
+        for (Iterator i=inputPortNodeMap.keySet().iterator(); i.hasNext();) {
+        IOPort inputport = (IOPort) i.next();
 
 
-          }
+        }
 
-          Map inputPorts = new HashMap();
-          Map outputPorts = new HashMap();
+        Map inputPorts = new HashMap();
+        Map outputPorts = new HashMap();
 
-          // 1. Identify ports in entity graph
-          // TODO: multiple calls to get in different control flow paths?
-          // - Assume homogoneous (need to think about how to connect
-          //   port calls for multi-rate ports)
-          // - Assume non-hierarchical (need to recursively build graph)
-          for (Iterator entityNodes = entityGraph.nodes().iterator();
-          entityNodes.hasNext();) {
-          Node node = (Node) entityNodes.next();
-          Object weight = node.getWeight();
+        // 1. Identify ports in entity graph
+        // TODO: multiple calls to get in different control flow paths?
+        // - Assume homogoneous (need to think about how to connect
+        //   port calls for multi-rate ports)
+        // - Assume non-hierarchical (need to recursively build graph)
+        for (Iterator entityNodes = entityGraph.nodes().iterator();
+        entityNodes.hasNext();) {
+        Node node = (Node) entityNodes.next();
+        Object weight = node.getWeight();
 
-          // See if weight is of type virtualinvoke
-          if (!(weight instanceof VirtualInvokeExpr))
-          continue;
-          VirtualInvokeExpr expr = (VirtualInvokeExpr) weight;
+        // See if weight is of type virtualinvoke
+        if (!(weight instanceof VirtualInvokeExpr))
+        continue;
+        VirtualInvokeExpr expr = (VirtualInvokeExpr) weight;
 
-          // See if the invoke calls the appropriate method
-          String methodName = expr.getMethod().getName();
-          System.out.println("   VirtualInvoke="+methodName);
-          if (!methodName.equals("getInt") &&
-          !methodName.equals("sendInt"))
-          continue;
+        // See if the invoke calls the appropriate method
+        String methodName = expr.getMethod().getName();
+        System.out.println("   VirtualInvoke="+methodName);
+        if (!methodName.equals("getInt") &&
+        !methodName.equals("sendInt"))
+        continue;
 
-          FieldRef ref = _getFieldRef(entityGraph,node);
-          SootField field = ref.getField();
-          String portName = field.getName();
+        FieldRef ref = _getFieldRef(entityGraph,node);
+        SootField field = ref.getField();
+        String portName = field.getName();
 
-          if (methodName.equals("getInt")) {
-          inputPorts.put(portName,node);
-          }
-          if (methodName.equals("sendInt")) {
-          outputPorts.put(portName,node);
-          }
-          }
+        if (methodName.equals("getInt")) {
+        inputPorts.put(portName,node);
+        }
+        if (methodName.equals("sendInt")) {
+        outputPorts.put(portName,node);
+        }
+        }
         */
 
         // 2. Add "in-between"

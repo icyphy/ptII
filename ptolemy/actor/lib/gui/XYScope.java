@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
@@ -42,32 +42,32 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// XYScope
 /**
-An X-Y plotter that plots with finite persistence.
-This plotter contains an instance of the Plot class
-from the Ptolemy plot package as a public member.
-Data at <i>inputX</i> and <i>inputY</i> are plotted on this instance.
-Both <i>inputX</i> and <i>inputY</i> are multiports that
-take a DoubleToken.
-When plotted, the first channel of <i>inputX</i> and the first channel
-of <i>inputY</i> are together considered the first signal,
-then the second channel of <i>inputX</i> and the second channel
-of <i>inputY</i> are considered the second signal, and so on.
-This requires that <i>inputX</i> and
-<i>inputY</i> have the same width.
-<p>
-This actor
-assumes that there is at least one token available on each channel
-when it fires. The horizontal axis is given by the value of the
-input from <i>inputX</i> and vertical axis is given by <i>inputY</i>.
-<p>
-If the <i>persistence</i> parameter is positive, then it specifies
-the number of points that are shown.
-It defaults to 100, so any point older than 100 samples is
-erased and forgotten.
+   An X-Y plotter that plots with finite persistence.
+   This plotter contains an instance of the Plot class
+   from the Ptolemy plot package as a public member.
+   Data at <i>inputX</i> and <i>inputY</i> are plotted on this instance.
+   Both <i>inputX</i> and <i>inputY</i> are multiports that
+   take a DoubleToken.
+   When plotted, the first channel of <i>inputX</i> and the first channel
+   of <i>inputY</i> are together considered the first signal,
+   then the second channel of <i>inputX</i> and the second channel
+   of <i>inputY</i> are considered the second signal, and so on.
+   This requires that <i>inputX</i> and
+   <i>inputY</i> have the same width.
+   <p>
+   This actor
+   assumes that there is at least one token available on each channel
+   when it fires. The horizontal axis is given by the value of the
+   input from <i>inputX</i> and vertical axis is given by <i>inputY</i>.
+   <p>
+   If the <i>persistence</i> parameter is positive, then it specifies
+   the number of points that are shown.
+   It defaults to 100, so any point older than 100 samples is
+   erased and forgotten.
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class XYScope extends XYPlotter {
 

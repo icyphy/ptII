@@ -1,34 +1,34 @@
 /*
-An implementation of the visitor design pattern that generates C code
-from Jimple statements.
+  An implementation of the visitor design pattern that generates C code
+  from Jimple statements.
 
-Copyright (c) 2001-2004 The University of Maryland.
-All rights reserved.
+  Copyright (c) 2001-2004 The University of Maryland.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the above
+  copyright notice and the following two paragraphs appear in all copies
+  of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
-THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
 
-@ProposedRating Red (ssb@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
+  @ProposedRating Red (ssb@eng.umd.edu)
+  @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.copernicus.c;
@@ -125,9 +125,9 @@ import java.util.Stack;
     internal code stack (see {@link #_push(StringBuffer)}, and {@link
     #_pop()}).
 
-   @author Shuvra S. Bhattacharyya, Ankush Varma
-   @version $Id$
-   @since Ptolemy II 2.0
+    @author Shuvra S. Bhattacharyya, Ankush Varma
+    @version $Id$
+    @since Ptolemy II 2.0
 */
 public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
@@ -434,7 +434,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     public void caseIfStmt(IfStmt stmt) {
         stmt.getCondition().apply(this);
         _push(new StringBuffer("if (" + _pop() + ") "
-                + "goto " + getLabel(stmt.getTarget())));
+                      + "goto " + getLabel(stmt.getTarget())));
     }
 
     /** Generate code for a reference to a non-static field of an object.
@@ -506,7 +506,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         String returnType = CNames.typeNameOf(method.getReturnType());
 
         if (!method.isStatic()) {
-             cast = new String("(" + returnType + " (*) (void*, ...))");
+            cast = new String("(" + returnType + " (*) (void*, ...))");
         }
         else {
             cast = new String("(" + returnType
@@ -596,14 +596,14 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             if (dummyLookupValue > maxLong) {
                 dummyLookupValue = maxLong;
                 code.append(Utilities.comment(
-                        "Warning: index out of range of long: "
-                        + "truncated by CSWitch.caseLookupSwitchStmt()"));
+                                    "Warning: index out of range of long: "
+                                    + "truncated by CSWitch.caseLookupSwitchStmt()"));
             }
             else if (dummyLookupValue < -maxLong) {
                 dummyLookupValue = -maxLong;
                 code.append(Utilities.comment(
-                        "Warning: index out of range of long: "
-                        + "truncated by CSWitch.caseLookupSwitchStmt()"));
+                                    "Warning: index out of range of long: "
+                                    + "truncated by CSWitch.caseLookupSwitchStmt()"));
             }
 
             code.append(_indent() + "case " + dummyLookupValue + ": goto "
@@ -613,9 +613,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         code.append(_indent() + "default: goto "
                 + getLabel(stmt.getDefaultTarget()) + ";\n");
 
-        indentLevel--;
-        code.append(_indent() + "}\n");
-        _push(code);
+                                     indentLevel--;
+                                     code.append(_indent() + "}\n");
+                                     _push(code);
     }
 
     /** Generate the code for a "less than" expression.
@@ -672,8 +672,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         String name = CNames.typeNameOf(v.getType());
         // Put a #include for the appropriate type.
         if (type instanceof RefType) {
-                SootClass sootClass = ((RefType)type).getSootClass();
-                _context.addIncludeFile("\""
+            SootClass sootClass = ((RefType)type).getSootClass();
+            _context.addIncludeFile("\""
                     + CNames.includeFileNameOf(sootClass) + "\"");
         }
         _push("( malloc(sizeof(struct " + name + ")))");
@@ -698,7 +698,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
 
         _push(_generateArrayAllocation(v.getBaseType(), v.getSizeCount(),
-                sizeCode));
+                      sizeCode));
     }
 
     /* FIXME : Is this replaced by something else?
@@ -777,8 +777,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
         else {
             _push("\n" + indent + "return "
-            + "(" + CNames.typeNameOf(_returnType) + ")"
-            + _pop());
+                    + "(" + CNames.typeNameOf(_returnType) + ")"
+                    + _pop());
         }
     }
 
@@ -1109,9 +1109,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         code.append(_indent() + "default: goto "
                 + getLabel(stmt.getDefaultTarget()) + ";\n");
 
-        indentLevel--;
-        code.append(_indent() + "}\n");
-        _push(code);
+                                     indentLevel--;
+                                     code.append(_indent() + "}\n");
+                                     _push(code);
     }
 
     /** Generate code for a "this" reference. Currently not supported.
@@ -1365,7 +1365,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     /** Allocate memory for a given array.
      */
     protected String _generateArrayAllocation(Type elementType,
-        int dimensionsToFill, String sizeCode) {
+            int dimensionsToFill, String sizeCode) {
         int dimensions;
         // Determine the name of the run-time variable that
         // represents the array element class.

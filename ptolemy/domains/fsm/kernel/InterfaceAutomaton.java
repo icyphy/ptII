@@ -1,28 +1,28 @@
 /* An Interface Automaton.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (liuxj@eecs.berkeley.edu)
 @AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
 */
@@ -52,31 +52,31 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomaton
 /**
-This class models an Interface Automaton. Interface automata is an automata
-model defined by de Alfaro and Henzinger in the paper "Interface Automata".
-An InterfaceAutomaton contains a set of states and
-InterfaceAutomatonTransitions. There are three kinds transitions:
-input transition, output transition, and internal transitions.
-The input and output transitions correspond to input and output ports,
-respectively. The internal transition correspond to a parameter in this
-InterfaceAutomaton. The parameter is added automatically when the internal
-transition is added.
-<p>
-When an InterfaceAutomaton is fired, the outgoing transitions of the current
-state are examined. An IllegalActionException is thrown if there is more than
-one enabled transition. If there is exactly one enabled transition then it is
-taken.
-<p>
-An InterfaceAutomaton enters its initial state during initialization. The
-name of the initial state is specified by the <i>initialStateName</i> string
-attribute.
-<p>
+   This class models an Interface Automaton. Interface automata is an automata
+   model defined by de Alfaro and Henzinger in the paper "Interface Automata".
+   An InterfaceAutomaton contains a set of states and
+   InterfaceAutomatonTransitions. There are three kinds transitions:
+   input transition, output transition, and internal transitions.
+   The input and output transitions correspond to input and output ports,
+   respectively. The internal transition correspond to a parameter in this
+   InterfaceAutomaton. The parameter is added automatically when the internal
+   transition is added.
+   <p>
+   When an InterfaceAutomaton is fired, the outgoing transitions of the current
+   state are examined. An IllegalActionException is thrown if there is more than
+   one enabled transition. If there is exactly one enabled transition then it is
+   taken.
+   <p>
+   An InterfaceAutomaton enters its initial state during initialization. The
+   name of the initial state is specified by the <i>initialStateName</i> string
+   attribute.
+   <p>
 
-@author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
-@see State
-@see InterfaceAutomatonTransition
+   @author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
+   @see State
+   @see InterfaceAutomatonTransition
 */
 
 // FIXME: Are interface automata that are fired required to be deterministic?
@@ -336,7 +336,7 @@ public class InterfaceAutomaton extends FSMActor {
             while (subStates.hasNext()) {
                 State subState = (State)subStates.next();
                 if (_condition1Satisfied(this, superState, subAutomaton,
-                        subState)) {
+                            subState)) {
                     StatePair pair = new StatePair(superState, subState);
                     simulation.add(pair);
                 }
@@ -356,7 +356,7 @@ public class InterfaceAutomaton extends FSMActor {
                 State subState = pair.second();
 
                 if (_condition2Satisfied(this, superState, subAutomaton,
-                        subState, simulation) == false) {
+                            subState, simulation) == false) {
                     toBeRemoved.add(pair);
                 }
             }
@@ -814,7 +814,7 @@ public class InterfaceAutomaton extends FSMActor {
 
                 int transitionType = superTransition.getType();
                 if ((transitionType ==
-                        InterfaceAutomatonTransition._INPUT_TRANSITION) ||
+                            InterfaceAutomatonTransition._INPUT_TRANSITION) ||
                         (transitionType ==
                                 InterfaceAutomatonTransition._OUTPUT_TRANSITION)) {
 
@@ -859,7 +859,7 @@ public class InterfaceAutomaton extends FSMActor {
 
                 int transitionType = subTransition.getType();
                 if ((transitionType ==
-                        InterfaceAutomatonTransition._INTERNAL_TRANSITION)) {
+                            InterfaceAutomatonTransition._INTERNAL_TRANSITION)) {
                     State subDestination = subTransition.destinationState();
                     StatePair newPair = new StatePair(superState,
                             subDestination);

@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (mudit@eecs.berkeley.edu)
 @AcceptedRating Red
@@ -36,16 +36,16 @@ import ptolemy.kernel.util.InternalErrorException;
 //////////////////////////////////////////////////////////////////////////
 //// PNProcessEvent
 /**
-An event passed from a process executing under the PN semantics to a
-PNProcessListener. This is used to
-represent an event that happened during the execution of a topology.
-This event contains two pieces of information:  the actor under the control
-of the process and an exception that might be thrown.
-The exception might not be a valid reference.
+   An event passed from a process executing under the PN semantics to a
+   PNProcessListener. This is used to
+   represent an event that happened during the execution of a topology.
+   This event contains two pieces of information:  the actor under the control
+   of the process and an exception that might be thrown.
+   The exception might not be a valid reference.
 
-@author Mudit Goel
-@version $Id$
-@since Ptolemy II 0.3
+   @author Mudit Goel
+   @version $Id$
+   @since Ptolemy II 0.3
 */
 
 public class PNProcessEvent {

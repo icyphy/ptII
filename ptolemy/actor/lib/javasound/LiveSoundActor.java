@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
@@ -49,17 +49,17 @@ import ptolemy.media.javasound.LiveSoundListener;
 /////////////////////////////////////////////////////////
 //// LiveSoundActor
 /**
-This actor forms a base class for actors that interact with real-time
-sound through the ptolemy.media.LiveSound class.  This class manages the
-parameters for live sound.
-<p>
-Note: Requires Java 2 v1.3.0 or later.
-@author Steve Neuendorffer
-@version  $Id$
-@since Ptolemy II 4.0
-@see ptolemy.media.javasound.LiveSound
-@see AudioPlayer
-@see AudioCapture
+   This actor forms a base class for actors that interact with real-time
+   sound through the ptolemy.media.LiveSound class.  This class manages the
+   parameters for live sound.
+   <p>
+   Note: Requires Java 2 v1.3.0 or later.
+   @author Steve Neuendorffer
+   @version  $Id$
+   @since Ptolemy II 4.0
+   @see ptolemy.media.javasound.LiveSound
+   @see AudioPlayer
+   @see AudioCapture
 */
 public class LiveSoundActor extends TypedAtomicActor
     implements LiveSoundListener {

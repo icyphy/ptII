@@ -1,28 +1,28 @@
 /* An atomic actor that executes a model specified by a file or URL.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
@@ -56,62 +56,62 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
 //////////////////////////////////////////////////////////////////////////
 //// VisualModelReference
 /**
-This is an atomic actor that can execute and/or open a model specified by
-a file or URL. This can be used to define an actor whose firing behavior
-is given by a complete execution of another model. It extends the base
-class with the following attributes and associated capabilities.
-<ul>
-<li> <i>openOnFiring</i>:
-The value of this string attribute determines what open
-happens when the fire() method is invoked.  The recognized
-values are:
-<ul>
-<li> "do not open" (the default)
-<li> "open in Vergil"
-<li> "open in Vergil (full screen)"
-<li> "open run control panel"
-</ul>
-Note that it is dangerous to use the full-screen mode because it
-becomes difficult to stop execution of the model that contains this
-actor.  In full-screen mode, the referenced model will consume
-the entire screen.  Stopping that execution will only serve to
-stop the current iteration, and very likely, another iteration will
-begin immediately and again occupy the entire screen.
-Use this option with care.
+   This is an atomic actor that can execute and/or open a model specified by
+   a file or URL. This can be used to define an actor whose firing behavior
+   is given by a complete execution of another model. It extends the base
+   class with the following attributes and associated capabilities.
+   <ul>
+   <li> <i>openOnFiring</i>:
+   The value of this string attribute determines what open
+   happens when the fire() method is invoked.  The recognized
+   values are:
+   <ul>
+   <li> "do not open" (the default)
+   <li> "open in Vergil"
+   <li> "open in Vergil (full screen)"
+   <li> "open run control panel"
+   </ul>
+   Note that it is dangerous to use the full-screen mode because it
+   becomes difficult to stop execution of the model that contains this
+   actor.  In full-screen mode, the referenced model will consume
+   the entire screen.  Stopping that execution will only serve to
+   stop the current iteration, and very likely, another iteration will
+   begin immediately and again occupy the entire screen.
+   Use this option with care.
 
-<li> <i>closeOnPostfire</i>:
-The value of this string attribute determines what happens
-in the postfire() method.  The recognized values are:
-<ul>
-<li> "do nothing" (the default)
-<li> "close Vergil graph"
-</ul>
+   <li> <i>closeOnPostfire</i>:
+   The value of this string attribute determines what happens
+   in the postfire() method.  The recognized values are:
+   <ul>
+   <li> "do nothing" (the default)
+   <li> "close Vergil graph"
+   </ul>
 
-</ul>
-<p>
-There are currently a number of serious limitations:
-<ul>
-FIXME: Modifying and saving the referenced model, if done through the
-Vergil window opened by this actor, results in overwriting the referenced
-model with a copy of the model containing this actor!
-<li>
-FIXME: Modifying the referenced model in another window and saving
-it does not result in this actor re-reading the model.
-<li>
-FIXME: Closing the master model doesn't close open referenced models.
-<li>
-FIXME: Supporting full-screen operation creates a dependence on vergil.
-Without that, this actor could be in the actor package.  Need to figure
-out how to remove this dependence.
-</ul>
-<P>
+   </ul>
+   <p>
+   There are currently a number of serious limitations:
+   <ul>
+   FIXME: Modifying and saving the referenced model, if done through the
+   Vergil window opened by this actor, results in overwriting the referenced
+   model with a copy of the model containing this actor!
+   <li>
+   FIXME: Modifying the referenced model in another window and saving
+   it does not result in this actor re-reading the model.
+   <li>
+   FIXME: Closing the master model doesn't close open referenced models.
+   <li>
+   FIXME: Supporting full-screen operation creates a dependence on vergil.
+   Without that, this actor could be in the actor package.  Need to figure
+   out how to remove this dependence.
+   </ul>
+   <P>
 
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
-@see ptolemy.data.expr.Variable
-@see ptolemy.data.expr.Parameter
-@see ptolemy.kernel.util.Settable
+   @author Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
+   @see ptolemy.data.expr.Variable
+   @see ptolemy.data.expr.Parameter
+   @see ptolemy.kernel.util.Settable
 */
 public class VisualModelReference
     extends ModelReference
@@ -134,7 +134,7 @@ public class VisualModelReference
      *   an actor already in the container.
      */
     public VisualModelReference(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the openOnFiring parameter.
@@ -188,7 +188,7 @@ public class VisualModelReference
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == openOnFiring) {
             String openOnFiringValue = openOnFiring.stringValue();
             if (openOnFiringValue.equals("do not open")) {
@@ -196,13 +196,13 @@ public class VisualModelReference
             } else if (openOnFiringValue.equals("open in Vergil")) {
                 _openOnFiringValue = _OPEN_IN_VERGIL;
             } else if (
-                openOnFiringValue.equals("open in Vergil (full screen)")) {
+                    openOnFiringValue.equals("open in Vergil (full screen)")) {
                 _openOnFiringValue = _OPEN_IN_VERGIL_FULL_SCREEN;
             } else if (openOnFiringValue.equals("open run control panel")) {
                 _openOnFiringValue = _OPEN_RUN_CONTROL_PANEL;
             } else {
                 throw new IllegalActionException(this,
-                "Unrecognized option for openOnFiring: " + openOnFiringValue);
+                        "Unrecognized option for openOnFiring: " + openOnFiringValue);
             }
         } else if (attribute == closeOnPostfire) {
             String closeOnPostfireValue = closeOnPostfire.stringValue();
@@ -212,7 +212,7 @@ public class VisualModelReference
                 _closeOnPostfireValue = _CLOSE_VERGIL_GRAPH;
             } else {
                 throw new IllegalActionException(this,
-                "Unrecognized option for closeOnPostfire: " + closeOnPostfireValue);
+                        "Unrecognized option for closeOnPostfire: " + closeOnPostfireValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -264,7 +264,7 @@ public class VisualModelReference
                     // Conditionally show the model in Vergil. The openModel()
                     // method also creates the right effigy.
                     if (_openOnFiringValue == _OPEN_IN_VERGIL
-                        || _openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
+                            || _openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
                         Configuration configuration =
                             (Configuration) myEffigy.toplevel();
                         if (_debugging) {
@@ -297,8 +297,8 @@ public class VisualModelReference
                         // to be contained by the effigy responsible for this actor.
                         PtolemyEffigy newEffigy =
                             new PtolemyEffigy(
-                                myEffigy,
-                                myEffigy.uniqueName(_model.getName()));
+                                    myEffigy,
+                                    myEffigy.uniqueName(_model.getName()));
                         newEffigy.setModel(_model);
                         // Since there is no tableau, this is probably not
                         // necessary, but as a safety precaution, we prevent
@@ -360,10 +360,10 @@ public class VisualModelReference
                     // completed.  Thus, we use the very dangerous
                     // invokeAndWait() facility here.
                     Runnable doClose = new Runnable() {
-                        public void run() {
-                            ((TableauFrame) frame).close();
-                        }
-                    };
+                            public void run() {
+                                ((TableauFrame) frame).close();
+                            }
+                        };
                     try {
                         SwingUtilities.invokeAndWait(doClose);
                     } catch (Exception ex) {
@@ -373,10 +373,10 @@ public class VisualModelReference
                 } else if (frame != null) {
                     // This should be done in the event thread.
                     Runnable doClose = new Runnable() {
-                        public void run() {
-                            frame.hide();
-                        }
-                    };
+                            public void run() {
+                                frame.hide();
+                            }
+                        };
                     Top.deferIfNecessary(doClose);
                 }
             }

@@ -1,28 +1,28 @@
 /* A nonstrict actor that delays tokens by one iteration.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (celaine@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
@@ -45,33 +45,33 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// NonstrictDelay
 /**
-This actor provides a token delay.  It has one input port and one
-output port, both of which are single ports.  A token that is received
-on the input port is sent on the output port on the next iteration.
-If more than one token is received on the input port in a given
-iteration, only the final token is output on the next iteration.  If
-no tokens are received on the input port in a given iteration
-(regardless of whether the <i>initialValue</i> parameter is set), no
-token is output on the next iteration.
-<p>
-You can specify the value of the token to be emitted in the first
-iteration by setting the <i>initialValue</i> parameter.  The token is
-emitted in the first iteration, regardless of whether any tokens are
-received on the input port.  If the parameter is left empty, then no
-token is emitted in the first iteration.
-<p>
-FIXME: This actor is truly questionable in an SR domain.
-It uses a special token, AbsentToken, and delays that as well as
-real tokens.  This does not conform with the usual SR behavior.
-(EAL)
+   This actor provides a token delay.  It has one input port and one
+   output port, both of which are single ports.  A token that is received
+   on the input port is sent on the output port on the next iteration.
+   If more than one token is received on the input port in a given
+   iteration, only the final token is output on the next iteration.  If
+   no tokens are received on the input port in a given iteration
+   (regardless of whether the <i>initialValue</i> parameter is set), no
+   token is output on the next iteration.
+   <p>
+   You can specify the value of the token to be emitted in the first
+   iteration by setting the <i>initialValue</i> parameter.  The token is
+   emitted in the first iteration, regardless of whether any tokens are
+   received on the input port.  If the parameter is left empty, then no
+   token is emitted in the first iteration.
+   <p>
+   FIXME: This actor is truly questionable in an SR domain.
+   It uses a special token, AbsentToken, and delays that as well as
+   real tokens.  This does not conform with the usual SR behavior.
+   (EAL)
 
-Compare this actor to other single token delay actors:
-@see ptolemy.domains.sdf.lib.SampleDelay
-@see ptolemy.domains.de.lib.TimedDelay
+   Compare this actor to other single token delay actors:
+   @see ptolemy.domains.sdf.lib.SampleDelay
+   @see ptolemy.domains.de.lib.TimedDelay
 
-@author Paul Whitaker and Elaine Cheong
-@version $Id$
-@since Ptolemy II 2.0
+   @author Paul Whitaker and Elaine Cheong
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 
 public class NonStrictDelay extends Transformer {

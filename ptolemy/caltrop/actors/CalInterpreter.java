@@ -1,31 +1,31 @@
 /*
-@Copyright (c) 2003-2004 The Regents of the University of California.
-All rights reserved.
+  @Copyright (c) 2003-2004 The Regents of the University of California.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the
+  above copyright notice and the following two paragraphs appear in all
+  copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+  @ProposedRating Red (cxh@eecs.berkeley.edu)
+  @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 
 */
@@ -73,28 +73,28 @@ import caltrop.interpreter.environment.SingleClassEnvironment;
 //////////////////////////////////////////////////////////////////////////
 //// CalInterpreter
 /**
- This actor interprets CAL source as an actor inside the Ptolemy II
- framework. It has a <tt>calCode</tt> string attribute that contains
- the text of a CAL actor. It configures itself according to CAL code
- string (setting up ports, parameters, types etc.) and then proceeds
- to execute the actor by interpreting the actions using the {@link
- ptolemy.caltrop.ddi.util.DataflowActorInterpreter
- DataflowActorInterpreter} infrastructure.
+   This actor interprets CAL source as an actor inside the Ptolemy II
+   framework. It has a <tt>calCode</tt> string attribute that contains
+   the text of a CAL actor. It configures itself according to CAL code
+   string (setting up ports, parameters, types etc.) and then proceeds
+   to execute the actor by interpreting the actions using the {@link
+   ptolemy.caltrop.ddi.util.DataflowActorInterpreter
+   DataflowActorInterpreter} infrastructure.
 
- <p> The actor interpreter is configured by a context that injects the
- appropriate <tt>Token</tt>-based value system into the evaluation of
- the actions. This is implemented in the class {@link
- ptolemy.caltrop.PtolemyPlatform PtolemyPlatform}.
+   <p> The actor interpreter is configured by a context that injects the
+   appropriate <tt>Token</tt>-based value system into the evaluation of
+   the actions. This is implemented in the class {@link
+   ptolemy.caltrop.PtolemyPlatform PtolemyPlatform}.
 
- <p> For further documentation on CAL, see the
-<a href = "http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport">Language Report</a>.
+   <p> For further documentation on CAL, see the
+   <a href = "http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport">Language Report</a>.
 
-@author J&#246;rn W. Janneck <jwj@acm.org> Christopher Chang <cbc@eecs.berkeley.edu>
-@version $Id$
-@since Ptolemy II 3.1
-@see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
-@see caltrop.interpreter.Context
-@see PtolemyPlatform
+   @author J&#246;rn W. Janneck <jwj@acm.org> Christopher Chang <cbc@eecs.berkeley.edu>
+   @version $Id$
+   @since Ptolemy II 3.1
+   @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
+   @see caltrop.interpreter.Context
+   @see PtolemyPlatform
 */
 public class CalInterpreter extends TypedAtomicActor {
 
@@ -170,13 +170,13 @@ public class CalInterpreter extends TypedAtomicActor {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         Environment env = new HashEnvironment(new CacheEnvironment(_env,
-                _theContext), _theContext);
+                                                      _theContext), _theContext);
         try {
             _bindActorParameters(env);
             _bindActorStateVariables(env);
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                   "Cannot initialize actor environment for actor '"
+                    "Cannot initialize actor environment for actor '"
                     + _actor.getName());
         }
         _ddi = _getPlugin(env);
@@ -320,7 +320,7 @@ public class CalInterpreter extends TypedAtomicActor {
             if (port != null &&
                     ((port.isInput() != isInput)
                             || (port.isOutput() != isOutput) ||
-                    (port.isMultiport() != ports[i].isMultiport()))) {
+                            (port.isMultiport() != ports[i].isMultiport()))) {
                 port.setContainer(null);
                 port = null;
             }
@@ -360,7 +360,7 @@ public class CalInterpreter extends TypedAtomicActor {
             if (container != null
                     && container.getEntity(actor.getName()) != this) {
                 _lastGeneratedActorName = ((CompositeEntity) this.getContainer())
-                                  .uniqueName(actor.getName());
+                    .uniqueName(actor.getName());
                 this.setName(_lastGeneratedActorName);
             }
         }
@@ -408,9 +408,9 @@ public class CalInterpreter extends TypedAtomicActor {
                 }
             } else {
                 throw new IllegalActionException(
-                    "Unknown import type '" + anImport
-                    + "' encountered in '"
-                    + _actor.getName() + "'.");
+                        "Unknown import type '" + anImport
+                        + "' encountered in '"
+                        + _actor.getName() + "'.");
             }
         }
         return lastEnv;

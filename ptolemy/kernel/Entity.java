@@ -1,28 +1,28 @@
 /* An Entity is an aggregation of ports.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (johnr@eecs.berkeley.edu)
@@ -53,35 +53,35 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// Entity
 /**
-An Entity is a vertex in a generalized graph. It is an aggregation
-of ports. The ports can be linked to relations. The
-relations thus represent connections between ports, and hence,
-connections between entities. To add a port to an entity, simply
-set its container to the entity.  To remove it, set its container
-to null, or to some other entity.
-<p>
-Entities are intended for flat graphs. Derived classes support
-hierarchy (clustered graphs) by defining entities that aggregate
-other entities.
-<p>
-An Entity can contain any instance of Port.  Derived classes may
-wish to constrain to a subclass of Port.  To do this, subclasses
-should override the public method newPort() to create a port of
-the appropriate subclass, and the protected method _addPort() to throw
-an exception if its argument is a port that is not of the appropriate
-subclass.
-<p>
-An Entity is created within a workspace.  If the workspace is
-not specified as a constructor argument, then the default workspace
-is used. The workspace is used to synchronize simultaneous accesses
-to a topology from multiple threads.  The workspace is immutable
-(it cannot be changed during the lifetime of the Entity).
+   An Entity is a vertex in a generalized graph. It is an aggregation
+   of ports. The ports can be linked to relations. The
+   relations thus represent connections between ports, and hence,
+   connections between entities. To add a port to an entity, simply
+   set its container to the entity.  To remove it, set its container
+   to null, or to some other entity.
+   <p>
+   Entities are intended for flat graphs. Derived classes support
+   hierarchy (clustered graphs) by defining entities that aggregate
+   other entities.
+   <p>
+   An Entity can contain any instance of Port.  Derived classes may
+   wish to constrain to a subclass of Port.  To do this, subclasses
+   should override the public method newPort() to create a port of
+   the appropriate subclass, and the protected method _addPort() to throw
+   an exception if its argument is a port that is not of the appropriate
+   subclass.
+   <p>
+   An Entity is created within a workspace.  If the workspace is
+   not specified as a constructor argument, then the default workspace
+   is used. The workspace is used to synchronize simultaneous accesses
+   to a topology from multiple threads.  The workspace is immutable
+   (it cannot be changed during the lifetime of the Entity).
 
-@author John S. Davis II, Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.2
-@see ptolemy.kernel.Port
-@see ptolemy.kernel.Relation
+   @author John S. Davis II, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see ptolemy.kernel.Port
+   @see ptolemy.kernel.Relation
 */
 public class Entity extends Prototype {
 
@@ -430,8 +430,8 @@ public class Entity extends Prototype {
                 Port port = (Port)ports.next();
                 if (port.numLinks() > 0) {
                     throw new IllegalActionException(this,
-                        "Cannot convert an entity to a class definition while "
-                        + "it contains ports with links.");
+                            "Cannot convert an entity to a class definition while "
+                            + "it contains ports with links.");
                 }
             }
         }
@@ -637,7 +637,7 @@ public class Entity extends Prototype {
      *  they include relations, and entities as well.
      */
     protected class ContainedObjectsIterator
-            extends NamedObj.ContainedObjectsIterator {
+        extends NamedObj.ContainedObjectsIterator {
 
         /** Return true if the iteration has more elements.
          *  In this base class, this returns true if there are more

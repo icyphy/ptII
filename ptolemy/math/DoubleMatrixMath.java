@@ -25,8 +25,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (ctsay@eecs.berkeley.edu)
 @AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
@@ -38,19 +38,19 @@ package ptolemy.math;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixMath
 /**
-This class provides a library for mathematical operations on
-matrices of doubles.
-All calls expect matrix arguments to be non-null. In addition, all
-rows of the matrix are expected to have the same number of columns.
-<p>
-Some algorithms are from:
-<p>
- [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
-    Signal Processing," Prentice Hall, Englewood Cliffs, NJ, 1991.
+   This class provides a library for mathematical operations on
+   matrices of doubles.
+   All calls expect matrix arguments to be non-null. In addition, all
+   rows of the matrix are expected to have the same number of columns.
+   <p>
+   Some algorithms are from:
+   <p>
+   [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
+   Signal Processing," Prentice Hall, Englewood Cliffs, NJ, 1991.
 
-@author Jeff Tsay
-@version $Id$
-@since Ptolemy II 1.0
+   @author Jeff Tsay
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 
 public class DoubleMatrixMath {

@@ -1,28 +1,28 @@
 /* A graph editor frame for Ptolemy models.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -76,15 +76,15 @@ import diva.gui.GUIUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// ActorGraphFrame
 /**
-This is a graph editor frame for ptolemy models.  Given a composite
-entity and an instance of ActorGraphTableau, it creates an editor
-and populates the menus and toolbar.  This overrides the base class
-to associate with the editor an instance of ActorEditorGraphController.
+   This is a graph editor frame for ptolemy models.  Given a composite
+   entity and an instance of ActorGraphTableau, it creates an editor
+   and populates the menus and toolbar.  This overrides the base class
+   to associate with the editor an instance of ActorEditorGraphController.
 
-@see ActorEditorGraphController
-@author  Steve Neuendorffer, Contributor: Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
+   @see ActorEditorGraphController
+   @author  Steve Neuendorffer, Contributor: Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class ActorGraphFrame extends ExtendedGraphFrame {
 
@@ -477,9 +477,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
                 GraphController controller =
-                        _jgraph.getGraphPane().getGraphController();
+                    _jgraph.getGraphPane().getGraphController();
                 AbstractBasicGraphModel model =
-                        (AbstractBasicGraphModel)controller.getGraphModel();
+                    (AbstractBasicGraphModel)controller.getGraphModel();
                 NamedObj context = model.getPtolemyModel();
 
                 _lastClassName = query.getStringValue("class");
@@ -499,15 +499,15 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 // Use the "auto" namespace group so that name collisions
                 // are automatically avoided by appending a suffix to the name.
                 String moml = "<group name=\"auto\"><entity name=\""
-                       + rootName
-                       + "\" class=\""
-                       + _lastClassName
-                       + "\"><property name=\"_location\" "
-                       + "class=\"ptolemy.kernel.util.Location\" value=\""
-                       + x
-                       + ", "
-                       + y
-                       + "\"></property></entity></group>";
+                    + rootName
+                    + "\" class=\""
+                    + _lastClassName
+                    + "\"><property name=\"_location\" "
+                    + "class=\"ptolemy.kernel.util.Location\" value=\""
+                    + x
+                    + ", "
+                    + y
+                    + "\"></property></entity></group>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
                 context.requestChange(request);
             }

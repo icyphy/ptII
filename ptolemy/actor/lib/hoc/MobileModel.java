@@ -1,28 +1,28 @@
 /* A composite actor that apply models dynamically.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
@@ -53,19 +53,19 @@ import java.lang.reflect.Constructor;
 //////////////////////////////////////////////////////////////////////////
 //// MobileModel
 /**
-This actor extends the TypedCompositeActor. It contains another model
-that is defined as a Ptolemy composite actor to its inputs. Rather than
-specified before executing, the inside model can be dynamically changed
-either locally or remotely. Currently, the model that dynamically applied
-to this actor is specified by a moml string from the <i>modelString</i>
-input.
+   This actor extends the TypedCompositeActor. It contains another model
+   that is defined as a Ptolemy composite actor to its inputs. Rather than
+   specified before executing, the inside model can be dynamically changed
+   either locally or remotely. Currently, the model that dynamically applied
+   to this actor is specified by a moml string from the <i>modelString</i>
+   input.
 
-Currently, it only accepts models with one input and one output, and
-requires the model name its input port as "input", output port as "output".
+   Currently, it only accepts models with one input and one output, and
+   requires the model name its input port as "input", output port as "output".
 
-@author Yang Zhao
-@version $Id$
-@since Ptolemy II 4.0
+   @author Yang Zhao
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class MobileModel extends TypedCompositeActor {
 
@@ -231,7 +231,7 @@ public class MobileModel extends TypedCompositeActor {
             try {
                 str = (StringToken) modelString.get(0);
                 //if (_refresh) {
-                    _parser.reset();
+                _parser.reset();
                 //}
                 CompositeActor model = (CompositeActor) _parser.parse(str.stringValue());
                 StringWriter writer = new StringWriter();
@@ -243,7 +243,7 @@ public class MobileModel extends TypedCompositeActor {
 
                 String modelMoML =  writer.toString();
                 if (_connectPorts) {
-                _moml = "<group>\n" + modelMoML + "<relation name=\"newR1\" "
+                    _moml = "<group>\n" + modelMoML + "<relation name=\"newR1\" "
                         + "class=\"ptolemy.actor.TypedIORelation\">\n"
                         + "</relation>\n"
                         + "<relation name=\"newR2\" "
@@ -259,16 +259,16 @@ public class MobileModel extends TypedCompositeActor {
                 } else {
                     _moml = "<group>\n" + modelMoML + "</group>";
                 }
-                } catch (Exception ex) {
-                    if (_debugging) {
-                        _debug("Problem parsing " + str.stringValue());
-                    }
-                    throw new IllegalActionException(this, ex,
-                            "Problem parsing " + str.stringValue());
+            } catch (Exception ex) {
+                if (_debugging) {
+                    _debug("Problem parsing " + str.stringValue());
                 }
+                throw new IllegalActionException(this, ex,
+                        "Problem parsing " + str.stringValue());
+            }
         }
         super.fire();
-        }
+    }
 
     /** Initialize this actor. create a new moml parser for passing
      *  the applied model to it.
@@ -280,23 +280,23 @@ public class MobileModel extends TypedCompositeActor {
         if (_debugging) {
             _debug("Invoking init");
         }
-//        _moml = null;
-//        try {
-//            _parser = new MoMLParser();
-//            _parser.setMoMLFilters(BackwardCompatibility.allFilters());
-//
-//            // When no model applied, output the default value.
-//            if (_connectPorts) {
-//                Const constActor = new Const(this, "Const");
-//                constActor.value.setExpression(defaultValue.getToken().toString());
-//                connect(input, constActor.trigger);
-//                connect(constActor.output, output);
-//            } //otherwise, do nothing.
-//
-//        } catch (Exception ex) {
-//            throw new IllegalActionException(this, ex, "initialize() failed");
-//        }
-//        //connect(input, output);
+        //        _moml = null;
+        //        try {
+        //            _parser = new MoMLParser();
+        //            _parser.setMoMLFilters(BackwardCompatibility.allFilters());
+        //
+        //            // When no model applied, output the default value.
+        //            if (_connectPorts) {
+        //                Const constActor = new Const(this, "Const");
+        //                constActor.value.setExpression(defaultValue.getToken().toString());
+        //                connect(input, constActor.trigger);
+        //                connect(constActor.output, output);
+        //            } //otherwise, do nothing.
+        //
+        //        } catch (Exception ex) {
+        //            throw new IllegalActionException(this, ex, "initialize() failed");
+        //        }
+        //        //connect(input, output);
         super.initialize();
     }
 
@@ -346,9 +346,9 @@ public class MobileModel extends TypedCompositeActor {
             // if it has no inputs at the boundary, the prefire method returns false,
             // and it won't be fired.
             try {
-                 getDirector().fireAtCurrentTime(this);
+                getDirector().fireAtCurrentTime(this);
             } catch (IllegalActionException ex) {
-                 throw new IllegalActionException("failed in dealing with director.");
+                throw new IllegalActionException("failed in dealing with director.");
             }
         }
         return super.postfire();
@@ -386,29 +386,29 @@ public class MobileModel extends TypedCompositeActor {
      *  if the director's preinitialize() method throws it.
      */
     public void preinitialize() throws IllegalActionException {
-       _director = null;
-       _createDirector();
+        _director = null;
+        _createDirector();
 
-       _moml = null;
-       try {
-           _parser = new MoMLParser();
-           _parser.setMoMLFilters(BackwardCompatibility.allFilters());
+        _moml = null;
+        try {
+            _parser = new MoMLParser();
+            _parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
-           // When no model applied, output the default value.
-           if (_connectPorts) {
-               Const constActor = new Const(this, "Const");
-               constActor.value.setExpression(defaultValue.getToken().toString());
-               connect(input, constActor.trigger);
-               connect(constActor.output, output);
-           } //otherwise, do nothing.
+            // When no model applied, output the default value.
+            if (_connectPorts) {
+                Const constActor = new Const(this, "Const");
+                constActor.value.setExpression(defaultValue.getToken().toString());
+                connect(input, constActor.trigger);
+                connect(constActor.output, output);
+            } //otherwise, do nothing.
 
-       } catch (Exception ex) {
-           throw new IllegalActionException(this, ex, "preinitialize() failed");
-       }
-       //connect(input, output);
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "preinitialize() failed");
+        }
+        //connect(input, output);
 
-       super.preinitialize();
-   }
+        super.preinitialize();
+    }
 
     /** Clean up tha changes that have been made.
      *  @exception IllegalActionException If there is no director,
@@ -457,10 +457,10 @@ public class MobileModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
-     /** create the inside director of this composite actor according
-      * to the <i>director<i> parameter.
-      * @exception IllegalActionException If cannot find the director
-      * class with the spedified name by the <i>director<i> parameter,
+    /** create the inside director of this composite actor according
+     * to the <i>director<i> parameter.
+     * @exception IllegalActionException If cannot find the director
+     * class with the spedified name by the <i>director<i> parameter,
      *  or if there is name duplicationn for the director.
      */
     private void _createDirector() throws IllegalActionException{
@@ -496,8 +496,8 @@ public class MobileModel extends TypedCompositeActor {
      */
     private String _requestToRemoveAll(CompositeActor actor) {
         if (_debugging) {
-                            _debug("create request to remove old model");
-                        }
+            _debug("create request to remove old model");
+        }
         StringBuffer delete = new StringBuffer("<group>");
         // FIXME: Should this also remove class definitions?
         // To do that, use classDefinitionList().

@@ -1,28 +1,28 @@
 /* An attribute that manages generation of NC code.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -57,14 +57,14 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// NCCodeGenerator
 /**
-This is a visible attribute that when configured (by double
-clicking on it or by invoking Configure in the context menu) generates
-NC code and displays it a text editor.  It is up to the user to save
-the NC code in an appropriate file, if necessary.
+   This is a visible attribute that when configured (by double
+   clicking on it or by invoking Configure in the context menu) generates
+   NC code and displays it a text editor.  It is up to the user to save
+   the NC code in an appropriate file, if necessary.
 
-@author Yang Zhao and Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.0
+   @author Yang Zhao and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 
 public class NCCodeGenerator extends Director {
@@ -131,7 +131,7 @@ public class NCCodeGenerator extends Director {
     public void preinitialize() throws IllegalActionException {
         if (!(getContainer() instanceof CompositeActor)) {
             throw new IllegalActionException(this,
-            "Requires the container to be an instance of CompositeActor.");
+                    "Requires the container to be an instance of CompositeActor.");
         }
         CompositeActor container = (CompositeActor)getContainer();
 
@@ -139,8 +139,8 @@ public class NCCodeGenerator extends Director {
         if (!directory.isDirectory()) {
             // FIXME: Should we create the directory?
             throw new IllegalActionException(this,
-            "No directory named: "
-            + destinationDirectory.getExpression());
+                    "No directory named: "
+                    + destinationDirectory.getExpression());
         }
         _writeCode(container, null, directory);
     }
@@ -186,12 +186,12 @@ public class NCCodeGenerator extends Director {
             IOPort port = (IOPort)inPorts.next();
             if (port.isOutput()) {
                 throw new IllegalActionException(port,
-                "Ports that are both inputs and outputs are not allowed.");
+                        "Ports that are both inputs and outputs are not allowed.");
             }
             codeString.append("provides interface "
-                + port.getName()
-                + ";"
-                + _endLine);
+                    + port.getName()
+                    + ";"
+                    + _endLine);
         }
         return codeString.toString();
     }
@@ -209,12 +209,12 @@ public class NCCodeGenerator extends Director {
             IOPort port = (IOPort)outPorts.next();
             if (port.isInput()) {
                 throw new IllegalActionException(port,
-                "Ports that are both inputs and outputs are not allowed.");
+                        "Ports that are both inputs and outputs are not allowed.");
             }
             codeString.append("uses interface "
-                + port.getName()
-                + ";"
-                + _endLine);
+                    + port.getName()
+                    + ";"
+                    + _endLine);
         }
 
         return codeString.toString();
@@ -245,7 +245,7 @@ public class NCCodeGenerator extends Director {
         }
         codeString.append(";" + _endLine);
         return codeString.toString();
-     }
+    }
 
     /** Generate code for the connections.
      *  @return The connections code.
@@ -256,42 +256,42 @@ public class NCCodeGenerator extends Director {
         StringBuffer codeString = new StringBuffer();
 
         String actorName = StringUtilities.
-                sanitizeName(((NamedObj) actor).getName());
+            sanitizeName(((NamedObj) actor).getName());
 
         for (Iterator inPorts = actor.inputPortList().iterator();
-                inPorts.hasNext();) {
+             inPorts.hasNext();) {
             IOPort inPort = (IOPort) inPorts.next();
             String sanitizedInPortName =
-                    StringUtilities.sanitizeName(inPort.getName());
+                StringUtilities.sanitizeName(inPort.getName());
             List sourcePortList = inPort.connectedPortList();
             if (sourcePortList.size() > 1) {
                 throw new IllegalActionException(inPort,
-                "Input port (provides) cannot connect to " +
+                        "Input port (provides) cannot connect to " +
                 "multiple output ports (requires) in NC.");
             }
             if (sourcePortList.size()== 1) {
                 IOPort sourcePort = (IOPort) sourcePortList.get(0);
                 String sanitizedSourcePortName =
-                        StringUtilities.sanitizeName(
-                        sourcePort.getName());
+                    StringUtilities.sanitizeName(
+                            sourcePort.getName());
                 String sourceActorName = StringUtilities.sanitizeName(
                         sourcePort.getContainer().getName());
                 if (sourcePort.getContainer() == model) {
                     codeString.append(sanitizedSourcePortName
-                                  + " = "
-                                  + actorName
-                                  + "."
-                                  + sanitizedInPortName
-                                  + ";");
+                            + " = "
+                            + actorName
+                            + "."
+                            + sanitizedInPortName
+                            + ";");
                 } else {
                     codeString.append(sourceActorName
-                                  + "."
-                                  + sanitizedSourcePortName
-                                  + " -> "
-                                  + actorName
-                                  + "."
-                                  + sanitizedInPortName
-                                  + ";");
+                            + "."
+                            + sanitizedSourcePortName
+                            + " -> "
+                            + actorName
+                            + "."
+                            + sanitizedInPortName
+                            + ";");
                 }
                 codeString.append(_endLine);
             }
@@ -323,11 +323,11 @@ public class NCCodeGenerator extends Director {
         Iterator outPorts = model.outputPortList().iterator();
         while (outPorts.hasNext()) {
             IOPort port = (IOPort)outPorts.next();
-                // FIXME: Assuming ports are either
-                // input or output and not both.
-                //String portID = port.getName();
+            // FIXME: Assuming ports are either
+            // input or output and not both.
+            //String portID = port.getName();
             System.out.println("tring to get the connected port for: "
-                               + port.getName());
+                    + port.getName());
             List sourcePortList = port.insidePortList();
             //FIXME: can the list be empty?
             if (sourcePortList.size() > 1) {
@@ -338,18 +338,18 @@ public class NCCodeGenerator extends Director {
             if (sourcePortList != null ) {
 
                 sourcePort = (IOPort) sourcePortList.get(0);
-            String sanitizedOutPortName =
-                StringUtilities.sanitizeName(
-                        sourcePort.getName());
-            String sourceActorName = StringUtilities.sanitizeName(
-                    sourcePort.getContainer().getName());
-            codeString += sourceActorName
-                          + "."
-                          + sanitizedOutPortName
-                          + " = "
-                          + port.getName()
-                          + ";"
-                          + _endLine;
+                String sanitizedOutPortName =
+                    StringUtilities.sanitizeName(
+                            sourcePort.getName());
+                String sourceActorName = StringUtilities.sanitizeName(
+                        sourcePort.getContainer().getName());
+                codeString += sourceActorName
+                    + "."
+                    + sanitizedOutPortName
+                    + " = "
+                    + port.getName()
+                    + ";"
+                    + _endLine;
             }
         }
         return codeString;
@@ -404,7 +404,7 @@ public class NCCodeGenerator extends Director {
             writer.close();
         } catch (IOException e) {
             throw new IllegalActionException(this, e,
-            "Failed to open file for writing.");
+                    "Failed to open file for writing.");
         }
 
         // Descend recursively into contained composites.
@@ -447,15 +447,15 @@ public class NCCodeGenerator extends Director {
 
                 // Preinitialize and resolve types.
                 /**
-                CompositeActor toplevel = (CompositeActor)model.toplevel();
-                Manager manager = toplevel.getManager();
-                if (manager == null) {
-                    manager = new Manager(
-                            toplevel.workspace(), "manager");
-                    toplevel.setManager(manager);
-                }
+                   CompositeActor toplevel = (CompositeActor)model.toplevel();
+                   Manager manager = toplevel.getManager();
+                   if (manager == null) {
+                   manager = new Manager(
+                   toplevel.workspace(), "manager");
+                   toplevel.setManager(manager);
+                   }
 
-                manager.preinitializeAndResolveTypes();
+                   manager.preinitializeAndResolveTypes();
                 */
 
                 TextEffigy codeEffigy = TextEffigy.newTextEffigy(

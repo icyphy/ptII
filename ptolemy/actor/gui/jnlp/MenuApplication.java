@@ -1,28 +1,28 @@
 /* Wrapper to start up Ptolemy from a Menu choice.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -53,8 +53,8 @@ instead of the application directory
 <ol>
 <li> Get rid of the following message when we open the file browser:
 <br> "There is no disk in the drive. Please insert a disk into drive A"
- with the standard Abort/Retry/Ignore buttons.
- See:
+with the standard Abort/Retry/Ignore buttons.
+See:
 <a href="http://forum.java.sun.com/thread.jsp?forum=38&thread=71610">http://forum.java.sun.com/thread.jsp?forum=38&thread=71610</a>
 
 <li> Speed things up, see
@@ -86,57 +86,57 @@ MenuApplication.class
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class MenuApplication {
+    public class MenuApplication {
 
-    /* Main method that sets user.dir as necessary and calls
-     * VergilApplication.main()
-     * @param args Arguments to be passed on to VergilApplication.main()
-     */
-    public static void main(final String [] args) {
-        // If we were started from a menu choice instead of a command
-        // line, then the current working directory is likely
-        // somewhere odd, so set the current working directory (the
-        // user.dir property) to the home directory of the user (the
-        // user.home property)
+        /* Main method that sets user.dir as necessary and calls
+         * VergilApplication.main()
+         * @param args Arguments to be passed on to VergilApplication.main()
+         */
+        public static void main(final String [] args) {
+            // If we were started from a menu choice instead of a command
+            // line, then the current working directory is likely
+            // somewhere odd, so set the current working directory (the
+            // user.dir property) to the home directory of the user (the
+            // user.home property)
 
-        // Note that Java has a very poor notion of the current
-        // directory and that changing user.dir will not necessarily
-        // change the current directory for all aspects of Java.
-        // In particular, the File class does not seems to always respect
-        // the value of user.dir.  In general, changing user.dir
-        // is frowned upon, but we do what we can here.
+            // Note that Java has a very poor notion of the current
+            // directory and that changing user.dir will not necessarily
+            // change the current directory for all aspects of Java.
+            // In particular, the File class does not seems to always respect
+            // the value of user.dir.  In general, changing user.dir
+            // is frowned upon, but we do what we can here.
 
-        if (_invokedFromAMenu()) {
-            try {
-                System.setProperty("user.dir",
-                        StringUtilities.getProperty("user.home"));
-            } catch (Exception ex) {
-                // Don't crash here, just print a message and move on
-                System.out.println("Warning, could not get user.home property "
-                        + "or set user.dir property:");
-                ex.printStackTrace();
+            if (_invokedFromAMenu()) {
+                try {
+                    System.setProperty("user.dir",
+                            StringUtilities.getProperty("user.home"));
+                } catch (Exception ex) {
+                    // Don't crash here, just print a message and move on
+                    System.out.println("Warning, could not get user.home property "
+                            + "or set user.dir property:");
+                    ex.printStackTrace();
+                }
             }
+
+            // Note that VergilApplication.main() invokes the VergilApplication
+            // constructor in the Swing Event thread.
+            ptolemy.vergil.VergilApplication.main(args);
         }
 
-        // Note that VergilApplication.main() invokes the VergilApplication
-        // constructor in the Swing Event thread.
-        ptolemy.vergil.VergilApplication.main(args);
+        ///////////////////////////////////////////////////////////////////
+        ////                         private methods                   ////
+
+        // Return true if this command was invoked from a menu.
+        private static boolean _invokedFromAMenu() {
+            // Check for Web Start
+            if (StringUtilities.getProperty("javawebstart.version").length() > 0) {
+                return true;
+            }
+            if (StringUtilities.getProperty("lax.user.dir").length() > 0) {
+                // If we are running under ZeroG's InstallAnywhere, then this
+                // property will be present.
+                return true;
+            }
+            return false;
+        }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Return true if this command was invoked from a menu.
-    private static boolean _invokedFromAMenu() {
-        // Check for Web Start
-        if (StringUtilities.getProperty("javawebstart.version").length() > 0) {
-            return true;
-        }
-        if (StringUtilities.getProperty("lax.user.dir").length() > 0) {
-            // If we are running under ZeroG's InstallAnywhere, then this
-            // property will be present.
-            return true;
-        }
-        return false;
-    }
-}

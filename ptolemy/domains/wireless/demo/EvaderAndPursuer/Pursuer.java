@@ -1,28 +1,28 @@
 /* A class defines how the Pursuer moves.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (pjb2e@eecs.berkeley.edu)
@@ -51,19 +51,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Pursuer
 
 /**
-The pursuer moves from a leaf node of the spanning tree to its parent node
-to track the envader.
+   The pursuer moves from a leaf node of the spanning tree to its parent node
+   to track the envader.
 
-see the Sensor class for how the spanning tree is constructed.
+   see the Sensor class for how the spanning tree is constructed.
 
-FIXME: Currently, the workRange is not really used, but I plan to use it
-to define a work area for a pursuer, so that when there are multi pursuers,
-each one can only take care of a particular part of the field to catch
-the evader more quickly.
+   FIXME: Currently, the workRange is not really used, but I plan to use it
+   to define a work area for a pursuer, so that when there are multi pursuers,
+   each one can only take care of a particular part of the field to catch
+   the evader more quickly.
 
-@author Yang Zhao
-@version $ $
-@since Ptolemy II 4.0
+   @author Yang Zhao
+   @version $ $
+   @since Ptolemy II 4.0
 */
 public class Pursuer extends TypedAtomicActor {
 
@@ -160,7 +160,7 @@ public class Pursuer extends TypedAtomicActor {
                 "_location", Location.class);
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
-            "Cannot find a _location attribute of class Location.");
+                    "Cannot find a _location attribute of class Location.");
         }
         _myLocation = locationAttribute.getLocation();
 
@@ -181,18 +181,18 @@ public class Pursuer extends TypedAtomicActor {
             DoubleToken time =(DoubleToken) inputToken.get("time");
             IntToken d = (IntToken) inputToken.get("depth");
             if (time.doubleValue() > _timeValue ||
-                (time.doubleValue() == _timeValue
-                 && d.intValue() < _parentDepth)) {
+                    (time.doubleValue() == _timeValue
+                            && d.intValue() < _parentDepth)) {
                 //the root node may have been changed
                 //or there is a shorter path.
                 ArrayToken locationArray =
-                        (ArrayToken)inputToken.get("location");
+                    (ArrayToken)inputToken.get("location");
                 int length = locationArray.length();
                 _parentLocation = new double[length];
                 for (int i = 0; i < length ; i++) {
                     _parentLocation[i] =
-                            ((DoubleToken) locationArray
-                            .getElement(i)).doubleValue();
+                        ((DoubleToken) locationArray
+                                .getElement(i)).doubleValue();
                 }
                 _timeValue = time.doubleValue();
                 _parentDepth = d.intValue();
@@ -212,7 +212,7 @@ public class Pursuer extends TypedAtomicActor {
                 "_location", Location.class);
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
-            "Cannot find a _location attribute of class Location.");
+                    "Cannot find a _location attribute of class Location.");
         }
         _myLocation =locationAttribute.getLocation();
         _getWorkRange();
@@ -247,10 +247,10 @@ public class Pursuer extends TypedAtomicActor {
             result[0] = spd*dx/d;
             result[1] = spd*dy/d;
             /*if (!_inWorkRange(_myLocation[0] + result[0],
-                    _myLocation[1] + result[1])) {
-                result[0] = 0.0;
-                result[1] = 0.0;
-            }*/
+              _myLocation[1] + result[1])) {
+              result[0] = 0.0;
+              result[1] = 0.0;
+              }*/
         }
         return result;
     }

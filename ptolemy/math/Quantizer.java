@@ -23,8 +23,8 @@ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED HAS NO
 OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
 MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
 @AcceptedRating Red (kienhuis@eecs.berkeley.edu)
@@ -38,30 +38,30 @@ import java.math.BigDecimal;
 //// Quantizer
 
 /**
-This class provides a set of static methods for creating instances of
-the FixPoint class from doubles, integers, or fixed point numbers.
-The various round() methods return a fixed point value that is nearest
-to the specified number, but has the specified precision.  The various
-roundToZero() and truncate() methods return a fixed point value that
-is nearest to the specified number, but no greater in magnitude.  The
-various roundDown() methods return a the nearest fixed point less than
-the argument. The intention is to fill out this class with roundUp(),
-and roundNearestEven().  All of these methods may introduce
-quantization errors and/or overflow.
+   This class provides a set of static methods for creating instances of
+   the FixPoint class from doubles, integers, or fixed point numbers.
+   The various round() methods return a fixed point value that is nearest
+   to the specified number, but has the specified precision.  The various
+   roundToZero() and truncate() methods return a fixed point value that
+   is nearest to the specified number, but no greater in magnitude.  The
+   various roundDown() methods return a the nearest fixed point less than
+   the argument. The intention is to fill out this class with roundUp(),
+   and roundNearestEven().  All of these methods may introduce
+   quantization errors and/or overflow.
 
-This class has been reimplemented to perform all rounding by first
-constructing a FixPointQuantization and then using either the quantizing
-constructor of FixPoint or FixPoint.quantize. Users may find that their
-code simplifies if they do likewise.
+   This class has been reimplemented to perform all rounding by first
+   constructing a FixPointQuantization and then using either the quantizing
+   constructor of FixPoint or FixPoint.quantize. Users may find that their
+   code simplifies if they do likewise.
 
-@author Bart Kienhuis, Edward A. Lee, Ed Willink
-@version $Id$
-@since Ptolemy II 0.4
-@see FixPoint
-@see Overflow
-@see Precision
-@see Rounding
-@see Quantization
+   @author Bart Kienhuis, Edward A. Lee, Ed Willink
+   @version $Id$
+   @since Ptolemy II 0.4
+   @see FixPoint
+   @see Overflow
+   @see Precision
+   @see Rounding
+   @see Quantization
 */
 
 public class Quantizer {

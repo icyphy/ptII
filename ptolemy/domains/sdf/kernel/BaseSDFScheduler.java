@@ -1,28 +1,28 @@
 /* A Scheduler infrastructure for the SDF domain
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2003-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
@@ -70,12 +70,12 @@ import ptolemy.math.Fraction;
 ///////////////////////////////////////////////////////////
 //// BaseSDFScheduler
 /**
-This class factors code out of the SDF domain, for use in different
-schedulers, so that they can be implemented in a consistent fashion.
+   This class factors code out of the SDF domain, for use in different
+   schedulers, so that they can be implemented in a consistent fashion.
 
-@author Stephen Neuendorffer, Shuvra S. Bhattacharyya
-@version $Id$
-@since Ptolemy II 4.0
+   @author Stephen Neuendorffer, Shuvra S. Bhattacharyya
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public abstract class BaseSDFScheduler extends Scheduler {
 
@@ -228,39 +228,39 @@ public abstract class BaseSDFScheduler extends Scheduler {
             (CompositeActor)director.getContainer();
         ChangeRequest request =
             new ChangeRequest(this, "Record buffer sizes") {
-            protected void _execute() throws KernelException {
-                Iterator relations = container.relationList().iterator();
-                while (relations.hasNext()) {
-                    Relation relation = (Relation)relations.next();
-                    Object bufferSizeObject =
+                protected void _execute() throws KernelException {
+                    Iterator relations = container.relationList().iterator();
+                    while (relations.hasNext()) {
+                        Relation relation = (Relation)relations.next();
+                        Object bufferSizeObject =
                             minimumBufferSizes.get(relation);
-                    if (bufferSizeObject instanceof Integer) {
-                        int bufferSize = ((Integer)bufferSizeObject).intValue();
-                        SDFUtilities._setOrCreate(relation, "bufferSize", bufferSize);
-                        if (_debugging) {
-                            _debug("Adding bufferSize parameter to "
-                                    + relation.getName() +
-                                    " with value " + bufferSize);
+                        if (bufferSizeObject instanceof Integer) {
+                            int bufferSize = ((Integer)bufferSizeObject).intValue();
+                            SDFUtilities._setOrCreate(relation, "bufferSize", bufferSize);
+                            if (_debugging) {
+                                _debug("Adding bufferSize parameter to "
+                                        + relation.getName() +
+                                        " with value " + bufferSize);
+                            }
+                        } else if (bufferSizeObject instanceof String) {
+                            String bufferSizeExpression = (String)bufferSizeObject;
+                            SDFUtilities._setOrCreate(relation, "bufferSize",
+                                    "\"" + bufferSizeExpression + "\"");
+                            if (_debugging) {
+                                _debug("Adding bufferSize parameter to "
+                                        + relation.getName() +
+                                        " with expression " + bufferSizeExpression);
+                            }
+                        } else if (bufferSizeObject == null) {
+                        } else {
+                            throw new InternalErrorException("Invalid value found "
+                                    + "in buffer size map.\nValue is of type "
+                                    + bufferSizeObject.getClass().getName()
+                                    + ".\nIt should be of type Integer or String.\n"                                );
                         }
-                    } else if (bufferSizeObject instanceof String) {
-                        String bufferSizeExpression = (String)bufferSizeObject;
-                        SDFUtilities._setOrCreate(relation, "bufferSize",
-                               "\"" + bufferSizeExpression + "\"");
-                        if (_debugging) {
-                            _debug("Adding bufferSize parameter to "
-                                    + relation.getName() +
-                                    " with expression " + bufferSizeExpression);
-                        }
-                    } else if (bufferSizeObject == null) {
-                    } else {
-                        throw new InternalErrorException("Invalid value found "
-                                + "in buffer size map.\nValue is of type "
-                                + bufferSizeObject.getClass().getName()
-                                + ".\nIt should be of type Integer or String.\n"                                );
                     }
                 }
-            }
-        };
+            };
         // Indicate that the change is non-persistent, so that
         // the UI doesn't prompt to save.
         request.setPersistent(false);
@@ -361,25 +361,25 @@ public abstract class BaseSDFScheduler extends Scheduler {
     protected void _saveFiringCounts(final Map entityToFiringsPerIteration) {
         Director director = (Director) getContainer();
         final CompositeActor container =
-                (CompositeActor)director.getContainer();
+            (CompositeActor)director.getContainer();
 
         ChangeRequest request =
             new ChangeRequest(this, "Record firings per iteration") {
-            protected void _execute() throws KernelException {
-                Iterator entities = entityToFiringsPerIteration.keySet().iterator();
-                while (entities.hasNext()) {
-                    Entity entity = (Entity) entities.next();
-                    int firingCount =
+                protected void _execute() throws KernelException {
+                    Iterator entities = entityToFiringsPerIteration.keySet().iterator();
+                    while (entities.hasNext()) {
+                        Entity entity = (Entity) entities.next();
+                        int firingCount =
                             ((Integer)entityToFiringsPerIteration.get(entity)).intValue();
-                    SDFUtilities._setOrCreate(entity, "firingsPerIteration", firingCount);
-                    if (_debugging) {
-                        _debug("Adding firingsPerIteration parameter to "
-                                + entity.getName() + " with value "
-                                + firingCount);
+                        SDFUtilities._setOrCreate(entity, "firingsPerIteration", firingCount);
+                        if (_debugging) {
+                            _debug("Adding firingsPerIteration parameter to "
+                                    + entity.getName() + " with value "
+                                    + firingCount);
+                        }
                     }
                 }
-            }
-        };
+            };
         // Indicate that the change is non-persistent, so that
         // the UI doesn't prompt to save.
         request.setPersistent(false);

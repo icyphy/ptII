@@ -1,28 +1,28 @@
 /* An interface for classes that replaces port methods.
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -204,9 +204,9 @@ public class FSMCreator implements AtomicActorCreator {
             int initialStateIndex = entity.entityList().indexOf(
                     entity.getEntity(initialStateName));
             units.add(Jimple.v().newAssignStmt(
-                    Jimple.v().newInstanceFieldRef(
-                            thisLocal, currentStateField),
-                    IntConstant.v(initialStateIndex)));
+                              Jimple.v().newInstanceFieldRef(
+                                      thisLocal, currentStateField),
+                              IntConstant.v(initialStateIndex)));
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
@@ -267,29 +267,29 @@ public class FSMCreator implements AtomicActorCreator {
                     SootField tokenIsPresentField = (SootField)
                         nameToField.get(name + "_isPresent");
                     units.add(Jimple.v().newAssignStmt(
-                            Jimple.v().newInstanceFieldRef(
-                                    thisLocal,
-                                    tokenIsPresentField),
-                            hasTokenToken));
+                                      Jimple.v().newInstanceFieldRef(
+                                              thisLocal,
+                                              tokenIsPresentField),
+                                      hasTokenToken));
 
                     Stmt target = Jimple.v().newNopStmt();
                     units.add(Jimple.v().newIfStmt(
-                            Jimple.v().newEqExpr(hasTokenLocal,
-                                    IntConstant.v(0)),
-                            target));
+                                      Jimple.v().newEqExpr(hasTokenLocal,
+                                              IntConstant.v(0)),
+                                      target));
                     units.add(Jimple.v().newAssignStmt(
-                            tokenLocal,
-                            Jimple.v().newVirtualInvokeExpr(
-                                    portLocal,
-                                    PtolemyUtilities.getMethod,
-                                    IntConstant.v(0))));
+                                      tokenLocal,
+                                      Jimple.v().newVirtualInvokeExpr(
+                                              portLocal,
+                                              PtolemyUtilities.getMethod,
+                                              IntConstant.v(0))));
                     SootField tokenField = (SootField)
                         nameToField.get(name);
                     units.add(Jimple.v().newAssignStmt(
-                            Jimple.v().newInstanceFieldRef(
-                                    thisLocal,
-                                    tokenField),
-                            tokenLocal));
+                                      Jimple.v().newInstanceFieldRef(
+                                              thisLocal,
+                                              tokenField),
+                                      tokenLocal));
                     units.add(target);
                 }
             }
@@ -465,10 +465,10 @@ public class FSMCreator implements AtomicActorCreator {
 
                     // Test the guard.
                     units.add(Jimple.v().newAssignStmt(
-                            tokenLocal,
-                            Jimple.v().newCastExpr(
-                                    guardLocal,
-                                    RefType.v(PtolemyUtilities.booleanTokenClass))));
+                                      tokenLocal,
+                                      Jimple.v().newCastExpr(
+                                              guardLocal,
+                                              RefType.v(PtolemyUtilities.booleanTokenClass))));
                     units.add(
                             Jimple.v().newAssignStmt(
                                     flagLocal,
@@ -639,7 +639,7 @@ public class FSMCreator implements AtomicActorCreator {
                                 RefType.v(PtolemyUtilities.namedObjClass));
                         body.getLocals().add(containerLocal);
                         Local entityLocal = Jimple.v().newLocal("entity",
-                                   RefType.v(PtolemyUtilities.entityClass));
+                                RefType.v(PtolemyUtilities.entityClass));
                         body.getLocals().add(entityLocal);
 
                         NamedObj containerModel =

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (Ed.Willink@uk.thalesgroup.com)
 @AcceptedRating Red
@@ -38,45 +38,45 @@ import java.math.BigInteger;
 //////////////////////////////////////////////////////////////////////////
 //// FixPoint
 /**
-The FixPoint class provides a fixed point data type and a set of functions
-that operate on and return fixed point data. An instance of the class
-is immutable, meaning that its value is set in the constructor and
-cannot then be modified.  This is similar to the Java built-in classes
-like Double, Integer, etc.
-<p>
-The FixPoint class represents signed numbers in a two's-complement
-format with unlimited dynamic range and a resolution defined by a finite
-number of fractional bits.
-<p>
-Because a fixed point data type uses a finite number of bits to
-represent a value, a real value is converted to a number that
-can be expressed with a given precision of the fixed point, thereby
-introducing a quantization error. The overflow and rounding strategies
-used for this quantization are defined by a Quantization instance.
-<p>
-The design of the FixPoint class complies with a philosophy that all
-operators work losslessly, i.e. the fractional precision of the result
-is determined such there is no loss of precision.
-These changes are different for the various operations.
-<p>
-Violations of the loss-less philosophy occur during construction, division
-and conversion to floating point. During construction from floating point
-values, the nearest fixed point representation is created. The preferred
-divide operator provides for explicit specification of the quantization.
-A deprecated divide operator guesses at the result precision.
-Conversion to floating point is limited by the available floating point
-accuracy.
-<p>
-The FixPoint implementation uses the Java class BigInteger to represent the
-finite value and so this implementation is truly platform independent.
-Note that the FixPoint does not put any restrictions on the maximum number
-of bits in the representation of a value.
+   The FixPoint class provides a fixed point data type and a set of functions
+   that operate on and return fixed point data. An instance of the class
+   is immutable, meaning that its value is set in the constructor and
+   cannot then be modified.  This is similar to the Java built-in classes
+   like Double, Integer, etc.
+   <p>
+   The FixPoint class represents signed numbers in a two's-complement
+   format with unlimited dynamic range and a resolution defined by a finite
+   number of fractional bits.
+   <p>
+   Because a fixed point data type uses a finite number of bits to
+   represent a value, a real value is converted to a number that
+   can be expressed with a given precision of the fixed point, thereby
+   introducing a quantization error. The overflow and rounding strategies
+   used for this quantization are defined by a Quantization instance.
+   <p>
+   The design of the FixPoint class complies with a philosophy that all
+   operators work losslessly, i.e. the fractional precision of the result
+   is determined such there is no loss of precision.
+   These changes are different for the various operations.
+   <p>
+   Violations of the loss-less philosophy occur during construction, division
+   and conversion to floating point. During construction from floating point
+   values, the nearest fixed point representation is created. The preferred
+   divide operator provides for explicit specification of the quantization.
+   A deprecated divide operator guesses at the result precision.
+   Conversion to floating point is limited by the available floating point
+   accuracy.
+   <p>
+   The FixPoint implementation uses the Java class BigInteger to represent the
+   finite value and so this implementation is truly platform independent.
+   Note that the FixPoint does not put any restrictions on the maximum number
+   of bits in the representation of a value.
 
-@author Bart Kienhuis, Ed Willink, Contributor: Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4, rewritten for Ptolemy II 2.2
-@see Precision
-@see Quantization
+   @author Bart Kienhuis, Ed Willink, Contributor: Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4, rewritten for Ptolemy II 2.2
+   @see Precision
+   @see Quantization
 */
 
 public class FixPoint implements Cloneable, Serializable {

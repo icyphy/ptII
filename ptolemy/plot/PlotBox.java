@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
@@ -87,154 +87,154 @@ import javax.swing.SwingUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// PlotBox
 /**
-This class provides a labeled box within which to place a data plot.
-A title, X and Y axis labels, tick marks, and a legend are all supported.
-Zooming in and out is supported.  To zoom in, drag the mouse
-downwards to draw a box.  To zoom out, drag the mouse upward.
-<p>
-The box can be configured either through a file with commands or
-through direct invocation of the public methods of the class.
-<p>
-When calling the methods, in most cases the changes will not
-be visible until paintComponent() has been called.  To request that this
-be done, call repaint().
-<p>
-A small set of key bindings are provided for convenience.
-They are:
-<ul>
-<li> Cntrl-c: Export the plot to the clipboard (in PlotML).
-<li> D: Dump the plot to standard output (in PlotML).
-<li> E: Export the plot to standard output in EPS format.
-<li> F: Fill the plot.
-<li> H or ?: Display a simple help message.
-<li> Cntrl-D or Q: quit
-</ul>
-These commands are provided in a menu by the PlotFrame class.
-Note that exporting to the clipboard is not allowed in applets
-(it used to be), so this will result in an error message.
-<p>
-At this time, the two export commands produce encapsulated postscript
-tuned for black-and-white printers.  In the future, more formats may
-supported.
-Exporting to the clipboard and to standard output, in theory,
-is allowed for applets, unlike writing to a file. Thus, these
-key bindings provide a simple mechanism to obtain a high-resolution
-image of the plot from an applet, suitable for incorporation in
-a document. However, in some browsers, exporting to standard out
-triggers a security violation.  You can use the JDK appletviewer instead.
-<p>
-To read commands from a file or URL, the preferred technique is
-to use one of the classes in the plotml package.  That package
-supports both PlotML, an XML extension for plots, and a historical
-file format specific to ptplot.  The historical file format is
-understood by the read() method in this class.
-The syntax of the historical format, documented below, is rudimentary,
-and will probably not be extended as ptplot evolves.  Nonetheless,
-we document it here since it is directly supported by this class.
-<p>
-The historical format for the file allows any number
-commands, one per line.  Unrecognized commands and commands with
-syntax errors are ignored.  Comments are denoted by a line starting
-with a pound sign "#".  The recognized commands include:
-<pre>
-TitleText: <i>string</i>
-XLabel: <i>string</i>
-YLabel: <i>string</i>
-</pre>
-These commands provide a title and labels for the X (horizontal) and Y
-(vertical) axes.
-A <i>string</i> is simply a sequence of characters, possibly
-including spaces.  There is no need here to surround them with
-quotation marks, and in fact, if you do, the quotation marks will
-be included in the labels.
-<p>
-The ranges of the X and Y axes can be optionally given by commands like:
-<pre>
-XRange: <i>min</i>, <i>max</i>
-YRange: <i>min</i>, <i>max</i>
-</pre>
-The arguments <i>min</i> and <i>max</i> are numbers, possibly
-including a sign and a decimal point. If they are not specified,
-then the ranges are computed automatically from the data and padded
-slightly so that datapoints are not plotted on the axes.
-<p>
-The tick marks for the axes are usually computed automatically from
-the ranges.  Every attempt is made to choose reasonable positions
-for the tick marks regardless of the data ranges (powers of
-ten multiplied by 1, 2, or 5 are used).  However, they can also be
-specified explicitly using commands like:
-<pre>
-XTicks: <i>label position, label position, ...</i>
-YTicks: <i>label position, label position, ...</i>
-</pre>
-A <i>label</i> is a string that must be surrounded by quotation
-marks if it contains any spaces.  A <i>position</i> is a number
-giving the location of the tick mark along the axis.  For example,
-a horizontal axis for a frequency domain plot might have tick marks
-as follows:
-<pre>
-XTicks: -PI -3.14159, -PI/2 -1.570795, 0 0, PI/2 1.570795, PI 3.14159
-</pre>
-Tick marks could also denote years, months, days of the week, etc.
-<p>
-The X and Y axes can use a logarithmic scale with the following commands:
-<pre>
-XLog: on
-YLog: on
-</pre>
-The grid labels represent powers of 10.  Note that if a logarithmic
-scale is used, then the values must be positive.  Non-positive values
-will be silently dropped.  Note further that when using logarithmic
-axes that the log of input data is taken as the data is added to the plot.
-This means that <pre>XLog: on</pre> or <pre>YLog: on</pre> should
-appear before any data.  Also, the value of the XTicks, YTicks,
-XRange or YRange directives should be in log units.
-So, <pre>XTicks: 1K 3</pre> will display the string <pre>1K</pre>
-at the 1000 mark.
-<p>
-By default, tick marks are connected by a light grey background grid.
-This grid can be turned off with the following command:
-<pre>
-Grid: off
-</pre>
-It can be turned back on with
-<pre>
-Grid: on
-</pre>
-Also, by default, the first ten data sets are shown each in a unique color.
-The use of color can be turned off with the command:
-<pre>
-Color: off
-</pre>
-It can be turned back on with
-<pre>
-Color: on
-</pre>
-Finally, the rather specialized command
-<pre>
-Wrap: on
-</pre>
-enables wrapping of the X (horizontal) axis, which means that if
-a point is added with X out of range, its X value will be modified
-modulo the range so that it lies in range. This command only has an
-effect if the X range has been set explicitly. It is designed specifically
-to support oscilloscope-like behavior, where the X value of points is
-increasing, but the display wraps it around to left. A point that lands
-on the right edge of the X range is repeated on the left edge to give
-a better sense of continuity. The feature works best when points do land
-precisely on the edge, and are plotted from left to right, increasing
-in X.
-<p>
-All of the above commands can also be invoked directly by calling the
-the corresponding public methods from some Java procedure.
-<p>
-This class uses features of JDK 1.2, and hence if used in an applet,
-it can only be viewed by a browser that supports JDK 1.2, or a plugin.
+   This class provides a labeled box within which to place a data plot.
+   A title, X and Y axis labels, tick marks, and a legend are all supported.
+   Zooming in and out is supported.  To zoom in, drag the mouse
+   downwards to draw a box.  To zoom out, drag the mouse upward.
+   <p>
+   The box can be configured either through a file with commands or
+   through direct invocation of the public methods of the class.
+   <p>
+   When calling the methods, in most cases the changes will not
+   be visible until paintComponent() has been called.  To request that this
+   be done, call repaint().
+   <p>
+   A small set of key bindings are provided for convenience.
+   They are:
+   <ul>
+   <li> Cntrl-c: Export the plot to the clipboard (in PlotML).
+   <li> D: Dump the plot to standard output (in PlotML).
+   <li> E: Export the plot to standard output in EPS format.
+   <li> F: Fill the plot.
+   <li> H or ?: Display a simple help message.
+   <li> Cntrl-D or Q: quit
+   </ul>
+   These commands are provided in a menu by the PlotFrame class.
+   Note that exporting to the clipboard is not allowed in applets
+   (it used to be), so this will result in an error message.
+   <p>
+   At this time, the two export commands produce encapsulated postscript
+   tuned for black-and-white printers.  In the future, more formats may
+   supported.
+   Exporting to the clipboard and to standard output, in theory,
+   is allowed for applets, unlike writing to a file. Thus, these
+   key bindings provide a simple mechanism to obtain a high-resolution
+   image of the plot from an applet, suitable for incorporation in
+   a document. However, in some browsers, exporting to standard out
+   triggers a security violation.  You can use the JDK appletviewer instead.
+   <p>
+   To read commands from a file or URL, the preferred technique is
+   to use one of the classes in the plotml package.  That package
+   supports both PlotML, an XML extension for plots, and a historical
+   file format specific to ptplot.  The historical file format is
+   understood by the read() method in this class.
+   The syntax of the historical format, documented below, is rudimentary,
+   and will probably not be extended as ptplot evolves.  Nonetheless,
+   we document it here since it is directly supported by this class.
+   <p>
+   The historical format for the file allows any number
+   commands, one per line.  Unrecognized commands and commands with
+   syntax errors are ignored.  Comments are denoted by a line starting
+   with a pound sign "#".  The recognized commands include:
+   <pre>
+   TitleText: <i>string</i>
+   XLabel: <i>string</i>
+   YLabel: <i>string</i>
+   </pre>
+   These commands provide a title and labels for the X (horizontal) and Y
+   (vertical) axes.
+   A <i>string</i> is simply a sequence of characters, possibly
+   including spaces.  There is no need here to surround them with
+   quotation marks, and in fact, if you do, the quotation marks will
+   be included in the labels.
+   <p>
+   The ranges of the X and Y axes can be optionally given by commands like:
+   <pre>
+   XRange: <i>min</i>, <i>max</i>
+   YRange: <i>min</i>, <i>max</i>
+   </pre>
+   The arguments <i>min</i> and <i>max</i> are numbers, possibly
+   including a sign and a decimal point. If they are not specified,
+   then the ranges are computed automatically from the data and padded
+   slightly so that datapoints are not plotted on the axes.
+   <p>
+   The tick marks for the axes are usually computed automatically from
+   the ranges.  Every attempt is made to choose reasonable positions
+   for the tick marks regardless of the data ranges (powers of
+   ten multiplied by 1, 2, or 5 are used).  However, they can also be
+   specified explicitly using commands like:
+   <pre>
+   XTicks: <i>label position, label position, ...</i>
+   YTicks: <i>label position, label position, ...</i>
+   </pre>
+   A <i>label</i> is a string that must be surrounded by quotation
+   marks if it contains any spaces.  A <i>position</i> is a number
+   giving the location of the tick mark along the axis.  For example,
+   a horizontal axis for a frequency domain plot might have tick marks
+   as follows:
+   <pre>
+   XTicks: -PI -3.14159, -PI/2 -1.570795, 0 0, PI/2 1.570795, PI 3.14159
+   </pre>
+   Tick marks could also denote years, months, days of the week, etc.
+   <p>
+   The X and Y axes can use a logarithmic scale with the following commands:
+   <pre>
+   XLog: on
+   YLog: on
+   </pre>
+   The grid labels represent powers of 10.  Note that if a logarithmic
+   scale is used, then the values must be positive.  Non-positive values
+   will be silently dropped.  Note further that when using logarithmic
+   axes that the log of input data is taken as the data is added to the plot.
+   This means that <pre>XLog: on</pre> or <pre>YLog: on</pre> should
+   appear before any data.  Also, the value of the XTicks, YTicks,
+   XRange or YRange directives should be in log units.
+   So, <pre>XTicks: 1K 3</pre> will display the string <pre>1K</pre>
+   at the 1000 mark.
+   <p>
+   By default, tick marks are connected by a light grey background grid.
+   This grid can be turned off with the following command:
+   <pre>
+   Grid: off
+   </pre>
+   It can be turned back on with
+   <pre>
+   Grid: on
+   </pre>
+   Also, by default, the first ten data sets are shown each in a unique color.
+   The use of color can be turned off with the command:
+   <pre>
+   Color: off
+   </pre>
+   It can be turned back on with
+   <pre>
+   Color: on
+   </pre>
+   Finally, the rather specialized command
+   <pre>
+   Wrap: on
+   </pre>
+   enables wrapping of the X (horizontal) axis, which means that if
+   a point is added with X out of range, its X value will be modified
+   modulo the range so that it lies in range. This command only has an
+   effect if the X range has been set explicitly. It is designed specifically
+   to support oscilloscope-like behavior, where the X value of points is
+   increasing, but the display wraps it around to left. A point that lands
+   on the right edge of the X range is repeated on the left edge to give
+   a better sense of continuity. The feature works best when points do land
+   precisely on the edge, and are plotted from left to right, increasing
+   in X.
+   <p>
+   All of the above commands can also be invoked directly by calling the
+   the corresponding public methods from some Java procedure.
+   <p>
+   This class uses features of JDK 1.2, and hence if used in an applet,
+   it can only be viewed by a browser that supports JDK 1.2, or a plugin.
 
-@author Edward A. Lee, Christopher Hylands, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger
+   @author Edward A. Lee, Christopher Hylands, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger
 
-@version $Id$
-@since Ptolemy II 0.2
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class PlotBox extends JPanel implements Printable {
 
@@ -2016,7 +2016,7 @@ public class PlotBox extends JPanel implements Printable {
                     double tmpStep = (yStep > 1.0)? 1.0 : yStep;
 
                     for (double ypos = _gridStep(unlabeledgrid , yStart,
-                            tmpStep, _ylog);
+                                 tmpStep, _ylog);
                          ypos <= _ytickMax;
                          ypos = _gridStep(unlabeledgrid, ypos,
                                  tmpStep, _ylog)) {
@@ -2177,7 +2177,7 @@ public class PlotBox extends JPanel implements Printable {
                         false, xgrid);
                 if (unlabeledgrid.size() > 0 ) {
                     for (double xpos = _gridStep(unlabeledgrid, xTmpStart,
-                            tmpStep, _xlog);
+                                 tmpStep, _xlog);
                          xpos <= _xtickMax;
                          xpos = _gridStep(unlabeledgrid, xpos,
                                  tmpStep, _xlog)) {
@@ -2934,8 +2934,8 @@ public class PlotBox extends JPanel implements Printable {
                     // Using == on doubles is bad if the numbers are close,
                     // but not exactly equal.
                     if (Math.abs(
-                            ((Double)oldgrid.elementAt(oldgridi)).doubleValue()
-                            - logval)
+                                ((Double)oldgrid.elementAt(oldgridi)).doubleValue()
+                                - logval)
                             > 0.00001) {
                         grid.addElement(new Double(logval));
                     }
@@ -3547,66 +3547,66 @@ public class PlotBox extends JPanel implements Printable {
     // NOTE: It is unfortunate to have to include the DTD here, but there
     // seems to be no other way to ensure that the generated data exactly
     // matches the DTD.
-//    private static final String _DTD =
-//    "<!-- PlotML DTD, created by Edward A. Lee, eal@eecs.berkeley.edu.\n"
-//    + "   See http://ptolemy.eecs.berkeley.edu/java/ptplot -->\n"
-//    + "<!ELEMENT plot (barGraph | bin | dataset | default | noColor | \n"
-//    + "        noGrid | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | \n"
-//    + " yLog | yRange | yTicks)*>\n"
-//    + "  <!ELEMENT barGraph EMPTY>\n"
-//    + "    <!ATTLIST barGraph width CDATA #IMPLIED>\n"
-//    + "    <!ATTLIST barGraph offset CDATA #IMPLIED>\n"
-//    + "  <!ELEMENT bin EMPTY>\n"
-//    + "    <!ATTLIST bin width CDATA #IMPLIED>\n"
-//    + "    <!ATTLIST bin offset CDATA #IMPLIED>\n"
-//    + "  <!ELEMENT dataset (m | move | p | point)*>\n"
-//    + "    <!ATTLIST dataset connected (yes | no) #IMPLIED>\n"
-//    + "    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>\n"
-//    + "    <!ATTLIST dataset name CDATA #IMPLIED>\n"
-//    + "    <!ATTLIST dataset stems (yes | no) #IMPLIED>\n"
-//    + "  <!ELEMENT default EMPTY>\n"
-//    + "    <!ATTLIST default connected (yes | no) \"yes\">\n"
-//    + "    <!ATTLIST default marks (none | dots | points | various) \"none\">\n"
-//    + "    <!ATTLIST default stems (yes | no) \"no\">\n"
-//    + "  <!ELEMENT noColor EMPTY>\n"
-//    + "  <!ELEMENT noGrid EMPTY>\n"
-//    + "  <!ELEMENT title (#PCDATA)>\n"
-//    + "  <!ELEMENT wrap EMPTY>\n"
-//    + "  <!ELEMENT xLabel (#PCDATA)>\n"
-//    + "  <!ELEMENT xLog EMPTY>\n"
-//    + "  <!ELEMENT xRange EMPTY>\n"
-//    + "    <!ATTLIST xRange min CDATA #REQUIRED>\n"
-//    + "    <!ATTLIST xRange max CDATA #REQUIRED>\n"
-//    + "  <!ELEMENT xTicks (tick)+>\n"
-//    + "  <!ELEMENT yLabel (#PCDATA)>\n"
-//    + "  <!ELEMENT yLog EMPTY>\n"
-//    + "  <!ELEMENT yRange EMPTY>\n"
-//    + "    <!ATTLIST yRange min CDATA #REQUIRED>\n"
-//    + "    <!ATTLIST yRange max CDATA #REQUIRED>\n"
-//    + "  <!ELEMENT yTicks (tick)+>\n"
-//    + "    <!ELEMENT tick EMPTY>\n"
-//    + "      <!ATTLIST tick label CDATA #REQUIRED>\n"
-//    + "      <!ATTLIST tick position CDATA #REQUIRED>\n"
-//    + "    <!ELEMENT m EMPTY>\n"
-//    + "      <!ATTLIST m x CDATA #IMPLIED>\n"
-//    + "      <!ATTLIST m x CDATA #REQUIRED>\n"
-//    + "      <!ATTLIST m lowErrorBar CDATA #IMPLIED>\n"
-//    + "      <!ATTLIST m highErrorBar CDATA #IMPLIED>\n"
-//    + "    <!ELEMENT move EMPTY>\n"
-//    + "      <!ATTLIST move x CDATA #IMPLIED>\n"
-//    + "      <!ATTLIST move x CDATA #REQUIRED>\n"
-//    + "      <!ATTLIST move lowErrorBar CDATA #IMPLIED>\n"
-//    + "      <!ATTLIST move highErrorBar CDATA #IMPLIED>\n"
-//    + "    <!ELEMENT p EMPTY>\n"
-//    + "      <!ATTLIST p x CDATA #IMPLIED>\n"
-//    + "      <!ATTLIST p x CDATA #REQUIRED>\n"
-//    + "      <!ATTLIST p lowErrorBar CDATA #IMPLIED>\n"
-//    + "      <!ATTLIST p highErrorBar CDATA #IMPLIED>\n"
-//    + "    <!ELEMENT point EMPTY>\n"
-//    + "      <!ATTLIST point x CDATA #IMPLIED>\n"
-//    + "      <!ATTLIST point x CDATA #REQUIRED>\n"
-//    + "      <!ATTLIST point lowErrorBar CDATA #IMPLIED>\n"
-//    + "      <!ATTLIST point highErrorBar CDATA #IMPLIED>";
+    //    private static final String _DTD =
+    //    "<!-- PlotML DTD, created by Edward A. Lee, eal@eecs.berkeley.edu.\n"
+    //    + "   See http://ptolemy.eecs.berkeley.edu/java/ptplot -->\n"
+    //    + "<!ELEMENT plot (barGraph | bin | dataset | default | noColor | \n"
+    //    + "        noGrid | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | \n"
+    //    + " yLog | yRange | yTicks)*>\n"
+    //    + "  <!ELEMENT barGraph EMPTY>\n"
+    //    + "    <!ATTLIST barGraph width CDATA #IMPLIED>\n"
+    //    + "    <!ATTLIST barGraph offset CDATA #IMPLIED>\n"
+    //    + "  <!ELEMENT bin EMPTY>\n"
+    //    + "    <!ATTLIST bin width CDATA #IMPLIED>\n"
+    //    + "    <!ATTLIST bin offset CDATA #IMPLIED>\n"
+    //    + "  <!ELEMENT dataset (m | move | p | point)*>\n"
+    //    + "    <!ATTLIST dataset connected (yes | no) #IMPLIED>\n"
+    //    + "    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>\n"
+    //    + "    <!ATTLIST dataset name CDATA #IMPLIED>\n"
+    //    + "    <!ATTLIST dataset stems (yes | no) #IMPLIED>\n"
+    //    + "  <!ELEMENT default EMPTY>\n"
+    //    + "    <!ATTLIST default connected (yes | no) \"yes\">\n"
+    //    + "    <!ATTLIST default marks (none | dots | points | various) \"none\">\n"
+    //    + "    <!ATTLIST default stems (yes | no) \"no\">\n"
+    //    + "  <!ELEMENT noColor EMPTY>\n"
+    //    + "  <!ELEMENT noGrid EMPTY>\n"
+    //    + "  <!ELEMENT title (#PCDATA)>\n"
+    //    + "  <!ELEMENT wrap EMPTY>\n"
+    //    + "  <!ELEMENT xLabel (#PCDATA)>\n"
+    //    + "  <!ELEMENT xLog EMPTY>\n"
+    //    + "  <!ELEMENT xRange EMPTY>\n"
+    //    + "    <!ATTLIST xRange min CDATA #REQUIRED>\n"
+    //    + "    <!ATTLIST xRange max CDATA #REQUIRED>\n"
+    //    + "  <!ELEMENT xTicks (tick)+>\n"
+    //    + "  <!ELEMENT yLabel (#PCDATA)>\n"
+    //    + "  <!ELEMENT yLog EMPTY>\n"
+    //    + "  <!ELEMENT yRange EMPTY>\n"
+    //    + "    <!ATTLIST yRange min CDATA #REQUIRED>\n"
+    //    + "    <!ATTLIST yRange max CDATA #REQUIRED>\n"
+    //    + "  <!ELEMENT yTicks (tick)+>\n"
+    //    + "    <!ELEMENT tick EMPTY>\n"
+    //    + "      <!ATTLIST tick label CDATA #REQUIRED>\n"
+    //    + "      <!ATTLIST tick position CDATA #REQUIRED>\n"
+    //    + "    <!ELEMENT m EMPTY>\n"
+    //    + "      <!ATTLIST m x CDATA #IMPLIED>\n"
+    //    + "      <!ATTLIST m x CDATA #REQUIRED>\n"
+    //    + "      <!ATTLIST m lowErrorBar CDATA #IMPLIED>\n"
+    //    + "      <!ATTLIST m highErrorBar CDATA #IMPLIED>\n"
+    //    + "    <!ELEMENT move EMPTY>\n"
+    //    + "      <!ATTLIST move x CDATA #IMPLIED>\n"
+    //    + "      <!ATTLIST move x CDATA #REQUIRED>\n"
+    //    + "      <!ATTLIST move lowErrorBar CDATA #IMPLIED>\n"
+    //    + "      <!ATTLIST move highErrorBar CDATA #IMPLIED>\n"
+    //    + "    <!ELEMENT p EMPTY>\n"
+    //    + "      <!ATTLIST p x CDATA #IMPLIED>\n"
+    //    + "      <!ATTLIST p x CDATA #REQUIRED>\n"
+    //    + "      <!ATTLIST p lowErrorBar CDATA #IMPLIED>\n"
+    //    + "      <!ATTLIST p highErrorBar CDATA #IMPLIED>\n"
+    //    + "    <!ELEMENT point EMPTY>\n"
+    //    + "      <!ATTLIST point x CDATA #IMPLIED>\n"
+    //    + "      <!ATTLIST point x CDATA #REQUIRED>\n"
+    //    + "      <!ATTLIST point lowErrorBar CDATA #IMPLIED>\n"
+    //    + "      <!ATTLIST point highErrorBar CDATA #IMPLIED>";
 
 
     ///////////////////////////////////////////////////////////////////

@@ -1,28 +1,28 @@
 /* A transformer that replaces port communication in an SDF model
 
- Copyright (c) 2001-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2001-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -86,19 +86,19 @@ import soot.toolkits.scalar.UnitValueBoxPair;
 //////////////////////////////////////////////////////////////////////////
 //// InlinePortTransformer
 /**
-A Transformer that is responsible for inlining the communication between ports.
-The connections between the ports are taken from the model specified in the
-constructor of this transformer.
+   A Transformer that is responsible for inlining the communication between ports.
+   The connections between the ports are taken from the model specified in the
+   constructor of this transformer.
 
-FIXME: currently we try to speed things up if the buffersize is only
-one by removing the index update overhead.  Note that there are other
-optimizations that can be made here (for instance, if we can
-statically determine all the channel references (which is trivially
-true if there is only one channel), then there is no need to have the
-index or portbuffer arrays.
-@author Stephen Neuendorffer
-@version $Id$
-@since Ptolemy II 2.0
+   FIXME: currently we try to speed things up if the buffersize is only
+   one by removing the index update overhead.  Note that there are other
+   optimizations that can be made here (for instance, if we can
+   statically determine all the channel references (which is trivially
+   true if there is only one channel), then there is no need to have the
+   index or portbuffer arrays.
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class InlinePortTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
@@ -316,13 +316,13 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
 
                             doneSomething = true;
                         } else {
-                                // FIXME: this is a bit of a hack, but
-                                // for right now it seems to work.
-                                // How many things that aren't
-                                // the actors we are generating
-                                // code for do we really care about here?
-                                // Can we do this without having to create
-                                // a class for the port too????
+                            // FIXME: this is a bit of a hack, but
+                            // for right now it seems to work.
+                            // How many things that aren't
+                            // the actors we are generating
+                            // code for do we really care about here?
+                            // Can we do this without having to create
+                            // a class for the port too????
                             body.getUnits().remove(stmt);
                             doneSomething = true;
                         }
@@ -337,7 +337,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                         //System.out.println("arg = " + arg);
                         if (Evaluator.isValueConstantValued(arg)) {
                             argValues[constantArgCount++] = Evaluator.getConstantValueOf(arg);
-                                // System.out.println("argument = " + argValues[argCount-1]);
+                            // System.out.println("argument = " + argValues[argCount-1]);
                         } else {
                             break;
                         }
@@ -345,7 +345,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                     boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
 
                     if (SootUtilities.derivesFrom(type.getSootClass(),
-                            PtolemyUtilities.componentPortClass)) {
+                                PtolemyUtilities.componentPortClass)) {
                         // If we are invoking a method on a port
                         // class, then attempt to get the constant
                         // value of the port.
@@ -362,20 +362,20 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                         // the ports.
                         if (port instanceof Typeable) {
                             PtolemyUtilities.inlineTypeableMethods(body,
-                                   stmt, box, r, (Typeable)port);
+                                    stmt, box, r, (Typeable)port);
 
                         }
 
                         // Inline namedObj methods on the attribute.
                         if (r.getMethod().getSubSignature().equals(
-                                PtolemyUtilities.getFullNameMethod.getSubSignature())) {
+                                    PtolemyUtilities.getFullNameMethod.getSubSignature())) {
                             box.setValue(StringConstant.v(
-                                    port.getFullName()));
+                                                 port.getFullName()));
                         }
                         if (r.getMethod().getSubSignature().equals(
-                                PtolemyUtilities.getNameMethod.getSubSignature())) {
+                                    PtolemyUtilities.getNameMethod.getSubSignature())) {
                             box.setValue(StringConstant.v(
-                                    port.getName()));
+                                                 port.getName()));
                         }
 
                         String methodName = r.getMethod().getName();
@@ -593,13 +593,13 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
 
                             doneSomething = true;
                         } else {
-                                // FIXME: this is a bit of a hack, but
-                                // for right now it seems to work.
-                                // How many things that aren't
-                                // the actors we are generating
-                                // code for do we really care about here?
-                                // Can we do this without having to create
-                                // a class for the port too????
+                            // FIXME: this is a bit of a hack, but
+                            // for right now it seems to work.
+                            // How many things that aren't
+                            // the actors we are generating
+                            // code for do we really care about here?
+                            // Can we do this without having to create
+                            // a class for the port too????
                             body.getUnits().remove(stmt);
                             doneSomething = true;
                         }
@@ -614,7 +614,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                         //System.out.println("arg = " + arg);
                         if (Evaluator.isValueConstantValued(arg)) {
                             argValues[constantArgCount++] = Evaluator.getConstantValueOf(arg);
-                                // System.out.println("argument = " + argValues[argCount-1]);
+                            // System.out.println("argument = " + argValues[argCount-1]);
                         } else {
                             break;
                         }
@@ -622,7 +622,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                     boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
 
                     if (SootUtilities.derivesFrom(type.getSootClass(),
-                            PtolemyUtilities.componentPortClass)) {
+                                PtolemyUtilities.componentPortClass)) {
                         // If we are invoking a method on a port
                         // class, then attempt to get the constant
                         // value of the port.
@@ -639,22 +639,22 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                          * allow for properly defined ports of
                          * toplevel composites.
                          */
-                     //    if (port instanceof Typeable) {
-//                             PtolemyUtilities.inlineTypeableMethods(body,
-//                                     stmt, box, r, (Typeable)port);
+                        //    if (port instanceof Typeable) {
+                        //                             PtolemyUtilities.inlineTypeableMethods(body,
+                        //                                     stmt, box, r, (Typeable)port);
 
-//                         }
+                        //                         }
 
                         // Inline namedObj methods on the attribute.
                         if (r.getMethod().getSubSignature().equals(
-                                PtolemyUtilities.getFullNameMethod.getSubSignature())) {
+                                    PtolemyUtilities.getFullNameMethod.getSubSignature())) {
                             box.setValue(StringConstant.v(
-                                    port.getFullName()));
+                                                 port.getFullName()));
                         }
                         if (r.getMethod().getSubSignature().equals(
-                                PtolemyUtilities.getNameMethod.getSubSignature())) {
+                                    PtolemyUtilities.getNameMethod.getSubSignature())) {
                             box.setValue(StringConstant.v(
-                                    port.getName()));
+                                                 port.getName()));
                         }
 
                         String methodName = r.getMethod().getName();
@@ -690,21 +690,21 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                         //                             }
 
                         if (r.getMethod().getName().equals("isInput")) {
-                                // return true.
+                            // return true.
                             if (port.isInput()) {
                                 box.setValue(IntConstant.v(1));
                             } else {
                                 box.setValue(IntConstant.v(0));
                             }
                         } else if (r.getMethod().getName().equals("isOutput")) {
-                                // return true.
+                            // return true.
                             if (port.isOutput()) {
                                 box.setValue(IntConstant.v(1));
                             } else {
                                 box.setValue(IntConstant.v(0));
                             }
                         } else if (r.getMethod().getName().equals("isMultiport")) {
-                                // return true.
+                            // return true.
                             if (port.isMultiport()) {
                                 box.setValue(IntConstant.v(1));
                             } else {

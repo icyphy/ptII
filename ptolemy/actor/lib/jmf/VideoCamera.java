@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red
 @AcceptedRating Red
 */
@@ -99,15 +99,15 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// VideoCamera
 /**
-An actor that produces a sequence of frames from a video camera.
-This actor requires the Java Media Framework, and has been tested
-at least with version 2.1.1.
+   An actor that produces a sequence of frames from a video camera.
+   This actor requires the Java Media Framework, and has been tested
+   at least with version 2.1.1.
 
-FIXME: more info.
+   FIXME: more info.
 
-@author  Christopher Hylands, Edward Lee, James Yeh, Paul Yang, David Lee
-@version $Id$
-@since Ptolemy II 3.0
+   @author  Christopher Hylands, Edward Lee, James Yeh, Paul Yang, David Lee
+   @version $Id$
+   @since Ptolemy II 3.0
 */
 public class VideoCamera extends Source implements ControllerListener {
 
@@ -234,7 +234,7 @@ public class VideoCamera extends Source implements ControllerListener {
         // FIXME: This isn't crashing gracefully at all.
         CaptureDeviceInfo captureDeviceInfo
             = (CaptureDeviceInfo) deviceList.get(((IntToken)deviceNumber.
-                                  getToken()).intValue());
+                                                         getToken()).intValue());
 
         // Create a locator for this device.
         MediaLocator locator = captureDeviceInfo.getLocator();

@@ -1,28 +1,28 @@
 /* Explicit variable step size Runge-Kutta 2(3) ODE solver.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
 
@@ -50,35 +50,35 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// ExplicitRK23Solver
 /**
-This class implements the Explicit Runge-Kutta 2(3) ODE solving method.
-For an ODE of the form:
-<pre>
-    dx/dt = f(x, t), x(0) = x0
-</pre>
-it does the following:
-<pre>
-    K0 = f(x(n), tn);
-    K1 = f(x(n)+0.5*h*K0, tn+0.5*h);
-    K2 = f(x(n)+0.75*h*K1, tn+0.75*h);
-    x(n+1) = x(n)+(2/9)*h*K0+(1/3)*h*K0+(4/9)*h*K2;
-</pre>,
-and error control:
-<pre>
-    K3 = f(x(n+1), tn+h);
-    LTE = h*[(-5.0/72.0)*K0 + (1.0/12.0)*K1 + (1.0/9.0)*K2 + (-1.0/8.0)*K3]
-</pre>
-<P>
-If the LTE is less than the error tolerance, then this step is considered
-successful, and the next integration step is predicted as:
-<pre>
-    h' = 0.8*Math.pow((ErrorTolerance/LTE), 1.0/3.0)
-</pre>
-This is a second order method, but uses a third order procedure to estimate
-the local truncation error.
+   This class implements the Explicit Runge-Kutta 2(3) ODE solving method.
+   For an ODE of the form:
+   <pre>
+   dx/dt = f(x, t), x(0) = x0
+   </pre>
+   it does the following:
+   <pre>
+   K0 = f(x(n), tn);
+   K1 = f(x(n)+0.5*h*K0, tn+0.5*h);
+   K2 = f(x(n)+0.75*h*K1, tn+0.75*h);
+   x(n+1) = x(n)+(2/9)*h*K0+(1/3)*h*K0+(4/9)*h*K2;
+   </pre>,
+   and error control:
+   <pre>
+   K3 = f(x(n+1), tn+h);
+   LTE = h*[(-5.0/72.0)*K0 + (1.0/12.0)*K1 + (1.0/9.0)*K2 + (-1.0/8.0)*K3]
+   </pre>
+   <P>
+   If the LTE is less than the error tolerance, then this step is considered
+   successful, and the next integration step is predicted as:
+   <pre>
+   h' = 0.8*Math.pow((ErrorTolerance/LTE), 1.0/3.0)
+   </pre>
+   This is a second order method, but uses a third order procedure to estimate
+   the local truncation error.
 
-@author  Jie Liu
-@version $Id$
-@since Ptolemy II 0.2
+   @author  Jie Liu
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class ExplicitRK23Solver extends ODESolver {
 

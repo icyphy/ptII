@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -283,7 +283,7 @@ public class MovieWriter extends Sink
             }
             if (_confirmOverwrite) {
                 if (!MessageHandler.yesNoQuestion(
-                        "OK to overwrite " + _file + "?")) {
+                            "OK to overwrite " + _file + "?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
                 }
@@ -319,13 +319,13 @@ public class MovieWriter extends Sink
 
         if (_fileType == _QUICKTIME) {
             processor.setContentDescriptor(new ContentDescriptor
-                (FileTypeDescriptor.QUICKTIME));
+                    (FileTypeDescriptor.QUICKTIME));
         } else if (_fileType == _AVI) {
             processor.setContentDescriptor(new ContentDescriptor
-                (FileTypeDescriptor.MSVIDEO));
+                    (FileTypeDescriptor.MSVIDEO));
         } else if (_fileType == _MPEG) {
             processor.setContentDescriptor(new ContentDescriptor
-                (FileTypeDescriptor.MPEG));
+                    (FileTypeDescriptor.MPEG));
         } else {
             throw new InternalErrorException(
                     "type = " + _fileType + ", which is not one of "
@@ -481,11 +481,11 @@ public class MovieWriter extends Sink
 
     private class ImageSourceStream implements PullBufferStream {
         public ImageSourceStream(int width, int height) {
-//              _videoFormat = new VideoFormat(VideoFormat.JPEG,
-//                      new Dimension(width, height),
-//                      Format.NOT_SPECIFIED,
-//                      Format.byteArray,
-//                      (float)_frameRate);
+            //              _videoFormat = new VideoFormat(VideoFormat.JPEG,
+            //                      new Dimension(width, height),
+            //                      Format.NOT_SPECIFIED,
+            //                      Format.byteArray,
+            //                      (float)_frameRate);
             _videoFormat = (VideoFormat)(_jmfImageToken.getValue()).getFormat();
         }
 

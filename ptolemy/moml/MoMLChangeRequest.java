@@ -1,28 +1,28 @@
 /* A mutation request specified in MoML.
 
- Copyright (c) 2000-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2000-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
@@ -40,41 +40,41 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// MoMLChangeRequest
 /**
-A mutation request specified in MoML.  This class provides the preferred
-mechanism for implementing mutations on a model while it is executing.
-To use it, create an instance of this class, specifying MoML code as
-an argument to the constructor.  Then queue the instance of this class
-with a composite entity by calling its requestChange() method.
-<p>
-If a context is given to the constructor, then the MoML will
-be executed in that context.  If that context has other objects
-that defer their MoML definitions to it (i.e., it is a class
-definition and there are instances of the class), then the
-MoML will also be executed in the context of those objects
-that defer to it.  Thus, the change to a class will propagate
-to instances.  If the context is (deeply) contained by another
-object that has objects that defer their MoML definitions to
-it, then the changes are also propagated to those objects.
-Thus, even when class definitions are nested within class
-definitions, a change within a class definition will
-propagate to all instances of the class(es).
-<p>
-The parser used to implement the change will be the parser contained
-by a ParserAttribute of the top-level element of the context.  If no
-context is given, or there is no ParserAttribute in its top level,
-then a new parser is created, and a new ParserAttribute is placed
-in the top level.
-<p>
-Note that if a context is specified that is above a class
-definition, and a change within the class definition is made
-by referencing the contents of the class definition using dotted
-names, then the change will not propagate. Thus, changes should be
-made in the most specific context (lowest level in the hierarchy)
-possible.
+   A mutation request specified in MoML.  This class provides the preferred
+   mechanism for implementing mutations on a model while it is executing.
+   To use it, create an instance of this class, specifying MoML code as
+   an argument to the constructor.  Then queue the instance of this class
+   with a composite entity by calling its requestChange() method.
+   <p>
+   If a context is given to the constructor, then the MoML will
+   be executed in that context.  If that context has other objects
+   that defer their MoML definitions to it (i.e., it is a class
+   definition and there are instances of the class), then the
+   MoML will also be executed in the context of those objects
+   that defer to it.  Thus, the change to a class will propagate
+   to instances.  If the context is (deeply) contained by another
+   object that has objects that defer their MoML definitions to
+   it, then the changes are also propagated to those objects.
+   Thus, even when class definitions are nested within class
+   definitions, a change within a class definition will
+   propagate to all instances of the class(es).
+   <p>
+   The parser used to implement the change will be the parser contained
+   by a ParserAttribute of the top-level element of the context.  If no
+   context is given, or there is no ParserAttribute in its top level,
+   then a new parser is created, and a new ParserAttribute is placed
+   in the top level.
+   <p>
+   Note that if a context is specified that is above a class
+   definition, and a change within the class definition is made
+   by referencing the contents of the class definition using dotted
+   names, then the change will not propagate. Thus, changes should be
+   made in the most specific context (lowest level in the hierarchy)
+   possible.
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class MoMLChangeRequest extends ChangeRequest {
 
@@ -229,9 +229,9 @@ public class MoMLChangeRequest extends ChangeRequest {
             System.out.println("****** Executing MoML change:");
             System.out.println(getDescription());
             if (_context != null) {
-                    System.out.println(
-                    "------ in context "
-                    + _context.getFullName());
+                System.out.println(
+                        "------ in context "
+                        + _context.getFullName());
             }
         }
 

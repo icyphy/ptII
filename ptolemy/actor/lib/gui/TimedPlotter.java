@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
@@ -43,15 +43,15 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// TimedPlotter
 /**
-A signal plotter.  This plotter contains an instance of the Plot class
-from the Ptolemy plot package as a public member.  Data at the input, which
-can consist of any number of channels, are plotted on this instance.
-Each channel is plotted as a separate data set.
-The horizontal axis represents time.
+   A signal plotter.  This plotter contains an instance of the Plot class
+   from the Ptolemy plot package as a public member.  Data at the input, which
+   can consist of any number of channels, are plotted on this instance.
+   Each channel is plotted as a separate data set.
+   The horizontal axis represents time.
 
-@author  Edward A. Lee
-@version $Id$
-@since Ptolemy II 1.0
+   @author  Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 1.0
 */
 public class TimedPlotter extends Plotter implements TimedActor {
 

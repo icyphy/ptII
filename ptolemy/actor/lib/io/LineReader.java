@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
@@ -50,42 +50,42 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// LineReader
 /**
-This actor reads a file or URL, one line at a time, and outputs each line
-as a string.  The file or URL is specified using any form acceptable
-to FileParameter. Before an end of file is reached, the <i>endOfFile</i>
-output produces <i>false</i>.  In the iteration where the last line
-of the file is read and produced on the <i>output</i> port, this actor
-produces <i>true</i> on the <i>endOfFile</i> port. In that iteration,
-postfire() returns false.  If the actor is iterated again, after the end
-of file, then prefire() and postfire() will both return false, <i>output</i>
-will produce the string "EOF", and <i>endOfFile</i> will produce <i>true</i>.
-<p>
-In some domains (such as SDF), returning false in postfire()
-causes the model to cease executing.
-In other domains (such as DE), this causes the director to avoid
-further firings of this actor.  So usually, the actor will not be
-invoked again after the end of file is reached.
-<p>
-This actor reads ahead in the file so that it can produce an output
-<i>true</i> on <i>endOfFile</i> in the same iteration where it outputs
-the last line.  It reads the first line in preinitialize(), and
-subsequently reads a new line in each invocation of postfire().  The
-line read is produced on the <i>output</i> in the next iteration
-after it is read.
-<p>
-This actor can skip some lines at the beginning of the file or URL, with
-the number specified by the <i>numberOfLinesToSkip</i> parameter. The
-default value of this parameter is 0.
-<p>
-If you need to reset this line reader to start again at the beginning
-of the file, the way to do this is to call initialize() during the run
-of the model.  This can be done, for example, using a modal model
-with a transition where reset is enabled.
+   This actor reads a file or URL, one line at a time, and outputs each line
+   as a string.  The file or URL is specified using any form acceptable
+   to FileParameter. Before an end of file is reached, the <i>endOfFile</i>
+   output produces <i>false</i>.  In the iteration where the last line
+   of the file is read and produced on the <i>output</i> port, this actor
+   produces <i>true</i> on the <i>endOfFile</i> port. In that iteration,
+   postfire() returns false.  If the actor is iterated again, after the end
+   of file, then prefire() and postfire() will both return false, <i>output</i>
+   will produce the string "EOF", and <i>endOfFile</i> will produce <i>true</i>.
+   <p>
+   In some domains (such as SDF), returning false in postfire()
+   causes the model to cease executing.
+   In other domains (such as DE), this causes the director to avoid
+   further firings of this actor.  So usually, the actor will not be
+   invoked again after the end of file is reached.
+   <p>
+   This actor reads ahead in the file so that it can produce an output
+   <i>true</i> on <i>endOfFile</i> in the same iteration where it outputs
+   the last line.  It reads the first line in preinitialize(), and
+   subsequently reads a new line in each invocation of postfire().  The
+   line read is produced on the <i>output</i> in the next iteration
+   after it is read.
+   <p>
+   This actor can skip some lines at the beginning of the file or URL, with
+   the number specified by the <i>numberOfLinesToSkip</i> parameter. The
+   default value of this parameter is 0.
+   <p>
+   If you need to reset this line reader to start again at the beginning
+   of the file, the way to do this is to call initialize() during the run
+   of the model.  This can be done, for example, using a modal model
+   with a transition where reset is enabled.
 
-@see FileParameter
-@author  Edward A. Lee, Yuhong Xiong
-@version $Id$
-@since Ptolemy II 2.2
+   @see FileParameter
+   @author  Edward A. Lee, Yuhong Xiong
+   @version $Id$
+   @since Ptolemy II 2.2
 */
 public class LineReader extends Source {
 

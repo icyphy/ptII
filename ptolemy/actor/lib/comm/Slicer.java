@@ -1,32 +1,32 @@
 /* A Slicer, which functions as a decoder of the LineCoder
    of complex type.
 
- Copyright (c) 2003-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Red (zhouye@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @ProposedRating Red (zhouye@eecs.berkeley.edu)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.comm;
@@ -47,21 +47,21 @@ import ptolemy.math.Complex;
 //////////////////////////////////////////////////////////////////////////
 //// Slicer
 /**
-The Slicer functions as a decoder of the LineCoder. The parameter
-<i>table</i> and <i>wordLength</i> has the same meaning as in LineCoder,
-except that the type of <i>table</i> is constrained to an ArrayToken
-of complex numbers. On each firing, the Slicer consumes one complex
-token from its input port and computes the Euclidean distance between
-the input data and the elements in the Slicer. The actor produces
-<i>wordLength</i> booleans on each firing. The values of these booleans
-correspond to the index of the entry that minimizes the distance. For
-example, if the first entry minimizes the distance, then all of these
-values are <i>false</i>. If the second entry minimizes the distance,
-then only the first boolean is true.
+   The Slicer functions as a decoder of the LineCoder. The parameter
+   <i>table</i> and <i>wordLength</i> has the same meaning as in LineCoder,
+   except that the type of <i>table</i> is constrained to an ArrayToken
+   of complex numbers. On each firing, the Slicer consumes one complex
+   token from its input port and computes the Euclidean distance between
+   the input data and the elements in the Slicer. The actor produces
+   <i>wordLength</i> booleans on each firing. The values of these booleans
+   correspond to the index of the entry that minimizes the distance. For
+   example, if the first entry minimizes the distance, then all of these
+   values are <i>false</i>. If the second entry minimizes the distance,
+   then only the first boolean is true.
 
-@author Rachel Zhou
-@version $Id$
-@since Ptolemy II 4.0
+   @author Rachel Zhou
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class Slicer extends Transformer {
 
@@ -79,10 +79,10 @@ public class Slicer extends Transformer {
 
         input.setTypeEquals(BaseType.COMPLEX);
         _inputRate = new Parameter(input, "tokenConsumptionRate",
-            new IntToken(1));
+                new IntToken(1));
         output.setTypeEquals(BaseType.BOOLEAN);
         _outputRate = new Parameter(output, "tokenProductionRate",
-            new IntToken(1));
+                new IntToken(1));
 
         table = new Parameter(this, "table");
         table.setTypeEquals(new ArrayType(BaseType.COMPLEX));
@@ -168,7 +168,7 @@ public class Slicer extends Transformer {
      *  @return The distance.
      */
     private double _computeEuclideanDistance(
-        Complex x, Complex y) {
+            Complex x, Complex y) {
         Complex z = x.subtract(y);
         return z.magnitude();
     }

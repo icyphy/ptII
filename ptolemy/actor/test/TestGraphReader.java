@@ -1,26 +1,26 @@
 /* An application for testing the conversion of Ptolemy models into
-weighted graphs.
+   weighted graphs.
 
- Copyright (c) 2003-2004 The University of Maryland
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The University of Maryland
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 
@@ -40,18 +40,18 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// TestGraphReader
 /** An application for testing the conversion of Ptolemy models into
-weighted graphs.
-<p>
-Usage: <code>java ptolemy.actor.test <em>xmlFileName</em></code>,
-<p>
-where <code><em>xmlFileName</code></em> is the name of a MoML file that
-contains a Ptolemy II specification. This application converts the
-specification into a weighted graph representation, and prints out information
-about this weighted graph.
+    weighted graphs.
+    <p>
+    Usage: <code>java ptolemy.actor.test <em>xmlFileName</em></code>,
+    <p>
+    where <code><em>xmlFileName</code></em> is the name of a MoML file that
+    contains a Ptolemy II specification. This application converts the
+    specification into a weighted graph representation, and prints out information
+    about this weighted graph.
 
-@author Shuvra S. Bhattacharyya
-@version $Id$
-@since Ptolemy II 4.0
+    @author Shuvra S. Bhattacharyya
+    @version $Id$
+    @since Ptolemy II 4.0
 */
 
 public class TestGraphReader {
@@ -119,7 +119,7 @@ public class TestGraphReader {
      *  @return The composite actor representation.
      */
     protected CompositeActor _readGraph(String[] args) {
-       if (args.length != 1) {
+        if (args.length != 1) {
             throw new RuntimeException("TestGraphReader expects exactly one "
                     + "argument.");
         }
@@ -139,7 +139,7 @@ public class TestGraphReader {
             throw new RuntimeException("Top level must be a CompositeActor "
                     + "(in this case, it is '"
                     + ((toplevel == null) ? "null" :
-                    toplevel.getClass().getName())
+                            toplevel.getClass().getName())
                     + "')\n");
         }
 

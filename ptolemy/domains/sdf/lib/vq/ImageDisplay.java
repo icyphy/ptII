@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @AcceptedRating Red
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 */
@@ -48,16 +48,16 @@ import javax.swing.SwingUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay
 /**
-Display an image on the screen using the ptolemy.media.Picture
-class.  For a sequence of images that are all the same size, this class
-will continually update the picture with new data.   If the size of the
-input image changes, then a new Picture object is created.  This class
-will only accept a IntMatrixToken on its input, and assumes that the
-input image contains greyscale pixel intensities between 0 and 255 (inclusive).
+   Display an image on the screen using the ptolemy.media.Picture
+   class.  For a sequence of images that are all the same size, this class
+   will continually update the picture with new data.   If the size of the
+   input image changes, then a new Picture object is created.  This class
+   will only accept a IntMatrixToken on its input, and assumes that the
+   input image contains greyscale pixel intensities between 0 and 255 (inclusive).
 
-@author Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 0.2
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 
 public class ImageDisplay extends Sink implements Placeable {

@@ -1,28 +1,28 @@
 /* An abstract base class for directors in the CT domain.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Green (chf@eecs.berkeley.edu)
@@ -58,78 +58,78 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
 /**
-This is the abstract base class for directors in the CT domain.
-<P>
-A CTDirector has a CTScheduler which provides the schedules for firing
-the actors in different phases of execution.
-<P>
-A CTDirector may have more than one ODE solvers. In each iteration, one
-of the ODE solvers is taking charge of solving the ODEs. This solver
-is called the <I>current ODE solver</I>.
-<P>
-The continuous time (CT) domain is a timed domain. There is a global
-notion of time that all the actors are aware of. Time is maintained
-by the director. The method getCurrentTime() returns the current
-notion of time. Time can be set by the setCurrentTime() method, but this
-method should not the called by the actors. Time can only be set
-by directors or their ODE solvers.
-<P>
-This base class maintains a list of parameters that may be used by
-ODE solvers and actors. These parameters are: <Br>
-<LI> <code>startTime</code>: The start time of the
-simulation. This parameter is effective only if the director
-is at the top level. Default value is 0.0.
-<LI> <code>stopTime</code>: The stop time of the simulation.
-This parameter is effective only if the director
-is at the top level. Default value is Double.MAX_VALUE.
-<LI> <code>initStepSize</code>: The suggested integration step size
-by the user. This will be the step size for fixed step
-size ODE solvers if there is no breakpoint. However, it is just
-a hint otherwise. Default value is 0.1
-<LI> <code>minStepSize</code>: The minimum step
-size that the user wants to use in the simulation. Default value is 1e-5.
-<LI> <code>maxStepSize</code>: The maximum step
-size the user wants to use in the simulation. Usually used to control
-the simulation speed. Default value is 1.0.
-<LI> <code>maxIterations</code>:
-Used only in implicit ODE solvers. This is the maximum number of
-iterations for finding the fixed point at one time point.
-Default value is 20.
-<LI> <code>errorTolerance</code>: This is the local truncation
-error tolerance, used for controlling the integration accuracy
-in variable step size ODE solvers. If the local truncation error
-at some step size control actors are greater than this tolerance, then the
-integration step is considered to have failed, and should be restarted with
-a reduced step size. Default value 1e-4.
-<LI> <code>valueResolution</code>:
- This is used to control the convergence of fixed point iterations.
-If in two successive iterations the differences of the state variables
-is less than this resolution, then the fixed point is considered to have
-reached.
-Default value is 1e-6.
-<LI> <code>timeResolution</code>: The minimum resolution
-of time. If two time values differ less than this value,
-they are considered equivalent. Default value is 1e-10.
-<P>
-This director also maintains a breakpoint table to record all
-predictable breakpoints that are greater than the current time.
-The breakpoints are sorted in their chronological order in the table.
-Breakpoints at the same time (controlled by the time resolution parameter)
-are considered to be one. A breakpoint can be inserted into the table by
-calling the fireAt() method. The fireAt method may be requested
-by the director, which inserts the start time and stop time of the
-execution. In this case, the first parameter actor is null. The fireAt
-method may also be requested by the actors and the requests are handled
-differently depending on the second parameter time. If the time is the
-current time, and if the actors are discrete actors, the actors are
-added into a refireActor list and will be fired in the current iteration.
-Otherwise, the time will be inserted into the breakpoint table.
-<p>
+   This is the abstract base class for directors in the CT domain.
+   <P>
+   A CTDirector has a CTScheduler which provides the schedules for firing
+   the actors in different phases of execution.
+   <P>
+   A CTDirector may have more than one ODE solvers. In each iteration, one
+   of the ODE solvers is taking charge of solving the ODEs. This solver
+   is called the <I>current ODE solver</I>.
+   <P>
+   The continuous time (CT) domain is a timed domain. There is a global
+   notion of time that all the actors are aware of. Time is maintained
+   by the director. The method getCurrentTime() returns the current
+   notion of time. Time can be set by the setCurrentTime() method, but this
+   method should not the called by the actors. Time can only be set
+   by directors or their ODE solvers.
+   <P>
+   This base class maintains a list of parameters that may be used by
+   ODE solvers and actors. These parameters are: <Br>
+   <LI> <code>startTime</code>: The start time of the
+   simulation. This parameter is effective only if the director
+   is at the top level. Default value is 0.0.
+   <LI> <code>stopTime</code>: The stop time of the simulation.
+   This parameter is effective only if the director
+   is at the top level. Default value is Double.MAX_VALUE.
+   <LI> <code>initStepSize</code>: The suggested integration step size
+   by the user. This will be the step size for fixed step
+   size ODE solvers if there is no breakpoint. However, it is just
+   a hint otherwise. Default value is 0.1
+   <LI> <code>minStepSize</code>: The minimum step
+   size that the user wants to use in the simulation. Default value is 1e-5.
+   <LI> <code>maxStepSize</code>: The maximum step
+   size the user wants to use in the simulation. Usually used to control
+   the simulation speed. Default value is 1.0.
+   <LI> <code>maxIterations</code>:
+   Used only in implicit ODE solvers. This is the maximum number of
+   iterations for finding the fixed point at one time point.
+   Default value is 20.
+   <LI> <code>errorTolerance</code>: This is the local truncation
+   error tolerance, used for controlling the integration accuracy
+   in variable step size ODE solvers. If the local truncation error
+   at some step size control actors are greater than this tolerance, then the
+   integration step is considered to have failed, and should be restarted with
+   a reduced step size. Default value 1e-4.
+   <LI> <code>valueResolution</code>:
+   This is used to control the convergence of fixed point iterations.
+   If in two successive iterations the differences of the state variables
+   is less than this resolution, then the fixed point is considered to have
+   reached.
+   Default value is 1e-6.
+   <LI> <code>timeResolution</code>: The minimum resolution
+   of time. If two time values differ less than this value,
+   they are considered equivalent. Default value is 1e-10.
+   <P>
+   This director also maintains a breakpoint table to record all
+   predictable breakpoints that are greater than the current time.
+   The breakpoints are sorted in their chronological order in the table.
+   Breakpoints at the same time (controlled by the time resolution parameter)
+   are considered to be one. A breakpoint can be inserted into the table by
+   calling the fireAt() method. The fireAt method may be requested
+   by the director, which inserts the start time and stop time of the
+   execution. In this case, the first parameter actor is null. The fireAt
+   method may also be requested by the actors and the requests are handled
+   differently depending on the second parameter time. If the time is the
+   current time, and if the actors are discrete actors, the actors are
+   added into a refireActor list and will be fired in the current iteration.
+   Otherwise, the time will be inserted into the breakpoint table.
+   <p>
 
-@author Jie Liu
-@version $Id$
-@since Ptolemy II 0.2
-@see ptolemy.actor.Director
+   @author Jie Liu
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see ptolemy.actor.Director
 */
 public abstract class CTDirector extends StaticSchedulingDirector {
 

@@ -1,28 +1,28 @@
 /* A PBODirector governs the execution of a PBO composite actor.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (neuendor@eecs.berkeley.edu)
@@ -58,62 +58,62 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// PBODirector
 /**
-This class implements the Port-based object model of computation.
-This model of computation is not data driven, like most of the other
-ptolemy domains.  Instead, it relies on analysis and user tuning of the
-scheduling to ensure that no important data is lost (or that lost data is
-not critical to the execution of the system).  This gives good real-time
-performance, and this model of computation is often used in embedded control
-systems.
-<p>
-Communication between port-based objects is *NOT* based on FIFO queues!
-Instead, the processes have a concept of a shared memory.   The shared
-memory is synchronized across processes that may be executing concurrently,
-so that an object is always guaranteed to have the most recent consistent
-available state of its inputs when it fires.   Note that in this communication
-model, data may be lost!
-<p>
-Port-based objects are normally associated with independant processes.
-However,
-unlike Process Networks, the threads are time-driven, instead of data-driven.
-Each actor has an associated firing period, which determines how often
-it will execute.  When a process is scheduled, it reads the current state
-of its input ports, performs calculation, and then sets the state of its
-output ports.   Because of this model, the calculated output during any
-firing is dependant on the arrival of events, which results in
-non-deterministic output.  Some effort must be expended at some point in the
-design of a system using this domain in properly choosing the firing
-periods of each actor.
-<p>
-Instead of associating a process with each actor, this director manually
-schedules the actors.  This can be useful for simulating execution on
-a target architecture that is different from the development machine.  In the
-future, a director based on actor/process could be developed that would allow
-the fastest execution on a given architecture.
-<p>
-The scheduling of actors is purposefully handled in an informal way.  Each
-actor specifies the period between firings using its
-<i>executionPeriod</i> parameter.  The
-scheduler attempts to fire the actor every time that period expires.
-The time spent during firing of the actor is given by its <i>executionTime</i>
-parameter.
-<p>
-This director schedules each process using a non-preemptive
-earliest deadline first strategy.
-Note that this means the currentTime of the director will advance
-by the <i>executionTime</i> parameter of an actor when the actor is fired.
-This is not the optimal strategy in terms of processor utilization, but it
-is deterministic and very much simpler than trying to deal with preeemptive
-modeling.  In such a case priority scheduling of some kind is
-probably necessary.
-<p>
-This director maintains a calendar queue of all the actors in the
-simulation, and fires them in the order given by the queue.  This director
-creates receivers of class PBOReceiver, which implements the shared memory
-communication.
+   This class implements the Port-based object model of computation.
+   This model of computation is not data driven, like most of the other
+   ptolemy domains.  Instead, it relies on analysis and user tuning of the
+   scheduling to ensure that no important data is lost (or that lost data is
+   not critical to the execution of the system).  This gives good real-time
+   performance, and this model of computation is often used in embedded control
+   systems.
+   <p>
+   Communication between port-based objects is *NOT* based on FIFO queues!
+   Instead, the processes have a concept of a shared memory.   The shared
+   memory is synchronized across processes that may be executing concurrently,
+   so that an object is always guaranteed to have the most recent consistent
+   available state of its inputs when it fires.   Note that in this communication
+   model, data may be lost!
+   <p>
+   Port-based objects are normally associated with independant processes.
+   However,
+   unlike Process Networks, the threads are time-driven, instead of data-driven.
+   Each actor has an associated firing period, which determines how often
+   it will execute.  When a process is scheduled, it reads the current state
+   of its input ports, performs calculation, and then sets the state of its
+   output ports.   Because of this model, the calculated output during any
+   firing is dependant on the arrival of events, which results in
+   non-deterministic output.  Some effort must be expended at some point in the
+   design of a system using this domain in properly choosing the firing
+   periods of each actor.
+   <p>
+   Instead of associating a process with each actor, this director manually
+   schedules the actors.  This can be useful for simulating execution on
+   a target architecture that is different from the development machine.  In the
+   future, a director based on actor/process could be developed that would allow
+   the fastest execution on a given architecture.
+   <p>
+   The scheduling of actors is purposefully handled in an informal way.  Each
+   actor specifies the period between firings using its
+   <i>executionPeriod</i> parameter.  The
+   scheduler attempts to fire the actor every time that period expires.
+   The time spent during firing of the actor is given by its <i>executionTime</i>
+   parameter.
+   <p>
+   This director schedules each process using a non-preemptive
+   earliest deadline first strategy.
+   Note that this means the currentTime of the director will advance
+   by the <i>executionTime</i> parameter of an actor when the actor is fired.
+   This is not the optimal strategy in terms of processor utilization, but it
+   is deterministic and very much simpler than trying to deal with preeemptive
+   modeling.  In such a case priority scheduling of some kind is
+   probably necessary.
+   <p>
+   This director maintains a calendar queue of all the actors in the
+   simulation, and fires them in the order given by the queue.  This director
+   creates receivers of class PBOReceiver, which implements the shared memory
+   communication.
 
-@author Steve Neuendorffer
-@version $Id$
+   @author Steve Neuendorffer
+   @version $Id$
 */
 public class PBOThreadDirector extends Director {
 
@@ -242,76 +242,76 @@ public class PBOThreadDirector extends Director {
     }
 
     /*       if (_deadlineQueue.isEmpty()) {
-             // nothing is currently waiting, so update time to the
-             // make the next actor ready to execute.
-             PBOEvent event = (PBOEvent)_requestQueue.take();
-             Actor actor = event.actor();
-             double requestTime = event.time();
-             // This is the time that the actor next wants to get fired.
-             double nextRequestTime =
-             requestTime + _getExecutionPeriod(actor);
-             double deadlineTime = requestTime + _getExecutionTime(actor);
-             _requestQueue.put(new PBOEvent(actor, nextRequestTime));
-             _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
-             setCurrentTime(requestTime);
-             return;
-             }
-             _debug("Starting iteration at " + getCurrentTime());
-             PBOEvent deadlineEvent = (PBOEvent)_deadlineQueue.take();
-             Actor executingActor = deadlineEvent.actor();
-             // The time the actor expected to finish by.
-             double executingTime = deadlineEvent.time();
-             // The time the actor actually started executing.
-             double firingTime = getCurrentTime();
-             // The time the actor actually finished.
-             double endFiringTime = getCurrentTime() +
-             _getExecutionTime(executingActor);
+    // nothing is currently waiting, so update time to the
+    // make the next actor ready to execute.
+    PBOEvent event = (PBOEvent)_requestQueue.take();
+    Actor actor = event.actor();
+    double requestTime = event.time();
+    // This is the time that the actor next wants to get fired.
+    double nextRequestTime =
+    requestTime + _getExecutionPeriod(actor);
+    double deadlineTime = requestTime + _getExecutionTime(actor);
+    _requestQueue.put(new PBOEvent(actor, nextRequestTime));
+    _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
+    setCurrentTime(requestTime);
+    return;
+    }
+    _debug("Starting iteration at " + getCurrentTime());
+    PBOEvent deadlineEvent = (PBOEvent)_deadlineQueue.take();
+    Actor executingActor = deadlineEvent.actor();
+    // The time the actor expected to finish by.
+    double executingTime = deadlineEvent.time();
+    // The time the actor actually started executing.
+    double firingTime = getCurrentTime();
+    // The time the actor actually finished.
+    double endFiringTime = getCurrentTime() +
+    _getExecutionTime(executingActor);
 
-             // first process any new activations that will
-             // occur before endFiringTime.
-             double requestTime = ((PBOEvent)_requestQueue.get()).time();
-             while (requestTime < endFiringTime) {
-             // make the given actor ready to execute.
-             PBOEvent event = (PBOEvent)_requestQueue.take();
-             Actor actor = (Actor)event.actor();
-             // This is the time that the actor next wants to get fired.
-             double nextRequestTime =
-             requestTime + _getExecutionPeriod(actor);
-             double deadlineTime = requestTime + _getExecutionTime(actor);
-             _requestQueue.put(new PBOEvent(actor, nextRequestTime));
-             _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
-             // get the next requested time
-             requestTime = ((PBOEvent)_requestQueue.get()).time();
-             }
+    // first process any new activations that will
+    // occur before endFiringTime.
+    double requestTime = ((PBOEvent)_requestQueue.get()).time();
+    while (requestTime < endFiringTime) {
+    // make the given actor ready to execute.
+    PBOEvent event = (PBOEvent)_requestQueue.take();
+    Actor actor = (Actor)event.actor();
+    // This is the time that the actor next wants to get fired.
+    double nextRequestTime =
+    requestTime + _getExecutionPeriod(actor);
+    double deadlineTime = requestTime + _getExecutionTime(actor);
+    _requestQueue.put(new PBOEvent(actor, nextRequestTime));
+    _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
+    // get the next requested time
+    requestTime = ((PBOEvent)_requestQueue.get()).time();
+    }
 
-             // now fire the currently executing actor and update
-             // time to reflect the amount of time spent.
-             boolean postfireReturns;
-             if (executingActor.prefire()) {
-             _debug("Firing actor " + ((Entity) executingActor).getFullName() +
-             " at " + firingTime);
-             executingActor.fire();
+    // now fire the currently executing actor and update
+    // time to reflect the amount of time spent.
+    boolean postfireReturns;
+    if (executingActor.prefire()) {
+    _debug("Firing actor " + ((Entity) executingActor).getFullName() +
+    " at " + firingTime);
+    executingActor.fire();
 
-             // This is the time when the actor finishes.
-             setCurrentTime(endFiringTime);
-             _debug("Postfiring actor at " + getCurrentTime());
-             postfireReturns = executingActor.postfire();
-             _debug("done firing");
+    // This is the time when the actor finishes.
+    setCurrentTime(endFiringTime);
+    _debug("Postfiring actor at " + getCurrentTime());
+    postfireReturns = executingActor.postfire();
+    _debug("done firing");
 
-             } else {
-             _debug("Actor " + ((Entity) executingActor).getFullName() +
-             " is not ready to fire.");
-             }
+    } else {
+    _debug("Actor " + ((Entity) executingActor).getFullName() +
+    " is not ready to fire.");
+    }
 
-             // reschedule this composite to handle the next process starting.
-             CompositeActor container = (CompositeActor)getContainer();
-             Director executive = container.getExecutiveDirector();
-             if (executive != null) {
-             _debug("Rescheduling composite");
-             executive.fireAt(container, getNextIterationTime());
-             }
+    // reschedule this composite to handle the next process starting.
+    CompositeActor container = (CompositeActor)getContainer();
+    Director executive = container.getExecutiveDirector();
+    if (executive != null) {
+    _debug("Rescheduling composite");
+    executive.fireAt(container, getNextIterationTime());
+    }
 
-             }*/
+    }*/
 
     /** Schedule a firing of the given actor at the given time. It does
      *  nothing in this base class. Derived classes
@@ -399,9 +399,9 @@ public class PBOThreadDirector extends Director {
                 thread.setPriority(IDLE);
                 _threadMap.put(actor, thread);
                 _deadlineQueue.put(new PBOEvent(actor,
-                        _getExecutionTime(actor)));
+                                           _getExecutionTime(actor)));
                 _requestQueue.put(new PBOEvent(actor,
-                        _getExecutionPeriod(actor)));
+                                          _getExecutionPeriod(actor)));
             }
         } else {
             throw new IllegalActionException("Cannot fire this director " +
@@ -651,7 +651,7 @@ public class PBOThreadDirector extends Director {
          */
         public final long getVirtualBinNumber(Object event) {
             return (long)((((PBOEvent) event).time()
-                    - _zeroReference.time())/_binWidth.time());
+                                  - _zeroReference.time())/_binWidth.time());
         }
 
         /** Given an array of PBOEvent objects, set an appropriate bin

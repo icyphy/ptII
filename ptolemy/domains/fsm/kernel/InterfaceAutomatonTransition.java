@@ -1,28 +1,28 @@
 /* A transition in an Interface Automaton.
 
- Copyright (c) 1999-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Red (yuhong@eecs.berkeley.edu)
 @AcceptedRating Red (yuhong@eecs.berkeley.edu)
 */
@@ -41,38 +41,38 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomatonTransition
 /**
-A Transition for Interface Automaton. In the Interface Automata paper
-written by Luca de Alfaro and Henzinger, transitions are called actions.
-However, the name action conflicts with the Action class in this package,
-so this class uses the name transition.  There are three types of transitions:
-input, output, and internal. Each transition has a label. The labels for
-input, output, and internal transitions end with "?", "!", and ";",
-respectively. The type of transition is determined by the ending character
-of the label this way. Each input transition corresponds to an input port of
-the InterfaceAutomaton that contains it, and its label, excluding the
-ending "?", must be the same as the input port name; Similarly, each output
-transition corresponds to an output port, and its label, excluding the
-ending "!", must be the same as the output port name;  Each internal
-transitions corresponds to a parameter of the InterfaceAutomaton that
-contains it, and its label, excluding the ending ";", must be the same as
-the parameter name.
-<p>
-The guard of each transition is set automatically. Users should not set
-the guard. For an input transition, the guard is set to <inputPort>_isPresent,
-where <inputPort> is the port corresponding to this transition; For output
-and internal transitions, the guard is set to true. Each of the output
-and internal transitions contain an Action. The expression of the Action
-is also set automatically. For output transition, the action is set to
-<outputPort>=true, where <outputPort> is the output port corresponding to
-this transition; for internal transition, the action is set to
-<parameter>=true, where <parameter> is the parameter corresponding to this
-transition.
+   A Transition for Interface Automaton. In the Interface Automata paper
+   written by Luca de Alfaro and Henzinger, transitions are called actions.
+   However, the name action conflicts with the Action class in this package,
+   so this class uses the name transition.  There are three types of transitions:
+   input, output, and internal. Each transition has a label. The labels for
+   input, output, and internal transitions end with "?", "!", and ";",
+   respectively. The type of transition is determined by the ending character
+   of the label this way. Each input transition corresponds to an input port of
+   the InterfaceAutomaton that contains it, and its label, excluding the
+   ending "?", must be the same as the input port name; Similarly, each output
+   transition corresponds to an output port, and its label, excluding the
+   ending "!", must be the same as the output port name;  Each internal
+   transitions corresponds to a parameter of the InterfaceAutomaton that
+   contains it, and its label, excluding the ending ";", must be the same as
+   the parameter name.
+   <p>
+   The guard of each transition is set automatically. Users should not set
+   the guard. For an input transition, the guard is set to <inputPort>_isPresent,
+   where <inputPort> is the port corresponding to this transition; For output
+   and internal transitions, the guard is set to true. Each of the output
+   and internal transitions contain an Action. The expression of the Action
+   is also set automatically. For output transition, the action is set to
+   <outputPort>=true, where <outputPort> is the output port corresponding to
+   this transition; for internal transition, the action is set to
+   <parameter>=true, where <parameter> is the parameter corresponding to this
+   transition.
 
-@author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
-@see InterfaceAutomaton
-@see Action
+   @author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
+   @see InterfaceAutomaton
+   @see Action
 */
 
 public class InterfaceAutomatonTransition extends Transition {

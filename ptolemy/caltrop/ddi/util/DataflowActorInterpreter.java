@@ -1,31 +1,31 @@
 /*
-@Copyright (c) 2003-2004 The Regents of the University of California.
-All rights reserved.
+  @Copyright (c) 2003-2004 The Regents of the University of California.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the
+  above copyright notice and the following two paragraphs appear in all
+  copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+  ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+  PT_COPYRIGHT_VERSION_2
+  COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+  @ProposedRating Red (cxh@eecs.berkeley.edu)
+  @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 
 */
@@ -56,38 +56,38 @@ import java.util.Map;
 //////////////////////////////////////////////////////////////////////////
 //// DataFlowActorInterpreter
 /**
-The actor interpreter provides an abstract interface to the execution
-of an actor. It provides a number of operations on the actions of an
-actor, allowing clients to test them for firability and execute them.
+   The actor interpreter provides an abstract interface to the execution
+   of an actor. It provides a number of operations on the actions of an
+   actor, allowing clients to test them for firability and execute them.
 
-<p> An instance of this class maintains some internal state
-identifying the action it currently works on. It expects its methods
-to be called in a particular order, viz.<br> {@link
-#actionSetup(caltrop.interpreter.ast.Action) actionSetup(action)} --
-{@link #actionEvaluatePrecondition() actionEvaluatePrecondition()} --
-{@link #actionStep() actionStep()} -- {@link #actionComputeOutputs()
-actionComputeOutputs()}
+   <p> An instance of this class maintains some internal state
+   identifying the action it currently works on. It expects its methods
+   to be called in a particular order, viz.<br> {@link
+   #actionSetup(caltrop.interpreter.ast.Action) actionSetup(action)} --
+   {@link #actionEvaluatePrecondition() actionEvaluatePrecondition()} --
+   {@link #actionStep() actionStep()} -- {@link #actionComputeOutputs()
+   actionComputeOutputs()}
 
-<br>
-During such a sequence, the methods operate on action <em>n</em>,
-which was selected by the call to {@link
-#actionSetup(caltrop.interpreter.ast.Action) actionSetup(action)}.
+   <br>
+   During such a sequence, the methods operate on action <em>n</em>,
+   which was selected by the call to {@link
+   #actionSetup(caltrop.interpreter.ast.Action) actionSetup(action)}.
 
-At any point in time, the client may call {@link #actionClear()
-actionClear()}, which deselects the action and deletes the references
-to the resources used by the action environment created during setup.
+   At any point in time, the client may call {@link #actionClear()
+   actionClear()}, which deselects the action and deletes the references
+   to the resources used by the action environment created during setup.
 
-@author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>
-@version $Id$
-@since Ptolemy II 3.1
-@see caltrop.interpreter.ast.Actor
-@see caltrop.interpreter.ast.Action
-@see #actionSetup
-@see #actionEvaluatePrecondition
-@see #actionStep
-@see #actionComputeOutputs
-@see #actionClear
- */
+   @author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>
+   @version $Id$
+   @since Ptolemy II 3.1
+   @see caltrop.interpreter.ast.Actor
+   @see caltrop.interpreter.ast.Action
+   @see #actionSetup
+   @see #actionEvaluatePrecondition
+   @see #actionStep
+   @see #actionComputeOutputs
+   @see #actionClear
+*/
 public class DataflowActorInterpreter {
 
     /**
@@ -115,7 +115,7 @@ public class DataflowActorInterpreter {
                 for (int j = 0; j < vars.length; j++) {
                     final InputChannel channel =
                         ((InputPort)(inputPortMap.get(inputPattern
-                                .getPortname()))).getChannel(0); // FIXME
+                                             .getPortname()))).getChannel(0); // FIXME
                     local.bind(vars[j],
                             new SingleTokenReaderThunk(channel, j));
                 }
@@ -127,9 +127,9 @@ public class DataflowActorInterpreter {
                 for (int j = 0; j < vars.length; j++) {
                     final InputChannel channel =
                         ((InputPort)(inputPortMap.get(inputPattern
-                                .getPortname()))).getChannel(0); // FIXME
+                                             .getPortname()))).getChannel(0); // FIXME
                     local.bind(vars[j], new MultipleTokenReaderThunk(channel,
-                            j, vars.length, repExprThunk, context));
+                                       j, vars.length, repExprThunk, context));
                 }
             }
         }
@@ -179,7 +179,7 @@ public class DataflowActorInterpreter {
             // FIXME: handle multiports
             final InputChannel channel =
                 ((InputPort)(inputPortMap.get(inputPattern
-                        .getPortname()))).getChannel(0);
+                                     .getPortname()))).getChannel(0);
             if (inputPattern.getRepeatExpr() == null) {
                 if (!channel.hasAvailable(inputPattern.getVariables().length))
                     return false;
@@ -187,7 +187,7 @@ public class DataflowActorInterpreter {
                 int repeatVal = context.intValue(env
                         .get(new EnvironmentKey(inputPattern.getPortname())));
                 if (!channel.hasAvailable(
-                        inputPattern.getVariables().length * repeatVal)) {
+                            inputPattern.getVariables().length * repeatVal)) {
                     return false;
                 }
             }
@@ -254,7 +254,7 @@ public class DataflowActorInterpreter {
 
             final OutputChannel channel =
                 ((OutputPort)(outputPortMap.get(outputExpression
-                        .getPortname()))).getChannel(0);
+                                      .getPortname()))).getChannel(0);
 
             // FIXME: handle multiports
             if (repeatExpr != null) {
@@ -285,33 +285,33 @@ public class DataflowActorInterpreter {
      * @return Map[ChannelID -> Integer]
      */
     /*public Map actionComputeOutputProfile() {
-        if (envAction < 0) {
-            throw new InterpreterException(
-                "DataflowActorInterpreter: Must call actionSetup() "
-                + "before calling actionComputeOutputs().");
-        }
-        Map profile = new HashMap();
-        final Action action = actor.getActions()[envAction];
-        final ExprEvaluator eval = new ExprEvaluator(context, env);
-        final OutputExpression [] outputExpressions =
-                action.getOutputExpressions();
-        for (int i = 0; i < outputExpressions.length; i++) {
-            final OutputExpression outputExpression = outputExpressions[i];
-            final Expression [] expressions =
-                    outputExpression.getExpressions();
-            final Expression repeatExpr = outputExpression.getRepeatExpr();
+      if (envAction < 0) {
+      throw new InterpreterException(
+      "DataflowActorInterpreter: Must call actionSetup() "
+      + "before calling actionComputeOutputs().");
+      }
+      Map profile = new HashMap();
+      final Action action = actor.getActions()[envAction];
+      final ExprEvaluator eval = new ExprEvaluator(context, env);
+      final OutputExpression [] outputExpressions =
+      action.getOutputExpressions();
+      for (int i = 0; i < outputExpressions.length; i++) {
+      final OutputExpression outputExpression = outputExpressions[i];
+      final Expression [] expressions =
+      outputExpression.getExpressions();
+      final Expression repeatExpr = outputExpression.getRepeatExpr();
 
-            int repeatValue = 1;
+      int repeatValue = 1;
 
-            // FIXME: handle multiports
-            if (repeatExpr != null) {
-                repeatValue = context.intValue(eval.evaluate(repeatExpr));
-            }
-            profile.put(new ChannelID(outputExpression.getPortname(), 0),
-                    new Integer(repeatValue * expressions.length));
-        }
-        return profile;
-    }*/
+      // FIXME: handle multiports
+      if (repeatExpr != null) {
+      repeatValue = context.intValue(eval.evaluate(repeatExpr));
+      }
+      profile.put(new ChannelID(outputExpression.getPortname(), 0),
+      new Integer(repeatValue * expressions.length));
+      }
+      return profile;
+      }*/
 
     /**
      * Clear action selection. The reference to the environment is

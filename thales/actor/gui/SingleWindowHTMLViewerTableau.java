@@ -27,25 +27,25 @@ import ptolemy.kernel.util.StringAttribute;
 /**
  * <p>Titre : SingleWindowHTMLViewerTableau</p>
  * <p>Description : Main Tableau for the SingleWindowHTMLViewer.</p>
-Copyright (c) 2003-2004 THALES.
-All rights reserved.
+ Copyright (c) 2003-2004 THALES.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
-OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+ SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+ OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  * <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
  * @author J&eacute;r&ocirc;me Blanc & Benoit Masson
  * 01 sept. 2003
@@ -93,9 +93,9 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
         if (attribute == url) {
             String urlSpec = ((Settable) attribute).getExpression();
             try {
-                                // NOTE: This cannot handle a URL that is relative to the
-                                // MoML file within which this attribute might be being
-                                // defined.  Is there any way to do that?
+                // NOTE: This cannot handle a URL that is relative to the
+                // MoML file within which this attribute might be being
+                // defined.  Is there any way to do that?
                 URL toRead = MoMLApplication.specToURL(urlSpec);
                 ((HTMLViewer) getFrame()).setPage(toRead);
             } catch (IOException ex) {
@@ -150,12 +150,12 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof HTMLEffigy) {
 
-                                // Indicate to the effigy that this factory contains effigies
-                                // offering multiple views of the effigy data.
+                // Indicate to the effigy that this factory contains effigies
+                // offering multiple views of the effigy data.
                 effigy.setTableauFactory(this);
 
-                                // First see whether the effigy already contains an
-                                // HTMLViewerTableau.
+                // First see whether the effigy already contains an
+                // HTMLViewerTableau.
                 SingleWindowHTMLViewerTableau tableau =
                     (SingleWindowHTMLViewerTableau) effigy.getEntity(
                             "SingleWHtmlTableau");
@@ -165,11 +165,11 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
                                 (HTMLEffigy) effigy,
                                 "SingleWHtmlTableau");
                 }
-                                // Unfortunately, if we have a jar url, (for example
-                                // jar:file:/C:/foo.jar!/intro.htm
-                                // then the java.net.URI toURL() method will return
-                                // a URL like jar:, which is missing the file: part
-                                // This breaks Ptolemy II under WebStart.
+                // Unfortunately, if we have a jar url, (for example
+                // jar:file:/C:/foo.jar!/intro.htm
+                // then the java.net.URI toURL() method will return
+                // a URL like jar:, which is missing the file: part
+                // This breaks Ptolemy II under WebStart.
                 URL pageURL = new URL(effigy.uri.getURI().toString());
                 try {
                     ((HTMLViewer) tableau.getFrame()).setPage(pageURL);
@@ -186,10 +186,10 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
                     }
                     ((HTMLViewer) tableau.getFrame()).setPage(anotherURL);
                 }
-                                // Don't call show() here.  If show() is called here,
-                                // then you can't set the size of the window after
-                                // createTableau() returns.  This will affect how
-                                // centering works.
+                // Don't call show() here.  If show() is called here,
+                // then you can't set the size of the window after
+                // createTableau() returns.  This will affect how
+                // centering works.
                 return tableau;
             } else {
                 return null;

@@ -1,28 +1,28 @@
 /* An editor for Ptolemy II objects.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
@@ -51,25 +51,25 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// Configurer
 /**
-This class is an editor for the user settable attributes of an object.
-It may consist of more than one editor panel.  If the object has
-any attributes that are instances of EditorPaneFactory, then the
-panes made by those factories are stacked vertically in this panel.
-Otherwise, a static method of EditorPaneFactory is
-used to construct a default editor.
-<p>
-The restore() method restores the values of the attributes of the
-object to their values when this object was created.  This can be used
-in a modal dialog to implement a cancel button, which restores
-the attribute values to those before the dialog was opened.
-<p>
-This class is created by an instance of the EditParametersDialog class
-to handle the part of the dialog that edits the parameters.
+   This class is an editor for the user settable attributes of an object.
+   It may consist of more than one editor panel.  If the object has
+   any attributes that are instances of EditorPaneFactory, then the
+   panes made by those factories are stacked vertically in this panel.
+   Otherwise, a static method of EditorPaneFactory is
+   used to construct a default editor.
+   <p>
+   The restore() method restores the values of the attributes of the
+   object to their values when this object was created.  This can be used
+   in a modal dialog to implement a cancel button, which restores
+   the attribute values to those before the dialog was opened.
+   <p>
+   This class is created by an instance of the EditParametersDialog class
+   to handle the part of the dialog that edits the parameters.
 
-@see EditorPaneFactory
-@author Steve Neuendorffer and Edward A. Lee
-@version $Id$
-@since Ptolemy II 0.4
+   @see EditorPaneFactory
+   @author Steve Neuendorffer and Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 0.4
 */
 
 public class Configurer extends JPanel implements CloseListener {

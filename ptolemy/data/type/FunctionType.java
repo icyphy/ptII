@@ -1,28 +1,28 @@
 /** A class representing the type of a RecordToken.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -41,10 +41,10 @@ import ptolemy.kernel.util.InternalErrorException;
 //////////////////////////////////////////////////////////////////////////
 //// FunctionType
 /**
-A class representing the type of a FunctionToken.
+   A class representing the type of a FunctionToken.
 
-@author Steve Neuendorffer
-$Id$
+   @author Steve Neuendorffer
+   $Id$
 */
 
 public class FunctionType extends StructuredType {
@@ -119,34 +119,34 @@ public class FunctionType extends StructuredType {
         return token;
         //   if (false) {
         /*FunctionToken functionToken = (FunctionToken)token;
-          // The converted token has the same set of labels as the argument.
-          // That is, fields not in this type are not cut off.
-          Object[] labelArray = functionToken.labelSet().toArray();
+        // The converted token has the same set of labels as the argument.
+        // That is, fields not in this type are not cut off.
+        Object[] labelArray = functionToken.labelSet().toArray();
 
-          // Arrays that will be used to create the new token.
-          String[] labelStringArray = new String[labelArray.length];
-          Token[] values = new Token[labelArray.length];
+        // Arrays that will be used to create the new token.
+        String[] labelStringArray = new String[labelArray.length];
+        Token[] values = new Token[labelArray.length];
 
-          for (int i = 0; i < labelArray.length; i++) {
-          String label = (String)labelArray[i];
+        for (int i = 0; i < labelArray.length; i++) {
+        String label = (String)labelArray[i];
 
-          // Convert each field of the function.
-          Token fieldToken = functionToken.get(label);
-          Type newFieldTypeTerm = get(label);
+        // Convert each field of the function.
+        Token fieldToken = functionToken.get(label);
+        Type newFieldTypeTerm = get(label);
 
-          // If the type of the field is specified, then convert it.
-          if (newFieldTypeTerm != null) {
-          values[i] = newFieldTypeTerm.convert(fieldToken);
-          } else {
-          values[i] = fieldToken;
-          }
+        // If the type of the field is specified, then convert it.
+        if (newFieldTypeTerm != null) {
+        values[i] = newFieldTypeTerm.convert(fieldToken);
+        } else {
+        values[i] = fieldToken;
+        }
 
-          // Store the label for each field.
-          labelStringArray[i] = label;
-          }
+        // Store the label for each field.
+        labelStringArray[i] = label;
+        }
 
-          return new FunctionToken(labelStringArray, values);
-          }*/
+        return new FunctionToken(labelStringArray, values);
+        }*/
     }
 
     /** Determine if the argument represents the same FunctionType as
@@ -359,7 +359,7 @@ public class FunctionType extends StructuredType {
 
         // Check the return type.
         if (!getReturnType().isSubstitutionInstance(
-                functionType.getReturnType())) {
+                    functionType.getReturnType())) {
             return false;
         }
 

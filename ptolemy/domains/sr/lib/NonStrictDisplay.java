@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Red (pwhitake@eecs.berkeley.edu)
 */
@@ -40,21 +40,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 import javax.swing.text.BadLocationException;
 
 /**
-Display the values of the tokens arriving on the input channels along
-with the associated time in a text area on the screen.  If the value is
-undefined or known to be absent, that information is indicated instead.
-Each input token is written on a separate line.  The input type can be
-of any type.  If the input happens to be a StringToken,
-then the surrounding quotation marks are stripped before printing
-the value of the token.  Thus, string-valued tokens can be used to
-generate arbitrary textual output, at one token per line.
-Tokens are read from the input only in
-the postfire() method, to allow them to settle in domains where they
-converge to a fixed point.
+   Display the values of the tokens arriving on the input channels along
+   with the associated time in a text area on the screen.  If the value is
+   undefined or known to be absent, that information is indicated instead.
+   Each input token is written on a separate line.  The input type can be
+   of any type.  If the input happens to be a StringToken,
+   then the surrounding quotation marks are stripped before printing
+   the value of the token.  Thus, string-valued tokens can be used to
+   generate arbitrary textual output, at one token per line.
+   Tokens are read from the input only in
+   the postfire() method, to allow them to settle in domains where they
+   converge to a fixed point.
 
-@author  Paul Whitaker, Yuhong Xiong, Edward A. Lee
-@version $Id$
-@since Ptolemy II 2.0
+   @author  Paul Whitaker, Yuhong Xiong, Edward A. Lee
+   @version $Id$
+   @since Ptolemy II 2.0
 */
 public class NonStrictDisplay extends Display {
 

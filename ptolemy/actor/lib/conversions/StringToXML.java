@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
@@ -41,14 +41,14 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// StringToXml
 /**
-This actor converts a string token to an xml token.
+   This actor converts a string token to an xml token.
 
-<p>FIXME: The type of the output ports is set to XmlTOken for now.
-       It should ???.
+   <p>FIXME: The type of the output ports is set to XmlTOken for now.
+   It should ???.
 
-@author Yang Zhao
-@version $Id$
-@since Ptolemy II 4.0
+   @author Yang Zhao
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class StringToXML extends Transformer{
 
@@ -85,9 +85,9 @@ public class StringToXML extends Transformer{
             if (input.hasToken(i)) {
                 StringToken in = (StringToken)input.get(i);
                 try {
-                _outToken = new XMLToken(in.stringValue());
-                output.broadcast(_outToken);
-                //k++;
+                    _outToken = new XMLToken(in.stringValue());
+                    output.broadcast(_outToken);
+                    //k++;
                 }
                 catch (java.lang.Exception ex) {
                     throw new IllegalActionException(this, ex,
@@ -97,21 +97,21 @@ public class StringToXML extends Transformer{
         }
 
         /*//for test purpose, use the following code when fire.
-        String in = "<?xml version='1.0' encoding='UTF-8'?> <Actors>" +
-                                 "<Actor> <name>Const</name> <class>ptolemy.actor.lib.Const</class>"
-                                 + " </Actor> </Actors>";
-        try {
-            //_outToken = new XmlToken[1];
-            _outToken = new XmlToken(in);
+          String in = "<?xml version='1.0' encoding='UTF-8'?> <Actors>" +
+          "<Actor> <name>Const</name> <class>ptolemy.actor.lib.Const</class>"
+          + " </Actor> </Actors>";
+          try {
+          //_outToken = new XmlToken[1];
+          _outToken = new XmlToken(in);
 
-            }
-            catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("exception is " + e.getClass());
-                System.out.println("### can't construct an XmlToken from: " + in + "\n");
-                throw new IllegalActionException(this, e.getMessage());
-        }
-        output.broadcast(_outToken); */
+          }
+          catch (Exception e) {
+          e.printStackTrace();
+          System.out.println("exception is " + e.getClass());
+          System.out.println("### can't construct an XmlToken from: " + in + "\n");
+          throw new IllegalActionException(this, e.getMessage());
+          }
+          output.broadcast(_outToken); */
     }
 
     /** Return true if there is token at the <i>input<i> input.

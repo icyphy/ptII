@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
@@ -32,12 +32,12 @@ package ptolemy.plot;
 //////////////////////////////////////////////////////////////////////////
 //// CmdLineArgException
 /**
-Exception thrown by plot classes if there are format
-problems with the data to be plotted.
+   Exception thrown by plot classes if there are format
+   problems with the data to be plotted.
 
-@author Christopher Hylands
-@version $Id$
-@since Ptolemy II 0.2
+   @author Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 0.2
 */
 public class CmdLineArgException extends Exception {
     public CmdLineArgException() { super(); }

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION 2
-                                                COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION 2
+COPYRIGHTENDKEY
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -56,21 +56,21 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// KeyReader
 /**
-Read in a keystore from a FileParameter and output a Key.
+   Read in a keystore from a FileParameter and output a Key.
 
-<p>Keystores are ways to manage keys and certificates.
-See the {@link KeyStoreActor} documentation for more information about
-keystores.
+   <p>Keystores are ways to manage keys and certificates.
+   See the {@link KeyStoreActor} documentation for more information about
+   keystores.
 
-<p>This class has many parameters, derived classes usually set some
-of the parameters to reasonable defaults and then hide them
-by setting the visibility to EXPERT.
+   <p>This class has many parameters, derived classes usually set some
+   of the parameters to reasonable defaults and then hide them
+   by setting the visibility to EXPERT.
 
-@see PrivateKeyReader
-@see PublicKeyReader
-@author  Christopher Hylands Brooks
-@version $Id$
-@since Ptolemy II 3.1
+   @see PrivateKeyReader
+   @see PublicKeyReader
+   @author  Christopher Hylands Brooks
+   @version $Id$
+   @since Ptolemy II 3.1
 */
 public class KeyReader extends KeyStoreActor {
     /** Construct an actor with the given container and name.

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
@@ -36,15 +36,15 @@ import java.util.Random;
 ///////////////////////////////////////////////////////////////
 //// DoubleArrayStat
 /**
-This class provides a library for statistical operations on arrays of
-doubles.
-Unless explicitly noted otherwise, all array arguments are assumed to be
-non-null. If a null array is passed to a method, a NullPointerException
-will be thrown in the method or called methods.
+   This class provides a library for statistical operations on arrays of
+   doubles.
+   Unless explicitly noted otherwise, all array arguments are assumed to be
+   non-null. If a null array is passed to a method, a NullPointerException
+   will be thrown in the method or called methods.
 
-@author Jeff Tsay
-@version $Id$
-@since Ptolemy II 0.3
+   @author Jeff Tsay
+   @version $Id$
+   @since Ptolemy II 0.3
 */
 public class DoubleArrayStat extends DoubleArrayMath {
 

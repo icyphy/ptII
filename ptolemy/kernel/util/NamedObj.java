@@ -1,28 +1,28 @@
 /* Base class for objects with a name and a container.
 
- Copyright (c) 1997-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
@@ -57,84 +57,84 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// NamedObj
 /**
-This is a base class for almost all Ptolemy II objects.
+   This is a base class for almost all Ptolemy II objects.
 
-<p>
-This class supports a naming scheme, change requests, a persistent
-file format (MoML), a mutual exclusion mechanism for models (the
-workspace), and a hierarchical class mechanism with inheritance.
-Instances of this class can also be parameterized by making this
-instance the container of instances of the Attribute class.
+   <p>
+   This class supports a naming scheme, change requests, a persistent
+   file format (MoML), a mutual exclusion mechanism for models (the
+   workspace), and a hierarchical class mechanism with inheritance.
+   Instances of this class can also be parameterized by making this
+   instance the container of instances of the Attribute class.
 
-<p>
-A simple name is an arbitrary string with no periods.  If no simple
-name is provided, the name is taken to be an empty string (not a null
-reference). An instance also has a full name, which is a concatenation
-of the container's full name and the simple name, separated by a
-period. If there is no container, then the full name begins with a
-period. The full name is used for error reporting throughout Ptolemy
-II.
+   <p>
+   A simple name is an arbitrary string with no periods.  If no simple
+   name is provided, the name is taken to be an empty string (not a null
+   reference). An instance also has a full name, which is a concatenation
+   of the container's full name and the simple name, separated by a
+   period. If there is no container, then the full name begins with a
+   period. The full name is used for error reporting throughout Ptolemy
+   II.
 
-<p>
-Instances of this class are associated with a workspace, specified as
-a constructor argument.  The workspace is immutable.  It cannot be
-changed during the lifetime of the object.  It is used for
-synchronization of methods that depend on or modify the state of
-objects within it. If no workspace is specified, then the default
-workspace is used.  Note that the workspace should not be confused
-with the container.  The workspace never serves as a container.
+   <p>
+   Instances of this class are associated with a workspace, specified as
+   a constructor argument.  The workspace is immutable.  It cannot be
+   changed during the lifetime of the object.  It is used for
+   synchronization of methods that depend on or modify the state of
+   objects within it. If no workspace is specified, then the default
+   workspace is used.  Note that the workspace should not be confused
+   with the container.  The workspace never serves as a container.
 
-<p>
-In this base class, the container is null by default, and no
-method is provided to change it. Derived classes that support
-hierarchy provide one or more methods that set the container.
+   <p>
+   In this base class, the container is null by default, and no
+   method is provided to change it. Derived classes that support
+   hierarchy provide one or more methods that set the container.
 
-<p> By convention, if the container of an instance of NamedObj is set,
-then the instance should be removed from the workspace directory, if
-it is present.  The workspace directory is expected to list only
-top-level objects in a hierarchy.  The NamedObj can still use the
-workspace for synchronization.  Any object contained by another uses
-the workspace of its container as its own workspace by default.
+   <p> By convention, if the container of an instance of NamedObj is set,
+   then the instance should be removed from the workspace directory, if
+   it is present.  The workspace directory is expected to list only
+   top-level objects in a hierarchy.  The NamedObj can still use the
+   workspace for synchronization.  Any object contained by another uses
+   the workspace of its container as its own workspace by default.
 
-<p>
-Instances of Attribute can be attached by calling their setContainer()
-method and passing this object as an argument. These instances will
-then be reported by the getAttribute() and attributeList() methods.
-Classes derived from NamedObj may constrain attributes to be a
-subclass of Attribute.  To do that, they should override the protected
-_addAttribute() method to throw an exception if the object provided is
-not of the right class.
+   <p>
+   Instances of Attribute can be attached by calling their setContainer()
+   method and passing this object as an argument. These instances will
+   then be reported by the getAttribute() and attributeList() methods.
+   Classes derived from NamedObj may constrain attributes to be a
+   subclass of Attribute.  To do that, they should override the protected
+   _addAttribute() method to throw an exception if the object provided is
+   not of the right class.
 
-<p>
-This class supports <i>change requests</i> or <i>mutations</i>,
-which are changes to a model that are performed in a disciplined
-fashion.  In particular, a mutation can be requested via the
-requestChange() method.  Derived classes will ensure that the mutation
-is executed at a time when it is safe to execute mutations.
+   <p>
+   This class supports <i>change requests</i> or <i>mutations</i>,
+   which are changes to a model that are performed in a disciplined
+   fashion.  In particular, a mutation can be requested via the
+   requestChange() method.  Derived classes will ensure that the mutation
+   is executed at a time when it is safe to execute mutations.
 
-<p>
-This class supports the notion of a <i>model error</i>, which is
-an exception that is handled by a registered model error handler, or
-passed up the container hierarchy if there is no registered model
-error handler.  This mechanism complements the exception mechanism in
-Java. Instead of unraveling the calling stack to handle exceptions,
-this mechanism passes control up the Ptolemy II hierarchy.
+   <p>
+   This class supports the notion of a <i>model error</i>, which is
+   an exception that is handled by a registered model error handler, or
+   passed up the container hierarchy if there is no registered model
+   error handler.  This mechanism complements the exception mechanism in
+   Java. Instead of unraveling the calling stack to handle exceptions,
+   this mechanism passes control up the Ptolemy II hierarchy.
 
-<p>
-Derived classes should override the _description() method to
-append new fields if there is new information that should be included
-in the description.
+   <p>
+   Derived classes should override the _description() method to
+   append new fields if there is new information that should be included
+   in the description.
 
-@author Mudit Goel, Edward A. Lee, Neil Smyth
-@version $Id$
-@since Ptolemy II 0.2
-@see Attribute
-@see Workspace
+   @author Mudit Goel, Edward A. Lee, Neil Smyth
+   @version $Id$
+   @since Ptolemy II 0.2
+   @see Attribute
+   @see Workspace
 */
 
 public class NamedObj implements
-        Changeable, Cloneable, Debuggable,
-        DebugListener, Derivable, Serializable {
+                          Changeable, Cloneable, Debuggable,
+                          DebugListener, Derivable, Serializable {
 
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
@@ -1652,11 +1652,11 @@ public class NamedObj implements
                 // initCause() and then throw.
                 CloneNotSupportedException cloneException =
                     new CloneNotSupportedException(
-                        "The field associated with "
-                        + fields[i].getName()
-                        + " could not be automatically cloned because "
-                        + ex.getMessage() + ".  This can be caused if "
-                        + "the field is not defined in a public class.");
+                            "The field associated with "
+                            + fields[i].getName()
+                            + " could not be automatically cloned because "
+                            + ex.getMessage() + ".  This can be caused if "
+                            + "the field is not defined in a public class.");
 
                 cloneException.initCause(ex);
                 throw cloneException;
@@ -2125,12 +2125,12 @@ public class NamedObj implements
                     newRelativeName = context.getName() + "." + relativeName;
                 }
                 result.addAll(_getHeritageList(
-                        visited,
-                        shadow,
-                        container,
-                        depth + 1,
-                        newRelativeName,
-                        depthList));
+                                      visited,
+                                      shadow,
+                                      container,
+                                      depth + 1,
+                                      newRelativeName,
+                                      depthList));
             }
             if (!(context instanceof Instantiable)) {
                 // This level can't possibly defer, so it has
@@ -2173,7 +2173,7 @@ public class NamedObj implements
                         int overrideDepth = candidate.getOverrideDepth();
                         if (shadow &&
                                 (overrideDepth == 0
-                                || overrideDepth > depth)) {
+                                        || overrideDepth > depth)) {
                             // Yes, it is.
                             continue;
                         }
@@ -2193,11 +2193,11 @@ public class NamedObj implements
                             // Note that depth starts at zero for this call,
                             // since this is checking propagation from here.
                             result.addAll(candidate._getHeritageList(
-                                    visited, shadow, candidate, 0, null, null));
+                                                  visited, shadow, candidate, 0, null, null));
                         } else {
                             List subDepthList = new LinkedList();
                             result.addAll(candidate._getHeritageList(
-                                    visited, shadow, candidate, 0, null, subDepthList));
+                                                  visited, shadow, candidate, 0, null, subDepthList));
                             depthList.addAll(subDepthList);
                         }
 

@@ -1,28 +1,28 @@
 /* An actor that computes a specified math function of the input.
 
- Copyright (c) 1998-2004 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1998-2004 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
 @ProposedRating Yellow (chf@eecs.berkeley.edu)
 @AcceptedRating Yellow (janneck@eecs.berkeley.edu)
@@ -48,42 +48,42 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// MathFunction
 /**
-Produce an output token on each firing with a value that is
-equal to the specified math function of the input.
-The input and output types are DoubleToken.  The functions
-are a subset of those in the java.lang.Math class.  They are:
-<ul>
-<li> <b>exp</b>: The exponential function.
-This is the default function for this actor
-If the argument is NaN, then the result is NaN.
-<li> <b>log</b>: The natural logarithm function.
-If the argument is NaN, then the result is NaN.
-<li> <b>modulo</b>: The modulo after division.
-If the second operand is zero, then the result is NaN.
-<li> <b>sign</b>: If the argument is greater than 0, return 1.0, if
-it is less than 0, return -1.0, otherwise return 0.0.
-<li> <b>square</b>: The square function
-If the argument is NaN, then the result is NaN.
-<li> <b>sqrt</b>: The square root function.
-If the argument is NaN, then the result is NaN.
-</ul>
-<p>
+   Produce an output token on each firing with a value that is
+   equal to the specified math function of the input.
+   The input and output types are DoubleToken.  The functions
+   are a subset of those in the java.lang.Math class.  They are:
+   <ul>
+   <li> <b>exp</b>: The exponential function.
+   This is the default function for this actor
+   If the argument is NaN, then the result is NaN.
+   <li> <b>log</b>: The natural logarithm function.
+   If the argument is NaN, then the result is NaN.
+   <li> <b>modulo</b>: The modulo after division.
+   If the second operand is zero, then the result is NaN.
+   <li> <b>sign</b>: If the argument is greater than 0, return 1.0, if
+   it is less than 0, return -1.0, otherwise return 0.0.
+   <li> <b>square</b>: The square function
+   If the argument is NaN, then the result is NaN.
+   <li> <b>sqrt</b>: The square root function.
+   If the argument is NaN, then the result is NaN.
+   </ul>
+   <p>
 
-NOTES:
-1. Some functions like exp, log, square, and sqrt act on a single
-operand only.  Other functions like modulo act on two operands.
-The actor acquires a second input when the function is changed to
-modulo, and loses the input when the function is changed back.
-2. There is an alternative to using the MathFunction.modulo() method
-If you want to use the IEEE remainder standard, use the Remainder actor.
+   NOTES:
+   1. Some functions like exp, log, square, and sqrt act on a single
+   operand only.  Other functions like modulo act on two operands.
+   The actor acquires a second input when the function is changed to
+   modulo, and loses the input when the function is changed back.
+   2. There is an alternative to using the MathFunction.modulo() method
+   If you want to use the IEEE remainder standard, use the Remainder actor.
 
-@author C. Fong
-@version $Id$
-@since Ptolemy II 1.0
-@see AbsoluteValue
-@see Remainder
-@see Scale
-@see TrigFunction
+   @author C. Fong
+   @version $Id$
+   @since Ptolemy II 1.0
+   @see AbsoluteValue
+   @see Remainder
+   @see Scale
+   @see TrigFunction
 */
 public class MathFunction extends TypedAtomicActor {
 

@@ -1,35 +1,35 @@
 /* A TypedCompositeActor that creates multiple instances of itself
- during the preinitialize phase of model execution.
+   during the preinitialize phase of model execution.
 
- Copyright (c) 2003-2004 The Regents of the University of California and
- Research in Motion Limited.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2003-2004 The Regents of the University of California and
+   Research in Motion Limited.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
- LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
- INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
- SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
- OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+   LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+   INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+   SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+   OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
- SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
- BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
- LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+   SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+   THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+   PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+   BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+   LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Red (zkemenczy@rim.net)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @ProposedRating Red (zkemenczy@rim.net)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.hoc;
@@ -59,58 +59,58 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// MultiInstanceComposite
 /**
- A {@link ptolemy.actor.TypedCompositeActor} that creates multiple
- instances of itself during the preinitialize phase of model execution.<p>
+   A {@link ptolemy.actor.TypedCompositeActor} that creates multiple
+   instances of itself during the preinitialize phase of model execution.<p>
 
- A MultiInstanceComposite actor may be used to instantiate {@link
- #nInstances} identical processing blocks within a model. This actor
- (the "master") creates {@link #nInstances}&nbsp;-&nbsp;1 additional
- instances (clones) of itself during the {@link #preinitialize()} phase
- of model execution and destroys these additional instances during model
- {@link #wrapup()}. MultiInstanceComposite <em>must be opaque</em> (have
- a director), so that its Actor interface methods (preinitialize(), ...,
- wrapup()) are invoked during model initialization. Each instance may
- refer to its {@link #instance} [0..{@link #nInstances}-1] parameter
- which is set automatically by the master if it needs to know its
- instance number.<p>
+   A MultiInstanceComposite actor may be used to instantiate {@link
+   #nInstances} identical processing blocks within a model. This actor
+   (the "master") creates {@link #nInstances}&nbsp;-&nbsp;1 additional
+   instances (clones) of itself during the {@link #preinitialize()} phase
+   of model execution and destroys these additional instances during model
+   {@link #wrapup()}. MultiInstanceComposite <em>must be opaque</em> (have
+   a director), so that its Actor interface methods (preinitialize(), ...,
+   wrapup()) are invoked during model initialization. Each instance may
+   refer to its {@link #instance} [0..{@link #nInstances}-1] parameter
+   which is set automatically by the master if it needs to know its
+   instance number.<p>
 
- MultiInstanceComposite <em>input</em> ports must not be multiports (for
- now) and may be connected to multiports or regular ports.  During
- preinitialize(), the master MultiInstanceComposite determines how its
- input ports are connected, and creates additional relations in its
- container (the model it is embedded in) to connect the input ports of
- its clones (instances) to the same output port if that port is a
- multiport.  If that output port is a regular port, the clone's input
- port is linked to the already existing relation between that output
- port and the master's input port.  MultiInstanceComposite
- <em>output</em> ports must not be multiports (for now) and must be
- connected to input multiports. The master MultiInstanceComposite
- creates additional relations to connect the output ports of its clones
- to the input port. Finally, after all these connections are made, the
- master's preinitialize() calls preinitialize() of the clones.<p>
+   MultiInstanceComposite <em>input</em> ports must not be multiports (for
+   now) and may be connected to multiports or regular ports.  During
+   preinitialize(), the master MultiInstanceComposite determines how its
+   input ports are connected, and creates additional relations in its
+   container (the model it is embedded in) to connect the input ports of
+   its clones (instances) to the same output port if that port is a
+   multiport.  If that output port is a regular port, the clone's input
+   port is linked to the already existing relation between that output
+   port and the master's input port.  MultiInstanceComposite
+   <em>output</em> ports must not be multiports (for now) and must be
+   connected to input multiports. The master MultiInstanceComposite
+   creates additional relations to connect the output ports of its clones
+   to the input port. Finally, after all these connections are made, the
+   master's preinitialize() calls preinitialize() of the clones.<p>
 
- From here on until wrapup(), nothing special happens. Type resolution
- occurs on all instances in the modified model, so does initialize() and
- the computation of schedules by directors of the master and clones.<p>
+   From here on until wrapup(), nothing special happens. Type resolution
+   occurs on all instances in the modified model, so does initialize() and
+   the computation of schedules by directors of the master and clones.<p>
 
- During model wrapup(), the master MultiContextComposite deletes any
- relations created, unlinks any ports if needed, and deletes the clones
- it created. To re-synchronize vergil's model graph, an empty
- ChangeRequest is also queued with the Manager.<p>
+   During model wrapup(), the master MultiContextComposite deletes any
+   relations created, unlinks any ports if needed, and deletes the clones
+   it created. To re-synchronize vergil's model graph, an empty
+   ChangeRequest is also queued with the Manager.<p>
 
- Actor parameters inside MultiInstanceComposite may refer to parameters
- of the container model. This presents a problem during cloning() and
- wrapup() where the container model's parameters are not in scope during
- the clone's validateSettables() (unless the MultiInstanceComposite is
- built as a moml class having its own set of parameters). This problem
- is for now solved by providing a temporary scope copy using a
- ScopeExtendingAttribute for the cloning() and wrapup() phases of the
- clones.<p>
+   Actor parameters inside MultiInstanceComposite may refer to parameters
+   of the container model. This presents a problem during cloning() and
+   wrapup() where the container model's parameters are not in scope during
+   the clone's validateSettables() (unless the MultiInstanceComposite is
+   built as a moml class having its own set of parameters). This problem
+   is for now solved by providing a temporary scope copy using a
+   ScopeExtendingAttribute for the cloning() and wrapup() phases of the
+   clones.<p>
 
- @author Zoltan Kemenczy, Sean Simmons, Research In Motion Limited
- @version $Id$
- @since Ptolemy II 4.0
- */
+   @author Zoltan Kemenczy, Sean Simmons, Research In Motion Limited
+   @version $Id$
+   @since Ptolemy II 4.0
+*/
 public class MultiInstanceComposite extends TypedCompositeActor {
 
     /** Construct a MultiInstanceComposite actor in the specified
@@ -245,9 +245,9 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                             if (port.isOutput() &&
                                     !otherPort.isMultiport()) {
                                 throw new IllegalActionException(this,
-                                    getFullName() + ".preinitialize(): "
-                                    + "output port "+ port.getName()
-                                    + "must be connected to a multi-port");
+                                        getFullName() + ".preinitialize(): "
+                                        + "output port "+ port.getName()
+                                        + "must be connected to a multi-port");
                             }
                             if ((port.isInput() && otherPort.isOutput()) ||
                                     (port.isOutput() && otherPort.isInput())) {

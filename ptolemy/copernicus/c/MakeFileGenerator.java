@@ -169,7 +169,7 @@ public class MakeFileGenerator {
 
         // Main Target.
         code.append("\n"+ className
-                    + ".exe : depend $(OBJECTS) $(LIB_FILE)\n");
+                + ".exe : depend $(OBJECTS) $(LIB_FILE)\n");
 
         code.append("\tgcc $(CFLAGS) $(OBJECTS) $(LIB_FILE) ");
         if (gc) {

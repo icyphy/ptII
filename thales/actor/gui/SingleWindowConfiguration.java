@@ -1,27 +1,27 @@
 /*
-Copyright (c) 2003-2004 THALES.
-All rights reserved.
+  Copyright (c) 2003-2004 THALES.
+  All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+  Permission is hereby granted, without written agreement and without
+  license or royalty fees, to use, copy, modify, and distribute this
+  software and its documentation for any purpose, provided that the
+  above copyright notice and the following two paragraphs appear in all
+  copies of this software.
 
-IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
-OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  IN NO EVENT SHALL THALES BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+  SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+  OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THALES HAS BEEN
+  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
-BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
-UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+  THALES SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+  BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+  UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Yellow (jerome.blanc@thalesgroup.com)
-@AcceptedRating
- */
+  @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+  @AcceptedRating
+*/
 package thales.actor.gui;
 
 import java.net.URI;
@@ -53,12 +53,12 @@ import thales.vergil.SingleWindowApplication;
 //////////////////////////////////////////////////////////////////////////
 //// SingleWindowConfiguration
 /**
-A Configuration that intercept created Tableau, and the content of its
-Frame into a TabbedPane.
+   A Configuration that intercept created Tableau, and the content of its
+   Frame into a TabbedPane.
 
-@author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
-@version $Id$
-@since Ptolemy II 3.1
+   @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
+   @version $Id$
+   @since Ptolemy II 3.1
 */
 public class SingleWindowConfiguration extends Configuration {
 
@@ -96,8 +96,8 @@ public class SingleWindowConfiguration extends Configuration {
             if (model != null) {
                 Iterator factories =
                     model.attributeList(TableauFactory.class).iterator();
-                                // If there are more than one of these, use the first
-                                // one that agrees to open the model.
+                // If there are more than one of these, use the first
+                // one that agrees to open the model.
                 while (factories.hasNext() && factory == null) {
                     factory = (TableauFactory) factories.next();
                     try {
@@ -137,14 +137,14 @@ public class SingleWindowConfiguration extends Configuration {
                     tableau.setMaster(true);
                 }
                 tableau.setEditable(effigy.isModifiable());
-                                //THALES MODIF
+                //THALES MODIF
                 catchTableau(tableau);
                 tableau.show();
                 return tableau;
             } catch (Exception ex) {
-                                // Note that we can't rethrow the exception here
-                                // because removing the effigy may result in
-                                // the application exiting.
+                // Note that we can't rethrow the exception here
+                // because removing the effigy may result in
+                // the application exiting.
                 MessageHandler.error(
                         "Failed to open tableau for "
                         + effigy.identifier.getExpression(),
@@ -222,34 +222,34 @@ public class SingleWindowConfiguration extends Configuration {
             // Look to see whether the model has a URIAttribute.
             List attributes = entity.attributeList(URIAttribute.class);
             if (attributes.size() > 0) {
-                                // The entity has a URI, which was probably
-                                // inserted by MoMLParser.
+                // The entity has a URI, which was probably
+                // inserted by MoMLParser.
 
                 URI uri = ((URIAttribute) attributes.get(0)).getURI();
 
-                                // Set the URI and identifier of the effigy.
+                // Set the URI and identifier of the effigy.
                 effigy.uri.setURI(uri);
                 effigy.identifier.setExpression(uri.toString());
 
-                                // Put the effigy into the directory
+                // Put the effigy into the directory
                 ModelDirectory directory = getDirectory();
                 effigy.setName(directory.uniqueName(entity.getName()));
                 effigy.setContainer(directory);
 
-                                // Create a default tableau.
+                // Create a default tableau.
                 return createPrimaryTableau(effigy);
             } else {
-                                // If we get here, then we are looking inside a model
-                                // that is defined within the same file as the parent,
-                                // probably.  Create a new PtolemyEffigy
-                                // and open a tableau for it.
+                // If we get here, then we are looking inside a model
+                // that is defined within the same file as the parent,
+                // probably.  Create a new PtolemyEffigy
+                // and open a tableau for it.
 
-                                // Put the effigy inside the effigy of the parent,
-                                // rather than directly into the directory.
+                // Put the effigy inside the effigy of the parent,
+                // rather than directly into the directory.
                 NamedObj parent = (NamedObj) entity.getContainer();
                 PtolemyEffigy parentEffigy = null;
-                                // Find the first container above in the hierarchy that
-                                // has an effigy.
+                // Find the first container above in the hierarchy that
+                // has an effigy.
                 while (parent != null && parentEffigy == null) {
                     parentEffigy = getEffigy(parent);
                     parent = (NamedObj) parent.getContainer();
@@ -286,9 +286,9 @@ public class SingleWindowConfiguration extends Configuration {
                     // Indicate success.
                     isContainerSet = true;
                 }
-                                // If the above code did not find an effigy to put
-                                // the new effigy within, then put it into the
-                                // directory directly.
+                // If the above code did not find an effigy to put
+                // the new effigy within, then put it into the
+                // directory directly.
                 if (!isContainerSet) {
                     CompositeEntity directory = getDirectory();
                     effigy.setName(directory.uniqueName(entity.getName()));
