@@ -1,4 +1,4 @@
-/* An DDEThread controls an actors according to DDE semantics.
+/* A DDEThread controls an actor according to DDE semantics.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -43,15 +43,15 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// DDEThread
 /**
-An DDEThread controls an actors according to DDE semantics. The primary
-purpose of an DDEThread is to control the iteration methods of an
-executing actor and to maintain the actor's local notion of time
-according to DDE semantics. An DDEThread has two unique functionalities
-for accomplishing this goal. First an DDEThread instantiates a TimeKeeper
-object. A TimeKeeper object manages a given actor's local notion of time
-according to DDE semantics. The second task of an DDEThread is to notify
-directly connected actors when the actor controlled by the thread is
-ending execution.
+A DDEThread controls an actor according to DDE semantics. The 
+primary purpose of a DDEThread is to control the iteration 
+methods of an executing actor and to maintain the actor's local 
+notion of time according to DDE semantics. A DDEThread has two 
+unique functionalities for accomplishing this goal. First a 
+DDEThread instantiates a TimeKeeper object. A TimeKeeper manages 
+a given actor's local notion of time according to DDE semantics. 
+The second task of a DDEThread is to notify directly connected 
+actors when the actor controlled by the thread is ending execution.
 
 @author John S. Davis II
 @version $Id$
@@ -60,9 +60,9 @@ ending execution.
 public class DDEThread extends ProcessThread {
 
     /** Construct a thread to be used to execute the iteration
-     *  methods of an DDEActor. This increases the count of
+     *  methods of a DDEActor. This increases the count of
      *  active actors in the director.
-     * @param actor The DDEActor that needs to be executed.
+     * @param actor The DDEActor that will be executed.
      * @param director The director of this actor.
      */
     public DDEThread(Actor actor, ProcessDirector director)
@@ -74,20 +74,21 @@ public class DDEThread extends ProcessThread {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the time keeper that keeps time for the actor that this
-     *  thread controls.
-     * @return The TimeKeeper of the actor that this thread controls.
+    /** Return the time keeper that keeps time for the actor that 
+     *  this thread controls.
+     * @return The TimeKeeper of the actor that this thread 
+     *  controls.
      */
     public TimeKeeper getTimeKeeper() {
 	return _timeKeeper;
     }
 
-    /** Notify directly connected actors that the actor controlled by
-     *  this thread is ending execution. "Directly connected actors"
-     *  are those that are connected to the actor controlled by this
-     *  thread via output ports of this thread's actor. Send events
-     *  with time stamps of TimedQueueReceiver.INACTIVE to these
-     *  "downstream" actors.
+    /** Notify output-connected actors that the actor controlled 
+     *  by this thread is ending execution. <I>Output-connected 
+     *  actors</I> are those that are connected to the actor 
+     *  controlled by this thread via output ports of this thread's 
+     *  actor. Send events with time stamps of 
+     *  TimedQueueReceiver.INACTIVE to these "downstream" actors.
      * @see ptolemy.domains.dde.kernel.TimedQueueReceiver
      */
     public synchronized void noticeOfTermination() {
@@ -97,7 +98,8 @@ public class DDEThread extends ProcessThread {
 	if( outputPorts != null ) {
 	    while( outputPorts.hasMoreElements() ) {
 	        IOPort port = (IOPort)outputPorts.nextElement();
-                Receiver rcvrs[][] = (Receiver[][])port.getRemoteReceivers();
+                Receiver rcvrs[][] = 
+                	(Receiver[][])port.getRemoteReceivers();
                 if( rcvrs == null ) {
 	            break;
 	        }
@@ -106,7 +108,8 @@ public class DDEThread extends ProcessThread {
 			try {
 			    if( ((DDEReceiver)rcvrs[i][j]).getRcvrTime()
 				    != endTime ) {
-				((DDEReceiver) rcvrs[i][j]).put(null, endTime);
+				((DDEReceiver) rcvrs[i][j]).put(null, 
+                                	endTime);
 			    }
 			} catch( TerminateProcessException e ) {
 			    // Do nothing since we are ending
@@ -117,12 +120,16 @@ public class DDEThread extends ProcessThread {
 	}
     }
 
-    /** Start this thread and initialize the time keeper to a future time
-     *  if specified in the director's initial time table. Use this method
-     *  to facilitate any calls to DDEDirector.fireAt() that occur prior
-     *  to the creation of this thread. If fireAt() was called for time
-     *  'T' with respect to the actor that this thread controls, then set
-     *  the current time of this threads TimeKeeper to time 'T.'
+    /** Start this thread and initialize the time keeper to a future 
+     *  time if specified in the director's initial time table. Use 
+     *  this method to facilitate any calls to DDEDirector.fireAt() 
+     *  that occur prior to the creation of this thread. If fireAt() 
+     *  was called for time 'T' with respect to the actor that this 
+     *  thread controls, then set the current time of this threads 
+     *  TimeKeeper to time 'T.' 
+     *  <P>
+     *  NOTE: This method assumes an implementation of fireAt() that
+     *  would be more appropriately named <I>continueAt()</I>. 
      */
     public void start() {
 	Actor actor = getActor();
@@ -149,9 +156,6 @@ public class DDEThread extends ProcessThread {
 	noticeOfTermination();
 	super.wrapup();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                   package friendly methods		   ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
