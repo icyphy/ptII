@@ -47,6 +47,10 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
+proc _getSchedule {scheduler} {
+    list [objectsToNames [iterToObjects [[$scheduler getSchedule] actorIterator]]]
+}
+
 test cycle-1.0 {Cycle Scheduling tests} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set manager [java::new ptolemy.actor.Manager $w Manager]
@@ -75,7 +79,7 @@ test cycle-1.0 {Cycle Scheduling tests} {
 #    $scheduler addDebugListener $l1
 
     $toplevel preinitialize
-    set sched1 [_testEnums schedule $scheduler]
+    set sched1 [_getSchedule $scheduler]
     list $sched1
 } {{{Actor1 Actor2 Delay}}}
 
