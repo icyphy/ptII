@@ -36,7 +36,7 @@
 # 719 ms. Memory: 3520K Free: 2212K (63%)
 
 
-awk 'BEGIN {min=99999999; count = 0 }
+awk 'BEGIN {min=99999999}
     NR > 1  {   if ( $0 ~ /ms. Memory:/) {
 		    count++;
 		    sum+= $1;
@@ -59,7 +59,6 @@ awk 'BEGIN {min=99999999; count = 0 }
 		}
 	    }
 	END {   
-	        print "memorystats: count = " count 
 		if (count==0) {
 		    print description ": count == 0! Perhaps the output did not contain   \"ms. Memory\""
 		} else {
