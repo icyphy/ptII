@@ -1202,7 +1202,7 @@ ArrayAccess :
 FieldAccess :
     /* The following never matches Name '.' IDENTIFIER */
     PrimaryExpression '.' SimpleName
-    { $$ = new ObjectFieldAccessNode((ExprNode) $1, (NameNode) $3); }
+    { $$ = new ObjectFieldAccessNode((NameNode) $3, (ExprNode) $1); }
   | SUPER '.' SimpleName
     { $$ = new SuperFieldAccessNode((NameNode) $3); }
   ;

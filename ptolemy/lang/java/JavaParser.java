@@ -1478,7 +1478,7 @@ case 206:
 break;
 case 207:
 //#line 1205 "jparser.y"
-{ yyval.obj = new ObjectFieldAccessNode((ExprNode) val_peek(2).obj, (NameNode) val_peek(0).obj); }
+{ yyval.obj = new ObjectFieldAccessNode((NameNode) val_peek(0).obj, (ExprNode) val_peek(2).obj); }
 break;
 case 208:
 //#line 1207 "jparser.y"

@@ -107,6 +107,43 @@ public class TypeUtility implements JavaStaticSemanticConstants {
         return sclass.getDefType();
     }
 
+    public static TypeNode arithPromoteType(TypeNode type) {
+        switch (kind(type)) {
+          case TYPE_KIND_BYTE:      
+          case TYPE_KIND_CHAR:
+          case TYPE_KIND_SHORT:
+          case TYPE_KIND_INT:
+          return IntTypeNode.instance;
+        }
+        return type;   
+    }
+
+    public static TypeNode arithPromoteType(final TypeNode type1, final TypeNode type2) {
+        int kind1 = kind(type1);
+        int kind2 = kind(type2);
+ 
+        if ((kind1 == TYPE_KIND_DOUBLE) ||
+            (kind2 == TYPE_KIND_DOUBLE)) {
+           return DoubleTypeNode.instance;
+        }
+       
+        if ((kind1 == TYPE_KIND_FLOAT) ||
+            (kind2 == TYPE_KIND_FLOAT)) {
+           return FloatTypeNode.instance;
+        }
+
+        if ((kind1 == TYPE_KIND_LONG) ||
+            (kind2 == TYPE_KIND_LONG)) {
+           return LongTypeNode.instance;
+        }
+
+        if ((kind1 == TYPE_KIND_BOOLEAN) ||
+            (kind2 == TYPE_KIND_BOOLEAN)) {     
+           return BoolTypeNode.instance;
+        }
+        return IntTypeNode.instance;
+    }       
+
     /** Return true if TypeNodes t1 and t2 are identical. */
     public static boolean compareTypes(TypeNode t1, TypeNode t2) {
         if (t1 == t2) {  // primitive types, or reference to same type node
@@ -221,6 +258,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
         return ((type == NullTypeNode.instance) || (type instanceof TypeNameNode));
     }
 
+    /** Return true iff type is an array type. */     
     public static boolean isArrayType(TypeNode type) {
         return (type.classID() == ARRAYTYPENODE_ID);
     }
@@ -356,7 +394,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
          case NULLTYPENODE_ID:     return TYPE_KIND_NULL;              
 
           // primitive types          
-         case BOOLTYPENODE_ID:    return TYPE_KIND_BOOL;          
+         case BOOLTYPENODE_ID:    return TYPE_KIND_BOOLEAN;          
          case CHARTYPENODE_ID:    return TYPE_KIND_CHAR; 
          case BYTETYPENODE_ID:    return TYPE_KIND_BYTE; 
          case SHORTTYPENODE_ID:   return TYPE_KIND_SHORT; 
@@ -364,12 +402,15 @@ public class TypeUtility implements JavaStaticSemanticConstants {
          case LONGTYPENODE_ID:    return TYPE_KIND_LONG; 
          case FLOATTYPENODE_ID:   return TYPE_KIND_FLOAT; 
          case DOUBLETYPENODE_ID:  return TYPE_KIND_DOUBLE;                  
-         
+                       
          // class or interface
          case TYPENAMENODE_ID:    return kind((TypeNameNode) type);
          
          // array types (derive from Object)
          case ARRAYTYPENODE_ID:   return TYPE_KIND_CLASS;
+
+         // void type          
+         case VOIDTYPENODE_ID:    return TYPE_KIND_VOID;
        }
 
        ApplicationUtility.error("unknown type encountered : " + type);
@@ -490,43 +531,6 @@ public class TypeUtility implements JavaStaticSemanticConstants {
         return false;
     }
 
-    public static TypeNode arithPromoteType(TypeNode type) {
-        switch (kind(type)) {
-          case TYPE_KIND_BYTE:      
-          case TYPE_KIND_CHAR:
-          case TYPE_KIND_SHORT:
-          case TYPE_KIND_INT:
-          return IntTypeNode.instance;
-        }
-        return type;   
-    }
-
-    public static TypeNode arithPromoteType(final TypeNode type1, final TypeNode type2) {
-        int kind1 = kind(type1);
-        int kind2 = kind(type2);
- 
-        if ((kind1 == TYPE_KIND_DOUBLE) ||
-            (kind2 == TYPE_KIND_DOUBLE)) {
-           return DoubleTypeNode.instance;
-        }
-       
-        if ((kind1 == TYPE_KIND_FLOAT) ||
-            (kind2 == TYPE_KIND_FLOAT)) {
-           return FloatTypeNode.instance;
-        }
-
-        if ((kind1 == TYPE_KIND_LONG) ||
-            (kind2 == TYPE_KIND_LONG)) {
-           return LongTypeNode.instance;
-        }
-
-        if ((kind1 == TYPE_KIND_BOOL) ||
-            (kind2 == TYPE_KIND_BOOL)) {     
-           return BoolTypeNode.instance;
-        }
-        return IntTypeNode.instance;
-    }       
-
     /** Return an array type with given element type and dimensions.  
      *  If dims is 0, return the element type.
      */
@@ -537,6 +541,21 @@ public class TypeUtility implements JavaStaticSemanticConstants {
         return elementType;
     }
 
+    /** Given a list of expressions, return an array of the corresponding types
+     *  of the expressions.
+     */
+    public static TypeNode[] typeArray(List exprList) {
+        Iterator exprItr = exprList.iterator();
+        TypeNode[] retval = new TypeNode[exprList.size()];
+        
+        int i = 0; 
+        while (exprItr.hasNext()) {
+            retval[i] = type((ExprNode) exprItr.next());            
+            i++;
+        }    
+        return retval;
+    }  
+    
 
     /** Return true if type is one of the types contained in typeArray. The
      *  comparison is made between references only, so this only works for
@@ -555,7 +574,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
     
     // primitive types
           
-    public static final int TYPE_KIND_BOOL    = 0; // first primitive type should start at 0       
+    public static final int TYPE_KIND_BOOLEAN    = 0; // first primitive type should start at 0       
     public static final int TYPE_KIND_BYTE    = 1;        
     public static final int TYPE_KIND_SHORT   = 2;        
     public static final int TYPE_KIND_CHAR    = 3;            
@@ -577,6 +596,11 @@ public class TypeUtility implements JavaStaticSemanticConstants {
     
     /** The kind of NULL. */
     public static final int TYPE_KIND_NULL    = 11;            
+   
+    /** The void type (for return types). */
+    public static final int TYPE_KIND_VOID    = 12;
+    
+    public static final int TYPE_KINDS = TYPE_KIND_VOID + 1;
                       
     protected static final TypeNode[] _PRIMITIVE_KIND_TO_TYPE = new TypeNode[]
      { BoolTypeNode.instance, ByteTypeNode.instance, ShortTypeNode.instance, 

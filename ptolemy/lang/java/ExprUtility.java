@@ -40,7 +40,7 @@ import java.util.Iterator;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
-public class ExprUtility {
+public class ExprUtility implements JavaStaticSemanticConstants {
 
     /** Public constructor allows inheritence of methods although this class has no
      *  instance members.
@@ -57,9 +57,43 @@ public class ExprUtility {
         return false;    
     }
     
+    /** Return the integer value given by the IntLitNode. */
     public static int intValue(IntLitNode litNode) {
         String literal = litNode.getLiteral();
         
         return Integer.decode(literal).intValue();             
     } 
+    
+    /** Return a resolved node corresponding the object that the 
+     *  FieldAccessNode accesses. The argument must be either an
+     *  ObjectFieldAccessNode, a ThisFieldAccessNode, or a 
+     *  SuperFieldAccessNode. Otherwise throw an IllegalArgumentException.
+     *  In particular, if node is a SuperFieldAccessNode or a ThisFieldAccessNode, 
+     *  return a new instance of ThisNode. If the node is a TypeFieldAccessNode,
+     *  return null. If the argument node has been name resolved,
+     *  return a node that is also resolved.
+     */
+    public static TreeNode accessedObject(FieldAccessNode node) {
+        TreeNode retval;
+        
+        switch (node.classID()) {
+          case OBJECTFIELDACCESSNODE_ID:
+          return ((ObjectFieldAccessNode) node).getObject();
+ 
+          case THISFIELDACCESSNODE_ID:
+          case SUPERFIELDACCESSNODE_ID:
+          retval = new ThisNode();
+          TypeNameNode typeNameNode = (TypeNameNode) node.getProperty(THIS_CLASS_KEY);
+          if (typeNameNode != null) {
+             retval.setProperty(THIS_CLASS_KEY, typeNameNode);
+          }          
+          return retval;
+          
+          case TYPEFIELDACCESSNODE_ID:
+          return null;          
+        }
+    
+        ApplicationUtility.error("accessedObject() : node not supported " + node);             
+        return null;
+    }
 }

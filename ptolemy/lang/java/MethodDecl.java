@@ -43,6 +43,8 @@ import java.util.HashSet;
 import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.nodetypes.TypeNode;
 
+//////////////////////////////////////////////////////////////////////////
+//// MethodDecl
 /** A declaration of a method or constructor.
  *
  *  @author Jeff Tsay

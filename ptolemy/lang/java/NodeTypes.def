@@ -79,7 +79,7 @@ IterationNode A StatementNode c 0 c
 JumpStmtNode A StatementNode k 0 TreeNode label k
 
 ExprNode A TreeNode c 0 c
-FieldAccessNode A ExprNode i NamedNode i c 0 c
+FieldAccessNode A ExprNode i NamedNode i k 0 NameNode name k
 
 SingleExprNode A ExprNode k 0 ExprNode expr k
 SingleOpNode A SingleExprNode c 1 ExprNode expr c
@@ -197,10 +197,10 @@ NullPntrNode C ExprNode c 0 c
 ThisNode C ExprNode c 0 c
 ArrayAccessNode C ExprNode k 0 ExprNode array ExprNode index k
 ObjectNode C ExprNode i NamedNode i k 0 NameNode name k
-ObjectFieldAccessNode C FieldAccessNode i NamedNode i k 0 TreeNode object NameNode name k
-SuperFieldAccessNode C FieldAccessNode i NamedNode i k 0 NameNode name k
-TypeFieldAccessNode C FieldAccessNode i NamedNode i k 0 TypeNameNode fType NameNode name k
-ThisFieldAccessNode C FieldAccessNode i NamedNode i k 0 NameNode name k
+ObjectFieldAccessNode C FieldAccessNode i NamedNode i k 1 NameNode name TreeNode object k
+SuperFieldAccessNode C FieldAccessNode i NamedNode i k 1 NameNode name k
+TypeFieldAccessNode C FieldAccessNode i NamedNode i k 1  NameNode name TypeNameNode fType k
+ThisFieldAccessNode C FieldAccessNode i NamedNode i k 1 NameNode name k
 TypeClassAccessNode C ExprNode k 0 TypeNode fType k
 OuterThisAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 OuterSuperAccessNode C OuterClassAccessNode c 1 TypeNameNode type c

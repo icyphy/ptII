@@ -119,7 +119,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
            if (container.hasEnviron()) {
               
               if ((categories & CG_USERTYPE) != 0) {
-                 ApplicationUtility.assert((categories & CG_USERTYPE) == 0);
                  
                  possibles = container.getTypeEnviron().lookupFirstProper(
                   name.getIdent(), categories);
@@ -227,17 +226,17 @@ public class StaticResolution implements JavaStaticSemanticConstants {
           MemberDecl md = (MemberDecl) d;
           if (qualifier == AbsentTreeNode.instance) {
              if ((md.getModifiers() & STATIC_MOD) != 0) {
-                res = new TypeFieldAccessNode(currentClass, name);
+                res = new TypeFieldAccessNode(name, currentClass);
              } else {
                 res = new ThisFieldAccessNode(name);
                 res.setProperty(THIS_CLASS_KEY, currentClass);
                 // FIXME what's wrong with a normal constructor
              }
           } else if ((JavaDecl.getDecl(qualifier).category & CG_USERTYPE) != 0) {      
-             res = new TypeFieldAccessNode(
-                    new TypeNameNode((NameNode) qualifier), name);
+             res = new TypeFieldAccessNode(name,
+                    new TypeNameNode((NameNode) qualifier));
           } else {
-             res = new ObjectFieldAccessNode(qualifier, name);
+             res = new ObjectFieldAccessNode(name, qualifier);
           }
 
           name.setQualifier(AbsentTreeNode.instance);
@@ -475,21 +474,21 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         Iterator nodeItr = pass0ResolvedList.iterator();
         
         while (nodeItr.hasNext()) {
-              CompileUnitNode node = (CompileUnitNode) nodeItr.next();
-              node.accept(new ResolveClassVisitor(), null);              
+           CompileUnitNode node = (CompileUnitNode) nodeItr.next();
+           node.accept(new ResolveClassVisitor(), null);              
         }
            
         nodeItr = pass0ResolvedList.iterator();
         
         while (nodeItr.hasNext()) {
-              CompileUnitNode node = (CompileUnitNode) nodeItr.next();
-              node.accept(new ResolveInheritanceVisitor(), null);              
+           CompileUnitNode node = (CompileUnitNode) nodeItr.next();
+           node.accept(new ResolveInheritanceVisitor(), null);              
               
-              String filename = (String) node.getDefinedProperty(IDENT_KEY);
+           String filename = (String) node.getDefinedProperty(IDENT_KEY);
               
-              if (filename != null) {
-                 allPass1ResolvedMap.put(filename, node);
-              }
+           if (filename != null) {
+              allPass1ResolvedMap.put(filename, node);
+           }
         }
 
         pass0ResolvedList.clear();                    

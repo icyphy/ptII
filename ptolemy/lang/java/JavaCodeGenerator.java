@@ -474,6 +474,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     public Object visitForNode(ForNode node, LinkedList args) {
+        // FIX ME
         return "for (" + _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_INIT)) +
                "; " + (String) node.childReturnValueAt(node.CHILD_INDEX_TEST) + "; " +
                _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_UPDATE)) + ") " +

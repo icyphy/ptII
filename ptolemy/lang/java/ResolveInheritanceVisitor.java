@@ -85,7 +85,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
            _fillInInheritedMembers(me, superClass);
         } else {
-           System.out.println("super class null, type = " + node.getName());
+           ApplicationUtility.assert(me == StaticResolution.OBJECT_DECL);
         }
         
 
