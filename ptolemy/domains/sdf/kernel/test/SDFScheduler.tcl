@@ -1161,7 +1161,9 @@ test SDFScheduler-13.1 {connected graph, disconnected relation} {
     set sched1 ""
     catch {set sched1 [_getSchedule $toplevel $scheduler]} err1
     list $sched1 $err1
-} {{} {ptolemy.actor.sched.NotSchedulableException: Actors remain that cannot be scheduled:W.TopLevel.Consumer}}
+} {{} {ptolemy.actor.sched.NotSchedulableException: Actors remain that cannot be scheduled:
+W.Toplevel.Consumer
+}}
 
 
 
