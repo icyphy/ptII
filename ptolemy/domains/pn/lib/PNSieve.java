@@ -120,7 +120,7 @@ public class PNSieve extends AtomicActor {
 		    //System.out.println(Integer.toString(value));
 		    //System.out.println("proceeding");
                     newSieve = new PNSieve(container, Integer.toString(value) + "_sieve");
-		    System.out.println("Created new seive");
+		    //System.out.println("Created new seive");
                     newSieve.setParam("prime", Integer.toString(value));
                     //System.out.println("Created new seive and set param");
                     //Disconnecting the plotter and attaching it to the output
