@@ -1,4 +1,4 @@
-/* Static functions for manipulating lists of children of a TreeNode.
+/* Commonly used static functions for manipulating Strings.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -33,17 +33,24 @@ package ptolemy.lang;
 
 import java.io.File;
 
-/**
+/** Commonly used static functions for manipulating Strings.
 @author Jeff Tsay
 @version $Id$
  */
 public class StringManip {
 
+    /** Return the portion of the substring after the final period '.', if any.
+     *  Note that the input string is usually either a classname or a
+     *  file name. 
+     */
     public static final String unqualifiedPart(String qualifiedName) {
         return partAfterLast(qualifiedName, '.');
     }
 
-    public static final String rawFilename(String filename) {
+    /** Return the substring that follows after the last file
+     *  file separator.
+     */
+    public static final String baseFilename(String filename) {
         return partAfterLast(filename, File.separatorChar);
     }
 
@@ -62,5 +69,4 @@ public class StringManip {
     public static final String partBeforeLast(String str, char c) {
         return str.substring(0, str.lastIndexOf(c));
     }
-
 }
