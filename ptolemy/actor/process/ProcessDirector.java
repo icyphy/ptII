@@ -452,10 +452,14 @@ public class ProcessDirector extends Director {
             }
 
             // Now wake up threads that depend on the manager.
-            // FIXME: For some reason, this isn't sufficient.
-            // Have to click the stop button twice.
             Manager manager = ((Actor)getContainer()).getManager();
-            (new NotifyThread(manager)).start();
+            // NOTE: Used to do the notification in a new thread.
+            // For some reason, however, this isn't sufficient.
+            // Have to click the stop button twice.
+            // (new NotifyThread(manager)).start();
+            synchronized(manager) {
+            	manager.notifyAll();
+            }
 
             // Wait until all process threads stop.
             synchronized (this) {
