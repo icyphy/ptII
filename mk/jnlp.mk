@@ -247,6 +247,30 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in
 		$(PTINY_MAIN_JAR) $(KEYALIAS)
 
 
+# Web Start: Ptiny version of Vergil - No sources or build env., in a sandbox
+vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in
+	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
+		-e 's%@PTVERSION@%$(PTVERSION)%' \
+			$< > $@
+	@echo "# Adding jar files to $@"
+	-chmod a+x "$(MKJNLP)"
+	"$(MKJNLP)" $@ \
+		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(PTINY_MAIN_JAR) \
+		$(PTINY_JNLP_JARS)
+	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
+	rm -rf JNLP-INF
+	mkdir JNLP-INF
+	cp $@ JNLP-INF/APPLICATION.JNLP
+	@echo "# $(PTINY_MAIN_JAR) contains the main class"
+	"$(JAR)" -uf $(PTINY_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	rm -rf JNLP-INF
+	"$(PTJAVA_DIR)/bin/jarsigner" \
+		-keystore $(KEYSTORE) \
+		$(STOREPASSWORD) \
+		$(PTINY_MAIN_JAR) $(KEYALIAS)
+
+
 # Web Start: Full Runtime version of Vergil - No sources or build env.
 vergil.jnlp: vergil.jnlp.in
 	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
