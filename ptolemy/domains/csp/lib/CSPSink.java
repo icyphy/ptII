@@ -67,7 +67,7 @@ public class CSPSink extends AtomicActor {
         	(new IntToken(-1)) );
     }
 
-    /** Construct a CSPSink with the sepcified container and the
+    /** Construct a CSPSink with the specified container and the
      *  specified name. The name must be unique within the container
      *  or an exception is thrown. The container argument must not be
      *  null, or a NullPointerException will be thrown.
