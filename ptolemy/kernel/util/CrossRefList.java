@@ -376,8 +376,8 @@ public final class CrossRefList implements Serializable  {
                 // get us started.
                 CrossRef previous = _headNode;
                 if (previous == null && index > 0) previous = new CrossRef();
-                int index = 1;
-                while (index++ < index) {
+                int ind = 1;
+                while (ind++ < index) {
                     if (previous == null) previous = new CrossRef();
                     else previous = previous._next;
                 }
