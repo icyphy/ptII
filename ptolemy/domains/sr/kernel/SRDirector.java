@@ -547,7 +547,7 @@ public class SRDirector extends StaticSchedulingDirector {
 
         // Get the current values for local use.
         int currentNumberOfActorsAllowedToFire =
-            _NumberOfActorsAllowedToFire();
+            _numberOfActorsAllowedToFire();
         int currentNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
 
         if (_debugging) {
@@ -765,7 +765,7 @@ public class SRDirector extends StaticSchedulingDirector {
 
     /** Return the number of actors that are allowed to fire.
      */
-    private int _NumberOfActorsAllowedToFire() {
+    private int _numberOfActorsAllowedToFire() {
         if (_actorsAllowedToFire == null) {
             return 0;
         }
