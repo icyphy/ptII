@@ -878,58 +878,58 @@ public class CalendarQueue {
     ////                         private inner class               ////
 
 
-            // CQEntry: encapsulate both the objects and its priority
-            // to be inserted into the queue.
-            private class CQEntry {
-                // Construct a CQEntry with the supplied content (obj)
-                // and priority (priority)
-                public CQEntry(Object v, Object k) {
-                    value = v;
-                    key = k;
+    // CQEntry: encapsulate both the objects and its priority
+    // to be inserted into the queue.
+    private class CQEntry {
+        // Construct a CQEntry with the supplied content (obj)
+        // and priority (priority)
+        public CQEntry(Object v, Object k) {
+            value = v;
+            key = k;
+        }
+
+        // override Object.equal() method
+        // This is needed, because 2 CQEntry object being equal
+        // doesn't mean cqEntry_a == cqEntry_b, but instead
+        // that both their members (object and priority) are equals.
+        public boolean equals(Object obj) {
+            if (!(obj instanceof CQEntry)) {
+                return false;
+            } else {
+                CQEntry snd = (CQEntry) obj;
+                boolean sameValue = false;
+                boolean sameKey = false;
+
+                if (value == null && snd.value == null) {
+                    sameValue = true;
+                } else if (value == null && snd.value != null) {
+                    sameValue = false;
+                } else if (value.equals(snd.value)) {
+                    sameValue = true;
                 }
 
-                // override Object.equal() method
-                // This is needed, because 2 CQEntry object being equal
-                // doesn't mean cqEntry_a == cqEntry_b, but instead
-                // that both their members (object and priority) are equals.
-                public boolean equals(Object obj) {
-                    if (!(obj instanceof CQEntry)) {
-                        return false;
-                    } else {
-                        CQEntry snd = (CQEntry) obj;
-                        boolean sameValue = false;
-                        boolean sameKey = false;
-
-                        if (value == null && snd.value == null) {
-                            sameValue = true;
-                        } else if (value == null && snd.value != null) {
-                            sameValue = false;
-                        } else if (value.equals(snd.value)) {
-                            sameValue = true;
-                        }
-
-                        if (this.key == null || snd.key == null) {
-                            throw new IllegalStateException(
-                                    "Bug in CalendarQueue.CQEntry.equals"
-                                    );
-                        } else if (this.key.equals(snd.key)){
-                            sameKey = true;
-                        }
-
-                        if (sameValue && sameKey) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
+                if (this.key == null || snd.key == null) {
+                    throw new IllegalStateException(
+                            "Bug in CalendarQueue.CQEntry.equals"
+                            );
+                } else if (this.key.equals(snd.key)){
+                    sameKey = true;
                 }
 
-                // I want to make this public, so it'll be more efficient
-                // than using method call to access these fields.
-                public Object value;
-                public Object key;
-
+                if (sameValue && sameKey) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
+        }
+
+        // I want to make this public, so it'll be more efficient
+        // than using method call to access these fields.
+        public Object value;
+        public Object key;
+
+    }
 
     // CQLinkedList
     // This class implement a function ( insertAndSort) that does
