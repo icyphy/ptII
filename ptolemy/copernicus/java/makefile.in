@@ -240,7 +240,7 @@ obfuscate: treeshake_codegen.jar
 	@echo "run 'make runObfuscate' to run the obfuscated code"
 
 runObfuscate:
-	@echo "Run the final codegen version"
+	@echo "Run the final obfuscated version"
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
@@ -266,7 +266,7 @@ treeShakeObfuscate:
 	@echo "Run 'make runTreeShakeObfuscate' to run the tree shaken version"
 
 runTreeShakeObfuscate:
-	@echo "Run the final codegen version"
+	@echo "Run the final treeshaken, obfuscated, codegen version"
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
