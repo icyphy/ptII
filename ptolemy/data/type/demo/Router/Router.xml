@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Router" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -39,10 +39,10 @@ Rayleigh distribution.</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 595}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {102, 102, 819, 595}, maximized = false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -93,6 +93,10 @@ and decomposition.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 450.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 239.5}">
+    </property>
     <entity name="Record Assembler" class="ptolemy.actor.lib.RecordAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 240.0">
         </property>
@@ -117,7 +121,7 @@ and decomposition.</text></svg></configure>
     <entity name="Channel Model" class="ptolemy.domains.de.lib.VariableDelay">
         <property name="defaultDelay" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 280.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 280.0]">
         </property>
     </entity>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
