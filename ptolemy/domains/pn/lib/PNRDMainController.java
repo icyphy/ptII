@@ -449,7 +449,7 @@ public class PNRDMainController extends AtomicActor {
 		    rel1 = myContainer.connect(decodport, _infoOut);
 		    rel2 = myContainer.connect(_done, doneport);
 		    
-		    //Creating Synthesis filters
+		    // Creating Synthesis filters
 		    double[] synHighpass = new double[_highpass.length];
 		    for (int j = 0; j < _highpass.length; j++) {
 			synHighpass[j] = _highpass[_highpass.length-1-j];
@@ -459,7 +459,8 @@ public class PNRDMainController extends AtomicActor {
 			synLowpass[j] = _lowpass[_lowpass.length-1-j];
 		    }
 		    
-		    //INternals of a galay. Need not be reported to the listeners
+		    // Internals of a galay. Need not be reported to
+                    // the listeners
 		    PNRDDecoder decoder = new PNRDDecoder(_decoderGal, 
 			    "decoder");                
 		    System.out.println("bestNumBlocks "+bestNumBlocks);
