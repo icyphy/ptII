@@ -622,7 +622,7 @@ public final class SignalProcessing {
         if (close(denominator, 0.0)) {
             return (T * sqrtT/(8 * excess * Math.PI * t)) *
                 (oneplus * Math.sin(oneplus * t) -
-                        (oneminus * T/(4 * excess * t)) * 
+                        (oneminus * T/(4 * excess * t)) *
                         Math.cos(oneminus * t) +
                         (T/(4 * excess * t * t)) * Math.sin(oneminus * t) );
         }
