@@ -128,6 +128,20 @@ public class TypeLattice {
                     "one or both of the argument types is null: "
                     + " type1 = " + type1 + ", type2 = " + type2);
         }
+        int i1 = type1.getNodeIndex();
+        int i2 = type2.getNodeIndex();
+
+        // Uncommment the false below to measure the impact of
+        // _lattice.compare() on ptolemy.data package performance... Run
+        // ptolemy/data/type/test/performance.xml before and after...(zk)
+        if (/*false &&*/ (i1 != Type.CACHE_INVALID) &&
+            (i2 != Type.CACHE_INVALID)) {
+            if (type1.getCachedTypeComparisonResult(i2) == Type.CACHE_INVALID) {
+                type1.setCachedTypeComparisonResult
+                    (i2, _lattice.compare(type1, type2));
+            }
+            return type1.getCachedTypeComparisonResult(i2);
+        }
         return _lattice.compare(type1, type2);
     }
 
@@ -180,7 +194,7 @@ public class TypeLattice {
             Type t2Rep = _toRepresentative(ct2);
 
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
-                return ((StructuredType)t1)._compare((StructuredType)t2);
+                    return ((StructuredType)t1)._compare((StructuredType)t2);
             } else if (_basicLattice.containsNodeWeight(t1Rep) &&
                     _basicLattice.containsNodeWeight(t2Rep)) {
                 // Both are not the same structured type, so their relation is 
@@ -260,10 +274,10 @@ public class TypeLattice {
 
             Type ct1 = (Type)t1;
             Type ct2 = (Type)t2;
-         
+
             Type t1Rep = _toRepresentative(ct1);
             Type t2Rep = _toRepresentative(ct2);
-         
+
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                 return ((StructuredType)t1)._greatestLowerBound(
                         (StructuredType)t2);
@@ -433,7 +447,7 @@ public class TypeLattice {
 
             Type t1Rep = _toRepresentative(ct1);
             Type t2Rep = _toRepresentative(ct2);
-         
+
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                 return ((StructuredType)t1)._leastUpperBound(
                         (StructuredType)t2);
@@ -450,8 +464,8 @@ public class TypeLattice {
                     return t1;
                 } else { // INCOMPARABLE
                     return _basicLattice.leastUpperBound(t1Rep, t2Rep);
-                }
-            } else {
+            }
+                } else {
                 // Both arguments are not the same structured type, and
                 // at least one is user defined, so their relation is
                 // rather simple.
@@ -584,6 +598,74 @@ public class TypeLattice {
             _basicLattice.addNodeWeight(arrayRep);
             _basicLattice.addNodeWeight(recordRep);
 
+             BaseType.BOOLEAN.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.BOOLEAN),
+                  _basicLattice.nodeCount());
+             BaseType.BOOLEAN_MATRIX.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.BOOLEAN_MATRIX),
+                  _basicLattice.nodeCount());
+             BaseType.UNSIGNED_BYTE.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.UNSIGNED_BYTE),
+                  _basicLattice.nodeCount());
+             BaseType.COMPLEX.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.COMPLEX),
+                  _basicLattice.nodeCount());
+             BaseType.COMPLEX_MATRIX.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.COMPLEX_MATRIX),
+                  _basicLattice.nodeCount());
+             BaseType.DOUBLE.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.DOUBLE),
+                  _basicLattice.nodeCount());
+             BaseType.DOUBLE_MATRIX.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.DOUBLE_MATRIX),
+                  _basicLattice.nodeCount());
+             BaseType.FIX.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.FIX),
+                  _basicLattice.nodeCount());
+             BaseType.FIX_MATRIX.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.FIX_MATRIX),
+                  _basicLattice.nodeCount());
+             BaseType.INT.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.INT),
+                  _basicLattice.nodeCount());
+             BaseType.INT_MATRIX.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.INT_MATRIX),
+                  _basicLattice.nodeCount());
+             BaseType.LONG.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.LONG),
+                  _basicLattice.nodeCount());
+             BaseType.LONG_MATRIX.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.LONG_MATRIX),
+                  _basicLattice.nodeCount());
+             BaseType.MATRIX.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.MATRIX),
+                  _basicLattice.nodeCount());
+             BaseType.UNKNOWN.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.UNKNOWN),
+                  _basicLattice.nodeCount());
+             BaseType.NUMERICAL.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.NUMERICAL),
+                  _basicLattice.nodeCount());
+             BaseType.OBJECT.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.OBJECT),
+                  _basicLattice.nodeCount());
+             BaseType.SCALAR.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.SCALAR),
+                  _basicLattice.nodeCount());
+             BaseType.STRING.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.STRING),
+                  _basicLattice.nodeCount());
+             BaseType.GENERAL.setNodeIndex
+                 (_basicLattice.nodeLabel(BaseType.GENERAL),
+                  _basicLattice.nodeCount());
+             arrayRep.setNodeIndex
+                 (_basicLattice.nodeLabel(arrayRep),
+                  _basicLattice.nodeCount());
+             recordRep.setNodeIndex
+                 (_basicLattice.nodeLabel(recordRep),
+                  _basicLattice.nodeCount());
+
+
             _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
             _basicLattice.addEdge(BaseType.STRING, BaseType.GENERAL);
@@ -637,7 +719,7 @@ public class TypeLattice {
         ///////////////////////////////////////////////////////////////
         ////                      private methods                  ////
 
-        // If the argument is a structured type, return its representative;
+            // If the argument is a structured type, return its representative;
         // otherwise, return the argument. In the latter case, the argument
         // is either a base type or a user defined type that is not a
         // structured type.

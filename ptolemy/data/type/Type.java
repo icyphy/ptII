@@ -45,6 +45,7 @@ An interface representing the type of a Token.
 */
 
 public interface Type {
+
     /** Return a deep clone of this type.
      *  @return A Type.
      *  @exception CloneNotSupportedException Not thrown.
@@ -108,4 +109,32 @@ public interface Type {
      *  @return A String.
      */
     public String toString();
+
+
+    /** Return the cached type comparison result:
+     * TypeLattice.compare(this,type(index)).
+     * @param index Other type's node index in the type lattice.
+     * @return Cached type comparison result.
+     */
+    public int getCachedTypeComparisonResult(int index);
+
+    /** Return this type's node index in the (constant) type lattice.
+     * @return this type's node index in the (constant) type lattice.
+     */
+    public int getNodeIndex();
+    /** Cache type comparison result:
+        
+    /** Set the cached TypeLattice.compare(this, type) value.
+     * @param index The other type's node index.
+     * @param value TypeLattice.compare(this, type) result.
+     */
+    public void setCachedTypeComparisonResult(int index, int value);
+
+    /** Set this type's node index in the (constant) type lattice.
+     * @param index This type's node index.
+     * @param value The total number of types in the type lattice.
+     */
+    public void setNodeIndex(int index, int nodeCount);
+
+    public static int CACHE_INVALID = Integer.MIN_VALUE;
 }
