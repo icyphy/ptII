@@ -34,7 +34,6 @@ import ptolemy.kernel.*;
 import ptolemy.actor.*;
 //import ptolemy.actor.NotSchedulableException;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.mutation.*;
 import ptolemy.math.Fraction;
 
 import java.util.*;
