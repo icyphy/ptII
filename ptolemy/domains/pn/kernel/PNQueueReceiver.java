@@ -31,7 +31,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
-import ptolemy.actor.TerminateProcessException;
+import ptolemy.actor.process.*;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
