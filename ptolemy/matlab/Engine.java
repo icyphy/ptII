@@ -257,6 +257,8 @@ public class Engine {
     /** Open a connection to a matlab engine.<p>
      * For more information, see the matlab engine API reference engOpen()
      * @param startCmd hostname or command to use to start the engine.
+     * @param needOutput selects whether the output should be buffered
+     * or not.
      * @return long[2] retval engine handle; retval[0] is the real
      * engine handle, retval[1] is a pointer to the engine output
      * buffer; both should be preserved and passed to subsequent engine
@@ -333,6 +335,7 @@ public class Engine {
      * engine handle, eng[1] is a pointer to the engine output
      * buffer.
      * @param evalStr string to evaluate.
+     * @return The value returned by the ptmatlabEngEvalString() native method.
      * @exception IllegalActionException If the matlab engine is not opened.
      */
     public int evalString(long[] eng, String evalStr)
