@@ -196,14 +196,6 @@ public class ThreeDFunction {
                 theta1Index = theta0Index + 1;
             }
 
-            System.out.print("Zero indices:  " + x0Index + " ");
-            System.out.print(y0Index + " ");
-            System.out.println(theta0Index + " ");
-
-            System.out.print("One indices:  " + x1Index + " ");
-            System.out.print(y1Index + " ");
-            System.out.println(theta1Index + " ");
-
             /** Get the normalized distance of x, y, and theta from
              *  the point corresponding to x0Index, y0Index, and
              *  theta0Index.  The distance is scaled by the step size
@@ -214,10 +206,6 @@ public class ThreeDFunction {
             yDis = (y - _yLowerBound) / _yStepSize - y0Index;
             thetaDis = 
                 (theta - _thetaLowerBound) / _thetaStepSize - theta0Index;
-
-            System.out.print("Dicstances:  " + xDis + " ");
-            System.out.print(yDis + " ");
-            System.out.println(thetaDis + " ");
 
             /** Through a for loop, compute the value.  At each step
              * of the for loop, add the contribution from one of the
@@ -252,10 +240,6 @@ public class ThreeDFunction {
                             thetaIndex = theta1Index;
                         }
                         point =_values[xIndex][yIndex][thetaIndex];
-                        System.out.print("indices:  " + xIndex);
-                        System.out.print(" " + yIndex);
-                        System.out.print(" " + thetaIndex);
-                        System.out.println("\t" + "point value:  " + point);
                         value = 
                             value + point * xWeight * yWeight * thetaWeight;
                     }
