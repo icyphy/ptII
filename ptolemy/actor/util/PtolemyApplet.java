@@ -32,6 +32,7 @@ package ptolemy.actor.util;
 
 // Java imports
 import java.applet.Applet;
+import java.lang.System;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -44,6 +45,11 @@ import ptolemy.actor.*;
 A base class for Ptolemy applets.  This is provided for convenience,
 in order to promote certain common elements among applets.  It is by
 no means required in order to create an applet that uses Ptolemy II.
+In particular, it creates a manager and optionally creates on-screen
+controls for model execution; it provides a top-level composite
+actor; it provides a mechanism for reporting
+errors and exceptions; and it provide an applet parameter for
+controlling the background color.
 
 @author Edward A. Lee
 @version $Id$
@@ -62,7 +68,9 @@ public class PtolemyApplet extends Applet {
             "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
     }
 
-    /** Describe the applet parameters.
+    /** Describe the applet parameters. Derived classes should override
+     *  this and append their own parameters.  The protected method
+     *  _concatStringArrays() is provided to make this easy to do.
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
@@ -72,7 +80,11 @@ public class PtolemyApplet extends Applet {
         return pinfo;
     }
 
-    /** Initialize the applet. This method creates a manager and
+    /** Initialize the applet. This method is called by the browser
+     *  or applet viewer to inform this applet that it has been
+     *  loaded into the system. It is always called before
+     *  the first time that the start method is called. 
+     *  In this base class, this method creates a manager and
      *  a top-level composite actor, both of which are accessible
      *  to derived classes via protected members.
      *  It also processes a background color parameter.
@@ -111,8 +123,9 @@ public class PtolemyApplet extends Applet {
         ex.printStackTrace();
     }
 
-    /** Report an exception with an additional message.  This prints a
-     *  message to standard error, followed by the stack trace.
+    /** Report an exception with an additional message.  Currently
+     *  this prints a message to standard error, followed by the stack trace,
+     *  although soon it will pop up a message window instead.
      */
     public void report(String msg, Exception ex) {
         System.err.println("Exception thrown by applet.\n" + msg + "\n"
@@ -120,14 +133,56 @@ public class PtolemyApplet extends Applet {
         ex.printStackTrace();
     }
 
+    /** Start execution of the model. This method is called by the
+     *  browser or applet viewer to inform this applet that it should
+     *  start its execution. It is called after the init method
+     *  and each time the applet is revisited in a Web page.
+     *  In this base class, this method calls the protected method
+     *  _go(), which executes the model.  If a derived class does not
+     *  wish to execute the model each time start() is called, it should
+     *  override this method.
+     */
+    public void start() {
+        _go();
+    }
+
+    /** Stop execution of the model. This method is called by the
+     *  browser or applet viewer to inform this applet that it should
+     *  stop its execution. It is called when the Web page
+     *  that contains this applet has been replaced by another page,
+     *  and also just before the applet is to be destroyed.
+     *  In this base class, this method calls the finish() method
+     *  of the manager.
+     */
+    public void stop() {
+        _manager.finish();
+    }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
+
+    /** Concatenate two parameter info string arrays and return the result.
+     *  This is provided to make it easy for derived classes to override
+     *  the getParameterInfo() method.
+     *  
+     *  @param first The first string array.  
+     *  @param second The second string array.
+     *  @returns A concatenated string array.
+     */
+    protected String[][] _concatStringArrays(
+            String[][] first, String[][] second) {
+        String[][] newinfo = new String[first.length + second.length][];
+        System.arraycopy(first, 0, newinfo, 0, first.length);
+        System.arraycopy(second, 0, newinfo, first.length, second.length);
+        return newinfo;
+    }
 
     /** Create run controls in a panel and return that panel.
      *  The second argument controls exactly how many buttons are
      *  created.  If its value is greater than zero, then a "Go" button
      *  created.  If its value is greater than one, then a "Stop" button
-     *  is also created.
+     *  is also created.  Derived classes may override this method to add
+     *  additional controls.
      *  @param numberOfButtons How many buttons to create.
      */
     protected Panel _createRunControls(int numberOfButtons) {
