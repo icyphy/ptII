@@ -34,6 +34,7 @@ package ptolemy.domains.csp.demo.BusContention;
 import ptolemy.domains.csp.lib.*;
 import ptolemy.domains.csp.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
@@ -152,9 +153,7 @@ public class Memory extends CSPActor {
 	    try {
 	        Thread.sleep(300);
 	    } catch( InterruptedException e ) {
-	        System.err.println("InterruptedException during "
-                	+ "Thread.sleep()");
-		e.printStackTrace();
+                throw new TerminateProcessException(this, "Terminated");
 	    }
 
             if( br >= 0 && br < _numInChannels ) {

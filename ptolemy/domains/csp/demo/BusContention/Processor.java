@@ -30,6 +30,7 @@
 
 package ptolemy.domains.csp.demo.BusContention;
 
+// Ptolemy imports.
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.actor.process.*;
@@ -42,9 +43,12 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import java.util.Enumeration;
-import collections.LinkedList;
+
+// Java imports.
 import java.awt.event.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -148,7 +152,7 @@ public class Processor extends CSPActor {
         if( _listeners == null ) {
             _listeners = new LinkedList();
         }
-        _listeners.insertLast(listener);
+        _listeners.add(listener);
     }
 
     /** Attempt to access the shared resource. 
@@ -178,8 +182,7 @@ public class Processor extends CSPActor {
 	try {
 	    Thread.sleep(300);
 	} catch( InterruptedException e ) {
-	    e.printStackTrace();
-            throw new RuntimeException(e.toString());
+            throw new TerminateProcessException(this, "Terminated");
 	}
         BooleanToken bToken = (BooleanToken)requestInput.get(0);
 
@@ -189,8 +192,7 @@ public class Processor extends CSPActor {
 	    try {
 	        Thread.sleep(300);
 	    } catch( InterruptedException e ) {
-		e.printStackTrace();
-		throw new RuntimeException(e.toString());
+                throw new TerminateProcessException(this, "Terminated");
 	    }
             if( read ) {
                 memoryInput.get(0);
@@ -206,8 +208,7 @@ public class Processor extends CSPActor {
 	    try {
 	        Thread.sleep(300);
 	    } catch( InterruptedException e ) {
-		e.printStackTrace();
-		throw new RuntimeException(e.toString());
+                throw new TerminateProcessException(this, "Terminated");
 	    }
 	}
 
@@ -254,10 +255,10 @@ public class Processor extends CSPActor {
         if( _listeners == null ) {
             return;
         }
-        Enumeration enum = _listeners.elements();
-        while( enum.hasMoreElements() ) {
+        Iterator enum = _listeners.iterator();
+        while( enum.hasNext() ) {
             ExecEventListener newListener =
-                (ExecEventListener)enum.nextElement();
+                (ExecEventListener)enum.next();
             newListener.stateChanged(event);
         }
     }
@@ -294,7 +295,7 @@ public class Processor extends CSPActor {
         if( _listeners == null ) {
             return;
         }
-        _listeners.removeOneOf(listener);
+        _listeners.remove(listener);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -302,6 +303,6 @@ public class Processor extends CSPActor {
 
     private int _code;
     private CSPDirector _dir;
-    private LinkedList _listeners;
+    private List _listeners;
     
 }

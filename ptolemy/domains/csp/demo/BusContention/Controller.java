@@ -30,6 +30,7 @@
 
 package ptolemy.domains.csp.demo.BusContention;
 
+// Ptolemy imports.
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.actor.process.*;
@@ -41,8 +42,11 @@ import ptolemy.data.Token;
 import ptolemy.data.IntToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
-import java.util.Enumeration;
-import collections.LinkedList;
+
+// Java imports.
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -146,7 +150,7 @@ public class Controller extends CSPActor {
         if( _listeners == null ) {
             _listeners = new LinkedList();
         }
-        _listeners.insertLast(listener);
+        _listeners.add(listener);
     }
 
     /** Execute this actor indefinitely. 
@@ -227,11 +231,11 @@ public class Controller extends CSPActor {
                     code = token.intValue();
                     if( code > _winningPortChannelCode.getCode() ) {
                         _losingPortChannelCodes.
-                            insertFirst(_winningPortChannelCode);
+                            add(0, _winningPortChannelCode);
                         _winningPortChannelCode =
                             new PortChannelCode(requestInput, br, code);
                     } else {
-                        _losingPortChannelCodes.insertFirst( new
+                        _losingPortChannelCodes.add(0, new
                                 PortChannelCode(requestInput, br, code) );
                     }
 
@@ -249,10 +253,10 @@ public class Controller extends CSPActor {
                     requestOutput.send(ch, posAck);
 
                     // Send Negative Ack
-                    Enumeration enum = _losingPortChannelCodes.elements();
+                    Iterator enum = _losingPortChannelCodes.iterator();
                     PortChannelCode pcc = null;
-                    while( enum.hasMoreElements() ) {
-                        pcc = (PortChannelCode)enum.nextElement();
+                    while( enum.hasNext() ) {
+                        pcc = (PortChannelCode)enum.next();
                         ch = pcc.getChannel();
                         requestOutput.send(ch, negAck);
                     }
@@ -283,10 +287,10 @@ public class Controller extends CSPActor {
         if( _listeners == null ) {
             return;
         }
-        Enumeration enum = _listeners.elements();
-        while( enum.hasMoreElements() ) {
+        Iterator listeners = _listeners.iterator();
+        while( listeners.hasNext() ) {
             ExecEventListener newListener =
-                (ExecEventListener)enum.nextElement();
+                (ExecEventListener)listeners.next();
             newListener.stateChanged(event);
         }
     }
@@ -299,7 +303,7 @@ public class Controller extends CSPActor {
         if( _listeners == null ) {
             return;
         }
-        _listeners.removeOneOf(listener);
+        _listeners.remove(listener);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -308,7 +312,7 @@ public class Controller extends CSPActor {
     private int _numRequestInChannels = -1;
 
     private PortChannelCode _winningPortChannelCode;
-    private LinkedList _losingPortChannelCodes;
+    private List _losingPortChannelCodes;
 
-    private LinkedList _listeners;
+    private List _listeners;
 }

@@ -543,7 +543,6 @@ public class BusContentionApplet extends CSPApplet {
 		f.setFillPaint(Color.blue);
             }
             String label = actor.getName();
-            System.out.println("Actor " + actor + " has label " + label);
             LabelWrapper w = new LabelWrapper(f, label);
             w.setAnchor(SwingConstants.SOUTH);
             w.getLabel().setAnchor(SwingConstants.NORTH);

@@ -32,6 +32,7 @@ composite actor.
 
 package ptolemy.domains.csp.demo.BusContention;
 
+// Ptolemy imports.
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.actor.process.*;
@@ -41,9 +42,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import java.util.Enumeration;
-import collections.LinkedList;
 
+// Java imports.
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ContentionAlarm
@@ -130,7 +133,7 @@ public class ContentionAlarm extends CSPActor {
         if( _listeners == null ) {
             _listeners = new LinkedList();
         }
-        _listeners.insertLast(listener);
+        _listeners.add(listener);
     }
 
     /** Execute this actor by cycling through its three states
@@ -167,10 +170,10 @@ public class ContentionAlarm extends CSPActor {
         if( _listeners == null ) {
             return;
         }
-        Enumeration enum = _listeners.elements();
-        while( enum.hasMoreElements() ) {
+        Iterator listeners = _listeners.iterator();
+        while( listeners.hasNext() ) {
             ExecEventListener newListener =
-                (ExecEventListener)enum.nextElement();
+                (ExecEventListener)listeners.next();
             newListener.stateChanged(event);
         }
     }
@@ -183,11 +186,11 @@ public class ContentionAlarm extends CSPActor {
         if( _listeners == null ) {
             return;
         }
-        _listeners.removeOneOf(listener);
+        _listeners.remove(listener);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    private LinkedList _listeners;
+    private List _listeners;
 }
