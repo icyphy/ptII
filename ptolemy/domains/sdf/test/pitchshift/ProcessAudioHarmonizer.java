@@ -234,11 +234,11 @@ public class ProcessAudioHarmonizer implements Runnable {
 	// Initialize the pitch detector.
 	PitchDetector pd = new PitchDetector(readWriteDataSizeInFrames);
 	// Initialize the pitch shifter.
-	PitchShift ps = new PitchShift();
+	PitchShift ps = new PitchShift((float)sampleRate);
 	// Initialize the 2nd pitch shifter.
-	PitchShift ps2 = new PitchShift();
+	PitchShift ps2 = new PitchShift((float)sampleRate);
 	// Initialize the 3rd pitch shifter.
-	PitchShift ps3 = new PitchShift();
+	PitchShift ps3 = new PitchShift((float)sampleRate);
 	// Initialize the 4th pitch shifter.
 	//PitchShift ps4 = new PitchShift();
 	// Initialize the 5th pitch shifter.
@@ -277,11 +277,11 @@ public class ProcessAudioHarmonizer implements Runnable {
 						       (int)sampleRate);
 
 		psArray1 = ps.performPitchShift(audioInDoubleArray,
-			  (float)sampleRate, currPitchArray, pitchScaleIn1);
+			    currPitchArray, pitchScaleIn1);
 		psArray2 = ps2.performPitchShift(audioInDoubleArray,
-                           (float)sampleRate, currPitchArray, pitchScaleIn2);
+                            currPitchArray, pitchScaleIn2);
 		psArray3 = ps3.performPitchShift(audioInDoubleArray,
-                           (float)sampleRate, currPitchArray, pitchScaleIn3);
+                            currPitchArray, pitchScaleIn3);
 		
 		for (int ind3 = 0; ind3 < audioInDoubleArray.length; ind3++) {
 		  

@@ -232,7 +232,7 @@ public class ProcessAudio implements Runnable {
 	// Initialize the pitch detector.
 	PitchDetector pd = new PitchDetector(readWriteDataSizeInFrames);
 	// Initialize the pitch shifter.
-	PitchShift ps = new PitchShift();
+	PitchShift ps = new PitchShift((float)sampleRate);
 	
 	double[] psArray1 = new double[readWriteDataSizeInFrames];
 	double[] psArray2 = new double[readWriteDataSizeInFrames];
@@ -261,7 +261,7 @@ public class ProcessAudio implements Runnable {
 		currPitchArray = pd.performPitchDetect(audioInDoubleArray, (int)sampleRate);
 
 		audioInDoubleArray = ps.performPitchShift(audioInDoubleArray,
-		            (float)sampleRate, currPitchArray, pitchScaleIn1);
+		             currPitchArray, pitchScaleIn1);
 		
 		audioOutByteArray = _doubleArrayToByteArray(audioInDoubleArray,
 							    frameSizeInBytes);

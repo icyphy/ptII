@@ -39,10 +39,10 @@ Perform pitch scaling of an input signal.
 public class PitchShift {
 
     private static final int RING_BUFFER_SIZE = 6000;
-    private static final int OUTPUT_BUFFER_DELAY = 1000;
+    private static int OUTPUT_BUFFER_DELAY;
     private static final double MINIMUM_PITCH = 50.0;
     private static final double DEFAULT_PITCH = MINIMUM_PITCH;
-    
+    private static int sampleRate;
     // Delay of the pitch detector, in samples.
     // FIXME: this should be public, and set in constructor.
     private static final int pitchDetectorDelay = 2048;
@@ -103,14 +103,16 @@ public class PitchShift {
   
     private int minimumPitchSamps; // This is minimumPitch converted to samples.
   
-    private int sampleRate; // sampling rate.
+    //private int sampleRate; // sampling rate.
 
     /* Initialize the current output ring buffer read postition.
      * Maybe need to add ringBuffSize because % does not like negative numbers?
      */
 	
     // Constructor
-    public PitchShift() {
+    public PitchShift(float sampleRate) {
+	this.sampleRate = (int)sampleRate;
+	OUTPUT_BUFFER_DELAY = (int)(1000*(float)sampleRate/44100);
 	this.outputDelay = OUTPUT_BUFFER_DELAY;
 	this.ringBufSize = RING_BUFFER_SIZE;
 	///////////////////////////////////////////////
@@ -149,7 +151,7 @@ public class PitchShift {
        and the sample of <i>pitchArray</i> containing the corresponding pitch)
        is set by <i>pitchDetectorDelay</i>.
     */
-    public double[] performPitchShift(double[] in, float sampleRate, double[] pitchArray, double pitchScaleIn) {
+    public double[] performPitchShift(double[] in, double[] pitchArray, double pitchScaleIn) {
 	minimumPitchSamps =(int)((1/minimumPitch)*sampleRate);
 
 	int inputPitchInPtr = 0;
