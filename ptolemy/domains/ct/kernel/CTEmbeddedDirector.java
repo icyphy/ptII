@@ -32,6 +32,7 @@ import java.util.Iterator;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.util.Time;
 import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -54,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
    information is accessible from outer domain which has a continuous
    time and understands the meaning of step size.
 
-   @author  Jie Liu
+   @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Yellow (liuj)
@@ -132,143 +133,186 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  it during one iteration.
      */
     public void fire() throws IllegalActionException {
-        // Get the inputs if there are any
-        CompositeActor container = (CompositeActor)getContainer();
-        Director exe = container.getExecutiveDirector();
-        _outsideTime = exe.getCurrentTime();
-        if (_debugging) _debug("Outside Time: "+ _outsideTime);
-        double nextIterationTime = exe.getNextIterationTime();
-        if (_debugging) _debug("Next Iteration Time: " + nextIterationTime);
-        setCurrentTime(getIterationBeginTime());
-        _outsideStepSize = nextIterationTime - getIterationBeginTime();
-
-        if (_outsideStepSize == 0) {
-            if (_debugging) {
-                _debug("Outside step size is 0 so treat this as a breakpoint.");
+        // FIXME: A rough design.
+        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+        if (isDiscretePhase()) {
+            setSuggestedNextStepSize(getMinStepSize());
+            if (isPureDiscretePhase()) {
+                super._iterateDiscreteActors(schedule);
             }
-            // it must be a breakpoint now.
-            _setCurrentODESolver(getBreakpointSolver());
-            _setBreakpointIteration(true);
-            setCurrentStepSize(getMinStepSize());
+            if (isWaveformGeneratingPhase()) {
+                // NOTE: the time a discrete phase execution (waveform phase) 
+                // starts is the the time the iteration time starts.
+                // NOTE: A ct composite actor is also a waveform generator.
+                CompositeActor container = (CompositeActor)getContainer();
+                Director exe = container.getExecutiveDirector();
+                Time time = exe.getCurrentTime();
+                setCurrentTime(exe.getCurrentTime());
+                _setIterationBeginTime(exe.getCurrentTime());
+                
+                super._iterateWaveformGenerators(schedule);
+            }
+            if (isCreatingIterationStartingStatesPhase()) 
+                super._createIterationStartingStates();
+            if (isEventGeneratingPhase()) {
+                super._iterateEventGenerators(schedule);
+            }
         } else {
+            // set the current time to the iteration begin time because the upper
+            // level hierarchy may request refiring with a smaller step size.
+            
+            // FIXME: this director may not even has its own time.
+            // setCurrentTime(getIterationBeginTime());
+            
+            // The following statement is decomposed into a set of actions with
+            // conditions.
+            // super._continuousPhaseExecution();
+            
+            // Change ODE solver
             _setCurrentODESolver(getODESolver());
-            _setBreakpointIteration(false);
-            setCurrentStepSize(_outsideStepSize);
-        }
-        // if break point now, change solver.
-        Double now = new Double(_outsideTime);
-        TotallyOrderedSet breakPoints = getBreakPoints();
-        if (breakPoints != null && !breakPoints.isEmpty()) {
-            breakPoints.removeAllLessThan(now);
-            if (breakPoints.contains(now)) {
-                if (_debugging)
-                    _debug(getName(),
-                            ": Break point now at" + _outsideTime);
-                // Breakpoints iterations are always successful
-                // so remove the breakpoints.
-                breakPoints.removeFirst();
-                // does not adjust step size,
-                // since the exe-dir should do it.
-                _setCurrentODESolver(getBreakpointSolver());
-                _setBreakpointIteration(true);
-                setCurrentStepSize(getMinStepSize());
+
+            if (isPrefiringDynamicActorsPhase()) {
+                super._prefireDynamicActors();
             }
-        }
-
-        if (_debugging) {
-            _debug("Step size is "
-                    + getCurrentStepSize()
-                    + " at "
-                    + getCurrentTime()
-                    + "; breakpoint table contains: "
-                    + getBreakPoints().toString());
-        }
-
-        _setDiscretePhase(true);
-        Iterator waveGenerators = getScheduler().getSchedule().get(
-                CTSchedule.WAVEFORM_GENERATORS).actorIterator();
-        while (waveGenerators.hasNext() && !_stopRequested) {
-            CTWaveformGenerator generator =
-                (CTWaveformGenerator) waveGenerators.next();
-            if (!isPrefireComplete(generator)) {
-                setPrefireComplete(generator);
-                if (_debugging) {
-                    _debug("Prefire generator actor: "
-                            + ((Nameable)generator).getName()
-                            + " at time "
-                            + getCurrentTime());
+            if (isSolvingStatesPhase()) {
+                // instead of resolve states, fire one round.
+                if (isFiringDynamicActorsPhase()) {
+                    getODESolver().fireDynamicActors();
                 }
-                if (!generator.prefire()) {
-                    throw new IllegalActionException((Nameable)generator,
-                            "Actor is not ready to fire. In the CT domain, "
-                            + "all generator actors should be ready to fire "
-                            + "at all times.\n"
-                            + "Does the actor only operate on sequence "
-                            + "of tokens?");
+                if (isFiringStateTransitionActorsPhase()) {
+                    getODESolver().fireStateTransitionActors();
+                    super.produceOutput();
                 }
             }
-            if (_debugging) {
-                _debug("Fire generator actor: "
-                        + ((Nameable)generator).getName()
-                        + " at time "
-                        + getCurrentTime());
+            // No seperate phase for producing output, because
+            // a CT subsystem need to produce output if it works
+            // as one of the state transition actors. 
+//            if (isProducingOutputsPhase()) {
+//                super.produceOutput();
+//            }
+            if (isUpdatingContinuousStatesPhase()) {
+                super.updateContinuousStates();
             }
-            generator.fire();
+            if (isFiringEventGeneratorsPhase()) {
+                super.fireEventGenerators();
+            }
         }
-        _setDiscretePhase(false);
-        // continuous phase;
-        if (_debugging) _debug("Execute the system from "+
-                getCurrentTime() + " with step size " + getCurrentStepSize()
-                + " using solver " + getCurrentODESolver().getName());
-        // NOTE: Used to prefire() all actors before any firing.
-        prefireClear();
-        _prefireDynamicActors();
-        ODESolver solver = getCurrentODESolver();
-        if (!solver.resolveStates()) {
-            _stateAcceptable = false;
-            if (_debugging) _debug("Resolve states failed.");
-        }
-
-        if (_debugging) {
-            _debug("Current time after"
-                    + " solver.resolveStates() is "
-                    + getCurrentTime());
-        }
-        produceOutput();
-        _discretePhaseExecution();
+        
+         
     }
 
-    /** Register the break point to this director and to the executive
-     *  director.
-     *  @param actor The actor that requested the fire
-     *  @param time The fire time
-     *  @exception IllegalActionException If the time is before
-     *  the current time, or there is no executive director.
+
+    /** Return the current integration step size. This method is final
+     *  for performance reason.
+     *  @return The current step size.
      */
-    public void fireAt(Actor actor, double time)
-            throws IllegalActionException{
-        super.fireAt(actor, time);
+    public double getCurrentStepSize() {
         CompositeActor container = (CompositeActor)getContainer();
-        Director exeDirector = container.getExecutiveDirector();
-        exeDirector.fireAt(container, time);
+        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+        return exe.getCurrentStepSize();  
     }
+    
+      /** Return true if this is the discrete phase execution.
+       *  @return True if this is the discrete phase execution.
+       */
+      public boolean isDiscretePhase() {
+          CompositeActor container = (CompositeActor)getContainer();
+          CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+          return exe.isDiscretePhase();
+      }
 
-    /** Set the current time to be the current time of the outside model.
-     *  Both the current time and the stop time are registered
-     *  as a breakpoint.
-     *  It invokes the initialize() method for all the Actors in the
-     *  container.
-     *
-     *  @exception IllegalActionException If the instantiation of the solvers
-     *  does not succeed or one of the directed actors throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        CompositeActor container = (CompositeActor)getContainer();
-        Director exe = container.getExecutiveDirector();
-        setCurrentTime(exe.getCurrentTime());
-        _setIterationBeginTime(getCurrentTime());
-        super.initialize();
-    }
+      /** Return true if this is the discrete phase execution.
+       *  @return True if this is the discrete phase execution.
+       */
+      public boolean isPureDiscretePhase() {
+          CompositeActor container = (CompositeActor)getContainer();
+          CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+          return exe.isPureDiscretePhase();
+      }
+
+      /** Return true if this is the discrete phase execution.
+       *  @return True if this is the discrete phase execution.
+       */
+      public boolean isWaveformGeneratingPhase() {
+          CompositeActor container = (CompositeActor)getContainer();
+          CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+          return exe.isWaveformGeneratingPhase();
+      }
+
+      /** Return true if this is the discrete phase execution.
+       *  @return True if this is the discrete phase execution.
+       */
+      public boolean isEventGeneratingPhase() {
+          CompositeActor container = (CompositeActor)getContainer();
+          CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+          return exe.isEventGeneratingPhase();
+      }
+
+      public boolean isCreatingIterationStartingStatesPhase() {
+          CompositeActor container = (CompositeActor)getContainer();
+          CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+          return exe.isCreatingIterationStartingStatesPhase();
+      }
+
+      /* (non-Javadoc)
+       * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isSolvingStatesPhase()
+       */
+      public boolean isSolvingStatesPhase() {
+          CompositeActor container = (CompositeActor)getContainer();
+          CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+          return exe.isSolvingStatesPhase();
+      }
+
+      /* (non-Javadoc)
+       * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isProducingOutputsPhase()
+       */
+      public boolean isProducingOutputsPhase() {
+          CompositeActor container = (CompositeActor)getContainer();
+          CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+          return exe.isProducingOutputsPhase();
+      }
+
+      /* (non-Javadoc)
+       * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isUpdatingContinuousStatesPhase()
+       */
+      public boolean isUpdatingContinuousStatesPhase() {
+          CompositeActor container = (CompositeActor)getContainer();
+          CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+          return exe.isUpdatingContinuousStatesPhase();
+      }
+
+      /* (non-Javadoc)
+       * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isPrefiringDynamicActorsPhase()
+       */
+      public boolean isPrefiringDynamicActorsPhase() {
+          CompositeActor container = (CompositeActor)getContainer();
+          CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+          return exe.isPrefiringDynamicActorsPhase();
+      }
+
+      /* (non-Javadoc)
+       * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isFiringEventGeneratorsPhase()
+       */
+      public boolean isFiringEventGeneratorsPhase() {
+          CompositeActor container = (CompositeActor)getContainer();
+          CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+          return exe.isFiringEventGeneratorsPhase();
+      }
+
+      public boolean isFiringDynamicActorsPhase() {
+          CompositeActor container = (CompositeActor)getContainer();
+          CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+          return exe.isFiringDynamicActorsPhase();
+      }
+
+      /* (non-Javadoc)
+       * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isFiringStateTransitionActorsPhase()
+       */
+      public boolean isFiringStateTransitionActorsPhase() {
+          CompositeActor container = (CompositeActor)getContainer();
+          CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
+          return exe.isFiringStateTransitionActorsPhase();
+      }
 
     /** Return true if the current integration step
      *  is accurate. This is determined by asking all the
@@ -277,28 +321,22 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @return True if the current step is accurate.
      */
     public boolean isThisStepAccurate() {
-        try {
-            _debug(getName() + ": Checking local actors for success.");
-            if (!_isStateAccurate()) {
-                //if (_debugging) _debug(getFullName() +
-                //        " current step not successful because of STATE.");
-                _stateAcceptable = false;
-                return false;
-            } else if (!_isOutputAccurate()) {
-                //if (_debugging) _debug(getFullName() +
-                //        " current step not successful because of OUTPUT.");
-                _stateAcceptable = true;
-                _outputAcceptable = false;
-                return false;
-            } else {
-                _stateAcceptable = true;
-                _outputAcceptable = true;
-                return true;
-            }
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException (
-                    "Nothing to schedule with out make schedule invalid." +
-                    ex.getMessage());
+        _debug(getName() + ": Checking local actors for success.");
+        if (!_isStateAccurate()) {
+            //if (_debugging) _debug(getFullName() +
+            //        " current step not successful because of STATE.");
+            _stateAcceptable = false;
+            return false;
+        } else if (!_isOutputAccurate()) {
+            //if (_debugging) _debug(getFullName() +
+            //        " current step not successful because of OUTPUT.");
+            _stateAcceptable = true;
+            _outputAcceptable = false;
+            return false;
+        } else {
+            _stateAcceptable = true;
+            _outputAcceptable = true;
+            return true;
         }
     }
 
@@ -308,15 +346,15 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *     is not finished and stop() has not been called.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public boolean postfire() throws IllegalActionException {
-        if (_debugging) _debug(getFullName(), " postfire.");
-        // FIXME: this postfire method produces outputs
-        //_discretePhaseExecution();
-        updateContinuousStates();
-        // The current time will be the begin time of the next iteration.
-        _setIterationBeginTime(getCurrentTime());
-        return !_stopRequested;
-    }
+//    public boolean postfire() throws IllegalActionException {
+//        if (_debugging) _debug(getFullName(), " postfire.");
+//        // FIXME: this postfire method produces outputs
+//        //_discretePhaseExecution();
+//        updateContinuousStates();
+//        // The current time will be the begin time of the next iteration.
+//        _setIterationBeginTime(getCurrentTime());
+//        return !_stopRequested;
+//    }
 
     /** Return the predicted next step size, which is the minimum
      *  of the prediction from step size control actors.
@@ -340,18 +378,22 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @return True always.
      */
     public boolean prefire() throws IllegalActionException {
-        if (_debugging) _debug("Director prefire.");
-        if (!isScheduleValid()) {
-            // mutation occurred, redo the schedule;
-            CTScheduler scheduler = (CTScheduler)getScheduler();
-            if (scheduler == null) {
-                throw new IllegalActionException (this,
-                        "does not have a Scheduler.");
-            }
-            scheduler.getSchedule();
-            setScheduleValid(true);
-        }
-        return true;
+        // FIXME: the following code can be simplified into
+        // getScheduler().getSchedule();
+        // or 
+        // return true, 
+        // because the initialize
+        // method is responsible to get a valid schedule.
+        // FIXME: will this be affected by mobile models?
+        // I guess not, if the mobile model requests an initialization
+        // whenever a model change happens.
+        
+        getScheduler().getSchedule();
+        
+        // FIXME: the following method may be masked by HSDirector.
+        super._prefireDynamicActors();
+
+        return super.prefire();
     }
 
     /** Check whether the container implements the CTStepSizeControlActor
@@ -403,6 +445,71 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     private boolean _stateAcceptable;
 
     // The current time of the outer domain.
-    private double _outsideTime;
+    private Time _outsideTime;
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#markState()
+     */
+    public void markState() {
+        try {
+            Iterator statefulActors = getScheduler().getSchedule().get(
+                    CTSchedule.STATEFUL_ACTORS).actorIterator();
+            while (statefulActors.hasNext() && !_stopRequested) {
+                CTStatefulActor statefulActor = 
+                    (CTStatefulActor) statefulActors.next();
+                statefulActor.markState();
+            }
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException (e);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#emitTentativeOutputs()
+     */
+    public void emitTentativeOutputs() {
+        try {
+            Iterator dynamicActors = getScheduler().getSchedule().get(
+                    CTSchedule.DYNAMIC_ACTORS).actorIterator();
+            while (dynamicActors.hasNext() && !_stopRequested) {
+                CTDynamicActor dynamicActor = 
+                    (CTDynamicActor) dynamicActors.next();
+                dynamicActor.emitTentativeOutputs();
+            }
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException (e);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#goToMarkedState()
+     */
+    public void goToMarkedState() {
+        try {
+            Iterator statefulActors = getScheduler().getSchedule().get(
+                    CTSchedule.STATEFUL_ACTORS).actorIterator();
+            while (statefulActors.hasNext() && !_stopRequested) {
+                CTStatefulActor statefulActor = 
+                    (CTStatefulActor) statefulActors.next();
+                statefulActor.goToMarkedState();
+            }
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException (e);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#isStateAccurate()
+     */
+    public boolean isStateAccurate() {
+        return _isStateAccurate();
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#isOutputAccurate()
+     */
+    public boolean isOutputAccurate() {
+        return _isOutputAccurate();
+    }
 }
 
