@@ -110,7 +110,9 @@ public class Port extends NamedObj {
      * @return Return an enumeration of relations. 
      */
     public Enumeration enumRelations() {
-        if (_relationsList == null) _relationsList = new CrossRefList(this);
+        if (_relationsList == null) {
+            _relationsList = new CrossRefList(this);
+        }
 	return _relationsList.elements();
     }
 
