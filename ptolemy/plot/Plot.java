@@ -1996,33 +1996,4 @@ public class Plot extends PlotBox {
 
     // Set by _drawPlot(), and reset by clear()
     private boolean _showing = false;
-
-    // NOTE: This strategy fails due to a bug in jdk 1.1
-    //     // Support for Painter class which draws plot in the background.
-    //     private Painter _painter;
-    //     // FIXME: This has to be friendly or Netscape fails
-    //     boolean _painting = false;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    // NOTE: This strategy fails due to a bug in jdk 1.1
-    // Nothing drawn to the graphics object in this other thread ever appears.
-    //     // This class spawns a thread to load the
-    //     // sound file in the background.
-    //     // NOTE: This class has to be public or Netscape 4.0 fails.
-    //     public class Painter extends Thread {
-    //         public Painter(Graphics graphics) {
-    //             _graphics = graphics;
-    //         }
-    //         public void run() {
-    //             _painting = true;
-    // // FIXME: Well, damn... Can't draw to the graphics object from another
-    // // thread, apparently!!!  This never appears!!!!
-    // _graphics.drawRect(10, 10, 100, 100);
-    //             _drawPlot(_graphics, true);
-    //             _painting = false;
-    //         }
-    //         private Graphics _graphics;
-    //     }
 }
