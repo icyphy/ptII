@@ -48,6 +48,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.data.expr.Variable;
 import ptolemy.gui.MessageHandler;
+import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -107,6 +108,9 @@ public class MoMLApplication {
      */
     public MoMLApplication(String args[]) throws Exception {
 	super();
+
+        // our applications want to display errors graphically.
+        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
 
         // The Java look & feel is pretty lame, so we use the native
         // look and feel of the platform we are running on.
