@@ -404,11 +404,11 @@ public class SDFDirector extends StaticSchedulingDirector {
         // because this method provides complete new information. 
         // Default is a NonStrictFSMDirector, while FSMDirector is also 
         // in the array.
-        String[] defaultSuggestions = 
-            {"ptolemy.domains.hdf.kernel.HDFFSMDirector"};
-        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
-        defaultSuggestions[2] = 
+        String[] defaultSuggestions = new String[3];
+        defaultSuggestions[0] = "ptolemy.domains.hdf.kernel.HDFFSMDirector";
+        defaultSuggestions[1] = 
             "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
+        defaultSuggestions[2] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
     

@@ -300,8 +300,9 @@ public class PNDirector extends CompositeProcessDirector {
         // because this method provides complete new information. 
         // Default is a NonStrictFSMDirector, while FSMDirector is also 
         // in the array.
-        String[] defaultSuggestions = 
-            {"ptolemy.domains.fsm.kernel.MultirateFSMDirector"};
+        String[] defaultSuggestions = new String[2];
+        defaultSuggestions[0] = 
+            "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
