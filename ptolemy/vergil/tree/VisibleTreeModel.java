@@ -52,7 +52,7 @@ A tree model for the Vergil library panel.  This is a tree model that
 shows all entities and some ports, relations, and attributes.  The ports,
 relations, and attributes that it shows are those that
 contains an attribute of class EditorIcon, or that contain an
-attribute named "_iconDescription" or "_iconSmallDescription".
+attribute named "_iconDescription" or "_smallIconDescription".
 A composite entity that contains an attribute with name "_libraryMarker"
 is treated as a sublibrary. A composite entity without such an attribute
 is treated as an atomic entity.
@@ -134,7 +134,7 @@ public class VisibleTreeModel extends FullTreeModel {
 
     /** Return true if the object contains either an attribute of
      *  class EditorIcon or an attribute of any class named
-     *  "_iconDescription" or "_iconSmallDescription".  This
+     *  "_iconDescription" or "_smallIconDescription".  This
      *  will result in the object being rendered in the library.
      *  @return True if the object is to be rendered in the library.
      */
@@ -142,7 +142,7 @@ public class VisibleTreeModel extends FullTreeModel {
         List iconList = object.attributeList(EditorIcon.class);
         if (iconList.size() > 0
                 || object.getAttribute("_iconDescription") != null
-                || object.getAttribute("_iconSmallDescription")!= null) {
+                || object.getAttribute("_smallIconDescription")!= null) {
             return true;
         } else {
             return false;

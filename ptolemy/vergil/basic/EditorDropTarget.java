@@ -30,27 +30,7 @@
 
 package ptolemy.vergil.basic;
 
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
-
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.ImportAttribute;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.toolbox.PtolemyTransferable;
-import ptolemy.vergil.toolbox.SnapConstraint;
-
-import java.awt.datatransfer.DataFlavor;
+import java.awt.Color;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
@@ -58,16 +38,51 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DropListener;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Singleton;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.kernel.AnimationRenderer;
+import ptolemy.vergil.toolbox.PtolemyTransferable;
+import ptolemy.vergil.toolbox.SnapConstraint;
+import diva.canvas.CanvasComponent;
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
+import diva.util.UserObjectContainer;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorDropTarget
 /**
 This class provides drag-and-drop support. When this drop target
-receives a Transferable object containing a ptolemy entity, it creates
-a new instance of the entity, and adds it to the given graph.
+receives a transferable object containing a ptolemy entity, it creates
+a new instance of the object, and adds it to the given graph.
+If the drop location falls on top of an icon associated with an
+instance of NamedObj, then the object is deposited inside that
+instance (so the instance becomes its container). Otherwise,
+the object is deposited inside the model associated with the
+target graph. In either case, if the target container implements
+the DropListener interface, then it is informed of the drop by
+calling its dropped() method.
 
-@author Steve Neuendorffer, Contributor: Michael Shilman and Edward A. Lee
+@author Steve Neuendorffer and Edward A. Lee, Contributor: Michael Shilman
 @version $Id$
 @since Ptolemy II 2.0
 */
@@ -84,19 +99,6 @@ public class EditorDropTarget extends DropTarget {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public members                   ////
-
-    /** The plain-text flavor that we will be using for our
-     *  basic drag-and-drop protocol.
-     */
-    public static final DataFlavor TEXT_FLAVOR = DataFlavor.plainTextFlavor;
-
-    /** The plain-text flavor that we will be using for our
-     *  basic drag-and-drop protocol.
-     */
-    public static final DataFlavor STRING_FLAVOR = DataFlavor.stringFlavor;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** The drop target listener used with the diva graph object.
@@ -107,37 +109,115 @@ public class EditorDropTarget extends DropTarget {
         ////                     public methods                    ////
 
         /** Accept the event if the data is a known key.
+         *  This is called while a drag operation is ongoing,
+         *  when the mouse pointer enters the operable part of
+         *  the drop site for the DropTarget registered with
+         *  this listener.
          *  @param dtde The drop event.
          */
         public void dragEnter(DropTargetDragEvent dtde) {
             if (dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
                 dtde.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
-            }
-            else {
+            } else {
                 dtde.rejectDrag();
             }
         }
 
-        /** Do nothing.
+        /** Remove any highlighting that might be active.
+         *  This is called while a drag operation is ongoing, when the mouse
+         *  pointer has exited the operable part of the drop site for the
+         *  DropTarget registered with this listener. 
          *  @param dtde The drop event.
          */
         public void dragExit(DropTargetEvent dtde) {
+            if (_highlighted != null) {
+                _highlighter.renderDeselected(_highlightedFigure);
+                _highlighted = null;
+                _highlightedFigure = null;
+            }
         }
 
-        /** Accept the event if the data is a known key.
+        /** If the location of the event is over an icon for
+         *  an instance of NamedObj, then highlight that icon.
+         *  This is called when a drag operation is ongoing,
+         *  while the mouse pointer is still over the operable
+         *  part of the drop site for the DropTarget registered
+         *  with this listener.
          *  @param dtde The drop event.
          */
         public void dragOver(DropTargetDragEvent dtde) {
-            dragEnter(dtde); //for now
+            // See whether there is a container under the point.
+            Point2D originalPoint = SnapConstraint.constrainPoint(
+                    dtde.getLocation());
+            NamedObj over = _getObjectUnder(originalPoint);
+            if (over != _highlighted) {
+                if (_highlighted != null) {
+                    _highlighter.renderDeselected(_highlightedFigure);
+                    _highlighted = null;
+                    _highlightedFigure = null;
+                }
+                if (over != null) {
+                    if (_highlighter == null) {
+                        _highlighter = new AnimationRenderer(Color.white);
+                    }
+                    _highlighted = over;
+                    _highlightedFigure = _getFigureUnder(originalPoint);
+                    _highlighter.renderSelected(_highlightedFigure);
+                }
+            }
+            // Used to do this... Any reason for it?
+            // dragEnter(dtde);
         }
 
-        /** If the data is recognized as a Ptolemy II object, then use the
-         *  MoML description of the object to create a new instance of the
-         *  object at the drop location.
+        /** If the transferrable object is recognized as a Ptolemy II object,
+         *  then use the MoML description of the object to create a new
+         *  instance of the object at the drop location. If the drop
+         *  location is on top of an icon representing an instance of
+         *  NamedObj, then make that instance the container of the new
+         *  object. Otherwise, make the model associated with the graph
+         *  the container.
+         *  This is called when the drag operation has terminated with a
+         *  drop on the operable part of the drop site for the DropTarget
+         *  registered with this listener. 
          *  @param dtde The drop event.
          */
         public void drop(DropTargetDropEvent dtde) {
+            
+            // Unhighlight the target. Do this first in case
+            // errors occur... Don't want to leave highlighting.
+            if (_highlighted != null) {
+                _highlighter.renderDeselected(_highlightedFigure);
+                _highlighted = null;
+                _highlightedFigure = null;
+            }
+            
+            // See whether there is a container under the point.
+            Point2D originalPoint = SnapConstraint.constrainPoint(
+                    dtde.getLocation());
+            NamedObj container = _getObjectUnder(originalPoint);
+            
+            GraphPane pane = ((JGraph)getComponent()).getGraphPane();
 
+            if (container == null) {
+                // Find the default container for the dropped object
+                GraphController controller = pane.getGraphController();
+                GraphModel model = controller.getGraphModel();
+                container = (NamedObj)model.getRoot();
+            }
+            
+            // Find the context for the MoML change request.
+            NamedObj context = MoMLChangeRequest.getDeferredToParent(container);
+            if (context == null) {
+                context = container;
+            }
+            
+            // Find the location for the dropped objects.
+            // Account for the scaling in the pane.
+            final Point2D transformedPoint = new Point2D.Double();
+            pane.getTransformContext().getInverseTransform().transform(
+                    originalPoint, transformedPoint);
+            
+            // Get an iterator over objects to drop.
             Iterator iterator = null;
             if (dtde.isDataFlavorSupported(
                     PtolemyTransferable.namedObjFlavor)) {
@@ -161,45 +241,33 @@ public class EditorDropTarget extends DropTarget {
                 return;
             }
 
-            Point2D originalPoint = SnapConstraint.constrainPoint(
-                    dtde.getLocation());
-            GraphPane pane = ((JGraph)getComponent()).getGraphPane();
-            final Point2D point = new Point2D.Double();
-            // Account for the scaling in the pane.
-            try {
-                pane.getTransformContext().getInverseTransform().transform(
-                        originalPoint, point);
-            } catch (Exception ex) {
-                MessageHandler.error("Failed to get transform context.", ex);
-                return;
-            }
-
-            final GraphController controller = pane.getGraphController();
-            GraphModel model = controller.getGraphModel();
-            final CompositeEntity toplevel = (CompositeEntity)model.getRoot();
-            NamedObj container =
-                MoMLChangeRequest.getDeferredToParent(toplevel);
-            if (container == null) {
-                container = toplevel;
-            }
-
+            // Create the MoML change request to instantiate the new objects.
             while (iterator.hasNext()) {
-                NamedObj dropObj = (NamedObj) iterator.next();
-                final String name = toplevel.uniqueName(dropObj.getName());
+                final NamedObj dropObj = (NamedObj) iterator.next();
+                final String name;
+                if (dropObj instanceof Singleton) {
+                    name = dropObj.getName();
+                } else {
+                    name = container.uniqueName(dropObj.getName());
+                }
 
                 // Create the MoML command.
                 StringBuffer moml = new StringBuffer();
+                moml.append("<group>");
+                if (container != context) {
+                    moml.append("<");
+                    moml.append(container.getMoMLInfo().elementName);
+                    moml.append(" name=\""
+                            + container.getName(context) + "\">\n");
+                }
+                /* Removed by EAL (9/28/03), which means the MoML import
+                 * element is no longer supported.
                 // If the dropObj defers to something else, then we
                 // have to check the parent of the object
                 // for import attributes, and then we have to
                 // generate import statements.  Note that everything
                 // imported by the parent will be imported now by
                 // the object into which this is dropped.
-                moml.append("<group>");
-                if (container != toplevel) {
-                    moml.append("<entity name=\""
-                            + toplevel.getName(container) + "\">\n");
-                }
                 if (dropObj.getMoMLInfo().deferTo != null) {
                     CompositeEntity sourceContainer =
                         (CompositeEntity)dropObj.getContainer();
@@ -207,72 +275,139 @@ public class EditorDropTarget extends DropTarget {
                         Iterator imports = sourceContainer.attributeList(
                                 ImportAttribute.class).iterator();
                         while (imports.hasNext()) {
-                            // FIXME: does this code ever get called?
+                            // Does this code ever get called?
                             // There is no code in the tree that instantiates
-                            // an ImportAttribute (8/02)
+                            // an ImportAttribute (8/02).
                             moml.append(((ImportAttribute)imports.next())
                                     .exportMoML());
                         }
                     }
                 }
+                */
                 moml.append(dropObj.exportMoML(name));
-                if (container != toplevel) {
-                    moml.append("</entity>");
+                if (container != context) {
+                    moml.append("</");
+                    moml.append(container.getMoMLInfo().elementName);
+                    moml.append(">");
                 }
                 moml.append("</group>");
 
                 // NOTE: Have to know whether this is an entity,
-                // port, etc. This seems awkward.
+                // port, etc. This seems awkward. The following
+                // code needs refactoring, as there are four very
+                // similar copies.
                 MoMLChangeRequest request = null;
+                final NamedObj finalContainer = container;
+                
                 if (dropObj instanceof ComponentEntity) {
 
                     // Dropped object is an entity.
-                    // FIXME: Should use the parser from the PtolemyEffigy,
-                    // so that undo will work.
                     request = new MoMLChangeRequest(
-                            this, container, moml.toString()) {
-                            protected void _execute() throws Exception {
+                        this, context, moml.toString()) {
+                        protected void _execute() throws Exception {
+                            // Errors will be reported to listeners as a consequence of
+                            // throwing an exception here, so don't also report them
+                            // via the error handler.
+                            setReportErrorsToHandler(false);
+                            try {
                                 super._execute();
-                                NamedObj newObject = toplevel.getEntity(name);
-                                _setLocation(name, newObject, point);
+                            } catch (Throwable ex) {
+                                throw new IllegalActionException(finalContainer, ex,
+                                "Cannot drop " + dropObj.getName());
                             }
-                        };
+                            // If this succeeded, then the container is surely a
+                            // a CompositeEntity.
+                            if (finalContainer instanceof CompositeEntity) {
+                                NamedObj newObject
+                                        = ((CompositeEntity)finalContainer)
+                                        .getEntity(name);
+                                if (newObject != null) {
+                                    _setLocation(name, newObject, transformedPoint);
+                                }
+                            }
+                        }
+                    };
 
                 } else if (dropObj instanceof Port) {
 
                     // Dropped object is a port.
                     request = new MoMLChangeRequest(
-                            this, container, moml.toString()) {
-                            protected void _execute() throws Exception {
+                        this, context, moml.toString()) {
+                        protected void _execute() throws Exception {
+                            // Errors will be reported to listeners as a consequence of
+                            // throwing an exception here, so don't also report them
+                            // via the error handler.
+                            setReportErrorsToHandler(false);
+                            try {
                                 super._execute();
-                                NamedObj newObject = toplevel.getPort(name);
-                                _setLocation(name, newObject, point);
+                            } catch (Throwable ex) {
+                                throw new IllegalActionException(finalContainer, ex,
+                                "Cannot drop " + dropObj.getName());
                             }
-                        };
+                            // If this succeeded, then the container is surely an
+                            // instance of Entity.
+                            if (finalContainer instanceof Entity) {
+                                NamedObj newObject
+                                        = ((Entity)finalContainer)
+                                        .getPort(name);
+                                if (newObject != null) {
+                                    _setLocation(name, newObject, transformedPoint);
+                                }
+                            }
+                        }
+                    };
 
                 } else if (dropObj instanceof Relation) {
 
                     // Dropped object is a relation.
                     request = new MoMLChangeRequest(
-                            this, container, moml.toString()) {
-                            protected void _execute() throws Exception {
+                        this, context, moml.toString()) {
+                        protected void _execute() throws Exception {
+                            // Errors will be reported to listeners as a consequence of
+                            // throwing an exception here, so don't also report them
+                            // via the error handler.
+                            setReportErrorsToHandler(false);
+                            try {
                                 super._execute();
-                                NamedObj newObject = toplevel.getRelation(name);
-                                _setLocation(name, newObject, point);
+                            } catch (Throwable ex) {
+                                throw new IllegalActionException(finalContainer, ex,
+                                "Cannot drop " + dropObj.getName());
                             }
-                        };
+                            // If this succeeded, then the container is surely
+                            // an instance of CompositeEntity.
+                            if (finalContainer instanceof CompositeEntity) {
+                                NamedObj newObject
+                                        = ((CompositeEntity)finalContainer)
+                                        .getRelation(name);
+                                if (newObject != null) {
+                                    _setLocation(name, newObject, transformedPoint);
+                                }
+                            }
+                        }
+                    };
 
                 } else if (dropObj instanceof Attribute) {
 
                     // Dropped object is an attribute.
                     request = new MoMLChangeRequest(
-                            this, container, moml.toString()) {
-                            protected void _execute() throws Exception {
+                        this, context, moml.toString()) {
+                        protected void _execute() throws Exception {
+                            // Errors will be reported to listeners as a consequence of
+                            // throwing an exception here, so don't also report them
+                            // via the error handler.
+                            setReportErrorsToHandler(false);
+                            try {
                                 super._execute();
-                                NamedObj newObject = toplevel.getAttribute(name);
-                                _setLocation(name, newObject, point);
+                            } catch (Throwable ex) {
+                                throw new IllegalActionException(finalContainer, ex,
+                                "Cannot drop " + dropObj.getName());
                             }
-                        };
+                            NamedObj newObject = finalContainer.getAttribute(name);
+                            if (newObject != null) {
+                                _setLocation(name, newObject, transformedPoint);
+                            }
+                        }
+                    };
                 }
 
                 // NOTE: If the drop object is not recognized, nothing
@@ -280,21 +415,91 @@ public class EditorDropTarget extends DropTarget {
                 if (request != null) {
                     request.setUndoable(true);
                     container.requestChange(request);
+                    if (container instanceof DropListener) {
+                        ((DropListener)container).dropped();
+                    }
                 }
             }
             dtde.dropComplete(true); //success!
         }
 
         /** Accept the event if the data is a known key.
+         *  This is called if the user has modified the current drop gesture. 
          *  @param dtde The drop event.
          */
         public void dropActionChanged(DropTargetDragEvent dtde) {
-            dragEnter(dtde); //for now
+            // Used to do this... Not needed?
+            // dragEnter(dtde);
         }
 
         ///////////////////////////////////////////////////////////////
         ////                     private methods                   ////
 
+        /** Return the figure that is an icon of a NamedObj and is
+         *  under the specified point, or null if there is none.
+         *  @param point The point in the graph pane.
+         *  @return The object under the specified point, or null if there
+         *   is none or it is not a NamedObj.
+         */
+        private Figure _getFigureUnder(Point2D point) {
+            GraphPane pane = ((JGraph)getComponent()).getGraphPane();
+                                           
+            // Account for the scaling in the pane.
+            Point2D transformedPoint = new Point2D.Double();
+            pane.getTransformContext().getInverseTransform().transform(
+                    point, transformedPoint);
+                       
+            FigureLayer layer = pane.getForegroundLayer();
+           
+            // Find the figure under the point.
+            // NOTE: Unfortunately, FigureLayer.getCurrentFigure() doesn't
+            // work with a drop target (I guess it hasn't seen the mouse events),
+            // so we have to use a lower level mechanism.
+            double halo = layer.getPickHalo();
+            double width = halo * 2;
+            Rectangle2D region = new Rectangle2D.Double (
+                    transformedPoint.getX() - halo,
+                    transformedPoint.getY() - halo,
+                    width, width);
+            CanvasComponent figureUnderMouse = layer.pick(region);
+
+            // Find a user object belonging to the figure under the mouse
+            // or to any figure containing it (it may be a composite figure).
+            Object objectUnderMouse = null;
+            while (figureUnderMouse instanceof UserObjectContainer
+                    && objectUnderMouse == null) {
+                objectUnderMouse = ((UserObjectContainer)figureUnderMouse).getUserObject();
+                if (objectUnderMouse instanceof NamedObj) {
+                    if (figureUnderMouse instanceof Figure) {
+                        return (Figure)figureUnderMouse;
+                    }
+                }
+                figureUnderMouse = figureUnderMouse.getParent();
+            }
+            return null;
+        }
+        
+        /** Return the object under the specified point, or null if there
+         *  is none.
+         *  @param point The point in the graph pane.
+         *  @return The object under the specified point, or null if there
+         *   is none or it is not a NamedObj.
+         */
+        private NamedObj _getObjectUnder(Point2D point) {
+            Figure figureUnderMouse = _getFigureUnder(point);
+            if (figureUnderMouse == null) {
+                return null;
+            }
+            Object objectUnderMouse = ((UserObjectContainer)figureUnderMouse).getUserObject();
+            // Object might be a Location, in which case we want its container.
+            if (objectUnderMouse instanceof Location) {
+                return (NamedObj)((NamedObj)objectUnderMouse).getContainer();
+            } else if (objectUnderMouse instanceof NamedObj) {
+                return (NamedObj)objectUnderMouse;
+            }
+            return null;
+        }
+        
         // Create a Location attribute if necessary for the specified object,
         // and set the location to the specified point.
         // Note that this needs to be done after the change request
@@ -322,5 +527,17 @@ public class EditorDropTarget extends DropTarget {
             coords[1] = ((int)newPoint.getY());
             location.setLocation(coords);
         }
+        
+        ///////////////////////////////////////////////////////////////
+        ////                     private variables                 ////
+
+        // Currently highlighted drop target.
+        private NamedObj _highlighted = null;
+        
+        // Currently highlighted figure.
+        private Figure _highlightedFigure = null;
+        
+        // The renderer used for highlighting.
+        private AnimationRenderer _highlighter = null;
     }
 }

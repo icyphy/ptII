@@ -66,7 +66,15 @@ public class AnimationRenderer implements SelectionRenderer {
      *  decorator.
      */
     public AnimationRenderer () {
-        _prototypeDecorator = new BasicHighlighter(Color.red, 4.0f);
+        this(Color.red);
+    }
+    
+    /** Create a new selection renderer with the default prototype
+     *  decorator using the specified color.
+     *  @param color The color for the highlight.
+     */
+    public AnimationRenderer (Color color) {
+        _prototypeDecorator = new BasicHighlighter(color, 4.0f);
     }
 
     ///////////////////////////////////////////////////////////////////

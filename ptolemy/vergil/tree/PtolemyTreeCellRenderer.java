@@ -103,7 +103,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 List iconList = object.attributeList(EditorIcon.class);
                 if (iconList.size() > 0
                         || object.getAttribute("_iconDescription") != null
-                        || object.getAttribute("_iconSmallDescription")
+                        || object.getAttribute("_smallIconDescription")
                         != null) {
                     // NOTE: this code is similar to that in IconController,
                     // except that only the first EditorIcon encountered is

@@ -44,8 +44,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// IconController
@@ -82,11 +84,20 @@ public class IconController extends ParameterizedNodeController {
         public Figure render(Object n) {
             Locatable location = (Locatable)n;
             final NamedObj object = (NamedObj) location.getContainer();
-
+            
             // NOTE: this code is similar to that in PtolemyTreeCellRenderer
             Figure result = null;
             try {
                 List iconList = object.attributeList(EditorIcon.class);
+                // Check to see whether there is an icon that has been created,
+                // but not inserted.
+                if (iconList.size() == 0) {
+                    XMLIcon alreadyCreated = (XMLIcon)_iconsPendingContainer.get(object);
+                    if (alreadyCreated != null) {
+                        iconList.add(alreadyCreated);
+                    }
+                }
+                // If there are still no icons, then we need to create one.
                 if (iconList.size() == 0) {
                     // NOTE: This used to directly create an XMLIcon within
                     // the container "object". However, this is not cosher,
@@ -96,10 +107,19 @@ public class IconController extends ParameterizedNodeController {
                     // require write access to the workspace), and specify
                     // to it what the container will eventually be. Then
                     // we queue a change request to make that the container.
+                    // Further, we have to make a record of the figure, indexed
+                    // by the object, in case some other change request is
+                    // executed before this gets around to setting the
+                    // container.  Otherwise, that second change request
+                    // will result in the creation of a second figure.
                     final EditorIcon icon = new XMLIcon(object.workspace(), "_icon");
                     icon.setContainerToBe(object);
                     icon.setPersistent(false);
                     result = icon.createFigure();
+
+                    // NOTE: Make sure this is done before the change request below
+                    // is executed, which may be as early as when it is requested.
+                    _iconsPendingContainer.put(object, icon);
 
                     // NOTE: Make sure the source of this change request is
                     // the graph model. Otherwise, this change request will trigger
@@ -114,6 +134,7 @@ public class IconController extends ParameterizedNodeController {
                          // NOTE: The KernelException should not be thrown, but
                          // if it is, it will be handled properly.
                          protected void _execute() throws KernelException {
+                             _iconsPendingContainer.remove(icon);
                              // If the icon already has a container, do nothing.
                              if (icon.getContainer() != null) return;
                              // If the container already has an icon, do nothing.
@@ -145,4 +166,7 @@ public class IconController extends ParameterizedNodeController {
             return result;
         }
     }
+    // Map used to keep track of icons that have been created
+    // but not yet assigned to a container.
+    private static Map _iconsPendingContainer = new HashMap();
 }

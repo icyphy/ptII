@@ -212,9 +212,6 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             // setModified() so that the panner is also updated.
             frame.changeExecuted(null);
         }
-
-
-
     }
 
     /** Drag all selected nodes and move any attached edges.
