@@ -116,9 +116,9 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         if (param == BreakpointODESolver) {
             _debug(getName() + "breakpoint solver updating.");
             _breakpointsolverclass =
-                    ((StringToken)param.getToken()).stringValue();
+                ((StringToken)param.getToken()).stringValue();
             _breakpointSolver =
-                    _instantiateODESolver(_breakpointsolverclass);
+                _instantiateODESolver(_breakpointsolverclass);
         } else {
             super.attributeChanged(param);
         }
@@ -163,8 +163,8 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
             _breakpointsolverclass=
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver";
             BreakpointODESolver = new Parameter(
-                this, "BreakpointODESolver",
-                new StringToken(_breakpointsolverclass));
+                    this, "BreakpointODESolver",
+                    new StringToken(_breakpointsolverclass));
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
@@ -200,7 +200,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                     _setCurrentODESolver(_breakpointSolver);
                     setCurrentStepSize(getMinStepSize());
                     _debug(getFullName() + 
-                                "IN BREAKPOINT iteration.");
+                            "IN BREAKPOINT iteration.");
                     _setIsBPIteration(true);
                     break;
                 } else {
