@@ -59,7 +59,7 @@ class RLEncoding {
 
         PNImageSource a1 = new PNImageSource(c1, "A1");
         Parameter p1 = (Parameter)a1.getAttribute("Image_file");
-        p1.setToken(new StringToken("/users/mudit/_PTII/ptolemy/domains/pn/lib/test/ptII.pbm"));
+        p1.setToken(new StringToken("/users/ptII/ptolemy/domains/pn/lib/test/ptII.pbm"));
         MatrixUnpacker a2 = new MatrixUnpacker(c1, "A2");
         RLEncoder a3 = new RLEncoder(c1, "A3");
         RLDecoder a4 = new RLDecoder(c1, "A4");
