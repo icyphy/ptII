@@ -27,66 +27,28 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.java;
 
-import java.io.FileWriter;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.parameters.PortParameter;
-import ptolemy.actor.sched.Firing;
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
-import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.HSDirector;
 import ptolemy.domains.giotto.kernel.GiottoDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.domains.sdf.kernel.SDFUtilities;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelRuntimeException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.StringUtilities;
-import soot.ArrayType;
-import soot.BooleanType;
 import soot.FastHierarchy;
 import soot.HasPhaseOptions;
 import soot.Hierarchy;
-import soot.IntType;
-import soot.Local;
-import soot.Modifier;
-import soot.PhaseOptions;
-import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
-import soot.SootField;
 import soot.SootMethod;
-import soot.Type;
 import soot.ValueBox;
-import soot.jimple.Expr;
-import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
-import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
-import soot.jimple.StringConstant;
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-import soot.jimple.toolkits.typing.TypeResolver;
-import soot.toolkits.scalar.LocalSplitter;
-import soot.util.Chain;
 
 //////////////////////////////////////////////////////////////////////////
 //// InlineDirectorTransformer
