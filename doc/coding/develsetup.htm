@@ -158,6 +158,59 @@ ln -s ~/ptII .
 </pre>
 </ol>
 
+<h2>Renaming actors</h2>
+Below are the steps necessary to rename an actor
+
+<ol>
+<li> copy the .java file to the new directory.
+
+<li> Remove the file from the makefile in the old directory
+<li> Remove the file from the cvs repository in the old directory
+<pre>
+cvs delete -f Foo.java
+cvs commit -m "Moved Foo to new directory blah" Foo.java makefile
+</pre>
+
+
+<li> Edit the .java file in the new directory and change the package
+and the comment at the top if necessary.
+
+<li> Add the new file to the makefile in the new directory
+
+<li> Compile the new file
+
+<li> Add the new file to CVS and commit the change to the makefile
+
+<pre>
+cd blah
+cvs add Foo.java
+cvs commit -m "Moved Foo from oldblah directory" Foo.java makefile
+</pre>
+
+
+<li> Move any tests from the old test directory by doing the
+copy - cvs delete - edit - cvs add - commit cycle as above
+
+<li> Run the tests in both the old and new directory
+
+<li> Fix up the Vergil palettes in each directory
+
+
+<li> Update the glimpse index and then search for
+instances of the actor name and fix it:
+<pre>
+cd $PTII
+make glimpse
+glimpse -H $PTII Foo
+</pre>
+
+
+<li> Update the framemaker documentation
+
+<li> Check the nightly build the next day for errors
+</ol>
+
+
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
 </html>
