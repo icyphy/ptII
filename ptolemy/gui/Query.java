@@ -76,6 +76,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Query
@@ -303,19 +304,25 @@ public class Query extends JPanel {
      *  @param base The URI with respect to which to give
      *   relative file names, or null to give absolute file name.
      *  @param startingDirectory The directory to open the file chooser in.
+     *  @param allowFiles True if regular files may be chosen.
+     *  @param allowDirectories True if directories may be chosen.
      */
     public void addFileChooser(
             String name,
             String label,
             String defaultName,
             URI base,
-            File startingDirectory) {
+            File startingDirectory,
+            boolean allowFiles,
+            boolean allowDirectories) {
         addFileChooser(
                 name,
                 label,
                 defaultName,
                 base,
                 startingDirectory,
+                allowFiles,
+                allowDirectories,
                 Color.white,
                 Color.black);
     }
@@ -327,6 +334,8 @@ public class Query extends JPanel {
      *  @param base The URI with respect to which to give
      *   relative file names, or null to give absolute file name.
      *  @param startingDirectory The directory to open the file chooser in.
+     *  @param allowFiles True if regular files may be chosen.
+     *  @param allowDirectories True if directories may be chosen.
      *  @param background The background color for the text entry box.
      *  @param foreground The foreground color for the text entry box.
      */
@@ -336,6 +345,8 @@ public class Query extends JPanel {
             String defaultName,
             URI base,
             File startingDirectory,
+            boolean allowFiles,
+            boolean allowDirectories,
             Color background,
             Color foreground) {
 
@@ -347,6 +358,8 @@ public class Query extends JPanel {
                     defaultName,
                     base,
                     startingDirectory,
+                    allowFiles,
+                    allowDirectories,
                     background,
                     foreground);
         _addPair(name, lbl, fileChooser, fileChooser);
@@ -1655,8 +1668,11 @@ public class Query extends JPanel {
                 String name,
                 String defaultName,
                 URI base,
-                File startingDirectory) {
+                File startingDirectory,
+                boolean allowFiles,
+                boolean allowDirectories) {
             this(name, defaultName, base, startingDirectory,
+                    allowFiles, allowDirectories,
                     Color.white, Color.black);
         }
         public QueryFileChooser(
@@ -1664,11 +1680,18 @@ public class Query extends JPanel {
                 String defaultName,
                 URI base,
                 File startingDirectory,
+                boolean allowFiles,
+                boolean allowDirectories,
                 Color background,
                 Color foreground) {
             super(BoxLayout.X_AXIS);
             _base = base;
             _startingDirectory = startingDirectory;
+            if (!allowFiles && !allowDirectories) {
+                throw new IllegalArgumentException("QueryFileChooser: nothing to be chosen.");
+            }
+            _allowFiles = allowFiles;
+            _allowDirectories = allowDirectories;
             _entryBox = new JTextField(defaultName, _width);
             _entryBox.setBackground(background);
             _entryBox.setForeground(foreground);
@@ -1702,6 +1725,16 @@ public class Query extends JPanel {
             fileChooser.setApproveButtonText("Select");
             // FIXME: The following doesn't have any effect.
             fileChooser.setApproveButtonMnemonic('S');
+            if (_allowFiles && _allowDirectories) {
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            } else if (_allowFiles && !_allowDirectories) {
+                // This is the default.
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            } else if (!_allowFiles && _allowDirectories) {
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            } else {
+                throw new InternalErrorException("QueryFileChooser: nothing to be chosen.");
+            }
             int returnValue = fileChooser.showOpenDialog(Query.this);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 if (_base == null) {
@@ -1748,6 +1781,8 @@ public class Query extends JPanel {
         private JTextField _entryBox;
         private String _name;
         private File _startingDirectory;
+        private boolean _allowFiles;
+        private boolean _allowDirectories;
     }
 
     /** Listener for line entries, for when they lose the focus.
