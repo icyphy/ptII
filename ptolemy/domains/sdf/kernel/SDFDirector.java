@@ -61,7 +61,7 @@ the execution sequence of the actors before execution begins.
 an infinite number of executions of the schedule.
 <li>Deadlock will never occur, given and infinite number of executions of
 the schedule.
-<ul>
+</ul>
 <h1>Class comments</h1>
 An SDFDirector is the class that controls execution of actors under the
 SDF domain.  By default, actor scheduling is handled by the SDFScheduler
