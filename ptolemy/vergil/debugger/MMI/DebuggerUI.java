@@ -572,7 +572,7 @@ public class DebuggerUI extends JFrame
         // The next line is hacking : _cmd should be set to    //
       	// "end" but this wouldn't work so we cheat the        //
 	// DbgController                                       //
-			_cmd ="microstep";
+			_cmd = "microstep";
 			displayResult("Command entered = end");
 			_pdb.getDbgController().notFinished = false;
 			_pdb.getDbgController().commandEntered();

@@ -25,44 +25,38 @@
 @AcceptedRating Red 
 */
 
-/* This class is used to store the state of execution of a DbgDirector
- * it stores the next method of an actor that will be executed and the last 
- * user command entered through the debuggerUI. It is initialized with 
- * _dbgCommand = "go".
- * Each Director has its own ExecState that is passed to DbgController
- * each time before calling an actor's method among prefire(), fire(), 
- * or postfire().
- */
-
 package ptolemy.vergil.debugger;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExecState 
 /**
-Store the execution state of a director : the next method to execute
-and the last debugging command
+This class is used to store the state of execution of a DbgDirector
+it stores the next method of an actor that will be executed and the last 
+user command entered through the debuggerUI. It is initialized with 
+_dbgCommand = "go".
+Each Director has its own ExecState that is passed to DbgController
+each time before calling an actor's method among prefire(), fire(), 
+or postfire().
+
 @author SUPELEC team
 @version $Id$
-@see ExecState
-@see ptolemy.vergil.debugger.ExecState
 */
 public class ExecState {
     
     ////////////////////////////////////////////////////////////////////
     /////     Constructor
-    /** Constructor
-     * @see ptolemy.vergil.debugger.ExecState#ExecState()
+    /** 
+     * Create a new execution state with the debug command set to "go".
      */
     public ExecState() {
 	_dbgCommand = "go";
     }
 
     ///////////////////////////////////////////////////////////////////
-    /// Public method   
-    /** sets _dbgCommand with the last user's command entered thyrough
-     *  the DbgController.
-      * @see ptolemy.vergil.debugger.ExecState#setdbgCommand(String s)
-     * @param s : a string that contains the debug command
+    /// Public methods
+
+    /** Set the last user's command entered through the DbgController.
+     * @param s A string that contains the debug command.
      */
     public void setdbgCommand(String s) {
 	if (s.equals("resume"))
@@ -82,9 +76,8 @@ public class ExecState {
 	    ;
     }
 
-    /** sets the variable _nextMethod 
-     * @see ptolemy.vergil.debugger.ExecState#setnextMethod(String s)
-     * @param s : a string that contains the name of the next method to execute
+    /** Sets the next method to be executed.
+     * @param s A string that contains the name of the next method to execute.
      */
     public void setnextMethod(String s) {
 	if (s.equals("prefire"))  
@@ -100,16 +93,14 @@ public class ExecState {
 	    ;
     }
 
-    /** Return the last debug command
-     * @see ptolemy.vergil.debugger.ExecState#getdbgCommand()
+    /** Return the last debug command.
      * @return a string containing the last command
      */
     public String getdbgCommand() {
 	return _dbgCommand;
     }
 
-     /** Return the next method to execute
-     * @see ptolemy.vergil.debugger.ExecState#getnextMethod()
+     /** Return the next method to execute.
      * @return a string that contains the next method to execute
      */
     public String getnextMethod() {
@@ -123,6 +114,6 @@ public class ExecState {
     private String _nextMethod;
     
     // A variable that contains the last user command : resume, paused, 
-    //  step, stepin, µstep, stepout.
+    //  step, stepin, step, stepout.
     private String _dbgCommand;
 }

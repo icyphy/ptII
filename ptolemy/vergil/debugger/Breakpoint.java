@@ -41,7 +41,7 @@ which enables the breakpoint when it evaluates to true.  Note that
 this class does not actually halt execution.  Instead, the DebugController
 inspects for its presence in an Actor and acts accordingly.
 
-@author SUPELEC team
+@author SUPELEC team and Steve Neuendorffer
 @version $Id$
 */
 public class Breakpoint extends Attribute {
@@ -50,7 +50,9 @@ public class Breakpoint extends Attribute {
      * @param actor The actor that contains the breakpoint.
      * @param method The name of the method from executable interface
      * during which the execution will eventually stop.
-     * @exception IllegalActionException, NameDuplicatiopnException
+     * @exception IllegalActionException If the container is not an actor
+     * @exception NameDuplicationException If the container already contains
+     * an object with the given name.
      */
     public Breakpoint(NamedObj actor, String method) 
 	throws IllegalActionException, NameDuplicationException {
@@ -72,21 +74,8 @@ public class Breakpoint extends Attribute {
 
     /////////////////////////////////////////////////////////////////
     //  Public methods
-    
-    /** 
-     * Return a reference to the executive director the actor that 
-     * contains this breakpoint.
-     * This function is used to edit or modify the breakpoint once
-     * it has been had in the executive director's breakpoint list
-     * @see ptolemy.vergil.debugger.Breakpoint#getContainerDirector()
-     * @return a reference on the executive director of the container actor
-     */
-    public Nameable getContainerDirector() {
-	return ((Actor)getContainer()).getExecutiveDirector();
-    }
 
     /** Set the boolean condition that will be evaluated
-     * @see ptolemy.vergil.debugger.Breakpoint#setCondition()
      * @param expr the expression to evaluate
      */
     public void setCondition(String expr) {
@@ -95,7 +84,6 @@ public class Breakpoint extends Attribute {
 
     /** Evaluate the boolean expression of the breakpoint and 
      * returns the boolean value. 
-     * @see ptolemy.vergil.debugger.Breakpoint#evaluateCondition()
      * @return a boolean true will stop the execution
      */
     public boolean evaluateCondition() {

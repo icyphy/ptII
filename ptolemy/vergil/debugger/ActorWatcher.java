@@ -40,22 +40,21 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// ActorWatcher
 /**
- This class allows to track some parameters values of an actor
+This class allows to track some parameters values of an actor
+
 @author SUPELEC team
 @version $Id$
-@see Nameable, Watchers
-@see ptolemy.vergil.debugger.ActorWatcher
+@see Watchers
 */
 public class ActorWatcher implements Nameable, Watchers {
 
     public Vector valueList;
-    /** Constructor
-     * @see ptolemy.vergil.debugger#ActorWatcher(NamedObj target)
-     * @param target : the actor that you care about
+    /** Construct a new watcher with the given target.
+     * @param target The actor that you care about.
      */
     public ActorWatcher(NamedObj target) {
 	_target = target;
-	_attributes = null;
+	_attributeList = null;
 	valueList = new Vector();
 	_name = target.getFullName();
 	_frame = new JFrame();
@@ -93,40 +92,41 @@ public class ActorWatcher implements Nameable, Watchers {
      * @see ptolemy.vergil.debugger#refresh()
      */
     public void refresh() {
-	Enumeration att;
-	att = _attributes.elements();
+	Iterator attributes;
+	attributes = _attributeList.elementList().iterator();
 	valueList.removeAllElements();
-	while (att.hasMoreElements()) {
+	while (attributes.hasNext()) {
 	    try {
-		valueList.addElement(new String(((Variable)att.nextElement()).getToken().toString())); 
+		Variable attribute = (Variable)attributes.next();
+		valueList.addElement(new String(attribute.getToken().toString())); 
 	    } catch (IllegalActionException e) {}
 	}
-	edit(_attributes);
+	edit(_attributeList);
 	_frame.setVisible(true);
     }
 
-    /** Build a visual representation of the watcher. For each target
+    /** 
+     * Build a visual representation of the watcher. For each target
      * value it builds a swing component to display this values
-     * @see ptolemy.vergil.debugger#edit()
-     * @param attributeList : the list of attribute to display 
+     * @param attributeList The list of attributes to display. 
      */
     public void edit(NamedList attributeList) {
-
-	_attributes = attributeList;
-	Enumeration e = _attributes.elements();
-	int size = _attributes.size();
+	_attributeList = attributeList;
+	Iterator attributes = _attributeList.elementList().iterator();
+	int size = _attributeList.size();
 	_frame.setSize(200, size*50);
 	JPanel panel = new JPanel();
 	panel.setLayout(new GridLayout(size, 2, 2, 10));
-	while (e.hasMoreElements()) {
+	while (attributes.hasNext()) {
 	    // Build a swing component to display attribute
 	    // and add it to the frame 
 	    // ONLY for string displayable parameter
-	    Variable attribute = (Variable)e.nextElement();
+	    Variable attribute = (Variable)attributes.next();
 	    JLabel label = new JLabel(attribute.getName());
 	    panel.add(label);
 	    try {
-		String nextValue = new String((attribute.getToken()).toString());
+		String nextValue = 
+		    new String((attribute.getToken()).toString());
 		JTextField text = new JTextField(nextValue);
 		valueList.addElement(nextValue);
 		panel.add(text);
@@ -141,6 +141,6 @@ public class ActorWatcher implements Nameable, Watchers {
     ////                         private variables                 ////
     private NamedObj _target;
     private String _name;
-    private NamedList _attributes;
+    private NamedList _attributeList;
     private JFrame _frame;
 }

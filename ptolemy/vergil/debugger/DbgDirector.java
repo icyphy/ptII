@@ -45,7 +45,7 @@ public interface DbgDirector {
      * @see ptolemy.vergil.debugger.DbgDirector#getState()
      * @return the ExecState of the director
      */
-    public ExecState getState();
+    //    public ExecState getState();
 
     public void addDebuggingListener(DebuggingListener listener);
 

@@ -41,11 +41,10 @@ import ptolemy.kernel.util.*;
    DbgController is the class that analyses and modifies the ExecState
    of any Director that calls it test method. Its method waitUserCommand
    allows him to wait for an entry by the user, in collaboration with 
-   DebuggerUI
-@author SUPELEC team B. Desoutter, P. Domecq & G. Vibert
+   DebuggerUI.
+
+@author SUPELEC team B. Desoutter, P. Domecq & G. Vibert and Steve Neuendorffer
 @version $Id$
-@see DbgController
-@see ptolemy.vergil.debugger.DbgController
 */
 public class DbgController implements DebuggingListener {
 
@@ -60,16 +59,13 @@ public class DbgController implements DebuggingListener {
     //(tested in XXXDbgDirector).
     public boolean stepInPause;
     
-    //Boolean that allows to synchronize DbgController and DebuggerUI.
-    private boolean _commandNotEntered = true;
-
     //List that contain the Watchers.
-    public NamedList actorWatcher = new NamedList();
+    public NamedList watcherList = new NamedList();
 
-
-    /** Constructor
-     * @see ptolemy.vergil.debugger.DbgController#DbgController()
-     * @param pdb : a reference on the debugger
+   /** 
+     * Construct a new debug controller with a reference to the given
+     * debugger.
+     * @param pdb A reference to the debugger.
      */
     public DbgController(Pdb pdb) {
 	_pdb = pdb;
@@ -77,137 +73,126 @@ public class DbgController implements DebuggingListener {
 	stepInPause = false;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notify the DebuggingListenr that actor is going to be prefire
-     * @see ptolemy.vergil.debugger.DbgController#prefireEvent(Actor actor)
-     * @param actor : the actor that is going to be prefire.
+    /** 
+     * Notify the DebuggingListener that actor is going to be prefired.
+     * @param actor The actor that is going to be prefired.
      */
     public void prefireEvent(Actor actor) {
-	ExecState state = ((DbgDirector) actor.getExecutiveDirector()).getState();
-
 	if (notFinished) {
 	    //Refresh the Value of the ExecState
-	    state.setnextMethod("prefire");
-	    _pdb.getDebuggerUI().displayResult("Before prefiring " + ((Nameable)actor).getFullName());
-	    if (((NamedObj) actor).getAttribute("prefire") != null) {
-		if (((Breakpoint) ((NamedObj) actor).getAttribute("prefire")).evaluateCondition()) {
-		    _pdb.getDebuggerUI().displayResult("Breakpoint encountered!");
-		    waitUserCommand(state);
-		}
+	    _state.setnextMethod("prefire");
+	    _pdb.getDebuggerUI().displayResult("Before prefiring " + 
+		 ((Nameable)actor).getFullName());
+	    Breakpoint breakpoint = (Breakpoint) 
+		((NamedObj) actor).getAttribute("prefire");
+	    if(breakpoint != null && breakpoint.evaluateCondition()) {
+		_pdb.getDebuggerUI().displayResult("Breakpoint encountered!");
+		waitUserCommand(_state);		
 	    }
+
 	    //Analyse the ExecState
-	    test(state);
+	    test(_state);
 	}
     }
 
     /** Notify the DebuggingListenr that actor is going to be fire
-     * @see ptolemy.vergil.debugger.DbgController#fireEvent(Actor actor)
      * @param actor : the actor that is going to be fire
      */
     public void fireEvent(Actor actor) {
-	ExecState state = ((DbgDirector) actor.getExecutiveDirector()).getState();
-
 	if (notFinished) {
 	    //Refresh the Value of ExecState
-	    state.setnextMethod("fire");
-	    _pdb.getDebuggerUI().displayResult("Before firing " + ((Nameable)actor).getFullName());		    
-	    if (((NamedObj) actor).getAttribute("fire") != null) {
-		if (((Breakpoint) ((NamedObj) actor).getAttribute("fire")).evaluateCondition()) {
-		    _pdb.getDebuggerUI().displayResult("Breakpoint encountered!");
-		    waitUserCommand(state);
-		}
+	    _state.setnextMethod("fire");
+	    _pdb.getDebuggerUI().displayResult("Before firing " + 
+		((Nameable) actor).getFullName());
+	    Breakpoint breakpoint = (Breakpoint) 
+		((NamedObj) actor).getAttribute("fire");
+	    if(breakpoint != null && breakpoint.evaluateCondition()) {
+		_pdb.getDebuggerUI().displayResult("Breakpoint encountered!");
+		waitUserCommand(_state);
 	    }
 	    
-	    if ( !((ComponentEntity)actor).isAtomic() && ((ComponentEntity)actor).isOpaque()) {
-		/* will hide stepin button in the MMI if actor is atomic
-		 * or a transparent composite actor has no local director
-		 */
+	    // Will hide the stepin button in the interface if the 
+	    // actor is not an opaque composite atomic.
+	    ComponentEntity entity = (ComponentEntity) actor;
+	    if (!entity.isAtomic() && entity.isOpaque()) {
 		_pdb.getDebuggerUI().enableButton(6);
+	    } else {
+		_pdb.getDebuggerUI().disableButton(6);
 	    }
-	    else {_pdb.getDebuggerUI().disableButton(6);}
-	    test(state);
 
-	    /* stepInPause can be true only if isAtomic is true because the button Step In
-	     * cannot be used if actor is atomic 
-	     */
+	    test(_state);
+
+	    // stepInPause can be true only if isAtomic is 
+	    // true because the button Step In
+	    // cannot be used if actor is atomic 
 	    if (stepInPause) {
 		stepInPause = false;
-		/* get the local director of the CompositeActor actor and put its state at Pause*/
-		(((DbgDirector)(actor.getDirector())).getState()).setdbgCommand("pause");
+		_state.setdbgCommand("pause");
 	    }
 	}			
     }
 
-    /** Notify the DebuggingListenr that actor is going to be postfire
-     * @see ptolemy.vergil.debugger.DbgController#postfireEvent(Actor actor)
-     * @param actor : the actor that is going to be postfire
+    /** 
+     * Notify the DebuggingListener that actor is going to be postfired.
+     * @param actor The actor that is going to be postfired.
      */
     public void postfireEvent(Actor actor) {
-	ExecState state = ((DbgDirector) actor.getExecutiveDirector()).getState();
-
 	if (notFinished) {
 	    //Refresh the ExecState
-	    state.setnextMethod("postfire");
-	    _pdb.getDebuggerUI().displayResult("Before postfiring " + ((Nameable)actor).getFullName());
-	    if (((NamedObj) actor).getAttribute("postfire") != null) {
-		if (((Breakpoint) ((NamedObj) actor).getAttribute("postfire")).evaluateCondition()) {
-		    _pdb.getDebuggerUI().displayResult("Breakpoint encountered!");
-		    waitUserCommand(state);
-		    
-		}
+	    _state.setnextMethod("postfire");
+	    _pdb.getDebuggerUI().displayResult("Before postfiring " + 
+		((Nameable)actor).getFullName());
+	    Breakpoint breakpoint = (Breakpoint)
+		((NamedObj) actor).getAttribute("postfire");
+	    if (breakpoint != null && breakpoint.evaluateCondition()) {
+		_pdb.getDebuggerUI().displayResult("Breakpoint encountered!");
+		waitUserCommand(_state);		    	       
 	    }
-	    test(state);
+	    test(_state);
 	}
     }
 
     /** Notify the DebuggingListenr that actor is going to be postpostfire
-     * @see ptolemy.vergil.debugger.DbgController#postpostfireEvent(Actor actor)
-     * @param actor : the actor that is going to be postpostfire
+     * @param actor The actor that is going to be postpostfired
      */
     public void postpostfireEvent(Actor actor) {
-	ExecState state = ((DbgDirector) actor.getExecutiveDirector()).getState();
-        TypedCompositeActor container = (TypedCompositeActor) actor.getExecutiveDirector().getContainer();
+        TypedCompositeActor container = 
+	    (TypedCompositeActor) ((NamedObj)actor).getContainer();
 
 	if (notFinished) {
-	    //Refresh ExecState
-	    state.setnextMethod("postpostfire");
-	    _pdb.getDebuggerUI().displayResult("After postfiring " + ((Nameable)actor).getFullName());
-	    if (((NamedObj) actor).getAttribute("postpostfire") != null) {
-		if (((Breakpoint) ((NamedObj) actor).getAttribute("postpostfire")).evaluateCondition()) {
-		    _pdb.getDebuggerUI().displayResult("Breakpoint encountered!");
-		    waitUserCommand(state);
-		}
+	    // Refresh ExecState
+	    _state.setnextMethod("postpostfire");
+	    _pdb.getDebuggerUI().displayResult("After postfiring " + 
+		       ((Nameable)actor).getFullName());
+	    Breakpoint breakpoint = (Breakpoint)
+		((NamedObj) actor).getAttribute("postpostfire");
+	    if (breakpoint != null && breakpoint.evaluateCondition()) {
+		_pdb.getDebuggerUI().displayResult("Breakpoint encountered!");
+		waitUserCommand(_state);
 	    }
-	    test(state);
-	    
-	    //If the Command is Resume, than the Director above must be set at resume.
-	    //more over, but this is juste temporary, if the command is Step Out, the Director Above must be set at pause.
-	    if (state.getdbgCommand() == "resume" || state.getdbgCommand() == "stepout") {
-		DbgDirector dbgUp;
-		dbgUp = (DbgDirector)(container.getExecutiveDirector());
-		if (dbgUp != null) {
-		    if (state.getdbgCommand() == "resume") 
-			(dbgUp.getState()).setdbgCommand("resume");
-		    if (state.getdbgCommand() == "stepout") 
-			(dbgUp.getState()).setdbgCommand("pause");
-		}
+
+	    test(_state);
+
+	    // After a composite is postpostfired, then pause execution.
+	    if (actor instanceof CompositeActor &&
+		_state.getdbgCommand() == "stepout") {
+		_state.setdbgCommand("pause");
 	    }
 	}
     }
 
-
-    /** Main method that analyse and modify the ExecState it receive :
-     *  depending on the method to be called and the command entered,
-     *  it choose to pause the execution or not. If the command entered
-     *  is 'pause', then test will call waitUserCommand, receive a new
-     *  command from the user, and analyse it. There cannot be any
-     *  infinite loop, because the command will not be 'pause' after the
-     *  user choose one.  
-     * @see ptolemy.vergil.debugger.DbgController#test(ExecState state)
-     * @param state : the execution state of the calling director
+    /** 
+     * Main method that analyse and modify the execution state.
+     * Depending on the method to be called and the command entered,
+     * it chooses to pause the execution or not. If the command entered
+     * is 'pause', then test will call waitUserCommand, receive a new
+     * command from the user, and analyse it. There cannot be any
+     * infinite loop, because the command will not be 'pause' after the
+     * user choose one.  
+     * @param state The execution state of the calling director.
      */
     public void test(ExecState state) {
 
@@ -219,44 +204,33 @@ public class DbgController implements DebuggingListener {
 	}
 
 	if (command == "pause") {
-	    //Debug code
-	    System.out.println("\t Before waitusercommand de test\n"
-			       + "\t" + method + "\t" + command);
 	    waitUserCommand(state);
 	    test(state);
-	} 
-	else if (command == "step") {
-	    if (method == "postfire") {
-		state.setdbgCommand("pause");
-	    } 
-	} 
-	else if (command == "microstep") {
+	} else if (command == "step" && method == "postfire") {
 	    state.setdbgCommand("pause");
-	}
-	else if (command =="stepin") {
-	    if (method != "fire") {
-		/* send error message : stepin forbidden */
-		_pdb.getDebuggerUI().displayResult("Error : Can't step in here");    
-	    }
-	    else {
+	} else if (command == "microstep") {
+	    state.setdbgCommand("pause");
+	} else if (command == "stepin") {
+	    if(method == "fire") {
 		stepInPause = true;
 		state.setdbgCommand("pause");
+	    } else {
+		_pdb.getDebuggerUI().displayResult("Error : Can't step in here");    
 	    }
 	}
-	
     }
 
     /** 
      * Synchronize the DbgController with the DebuggerUI,
      * and wait for an entry by the user. See the actionListener of
      * the DebuggerUI for a more effective comprehension. 
-     * @see ptolemy.vergil.debugger.DbgController#waitUserCommand()
-     * @param state : the execution state of the calling director
+     * @param state The execution state of the calling director.
      */
     public synchronized void waitUserCommand(ExecState directorState) {
-	Enumeration e = actorWatcher.elements();
-	while (e.hasMoreElements()) {
-	    ((ActorWatcher)e.nextElement()).refresh();
+	Iterator watchers = watcherList.elementList().iterator();
+	while (watchers.hasNext()) {
+	    ActorWatcher watcher = (ActorWatcher)watchers.next();
+	    watcher.refresh();
 	}
 
 	_commandNotEntered = true;
@@ -270,8 +244,6 @@ public class DbgController implements DebuggingListener {
 	}
 	_pdb.getDebuggerUI().putCmd = false;
 	directorState.setdbgCommand(_pdb.getDebuggerUI().getuserCommand());
-	System.out.println("\t waitusercommand \n"
-			    + "\t" + _pdb.getDebuggerUI().getuserCommand());
     }
 
     /**
@@ -288,6 +260,12 @@ public class DbgController implements DebuggingListener {
     private Pdb _pdb;
     private String method;
     private String command;
+
+    //Boolean that allows to synchronize DbgController and DebuggerUI.
+    private boolean _commandNotEntered = true;
+
+    // The current Execution state.
+    private ExecState _state = new ExecState();
 }
 
     

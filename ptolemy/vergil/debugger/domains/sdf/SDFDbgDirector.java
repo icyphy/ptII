@@ -99,7 +99,7 @@ public class SDFDbgDirector extends StaticSchedulingDirector implements DbgDirec
 	
 	/*££Debug Code££*/
 	//breakpoints = new BrkptList();
-	state = new ExecState();
+	//	state = new ExecState();
 	/*££End of Debug Code££*/
 
         _init();
@@ -117,7 +117,7 @@ public class SDFDbgDirector extends StaticSchedulingDirector implements DbgDirec
 
 	/*££Debug Code££*/
 	//breakpoints = new BrkptList();
-	state = new ExecState();
+	//	state = new ExecState();
 	/*££End of Debug Code££*/
 
         _init();
@@ -142,7 +142,7 @@ public class SDFDbgDirector extends StaticSchedulingDirector implements DbgDirec
 
 	/*££Debug Code££*/
 	//breakpoints = new BrkptList();
-	state = new ExecState();
+	//	state = new ExecState();
 	/*££End of Debug Code££*/
 
         _init();
@@ -421,9 +421,9 @@ public class SDFDbgDirector extends StaticSchedulingDirector implements DbgDirec
     ///////////////////////////////////////////////////////////////////
     /*££Debug Code££*/
 
-    public ExecState getState () {
-	return state;
-    }
+    //    public ExecState getState () {
+    //	return state;
+    //  }
 
     //public BrkptList getBrkptList() {
     //	return breakpoints;
@@ -494,7 +494,7 @@ public class SDFDbgDirector extends StaticSchedulingDirector implements DbgDirec
     //public BrkptList breakpoints;
 
     /** A variable that contains the execution state */
-    public ExecState state;
+    //  public ExecState state;
 
     /*££End of Debug Code££*/
 
