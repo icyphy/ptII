@@ -84,6 +84,7 @@ JSRCS = \
 	NoTokenException.java \
 	QueueReceiver.java \
 	Receiver.java \
+	RemoteCompositeActor.java \
 	TypedActor.java \
 	TypedAtomicActor.java \
 	TypedCompositeActor.java \
