@@ -677,6 +677,12 @@ public class CTMultiSolverDirector extends CTDirector {
                     + size);
             refinedStep = Math.min(refinedStep, size);
         }
+        if(refinedStep < 0.5*getMinStepSize()) {
+            throw new IllegalActionException(this,
+                    "Cannot resolve new states even using "+
+                    "the minimum step size, at time "+
+                    getCurrentTime());
+        }
         return refinedStep;
     }
 
@@ -697,6 +703,12 @@ public class CTMultiSolverDirector extends CTDirector {
             CTStepSizeControlActor actor =
                 (CTStepSizeControlActor)actors.next();
             refinedStep = Math.min(refinedStep, actor.refinedStepSize());
+        }
+        if(refinedStep < 0.5*getMinStepSize()) {
+            throw new IllegalActionException(this,
+                    "Cannot resolve new states even using "+
+                    "the minimum step size, at time "+
+                    getCurrentTime());
         }
         return refinedStep;
     }
