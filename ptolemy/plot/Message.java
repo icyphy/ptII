@@ -28,6 +28,7 @@
 package plot;
 
 import java.awt.*;
+import java.util.*;
 
 /** Class that implements a simple message display with a close button.
  * @author Christopher Hylands
@@ -36,10 +37,12 @@ import java.awt.*;
 public class Message extends Frame {
     /** Pop up a text widget with a close button.
       */
-    public Message(String msg) {
+    public Message(String msg, Color background, Color foreground) {
+ 	setBackground(background);
+ 	setForeground(foreground);
+
 	// TextArea.SCROLLABARS_NONE is not in jdk1.0.2
-        // _txtarea = new TextArea(msg, 9, 40,TextArea.SCROLLBARS_NONE);
-	_txtarea = new TextArea(msg, 9, 40);
+        _txtarea = new TextArea(msg, 10, 40,TextArea.SCROLLBARS_NONE);
         _txtarea.setEditable(false);
         add("Center", _txtarea);
 
@@ -47,7 +50,15 @@ public class Message extends Frame {
         Panel panel = new Panel();
         panel.add(button);
         add("South", panel);
+
     }
+
+//     public static void main(String args[]){
+// 	Message message = new Message("A message", Color.white,Color.black);
+// 	message.setTitle("A Message");
+// 	message.pack();
+// 	message.show();
+//     }
 
     public boolean handleEvent(Event event) {
         if (event.id == Event.WINDOW_DESTROY) {
