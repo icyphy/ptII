@@ -464,9 +464,10 @@ public class ComponentPort extends Port {
      *  method makes a field-by-field copy, which results
      *  in invalid references to objects. 
      *  In this class, this method resets the private member _insideLinks.
+     *  @param ws The workspace the cloned object is to be placed in.
      */
-    protected void _clear() {
-        super._clear();
+    protected void _clear(Workspace ws) {
+        super._clear(ws);
         // Ignore exception because "this" cannot be null.
         try {
             _insideLinks = new CrossRefList(this);

@@ -247,9 +247,10 @@ public class ComponentEntity extends Entity {
      *  method makes a field-by-field copy, which results
      *  in invalid references to objects. 
      *  In this class, this method resets the private member _container.
+     *  @param ws The workspace the cloned object is to be placed in.
      */
-    protected void _clear() {
-        super._clear();
+    protected void _clear(Workspace ws) {
+        super._clear(ws);
         _container = null;
     }
 
