@@ -1198,7 +1198,7 @@ public class Variable extends Attribute implements Typeable {
 
     private class TypeTerm implements InequalityTerm {
 
-	// pass the variable reference in the constructor so it can be
+	// Pass the variable reference in the constructor so it can be
 	// returned by getAssociatedObject().
 	private TypeTerm(Variable var) {
 	    _variable = var;
@@ -1214,7 +1214,7 @@ public class Variable extends Attribute implements Typeable {
 	    return _variable;
 	}
 
-	/** Return the type of this TypedIOPort.
+	/** Return the type of this Variable.
 	 */
 	public Object getValue() {
 	    return getType();
