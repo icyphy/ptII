@@ -30,7 +30,6 @@
 
 package ptolemy.actor.util;
 
-import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
 import collections.LinkedList;
