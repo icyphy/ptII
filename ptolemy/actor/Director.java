@@ -425,10 +425,17 @@ public class Director extends NamedObj implements Executable {
             // find the greatest solution (most general types)
             boolean resolved = solver.solve(false);
             if ( !resolved) {
+		Enumeration unsatisfied = solver.unsatisfiedIneq();
                 // FIXME: should have a new TypeConflictException
                 throw new InvalidStateException("Type Conflict.");
             }
-            // FIXME: also need to check if any port is resolved to NaT.
+
+	    // see if any resolved type is NaT
+	    Enumeration nats = solver.bottomVariables();
+	    if (nats.hasMoreElements()) {
+                // FIXME: also need to check if any port is resolved to NaT.
+		throw new InvalidStateException("Some resolved types are NaT.");
+	    }
 	} finally {
 	    workspace().doneWriting();
 	}
