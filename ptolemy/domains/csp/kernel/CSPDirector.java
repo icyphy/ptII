@@ -249,7 +249,8 @@ public class CSPDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Increase the count of blocked processes and check for deadlock.
+    /** Increase the count of blocked processes and check if the actors
+     *  are deadlocked or stopped.
      */
     protected synchronized void _actorBlocked(CSPReceiver rcvr) {
         /*
@@ -261,9 +262,7 @@ public class CSPDirector extends ProcessDirector {
         }
         */
         _actorsBlocked++;
-        if (_areActorsDeadlocked()) {
-	    notifyAll();
-	}
+	notifyAll();
     }
  
     /** Increase the count of blocked processes and check for deadlock.
@@ -316,9 +315,7 @@ public class CSPDirector extends ProcessDirector {
 	    // Enter the actor and the time to wake it up into the
 	    // LinkedList of delayed actors.
 	    _registerDelayedActor( (getCurrentTime() + delta), actor);
-	    if (_areActorsDeadlocked()) {
-	        notifyAll();
-	    }
+	    notifyAll();
 	    return;
 	}
     }
@@ -365,7 +362,6 @@ public class CSPDirector extends ProcessDirector {
      *  because they are blocked or delayed.
      * @return True if all active threads containing actors controlled
      *  by this thread have stopped; otherwise return false.
-     */
     protected synchronized boolean _areActorsStopped() {
 	long threadsStopped = _getStoppedProcessesCount();
 	long actorsActive = _getActiveActorsCount();
@@ -387,6 +383,7 @@ public class CSPDirector extends ProcessDirector {
 
 	return false;
     }
+     */
 
     /** Returns true if all active processes are either blocked or
      *  delayed, false otherwise.
@@ -455,7 +452,7 @@ public class CSPDirector extends ProcessDirector {
                     done = true;
                 }
             }
-        } else {
+        } else if( _actorsBlocked == _getActiveActorsCount() ) {
             // Real deadlock.
             return false;
         }
