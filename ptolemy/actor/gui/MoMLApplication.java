@@ -251,9 +251,6 @@ public class MoMLApplication {
 		String entry = spec.substring(jarEntry + 2);
 		Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
 		URL entryURL = refClass.getClassLoader().getResource(entry);
-		System.err.println("MoMLApplication.jarURLEntryResource(): "
-				   + " failed to open: " + spec
-				   + "\ntrying: " + entryURL);
 		return entryURL;
 	    } catch (Exception ex) {
                     throw new IOException("File not found: " + spec + ": "
