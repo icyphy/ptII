@@ -117,12 +117,15 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            Token token = (Token) _actorInfo.parameterNameToTokenMap.get(paramName);
           
            if (token != null) {
+              node.setModifiers(node.getModifiers() | FINAL_MOD);
               node.setDefType((TypeNode) 
                _typeID.typeNodeForTokenType(token.getType()).accept(this, args));
                                     
               node.setInitExpr(tokenToExprNode(token));  
               
               return node;                              
+           } else {           
+              ApplicationUtility.error("found parameter field, but no associated token");
            }
         } else if (_typeID.isSupportedPortKind(kind)) {
            Object retval = _portFieldDeclNode(node, args);
@@ -221,43 +224,11 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         
         return node;
     }
-    
-    public Object visitLabeledStmtNode(LabeledStmtNode node, LinkedList args) {
-        Object stmtReturn = node.getStmt().accept(this, args);
-
-        if (stmtReturn instanceof StatementNode) {
-           node.setStmt((StatementNode) stmtReturn);
-        } else if (stmtReturn == NullValue.instance) {
-           node.setStmt(new EmptyStmtNode());
-        } else if (stmtReturn instanceof ExprNode) {
-           ExprNode exprNode = (ExprNode) stmtReturn;
-              
-           if (ExprUtility.isStatementExpression(exprNode)) {
-              node.setStmt(new ExprStmtNode(exprNode));
-           } else {
-              node.setStmt(new EmptyStmtNode());            
-           }                       
-        } else if (stmtReturn instanceof List) {
-           List transformedStmtList = _makeStmtList((List) stmtReturn);
-           
-           if (transformedStmtList.size() > 0) {
-              // label the first statement
-              node.setStmt((StatementNode) transformedStmtList.get(0));
-              
-              transformedStmtList.set(0, node);
-              
-              return transformedStmtList;           
-           } else {
-              node.setStmt(new EmptyStmtNode());            
-           }                     
-        }
-        return node;        
-    }
-               
+                   
     public Object visitExprStmtNode(ExprStmtNode node, LinkedList args) {
-        // let visitBlockNode() handle the return value of the expression node
-        // accepting the visitor
-        return node.getExpr().accept(this, args);  
+        Object exprRetval = node.getExpr().accept(this, args);  
+                        
+        return _makeStmt(exprRetval);
     } 
 
     // try and catch were here
@@ -424,7 +395,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                 case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
                 case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
                 return new MethodCallNode(new TypeFieldAccessNode(
-                 new NameNode(AbsentTreeNode.instance, "getValue"),
+                 new NameNode(AbsentTreeNode.instance, "valueOf"),
                  (TypeNameNode) StaticResolution.STRING_TYPE.clone()),
                  TNLManip.cons(accessedObj)); 
                 
@@ -1185,6 +1156,26 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
          new BlockNode(new LinkedList()), VoidTypeNode.instance);
     }    
 
+    protected StatementNode _makeStmt(Object obj) {           
+        if (obj instanceof List) {
+           return new BlockNode(_makeStmtList((List) obj));           
+        } else if (obj instanceof ExprNode) {
+           ExprNode exprNode = (ExprNode) obj;
+              
+           if (ExprUtility.isStatementExpression(exprNode)) {
+              return new ExprStmtNode(exprNode);
+           }         
+           
+           return new EmptyStmtNode();     
+        } else if (obj == NullValue.instance) {
+           return new EmptyStmtNode();
+        } else if (obj instanceof StatementNode) {
+           return (StatementNode) obj;
+        } else {
+           throw new IllegalArgumentException("unknown object : " + obj);
+        }                                                                              
+    }
+
     protected List _makeStmtList(List retvalList) {
         LinkedList newStmtList = new LinkedList();
 
@@ -1195,19 +1186,11 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            
            if (obj instanceof List) {
               newStmtList.addAll(_makeStmtList((List) obj));           
-           } else if (obj instanceof ExprNode) {
-              ExprNode exprNode = (ExprNode) obj;
-              
-              if (ExprUtility.isStatementExpression(exprNode)) {
-                 newStmtList.addLast(new ExprStmtNode(exprNode));
-              }              
-           } else if (obj == NullValue.instance) {
-              // do not add the object
-           } else if (obj instanceof StatementNode) {
-              newStmtList.addLast(obj);           
-           } else {
-              throw new IllegalArgumentException("unknown object in list : " + obj);
-           }                                                                    
+           } else if (obj != NullValue.instance) {
+              // don't add statements that have NullValue.instance as the result
+              // of visitation
+              newStmtList.addLast(_makeStmt(obj));
+           }                                                                  
         }            
         
         return newStmtList;
@@ -1357,4 +1340,3 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
      */      
     protected boolean _isBaseClass = false;                                 
 }
- *
