@@ -341,7 +341,7 @@ bldmastrcoverage:
 		JFLAGS="-deprecation -g" \
 		JSDATABASE=/home/bldmastr/jsdatabase \
 		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
-		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
+		JSCLASSPATH=/usr/local/JavaScope/classes \
 		remote1distclean \
 		remote1configure \
 		remote1doc \
@@ -448,7 +448,11 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
 	$(REMOTE1PTIIDIST)/com/JLex \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
+	$(REMOTE1PTIIDIST)/ptolemy/lang \
+	$(REMOTE1PTIIDIST)/ptolemy/lang/java \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/saveasjava \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
