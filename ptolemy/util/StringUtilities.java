@@ -106,6 +106,31 @@ public class StringUtilities {
         return string;
     }
 
+    /** Return the preferences directory, creating it if necessary.
+     *  @return A string naming the preferences directory.  The last
+     *  character of the string will have the file.separator character
+     *  appended.
+     *  @exception IOException If the directory could not be created.
+     *  @see #PREFERENCES_DIRECTORY
+     */
+    public static String preferencesDirectory() throws IOException {
+	String preferencesDirectoryName =
+	    StringUtilities.getProperty("user.home")
+            + StringUtilities.getProperty("file.separator")
+	    + StringUtilities.PREFERENCES_DIRECTORY 
+            + StringUtilities.getProperty("file.separator");
+        File preferencesDirectory = new File(preferencesDirectoryName);
+	if (!preferencesDirectory.isDirectory()) {
+	    if (preferencesDirectory.mkdirs() == false) {
+		throw new IOException("Could not create user preferences "
+				      + "directory '"
+				      + preferencesDirectoryName + "'");
+
+	    }
+	}
+	return preferencesDirectoryName;
+    }
+
     /** Get the specified property from the environment. An empty string
      *  is returned if the argument environment variable does not exist,
      *  though if certain properties are not defined, then we
@@ -463,4 +488,11 @@ public class StringUtilities {
         }
         return result;
     }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** Location of Application preferences such as the user library.
+     *  @see #preferencesDirectory()
+     */
+    public static String PREFERENCES_DIRECTORY = ".ptolemyII";
 }
