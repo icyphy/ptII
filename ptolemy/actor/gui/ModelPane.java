@@ -222,7 +222,7 @@ public class ModelPane extends JPanel implements CloseListener {
      */
     public void setDefaultButton() {
         JRootPane root = getRootPane();
-        if (root != null) {
+        if (root != null && (_show & BUTTONS) != 0) {
             root.setDefaultButton(_goButton);
             _goButton.setMnemonic(KeyEvent.VK_G);
             _stopButton.setMnemonic(KeyEvent.VK_S);
