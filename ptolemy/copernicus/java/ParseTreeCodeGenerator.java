@@ -201,7 +201,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         local,
                                         RefType.v(PtolemyUtilities.arrayTokenClass))), _insertPoint);
 
-                Local indexTokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
+                Local indexTokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(1));
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 indexTokenLocal,
@@ -240,7 +240,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         local,
                                         RefType.v(PtolemyUtilities.matrixTokenClass))), _insertPoint);
 
-                Local rowIndexTokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
+                Local rowIndexTokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(1));
                 Local columnIndexTokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(1));
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(
