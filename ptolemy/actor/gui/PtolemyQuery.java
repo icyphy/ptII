@@ -210,6 +210,22 @@ public class PtolemyQuery extends Query
                     if (directory != null) {
                         base = directory.toURI();
                     }
+                    boolean allowFiles = true;
+                    boolean allowDirectories = false;
+                    if (attribute instanceof NamedObj) {
+                        if (((NamedObj)attribute).getAttribute("noFiles") != null) {
+                            allowFiles = false;
+                        }
+                        if (((NamedObj)attribute).getAttribute("allowDirectories") != null) {
+                            allowDirectories = true;
+                        }
+                    }
+                    // FIXME: What to do when neither files nor directories are allowed?
+                    if (!allowFiles && !allowDirectories) {
+                        // The given attribute will not have a query in the dialog.
+                        return;
+                    }
+                    
                     // FIXME: Should remember previous browse location?
                     // Next to last argument is the starting directory.
                     addFileChooser(name,
@@ -217,6 +233,8 @@ public class PtolemyQuery extends Query
                             attribute.getExpression(),
                             base,
                             directory,
+                            allowFiles,
+                            allowDirectories,
                             preferredBackgroundColor(attribute),
                             preferredForegroundColor(attribute));
                     attachParameter(attribute, name);

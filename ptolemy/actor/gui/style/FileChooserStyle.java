@@ -122,12 +122,30 @@ public class FileChooserStyle extends ParameterEditorStyle {
                 directory = modelFile.getParentFile();
             }
         }
+        boolean allowFiles = true;
+        boolean allowDirectories = false;
+        if (container instanceof NamedObj) {
+            if (((NamedObj)container).getAttribute("noFiles") != null) {
+                allowFiles = false;
+            }
+            if (((NamedObj)container).getAttribute("allowDirectories") != null) {
+                allowDirectories = true;
+            }
+        }
+        // FIXME: What to do when neither files nor directories are allowed?
+        if (!allowFiles && !allowDirectories) {
+            // The given attribute will not have a query in the dialog.
+            return;
+        }
+        
         query.addFileChooser(
                 name,
                 name,
                 defaultValue,
                 modelURI,
                 directory,
+                allowFiles,
+                allowDirectories,
                 PtolemyQuery.preferredBackgroundColor(container),
                 PtolemyQuery.preferredForegroundColor(container));
         query.attachParameter(container, name);
