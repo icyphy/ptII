@@ -156,5 +156,5 @@ public class Box3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Box _containedNode;
+    protected Box _containedNode;
 }
