@@ -128,9 +128,6 @@ public class SearchPath extends Vector {
                     throw new RuntimeException(
                             "cannot get canonical filename");
                 }
-            }
-
-            if (file != null) {
                 return file;
             }
         }
