@@ -11,21 +11,22 @@
 <menu>
 <li><a href="#Installing">Downloading, and installing Eclipse</a>
 <li><a href="#SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a>
-<menu>
-<li><a href="#NoCVS">If you <em>don't</em> want CVS</a>
-<li><a href="#YesCVS">If you <em>do</em> want CVS</a>
-<li><a href="#dotFileSetup">Creating the .classpath and .project files</a>
-<li><a href="#PtolemyPreferences">Importing the Ptolemy II specific preferences</a>
-<li><a href="#ByHand">Setting up for Ptolemy II By Hand<a>
-<li><a href="#tabs">Don't use tabs in the editor</a>
-</menu>
+ <menu>
+  <li><a href="#NoCVS">If you <em>don't</em> want to use CVS with Eclipse</a>
+  <li><a href="#YesCVS">If you <em>do</em> want to use CVS with Eclipse</a>
+  <li><a href="#dotFileSetup">Creating the .classpath and .project files</a>
+  <li><a href="#PtolemyPreferences">Importing the Ptolemy II specific preferences</a>
+  <li><a href="#ByHand">Setting up for Ptolemy II By Hand<a>
+  <li><a href="#tabs">Don't use tabs in the editor</a>
+  </menu>
+
 <li><a href="#UsingEclipse">Using Eclipse</a>
-<menu>
-<li><a href="#RunningEclipse">Running Eclipse</a>
-<li><a href="#simpleDebug">Simple Debugging Session</a>
-<li><a href="#UsingCVS">Using CVS</a>
-<li><a href="#troubleshooting">Troubleshooting</a>
-</menu>
+  <menu>
+  <li><a href="#RunningEclipse">Running Eclipse</a>
+  <li><a href="#simpleDebug">Simple Debugging Session</a>
+  <li><a href="#UsingCVS">Using CVS</a>
+  <li><a href="#troubleshooting">Troubleshooting</a>
+  </menu>
 </menu>
 
 <hr>
@@ -107,7 +108,7 @@ ptII tree at that location, it must be removed.
  <br>Host: <CODE>gigas<B>source</B>.eecs.berkeley.edu</CODE>
  <br>Repository path: <CODE>/home/cvs</CODE>
  <br>User: Your username, see 
-<a href="http://www.gigascale.org/ptexternal"><CODE>http://www.gigascale.org/ptexternal</CODE></a> for information about how to get 
+<a href="http://www.gigascale.org/ptexternal" target="_top"><CODE>http://www.gigascale.org/ptexternal</CODE></a> for information about how to get 
 a login for cvs access
  <br>ConnectionType
 	<ul>
@@ -131,25 +132,8 @@ a login for cvs access
 <li> If you are connecting via a DSL connection, you may
 want to use compression to transfer files:
 In Window -&gt; Preferences -&gt; Team -&gt; CVS, change Compression Level
-to 3.
-<br>If, under Eclipse 2.1,
-you receive a message "Terminated with fatal signal 10", then
-try using a different compression level, see the
-<a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_3" target="_top">The Eclipse CVS FAQ</a>
-for details.
-<br><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=15724" target="_top"><code>https://bugs.eclipse.org/bugs/show_bug.cgi?id=15724</code></a> suggests using
-a compression level of 5.
-
-<p>After the failure, the cvs log (Window -&gt; Show Views -&gt; CVS -&gt; CVS Console says:
-
-<pre>
-U ptII/ptolemy/domains/fsm/demo/ABP/img/Receiver.vsd
-  U ptII/ptolemy/domains/fsm/demo/ABP/img/Sender.gif
-  Terminated with fatal signal 11
-The server reported an error while performing the "cvs checkout" command. (took 15:16.607)
-Error: : Terminated with fatal signal 11
-***
-</pre>
+to 3. Under Eclipse 2.1, compression level 9 might not work, see
+<a name="#cvsCompression">Problems with CVS compression</h3> for details.
 
 <li> In the CVS Repositories View window, click on the repository and then on
 HEAD until you see the ptII Head.
@@ -165,20 +149,9 @@ where you want ptII to go (e.g. <CODE>c:\ptII</CODE>).
 several errors reported that are due to the .classpath that was just
 created as part of the checkout/project creation process.
 
-<li> Now run configure in the ptII directory outside of Eclipse. This
-will create the "correct" <code>ptII/.classpath</code>. See <a
-href="#dotFileSetup">Creating the .classpath and .project files</a>.
-
-<li> In Eclipse, perform a Refresh on the ptII project
-by Window -&gt; Open Perspective -&gt; Java,
-<br> goto the Package Explorer, 
-<br> right click on the ptII icon and select Refresh
-<br> This will
-cause Eclipse to see the new <code>ptII/.classpath</code> and build
-the project
-
-
 </ol>
+Now, go on to the next step: Creating the .classpath and .project files.
+
 
 <h2><a name="dotFileSetup">Creating the .classpath and .project files</a></h2>
 
@@ -207,41 +180,12 @@ export PTII
 cd $PTII
 </pre>
 <li>Run configure:
-</pre>
+<pre>
 ./configure
 </pre>
 This will create <code>$PTII/.classpath</code>
-<li> If Eclipse is running, do a Refresh on the project.
-</ol>  
 
-<h2><a name="PtolemyPreferences">Importing the Ptolemy II specific preferences</a></h2>
-<li> If you have already used Eclipse and you would like to start
-over with new settings,
-remove the <code>workspace</code> directory in the Eclipse directory.
-(This directory will only appear if you have already run Eclipse).
-
-<li> Start eclipse by clicking on the <code>eclipse.exe</code> icon.
-
-<li> Import the Ptolemy II specific preferences:
-Window -&gt; Preferences -&gt; Import, and then browse
-to <code>$PTII/.eclipse.epf</code>.
-<li> Unfortunately, not all the preferences are set, you will need
-to do:
-Window-&gt;Preferences. Deselect Workbench-&gt;"Perform build automatically on resource modification."
-<br>If you edit .tcl files, you will also need to follow the
-instructions in
-<a href="#tcl">Associating the Text editor with .tcl files</a>
-
-<li> Import the Ptolemy II preferences by doing:
-
-<li> File -&gt; Import -&gt Existing Project into Workspace
-<li> Browse to the <code>ptII</code> directory (Folder: should say <code>ptII</code>). Hit OK, then Finish.
-<li> Project -&gt; Rebuild All <i>Probably not necessary</i>
-<li> Proceed with the <a href="#simpleDebug">Simple Debugging Session</a>. 
-</ol>
-See <a href="#troubleshooting">Troubleshooting</a> for hints
-
-<h2><a name="buildingForCygwin">Building for Cygwin</a></h2>
+<li>
 If you plan on running the Ptolemy II startup scripts in 
 <CODE>$PTII/bin</CODE> from within Cygwin bash, you will probably
 want to run the following commands within Cygwin bash:
@@ -249,8 +193,39 @@ want to run the following commands within Cygwin bash:
 cd $PTII/bin
 make
 </pre>
+
 See the <a href="../install.htm">Ptolemy II Installation</a> page
 for details.
+
+<li> In Eclipse, perform a Refresh on the ptII project
+by Window -&gt; Open Perspective -&gt; Java,
+<br> goto the Package Explorer, 
+<br> right click on the ptII icon and select Refresh
+<br> This will
+cause Eclipse to see the new <code>ptII/.classpath</code> and build
+the project
+
+</ol>  
+Now, import the Ptolemy II specific preferences:
+
+<h2><a name="PtolemyPreferences">Importing the Ptolemy II specific preferences</a></h2>
+<ol>
+<li> Start Eclipse by clicking on the <code>eclipse.exe</code> icon.
+
+<li> Import the Ptolemy II specific preferences:
+Window -&gt; Preferences -&gt; Import, and then browse
+to <code>$PTII/.eclipse.epf</code>.
+<li> Unfortunately, not all the preferences are set, you will need
+to do:
+Window-&gt;Preferences. Deselect Workbench-&gt;"Perform build automatically on resource modification."
+</ol>
+If you edit .tcl files, you will also need to follow the
+instructions in
+<a href="#tcl">Associating the Text editor with .tcl files</a>
+
+
+The next step is the <a href="#simpleDebug">Simple Debugging Session</a>. 
+
 
 
 <h2><a name="ByHand">Setting up for Ptolemy II By Hand<a></h2>
@@ -354,7 +329,7 @@ eclipse.exe on Windows systems and simply eclipse on Linux
 systems. Note, the following discussion details the setup on Windows
 systems.  The Linux setup is analogous.
 
-If you don't specify differently, the platform creates a default
+<p>If you don't specify differently, the platform creates a default
 workspace directory as a sibling of the executable (e.g.,
 c:\eclipse\workspace).  This workspace directory is used as the
 default content area for your projects as well as for holding any
@@ -395,16 +370,25 @@ Before editing any files, follow the steps in
 <ol>
  <li> Locate ptolemy/vergil/VergilApplication in the Explorer and
 double click. Place a breakpoint on the first line of main()
-<I>[with Run-&gt;Add/Remove Breakpoint]</I>
- <li> Run-&gt;Run. On the Main tab, select the Ptolemy II package and
-enter ptolemy.vergil.VergilApplication as Main class.
- <li> Press the Run button...
+by using Run- &gt; Add/Remove Breakpoint
+
+ <li> Tell Eclipse which class to run with Run -&gt; Run. On the Main
+tab, select the Ptolemy II package and enter
+ptolemy.vergil.VergilApplication as Main class.
+
+ <li> Press the Run button
  <li> To debug, quit Vergil, and place a breakpoint in, say, the fire() method
 of ptolemy.domains.ct.kernel.CTBaseIntegrator. Then Run-&gt;Debug, and
 as above. Open the Lorenz CT demo from the Quick Tour and run it.
 </ol>
 
 <h2><a name="UsingCVS">Using CVS</a></h2>
+Resources:
+<ul>
+<li><a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_3" target="_top">The Eclipse CVS FAQ</a> 
+<li><a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">GSRC CVS FAQ</a></a>
+</ul>
+
 <h3>Syncronizing with the repository</h3>
 
 <ol>
@@ -422,6 +406,41 @@ as above. Open the Lorenz CT demo from the Quick Tour and run it.
 </ol>
 
 <h2><a name="troubleshooting">Troubleshooting</a></h2>
+
+<h3>Preferences</h3>
+If you have already used Eclipse and you would like to start over with
+new projects and preferences, remove the <code>workspace</code> directory in the
+Eclipse directory.  The <code>workspace</code> directory will only
+appear if you have already run Eclipse.  <b>Note that removing the
+<code>workspace<code> directory will cause Eclipse to 'forget'
+about any projects that you may have set up</b>
+
+
+<h3><a name="cvsConsole">CVS Console</h3>
+You might find the cvs console to be of use, to use it do
+Window -&gt; Show View -&gt; Other -&gt; CVS -&gt; CVS Console.
+
+
+<h3><a name="cvsCompression">Problems with CVS compression</h3>
+
+If, under Eclipse 2.1, you receive a message "Terminated with fatal
+signal 10", then try using a different compression level, see the
+
+<a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_3" target="_top">The Eclipse CVS FAQ</a>
+for details.
+<br><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=15724" target="_top"><code>https://bugs.eclipse.org/bugs/show_bug.cgi?id=15724</code></a> suggests using
+a compression level of 5.
+
+<p>After the failure, the cvs log (Window -&gt; Show Views -&gt; CVS -&gt; CVS Console says:
+
+<pre>
+  U ptII/ptolemy/domains/fsm/demo/ABP/img/Receiver.vsd
+  U ptII/ptolemy/domains/fsm/demo/ABP/img/Sender.gif
+  Terminated with fatal signal 11
+The server reported an error while performing the "cvs checkout" command. (took 15:16.607)
+Error: : Terminated with fatal signal 11
+***
+</pre>
 
 <h3>Rebuilding Briefly flashes a window</h3> 
 <p>If you have problems where clicking on build briefly flashes up
