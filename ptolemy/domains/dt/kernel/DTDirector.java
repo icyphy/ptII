@@ -304,32 +304,25 @@ public class DTDirector extends SDFDirector {
     }
 
 
-    /** If an actor is firing, return the local time of the actor. 
-     *  If the actor currently firing is an opaque composite actor
+    /** If the actor currently firing is an opaque composite actor
      *  that is not directed by DT, return that director's current time.
+     *  Otherwise, return the DT global time. Actors who wish to take
+     *  advantage of DT's multi-rate time-keeping capabilities should
+     *  call getCurrentTime(channel_number) on a specific IOPort instead.
      *
      *  @return the current time
      */
     public double getCurrentTime() {
-    // -getCurrentTime-
         double timeValue;
 
         if (_pseudoTimeEnabled == true) {
             timeValue = _insideDirector.getCurrentTime();
         } else {
-            if (_currentActiveActor == null) {
-                timeValue = _currentTime;
-            } else {
-                _DTActor dtActor = (_DTActor)
-                                   _allActorsTable.get(_currentActiveActor);
-                timeValue = dtActor._localTime;
-                if (timeValue == 0.0 ) {
-                    timeValue = _currentTime;
-                }
-            }
+            timeValue = _currentTime;
         }
         return timeValue;
     }
+
 
 
     /** Return the time value of the next iteration.
