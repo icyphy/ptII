@@ -32,7 +32,7 @@ package ptolemy.data.type.test;
 
 import java.io.Serializable;
 
-import ptolemy.actor.Actor;
+import ptolemy.kernel.Entity;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
@@ -56,18 +56,28 @@ being retrieved from this token.
 */
 public class ActorToken extends Token {
 
-    public ActorToken(Actor actor) {
+    public ActorToken(Entity entity) throws IllegalActionException {
         super();
-        _actor = actor.clone();
+        try {
+            _entity = (Entity)entity.clone();
+        } catch(CloneNotSupportedException ex) {
+            throw new IllegalActionException(null, ex,
+                    "Failed to create actor token");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a clone of the actor contained by this token.
+    /** Return a clone of the entity contained by this token.
      */
-    public Actor getActor() {
-        return _actor.clone();
+    public Entity getEntity() {
+        try {
+            return (Entity)_entity.clone();
+        } catch(CloneNotSupportedException ex) {
+            throw new RuntimeException(
+                    "Failed to clone actor, but I already cloned it once!!!");
+        }
     }
 
     /** Return the type of this token.
@@ -103,7 +113,7 @@ public class ActorToken extends Token {
      *  @return The String "present".
      */
     public String toString() {
-        return "ActorToken(" + _actor + ")";
+        return "ActorToken(" + _entity + ")";
     }
 
     public static class ActorType implements Type, Serializable {
@@ -201,7 +211,7 @@ public class ActorToken extends Token {
          *  @return A String.
          */
         public String toString() {
-            return "Actor(" + _actor.getClass().getName() + ")";
+            return "Actor";
         }
     }
 
@@ -209,5 +219,5 @@ public class ActorToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private Actor _actor;
+    private Entity _entity;
 }
