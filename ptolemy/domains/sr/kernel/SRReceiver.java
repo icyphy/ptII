@@ -23,9 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
 @ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
-
 */
 
 package ptolemy.domains.sr.kernel;
@@ -47,7 +47,7 @@ known to contain a token or known not to contain a token) or unknown.  The
 isKnown() method returns true if the receiver has known status.  If the 
 receiver has known status, the hasToken() method returns whether the receiver 
 has a token.  If the receiver has unknown status, the hasToken() method 
-will throw an exception.
+will throw an UnknownTokenException.
 <p>
 In the course of an iteration in SR, receivers can change from unknown status 
 to known status, but never the other way around.
@@ -62,10 +62,10 @@ known values:     absent     value (present)
                        unknown
 </pre>
 <p>
-The status is automatically 
-set to known when the put() method or setAbsent() method is called.  Once a 
-receiver becomes known, its value (or lack of a value if it is absent) can not
-change.  The hasRoom() method always returns true, but attempting to change 
+The status is automatically set to known when the put() method or setAbsent() 
+method is called.  Once a receiver becomes known, its value (or lack of a 
+value if it is absent) can not change until the next iteration of the 
+director.  The hasRoom() method always returns true, but attempting to change 
 the status of a receiver from present to absent or from absent to present will
 result in an exception.  An exception will also be thrown if a receiver has 
 present status and it receives a token that is not the same as the one it 
@@ -244,3 +244,4 @@ public class SRReceiver extends Mailbox {
     // The director of this receiver.
     private SRDirector _director;
 }
+

@@ -34,9 +34,10 @@ import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
-//// IllegalActionException
+//// IllegalOutputException
 /**
-Thrown on an attempt to obtain information about an unknown token.
+Thrown on an attempt to send a value to a port that violates the output 
+monotonicity constraint of the SR domain.
 
 @author Paul Whitaker
 @version $Id$

@@ -95,11 +95,13 @@ method has returned true.  An actor is considered <i>allowed to iterate</i>
 if its postfire() method has not returned false.
 <p>
 A scheduler returns an ordering of the actors.  SR semantics do not
-require any specific ordering of actor firings, so the ordering exists only
-to attempt to reduce the computation time required for a given iteration to
-converge.  In the course of an iteration, the director cycles through the 
-schedule repeatedly, firing those actors that are allowed to fire and ready 
-to fire.
+require any specific ordering of actor firings, but a particular ordering
+may be desirable in an attempt to reduce the computation time required for 
+a given iteration to converge.  If the scheduler is an SRRandomizedScheduler,
+in the course of an iteration, the director cycles through the schedule 
+repeatedly, firing those actors that are allowed to fire and ready to fire.
+If the scheduler is an SROptimizedScheduler, the director makes only one pass 
+through the schedule, since it guarantees the convergence of the iteration.
 <p>
 For an actor to be valid in the SR domain, its prefire() method must be 
 monotonic.  In other words, once the prefire() method of an actor returns 
@@ -167,7 +169,8 @@ public class SRDirector extends StaticSchedulingDirector {
     public Parameter iterations;
 
     /** The name of the scheduler to be used.  The default is a String
-     *  "ptolemy.domains.sr.kernel.SRRandomizedScheduler".
+     *  "ptolemy.domains.sr.kernel.SRRandomizedScheduler".  The only other 
+     *  valid value is "ptolemy.domains.sr.kernel.SROptimizedScheduler".
      */
     public Parameter scheduler;
 
@@ -178,8 +181,8 @@ public class SRDirector extends StaticSchedulingDirector {
      *  a parameter of the director, then the corresponding private copy of the
      *  parameter value will be updated.
      *  In particular, if the <i>scheduler</i> parameter is changed, then
-     *  the corresponding scheduler will be instantiated.  However, 
-     *  setScheduler() will not be called until the next invocation of 
+     *  the corresponding scheduler name will be recorded.  The new
+     *  scheduler will be instantiated during the next invocation of 
      *  prefire().
      *  @param param The changed parameter.
      *  @exception IllegalActionException If the new scheduler that is 
@@ -205,25 +208,27 @@ public class SRDirector extends StaticSchedulingDirector {
 
     /** Fire contained actors until the iteration converges.  This method
      *  also calls the prefire() method of an actor before it is fired for
-     *  the first time, and at the end, calls the postfire() methods of all 
-     *  actors that were fired.
+     *  the first time.
      *  @exception IllegalActionException If an actor attempts to modify
      *   a known value.
      */
     public void fire() throws IllegalActionException {
 
         Schedule schedule = _getSchedule();
+        boolean randomizedScheduler =
+            (getScheduler() instanceof SRRandomizedScheduler);
         Iterator firingIterator;
 
         _initFiring();
 
         // Here we need to check for each actor that iteration is allowed
         // (in other words, that the actor has not returned false in 
-        //  postfire()).
+        // postfire()).
         
         // _fireActor and _postfireActor are responsible for checking that
-        // firing is allowed (in other words, the actor will not call fire()
-        // or postfire() on an actor until it returns true in prefire()).
+        // firing is allowed (in other words, the director will not call 
+        // fire() or postfire() on an actor until the actor returns true 
+        // in prefire()).
 
         // _fireActor is also responsible for checking that the actor is
         // ready to fire (sufficient known inputs are available).
@@ -245,7 +250,7 @@ public class SRDirector extends StaticSchedulingDirector {
                 }
 
             }
-        } while (!_hasIterationConverged());
+        } while (randomizedScheduler && !_hasIterationConverged());
 
     }
 
@@ -291,9 +296,9 @@ public class SRDirector extends StaticSchedulingDirector {
         return receiver;
     }
 
-    /** Return false if the system has finished executing, either by
-     *  reaching the iteration limit, or if no actors in the model
-     *  return true in postfire.
+    /** Call postfire() on all contained actors.  Return false if the system 
+     *  has finished executing, either by reaching the iteration limit, or if 
+     *  no actors in the model return true in postfire().
      *  @return True if the execution is not finished.
      *  @exception IllegalActionException If the iterations parameter does
      *   not have a valid token.
@@ -325,8 +330,11 @@ public class SRDirector extends StaticSchedulingDirector {
                 "is complete.");
 
         // All receivers must be reset before any actors are executed in the 
-        // next iteration.  By doing this at the end of each iteration, all 
-        // receivers are guaranteed to be reset, even in a heterogeneous model.
+        // next iteration.  Since some domains (including SR) might fire one
+        // actor before prefiring another actor, resetting the receivers in
+        // the prefire() method will not work.  By doing this at the end of 
+        // each iteration, all receivers are guaranteed to be reset, even in 
+        // a hierarchical model.
         _resetAllReceivers();
 
         if((numberOfIterations > 0) && (_iteration >= numberOfIterations)) {
@@ -337,8 +345,8 @@ public class SRDirector extends StaticSchedulingDirector {
         return _postfireReturns;
     }
 
-    /** Initialize the internal receiver list and invoke the preinitialize() 
-     *  methods of all deeply contained actors.
+    /** Instantiate a new scheduler if necessary and invoke the 
+     *  preinitialize() methods of all deeply contained actors.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
@@ -406,8 +414,8 @@ public class SRDirector extends StaticSchedulingDirector {
         return true;
     }
 
-    /** Do allow the specified actor to fire.  Typically called when
-     *  the prefire method of the actor returns true.
+    /** Do allow the specified actor to fire in the current iteration.  
+     *  Typically called when the prefire method of the actor returns true.
      */
     private void _doAllowFiringOf(Actor actor) {
         if (actor != null) {
@@ -546,7 +554,8 @@ public class SRDirector extends StaticSchedulingDirector {
         return true;
     }
 
-    /** Initialize the director by creating the scheduler and the parameters.
+    /** Initialize the director by creating the parameters and setting their
+     *  values and types.
      */
     private void _init() {
 	try {
@@ -569,7 +578,7 @@ public class SRDirector extends StaticSchedulingDirector {
     }
 
     /** Initialize the firing of the director by resetting state variables
-     *  and resetting all receivers to have unknown status.
+     *  and obtaining the current time from an outside director if one exists.
      */
     private void _initFiring() throws IllegalActionException {
         _postfireReturns = false;
@@ -587,12 +596,10 @@ public class SRDirector extends StaticSchedulingDirector {
         if (outsideDirector != null) 
             setCurrentTime(outsideDirector.getCurrentTime());
 
-        //_resetAllReceivers();
-        //_currentNumOfKnownReceivers = 0;
     }
 
-    /** Instantiate a scheduler from its classname. Given the scheduler's full
-     *  class name, this method will try to instantiate it by looking
+    /** Instantiate a scheduler from its classname. Given the scheduler's 
+     *  full class name, this method will try to instantiate it by looking
      *  for the java class.
      *  @param className The scheduler's full class name.
      *  @exception IllegalActionException If the scheduler is unable to be
@@ -646,7 +653,7 @@ public class SRDirector extends StaticSchedulingDirector {
 
         // Non strict actors should fire every phase in case more inputs
         // become available (the inputs might be, for example, cached and
-        // used in a subsequent iteration.
+        // used in a subsequent iteration).
         if (_isNonStrict(actor)) return false;
 
         // Actors that have not fired in this iteration are not finished.
@@ -743,7 +750,7 @@ public class SRDirector extends StaticSchedulingDirector {
     }
 
     /** Call the sendAbsent() method of each of the output ports of the
-     *  specified actor.
+     *  specified actor if the actor is strict.
      */
     private void _sendAbsentToAllUnknownOutputsOf(Actor actor)
             throws IllegalActionException {
@@ -769,7 +776,7 @@ public class SRDirector extends StaticSchedulingDirector {
     }
 
 
-    /** Create a new scheduler, and set it as the new scheduler.
+    /** Create a new scheduler, and set it as the scheduler for the director.
      */
     private void _setNewScheduler(String className)
             throws IllegalActionException {
@@ -814,7 +821,8 @@ public class SRDirector extends StaticSchedulingDirector {
     // The count of iterations executed.
     private int _iteration;
 
-    // The logical or of the values returned by actors' postfire().
+    // The logical 'or' of the values returned by the postfire() methods of 
+    // all contained actors.
     private boolean _postfireReturns;
 
     // The number of actors that were fired on the last phase of
@@ -832,7 +840,7 @@ public class SRDirector extends StaticSchedulingDirector {
     // parameter.
     private String _schedulerClassName;
 
-    // A flag indicating whether the scheduler must be updated.
+    // A flag indicating whether a new scheduler must instantiated.
     private boolean _updateScheduler;
 
     // The name of an attribute that marks an actor as non strict.

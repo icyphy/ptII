@@ -50,15 +50,11 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// SRRandomizedScheduler
 /**
-A scheduler the Synchronous Reactive (SR) domain.  The schedule is simply 
-an ordering of all the actors.  The director should cycle through this 
+A scheduler the Synchronous Reactive (SR) domain.  This schedule is simply 
+a random ordering of all the actors.  The director should cycle through this 
 schedule repeatedly, deciding which actors to fire, until it determines 
 that the given iteration has converged.  The ordering of the schedule has 
-no effect on the results of an iteration.  The ordering returned by the 
-scheduler is preferable only in the sense that it is intended to reduce the 
-computation time required for a given iteration to converge.
-<p>
-FIXME: Add more comments after more code is written.
+no effect on the results of an iteration.
 
 @author Paul Whitaker
 @version $Id$
@@ -122,8 +118,6 @@ public class SRRandomizedScheduler extends Scheduler {
 	    (CompositeActor) (director.getContainer());
 
         List actorList = compositeActor.deepEntityList();
-
-        // FIXME: randomized scheduler, and S. Edwards optimized scheduler.
 
         Collections.shuffle(actorList);
 
