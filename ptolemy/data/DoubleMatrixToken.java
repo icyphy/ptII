@@ -75,7 +75,7 @@ public class DoubleMatrixToken extends MatrixToken {
     // FIXME: finish this method after array is added to the
     // 	      expression language.
     // Construct an DoubleMatrixToken from the specified string.
-    // @param init A string expression of a 2-D int array.
+    // @param init A string expression of a 2-D double array.
     // @exception IllegalArgumentException If the string does
     //  not contain a parsable 2-D int array.
     //
@@ -95,7 +95,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  If the specified token is a matrix, its dimension must be the
      *  same as this token.
      *  @param t The token to add to this token.
-     *  @return A new token.
+     *  @return A new token containing the result.
      *  @exception IllegalActionException If the specified token is
      *   not of a type that can be added to this token in a lossless
      *   fashion.
@@ -112,7 +112,7 @@ public class DoubleMatrixToken extends MatrixToken {
 	} else if (compare == CPO.LOWER) {
 	    return t.addR(this);
 	} else {
-	    // type of the specified token <= IntMatrixToken
+	    // type of the specified token <= DoubleMatrixToken
 	    double[][] result = null;
 
 	    if (t instanceof ScalarToken) {
@@ -125,27 +125,18 @@ public class DoubleMatrixToken extends MatrixToken {
 		}
 	    } else {
 		// the specified token is not a scalar.
-	        if (t instanceof MatrixToken) {
-	    	    if (((MatrixToken)t).getRowCount() != _rowCount ||
-		        ((MatrixToken)t).getColumnCount() != _columnCount) {
+		DoubleMatrixToken tem = (DoubleMatrixToken)this.convert(t);
+	    	if (tem.getRowCount() != _rowCount ||
+		    tem.getColumnCount() != _columnCount) {
 		    	throw new IllegalActionException("Cannot add two " +
 				"matrices with different dimension.");
-	    	    }
+	    	}
 
-		    if (t instanceof DoubleMatrixToken) {
-		    	result = ((DoubleMatrixToken)t).doubleMatrix();
-		    } else {
-		        DoubleMatrixToken tem =
-				(DoubleMatrixToken)this.convert(t);
-			result = tem.doubleMatrix();
+		result = tem.doubleMatrix();
+		for (int i = 0; i < _rowCount; i++) {
+		    for (int j = 0; j < _columnCount; j++) {
+			result[i][j] += _value[i][j];
 		    }
-		    for (int i = 0; i < _rowCount; i++) {
-			for (int j = 0; j < _columnCount; j++) {
-			    result[i][j] += _value[i][j];
-			}
-		    }
-		} else {
-		    // FIXME: what if the specified token is user defined?
 		}
 	    }
 	    return new DoubleMatrixToken(result);
@@ -153,14 +144,12 @@ public class DoubleMatrixToken extends MatrixToken {
     }
 
     /** Return a new token whose value is the sum of this token
-     *  and the argument. The type of the specified token should
+     *  and the argument. The type of the specified token must
      *  be lower than DoubleMatrixToken.
-     *  @param t The token to be added to this token.
+     *  @param t The token to add this Token to.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than DoubleMatrixToken; or if the specified
-     *   token is not of a type that can be added to this token in a
-     *   lossless fashion.
+     *   token is not lower than DoubleMatrixToken.
      */
     public Token addR(Token t)
 	    throws IllegalActionException {
@@ -170,7 +159,7 @@ public class DoubleMatrixToken extends MatrixToken {
 		+ "token " + t.getClass().getName() + " is not lower than "
 		+ getClass().getName());
 	}
-	// add is commutative on integer matrix.
+	// add is commutative on double matrix.
 	return add(t);
     }
 
@@ -188,12 +177,12 @@ public class DoubleMatrixToken extends MatrixToken {
     }
 
     /** Convert the specified token into an instance of DoubleMatrixToken.
-     *  This method does lossly conversion.
+     *  This method does lossless conversion.
      *  If the argument is already an instance of DoubleMatrixToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below DoubleMatrixToken in the type hierarchy, it is converted to
      *  an instance of DoubleMatrixToken or one of the subclasses of
-     *  DoubleMatrixToken and returned. If non of the above condition is
+     *  DoubleMatrixToken and returned. If none of the above condition is
      *  met, an exception is thrown.
      *  @param token The token to be converted to a DoubleMatrixToken.
      *  @return A DoubleMatrixToken
@@ -232,7 +221,8 @@ public class DoubleMatrixToken extends MatrixToken {
 	    return new DoubleMatrixToken(result);
 	}
 
-	// FIXME: token must be user defined. what to do?
+	// The argument is below DoubleMatrixToken in the type hierarchy,
+        // but I don't recognize it.
         throw new IllegalActionException("cannot convert from token " +
                 "type: " + token.getClass().getName() + " to a " +
 		"DoubleMatrixToken.");
@@ -283,12 +273,7 @@ public class DoubleMatrixToken extends MatrixToken {
 	    return t.equals(this);
 	} else {
 	    // type of specified token <= DoubleMatrixToken
-	    DoubleMatrixToken tem = null;
-	    if (t instanceof DoubleMatrixToken) {
-		tem = (DoubleMatrixToken)t;
-	    } else {
-		tem = (DoubleMatrixToken)convert(t);
-	    }
+	    DoubleMatrixToken tem = (DoubleMatrixToken)convert(t);
 	    double[][] array = tem.doubleMatrix();
 
 	    for (int i = 0; i < _rowCount; i++) {
@@ -320,13 +305,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A 2-D integer array.
      */
     public double[][] getWritableCopy() {
-        double[][] result = new double[_rowCount][_columnCount];
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                result[i][j] = _value[i][j];
-            }
-        }
-        return result;
+	return doubleMatrix();
     }
 
     /** Return the number of columns in the matrix.

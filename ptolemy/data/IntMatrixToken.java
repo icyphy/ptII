@@ -125,26 +125,18 @@ public class IntMatrixToken extends MatrixToken {
 		}
 	    } else {
 		// the specified token is not a scalar.
-	        if (t instanceof MatrixToken) {
-	    	    if (((MatrixToken)t).getRowCount() != _rowCount ||
-		        ((MatrixToken)t).getColumnCount() != _columnCount) {
-		    	throw new IllegalActionException("Cannot add two " +
-				"matrices with different dimension.");
-	    	    }
+		IntMatrixToken tem = (IntMatrixToken)this.convert(t);
+	    	if (tem.getRowCount() != _rowCount ||
+		    tem.getColumnCount() != _columnCount) {
+		    throw new IllegalActionException("Cannot add two " +
+			"matrices with different dimension.");
+	    	}
 
-		    if (t instanceof IntMatrixToken) {
-		    	result = ((IntMatrixToken)t).intMatrix();
-		    } else {
-		        IntMatrixToken tem = (IntMatrixToken)this.convert(t);
-			result = tem.intMatrix();
+		result = tem.intMatrix();
+		for (int i = 0; i < _rowCount; i++) {
+		    for (int j = 0; j < _columnCount; j++) {
+			result[i][j] += _value[i][j];
 		    }
-		    for (int i = 0; i < _rowCount; i++) {
-			for (int j = 0; j < _columnCount; j++) {
-			    result[i][j] += _value[i][j];
-			}
-		    }
-		} else {
-		    // FIXME: what if the specified token is user defined?
 		}
 	    }
 	    return new IntMatrixToken(result);
@@ -157,9 +149,7 @@ public class IntMatrixToken extends MatrixToken {
      *  @param t The token to be added to this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than IntMatrixToken; or if the specified
-     *   token is not of a type that can be added to this token in a
-     *   lossless fashion.
+     *   token is not lower than IntMatrixToken.
      */
     public Token addR(Token t)
 	    throws IllegalActionException {
@@ -187,12 +177,12 @@ public class IntMatrixToken extends MatrixToken {
     }
 
     /** Convert the specified token to an instance of IntMatrixToken.
-     *  This method does lossly conversion.
+     *  This method does lossless conversion.
      *  If the argument is already an instance of IntMatrixToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below IntMatrixToken in the type hierarchy, it is converted to
      *  an instance of IntMatrixToken or one of the subclasses of
-     *  IntMatrixToken and returned. If non of the above condition is
+     *  IntMatrixToken and returned. If none of the above condition is
      *  met, an exception is thrown.
      *  @param token The token to be converted to IntMatrixToken.
      *  @return A IntMatrixToken
@@ -222,7 +212,8 @@ public class IntMatrixToken extends MatrixToken {
             return new IntMatrixToken(result);
         }
 
-        // FIXME: token must be user defined. what to do?
+        // The argument is below IntMatrixToken in the type hierarchy,
+        // but I don't recognize it.
         throw new IllegalActionException("cannot convert from token " +
                 "type: " + token.getClass().getName() + " to a " +
                 "IntMatrixToken.");
@@ -308,13 +299,7 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A 2-D integer array.
      */
     public int[][] getWritableCopy() {
-	int[][] result = new int[_rowCount][_columnCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		result[i][j] = _value[i][j];
-	    }
-	}
-	return result;
+	return intMatrix();
     }
 
     /** Return the content of this token as a 2-D integer array.
