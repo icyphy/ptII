@@ -2492,9 +2492,9 @@ test MoMLParser-10.1 {test vertex} {
         </port>
     </entity>
     <relation name="r" class="ptolemy.actor.TypedIORelation">
-        <vertex name="v1" class="ptolemy.moml.Vertex">
+        <vertex name="v1">
         </vertex>
-        <vertex name="v2" class="ptolemy.moml.Vertex">
+        <vertex name="v2">
         </vertex>
     </relation>
     <link port="A.out" relation="r"/>
@@ -2528,9 +2528,9 @@ test MoMLParser-10.2 {exportMoML and then parse it - a good test for SaveAs } {
         </port>
     </entity>
     <relation name="r" class="ptolemy.actor.TypedIORelation">
-        <vertex name="v1" class="ptolemy.moml.Vertex">
+        <vertex name="v1">
         </vertex>
-        <vertex name="v2" class="ptolemy.moml.Vertex">
+        <vertex name="v2">
         </vertex>
     </relation>
     <link port="A.out" relation="r"/>
