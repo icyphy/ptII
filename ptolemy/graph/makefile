@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/newgraph
+ME =		ptolemy/graph
 
 DIRS = 		test demo
 
@@ -46,7 +46,7 @@ include $(CONFIG)
 JDOCFLAGS = 	-author -version -public
 
 # Used to build jar files
-PTPACKAGE = 	newgraph
+PTPACKAGE = 	graph
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
@@ -54,9 +54,9 @@ JSRCS = \
 	CPO.java \
 	DirectedAcyclicGraph.java \
 	DirectedGraph.java \
-    Edge.java \
+	Edge.java \
 	Graph.java \
-    Node.java \
+	Node.java \
 	Inequality.java \
 	InequalitySolver.java \
 	InequalityTerm.java
