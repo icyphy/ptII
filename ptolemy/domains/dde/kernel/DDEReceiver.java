@@ -176,6 +176,18 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	}
     }
 
+    /** Return true if the receiver has room for putting the given number of 
+     *  tokens into it (via the put() method).
+     *  Returning true in this method should also guarantee that calling
+     *  the put() method will not result in an exception.
+     *
+     *  @exception IllegalActionException If the Receiver implementation
+     *    does not support this query.
+     */
+    public boolean hasRoom(int tokens) {
+	return true;
+    }
+
     /** Return true if the get() method of this receiver will return a
      *  token without throwing a NoTokenException. This method will
      *  perform a blocking read if this receiver is empty and has a
@@ -283,6 +295,19 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	return hasToken();
     }
 
+    /** Return true if the receiver contains the given number of tokens
+     *  that can be obtained by calling the get() method.
+     *  Returning true in this method should also guarantee that calling
+     *  the get() method will not result in an exception.
+     *
+     *  @exception IllegalActionException If the Receiver implementation
+     *    does not support this query.
+     */
+    public boolean hasToken(int tokens) throws IllegalActionException {
+        return true;
+	// FIXME hack
+    }
+
     /** Return true if this receiver is connected to the inside of a 
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
@@ -290,7 +315,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  return false. 
      *  <P>
      *  This method is not synchronized so the caller
-     *  @return True if this receiver is connected to the inside of
+     *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
      */

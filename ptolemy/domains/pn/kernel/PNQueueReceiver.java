@@ -104,7 +104,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             _otherBranch = branch;
         } else {
             BasePNDirector director = ((BasePNDirector)((Actor)
-        	    (getContainer().getContainer())).getDirector());
+        	    (getContainer().getContainer())).getExecutiveDirector());
             director._actorBlocked(this);
             _otherBranch = branch;
         }
@@ -218,6 +218,21 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return true;
     }
 
+    /** Return true if the receiver has room for putting the given number of 
+     *  tokens into it (via the put() method).
+     *  Returning true in this method should also guarantee that calling
+     *  the put() method will not result in an exception.
+     *  @return true;
+     *  @exception IllegalActionException If the number of tokens is less
+     *  than one.
+     */
+    public boolean hasRoom(int tokens) throws IllegalActionException {
+	if(tokens < 1) 
+	    throw new IllegalActionException("The number of " + 
+					     "tokens must be greater than 0");
+	return true;
+    }
+
     /** Return true since a call to the get() method of the receiver will
      *  always return a token if the call to get() ever returns.
      *  @return true
@@ -225,6 +240,19 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public boolean hasToken() {
 	return true;
+    }
+
+    /** Return true if get() will succeed in returning a token the given
+     *  number of times.  
+     *  @return true
+     *  @exception IllegalActionException If the number of tokens is less
+     *  than one.
+     */
+    public boolean hasToken(int tokens) throws IllegalActionException {
+	if(tokens < 1) 
+	    throw new IllegalActionException("The number of " + 
+					     "tokens must be greater than 0");
+        return true;
     }
 
     /** Return true if this receiver is connected to the inside of a 
@@ -351,7 +379,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     public void put(Token token, Branch branch) {
 	Workspace workspace = getContainer().workspace();
 	BasePNDirector director = (BasePNDirector)
-            ((Actor)(getContainer().getContainer())).getDirector();
+            ((Actor)(getContainer().getContainer())).getExecutiveDirector();
         synchronized(this) {
             // if (!super.hasRoom()) {
             while (!_terminate && !super.hasRoom()) {

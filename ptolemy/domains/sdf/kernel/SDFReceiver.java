@@ -57,7 +57,7 @@ than simply removed. By default, the history capacity is zero.
 @version $Id$
 @see ptolemy.actor.util.FIFOQueue
 */
-public final class SDFReceiver implements Receiver {
+public final class SDFReceiver extends AbstractReceiver {
 
     /** Construct an empty receiver with no container.
      */
@@ -77,18 +77,16 @@ public final class SDFReceiver implements Receiver {
      *  @param container The container of the receiver.
      */
     public SDFReceiver(IOPort container) {
-        super();
-	_container = container;
-        _queue = new ArrayFIFOQueue();
+        super(container);
+	_queue = new ArrayFIFOQueue();
     }
 
     /** Construct an empty receiver with the specified container and size.
      *  @param container The container of the receiver.
      */
     public SDFReceiver(IOPort container, int size) {
-        super();
-	_container = container;
-        _queue = new ArrayFIFOQueue(size);
+        super(container);
+	_queue = new ArrayFIFOQueue(size);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -173,13 +171,6 @@ public final class SDFReceiver implements Receiver {
         return _queue.getCapacity();
     }
 
-    /** Return the container of this receiver, or null if there is none.
-     *  @return The IOPort containing this receiver.
-     */
-    public IOPort getContainer() {
-        return _container;
-    }
-
     /** Return the capacity of the history queue.
      *  This will be zero if the history mechanism is disabled
      *  and INFINITE_CAPACITY if the history capacity is unbounded.
@@ -197,12 +188,39 @@ public final class SDFReceiver implements Receiver {
         return !_queue.isFull();
     }
 
+    /** Return true if put() will succeed in accepting a token.
+     *  @return A boolean indicating whether a token can be put in this
+     *   receiver.
+     *  @exception IllegalActionException If the number of tokens is less
+     *  than one.
+     */
+    public boolean hasRoom(int tokens) throws IllegalActionException {
+	if(tokens < 1) 
+	    throw new IllegalActionException("The number of " + 
+					     "tokens must be greater than 0");
+	return (_queue.size() + tokens) < _queue.getCapacity();
+    }
+
     /** Return true if get() will succeed in returning a token.
      *  @return A boolean indicating whether there is a token in this
      *   receiver.
      */
     public boolean hasToken() {
         return !_queue.isEmpty();
+    }
+
+    /** Return true if get() will succeed in returning a token the given
+     *  number of times.
+     *  @return A boolean indicating whether there are the given number of
+     *  tokens in this receiver.
+     *  @exception IllegalActionException If the number of tokens is less
+     *  than one.
+     */
+    public boolean hasToken(int tokens) throws IllegalActionException {
+	if(tokens < 1) 
+	    throw new IllegalActionException("The number of " + 
+					     "tokens must be greater than 0");
+        return _queue.size() >= tokens;
     }
 
     /** Enumerate the tokens stored in the history queue, which are
@@ -262,13 +280,6 @@ public final class SDFReceiver implements Receiver {
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(getContainer(), ex.getMessage());
         }
-    }
-
-    /** Set the container.
-     *  @param port The IOPort containing this receiver.
-     */
-    public void setContainer(IOPort port) {
-        _container = port;
     }
 
     /** Set the capacity of the history queue. Use 0 to disable the

@@ -42,18 +42,19 @@ this receiver will always accept a token.
 @author Stephen Neuendorffer
 @version $Id$
 */
-public class PBOReceiver implements Receiver {
+public class PBOReceiver extends AbstractReceiver {
 
     /** Construct an empty PBOReceiver with no container.
      */
     public PBOReceiver() {
+	super();
     }
 
     /** Construct an empty PBOReceiver with the specified container.
      *  @param container The container.
      */
     public PBOReceiver(IOPort container) {
-        _container = container;
+        super(container);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -58,11 +58,12 @@ and ConditionalReceive branches to know when they can proceed.
 @version $Id$
 */
 
-public class CSPReceiver implements ProcessReceiver {
+public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Construct a CSPReceiver with no container.
      */
     public CSPReceiver() {
+	super();
 	_boundaryDetector = new BoundaryDetector(this);
     }
 
@@ -70,7 +71,7 @@ public class CSPReceiver implements ProcessReceiver {
      *  @param container The port containing this receiver.
      */
     public CSPReceiver(IOPort container) {
-        _container = container;
+     	super(container);
 	_boundaryDetector = new BoundaryDetector(this);
     }
 
@@ -152,13 +153,6 @@ public class CSPReceiver implements ProcessReceiver {
         return tmp;
     }
 
-    /** Return the IOPort containing this receiver.
-     *  @return The port to which this receiver is attached.
-     */
-    public IOPort getContainer() {
-        return _container;
-    }
-
     /** True if a get is waiting to rendezvous.
      *  @return True if a get is waiting to rendezvous.
      */
@@ -166,11 +160,39 @@ public class CSPReceiver implements ProcessReceiver {
         return _isGetWaiting();
     }
 
+
+    /** Return true if the receiver has room for putting the given number of 
+     *  tokens into it (via the put() method).
+     *  Returning true in this method should also guarantee that calling
+     *  the put() method will not result in an exception.
+     *
+     *  @exception IllegalActionException If the Receiver implementation
+     *    does not support this query.
+     */
+    public boolean hasRoom(int tokens) {
+	return true;
+	// FIXME
+    }
+
     /** True if a put is waiting to rendezvous.
      *  @return True if a put is waiting to rendezvous.
      */
     public synchronized boolean hasToken() {
         return _isPutWaiting();
+    }
+
+
+    /** Return true if the receiver contains the given number of tokens
+     *  that can be obtained by calling the get() method.
+     *  Returning true in this method should also guarantee that calling
+     *  the get() method will not result in an exception.
+     *
+     *  @exception IllegalActionException If the Receiver implementation
+     *    does not support this query.
+     */
+    public boolean hasToken(int tokens) throws IllegalActionException {
+        return true;
+	// FIXME hack
     }
 
     /** Return a true or false to indicate whether there is a read block
@@ -357,13 +379,6 @@ public class CSPReceiver implements ProcessReceiver {
 	_rendezvousComplete = false;
 	_modelFinished = false;
 	_boundaryDetector.reset();
-    }
-
-    /** Set the container of this CSPReceiver to the specified IOPort.
-     *  @param parent The IOPort this receiver is to be contained by.
-     */
-    public void setContainer(IOPort parent) {
-        _container = parent;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -555,9 +570,6 @@ public class CSPReceiver implements ProcessReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // Container.
-    private IOPort _container = null;
 
     private boolean _readBlocked = false;
     private boolean _writeBlocked = false;

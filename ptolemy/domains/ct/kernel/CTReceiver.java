@@ -45,7 +45,7 @@ when the receiver is full, then the old token will be overwritten.
 @author  Jie Liu
 @version $Id$
 */
-public class CTReceiver extends Mailbox{
+public class CTReceiver extends Mailbox {
     /** Construct an empty CTReceiver with no container.
      */
     public CTReceiver() {

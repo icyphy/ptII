@@ -61,18 +61,19 @@ import java.util.LinkedList;
  *  @author Lukito Muliadi, Edward A. Lee, Jie Liu
  *  @version $Id$
  */
-public class DEReceiver implements Receiver {
+public class DEReceiver extends AbstractReceiver {
 
     /** Construct an empty DEReceiver with no container.
      */
     public DEReceiver() {
+	super();
     }
 
     /** Construct an empty DEReceiver with the specified container.
      *  @param container The container.
      */
     public DEReceiver(IOPort container) {
-        _container = container;
+        super(container);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,13 +95,6 @@ public class DEReceiver implements Receiver {
                     "No more tokens in the DE receiver.");
         }
         return (Token)_tokens.removeFirst();
-    }
-
-    /** Return the IOPort containing this receiver.
-     *  @return An instance of IOPort.
-     */
-    public final IOPort getContainer() {
-        return _container;
     }
 
     /** Return the director that created this receiver. Note that
@@ -145,6 +139,18 @@ public class DEReceiver implements Receiver {
      */
     public final boolean hasRoom() {
         return true;
+    }
+
+    /** Return true if the receiver has room for putting the given number of 
+     *  tokens into it (via the put() method).
+     *  Returning true in this method should also guarantee that calling
+     *  the put() method will not result in an exception.
+     *
+     *  @exception IllegalActionException If the Receiver implementation
+     *    does not support this query.
+     */
+    public boolean hasRoom(int tokens) {
+	return true;
     }
 
     /** Return true if there are tokens available to the get() method.
@@ -212,13 +218,6 @@ public class DEReceiver implements Receiver {
         }
     }
 
-    /** Set the IOPort containing this receiver.
-     *  @param port The container.
-     */
-    public void setContainer(IOPort port) {
-        _container = port;
-    }
-
     /** Set the delay for the next call to put().  This causes the director
      *  to make the token available for the get() method at some future time,
      *  i.e. current time plus the specified delay.  This value of delay is
@@ -258,9 +257,6 @@ public class DEReceiver implements Receiver {
 
     // A flag indicating that setDelay() has been called.
     private boolean _useDelay = false;
-
-    // IOPort containing this receiver.
-    private IOPort _container = null;
 
     // The topological depth associated with this receiver.
     //private int _depth = 0;
