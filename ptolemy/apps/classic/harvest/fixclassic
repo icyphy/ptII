@@ -2,18 +2,24 @@
 # $Id$
 # Script to harvest fix
 
-destinationSubdir=ptolemy/domains/sdf/cgc
-dirs="lib dsp/lib"
-for dir in $dirs
-do
-    destinationDirectory=$PTII/$destinationSubdir/$dir
+if [ $# -lt 1 ]; then
+    destinationSubdir=ptolemy/domains/sdf/cgc
+    destinationDirectory=$PTII/$destinationSubdir/lib
     actors=`ls -1 $destinationDirectory/*.java`
-    for actor in $actors
-    do
-	cat $actor |
-            sed -e 's@//# line [0-9]*.*$@@' \
-	        -e 's@//\([ 	]*addCode\)@\1@' \
-                > $actor.tmp
-        diff $actor $actor.tmp 
-    done
+else
+    actors=$@
+fi
+
+for actor in $actors
+do
+    cat $actor |
+       sed -e 's@//# line [0-9]*.*$@@' \
+           -e 's@//\([ 	]*addCode\)@\1@' \
+           -e 's@//[ 	]*StringList \([a-z_0-9A-Z]*\) = \(".*"\);$@StringBuffer \1 = new StringBuffer(\2);@' \
+           -e 's@StringList \([a-z_0-9A-Z]*\);@StringBuffer \1 = new StringBuffer();@' \
+           -e 's@Error::abortRun(\*this,@throw new IllegalActionException(this,@' \
+           -e 's@\(//[ 	]*[a-zA-Z0-9_]*\) << \(.*\);$@\1.append(\2);@' \
+               > $actor.tmp
+    diff $actor $actor.tmp 
+
 done
