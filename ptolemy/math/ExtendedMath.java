@@ -56,7 +56,7 @@ public final class ExtendedMath {
      *  The returned value is positive.
      *  FIXME: Is the range of the argument correct?
      */
-    public static double acosh (double x) {
+    public static double acosh(double x) {
         if (x < 1) {
             throw new IllegalArgumentException("ExtendedMath.acosh: Argument "
                     + "is required to be greater than 1.  Got " + x);
