@@ -1002,7 +1002,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
           case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
           {
-            return new StringLitNode(token.toString());
+            // FIXME : this does not handle special escape characters correctly
+            return new StringLitNode(((StringToken) token).stringValue());
           }
 
           case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
@@ -1295,14 +1296,21 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     protected StatementNode _makeStmt(Object obj) {
         if (obj instanceof List) {
-           return new BlockNode(_makeStmtList((List) obj));
+           List listObj = (List) obj;
+           int listSize = listObj.size();
+           if (listSize == 0) {
+              return new EmptyStmtNode();
+           } else if (listSize == 1) {
+              return _makeStmt(listObj.get(0));
+           } else {
+              return new BlockNode(_makeStmtList(listObj));
+           }
         } else if (obj instanceof ExprNode) {
            ExprNode exprNode = (ExprNode) obj;
 
            if (ExprUtility.isStatementExpression(exprNode)) {
               return new ExprStmtNode(exprNode);
            }
-
            return new EmptyStmtNode();
         } else if (obj == NullValue.instance) {
            return new EmptyStmtNode();
@@ -1386,7 +1394,6 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
           return null;
         }
     }
-
 
     protected Object _portFieldDeclNode(FieldDeclNode node, LinkedList args) {
         // by default, get rid of the port field declaration
