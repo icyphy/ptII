@@ -119,7 +119,7 @@ public class ASTReflect {
             //    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
             //           fullInterfaceName));
 
-	    
+
 	    // FIXME: The output of Skelton does not seem to use
 	    // InterfaceDeclNode?
 	    //
@@ -179,7 +179,7 @@ public class ASTReflect {
             packageName =
                 (NameNode) _makeNameNode(StringManip.partBeforeLast(
                         myClass.getName(), '.'));
-            
+
         } else {
             packageName =
                 (NameNode) _makeNameNode(myClass.getPackage().getName());
@@ -380,9 +380,9 @@ public class ASTReflect {
                 } catch (ClassNotFoundException ee) {
                     // Keep searching the packages.
                 }
-	    } 
+	    }
             // Ok, try the SearchPath
-            
+
             for (int i = 0; i < SearchPath.NAMED_PATH.size(); i++) {
                 String candidate = (String) SearchPath.NAMED_PATH.get(i);
                 System.out.println("ASTReflect.lookupClass: SearchPath: " +
@@ -406,7 +406,7 @@ public class ASTReflect {
                 packageBuffer.append(packages[i].getName() + " ");
             }
 	    throw new RuntimeException("ASTReflect.lookupClass(): " +
-				       "Could not find class '" + name + 
+				       "Could not find class '" + name +
 				       "'. The package of this class has " +
 				       "not yet been loaded, so we need to " +
 				       "look in the searchPath. Looked in" +
@@ -477,7 +477,7 @@ public class ASTReflect {
 
 	// Try to find a class by starting with the file name
 	// and then adding directories as we go along
-	
+
 	StringBuffer classname = null;
 	if(pathname.lastIndexOf('.') != -1) {
 	    // Strip out anything after the last '.', such as .java
@@ -501,7 +501,7 @@ public class ASTReflect {
 		return myClass;
 	    }
 
-	    if (restOfPath.lastIndexOf(File.separatorChar) == -1) { 
+	    if (restOfPath.lastIndexOf(File.separatorChar) == -1) {
 		// We are out of directories to try.
 		return null;
 	    }
@@ -511,7 +511,7 @@ public class ASTReflect {
 						    File.separatorChar);
 	    classname.insert(0, StringManip.baseFilename(restOfPath) + ".");
 	}
-	
+
     }
 
     /** Print the AST of the command line argument for testing purposes. */

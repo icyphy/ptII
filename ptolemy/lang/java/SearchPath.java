@@ -48,7 +48,7 @@ package.
 
 <p>There are three ways that classes are read in.
 <ol>
-<li> The class is a System classes (such as java.lang.Object), 
+<li> The class is a System classes (such as java.lang.Object),
 and it is read in using reflection
 <li> The class is a Ptolemy core class (such as ptolemy.kernel.util.NamedObj)
 and it is read in using reflection.
@@ -76,12 +76,12 @@ public class SearchPath extends Vector {
 
     /** Construct a SearchPath object by reading the propertyName
      *  property, if propertyName is null or does not name a property
-     *  then use fallbackPaths.  The value of the property named by 
+     *  then use fallbackPaths.  The value of the property named by
      *  propertyName and the value of fallbackPaths should contain
      *  a string with pathnames separated by File.separatorChar.
      *  @param propertyName Name of the property to look for.
      *  @param fallbackPaths Path list to use if propertyName can't be found.
-     */ 
+     */
     public SearchPath(String propertyName, String fallbackPaths) {
         if (propertyName != null) {
             String propertyValue = System.getProperty(propertyName, ".");
@@ -156,7 +156,7 @@ public class SearchPath extends Vector {
             "ptolemy/data",
             "ptolemy/data/type",
             "ptolemy/graph",
-            "ptolemy/math" 
+            "ptolemy/math"
         };
 
         ptolemyCorePackageSet = new HashSet();
@@ -166,7 +166,7 @@ public class SearchPath extends Vector {
         boolean [] foundPackages = new boolean [ptolemyCorePackages.length];
 
         for (int i = 0; i < NAMED_PATH.size(); i++) {
-            String path = (String) NAMED_PATH.get(i);        
+            String path = (String) NAMED_PATH.get(i);
             for(int p = 0; p < ptolemyCorePackages.length &&
                     !foundPackages[p];
                     p++) {
@@ -179,7 +179,7 @@ public class SearchPath extends Vector {
                         String name = nameList[j];
                         int length = name.length();
                         String className = null;
-                            if ((length > 6) && 
+                            if ((length > 6) &&
                                     name.substring(length - 6).
                                     equals(".class")) {
                                 className = name.substring(0, length - 6);
@@ -206,7 +206,7 @@ public class SearchPath extends Vector {
         return classSet;
     }
     /** Return a Set that contains an entry for each class in the
-     * system jar file. 
+     * system jar file.
      * Note that classes will have entries like java.lang.Object, they
      * will not have extension like .class or .java
      */
@@ -222,12 +222,12 @@ public class SearchPath extends Vector {
         // http://www.javasoft.com/docs/books/tutorial/collections/implementations/general.html
         // says:
         // "If you accept the default load factor but you do want to
-        // specify an initial capacity, pick a number that's 
+        // specify an initial capacity, pick a number that's
         // about twice the size that you expect the Set to grow to."
         // It also suggests selecting a prime number just larger.
         // Primes can be found at
         // http://www.utm.edu/research/primes/lists/small/10000.txt
-        Set classSet = new HashSet(10427); 
+        Set classSet = new HashSet(10427);
 
         systemPackageSet = new HashSet();
         // Now read in the system jar file (jre/lib/rt.jar) and
@@ -250,7 +250,7 @@ public class SearchPath extends Vector {
 				     replace(File.separatorChar, '.'));
             } else {
                 if (jarFile.getPath().endsWith(".class")) {
-		    // Strip off the .class, 
+		    // Strip off the .class,
 		    // substitute . for File.separatorChar
                     classSet.add((StringManip.partBeforeLast(jarFile.getPath(),
                             '.')).replace(File.separatorChar, '.'));
@@ -274,7 +274,7 @@ public class SearchPath extends Vector {
     public static Set systemClassSet = systemClasses() ;
 
     /** Set of Strings that name all the packages in the system jar file.
-     */   
+     */
     public static Set systemPackageSet;
 
     /** Set of Strings that name the .java files in the Ptolemy II core
