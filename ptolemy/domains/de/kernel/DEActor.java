@@ -40,7 +40,7 @@ import java.util.Enumeration;
  *  necessarily derive from this class. This class provides methods to access
  *  time (since DE is a timed domain) and methods for an actor to reschedule
  *  itself in the future. Actors specializing in DE domain should derive from
- *  this class and thus can be written more succintly.
+ *  this class and thus can be written more succinctly.
  *
  *  @author Lukito Muliadi
  *  @version $Id$
