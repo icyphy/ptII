@@ -399,7 +399,7 @@ public class DoubleArrayMath {
    *  without parentheses.
    *  @return The length of the array.
    */
-  protected static final int _nonZeroLength(double[] array,
+  public static final int _nonZeroLength(double[] array,
    String methodName) {
     if (array == null) {
        throw new IllegalArgumentException("ptolemy.math." + methodName +
@@ -424,7 +424,7 @@ public class DoubleArrayMath {
    *  without parentheses.
    *  @return The common length of both arrays.
    */
-  protected static final int _commonLength(double[] array1, double[] array2,
+  public static final int _commonLength(double[] array1, double[] array2,
    String methodName) {
     if (array1 == null) {
        throw new IllegalArgumentException("ptolemy.math." + methodName +

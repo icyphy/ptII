@@ -1338,7 +1338,7 @@ public class SignalProcessing {
 
     /** To select the rectangular window,
      *  <p>
-     *   w[n] = 1   0 <= n <= M
+     *   w[n] = 1 for 0 <= n <= M
      *  </p>
      *  use this window type.
      */
@@ -1384,7 +1384,7 @@ public class SignalProcessing {
     /** To select the 4-term Blackman-Harris window,
      *  <p>
      *   w[n] = 0.35875 - 0.48829 cos(2 * PI * n /M)  + <br>
-     *          0.14128 cos (4 * PI * n / M) - 0.01168 cos(6 * PI / M) <br>
+     *          0.14128 cos (4 * PI * n / M) - 0.01168 cos(6 * PI * n / M) <br>
      *   for 0 <= n <= M
      *  </p>
      *  use this window type.

@@ -66,7 +66,7 @@ public interface ArrayStringFormat {
   public String vectorBeginString();
 
   /**
-   *  Return a String separating the row v.
+   *  Return a String separating the row vectors.
    */
   public String vectorDeliminatorString();
 

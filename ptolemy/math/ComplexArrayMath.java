@@ -189,7 +189,8 @@ public class ComplexArrayMath {
      */
     public static final Complex[] formComplexArray(double[] realPart,
      double[] imagPart) {
-       int size = Math.min(realPart.length, imagPart.length);
+       int size = DoubleArrayMath._commonLength(realPart, imagPart,
+        "ComplexArrayMath.formComplexArray");
 
        Complex[] retval = new Complex[size];
 
@@ -379,8 +380,7 @@ public class ComplexArrayMath {
      *  the real parts, and 0 for the imaginary parts. If the argument is
      *  of length 0, return a new array of length 0.
      */
-    public static final Complex[] realArrayToComplexArray(double[] realArray)
-    {
+    public static final Complex[] realArrayToComplexArray(double[] realArray) {
        int size = realArray.length;
 
        Complex[] retval = new Complex[size];
@@ -460,7 +460,8 @@ public class ComplexArrayMath {
                 
     /** Return a new array that is constructed from the argument by
      *  scaling each element in the array by factor, which
-     *  is a double.
+     *  is a double. If the array argument is of length 0, return a new array 
+     *  of length 0.
      */
     public static final Complex[] scale(Complex[] array, double factor) {
         int len = array.length;
@@ -474,10 +475,8 @@ public class ComplexArrayMath {
     }
 
     /** Return a new array that is constructed by subtracting the complex
-     *  number z from every element in the first array.
-     *  @param array An array of Complex's.
-     *  @param z The complex number to subtract.
-     *  @return A new array of Complex's.
+     *  number z from every element in the first array. If the array argument 
+     *  is of length 0, return a new array of length 0.
      */
     public static final Complex[] subtract(Complex[] array, Complex z) {
         Complex[] result = new Complex[array.length];
