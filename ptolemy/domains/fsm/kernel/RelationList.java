@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 
 A RelationList contains a list of relations of a guard expression.  It
-provides facilities to access the former and current information of
+provides facilities to access the previous and current information of
 each relation of a guard expression during its evaluation. The
 information includes type and difference information. (See
 ParseTreeEvaluatorForGuardExpression for detailed explanation of type
