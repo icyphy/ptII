@@ -208,12 +208,12 @@ public class PNDirector extends BasePNDirector {
             //Loop until a deadlock other than an artificial deadlock is
             //detected.
             while ((_readBlockCount != _getActiveActorsCount()) &&
-                    !_areAllThreadsStopped()) {
+                    !_areActorsStopped()) {
                 //Sleep until a deadlock is detected or mutations are requested
-		while (!_isDeadlocked() && !_areAllThreadsStopped()) {
+		while (!_areActorsDeadlocked() && !_areActorsStopped()) {
 		    worksp.wait(this);
 		}
-                if (!_areAllThreadsStopped()) {
+                if (!_areActorsStopped()) {
                     _notDone = _resolveDeadlock();
                 }
 	    }
@@ -269,7 +269,7 @@ public class PNDirector extends BasePNDirector {
      *  @return True if all active threads containing actors controlled
      *  by this thread have stopped or are blocked; otherwise return false.
      */
-    protected synchronized boolean _areAllThreadsStopped() {
+    protected synchronized boolean _areActorsStopped() {
  	if(_getStoppedProcessesCount() + _readBlockCount +
                 _mutationBlockCount == _getActiveActorsCount()) {
  	    return (_getStoppedProcessesCount() != 0);
@@ -283,7 +283,7 @@ public class PNDirector extends BasePNDirector {
      *  a mutation.
      *  @return true if a deadlock is detected.
      */
-    protected synchronized boolean _isDeadlocked() {
+    protected synchronized boolean _areActorsDeadlocked() {
 	return (_readBlockCount + _writeBlockCount +
                 _mutationBlockCount == _getActiveActorsCount());
     }

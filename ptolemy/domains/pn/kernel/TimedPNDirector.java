@@ -226,11 +226,11 @@ public class TimedPNDirector extends BasePNDirector {
             _mutationsRequested = false;
             //Loop until a real deadlock is detected.
             while (_readBlockCount != _getActiveActorsCount() &&
-                    !_areAllThreadsStopped()) {
-		while (!_isDeadlocked() && !_areAllThreadsStopped()) {
+                    !_areActorsStopped()) {
+		while (!_areActorsDeadlocked() && !_areActorsStopped()) {
 		    worksp.wait(this);
 		}
-                if (!_areAllThreadsStopped()) {
+                if (!_areActorsStopped()) {
                     _notDone = _resolveDeadlock();
                 }
 	    }
@@ -327,7 +327,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  @return True if all active threads containing actors controlled
      *  by this thread have stopped or are blocked; otherwise return false.
      */
-    protected synchronized boolean _areAllThreadsStopped() {
+    protected synchronized boolean _areActorsStopped() {
  	if(_getStoppedProcessesCount() + _readBlockCount + _delayBlockCount +
                 _mutationBlockCount == _getActiveActorsCount()) {
  	    return (_getStoppedProcessesCount() != 0);
@@ -340,7 +340,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  read-blocked, write-blocked, time-blocked or mutation-blocked.
      *  @return true if a deadlock is detected.
      */
-    protected synchronized boolean _isDeadlocked() {
+    protected synchronized boolean _areActorsDeadlocked() {
 	if (_readBlockCount + _writeBlockCount + _delayBlockCount
 		+ _mutationBlockCount >= _getActiveActorsCount()) {
 	    return true;
@@ -356,7 +356,7 @@ public class TimedPNDirector extends BasePNDirector {
      */
     protected synchronized void _informOfDelayBlock() {
 	_delayBlockCount++;
-	if (_isDeadlocked()) {
+	if (_areActorsDeadlocked()) {
 	    notifyAll();
 	}
 	return;

@@ -231,7 +231,7 @@ public class BasePNDirector extends ProcessDirector {
 	while (_readBlockCount != _getActiveActorsCount()) {
 	    //In this case, wait until a real deadlock occurs.
 	    synchronized (this) {
-		while (!_isDeadlocked()) {
+		while (!_areActorsDeadlocked()) {
 		    //Wait until a deadlock is detected.
 		    workspace.wait(this);
 		}
@@ -407,7 +407,7 @@ public class BasePNDirector extends ProcessDirector {
      */
     protected synchronized void _informOfMutationBlock() {
 	_mutationBlockCount++;
-	if (_isDeadlocked()) {
+	if (_areActorsDeadlocked()) {
 	    notifyAll();
 	}
 	return;
@@ -437,7 +437,7 @@ public class BasePNDirector extends ProcessDirector {
 	    _writeblockedQueues.add(rcvr);
 	    _writeBlockCount++;
         }
-	if (_isDeadlocked()) {
+	if (_areActorsDeadlocked()) {
 	    notifyAll();
 	}
 	return;
@@ -485,7 +485,7 @@ public class BasePNDirector extends ProcessDirector {
      *  to write.
     protected synchronized void _actorWriteBlocked() {
 	_writeBlockCount++;
-	if (_isDeadlocked()) {
+	if (_areActorsDeadlocked()) {
 	    notifyAll();
 	}
 	return;
@@ -512,7 +512,7 @@ public class BasePNDirector extends ProcessDirector {
      *  This method is synchronized on this object.
      *  @return true if a real or artificial deadlock is detected.
      */
-    protected synchronized boolean _isDeadlocked() {
+    protected synchronized boolean _areActorsDeadlocked() {
 	if (_readBlockCount + _writeBlockCount >= _getActiveActorsCount()) {
 	    return true;
 	} else {
