@@ -1680,11 +1680,10 @@ public class MoMLParser extends HandlerBase {
             } else {
                 throw new XmlException(
                         "XML element \"" + elementName
-                        + "\" triggers exception:\n  "
-                        + ex,
+                        + "\" triggers exception.",
                         _currentExternalEntity(),
                         _parser.getLineNumber(),
-                        _parser.getColumnNumber());
+                        _parser.getColumnNumber(), ex);
             }
         }
         _attributes.clear();
@@ -1823,7 +1822,10 @@ public class MoMLParser extends HandlerBase {
 		    try {
 			reference = _attemptToFindMoMLClass(className, source);
 		    } catch (Exception ex2) {
-			throw new Exception(
+			// If we are running inside an applet, then
+			// we may end up getting a SecurityException,
+			// so we want to be sure to not throw away ex2
+			throw new IllegalActionException(null, ex2, 
                                 "Cannot find class: "
                                 + className);
 		    }
@@ -2009,11 +2011,16 @@ public class MoMLParser extends HandlerBase {
                     classAsFile = altClassAsFile;
                 } catch (Exception ex3) {
                     // Cannot find class definition.
-                    throw new XmlException(
-                            ex3.getMessage(),
+		    // Unfortunately exception chaining does not work here
+		    // since we really want to know what ex2 and ex3
+		    // both were.
+                    throw new XmlException("Could not find '"
+			    + classAsFile + "' or '"
+			    + altClassAsFile + "' using base '"
+ 			    + _base + "': " ,
                             _currentExternalEntity(),
                             _parser.getLineNumber(),
-                            _parser.getColumnNumber());
+                            _parser.getColumnNumber(), ex2);
                 }
             } else {
                 // No alternative. Rethrow exception.
