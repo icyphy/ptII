@@ -138,6 +138,10 @@ JAR =		$(PTJAVA_DIR)/bin/jar
 # The 'java' interpreter.
 JAVA =		$(PTJAVA_DIR)/bin/java
 
+# Flags to use with java.  Try 'java -help' or 'java -X'
+# A common value is -Xmx100m to set the maximum stack size
+JAVAFLAGS = 
+
 # The 'rmic' command - The Java Remote Method Invocation (RMI) command
 RMIC =		$(PTJAVA_DIR)/bin/rmic
 
