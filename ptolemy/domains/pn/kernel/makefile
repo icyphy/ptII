@@ -54,16 +54,13 @@ JSRCS = \
 	PNAlternate.java \
 	PNExample.java \
 	PNExecutive.java \
-	PNFifoRelation.java \
 	PNInPort.java \
 	PNInterleave.java \
 	PNOutPort.java \
 	PNPort.java \
-	PNQueueLink.java \
 	PNRedirect.java \
 	PNStar.java \
-	PNUniverse.java \
-	TerminationException.java
+	PNUniverse.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
