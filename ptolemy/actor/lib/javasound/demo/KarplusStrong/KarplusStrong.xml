@@ -16,20 +16,26 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="394.0, 42.0">
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model implements the Karplus-Strong algorithm
-for generating a plucked string sound.  Executing it
-requires that you use Java 1.3, which includes the
-javasound package.</text>
-           </svg>
-           </configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model implements the Karplus-Strong
+algorithm for generating a plucked-string
+musical instrument sound.</text></svg></configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.kernel.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="288.0, 45.0">
         </property>
     </property>
     <entity name="Delay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -146,7 +152,7 @@ javasound package.</text>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="91.0, 250.0">
+        <property name="_location" class="ptolemy.moml.Location" value="86.5, 233.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

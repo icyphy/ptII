@@ -73,39 +73,6 @@ model is known as a Lorenz attractor.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="1:0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="417.0, 217.0">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The Integrator is an example
-of a domain-specific actor. This
-actor is designed to work with the
-CT director.</text>
-           </svg>
-           </configure>
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
-        </property>
-    </property>
-    <property name="2:1:0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="434.0, 334.0">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The expression actor is used
-here to simplify the block diagram.
-To see what expression is implemented,
-right click on the actor and select
-"Edit Parameters".</text>
-           </svg>
-           </configure>
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
-        </property>
-    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[608, 426]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[100, 114]">
@@ -160,7 +127,7 @@ right click on the actor and select
     <entity name="Integrator 3" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="234.0, 353.5">
+        <property name="_location" class="ptolemy.moml.Location" value="224.0, 368.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -226,7 +193,8 @@ right click on the actor and select
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Strange Attractor</title>
@@ -236,7 +204,8 @@ right click on the actor and select
 <yRange min="-20.0" max="25.0"/>
 <noGrid/>
 </plot>?>
-                                                </configure>    </entity>
+        </configure>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="31.0, 150.0">
         </vertex>
@@ -248,7 +217,7 @@ right click on the actor and select
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="54.0, 178.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="79.0, 408.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">

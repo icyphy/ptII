@@ -59,7 +59,7 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model shows a following car tracking a leading car in an unreliable 
-communication environment. At regular condition, the leading car informs
+communication environment. In normal operation, the leading car informs
 the following car about its position, speed, acceleration, and a time 
 stamp for this information. The following car does a sanity check to make
 sure that the data are coherent. If so, the following car will apply the
@@ -69,8 +69,9 @@ information by setting the parameter "fault" to 0 or 1, (0 indicating
 the correct information). If the following car receives uncorrect 
 information, it abandons the received acceleration, and relies on 
 distance measurements for the tacking. In this mode, the following car 
-will apply zero acceleration if it is too close to the leading car, and 
-apply maximum acceleration if it is too far from the leading car.  </text></svg></configure>
+will apply zero acceleration, if it is too close to the leading car, and 
+maximum acceleration if it is too far from the leading car. This (simple-
+minded) control law results in a rather jerky ride.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -83,7 +84,7 @@ apply maximum acceleration if it is too far from the leading car.  </text></svg>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="296.5, 341.0">
+        <property name="_location" class="ptolemy.moml.Location" value="291.5, 376.0">
         </property>
     </property>
     <entity name="leading car" class="ptolemy.actor.TypedCompositeActor">
@@ -1236,9 +1237,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Second Car Acceleration</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
+<title></title>
 <xRange min="0.0" max="99.99999999999862"/>
 <yRange min="0.0" max="2.0"/>
 </plot>?>
@@ -1584,9 +1583,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Positions of Cars</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
+<title></title>
 <xRange min="0.0" max="99.99999999999862"/>
 <yRange min="0.0" max="181.67896331079464"/>
 </plot>?>
