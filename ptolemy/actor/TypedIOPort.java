@@ -510,9 +510,9 @@ public class TypedIOPort extends IOPort implements Typeable {
 	    }
 	    return _convertMethod;
 
-	} catch (NoSuchMethodException nsme) {
+	} catch (NoSuchMethodException e) {
             throw new InternalErrorException("TypedIOPort._getConvertMethod: "
-                    + "NoSuchMethodException: " + nsme.getMessage());
+                    + "NoSuchMethodException: " + e.getMessage());
         }
     }
 
