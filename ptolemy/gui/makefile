@@ -57,6 +57,8 @@ JSRCS = \
 	MessageHandler.java \
 	Query.java \
 	QueryListener.java \
+	ShellInterpreter.java \
+	ShellTextArea.java \
 	StatusBar.java \
 	StreamExec.java \
 	SwingWorker.java \
