@@ -138,8 +138,8 @@ public class PortConfigurerDialog
         JScrollPane scrollPane = new JScrollPane(_portTable);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
 
-        JPanel _buttons = _createButtonsPanel();
-        getContentPane().add(_buttons, BorderLayout.SOUTH);
+        JPanel buttons = _createButtonsPanel();
+        getContentPane().add(buttons, BorderLayout.SOUTH);
 
         // Listen for selections on the table. There can only be one row
         // selected. When a row is selected, the Remove button will show the
@@ -174,14 +174,14 @@ public class PortConfigurerDialog
             public void mouseClicked(MouseEvent me) {
                 Rectangle headerShowNameRect =
                     _jth.getHeaderRect(PortTableModel.COL_SHOW_NAME);
-				Rectangle headerHidePortRect =
-					_jth.getHeaderRect(PortTableModel.COL_HIDE);
+                Rectangle headerHidePortRect =
+                    _jth.getHeaderRect(PortTableModel.COL_HIDE);
                 if (headerShowNameRect.contains(me.getPoint())) {
                     _portTableModel.toggleShowAllNames();
                 }
-				if (headerHidePortRect.contains(me.getPoint())) {
-					_portTableModel.toggleHidePorts();
-				}
+                if (headerHidePortRect.contains(me.getPoint())) {
+                    _portTableModel.toggleHidePorts();
+                }
             }
         });
 
@@ -212,51 +212,50 @@ public class PortConfigurerDialog
                     portInfo[COL_OUTPUT] = Boolean.valueOf(port.isOutput());
                     portInfo[COL_MULTIPORT] =
                         Boolean.valueOf(port.isMultiport());
-                    TypeAttribute _type =
+                    TypeAttribute type =
                         (TypeAttribute) (port.getAttribute("_type"));
-                    if (_type != null) {
-                        portInfo[COL_TYPE] = _type.getExpression();
+                    if (type != null) {
+                        portInfo[COL_TYPE] = type.getExpression();
                     } else {
                         portInfo[COL_TYPE] = "unknown";
                     }
-                    String _direction;
-                    StringAttribute _cardinal =
+                    String direction;
+                    StringAttribute cardinal =
                         (StringAttribute) (port.getAttribute("_cardinal"));
-                    if (_cardinal != null) {
-                        _direction = _cardinal.getExpression().toUpperCase();
+                    if (cardinal != null) {
+                        direction = cardinal.getExpression().toUpperCase();
                     } else if (port.isInput() && !port.isOutput()) {
-                        _direction = "WEST";
+                        direction = "WEST";
                     } else if (port.isOutput() && !port.isInput()) {
-                        _direction = "EAST";
+                        direction = "EAST";
                     } else if (!port.isOutput() && !port.isInput()) {
-                        _direction = "SOUTH";
+                        direction = "SOUTH";
                     } else { // multiport
-                        _direction = "WEST";
+                        direction = "WEST";
                     }
-                    portInfo[COL_DIRECTION] = _direction;
+                    portInfo[COL_DIRECTION] = direction;
 
-                    SingletonAttribute _show =
-                        (SingletonAttribute) (port.getAttribute("_showName"));
-                    if (_show == null) {
+                    Attribute show =
+                        (Attribute) (port.getAttribute("_showName"));
+                    if (show == null) {
                         portInfo[COL_SHOW_NAME] = Boolean.FALSE;
                     } else {
                         portInfo[COL_SHOW_NAME] = Boolean.TRUE;
                     }
-                    
-					SingletonAttribute _hide =
-						(SingletonAttribute) (port.getAttribute("_hide"));
-					if (_hide == null) {
-						portInfo[COL_HIDE] = Boolean.FALSE;
-					} else {
-						portInfo[COL_HIDE] = Boolean.TRUE;
-					}
 
-                    String _units = "";
+                    Attribute hide = (Attribute) (port.getAttribute("_hide"));
+                    if (hide == null) {
+                        portInfo[COL_HIDE] = Boolean.FALSE;
+                    } else {
+                        portInfo[COL_HIDE] = Boolean.TRUE;
+                    }
+
+                    String units = "";
                     Units _unitsAttribute = (Units) port.getAttribute("_units");
                     if (_unitsAttribute != null) {
-                        _units = _unitsAttribute.getExpression();
+                        units = _unitsAttribute.getExpression();
                     }
-                    portInfo[COL_UNITS] = _units;
+                    portInfo[COL_UNITS] = units;
 
                     portInfo[COL_ACTUAL_PORT] = port;
 
@@ -278,7 +277,7 @@ public class PortConfigurerDialog
             portInfo[COL_TYPE] = "unknown";
             portInfo[COL_DIRECTION] = "";
             portInfo[COL_SHOW_NAME] = Boolean.FALSE;
-			portInfo[COL_HIDE] = Boolean.FALSE;
+            portInfo[COL_HIDE] = Boolean.FALSE;
             portInfo[COL_UNITS] = "";
             portInfo[COL_ACTUAL_PORT] = null;
             _ports.add(portInfo);
@@ -370,14 +369,14 @@ public class PortConfigurerDialog
                 setValueAt(_show, i, COL_SHOW_NAME);
             }
         }
-        
-		public void toggleHidePorts() {
-			_hideAllPorts = !_hideAllPorts;
-			Boolean _hide = new Boolean(_hideAllPorts);
-			for (int i = 0; i < getRowCount(); i++) {
-				setValueAt(_hide, i, COL_HIDE);
-			}
-		}
+
+        public void toggleHidePorts() {
+            _hideAllPorts = !_hideAllPorts;
+            Boolean _hide = new Boolean(_hideAllPorts);
+            for (int i = 0; i < getRowCount(); i++) {
+                setValueAt(_hide, i, COL_HIDE);
+            }
+        }
 
         // The columns of portInfo[].
         public final static int COL_NAME = 0;
@@ -387,8 +386,8 @@ public class PortConfigurerDialog
         public final static int COL_TYPE = 4;
         public final static int COL_DIRECTION = 5;
         public final static int COL_SHOW_NAME = 6;
- 		public final static int COL_HIDE = 7;
-		public final static int COL_UNITS = 8;
+        public final static int COL_HIDE = 7;
+        public final static int COL_UNITS = 8;
         public final static int COL_ACTUAL_PORT = 9;
 
     }
@@ -590,7 +589,7 @@ public class PortConfigurerDialog
                 }
             }
         }
-        
+
         // There may be several change requests generated.
         // We merge them into one undo action as needed.
         boolean requestedChange = false;
@@ -696,22 +695,22 @@ public class PortConfigurerDialog
                     updates[PortTableModel.COL_MULTIPORT] = true;
                 }
 
-                SingletonAttribute _show =
-                    (SingletonAttribute) (actualPort.getAttribute("_showName"));
+                Attribute _show =
+                    (Attribute) (actualPort.getAttribute("_showName"));
                 if ((_show == null)
                     == (((Boolean) (portInfo[PortTableModel.COL_SHOW_NAME]))
                         .booleanValue())) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_SHOW_NAME] = true;
                 }
-                
-				Attribute hide = actualPort.getAttribute("_hide");
-				if ((hide == null)
-					== (((Boolean) (portInfo[PortTableModel.COL_HIDE]))
-						.booleanValue())) {
-					havePortUpdate = true;
-					updates[PortTableModel.COL_HIDE] = true;
-				}
+
+                Attribute hide = actualPort.getAttribute("_hide");
+                if ((hide == null)
+                    == (((Boolean) (portInfo[PortTableModel.COL_HIDE]))
+                        .booleanValue())) {
+                    havePortUpdate = true;
+                    updates[PortTableModel.COL_HIDE] = true;
+                }
 
                 String Type = "unknown";
                 TypeAttribute _type =
@@ -782,9 +781,9 @@ public class PortConfigurerDialog
                 updates[PortTableModel.COL_SHOW_NAME] =
                     ((Boolean) (portInfo[PortTableModel.COL_SHOW_NAME]))
                         .booleanValue();
-				updates[PortTableModel.COL_HIDE] =
-					((Boolean) (portInfo[PortTableModel.COL_HIDE]))
-						.booleanValue();
+                updates[PortTableModel.COL_HIDE] =
+                    ((Boolean) (portInfo[PortTableModel.COL_HIDE]))
+                        .booleanValue();
                 if (((String) (portInfo[PortTableModel.COL_DIRECTION]))
                     .equals("")) {
                     String _direction;
@@ -941,15 +940,15 @@ public class PortConfigurerDialog
                 momlUpdate.append("<deleteProperty name=\"_showName\" />");
             }
         }
-		if (updates[PortTableModel.COL_HIDE]) {
-			if (((Boolean) (portInfo[PortTableModel.COL_HIDE]))
-				.booleanValue()) {
-				momlUpdate.append(
-					"<property name=\"_hide\" class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
-			} else {
-				momlUpdate.append("<deleteProperty name=\"_hide\" />");
-			}
-		}
+        if (updates[PortTableModel.COL_HIDE]) {
+            if (((Boolean) (portInfo[PortTableModel.COL_HIDE]))
+                .booleanValue()) {
+                momlUpdate.append(
+                    "<property name=\"_hide\" class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+            } else {
+                momlUpdate.append("<deleteProperty name=\"_hide\" />");
+            }
+        }
         if (_units && updates[PortTableModel.COL_UNITS]) {
             momlUpdate.append(
                 "<property name=\"_units\" "
@@ -1032,9 +1031,8 @@ public class PortConfigurerDialog
         column =
             _portTable.getColumnModel().getColumn(PortTableModel.COL_SHOW_NAME);
         column.setPreferredWidth(70);
-		column =
-			_portTable.getColumnModel().getColumn(PortTableModel.COL_HIDE);
-		column.setPreferredWidth(30);
+        column = _portTable.getColumnModel().getColumn(PortTableModel.COL_HIDE);
+        column.setPreferredWidth(30);
     }
 
     private void _populateActualPorts() {
