@@ -314,7 +314,9 @@ public class GraphEditor extends MDIApplication {
             Entity entity = 
                 (Entity) enum.nextElement();
             if(!(entity instanceof CompositeEntity)) {
-                palette.addNode(entity, 
+		ptolemy.moml.Icon icon = 
+		    (ptolemy.moml.Icon) entity.getAttribute("_icon");
+                palette.addNode(icon, 
                         60, 50 + (i++) * 50);     
             }
 

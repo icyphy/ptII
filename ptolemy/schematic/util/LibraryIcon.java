@@ -121,6 +121,9 @@ public class LibraryIcon extends PatternIcon implements Configurable {
         return str + ")";
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected variables                ////
+
     /** Return a description of the object.  Lines are indented according to
      *  to the level argument using the protected method _getIndentPrefix().
      *  Zero, one or two brackets can be specified to surround the returned
@@ -146,6 +149,27 @@ public class LibraryIcon extends PatternIcon implements Configurable {
         return result;
     }
 
+    /** Write a MoML description of the contents of this object, which
+     *  in this base class is the attributes.  This method is called
+     *  by _exportMoML().  If there are attributes, then
+     *  each attribute description is indented according to the specified
+     *  depth and terminated with a newline character.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @throws IOException If an I/O error occurs.
+     *  @see exportMoMLContents
+     *  @see _exportMoMLContents
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+	super._exportMoMLContents(output, depth);
+	output.write(_getIndentPrefix(depth));
+	output.write("<configure>" + _iconName + "</configure>\n");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         static variables                  ////
+
     /** Return the root icon library from which to search for icons.
      */
     public static IconLibrary getIconLibrary() {
@@ -154,7 +178,7 @@ public class LibraryIcon extends PatternIcon implements Configurable {
 
     /** Set the root icon library from which to search for icons.
      */
-     public static void setIconLibrary(IconLibrary library) {
+    public static void setIconLibrary(IconLibrary library) {
 	_iconLibrary = library;
     }
 

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.Icon;
 
 /**
  * This class provides drag-and-drop support for the
@@ -108,7 +109,8 @@ public class EditorDropTarget extends DropTarget {
                 //System.out.println("Dropping at " + p); //DEBUG
                 GraphController gc = 
 		    ((JGraph)getComponent()).getGraphPane().getGraphController();
-                NamedObj semanticObject = (NamedObj) data.getSemanticObject();
+		Icon sourceIcon = (Icon) data.getSemanticObject();
+                NamedObj sourceEntity = (NamedObj) sourceIcon.getContainer();
                 CompositeNode newNode;
                 Graph graph;
 
@@ -118,22 +120,18 @@ public class EditorDropTarget extends DropTarget {
                     graph = gc.getGraph();
                     NamedObj container = (NamedObj) graph.getSemanticObject();
                     // Create the new node
-                    NamedObj newObject = (NamedObj) semanticObject.clone(
+                    NamedObj entity = (NamedObj) sourceEntity.clone(
                             container.workspace());
-                    newObject.setName(semanticObject.getName() + 
-                            ((EditorGraphController)gc).createUniqueID());    
-                     ((EditorGraphController) gc).getEntityController()
-                         .addNode(newObject, p.x, p.y);
-
-                    /*
-                    newNode = impl.createCompositeNode(semanticObject.clone(
-                            container.workspace()));
-                    NamedObj newObject = (NamedObj)newNode.getSemanticObject();
-		    newObject.setName(semanticObject.getName() + 
-				      ((EditorGraphController)gc).createUniqueID());
-		    ((EditorGraphController) gc).getEntityController().addNode(newNode, p.x, p.y);
-                    */
-                }
+		    Icon icon = (Icon) entity.getAttribute("_icon");
+                    entity.setName(sourceEntity.getName() + 
+                            ((EditorGraphController)gc).createUniqueID()); 
+		    ((EditorGraphController) gc).getEntityController()
+                         .addNode(icon, p.x, p.y);
+		    int[] coords = new int[2];
+		    coords[0] = p.x;
+		    coords[1] = p.y;
+		    icon.setLocation(coords);
+		}
                 catch (Exception ex) {
                     ex.printStackTrace();
                     throw new RuntimeException(ex.getMessage());

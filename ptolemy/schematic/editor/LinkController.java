@@ -119,25 +119,6 @@ public class LinkController extends EdgeController {
         ConnectorTarget _vertexTarget;
     }
              
-    /** An interactor that creates context-sensitive menus.
-     */
-    protected class MenuCreator extends AbstractInteractor {
-	public MenuCreator(CompositeInteractor interactor) {
-	    interactor.addInteractor(this);
-	    setMouseFilter(new MouseFilter(3));
-	}
-	
-	public void mousePressed(LayerEvent e) {
-	    Figure source = e.getFigureSource();
-	    Edge sourcenode = (Edge) source.getUserObject();
-	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
-	    JPopupMenu menu = 
-		new RelationController.RelationContextMenu(object);
-	    menu.show(getController().getGraphPane().getCanvas(),
-		      e.getX(), e.getY());
-	}
-    }
-
     public class LinkRenderer implements EdgeRenderer {
 	/**
          * Render a visual representation of the given edge.
@@ -146,10 +127,6 @@ public class LinkController extends EdgeController {
             StraightConnector c = new StraightConnector(tailSite, headSite);
             c.setLineWidth((float)2.0);
             c.setUserObject(edge);
-            //            Arrowhead arrow = new Arrowhead(
-            //        headSite.getX(), headSite.getY(), headSite.getNormal());
-            //c.setHeadEnd(arrow);
-            // Add to the view and model
             return c;
         }
     }

@@ -2,7 +2,10 @@ BUGS:
 Fix layering of nodes and edges
 The TreePane should have the first level expanded by default.
 Layout breaks when toolbar gets dragged to the bottom.
-Delete key.
+Node deletion is broken when an edge is connected.
+entities should refer to icons, not to the entities themselves.
+exportMoML: icons location is not set (probably because of above).
+exportMoML: toplevel should be model
 
 TODO:
 Snap to Grid.

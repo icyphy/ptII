@@ -146,43 +146,12 @@ public class EntityController extends LocatableNodeController {
         return nf;
     }
 
-    /** Return true if the node is associated with a desired location.
-     */
-    public boolean hasLocation(Node n) {
-        NamedObj object = (NamedObj)n.getSemanticObject();
-        Icon icon = (Icon) object.getAttribute("_icon");
-        return (icon != null) && (icon.getLocation() != null);
-    }
-
-    /** Return the desired location of this node. 
-     */
-    public int[] getLocation(Node n) {
-        NamedObj object = (NamedObj)n.getSemanticObject();
-        Icon icon = (Icon) object.getAttribute("_icon");
-        if(icon != null) {
-            return icon.getLocation();         
-        } else throw new GraphException("The node " + n + 
-                "does not have a desired location");
-    }
-
     /** Get the controller for the ports of this entity.
      */
     public NodeController getPortController() {
 	return _portController;
     }
 
-    /** Set the desired location of this node.  Throw an exception if the
-     *  node can not be given a desired location.
-     */
-    public void setLocation(Node n, int[] location) {
-        NamedObj object = (NamedObj)n.getSemanticObject();
-        Icon icon = (Icon) object.getAttribute("_icon");
-        if(icon != null) {
-            icon.setLocation(location);
-        } else throw new GraphException("The node " + n + 
-                "can not have a desired location");
-    }
-    
     /** Set the controller for the ports of this entity.
      */
     public void setPortController(NodeController controller) {
@@ -212,7 +181,8 @@ public class EntityController extends LocatableNodeController {
     public class EntityContextMenuFactory extends MenuFactory {
 	public JPopupMenu create(Figure source) {
 	    Node sourcenode = (Node) source.getUserObject();
-	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
+	    Icon icon = (Icon)sourcenode.getSemanticObject();
+	    NamedObj object = (NamedObj) icon.getContainer();
 	    return new Menu(object);
 	}    
 	
@@ -226,14 +196,7 @@ public class EntityController extends LocatableNodeController {
     public class EntityRenderer implements NodeRenderer {
 	public Figure render(Node n) {
 	    Figure figure;
-	    NamedObj object = (NamedObj)n.getSemanticObject();
-	    BasicCompositeNode node = (BasicCompositeNode) n;
-	    Entity entity = (Entity)object;
-	    EditorIcon icon = (EditorIcon)entity.getAttribute("_icon");
-            //           Figure background = new BasicRectangle(-10, -10, 20, 20, Color.red);
-            //icon.createFigure();
-            // Figure background = icon.createFigure(); 
-	    //figure = new CompositeFigure(background);	   
+	    EditorIcon icon = (EditorIcon)n.getSemanticObject();
 	    return icon.createFigure();
 	}
     }

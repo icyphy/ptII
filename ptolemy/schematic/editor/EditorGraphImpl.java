@@ -38,8 +38,9 @@ public class EditorGraphImpl extends BasicGraphImpl {
 		ex.printStackTrace();
 		throw new GraphException(ex.getMessage());
 	    }    
-	} else if(object instanceof ComponentEntity) {
-	    ComponentEntity entity = (ComponentEntity)object;
+	} else if(object instanceof Icon) {
+	    Icon icon = (Icon)object;
+	    ComponentEntity entity = (ComponentEntity)icon.getContainer();
 	    try {
 		entity.setContainer(container);
 	    } catch (Exception ex) {
@@ -77,7 +78,8 @@ public class EditorGraphImpl extends BasicGraphImpl {
 		throw new GraphException(ex.getMessage());
 	    }    
 	} else if(object instanceof ComponentEntity) {
-	    ComponentEntity entity = (ComponentEntity)object;
+	    Icon icon = (Icon)object;
+	    ComponentEntity entity = (ComponentEntity)icon.getContainer();
 	    try {
                 Enumeration ports = entity.getPorts();
                 while(ports.hasMoreElements()) {
@@ -113,8 +115,12 @@ public class EditorGraphImpl extends BasicGraphImpl {
     public CompositeNode createCompositeNode(Object semanticObject) {
 	BasicCompositeNode n = 
 	    (BasicCompositeNode) super.createCompositeNode(semanticObject);
-	if(semanticObject instanceof Entity) {
-	    Entity entity = (Entity) semanticObject;
+	if(semanticObject instanceof Icon) {
+	    Icon icon = (Icon) semanticObject;
+	    Entity entity = (Entity) icon.getContainer();
+	    if(entity == null)
+		throw new GraphException("Icon must be contained " + 
+					 "in an entity");
 	    Enumeration ports = entity.getPorts();
 	    while(ports.hasMoreElements()) {
 		Port port = (Port) ports.nextElement();
@@ -137,7 +143,8 @@ public class EditorGraphImpl extends BasicGraphImpl {
 	    Enumeration entities = toplevel.getEntities();
 	    while(entities.hasMoreElements()) {
 		Entity entity = (Entity)entities.nextElement();
-		addNode(createCompositeNode(entity), g);
+		Icon icon = (Icon)entity.getAttribute("_icon");
+		addNode(createCompositeNode(icon), g);
 	    }
 	    
 	    Enumeration relations = toplevel.getRelations();
