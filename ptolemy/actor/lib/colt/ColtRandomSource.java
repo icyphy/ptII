@@ -94,9 +94,25 @@ public abstract class ColtRandomSource extends RandomSource
     ///////////////////////////////////////////////////////////////////
     ////                         ports and parameter               ////
 
-    /** The desired low-level RNG class name.
+    /** The desired low-level random number generator (RNG) class name.
      *  The {@link #_randomNumberGeneratorClassNames} array contains
-     *  available class names.   
+     *  available class names.   The value of this parameter is shared
+     *  between all Colt random source actors.  The initial default
+     *  is the String "DRand".
+     *  <p>Below are possible values for this parameter and links
+     *  to pages that define the meaning of the parameter.
+     *  <menu>
+     *  <li><code>"DRand"</code>
+     *  (<a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/engine/DRand.html#in_browser">Definition</a>)
+     *  <li><code>"MersenneTwister (MT19937)"</code>
+     *  (<a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/engine/MersenneTwister.html#in_browser">Definition</a>)
+     *  <li><code>"Ranecu""</code>
+     *  (<a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/edu/cornell/lassp/houle/RngPack/Ranecu.html#in_browser">Definition</a>)
+     *  <li><code>"Ranlux"</code>
+     *  (<a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/engine/Ranlux.html#in_browser">Definition</a>)
+     *  <li><code>"Ranmar"</code>
+     *  (<a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/engine/Ranmar.html#in_browser">Definition</a>)
+     *  </menu>
      */
     public Parameter randomNumberGeneratorClass = null;
 
