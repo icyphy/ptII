@@ -41,12 +41,12 @@ import ptolemy.data.type.*;
 //////////////////////////////////////////////////////////////////////////
 //// IntToken
 /**
- * A token that contains an integer number.
- *
- * @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer
- * @version $Id$
- * @since Ptolemy II 0.2
- */
+A token that contains an integer number.
+
+@author Neil Smyth, Yuhong Xiong, Steve Neuendorffer
+@version $Id$
+@since Ptolemy II 0.2
+*/
 public class IntToken extends ScalarToken {
 
     /** Construct a token with integer 0.
@@ -112,8 +112,8 @@ public class IntToken extends ScalarToken {
 
         compare = TypeLattice.compare(BaseType.BYTE, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-            ByteToken bytetoken = ByteToken.convert(token);
-            return new IntToken(bytetoken.intValue());
+            ByteToken byteToken = ByteToken.convert(token);
+            return new IntToken(byteToken.intValue());
         }
 
          // The argument is below ByteToken in the type hierarchy,

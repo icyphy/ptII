@@ -84,7 +84,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
         Object[] labelObjects = token.labelSet().toArray();
         String[] labels = new String[labelObjects.length];
         Token[] values = new Token[labelObjects.length];
-        for (int i=0; i<labelObjects.length; i++) {
+        for (int i = 0; i < labelObjects.length; i++) {
             labels[i] = (String)labelObjects[i];
             values[i] = token.get(labels[i]);
         }

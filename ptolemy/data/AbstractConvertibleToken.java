@@ -93,7 +93,8 @@ public abstract class AbstractConvertibleToken extends Token
             Token result = _add(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken)
+            AbstractConvertibleToken convertedArgument =
+                (AbstractConvertibleToken)
                 getType().convert(rightArgument);
              try {
                 Token result = _add(convertedArgument);
@@ -136,7 +137,8 @@ public abstract class AbstractConvertibleToken extends Token
         // We would normally expect this to be LOWER, since this will almost
         // always be called by subtract, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken)
+            AbstractConvertibleToken convertedArgument =
+                (AbstractConvertibleToken)
                 getType().convert(leftArgument);
             try {
                 Token result = convertedArgument._add(this);
@@ -150,7 +152,8 @@ public abstract class AbstractConvertibleToken extends Token
                             this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result = ((AbstractConvertibleToken)leftArgument)._add(this);
+            Token result =
+                ((AbstractConvertibleToken)leftArgument)._add(this);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
             Token result = leftArgument.add(this);
@@ -184,7 +187,8 @@ public abstract class AbstractConvertibleToken extends Token
             Token result = _divide(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken)
+            AbstractConvertibleToken convertedArgument =
+                (AbstractConvertibleToken)
                 getType().convert(rightArgument);
 
             try {
@@ -228,7 +232,8 @@ public abstract class AbstractConvertibleToken extends Token
         // We would normally expect this to be LOWER, since this will almost
         // always be called by subtract, so put that case first.
         if (typeInfo == CPO.LOWER) {
-           AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken)
+           AbstractConvertibleToken convertedArgument =
+               (AbstractConvertibleToken)
                 getType().convert(leftArgument);
             try {
                 Token result = convertedArgument._divide(this);
@@ -242,7 +247,8 @@ public abstract class AbstractConvertibleToken extends Token
                             this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result = ((AbstractConvertibleToken)leftArgument)._divide(this);
+            Token result =
+                ((AbstractConvertibleToken)leftArgument)._divide(this);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
             Token result = leftArgument.divide(this);
@@ -287,7 +293,8 @@ public abstract class AbstractConvertibleToken extends Token
         if(typeInfo == CPO.SAME) {
             return _isCloseTo(rightArgument, epsilon);
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken)
+            AbstractConvertibleToken convertedArgument =
+                (AbstractConvertibleToken)
                 getType().convert(rightArgument);
              try {
                 BooleanToken result = _isCloseTo(convertedArgument, epsilon);
@@ -329,7 +336,8 @@ public abstract class AbstractConvertibleToken extends Token
         if(typeInfo == CPO.SAME) {
             return _isEqualTo(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken)
+            AbstractConvertibleToken convertedArgument =
+                (AbstractConvertibleToken)
                 getType().convert(rightArgument);
              try {
                 BooleanToken result = _isEqualTo(convertedArgument);
@@ -372,7 +380,8 @@ public abstract class AbstractConvertibleToken extends Token
             Token result = _modulo(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken)
+            AbstractConvertibleToken convertedArgument =
+                (AbstractConvertibleToken)
                 getType().convert(rightArgument);
              try {
                 Token result = _modulo(convertedArgument);
@@ -416,7 +425,8 @@ public abstract class AbstractConvertibleToken extends Token
         // We would normally expect this to be LOWER, since this will almost
         // always be called by modulo, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken)
+            AbstractConvertibleToken convertedArgument =
+                (AbstractConvertibleToken)
                 getType().convert(leftArgument);
             try {
                 Token result = convertedArgument._modulo(this);
@@ -430,7 +440,8 @@ public abstract class AbstractConvertibleToken extends Token
                             this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result = ((AbstractConvertibleToken)leftArgument)._modulo(this);
+            Token result =
+                ((AbstractConvertibleToken)leftArgument)._modulo(this);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
             Token result = leftArgument.modulo(this);
@@ -464,7 +475,8 @@ public abstract class AbstractConvertibleToken extends Token
             Token result = _multiply(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken)
+            AbstractConvertibleToken convertedArgument =
+                (AbstractConvertibleToken)
                 getType().convert(rightArgument);
              try {
                 Token result = _multiply(convertedArgument);
@@ -508,7 +520,8 @@ public abstract class AbstractConvertibleToken extends Token
         // We would normally expect this to be LOWER, since this will almost
         // always be called by multiply, so put that case first.
         if (typeInfo == CPO.LOWER) {
-            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken)
+            AbstractConvertibleToken convertedArgument =
+                (AbstractConvertibleToken)
                 getType().convert(leftArgument);
             try {
                 Token result = convertedArgument._multiply(this);
@@ -522,7 +535,8 @@ public abstract class AbstractConvertibleToken extends Token
                             this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result = ((AbstractConvertibleToken)leftArgument)._multiply(this);
+            Token result =
+                ((AbstractConvertibleToken)leftArgument)._multiply(this);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
             Token result = leftArgument.multiply(this);
@@ -543,7 +557,7 @@ public abstract class AbstractConvertibleToken extends Token
      *  type.  Subclasses should not override this method,
      *  but override the protected _subtract() method to ensure that type
      *  conversion is performed consistently.
-     *  @param rightArgument The token to dubtract from this token.
+     *  @param rightArgument The token to subtract from this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
      *  this token are of incomparable types, or the operation does
@@ -556,7 +570,8 @@ public abstract class AbstractConvertibleToken extends Token
             Token result = _subtract(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
-            AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken)
+            AbstractConvertibleToken convertedArgument =
+                (AbstractConvertibleToken)
                 getType().convert(rightArgument);
              try {
                 Token result = _subtract(convertedArgument);
@@ -613,7 +628,8 @@ public abstract class AbstractConvertibleToken extends Token
                             this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result = ((AbstractConvertibleToken)leftArgument)._subtract(this);
+            Token result =
+                ((AbstractConvertibleToken)leftArgument)._subtract(this);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
             Token result = leftArgument.subtract(this);

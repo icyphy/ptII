@@ -322,8 +322,8 @@ public class FixToken extends ScalarToken {
             throws IllegalActionException {
         FixToken convertedArgument = (FixToken)rightArgument;
         return BooleanToken.getInstance(
-                 _value.doubleValue() < convertedArgument.fixValue().doubleValue());
-
+                 _value.doubleValue() <
+                 convertedArgument.fixValue().doubleValue());
     }
 
     /** Return a new token whose value is the value of this token

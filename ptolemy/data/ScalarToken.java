@@ -446,7 +446,8 @@ public abstract class ScalarToken extends Token {
                 // better error message that has the types of the
                 // arguments that were passed in.
                throw new IllegalActionException(null, ex,
-                        notSupportedMessage("isGreaterThan", this, rightArgument));
+                        notSupportedMessage("isGreaterThan", this,
+                                rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
              return rightArgument.isLessThan(this);
@@ -834,13 +835,13 @@ public abstract class ScalarToken extends Token {
         String negativeUnits = "";
         boolean justOnePositive = true;
         boolean justOneNegative = true;
-        for (int i=0; i<_unitCategoryExponents.length; i++) {
+        for (int i = 0; i<_unitCategoryExponents.length; i++) {
             int exponent = _unitCategoryExponents[i];
             if (exponent != 0) {
                 String baseString = null;
                 baseString = UnitSystem.getBaseUnitName(i);
                 if (exponent > 0) {
-                    for (int j=0; j<exponent; j++) {
+                    for (int j = 0; j < exponent; j++) {
                         if (positiveUnits.equals("")) {
                             positiveUnits = baseString;
                         } else {
@@ -849,7 +850,7 @@ public abstract class ScalarToken extends Token {
                         }
                     }
                 } else {
-                    for (int j=0; j<-exponent; j++) {
+                    for (int j = 0; j < -exponent; j++) {
                         if (negativeUnits.equals("")) {
                             negativeUnits = baseString;
                         } else {
@@ -960,19 +961,19 @@ public abstract class ScalarToken extends Token {
             int argumentLength = scalarToken._unitCategoryExponents.length;
             int shorterLength = (thisLength <= argumentLength) ? thisLength :
                 argumentLength;
-            for (int i=0; i<shorterLength; i++) {
+            for (int i = 0; i < shorterLength; i++) {
                 if (_unitCategoryExponents[i] !=
                         scalarToken._unitCategoryExponents[i]) {
                     return false;
                 }
             }
 
-            for (int i=shorterLength; i<thisLength; i++) {
+            for (int i = shorterLength; i < thisLength; i++) {
                 if (_unitCategoryExponents[i] != 0) {
                     return false;
                 }
             }
-            for (int i=shorterLength; i<argumentLength; i++) {
+            for (int i = shorterLength; i < argumentLength; i++) {
                 if (scalarToken._unitCategoryExponents[i] != 0) {
                     return false;
                 }
@@ -1098,7 +1099,7 @@ public abstract class ScalarToken extends Token {
         if ( !token._isUnitless()) {
             int length = token._unitCategoryExponents.length;
             negation = new int[length];
-            for (int i=0; i<length; i++) {
+            for (int i = 0; i < length; i++) {
                 negation[i] = -token._unitCategoryExponents[i];
             }
         }
@@ -1162,13 +1163,13 @@ public abstract class ScalarToken extends Token {
         if (thisLength <= argumentLength) {
             result = new int[argumentLength];
             System.arraycopy(exponents, 0, result, 0, argumentLength);
-            for (int i=0; i<thisLength; i++) {
+            for (int i = 0; i < thisLength; i++) {
                 result[i] += _unitCategoryExponents[i];
             }
         } else {
             result = new int[thisLength];
             System.arraycopy(_unitCategoryExponents, 0, result, 0, thisLength);
-            for (int i=0; i<argumentLength; i++) {
+            for (int i = 0; i < argumentLength; i++) {
                 result[i] += exponents[i];
             }
         }
@@ -1392,7 +1393,7 @@ public abstract class ScalarToken extends Token {
     // Return true if this token does not have a unit.
     private boolean _isUnitless(int[] exponents) {
         if (exponents != null) {
-            for (int i=0; i<exponents.length; i++) {
+            for (int i = 0; i < exponents.length; i++) {
                 if (exponents[i] != 0) {
                     return false;
                 }

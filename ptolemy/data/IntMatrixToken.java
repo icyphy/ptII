@@ -195,7 +195,7 @@ public class IntMatrixToken extends MatrixToken {
     public static Token convert(ScalarToken token, int size)
             throws IllegalActionException {
 
-        // Check to make sure that the token is convertable to INT.
+        // Check to make sure that the token is convertible to INT.
         int compare = TypeLattice.compare(BaseType.INT, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntToken tem = IntToken.convert(token);

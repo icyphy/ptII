@@ -47,15 +47,19 @@ in order to allow consistent implementation of Token operations that
 operate on tokens that are defined in different classes.  In particular,
 this requires the duplicate operation and operationReverse methods.
 
-<p> This base class is intended to make it easy to implement tokens that
-only require operations on the same data type.  In these cases, the operations
-and their reverses perform exactly the same operation.  This class provides
-a base class implementation of the operation methods which checks to make
-sure that the arguments are actually both implemented in the same class,
-and then defers to a protected _operation method.  These protected methods
-should be overridden in derived classes to provide type-specific operations.
+<p> This base class is intended to make it easy to implement tokens
+that only require operations on the same data type.  In these cases,
+the operations and their reverses perform exactly the same operation.
+This class provides a base class implementation of the operation
+methods which checks to make sure that the arguments are actually both
+implemented in the same class, and then defers to a protected
+_operation method.  These protected methods should be overridden in
+derived classes to provide type-specific operations.
 
-<p> Note that the tokens operated on must only be implemented in the same class, which does not require that they have the same Ptolemy data type.  This commonly happens when StructuredTypes are used, as with record and array tokens.
+<p> Note that the tokens operated on must only be implemented in the
+same class, which does not require that they have the same Ptolemy
+data type.  This commonly happens when StructuredTypes are used, as
+with record and array tokens.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -107,7 +111,8 @@ public abstract class AbstractNotConvertibleToken extends Token
                             this, leftArgument));
         }
 
-        Token result = ((AbstractNotConvertibleToken)leftArgument)._add(this);
+        Token result =
+            ((AbstractNotConvertibleToken)leftArgument)._add(this);
         return result;
     }
 
@@ -153,7 +158,8 @@ public abstract class AbstractNotConvertibleToken extends Token
                             this, leftArgument));
         }
 
-        Token result = ((AbstractNotConvertibleToken)leftArgument)._divide(this);
+        Token result =
+            ((AbstractNotConvertibleToken)leftArgument)._divide(this);
         return result;
     }
 
@@ -249,7 +255,8 @@ public abstract class AbstractNotConvertibleToken extends Token
                             this, leftArgument));
         }
 
-        Token result = ((AbstractNotConvertibleToken)leftArgument)._modulo(this);
+        Token result =
+            ((AbstractNotConvertibleToken)leftArgument)._modulo(this);
         return result;
     }
 
@@ -295,7 +302,8 @@ public abstract class AbstractNotConvertibleToken extends Token
                             this, leftArgument));
         }
 
-        Token result = ((AbstractNotConvertibleToken)leftArgument)._multiply(this);
+        Token result =
+            ((AbstractNotConvertibleToken)leftArgument)._multiply(this);
         return result;
     }
 
@@ -304,7 +312,7 @@ public abstract class AbstractNotConvertibleToken extends Token
      *  ensures that the arguments are implemented in the same class,
      *  and then defers to the _multiply() method.  Subclasses should
      *  override that method to perform type-specific operation.
-     *  @param rightArgument The token to dubtract from this token.
+     *  @param rightArgument The token to subtract from this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
      *  this token are of incomparable types, or the operation does
@@ -341,7 +349,8 @@ public abstract class AbstractNotConvertibleToken extends Token
                             this, leftArgument));
         }
 
-        Token result = ((AbstractNotConvertibleToken)leftArgument)._subtract(this);
+        Token result =
+            ((AbstractNotConvertibleToken)leftArgument)._subtract(this);
         return result;
     }
 

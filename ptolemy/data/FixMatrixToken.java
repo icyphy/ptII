@@ -425,10 +425,13 @@ public class FixMatrixToken extends MatrixToken {
         FixPoint[][] result = fixMatrix();
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
-                //   System.out.println("left = " + result[i][j] + ", " + result[i][j].getPrecision());
-                //System.out.println("right = " + scalar + ", " + scalar.getPrecision());
+                //   System.out.println("left = " + result[i][j] + ", "
+                //       + result[i][j].getPrecision());
+                //   System.out.println("right = " + scalar + ", "
+                //       + scalar.getPrecision());
                 result[i][j] = result[i][j].multiply(scalar);
-                // System.out.println("result = " + result[i][j] + ", " + result[i][j].getPrecision());
+                //   System.out.println("result = " + result[i][j] + ", "
+                /        + result[i][j].getPrecision());
             }
         }
         return new FixMatrixToken(result);

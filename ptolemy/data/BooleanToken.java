@@ -234,7 +234,7 @@ public class BooleanToken extends AbstractConvertibleToken {
      *  is <i>true</i>, then this method returns this token.
      *  Otherwise it throws an exception.
      *  @param rightArgument The token to divide this token by
-     *  @return A new Booleanoken containing the result.
+     *  @return A new BooleanToken containing the result.
      *  @exception IllegalActionException If the argument token is
      *  FALSE.
      */

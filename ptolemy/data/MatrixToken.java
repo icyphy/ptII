@@ -577,7 +577,7 @@ public abstract class MatrixToken extends Token {
      *  type.  Subclasses should not override this method,
      *  but override the protected _subtract() method to ensure that type
      *  conversion is performed consistently.
-     *  @param rightArgument The token to dubtract from this token.
+     *  @param rightArgument The token to subtract from this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token
      *   and this token are of incomparable types, or the operation

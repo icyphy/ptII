@@ -38,12 +38,12 @@ import ptolemy.data.type.*;
 //////////////////////////////////////////////////////////////////////////
 //// LongToken
 /**
- * A token that contains an long integer.
- *
- * @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer
- * @version $Id$
- * @since Ptolemy II 0.2
- */
+A token that contains an long integer.
+
+@author Neil Smyth, Yuhong Xiong, Steve Neuendorffer
+@version $Id$
+@since Ptolemy II 0.2
+*/
 public class LongToken extends ScalarToken {
 
     /** Construct a token with long integer 0.
@@ -101,8 +101,8 @@ public class LongToken extends ScalarToken {
 
         compare = TypeLattice.compare(BaseType.INT, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-            IntToken inttoken = IntToken.convert(token);
-            return new LongToken(inttoken.longValue());
+            IntToken intToken = IntToken.convert(token);
+            return new LongToken(intToken.longValue());
         }
 
         throw new IllegalActionException(
