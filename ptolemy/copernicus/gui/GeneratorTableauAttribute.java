@@ -81,6 +81,12 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 	sootDeep = new StringAttribute(choiceStyle, "sootDeep");
 	sootDeep.setExpression("deep");
 
+	// I'm not sure why this is necessary, but if we do not set
+	// the expression of the codeGenerator attribute, then
+	// when we start up the code generator, the combobox says
+	// "deep", but codeGenerator.getExpression() returns "".
+	codeGenerator.setExpression(sootDeep.getExpression());
+
 	sootApplet = new StringAttribute(choiceStyle, "sootApplet");
 	sootApplet.setExpression("applet");
 
