@@ -414,6 +414,17 @@ case "`uname -s`" in
 esac
 AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 
+
+#--------------------------------------------------------------------
+#	Get ready to accumulate information for Eclipse
+#--------------------------------------------------------------------
+
+# These directories are always excluded from Eclipse
+ECLIPSE_EXCLUDING_SRC=""
+
+# Jar files to include in the Eclipse library
+ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
+
 #####################################################################
 #####################################################################
 #       Below here we look for various packages.
@@ -444,7 +455,7 @@ if test ! -d "$PTII/ptolemy/copernicus/c"; then
 	so we need not find the CaffeineMark Kit.])
 else
     AC_MSG_CHECKING([for CaffeineMarkEmbeddedApp.class])
-    AC_ARG_WITH(jhdl_jar, [  --with-cmkit=DIR       use CaffeineMark from DIR,
+    AC_ARG_WITH(cmkit, [  --with-cmkit=DIR       use CaffeineMark from DIR,
                           defaults to \$PTII/vendors/cm],
 	CMKIT_DIR=$withval,
 	CMKIT_DIR=$PTII/vendors/cm)
@@ -501,7 +512,7 @@ else
     which is required by Cal, the actor language.
     You can download saxon from http://saxon.sourceforge.net/
     If it is not present, you will not be able to use the Cal actor
-    or run the demosntrations  in ptolemy/cal])
+    or run the demonstrations  in ptolemy/cal])
 	   # Note that we don't substitute in the ${PTII} here
 	   CAL_DIR='${PTII}/lib/'
         fi
@@ -509,11 +520,70 @@ else
         AC_MSG_WARN([Failed to find PTII/lib/ptCal.jar
     ptCal.jar should be present in your distribution.  
     If it is not present, you will not be able to use the Cal actor
-    or run the demosntrations  in ptolemy/cal])
+    or run the demonstrations  in ptolemy/cal])
 	# Note that we don't substitute in the ${PTII} here
 	CAL_DIR='${PTII}/lib/'
     fi
 fi
+
+if test -z "$PTCAL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/cal"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$CAL_DIR/ptCal.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$CAL_DIR/saxon7.jar\"/> "
+fi 
+
+#--------------------------------------------------------------------
+#       "CHIC is a modular verifier for behavioral compatibility checking
+#	 of software and hardware components"
+#
+#	For more information, 
+#       see http://www-cad.eecs.berkeley.edu/~tah/chic/
+#--------------------------------------------------------------------
+
+# PTCHIC_DIR is set to chic and used in
+# $PTII/ptolemy/makefile if Chic was found.
+PTCHIC_DIR=
+
+# Directory that contains the chic jar file
+CHIC_DIR='${PTII}/lib'
+
+# We only need to look for if $PTII/ptolemy/chic exists
+CHIC_USER_DIR="$PTII/ptolemy/chic"
+if test ! -d "$CHIC_USER_DIR"; then
+    AC_MSG_RESULT([$CHIC_USER_DIR is not present,
+    so we need not find Chic, the modular verifier for
+    behavioral compatibility checking of software and hardware components.]) 
+else
+    AC_MSG_CHECKING([for Chic, the model checker])
+    AC_ARG_WITH(CHIC_DIR, [  --with-chic=DIR       use chic.jar from DIR,
+                          defaults to \$PTII/lib],
+	CHIC_DIR=$withval,
+	CHIC_DIR=$PTII/lib)
+
+    if test -f "$CHIC_DIR/chic.jar"; then
+	AC_MSG_RESULT([$CHIC_DIR])
+	# We found chic
+	PTCHIC_DIR=chic
+    else  
+        AC_MSG_WARN([Failed to find PTII/lib/chic.jar
+    chic.jar should be present in your distribution.  
+    Chic is a modular verifier for behavioral compatibility checking
+    of software and hardware components.
+    If it is not present, you will not be able to use the Chic facilities
+    or run the demonstrations in ptolemy/chic.])
+	# Note that we don't substitute in the ${PTII} here
+	CHIC_DIR='${PTII}/lib/'
+    fi
+fi
+
+if test -z "$PTCHIC_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/chic"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	<classpathentry kind=\"lib\" path=\"lib/chic.jar\"/> "
+fi 
 
 #--------------------------------------------------------------------
 #       commapi is the Java serial interface, see
@@ -530,7 +600,7 @@ COMMAPI_PRESENT=no
 #
 PTLEGO_DIR=
 # PTCOMM_DIR is set to comm and used in 
-# $PTII/ptolemy/actor/lib/makefile if the Java Communications API was found
+# $PTII/ptolemy/actor/lib/io/makefile if the Java Communications API was found
 #
 PTCOMM_DIR=
 if test ! -d "$COMMAPI_USER_DIR"; then
@@ -579,6 +649,13 @@ else
     and placed  in \$PTII/vendors/sun/commapi])
     fi
 fi
+
+if test -z "$PTCOMM_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/io/comm/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$COMMAPI_DIR/comm.jar\"/>"
+fi 
 
 #--------------------------------------------------------------------
 #       Garbage Collector (GC)
@@ -685,7 +762,7 @@ if test ! -d "$JAI_USER_DIR"; then
     AC_MSG_RESULT([$JAI_USER_DIR is not present,
 	so we need not find JAI - The Java Advanced Imaging API.])
 else
-    AC_MSG_CHECKING([for Java Advanced Imaging API])
+    AC_MSG_CHECKING([for Java Advanced Imaging (JAI) API])
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
     startdir=`pwd`
@@ -703,6 +780,10 @@ else
     http://java.sun.com/products/java-media/jai/])	
     fi
     cd "$startdir"
+fi
+
+if test -z "$PTJAI_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jai/"
 fi
 
 #--------------------------------------------------------------------
@@ -756,6 +837,13 @@ else
     fi
 fi
 
+if test -z "$PTJHDL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/copernicus/jhdl/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JHDL_JAR\"/>"
+fi 
+
 #--------------------------------------------------------------------
 #       JMF is the Java Media Framework
 #	For more information, 
@@ -773,7 +861,7 @@ if test ! -d "$JMF_USER_DIR"; then
     AC_MSG_RESULT([$JMF_USER_DIR is not present,
 	so we need not find the JMF - The Java Media Framework.])
 else
-    AC_MSG_CHECKING([for Java Media Framework])
+    AC_MSG_CHECKING([for Java Media Framework (JMF)])
     # We need to run javac in the config directory so that javac
     # from jdk1.1.6 under NT and cygwin works properly
     startdir=`pwd`
@@ -782,6 +870,32 @@ else
     if "$JAVAC" JMFTest.java ; then
         AC_MSG_RESULT(ok)
         PTJMF_DIR=jmf
+	# Usually, JMF gets installed in C:/Program Files/JMF2.1.1
+	# and CLASSPATH gets that C:/Program Files/JMF2.1.1/lib/jmf.jar
+	# and C:/Program Files/JMF2.1.1/lib/sound.jar appended to it
+	# We need to figure out where it was found so that Eclipse
+	# can find it
+	AC_MSG_CHECKING([for the JMF directory])
+	if "$JAVAC" FindClass.java ; then
+	    # Usually jmf.jar will be in the CLASSPATH
+	    JMF_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass javax.media.CaptureDeviceInfo`
+	    if test -f "$JMF_JAR" ; then
+	       JMF_JARS_DIR=`dirname "$JMF_JAR"`
+	       AC_MSG_RESULT($JMF_JARS_DIR)
+	       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	           <classpathentry kind=\"lib\" path=\"$JMF_JAR\"/> \
+	           <classpathentry kind=\"lib\" path=\"$JMF_JARS_DIR/sound.jar\"/>"
+	    else 
+       	       AC_MSG_WARN([Could not find javax.media.CaptureDeviceInfo
+    class: $JMF_JAR
+    This means that Eclipse might not be able to find the JMF files.
+    This is only a problem if you are using Eclipse])
+            fi
+	else
+	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
+    This means that Eclipse might not be able to find the JMF files.
+    This is only a problem if you are using Eclipse])
+        fi
     else
         AC_MSG_WARN(['"$JAVAC" JMFTest.java' failed.
     perhaps the Java Media Framework (JMF) is not installed?
@@ -792,6 +906,11 @@ else
     fi
     cd "$startdir"
 fi
+
+if test -z "$PTJMF_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jmf/"
+fi
+
 
 
 #--------------------------------------------------------------------
@@ -808,13 +927,13 @@ PTJOYSTICK_DIR=
 # Joystick Jar file
 JOYSTICK_JAR='${PTII}/vendors/misc/joystick/Joystick.jar'
 
-# We only need to look for jhdl if $PTII/ptolemy/actor/lib/joystick exists
+# We only need to look for joystick if $PTII/ptolemy/actor/lib/joystick exists
 if test ! -d "$PTII/ptolemy/actor/lib/joystick"; then
     AC_MSG_RESULT([$PTII/ptolemy/actor/lib/joystick is not present,
 	so we need not find the Joystick interface.])
 else
     AC_MSG_CHECKING([for joystick jar file])
-    AC_ARG_WITH(jhdl_jar, [  --with-jhdl-jar=JARFILE       use JOYSTICK from JARFILE,
+    AC_ARG_WITH(joystick_jar, [  --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar],
 	JOYSTICK_JAR=$withval,
 	JOYSTICK_JAR=$PTII/vendors/misc/joystick/Joystick.jar)
@@ -838,11 +957,18 @@ else
     fi
 fi
 
+if test -z "$PTJOYSTICK_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/joystick/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JOYSTICK_JAR\"/>"
+fi 
+
 #--------------------------------------------------------------------
 #       Jython is an implementation of Python in Java
 #	For more information, 
 #       see http://www.jython.org
-#       See if there was a command-line option for where JMF is.
+#       See if there was a command-line option for where Jython is.
 #--------------------------------------------------------------------
 
 # PTJYTHON_DIR is set to python (FIXME: should be jython) and used in
@@ -874,7 +1000,7 @@ else
 
     if test "$PTJYTHON_DIR" = ""; then
         if test -f "$PTII/vendors/jython/jython.jar"; then
-	    JYTHON_DIR="$PTII/vendors/jython/jython.jar"
+	    JYTHON_DIR="$PTII/vendors/jython"
 	    AC_MSG_RESULT([$JYTHON_DIR])
 	    # FIXME: This is ugly, but we set to python instead of jythong
  	    # $PTII/ptolemy/actor/lib/makefile if jython was found
@@ -891,6 +1017,13 @@ else
         fi
     fi
 fi
+
+if test -z "$PTJYTHON_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jython/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JYTHON_DIR/jython.jar\"/>"
+fi 
 
 #--------------------------------------------------------------------
 #	"JXTA technology is a set of open protocols that allow any
@@ -940,6 +1073,19 @@ else
     fi
 fi
 
+if test -z "$PTJYTHON_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|vendors/sun/jxta/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxta.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/cryptix-asn1.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/cryptix32.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/beepcore.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/minimalBC.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxtasecurity.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/log4j.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxtaptls.jar\"/>"
+fi 
 
 #--------------------------------------------------------------------
 #       Lejos is a Java Virtual machine that runs on the Lego Mindstorm
@@ -1124,6 +1270,13 @@ else
     fi
 fi
 
+if test -z "$PTJACL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/gui/ptjacl/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$PTJACL_JAR\"/>"
+fi 
+
 #--------------------------------------------------------------------
 #	Test for javax.media.j3d (Java 3D)
 #--------------------------------------------------------------------
@@ -1151,11 +1304,14 @@ else
 	http://java.sun.com/products/java-media/3D/download.html
 	Java 3D is only needed if you want to build in
 	$JAVA3D_USER_DIR,
-	otherwise the build will proceed fine with out Java 3D.])
+	otherwise the build will proceed fine without Java 3D.])
     fi
     cd "$startdir"
 fi
 
+if test -z "$PTJAVA3D_DIR"; then
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/"
+fi 
 
 #--------------------------------------------------------------------
 #       Jini is connection technology from Sun, see http://www.sun.com/jini/
@@ -1473,7 +1629,7 @@ else
 		    AC_MSG_RESULT('$MATLAB_DIR')
 		else	
 		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MatlabRootDirectory "$MATLAB"' failed.
-    We will not be able to compile the Matlab interface in ptolemy/matlab]);
+    We will not be able to compile the Matlab interface in ptolemy/matlab/]);
 		fi
 	    else
 		AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC MatlabRootDirectory.java' failed.
@@ -1491,7 +1647,7 @@ else
 	    if "$JAVAC" MajorOSName.java ; then
 	        AC_MSG_CHECKING([the which major type of OS we are running under])
 		# Older versions of cygwin might not have env, but 1.1 does
-		if env CLASSPATH="$PTII/config" "$JAVA" confTest > /dev/null; then
+		if env CLASSPATH="$PTII/config" "$JAVA" MajorOSName > /dev/null; then
 		    # Run it again and get the results
 		    MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName`
 		    AC_MSG_RESULT($MAJOR_OS_NAME)
@@ -1538,6 +1694,96 @@ else
     fi	
 fi
 
+if test -z "$PTMATLAB_DIR"; then
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/matlab/"
+fi 
+
+
+#--------------------------------------------------------------------
+#	Test for quicktime
+#--------------------------------------------------------------------
+# PTQUICKTIME_DIR is set to quicktime and used in
+# $PTII/ptolemy/domains/gr/lib/makefile if Quicktime for Java was found
+PTQUICKTIME_DIR=
+
+# Set to the location of the QTJava.zip file
+QTJAVA_ZIP=
+
+# We only need to look for Java3D if the gr domain is present
+QUICKTIME_USER_DIR="$PTII/ptolemy/domains/gr/lib/quicktime"
+
+if test ! -d "$QUICKTIME_USER_DIR"; then
+    AC_MSG_RESULT([$QUICKTIME_USER_DIR is not present,
+	so we need not find Quicktime for Java.])
+else
+    AC_MSG_CHECKING([for Quicktime for Java])
+    # We need to run javac in the config directory so that javac from jdk1.1.6
+    # under NT and cygwin works properly
+    startdir=`pwd`
+    cd "$srcdir/config"
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" quickTimeTest.java ; then
+       AC_MSG_RESULT(ok)
+       PTQUICKTIME_DIR=quicktime
+    else
+       if test "${MAJOR_OS_NAME:-none}" = "none"; then
+	    if "$JAVAC" MajorOSName.java ; then
+	        AC_MSG_CHECKING([the which major type of OS we are running under])
+		# Older versions of cygwin might not have env, but 1.1 does
+		if env CLASSPATH="$PTII/config" "$JAVA" MajorOSName > /dev/null; then
+		    # Run it again and get the results
+		    MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName`
+		    AC_MSG_RESULT($MAJOR_OS_NAME)
+		else   
+		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MajorOSName' failed.
+    This means we cannot look for the Quicktime zip file in the likely places]);		    
+		fi
+	    fi
+       fi	    
+       if test "${MAJOR_OS_NAME:-none}" = "Windows"; then
+	   SAFE_PROGRAMFILES=`echo $PROGRAMFILES | sed -e 's@\\\@/@g'`
+
+           AC_MSG_WARN(['"$JAVAC" quickTime3dTest.java' failed, looking for
+    QTJava.zip in $SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip'])
+	  # Under Windows try to find the jar file
+	  #c:/Program Files/Java/j2re1.4.1_02/lib/ext/QTJava.zip
+	  QTJAVA_ZIP=`cd "$SAFE_PROGRAMFILES"; ls -tr java/*/lib/ext/QTJava.zip | head -1`
+	  if test -z "$QTJAVA_ZIP" ; then
+    	     AC_MSG_WARN(['Did not find "$SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip"'])
+	  else    
+	     QTJAVA_ZIP="$SAFE_PROGRAMFILES/$QTJAVA_ZIP"
+	     AC_MSG_RESULT([ok, found '$QTJAVA_ZIP'])
+	     AC_MSG_CHECKING([again for Quicktime for Java])
+	     if "$JAVAC" -classpath "$QTJAVA_ZIP" quickTimeTest.java ; then
+	         AC_MSG_RESULT(ok)
+	         PTQUICKTIME_DIR=quicktime
+	     fi
+	  fi    
+       fi
+       if test -z "$PTQUICKTIME_DIR" ; then
+           AC_MSG_WARN(['"$JAVAC" quickTime3dTest.java' failed.
+    You may need to install QuickTime with the "QuickTime For
+    Java" option from http://developer.apple.com/quicktime/qtjava/
+    During installation, choose "custom" and then "select all".
+    This drops QTJava.zip into the lib/ext of all your installed JREs.
+    Then you have to copy this zip file to the jre/lib/ext directory
+    of your SDK.
+    QuickTime for Java is only needed if you want to build in
+    $QUICKTIME_USER_DIR,
+    otherwise the build will proceed fine without Quicktime for Java.])
+        fi
+    fi
+    cd "$startdir"
+fi
+
+if test -z "$PTQUICKTIME_DIR"; then
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/quicktime"
+else
+    if test ! -z "$QTJAVA_ZIP"; then
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        <classpathentry kind=\"lib\" path=\"$QTJAVA_ZIP\"/>"
+    fi
+fi 
 
 #--------------------------------------------------------------------
 #       Soot is a Java Optimization Framework, see
@@ -1632,6 +1878,14 @@ else
     cd "$startdir"
 fi
 
+if test -z "$PTCOPERNICUS_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/copernicus/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/sootclasses.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/jasminclasses.jar\"/>"
+    # What about JAVA_SYSTEM_JAR?
+fi 
 
 #--------------------------------------------------------------------
 #       TINI is the JDK for Dallas Tini board, see
@@ -1700,7 +1954,7 @@ if test ! -d "$PTII/ptolemy/domains/giotto"; then
     AC_MSG_RESULT([$PTII/ptolemy/domains/giotto is not present,
 	so we need not find the Giotto SDK.])
     GIOTTO_DIR='${PTII}/vendors/giotto'
-    GIOTTO_CLASSES='${GIOTTO_DIR}/giotto.jar'
+    GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
 else
     AC_MSG_CHECKING([for giotto directory])
     AC_ARG_WITH(tini, [  --with-giotto=DIR       use GiottoSDF from DIR,
@@ -1710,24 +1964,29 @@ else
 
     if test -d "$GIOTTO_DIR"; then
     	AC_MSG_RESULT([$GIOTTO_DIR])
-      	AC_MSG_CHECKING([for \$GIOTTO_DIR/giotto.jar])
-	if test -f "$GIOTTO_DIR/giotto.jar"; then
-	   AC_MSG_RESULT([$GIOTTO_DIR/giotto.jar])
-	   GIOTTO_CLASSES='${GIOTTO_DIR}/giotto.jar'
+      	AC_MSG_CHECKING([for \$GIOTTO_DIR/gdk.jar])
+	if test -f "$GIOTTO_DIR/gdk.jar"; then
+	   AC_MSG_RESULT([$GIOTTO_DIR/gdk.jar])
+	   GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
 	else
 	   GIOTTO_CLASSES=no
         fi
 	AC_MSG_RESULT([$GIOTTO_CLASSES])
     fi
     if test "$GIOTTO_CLASSES" = "no"; then
-        AC_MSG_WARN([Failed to find giotto/giotto.jar
+        AC_MSG_WARN([Failed to find giotto/gdk.jar
     perhaps Giotto is not installed?
     You need not download Giotto unless you plan on generating code for 
     Giotto models.
-    The Giotto SDK can be downloaded from http://www.eecs.berkeley.edu/~fresco/giotto])
+    The Giotto SDK can be
+    downloaded from http://www-cad.eecs.berkeley.edu/~giotto/
+    Copy gdk.jar to $PTII/vendors/giotto, for example:
+        mkdir -p $PTII/vendors/giotto
+        cp C:/Program\ Files/Giotto*/gdk.jar $PTII/vendors/giotto/
+    ])
 	# Note that we don't substitute in the ${PTII} or $(GIOTTO_DIR) here
 	GIOTTO_DIR='${PTII}/vendors/giotto'
-   	GIOTTO_CLASSES='${GIOTTO_DIR}/giotto.jar'
+   	GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
     else
 	# Set to giotto and used in
 	# $PTII/ptolemy/copernicus/java/ if giotto was found
@@ -1805,12 +2064,77 @@ else
     fi
 fi
 
+#--------------------------------------------------------------------
+#       X10 is the interface library for power line communication, see
+#	http://x10.homelinux.org/download.html
+#	See if there was a command-line option for where
+#       X10sk is;  if not,
+#       check to see if $PTII/vendors/misc/X10 exists
+#--------------------------------------------------------------------
+
+# PTX10_DIR is set to x10 and used in
+# $PTII/ptolemy/apps/superb/makefile if tini was found
+PTX10_DIR=
+#
+
+# We only need to look for x10 if $PTII/ptolemy/apps/superb/x10 exists
+X10_USER_DIR="$PTII/ptolemy/apps/superb/x10"
+if test ! -d "$X10_USER_DIR"; then
+    AC_MSG_RESULT([$X10_USER_DIR is not present,
+	so we need not find the X10 SDK. X10 is the power line comm interface.])
+else
+    AC_MSG_CHECKING([for X10 directory])
+    AC_ARG_WITH(x10, [  --with-X10=DIR       use X10 from DIR,
+                          defaults to \$PTII/vendors/misc/x10],
+	X10_DIR=$withval,
+	X10_DIR=$PTII/vendors/misc/x10)
+
+    if test -d "$X10_DIR"; then
+      	AC_MSG_RESULT([$X10_DIR])
+      	AC_MSG_CHECKING([for \$X10_DIR/tjx10p-11/lib/x10.jar])
+	if test -f "$X10_DIR/tjx10p-11/lib/x10.jar"; then
+	   AC_MSG_RESULT([$X10_DIR/tjx10p-11/lib/x10.jar])
+	   X10_CLASSES=${X10_DIR}/tjx10p-11/lib/x10.jar
+	else
+	   X10_CLASSES=no
+        fi
+	AC_MSG_RESULT([$X10_CLASSES])
+    fi
+    if test "$X10_CLASSES" = "no"; then
+        AC_MSG_WARN([Failed to find tjx10p-11/lib/x10.jar
+    perhaps X10 is not installed?
+    You need not download X10 unless you plan on building applications
+    using the X10 interface.
+    The X10 SDK can be downloaded from http://x10.homelinux.org])
+	# Note that we don't substitute in the ${PTII} or $(X10_DIR) here
+	X10_DIR='${PTII}/vendors/misc/x10'
+   	X10_CLASSES='${X10_DIR}/tjx10p-11/lib/x10.jar'
+    else
+	# Set to x10 and used in
+	# $PTII/ptolemy/apps/superb/makefile if tini was found
+	PTX10_DIR=x10
+    fi
+fi
+
+if test -z "$PTX10_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/x10/|ptolemy/apps/superb/x10/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$X10_CLASSES\"/>"
+fi 
+
 
 # Keep these substitutions alphabetical, with a description
 
 # Directory that contains the Cal jar file ptCal.jar
 # used by bin/ptinvoke.in
 AC_SUBST(CAL_DIR)
+
+# Directory that contains chic.jar.
+# Chic is a modular verifier for behavioral compatibility checking of
+# software and hardware components.
+# Used in bin/ptinvoke.in
+AC_SUBST(CHIC_DIR)
 
 # Separator in CLASSPATH,  For Unix, this should be :, for Cygwin use ;
 AC_SUBST(CLASSPATHSEPARATOR)
@@ -1833,6 +2157,14 @@ AC_SUBST(GC_INCLUDE_DIR)
 # or in $PTII/lib.
 # GC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
 AC_SUBST(GC_LD_DIRECTIVE)
+
+# Eclipse .classpath excluding src values
+# of the form "vendors/|ptolemy/matlab/"
+AC_SUBST(ECLIPSE_EXCLUDING_SRC)
+
+# Eclipse .classpath lib elements of the format
+#    <classpathentry kind="lib" path="lib/diva.jar"/>
+AC_SUBST(ECLIPSE_CLASSPATHENTRY_LIBS)
 
 # Location of rt.jar, usually $(PTJAVA_DIR)/jre/lib/rt.jar
 # However, we have to be careful of backslashes and /cygwin
@@ -1919,6 +2251,9 @@ AC_SUBST(PTCM_DIR)
 #
 AC_SUBST(PTCOMM_DIR)
 
+# Set to chic and used in $PTII/ptolemy/makefile if chic was found.
+AC_SUBST(PTCHIC_DIR)
+
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
 AC_SUBST(PTII)
@@ -1997,6 +2332,10 @@ AC_SUBST(PTLEJOS_DIR)
 # $PTII/ptolemy/makefile if the Matlab was found.
 AC_SUBST(PTMATLAB_DIR)
 
+# Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
+# QuickTime for Java was found.
+AC_SUBST(PTQUICKTIME_DIR)
+
 # Set to tini and used in
 # $PTII/ptolemy/apps/makefile if TINI was found
 AC_SUBST(PTTINI_DIR)
@@ -2005,13 +2344,24 @@ AC_SUBST(PTTINI_DIR)
 # $PTII/ptolemy/apps/makefile if Giotto was found
 AC_SUBST(PTGIOTTO_DIR)
 
+# Set to quicktime and used in
+# $PTII/ptolemy/domains/gr/lib/makefile if Quicktime for Java was found
+AC_SUBST(PTQUICKTIME_DIR)
+
 # Set to waba and used in
 # $PTII/ptolemy/apps/makefile if Waba was found
 AC_SUBST(PTWABA_DIR)
 
+# Set to x10 and used in
+# $PTII/ptolemy/apps/superb/makefile if the X10 jar files were found
+AC_SUBST(PTX10_DIR)
+
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
 AC_SUBST(PTII_LOCALURL)
+
+# Set to the location of the QTJava.zip file
+AC_SUBST(QTJAVA_ZIP)
 
 # tini/bin/tinclasses.jar file used Soot - a Java Optimization Framework
 AC_SUBST(SOOT_CLASSES)
@@ -2025,7 +2375,7 @@ AC_SUBST(TINI_CLASSES)
 # Directory that contains the Tini installation
 AC_SUBST(TINI_DIR)
 
-# giotto/giotto.jar file used by GiottoSDK
+# giotto/gdk.jar file used by GiottoSDK
 AC_SUBST(GIOTTO_CLASSES)
 
 # Directory that contains the GiottoSDK installation
@@ -2037,7 +2387,12 @@ AC_SUBST(WABA_CLASSES)
 # Directory that contains the waba used by PalmOS
 AC_SUBST(WABA_DIR)
 
+# tjx10p-11/lib/x10.jar file used for X10
+AC_SUBST(X10_CLASSES)
+
+# Directory that contains the X10 installation
+AC_SUBST(X10_DIR)
 
 # Files we substitute in
-AC_OUTPUT(mk/ptII.mk bin/ptinvoke, chmod a+x bin/ptinvoke)
+AC_OUTPUT(mk/ptII.mk bin/ptinvoke .classpath, chmod a+x bin/ptinvoke)
 
