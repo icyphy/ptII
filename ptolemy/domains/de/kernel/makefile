@@ -55,9 +55,8 @@ JSRCS = DEActor.java \
 	DEEventQueue.java \
 	DEIOPort.java \
 	DEReceiver.java\
-	DEThreadActor.java \
-        HDEDirector.java \
-        HDEReceiver.java
+	DEThreadActor.java 
+
 EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
