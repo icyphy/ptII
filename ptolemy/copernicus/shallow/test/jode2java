@@ -45,14 +45,14 @@ awk ' { if ($0 ~ /UNCONSTRUCTED/) {
       }
    END {print lastline}
 ' $1 |
-awk '{if ($0 ~ /public void __CGInit/) {
+awk '{if ($0 ~ /public void __CGInit/ ) {
             # Skip the trailing {
             print substr($0,1, length($0)-2), "throws IllegalActionException, NameDuplicationException {"
         } else {
             print $0
         }
     }' |
-awk '{ if ($0 ~ /^package/) {
+awk '{ if ( $0 ~ /^package/ ) {
             print $0
             printf("\n");
             print "import ptolemy.kernel.util.IllegalActionException;"
@@ -60,8 +60,8 @@ awk '{ if ($0 ~ /^package/) {
         } else {
             print $0
         }
-    }' |
-awk '{ if ($0 ~ /__CGInit\(\);/) {
+    }'|
+awk '{ if ( $0 ~ /__CGInit\(\);/ ) {
             indent = "        ";
             print indent "try {"
                 print indent $0
@@ -82,19 +82,18 @@ awk '{ if ( $0 ~ /CompositeEntity compositeentity, String s\)$/ ) {
                 print $0
             }
         }
-    '}  |
-awk '{  if (match($0, "; *") > 0) {
+    '} |
+awk '{  if ($0 ~ /; */) {
             lastsemi = sawtrailingsemicolon;
             sawtrailingsemicolon = NR
          }
-            if ( $1 ~ /"/) {
+            if ( $1 ~ /\"/) {
                 stringRecord = NR
                 print "         String tmp" stringRecord " = " $0
                 dontprint = 1
             }
             if ( NR - stringRecord < 10 \
                     && $0 ~ /throw new RuntimeException\(\);/) {
-                  // Strip off the trailing closing paren and semicolon
                 print substr($0, 1, length($0)-2) "tmp" stringRecord ");"
                 dontprint = 1
                 stringRecord = 0
