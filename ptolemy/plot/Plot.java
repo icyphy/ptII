@@ -128,7 +128,7 @@ Bars: <i>width, offset</i>
 </pre>
 The <i>width</i> is a real number specifying the width of the bars
 in the units of the x axis.  The <i>offset</i> is a real number
-specifying how much the bar of the <i>i < /i><sup>th</sup> data set
+specifying how much the bar of the <i>i</i><sup>th</sup> data set
 is offset from the previous one.  This allows bars to "peek out"
 from behind the ones in front.  Note that the frontmost data set
 will be the first one.  To turn off bars, use
