@@ -300,7 +300,7 @@ public class CryptographyActor extends TypedAtomicActor {
             objectOutputStream.writeObject(key);
             return byteArrayOutputStream.toByteArray();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, 
+            throw new IllegalActionException(this, ex,
                     "Problem with writing key");
         }
     }

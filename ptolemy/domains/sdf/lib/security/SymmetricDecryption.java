@@ -172,7 +172,7 @@ public class SymmetricDecryption extends CipherActor {
      * @return byte[] the decrypted data.
      * @exception IllegalActionException If an error occurs in
      * ByteArrayOutputStream, a key is invalid, padding is bad,
-     * or if the block size is illegal. 
+     * or if the block size is illegal.
      */
     protected byte[] _process(byte[] dataBytes)
             throws IllegalActionException {

@@ -62,7 +62,7 @@ This actor lists the following services:
 </ul>
 
 Services are those algorithms have been implemented by providers and are
-installed on the local system.  To add providers please refer to the 
+installed on the local system.  To add providers please refer to the
 Java Cryptography Architecture (JCA) and Java Cryptography Extension (JCE).
 
 @author Rakesh Reddy, Christopher Hylands Brooks
@@ -135,7 +135,7 @@ public class ServiceInformation extends TypedAtomicActor {
                     output.send(i, new StringToken(providers[i].getName()));
                 }
             } else {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Service request '" + request + "' is not valid");
             }
         } else super.attributeChanged(attribute);
