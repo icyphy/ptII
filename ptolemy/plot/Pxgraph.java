@@ -27,16 +27,7 @@
 
 package plot;
 
-import java.awt.Button;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.Event;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Frame;
-import java.awt.Panel;
-import java.awt.PrintJob;
-import java.awt.TextArea;
+import java.awt.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -579,9 +570,22 @@ public class Pxgraph extends Frame {
     /* Set the visibility of the buttons
      */
     private void _setButtonsVisibility(boolean vis) {
-	_exitButton.setVisible(vis);
-	_printButton.setVisible(vis);
-	_aboutButton.setVisible(vis);
+	//_exitButton.setVisible(vis);
+	//_printButton.setVisible(vis);
+	//_aboutButton.setVisible(vis);
+	if (vis) {
+	    _exitButton.hide(); // FIXME: hide() is
+	    // deprecated in JDK1.1, but we need to compile under
+	    // 1.0.2 for netscape3.x compatibilty.
+	    _printButton.hide(); // FIXME: hide() deprecated, but . . .
+	    _aboutButton.hide(); // FIXME: hide() deprecated, but . . .
+	} else {
+	    _exitButton.show(); // FIXME: show() is
+	    // deprecated in JDK1.1, but we need to compile under
+	    // 1.0.2 for netscape3.x compatibilty.
+	    _printButton.show(); // FIXME: show() deprecated, but . . .
+	    _aboutButton.show(); // FIXME: show() deprecated, but . . .
+	}
     }
 
     /* Create buttons.
@@ -708,7 +712,9 @@ public class Pxgraph extends Frame {
     }
 
     /* Spawn a browser and run the applet Plot class so that the
-     * user can print.
+     * user can print.  Note that we use the JDK1.1 PrintJob
+     * class here.  If you are compiling under 1.0.2, you can
+     * just comment out the body of this method.
      */	
     private void _print () {
 	// awt.print.destination   - can be "printer" or "file"
