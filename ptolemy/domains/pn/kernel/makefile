@@ -37,7 +37,7 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 # Flags to pass to javadoc. (Override value in ptII.mk)
-JDOCFLAGS = 	-author -version -public
+#JDOCFLAGS = 	-author -version -public
 
 
 DIRS = 		#demo test #doc
