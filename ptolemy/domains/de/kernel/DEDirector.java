@@ -971,7 +971,7 @@ public class DEDirector extends Director {
                         // create an arc from p to pp
                         if (_dag.contains(pp)) {
 			    //if (pp != deltaInPort)
-			    _dag.addEdge(p,pp);
+			    _dag.addEdge(p, pp);
                         } else {
                             // Note: Could this exception be triggered by
                             // level-crossing transitions?  In this case,
@@ -996,7 +996,7 @@ public class DEDirector extends Director {
                         // create an arc from p to pp
                         if (_dag.contains(pp)) {
 			    //if (pp != deltaInPort)
-			    _dag.addEdge(ioPort,pp);
+			    _dag.addEdge(ioPort, pp);
                         } else {
                             // Note: Could this exception be triggered by
                             // level-crossing transitions?  In this case,

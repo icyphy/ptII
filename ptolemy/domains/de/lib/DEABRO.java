@@ -100,7 +100,7 @@ public class DEABRO extends DEThreadActor {
                         System.out.println("Seen A..");
                     }
 
-                    IOPort[] ports = {B,R};
+                    IOPort[] ports = {B, R};
                     waitForNewInputs(ports);
                     if (!R.hasToken(0)) {
                         if (DEBUG) {
@@ -120,7 +120,7 @@ public class DEABRO extends DEThreadActor {
                         System.out.println("Seen B..");
                     }
 
-                    IOPort[] ports = {A,R};
+                    IOPort[] ports = {A, R};
                     waitForNewInputs(ports);
                     if (!R.hasToken(0)) {
                         if (DEBUG) {
