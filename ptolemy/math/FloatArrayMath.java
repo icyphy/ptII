@@ -423,8 +423,10 @@ public class FloatArrayMath {
         int copySize = Math.min(newLength, array.length - startIdx);
         if ((startIdx >= array.length) && (copySize > 0)) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.FloatArrayMath.resize() : " +
-                    "input array size is less than the start index");
+                    "resize():  the start index '" + startIdx
+                    + "' is greather than equal to the array length '"
+                    + array.length + "' and the number of items to be copied '"
+                    + copySize + "' is greater than zero.");
         }
 
         if (copySize > 0) {
