@@ -161,12 +161,15 @@ public class NonStrictTest extends Sink {
         }
     }
 
-    /** Call super.fire() and reset _postFireCompletedOK to false.
+    /** Call super.fire() and set _firedOnce to true.
+     *  Derived classes should either call this fire() method
+     *  or else set _firedOnce to true.
+     *  @see #_firedOnce
      *  @exception IllegalActionException If thrown by the baseclass.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        _postFireCompletedOK = false; 
+        _firedOnce = true;
     }
 
     /** Override the base class to set the iteration counter to zero.
@@ -180,7 +183,7 @@ public class NonStrictTest extends Sink {
         _numberOfInputTokensSeen = 0;
         _iteration = 0;
         _trainingTokens = null;
-        _postFireCompletedOK = false; 
+        _firedOnce = false;
         if (((BooleanToken)trainingMode.getToken()).booleanValue()) {
             if (isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
@@ -262,28 +265,25 @@ public class NonStrictTest extends Sink {
 
         }
         _iteration++;
-        _postFireCompletedOK = true; 
         return true;
     }
 
     /** If <i>trainingMode</i> is <i>true</i>, then take the collected
      *  training tokens and store them as an array in <i>correctValues</i>.
+     *  @exception IllegalActionException If fire() was not called at least
+     *  once.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         boolean training = ((BooleanToken)trainingMode.getToken())
             .booleanValue();
         if (!training
-                && _postFireCompletedOK
-                && ((ArrayToken)(correctValues.getToken())).length() > 0
-                && _numberOfInputTokensSeen == 0) {
+                && ! _firedOnce) {
             throw new IllegalActionException(this,
-                    "Test failed to produce "
-                    + ((ArrayToken)(correctValues.getToken())).length()
-                    + " tokens as expected in the correctValues parameter, "
-                    + "only " + _numberOfInputTokensSeen + " were produced.");
+                    "The fire() method of this actor was never called. "
+                    + "Usually, this is an error indicating that "
+                    + "starvation is occurring");
         }
-
         // Note that wrapup() might get called by the manager before
         // we have any data...
         if (training && _trainingTokens != null &&
@@ -348,13 +348,8 @@ public class NonStrictTest extends Sink {
     /** List to store tokens for training mode. */
     protected List _trainingTokens;
 
-    /** Set to true if postfire() returned ok.  This variable is set
-     *  to false each time we call fire().  If this variable is true,
-     *  then in wrapup() we check the number of tokens we have seen
-     *  against the number of tokens in the <i>correctValues</i> Parameter.
-     *  If this variable is false, then either fire() or postfire()
-     *  failed to successfully complete, so we do not check the token
-     *  count in wrapup().
+    /** Set to true if fire() is called once.  If fire() is not called at
+     *  least once, then throw an exception in wrapup().
      */
-    protected boolean _postFireCompletedOK = false; 
+    protected boolean _firedOnce = false; 
 }

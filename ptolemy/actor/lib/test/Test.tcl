@@ -40,7 +40,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 #### Test the Test actor in an SDF model
 #
-test Ramp-1.1 {test with the default output values} {
+test Test-1.1 {test with the default output values} {
     set e0 [sdfModel 5]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set test [java::new ptolemy.actor.lib.Test $e0 test]
@@ -61,7 +61,7 @@ test Ramp-1.1 {test with the default output values} {
 ######################################################################
 #### 
 #
-test Ramp-1.2 {change the number of iterations, force a failure } {
+test Test-1.2 {change the step size, force a failure } {
     # Uses 1.1 above
 
     set step [getParameter $ramp step]
@@ -73,15 +73,17 @@ test Ramp-1.2 {change the number of iterations, force a failure } {
     set step [getParameter $ramp step]
     $step setToken [java::new ptolemy.data.DoubleToken 1.0]
 
-    list [string range $errMsg 0 105] 
+    #list [string range $errMsg 0 105] 
+    list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Test fails in iteration 1.
-Value was: 2.5. Should have been: 1}}
+Value was: 2.5. Should have been: 1
+  in .top.test}}
 
 
 ######################################################################
 #### 
 #
-test Ramp-1.3 {Adjust the tolerance and run within the tolerance } {
+test Test-1.3 {Adjust the tolerance and run within the tolerance } {
     # Uses 1.1 above
 
     set tolerance [getParameter $test tolerance]
@@ -106,6 +108,8 @@ test Ramp-1.3 {Adjust the tolerance and run within the tolerance } {
     # This should fail because we are outside the tolerance
     catch {[$e0 getManager] execute} errMsg
 
+    $step setToken [java::new ptolemy.data.DoubleToken 1.0]
+
     # Set the tolerance back to the initial value
     $tolerance setToken [java::new ptolemy.data.DoubleToken $initialTolerance]
 
@@ -113,10 +117,36 @@ test Ramp-1.3 {Adjust the tolerance and run within the tolerance } {
 } {{ptolemy.kernel.util.IllegalActionException: Test fails in iteration 1.
 Value was: 1.01. Should have been: 1}}
 
+
 ######################################################################
 #### 
 #
-test Ramp-1.4 {Export} {
+test Test-1.4 {If fire() is not called, throw an Exception} {
+    # Create a model that has an unconnected test actor 
+    set e4 [sdfModel 5]
+    set ramp4 [java::new ptolemy.actor.lib.Ramp $e4 ramp4]
+    set test4 [java::new ptolemy.actor.lib.Test $e4 test4]
+    $e4 connect \
+	[java::field [java::cast ptolemy.actor.lib.Source $ramp4] output] \
+	[java::field [java::cast ptolemy.actor.lib.Sink $test4] input]
+
+    # Unconnected actor
+    set test4a [java::new ptolemy.actor.lib.Test $e4 test4a]
+
+    set trainingMode4 [getParameter $test4 trainingMode]
+    $trainingMode4 setExpression "true" 
+    puts " The next command will produce a warning about training mode,"
+    puts "   which may be ignored."
+    catch {[$e4 getManager] execute} errMsg
+
+    list [string range $errMsg 0 176]
+} {{ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring
+  in .top.test4a}}
+
+######################################################################
+#### 
+#
+test Test-1.5 {Export} {
     # Uses 1.1 above
     list [$e0 exportMoML]
 } {{<?xml version="1.0" standalone="no"?>
@@ -142,7 +172,7 @@ test Ramp-1.4 {Export} {
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.01">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -181,7 +211,7 @@ test Ramp-1.4 {Export} {
 ######################################################################
 #### 
 #
-test Ramp-2.1 {Test the Test actor in an SDF model with two ramps} {
+test Test-2.1 {Test the Test actor in an SDF model with two ramps} {
     set e1 [sdfModel 5]
     set ramp1 [java::new ptolemy.actor.lib.Ramp $e1 ramp1]
     set ramp2 [java::new ptolemy.actor.lib.Ramp $e1 ramp2]

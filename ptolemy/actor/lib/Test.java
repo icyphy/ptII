@@ -252,12 +252,9 @@ public class Test extends NonStrictTest {
     }
 
     /** Override the base class to do nothing and return true.
-     *  The protected variable _postFireCompletedOK is always set to
-     *  true.
      *  @return True.
      */
     public boolean postfire() {
-        _postFireCompletedOK = true; 
         return true;
     }
 }
