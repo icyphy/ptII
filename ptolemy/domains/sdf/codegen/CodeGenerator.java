@@ -45,6 +45,12 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.domains.sdf.kernel.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// CodeGenerator
+/** A code generator for SDF.
+ *
+ *  @author Jeff Tsay
+ */
 public class CodeGenerator extends CompositeActorApplication {
 
     public CodeGenerator(String[] args) throws Exception {
@@ -108,9 +114,12 @@ public class CodeGenerator extends CompositeActorApplication {
         while (entityItr.hasNext()) {
              Entity entity = (Entity) entityItr.next();  
              PerActorCodeGeneratorInfo actorInfo = 
-              (PerActorCodeGeneratorInfo) _entityInfoMap.get(entity);
-        
+              (PerActorCodeGeneratorInfo) _entityInfoMap.get(entity);        
+             
              _makeInputInfo(entity, actorInfo);
+             
+             ActorCodeGenerator actorCodeGen = new ActorCodeGenerator(entity);
+             actorCodeGen.generateCode(actorInfo);
         }                                                           
     }
 

@@ -33,25 +33,27 @@ package ptolemy.domains.sdf.codegen;
 import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.HashSet;
 
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
+
 import ptolemy.lang.*;
 import ptolemy.lang.java.*;
+import ptolemy.lang.java.nodetypes.CompileUnitNode;
 
+/** A code generator for each actor in an SDF system.
+ *
+ *  @author Jeff Tsay
+ */
 public class ActorCodeGenerator {
     public ActorCodeGenerator(Entity entity) {
         _entity = entity;
     }
     
     public void generateCode(PerActorCodeGeneratorInfo actorInfo) {
-        // get the location of the source code for this actor
+    
+        // get the location of the source code for this actor                       
                         
         File sourceFile = SearchPath.NAMED_PATH.openSource(
          _entity.getClass().getName());                
@@ -60,9 +62,22 @@ public class ActorCodeGenerator {
            ApplicationUtility.error("source code not found for " +
             "entity " + _entity);
         }
+
+        System.out.println("acg : loading " + sourceFile.toString());
         
-        StaticResolution.load(sourceFile, true);     
+        unitNode = StaticResolution.load(sourceFile, 2);     
+        
+        LinkedList visitorArgs = TNLManip.cons(actorInfo);
+        
+        unitNode = (CompileUnitNode) unitNode.accept(
+         new ActorTransformerVisitor(), visitorArgs);
+         
+        String modifiedSourceCode = (String) unitNode.accept(
+         new JavaCodeGenerator(), null);
+         
+        System.out.println(modifiedSourceCode);  
     }
     
-    protected Entity _entity;
+    protected final Entity _entity;
+    protected CompileUnitNode unitNode;
 }
