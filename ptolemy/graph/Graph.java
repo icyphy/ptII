@@ -599,8 +599,8 @@ public class Graph implements Cloneable {
         return edges;
     }
 
-    /** Test if a graph is equal to this one. It is equal 
-     *  if it is of the same class, and has the same sets of nodes 
+    /** Test if a graph is equal to this one. It is equal
+     *  if it is of the same class, and has the same sets of nodes
      *  and edges.
      *
      *  @param graph The graph with which to compare this graph.
@@ -614,7 +614,7 @@ public class Graph implements Cloneable {
         else if (graph.getClass() != getClass()) {
             return false;
         } else {
-            Graph argumentGraph = (Graph)graph; 
+            Graph argumentGraph = (Graph)graph;
             Iterator argumentNodes = argumentGraph.nodes().iterator();
             while (argumentNodes.hasNext()) {
                 if (!containsNode((Node)argumentNodes.next()))
@@ -639,7 +639,7 @@ public class Graph implements Cloneable {
         return result;
     }
 
-    /** Returns the hash code for this graph. 
+    /** Returns the hash code for this graph.
      *
      *  @return The hash code for this graph.
      */
@@ -1145,7 +1145,7 @@ public class Graph implements Cloneable {
         _removeIfPresent(_incidentEdgeList(node), edge);
     }
 
-    /** Return an empty graph that has the same run-time type as this graph. 
+    /** Return an empty graph that has the same run-time type as this graph.
      *  @return An empty graph.
      */
     protected Graph _emptyGraph() {
