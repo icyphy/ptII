@@ -52,6 +52,7 @@ import diva.graph.*;
 import diva.graph.model.*;
 
 import java.awt.Font;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingConstants;
 import java.util.*;
 
@@ -236,7 +237,12 @@ public class CompaanNotation extends Attribute implements VisualNotation {
         }
 
         public void executionFinished(Manager manager) {
-            _controller.rerender();
+            SwingUtilities.invokeLater(
+                    new Runnable() {
+                public void run() {
+                    _controller.rerender();
+                }
+            });
         }
 
         public void managerStateChanged(Manager manager) {
