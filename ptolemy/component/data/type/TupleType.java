@@ -29,7 +29,7 @@ package ptolemy.component.data.type;
 
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
-import ptolemy.data.TupleToken;
+import ptolemy.component.data.TupleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.StructuredType;
 import ptolemy.data.type.Type;
