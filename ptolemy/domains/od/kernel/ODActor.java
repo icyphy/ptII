@@ -164,7 +164,7 @@ public class ODActor extends AtomicActor {
         RcvrTimeTriple highPriorityTriple = null;
 
 	while( rcvrNotFound ) {
-	    if( cnt > _rcvrTimeTable.size() ) {
+	    if( cnt == _rcvrTimeTable.size() ) {
 	        return highPriorityTriple;
 	    }
 	    RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.at(cnt);
@@ -197,6 +197,10 @@ public class ODActor extends AtomicActor {
      */
     public Token getNextToken() {
         
+        if( _rcvrTimeTable.size() == 0 ) {
+            return null;
+        }
+        
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
         
         ODReceiver lowestRcvr = (ODReceiver)triple.getReceiver();
@@ -205,7 +209,9 @@ public class ODActor extends AtomicActor {
         
         Token token = lowestRcvr.get();
         
+        
         if( token != null ) {
+            System.out.println("We returned a token: 1st null");
             return token;
         } else {
             if( this.hasMinRcvrTime() ) {
@@ -231,6 +237,7 @@ public class ODActor extends AtomicActor {
                 _lastPort = (ODIOPort)lowestRcvr.getContainer();
                 
                 if( token != null ) {
+                    System.out.println("We returned a token: 2nd null");
                     return token;
                 } else {
                     // This means that although originally there was 
