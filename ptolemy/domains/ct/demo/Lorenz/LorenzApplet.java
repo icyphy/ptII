@@ -227,8 +227,8 @@ public class LorenzApplet extends CTApplet {
     private Scale _SIGMA;
     private Scale _B;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       inner classes                              ////
+    ///////////////////////////////////////////////////////////////////
+    ////                       inner classes                       ////
 
     /** Listener update the parameter change of stop time.
      */
