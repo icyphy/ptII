@@ -75,7 +75,7 @@ public class TimedQueueReceiver implements Receiver {
      * @exception NoTokenException If the queue is empty.
      */
     public Token get() {
-        System.out.println("\nCall to TimedQueueReceiver.get()");
+        System.out.println("Call to TimedQueueReceiver.get()");
         // System.out.println("Previous rcvrTime = " + getRcvrTime() );
         System.out.println("rcvrTime = " + getRcvrTime() );
         ODActor odactor = (ODActor)getContainer().getContainer();
@@ -96,12 +96,15 @@ public class TimedQueueReceiver implements Receiver {
             _rcvrTime = nextEvent.getTime();
             System.out.println("Update via get(): _rcvrTime = " + _rcvrTime );
             // FIXME We should update the actor rcvrtripletable here 
+        }
+        // Call update even if getSize == 0, so that triple is 
+        // no longer in front
             
             RcvrTimeTriple triple; 
             triple = new RcvrTimeTriple( this, _rcvrTime, getPriority() ); 
             ODActor actor = (ODActor)getContainer().getContainer();
             actor.updateRcvrTable( triple );
-        }
+            
         return token;
     }
 
@@ -185,7 +188,7 @@ public class TimedQueueReceiver implements Receiver {
      *         time stamps that are decreasing.
      */
     public synchronized void put(Token token, double time) {
-        System.out.println("\nCall to TimedQueueReceiver.put()");
+        System.out.println("Call to TimedQueueReceiver.put()");
         System.out.println("Previous queue size = " + getSize() );
         Event event = new Event(token, time);
         ODIOPort port = (ODIOPort)getContainer();
@@ -196,9 +199,9 @@ public class TimedQueueReceiver implements Receiver {
         if( getSize() == 0 ) {
             RcvrTimeTriple triple; 
             triple = new RcvrTimeTriple( this, time, _priority ); 
-            actor.updateRcvrTable( triple ); 
             _rcvrTime = time;
             System.out.println("Update: _rcvrTime = " + _rcvrTime);
+            actor.updateRcvrTable( triple ); 
         }
 
         if (!_queue.put(event)) {

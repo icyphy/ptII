@@ -92,11 +92,11 @@ public class ODReceiver extends TimedQueueReceiver
                         setSimultaneousIgnore(false);
                         return super.get();
                     }
-                    System.out.println("First null");
+                    // System.out.println("First null");
                     return null;
                 }
                 // FIXME: Will this point ever be reached? 
-                System.out.println("Second null");
+                // System.out.println("Second null");
                 return null;
             } else {
                 director.addReadBlock();

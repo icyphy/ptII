@@ -170,7 +170,7 @@ public class ODIOPort extends IOPort {
                 return;
             }
             
-            System.out.println("About to call ODReceiver.put() within " +
+            System.out.println("\nAbout to call ODReceiver.put() within " +
                     "ODIOPort.send()."); 
             for (int j = 0; j < farRec[channelindex].length; j++) {
                 double currentTime = ((ODActor)getContainer()).getCurrentTime(); 
