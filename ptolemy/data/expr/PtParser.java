@@ -39,6 +39,7 @@ import ptolemy.data.*;
 import ptolemy.math.Complex;
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 import java.io.*;
 
@@ -79,7 +80,10 @@ of the parse tree. Thus the process is
 The parser can also be passed a symbol table of ptolemy.data.expr.Variables
 which the expression to be parsed can reference.
 <p>
-Anything between quotes(") is taken to be one string.
+Anything between quotes(") or apostrophes(') is taken to be one string.
+Strings are not allowed to contain newlines or carriage returns. These
+characters, as well as other special characters, can be escaped using the
+standard Java syntax (\n, \t, \077, etc.).
 <p>
 The expressions recognized follow as close as possible the syntax of Java.
 In particular the operator precedences implemented here follow exactly 
@@ -1111,10 +1115,69 @@ String tidied, x;
         jj_consume_token(STRING);
         jjtree.closeNodeScope(jjtn004, true);
         jjtc004 = false;
-         // Now cut the " from each end of the string
+         // Now cut the " from each end of the string.
         len = token.image.length();
         tidied = token.image.substring(1, (len -1));
-        jjtn004._ptToken = new StringToken(tidied);
+
+        // Resolve escape sequences in the string.
+        StringTokenizer st = new StringTokenizer(tidied, "\\", true);
+        boolean escape = false;
+        x = new String();
+        while (st.hasMoreTokens()) {
+            String tok = st.nextToken();
+            if (escape) {
+                // The previous character was a backslash that started
+                // an escape sequence.
+                escape = false;
+                int trailingCharIndex = 1;
+                switch (tok.charAt(0)) {
+                    case 'n': x += "\n"; break;
+                    case 't': x += "\t"; break;
+                    case 'b': x += "\b"; break;
+                    case 'r': x += "\r"; break;
+                    case 'f': x += "\f"; break;
+                    case '\\': x += "\\"; break;
+                    case '\'': x += "\'"; break;
+                    case '"': x += "\""; break;
+                    default:
+                        // The escape sequence is a character
+                        // specified in octal.
+                        int i;
+                        for (i = 0; i < tok.length(); i++) {
+                            // The octal sequence stops at the first
+                            // non-octal character.
+                            char c = tok.charAt(i);
+                            if (! (c == '0' ||
+                                   c == '1' ||
+                                   c == '2' ||
+                                   c == '3' ||
+                                   c == '4' ||
+                                   c == '5' ||
+                                   c == '6' ||
+                                   c == '7'))
+                                break;
+                        }
+                        trailingCharIndex = i;
+                        int octVal = Integer.parseInt(
+                                tok.substring(0, trailingCharIndex), 8);
+                        x += (char)octVal;
+                        break;
+                }
+                if (trailingCharIndex < tok.length()) {
+                    // Keep any remaining characters.
+                    x += tok.substring(trailingCharIndex);
+                }
+            }
+            else if (tok.equals("\\")) {
+                // Start an escape sequence.
+                escape = true;
+            }
+            else {
+                // Keep regular text.
+                x += tok;
+            }
+        }
+        jjtn004._ptToken = new StringToken(x);
         jjtn004._isConstant = true;
       } finally {
      if (jjtc004) {
@@ -1556,6 +1619,16 @@ String tidied, x;
     return retval;
   }
 
+  final private boolean jj_3_3() {
+    if (jj_scan_token(47)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(ID)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(48)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
   final private boolean jj_3_2() {
     if (jj_scan_token(46)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -1572,16 +1645,6 @@ String tidied, x;
 
   final private boolean jj_3_4() {
     if (jj_scan_token(47)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
-  final private boolean jj_3_3() {
-    if (jj_scan_token(47)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(ID)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(48)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
