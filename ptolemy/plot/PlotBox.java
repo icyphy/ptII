@@ -387,14 +387,14 @@ public class PlotBox extends Panel {
                  ypos = _gridStep(ygrid, ind, ypos, yStep, _ylog)) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
-                String yl;
+                String yticklabel;
                 if (_ylog) {
-                    yl = _formatLogNum(ypos, numfracdigits);
+                    yticklabel = _formatLogNum(ypos, numfracdigits);
                 } else {
-                    yl = _formatNum(ypos, numfracdigits);
+                    yticklabel = _formatNum(ypos, numfracdigits);
                 }
-                ylabels[ind] = yl;
-                int lw = _labelFontMetrics.stringWidth(yl);
+                ylabels[ind] = yticklabel;
+                int lw = _labelFontMetrics.stringWidth(yticklabel);
                 ylabwidth[ind++] = lw;
                 if (lw > widesty) {widesty = lw;}
             }
@@ -444,19 +444,15 @@ public class PlotBox extends Panel {
         int xCoord2 = _lrx-tickLength;
         
         if (_yticks == null) {
-            Vector ygrid = null;
-            if (_ylog) {
-                ygrid = _initGrid(yStart, yStep);
-            }
-
             // auto-ticks
             ind = 0;
-
+            Vector ygrid = null;
             double yTmpStart = yStart;
             if (_ylog) {
+                ygrid = _initGrid(yStart, yStep);
                 yTmpStart = _gridStep(ygrid, ind, yStart, yStep, _ylog);
                 if (_debug == 5) 
-                    System.out.println("PlotBox: drawPlot: ind="+ind+
+                    System.out.println("PlotBox: drawPlot: YAXIS ind="+ind+
                             " yStart="+yStart+" yStep="+yStep+
                             " yTmpStart="+yTmpStart);
             }
@@ -480,7 +476,6 @@ public class PlotBox extends Panel {
                     System.out.println("PlotBox: drawPlot: ypos = "+ypos+
                             " _ytickMax="+_ytickMax+
                             " ylabels["+ind+"] ="+ylabels[ind] );
-
                 // NOTE: 4 pixel spacing between axis and labels.
                 graphics.drawString(ylabels[ind],
                         _ulx-ylabwidth[ind++]-4, yCoord1+offset);
@@ -533,6 +528,11 @@ public class PlotBox extends Panel {
             double xStep = 0.0;
             int numfracdigits = 0;
             int charwidth = _labelFontMetrics.stringWidth("8");
+            if (_xlog) {
+                // -1E-02
+                nx = 2 + width/((charwidth * 6) + 10);
+            } else {
+
             // Limit to 10 iterations
             int count = 0;
             while (count++ <= 10) {
@@ -555,6 +555,7 @@ public class PlotBox extends Panel {
                 nx = 2 + width/(maxlabelwidth+10);
                 if (nx - savenx <= 1 || savenx - nx <= 1) break;
             }
+            }
             xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
             numfracdigits = _numFracDigits(xStep);
             
@@ -564,10 +565,26 @@ public class PlotBox extends Panel {
             // NOTE: Following disables first tick.  Not a good idea?
             // if (xStart == _xMin) xStart+=xStep;
         
+            Vector xgrid = null;
+            double xTmpStart = xStart;
+            if (_xlog) {
+                xgrid = _initGrid(xStart, xStep);
+                xTmpStart = _gridStep(xgrid, ind, xStart, xStep, _xlog);
+                if (_debug == 5) 
+                    System.out.println("PlotBox: drawPlot: XAXIS ind="+ind+
+                            " xStart="+xStart+" nx="+nx+" xStep="+xStep+
+                            " xTmpStart="+xTmpStart);
+            }
             // Label the x axis.  The labels are quantized so that
             // they don't have excess resolution.
-            for (double xpos=xStart; xpos <= _xtickMax; xpos += xStep) {
-                String xticklabel =  _formatNum(xpos, numfracdigits);
+            for (double xpos=xTmpStart; xpos <= _xtickMax;
+                 xpos = _gridStep(xgrid, ind, xpos, xStep, _xlog)) {
+                String xticklabel;
+                if (_xlog) {
+                    xticklabel = _formatLogNum(xpos, numfracdigits);
+                } else {
+                    xticklabel = _formatNum(xpos, numfracdigits);
+                }
                 xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
                 graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
                 graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
@@ -578,6 +595,10 @@ public class PlotBox extends Panel {
                 }
                 int labxpos = xCoord1 -
                     _labelFontMetrics.stringWidth(xticklabel)/2;
+                if (_debug == 5) 
+                    System.out.println("PlotBox: drawPlot: xpos = "+xpos+
+                            " _xtickMax="+_xtickMax+
+                            " xticklabel="+xticklabel);
                 // NOTE: 3 pixel spacing between axis and labels.
                 graphics.drawString(xticklabel, labxpos,
                         _lry + 3 + labelheight);
@@ -1580,14 +1601,14 @@ public class PlotBox extends Panel {
                 results = "1e" + results;
             } else {
                 results = _formatNum(Math.pow(10.0,(num - (int)num)),
-                        numfracdigits - 1);
+                        numfracdigits);
             }
         } else {
             if (-num - (int)(-num) < 0.001) {
                 results = "1e" + results;
             } else {
                 results = _formatNum(Math.pow(10.0,(num - (int)num))*10,
-                        numfracdigits - 1);
+                        numfracdigits);
             }
         }
         if (_debug == 5) 
@@ -1647,12 +1668,12 @@ public class PlotBox extends Panel {
     }
  
     private double _gridBase = 0.0;
+    // FIXME: ind is unused.
     private double _gridStep(Vector grid, int ind, double pos, double step, boolean logflag) {
         if (logflag) {
             if (++gridCurJuke >= grid.size()) {
                 gridCurJuke = 0;
-                // FIXME: 1.0 is not right if step is more than 1.0
-                _gridBase++;
+                _gridBase+=Math.ceil(step);
                 //gridBase += gridStep;
                 //pos += _roundUp(step);
                 if (_debug == 5)
@@ -1689,7 +1710,7 @@ public class PlotBox extends Panel {
         // {0.0 0.301 0.698}, which could correspond to
         // axis labels {1 1.2 1.5 10 12 15 100 120 150}
         //
-        // _stepGrid() gets the proper value.  _initGrid is cycled through
+        // _gridStep() gets the proper value.  _initGrid is cycled through
         // for each integer log value.
 
         gridNJuke = 0;
@@ -1720,7 +1741,7 @@ public class PlotBox extends Panel {
                 grid.addElement(new Double(log10(3.0)));
                 grid.addElement(new Double(log10(5.0)));
                 grid.addElement(new Double(log10(7.0)));
-	    } else 
+	    } else {
 		for (x = 1.0; x < 10.0 && (x+.5)/(x+.4) >= ratio; x += .5) {
 		    //gridJuke[gridNJuke++] = log10(x + .1);	gridJuke[gridNJuke++] = log10(x + .2);
                 gridNJuke++;                 gridNJuke++;
