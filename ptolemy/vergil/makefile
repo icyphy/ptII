@@ -62,6 +62,7 @@ PTCLASSALLJAR = vergil.jar
 
 JSRCS = \
 	AbstractService.java \
+	ExceptionHandler.java \
 	JModelViewer.java \
 	MoMLViewerApplet.java \
 	Module.java \

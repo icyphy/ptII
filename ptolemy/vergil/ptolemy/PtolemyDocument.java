@@ -204,7 +204,7 @@ public class PtolemyDocument extends AbstractDocument
 	GraphController controller =
 	    jgraph.getGraphPane().getGraphController();
 
-	new EditorDropTarget(jgraph, getApplication());
+	new EditorDropTarget(jgraph);
        
 	ActionListener deletionListener = new DeletionListener();
         jgraph.registerKeyboardAction(deletionListener, "Delete",
@@ -287,7 +287,8 @@ public class PtolemyDocument extends AbstractDocument
 	    CompositeEntity toplevel = (CompositeEntity)model.getRoot();
 	    MoMLParser parser = new MoMLParser(workspace);
 	    parser.setContext(toplevel);
-	    toplevel.requestChange(new MoMLChangeRequest(parser, string));
+	    toplevel.requestChange(
+                new MoMLChangeRequest(this, parser, string));
 	} catch (UnsupportedFlavorException ex) {
 	    System.out.println("Transferable object didn't " + 
 			       "support stringFlavor: " +
@@ -388,6 +389,10 @@ public class PtolemyDocument extends AbstractDocument
 	public void changeExecuted(ChangeRequest change) {
 	    setDirty(true);
 	}
+
+        public void changeFailed(ChangeRequest change, Exception exception) {
+            // Since the change failed, we assume the model is unchanged.
+        }
     }
 
     /**

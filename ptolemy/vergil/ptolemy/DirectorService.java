@@ -120,32 +120,21 @@ public class DirectorService extends AbstractService {
 		    PtolemyDocument d = (PtolemyDocument)
 			getApplication().getCurrentDocument();
 		    if(d == null) return;
-		    CompositeEntity entity =
-			d.getModel();
-		    if(entity instanceof Actor) {
-			final CompositeActor actor =
-			    (CompositeActor) entity;
+		    CompositeEntity entity = d.getModel();
+		    if(entity instanceof CompositeActor) {
+			final CompositeActor actor = (CompositeActor) entity;
 			final Director oldDirector = actor.getDirector();
-			try {
-			    if((oldDirector == null) ||
-			       (director.getClass() != oldDirector.getClass()))
-				actor.requestChange(new ChangeRequest(actor, 
-								      "Set Director") {
-				    public void execute() {
-					try {
-					    Director clone =
-						(Director)director.clone(actor.workspace());
-					    actor.setDirector(clone);
-					} catch (Exception ex) {
-					    getApplication().showError("Failed to set " + 
-								       "Director", ex);
-					}
-				    }
-				});
-			} catch (ChangeFailedException ex) {
-			    getApplication().showError("Could not set director", ex);
-			}
-						      
+                        if((oldDirector == null) || (director.getClass()
+                                != oldDirector.getClass())) {
+                            actor.requestChange(new ChangeRequest(
+                                   this, "Set Director") {
+                                protected void _execute() throws Exception {
+                                    Director clone = (Director)
+                                            director.clone(actor.workspace());
+                                    actor.setDirector(clone);
+                                }
+                            });
+                        }					      
 		    }
                 }
             }

@@ -43,6 +43,7 @@ import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.resource.DefaultBundle;
 import diva.resource.RelativeBundle;
+
 import java.awt.Event;
 import java.awt.dnd.*;
 import java.awt.event.*;
@@ -113,6 +114,7 @@ public class VergilApplication extends MDIApplication {
 	// Initialize behavioral objects for superclass
         final DesktopContext context = new DesktopContext(frame, palettePane);
         setAppContext(context);
+        ExceptionHandler.setContext(frame.makeComponent());
 
 	Clipboard clipboard;
 	try {
@@ -124,7 +126,11 @@ public class VergilApplication extends MDIApplication {
 	setClipboard(clipboard);
 	
 	// Handle exceptions thrown by awt events in a nice way.
-	ApplicationExceptionHandler.setApplication(this);
+        // No, this is not such a nice way.  It's using undocumented
+        // features of Java, and features that will fail for applets.
+        // We need to be systematically handling errors using
+        // the ExceptionHandler class.  EAL
+	// ApplicationExceptionHandler.setApplication(this);
 
         // Create and initialize the storage policy
         try {
@@ -428,7 +434,6 @@ public class VergilApplication extends MDIApplication {
             Action saveAsAction = getAction(DefaultActions.SAVE_AS);
             saveAsAction.setEnabled(true);
         }
-
     }
 
     /** 
@@ -441,11 +446,11 @@ public class VergilApplication extends MDIApplication {
 				   "addDocumentFactory instead.");
     }
 
-    /** 
-     * Show the error without the stack trace by default.
+    /** Show the error without the stack trace by default.
+     *  @deprecated Use ExceptionHandler.show() instead.
      */
     public void showError(String op, Exception e) {
-	GUIUtilities.showException(getAppContext().makeComponent(), e, op);
+        ExceptionHandler.show(op, e);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -517,7 +522,7 @@ public class VergilApplication extends MDIApplication {
                                     new FileReader(file));
                         LibraryTreeModel.addLibrary(toplevel);
                     } catch (Exception ex) {
-                        showError("Library import failed.", ex);
+                        ExceptionHandler.show("Library import failed.", ex);
                     }
                 }
             }

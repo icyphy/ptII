@@ -30,8 +30,12 @@
 
 package ptolemy.vergil.graph;
 
-import diva.graph.*;
-import diva.gui.*;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.JGraph;
+import diva.gui.Application;
+
+// FIXME: Replace these with per-class imports.
 import java.awt.dnd.*;
 import java.awt.datatransfer.*;
 import java.awt.Point;
@@ -41,38 +45,41 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
 import ptolemy.kernel.*;
 import ptolemy.moml.Icon;
-import ptolemy.vergil.toolbox.*;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.ExceptionHandler;
+import ptolemy.vergil.toolbox.EditorIcon;
+import ptolemy.vergil.toolbox.PtolemyTransferable;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorDropTarget
 /**
-This class provides drag-and-drop support.
-When this drop target receives a Transferable object
-containing a ptolemy entity, it clones the entity, and
-adds it to the given graph.
+This class provides drag-and-drop support. When this drop target
+receives a Transferable object containing a ptolemy entity, it creates
+a new instance of the entity, and adds it to the given graph.
 
 @author Steve Neuendorffer
 @contributor Michael Shilman
 @version $Id$
 */
 public class EditorDropTarget extends DropTarget {
-    /**
-     * Construct a new graph target to operate
-     * on the given JGraph.
+
+    /** Construct a new graph target to operate on the given JGraph.
+     *  FIXME: @param tags.
      */
-    public EditorDropTarget(JGraph g, Application application) {
+    public EditorDropTarget(JGraph g) {
         setComponent(g);
-        _application = application;
         try {
             addDropTargetListener(new DTListener());
-        }
-        catch(java.util.TooManyListenersException wow) {
-        }
+        } catch(java.util.TooManyListenersException wow) {}
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * A drop target listener that comprehends
@@ -113,15 +120,12 @@ public class EditorDropTarget extends DropTarget {
 	    Iterator iterator = null;
             if(dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
 		try {
-		    // System.out.println(PtolemyTransferable.namedObjFlavor);
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 		    iterator = (Iterator)dtde.getTransferable().
 			getTransferData(PtolemyTransferable.namedObjFlavor);
-		    // System.out.println("Data is [" + data + "]");//DEBUG
-		}
-                catch(Exception e) {
-		    _application.showError("Couldn't find a supported " + 
-					   "data flavor in " + dtde, e);
+		} catch(Exception e) {
+		    ExceptionHandler.show(
+                        "Couldn't find a supported data flavor in " + dtde, e);
 		}
             } else {
                 dtde.rejectDrop();
@@ -132,67 +136,58 @@ public class EditorDropTarget extends DropTarget {
 		return;
             }
 
-	    final Point p = dtde.getLocation();
-	    final GraphController gc =
+	    final Point point = dtde.getLocation();
+	    final GraphController controller =
 		((JGraph)getComponent()).getGraphPane().getGraphController();
-	    // Figure out where this is going, so we can clone into
-	    // the right workspace.
-	    GraphModel model = gc.getGraphModel();
+	    GraphModel model = controller.getGraphModel();
 	    final CompositeEntity container = (CompositeEntity)model.getRoot();
 	    while(iterator.hasNext()) {
-		final NamedObj data = (NamedObj) iterator.next();	
-		try {
-		container.requestChange(new ChangeRequest(container, 
-							  "drop entity") {
-		    public void execute() throws ChangeFailedException {
-			try {
-			    NamedObj newObject = null;
-			    if(data instanceof Entity) {
-				NamedObj sourceEntity = (NamedObj) data;
-				// Create the new node
-				NamedObj entity = (NamedObj) sourceEntity.clone(
-										container.workspace());
-				// FIXME get by class.
-				Icon icon = (Icon) entity.getAttribute("_icon");
-				// If there is no icon, then manufacture one.
-				if(icon == null) {
-				    icon = new EditorIcon(entity, "_icon");
-				}
-				
-				// FIXME it would be nice if this was 
-				// not editor specific.
-				entity.setName(container.uniqueName(
-								    sourceEntity.getName()));  
-				newObject = icon;
-			    } /*else if(data instanceof Port) {
-				Port sourcePort = (Port) data;
-				Port port = 
-				    (Port)sourcePort.clone(container.workspace());
-				port.setName(container.uniqueName(
-								  sourcePort.getName()));
-				newObject = port;
-				}*/ else {
-				throw new ChangeFailedException(this, "Drop target doesn't " + 
-							   "recognize data");
-			    }
-			    gc.addNode(newObject, ((int)p.x), ((int)p.y));
-			}
-			catch (ChangeFailedException ex) {
-			    throw ex;
-			}
-			catch (Exception ex) {
-			    ex.printStackTrace();
-			    throw new ChangeFailedException(this, "Drop of " + 
-							    data.getFullName()
-							    + " failed." + 
-							    ex.getMessage());
-			}
-		    }
-		});
-		} catch (Exception ex) {
-		    _application.showError("Drop of " + data.getFullName()
-					   + " failed.", ex);
-		}
+		NamedObj data = (NamedObj) iterator.next();
+                // FIXME: Might consider giving a simpler name and then
+                // displaying the classname in the icon.
+                final String name = container.uniqueName(data.getName());
+                String moml = data.exportMoML(name);
+                // The first argument is the originator of the request.
+                // We declare the model to be the originator so that the
+                // model does not react to the added entity as if it were
+                // added by some external request.
+                ChangeRequest request = new MoMLChangeRequest(model,
+                        container, moml) {
+                    protected void _execute() throws Exception {
+                        super._execute();
+
+                        // Add the icon for the entity to the graph model.
+                        // Note that this really needs to be done after
+                        // the change request has succeeded, which is why
+                        // it is done here.
+
+                        // FIXME: Have to know whether this is an entity,
+                        // port, etc. For now, assuming it is an entity.
+                        NamedObj newObject = container.getEntity(name);
+                        Icon icon = (Icon) newObject.getAttribute("_icon");
+                        // If there is no icon, then manufacture one.
+                        if(icon == null) {
+                            icon = new EditorIcon(newObject, "_icon");
+                        }
+                        // NOTE: The following call triggers a truly baroque
+                        // series of calls in diva, where graph controller,
+                        // which is an instance of CompositeGraphController,
+                        // gets a node controller for an icon, which is
+                        // an instance of EntityController, and then
+                        // calls addNode() on that node controller, which
+                        // finds the model, which is an instance of
+                        // MutableGraphModel, and calls addNode() on that
+                        // model.  The model in turn calls various addNode()
+                        // methods, depending on the type of node being added
+                        // (in this case, an Icon).
+                        // Whew!  I wonder if would have been possible
+                        // to make this more complicated?
+                        controller.addNode(
+                                icon, ((int)point.x), ((int)point.y));
+                    }
+                };
+
+                container.requestChange(request);
 	    }
 	    dtde.dropComplete(true); //success!
 	}
@@ -211,7 +206,4 @@ public class EditorDropTarget extends DropTarget {
      */
     public static final DataFlavor TEXT_FLAVOR = DataFlavor.plainTextFlavor;
     public static final DataFlavor STRING_FLAVOR = DataFlavor.stringFlavor;
-    
-    // The application for reporting exceptions.
-    private Application _application;
 }

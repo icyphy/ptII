@@ -150,6 +150,7 @@ public class FSMGraphModel extends AbstractGraphModel
     public void addNode(Object eventSource, Icon icon, CompositeEntity parent) {
 	ComponentEntity entity = (ComponentEntity)icon.getContainer();
 	try {
+            // FIXME: This needs to be a change request.
 	    entity.setContainer(parent);
 	} catch (Exception ex) {
 	    ex.printStackTrace();
@@ -166,6 +167,7 @@ public class FSMGraphModel extends AbstractGraphModel
      */
     public void addNode(Object eventSource, ComponentPort port, CompositeEntity parent) {
 	try {
+            // FIXME: This needs to be a change request.
 	    port.setContainer(parent);
 	} catch (Exception ex) {
 	    ex.printStackTrace();

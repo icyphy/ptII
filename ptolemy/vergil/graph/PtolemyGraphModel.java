@@ -30,29 +30,46 @@
 
 package ptolemy.vergil.graph;
 
+// FIXME: Trim this list and replace with explict (per class) imports.
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
-import ptolemy.vergil.toolbox.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.actor.event.*;
 import ptolemy.moml.*;
-import diva.graph.*;
+import ptolemy.vergil.ExceptionHandler;
+import ptolemy.vergil.toolbox.EditorIcon;
+
+import diva.graph.AbstractGraphModel;
+import diva.graph.GraphEvent;
+import diva.graph.GraphException;
+import diva.graph.MutableGraphModel;
 import diva.graph.toolbox.*;
 import diva.util.*;
+
 import java.util.*;
+
+// FIXME: This class throws InternalErrorException on type-valid
+// uses of public methods.  This is probably not the right exception
+// to throw.  Also, the error messages are quite poor.
+
+// FIXME: Many of these methods have two versions, but it seems
+// unnecessary.  Avoid the instanceof tests, just do a cast, and document
+// that a ClassCastException will occur if the classes aren't right.
+
+// FIXME: Methods are not listed in alphabetical order.
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyGraphModel
 /**
 A graph for basic Ptolemy II models.  This model is useful for visual notations
-which expose all of the kernel objects (ports, relations, links and entities).
-
+that expose all of the kernel objects (ports, relations, links and entities).
+<p>
 This graph model represents ports, entities and relations as nodes.  Entities
 are proxied in the model by the icon that represents them.  Relations are
-proxied in the model by its vertecies (which generally exist in different
-places!)  Ports represent themselves in the model.  
-
+proxied in the model by its vertices (which generally exist in multiple
+places).  Ports represent themselves in the model.  
+<p>
 Edges may be connected between a port and a vertex, or between a port and
 another port.  For visual simplicity, both types of edges are represented by
 an instance of the Link class.  If an edge is placed between a port 
@@ -61,42 +78,34 @@ then the Link represents a proxy for a single link between the port and the
 vertex's Relation.  However, if an edge is placed between two ports, then 
 it proxies a Relation (with no vertex) and links from the relation to each 
 port.
+
 @author Steve Neuendorffer
 @version $Id$
  */
 public class PtolemyGraphModel extends AbstractGraphModel 
-    implements MutableGraphModel, Nameable{
+    implements MutableGraphModel {
     
-    /**
-     * Construct an empty graph model whose
-     * root is a new CompositeEntity.
+    /** Construct an empty graph model whose root is a new CompositeEntity.
      */
     public PtolemyGraphModel() {
-	_changeListener = new GraphChangeListener();
-	_root = new CompositeEntity();
-	_root.addChangeListener(_changeListener);
-	_visualObjectMap = new HashMap();
+        this(new CompositeEntity());
     }
 
-    /**
-     * Construct a new graph model whose root is the given composite entity.
-     * If an entity exists in the given composite that does not have an 
-     * icon, then create a default icon for it.  If a relation exists in the
-     * given composite that does not have a vertex and it is connected to 
-     * exactly two ports, then create a link to represent the relation.
-     * otherwise if a Relation exists without a vertex, create a Vertex to 
-     * represent it.
+    /** Construct a new graph model whose root is the given composite entity.
+     *  @param toplevel The top-level composite entity for the model.
      */
     public PtolemyGraphModel(CompositeEntity toplevel) {
-	_changeListener = new GraphChangeListener();
 	_root = toplevel;
-	_root.addChangeListener(_changeListener);
-	_visualObjectMap = new HashMap();
+	_root.addChangeListener(new GraphChangeListener());
     }
-    	
-    /**
-     * Return true if the head of the given edge can be attached to the
-     * given node.
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return true if the head of the given edge can be attached to the
+     *  given node.
+     *  @param edge The edge to attach.
+     *  @param node The node to attach to.
      */
     public boolean acceptHead(Object edge, Object node) {
 	if (node instanceof Port ||
@@ -106,9 +115,10 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    return false;
     }
 
-    /**
-     * Return true if the tail of the given edge can be attached to the
-     * given node.
+    /** Return true if the tail of the given edge can be attached to the
+     *  given node.
+     *  @param edge The edge to attach.
+     *  @param node The node to attach to.
      */
     public boolean acceptTail(Object edge, Object node) {
 	if (node instanceof Port ||
@@ -117,106 +127,31 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	} else
 	    return false;
     }
-    /**
-     * Add a node to the given graph and notify listeners with a
-     * NODE_ADDED event. <p>
+
+    /** Notify any graph listeners with a NODE_ADDED event that the specified
+     *  node has been added.
+     *  @param eventSource The source of the event.
+     *  @param node The node that has been added.
+     *  @param parent The parent to which it has been added.
      */
     public void addNode(Object eventSource, Object node, Object parent) {
-	if(node instanceof ComponentPort &&
-	   parent instanceof Icon) {
-	    addNode(eventSource, (ComponentPort)node, (Icon)parent);
-	} else if (node instanceof Icon &&
-		   parent instanceof CompositeEntity) {
-	    addNode(eventSource, (Icon)node, (CompositeEntity)parent);
-	} else if (node instanceof Port &&
-		   parent instanceof CompositeEntity) {
-	    addNode(eventSource, (ComponentPort)node, (CompositeEntity)parent);
-	} else if (node instanceof Vertex &&
-		   parent instanceof CompositeEntity) {
-	    addNode(eventSource, (Vertex)node, (CompositeEntity)parent);
-	} else {
-	    throw new InternalErrorException(
-                    "Ptolemy Graph Model does not recognize the " +
-		    "given graph objects. node = " + node + 
-                    "parent = " + parent);
-	}
-    }
-
-    /**
-     * Add a node to the given graph and notify listeners with a
-     * NODE_ADDED event. <p>
-     */
-    public void addNode(Object eventSource, Vertex vertex, 
-			CompositeEntity parent) {
-	ComponentRelation relation = 
-	    (ComponentRelation)vertex.getContainer();
-	try {
-	    _doChangeRequest(new PlaceRelation(this, relation, parent));
-	} catch (Exception ex) {
-            throw new GraphException(ex);
-	}
-        GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_ADDED,
-				      vertex, parent);
+        GraphEvent e = new GraphEvent(
+                eventSource, GraphEvent.NODE_ADDED, node, parent);
         dispatchGraphEvent(e);
     }
 
-    /**
-     * Add a node to the given graph and notify listeners with a
-     * NODE_ADDED event. <p>
+    /** Connect the specified edge to the given tail and head nodes,
+     *  then dispatch events to the listeners.  One of the tail or head
+     *  must be an instance of ComponentPort and the other must be an instance
+     *  of Vertex or an InternalErrorException will be thrown.
+     *  @param eventSource The source of the request.
+     *  @param link The link to change, which must be an instance of Link
+     *   or an InternalErrorException will be thrown.
+     *  @param tail The new tail.
+     *  @param head The new head.
      */
-    public void addNode(Object eventSource, Icon icon, 
-			CompositeEntity parent) {
-	ComponentEntity entity = (ComponentEntity)icon.getContainer();
-	try {
-	    _doChangeRequest(new PlaceEntity(this, entity, parent));
-	} catch (Exception ex) {
-            throw new GraphException(ex);
-	}
-        GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_ADDED,
-				      icon, parent);
-        dispatchGraphEvent(e);
-    }
-
-    /**
-     * Add a node to the given graph and notify listeners with a
-     * NODE_ADDED event. <p>
-     */
-    public void addNode(Object eventSource, ComponentPort port, 
-			CompositeEntity parent) {
-	try {
-	    _doChangeRequest(new PlacePort(this, port, parent));
-	} catch (Exception ex) {
-            throw new GraphException(ex);
-	}
-        GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_ADDED,
-				      port, parent);
-        dispatchGraphEvent(e);
-    }
-
-    /**
-     * Add a node to the given graph and notify listeners with a
-     * NODE_ADDED event. <p>
-     */
-    public void addNode(Object eventSource, ComponentPort port, Icon icon) {
-	ComponentEntity entity = (ComponentEntity)icon.getContainer();
-	try {
-	    port.setContainer(entity);
-	} catch (Exception ex) {
-            throw new GraphException(ex);
-	}
-        GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_ADDED,
-				      port, icon);
-        dispatchGraphEvent(e);
-    }
-
-    /**
-     * Connect the given edge to the given tail and head nodes,
-     * then dispatch events to the listeners.
-     */
-    public void connectEdge(Object eventSource, 
-			    Object link,
-			    Object tail,
-			    Object head) {
+    public void connectEdge(
+            Object eventSource, Object link, Object tail, Object head) {
 	if(link instanceof Link) {
 	    if(tail instanceof ComponentPort &&
 	       head instanceof Vertex) {
@@ -228,6 +163,11 @@ public class PtolemyGraphModel extends AbstractGraphModel
 		connectEdge(eventSource, (Link)link, 
 			    (Vertex)tail,
 			    (ComponentPort)head);
+	    } else {
+                throw new InternalErrorException(
+                        "PtolemyGraphModel does not recognize the " +
+                        "given graph objects. link = " + link +
+                        "tail = " + tail + " head = " + head);
 	    }
 	} else {
 	    throw new InternalErrorException(
@@ -237,37 +177,41 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}
     }
 
-    public void connectEdge(Object eventSource, 
-			    Link link, 
-			    Vertex vertex, 
-			    ComponentPort port) {
+    /** Connect the specified link to the given vertex (as tail) and 
+     *  port (as head), and then dispatch events to the listeners.
+     *  @param eventSource The source of the request.
+     *  @param link The link to change.
+     *  @param vertex The vertex to connect.
+     *  @param port The port to connect.
+     */
+    public void connectEdge(
+            Object eventSource, Link link, Vertex vertex, ComponentPort port) {
 	setEdgeTail(eventSource, link, vertex);
 	setEdgeHead(eventSource, link, port);
     }
 
-    /**
-     * Connect the given edge to the given tail and head nodes,
-     * then dispatch events to the listeners.
+    /** Connect the specified edge to the given port (as tail) and
+     *  vertex (as head), and then dispatch events to the listeners.
+     *  @param eventSource The source of the request.
+     *  @param link The link to change.
+     *  @param port The port to connect.
+     *  @param vertex The vertex to connect.
      */
-    public void connectEdge(Object eventSource,
-			    Link link, 
-			    ComponentPort port,
-			    Vertex vertex) {
+    public void connectEdge(
+             Object eventSource, Link link, ComponentPort port, Vertex vertex) {
 	setEdgeTail(eventSource, link, port);
 	setEdgeHead(eventSource, link, vertex);
     }
 
-    /** Return the container. */
-    public Nameable getContainer() {
-	return null;
-    }
-
-    /**
-     * Return true if this composite node contains the given node.
+    /** Return true if the specified composite node contains the given node.
+     *  Both arguments must be instances of NamedObj or an
+     *  InternalErrorException will be thrown.
+     *  @param composite A container.
+     *  @param node A node that may be contained by the container.
+     *  @return True if the container of the node is equal to the composite.
      */
     public boolean containsNode(Object composite, Object node) {
-	if(composite instanceof NamedObj &&
-	   node instanceof NamedObj) {
+	if(composite instanceof NamedObj && node instanceof NamedObj) {
 	    return containsNode((NamedObj)composite, (NamedObj)node);
 	} else {
 	    throw new InternalErrorException(
@@ -277,24 +221,21 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}
     }
 
-    /**
-     * Return true if this composite node contains the given node.
+    /** Return true if this composite node contains the given node.
+     *  @param composite A container.
+     *  @param node A node that may be contained by the container.
+     *  @return True if the container of the node is equal to the composite.
      */
     public boolean containsNode(NamedObj composite, NamedObj node) {
         return composite.equals(getParent(node));
     }
 
-    /** 
-     * Return a string representation of this graph model.
-     */
-    public String description() {
-	return "PtolemyGraphModel {" + _root.description() + "}";
-    }
-
-    /**
-     * Disconnect an edge from its two enpoints and notify graph
-     * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
-     * event.
+    /** Disconnect an edge from its two enpoints and notify graph
+     *  listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
+     *  event.
+     *  @param eventSource The source of the event.
+     *  @param link The link to delete, which must be an instance of Link
+     *   or an InternalErrorException will be thrown.
      */
     public void disconnectEdge(Object eventSource, Object edge) {
 	if(edge instanceof Link) {
@@ -306,26 +247,21 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}
     }
 
-    /**
-     * Disconnect an edge from its two endpoints and notify graph
-     * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
-     * event.
+    /** Disconnect an edge from its two endpoints and notify graph
+     *  listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
+     *  event.
+     *  @param eventSource The source of the event.
+     *  @param link The link to delete.
      */
     public void disconnectEdge(Object eventSource, final Link link) {
 	Object head = link.getHead();
 	Object tail = link.getTail();
-	_doChangeRequest(new ChangeRequest(this, 
+	_root.requestChange(new ChangeRequest(this,
 		"disconnect link" + link.getFullName()) {
-	    public void execute() throws ChangeFailedException {
-		try {
-		    link.unlink();
-		    link.setHead(null);
-		    link.setTail(null);
-		} catch (IllegalActionException ex) {
-		    throw new ChangeFailedException(this, ex.getMessage());
-		} catch (NameDuplicationException ex) {
-		    throw new ChangeFailedException(this, ex.getMessage());
-		}
+	    protected void _execute() throws Exception {
+                link.unlink();
+                link.setHead(null);
+                link.setTail(null);
 	    }
 	});
 	GraphEvent e;
@@ -337,25 +273,18 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	dispatchGraphEvent(e);
     }
 
-    /**
-     * Return the root graph of this graph model.
+    /** Return the root graph of this graph model.
+     *  @return The root of this graph model, which is an instance of
+     *   CompositeEntity.
      */
     public Object getRoot() {
         return _root;
     }
 
-    /** Return the full name, which reflects the container object, if there
-     *  is one. For example the implementation in NamedObj concatenates the
-     *  full name of the container objects with the name of the this object,
-     *  separated by periods.
-     *  @return The full name of the object.
-     */
-    public String getFullName() {
-	return "PtolemyGraphModel." + _root.getFullName();
-    }
-
-    /**
-     * Return the head node of the given edge.
+    /** Return the head node of the given edge.
+     *  @param link The edge, which must be an instance of Link or an
+     *   InternalErrorException will be thrown.
+     *  @return The head node.
      */
     public Object getHead(Object link) {
 	if(link instanceof Link) {
@@ -367,30 +296,25 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}       
     }
 		
-    /**
-     * Return the head node of the given edge.
+    /** Return the head node of the given edge.
+     *  @param link The edge.
+     *  @return The head node.
      */
     public Object getHead(Link link) {
 	return link.getHead();
     }
 	
-    /** Return the name of the object.
-     *  @return The name of the object.
-     */
-    public String getName() {
-	return "PtolemyGraphModel";
-    }
-	
-    /**
-     * Return the number of nodes contained in
-     * this graph or composite node.
+    /** Return the number of nodes contained in the specified composite node.
+     *  If the argument is a composite entity, then return the number of
+     *  ports, plus the number of entities, plus the number of vertices
+     *  associated with relations.  If the argument is an instance of Icon,
+     *  then return the number of ports it contains.
+     *  @param composite A composite node, which must be either an instance
+     *   of Icon or of CompositeEntity, or an InternalErrorException will be
+     *   thrown.
+     *  @return The number of nodes that it contains.
      */
     public int getNodeCount(Object composite) {
-	if(!isComposite(composite)) {
-	    throw new InternalErrorException("object " + composite + 
-					     " is not a composite node in " + 
-					     "this graph model.");
-	}
 	if(composite instanceof CompositeEntity) {
 	    return getNodeCount((CompositeEntity)composite);
 	} else if(composite instanceof Icon) {
@@ -402,9 +326,11 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}
     }
 	
-    /**
-     * Return the number of nodes contained in
-     * this graph or composite node.
+    /** Return the number of nodes contained in the specified entity, which
+     *  is the number of ports, plus the number of entities, plus the
+     *  number of vertices associated with relations.
+     *  @param entity A composite entity.
+     *  @return The number of nodes contained.
      */
     public int getNodeCount(CompositeEntity entity) {
 	int count = entity.entityList().size() + entity.portList().size();
@@ -416,9 +342,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	return count;
     }
 	
-    /**
-     * Return the number of nodes contained in
-     * this graph or composite node.
+    /** Return the number of ports contained by the specified icon.
+     *  @param icon A node in the graph.
+     *  @return The number of ports it contains.
      */
     public int getNodeCount(Icon icon) {
 	return ((ComponentEntity)icon.getContainer()).portList().size();
@@ -630,12 +556,14 @@ public class PtolemyGraphModel extends AbstractGraphModel
         return false;
     }
 
-    /**
-     * Return true if the given object is a composite
-     * node in this model, i.e. it contains children.
+    /** Return true if the given object is a composite node in this model.
+     *  An object is a composite if it is an instance of Icon or is the
+     *  root node.
+     *  @param node The node that may be composite.
+     *  @return True if the node is composite.
      */
-    public boolean isComposite(Object o) {
-        return(o instanceof Icon) || getRoot().equals(o);
+    public boolean isComposite(Object node) {
+        return(node instanceof Icon) || getRoot().equals(node);
     }
 
     /**
@@ -835,9 +763,12 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	return vertexLinkList.iterator();
     }	
 
-    /**
-     * Delete a node from its parent graph and notify
-     * graph listeners with a NODE_REMOVED event.
+    /** Delete a node from its parent and notify
+     *  graph listeners with a NODE_REMOVED event.
+     *  This method generates a change request.
+     *  @param eventSource The source of the event.
+     *  @param node The node to remove, which must be an instance of
+     *   ComponentPort, Icon, or Vertex.
      */
     public void removeNode(Object eventSource, Object node) {
 	Object parent = getParent(node);
@@ -852,27 +783,32 @@ public class PtolemyGraphModel extends AbstractGraphModel
                     "Ptolemy Graph Model does not recognize the " +
 		    "given graph objects. node = " + node);
 	}
-	GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_REMOVED,
-				      node, parent);
+	GraphEvent e = new GraphEvent(
+                eventSource, GraphEvent.NODE_REMOVED, node, parent);
 	dispatchGraphEvent(e);
     }
     
-    /**
-     * Delete a node from its parent graph and notify
-     * graph listeners with a NODE_REMOVED event.
+    /** Delete a port from its parent entity and notify
+     *  graph listeners with a NODE_REMOVED event.
+     *  This method generates a change request.
+     *  @param eventSource The source of the event.
+     *  @param node The port to remove.
      */
     public void removeNode(Object eventSource, ComponentPort port) {
 	// remove any connected edges first.
-	
-	_removeConnectedEdges(eventSource, port);
-	
-	
-	_doChangeRequest(new RemovePort(this, port));
+        _removeConnectedEdges(eventSource, port);
+
+	ComponentEntity container = (ComponentEntity)port.getContainer();
+        String moml = "<deletePort name=\"" + port.getName() + "\"/>";
+        ChangeRequest request = new MoMLChangeRequest(this, container, moml);
+        _root.requestChange(request);
     }
 	
-    /**
-     * Delete a node from its parent graph and notify
-     * graph listeners with a NODE_REMOVED event.
+    /** Delete an entity from its parent entity and notify
+     *  graph listeners with a NODE_REMOVED event.
+     *  This method generates a change request.
+     *  @param eventSource The source of the event.
+     *  @param icon The icon of the entity to remove.
      */
     public void removeNode(Object eventSource, Icon icon) {
 	// remove all the edges connected to each port of the icon.
@@ -880,31 +816,38 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	while(nodes.hasNext()) {
 	    _removeConnectedEdges(eventSource, (ComponentPort)nodes.next());
 	}
-	
-	final ComponentEntity entity = (ComponentEntity)icon.getContainer();
-	_doChangeRequest(new RemoveActor(this, entity));
-
+	ComponentEntity entity = (ComponentEntity)icon.getContainer();
+	CompositeEntity container = (CompositeEntity)entity.getContainer();
+        String moml = "<deleteEntity name=\"" + entity.getName() + "\"/>";
+        ChangeRequest request = new MoMLChangeRequest(this, container, moml);
+        _root.requestChange(request);
     }  
 
-    /**
-     * Delete a node from its parent graph and notify
-     * graph listeners with a NODE_REMOVED event.
+    /** Delete a vertex from its parent and notify
+     *  graph listeners with a NODE_REMOVED event.
+     *  This method generates a change request.
+     *  @param eventSource The source of the event.
+     *  @param icon The icon of the entity to remove.
      */
     public void removeNode(Object eventSource, final Vertex vertex) {
-	final ComponentRelation relation =
-	    (ComponentRelation)vertex.getContainer();
-	_doChangeRequest(new RemoveRelation(this, relation));
+	ComponentRelation relation = (ComponentRelation)vertex.getContainer();
+	CompositeEntity container = (CompositeEntity)relation.getContainer();
+        String moml = "<deleteRelation name=\"" + relation.getName() + "\"/>";
+        ChangeRequest request = new MoMLChangeRequest(this, container, moml);
+        _root.requestChange(request);
     }
 
-    /**
-     * Connect an edge to the given head node and notify listeners
-     * with an EDGE_HEAD_CHANGED event.
+    /** Connect an edge to the given head node and notify listeners
+     *  with an EDGE_HEAD_CHANGED event.
+     *  @param eventSource The source of the request.
+     *  @param link The edge to change, which must be an instance of Link
+     *   or an InternalErrorException will be thrown.
+     *  @param head The new head for the edge, which must be an instance
+     *   of NamedObj or a ClassCastException will be thrown.
      */
     public void setEdgeHead(Object eventSource, Object link, Object object) {
 	if(link instanceof Link) {
-	    setEdgeHead(eventSource, 
-			(Link)link,
-			(NamedObj)object);
+	    setEdgeHead(eventSource, (Link)link, (NamedObj)object);
 	} else {
 	    throw new InternalErrorException(
                     "Ptolemy Graph Model does not recognize the " +
@@ -913,98 +856,74 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}
     }
 
-    /**
-     * Connect an edge to the given head node and notify listeners
-     * with an EDGE_HEAD_CHANGED event.
+    /** Connect an edge to the given head node and notify listeners
+     *  with an EDGE_HEAD_CHANGED event.
+     *  @param eventSource The source of the request.
+     *  @param link The edge to change.
+     *  @param head The new head for the edge.
      */
-    public void setEdgeHead(Object eventSource, 
-			    final Link link, final Object head) {
-	_doChangeRequest(new ChangeRequest(this, "move head of link" + 
-					   link.getFullName()) {
-	    public void execute() throws ChangeFailedException {
-		System.out.println("executing change request");
-		try {
-		    link.unlink();
-		} catch (Exception ex) {
-		    throw new ChangeFailedException(this, ex.getMessage());
-		}
-		
+    public void setEdgeHead(
+            Object eventSource, final Link link, final Object head) {
+	_root.requestChange(new ChangeRequest(
+                this, "move head of link" + link.getFullName()) {
+	    protected void _execute() throws Exception {
+                link.unlink();		
 		link.setHead(head);
-		try {
-		    link.link();
-		} catch (Exception ex) {
-		    throw new ChangeFailedException(this, ex.getMessage());
-		}
-		System.out.println("finished change request");
+                link.link();
 	    }
 	});
-	GraphEvent e = new GraphEvent(eventSource, 
-				      GraphEvent.EDGE_HEAD_CHANGED,
-				      link, head);
+	GraphEvent e = new GraphEvent(
+                eventSource, GraphEvent.EDGE_HEAD_CHANGED, link, head);
         dispatchGraphEvent(e);
     }
 
-    /**
-     * Connect an edge to the given head node and notify listeners
-     * with an EDGE_HEAD_CHANGED event.
+    /** Connect an edge to the given head node and notify listeners
+     *  with an EDGE_HEAD_CHANGED event.
+     *  @param eventSource The source of the request.
+     *  @param link The link to change, which must be an instance of Link or
+     *   an InternalErrorException will be thrown.
+     *  @param tail The new tail for the link, which must be an instance of
+     *   NamedObj or a class cast exception will be thrown.
      */
-    public void setEdgeTail(Object eventSource, Object link, Object object) {
+    public void setEdgeTail(Object eventSource, Object link, Object tail) {
 	if(link instanceof Link) {
-	    setEdgeTail(eventSource, (Link)link,
-			(NamedObj)object);
+	    setEdgeTail(eventSource, (Link)link, (NamedObj)tail);
 	} else {
 	    throw new InternalErrorException(
                     "Ptolemy Graph Model does not recognize the " +
 		    "given graph objects. link = " + link +
-                    "object = " + object);
+                    "tail = " + tail);
 	}
     }
 
-    /**
-     * Connect an edge to the given tail node and notify listeners
-     * with an EDGE_TAIL_CHANGED event.
+    /** Connect an edge to the given tail node and notify listeners
+     *  with an EDGE_TAIL_CHANGED event.
+     *  @param eventSource The source of the request.
+     *  @param link The link to change.
+     *  @param tail The new tail for the link.
      */
-    public void setEdgeTail(Object eventSource, final Link link,
-			    final NamedObj tail) {
-	_doChangeRequest(new ChangeRequest(this, "move head of link" + 
-					   link.getFullName()) {
-	    public void execute() throws ChangeFailedException {
-		System.out.println("executing change request");
-		try {
-		    link.unlink();
-		} catch (Exception ex) {
-		    throw new ChangeFailedException(this, ex.getMessage());
-		}
+    public void setEdgeTail(
+            Object eventSource, final Link link, final NamedObj tail) {
+	_root.requestChange(new ChangeRequest(
+                this, "move head of link" + link.getFullName()) {
+	    protected void _execute() throws Exception {
+                link.unlink();
 		link.setTail(tail);
-		try {
-		    link.link();
-		} catch (Exception ex) {
-		    throw new ChangeFailedException(this, ex.getMessage());
-		}
+                link.link();
 	    }
 	});
-	GraphEvent e = new GraphEvent(eventSource, 
-				      GraphEvent.EDGE_TAIL_CHANGED,
-				      link, tail);
+	GraphEvent e = new GraphEvent(
+                eventSource, GraphEvent.EDGE_TAIL_CHANGED, link, tail);
         dispatchGraphEvent(e);
     }
 
-    /** Set or change the name. By convention, if the argument is null,
-     *  the name should be set to an empty string rather than to null.
-     *  @param name The new name.
-     *  @exception IllegalActionException If the name contains a period.
-     *  @exception NameDuplicationException If the container already
-     *   contains an object with this name.
-     */
-    public void setName(String name)
-	throws IllegalActionException, NameDuplicationException {
-	throw new IllegalActionException(
-	     "The name of a graph model cannot be changed");
-    }
-
-    /**
-     * Set the semantic object correspoding
-     * to the given node, edge, or composite.
+    /** Set the semantic object corresponding to the given node, edge,
+     *  or composite.  The "semantic object" is simply some object
+     *  associated with the node.  In this class, the semantic object
+     *  is always an entity, a port, or a relation, and it does not
+     *  make sense to set it directly.  Thus, this method throws
+     *  an InternalErrorException (which is admittedly the wrong
+     *  exception to throw).
      */
     public void setSemanticObject(Object o, Object sem) {
 	throw new InternalErrorException(
@@ -1012,12 +931,16 @@ public class PtolemyGraphModel extends AbstractGraphModel
                 " setting semantic objects.");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
     /** Mutations may happen to the ptolemy model without the knowledge of
-     * this model.  This change listener listens for those changes
-     * and when they occur, issues a GraphEvent so that any views of
-     * this graph model can come back and update themselves.
+     *  this model.  This change listener listens for those changes
+     *  and when they occur, issues a GraphEvent so that any views of
+     *  this graph model can come back and update themselves.
      */
     public class GraphChangeListener implements ChangeListener {
+
         /** Notify the listener that a change has been successfully executed.
 	 *  @param change The change that has been executed.
 	 */
@@ -1025,26 +948,25 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    // Ignore anything that comes from this graph model.  
 	    // the other methods take care of issuing the graph event in
 	    // that case.
-	    if(change.getOriginator() == PtolemyGraphModel.this) return;
+	    if(change.getOriginator() == PtolemyGraphModel.this) {
+                return;
+            }
 	    // Otherwise notify any graph listeners that the graph might have
 	    // completely changed.
-	    dispatchGraphEvent(new GraphEvent(this, 
-				  GraphEvent.STRUCTURE_CHANGED,
-				  getRoot()));
+	    dispatchGraphEvent(new GraphEvent(
+                    this, GraphEvent.STRUCTURE_CHANGED, getRoot()));
 	}
+
+        /** Notify the listener that the change has failed with the
+         *  specified exception.
+ 	 *  @param change The change that has failed.
+         *  @param exception The exception that was thrown.
+         */
+        public void changeFailed(ChangeRequest change, Exception exception) {
+            ExceptionHandler.show("Change failed", exception);
+        }
     }    
 
-    // Perform the specified change request.  Queue the request with the
-    // root entity.  If the change fails, then throw a graph exception. 
-    private void _doChangeRequest(ChangeRequest request) {
-	try {
-	    _root.requestChange(request);
-	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new GraphException(ex);
-	}
-    }
-    
     // Remove all the edges connected to the given port.
     private void _removeConnectedEdges(Object eventSource, 
 				       ComponentPort port) {
@@ -1159,13 +1081,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}
     }
 
-    /**
-     * The root of the graph contained by this model.
-     */
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The root of the graph contained by this model.
     private CompositeEntity _root = null;
-
-    private Map _visualObjectMap;
-
-    private GraphChangeListener _changeListener;
 }
-

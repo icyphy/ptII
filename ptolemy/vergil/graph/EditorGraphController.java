@@ -30,27 +30,30 @@
 
 package ptolemy.vergil.graph;
 
+// FIXME: Replace with per-class imports.
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
+import ptolemy.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.vergil.VergilApplication;
-import ptolemy.gui.*;
 import ptolemy.moml.*;
+import ptolemy.vergil.VergilApplication;
+
 import diva.gui.*;
 import diva.gui.toolbox.*;
-import diva.graph.*;
+import diva.graph.GraphPane;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
 import diva.canvas.interactor.*;
 import diva.canvas.toolbox.*;
-import java.awt.geom.Rectangle2D;
 import diva.util.Filter;
-import java.awt.*;
 import diva.util.java2d.Polygon2D;
+
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
+import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Enumeration;
 import java.util.Iterator;

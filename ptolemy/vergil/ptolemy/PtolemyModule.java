@@ -343,7 +343,6 @@ public class PtolemyModule implements Module {
 		// to code in MoMLApplet and MoMLApplication.  I think
 		// this should all be in ModelPane.
 				
-
 		// Create a manager.
 		// Attaching these listeners is a nasty business...
 		// All Managers are not created equal, since some have
@@ -521,16 +520,11 @@ public class PtolemyModule implements Module {
 	    GraphModel model = controller.getGraphModel();
 	    final CompositeEntity toplevel =
 		(CompositeEntity)model.getRoot();
-	    _doChangeRequest(toplevel, new ChangeRequest(toplevel, 
-		"Creating new Port in " + toplevel.getFullName()) {
-		public void execute() throws ChangeFailedException {
-		    try {
-			Port port = 
-			    toplevel.newPort(toplevel.uniqueName("port"));
-			controller.addNode(port, finalX, finalY);
-		    } catch (Exception ex) {
-			throw new ChangeFailedException(this, ex.getMessage());
-		    }
+	    toplevel.requestChange(new ChangeRequest(this,
+		    "Creating new Port in " + toplevel.getFullName()) {
+		protected void _execute() throws Exception {
+                    Port port =  toplevel.newPort(toplevel.uniqueName("port"));
+                    controller.addNode(port, finalX, finalY);
 		}
 	    });
 	}
@@ -571,20 +565,16 @@ public class PtolemyModule implements Module {
 	    final GraphModel model = controller.getGraphModel();
 	    final CompositeEntity toplevel =
 		(CompositeEntity)model.getRoot();
-	    _doChangeRequest(toplevel, new ChangeRequest(toplevel, 
+	    toplevel.requestChange(new ChangeRequest(this,
 		"Creating new Relation in " + toplevel.getFullName()) {
-		public void execute() throws ChangeFailedException {
-		    try {
-			Relation relation = 
-			    toplevel.newRelation(toplevel.uniqueName("relation"));
-			Vertex vertex = new Vertex(relation,
-						   relation.uniqueName("vertex"));
-			controller.addNode(vertex, finalX, finalY);
-		    } catch (Exception ex) {
-			throw new ChangeFailedException(this, ex.getMessage());
-		    }
+		protected void _execute() throws Exception {
+                    Relation relation = 
+                         toplevel.newRelation(toplevel.uniqueName("relation"));
+		    Vertex vertex =
+                         new Vertex(relation, relation.uniqueName("vertex"));
+                    controller.addNode(vertex, finalX, finalY);
 		}
-	    });
+            });
 	}
     }
 
@@ -761,18 +751,6 @@ public class PtolemyModule implements Module {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    // Queue the change request with the given entity.  show any exceptions
-    // that occur in the user interface.
-    private void _doChangeRequest(CompositeEntity entity, 
-				 ChangeRequest request) {
-	try {
-	    entity.requestChange(request);
-	} 
-	catch (ChangeFailedException ex) {
-	    getApplication().showError("Create relation failed:", ex);
-	}
-    }
     
     // Redo the layout of the given JGraph.
     private void _redoLayout(JGraph jgraph) {
