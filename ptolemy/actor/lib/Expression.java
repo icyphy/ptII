@@ -177,7 +177,7 @@ public class Expression extends TypedAtomicActor {
         Token result = expression.getToken();
         if (result == null) {
             throw new IllegalActionException(this,
-            "Expression yields a null result: " + expression.getExpression());
+                    "Expression yields a null result: " + expression.getExpression());
         }
         output.broadcast(result);
     }
@@ -210,8 +210,8 @@ public class Expression extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this,
-            "Cannot add an input port that is not a TypedIOPort: "
-            + port.getName());
+                    "Cannot add an input port that is not a TypedIOPort: "
+                    + port.getName());
         }
         super._addPort(port);
         String portName = port.getName();
@@ -225,7 +225,7 @@ public class Expression extends TypedAtomicActor {
         } else if ((there instanceof Parameter)
                 || !(there instanceof Variable)) {
             throw new IllegalActionException(this, "Port name collides with"
-            + " another attribute name: " + portName);
+                    + " another attribute name: " + portName);
         }
         // NOTE: We assume that if there is already a variable with
         // this name then that is the variable we are intended to use.

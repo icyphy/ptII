@@ -135,9 +135,9 @@ public class StringToken extends Token {
 	int compare = TypeLattice.compare(new StringToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("StringToken.convert: " +
-                "type of argument: " + token.getClass().getName() +
-                "is higher or incomparable with StringToken in the " +
-	 	"type hierarchy.");
+                    "type of argument: " + token.getClass().getName() +
+                    "is higher or incomparable with StringToken in the " +
+                    "type hierarchy.");
 	}
 
 	if (token instanceof StringToken) {
@@ -145,7 +145,7 @@ public class StringToken extends Token {
 	}
 
 	if (token instanceof MatrixToken || token instanceof ScalarToken ||
-	    token instanceof BooleanToken) {
+                token instanceof BooleanToken) {
 	    String str = token.stringValue();
 	    return new StringToken(str);
 	}

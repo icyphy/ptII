@@ -90,7 +90,7 @@ public class Bernoulli extends RandomSource {
     public Object clone(Workspace ws) {
         Bernoulli newobj = (Bernoulli)super.clone(ws);
         newobj.trueProbability =
-                (Parameter)newobj.getAttribute("trueProbability");
+            (Parameter)newobj.getAttribute("trueProbability");
         return newobj;
     }
 

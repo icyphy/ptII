@@ -221,7 +221,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             throws IllegalActionException, NoRoomException {
         if (token == null) {
             throw new IllegalActionException(this,
-            "Cannot send a null token.");
+                    "Cannot send a null token.");
         }
 	Receiver[][] farRec;
         try {
@@ -238,9 +238,9 @@ public class TypedIOPort extends IOPort implements Typeable {
 	    if (compare == CPO.HIGHER ||
                     compare == CPO.INCOMPARABLE) {
 		throw new IllegalArgumentException("Run-time type checking " +
-		    "failed. token: " + token.getClass().getName() +
-		    ", port: " + getFullName() + ", port type: " +
-		    getType().getName());
+                        "failed. token: " + token.getClass().getName() +
+                        ", port: " + getFullName() + ", port type: " +
+                        getType().getName());
 	    }
 
 	    // Note that the getRemoteReceivers() method doesn't throw
@@ -311,7 +311,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public void setTypeAtLeast(Typeable lesser) {
 	Inequality ineq = new Inequality(lesser.getTypeTerm(),
-					 this.getTypeTerm());
+                this.getTypeTerm());
 	_constraints.insertLast(ineq);
     }
 
@@ -320,7 +320,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public void setTypeAtMost(Class type) {
 	Inequality ineq = new Inequality(this.getTypeTerm(),
-					 new TypeConstant(type));
+                new TypeConstant(type));
 	_constraints.insertLast(ineq);
     }
 
@@ -362,10 +362,10 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public void setTypeSameAs(Typeable equal) {
 	Inequality ineq = new Inequality(this.getTypeTerm(),
-					 equal.getTypeTerm());
+                equal.getTypeTerm());
 	_constraints.insertLast(ineq);
 	ineq = new Inequality(equal.getTypeTerm(),
-			      this.getTypeTerm());
+                this.getTypeTerm());
 	_constraints.insertLast(ineq);
     }
 
@@ -640,7 +640,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 	    }
 
 	    throw new IllegalActionException("TypeTerm.setValue: Cannot set "
-                + "the value of a type constant.");
+                    + "the value of a type constant.");
         }
 
         ///////////////////////////////////////////////////////////////

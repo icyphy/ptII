@@ -228,7 +228,7 @@ public final class TypeLattice
 
 	if ( !lattice.isLattice()) {
 	    throw new InternalErrorException("TypeLattice: The type " +
-		"hierarchy is not a lattice.");
+                    "hierarchy is not a lattice.");
 	}
 	return lattice;
     }

@@ -98,8 +98,8 @@ public class LongToken extends ScalarToken {
             }
         } catch (Exception ex) {
             throw new IllegalActionException("LongToken: add method not " +
-                   "supported between " + getClass().getName() + " and "
-                   + token.getClass().getName());
+                    "supported between " + getClass().getName() + " and "
+                    + token.getClass().getName());
         }
     }
 
@@ -138,9 +138,9 @@ public class LongToken extends ScalarToken {
 	int compare = TypeLattice.compare(new LongToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("LongToken.convert: " +
-	    	"type of argument: " + token.getClass().getName() +
-	    	"is higher or incomparable with LongToken in the type " +
-		"hierarchy.");
+                    "type of argument: " + token.getClass().getName() +
+                    "is higher or incomparable with LongToken in the type " +
+                    "hierarchy.");
 	}
 
 	if (token instanceof LongToken) {
@@ -185,8 +185,8 @@ public class LongToken extends ScalarToken {
         } catch (Exception ex) {
             String str = "divide method not supported between"
             	+ this.getClass().getName() + " and "
-            	+ divisor.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+                    + divisor.getClass().getName();
+                    throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
 
@@ -213,7 +213,7 @@ public class LongToken extends ScalarToken {
      *  @exception IllegalActionException If the passed token is
      *  not of a type that can be compared with this Tokens value.
      *  @return BooleanToken indicating whether the values are equal.
-    */
+     */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         long typeInfo = TypeLattice.compare(this, token);
         try {

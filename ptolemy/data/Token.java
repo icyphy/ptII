@@ -168,7 +168,7 @@ public class Token {
      */
     public Token modulo(Token rightArg) throws  IllegalActionException {
         String str = "modulo method not supported on " +
-        	this.getClass().getName() + " objects.";
+            this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
@@ -182,7 +182,7 @@ public class Token {
      *  @return A new Token containing the result.
      */
     public Token moduloReverse(Token leftArg)
-	     throws IllegalActionException {
+            throws IllegalActionException {
         String str = "moduloReverse method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);

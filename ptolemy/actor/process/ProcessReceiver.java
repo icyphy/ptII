@@ -106,7 +106,7 @@ public interface ProcessReceiver extends Receiver {
     public void requestPause(boolean value);
 
     /** Set a local flag requesting that the simulation be finished.
-      */
+     */
     public void requestFinish();
 }
 

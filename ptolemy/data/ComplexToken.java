@@ -58,14 +58,14 @@ public class ComplexToken extends ScalarToken {
     }
 
     /* FIXME: It seems that initializing from String should be supported
-    // in the Complex class. This constructor will be supported after
-    // the Complex class supports that.
-    // Construct a ComplexToken from the specified string.
-    // @exception IllegalArgumentException If the Token could not
-    //  be created with the given String.
+       // in the Complex class. This constructor will be supported after
+       // the Complex class supports that.
+       // Construct a ComplexToken from the specified string.
+       // @exception IllegalArgumentException If the Token could not
+       //  be created with the given String.
 
-    public ComplexToken(String init) throws IllegalArgumentException {
-    }
+       public ComplexToken(String init) throws IllegalArgumentException {
+       }
     */
 
     ///////////////////////////////////////////////////////////////////
@@ -91,8 +91,8 @@ public class ComplexToken extends ScalarToken {
         int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
             String msg = "add method not supported between " +
-                         this.getClass().getName() + " and " +
-                         token.getClass().getName();
+                this.getClass().getName() + " and " +
+                token.getClass().getName();
             throw new IllegalActionException(msg);
         } else if (compare == CPO.LOWER) {
             return token.addReverse(this);
@@ -118,8 +118,8 @@ public class ComplexToken extends ScalarToken {
 	int compare = TypeLattice.compare(this, token);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the specified "
-                + "token " + token.getClass().getName() + " is not lower than "
-                + getClass().getName());
+                    + "token " + token.getClass().getName() + " is not lower than "
+                    + getClass().getName());
         }
 
 	// add is commutative on Complex.
@@ -153,9 +153,9 @@ public class ComplexToken extends ScalarToken {
 	int compare = TypeLattice.compare(new ComplexToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("DoubleToken.convert: " +
-	    	"type of argument: " + token.getClass().getName() +
-	    	"is higher or incomparable with ComplexToken in the type " +
-		"hierarchy.");
+                    "type of argument: " + token.getClass().getName() +
+                    "is higher or incomparable with ComplexToken in the type " +
+                    "hierarchy.");
 	}
 
 	if (token instanceof ComplexToken) {
@@ -193,9 +193,9 @@ public class ComplexToken extends ScalarToken {
         int compare = TypeLattice.compare(this, divisor);
 	if (compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("ComplexToken.divide: " +
-                "type of argument: " + divisor.getClass().getName() +
-                "is incomparable with ComplexToken in the type " +
-                "hierarchy.");
+                    "type of argument: " + divisor.getClass().getName() +
+                    "is incomparable with ComplexToken in the type " +
+                    "hierarchy.");
         }
 
         if (compare == CPO.LOWER) {
@@ -221,8 +221,8 @@ public class ComplexToken extends ScalarToken {
 	int compare = TypeLattice.compare(this, dividend);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the dividend "
-                + dividend.getClass().getName() + " is not lower than "
-                + getClass().getName());
+                    + dividend.getClass().getName() + " is not lower than "
+                    + getClass().getName());
         }
 
         ComplexToken tem = (ComplexToken)this.convert(dividend);
@@ -241,13 +241,13 @@ public class ComplexToken extends ScalarToken {
      *   not of a type that can be compared with this Token.
      */
     public BooleanToken isEqualTo(Token token)
-	     throws IllegalActionException {
+            throws IllegalActionException {
         int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("ComplexToken.isEqualTo: " +
-                "type of argument: " + token.getClass().getName() +
-                "is incomparable with ComplexToken in the type " +
-                "hierarchy.");
+                    "type of argument: " + token.getClass().getName() +
+                    "is incomparable with ComplexToken in the type " +
+                    "hierarchy.");
         }
 
         if (compare == CPO.LOWER) {
@@ -283,8 +283,8 @@ public class ComplexToken extends ScalarToken {
         int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
             String msg = "multiply method not supported between " +
-                         this.getClass().getName() + " and " +
-                         token.getClass().getName();
+                this.getClass().getName() + " and " +
+                token.getClass().getName();
             throw new IllegalActionException(msg);
         } else if (compare == CPO.LOWER) {
             return token.multiplyReverse(this);
@@ -310,9 +310,9 @@ public class ComplexToken extends ScalarToken {
 	int compare = TypeLattice.compare(this, token);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("Complex.multiplyReverse: "
-		+ "The type of the specified token "
-		+ token.getClass().getName()
-		+ " is not lower than " + getClass().getName());
+                    + "The type of the specified token "
+                    + token.getClass().getName()
+                    + " is not lower than " + getClass().getName());
         }
 
 	// multiply is commutative on Complex.
@@ -352,9 +352,9 @@ public class ComplexToken extends ScalarToken {
         int compare = TypeLattice.compare(this, rightArg);
 	if (compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("ComplexToken.subtract: " +
-                "type of argument: " + rightArg.getClass().getName() +
-                "is incomparable with ComplexToken in the type " +
-                "hierarchy.");
+                    "type of argument: " + rightArg.getClass().getName() +
+                    "is incomparable with ComplexToken in the type " +
+                    "hierarchy.");
         }
 
         if (compare == CPO.LOWER) {
@@ -380,8 +380,8 @@ public class ComplexToken extends ScalarToken {
 	int compare = TypeLattice.compare(this, leftArg);
         if (! (compare == CPO.HIGHER)) {
             throw new IllegalActionException("The type of the specified "
-                + "token " + leftArg.getClass().getName() + " is not lower "
-		+ "than " + getClass().getName());
+                    + "token " + leftArg.getClass().getName() + " is not lower "
+                    + "than " + getClass().getName());
         }
 
         ComplexToken tem = (ComplexToken)this.convert(leftArg);

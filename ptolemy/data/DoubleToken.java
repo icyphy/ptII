@@ -158,9 +158,9 @@ public class DoubleToken extends ScalarToken {
 	int compare = TypeLattice.compare(new DoubleToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("DoubleToken.convert: " +
-	    	"type of argument: " + token.getClass().getName() +
-	    	"is higher or incomparable with DoubleToken in the type " +
-		"hierarchy.");
+                    "type of argument: " + token.getClass().getName() +
+                    "is higher or incomparable with DoubleToken in the type " +
+                    "hierarchy.");
 	}
 
 	if (token instanceof DoubleToken) {
@@ -209,7 +209,7 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-     /** Return a new Token whose value is the value of the argument token
+    /** Return a new Token whose value is the value of the argument token
      *  divided by the value of this token. Type resolution
      *  also occurs here, with the returned Token type chosen to achieve
      *  a lossless conversion.
@@ -334,7 +334,7 @@ public class DoubleToken extends ScalarToken {
                 return rightFactor.multiplyReverse(this);
             } else if (rightFactor instanceof DoubleToken) {
                 double result = _value *
-				((DoubleToken)rightFactor).doubleValue();
+                    ((DoubleToken)rightFactor).doubleValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.HIGHER) {
                 DoubleToken tmp = (DoubleToken)this.convert(rightFactor);

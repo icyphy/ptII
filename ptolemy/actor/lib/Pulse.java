@@ -125,17 +125,17 @@ public class Pulse extends SequenceSource {
             throws IllegalActionException {
         if (attribute == indexes) {
             int[][] idx =
-                   ((IntMatrixToken)indexes.getToken()).intMatrix();
+                ((IntMatrixToken)indexes.getToken()).intMatrix();
             if (idx.length != 1) {
                 throw new IllegalActionException(this,
-                "Cannot set indexes parameter to a non-row vector.");
+                        "Cannot set indexes parameter to a non-row vector.");
             }
             int previous = -1;
             for (int j=0; j<idx[0].length; j++) {
                 if (idx[0][j] <= previous) {
                     throw new IllegalActionException(this,
-                    "Value of indexes must be an array of nonnegative "
-                    + "integers increasing in value.");
+                            "Value of indexes must be an array of nonnegative "
+                            + "integers increasing in value.");
                 }
                 previous = idx[0][j];
             }
@@ -143,12 +143,12 @@ public class Pulse extends SequenceSource {
             Token contents = values.getToken();
             if (!(contents instanceof MatrixToken)) {
                 throw new IllegalActionException(this,
-                "Cannot set values parameter to a non-matrix.");
+                        "Cannot set values parameter to a non-matrix.");
             }
             int rowCount = ((MatrixToken)contents).getRowCount();
             if (rowCount != 1) {
                 throw new IllegalActionException(this,
-                "Cannot set values parameter to a non-row vector.");
+                        "Cannot set values parameter to a non-row vector.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -179,11 +179,11 @@ public class Pulse extends SequenceSource {
                 _zero = prototype.zero();
             } catch (ArrayIndexOutOfBoundsException ex) {
                 throw new IllegalActionException(this,
-                "Cannot set values to an empty array.");
+                        "Cannot set values to an empty array.");
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this,
-                "Cannot set values to something that is not an array: "
-                + values.getToken());
+                        "Cannot set values to something that is not an array: "
+                        + values.getToken());
             }
         } else if (attribute != _dummy) {
             // Notice that type changes to _dummy are allowed...
@@ -238,7 +238,7 @@ public class Pulse extends SequenceSource {
         if (_indexColCount < idx[0].length) {
             if (val.getColumnCount() != idx[0].length) {
                 throw new IllegalActionException(this,
-                "Parameters values and indexes have different lengths.");
+                        "Parameters values and indexes have different lengths.");
             }
             int currentIndex = idx[0][_indexColCount];
             if (_iterationCount == currentIndex) {
@@ -308,7 +308,7 @@ public class Pulse extends SequenceSource {
 
     // Default value of the indexes parameter.
     private IntMatrixToken defaultIndexToken =
-            new IntMatrixToken(defaultIndexes);
+    new IntMatrixToken(defaultIndexes);
 
     // Default value of the values array.
     private int defaultValues[][] = {
@@ -317,7 +317,7 @@ public class Pulse extends SequenceSource {
 
     // Default value of the values parameter.
     private IntMatrixToken defaultValueToken =
-            new IntMatrixToken(defaultValues);
+    new IntMatrixToken(defaultValues);
 
     // Dummy variable which reflects the type of the elements of the
     // values parameter, so that the output type can be related to it.

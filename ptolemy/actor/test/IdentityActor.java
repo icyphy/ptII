@@ -83,7 +83,7 @@ public class IdentityActor extends AtomicActor {
             output.broadcast(in);
         }catch(NoTokenException e) {
             throw new IllegalActionException( this,
-            " No token available when firing.");
+                    " No token available when firing.");
         }
     }
 

@@ -97,10 +97,10 @@ public class BooleanMatrixToken extends MatrixToken {
 	    throws IllegalActionException {
 	int compare = TypeLattice.compare(this, t);
 	if (compare == CPO.INCOMPARABLE || compare == CPO.HIGHER ||
-	    compare == CPO.SAME) {
+                compare == CPO.SAME) {
             String msg = "add method not supported between " +
-                         this.getClass().getName() + " and " +
-                         t.getClass().getName();
+                this.getClass().getName() + " and " +
+                t.getClass().getName();
             throw new IllegalActionException(msg);
         } else {
             return t.addReverse(this);
@@ -140,9 +140,9 @@ public class BooleanMatrixToken extends MatrixToken {
 	int compare = TypeLattice.compare(new BooleanMatrixToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("BooleanMatrixToken.convert: " +
-                "type of argument: " + token.getClass().getName() +
-                "is higher or incomparable with BooleanMatrixToken in the " +
-	 	"type hierarchy.");
+                    "type of argument: " + token.getClass().getName() +
+                    "is higher or incomparable with BooleanMatrixToken in the " +
+                    "type hierarchy.");
 	}
 
 	if (token instanceof BooleanMatrixToken) {
@@ -178,14 +178,14 @@ public class BooleanMatrixToken extends MatrixToken {
 	    throws IllegalActionException {
 	int compare = TypeLattice.compare(this, t);
 	if ( !(t instanceof MatrixToken) ||
-	     compare == CPO.INCOMPARABLE) {
+                compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("Cannot check equality " +
-		"between " + this.getClass().getName() + " and " +
-		t.getClass().getName());
+                    "between " + this.getClass().getName() + " and " +
+                    t.getClass().getName());
 	}
 
 	if ( ((MatrixToken)t).getRowCount() != _rowCount ||
-	     ((MatrixToken)t).getColumnCount() != _columnCount) {
+                ((MatrixToken)t).getColumnCount() != _columnCount) {
 	    return new BooleanToken(false);
 	}
 

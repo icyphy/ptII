@@ -151,9 +151,9 @@ public class IntToken extends ScalarToken {
 	int compare = TypeLattice.compare(new IntToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("IntToken.convert: " +
-	    	"type of argument: " + token.getClass().getName() +
-	    	"is higher or incomparable with IntToken in the type " +
-		"hierarchy.");
+                    "type of argument: " + token.getClass().getName() +
+                    "is higher or incomparable with IntToken in the type " +
+                    "hierarchy.");
 	}
 
 	if (token instanceof IntToken) {

@@ -101,7 +101,7 @@ public class Distributor extends Transformer implements SequenceActor {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Distributor newobj = (Distributor)super.clone(ws);
         newobj._consumptionRate = (Parameter)
-                (newobj.input.getAttribute("TokenConsumptionRate"));
+            (newobj.input.getAttribute("TokenConsumptionRate"));
         return newobj;
     }
     

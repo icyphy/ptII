@@ -161,16 +161,16 @@ public class Clock extends TimedSource {
         if (attribute == offsets) {
             // Check nondecreasing property.
             double[][] offsts =
-                    ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
+                ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
             if (offsts.length != 1 || offsts[0].length == 0) {
                 throw new IllegalActionException(this,
-                "Value of offsets is not a row vector.");
+                        "Value of offsets is not a row vector.");
             }
             double previous = 0.0;
             for (int j=0; j<offsts[0].length; j++) {
                 if (offsts[0][j] < previous) {
                     throw new IllegalActionException(this,
-                    "Value of offsets is not nondecreasing and nonnegative.");
+                            "Value of offsets is not nondecreasing and nonnegative.");
                 }
                 previous = offsts[0][j];
             }
@@ -178,7 +178,7 @@ public class Clock extends TimedSource {
             double prd = ((DoubleToken)period.getToken()).doubleValue();
             if (prd <= 0.0) {
                 throw new IllegalActionException(this,
-                "Period is required to be positive.  Period given: " + prd);
+                        "Period is required to be positive.  Period given: " + prd);
             }
         } else {
             super.attributeChanged(attribute);
@@ -206,8 +206,8 @@ public class Clock extends TimedSource {
                 _dummy.setToken(_getValue(0));
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this,
-                "Cannot set values to something that is not an array: "
-                + values.getToken());
+                        "Cannot set values to something that is not an array: "
+                        + values.getToken());
             }
         } else if (attribute != _dummy) {
             // Notice that type changes to _dummy are allowed...
@@ -271,7 +271,7 @@ public class Clock extends TimedSource {
             _tentativeCycleStartTime += prd;
         }
         double[][] offsts =
-                ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
+            ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
 
         // Adjust the phase if time has moved beyond the current phase.
         while (currentTime >= 
@@ -287,7 +287,7 @@ public class Clock extends TimedSource {
             }
             // Schedule the next firing in this period.
             _tentativeNextFiringTime
-                    = _tentativeCycleStartTime + offsts[0][_tentativePhase];
+                = _tentativeCycleStartTime + offsts[0][_tentativePhase];
         }
         output.broadcast(_tentativeCurrentValue);
     }
@@ -301,7 +301,7 @@ public class Clock extends TimedSource {
         _cycleStartTime = 0.0;
 
         double[][] offsts =
-               ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
+            ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
         getDirector().fireAt(this,offsts[0][0]);
 
         _currentValue = _getValue(0).zero();
@@ -337,7 +337,7 @@ public class Clock extends TimedSource {
         if (val == null || val.getRowCount() != 1 ||
                 val.getColumnCount() <= index) {
             throw new IllegalActionException(this,
-            "Index out of range of the values parameter.");
+                    "Index out of range of the values parameter.");
         }
         return val.getElementAsToken(0,index);
     }

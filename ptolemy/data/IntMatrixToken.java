@@ -97,7 +97,7 @@ public final class IntMatrixToken extends MatrixToken {
 	_columnCount = columns;
 	_value = new int[_rowCount * _columnCount];
         System.arraycopy(value, 0, _value, 0,
-                    _rowCount * _columnCount);
+                _rowCount * _columnCount);
 
     }
 
@@ -135,8 +135,8 @@ public final class IntMatrixToken extends MatrixToken {
 	int compare = TypeLattice.compare(this, t);
 	if (compare == CPO.INCOMPARABLE) {
 	    String msg = "add method not supported between " +
-			 this.getClass().getName() + " and " +
-			 t.getClass().getName();
+                this.getClass().getName() + " and " +
+                t.getClass().getName();
 	    throw new IllegalActionException(msg);
 	} else if (compare == CPO.LOWER) {
 	    return t.addReverse(this);
@@ -157,9 +157,9 @@ public final class IntMatrixToken extends MatrixToken {
 		// the specified token is not a scalar.
 		IntMatrixToken tem = (IntMatrixToken)this.convert(t);
 	    	if (tem.getRowCount() != _rowCount ||
-		    tem.getColumnCount() != _columnCount) {
+                        tem.getColumnCount() != _columnCount) {
 		    throw new IllegalActionException("Cannot add two " +
-			"matrices with different dimension.");
+                            "matrices with different dimension.");
 	    	}
 
 		result = tem.intMatrix();
@@ -187,8 +187,8 @@ public final class IntMatrixToken extends MatrixToken {
 	int compare = TypeLattice.compare(this, t);
 	if (! (compare == CPO.HIGHER)) {
 	    throw new IllegalActionException("The type of the specified "
-		+ "token " + t.getClass().getName() + " is not lower than "
-		+ getClass().getName());
+                    + "token " + t.getClass().getName() + " is not lower than "
+                    + getClass().getName());
 	}
 	// add is commutative on integer matrix.
 	return add(t);
@@ -227,9 +227,9 @@ public final class IntMatrixToken extends MatrixToken {
 	int compare = TypeLattice.compare(new IntMatrixToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("IntMatrixToken.convert: " +
-		"type of argument: " + token.getClass().getName() +
-		"is higher or incomparable with IntMatrixToken in the " +
-                "type hierarchy.");
+                    "type of argument: " + token.getClass().getName() +
+                    "is higher or incomparable with IntMatrixToken in the " +
+                    "type hierarchy.");
 	}
 
 	if (token instanceof IntMatrixToken) {
@@ -279,14 +279,14 @@ public final class IntMatrixToken extends MatrixToken {
 	    throws IllegalActionException {
 	int compare = TypeLattice.compare(this, t);
 	if ( !(t instanceof MatrixToken) ||
-	     compare == CPO.INCOMPARABLE) {
+                compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("Cannot check equality " +
-		"between " + this.getClass().getName() + " and " +
-		t.getClass().getName());
+                    "between " + this.getClass().getName() + " and " +
+                    t.getClass().getName());
 	}
 
 	if ( ((MatrixToken)t).getRowCount() != _rowCount ||
-	     ((MatrixToken)t).getColumnCount() != _columnCount) {
+                ((MatrixToken)t).getColumnCount() != _columnCount) {
 	    return new BooleanToken(false);
 	}
 
@@ -374,8 +374,8 @@ public final class IntMatrixToken extends MatrixToken {
      * FIXME should this method be here?
      */
     /*public int[] intArrayRef() {
-        return _value;
-        }*/
+      return _value;
+      }*/
 
     /** Return the content of this token as a 2-D long array.
      */
@@ -391,14 +391,14 @@ public final class IntMatrixToken extends MatrixToken {
 
     /** Return the number of columns in the matrix.
      *  @return An integer.
-    */
+     */
     public int getColumnCount() {
         return _columnCount;
     }
 
     /** Return the number of rows of the contained  matrix.
      *  @return An integer.
-    */
+     */
     public int getRowCount() {
         return _rowCount;
     }

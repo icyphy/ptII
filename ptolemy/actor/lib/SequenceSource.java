@@ -103,7 +103,7 @@ public class SequenceSource extends Source implements SequenceActor {
     public Object clone(Workspace ws) {
         SequenceSource newobj = (SequenceSource)super.clone(ws);
         newobj.firingCountLimit =
-                (Parameter)newobj.getAttribute("firingCountLimit");
+            (Parameter)newobj.getAttribute("firingCountLimit");
         return newobj;
     }
 

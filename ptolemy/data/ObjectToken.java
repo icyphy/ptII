@@ -85,9 +85,9 @@ public class ObjectToken extends Token {
 	int compare = TypeLattice.compare(new ObjectToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("ObjectToken.convert: " +
-	    	"type of argument: " + token.getClass().getName() +
-	    	"is higher or incomparable with ObjectToken in the type " +
-		"hierarchy.");
+                    "type of argument: " + token.getClass().getName() +
+                    "is higher or incomparable with ObjectToken in the type " +
+                    "hierarchy.");
 	}
 
 	if (token instanceof ObjectToken) {

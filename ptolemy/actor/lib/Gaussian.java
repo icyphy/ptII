@@ -97,7 +97,7 @@ public class Gaussian extends RandomSource {
         newobj.output.setTypeEquals(DoubleToken.class);
         newobj.mean = (Parameter)newobj.getAttribute("mean");
         newobj.standardDeviation = (Parameter)newobj.getAttribute(
-            "standardDeviation");
+                "standardDeviation");
         return newobj;
     }
 
@@ -122,7 +122,7 @@ public class Gaussian extends RandomSource {
     public boolean prefire() throws IllegalActionException {
 	double meanValue = ((DoubleToken)(mean.getToken())).doubleValue();
 	double standardDeviationValue =
-                ((DoubleToken)(standardDeviation.getToken())).doubleValue();
+            ((DoubleToken)(standardDeviation.getToken())).doubleValue();
         double rawNum = _random.nextGaussian();
         _current = (rawNum*standardDeviationValue) + meanValue;
         return super.prefire();

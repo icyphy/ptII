@@ -193,12 +193,12 @@ public class ProcessDirector extends Director {
             }
 
 	    CompositeActor containersContainer = 
-		    (CompositeActor)container.getContainer();
+                (CompositeActor)container.getContainer();
 	    if( containersContainer == null ) {
 		setCurrentTime(0.0);
 	    } else {
 		double time = 
-                        containersContainer.getDirector().getCurrentTime();
+                    containersContainer.getDirector().getCurrentTime();
                 setCurrentTime(time);
 	    }
         }

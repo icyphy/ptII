@@ -115,9 +115,9 @@ public class BooleanToken extends Token {
 	int compare = TypeLattice.compare(new BooleanToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("DoubleToken.convert: " +
-	    	"type of argument: " + token.getClass().getName() +
-	    	"is higher or incomparable with BooleanToken in the type " +
-		"hierarchy.");
+                    "type of argument: " + token.getClass().getName() +
+                    "is higher or incomparable with BooleanToken in the type " +
+                    "hierarchy.");
 	}
 
 	if (token instanceof BooleanToken) {
@@ -151,7 +151,7 @@ public class BooleanToken extends Token {
     /** Return a new BooleanToken with the logical not of the value
      *  stored in this token.
      *  @return a new BooleanToken with the opposite value to this token.
-    */
+     */
     public BooleanToken negate() {
         return new BooleanToken(!booleanValue());
     }

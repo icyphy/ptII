@@ -109,8 +109,8 @@ public class ComplexMatrixToken extends MatrixToken {
 	int compare = TypeLattice.compare(this, t);
 	if (compare == CPO.INCOMPARABLE) {
 	    String msg = "add method not supported between " +
-			 this.getClass().getName() + " and " +
-			 t.getClass().getName();
+                this.getClass().getName() + " and " +
+                t.getClass().getName();
 	    throw new IllegalActionException(msg);
 	} else if (compare == CPO.LOWER) {
 	    return t.addReverse(this);
@@ -131,9 +131,9 @@ public class ComplexMatrixToken extends MatrixToken {
 		ComplexMatrixToken tem = (ComplexMatrixToken)convert(t);
 
 	    	if (tem.getRowCount() != _rowCount ||
-		    tem.getColumnCount() != _columnCount) {
-			throw new IllegalActionException("Cannot add two " +
-			"matrices with different dimension.");
+                        tem.getColumnCount() != _columnCount) {
+                    throw new IllegalActionException("Cannot add two " +
+                            "matrices with different dimension.");
 	    	}
 
 		result = tem.complexMatrix();
@@ -160,8 +160,8 @@ public class ComplexMatrixToken extends MatrixToken {
 	int compare = TypeLattice.compare(this, t);
 	if (! (compare == CPO.HIGHER)) {
 	    throw new IllegalActionException("The type of the specified "
-		+ "token " + t.getClass().getName() + " is not lower than "
-		+ getClass().getName());
+                    + "token " + t.getClass().getName() + " is not lower than "
+                    + getClass().getName());
 	}
 	// add is commutative on Complex matrix.
 	return add(t);
@@ -200,9 +200,9 @@ public class ComplexMatrixToken extends MatrixToken {
 	int compare = TypeLattice.compare(new ComplexMatrixToken(), token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("ComplexMatrixToken.convert: " +
-                "type of argument: " + token.getClass().getName() +
-                "is higher or incomparable with ComplexMatrixToken in the " +
-	 	"type hierarchy.");
+                    "type of argument: " + token.getClass().getName() +
+                    "is higher or incomparable with ComplexMatrixToken in the " +
+                    "type hierarchy.");
 	}
 
 	if (token instanceof ComplexMatrixToken) {
@@ -222,7 +222,7 @@ public class ComplexMatrixToken extends MatrixToken {
 	compare = TypeLattice.compare(new DoubleMatrixToken(), token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    DoubleMatrixToken tem =
-			(DoubleMatrixToken)DoubleMatrixToken.convert(token);
+                (DoubleMatrixToken)DoubleMatrixToken.convert(token);
 	    Complex[][] result = tem.complexMatrix();
 	    return new ComplexMatrixToken(result);
 	}
@@ -249,14 +249,14 @@ public class ComplexMatrixToken extends MatrixToken {
 	    throws IllegalActionException {
 	int compare = TypeLattice.compare(this, t);
 	if ( !(t instanceof MatrixToken) ||
-	     compare == CPO.INCOMPARABLE) {
+                compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("Cannot check equality " +
-		"between " + this.getClass().getName() + " and " +
-		t.getClass().getName());
+                    "between " + this.getClass().getName() + " and " +
+                    t.getClass().getName());
 	}
 
 	if ( ((MatrixToken)t).getRowCount() != _rowCount ||
-	     ((MatrixToken)t).getColumnCount() != _columnCount) {
+                ((MatrixToken)t).getColumnCount() != _columnCount) {
 	    return new BooleanToken(false);
 	}
 

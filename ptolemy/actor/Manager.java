@@ -124,7 +124,7 @@ public final class Manager extends NamedObj implements Runnable {
     /** Indicator that the model may be corrupted.
      */
     public final State CORRUPTED = new State(
-        "Model terminated and may be corrupted");
+            "Model terminated and may be corrupted");
 
     /** Indicator that there is no currently active execution.
      */
@@ -300,11 +300,11 @@ public final class Manager extends NamedObj implements Runnable {
             throws KernelException, IllegalActionException {
         if (_state != IDLE) {
             throw new IllegalActionException(this,
-            "The model is already running.");
+                    "The model is already running.");
         }
         if (_container == null) {
             throw new IllegalActionException(this,
-            "No model to run!");
+                    "No model to run!");
         }
         _setState(INITIALIZING);
 
@@ -345,7 +345,7 @@ public final class Manager extends NamedObj implements Runnable {
     public boolean iterate() throws KernelException {
         if (_container == null) {
             throw new IllegalActionException(this,
-            "No model to execute!");
+                    "No model to execute!");
         }
         boolean result = true;
         try {
@@ -397,7 +397,7 @@ public final class Manager extends NamedObj implements Runnable {
             Enumeration listeners = _executionListeners.elements();
             while(listeners.hasMoreElements()) {
                 ExecutionListener listener =
-                       (ExecutionListener) listeners.nextElement();
+                    (ExecutionListener) listeners.nextElement();
                 listener.executionError(this, ex);
             }
         }
@@ -438,7 +438,7 @@ public final class Manager extends NamedObj implements Runnable {
             return;
         }
         _changeListeners.exclude(change);
-   }
+    }
 
     /** Queue a change request.
      *  The indicated change will be executed at the next opportunity,
@@ -495,7 +495,7 @@ public final class Manager extends NamedObj implements Runnable {
 		        Inequality ineq =
                             (Inequality)unsatisfied.next();
 		        InequalityTerm term =
-					(InequalityTerm)ineq.getLesserTerm();
+                            (InequalityTerm)ineq.getLesserTerm();
 		        Object typeObj = term.getAssociatedObject();
 		        if (typeObj != null) {
 			    // typeObj is a Typeable
@@ -574,7 +574,7 @@ public final class Manager extends NamedObj implements Runnable {
     public void startRun() throws IllegalActionException {
         if (_state != IDLE) {
             throw new IllegalActionException(this,
-            "Model is " + _state.getDescription());
+                    "Model is " + _state.getDescription());
         }
         _thread = new PtolemyThread(this);
         _thread.start();
@@ -631,12 +631,12 @@ public final class Manager extends NamedObj implements Runnable {
             throws KernelException, IllegalActionException {
         if (_state == IDLE || _state == WRAPPING_UP) {
             throw new IllegalActionException(this,
-            "Cannot wrap up. The current state is: "
-            + _state.getDescription());
+                    "Cannot wrap up. The current state is: "
+                    + _state.getDescription());
         }
         if (_container == null) {
             throw new IllegalActionException(this,
-            "No model to run!");
+                    "No model to run!");
         }
         _setState(WRAPPING_UP);
 
@@ -684,7 +684,7 @@ public final class Manager extends NamedObj implements Runnable {
             Enumeration listeners = _executionListeners.elements();
             while(listeners.hasMoreElements()) {
                 ExecutionListener listener =
-                       (ExecutionListener) listeners.nextElement();
+                    (ExecutionListener) listeners.nextElement();
                 listener.executionFinished(this);
             }
         }
@@ -696,7 +696,7 @@ public final class Manager extends NamedObj implements Runnable {
         String msg;
         if (_state == ITERATING) {
             msg = _state.getDescription() + " number "
-            + _iterationCount;
+                + _iterationCount;
         } else {
             msg = _state.getDescription();
         }
@@ -705,7 +705,7 @@ public final class Manager extends NamedObj implements Runnable {
             Enumeration listeners = _executionListeners.elements();
             while(listeners.hasMoreElements()) {
                 ExecutionListener listener =
-                       (ExecutionListener) listeners.nextElement();
+                    (ExecutionListener) listeners.nextElement();
                 listener.managerStateChanged(this);
             }
         }
@@ -774,7 +774,7 @@ public final class Manager extends NamedObj implements Runnable {
                     Enumeration listeners = _changeListeners.elements();
                     while(listeners.hasMoreElements()) {
                         ChangeListener listener
-                                = (ChangeListener)listeners.nextElement();
+                            = (ChangeListener)listeners.nextElement();
                         request.notify(listener);
                     }
                 }

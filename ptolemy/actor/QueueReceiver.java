@@ -116,7 +116,7 @@ public class QueueReceiver implements Receiver {
      *  exception is thrown.
      *  @param offset The offset from the oldest token in the receiver.
      *  @return The token at the desired offset in the receiver or its
-         history.
+     history.
      *  @exception NoTokenException If the offset is out of range.
      */
     public Token get(int offset) {
@@ -271,7 +271,7 @@ public class QueueReceiver implements Receiver {
     ////                         public variables                  ////
 
     public static final int INFINITE_CAPACITY =
-            FIFOQueue.INFINITE_CAPACITY;
+    FIFOQueue.INFINITE_CAPACITY;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

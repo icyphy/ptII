@@ -60,7 +60,7 @@ public abstract class MatrixToken extends Token {
      */
     public Complex[][] complexMatrix() throws IllegalActionException {
         throw new IllegalActionException(this.getClass().getName() +
-        " cannot be converted to a complex matrix.");
+                " cannot be converted to a complex matrix.");
     }
 
     /** Throw an exception, since conversion to this class is not supported
@@ -72,7 +72,7 @@ public abstract class MatrixToken extends Token {
      */
     public static Token convert(Token token) throws IllegalActionException {
         throw new IllegalActionException(token.getClass().getName() +
-        " cannot convert to a MatrixToken since that class is abstract.");
+                " cannot convert to a MatrixToken since that class is abstract.");
     }
 
     /** In derived classes that can be represented as a 2-D double array,
@@ -84,7 +84,7 @@ public abstract class MatrixToken extends Token {
      */
     public double[][] doubleMatrix() throws IllegalActionException {
         throw new IllegalActionException(this.getClass().getName() +
-        " cannot be converted to a double matrix.");
+                " cannot be converted to a double matrix.");
     }
 
     // Return the content in the token as a 2-D Fix array.
@@ -100,7 +100,7 @@ public abstract class MatrixToken extends Token {
      */
     public int[][] intMatrix() throws IllegalActionException {
         throw new IllegalActionException(this.getClass().getName() +
-        " cannot be converted to an integer matrix.");
+                " cannot be converted to an integer matrix.");
     }
 
     /** In derived classes that can be represented as a 2-D long array,
@@ -112,7 +112,7 @@ public abstract class MatrixToken extends Token {
      */
     public long[][] longMatrix() throws IllegalActionException {
         throw new IllegalActionException(this.getClass().getName() +
-        " cannot be converted to a long matrix.");
+                " cannot be converted to a long matrix.");
     }
 
     /** Return the number of columns of the contained matrix.

@@ -236,7 +236,7 @@ public class IOPort extends ComponentPort {
     public void createReceivers() throws IllegalActionException {
         if (!isOpaque()) {
             throw new IllegalActionException(this,
-            "createReceivers: Can only create receivers on opaque ports.");
+                    "createReceivers: Can only create receivers on opaque ports.");
         }
         int portWidth = getWidth();
         if (portWidth <= 0) return;
@@ -1226,15 +1226,15 @@ public class IOPort extends ComponentPort {
                             result += "{";
                             if (receivers[i][j] != null) {
                                 result += 
-				        receivers[i][j].getClass().getName();
-                                }
+                                    receivers[i][j].getClass().getName();
+                            }
                             result += "}\n";
                         }
                         result += _getIndentPrefix(indent+1) + "}\n";
                     }
                 } catch (IllegalActionException ex) {
                     result += _getIndentPrefix(indent+1) +
-                             ex.getMessage() + "\n";
+                        ex.getMessage() + "\n";
                 }
                 result += _getIndentPrefix(indent) + "}";
             }

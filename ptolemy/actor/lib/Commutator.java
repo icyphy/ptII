@@ -103,7 +103,7 @@ public class Commutator extends Transformer implements SequenceActor {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Commutator newobj = (Commutator)super.clone(ws);
         newobj._productionRate = (Parameter)
-                (newobj.output.getAttribute("TokenProductionRate"));
+            (newobj.output.getAttribute("TokenProductionRate"));
         return newobj;
     }
     
