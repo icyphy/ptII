@@ -37,7 +37,6 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.CalendarQueue;
-import ptolemy.actor.gui.ModelFrame;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
@@ -46,15 +45,11 @@ import ptolemy.domains.de.kernel.DECQEventQueue;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+
 import java.util.LinkedList;
 import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
 
 //////////////////////////////////////////////////////////////////////////
 //// TMDirector
@@ -204,10 +199,6 @@ public class TMDirector extends Director {
      */
     public Parameter synchronizeToRealTime;
 
-    /**
-
-     */
-    public Parameter displaySchedule;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -256,22 +247,6 @@ public class TMDirector extends Director {
             _synchronizeToRealTime =
                 ((BooleanToken)synchronizeToRealTime.getToken()).
                 booleanValue();
-        } else if (attribute == displaySchedule) {
-            if (_scheduleDisplay == null) {
-                _scheduleDisplay = new JFrame("TM Schedule");
-                SchedulePlotter schedulePlotter = new SchedulePlotter();
-                JPanel pane = new JPanel();
-                pane.add(schedulePlotter.plot);
-                addScheduleListener(schedulePlotter);
-                _scheduleDisplay.getContentPane().
-                    add(pane, BorderLayout.CENTER);
-                _scheduleDisplay.pack();
-            }
-            if (((BooleanToken)displaySchedule.getToken()). booleanValue()) {
-                _scheduleDisplay.setVisible(true);
-            } else {
-                _scheduleDisplay.setVisible(false);
-            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -386,7 +361,7 @@ public class TMDirector extends Director {
                         // Actor stops executing, i.e. finishing
                         _displaySchedule(((Nameable)actor).getName(),
                                 getCurrentTime(),
-                                SchedulePlotter.TASK_SLEEPING);
+                                ScheduleListener.TASK_SLEEPING);
                         _displaySchedule();
 
                         if (!actor.postfire()) {
@@ -506,7 +481,7 @@ public class TMDirector extends Director {
                 ((DEEvent)_interruptQueue.get()).timeStamp();
             _requestFiringAt(nextPureEventTime);
         }
-        _displaySchedule("", 0.0, SchedulePlotter.RESET_DISPLAY);
+        _displaySchedule("", 0.0, ScheduleListener.RESET_DISPLAY);
     }
 
     /** Return a new TMReceiver.
@@ -586,7 +561,7 @@ public class TMDirector extends Director {
                     // Actor stops executing, i.e. finishing
                     _displaySchedule(((Nameable)actor).getName(),
                             getCurrentTime(),
-                            SchedulePlotter.TASK_SLEEPING);
+                            ScheduleListener.TASK_SLEEPING);
                     _displaySchedule();
                     // Should handle dead actors.
                     if (!actor.postfire()) {
@@ -680,16 +655,16 @@ public class TMDirector extends Director {
     protected final void _displaySchedule() {
         if (_eventQueue != null) {
             Object[] events = _eventQueue.toArray();
-            // System.out.println("REPORT SCHEDULE @ " + getCurrentTime());
+            //System.out.println("REPORT SCHEDULE @ " + getCurrentTime());
             for (int i = events.length-1; i >= 0; i-- ) {
                 String actorName =
                     ((Nameable)((TMEvent)events[i]).actor()).getName();
                 double time = getCurrentTime();
-                int scheduleEvent = SchedulePlotter.TASK_BLOCKED;
+                int scheduleEvent = ScheduleListener.TASK_BLOCKED;
                 if (i == 0) {
-                    scheduleEvent = SchedulePlotter.TASK_RUNNING;
+                    scheduleEvent = ScheduleListener.TASK_RUNNING;
                 }
-                // System.out.println("EVENT: " + actorName + ", " +
+                //System.out.println("EVENT: " + actorName + ", " +
                 //                  time + ", " + scheduleEvent);
                 _displaySchedule(actorName, time, scheduleEvent);
             }
@@ -705,13 +680,13 @@ public class TMDirector extends Director {
     protected final void _displaySchedule(String actorName,
             double time, int scheduleEvent) {
         synchronized(this) {
-            if (_scheduleDisplay != null) {
+            //if (_scheduleDisplay != null) {
                 Iterator listeners = _scheduleListeners.iterator();
                 while (listeners.hasNext()) {
                     ((ScheduleListener)listeners.next()).
                         event(actorName, time, scheduleEvent);
                 }
-            }
+                //}
         }
     }
 
@@ -760,10 +735,6 @@ public class TMDirector extends Director {
                     "synchronizeToRealTime",
                     new BooleanToken(false));
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
-
-            displaySchedule = new Parameter(this, "displaySchedule",
-                    new BooleanToken(false));
-            displaySchedule.setTypeEquals(BaseType.BOOLEAN);
 
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName() +
@@ -821,9 +792,6 @@ public class TMDirector extends Director {
 
     // The real start time in milliseconds count.
     private long _realStartTime;
-
-    // The real start time in milliseconds count.
-    private JFrame _scheduleDisplay = null;
 }
 
 

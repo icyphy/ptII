@@ -1,6 +1,6 @@
-/* A director schedule listener that plots the schedule.
+/* An attribute that displays a plot of a schedule
 
- Copyright (c) 2001-2002 The Regents of the University of California.
+ Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,60 +24,83 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (johane@eecs.berkeley.edu)
-@AcceptedRating Red (johane@eecs.berkeley.edu)
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.tm.kernel;
 
-import ptolemy.kernel.util.RecorderListener; // For javadoc
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.PlotEffigy;
+import ptolemy.actor.gui.TableauFrame;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.kernel.util.*;
 import ptolemy.plot.Plot;
-import ptolemy.plot.plotml.PlotMLParser;
-import java.util.HashMap;
+
+import java.awt.BorderLayout;
+import java.awt.Frame;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// SchedulePlotter
-
 /**
-A director schedule listener that plots the schedule.
+This attribute is a visible attribute that when configured (by double
+clicking on it or by invoking Configure in the context menu) it displays
+a plot of the schedule while the model is being run.
 
-@author Johan Eker
+@author Christopher Hylands, Contributor: Johan Ecker
 @version $Id$
 @since Ptolemy II 2.0
-@see ptolemy.kernel.util.NamedObj
-@see ptolemy.kernel.util.RecorderListener
-
 */
-public class SchedulePlotter implements ScheduleListener {
-    static final int RESET_DISPLAY = -1;
-    static final int TASK_SLEEPING = 1;
-    static final int TASK_BLOCKED  = 2;
-    static final int TASK_RUNNING  = 3;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         constructors                      ////
+public class SchedulePlotter extends Attribute implements ScheduleListener {
 
-    /** Create a schedule listener that displays the schedule in
-        a plot window.
-    */
-    public SchedulePlotter() {
-	_taskMap = new HashMap();
-	_taskState = new ArrayList();
-	try {
-	    plot = new Plot();
-	    plot.setTitle("TM Schedule");
-	    plot.setButtons(true);
-	} catch (Exception e) {
-	    System.out.println(e);
-        }
+    /** Construct a factory with the specified container and name.
+     *  @param container The container.
+     *  @param name The name of the factory.
+     *  @exception IllegalActionException If the factory is not of an
+     *   acceptable attribute for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
+    public SchedulePlotter(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+
+	_attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"-50\" y=\"-20\" width=\"130\" height=\"40\" "
+                + "style=\"fill:blue\"/>"
+                + "<text x=\"-40\" y=\"-5\" "
+                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
+                + "Double click to\nplot the schedule.</text></svg>");
+        new SingletonAttribute(this, "_hideName");
+
+        new SchedulePlotterEditorFactory(this, "_editorFactory");
+
+        // FIXME: These casts look unsafe, use instanceOf?
+        Director director = ((CompositeActor)container).getDirector();
+        ((TMDirector)director).addScheduleListener(this);
+                
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////        public variables and parameters                    ////
 
-    /** React to the given scheduling event.
-     */
+
+    public Plot plot;
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     public void event(String actorName, double time, int scheduleEvent) {
         try {
 	    if (scheduleEvent == -1) {
@@ -102,16 +125,86 @@ public class SchedulePlotter implements ScheduleListener {
                 _taskState.set(id, new Integer(scheduleEvent));
 	    }
 	} catch (Exception e) {
-
+            System.out.println("event: Ignoring " + e);
 	}
     }
 
-    public Plot plot;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                    ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private LinkedList _commActors;
+    private TypedCompositeActor _container;
+    private String _endLine = "\n";
+    private int _currentDepth;
+    private Iterator _inPorts, _outPorts;
+
     private HashMap _taskMap;
     private ArrayList _taskState;
     private int _oldScheduleEvent = 0;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    private class SchedulePlotterEditorFactory extends EditorFactory {
+
+        public SchedulePlotterEditorFactory(NamedObj _container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(_container, name);
+        }
+
+        /** Create an editor for configuring the specified object with the
+         *  specified parent window.
+         *  @param object The object to configure.
+         *  @param parent The parent window, or null if there is none.
+         */
+        public void createEditor(NamedObj object, Frame parent) {
+            try {
+                Configuration configuration
+                    = ((TableauFrame)parent).getConfiguration();
+
+                NamedObj container = (NamedObj)object.getContainer();
+
+                _taskMap = new HashMap();
+                _taskState = new ArrayList();
+                plot = new Plot();
+                plot.setTitle("TM Schedule");
+                plot.setButtons(true);
+
+                // FIXME: I can't get the PlotEffigy to work, so
+                // I've folded in the code from TMDirector.
+                JFrame scheduleDisplay = new JFrame("TM Schedule");
+
+                JPanel pane = new JPanel();
+                pane.add(plot);
+                scheduleDisplay.getContentPane().
+                    add(pane, BorderLayout.CENTER);
+                scheduleDisplay.pack();
+                scheduleDisplay.setVisible(true); 
+
+                PlotEffigy schedulePlotterEffigy = 
+                    new PlotEffigy(configuration.getDirectory(),
+                            container.uniqueName("schedulePlotterEffigy"));
+                
+
+                //schedulePlotterEffigy.setPlot(plot);
+                //schedulePlotterEffigy.identifier.setExpression("TM Schedule");
+                //configuration.createPrimaryTableau(schedulePlotterEffigy);
+
+                plot.setVisible(true);
+
+                // FIXME: This code is an example from GiottoCodeGenerator
+                // TextEffigy codeEffigy = TextEffigy.newTextEffigy(
+                //    configuration.getDirectory(), "This is a test");
+                // codeEffigy.setModified(true);
+                //    configuration.createPrimaryTableau(codeEffigy);
+            } catch (Exception ex) {
+                throw new InternalErrorException(object, ex,
+                        "Cannot create Schedule Plotter");
+            }
+        }
+    }
 }
