@@ -41,9 +41,23 @@ ROOT =		..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-EXTRA_SRCS = \
+# Used to build jar files
+PTPACKAGE = 	doc
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
+
+# Files in this directory (but not the subdirectories) that should go
+# into docConfig.jar because files in ptolemy/config refer to them.
+#
+# We use a separate variable here so that we can refer to these files
+# in EXTRA_SRCS with out have to duplicate the names.  
+#
+UI_FILES_TO_BE_JARED = \
 	acks.htm \
-	authors.htm \
+	authors.htm
+
+EXTRA_SRCS = \
+	$(UI_FILES_TO_BE_JARED) \
 	banner.htm \
 	body.htm \
 	buttons.htm \
@@ -71,10 +85,26 @@ EXTRA_SRCS = \
 	troubleshooting.htm \
 	types.htm
 
+# Derived files that are preprocessed for use within vergil.
 VERGIL_DOCS = \
 	mainVergil.htm \
 	ptII1.0.releaseVergil.htm \
 	troubleshootingVergil.htm
+
+# All the doc/ files that are referred to by files in ptolemy/config
+PTAUXALLJAR =	docConfig.jar
+
+# Files in this directory and any subdirectories that should go into
+# docConfig.jar because files in ptolemy/config refer to them.
+# FIXME: doc/design/usingVergil/index.htm is a derived file
+# that refers to other files. 
+OTHER_FILES_TO_BE_JARED = \
+	$(VERGIL_DOCS) \
+	$(UI_FILES_TO_BE_JARED) \
+	img/ptIIplanet.gif
+	#doc/design/usingVergil/index.htm 
+
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
