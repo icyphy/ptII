@@ -50,7 +50,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
 
 
 import soot.*;

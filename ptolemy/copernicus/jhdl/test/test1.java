@@ -32,6 +32,7 @@ package ptolemy.copernicus.jhdl.test;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -46,7 +47,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
 
 public class test1 extends TypedAtomicActor {
 
@@ -54,21 +54,21 @@ public class test1 extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        input = new SDFIOPort(this, "input", true, false);
-        output = new SDFIOPort(this, "output", false, true);
+        input = new TypedIOPort(this, "input", true, false);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(input);
 
     }
 
-    //      ///////////////////////////////////////////////////////////////////
-    //      ////                         public variables                  ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-    public SDFIOPort input;
+    public TypedIOPort input;
 
     /** The output port. By default, the type of this output is constrained
      *  to be at least that of the input.
      */
-    public SDFIOPort output;
+    public TypedIOPort output;
 
     public int e;
 
