@@ -37,6 +37,13 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Iterator;
 
+
+//////////////////////////////////////////////////////////////////////////
+//// Environ
+/** An environment for declarations, which may be contained in another
+ *  environment. Code converted from Environ in Titanium.
+ *  @author ctsay@eecs.berkeley.edu
+ */
 public class Environ {
 
   public Environ() {

@@ -35,6 +35,9 @@ package ptolemy.lang;
 
 public class ApplicationUtility {
 
+  // private constructor prevent instantiation of this class
+  private ApplicationUtility() {}
+
   public static final void assert(boolean condition) {
     if (enableAsserts) {
        assert(condition, "no reason specified");
@@ -53,8 +56,14 @@ public class ApplicationUtility {
        warnings++;
 
        if (errorOnWarning) {
-          error("Error on warning: " + msg);
+          error("Error on warning");
        }
+    }
+  }
+
+  public static final void trace(String msg, String separator) {
+    if (enableTrace) {
+       System.out.print(msg + separator);
     }
   }
 

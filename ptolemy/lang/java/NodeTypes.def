@@ -1,5 +1,8 @@
 <cheader>
-/* Copyright (c) 1998-1999 The Regents of the University of California.
+/*
+This file was generated automatically by GenerateVisitor.
+
+Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -45,7 +48,6 @@ import ptolemy.lang.TreeNode;
 
 NamedNode I <none> m NameNode getName m m void setName NameNode name m
 ModifiedNode I <none> m int getModifiers m m void setModifiers int modifiers m
-UserTypeDeclNode I NamedNode m LinkedList getInterfaces m m void setInterfaces LinkedList interfaceList m m LinkedList getMembers m m void setMembers LinkedList memberList m
 
 NameNode C TreeNode k 0 TreeNode qualifier String ident k
 TypeNode A TreeNode c 0 c
@@ -57,22 +59,28 @@ AbsentTreeNode S TreeNode
 PrimitiveTypeNode A TypeNode c 0 c
 ReferenceTypeNode A TypeNode c 0 c
 ExprNode A TreeNode c 0 c
-SingleExprNode A ExprNode k 0 ExprNode expr k
-DoubleExprNode A ExprNode k 0 ExprNode expr1 ExprNode expr2 k
-IncrDecrNode A SingleExprNode c 1 ExprNode expr c
-UnaryArithNode A SingleExprNode c 1 ExprNode expr c
-BinaryArithNode A DoubleExprNode c 2 ExprNode expr1 ExprNode expr2 c
-BinaryArithAssignNode A DoubleExprNode c 2 ExprNode expr1 ExprNode expr2 c
-ShiftNode A BinaryArithNode c 2 ExprNode expr1 ExprNode expr2 c
-ShiftAssignNode A BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
-RelationNode A BinaryArithNode c 2 ExprNode expr1 ExprNode expr2 c
-EqualityNode A BinaryArithNode c 2 ExprNode expr1 ExprNode expr2 c
-BitwiseNode A BinaryArithNode c 2 ExprNode expr1 ExprNode expr2 c
-BitwiseAssignNode A BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
-LogCondNode A BinaryArithNode c 2 ExprNode expr1 ExprNode expr2 c
-OuterClassAccessNode A ExprNode k 0 TypeNameNode type k
-UserTypeDeclNode C ReferenceTypeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name LinkedList interfaces LinkedList members k
 
+ConstructorCallNode C TreeNode k 0 LinkedList args k
+
+SingleExprNode A ExprNode k 0 ExprNode expr k
+SingleOpNode A SingleExprNode c 1 ExprNode expr c
+IncrDecrNode A SingleOpNode c 1 ExprNode expr c
+UnaryArithNode A SingleOpNode c 1 ExprNode expr c
+
+DoubleExprNode A ExprNode k 0 ExprNode expr1 ExprNode expr2 k
+BinaryOpNode A DoubleExprNode c 2 ExprNode expr1 ExprNode expr2 c
+BinaryArithNode A BinaryOpNode c 2 ExprNode expr1 ExprNode expr2 c
+BinaryOpAssignNode A DoubleExprNode c 2 ExprNode expr1 ExprNode expr2 c
+BinaryArithAssignNode A BinaryOpAssignNode c 2 ExprNode expr1 ExprNode expr2 c
+ShiftNode A BinaryOpNode c 2 ExprNode expr1 ExprNode expr2 c
+ShiftAssignNode A BinaryOpAssignNode c 2 ExprNode expr1 ExprNode expr2 c
+RelationNode A BinaryOpNode c 2 ExprNode expr1 ExprNode expr2 c
+EqualityNode A BinaryOpNode c 2 ExprNode expr1 ExprNode expr2 c
+BitwiseNode A BinaryOpNode c 2 ExprNode expr1 ExprNode expr2 c
+BitwiseAssignNode A BinaryOpAssignNode c 2 ExprNode expr1 ExprNode expr2 c
+LogCondNode A BinaryOpNode c 2 ExprNode expr1 ExprNode expr2 c
+OuterClassAccessNode A ExprNode k 0 TypeNameNode type k
+UserTypeDeclNode A ReferenceTypeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name LinkedList interfaces LinkedList members k
 
 // literals
 LiteralNode A ExprNode k 0 String literal k
@@ -113,25 +121,22 @@ CompileUnitNode C TreeNode k 0 TreeNode pkg LinkedList imports LinkedList defTyp
 ImportNode C TreeNode i NamedNode i k 0 NameNode name k
 ImportOnDemandNode C TreeNode i NamedNode i k 0 NameNode name k
 
-// may not work for anonymous classes
 ClassDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name LinkedList interfaces LinkedList members TreeNode superClass k
 
 FieldDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
 VarDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
 
 // body may be absent
-MethodDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers LinkedList params TypeNode returnType NameNode name LinkedList throwsList TreeNode body k
+InvokableDeclNode A TreeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name LinkedList params LinkedList throwsList k
+MethodDeclNode C InvokableDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name LinkedList params LinkedList throwsList TreeNode body TypeNode returnType k
+ConstructorDeclNode C InvokableDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name LinkedList params LinkedList throwsList BlockNode body ConstructorCallNode constructorCall k
 
-// TreeNode constructorCall should be more specific -- maybe make a ConstructorCall superclass of ThisCCN and SuperCCN
-ConstructorDeclNode C TreeNode i ModifiedNode i k 0 int modifiers String ident LinkedList params LinkedList throwsList TreeNode constructorCall BlockNode body k
-
-ThisConstructorCallNode C TreeNode k 0 LinkedList args k
+ThisConstructorCallNode C ConstructorCallNode c 1 LinkedList args c
+SuperConstructorCallNode C ConstructorCallNode c 1 LinkedList args c
 StaticInitNode C TreeNode k 0 BlockNode block k
 InstanceInitNode C TreeNode k 0 BlockNode block k
 InterfaceDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name LinkedList interfaces LinkedList members k
-ArrayInitNode C ExprNode k 0 LinkedList initializers k
 ParameterNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name k
-SuperConstructorCallNode C TreeNode k 0 LinkedList args k
 BlockNode C StatementNode k 0 LinkedList stmts k
 EmptyStmtNode C StatementNode c 0 c
 LabeledStmtNode C StatementNode i NamedNode i k 0 NameNode name TreeNode stmt k
@@ -140,7 +145,8 @@ SwitchNode C StatementNode k 0 ExprNode expr LinkedList switchBlocks k
 // expr may be absent
 CaseNode C TreeNode k 0 TreeNode expr k
 SwitchBranchNode C TreeNode k 0 LinkedList cases LinkedList stmts k
-LoopNode C TreeNode k 0 TreeNode foreStmt ExprNode test TreeNode aftStmt k
+LoopNode C StatementNode k 0 TreeNode foreStmt ExprNode test TreeNode aftStmt k
+ExprStmtNode C StatementNode k 0 ExprNode expr k
 
 // test will be a BoolLitNode in "for(;;)"
 ForNode C TreeNode k 0 LinkedList init ExprNode test LinkedList update TreeNode stmt k
@@ -162,6 +168,8 @@ TryNode C StatementNode k 0 BlockNode block LinkedList catches TreeNode finly k
 
 // Expressions
 
+ArrayInitNode C ExprNode k 0 LinkedList initializers k
+
 NullPntrNode C ExprNode c 0 c
 ThisNode C ExprNode c 0 c
 ArrayAccessNode C ExprNode k 0 ExprNode array ExprNode index k
@@ -174,17 +182,17 @@ TypeClassAccessNode C ExprNode k 0 TypeNode fType k
 OuterThisAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 OuterSuperAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 MethodCallNode C ExprNode k 0 TreeNode method LinkedList args k
-AllocateNode C ExprNode k 0 TypeNode dtype LinkedList args k
+AllocateNode C ExprNode k 0 TypeNode dtype LinkedList args ExprNode enclosingInstance k
 AllocateArrayNode C ExprNode k 0 TypeNode dtype LinkedList dimExprs int dims TreeNode initExpr k
-AllocateAnonymousClassNode C ExprNode k 0 TypeNode superType LinkedList superArgs LinkedList members k
+AllocateAnonymousClassNode C ExprNode k 0 TypeNameNode superType LinkedList superArgs LinkedList members ExprNode enclosingInstance k
 PostIncrNode C IncrDecrNode c 1 ExprNode expr c
 PostDecrNode C IncrDecrNode c 1 ExprNode expr c
 UnaryPlusNode C UnaryArithNode c 1 ExprNode expr c
 UnaryMinusNode C UnaryArithNode c 1 ExprNode expr c
 PreIncrNode C IncrDecrNode c 1 ExprNode expr c
 PreDecrNode C IncrDecrNode c 1 ExprNode expr c
-ComplementNode C SingleExprNode c 1 ExprNode expr c
-NotNode C SingleExprNode c 1 ExprNode expr c
+ComplementNode C SingleOpNode c 1 ExprNode expr c
+NotNode C SingleOpNode c 1 ExprNode expr c
 CastNode C ExprNode k 0 TypeNode dtype ExprNode expr k
 MultNode C BinaryArithNode c 2 ExprNode expr1 ExprNode expr2 c
 DivNode C BinaryArithNode c 2 ExprNode expr1 ExprNode expr2 c
@@ -213,9 +221,9 @@ DivAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 RemAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 PlusAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 MinusAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
-LeftShiftLogAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
-RightShiftLogAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
-RightShiftArithAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
+LeftShiftLogAssignNode C ShiftAssignNode c 2 ExprNode expr1 ExprNode expr2 c
+RightShiftLogAssignNode C ShiftAssignNode c 2 ExprNode expr1 ExprNode expr2 c
+RightShiftArithAssignNode C ShiftAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 BitAndAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 BitXorAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 BitOrAssignNode C BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c

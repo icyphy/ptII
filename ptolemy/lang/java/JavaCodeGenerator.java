@@ -74,7 +74,7 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitCharLitNode(CharLitNode node, LinkedList args) {
-        return node.getLiteral(); // check this
+        return "'" + node.getLiteral() + "'"; 
     }
 
     public Object visitStringLitNode(StringLitNode node, LinkedList args) {
@@ -131,8 +131,9 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitDeclaratorNode(DeclaratorNode node, LinkedList args) {
-        throw new RuntimeException("DeclaratorNode should not appear in the " +
+        ApplicationUtility.error("DeclaratorNode should not appear in the " +
          "final parse tree.");
+        return null;
     }
 
     public Object visitPackageNode(PackageNode node, LinkedList args) {
@@ -142,8 +143,9 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitNullTypeNode(NullTypeNode node, LinkedList args) {
-        throw new RuntimeException("NullTypeNode should not appear in the " +
+        ApplicationUtility.error("NullTypeNode should not appear in the " +
          "final parse tree.");
+        return null;
     }
 
     public Object visitOuterThisAccessNode(OuterThisAccessNode node, LinkedList args) {
@@ -284,6 +286,7 @@ public class JavaCodeGenerator extends JavaVisitor {
         sb.append(node.getName().getIdent());
         sb.append(" = ");
         sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_INITEXPR));
+        sb.append(";\n");
 
         return sb.toString();
     }
@@ -331,7 +334,7 @@ public class JavaCodeGenerator extends JavaVisitor {
 
         sb.append(Modifier.toString(node.getModifiers()));
 
-        sb.append(node.getIdent());
+        sb.append(node.getName().getIdent());
         sb.append('(');
 
         LinkedList paramList = (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_PARAMS);
@@ -393,6 +396,10 @@ public class JavaCodeGenerator extends JavaVisitor {
         return sb.toString();
     }
 
+    public Object visitInstanceInitNode(InstanceInitNode node, LinkedList args) {
+        return (String) node.childReturnValueAt(node.CHILD_INDEX_BLOCK);
+    }
+
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
         StringBuffer sb = new StringBuffer();
 
@@ -438,7 +445,18 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitArrayInitNode(ArrayInitNode node, LinkedList args) {
-        return _defaultVisit((TreeNode) node, args);
+        StringBuffer sb = new StringBuffer();
+
+        sb.append('{');
+
+        LinkedList initializers = (LinkedList)
+         node.childReturnValueAt(node.CHILD_INDEX_INITIALIZERS);
+
+        sb.append(_commaList(initializers));
+
+        sb.append('}');
+
+        return sb.toString();
     }
 
     public Object visitParameterNode(ParameterNode node, LinkedList args) {
@@ -481,11 +499,6 @@ public class JavaCodeGenerator extends JavaVisitor {
           sb.append((String) stmtItr.next());
 
           TreeNode stmt = (TreeNode) stmtTreeItr.next();
-
-          if ((stmt instanceof ExprNode) ||
-              (stmt instanceof VarDeclNode)) {
-             sb.append(";\n");
-          }
         }
 
         sb.append("}\n");
@@ -537,7 +550,30 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitLoopNode(LoopNode node, LinkedList args) {
-        return _defaultVisit((TreeNode) node, args);
+        StringBuffer sb = new StringBuffer();
+        if (node.getForeStmt() instanceof EmptyStmtNode) {
+           // while loop
+           sb.append("while (");
+           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_TEST));
+           sb.append(") \n");
+           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_AFTSTMT));
+        } else {
+           // do loop
+           sb.append("do ");
+           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_FORESTMT));
+           sb.append(" while (");
+           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_TEST));
+           sb.append(");\n");
+        }
+        return sb.toString();
+    }
+
+    public Object visitExprStmtNode(ExprStmtNode node, LinkedList args) {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_EXPR));
+        sb.append(";\n");
+        return sb.toString();
     }
 
     public Object visitForNode(ForNode node, LinkedList args) {
@@ -565,15 +601,7 @@ public class JavaCodeGenerator extends JavaVisitor {
         LinkedList updateList =
          (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_UPDATE);
 
-        ListIterator updateItr = updateList.listIterator();
-
-        while (updateItr.hasNext()) {
-          sb.append((String) updateItr.next());
-
-          if (updateItr.hasNext()) {
-             sb.append(", ");
-          }
-        }
+        sb.append(_commaList(updateList));
 
         sb.append(") ");
         sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_STMT));
@@ -650,11 +678,35 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitCatchNode(CatchNode node, LinkedList args) {
-        return _defaultVisit((TreeNode) node, args);
+        StringBuffer sb = new StringBuffer();
+        sb.append("catch (");
+        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_PARAM));
+        sb.append(") ");
+        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_BLOCK));
+
+        return sb.toString();
     }
 
     public Object visitTryNode(TryNode node, LinkedList args) {
-        return _defaultVisit((TreeNode) node, args);
+        StringBuffer sb = new StringBuffer();
+        sb.append("try ");
+        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_BLOCK));
+
+        LinkedList catchesList =
+         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_CATCHES);
+
+        ListIterator catchesItr = catchesList.listIterator();
+
+        while (catchesItr.hasNext()) {
+          sb.append((String) catchesItr.next());
+        }
+
+        if (node.getFinly() != AbsentTreeNode.instance) {
+           sb.append(" finally ");
+           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_FINLY));
+        }
+
+        return sb.toString();
     }
 
     public Object visitNullPntrNode(NullPntrNode node, LinkedList args) {
@@ -685,6 +737,8 @@ public class JavaCodeGenerator extends JavaVisitor {
 
         sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_OBJECT));
 
+        sb.append('.');
+
         sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_NAME));
 
         return sb.toString();
@@ -701,7 +755,15 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitTypeFieldAccessNode(TypeFieldAccessNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        StringBuffer sb = new StringBuffer();
+
+        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_FTYPE));
+
+        sb.append('.');
+
+        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_NAME));
+
+        return sb.toString();
     }
 
     public Object visitThisFieldAccessNode(ThisFieldAccessNode node, LinkedList args) {
@@ -742,6 +804,15 @@ public class JavaCodeGenerator extends JavaVisitor {
 
     public Object visitAllocateNode(AllocateNode node, LinkedList args) {
         StringBuffer sb = new StringBuffer();
+
+        String enclosingInstance = (String)
+         node.childReturnValueAt(node.CHILD_INDEX_ENCLOSINGINSTANCE);
+
+        if (!enclosingInstance.equals("this")) {
+           sb.append(enclosingInstance);
+           sb.append('.');
+        }
+
         sb.append("new ");
 
         sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
@@ -760,7 +831,7 @@ public class JavaCodeGenerator extends JavaVisitor {
     public Object visitAllocateArrayNode(AllocateArrayNode node, LinkedList args) {
 
         StringBuffer sb = new StringBuffer();
-         
+
         sb.append("new ");
 
         sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
@@ -776,9 +847,16 @@ public class JavaCodeGenerator extends JavaVisitor {
             sb.append(']');
         }
 
-
         for (int dimsLeft = node.getDims(); dimsLeft > 0; dimsLeft--) {
             sb.append("[]");
+        }
+
+        if (node.getInitExpr() != AbsentTreeNode.instance) {
+           String initExpr =
+            (String) node.childReturnValueAt(node.CHILD_INDEX_INITEXPR);
+
+           sb.append(' ');
+           sb.append(initExpr);
         }
 
         return sb.toString();
@@ -789,35 +867,35 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitPostIncrNode(PostIncrNode node, LinkedList args) {
-        return visitSingleExprNode((SingleExprNode) node, "++", true);
+        return _visitSingleExprNode(node, "++", true);
     }
 
     public Object visitPostDecrNode(PostDecrNode node, LinkedList args) {
-        return visitSingleExprNode((SingleExprNode) node, "++", true);
+        return _visitSingleExprNode(node, "++", true);
     }
 
     public Object visitUnaryPlusNode(UnaryPlusNode node, LinkedList args) {
-        return visitSingleExprNode((SingleExprNode) node, "+", false);
+        return _visitSingleExprNode(node, "+", false);
     }
 
     public Object visitUnaryMinusNode(UnaryMinusNode node, LinkedList args) {
-        return visitSingleExprNode((SingleExprNode) node, "-", false);
+        return _visitSingleExprNode(node, "-", false);
     }
 
     public Object visitPreIncrNode(PreIncrNode node, LinkedList args) {
-        return visitSingleExprNode((SingleExprNode) node, "++", false);
+        return _visitSingleExprNode(node, "++", false);
     }
 
     public Object visitPreDecrNode(PreDecrNode node, LinkedList args) {
-        return visitSingleExprNode((SingleExprNode) node, "--", false);
+        return _visitSingleExprNode(node, "--", false);
     }
 
     public Object visitComplementNode(ComplementNode node, LinkedList args) {
-        return visitSingleExprNode((SingleExprNode) node, "~", false);
+        return _visitSingleExprNode(node, "~", false);
     }
 
     public Object visitNotNode(NotNode node, LinkedList args) {
-        return visitSingleExprNode((SingleExprNode) node, "!", false);
+        return _visitSingleExprNode(node, "!", false);
     }
 
     public Object visitCastNode(CastNode node, LinkedList args) {
@@ -838,57 +916,55 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitMultNode(MultNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "*");
+        return _visitBinaryOpNode(node, "*");
     }
 
     public Object visitDivNode(DivNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "/");
+        return _visitBinaryOpNode(node, "/");
     }
 
     public Object visitRemNode(RemNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "%");
+        return _visitBinaryOpNode(node, "%");
     }
 
     public Object visitPlusNode(PlusNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "+");
+        return _visitBinaryOpNode(node, "+");
     }
 
     public Object visitMinusNode(MinusNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "-");
+        return _visitBinaryOpNode(node, "-");
     }
 
     public Object visitLeftShiftLogNode(LeftShiftLogNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "<<");
+        return _visitBinaryOpNode(node, "<<");
     }
 
     public Object visitRightShiftLogNode(RightShiftLogNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, ">>>");
+        return _visitBinaryOpNode(node, ">>>");
     }
 
     public Object visitRightShiftArithNode(RightShiftArithNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, ">>");
+        return _visitBinaryOpNode(node, ">>");
     }
 
     public Object visitLTNode(LTNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "<");
+        return _visitBinaryOpNode(node, "<");
     }
 
     public Object visitGTNode(GTNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, ">");
+        return _visitBinaryOpNode(node, ">");
     }
 
     public Object visitLENode(LENode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "<=");
+        return _visitBinaryOpNode(node, "<=");
     }
 
     public Object visitGENode(GENode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, ">=");
+        return _visitBinaryOpNode(node, ">=");
     }
 
     public Object visitInstanceOfNode(InstanceOfNode node, LinkedList args) {
         StringBuffer sb = new StringBuffer();
-
-        sb.append('(');
 
         sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_EXPR));
 
@@ -896,96 +972,115 @@ public class JavaCodeGenerator extends JavaVisitor {
 
         sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
 
-        sb.append(')');
-
         return sb.toString();
     }
 
     public Object visitEQNode(EQNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "==");
+        return _visitBinaryOpNode(node, "==");
     }
 
     public Object visitNENode(NENode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "!=");
+        return _visitBinaryOpNode(node, "!=");
     }
 
     public Object visitBitAndNode(BitAndNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "&");
+        return _visitBinaryOpNode(node, "&");
     }
 
     public Object visitBitOrNode(BitOrNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "|");
+        return _visitBinaryOpNode(node, "|");
     }
 
     public Object visitBitXorNode(BitXorNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "^");
+        return _visitBinaryOpNode(node, "^");
     }
 
     public Object visitCandNode(CandNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "&&");
+        return _visitBinaryOpNode(node, "&&");
     }
 
     public Object visitCorNode(CorNode node, LinkedList args) {
-        return visitBinaryArithNode((BinaryArithNode) node, "||");
+        return _visitBinaryOpNode(node, "||");
     }
 
     public Object visitIfExprNode(IfExprNode node, LinkedList args) {
-        return _defaultVisit((TreeNode) node, args); // FIXME
+        StringBuffer sb = new StringBuffer();
+
+        String e1String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR1);
+        String e2String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
+        String e3String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR3);
+
+        e1String = _parenExpr(node.getExpr1(), e1String);
+        e2String = _parenExpr(node.getExpr2(), e2String);
+        e3String = _parenExpr(node.getExpr3(), e2String);
+
+        sb.append(e1String);
+        sb.append(" ? ");
+        sb.append(e2String);
+        sb.append(" : ");
+        sb.append(e3String);
+
+        return sb.toString();
     }
 
     public Object visitAssignNode(AssignNode node, LinkedList args) {
+        StringBuffer sb = new StringBuffer();
+
         String e1String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR1);
         String e2String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
 
-        return  e1String + " = " + e2String;
+        sb.append(e1String);
+        sb.append(" = ");
+        sb.append(e2String);
 
+        return sb.toString();
     }
 
     public Object visitMultAssignNode(MultAssignNode node, LinkedList args) {
-        return visitBinaryArithAssignNode((BinaryArithAssignNode) node, "*=");
+        return _visitBinaryOpAssignNode(node, "*=");
     }
 
     public Object visitDivAssignNode(DivAssignNode node, LinkedList args) {
-        return visitBinaryArithAssignNode((BinaryArithAssignNode) node, "/=");
+        return _visitBinaryOpAssignNode(node, "/=");
     }
 
     public Object visitRemAssignNode(RemAssignNode node, LinkedList args) {
-        return visitBinaryArithAssignNode((BinaryArithAssignNode) node, "%=");
+        return _visitBinaryOpAssignNode(node, "%=");
     }
 
     public Object visitPlusAssignNode(PlusAssignNode node, LinkedList args) {
-        return visitBinaryArithAssignNode((BinaryArithAssignNode) node, "+=");
+        return _visitBinaryOpAssignNode(node, "+=");
     }
 
     public Object visitMinusAssignNode(MinusAssignNode node, LinkedList args) {
-        return visitBinaryArithAssignNode((BinaryArithAssignNode) node, "-=");
+        return _visitBinaryOpAssignNode(node, "-=");
     }
 
     public Object visitLeftShiftLogAssignNode(LeftShiftLogAssignNode node, LinkedList args) {
-        return visitBinaryArithAssignNode((BinaryArithAssignNode) node, "<<=");
+        return _visitBinaryOpAssignNode(node, "<<=");
     }
 
     public Object visitRightShiftLogAssignNode(RightShiftLogAssignNode node, LinkedList args) {
-        return visitBinaryArithAssignNode((BinaryArithAssignNode) node, ">>>=");
+        return _visitBinaryOpAssignNode(node, ">>>=");
     }
 
     public Object visitRightShiftArithAssignNode(RightShiftArithAssignNode node, LinkedList args) {
-        return visitBinaryArithAssignNode((BinaryArithAssignNode) node, ">>=");
+        return _visitBinaryOpAssignNode(node, ">>=");
     }
 
     public Object visitBitAndAssignNode(BitAndAssignNode node, LinkedList args) {
-        return visitBinaryArithAssignNode((BinaryArithAssignNode) node, "&=");
+        return _visitBinaryOpAssignNode(node, "&=");
     }
 
     public Object visitBitXorAssignNode(BitXorAssignNode node, LinkedList args) {
-        return visitBinaryArithAssignNode((BinaryArithAssignNode) node, "^=");
+        return _visitBinaryOpAssignNode(node, "^=");
     }
 
     public Object visitBitOrAssignNode(BitOrAssignNode node, LinkedList args) {
-        return visitBinaryArithAssignNode((BinaryArithAssignNode) node, "|=");
+        return _visitBinaryOpAssignNode(node, "|=");
     }
 
-    protected String visitSingleExprNode(SingleExprNode node, String opString,
+    protected String _visitSingleExprNode(SingleExprNode node, String opString,
      boolean post) {
         String exprString = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR);
 
@@ -994,21 +1089,37 @@ public class JavaCodeGenerator extends JavaVisitor {
         return (post ? (exprString + opString) : (opString + exprString));
     }
 
-    protected String visitBinaryArithNode(BinaryArithNode node, String opString) {
+    protected String _visitBinaryOpNode(BinaryOpNode node, String opString) {
+        StringBuffer sb = new StringBuffer();
+
         String e1String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR1);
         String e2String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
 
         e1String = _parenExpr(node.getExpr1(), e1String);
         e2String = _parenExpr(node.getExpr2(), e2String);
 
-        return  e1String + " " + opString + " " + e2String;
+        sb.append(e1String);
+        sb.append(' ');
+        sb.append(opString);
+        sb.append(' ');
+        sb.append(e2String);
+
+        return sb.toString();
     }
 
-    protected String visitBinaryArithAssignNode(BinaryArithAssignNode node, String opString) {
+    protected String _visitBinaryOpAssignNode(BinaryOpAssignNode node, String opString) {
+        StringBuffer sb = new StringBuffer();
+        
         String e1String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR1);
         String e2String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
 
-        return  e1String + " " + opString + " " + e2String;
+        sb.append(e1String);
+        sb.append(' ');
+        sb.append(opString);
+        sb.append(' ');
+        sb.append(e2String);
+
+        return sb.toString();;
     }
 
 
@@ -1034,19 +1145,19 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     protected String _parenExpr(ExprNode expr, String exprStr) {
-       if ((expr instanceof ObjectNode) ||
-           (expr instanceof LiteralNode) ||
-           (expr instanceof ArrayAccessNode) ||
-           (expr instanceof FieldAccessNode)) {
-          return exprStr;
+       if ((expr instanceof BinaryOpNode) ||
+           (expr instanceof BinaryOpAssignNode) ||
+           (expr instanceof AssignNode) ||
+           (expr instanceof InstanceOfNode) ||
+           (expr instanceof EqualityNode) ||
+           (expr instanceof IfExprNode)) {
+          StringBuffer sb = new StringBuffer();
+          sb.append('(');
+          sb.append(exprStr);
+          sb.append(')');
+          return sb.toString();
        }
-       StringBuffer sb = new StringBuffer();
 
-       sb.append('(');
-       sb.append(exprStr);
-       sb.append(')');
-
-       return sb.toString();
+       return exprStr;
     }
-
 }

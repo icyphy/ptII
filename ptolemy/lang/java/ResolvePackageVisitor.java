@@ -1,7 +1,7 @@
 /*
-A JavaVisitor that adds the names of the types defined in a CompileUnitNode
-to the file environment, then resolves names of the imports with a
-ResolveImportsVisitor.
+A JavaVisitor that adds the names of the types defined in the CompileUnitNode
+to the file environment, creates the environments for all nodes,
+then resolves names of the imports with a ResolveImportsVisitor.
 
 Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
@@ -37,33 +37,27 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import java.util.LinkedList;
 
-public class ResolvePackageVisitor extends JavaVisitor {
+public class ResolvePackageVisitor extends ResolveVisitorBase {
 
     ResolvePackageVisitor() {
-        super(TM_CUSTOM);
+        super();
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
+        _pkgDecl = (PackageDecl) node.getDefinedProperty("thePackage");
+
         Environ environ = (Environ) node.getDefinedProperty("environ");
-        PackageDecl pkgDecl = (PackageDecl) node.getDefinedProperty("thePackage");
+
+        _pkgEnv  = (Environ) environ.parent();
 
         LinkedList childArgs = new LinkedList();
-        childArgs.addLast(pkgDecl);            // package declaration
         childArgs.addLast(environ);            // enclosing environment =
                                                // file environment
-        childArgs.addLast(new Boolean(false)); // inner class = false
-        childArgs.addLast(environ.parent());   // package environment
+        childArgs.addLast(Boolean.FALSE);      // inner class = false
+        childArgs.addLast(NullValue.instance); // no enclosing decl
 
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
 
-        /*
-        LinkedList rivArgs = new LinkedList();
-        rivArgs.addLast(node);
-        rivArgs.addLast(environ);
-
-        TNLManip.traverseList(new ResolveImportsVisitor(), node,
-         rivArgs, node.getImports());
-        */
         node.accept(new ResolveImportsVisitor(), null);
 
         return null;
@@ -73,23 +67,58 @@ public class ResolvePackageVisitor extends JavaVisitor {
         return _visitUserTypeDeclNode(node, args, true);
     }
 
+    public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
+        Environ env = _makeEnviron(node, args);
+
+        _visitNode(node.getBody(), env);
+        return null;
+    }
+
+    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
+        Environ env = _makeEnviron(node, args);
+
+        _visitNode(node.getBody(), env);
+        return null;
+    }
+
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
         return _visitUserTypeDeclNode(node, args, false);
     }
 
+    public Object visitBlockNode(BlockNode node, LinkedList args) {
+        Environ env = _makeEnviron(node, args);
+
+        _visitList(node.getStmts(), env);
+        return null;
+    }
+
+    public Object visitForNode(ForNode node, LinkedList args) {
+        Environ env = _makeEnviron(node, args);
+
+        _visitNode(node.getStmt(), env);
+        return null;
+    }
+
+    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
+        Environ env = _makeEnviron(node, args);
+
+        _visitList(node.getMembers(), env);
+        return null;
+    }
+
     /** The default visit method. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
+        // just pass on args as is
+        TNLManip.traverseList(this, node, args, node.children());
         return null;
     }
 
     protected Object _visitUserTypeDeclNode(UserTypeDeclNode node,
      LinkedList args, boolean isClass) {
-        PackageDecl pkgDecl = (PackageDecl) args.get(0);
-        Environ encEnv = (Environ) args.get(1);
+        Environ encEnv = (Environ) args.get(0);
 
         // inner class change
-        boolean isInner = ((Boolean) args.get(2)).booleanValue();
-        Environ pkgEnv  = (Environ) args.get(3);
+        boolean isInner = ((Boolean) args.get(1)).booleanValue();
 
         String className = ((NameNode) node.getName()).getIdent();
 
@@ -100,9 +129,7 @@ public class ResolvePackageVisitor extends JavaVisitor {
            " as a class");
         }
 
-        // Environ pkgEnv = encEnv.parent();
-
-        ClassDecl ocl = (ClassDecl) pkgEnv.lookupProper(className);
+        ClassDecl ocl = (ClassDecl) _pkgEnv.lookupProper(className);
 
         if ((ocl != null) &&
             ((ocl.getSource() == null) ||
@@ -117,14 +144,19 @@ public class ResolvePackageVisitor extends JavaVisitor {
 
            //if (topLevel) {
            if (!isInner) {
-              encDecl = pkgDecl;
+              encDecl = _pkgDecl;
            } else {
-              encDecl = (ClassDecl) args.get(4); // decl of enclosing class
+              Object encDeclObject = args.get(2);
+              if (encDeclObject == NullValue.instance) {
+                 encDecl = null;
+              } else {
+                 encDecl = (JavaDecl) encDeclObject; // enclosing decl
+              }
            }
 
            ClassDecl cl = new ClassDecl(className,
             isClass ? JavaDecl.CG_CLASS : JavaDecl.CG_INTERFACE,
-            NullTypeNode.instance, node.getModifiers(), node, encDecl);
+            null, node.getModifiers(), node, encDecl);
 
            if (ocl != null)  { // Redefinition in same package.
               ApplicationUtility.error("user type name " + className +
@@ -133,7 +165,7 @@ public class ResolvePackageVisitor extends JavaVisitor {
 
            //if (topLevel) {
            if (!isInner) {
-  	           pkgEnv.add(cl);
+  	           _pkgEnv.add(cl);
            }
 
            ocl = cl;
@@ -147,15 +179,43 @@ public class ResolvePackageVisitor extends JavaVisitor {
 
         node.getName().setProperty("decl", ocl);
 
-        // additions for inner classes
         LinkedList memberArgs = new LinkedList();
-        memberArgs.addLast(pkgDecl);              // package declaration
         memberArgs.addLast(env);                  // environment for this class
-        memberArgs.addLast(new Boolean(true));    // inner class = true
-        memberArgs.addLast(pkgEnv);               // package environment
+        memberArgs.addLast(Boolean.TRUE);         // inner class = true
         memberArgs.addLast(ocl);                  // last class decl
         TNLManip.traverseList(this, node, memberArgs, node.getMembers());
 
         return null;
     }
+
+    protected Environ _makeEnviron(TreeNode node, LinkedList args) {
+        Environ encEnv = (Environ) args.get(0);
+
+        Environ env = new Environ(encEnv);
+        node.setProperty("environ", env);
+
+        return env;
+    }
+
+    protected void _visitNode(TreeNode node, Environ env) {
+        LinkedList nodeArgs = new LinkedList();
+        nodeArgs.addLast(env);                  // last environment
+        nodeArgs.addLast(Boolean.TRUE);         // inner class = true
+        nodeArgs.addLast(NullValue.instance);   // no enclosing decl
+        node.accept(this, nodeArgs);
+    }
+
+    protected void _visitList(LinkedList nodeList, Environ env) {
+        LinkedList listArgs = new LinkedList();
+        listArgs.addLast(env);                  // last environment
+        listArgs.addLast(Boolean.TRUE);         // inner class = true
+        listArgs.addLast(NullValue.instance);   // no enclosing decl
+        TNLManip.traverseList(this, null, listArgs, nodeList);
+    }
+
+    /** The package this compile unit is in. */
+    protected PackageDecl _pkgDecl = null;
+
+    /** The package environment. */
+    protected Environ _pkgEnv = null;
 }

@@ -252,17 +252,17 @@ final static short yylhs[] = {                           -1,
    62,   62,   96,   96,   95,   95,   50,   50,   50,   50,
    63,   63,   66,   66,   64,   64,   65,   65,   51,   51,
    51,   51,   98,   98,   52,   52,   52,   52,  103,  103,
-  102,   54,    5,    5,    5,    5,    5,    6,    6,    7,
-    7,    7,    7,    7,    7,    7,    7,    7,    7,    7,
+  102,   54,    5,    5,    5,    5,    5,    5,    5,    6,
+    6,    7,    7,    7,    7,    7,    7,    7,    7,    7,
   100,  100,   97,  101,    8,    8,   31,   31,    9,    9,
     9,   27,   27,   28,   28,   10,   10,   10,   10,   10,
-   10,   10,   10,   29,   29,   23,    3,    3,    2,    2,
-   11,   11,   11,   12,   13,   14,   14,   14,   14,   14,
-   15,   16,   17,   17,   17,   17,   18,   18,   18,   19,
-   19,   20,   20,   20,   20,   20,   20,   20,   20,   20,
+   10,   10,   10,   10,   10,   29,   29,   23,    3,    3,
+    2,    2,   11,   11,   11,   12,   13,   14,   14,   14,
+   14,   14,   15,   16,   17,   17,   17,   17,   18,   18,
+   18,   19,   19,   20,   20,   20,   20,   20,   20,   20,
    20,   20,   20,   20,   20,   20,   20,   20,   20,   20,
-   20,   20,   20,   20,   21,   21,   21,   21,   21,   21,
-   21,   21,   21,   21,   21,   21,   22,  106,
+   20,   20,   20,   20,   20,   20,   21,   21,   21,   21,
+   21,   21,   21,   21,   21,   21,   21,   21,   22,  106,
 };
 final static short yylen[] = {                            2,
     1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -283,17 +283,17 @@ final static short yylen[] = {                            2,
     3,    1,    1,    2,    3,    2,    5,    7,    8,    7,
     2,    1,    1,    1,    1,    1,    1,    3,    3,    3,
     3,    3,    1,    1,    5,    3,    3,    4,    1,    2,
-    5,    2,    1,    1,    3,    3,    3,    1,    1,    1,
-    1,    1,    3,    3,    1,    1,    1,    3,    3,    3,
+    5,    2,    1,    1,    3,    3,    3,    3,    3,    1,
+    1,    1,    1,    1,    3,    3,    1,    1,    1,    3,
     1,    1,    1,    3,    4,    4,    3,    3,    4,    4,
     6,    1,    1,    1,    3,    5,    6,    4,    4,    4,
-    4,    7,    8,    1,    2,    3,    1,    1,    1,    2,
-    1,    1,    1,    2,    2,    1,    1,    2,    2,    1,
-    2,    2,    1,    2,    2,    1,    4,    4,    4,    1,
-    1,    1,    3,    3,    3,    3,    3,    3,    3,    3,
+    4,    7,    8,    7,    8,    1,    2,    3,    1,    1,
+    1,    2,    1,    1,    1,    2,    2,    1,    1,    2,
+    2,    1,    2,    2,    1,    2,    2,    1,    4,    4,
+    4,    1,    1,    1,    3,    3,    3,    3,    3,    3,
     3,    3,    3,    3,    3,    3,    3,    3,    3,    3,
-    3,    3,    5,    1,    3,    3,    3,    3,    3,    3,
-    3,    3,    3,    3,    3,    3,    1,    0,
+    3,    3,    3,    3,    5,    1,    3,    3,    3,    3,
+    3,    3,    3,    3,    3,    3,    3,    3,    1,    0,
 };
 final static short yydefred[] = {                         0,
     0,    0,    1,    0,   26,  203,  201,    0,  202,    0,
@@ -307,189 +307,192 @@ final static short yydefred[] = {                         0,
    97,    0,    0,   49,   51,   50,   52,    0,   44,    0,
    48,    0,   89,   14,   16,   15,   21,   19,   18,   20,
    17,   79,    0,   11,   10,   12,   13,    0,  108,  104,
-  102,   96,    0,    0,    0,    0,    0,    0,  191,    0,
-    0,    0,    0,  192,    0,    0,    0,    6,    7,    2,
+  102,   96,    0,    0,    0,    0,    0,    0,  193,    0,
+    0,    0,    0,  194,    0,    0,    0,    6,    7,    2,
     3,    4,    5,    8,    9,    0,  137,    0,    0,    0,
-    0,    0,    0,  190,    0,  184,    0,  195,    0,    0,
-    0,    0,    0,    0,    0,    0,  240,  246,  139,    0,
+    0,    0,    0,  192,    0,  184,    0,  197,    0,    0,
+    0,    0,    0,    0,    0,    0,  242,  248,  139,    0,
     0,    0,    0,    0,  136,  125,  129,  130,  132,  133,
   134,  135,    0,    0,    0,  122,  124,    0,    0,  126,
     0,    0,    0,    0,    0,    0,   54,   43,   47,   57,
    23,    0,   71,    0,    0,  173,    0,  174,    0,    0,
-    0,    0,    0,    0,    0,    0,  197,  188,  232,  233,
-    0,  236,  237,    0,    0,  274,    0,  251,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,  245,  244,
-  238,  239,  241,  242,    0,    0,  234,  235,    0,    0,
+    0,    0,    0,    0,    0,    0,  199,  190,  234,  235,
+    0,  238,  239,    0,    0,  276,    0,  253,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,  247,  246,
+  240,  241,  243,  244,    0,    0,  236,  237,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,  131,  119,  123,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,  229,
-    0,    0,  228,    0,  109,    0,  169,  170,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,  231,
+    0,    0,  230,    0,  109,    0,  169,  170,    0,    0,
   162,    0,    0,  165,    0,  166,    0,    0,    0,    0,
     0,    0,    0,    0,  171,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,  208,    0,    0,  172,
-    0,    0,  176,    0,    0,    0,  193,    0,    0,    0,
+    0,    0,  176,    0,    0,    0,  195,    0,    0,    0,
     0,  207,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,  212,  213,  128,
-  198,  200,  199,    0,    0,  138,    0,  185,  187,  186,
-    0,    0,    0,    0,   80,    0,    0,   55,    0,    0,
-  230,    0,   72,    0,    0,    0,    0,    0,  161,    0,
-    0,    0,  221,  225,  220,    0,  219,  218,    0,    0,
-    0,    0,    0,    0,  253,  254,    0,    0,    0,  255,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,  182,  180,  178,    0,  248,  247,  249,    0,
-  206,    0,  210,  127,  209,  205,    0,    0,    0,    0,
-    0,    0,    0,    0,   74,   76,    0,    0,  168,  163,
-    0,  164,    0,    0,  226,  114,    0,  118,  115,    0,
-    0,    0,    0,  148,  175,    0,  157,    0,  215,    0,
-    0,   83,    0,    0,   85,   86,    0,    0,    0,    0,
-    0,    0,    0,    0,  112,    0,  217,    0,    0,    0,
-    0,    0,    0,  150,    0,    0,  211,   84,   87,    0,
-    0,    0,    0,    0,  158,  160,    0,  147,  113,  116,
-    0,    0,  156,  149,  154,    0,  181,    0,    0,    0,
-    0,    0,    0,    0,  110,  111,  159,  155,  151,    0,
-  223,    0,    0,    0,   93,   91,   90,   77,   78,    0,
-    0,   92,    0,    0,   95,   94,
+  186,  200,  187,    0,    0,  138,    0,  185,    0,  189,
+  188,    0,    0,    0,    0,   80,    0,    0,   55,    0,
+    0,  232,    0,   72,    0,    0,    0,    0,    0,  161,
+    0,    0,    0,  221,  227,  220,    0,  219,  218,    0,
+    0,    0,    0,    0,    0,  255,  256,    0,    0,    0,
+  257,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,  182,  180,  178,    0,  250,  249,  251,
+    0,  206,    0,  210,  127,  209,  205,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,   74,   76,    0,    0,
+  168,  163,    0,  164,    0,    0,  228,  114,    0,  118,
+  115,    0,    0,    0,    0,  148,  175,    0,  157,    0,
+  215,    0,    0,    0,   83,    0,    0,   85,   86,    0,
+    0,    0,    0,    0,    0,    0,    0,  112,    0,  217,
+    0,    0,    0,    0,    0,    0,  150,    0,    0,    0,
+  211,   84,   87,    0,    0,    0,    0,    0,  158,  160,
+    0,  147,  113,  116,    0,    0,  156,  149,  154,    0,
+  181,    0,    0,    0,    0,    0,    0,    0,    0,  110,
+  111,  159,  155,  151,    0,  223,  225,    0,    0,    0,
+   93,   91,   90,   77,   78,    0,    0,   92,    0,    0,
+   95,   94,
 };
 final static short yydgoto[] = {                          2,
     3,  271,  272,  144,  145,  146,  147,  148,  207,  208,
   151,  209,  210,  211,  212,  213,  157,  158,  214,  346,
-  216,  502,  290,  435,  448,  449,  347,  348,  291,  450,
+  216,  506,  290,  437,  450,  451,  347,  348,  291,  452,
   160,  201,  104,  162,  106,  163,  164,   53,   65,   62,
-  464,  465,   56,   57,  165,  166,  167,  168,  169,  170,
-  171,  172,  528,  323,  511,  173,  174,  175,  176,  454,
-  177,  481,  282,  283,  440,  441,  362,   33,   34,   11,
-   12,   13,   35,   36,  363,   37,   84,   85,   86,   87,
-   74,   70,   88,   89,   90,   91,   75,   38,  364,  365,
-   67,   14,   76,   77,  482,  483,  217,  197,    4,  182,
+  467,  468,   56,   57,  165,  166,  167,  168,  169,  170,
+  171,  172,  534,  323,  516,  173,  174,  175,  176,  456,
+  177,  484,  282,  283,  442,  443,  363,   33,   34,   11,
+   12,   13,   35,   36,  364,   37,   84,   85,   86,   87,
+   74,   70,   88,   89,   90,   91,   75,   38,  365,  366,
+   67,   14,   76,   77,  485,  486,  217,  197,    4,  182,
     9,  324,  325,  193,  194,  273,
 };
-final static short yysindex[] = {                      -200,
- -209,    0,    0, -142,    0,    0,    0,  179,    0, -209,
- -142,    0,    0, 2608,    0, -139,    0,  189,    0,    0,
+final static short yysindex[] = {                      -226,
+ -203,    0,    0, -195,    0,    0,    0,   27,    0, -203,
+ -195,    0,    0, 3100,    0, -191,    0,  124,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
- 2608, -110, 4905,    0,    0, 2608,    0,    0,    0,    0,
-    2,    0,    0, -209, -209,    0,    0,  140,  -19,  -17,
-    0, -209,  -65,    0, -209,  132,    0,    0,    0,  181,
- -209,  145,    0,  227,    0, 4905,    0,    0, 2669,    0,
- -209, 2994,  223,    0,    0, 4905,  171,    0,  177, 1193,
-    0, 4873,  242,    0,    0,    0,    0,  187,    0, 2669,
+ 3100, -103, 2193,    0,    0, 3100,    0,    0,    0,    0,
+  -16,    0,    0, -203, -203,    0,    0,   72,  -76,  -51,
+    0, -203,  -81,    0, -203,   97,    0,    0,    0,  196,
+ -203,  164,    0,  184,    0, 2193,    0,    0,   94,    0,
+ -203, 2727,  220,    0,    0, 2193,  166,    0,  177, 1359,
+    0, 4101,  245,    0,    0,    0,    0,  190,    0,   94,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,  -54,    0,    0,    0,    0, -209,    0,    0,
-    0,    0, -209, -209, 1385,  273,  281,   79,    0, 1886,
-  276,  283,  284,    0, 1886,  177,  287,    0,    0,    0,
-    0,    0,    0,    0,    0, 1886,    0, 1886, 1886, 1886,
- 1886, 1886, 1886,    0,  282,    0,  238,    0,    0,    0,
-  -61,    0,    0,  460,    0,    0,    0,    0,    0,  293,
-  -54,  290,  292,  297,    0,    0,    0,    0,    0,    0,
-    0,    0,  285,  226, 1193,    0,    0,   84, 4830,    0,
-   92,   42,    0,  316,  -54, -209,    0,    0,    0,    0,
-    0,  -31,    0,   49,  323,    0,  306,    0,  307,  284,
-   56,   71, 1480, 1886,  -57,  -20,    0,    0,    0,    0,
-  460,    0,    0,  320, 4124,    0,  340,    0, -209, 1886,
- 1886, 2882,  -71, 1886, 3592,  341,  195,   18,    0,    0,
-    0,    0,    0,    0, -207, 1886,    0,    0, 1886, 1886,
- 1886, 1886, 1886, 1886, 1886, 1886, 1886, 1886, 1886, 1886,
- 1886,   66,   78,  122,  125,  135,    0,    0,    0,  -54,
- 1886, 1385, 1886,   38, 4905,  -29,  139,  350, 4905,    0,
-   81,  342,    0, -209,    0, 4905,    0,    0,  361,  364,
-    0, 1766,  357,    0, 4830,    0, 3625, 1886,  291,  333,
-   66, 1886,  291,   66,    0,   79, 1886, 1886, 1886, 1886,
- 1886, 1886, 1886, 1886, 1886, 1886, 1886, 1886, 1886, 1886,
- 1886, 1886, 1886, 1886, 1886, 1886,    0, 3652, 3685,    0,
-  387,  177,    0,  167,  163, 3745,    0, 4605, 1886, 4605,
- -209,    0, 3795, 4124, 4124, 4124, 4124, 4124, 4124, 4124,
- 4124, 4124, 4124, 4124, 4124, 3890,  395,    0,    0,    0,
-    0,    0,    0,  156,  399,    0, 3917,    0,    0,    0,
-  405,   79,  402,  409,    0,    0, 4905,    0, 4905,  411,
-    0, 1826,    0,  414, 1886, 1886, 1886, 3953,    0, 1385,
- 3982, 1577,    0,    0,    0,  417,    0,    0,    0,   -7,
-   -7, 4041,  200,  200,    0,    0, 4012, 2871, 3325,    0,
- 2517, 4185,  647,  647,   -7,   -7,  355,  355,  355,  343,
- 1385, 4905,    0,    0,    0, 1385,    0,    0,    0,  423,
-    0, 1886,    0,    0,    0,    0, 1886,  -54, 4905,  178,
-  428,  437,   66, 4124,    0,    0,   66, 4091,    0,    0,
-  438,    0, 1886,  211,    0,    0, 4124,    0,    0,   -1,
-  145, 1886,    8,    0,    0,  440,    0, 1886,    0,  444,
-   66,    0, -209,  367,    0,    0,   66,   66,  178,  178,
-  436, 1385,  456, 1385,    0, 1672,    0, 4124, 1886,  442,
-  376,    8, 1193,    0,  177,  470,    0,    0,    0, 1291,
-  178,  178,  454,  455,    0,    0, 1385,    0,    0,    0,
- 4124,  458,    0,    0,    0, 1001,    0,  145,  126,  482,
- 1193,  400,    6,    6,    0,    0,    0,    0,    0,    0,
-    0, 1886, 1886,  401,    0,    0,    0,    0,    0,  486,
-  489,    0,  473,  474,    0,    0,
+    0,    0,  -78,    0,    0,    0,    0, -203,    0,    0,
+    0,    0, -203, -203, 1551,  272,  276,  474,    0, 2056,
+  286,  300,  304,    0, 2056,  177,  306,    0,    0,    0,
+    0,    0,    0,    0,    0, 2056,    0, 2056, 2056, 2056,
+ 2056, 2056, 2056,    0,  301,    0,  258,    0,    0,    0,
+ -243,    0,    0, 2075,    0,    0,    0,    0,    0,  310,
+  -78,  311,  313,  315,    0,    0,    0,    0,    0,    0,
+    0,    0,  297,  235, 1359,    0,    0,  100, 4993,    0,
+  105,    7,    0,  327,  -78, -203,    0,    0,    0,    0,
+    0,  -20,    0,   59,  334,    0,  316,    0,  319,  304,
+   48,   80, 1642, 2056,  -75,   22,    0,    0,    0,    0,
+ 2075,    0,    0,  325, 4234,    0,  354,    0, -203, 2056,
+ 2056, 2189, -112, 2056, 3011,  356,  165,   83,    0,    0,
+    0,    0,    0,    0, -220, 2056,    0,    0, 2056, 2056,
+ 2056, 2056, 2056, 2056, 2056, 2056, 2056, 2056, 2056, 2056,
+ 2056,   84,  156,  131,  134,  137,    0,    0,    0,  -78,
+ 2056, 1551, 2056,  -62, 2193,    4,  170,  362, 2193,    0,
+   91,  347,    0, -203,    0, 2193,    0,    0,  370,  367,
+    0, 1932,  353,    0, 4993,    0, 3809, 2056,  294,  328,
+   84, 2056,  294,   84,    0,  474, 2056, 2056, 2056, 2056,
+ 2056, 2056, 2056, 2056, 2056, 2056, 2056, 2056, 2056, 2056,
+ 2056, 2056, 2056, 2056, 2056, 2056,    0, 3864, 3875,    0,
+  378,  177,    0,  158,  151, 3923,    0, 4644, 2056, 4644,
+  118,    0, 3934, 4234, 4234, 4234, 4234, 4234, 4234, 4234,
+ 4234, 4234, 4234, 4234, 4234, 3988,  387,    0,    0,    0,
+    0,    0,    0,  182,  390,    0, 4017,    0,  126,    0,
+    0,  402,  474,  400,  404,    0,    0, 2193,    0, 2193,
+  406,    0, 1997,    0,  409, 2056, 2056, 2056, 4076,    0,
+ 1551, 4109, 1743,    0,    0,    0,  417,    0,    0,    0,
+  144,  144, 4168,  221,  221,    0,    0, 3000, 2703, 2283,
+    0, 4310, 4282, 2523, 2523,  144,  144,  592,  592,  592,
+  336, 1551, 2193,    0,    0,    0, 1551,    0,    0,    0,
+  424,    0, 2056,    0,    0,    0,    0,  429, 2056,  -78,
+ 2193,  173,  431,  434,   84, 4234,    0,    0,   84, 4222,
+    0,    0,  436,    0, 2056,  210,    0,    0, 4234,    0,
+    0,  -17,  164, 2056,   75,    0,    0,  439,    0, 2056,
+    0, 2056,  440,   84,    0, -203,  359,    0,    0,   84,
+   84,  173,  173,  425, 1551,  442, 1551,    0, 1834,    0,
+ 4234, 2056,  430,  364,   75, 1359,    0,  177,  452,  461,
+    0,    0,    0, 1453,  173,  173,  444,  445,    0,    0,
+ 1551,    0,    0,    0, 4234,  447,    0,    0,    0, 1167,
+    0,  164,  164,  248,  466, 1359,  383,  -31,  -31,    0,
+    0,    0,    0,    0,    0,    0,    0, 2056, 2056,  384,
+    0,    0,    0,    0,    0,  473,  480,    0,  453,  477,
+    0,    0,
 };
-final static short yyrindex[] = {                       646,
-    0,    0,    0, 1944,    0,    0,    0,    0,    0,    0,
- 1944,    0,    0,   14,    0,    0,    0,    0,    0,    0,
+final static short yyrindex[] = {                        19,
+    0,    0,    0,  275,    0,    0,    0,    0,    0,    0,
+  275,    0,    0,    9,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-   14,    0, 4887,    0,    0,   14,    0,    0,   17,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,  -82,  415,
-    0,    0,  415,    0,    0,    0,    0,    0,    0, 3435,
-    0,    0,    0,   24,    0,  641,    0,    0,  641,    0,
-    0,    0, 4715,    0,    0,  641,    0, 3096, 4431,  -86,
-    0,    0, 4663,    0,    0,    0,    0,    0,    0, 4501,
-    0, 4762,    0,    0,    0,    0,    0,    0,    0,    0,
+    9,    0, 5036,    0,    0,    9,    0,    0,   17,    0,
+    0,    0,    0,    0,    0,    0,    0,    0, -101,  410,
+    0,    0,  410,    0,    0,    0,    0,    0,    0, 3632,
+    0,    0,    0,   13,    0, 4547,    0,    0, 4547,    0,
+    0,    0, 4783,    0,    0, 4547,    0, 4834, 4904,  -95,
+    0,    0, 4736,    0,    0,    0,    0,    0,    0, 4848,
+    0, 4873,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,  475,  475,    0,    0,    0,    0,    0,  475,
-    0,    0, 4787,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,  479,  479,    0,    0,    0,    0,    0,  479,
+    0,    0, 4950,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0, 3188,    0, 2787,    0, 1570, 2107,
- 3256, 1398, 2010,    0, 1212, 2144,    0,    0,    0, 2364,
-    0,  -43,  -16,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,  -62,    0,    0,    0,  275,    0,
- 2172, 2665,  -59,   10,    0,    0,    0,    0,    0,    0,
-    0,   35,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,  475,    0,  415,  415,    0,    0,    0,    0,
- 3557,    0,    0,    0,  490,    0, 2207,    0,    0,    0,
-    0,    0,    0,    0,    0,  233,  239, 1959,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-  512,   35,    0,    0,    0,    0,    0,    0,    0,    0,
-  512,    0,    0,    0,  104,   35,    0,    0,  104,    0,
- 2327,  164,    0,    0,    0,  104,    0,    0,    0,  105,
-    0,    0,    0,    0,    0,    0,    0,    0,    0, 2692,
- 3008,  512,    0, 3008,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0, 3385,    0, 2916,    0,  744,  760,
+ 3562, 1734, 1831,    0,  890, 1472,    0,    0,    0, 2493,
+    0,  -64,   23,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,  -92,    0,    0,    0,  277,    0,
+  394, 2794,  -84,  -44,    0,    0,    0,    0,    0,    0,
+    0,  129,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,  479,    0,  410,  410,    0,    0,    0,    0,
+ 3774,    0,    0,    0,  483,    0, 2336,    0,    0,    0,
+    0,    0,    0,    0,    0,  228,  232, 3469,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,  715,  804,    0,    0,    0,    0, 2760,
-    0,    0,    0,   97,  546,  548,  677, 1769, 1902, 1930,
- 1972, 1999, 2084, 2258, 2322,  514,    0,    0,    0,    0,
+  508,  129,    0,    0,    0,    0,    0,    0,    0,    0,
+  508,    0,    0,    0,  574,  129,    0,    0,  574,    0,
+ 2456,  194,    0,    0,    0,  574,    0,    0,    0,  106,
+    0,    0,    0,    0,    0,    0,    0,    0,    0, 2821,
+ 3137,  508,    0, 3137,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
- 2267,    0,  520,    0,    0,  412,  104,    0,  104,    0,
-    0,    0,    0,    0,    0,    0,  512,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0, 3503, 4436,
- 4495,    0, 4064, 4332,    0,    0, 2719, 3736, 3676,    0,
-  500,  718,  539, 2828, 4518, 4541, 4224, 4359, 4427,    0,
-    0, 1573,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,  512,    0, 1573,  415,
-    0,    0,  -41,  173,    0,    0,  -41,    0,    0,    0,
-    0,    0,  512,  907,    0,    0,    9,    0,    0,    0,
- 3093,    0,  439,    0,    0,    0,    0,  512,    0,    0,
-   69,    0,    0,    0,    0,    0,  -11,  -11,  475,  475,
-    0,    0,    0,    0,    0,    0,    0, 2335,    0,    0,
-    0, 1099,  -52,    0,    0,    0,    0,    0,    0,  -86,
-   28,   28,    0,    0,    0,    0,    0,    0,    0,    0,
-  508,    0,    0,    0,    0,  -86,    0, 3120,    0, 2287,
-  -86,    0,    0,    0,    0,    0,    0,    0,    0,  -50,
-    0,  512,  512,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,  877,  975,    0,    0,    0,    0, 2889,
+    0,    0,    0,  562,  564,  652,  846,  882,  886, 1645,
+ 2230, 2483, 2485, 2504, 2554,  509,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0, 2396,    0,  511,    0,    0, 1739,  574,    0,  574,
+    0,    0,    0,    0,    0,    0,    0,  508,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0, 2583,
+ 4551, 4580,    0, 3720, 4377,    0,    0, 2160,  108,   99,
+    0,  314,  534,  787,  800, 4648, 4671, 4400, 4469, 4523,
+    0,    0, 1814,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,  508,    0,
+ 1814,  410,    0,    0,  -48,  195,    0,    0,  -48,    0,
+    0,    0,    0,    0,  508, 1069,    0,    0,    3,    0,
+    0,    0, 3222,    0,  428,    0,    0,    0,    0,  508,
+    0,  508,    0,  115,    0,    0,    0,    0,    0,  -49,
+  -49,  479,  479,    0,    0,    0,    0,    0,    0,    0,
+ 2642,    0,    0,    0, 1261,  -82,    0,    0,    0,    0,
+    0,    0,    0,  -95,   25,   25,    0,    0,    0,    0,
+    0,    0,    0,    0,  498,    0,    0,    0,    0,  -95,
+    0, 3249, 3317,    0, 2088,  -95,    0,    0,    0,    0,
+    0,    0,    0,    0,  -80,    0,    0,  508,  508,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,
 };
 final static short yygindex[] = {                         0,
-    0,    0, 1240,    0,    0,    0,    0,    0,  -23,   88,
-    0,  129,  170,   46,  234,  240, -153,    0,    0,  579,
-  362,    0,    0,    0, -215,   91, -118,  146, -154,    0,
-    0,  -72, -103,  -56,  155,  -51,  161,    0,  -42,    0,
- -273,    0,    0,    0,  -66, -113,    0,    0,    0,    0,
-    0,    0,   55,  245,    0, -117, -372,   93, -171,    0,
-  371,   73,    0,    0, -181,  141,   -8,  -73,   -6,    0,
-    0,    0,    4,   29,  176,    0,    0,    0,    0,    0,
-    0, -404,    0,  485,    0,    0,    0,  252, -227,  153,
-    0,  580,    0,  519,    0,  114,   45,  494,    0,  110,
-    0,    0,  298,  326, -116,    1,
+    0,    0,  322,    0,    0,    0,    0,    0,  142,  167,
+    0,  273,  323,  187,  385,  398,  -50,    0,    0,  749,
+  471,    0,    0,    0, -253,   79,   62,  146, -167,    0,
+    0,  -24, -118,  -11,   -6,   37,  136,    0,  -57,    0,
+ -260,    0,    0,    0,  -66, -109,    0,    0,    0,    0,
+    0,    0,   52,  247,    0, -180, -372,   90, -175,    0,
+  377,   71,    0,    0, -172,  138,   21,  -73,  -25,    0,
+    0,    0,  -59,  179,  169,    0,    0,    0,    0,    0,
+    0, -378,    0,  499,    0,    0,    0,  312, -143,  163,
+    0,  584,    0,  520,    0,  113,   24,  486,    0,   28,
+    0,    0,  278,  333, -119,    1,
 };
-final static int YYTABLESIZE=5207;
+final static int YYTABLESIZE=5344;
 final static short yytable[] = parserdata.yytable;
 final static short yycheck[] = parserdata.yycheck;
 final static short YYFINAL=2;
@@ -526,7 +529,7 @@ null,null,null,null,null,null,null,null,null,"ABSTRACT","BOOLEAN","BREAK",
 };
 final static String yyrule[] = parserdata.yyrule;
 
-//#line 1365 "jparser.y"
+//#line 1395 "jparser.y"
 
 protected void init(String filename) throws IOException {
   _filename = filename;
@@ -586,7 +589,11 @@ public CompileUnitNode getAST() { return _theAST; }
 
 protected void yyerror(String msg)
 {
-  throw new RuntimeException("parse error for " + _filename + ": " + msg);
+  String errMsg = "parse error in " + _filename + ": " + msg;
+  if (_lexer != null) {
+     errMsg += " on line " + _lexer.lineNumber();
+  }
+  ApplicationUtility.error(errMsg);
 }
 
 /** An array type with given ELEMENTTYPE and DIMS dimensions.  When
@@ -603,7 +610,7 @@ protected static TypeNode makeArrayType(TypeNode elementType, int dims)
 
 protected String _filename = null;
 protected Yylex _lexer = null;
-//#line 1887 "parser.java"
+//#line 1924 "parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1040,39 +1047,42 @@ case 77:
 //#line 524 "jparser.y"
 {
      Modifier.checkMethodModifiers(val_peek(8).ival);
-	    yyval.obj = new MethodDeclNode(val_peek(8).ival, (LinkedList) val_peek(4).obj, makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival),
-			                        (NameNode) val_peek(6).obj, (LinkedList) val_peek(1).obj, (TreeNode) val_peek(0).obj); }
+	    yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj, (LinkedList) val_peek(4).obj,
+                             (LinkedList) val_peek(1).obj, (TreeNode) val_peek(0).obj,
+                             makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
+   }
 break;
 case 78:
-//#line 530 "jparser.y"
+//#line 532 "jparser.y"
 {
      Modifier.checkMethodModifiers(val_peek(8).ival);
-	    yyval.obj = new MethodDeclNode(val_peek(8).ival, (LinkedList) val_peek(4).obj, makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival),
-                             (NameNode) val_peek(6).obj, (LinkedList) val_peek(1).obj, (TreeNode) val_peek(0).obj);
+	    yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj, (LinkedList) val_peek(4).obj,
+                             (LinkedList) val_peek(1).obj, (TreeNode) val_peek(0).obj,
+                             makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
    }
 break;
 case 79:
-//#line 539 "jparser.y"
+//#line 542 "jparser.y"
 { yyval.obj = VoidTypeNode.instance; }
 break;
 case 80:
-//#line 547 "jparser.y"
+//#line 550 "jparser.y"
 { }
 break;
 case 81:
-//#line 549 "jparser.y"
+//#line 552 "jparser.y"
 { yyval.obj = new LinkedList();  }
 break;
 case 82:
-//#line 554 "jparser.y"
+//#line 557 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 83:
-//#line 556 "jparser.y"
+//#line 559 "jparser.y"
 { yyval.obj = cons(val_peek(2).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 84:
-//#line 561 "jparser.y"
+//#line 564 "jparser.y"
 {
      Modifier.checkParameterModifiers(val_peek(3).ival); 
      yyval.obj = new ParameterNode(val_peek(3).ival, makeArrayType((TypeNode) val_peek(2).obj, val_peek(0).ival),
@@ -1080,107 +1090,110 @@ case 84:
    }
 break;
 case 85:
-//#line 572 "jparser.y"
+//#line 575 "jparser.y"
 { }
 break;
 case 86:
-//#line 574 "jparser.y"
+//#line 577 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 87:
-//#line 579 "jparser.y"
+//#line 582 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 88:
-//#line 584 "jparser.y"
+//#line 587 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 89:
-//#line 586 "jparser.y"
+//#line 589 "jparser.y"
 { yyval.obj = cons(val_peek(2).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 91:
-//#line 595 "jparser.y"
+//#line 598 "jparser.y"
 { yyval.obj = AbsentTreeNode.instance; }
 break;
 case 92:
-//#line 604 "jparser.y"
+//#line 607 "jparser.y"
 {
       Modifier.checkConstructorModifiers(val_peek(9).ival);
-	     yyval.obj = new ConstructorDeclNode(val_peek(9).ival, val_peek(8).sval, (LinkedList) val_peek(6).obj, (LinkedList) val_peek(4).obj,
-            (TreeNode) val_peek(2).obj, new BlockNode((LinkedList) val_peek(1).obj));
+	     yyval.obj = new ConstructorDeclNode(val_peek(9).ival,
+            new NameNode(AbsentTreeNode.instance, val_peek(8).sval), (LinkedList) val_peek(6).obj,
+            (LinkedList) val_peek(4).obj, new BlockNode((LinkedList) val_peek(1).obj),
+            (ConstructorCallNode) val_peek(2).obj);
    }
 break;
 case 93:
-//#line 611 "jparser.y"
+//#line 616 "jparser.y"
 {
      Modifier.checkConstructorModifiers(val_peek(8).ival);
-	    yyval.obj = new ConstructorDeclNode(val_peek(8).ival, val_peek(7).sval, (LinkedList) val_peek(5).obj, (LinkedList) val_peek(3).obj,
-					    new SuperConstructorCallNode(new LinkedList()),
-					    new BlockNode((LinkedList) val_peek(1).obj));
+	    yyval.obj = new ConstructorDeclNode(val_peek(8).ival,
+           new NameNode(AbsentTreeNode.instance, val_peek(7).sval), (LinkedList) val_peek(5).obj,
+           (LinkedList) val_peek(3).obj, new BlockNode((LinkedList) val_peek(1).obj),
+           new SuperConstructorCallNode(new LinkedList()));
 	  }
 break;
 case 94:
-//#line 625 "jparser.y"
+//#line 631 "jparser.y"
 { yyval.obj = new ThisConstructorCallNode((LinkedList) val_peek(2).obj); }
 break;
 case 95:
-//#line 627 "jparser.y"
+//#line 633 "jparser.y"
 { yyval.obj = new SuperConstructorCallNode((LinkedList) val_peek(2).obj); }
 break;
 case 96:
-//#line 635 "jparser.y"
+//#line 641 "jparser.y"
 { yyval.obj = new StaticInitNode((BlockNode) val_peek(0).obj); }
 break;
 case 97:
-//#line 640 "jparser.y"
+//#line 646 "jparser.y"
 { yyval.obj = new InstanceInitNode((BlockNode) val_peek(0).obj); }
 break;
 case 98:
-//#line 648 "jparser.y"
+//#line 654 "jparser.y"
 {
      Modifier.checkInterfaceModifiers(val_peek(4).ival);
      yyval.obj = new InterfaceDeclNode(val_peek(4).ival, (NameNode) val_peek(2).obj, (LinkedList) val_peek(1).obj, (LinkedList) val_peek(0).obj);
    }
 break;
 case 99:
-//#line 663 "jparser.y"
+//#line 669 "jparser.y"
 { }
 break;
 case 100:
-//#line 665 "jparser.y"
+//#line 671 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 101:
-//#line 670 "jparser.y"
+//#line 676 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 102:
-//#line 677 "jparser.y"
+//#line 683 "jparser.y"
 { yyval.obj = val_peek(1).obj; }
 break;
 case 103:
-//#line 682 "jparser.y"
+//#line 688 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 104:
-//#line 684 "jparser.y"
+//#line 690 "jparser.y"
 { yyval.obj = appendLists((LinkedList) val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 106:
-//#line 690 "jparser.y"
+//#line 696 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 107:
-//#line 692 "jparser.y"
+//#line 698 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 108:
-//#line 694 "jparser.y"
+//#line 700 "jparser.y"
 { yyval.obj = cons(val_peek(1).obj); }
 break;
 case 109:
-//#line 699 "jparser.y"
+//#line 705 "jparser.y"
 {
      int modifiers = val_peek(3).ival;
      modifiers |= (Modifier.STATIC_MOD | Modifier.FINAL_MOD);
@@ -1202,76 +1215,79 @@ case 109:
 	  }
 break;
 case 110:
-//#line 723 "jparser.y"
-{ Modifier.checkMethodSignatureModifiers(val_peek(8).ival);
-	      yyval.obj = new MethodDeclNode(val_peek(8).ival | Modifier.ABSTRACT_MOD, (LinkedList) val_peek(4).obj,
-				       makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival),
-				       (NameNode) val_peek(6).obj, (LinkedList) val_peek(1).obj, AbsentTreeNode.instance);
-     }
+//#line 729 "jparser.y"
+{
+     Modifier.checkMethodSignatureModifiers(val_peek(8).ival);
+	    yyval.obj = new MethodDeclNode(val_peek(8).ival | Modifier.ABSTRACT_MOD, (NameNode) val_peek(6).obj,
+                             (LinkedList) val_peek(4).obj, (LinkedList) val_peek(1).obj,
+                             AbsentTreeNode.instance,
+                             makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
+   }
 break;
 case 111:
-//#line 730 "jparser.y"
+//#line 738 "jparser.y"
 {
-        Modifier.checkMethodSignatureModifiers(val_peek(8).ival);
-	      yyval.obj = new MethodDeclNode(val_peek(8).ival | Modifier.ABSTRACT_MOD, (LinkedList) val_peek(4).obj,
-				       makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival), (NameNode) val_peek(6).obj, (LinkedList) val_peek(1).obj,
-              AbsentTreeNode.instance);
-     }
+     Modifier.checkMethodSignatureModifiers(val_peek(8).ival);
+	    yyval.obj = new MethodDeclNode(val_peek(8).ival | Modifier.ABSTRACT_MOD, (NameNode) val_peek(6).obj,
+                             (LinkedList) val_peek(4).obj, (LinkedList) val_peek(1).obj,
+                             AbsentTreeNode.instance,
+                             makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
+   }
 break;
 case 112:
-//#line 744 "jparser.y"
+//#line 753 "jparser.y"
 { yyval.obj = new ArrayInitNode((LinkedList) val_peek(1).obj); }
 break;
 case 113:
-//#line 746 "jparser.y"
+//#line 755 "jparser.y"
 { yyval.obj = new ArrayInitNode((LinkedList) val_peek(2).obj); }
 break;
 case 114:
-//#line 748 "jparser.y"
+//#line 757 "jparser.y"
 { yyval.obj = new ArrayInitNode(new LinkedList()); }
 break;
 case 115:
-//#line 754 "jparser.y"
+//#line 763 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 116:
-//#line 756 "jparser.y"
+//#line 765 "jparser.y"
 { yyval.obj = append((LinkedList) val_peek(2).obj, val_peek(0).obj); }
 break;
 case 119:
-//#line 771 "jparser.y"
+//#line 780 "jparser.y"
 { yyval.obj = new BlockNode((LinkedList) val_peek(1).obj); }
 break;
 case 120:
-//#line 775 "jparser.y"
+//#line 784 "jparser.y"
 { }
 break;
 case 121:
-//#line 777 "jparser.y"
+//#line 786 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 122:
-//#line 782 "jparser.y"
+//#line 791 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 123:
-//#line 784 "jparser.y"
+//#line 793 "jparser.y"
 { yyval.obj = appendLists((LinkedList) val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 124:
-//#line 789 "jparser.y"
+//#line 798 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 125:
-//#line 791 "jparser.y"
+//#line 800 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 126:
-//#line 793 "jparser.y"
-{ yyval.obj = val_peek(0).obj; }
+//#line 802 "jparser.y"
+{ yyval.obj = cons(val_peek(0).obj); }
 break;
 case 127:
-//#line 801 "jparser.y"
+//#line 810 "jparser.y"
 {
      Modifier.checkLocalVariableModifiers(val_peek(3).ival);
 
@@ -1290,7 +1306,7 @@ case 127:
    }
 break;
 case 128:
-//#line 819 "jparser.y"
+//#line 828 "jparser.y"
 {
      LinkedList varDecls = (LinkedList) val_peek(1).obj;
      LinkedList result = new LinkedList();
@@ -1307,566 +1323,586 @@ case 128:
    }
 break;
 case 131:
-//#line 841 "jparser.y"
-{ yyval.obj = val_peek(1).obj; }
+//#line 850 "jparser.y"
+{ yyval.obj = new ExprStmtNode((ExprNode) val_peek(1).obj); }
 break;
 case 137:
-//#line 853 "jparser.y"
+//#line 862 "jparser.y"
 { yyval.obj = new EmptyStmtNode(); }
 break;
 case 138:
-//#line 861 "jparser.y"
+//#line 870 "jparser.y"
 { yyval.obj = new LabeledStmtNode((NameNode) val_peek(2).obj, (TreeNode) val_peek(0).obj); }
 break;
 case 139:
-//#line 869 "jparser.y"
+//#line 878 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 140:
-//#line 871 "jparser.y"
+//#line 880 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 141:
-//#line 873 "jparser.y"
+//#line 882 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 142:
-//#line 875 "jparser.y"
+//#line 884 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 143:
-//#line 877 "jparser.y"
+//#line 886 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 144:
-//#line 879 "jparser.y"
+//#line 888 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 145:
-//#line 881 "jparser.y"
+//#line 890 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 146:
-//#line 889 "jparser.y"
+//#line 898 "jparser.y"
 { yyval.obj = new IfStmtNode((ExprNode) val_peek(2).obj, (TreeNode) val_peek(0).obj, AbsentTreeNode.instance); }
 break;
 case 147:
-//#line 891 "jparser.y"
+//#line 900 "jparser.y"
 { yyval.obj = new IfStmtNode((ExprNode) val_peek(4).obj, (TreeNode) val_peek(2).obj, (TreeNode) val_peek(0).obj); }
 break;
 case 148:
-//#line 893 "jparser.y"
+//#line 902 "jparser.y"
 { yyval.obj = new SwitchNode((ExprNode) val_peek(2).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 149:
-//#line 898 "jparser.y"
+//#line 907 "jparser.y"
 { yyval.obj = val_peek(1).obj; }
 break;
 case 150:
-//#line 903 "jparser.y"
+//#line 912 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 151:
-//#line 905 "jparser.y"
+//#line 914 "jparser.y"
 {
      yyval.obj = cons(new SwitchBranchNode((LinkedList) val_peek(2).obj, (LinkedList) val_peek(1).obj),
                (LinkedList) val_peek(0).obj);
    }
 break;
 case 152:
-//#line 911 "jparser.y"
+//#line 920 "jparser.y"
 { yyval.obj = cons(new SwitchBranchNode((LinkedList) val_peek(0).obj, new LinkedList())); }
 break;
 case 153:
-//#line 916 "jparser.y"
+//#line 925 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 154:
-//#line 918 "jparser.y"
+//#line 927 "jparser.y"
 { yyval.obj = cons(val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 155:
-//#line 923 "jparser.y"
+//#line 932 "jparser.y"
 { yyval.obj = new CaseNode((TreeNode) val_peek(1).obj); }
 break;
 case 156:
-//#line 925 "jparser.y"
+//#line 934 "jparser.y"
 { yyval.obj = new CaseNode(AbsentTreeNode.instance); }
 break;
 case 157:
-//#line 932 "jparser.y"
+//#line 941 "jparser.y"
 { yyval.obj = new LoopNode(new EmptyStmtNode(), (ExprNode) val_peek(2).obj, (TreeNode) val_peek(0).obj); }
 break;
 case 158:
-//#line 934 "jparser.y"
+//#line 943 "jparser.y"
 { yyval.obj = new LoopNode((TreeNode) val_peek(5).obj, (ExprNode) val_peek(2).obj, new EmptyStmtNode()); }
 break;
 case 159:
-//#line 936 "jparser.y"
+//#line 945 "jparser.y"
 { yyval.obj = new ForNode((LinkedList) val_peek(5).obj, (ExprNode) val_peek(4).obj,
       (LinkedList) val_peek(2).obj, (TreeNode) val_peek(0).obj); }
 break;
 case 160:
-//#line 939 "jparser.y"
+//#line 948 "jparser.y"
 { yyval.obj = new ForNode((LinkedList) val_peek(4).obj, new BoolLitNode("true"), (LinkedList) val_peek(2).obj,
       (TreeNode) val_peek(0).obj); }
 break;
 case 161:
-//#line 945 "jparser.y"
+//#line 954 "jparser.y"
 { yyval.obj = val_peek(1).obj; }
 break;
 case 162:
-//#line 947 "jparser.y"
+//#line 956 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 163:
-//#line 951 "jparser.y"
+//#line 960 "jparser.y"
 { }
 break;
 case 164:
-//#line 953 "jparser.y"
+//#line 962 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 165:
-//#line 957 "jparser.y"
+//#line 966 "jparser.y"
 { }
 break;
 case 166:
-//#line 959 "jparser.y"
+//#line 968 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 167:
-//#line 964 "jparser.y"
+//#line 973 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 168:
-//#line 966 "jparser.y"
+//#line 975 "jparser.y"
 { yyval.obj = cons(val_peek(2).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 169:
-//#line 974 "jparser.y"
+//#line 983 "jparser.y"
 { yyval.obj = new BreakNode((TreeNode) val_peek(1).obj); }
 break;
 case 170:
-//#line 976 "jparser.y"
+//#line 985 "jparser.y"
 { yyval.obj = new ContinueNode((TreeNode) val_peek(1).obj); }
 break;
 case 171:
-//#line 978 "jparser.y"
+//#line 987 "jparser.y"
 { yyval.obj = new ReturnNode((TreeNode) val_peek(1).obj); }
 break;
 case 172:
-//#line 980 "jparser.y"
+//#line 989 "jparser.y"
 { yyval.obj = new ThrowNode((ExprNode) val_peek(1).obj); }
 break;
 case 173:
-//#line 985 "jparser.y"
+//#line 994 "jparser.y"
 { }
 break;
 case 174:
-//#line 987 "jparser.y"
+//#line 996 "jparser.y"
 { yyval.obj = AbsentTreeNode.instance; }
 break;
 case 175:
-//#line 995 "jparser.y"
+//#line 1004 "jparser.y"
 { yyval.obj = new SynchronizedNode((ExprNode) val_peek(2).obj, (TreeNode) val_peek(0).obj); }
 break;
 case 176:
-//#line 997 "jparser.y"
+//#line 1006 "jparser.y"
 { yyval.obj = new TryNode((BlockNode) val_peek(1).obj, new LinkedList(), (TreeNode) val_peek(0).obj); }
 break;
 case 177:
-//#line 999 "jparser.y"
+//#line 1008 "jparser.y"
 { yyval.obj = new TryNode((BlockNode) val_peek(1).obj, (LinkedList) val_peek(0).obj, AbsentTreeNode.instance); }
 break;
 case 178:
-//#line 1001 "jparser.y"
+//#line 1010 "jparser.y"
 { yyval.obj = new TryNode((BlockNode) val_peek(2).obj, (LinkedList) val_peek(1).obj, (TreeNode) val_peek(0).obj); }
 break;
 case 179:
-//#line 1006 "jparser.y"
-{ yyval.obj = cons (val_peek(0).obj); }
+//#line 1015 "jparser.y"
+{ yyval.obj = cons(val_peek(0).obj); }
 break;
 case 180:
-//#line 1008 "jparser.y"
-{ yyval.obj = cons (val_peek(1).obj, (LinkedList) val_peek(0).obj); }
+//#line 1017 "jparser.y"
+{ yyval.obj = cons(val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 181:
-//#line 1013 "jparser.y"
+//#line 1022 "jparser.y"
 { yyval.obj = new CatchNode((ParameterNode) val_peek(2).obj, (BlockNode) val_peek(0).obj); }
 break;
 case 182:
-//#line 1018 "jparser.y"
+//#line 1027 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 183:
-//#line 1029 "jparser.y"
+//#line 1038 "jparser.y"
 { yyval.obj = new ObjectNode((NameNode) val_peek(0).obj); }
 break;
 case 185:
-//#line 1032 "jparser.y"
+//#line 1041 "jparser.y"
 { yyval.obj = new TypeClassAccessNode(new TypeNameNode((NameNode) val_peek(2).obj)); }
 break;
 case 186:
-//#line 1034 "jparser.y"
-{ yyval.obj = new OuterThisAccessNode(new TypeNameNode((NameNode) val_peek(2).obj)); }
+//#line 1043 "jparser.y"
+{ yyval.obj = new TypeClassAccessNode((TypeNode) val_peek(2).obj); }
 break;
 case 187:
-//#line 1036 "jparser.y"
+//#line 1045 "jparser.y"
+{ yyval.obj = new TypeClassAccessNode((TypeNode) val_peek(2).obj); }
+break;
+case 188:
+//#line 1047 "jparser.y"
+{ yyval.obj = new OuterThisAccessNode(new TypeNameNode((NameNode) val_peek(2).obj)); }
+break;
+case 189:
+//#line 1049 "jparser.y"
 { yyval.obj = new OuterSuperAccessNode(new TypeNameNode((NameNode) val_peek(2).obj)); }
 break;
-case 191:
-//#line 1047 "jparser.y"
+case 193:
+//#line 1060 "jparser.y"
 { yyval.obj = new NullPntrNode(); }
 break;
-case 192:
-//#line 1049 "jparser.y"
+case 194:
+//#line 1062 "jparser.y"
 { yyval.obj = new ThisNode(); }
 break;
-case 193:
-//#line 1051 "jparser.y"
+case 195:
+//#line 1064 "jparser.y"
 { yyval.obj = val_peek(1).obj; }
 break;
-case 194:
-//#line 1053 "jparser.y"
+case 196:
+//#line 1066 "jparser.y"
 { yyval.obj = new ObjectNode((NameNode) val_peek(1).obj); }
 break;
-case 196:
-//#line 1056 "jparser.y"
+case 198:
+//#line 1069 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
-case 198:
-//#line 1060 "jparser.y"
-{ yyval.obj = new TypeClassAccessNode((TypeNode) val_peek(2).obj); }
-break;
-case 199:
-//#line 1062 "jparser.y"
-{ yyval.obj = new TypeClassAccessNode((TypeNode) val_peek(2).obj); }
-break;
 case 200:
-//#line 1064 "jparser.y"
+//#line 1073 "jparser.y"
 { yyval.obj = new TypeClassAccessNode((TypeNode) val_peek(2).obj); }
 break;
 case 201:
-//#line 1073 "jparser.y"
+//#line 1082 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 203:
-//#line 1079 "jparser.y"
+//#line 1088 "jparser.y"
 { yyval.obj = new NameNode(AbsentTreeNode.instance, val_peek(0).sval); }
 break;
 case 204:
-//#line 1084 "jparser.y"
+//#line 1093 "jparser.y"
 { yyval.obj = new NameNode((NameNode) val_peek(2).obj, val_peek(0).sval); }
 break;
 case 205:
-//#line 1091 "jparser.y"
+//#line 1100 "jparser.y"
 { yyval.obj = new ArrayAccessNode(new ObjectNode((NameNode) val_peek(3).obj), (ExprNode) val_peek(1).obj); }
 break;
 case 206:
-//#line 1093 "jparser.y"
+//#line 1102 "jparser.y"
 { yyval.obj = new ArrayAccessNode((ExprNode) val_peek(3).obj, (ExprNode) val_peek(1).obj); }
 break;
 case 207:
-//#line 1102 "jparser.y"
+//#line 1111 "jparser.y"
 { yyval.obj = new ObjectFieldAccessNode((TreeNode) val_peek(2).obj, (NameNode) val_peek(0).obj); }
 break;
 case 208:
-//#line 1104 "jparser.y"
+//#line 1113 "jparser.y"
 { yyval.obj = new SuperFieldAccessNode((NameNode) val_peek(0).obj); }
 break;
 case 209:
-//#line 1112 "jparser.y"
+//#line 1121 "jparser.y"
 { yyval.obj = new MethodCallNode((NameNode) val_peek(3).obj, (LinkedList) val_peek(1).obj); }
 break;
 case 210:
-//#line 1114 "jparser.y"
+//#line 1123 "jparser.y"
 { yyval.obj = new MethodCallNode((TreeNode) val_peek(3).obj, (LinkedList) val_peek(1).obj); }
 break;
 case 211:
-//#line 1117 "jparser.y"
+//#line 1126 "jparser.y"
 { yyval.obj = new MethodCallNode(new NameNode((NameNode) val_peek(5).obj, val_peek(3).sval), (LinkedList) val_peek(1).obj); }
 break;
 case 212:
-//#line 1121 "jparser.y"
+//#line 1130 "jparser.y"
 {  }
 break;
 case 213:
-//#line 1123 "jparser.y"
+//#line 1132 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 214:
-//#line 1128 "jparser.y"
+//#line 1137 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 215:
-//#line 1130 "jparser.y"
+//#line 1139 "jparser.y"
 { yyval.obj = cons(val_peek(2).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 216:
-//#line 1138 "jparser.y"
-{ yyval.obj = new AllocateNode((TypeNode) val_peek(3).obj, (LinkedList) val_peek(1).obj); }
+//#line 1147 "jparser.y"
+{ yyval.obj = new AllocateNode((TypeNode) val_peek(3).obj, (LinkedList) val_peek(1).obj, new ThisNode()); }
 break;
 case 217:
-//#line 1141 "jparser.y"
+//#line 1150 "jparser.y"
 {
-     yyval.obj = new AllocateAnonymousClassNode((TypeNode) val_peek(4).obj,
-               (LinkedList) val_peek(2).obj, (LinkedList) val_peek(0).obj);
+     yyval.obj = new AllocateAnonymousClassNode((TypeNameNode) val_peek(4).obj,
+               (LinkedList) val_peek(2).obj, (LinkedList) val_peek(0).obj, new ThisNode());
    }
 break;
 case 218:
-//#line 1146 "jparser.y"
+//#line 1155 "jparser.y"
 {
      yyval.obj = new AllocateArrayNode((TypeNode) val_peek(2).obj, (LinkedList) val_peek(1).obj, val_peek(0).ival,
            AbsentTreeNode.instance);
    }
 break;
 case 219:
-//#line 1152 "jparser.y"
+//#line 1161 "jparser.y"
 {
      yyval.obj = new AllocateArrayNode((TypeNode) val_peek(2).obj, new LinkedList(), val_peek(1).ival,
           (TreeNode) val_peek(0).obj);
    }
 break;
 case 220:
-//#line 1157 "jparser.y"
+//#line 1166 "jparser.y"
 {
      yyval.obj = new AllocateArrayNode((TypeNode) val_peek(2).obj, (LinkedList) val_peek(1).obj, val_peek(0).ival,
            AbsentTreeNode.instance);
    }
 break;
 case 221:
-//#line 1163 "jparser.y"
+//#line 1172 "jparser.y"
 {
      yyval.obj = new AllocateArrayNode((TypeNode) val_peek(2).obj, new LinkedList(), val_peek(1).ival,
            (TreeNode) val_peek(0).obj);
    }
 break;
 case 222:
-//#line 1168 "jparser.y"
+//#line 1178 "jparser.y"
 {
-     yyval.obj = AbsentTreeNode.instance; /* FIXME*/
+     yyval.obj = new AllocateNode(
+           new TypeNameNode(new NameNode(AbsentTreeNode.instance, val_peek(3).sval)),
+           (LinkedList) val_peek(1).obj, (ExprNode) val_peek(6).obj);
    }
 break;
 case 223:
-//#line 1172 "jparser.y"
+//#line 1185 "jparser.y"
 {
-     yyval.obj = AbsentTreeNode.instance; /* FIXME*/
+     yyval.obj = new AllocateAnonymousClassNode(
+           new TypeNameNode(new NameNode(AbsentTreeNode.instance, val_peek(4).sval)),
+           (LinkedList) val_peek(2).obj, (LinkedList) val_peek(0).obj, (ExprNode) val_peek(7).obj);
    }
 break;
 case 224:
-//#line 1179 "jparser.y"
-{ yyval.obj = cons(val_peek(0).obj); }
+//#line 1193 "jparser.y"
+{
+     yyval.obj = new AllocateNode(
+           new TypeNameNode(new NameNode(AbsentTreeNode.instance, val_peek(3).sval)),
+           (LinkedList) val_peek(1).obj, new ObjectNode((NameNode) val_peek(6).obj));
+   }
 break;
 case 225:
-//#line 1181 "jparser.y"
-{ yyval.obj = cons(val_peek(1).obj, (LinkedList) val_peek(0).obj); }
+//#line 1200 "jparser.y"
+{
+     yyval.obj = new AllocateAnonymousClassNode(
+           new TypeNameNode(new NameNode(AbsentTreeNode.instance, val_peek(4).sval)),
+           (LinkedList) val_peek(2).obj, (LinkedList) val_peek(0).obj, new ObjectNode((NameNode) val_peek(7).obj));
+   }
 break;
 case 226:
-//#line 1186 "jparser.y"
-{ yyval.obj = val_peek(1).obj; }
+//#line 1209 "jparser.y"
+{ yyval.obj = cons(val_peek(0).obj); }
 break;
 case 227:
-//#line 1190 "jparser.y"
-{ }
+//#line 1211 "jparser.y"
+{ yyval.obj = cons(val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 228:
-//#line 1192 "jparser.y"
-{ yyval.ival = 0; }
+//#line 1216 "jparser.y"
+{ yyval.obj = val_peek(1).obj; }
 break;
 case 229:
-//#line 1197 "jparser.y"
-{ yyval.ival = 1; }
-break;
-case 230:
-//#line 1199 "jparser.y"
-{ yyval.ival = val_peek(1).ival + 1; }
-break;
-case 234:
-//#line 1213 "jparser.y"
-{ yyval.obj = new PostIncrNode((ExprNode) val_peek(1).obj); }
-break;
-case 235:
-//#line 1218 "jparser.y"
-{ yyval.obj = new PostDecrNode((ExprNode) val_peek(1).obj); }
-break;
-case 238:
-//#line 1228 "jparser.y"
-{ yyval.obj = new UnaryPlusNode((ExprNode) val_peek(0).obj); }
-break;
-case 239:
-//#line 1230 "jparser.y"
-{ yyval.obj = new UnaryMinusNode((ExprNode) val_peek(0).obj); }
-break;
-case 241:
-//#line 1236 "jparser.y"
-{ yyval.obj = new PreIncrNode((ExprNode) val_peek(0).obj); }
-break;
-case 242:
-//#line 1241 "jparser.y"
-{ yyval.obj = new PreDecrNode((ExprNode) val_peek(0).obj); }
-break;
-case 244:
-//#line 1247 "jparser.y"
-{ yyval.obj = new ComplementNode((ExprNode) val_peek(0).obj); }
-break;
-case 245:
-//#line 1249 "jparser.y"
-{ yyval.obj = new NotNode((ExprNode) val_peek(0).obj); }
-break;
-case 247:
-//#line 1255 "jparser.y"
-{ yyval.obj = new CastNode((TypeNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
-break;
-case 248:
-//#line 1257 "jparser.y"
-{ yyval.obj = new CastNode((TypeNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
-break;
-case 249:
-//#line 1259 "jparser.y"
-{ yyval.obj = new CastNode(new TypeNameNode((NameNode) val_peek(2).obj), (ExprNode) val_peek(0).obj); }
-break;
-case 250:
-//#line 1270 "jparser.y"
+//#line 1220 "jparser.y"
 { }
 break;
+case 230:
+//#line 1222 "jparser.y"
+{ yyval.ival = 0; }
+break;
+case 231:
+//#line 1227 "jparser.y"
+{ yyval.ival = 1; }
+break;
+case 232:
+//#line 1229 "jparser.y"
+{ yyval.ival = val_peek(1).ival + 1; }
+break;
+case 236:
+//#line 1243 "jparser.y"
+{ yyval.obj = new PostIncrNode((ExprNode) val_peek(1).obj); }
+break;
+case 237:
+//#line 1248 "jparser.y"
+{ yyval.obj = new PostDecrNode((ExprNode) val_peek(1).obj); }
+break;
+case 240:
+//#line 1258 "jparser.y"
+{ yyval.obj = new UnaryPlusNode((ExprNode) val_peek(0).obj); }
+break;
+case 241:
+//#line 1260 "jparser.y"
+{ yyval.obj = new UnaryMinusNode((ExprNode) val_peek(0).obj); }
+break;
+case 243:
+//#line 1266 "jparser.y"
+{ yyval.obj = new PreIncrNode((ExprNode) val_peek(0).obj); }
+break;
+case 244:
+//#line 1271 "jparser.y"
+{ yyval.obj = new PreDecrNode((ExprNode) val_peek(0).obj); }
+break;
+case 246:
+//#line 1277 "jparser.y"
+{ yyval.obj = new ComplementNode((ExprNode) val_peek(0).obj); }
+break;
+case 247:
+//#line 1279 "jparser.y"
+{ yyval.obj = new NotNode((ExprNode) val_peek(0).obj); }
+break;
+case 249:
+//#line 1285 "jparser.y"
+{ yyval.obj = new CastNode((TypeNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+break;
+case 250:
+//#line 1287 "jparser.y"
+{ yyval.obj = new CastNode((TypeNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+break;
 case 251:
-//#line 1272 "jparser.y"
-{ yyval.obj = AbsentTreeNode.instance; }
+//#line 1289 "jparser.y"
+{ yyval.obj = new CastNode(new TypeNameNode((NameNode) val_peek(2).obj), (ExprNode) val_peek(0).obj); }
+break;
+case 252:
+//#line 1300 "jparser.y"
+{ }
 break;
 case 253:
-//#line 1278 "jparser.y"
-{ yyval.obj = new MultNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
-break;
-case 254:
-//#line 1280 "jparser.y"
-{ yyval.obj = new DivNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1302 "jparser.y"
+{ yyval.obj = AbsentTreeNode.instance; }
 break;
 case 255:
-//#line 1282 "jparser.y"
-{ yyval.obj = new RemNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1308 "jparser.y"
+{ yyval.obj = new MultNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 256:
-//#line 1284 "jparser.y"
-{ yyval.obj = new PlusNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1310 "jparser.y"
+{ yyval.obj = new DivNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 257:
-//#line 1286 "jparser.y"
-{ yyval.obj = new MinusNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1312 "jparser.y"
+{ yyval.obj = new RemNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 258:
-//#line 1288 "jparser.y"
-{ yyval.obj = new LeftShiftLogNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1314 "jparser.y"
+{ yyval.obj = new PlusNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 259:
-//#line 1290 "jparser.y"
-{ yyval.obj = new RightShiftLogNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1316 "jparser.y"
+{ yyval.obj = new MinusNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 260:
-//#line 1292 "jparser.y"
-{ yyval.obj = new RightShiftArithNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1318 "jparser.y"
+{ yyval.obj = new LeftShiftLogNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 261:
-//#line 1294 "jparser.y"
-{ yyval.obj = new LTNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1320 "jparser.y"
+{ yyval.obj = new RightShiftLogNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 262:
-//#line 1296 "jparser.y"
-{ yyval.obj = new GTNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1322 "jparser.y"
+{ yyval.obj = new RightShiftArithNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 263:
-//#line 1298 "jparser.y"
-{ yyval.obj = new LENode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1324 "jparser.y"
+{ yyval.obj = new LTNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 264:
-//#line 1300 "jparser.y"
-{ yyval.obj = new GENode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1326 "jparser.y"
+{ yyval.obj = new GTNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 265:
-//#line 1302 "jparser.y"
-{ yyval.obj = new InstanceOfNode((ExprNode) val_peek(2).obj, (TypeNode) val_peek(0).obj); }
+//#line 1328 "jparser.y"
+{ yyval.obj = new LENode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 266:
-//#line 1304 "jparser.y"
-{ yyval.obj = new EQNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1330 "jparser.y"
+{ yyval.obj = new GENode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 267:
-//#line 1306 "jparser.y"
-{ yyval.obj = new NENode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1332 "jparser.y"
+{ yyval.obj = new InstanceOfNode((ExprNode) val_peek(2).obj, (TypeNode) val_peek(0).obj); }
 break;
 case 268:
-//#line 1308 "jparser.y"
-{ yyval.obj = new BitAndNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1334 "jparser.y"
+{ yyval.obj = new EQNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 269:
-//#line 1310 "jparser.y"
-{ yyval.obj = new BitOrNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1336 "jparser.y"
+{ yyval.obj = new NENode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 270:
-//#line 1312 "jparser.y"
-{ yyval.obj = new BitXorNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1338 "jparser.y"
+{ yyval.obj = new BitAndNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 271:
-//#line 1314 "jparser.y"
-{ yyval.obj = new CandNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1340 "jparser.y"
+{ yyval.obj = new BitOrNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 272:
-//#line 1316 "jparser.y"
-{ yyval.obj = new CorNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1342 "jparser.y"
+{ yyval.obj = new BitXorNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 273:
-//#line 1318 "jparser.y"
-{ yyval.obj = new IfExprNode((ExprNode) val_peek(4).obj, (ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1344 "jparser.y"
+{ yyval.obj = new CandNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+break;
+case 274:
+//#line 1346 "jparser.y"
+{ yyval.obj = new CorNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 275:
-//#line 1327 "jparser.y"
-{ yyval.obj = new AssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
-break;
-case 276:
-//#line 1329 "jparser.y"
-{ yyval.obj = new MultAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1348 "jparser.y"
+{ yyval.obj = new IfExprNode((ExprNode) val_peek(4).obj, (ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 277:
-//#line 1331 "jparser.y"
-{ yyval.obj = new DivAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1357 "jparser.y"
+{ yyval.obj = new AssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 278:
-//#line 1333 "jparser.y"
-{ yyval.obj = new RemAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1359 "jparser.y"
+{ yyval.obj = new MultAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 279:
-//#line 1335 "jparser.y"
-{ yyval.obj = new PlusAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1361 "jparser.y"
+{ yyval.obj = new DivAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 280:
-//#line 1337 "jparser.y"
-{ yyval.obj = new MinusAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1363 "jparser.y"
+{ yyval.obj = new RemAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 281:
-//#line 1339 "jparser.y"
-{ yyval.obj = new LeftShiftLogAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1365 "jparser.y"
+{ yyval.obj = new PlusAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 282:
-//#line 1341 "jparser.y"
-{ yyval.obj = new RightShiftLogAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1367 "jparser.y"
+{ yyval.obj = new MinusAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 283:
-//#line 1343 "jparser.y"
-{ yyval.obj = new RightShiftArithAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1369 "jparser.y"
+{ yyval.obj = new LeftShiftLogAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 284:
-//#line 1345 "jparser.y"
-{ yyval.obj = new BitAndAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1371 "jparser.y"
+{ yyval.obj = new RightShiftLogAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 285:
-//#line 1347 "jparser.y"
-{ yyval.obj = new BitXorAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+//#line 1373 "jparser.y"
+{ yyval.obj = new RightShiftArithAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 286:
-//#line 1349 "jparser.y"
+//#line 1375 "jparser.y"
+{ yyval.obj = new BitAndAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+break;
+case 287:
+//#line 1377 "jparser.y"
+{ yyval.obj = new BitXorAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
+break;
+case 288:
+//#line 1379 "jparser.y"
 { yyval.obj = new BitOrAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
-//#line 3140 "parser.java"
+//#line 3206 "parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

@@ -59,7 +59,7 @@ public class EnvironIter implements Iterator {
   }
 
   public boolean hasNext() {
-     ApplicationUtility.trace("EnvironIter : hasNext for " + _name);
+     //ApplicationUtility.trace("EnvironIter : hasNext for " + _name);
 
      try {
        nextDecl();
@@ -67,11 +67,11 @@ public class EnvironIter implements Iterator {
        // rewind to valid Decl
        _declIter.previous();
      } catch (NoSuchElementException e) {
-       ApplicationUtility.trace("EnvironIter : hasNext for " + _name +
-        " = false");     
+       //ApplicationUtility.trace("EnvironIter : hasNext for " + _name +
+       // " = false");
        return false;
      }
-     ApplicationUtility.trace("EnvironIter : hasNext for " + _name + " = true");
+     //ApplicationUtility.trace("EnvironIter : hasNext for " + _name + " = true");
      return true;
   }
 
@@ -81,7 +81,7 @@ public class EnvironIter implements Iterator {
 
   public Decl nextDecl() {
 
-     ApplicationUtility.trace("EnvironIter : nextDecl for " + _name);
+     //ApplicationUtility.trace("EnvironIter : nextDecl for " + _name);
 
 
      if (_declIter == null) {
@@ -107,8 +107,8 @@ public class EnvironIter implements Iterator {
            throw new NoSuchElementException("No more elements in EnvironIter.");
         }
 
-        ApplicationUtility.trace("EnvironIter : going to next environment " +
-         "looking for " + _name);
+        //ApplicationUtility.trace("EnvironIter : going to next environment " +
+        // "looking for " + _name);
 
         _declIter = _nextEnviron.allProperDecls();
         _nextEnviron = _nextEnviron.parent();

@@ -403,8 +403,8 @@ FieldDeclaration :
   | InstanceInitializer
     { $$ = cons($1); }
     /*  NEW : Java 1.1 : D.1.1 : Inner classes
-     *  It's ambiguous whether or not there is a semicolon following
-     *  the declaration.
+     *  There shouldn't be a semicolon following
+     *  the declaration, but some of the Java sources do it.
      */
   | TypeDeclaration
     { $$ = cons($1); }
@@ -523,14 +523,17 @@ MethodDeclaration :
 		ThrowsOpt MethodBody
    {
      Modifier.checkMethodModifiers($1);
-	    $$ = new MethodDeclNode($1, (LinkedList) $5, makeArrayType((TypeNode) $2, $7),
-			                        (NameNode) $3, (LinkedList) $8, (TreeNode) $9); }
+	    $$ = new MethodDeclNode($1, (NameNode) $3, (LinkedList) $5,
+                             (LinkedList) $8, (TreeNode) $9,
+                             makeArrayType((TypeNode) $2, $7));
+   }
 	| FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt
 		ThrowsOpt MethodBody
    {
      Modifier.checkMethodModifiers($1);
-	    $$ = new MethodDeclNode($1, (LinkedList) $5, makeArrayType((TypeNode) $2, $7),
-                             (NameNode) $3, (LinkedList) $8, (TreeNode) $9);
+	    $$ = new MethodDeclNode($1, (NameNode) $3, (LinkedList) $5,
+                             (LinkedList) $8, (TreeNode) $9,
+                             makeArrayType((TypeNode) $2, $7));
    }
  ;
 
@@ -603,16 +606,19 @@ ConstructorDeclaration :
    '{' ExplicitConstructorCallStatement BlockStatementsOpt '}'
 	  {
       Modifier.checkConstructorModifiers($1);
-	     $$ = new ConstructorDeclNode($1, $2, (LinkedList) $4, (LinkedList) $6,
-            (TreeNode) $8, new BlockNode((LinkedList) $9));
+	     $$ = new ConstructorDeclNode($1,
+            new NameNode(AbsentTreeNode.instance, $2), (LinkedList) $4,
+            (LinkedList) $6, new BlockNode((LinkedList) $9),
+            (ConstructorCallNode) $8);
    }
 	| FieldModifiersOpt IDENTIFIER '(' ParameterListOpt ')'  ThrowsOpt
    '{' BlockStatementsOpt '}'
 	  {
      Modifier.checkConstructorModifiers($1);
-	    $$ = new ConstructorDeclNode($1, $2, (LinkedList) $4, (LinkedList) $6,
-					    new SuperConstructorCallNode(new LinkedList()),
-					    new BlockNode((LinkedList) $8));
+	    $$ = new ConstructorDeclNode($1,
+           new NameNode(AbsentTreeNode.instance, $2), (LinkedList) $4,
+           (LinkedList) $6, new BlockNode((LinkedList) $8),
+           new SuperConstructorCallNode(new LinkedList()));
 	  }
 	;
 
@@ -688,10 +694,10 @@ InterfaceMemberDeclaration :
 	  ConstantFieldDeclaration
 	| MethodSignatureDeclaration
 		{ $$ = cons($1); }
-   | TypeDeclaration
-       { $$ = cons($1); }
-   | TypeDeclaration ';'
-       { $$ = cons($1); }
+ | TypeDeclaration
+   { $$ = cons($1); }
+ | TypeDeclaration ';'
+   { $$ = cons($1); }
 	;
 
 ConstantFieldDeclaration :
@@ -720,19 +726,22 @@ ConstantFieldDeclaration :
 MethodSignatureDeclaration :
 	  FieldModifiersOpt Type SimpleName '(' ParameterListOpt ')' DimsOpt
 		ThrowsOpt ';'
-	    { Modifier.checkMethodSignatureModifiers($1);
-	      $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (LinkedList) $5,
-				       makeArrayType((TypeNode) $2, $7),
-				       (NameNode) $3, (LinkedList) $8, AbsentTreeNode.instance);
-     }
-	  | FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt
-		  ThrowsOpt ';'
-	    {
-        Modifier.checkMethodSignatureModifiers($1);
-	      $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (LinkedList) $5,
-				       makeArrayType((TypeNode) $2, $7), (NameNode) $3, (LinkedList) $8,
-              AbsentTreeNode.instance);
-     }
+	  {
+     Modifier.checkMethodSignatureModifiers($1);
+	    $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (NameNode) $3,
+                             (LinkedList) $5, (LinkedList) $8,
+                             AbsentTreeNode.instance,
+                             makeArrayType((TypeNode) $2, $7));
+   }
+ | FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt
+		ThrowsOpt ';'
+	  {
+     Modifier.checkMethodSignatureModifiers($1);
+	    $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (NameNode) $3,
+                             (LinkedList) $5, (LinkedList) $8,
+                             AbsentTreeNode.instance,
+                             makeArrayType((TypeNode) $2, $7));
+   }
 	;
 
 			     /* ARRAYS */
@@ -790,7 +799,7 @@ BlockStatement :
 	| Statement
 		{ $$ = cons($1); }
  | ClassDeclaration
-   { $$ = $1; }
+   { $$ = cons($1); }
 	;
 
 
@@ -838,7 +847,7 @@ Statement :
 	  EmptyStatement
 	| LabeledStatement
 	| ExpressionStatement ';'
-		{ $$ = $1; }
+		{ $$ = new ExprStmtNode((ExprNode) $1); }
 	| SelectionStatement
 	| IterationStatement
 	| JumpStatement
@@ -1003,9 +1012,9 @@ GuardingStatement :
 
 Catches :
 	  Catch
-		{ $$ = cons ($1); }
+		{ $$ = cons($1); }
 	| Catch Catches
-		{ $$ = cons ($1, (LinkedList) $2); }
+		{ $$ = cons($1, (LinkedList) $2); }
 	;
 
 Catch :
@@ -1030,6 +1039,10 @@ PrimaryExpression :
  | NotJustName
  | Name '.' CLASS
    { $$ = new TypeClassAccessNode(new TypeNameNode((NameNode) $1)); }
+ | PrimitiveType '.' CLASS
+   { $$ = new TypeClassAccessNode((TypeNode) $1); }
+ | Void '.' CLASS
+   { $$ = new TypeClassAccessNode((TypeNode) $1); }
  | Name '.' THIS
    { $$ = new OuterThisAccessNode(new TypeNameNode((NameNode) $1)); }
  | Name '.' SUPER
@@ -1056,10 +1069,6 @@ ComplexPrimary :
 		{ $$ = $1; }
 	| MethodCall
    /* NEW : Java 1.1 : D.7.3 : type class access */
- | PrimitiveType '.' CLASS
-   { $$ = new TypeClassAccessNode((TypeNode) $1); }
- | Void '.' CLASS
-   { $$ = new TypeClassAccessNode((TypeNode) $1); }
  | ArrayType '.' CLASS
    { $$ = new TypeClassAccessNode((TypeNode) $1); }
 	;
@@ -1076,13 +1085,13 @@ Name :
 
 SimpleName :
 	  IDENTIFIER
-	  	{ $$ = new NameNode(AbsentTreeNode.instance, $1); }
+  	{ $$ = new NameNode(AbsentTreeNode.instance, $1); }
 	;
 
 QualifiedName :
 	  Name '.' IDENTIFIER
 		{ $$ = new NameNode((NameNode) $1, $3); }
-   ;
+ ;
 
 /* Section 9.5 */
 
@@ -1135,12 +1144,12 @@ ArgumentList :
 
 AllocationExpression :
    NEW ClassOrInterfaceType '(' ArgumentListOpt ')'
-   { $$ = new AllocateNode((TypeNode) $2, (LinkedList) $4); }
+   { $$ = new AllocateNode((TypeNode) $2, (LinkedList) $4, new ThisNode()); }
    /* NEW: Java 1.1 : D.2.1 Anonymous classes */
  | NEW ClassOrInterfaceType '(' ArgumentListOpt ')' ClassBody
    {
-     $$ = new AllocateAnonymousClassNode((TypeNode) $2,
-               (LinkedList) $4, (LinkedList) $6);
+     $$ = new AllocateAnonymousClassNode((TypeNameNode) $2,
+               (LinkedList) $4, (LinkedList) $6, new ThisNode());
    }
  | NEW ClassOrInterfaceType DimExprs DimsOpt
    {
@@ -1164,15 +1173,36 @@ AllocationExpression :
      $$ = new AllocateArrayNode((TypeNode) $2, new LinkedList(), $3,
            (TreeNode) $4);
    }
- | PrimaryExpression '.' NEW ClassOrInterfaceType '(' ArgumentListOpt ')'
+   /* NEW: Java 1.1 : qualified class creation */
+ | PrimaryExpression '.' NEW IDENTIFIER '(' ArgumentListOpt ')'
    {
-     $$ = AbsentTreeNode.instance; // FIXME
+     $$ = new AllocateNode(
+           new TypeNameNode(new NameNode(AbsentTreeNode.instance, $4)),
+           (LinkedList) $6, (ExprNode) $1);
    }
- | PrimaryExpression '.' NEW ClassOrInterfaceType '(' ArgumentListOpt ')' ClassBody
+   /* NEW: Java 1.1 : qualified anonymous class creation */
+ | PrimaryExpression '.' NEW IDENTIFIER '(' ArgumentListOpt ')' ClassBody
    {
-     $$ = AbsentTreeNode.instance; // FIXME
+     $$ = new AllocateAnonymousClassNode(
+           new TypeNameNode(new NameNode(AbsentTreeNode.instance, $4)),
+           (LinkedList) $6, (LinkedList) $8, (ExprNode) $1);
    }
-	;
+   /* Redundant productions to handle Name . new */
+   /* NEW: Java 1.1 : qualified class creation */
+ | Name '.' NEW IDENTIFIER '(' ArgumentListOpt ')'
+   {
+     $$ = new AllocateNode(
+           new TypeNameNode(new NameNode(AbsentTreeNode.instance, $4)),
+           (LinkedList) $6, new ObjectNode((NameNode) $1));
+   }
+   /* NEW: Java 1.1 : qualified anonymous class creation */
+ | Name '.' NEW IDENTIFIER '(' ArgumentListOpt ')' ClassBody
+   {
+     $$ = new AllocateAnonymousClassNode(
+           new TypeNameNode(new NameNode(AbsentTreeNode.instance, $4)),
+           (LinkedList) $6, (LinkedList) $8, new ObjectNode((NameNode) $1));
+   }
+ ;
 
 DimExprs :
 	  DimExpr
@@ -1421,7 +1451,11 @@ public CompileUnitNode getAST() { return _theAST; }
 
 protected void yyerror(String msg)
 {
-  throw new RuntimeException("parse error for " + _filename + ": " + msg);
+  String errMsg = "parse error in " + _filename + ": " + msg;
+  if (_lexer != null) {
+     errMsg += " on line " + _lexer.lineNumber();
+  }
+  ApplicationUtility.error(errMsg);
 }
 
 /** An array type with given ELEMENTTYPE and DIMS dimensions.  When

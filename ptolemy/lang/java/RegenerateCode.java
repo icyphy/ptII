@@ -1,6 +1,6 @@
 /*
-An application that writes a skeleton file with extension "j" after
-parsing an input Java file.
+An application that parses a Java program, then reconstructs the source
+program using the AST. This is used for testing purposes.
 
 Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
@@ -34,10 +34,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import java.io.FileOutputStream;
 import ptolemy.lang.*;
 
-public class Skeleton {
+public class RegenerateCode {
   public static void main(String[] args) {
     int files = args.length;
     int fileStart = 0;
@@ -52,9 +51,10 @@ public class Skeleton {
     }
 
     if (files < 1) {
-       System.out.println("usage : ptolemy.lang.Skeleton [-d] f1.java [f2.java ...]");
+       System.out.println("usage : ptolemy.lang.java.RegenerateCode [-d] f1.java [f2.java ...]");
     }
 
+    ApplicationUtility.enableTrace = debug;
 
     for (int f = 0; f < files; f++) {
         parser p = new parser();
@@ -67,30 +67,16 @@ public class Skeleton {
           System.err.println(e.toString());
         }
 
-        p.yydebug = debug;
+        //p.yydebug = debug;
 
         p.yyparse();
 
         CompileUnitNode ast = p.getAST();
 
-        ast.accept(new SkeletonVisitor());
+        String codeString = (String) ast.accept(new JavaCodeGenerator());
 
-        String outCode = (String) ast.accept(new JavaCodeGenerator());
-
-        try {
-          String outFileName = args[f + fileStart];
-          outFileName = outFileName.substring(0, outFileName.indexOf('.'));
-          outFileName += ".jskel";
-          FileOutputStream outFile = null;
-
-          outFile = new FileOutputStream(outFileName);
-
-          outFile.write(outCode.getBytes());
-        } catch (Exception e) {
-          System.err.println("error opening output file "
-           + args[f + fileStart]);
-          System.err.println(e.toString());
-        }
+        System.out.println("// Regenerated file : " + args[f + fileStart]);
+        System.out.println(codeString);
     }
   }
 }

@@ -44,7 +44,7 @@ public class ClassDecl extends TypeDecl {
         _defType = _invalidType(this, name);
     }
 
-    public ClassDecl(String name, int category0, TypeNode defType, int modifiers, TreeNode source, JavaDecl container) {
+    public ClassDecl(String name, int category0, TypeNameNode defType, int modifiers, TreeNode source, JavaDecl container) {
         super(name, category0, defType);
         _modifiers = modifiers;
         _source = source;
@@ -117,10 +117,10 @@ public class ClassDecl extends TypeDecl {
            String fileName = fullName(File.separatorChar);
            File file = _pickLibrary(_container).openSource(fileName);
 
-           ApplicationUtility.trace(">Reading in user type : " + fullName() +
-            " from " + fileName);
+           //ApplicationUtility.trace(">Reading in user type : " + fullName() +
+           // " from " + fileName);
 
-           StaticResolution.load(fileName, file);
+           StaticResolution.load(fileName, file, false);
 
            if (_source == AbsentTreeNode.instance) {
 	           ApplicationUtility.error("file " + fileName +
@@ -129,6 +129,14 @@ public class ClassDecl extends TypeDecl {
 
            ApplicationUtility.trace(">Done reading class " + fullName());
         }
+    }
+
+    public ClassDecl getSuperClass() {
+        return _superClass;
+    }
+
+    public void setSuperClass(ClassDecl superClass) {
+        _superClass = superClass;
     }
 
     protected void _buildEnviron() {
@@ -160,4 +168,5 @@ public class ClassDecl extends TypeDecl {
     protected JavaDecl  _container;
     protected Environ   _environ = null;
     protected LinkedList _interfaces = new LinkedList();
+    protected ClassDecl _superClass;
 }

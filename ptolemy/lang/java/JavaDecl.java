@@ -36,73 +36,79 @@ import java.util.LinkedList;
 import ptolemy.lang.*;
 
 /**
-The class JavaDecl declares many members, most of which make sense only
-for certain types of JavaDecl.  Attempts to access nonsensical members
-will cause runtime errors.
+ *  The class JavaDecl declares many members, most of which make sense only
+ *  for certain types of JavaDecl.  Attempts to access nonsensical members
+ *  will cause runtime errors.
 
-By convention, a JavaDecl member named "getFoo" will return the "foo"
-attribute when called with no parameters, and set the "foo"
-attribute when called with one parameter.  Thus, decl.getType() is
-the type of the entity referred to by decl (a JavaDecl, presumably),
-and decl.setFoo(aType) sets the type attribute of decl to aType.
-Also, if member "foo" is not valid for all JavaDecls, there is a member
-"hasFoo()" that returns true or false depending on whether object
-on which it is called has a class for which "foo" may be called.
+ *  By convention, a JavaDecl member named "getFoo" will return the "foo"
+ *  attribute when called with no parameters, and set the "foo"
+ *  attribute when called with one parameter.  Thus, decl.getType() is
+ *  the type of the entity referred to by decl (a JavaDecl, presumably),
+ *  and decl.setFoo(aType) sets the type attribute of decl to aType.
+ *  Also, if member "foo" is not valid for all JavaDecls, there is a member
+ *  "hasFoo()" that returns true or false depending on whether object
+ *  on which it is called has a class for which "foo" may be called.
+ *
+ *  Objects of type JavaDecl should not be allocated; the class is intended
+ *  as a base class for others.
 
-Objects of type JavaDecl should not be allocated; the class is intended
-as a base class for others.
-
- ATTRIBUTE name
-   All Decls have a name, of type const string*.  These are
-   the unique representative strings assigned by lexical analysis.
-   The names of two Decls are considered the same iff they are the
-   same pointer, ignoring contents: names that are different pointers
-   to strings containing the same characters are considered distinct.
-
- ATTRIBUTE container(), container (declp)
-   Members, classes, interfaces, and packages are all parts of some
-   larger declared entity, which is their container.  Members are
-   contained in classes and interfaces, which are themselves contained
-   in packages, which are in turn contained in other packages.
-   Outer-level packages have as their container the special Decl*
-   PackageDecl::System.
-
- ATTRIBUTE type
-   Decls of entities that "have a type"---such as local variables,
-   parameters, fields, and methods---define this member.  Types are
-   represented as pointers to AST nodes of type TypeNode, just as they
-   are during parsing.  Packages, statement labels, classes, and
-   interfaces don't have types (although the latter two ARE types).
-
- ATTRIBUTE modifiers
-   Classes, interfaces, and their members have modifiers, as defined
-   by Modifier;
-
- ATTRIBUTE environ
-   Classes, interfaces, and packages define environments:  mappings of
-   names (of members, classes, interfaces, and subpackages) to
-   JavaDecls of these entities.
-
- ATTRIBUTE source
-   Decls that come from the current compilation have some piece of the
-   AST associated with them.  For example, a JavaDecl for a local variable
-   is created in response to a VarDeclNode.  That VarDeclNode becomes the
-   source attribute of LocalVarDecl created to stand
-   for that declaration.  ClassDecls have a a ClassDeclNode as their source,
-   and so on.  Decls that arise as the result of importing a class
-   have special dummy source nodes created for them.
-
- ATTRIBUTE isType()
-   True for Decls that represent classes or interfaces.
-
- ATTRIBUTE asType()
-   For Decls for which isType() is true, a resolved
-   TypeNameNode that stands for the type this class represents.  That
-   is, it is a TypeNameNode whose decl() is THIS.
-
- ATTRIBUTE overrides(), overrides (d)
-   Methods indicate which declaration D they override/hide.
-*/
+ *   ATTRIBUTE name
+ *     All Decls have a name, of type String.  These are
+ *     the unique representative strings assigned by lexical analysis.
+ *     The names of two Decls are considered the same iff they are the
+ *     same pointer, ignoring contents: names that are different pointers
+ *     to strings containing the same characters are considered distinct.
+ *
+ *   ATTRIBUTE container(), container (declp)
+ *     Members, classes, interfaces, and packages are all parts of some
+ *     larger declared entity, which is their container.  Members are
+ *     contained in classes and interfaces, which are themselves contained
+ *     in packages, which are in turn contained in other packages. However,
+ *     inner classes have no container.
+ *
+ *     Outer-level packages have as their container the special Decl
+ *     PackageDecl.SYSTEM_PACKAGE
+ *
+ *   ATTRIBUTE type
+ *     Decls of entities that "have a type"---such as local variables,
+ *     parameters, fields, and methods---define this member.  Types are
+ *     represented as pointers to AST nodes of type TypeNode, just as they
+ *     are during parsing.  Packages, statement labels, classes, and
+ *     interfaces don't have types (although the latter two ARE types).
+ *
+ *   ATTRIBUTE modifiers
+ *     Classes, interfaces, and their members have modifiers, as defined
+ *     by Modifier;
+ *
+ *   ATTRIBUTE environ
+ *     Classes, interfaces, and packages define environments:  mappings of
+ *     names (of members, classes, interfaces, and subpackages) to
+ *     JavaDecls of these entities.
+ *
+ *   ATTRIBUTE source
+ *     Decls that come from the current compilation have some piece of the
+ *     AST associated with them.  For example, a JavaDecl for a local variable
+ *     is created in response to a VarDeclNode.  That VarDeclNode becomes the
+ *     source attribute of LocalVarDecl created to stand
+ *     for that declaration.  ClassDecls have a a ClassDeclNode as their source,
+ *     and so on.  Decls that arise as the result of importing a class
+ *     have special dummy source nodes created for them.
+ *
+ *   ATTRIBUTE isType()
+ *     True for Decls that represent classes or interfaces.
+ *
+ *   ATTRIBUTE asType()
+ *     For Decls for which isType() is true, a resolved
+ *     TypeNameNode that stands for the type this class represents.  That
+ *     is, it is a TypeNameNode whose decl() is THIS.
+ *
+ *   ATTRIBUTE overrides(), overrides (d)
+ *     Methods indicate which declaration D they override/hide.
+ *
+ *  Code and comments converted from Decl in the Titanium project.
+ *
+ *  @author ctsay@eecs.berkeley.edu
+ */
 public abstract class JavaDecl extends Decl {
 
   protected JavaDecl(String name, int category0) {
@@ -115,7 +121,8 @@ public abstract class JavaDecl extends Decl {
    *  contained in classes and interfaces, which are themselves contained
    *  in packages, which are in turn contained in other packages.
    *  Outer-level packages have as their container the special JavaDecl
-   *  StaticResoltuion.SYSTEM_PACKAGE. */
+   *  StaticResoltuion.SYSTEM_PACKAGE.
+   */
   public JavaDecl getContainer() {
     throw new RuntimeException(getClass().getName() + " has no container.");
   }
@@ -217,13 +224,37 @@ public abstract class JavaDecl extends Decl {
     return prefix.toString();
   }
 
+  /** Return true iff this declaration is contained by the container Decl.
+   *  Search all super-containers of this declaration for the container.
+   */
+  public boolean deepContainedBy(JavaDecl container) {
+
+    JavaDecl decl = this;
+
+    while (decl.hasContainer()) {
+      decl = decl.getContainer();
+
+      if (decl == container) {
+         return true;
+      }
+
+      if (decl == null) {
+         return false;
+      }
+    }
+    return false;
+  }
+
   protected static final SearchPath _pickLibrary(JavaDecl container) {
     if (container == StaticResolution.UNNAMED_PACKAGE) {
-       ApplicationUtility.trace("picked unnamed library");
        return SearchPath.UNNAMED_PATH;
     }
-    ApplicationUtility.trace("picked named library");
     return SearchPath.NAMED_PATH;
+  }
+
+  /** Return the Decl associated with the named node. */
+  public static final JavaDecl getDecl(NamedNode node) {
+    return (JavaDecl) node.getName().getProperty("decl");
   }
 
   public static final int CG_CLASS = 1;        // Type ClassDecl representing a class

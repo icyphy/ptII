@@ -107,9 +107,9 @@ public class SkeletonVisitor extends JavaVisitor {
 
         if (!foundDefConstruct) {
            newMemberList.addFirst(new ConstructorDeclNode(Modifier.PUBLIC_MOD,
-            node.getName().getIdent(), new LinkedList(), new LinkedList(),
-            new SuperConstructorCallNode(new LinkedList()),
-            new BlockNode(new LinkedList())));
+            node.getName(), new LinkedList(), new LinkedList(),            
+            new BlockNode(new LinkedList()),
+            new SuperConstructorCallNode(new LinkedList())));
         }
 
         node.setMembers(newMemberList);

@@ -76,7 +76,12 @@ public class SearchPath extends Vector {
     for (int i = 0; i < size(); i++) {
       String candidate = (String) get(i);
 
-      File file = tryOpen(candidate, target, "java");
+      // favor skeletons instead of full versions for performance
+      File file = tryOpen(candidate, target, "jskel");
+
+      if (file == null) {
+         file = tryOpen(candidate, target, "java");
+      }
 
       if (file != null) {
          return file;

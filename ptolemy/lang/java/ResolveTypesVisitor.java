@@ -35,88 +35,22 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import java.util.LinkedList;
 
-public class ResolveTypesVisitor extends JavaVisitor {
+public class ResolveTypesVisitor extends ResolveVisitorBase {
 
     /** Create a ResolveTypesVisitor. */
     ResolveTypesVisitor() {
-        super(TM_CUSTOM);
-    }
-
-    public Object visitNameNode(NameNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitAbsentTreeNode(AbsentTreeNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitIntLitNode(IntLitNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitLongLitNode(LongLitNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitFloatLitNode(FloatLitNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitDoubleLitNode(DoubleLitNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitBoolLitNode(BoolLitNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitCharLitNode(CharLitNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitStringLitNode(StringLitNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitBoolTypeNode(BoolTypeNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitCharTypeNode(CharTypeNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitByteTypeNode(ByteTypeNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitShortTypeNode(ShortTypeNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitIntTypeNode(IntTypeNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitFloatTypeNode(FloatTypeNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitLongTypeNode(LongTypeNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitDoubleTypeNode(DoubleTypeNode node, LinkedList args) {
-        return null;
+        super();
     }
 
     /** Resolve the name of the type. */
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
-        PackageDecl pkgDecl = (PackageDecl) args.get(0);
-        Environ env = (Environ) args.get(1);
+
+        Environ env = (Environ) args.get(0);
+
+        NameNode name = node.getName();
 
         NameNode newName = (NameNode) StaticResolution.resolveAName(
-         node.getName(), env, null, false, pkgDecl, JavaDecl.CG_USERTYPE);
+         name, env, null, false, _pkgDecl, JavaDecl.CG_USERTYPE);
 
         // this is not necessary, but by convention ...
         node.setName(newName);
@@ -130,12 +64,16 @@ public class ResolveTypesVisitor extends JavaVisitor {
 
     /** Visit the types defined in this file. */
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
+
+        _initLazyFlag(node);
+
+        _pkgDecl = (PackageDecl) node.getDefinedProperty("thePackage");
+
         LinkedList childArgs = new LinkedList();
-        childArgs.addLast(node.getDefinedProperty("thePackage"));  // package decl
-        childArgs.addLast(node.getDefinedProperty("environ"));
+        childArgs.add(node.getDefinedProperty("environ")); // file environment
 
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
-        
+
         return null;
     }
 
@@ -147,41 +85,73 @@ public class ResolveTypesVisitor extends JavaVisitor {
         return _visitUserTypeNode(node, args);
     }
 
-    public Object visitEmptyStmtNode(EmptyStmtNode node, LinkedList args) {
-        return null;
+    public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
+        if (_lazy) {
+           if ((node.getModifiers() & Modifier.PRIVATE_MOD) != 0) {
+              // don't resolve anything if it's a private method
+              return null;
+           }
+
+           // resolve only the return type, parameters and exceptions thrown
+           node.getReturnType().accept(this, args);
+           TNLManip.traverseList(this, node, args, node.getParams());
+           TNLManip.traverseList(this, node, args, node.getThrowsList());
+           return null;
+        }
+        return _defaultVisit(node, args);
     }
 
-    public Object visitBreakNode(BreakNode node, LinkedList args) {
-        return null;
+    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
+        if (_lazy) {
+           if ((node.getModifiers() & Modifier.PRIVATE_MOD) != 0) {
+              // don't resolve anything if it's a private constructor
+              return null;
+           }
+
+           // resolve only the parameters and exceptions thrown
+           TNLManip.traverseList(this, node, args, node.getParams());
+           TNLManip.traverseList(this, node, args, node.getThrowsList());
+           return null;
+        }
+        return _defaultVisit(node, args);
     }
 
-    public Object visitContinueNode(ContinueNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitNullPntrNode(NullPntrNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitThisNode(ThisNode node, LinkedList args) {
-        return null;
-    }
-
-    /** The default visit method.
-     *  Visit all child nodes.
+    /** The default visit method. Visits all child nodes with the same
+     *  environment as in the argument list. Only nodes that do not have their
+     *  own environment should call this method.
      */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        TNLManip.traverseList(this, node, args, node.children());
-        return null;
+        // just pass on the same environment to the children
+        return TNLManip.traverseList(this, node, args, node.children());
+    }
+
+    /** Get environment from this node, and pass it to the children.
+     *  Only nodes that do have their own environment should call this method.
+     */
+    protected Object _visitNodeWithEnviron(TreeNode node) {
+        Object envObj = node.getDefinedProperty("environ");
+
+        LinkedList childArgs = new LinkedList();
+        childArgs.addLast(envObj);
+
+        return TNLManip.traverseList(this, node, childArgs, node.children());
     }
 
     protected Object _visitUserTypeNode(UserTypeDeclNode node, LinkedList args) {
+        if ((node.getModifiers() & Modifier.PRIVATE_MOD) != 0) {
+           // don't resolve anything if it's a private class
+           return null;
+        }
+
         LinkedList childArgs = new LinkedList();
-        childArgs.addLast(args.get(0)); // package decl
+        // environment for this class
         childArgs.addLast(node.getDefinedProperty("environ"));
 
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
 
         return null;
     }
+
+    /** The package this compile unit is in. */
+    protected PackageDecl _pkgDecl = null;
 }

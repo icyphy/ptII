@@ -19,7 +19,8 @@ class Main {
     }
 
     if (files < 1) {
-       System.out.println("usage : ptolemy.lang.javaMain [-d] f1.java [f2.java ...]");
+       System.out.println(
+        "usage : ptolemy.lang.java.Main [-d] f1.java [f2.java ...]");
     }
 
     /*
@@ -54,17 +55,17 @@ class Main {
         ast.accept(new PackageResolutionVisitor());
     } */
 
-    ApplicationUtility.enableTrace = true;
+    ApplicationUtility.enableTrace = debug;
     
     for (int f = 0; f < files; f++) {
-        StaticResolution.load(args[fileStart + f]);
+        StaticResolution.load(args[fileStart + f], true);
         StaticResolution.declResolution();
     }
 
     LinkedList unitList = StaticResolution.allFiles;
     ListIterator unitItr = unitList.listIterator();
 
-    for (int f = 0; f < files; f++) {
+    while (unitItr.hasNext()) {
         CompileUnitNode ast = (CompileUnitNode) unitItr.next();
         System.out.println(ast.toString());
     }
