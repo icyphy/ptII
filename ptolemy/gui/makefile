@@ -33,9 +33,9 @@
 # by Sun.  These classes came from tcljava, see license.terms for more info.
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../..
 
-ME =		java/pt/gui
+ME =		pt/gui
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -43,7 +43,7 @@ include $(CONFIG)
 
 DIRS = 		#test doc demo
 
-CLASSPATH = ../..
+CLASSPATH =     ../..
 
 # Used to build zip files
 TYPACKAGE = 	pt.gui

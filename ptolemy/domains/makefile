@@ -33,9 +33,9 @@
 DIRS = ct #sdf pn
 
 # Root of Tycho directory
-ROOT =		../../..
+ROOT =		../..
 
-ME = 		java/pt/domains
+ME = 		pt/domains
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 
