@@ -251,7 +251,6 @@ public class SRDirector extends StaticSchedulingDirector {
         if (_receivers == null) _receivers = new LinkedList();
         Receiver receiver = new SRReceiver(this);
         _receivers.add(receiver);
-        _debug("Created and added new receiver, now has "+_receivers.size());
         return receiver;
     }
 
