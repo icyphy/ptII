@@ -321,7 +321,7 @@ public class AudioSource extends SDFAtomicActor {
     public boolean postfire() throws IllegalActionException {
 	//System.out.println("AudioSource: postfire(): invoked");
 	// Read in audio data.
-	_audioInDoubleArray =_soundCapture.getSamples();
+	_audioInDoubleArray = _soundCapture.getSamples();
 	//System.out.println("AudioSource: postfire(): after getSamples");
 	// Check that the read was successful
 
