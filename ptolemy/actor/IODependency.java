@@ -91,7 +91,7 @@ public abstract class IODependency {
         return _directedGraph.cycleNodes();
     } 
     
-    /** Return a detailed ports graph reflecting the input-output dependency
+    /** Return an abstract ports graph reflecting the input-output dependency
      *  information. The ports graph includes only the container ports but not 
      *  those of contained actors (if any). This information is usually used by 
      *  the director of the container, which contains the container of this 
