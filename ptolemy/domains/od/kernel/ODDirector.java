@@ -120,6 +120,7 @@ public class ODDirector extends ProcessDirector {
     public void initialize() throws IllegalActionException {
         // System.out.println("ODDirector.initialize()");
         super.initialize();
+        System.out.println("Active Count = " + _getActiveActorsCount());
     }
     
     /** 
