@@ -3,16 +3,22 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="deInsideDT" class="ptolemy.actor.TypedCompositeActor">
     <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="480.0, 345.0">
+        <property name="_location" class="ptolemy.moml.Location" value="498.0, 338.0">
         </property>
     </property>
-    <entity name="DT_model" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <entity name="DE_model" class="ptolemy.actor.TypedCompositeActor">
         <property name="DE0" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -31,7 +37,11 @@
             <property name="_location" class="ptolemy.moml.Location" value="460.0, 315.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 225.0">
+        <property name="_location" class="ptolemy.moml.Location" value="121.0, 219.0">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <port name="port1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -106,7 +116,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="479.99998474121094, 225.0">
+        <property name="_location" class="ptolemy.moml.Location" value="470.99998474121094, 245.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -119,7 +129,7 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="DT_model.port1" relation="relation1"/>
+    <link port="DE_model.port1" relation="relation1"/>
     <link port="CurrentTime3.output" relation="relation3"/>
     <link port="CurrentTime3.trigger" relation="relation1"/>
     <link port="Discard1.input" relation="relation1"/>
