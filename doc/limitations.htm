@@ -13,6 +13,27 @@ sufficiently mission-critical to have been addressed.
 <ol>
 
 <li>
+<b>JNI User interface problems</b>
+The JNI User interface has problems creating new JNI models.
+<b>If you follow the instructions in 
+<a href="codeDoc/jni/JNIUtilities.html">JNIUtilities</a>, then
+eventually you will get a NameDuplicationException.
+<p>The resulting model will be missing
+<pre>
+&lt;property name="output" class="jni.Argument" value="false,false,true,double"&gt;
+&lt;/property&gt;
+</pre>
+We are working with the original authors on a solution.
+<br>In the short term, one workaround is to edit the xml file directly
+and add the appropriate property by hand.
+
+<li>
+<b>Matlab interface has problems work with gcc-3.3</b>
+Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
+<br>Under Windows, we recommend using gcc-3.2.
+
+
+<li>
 <b>Plot windows don't resize when control panel is resized</b>.
 If a model with plotters
 is executed using the run button on the toolbar, and
