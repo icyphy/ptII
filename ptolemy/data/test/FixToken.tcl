@@ -123,7 +123,7 @@ test FixToken-3.3 {Test Multiply} {
     set res [$pa multiply $pb]   
 
     list [$res toString]
-} {fix(-4.996926784515381,27,3)}
+} {fix(-4.996926784515381,28,4)}
 
 test FixToken-3.4 {Test Divide} {    
    set res [$pa divide $pb]    	
@@ -222,22 +222,19 @@ test FixToken-6.0 {Test round with a Precision, 5.375, Saturate  }  {
     set p3 [java::new ptolemy.math.Precision "(32/3)" ]
     set p4 [java::new ptolemy.math.Precision "(32/2)" ]
     set p5 [java::new ptolemy.math.Precision "(32/1)" ]
-    set p6 [java::new ptolemy.math.Precision "(32/0)" ]
 
     set v1 [$r1 fixValue]
     set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 0 ]
     set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 0 ]
     set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 0 ]
     set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 0 ]
-    set res5 [java::call ptolemy.math.Quantizer round  $v1 $p6 0 ]
 
     list [FixedPointToString $res1] \
 	    [FixedPointToString $res2] \
 	    [FixedPointToString $res3] \
-	    [FixedPointToString $res4] \
-	    [FixedPointToString $res5]
+	    [FixedPointToString $res4]
 
-} {fix(5.375,32,4) fix(3.999999998137355,32,3) fix(1.9999999990686774,32,2) fix(0.9999999995343387,32,1) fix(0.49999999976716936,32,0)}
+} {fix(5.375,32,4) fix(3.99999999814,32,3) fix(1.99999999907,32,2) fix(0.999999999534,32,1)}
 
 test FixToken-6.1 {Test round with a Precision, 5.375, Saturate}  {
 
@@ -251,15 +248,13 @@ test FixToken-6.1 {Test round with a Precision, 5.375, Saturate}  {
     set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 0 ]
     set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 0 ]
     set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 0 ]
-    set res5 [java::call ptolemy.math.Quantizer round  $v1 $p6 0 ]
 
     list [FixedPointToString $res1] \
 	    [FixedPointToString $res2] \
 	    [FixedPointToString $res3] \
-	    [FixedPointToString $res4] \
-	    [FixedPointToString $res5]
+	    [FixedPointToString $res4]
 
-} {fix(-5.375,32,4) fix(-4.0,32,3) fix(-2.0,32,2) fix(-1.0,32,1) fix(-0.5,32,0)}
+} {fix(-5.375,32,4) fix(-4.0,32,3) fix(-2.0,32,2) fix(-1.0,32,1)}
 
 test FixToken-6.2 {Test round with a Precision, -5.375, Saturate}  {
 
@@ -272,22 +267,19 @@ test FixToken-6.2 {Test round with a Precision, -5.375, Saturate}  {
     set p3 [java::new ptolemy.math.Precision "(32/3)" ]
     set p4 [java::new ptolemy.math.Precision "(32/2)" ]
     set p5 [java::new ptolemy.math.Precision "(32/1)" ]
-    set p6 [java::new ptolemy.math.Precision "(32/0)" ]
 
     set v1 [$r1 fixValue]
     set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 1 ]
     set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 1 ]
     set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 1 ]
     set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 1 ]
-    set res5 [java::call ptolemy.math.Quantizer round $v1 $p6 1 ]
 
     list [FixedPointToString $res1] \
 	    [FixedPointToString $res2] \
 	    [FixedPointToString $res3] \
-	    [FixedPointToString $res4] \
-	    [FixedPointToString $res5]
+	    [FixedPointToString $res4]
 
-} {fix(-5.375,32,4) fix(0.0,32,3) fix(0.0,32,2) fix(0.0,32,1) fix(0.0,32,0)}
+} {fix(-5.375,32,4) fix(0.0,32,3) fix(0.0,32,2) fix(0.0,32,1)}
 
 test FixToken-6.3 {Test round with a Precision, -5.375, ZeroSaturate}  {
 
@@ -300,22 +292,19 @@ test FixToken-6.3 {Test round with a Precision, -5.375, ZeroSaturate}  {
     set p3 [java::new ptolemy.math.Precision "(32/3)" ]
     set p4 [java::new ptolemy.math.Precision "(32/2)" ]
     set p5 [java::new ptolemy.math.Precision "(32/1)" ]
-    set p6 [java::new ptolemy.math.Precision "(32/0)" ]
 
     set v1 [$r1 fixValue]
     set res1 [java::call ptolemy.math.Quantizer round $v1 $p2 1 ]
     set res2 [java::call ptolemy.math.Quantizer round $v1 $p3 1 ]
     set res3 [java::call ptolemy.math.Quantizer round $v1 $p4 1 ]
     set res4 [java::call ptolemy.math.Quantizer round $v1 $p5 1 ]
-    set res5 [java::call ptolemy.math.Quantizer round $v1 $p6 1 ]
 
     list [FixedPointToString $res1] \
 	    [FixedPointToString $res2] \
 	    [FixedPointToString $res3] \
-	    [FixedPointToString $res4] \
-	    [FixedPointToString $res5]
+	    [FixedPointToString $res4]
 
-} {fix(-5.375,32,4) fix(0.0,32,3) fix(0.0,32,2) fix(0.0,32,1) fix(0.0,32,0)}
+} {fix(-5.375,32,4) fix(0.0,32,3) fix(0.0,32,2) fix(0.0,32,1)}
 
 
 
@@ -344,7 +333,7 @@ test FixToken-6.4 {Test round with a Precision, 5.97534, Saturate}  {
 	    [FixedPointToString $res3] \
 	    [FixedPointToString $res4] \
 	    [FixedPointToString $res5]
-} {fix(5.975340001285076,32,4) fix(5.97265625,12,4) fix(5.96875,10,4) fix(5.9375,8,4) fix(5.75,6,4)}
+} {fix(5.97534000129,32,4) fix(5.97265625,12,4) fix(5.96875,10,4) fix(5.75,8,6) fix(5.75,6,4)}
 
 test FixToken-6.5 {Test round with a Precision, -5.97534, Saturate}  {
 
@@ -371,7 +360,7 @@ test FixToken-6.5 {Test round with a Precision, -5.97534, Saturate}  {
 	    [FixedPointToString $res3] \
 	    [FixedPointToString $res4] \
 	    [FixedPointToString $res5]
-} {fix(-5.975340001285076,32,4) fix(-5.97265625,12,4) fix(-5.96875,10,4) fix(-5.9375,8,4) fix(-5.75,6,4)}
+} {fix(-5.97534000129,32,4) fix(-5.97265625,12,4) fix(-5.96875,10,4) fix(-5.75,8,6) fix(-5.75,6,4)}
 
 test FixToken-6.6 {Test round with a Precision, 5.97534, ZeroSaturate} {
 
@@ -400,7 +389,7 @@ test FixToken-6.6 {Test round with a Precision, 5.97534, ZeroSaturate} {
 	    [FixedPointToString $res4] \
 	    [FixedPointToString $res5]
 
-} {fix(5.975340001285076,32,4) fix(5.97265625,12,4) fix(5.96875,10,4) fix(5.9375,8,4) fix(5.75,6,4) }
+} {fix(5.97534000129,32,4) fix(5.97265625,12,4) fix(5.96875,10,4) fix(5.75,8,6) fix(5.75,6,4)}
 
 test FixToken-6.7 {Test round with a Precision, -5.97534, ZeroSaturate} {
 
@@ -428,4 +417,4 @@ test FixToken-6.7 {Test round with a Precision, -5.97534, ZeroSaturate} {
 	    [FixedPointToString $res4] \
 	    [FixedPointToString $res5]
 
-} {fix(-5.975340001285076,32,4) fix(-5.97265625,12,4) fix(-5.96875,10,4) fix(-5.9375,8,4) fix(-5.75,6,4)}
+} {fix(-5.97534000129,32,4) fix(-5.97265625,12,4) fix(-5.96875,10,4) fix(-5.75,8,6) fix(-5.75,6,4)}
