@@ -52,7 +52,7 @@ CalendarQueue instances, because it doesn't contain any state information.
 @see collections.Comparator
 */
 
-public interface CQComparator extends Comparator{
+public interface CQComparator extends Comparator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -76,10 +76,17 @@ public interface CQComparator extends Comparator{
      */
     public long getBinIndex(Object key, Object zeroReference, Object binWidth);
 
-    /** Given an array of objects, return the bin width.
-     * @param keyArray the array of key objects.
-     * @return The bin width.
-     * @exception ClassCastException Incompatible argument type.
+    /** Given an array of keys, return an appropriate bin width for a
+     *  calendar queue to hold these keys.
+     *  Ideally, the bin width is chosen so that
+     *  the average number of entries in non-empty bins is equal to one.
+     *  If the argument is null, return the default bin width.
+     *  The return value is an object because keys can be any
+     *  comparable objects, so how a width is represented depends on
+     *  how the keys are realized.
+     *  @param keyArray An array of key objects.
+     *  @return The bin width.
+     *  @exception ClassCastException Incompatible argument type.
      */
     public Object getBinWidth(Object[] keyArray);
 }
