@@ -129,38 +129,4 @@ public class DEActor extends TypedAtomicActor {
         DEDirector dir = (DEDirector)getDirector();
         dir.fireAt(this, timeStamp);
     }
-
-    /** Empty all input ports.
-     *
-     *  @exception IllegalActionException Not thrown.
-     */
-    /*
-      public void wrapup() throws IllegalActionException {
-      super.wrapup();
-      Enumeration inputs = inputPorts();
-      while (inputs.hasMoreElements()) {
-      IOPort p = (IOPort)inputs.nextElement();
-      int width = p.getWidth();
-      for (int i = 0; i<width; i++) {
-      while (p.hasToken(i)) {
-      try {
-      p.get(i);
-      } catch (NoSuchItemException e) {
-      e.printStackTrace();
-      throw new InternalErrorException(e.getMessage());
-      }
-      }
-      }
-
-      }
-      }
-    */
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
-
 }
-
