@@ -361,7 +361,8 @@ public class Main extends KernelMain {
        }
        
        addTransform(pack, "wjtp.ttn",
-                        TokenToNativeTransformer.v(toplevel));
+               TokenToNativeTransformer.v(toplevel));
+
        addStandardOptimizations(pack, 4);
        
        addTransform(pack, "wjtp.ufr",

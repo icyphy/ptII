@@ -732,7 +732,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
      */
     public static String getFieldNameForPort(Port port, NamedObj context) {
         if(port instanceof ParameterPort) {
-            return StringUtilities.sanitizeName(port.getName(context)+"Port");
+            return StringUtilities.sanitizeName(port.getName(context) + "Port");
         } else {
             return StringUtilities.sanitizeName(port.getName(context));
         }
@@ -1641,6 +1641,12 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             //     SootUtilities.copyClass(entityClass, newClassName);
             //  newClass.setApplicationClass();
 
+            if (entity.getClass().getName().equals(
+                        "ptolemy.actor.lib.MathFunction")) {
+                throw new RuntimeException("Code Generation for " + 
+                        "ptolemy.actor.lib.MathFunction not supported, since " 
+                        + "it dynamically creates ports.");
+            } else 
             if (entity instanceof CompositeActor) {
                 CompositeActor composite = (CompositeActor)entity;
                 _createCompositeActor(composite, newClassName, options);

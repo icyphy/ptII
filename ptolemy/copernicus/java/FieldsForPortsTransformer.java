@@ -288,10 +288,6 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
              ports.hasNext();) {
             Port port = (Port)ports.next();
             
-            // Skip over ParameterPorts
-            if(port instanceof ParameterPort) {
-                continue;
-            }
             String fieldName =
                 ModelTransformer.getFieldNameForPort(port, container);
             SootField field;

@@ -384,7 +384,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         CachedMethod.ArgumentConversion[] conversions =
             cachedMethod.getConversions();
         for (int i = 0; i < argCount; i++) {
-            Local tokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(i + 1));
+            Local tokenLocal = (Local)
+                _nodeToLocal.get(node.jjtGetChild(i + 1));
 
             // Insert the appropriate conversion.
             Local argLocal = _convertTokenArgToJavaArg(
@@ -969,9 +970,10 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                                         tempLocal,
                                         PtolemyUtilities.fixMatrixMethod)), _insertPoint);
                 return resultLocal;
-            } else {// if (argTypes[i] instanceof ArrayType) {
+            } else {
                 throw new IllegalActionException(
-                        "CodeGeneration not supported for arrayType");
+                        "Code generation not supported for native " + 
+                        "conversion of type " + tokenType);
             }
         } else {
             throw new IllegalActionException(
@@ -1207,6 +1209,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         }
         _nodeToLocal.put(node, resultLocal);
     }
+
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         _debug(node);
@@ -1284,6 +1287,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         // Find the corresponding soot method.
         SootMethod sootMethod = SootUtilities.getSootMethodForMethod(method);
 
+        //     System.out.println("generating code to invoke " + sootMethod);
+
         Local originalBaseLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
         RefType baseType = RefType.v(sootMethod.getDeclaringClass());
         Local baseLocal = Jimple.v().newLocal("base",
@@ -1320,10 +1325,12 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             cachedMethod.getConversions();
         for (int i = 1; i < node.jjtGetNumChildren(); i++) {
             Local tokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(i));
+            
+            //  System.out.println("converting argument " + conversions[i-1]);
 
             // Insert the appropriate conversion.
             Local argLocal = _convertTokenArgToJavaArg(
-                    tokenLocal, argTypes[i-1], conversions[i-1]);
+                    tokenLocal, argTypes[i], conversions[i-1]);
             args.add(argLocal);
         }
 

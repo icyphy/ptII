@@ -253,8 +253,9 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
     private boolean _inlineMethodCalls(SootClass modelClass,
             SootClass theClass, SootMethod method, JimpleBody body,
             PortInliner inliner, boolean debug) {
+        if (debug) System.out.println("Inlining method calls in method " + method);
+                          
         boolean doneSomething = false;
-
         // System.out.println("portToIndexArrayField = " + portToIndexArrayField);
         //System.out.println("portToInsideIndexArrayField = " + portToInsideIndexArrayField);
 
@@ -483,6 +484,8 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
     private boolean _inlineInsideMethodCalls(
             SootClass theClass, SootMethod method, JimpleBody body,
             PortInliner inliner, boolean debug) {
+        if (debug) System.out.println("Inlining inside method calls in method " + method);
+                          
         boolean doneSomething = false;
 
         // System.out.println("portToIndexArrayField = " + portToIndexArrayField);
