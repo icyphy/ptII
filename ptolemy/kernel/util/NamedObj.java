@@ -315,6 +315,7 @@ public class NamedObj implements Nameable, Debuggable,
         try {
             _workspace.getReadAccess();
             NamedObj newobj = (NamedObj)super.clone();
+            newobj._clonedFrom = this;
             // NOTE: It is not necessary to write-synchronize on the other
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
@@ -403,11 +404,12 @@ public class NamedObj implements Nameable, Debuggable,
     /** Get a MoML description of this object.  This might be an empty string
      *  if there is no MoML description of the object.
      *  MoML is an XML modeling markup language.  This uses the two
-     *  argument version of this method, so it is sufficient for derived
-     *  classes to override that method to change the MoML description.
+     *  argument version of this method.  It is final to ensure that
+     *  derived classes only need to override that method to change
+     *  the MoML description.
      *  @return A MoML description, or null if there is none.
      */
-    public String exportMoML() {
+    public final String exportMoML() {
         try {
             StringWriter buffer = new StringWriter();
             exportMoML(buffer, 0);
@@ -432,12 +434,13 @@ public class NamedObj implements Nameable, Debuggable,
      *      String result = buffer.toString();
      *  </pre>
      *  This method uses the two
-     *  argument version of this method, so it is sufficient for derived
-     *  classes to override that method to change the MoML description.
+     *  argument version of this method.  It is final to ensure that
+     *  derived classes only need to override that method to change
+     *  the MoML description.
      *  @exception IOException If an I/O error occurs.
      *  @param output The stream to write to.
      */
-    public void exportMoML(Writer output) throws IOException {
+    public final void exportMoML(Writer output) throws IOException {
         exportMoML(output, 0);
     }
 
@@ -943,6 +946,9 @@ public class NamedObj implements Nameable, Debuggable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** @serial The object this was cloned from, if any. */
+    protected NamedObj _clonedFrom = null;
 
     /** @serial Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
