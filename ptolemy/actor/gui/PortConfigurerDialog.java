@@ -622,6 +622,26 @@ public class PortConfigurerDialog
         return true;
     }
 
+        public void saveIfRequired() {
+                if (_isDirty()) {
+                        int option =
+                                JOptionPane.showConfirmDialog(
+                                        getOwner(),
+                                        "Save port modifications on "
+                                                + getTarget().getFullName()
+                                                + "?",
+                                        "Unsaved Port Modifications",
+                                        JOptionPane.YES_NO_OPTION);
+                        switch (option) {
+                                case (JOptionPane.YES_OPTION) :
+                                        {
+                                                _apply();
+                                        }
+                        }
+                }
+        }
+
+
     ///////////////////////////////////////////////////////////////////
     //// protected methods ////
     /**

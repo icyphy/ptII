@@ -124,6 +124,9 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         return _target;
     }
 
+    public void saveIfRequired() {
+    }
+
     public void setContents(JComponent contents) {
         _contents = contents;
         getContentPane().add(_contents, BorderLayout.CENTER);
@@ -146,6 +149,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     ////                         protected methods                   ////
 
     protected void _cancel() {
+            saveIfRequired();
         dispose();
     }
 
