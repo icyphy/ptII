@@ -112,24 +112,28 @@ public class DEProcessor extends TypedCompositeActor {
 
         // get the inner parameters.
         Parameter iServerMST = 
-            (Parameter)iServer.getAttribute("Minimum Service Time");
+            (Parameter)iServer.getAttribute("MinimumServiceTime");
         Parameter iServerIST = 
-            (Parameter)iServer.getAttribute("Interrupt Service Time");
+            (Parameter)iServer.getAttribute("InterruptServiceTime");
         Parameter poissonLambda = 
             (Parameter)poisson.getAttribute("lambda");
         
         // make inner parameters depend on outer.
 
+        if (iServerMST == null) {
+            System.out.println("Weird bug");
+        }
+
         iServerMST.setExpression(_minimumServiceTime.getName());
-        _minimumServiceTime.addParameterListener(iServerMST);
+        //_minimumServiceTime.addParameterListener(iServerMST);
         iServerMST.evaluate();
 
         iServerIST.setExpression(_interruptServiceTime.getName());
-        _interruptServiceTime.addParameterListener(iServerIST);
+        //_interruptServiceTime.addParameterListener(iServerIST);
         iServerIST.evaluate();
 
         poissonLambda.setExpression(_lambda.getName());
-        _lambda.addParameterListener(poissonLambda);
+        //_lambda.addParameterListener(poissonLambda);
         poissonLambda.evaluate();
 
     }
