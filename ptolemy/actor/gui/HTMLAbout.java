@@ -194,6 +194,10 @@ public class HTMLAbout {
                     + "   <code>about:demos#ptolemy/configs/visualsense/intro.htm</code></a>"
                     + "   \nOpen up the .xml files in\n"
                     + "   <code>ptolemy/configs/visualsense/intro.htm</code>.\n"
+                    + "  <li><a href=\"about:demos#ptolemy/configs/visualsense/completeDemos.htm\">"
+                    + "   <code>about:demos#ptolemy/configs/visualsense/completeDemos.htm</code></a>"
+                    + "   \nOpen up the .xml files in\n"
+                    + "   <code>ptolemy/configs/visualsense/completeDemos.htm</code>.\n"
                     + " </ul>\n");
         }
 
