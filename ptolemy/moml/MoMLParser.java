@@ -1473,7 +1473,7 @@ public class MoMLParser extends HandlerBase {
 			reference = _attemptToFindMoMLClass(className, source);
 		    } catch (Exception ex2) {
 			throw new Exception("Attempted to lookup '"
-					    + className + "', but got:\n" + error
+					    + className + "', but got:\n" + ex
 					    + "\nAttempted to find as a moml "
 					    + "class, but got: " + ex2);
 		    }
