@@ -1,6 +1,6 @@
 /* An object for synchronization and version tracking of groups of objects.
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -61,7 +61,7 @@ public class Workspace implements Nameable {
      *  @param name
      */	
     public Workspace(String name)
-           throws IllegalActionException {
+            throws IllegalActionException {
         setName(name);
         _contents = new LinkedList();
     }
@@ -83,11 +83,11 @@ public class Workspace implements Nameable {
             throws IllegalActionException {
         if (element.getContainer() != null) {
             throw new IllegalActionException(this, element,
-                   "Cannot add an object with a container to a workspace.");
+                    "Cannot add an object with a container to a workspace.");
         }
         if (_contents.firstIndexOf(element) >= 0) {
             throw new IllegalActionException(this, element,
-                   "Object is already listed in the workspace.");
+                    "Object is already listed in the workspace.");
         }
         _contents.insertLast(element);
         incrVersion();
@@ -116,13 +116,13 @@ public class Workspace implements Nameable {
         return _name;
     }
 
-     /** Get the name.
+    /** Get the name.
      *  @return The name of the object. 
      */	
     public String getName() { 
         return _name; 
     }
-   /** Get a the version number
+    /** Get a the version number
      *  @return A non-negative integer.
      */	
     public synchronized long getVersion() {
