@@ -42,7 +42,7 @@ import javax.sound.sampled.*;
 /**
    <h2>Overview</h2>
    A buffer supporting the capturing of audio samples from a file or
-   from the computer's audio in port. This class supports the
+   from the computer's audio input port. This class supports the
    real-time capture of audio from the audio input port (mic or line-in)
    as well as the capture of audio from a sound file specified as
    a URL. Single channel
@@ -73,7 +73,7 @@ import javax.sound.sampled.*;
    available via getSamples() or getSamplesInt(). 
    This latency can be adjusted by setting the <i>bufferSize</i>
    constructor parameter. Another constructor creates a sound capture
-   object that captures audio from a sound file.
+   object that captures audio from a sound file specified as a URL.
    <p>
    After calling the appropriate constructor, startCapture()
    must be called to initialize the audio system for capture.
@@ -305,7 +305,7 @@ public class SoundCapture {
 	    if (_isRealTime == true) {
 		// Real-time capture.
 		numBytesRead = _targetLine.read(_data, 0,
-						_productionRate*_frameSizeInBytes);
+				_productionRate*_frameSizeInBytes);
 		
 	    } else {
 		// Capture audio from file.
@@ -318,7 +318,6 @@ public class SoundCapture {
 		    _byteArrayToDoubleArray(_data,
 					    _bytesPerSample,
 					    _channels);
-		//System.out.println("SoundCapture: getSamples(): returning some data");
 		return _audioInDoubleArray;
 	    } else if (numBytesRead != _data.length) {
 		// Read fewer samples than productionRate many samples.
@@ -328,7 +327,6 @@ public class SoundCapture {
 	    } else if (numBytesRead == -1) {
 		// Ran out of samples to play. This generally means
 		// that the end of the sound file has been reached.
-		//System.out.println("SoundCapture: getSamples(): returning null 1");
 		return null;
 	    }
 	    return null;
@@ -393,7 +391,7 @@ public class SoundCapture {
 	    if (_isRealTime == true) {
 		// Real-time capture.
 		numBytesRead = _targetLine.read(_data, 0,
-						_productionRate*_frameSizeInBytes);
+				_productionRate*_frameSizeInBytes);
 		
 	    } else {
 		// Capture audio from file.
@@ -406,7 +404,6 @@ public class SoundCapture {
 		    _byteArrayToIntArray(_data,
 					    _bytesPerSample,
 					    _channels);
-		//System.out.println("SoundCapture: getSamples(): returning some data");
 		return _audioInIntArray;
 	    } else if (numBytesRead != _data.length) {
 		// Read fewer samples than productionRate many samples.
@@ -416,7 +413,6 @@ public class SoundCapture {
 	    } else if (numBytesRead == -1) {
 		// Ran out of samples to play. This generally means
 		// that the end of the sound file has been reached.
-		//System.out.println("SoundCapture: getSamples(): returning null 1");
 		return null;
 	    }
 	    return null;

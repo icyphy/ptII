@@ -85,7 +85,7 @@ import javax.sound.sampled.*;
    Finally, after no more audio playback is desired, stopPlayback()
    should be called to free up audio system resources.
    <p>
-   <h2>Security issues</h2>: Applications have no restrictions on the
+   <h2>Security issues</h2>Applications have no restrictions on the
    capturing or playback of audio. Applet code is not allowed to
    write native files by default. The .java.policy file must be
    modified to grant applets more privileges.
@@ -204,7 +204,8 @@ public class SoundPlayback {
     ///////////////////////////////////////////////////////////////
     ///  Public Methods                                         ///
 
-    /** If the "play audio to speaker" constructor was called,
+    /** Play an array of audio samples.
+     *  If the "play audio to speaker" constructor was called,
      *  then queue the array of audio samples in
      *  <i>putSamplesArray</i> for playback. There will be a
      *  latency before the audio data is actually heard, since the
@@ -285,7 +286,8 @@ public class SoundPlayback {
 	}
     }
 
-    /** If the "play audio to speaker" constructor was called,
+    /** Play an array of audio samples.
+     *  If the "play audio to speaker" constructor was called,
      *  then queue the array of audio samples in
      *  <i>putSamplesArray</i> for playback. The samples should be
      *  in the range (-2^(bits_per_sample/2), 2^(bits_per_sample/2)).
