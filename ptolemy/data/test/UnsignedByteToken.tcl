@@ -120,6 +120,36 @@ test UnsignedByteToken-5.0 {Test hashCode} {
 
 ######################################################################
 ####
+# Test subtract operator between ints and ints.
+test UnsignedByteToken-8.0 {Test subtract operator between ints.} {
+    set tok1 [java::new {ptolemy.data.UnsignedByteToken int} 7]
+    set tok2 [java::new {ptolemy.data.UnsignedByteToken int} 2]
+
+    set res1 [$tok1 subtract $tok2]
+    set res2 [$tok1 subtractReverse $tok2]
+
+    list [$res1 toString] [$res2 toString]
+} {5ub 251ub}
+
+######################################################################
+####
+# Test subtract operator between ints and ints.
+test UnsignedByteToken-8.1 {Test shift operator between ints.} {
+    set tok1 [java::new {ptolemy.data.UnsignedByteToken int} 7]
+    set tok2 [java::new {ptolemy.data.UnsignedByteToken int} -7]
+
+    set res1 [$tok1 leftShift 1]
+    set res2 [$tok2 leftShift 1]
+    set res3 [$tok1 rightShift 1]
+    set res4 [$tok2 rightShift 1]
+    set res5 [$tok1 logicalRightShift 1]
+    set res6 [$tok2 logicalRightShift 1]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString] [$res6 toString]
+} {14ub 242ub 3ub 252ub 3ub 252ub}
+
+######################################################################
+####
 # 
 test UnsignedByteToken-13.0 {Test convert from BooleanToken} {
     set t [java::new {ptolemy.data.BooleanToken boolean} false]
