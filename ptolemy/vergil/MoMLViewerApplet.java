@@ -44,6 +44,7 @@ import ptolemy.actor.Configurable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.MoMLApplet;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.kernel.ComponentEntity;
