@@ -71,7 +71,7 @@ succeeded with its rendezvous is executed in the run method. There are
 roughly three parts to the algorithm, each of which is relevant
 to the different rendezvous scenarios.
 <br>
-<I>Case 1:</I> Realized by arriveAfterPut(). There is a put already waiting
+<I>Case 1:</I> Realized by _arriveAfterPut(). There is a put already waiting
 at the rendezvous point. In this case
 the branch attempts to register itself, with the parent actor, as the first
 branch ready to rendezvous. If it succeeds, it performs the rendezvous,
@@ -81,7 +81,7 @@ branch successfully rendezvoused in which case it fails and terminates. Note
 that a put cannot "go away" so it remains in an inner-loop trying to
 rendezvous or failing.
 <br>
-<I>Case 2:</I> Realized by arriveAfterCondSend(). There is a conditional send
+<I>Case 2:</I> Realized by _arriveAfterCondSend(). There is a conditional send
 waiting. In this case it tries to register both branches with their parents as
 the first to try. If it
 succeeds it performs the transfer, notifies the parent and returns. It
@@ -93,7 +93,7 @@ the conditional send could "go away". If it is unable to register itself as
 the first branch to try, it again starts trying to rendezvous from the
 beginning.
 <br>
-<I>Case 3:</I> Realized by arriveFirst(). If there is neither a put or a
+<I>Case 3:</I> Realized by _arriveFirst(). If there is neither a put or a
 conditional send waiting, it sets a
 flag in the receiver that a conditional receive is trying to rendezvous. It
 then waits until a put is executed on the receiver, or until another branch
@@ -193,14 +193,14 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         parentActor._branchFailed(getID());
                         return;
                     } else if (rcvr._isPutWaiting()) {
-                        arriveAfterPut(rcvr, parentActor);
+                        _arriveAfterPut(rcvr, parentActor);
                         return;
                     } else if (rcvr._isConditionalSendWaiting()) {
-                        if( !arriveAfterCondSend(rcvr, parentActor) ) {
+                        if( !_arriveAfterCondSend(rcvr, parentActor) ) {
                             return;
                         }
                     } else {
-                        arriveFirst(rcvr, parentActor);
+                        _arriveFirst(rcvr, parentActor);
                         return;
                     }
                 }
@@ -235,7 +235,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
-    protected boolean arriveAfterCondSend(CSPReceiver rcvr, CSPActor parent)
+    protected boolean _arriveAfterCondSend(CSPReceiver rcvr, CSPActor parent)
             throws InterruptedException {
         if (parent._isBranchFirst(getID())) {
             // receive side ok, need to check that send
@@ -263,7 +263,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
-    protected void arriveAfterPut(CSPReceiver rcvr, CSPActor parent)
+    protected void _arriveAfterPut(CSPReceiver rcvr, CSPActor parent)
             throws InterruptedException {
         while (true) {
             if (parent._isBranchFirst(getID())) {
@@ -288,7 +288,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      * @param rcvr The CSPReceiver through which a rendezvous attempt is
      *  taking place.
      */
-    protected void arriveFirst(CSPReceiver rcvr, CSPActor parent)
+    protected void _arriveFirst(CSPReceiver rcvr, CSPActor parent)
             throws InterruptedException {
         rcvr._setConditionalReceive(true, parent);
         _registerBlockAndWait();
