@@ -395,7 +395,7 @@ public class CTScheduler extends Scheduler{
                 _classifyActors();
                 _dynamicversion = workspace().getVersion();
             }
-            return _memaris.elements();
+            return _stateful.elements();
         } finally {
             workspace().doneReading();
         }
@@ -520,6 +520,9 @@ public class CTScheduler extends Scheduler{
             }
             if (a instanceof CTMemarisActor) {  //deprecated.
                 _memaris.insertLast(a);
+            }
+            if (a instanceof CTStatefulActor) {  
+                _stateful.insertLast(a);
             }
             if (a instanceof CTStatefulActor) {
                 _stateful.insertLast(a);
