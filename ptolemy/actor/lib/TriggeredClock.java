@@ -84,10 +84,6 @@ public class TriggeredClock extends Clock {
         // type is undeclared.
         // Annotate DISCRETE, for the benefit of CT.
         new Parameter(stop, "signalType", new StringToken("DISCRETE"));
-
-        // To prevent type inference from doing the wrong thing, we have
-        // to declare the output to be CONTINUOUS.
-        new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
     }
 
     ///////////////////////////////////////////////////////////////////
