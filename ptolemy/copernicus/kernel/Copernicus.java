@@ -63,7 +63,7 @@ A Standalone application that generates code using the Ptolemy II code
 generation system.  This class acts a wrapper for the copernicus.*.Main
 classes by providing defaults arguments for the various backends. 
 
-The <i>generatorAttribute</a> Parameter names a MoML file that
+The <i>generatorAttribute</i> Parameter names a MoML file that
 contains definitions for other Parameters and Variables that control
 the compilation and execution of the model
 

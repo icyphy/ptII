@@ -384,39 +384,15 @@ public class GeneratorTableau extends Tableau {
 			    // earlier compilation and running.
 			    List commands = null;
 
-			    if (codeGenerator.equals("applet")) {
-				// Soot is a memory pig, so we run
-				// it in a separate process.
+			    if (codeGenerator.equals("applet") ||
+				codeGenerator.equals("interpreted") ||
+				codeGenerator.equals("java") ||
+				codeGenerator.equals("shallow")) {
 				try {
 				    commands =
 					_generateCodeGeneratorCommands(model,
 								       options,
-								       "applet"
-								       );
-				} catch (Exception ex) {
-				    throw new IllegalActionException(model, ex, null);
-				}
-			    } else if (codeGenerator.equals("java")) {
-				// Soot is a memory pig, so we run
-				// it in a separate process.
-				try {
-				    commands =
-					_generateCodeGeneratorCommands(model,
-								       options,
-								       "java");
-                                    decompile = true;
-				} catch (Exception ex) {
-				    throw new IllegalActionException(model,
-								     ex, null);
-				}
-			    } else if (codeGenerator.equals("shallow")) {
-				// Soot is a memory pig, so we run
-				// it in a separate process.
-				try {
-				    commands =
-					_generateCodeGeneratorCommands(model,
-								       options,
-							              "shallow"
+								       codeGenerator
 								       );
 				} catch (Exception ex) {
 				    throw new IllegalActionException(model,
@@ -429,6 +405,10 @@ public class GeneratorTableau extends Tableau {
 					 + codeGenerator + "'.  Try 'java'");
 			    }
 
+			    if (codeGenerator.equals("applet") ||
+				codeGenerator.equals("interpreted")) {
+				decompile = false;
+			    }
 
 			    if (compile && commands != null) {
 				execCommands.add(commands.get(0));

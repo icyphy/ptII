@@ -7,4 +7,5 @@
 #
 @java@
  -Xfuture -classpath "@classPath@"
- @targetPackage@.Main 
+ ptolemy.actor.gui.MoMLSimpleStatisticalApplication
+ "@targetPath@/@modelName@.xml"
