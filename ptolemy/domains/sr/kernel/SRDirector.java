@@ -78,7 +78,7 @@ inherit the current time of the outside director.
 In SR, each iteration begins with the values on all channels being unknown.
 To ensure that an iteration converges to final values in finite time, it is
 required that values change only from unknown to known, and never the other
-way around.  Once a value is set (or set to be absent), it must not
+way around.  Once a value is set (or cleared), it must not
 change again in the course of the iteration.
 <p>
 An actor is considered <i>ready to fire</i> if sufficient known inputs are
@@ -254,8 +254,8 @@ public class SRDirector extends StaticSchedulingDirector {
                     // The postfire() method of this actor returned false in
                     // a previous iteration, so here, for the benefit of
                     // connected actors, we need to explicitly call the
-                    // sendAbsent() method of all of its output ports.
-                    _sendAbsentToAllUnknownOutputsOf(actor);
+                    // sendClear() method of all of its output ports.
+                    _sendClearToAllUnknownOutputsOf(actor);
                 }
 
             }
@@ -509,7 +509,7 @@ public class SRDirector extends StaticSchedulingDirector {
                     // can assume that any unknown outputs of this actor
                     // are actually absent.
                     if (allInputsKnownBeforeFiring) {
-                        _sendAbsentToAllUnknownOutputsOf(actor);
+                        _sendClearToAllUnknownOutputsOf(actor);
                     }
                 }
             }
@@ -568,7 +568,7 @@ public class SRDirector extends StaticSchedulingDirector {
 
         // Note that having zero actors to fire is not sufficient for
         // convergence.  Some actors may fire in the next phase if
-        // the director calls sendAbsent() on any output ports.
+        // the director calls sendClear() on any output ports.
 
         // Note that all receivers having known state is not sufficient
         // for convergence.  After the values are present, each actor must
@@ -803,17 +803,17 @@ public class SRDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Call the sendAbsent() method of each of the output ports of the
+    /** Call the sendClear() method of each of the output ports of the
      *  specified actor if the actor is strict.
      */
-    private void _sendAbsentToAllUnknownOutputsOf(Actor actor)
+    private void _sendClearToAllUnknownOutputsOf(Actor actor)
             throws IllegalActionException {
 
         // Nonstrict actors may intend to output undefined values.
         if ((!_isNonStrict(actor)) && (!_isFinishedFiring(actor))) {
             // No need to do anything if this actor has defined all of its
             // outputs.
-            _debug("  SRDirector is calling sendAbsent()",
+            _debug("  SRDirector is calling sendClear()",
                     "on the output ports of", _getNameOf(actor));
 
             Iterator outputPorts = actor.outputPortList().iterator();
@@ -821,7 +821,7 @@ public class SRDirector extends StaticSchedulingDirector {
             while (outputPorts.hasNext()) {
                 IOPort outputPort = (IOPort)outputPorts.next();
                 for (int j = 0; j < outputPort.getWidth(); j++) {
-                    if (!outputPort.isKnown(j)) outputPort.sendAbsent(j);
+                    if (!outputPort.isKnown(j)) outputPort.sendClear(j);
                 }
             }
         }

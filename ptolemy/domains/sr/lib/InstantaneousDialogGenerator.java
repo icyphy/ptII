@@ -105,7 +105,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
             if (dataInput.hasToken(0)) {
                 dataOutput.send(0, dataInput.get(0));
             } else {
-                dataOutput.sendAbsent(0);
+                dataOutput.sendClear(0);
             }
         }
     }

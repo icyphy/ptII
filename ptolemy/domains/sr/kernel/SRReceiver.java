@@ -63,7 +63,7 @@ known values:     absent     value (present)
                        unknown
 </pre>
 <p>
-The status is automatically set to known when the put() method or setAbsent()
+The status is automatically set to known when the put() method or clear()
 method is called.  Once a receiver becomes known, its value (or lack of a
 value if it is absent) cannot change until the next iteration of the
 director.  The hasRoom() method always returns true, but attempting to change
@@ -104,7 +104,7 @@ public class SRReceiver extends Mailbox {
      */
     public Token get() {
         if (isKnown()) {
-            return _getToken();
+            return super.get();
         } else {
             throw new UnknownTokenException(getContainer(),
                     "get() called on SRReceiver with unknown state.");
@@ -205,18 +205,18 @@ public class SRReceiver extends Mailbox {
     }
 
     /** Set the state of this receiver to be known and to contain no token.
+     *  Note that during an iteration, SR semantics does not allow a receiver
+     *  to receive a token and then be cleared.  Thus, the clear will
+     *  trigger an exception.
+     *  @throws IllegalOutputException If this receiver has a token in it.
      */
-    public void setAbsent() {
-        if (!isKnown()) {
-            _putToken(null);
-        } else {
-            if (hasToken()) {
-                throw new IllegalOutputException(getContainer(),
-                        "SRReceiver cannot transition from a present " +
-                        "state to an absent state.");
-            }
-            // Otherwise, do nothing, because already in an absent state.
+    public void clear() {
+        if (isKnown() && hasToken()) {
+            throw new IllegalOutputException(getContainer(),
+            "SRReceiver cannot transition from a present " +
+            "state to an absent state.");
         }
+        super.clear();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -229,27 +229,12 @@ public class SRReceiver extends Mailbox {
      *  this method, but actors in other packages cannot.
      */
     void reset() {
-        if (isKnown()) {
-            if (hasToken()) {
-                super.get();
-            }
-            _known = false;
-        }
+        clear();
+        _known = false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Return the contained token without modifying or removing it.
-     *  @return The token contained in this receiver.
-     */
-    private Token _getToken() {
-        if (_token == null) {
-            throw new NoTokenException(getContainer(),
-                    "Attempt to get data from an empty mailbox.");
-        }
-        return _token;
-    }
 
     /** Discard any contained token, and replace it with the specified
      *  token or null for no token.

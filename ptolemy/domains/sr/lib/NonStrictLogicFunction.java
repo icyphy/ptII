@@ -119,7 +119,7 @@ public class NonStrictLogicFunction extends LogicFunction {
         if (value == null) {
             // If value is null, there were no inputs.  If all the inputs are
             // known, they must be all absent, so make the output absent.
-            if (input.isKnown()) output.sendAbsent(0);
+            if (input.isKnown()) output.sendClear(0);
         } else {
             // If the value is not null, there were some inputs.  If some of
             // the inputs are unknown, the result might be invalid.  In that

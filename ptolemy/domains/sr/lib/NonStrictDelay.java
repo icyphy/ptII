@@ -60,8 +60,10 @@ emitted in the first iteration, regardless of whether any tokens are
 received on the input port.  If the parameter is left empty, then no
 token is emitted in the first iteration.
 <p>
-This actor does not work entirely correctly in the SDF domain, since
-SDF does not recognize the "absent" token.
+FIXME: This actor is truly questionable in an SR domain.
+It uses a special token, AbsentToken, and delays that as well as
+real tokens.  This does not conform with the usual SR behavior.
+(EAL)
 
 Compare this actor to other single token delay actors:
 @see ptolemy.domains.sdf.lib.SampleDelay
@@ -121,7 +123,7 @@ public class NonStrictDelay extends Transformer {
 
         if (_previousToken != null) {
             if (_previousToken == AbsentToken.ABSENT) {
-                output.sendAbsent(0);
+                output.sendClear(0);
             } else {
                 output.send(0, _previousToken);
             }
