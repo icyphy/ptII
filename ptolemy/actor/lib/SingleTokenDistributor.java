@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (pwhitake@eecs.berkeley.edu)
+@ProposedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -38,17 +38,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// SingleTokenDistributor
 /**
-A distributor, which splits an input stream into a set of
-output streams. The distributor has an input port and an output port,
-the latter of which is a multiport.
-The types of the ports are undeclared and will be resolved by the type
-resolution mechanism, with the constraint that the output type must be
-greater than or equal to the input type. On each call to the fire method, the
-actor reads at most one token from the input, and writes one token to an
-output channel.  In the next iteration of this actor, it will produce an
-output on the next channel.
+A distributor that splits an input stream into a set of output
+streams. The distributor has an input port and an output port, the
+latter of which is a multiport.  The types of the ports are undeclared
+and will be resolved by the type resolution mechanism, with the
+constraint that the output type must be greater than or equal to the
+input type. On each call to the fire method, the actor reads at most
+one token from the input, and writes one token to an output channel.
+If there is no token on the input, then it will not produce a token on
+the current output.  In the next iteration of this actor, it will
+produce an output on the next channel.
 
-@author Paul Whitaker, Mudit Goel, Edward A. Lee
+@author Paul Whitaker, Mudit Goel, Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 public class SingleTokenDistributor extends Transformer
@@ -75,27 +76,14 @@ public class SingleTokenDistributor extends Transformer
     ////                         public methods                    ////
 
     /** Read at most one token from the input port, and write that token
-     *  to the current output channel.  If there is no token on the input,
-     *  do nothing.
+     *  to the current output channel.  If there is no token on the input
+     *  port, do nothing.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        int width = output.getWidth();
-        _tentativeOutputPosition = _currentOutputPosition;
-        if (_tentativeOutputPosition >= width) {
-            _tentativeOutputPosition = 0;
-        }
         if (input.hasToken(0)) {
-            for (int i = 0; i < width; i++) {
-                if (i == _tentativeOutputPosition) {
-                    Token outToken = input.get(0);
-                    output.send(i, outToken);
-                } else {
-                    output.sendAbsent(i);
-                }
-            }
+	    output.send(_currentOutputPosition, input.get(0));
         }
-        _tentativeOutputPosition++;
     }
 
     /** Begin execution by setting the current output channel to zero.
@@ -109,11 +97,15 @@ public class SingleTokenDistributor extends Transformer
     /** Update the output position to equal that determined by the most
      *  recent invocation of the fire() method.  The output position is
      *  the channel number of the output port to which the next input
-     *  will be sent.
+     *  will be sent.  
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        _currentOutputPosition = _tentativeOutputPosition;
+        _currentOutputPosition++;
+        if (_currentOutputPosition >= output.getWidth()) {
+            _currentOutputPosition = 0;
+        }
+
         return super.postfire();
     }
 
@@ -122,12 +114,4 @@ public class SingleTokenDistributor extends Transformer
 
     // The channel number for the next output.
     private int _currentOutputPosition;
-
-    // The new channel number for the next output as determined by fire().
-    private int _tentativeOutputPosition;
 }
-
-
-
-
-
