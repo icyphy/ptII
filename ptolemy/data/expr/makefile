@@ -43,7 +43,7 @@ ME =		pt/data/expr
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-DIRS = 		test 
+DIRS = 		test # doc
 
 CLASSPATH = ../../..:$(JAVACCDIR)/JavaCC.zip
 
@@ -69,11 +69,11 @@ JSRCS = \
 	ASTPtUnaryNode.java \
 	Parameter.java
 
-EXTRA_SRCS =   PtParser.jjt $(JSRCS)
+EXTRA_SRCS =	PtParser.jjt $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	# doc test
+MISC_FILES =	$(DIRS) doc
 
 # OPTIONAL_JSRCS files are created by javacc.  
 # javadoc generates html for files in $(OPTIONAL_JSRCS)
