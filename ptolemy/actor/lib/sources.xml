@@ -3,7 +3,6 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="sources" class="ptolemy.moml.EntityLibrary">
   <configure>
-    <?moml
       <group>
 <doc>Domain-polymorphic sources</doc>
 
@@ -56,6 +55,5 @@
 </entity>
 
       </group>
-    ?>
   </configure>
 </entity>

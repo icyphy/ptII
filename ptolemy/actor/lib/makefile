@@ -119,7 +119,6 @@ JSRCS = \
 
 EXTRA_SRCS =	$(JSRCS) \
 	flowcontrol.xml \
-	genericicons.xml \
 	math.xml \
 	signalprocessing.xml \
 	Sinewave.xml \

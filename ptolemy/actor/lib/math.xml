@@ -3,7 +3,6 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="math" class="ptolemy.moml.EntityLibrary">
   <configure>
-    <?moml
       <group>
   <doc>Arithmetic and mathematical functions</doc>
 
@@ -79,6 +78,5 @@
   </entity>
 
       </group>
-    ?>
   </configure>
 </entity>

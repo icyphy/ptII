@@ -3,7 +3,6 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="flow control" class="ptolemy.moml.EntityLibrary">
   <configure>
-    <?moml
       <group>
   <doc>Actors that route tokens or otherwise affect the flow of control.</doc>
 
@@ -20,6 +19,5 @@
   <entity name="Synchronizer" class="ptolemy.actor.lib.Synchronizer"/>  
 
       </group>
-    ?>
   </configure>
 </entity>
