@@ -1104,7 +1104,7 @@ public class PtolemyUtilities {
         booleanTypeField = baseTypeClass.getFieldByName("BOOLEAN");
         booleanMatrixTypeField =
             baseTypeClass.getFieldByName("BOOLEAN_MATRIX");
-        byteTypeField = baseTypeClass.getFieldByName("BYTE");
+        byteTypeField = baseTypeClass.getFieldByName("UNSIGNED_BYTE");
         complexTypeField = baseTypeClass.getFieldByName("COMPLEX");
         complexMatrixTypeField =
             baseTypeClass.getFieldByName("COMPLEX_MATRIX");
