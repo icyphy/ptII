@@ -68,7 +68,7 @@ public class TestToken extends Token {
     }
 
     /** Return the type of this token.
-     *  @return 
+     *  @return the type of this token.
      */
     public Type getType() {
         return TYPE;
