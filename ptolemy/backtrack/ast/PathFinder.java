@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -34,18 +34,19 @@ import java.io.FileFilter;
 //////////////////////////////////////////////////////////////////////////
 //// PathFinder
 /**
- *  This class provides a tool to set up customized class paths from which
- *  class are loaded with {@link LocalClassLoader}.
- *
- *  @author Thomas Feng
- *  @version $Id$
- *  @since Ptolemy II 4.1
- *  @Pt.ProposedRating Red (tfeng)
- */
+   A tool to set up customized class paths from which class are loaded
+   with {@link LocalClassLoader}.
+ 
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class PathFinder {
 
-    /** Return the class paths containing the root of the Ptolemy tree,
-     *  and the Jar files in sub-directories <tt>lib/</tt>,
+    /** Return the class paths containing the root of the Ptolemy tree, 
+     *  and the Jar files in sub-directories <tt>lib/</tt>, 
      *  <tt>vendors/sun/commapi/</tt> and <tt>vendors/sun/jxta</tt>.
      *
      *  @return The class paths.
@@ -59,16 +60,19 @@ public class PathFinder {
         };
         File[][]files = new File[subdirs.length][];
         int totalNumber = 0;
-        for (int i=0; i<subdirs.length; i++) {
-            files[i] = new File(PTII + "/" + subdirs[i]).listFiles(new JarFileFilter());
+        for (int i = 0; i < subdirs.length; i++) {
+            files[i] = 
+                new File(PTII + "/" + subdirs[i]).listFiles(
+                        new JarFileFilter()
+                );
             totalNumber += files[i].length;
         }
 
         String[] classPaths = new String[totalNumber + 1];
         classPaths[0] = PTII;
         int currentNumber = 1;
-        for (int i=0; i<files.length; i++)
-            for (int j=0; j<files[i].length; j++)
+        for (int i = 0; i < files.length; i++)
+            for (int j = 0; j < files[i].length; j++)
                 classPaths[currentNumber++] = files[i][j].getPath();
 
         return classPaths;
@@ -85,7 +89,7 @@ public class PathFinder {
      *  @since Ptolemy II 4.1
      *  @Pt.ProposedRating Red (tfeng)
      */
-    private static class JarFileFilter implements FileFilter {
+    static class JarFileFilter implements FileFilter {
 
         /** Accept only files with names ending with "<tt>.jar</tt>".
          *
