@@ -76,8 +76,7 @@
         <?moml
           <group>
 	    <!-- GR depends on the 3D graphics package of Java being present-->
-            <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector"/>
-            <input source="ptolemy/domains/gr/lib/grentities.xml"/>
+            <input source="ptolemy/domains/gr/gr.xml"/>
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>
           </group>
