@@ -1450,7 +1450,7 @@ if test ! -d "$PTII/ptolemy/apps/soot"; then
     echo "$ac_t""$PTII/ptolemy/apps/soot is not present, so we need not
 find the Soot - a Java Optimization Framework" 1>&6
     SOOT_DIR='${PTII}/vendors/soot/1.2.2'
-    SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar'
+    SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/jre/lib/rt.jar'
 else
     echo $ac_n "checking for soot directory""... $ac_c" 1>&6
 echo "configure:1457: checking for soot directory" >&5
@@ -1474,6 +1474,17 @@ echo "configure:1474: checking for \$SOOT_DIR/jasminclasses.jar" >&5
   	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
                 echo "$ac_t""$SOOT_DIR/jasminclasses.jar" 1>&6
 	        SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar'
+	        echo $ac_n "checking for \$PTJAVA_DIR/jre/lib/rt.jar""... $ac_c" 1>&6
+echo "configure:1479: checking for \$PTJAVA_DIR/jre/lib/rt.jar" >&5
+  	        if test -f "$PTJAVA_DIR/jre/lib/rt.jar"; then
+                    echo "$ac_t""$PTJAVA_DIR/jre/lib/rt.jar" 1>&6
+		    SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/jre/lib/rt.jar'
+	        else	
+		    # We could resurrect config/SystemJar.java and run it?
+		    SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar'
+		   echo "configure: warning: 'Failed to find $PTJAVA_DIR/jre/lib/rt.jar
+    Classes that use Soot will compile, but will fail to run'" 1>&2
+	        fi
 	    else
 	        SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar'
             fi
@@ -1521,7 +1532,7 @@ find the Dallas Semiconductor tini" 1>&6
     TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
 else
     echo $ac_n "checking for tini directory""... $ac_c" 1>&6
-echo "configure:1525: checking for tini directory" >&5
+echo "configure:1536: checking for tini directory" >&5
     # Check whether --with-tini or --without-tini was given.
 if test "${with_tini+set}" = set; then
   withval="$with_tini"
@@ -1534,11 +1545,11 @@ fi
     if test -d "$TINI_DIR"; then
 	echo "$ac_t""$TINI_DIR" 1>&6
         echo $ac_n "checking for \$TINI_DIR/bin/tiniclasses.jar""... $ac_c" 1>&6
-echo "configure:1538: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+echo "configure:1549: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 	if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
 	    echo "$ac_t""$TINI_DIR/bin/tiniclasses.jar" 1>&6
 	    echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
-echo "configure:1542: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo "configure:1553: checking for \$TINI_DIR/bin/tini.jar" >&5
   	    if test -f "$TINI_DIR/bin/tini.jar"; then
                 echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
 	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
@@ -1552,17 +1563,17 @@ echo "configure:1542: checking for \$TINI_DIR/bin/tini.jar" >&5
     else
 	echo "$ac_t""Not found in $TINI_DIR" 1>&6
 	echo $ac_n "checking for tini directory in /tini""... $ac_c" 1>&6
-echo "configure:1556: checking for tini directory in /tini" >&5
+echo "configure:1567: checking for tini directory in /tini" >&5
 	# Likely place for tini under windows
 	TINI_DIR=/tini
         if test -d "$TINI_DIR"; then
 	    echo "$ac_t""$TINI_DIR" 1>&6
             echo $ac_n "checking for \$TINI_DIR/bin/tiniclasses.jar""... $ac_c" 1>&6
-echo "configure:1562: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+echo "configure:1573: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 	    if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
 	        echo "$ac_t""$TINI_DIR/bin/tiniclasses.jar" 1>&6
 	        echo $ac_n "checking for \$TINI_DIR/bin/tini.jar""... $ac_c" 1>&6
-echo "configure:1566: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo "configure:1577: checking for \$TINI_DIR/bin/tini.jar" >&5
 	        if test -f "$TINI_DIR/bin/tini.jar"; then
 	            echo "$ac_t""$TINI_DIR/bin/tini.jar" 1>&6
 	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
@@ -1614,7 +1625,7 @@ find the PalmOS waba" 1>&6
     WABA_CLASSES='$(WABA_DIR)/classes'
 else
     echo $ac_n "checking for waba directory""... $ac_c" 1>&6
-echo "configure:1618: checking for waba directory" >&5
+echo "configure:1629: checking for waba directory" >&5
     # Check whether --with-waba or --without-waba was given.
 if test "${with_waba+set}" = set; then
   withval="$with_waba"
@@ -1627,7 +1638,7 @@ fi
     if test -d "$WABA_DIR"; then
 	echo "$ac_t""$WABA_DIR" 1>&6
         echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:1631: checking for \$WABA_DIR/classes" >&5
+echo "configure:1642: checking for \$WABA_DIR/classes" >&5
 	if test -d "$WABA_DIR/classes"; then
 	    WABA_CLASSES='$(WABA_DIR)/classes'
 	    echo "$ac_t""$WABA_CLASSES" 1>&6
@@ -1637,13 +1648,13 @@ echo "configure:1631: checking for \$WABA_DIR/classes" >&5
     else
 	echo "$ac_t""Not found in $WABA_DIR" 1>&6
 	echo $ac_n "checking for waba directory in /waba""... $ac_c" 1>&6
-echo "configure:1641: checking for waba directory in /waba" >&5
+echo "configure:1652: checking for waba directory in /waba" >&5
 	# Likely place for waba under windows
 	WABA_DIR=/waba/wabasdk
         if test -d "$WABA_DIR"; then
 	    echo "$ac_t""$WABA_DIR" 1>&6
             echo $ac_n "checking for \$WABA_DIR/classes""... $ac_c" 1>&6
-echo "configure:1647: checking for \$WABA_DIR/classes" >&5
+echo "configure:1658: checking for \$WABA_DIR/classes" >&5
 	    if test -d "$WABA_DIR/classes"; then
 	        WABA_CLASSES='$(WABA_DIR)/classes'
 	        echo "$ac_t""$WABA_CLASSES" 1>&6
