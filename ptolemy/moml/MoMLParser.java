@@ -394,79 +394,16 @@ public class MoMLParser extends HandlerBase {
             // intended to be called, simply by putting in an element
             // whose name matches the method name.  So instead, we do
             // a dumb if...then...elseif... chain with string comparisons.
-            if (elementName.equals("property")) {
-                String propertyName = (String)_attributes.get("name");
-                _checkForNull(propertyName,
-                        "No name for element \"property\"");
-                String value = (String)_attributes.get("value");
-                NamedObj property = (Attribute)
-                        _current.getAttribute(propertyName);
-
-                String className = (String)_attributes.get("class");
-                Class newClass = null;
-                if (className != null) {
-                    newClass = Class.forName(className);
-                }
-
-                if (property == null) {
-                    // No previously existing attribute with this name.
-                    _checkForNull(newClass,
-                            "Cannot create property without a class name.");
-
-                    // Invoke the constructor.
-                    Object[] arguments = new Object[2];
-                    arguments[0] = _current;
-                    arguments[1] = propertyName;
-                    property = _createInstance(newClass, arguments);
-
-                    if (value != null) {
-                        if (!(property instanceof Variable)) {
-                            throw new XmlException("Property is not an "
-                            + "instance of Variable, so can't set value.",
-                            _currentExternalEntity(),
-                            _parser.getLineNumber(),
-                            _parser.getColumnNumber());
-                        }
-                        ((Variable)property).setExpression(value);
-                    }
-                } else {
-                    // Previously existing property with this name.
-                    if (newClass != null) {
-                        // Check that it has the right class.
-                        _checkClass(property, newClass,
-                                "property named \"" + propertyName
-                                + "\" exists and is not an instance of "
-                                + className);
-                    }
-                    // If value is null and the property already
-                    // exists, then there is nothing to do.
-                    if (value != null) {
-                        _checkClass(property, Variable.class,
-                               "property named \"" + propertyName
-                               + "\" is not an instance of Variable,"
-                               + " so its value cannot be set.");
-                        ((Variable)property).setExpression(value);
-                    }
-                 }
-                 _containers.push(_current);
-                 _current = property;
-
-             } else if (elementName.equals("class")) {
+            if (elementName.equals("class")) {
                 String className = (String)_attributes.get("extends");
                 _checkForNull(className,
                         "Missing \"extends\" attribute for element \"class\"");
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName, "No name for element \"class\"");
-                NamedObj newEntity;
+                NamedObj newEntity = _createEntity(className, entityName);
                 if (_current != null) {
-                    _checkClass(_current, CompositeEntity.class,
-                           "Element \"class\" found inside an element that "
-                           + "is not a CompositeEntity. It is: "
-                           + _current);
                     _containers.push(_current);
-                    newEntity = _createEntity(className, entityName);
                 } else {
-                    newEntity = _createEntity(className, entityName);
                     _toplevel = newEntity;
                 }
                 newEntity.setMoMLElementName("class");
@@ -513,15 +450,17 @@ public class MoMLParser extends HandlerBase {
                 String className = (String)_attributes.get("class");
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName, "No name for element \"entity\"");
-                _checkClass(_current, CompositeEntity.class,
-                        "Element \"entity\" found inside an element that "
-                        + "is not a CompositeEntity. It is: "
-                        + _current);
                 NamedObj newEntity = _createEntity(className, entityName);
                 if (_panel != null && newEntity instanceof Placeable) {
                     ((Placeable)newEntity).place(_panel);
                 }
-                _containers.push(_current);
+                // NOTE: We tolerate entities at the top level, even
+                // though this is not proper MoML.
+                if (_current != null) {
+                    _containers.push(_current);
+                } else {
+                    _toplevel = newEntity;
+                }
                 _current = newEntity;
 
             } else if (elementName.equals("import")) {
@@ -626,14 +565,38 @@ public class MoMLParser extends HandlerBase {
                 port.link(relation);
 
              } else if (elementName.equals("location")) {
-                String xSpec = (String)_attributes.get("x");
-                String ySpec = (String)_attributes.get("y");
-                String zSpec = (String)_attributes.get("z");
-                _checkForNull(xSpec, "No x attribute for element \"location\"");
+                String value = (String)_attributes.get("value");
+                _checkForNull(value, "No value for element \"location\"");
                 _checkClass(_current, Locatable.class,
                        "Element \"location\" found inside an element that "
                        + "is not Locatable. It is: "
                        + _current);
+
+                // Parse the specification.
+                int comma = value.indexOf(",");
+                String xSpec = null;
+                String ySpec = null;
+                String zSpec = null;
+                if (comma < 0) {
+                    // Only one dimension given.
+                    xSpec = value.trim();
+                } else {
+                    xSpec = value.substring(0, comma).trim();
+                    if (value.length() > comma + 1) {
+                        String rest = value.substring(comma + 1);
+                        comma = rest.indexOf(",");
+                        if (comma < 0) {
+                            // No more dimensions given.
+                            ySpec = rest.trim();
+                        } else {
+                            // A third dimension is given.
+                            ySpec = rest.substring(0, comma).trim();
+                            if (rest.length() > comma + 1) {
+                                zSpec = rest.substring(comma + 1).trim();
+                            }
+                        }
+                    }
+                }
 
                 double x = Double.parseDouble(xSpec);
                 if (ySpec != null) {
@@ -717,6 +680,79 @@ public class MoMLParser extends HandlerBase {
                     }
                 }
 
+            } else if (elementName.equals("property")) {
+                String propertyName = (String)_attributes.get("name");
+                _checkForNull(propertyName,
+                        "No name for element \"property\"");
+                String value = (String)_attributes.get("value");
+
+                // First handle special properties that are not translated
+                // into Ptolemy II attributes.
+                boolean isIOPort = (_current instanceof IOPort);
+                if (propertyName.equals("multiport") && isIOPort) {
+                    // The mere presense of a named property "multiport"
+                    // makes the enclosing port a multiport.
+                    ((IOPort)_current).setMultiport(true);
+                } else if (propertyName.equals("output") && isIOPort) {
+                    ((IOPort)_current).setOutput(true);
+                } else if (propertyName.equals("input") && isIOPort) {
+                    ((IOPort)_current).setInput(true);
+                } else {
+                    // Ordinary attribute.
+                    NamedObj property = (Attribute)
+                            _current.getAttribute(propertyName);
+
+                    String className = (String)_attributes.get("class");
+                    Class newClass = null;
+                    if (className != null) {
+                        newClass = Class.forName(className);
+                    }
+
+                    if (property == null) {
+                        // No previously existing attribute with this name.
+                        if (newClass == null) {
+                            newClass = Attribute.class;
+                        }
+
+                        // Invoke the constructor.
+                        Object[] arguments = new Object[2];
+                        arguments[0] = _current;
+                        arguments[1] = propertyName;
+                        property = _createInstance(newClass, arguments);
+
+                        if (value != null) {
+                            if (!(property instanceof Variable)) {
+                                throw new XmlException("Property is not an "
+                                + "instance of Variable, so can't set value.",
+                                _currentExternalEntity(),
+                                _parser.getLineNumber(),
+                                _parser.getColumnNumber());
+                            }
+                            ((Variable)property).setExpression(value);
+                        }
+                    } else {
+                        // Previously existing property with this name.
+                        if (newClass != null) {
+                            // Check that it has the right class.
+                            _checkClass(property, newClass,
+                            "property named \"" + propertyName
+                            + "\" exists and is not an instance of "
+                            + className);
+                        }
+                        // If value is null and the property already
+                        // exists, then there is nothing to do.
+                        if (value != null) {
+                            _checkClass(property, Variable.class,
+                            "property named \"" + propertyName
+                            + "\" is not an instance of Variable,"
+                            + " so its value cannot be set.");
+                            ((Variable)property).setExpression(value);
+                        }
+                    }
+                    _containers.push(_current);
+                    _current = property;
+                }
+
             } else if (elementName.equals("relation")) {
                 String className = (String)_attributes.get("class");
                 String relationName = (String)_attributes.get("name");
@@ -784,6 +820,11 @@ public class MoMLParser extends HandlerBase {
 
             }
         } catch (InvocationTargetException ex) {
+            // NOTE: While debugging, we print a stack trace here.
+            // This is because XmlException loses it.
+            // System.err.println("******** original error:");
+            // ex.printStackTrace();
+
             // A constructor or method invoked via reflection has
             // triggered an exception.
             String msg = "XML element \"" + elementName
@@ -795,15 +836,21 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         } catch (Exception ex) {
             if (ex instanceof XmlException) {
+
+                // NOTE: While debugging, we print a stack trace here.
+                // This is because XmlException loses it.
+                // System.err.println("******** original error:");
+                // ex.printStackTrace();
+
                 throw (XmlException)ex;
             } else {
                 String msg = "XML element \"" + elementName
                         + "\" triggers exception:\n  " + ex.toString();
 
-                // FIXME: While debugging, we print a stack trace here.
-                // This is because XmlException loses 
-                System.err.println("******** original error:");
-                ex.printStackTrace();
+                // NOTE: While debugging, we print a stack trace here.
+                // This is because XmlException loses it.
+                // System.err.println("******** original error:");
+                // ex.printStackTrace();
 
                 throw new XmlException(msg,
                         _currentExternalEntity(),
@@ -832,11 +879,11 @@ public class MoMLParser extends HandlerBase {
     /** The standard MoML DTD, represented as a string.  This is used
      *  to parse MoML data when a compatible PUBLIC DTD is specified.
      */
-    public static String MoML_DTD_1 = "<!ELEMENT model (property | class | configure | doc | director | entity | import | link | relation)*><!ATTLIST model name CDATA #REQUIRED class CDATA #REQUIRED><!ELEMENT class (property | configure | director | doc | entity | link)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #REQUIRED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT director (property | configure)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ELEMENT entity (property | class | configure | doc | director | entity | rendition | relation)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location x CDATA #REQUIRED y CDATA #IMPLIED z CDATA #IMPLIED><!ELEMENT port (doc | configure)*><!ATTLIST port name CDATA #REQUIRED class CDATA #IMPLIED direction (input | output | both) #IMPLIED><!ELEMENT property (doc | configure)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (vertex*)><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT vertex (location?)><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
+    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | director | doc | entity | import | link | property | relation | rendition)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | director | doc | entity | import | link | property | relation | rendition)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT director (configure | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ELEMENT entity (class | configure | director | doc | entity | import | link | port | property | relation | rendition)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (property | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT vertex (location | property)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
 
     // NOTE: The master file for the above DTD is at
-    // $PTII/ptolemy/moml/moml.dtd.  If modified, it needs to be also
-    // updated at ptweb/xml/dtd/moml.dtd.
+    // $PTII/ptolemy/moml/MoML_1.dtd.  If modified, it needs to be also
+    // updated at ptweb/xml/dtd/MoML_1.dtd.
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -890,10 +937,7 @@ public class MoMLParser extends HandlerBase {
     private NamedObj _createEntity(String className, String entityName)
                  throws Exception {
         CompositeEntity container = (CompositeEntity)_current;
-        ComponentEntity previous = null;
-        if (container != null) {
-            previous = container.getEntity(entityName);
-        }
+        ComponentEntity previous = _searchForEntity(entityName);
         Class newClass = null;
         ComponentEntity reference = null;
         if (className != null) {
@@ -909,6 +953,16 @@ public class MoMLParser extends HandlerBase {
                         + "\" exists and is not an instance of "
                         + className);
             }
+            // Check that the container is the same as that of the
+            // pre-existing instance.
+            if (previous.getContainer() != _current) {
+                throw new XmlException("Sorry: Ptolemy II does not support " +
+                "multiple containment.  Attempt to place " +
+                previous.getFullName() + " into " + _current.getFullName(),
+                _currentExternalEntity(),
+                _parser.getLineNumber(),
+                _parser.getColumnNumber());
+            }
             return previous;
         }
 
@@ -919,6 +973,10 @@ public class MoMLParser extends HandlerBase {
         if (reference == null) {
             // Not a named entity. Invoke the class loader.
             if (_current != null) {
+                _checkClass(_current, CompositeEntity.class,
+                       "Cannot create an entity inside an element that "
+                       + "is not a CompositeEntity. It is: "
+                       + _current);
                 Object[] arguments = new Object[2];
                 // If the container is cloned from something, break
                 // the link, since now the object has changed.
@@ -994,7 +1052,8 @@ public class MoMLParser extends HandlerBase {
             }
         }
         // If we get here, then there is no matching constructor.
-        throw new XmlException("Failed to construct " + newClass.getName(),
+        throw new XmlException("Cannot find a suitable constructor for "
+                + newClass.getName(),
                 _currentExternalEntity(),
                 _parser.getLineNumber(),
                 _parser.getColumnNumber());
@@ -1030,23 +1089,47 @@ public class MoMLParser extends HandlerBase {
             } else {
                 topLevelName = name.substring(1, nextPeriod);
             }
-            Iterator entries = _imports.iterator();
-            while (entries.hasNext()) {
-                Object possibleCandidate = entries.next();
-                if (possibleCandidate instanceof ComponentEntity) {
-                    ComponentEntity candidate =
-                            (ComponentEntity)possibleCandidate;
-                    if (candidate.getName().equals(topLevelName)) {
-                        if (nextPeriod < 1) {
-                            // Found a match.
-                            return candidate;
-                        } else {
-                            if (candidate instanceof CompositeEntity) {
-                                ComponentEntity result =
-                                ((CompositeEntity)candidate).getEntity(
-                                        name.substring(nextPeriod + 1));
-                                if (result != null) {
-                                    return result;
+
+            // First search the current top level, if the name matches.
+            if (_toplevel != null && topLevelName.equals(_toplevel.getName())) {
+                if (nextPeriod < 1) {
+                    if (_toplevel instanceof ComponentEntity) {
+                        return (ComponentEntity)_toplevel;
+                    }
+                } else {
+                    if (_toplevel instanceof CompositeEntity) {
+                        if (name.length() > nextPeriod + 1) {
+                            ComponentEntity result =
+                                   ((CompositeEntity)_toplevel).getEntity(
+                                   name.substring(nextPeriod + 1));
+                            if (result != null) {
+                                return result;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Next search the imports.
+            if (_imports != null) {
+                Iterator entries = _imports.iterator();
+                while (entries.hasNext()) {
+                    Object possibleCandidate = entries.next();
+                    if (possibleCandidate instanceof ComponentEntity) {
+                        ComponentEntity candidate =
+                                (ComponentEntity)possibleCandidate;
+                        if (candidate.getName().equals(topLevelName)) {
+                            if (nextPeriod < 1) {
+                                // Found a match.
+                                return candidate;
+                            } else {
+                                if (candidate instanceof CompositeEntity) {
+                                    ComponentEntity result =
+                                    ((CompositeEntity)candidate).getEntity(
+                                            name.substring(nextPeriod + 1));
+                                    if (result != null) {
+                                        return result;
+                                    }
                                 }
                             }
                         }

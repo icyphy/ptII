@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="sinewave" extends="ptolemy.actor.TypedCompositeActor">
     <doc>
     This composite actor generates a sine wave.
@@ -38,7 +38,8 @@
     </entity>
 
     <!-- Define the ports. -->
-    <port name="output" direction="output" class="ptolemy.actor.TypedIOPort">
+    <port name="output" class="ptolemy.actor.TypedIOPort">
+      <property name="output"/>
       <doc>Sinusoidal waveform output.</doc>
     </port>
 

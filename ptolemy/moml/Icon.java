@@ -99,6 +99,9 @@ public class Icon extends Attribute implements Locatable {
         return "(" + className + ", Location = (" + location.toString() + "))";
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** Write a MoML description of the contents of this object, which
      *  in this base class is the attributes.  This method is called
      *  by _exportMoML().  If there are attributes, then
@@ -112,11 +115,16 @@ public class Icon extends Attribute implements Locatable {
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
 	super._exportMoMLContents(output, depth);
-	output.write(_getIndentPrefix(depth));
-	if(_location != null) {
-	    output.write("<location x=\"" + 
-			 _location[0] + "\" y=\"" + 
-			 _location[1] + "\"/>\n");
+	if(_location != null && _location.length > 0) {
+            output.write(_getIndentPrefix(depth));
+            output.write("<location value=\"" + _location[0]);
+            if (_location.length > 1) {
+                output.write(", " + _location[1]);
+                if (_location.length > 2) {
+                    output.write(", " + _location[1]);
+                }
+            }
+            output.write("\"/>\n");
 	}
     }
 

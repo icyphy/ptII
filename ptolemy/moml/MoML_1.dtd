@@ -1,0 +1,64 @@
+<!-- MoML DTD Version 1, UC Berkeley -->
+<!-- $Id$ -->
+<!-- If you update this file, please also update ptweb/xml/dtd/MoML_1.dtd, -->
+<!-- and also the static field MoML_DTD_1 in MoMLParser.java. -->
+<!-- The top-level element can be either model or class. -->
+
+<!ELEMENT model (class | configure | director | doc |
+                entity | import | link |
+                property | relation | rendition)*>
+<!ATTLIST model name CDATA #REQUIRED
+                class CDATA #IMPLIED>
+
+<!ELEMENT class (class | configure | director | doc |
+                 entity | import | link |
+                 property | relation | rendition)*>
+<!ATTLIST class name CDATA #REQUIRED
+                extends CDATA #IMPLIED>
+
+<!ELEMENT configure (#PCDATA)>
+<!ATTLIST configure source CDATA #IMPLIED>
+
+<!ELEMENT director (configure | property)*>
+<!ATTLIST director name CDATA "director"
+                   class CDATA #REQUIRED>
+
+<!ELEMENT doc (#PCDATA)>
+
+<!ELEMENT entity (class | configure | director | doc |
+                  entity | import | link | port |
+                  property | relation | rendition)*>
+<!ATTLIST entity name CDATA #REQUIRED
+                 class CDATA #IMPLIED>
+
+<!ELEMENT import EMPTY>
+<!ATTLIST import source CDATA #REQUIRED
+                 base CDATA #IMPLIED>
+
+<!ELEMENT link EMPTY>
+<!ATTLIST link port CDATA #REQUIRED
+               relation CDATA #REQUIRED
+               vertex CDATA #IMPLIED>
+
+<!ELEMENT location EMPTY>
+<!ATTLIST location value CDATA #REQUIRED>
+
+<!ELEMENT port (configure | doc | property)*>
+<!ATTLIST port class CDATA #IMPLIED
+               name CDATA #REQUIRED>
+
+<!ELEMENT property (configure | doc | property)*>
+<!ATTLIST property class CDATA #IMPLIED
+                    name CDATA #REQUIRED
+                    value CDATA #IMPLIED>
+
+<!ELEMENT relation (property | vertex)*>
+<!ATTLIST relation name CDATA #REQUIRED
+                   class CDATA #IMPLIED>
+
+<!ELEMENT rendition (configure | location | property)*>
+<!ATTLIST rendition class CDATA #REQUIRED>
+
+<!ELEMENT vertex (location | property)*>
+<!ATTLIST vertex name CDATA #REQUIRED
+                 pathTo CDATA #IMPLIED>

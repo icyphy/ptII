@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/moml.dtd">
-<model>
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.TypedCompositeActor">
   <director class="ptolemy.domains.sdf.kernel.SDFDirector">
     <parameter name="iterations" value="100"/>
   </director>
@@ -9,25 +9,23 @@
     <property name="step" value="0.1"/>
     <port name="output"></port>
     <rendition class="ptolemy.moml.Icon">
-      <!-- FIXME: How can configure info avoid absolute URLs??? -->
-      <configure src="$CLASSPATH/ptolemy/actor/lib/icons/Ramp.icon"/>
-      <location x="100" y="100"/>
+      <location value="100, 100"/>
     </rendition>
   </entity>
   <entity name="display" class="ptolemy.actor.gui.SequencePlotter">
     <port name="input"></port>
     <rendition class="ptolemy.moml.Icon">
-      <location x="200" y="100"/>
+      <location value="200, 100"/>
     </rendition>
   </entity>
 
   <!-- FIXME: Link parameters with on-screen controls here. -->
 
   <relation name="r1" class="ptolemy.actor.TypedIORelation">
-    <vertex name="v1"><location x="120" y="100"/></vertex>
-    <vertex name="v2" pathTo="v1"><location x="120" y="120"/></vertex>
-    <vertex name="v3" pathTo="v2"><location x="180" y="120"/></vertex>
-    <vertex name="v4" pathTo="v3"><location x="180" y="100"/></vertex>
+    <vertex name="v1"><location value="120, 100"/></vertex>
+    <vertex name="v2" pathTo="v1"><location value="120,120"/></vertex>
+    <vertex name="v3" pathTo="v2"><location value="180,120"/></vertex>
+    <vertex name="v4" pathTo="v3"><location value="180,100"/></vertex>
   </relation>
   <link port="ramp.output" relation="r1" vertex="v1"/>
   <link port="display.input" relation="r1" vertex="v4"/>
