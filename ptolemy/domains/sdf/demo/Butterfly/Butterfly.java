@@ -69,11 +69,11 @@ public class Butterfly {
 	throws Exception {
 	
 	Scale scale1 = new Scale(toplevel,"scale1");
-	scale1.gain.setToken(new DoubleToken(4.0));
+	scale1.factor.setToken(new DoubleToken(4.0));
 	Scale scale2 = new Scale(toplevel,"scale2");
-	scale2.gain.setToken(new DoubleToken(1.0/12.0));
+	scale2.factor.setToken(new DoubleToken(1.0/12.0));
 	Scale scale3 = new Scale(toplevel,"scale3");
-	scale3.gain.setToken(new DoubleToken(-2.0));
+	scale3.factor.setToken(new DoubleToken(-2.0));
 	    
 	AddSubtract add1 = new AddSubtract(toplevel,"add1");
 	MultiplyDivide mpy1 = new MultiplyDivide(toplevel,"mpy1");
