@@ -32,7 +32,7 @@ package ptolemy.copernicus.kernel;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -456,7 +456,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 		try {
 		    // Might be under Web Start, try it this way.
 		    URL anotherURL =
-			MoMLApplication.jarURLEntryResource(modelPathOrURL);
+			JNLPUtilities.jarURLEntryResource(modelPathOrURL);
 		    if (anotherURL != null) {
 			toplevel = parser.parse(null, anotherURL);
 			modelPathOrURL = anotherURL.toExternalForm();
