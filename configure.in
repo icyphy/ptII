@@ -414,6 +414,17 @@ case "`uname -s`" in
 esac
 AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 
+
+#--------------------------------------------------------------------
+#	Get ready to accumulate information for Eclipse
+#--------------------------------------------------------------------
+
+# These directories are always excluded from Eclipse
+ECLIPSE_EXCLUDING_SRC=""
+
+# Jar files to include in the Eclipse library
+ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
+
 #####################################################################
 #####################################################################
 #       Below here we look for various packages.
@@ -444,7 +455,7 @@ if test ! -d "$PTII/ptolemy/copernicus/c"; then
 	so we need not find the CaffeineMark Kit.])
 else
     AC_MSG_CHECKING([for CaffeineMarkEmbeddedApp.class])
-    AC_ARG_WITH(jhdl_jar, [  --with-cmkit=DIR       use CaffeineMark from DIR,
+    AC_ARG_WITH(cmkit, [  --with-cmkit=DIR       use CaffeineMark from DIR,
                           defaults to \$PTII/vendors/cm],
 	CMKIT_DIR=$withval,
 	CMKIT_DIR=$PTII/vendors/cm)
@@ -515,6 +526,14 @@ else
     fi
 fi
 
+if test -z "$PTCAL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/cal"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$CAL_DIR/ptCal.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$CAL_DIR/saxon7.jar\"/> "
+fi 
+
 #--------------------------------------------------------------------
 #       commapi is the Java serial interface, see
 #	http://java.sun.com/products/javacomm/
@@ -530,7 +549,7 @@ COMMAPI_PRESENT=no
 #
 PTLEGO_DIR=
 # PTCOMM_DIR is set to comm and used in 
-# $PTII/ptolemy/actor/lib/makefile if the Java Communications API was found
+# $PTII/ptolemy/actor/lib/io/makefile if the Java Communications API was found
 #
 PTCOMM_DIR=
 if test ! -d "$COMMAPI_USER_DIR"; then
@@ -579,6 +598,13 @@ else
     and placed  in \$PTII/vendors/sun/commapi])
     fi
 fi
+
+if test -z "$PTCOMM_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/io/comm/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$COMMAPI_DIR/comm.jar\"/>"
+fi 
 
 #--------------------------------------------------------------------
 #       Garbage Collector (GC)
@@ -756,6 +782,13 @@ else
     fi
 fi
 
+if test -z "$PTJHDL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/copernicus/jhdl/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JHDL_JAR\"/>"
+fi 
+
 #--------------------------------------------------------------------
 #       JMF is the Java Media Framework
 #	For more information, 
@@ -808,13 +841,13 @@ PTJOYSTICK_DIR=
 # Joystick Jar file
 JOYSTICK_JAR='${PTII}/vendors/misc/joystick/Joystick.jar'
 
-# We only need to look for jhdl if $PTII/ptolemy/actor/lib/joystick exists
+# We only need to look for joystick if $PTII/ptolemy/actor/lib/joystick exists
 if test ! -d "$PTII/ptolemy/actor/lib/joystick"; then
     AC_MSG_RESULT([$PTII/ptolemy/actor/lib/joystick is not present,
 	so we need not find the Joystick interface.])
 else
     AC_MSG_CHECKING([for joystick jar file])
-    AC_ARG_WITH(jhdl_jar, [  --with-jhdl-jar=JARFILE       use JOYSTICK from JARFILE,
+    AC_ARG_WITH(joystick_jar, [  --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar],
 	JOYSTICK_JAR=$withval,
 	JOYSTICK_JAR=$PTII/vendors/misc/joystick/Joystick.jar)
@@ -837,6 +870,13 @@ else
 	JOYSTICK_JAR='${PTII}/vendors/misc/joystick/Joystick.jar'
     fi
 fi
+
+if test -z "$PTJOYSTICK_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/joystick/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JOYSTICK_JAR\"/>"
+fi 
 
 #--------------------------------------------------------------------
 #       Jython is an implementation of Python in Java
@@ -874,7 +914,7 @@ else
 
     if test "$PTJYTHON_DIR" = ""; then
         if test -f "$PTII/vendors/jython/jython.jar"; then
-	    JYTHON_DIR="$PTII/vendors/jython/jython.jar"
+	    JYTHON_DIR="$PTII/vendors/jython"
 	    AC_MSG_RESULT([$JYTHON_DIR])
 	    # FIXME: This is ugly, but we set to python instead of jythong
  	    # $PTII/ptolemy/actor/lib/makefile if jython was found
@@ -891,6 +931,13 @@ else
         fi
     fi
 fi
+
+if test -z "$PTJYTHON_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jython/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JYTHON_DIR/jython.jar\"/>"
+fi 
 
 #--------------------------------------------------------------------
 #	"JXTA technology is a set of open protocols that allow any
@@ -940,6 +987,19 @@ else
     fi
 fi
 
+if test -z "$PTJYTHON_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|vendors/sun/jxta/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxta.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/cryptix-asn1.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/cryptix32.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/beepcore.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/minimalBC.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxtasecurity.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/log4j.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxtaptls.jar\"/>"
+fi 
 
 #--------------------------------------------------------------------
 #       Lejos is a Java Virtual machine that runs on the Lego Mindstorm
@@ -1124,6 +1184,13 @@ else
     fi
 fi
 
+if test -z "$PTJACL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/gui/ptjacl/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$PTJACL_JAR\"/>"
+fi 
+
 #--------------------------------------------------------------------
 #	Test for javax.media.j3d (Java 3D)
 #--------------------------------------------------------------------
@@ -1156,6 +1223,9 @@ else
     cd "$startdir"
 fi
 
+if test -z "$PTJAVA3D_DIR"; then
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/"
+fi 
 
 #--------------------------------------------------------------------
 #       Jini is connection technology from Sun, see http://www.sun.com/jini/
@@ -1473,7 +1543,7 @@ else
 		    AC_MSG_RESULT('$MATLAB_DIR')
 		else	
 		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MatlabRootDirectory "$MATLAB"' failed.
-    We will not be able to compile the Matlab interface in ptolemy/matlab]);
+    We will not be able to compile the Matlab interface in ptolemy/matlab/]);
 		fi
 	    else
 		AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC MatlabRootDirectory.java' failed.
@@ -1537,6 +1607,10 @@ else
 	fi
     fi	
 fi
+
+if test -z "$PTMATLAB_DIR"; then
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/matlab/"
+fi 
 
 
 #--------------------------------------------------------------------
@@ -1632,6 +1706,15 @@ else
     cd "$startdir"
 fi
 
+if test -z "$PTCOPERNICUS_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/copernicus/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/sootclasses.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/jasminclasses.jar\"/>"
+EoF
+    # What about JAVA_SYSTEM_JAR?
+fi 
 
 #--------------------------------------------------------------------
 #       TINI is the JDK for Dallas Tini board, see
@@ -1833,6 +1916,14 @@ AC_SUBST(GC_INCLUDE_DIR)
 # or in $PTII/lib.
 # GC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
 AC_SUBST(GC_LD_DIRECTIVE)
+
+# Eclipse .classpath excluding src values
+# of the form "vendors/|ptolemy/matlab/"
+AC_SUBST(ECLIPSE_EXCLUDING_SRC)
+
+# Eclipse .classpath lib elements of the format
+#    <classpathentry kind="lib" path="lib/diva.jar"/>
+AC_SUBST(ECLIPSE_CLASSPATHENTRY_LIBS)
 
 # Location of rt.jar, usually $(PTJAVA_DIR)/jre/lib/rt.jar
 # However, we have to be careful of backslashes and /cygwin
@@ -2039,5 +2130,5 @@ AC_SUBST(WABA_DIR)
 
 
 # Files we substitute in
-AC_OUTPUT(mk/ptII.mk bin/ptinvoke, chmod a+x bin/ptinvoke)
+AC_OUTPUT(mk/ptII.mk bin/ptinvoke .classpath, chmod a+x bin/ptinvoke)
 

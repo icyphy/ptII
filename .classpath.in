@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="src" path=""/>
-    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-    @ECLIPSE_CLASSPATHENTRY_LIBS@
     <classpathentry
-         excluding="@ECLIPSE_EXCLUDING_SRC@"
+         excluding="**/CVS/|**/codeDoc/|config/|doc/coding/templates/|ptolemy/apps/|ptolemy/copernicus/c/test/|ptolemy/domains/ct/demo/Saber/|ptolemy/domains/gr/lib/experimental/|ptolemy/domains/pdf/|ptolemy/plot/servlet/|vendors/|@ECLIPSE_EXCLUDING_SRC@"
          kind="src" path=""/>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	@ECLIPSE_CLASSPATHENTRY_LIBS@
     <classpathentry kind="output" path=""/>
 </classpath>
