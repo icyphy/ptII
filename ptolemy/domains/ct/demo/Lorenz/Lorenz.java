@@ -203,8 +203,6 @@ public class Lorenz extends TypedCompositeActor {
             throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
         if (director != null) {
-            System.out.println("update director parameters.");
-
             director.stopTime.setToken(stopTime.getToken());
         } else {
             super.attributeChanged(attribute);
