@@ -67,4 +67,19 @@ test SDFCodeGenerator-2.1 {Constructor tests} {
     set sdfCodeGenerator \
 	    [java::new ptolemy.domains.sdf.codegen.SDFCodeGenerator $args]
     $sdfCodeGenerator generateCode
+
 } {}
+
+######################################################################
+####
+#
+test SDFCodeGenerator-2.2 {Compile and run the ramp test} {
+    # Note uses setup from SDFCodeGenerator-1.1
+    set results {}
+    set currentDirectory [pwd]
+    cd $PTII/cg/RampSystem
+    exec javac -classpath ../.. CG_Main.java
+    set result [exec java -classpath ../.. cg.RampSystem.CG_Main]
+    cd $currentDirectory
+    lrange $result 0 49
+} {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49}
