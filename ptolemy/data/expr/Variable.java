@@ -510,7 +510,6 @@ public class Variable extends Attribute
         if (_currentExpression != null) {
             _needsEvaluation = true;
         }
-
         if (_variablesDependentOn != null) {
             Iterator entries = _variablesDependentOn.entrySet().iterator();
             while (entries.hasNext()) {
@@ -758,6 +757,25 @@ public class Variable extends Attribute
         }
 
         setUnknown(false);
+    }
+    
+    /** Set the expression for this variable by calling
+     *  setExpression(), and then evaluate it by calling
+     *  validate().  This will cause any other variables
+     *  that are dependent on it to be evaluated, and will
+     *  also cause the container to be notified of the change,
+     *  unlike setExpression().
+     *  @param expression The expression.
+     *  @see #setExpression(String)
+     *  @see #validate()
+     *  @exception IllegalActionException If this variable or a
+     *   variable dependent on this variable cannot be evaluated (and is
+     *   not lazy) and the model error handler throws an exception.
+     *   Also thrown if the change is not acceptable to the container.
+     */
+    public void setToken(String expression) throws IllegalActionException {
+        setExpression(expression);
+        validate();
     }
 
     /** Constrain the type of this variable to be equal to or
@@ -1061,9 +1079,9 @@ public class Variable extends Attribute
                     message.append("\n-------------- and --------------\n");
                 }
             }
-            // FIXME: we need exception chaining here!  Otherwise, exceptions
-            // thrown in attributeChanged will get reported to the user as
-            // originating here.
+            // NOTE: We could use exception chaining here to report
+            // the cause, but this leads to very verbose error
+            // error messages that are not very friendly.
             throw new IllegalActionException(message.toString());
         }
         // NOTE: The call to _propagate() above has already done

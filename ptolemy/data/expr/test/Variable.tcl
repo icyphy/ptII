@@ -450,6 +450,15 @@ test Variable-11.0 {Check reach of scope} {
     [$p2 getToken] toString
 } {"a"}
 
+test Variable-11.1 {Check setToken(String)} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set p1 [java::new ptolemy.data.expr.Variable $e1 P1]
+    $p1 setExpression {P2}
+    set p2 [java::new ptolemy.data.expr.Variable $e1 P2]
+    $p2 setToken {1.0}
+    [$p1 getToken] toString
+} {1.0}
+
 ######################################################################
 ####
 #
