@@ -54,8 +54,12 @@ if [ file isdirectory auto/knownFailedTests ] {
 foreach file [glob auto/*.xml] {
     puts "------------------ testing $file"
     test "Auto" "Automatic test in file $file" {
-        createAndExecute $file
+        set application [createAndExecute $file]
         list {}
+    } {{}}
+    test "Auto-rerun" "Automatic test rerun in file $file" {
+	$application rerun
+	list {}
     } {{}}
 }
 
