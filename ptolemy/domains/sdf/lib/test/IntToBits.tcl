@@ -68,7 +68,7 @@ test IntToBits-1.1 {test 1} {
 #### Test IntToBits in an SDF model
 #
 
-test IntToBits-1.2 {test 2: testing both PolarToRec and RecToPolar} {
+test IntToBits-1.2 {test 2} {
     set e0 [sdfModel 1]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
