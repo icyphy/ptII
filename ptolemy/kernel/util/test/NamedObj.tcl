@@ -309,6 +309,17 @@ test NamedObj-8.9 {Test RecorderListener: call event() directly} {
     $listener getMessages
 } {ptolemy.kernel.util.NamedObj {.event source}
 }
+test NamedObj-8.9.1 {Test NamedObj.event()} {
+    set a [java::new ptolemy.kernel.util.NamedObj]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $a addDebugListener $listener
+    set source [java::new ptolemy.kernel.util.NamedObj "event source"]
+    set debugEvent [java::new ptolemy.kernel.util.test.TestDebugEvent $source]
+    $a event $debugEvent
+    #$listener event $debugEvent
+    $listener getMessages
+} {ptolemy.kernel.util.NamedObj {.event source}
+}
 
 test NamedObj-9.1 {Test StreamListener} {
     set a [java::new ptolemy.kernel.util.NamedObj]
