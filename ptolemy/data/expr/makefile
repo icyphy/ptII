@@ -113,7 +113,7 @@ MISC_FILES =	$(DIRS)
 
 # OPTIONAL_JSRCS files are created by javacc.
 # javadoc generates html for files in $(OPTIONAL_JSRCS)
-#	ASCII_CharStream.java \
+#	ASCII_CharStream.java 
 OPTIONAL_JSRCS = \
 	JJTPtParserState.java \
 	ParseException.java \
