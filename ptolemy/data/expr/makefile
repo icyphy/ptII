@@ -65,9 +65,11 @@ JSRCS = \
         ASTPtMatrixConstructNode.java \
         ASTPtMethodCallNode.java \
 	ASTPtProductNode.java \
+	ASTPtPowerNode.java \
 	ASTPtRecordConstructNode.java \
 	ASTPtRelationalNode.java \
 	ASTPtRootNode.java \
+	ASTPtShiftNode.java \
 	ASTPtSumNode.java \
 	ASTPtUnaryNode.java \
 	CachedMethod.java \
@@ -89,6 +91,7 @@ JSRCS = \
         ParserScope.java \
         ScopeExtender.java \
         ScopeExtendingAttribute.java \
+	SimpleCharStream.java \
 	TokenMgrError.java \
 	UnknownResultException.java \
 	UtilityFunctions.java \
