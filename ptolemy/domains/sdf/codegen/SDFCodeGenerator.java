@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
@@ -205,7 +206,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
 	System.out.println("SDFCodeGenerator: Starting to accumulate "
 			   + "class info --- "
-			   + _timeAndMemory(startTime));
+			   + Manager.timeAndMemory(startTime));
 
         ActorCodeGenerator actorCodeGen =
             new ActorCodeGenerator(_codeGeneratorClassFactory,
@@ -214,13 +215,13 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         System.out.println("\nSDFCodeGenerator: "
 			   + "Done accumulating class info ---"
-			   + _timeAndMemory(startTime));
+			   + Manager.timeAndMemory(startTime));
 
         System.out.println("SDFCodeGenerator: calling System.gc()");
 	System.gc();
 
         System.out.println("SDFCodeGenerator: pass1 ---"
-			   + _timeAndMemory(startTime));
+			   + Manager.timeAndMemory(startTime));
 
 
         LinkedList renamedSourceList = new LinkedList();
@@ -242,7 +243,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 	}
 
         System.out.println("\nSDFCodeGenerator: pass2 ---"
-			   + _timeAndMemory(startTime));
+			   + Manager.timeAndMemory(startTime));
 
         actorItr = _actorSet.iterator();
         Iterator renamedSourceItr = renamedSourceList.iterator();
@@ -265,7 +266,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 	}
 
         System.out.println("\nSDFCodeGenerator: pass3 ---"
-			   + _timeAndMemory(startTime));
+			   + Manager.timeAndMemory(startTime));
 
         renamedSourceItr = renamedSourceList.iterator();
 
@@ -278,7 +279,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         System.out.println("AST loading status: "
                 + ASTReflect.getLoadingStatus());
         System.out.println("\nSDFCodeGenerator: done "
-			   + _timeAndMemory(startTime));
+			   + Manager.timeAndMemory(startTime));
     }
 
     /** Return the canonical pathname of the output package, including the last
@@ -1062,22 +1063,6 @@ public class SDFCodeGenerator extends CompositeActorApplication
             }
         }
         return true;
-    }
-
-    /** Return a string with the elapsed time since startTime, and
-     *  the amount of memory used.
-     */
-    protected String _timeAndMemory(long startTime) {
-	Runtime runtime = Runtime.getRuntime();
-	long totalMemory = runtime.totalMemory()/1024;
-	long freeMemory = runtime.freeMemory()/1024;
-	return System.currentTimeMillis() - startTime
-	    + " ms. Memory: " 
-	    + totalMemory + "K Free: " + freeMemory + "K ("
-	    + Math.round( (((double)freeMemory)/((double)totalMemory))
-			  * 100.0)
-	    + "%)";
-
     }
 
     /** Return a string summarizing the command-line arguments.
