@@ -32,6 +32,7 @@ package ptolemy.domains.fsm.kernel;
 import ptolemy.data.expr.ASTPtAssignmentNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParseTreeWriter;
 import ptolemy.data.expr.PtParser;
@@ -129,8 +130,11 @@ public abstract class AbstractActionsAttribute extends Action
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** For each destination identified in an action, find the corresponding
-     *  Ptolemy II object (a variable or a port).
+    /** Execute this action.  For each destination identified in the
+     *  action, compute the value in the action and perform the
+     *  particular assignment.  This method should be extended by
+     *  derived classes to perform the evaluation and assignment as
+     *  appropriate.
      *  @exception IllegalActionException If a destination is not found.
      */
     public void execute() throws IllegalActionException {
@@ -139,9 +143,6 @@ public abstract class AbstractActionsAttribute extends Action
         }
         if (_parseTreeEvaluator == null) {
             _parseTreeEvaluator = new ParseTreeEvaluator();
-        }
-        if (_scope == null) {
-            _scope = new ActionScope();
         }
     }
 
@@ -331,14 +332,15 @@ public abstract class AbstractActionsAttribute extends Action
     protected ParseTreeEvaluator _parseTreeEvaluator;
 
     // The scope.
-    protected ActionScope _scope;
+    protected ParserScope _scope;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /*  For each destination in the _destinationNames list,
-     *  create a corresponding
-     *  entry in the _destinations list that refers to the destination.
+    /*  Cache a reference to each destination of this action.  For
+     *  each destination in the _destinationNames list, create a
+     *  corresponding entry in the _destinations list that refers to
+     *  the destination.
      *  @exception IllegalActionException If the associated FSMActor
      *   does not have a destination with the specified name.
      */
@@ -359,59 +361,6 @@ public abstract class AbstractActionsAttribute extends Action
             _destinationsListVersion = workspace().getVersion();
         } finally {
             workspace().doneReading();
-        }
-    }
-
-    /** This class implements a scope, which is used to evaluate the 
-     *  parsed expressions.  This class is currently rather simple, 
-     *  but in the future should allow the values of input ports to 
-     *  be referenced without having shadow variables.
-     */
-    private class ActionScope extends ModelScope {
-
-        /** Look up and return the attribute with the specified name in the
-         *  scope. Return null if such an attribute does not exist.
-         *  @return The attribute with the specified name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public ptolemy.data.Token get(String name)
-                throws IllegalActionException {
-            Variable result = getScopedVariable(
-                    null,
-                    (NamedObj)AbstractActionsAttribute.this, name);
-            if (result != null) {
-                return result.getToken();
-            } else {
-                return null;
-            }
-        }
-
-        /** Look up and return the type of the attribute with the
-         *  specified name in the scope. Return null if such an
-         *  attribute does not exist.
-         *  @return The attribute with the specified name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public ptolemy.data.type.Type getType(String name)
-                throws IllegalActionException {
-            Variable result = getScopedVariable(
-                    null,
-                    (NamedObj)AbstractActionsAttribute.this, name);
-            if (result != null) {
-                return result.getType();
-            } else {
-                return null;
-            }
-        }
-
-        /** Return the list of identifiers within the scope.
-         *  @return The list of identifiers within the scope.
-         */
-        public Set identifierSet() {
-            return getAllScopedVariableNames(null,
-                    (NamedObj)AbstractActionsAttribute.this);
         }
     }
 
@@ -456,12 +405,15 @@ public abstract class AbstractActionsAttribute extends Action
                     (ASTPtRootNode)_parseTrees.get(
                             _destinationNames.indexOf(_name));
                 if (_scope == null) {
-                    _scope = new ActionScope();
+                    FSMActor fsmActor = 
+                        (FSMActor)getContainer().getContainer();
+                    _scope = fsmActor.getPortScope();
                 }
                 Type type = _typeInference.inferTypes(parseTree, _scope);
                 return type;
             } catch (Exception ex) {
-                throw new IllegalActionException(AbstractActionsAttribute.this, ex, 
+                throw new IllegalActionException(
+                        AbstractActionsAttribute.this, ex, 
                         "An error occured during expression type inference");
             }
         }
@@ -482,7 +434,9 @@ public abstract class AbstractActionsAttribute extends Action
                             _destinationNames.indexOf(_name));
 
                 if (_scope == null) {
-                    _scope = new ActionScope();
+                    FSMActor fsmActor = 
+                        (FSMActor)getContainer().getContainer();
+                    _scope = fsmActor.getPortScope();
                 }
                 Set set = _variableCollector.collectFreeVariables(
                         parseTree, _scope);
@@ -490,17 +444,18 @@ public abstract class AbstractActionsAttribute extends Action
                 for (Iterator elements = set.iterator();
                      elements.hasNext();) {
                     String name = (String)elements.next();
-
-                    Variable result = ModelScope.getScopedVariable(
-                            null, AbstractActionsAttribute.this, name);
-                    if (result != null) {
-                        InequalityTerm[] terms =
-                            result.getTypeTerm().getVariables();
-                        for (int i = 0; i < terms.length; i++) {
-                            termList.add(terms[i]);
-                        }
-                        continue;
-                    }
+                    termList.add(_scope.getTypeTerm(name));   
+                   //     Variable result = ModelScope.getScopedVariable(
+//                             null, AbstractActionsAttribute.this, name);
+//                     if (result != null) {
+                  
+                      //   InequalityTerm[] terms =
+//                             result.getTypeTerm().getVariables();
+//                         for (int i = 0; i < terms.length; i++) {
+//                             termList.add(terms[i]);
+//                         }
+//                         continue;
+                       //    }
                 }
                 return (InequalityTerm[])termList.toArray(
                         new InequalityTerm[termList.size()]);

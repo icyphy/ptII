@@ -139,40 +139,15 @@ test Transition-3.1 {test scope of guard and trigger expressions} {
     $p2 link $r0
     $p2 link $r1
     $dir preinitialize
-    set guard [java::cast ptolemy.data.expr.Variable \
-            [$t0 getAttribute _guard]]
-    set trigger [java::cast ptolemy.data.expr.Variable \
-            [$t0 getAttribute _trigger]]
-    set scope1 [[$guard getScope] elementList]
-    set scope2 [[$trigger getScope] elementList]
-    list [listToNames $scope1] [listToNames $scope2]
-} {{exitAngle gamma reset preemptive _trigger p0_isPresent p0 p0Array p1_0_isPresent p1_0 p1_0Array p1_1_isPresent p1_1 p1_1Array} {exitAngle gamma reset preemptive _guard p0_isPresent p0 p0Array p1_0_isPresent p1_0 p1_0Array p1_1_isPresent p1_1 p1_1Array}}
+    set scope1 [[$fsm getPortScope] identifierSet]
+    list [lsort [listToStrings $scope1]]
+} {{p0 p0Array p0_0 p0_0Array p0_0_isPresent p0_isPresent p1 p1Array p1_0 p1_0Array p1_0_isPresent p1_1 p1_1Array p1_1_isPresent p1_isPresent}}
 
 test Transition-3.2 {test setting guard and trigger expression} {
     $t0 setGuardExpression "p0 > 0"
     $t0 setTriggerExpression "p0 > 5"
     list [$t0 getGuardExpression] [$t0 getTriggerExpression]
 } {{p0 > 0} {p0 > 5}}
-
-test Transition-3.3 {test guard and trigger evaluation} {
-    set tok [java::new {ptolemy.data.IntToken int} 10]
-    set v0 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p0]]
-    $v0 setToken $tok
-    set re0 [$t0 isEnabled]
-    set re1 [$t0 isTriggered]
-    set tok [java::new {ptolemy.data.IntToken int} -1]
-    $v0 setToken $tok
-    set re2 [$t0 isEnabled]
-    set re3 [$t0 isTriggered]
-    list $re0 $re1 $re2 $re3
-} {1 1 0 0}
-
-test Transition-3.4 {guard must be true whenever trigger is true} {
-    $t0 setTriggerExpression "p0 > -5"
-    catch {$t0 isTriggered} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: The trigger: p0 > -5 is true but the guard: p0 > 0 is false.
-  in .<Unnamed Object>.fsm.t0}}
 
 ######################################################################
 ####

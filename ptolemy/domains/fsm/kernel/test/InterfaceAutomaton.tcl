@@ -141,35 +141,6 @@ test InterfaceAutomaton-4.1 {test setting initial state} {
 ######################################################################
 ####
 #
-test InterfaceAutomaton-5.1 {test creating input variables} {
-    set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    set dir [java::new ptolemy.actor.Director $e0 dir]
-    set ia [java::new ptolemy.domains.fsm.kernel.InterfaceAutomaton $e0 ia]
-    set s0 [java::new ptolemy.domains.fsm.kernel.State $ia s0]
-    [java::field [java::cast ptolemy.domains.fsm.kernel.FSMActor $ia] \
-        initialStateName] setExpression s0
-    set p0 [java::new ptolemy.actor.TypedIOPort $ia p0]
-    $p0 setInput true
-    set p1 [java::new ptolemy.actor.TypedIOPort $ia p1]
-    $p1 setInput true
-    $p1 setMultiport true
-    set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 e2]
-    set p2 [java::new ptolemy.actor.TypedIOPort $e2 p2]
-    $p2 setMultiport true
-    set r0 [java::new ptolemy.actor.TypedIORelation $e0 r0]
-    set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
-    $r1 setWidth 2
-    $p0 link $r0
-    $p1 link $r1
-    $p2 link $r0
-    $p2 link $r1
-    $dir preinitialize
-    listToNames [$ia attributeList]
-} {_iconDescription initialStateName finalStateNames _nonStrictMarker p0_isPresent p0 p0Array p1_0_isPresent p1_0 p1_0Array p1_1_isPresent p1_1 p1_1Array}
-
-######################################################################
-####
-#
 test InterfaceAutomaton-6.1 {test newRelation} {
     set ia [java::new ptolemy.domains.fsm.kernel.InterfaceAutomaton]
     set r0 [$ia newRelation r0]

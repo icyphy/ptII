@@ -45,6 +45,8 @@ import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.Typeable;
@@ -68,14 +70,7 @@ import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-import java.util.Hashtable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMActor
@@ -228,8 +223,9 @@ public class FSMActor extends CompositeEntity
         newObject._connectionMapsVersion = -1;
         newObject._connectionMaps = null;
         newObject._initialStateVersion = -1;
-        newObject._inputVariableMap = new HashMap();
+        newObject._inputTokenMap = new HashMap();
         newObject._inputVariableVersion = -1;
+        newObject._identifierToPort = new HashMap();
         return newObject;
     }
 
@@ -239,17 +235,17 @@ public class FSMActor extends CompositeEntity
      *  created shadow variables, and then recreates them.
      *  @param port The port to which connections have changed.
      */
-    public void connectionsChanged(Port port) {
-        IOPort castPort = (IOPort)port;
-        if (castPort.isInput()) {
-            _removeInputVariables(castPort);
-            try {
-                _createInputVariables(castPort);
-            } catch (IllegalActionException ex) {
-                throw new InternalErrorException(ex);
-            }
-        }
-    }
+//     public void connectionsChanged(Port port) {
+//         IOPort castPort = (IOPort)port;
+//         if (castPort.isInput()) {
+//             _removeInputVariables(castPort);
+//             try {
+//                 _createInputVariables(castPort);
+//             } catch (IllegalActionException ex) {
+//                 throw new InternalErrorException(ex);
+//             }
+//         }
+//     }
 
     /** Return the current state of this actor.
      *  @return The current state of this actor.
@@ -268,8 +264,8 @@ public class FSMActor extends CompositeEntity
      */
     public void fire() throws IllegalActionException {
         _setInputVariables();
-        List trList = _currentState.outgoingPort.linkedRelationList();
-        _chooseTransition(trList);
+        List transitionList = _currentState.outgoingPort.linkedRelationList();
+        _chooseTransition(transitionList);
     }
 
     /** 
@@ -417,6 +413,14 @@ public class FSMActor extends CompositeEntity
             }
         }      
         return list;
+    }
+
+    /** Return a scope object that has current values from input ports
+     *  of this FSMActor in scope.  This scope is used to evaluate
+     *  guard expressions and set and output actions.
+     */
+    public ParserScope getPortScope() {
+        return new PortScope();
     }
 
     /** Initialize this actor.  Goto initial state.
@@ -653,8 +657,25 @@ public class FSMActor extends CompositeEntity
         //              _createInputVariables(inPort);
         //         }
 
+        // Populate a map from identifier to the input port represented.
+        _identifierToPort.clear();
+        for(Iterator inputPorts = inputPortList().iterator();
+            inputPorts.hasNext();) {
+            IOPort inPort = (IOPort)inputPorts.next();
+            _setIdentifierToPort(inPort.getName(), inPort);
+            _setIdentifierToPort(inPort.getName() + "_isPresent", inPort);
+            _setIdentifierToPort(inPort.getName() + "Array", inPort);
+            for(int i = 0; i < inPort.getWidth(); i++) {
+                _setIdentifierToPort(inPort.getName() + "_" + i, inPort);
+                _setIdentifierToPort(inPort.getName() + "_" + i + "_isPresent", inPort);
+                _setIdentifierToPort(inPort.getName() + "_" + i + "Array", inPort);
+            }       
+        }
+
+        _inputTokenMap.clear();
         // Note: reset() (gotoInitialState()) is called from
         // initialize() now (zk 2002/09/11)`
+
     }
 
     /** Reset current state to the initial state. Throw an
@@ -733,23 +754,23 @@ public class FSMActor extends CompositeEntity
             _workspace.getReadAccess();
 
             List result = new LinkedList();
-            Iterator inPorts = inputPortList().iterator();
-            while (inPorts.hasNext()) {
-                TypedIOPort inPort = (TypedIOPort)inPorts.next();
-                // Note that we must constrain the types of shadow
-                // variables properly so that output types can be
-                // inferred.
-                Variable[][] shadowVariables =
-                    (Variable[][])_inputVariableMap.get(inPort);
-                if(shadowVariables != null) {
-                    for(int i = 0; i < shadowVariables.length; i++) {
-                        Inequality ineq = new Inequality(
-                                inPort.getTypeTerm(),
-                                shadowVariables[i][1].getTypeTerm());
-                        result.add(ineq);
-                    }
-                }
-            }
+         //    Iterator inPorts = inputPortList().iterator();
+//             while (inPorts.hasNext()) {
+//                 TypedIOPort inPort = (TypedIOPort)inPorts.next();
+//                 // Note that we must constrain the types of shadow
+//                 // variables properly so that output types can be
+//                 // inferred.
+//                 Variable[][] shadowVariables =
+//                     (Variable[][])_inputVariableMap.get(inPort);
+//                 if(shadowVariables != null) {
+//                     for(int i = 0; i < shadowVariables.length; i++) {
+//                         Inequality ineq = new Inequality(
+//                                 inPort.getTypeTerm(),
+//                                 shadowVariables[i][1].getTypeTerm());
+//                         result.add(ineq);
+//                     }
+//                 }
+//             }
 
             // Collect constraints from contained Typeables.
             Iterator ports = portList().iterator();
@@ -758,6 +779,8 @@ public class FSMActor extends CompositeEntity
                 result.addAll(port.typeConstraintList());
             }
 
+            // Collect constraints from contained HasTypeConstraints
+            // attributes.
             Iterator attributes = 
                 attributeList(HasTypeConstraints.class).iterator();
             while (attributes.hasNext()) {
@@ -885,7 +908,9 @@ public class FSMActor extends CompositeEntity
         Transition result = _checkTransition(transitionList);
 
         if (result != null) {
-            if (_debugging) _debug("Enabled transition: "+ result.getFullName());
+            if (_debugging) {
+                _debug("Enabled transition: ", result.getFullName());
+            }
             Iterator actions = result.choiceActionList().iterator();
             while (actions.hasNext()) {
                 Action action = (Action)actions.next();
@@ -983,7 +1008,7 @@ public class FSMActor extends CompositeEntity
      *  @param port The port for which to create a shadow variable.
      *  @exception IllegalActionException If the port is not contained
      *   by this FSMActor.
-     */
+     
     protected void _createInputVariables(IOPort port)
             throws IllegalActionException {
         if (port.getContainer() != this) {
@@ -1108,7 +1133,7 @@ public class FSMActor extends CompositeEntity
      *  those are lazy.
      *  @see #_createInputVariables(IOPort port)
      *  @param port The port to remove shadow variables for.
-     */
+     
     protected void _removeInputVariables(IOPort port) {
         Variable[][] shadowVariables =
             (Variable[][])_inputVariableMap.get(port);
@@ -1165,9 +1190,9 @@ public class FSMActor extends CompositeEntity
         // If the workspace version is different from when the last input
         // variables were created, possibly due to changing the name of a
         // port, update the input variables to reflect the name change.
-        if (_workspace.getVersion() != _inputVariableVersion) {
-            _updateInputVariables();
-        }
+//         if (_workspace.getVersion() != _inputVariableVersion) {
+//             _updateInputVariables();
+//         }
         CompositeActor container = (CompositeActor)getContainer();
         Director director = container.getDirector();
         //if (director instanceof HDFFSMDirector) {
@@ -1196,7 +1221,8 @@ public class FSMActor extends CompositeEntity
      */
     protected void _setInputVariables(IOPort port, int channel)
             throws IllegalActionException {
-        
+        String portName = port.getName();
+        String portChannelName = portName + "_" + channel;
         if (port.getContainer() != this) {
             throw new IllegalActionException(this, port,
                     "Cannot set input variables for port "
@@ -1206,17 +1232,18 @@ public class FSMActor extends CompositeEntity
             return;
         }
         int width = port.getWidth();
-        Variable[][] shadowVariables
-            = (Variable[][])_inputVariableMap.get(port);
-        if (shadowVariables == null) {
-            throw new InternalErrorException(getName() + ": "
-                    + "Cannot find input variables for port "
-                    + port.getName() + ".\n");
-        }
+      //   Variable[][] shadowVariables
+//             = (Variable[][])_inputVariableMap.get(port);
+//         if (shadowVariables == null) {
+//             throw new InternalErrorException(getName() + ": "
+//                     + "Cannot find input variables for port "
+//                     + port.getName() + ".\n");
+//         }
+        
         if (port.isKnown(channel)) {
             int portRate = SDFUtilities.getTokenConsumptionRate(port);
-            if (_debug_info) {
-                System.out.println(port.getFullName() + " port rate = " + portRate);
+            if (_debugging) {
+                _debug(port.getFullName() + " port rate = " + portRate);
             }
             if (_newIteration && channel == 0) {
                 //Token[][] a_of_p = new Token[width][portRate * _firingsPerIteration];
@@ -1248,15 +1275,15 @@ public class FSMActor extends CompositeEntity
                     // Set the value of tokens here.
                   //  Token[][] a_of_p = (Token[][])_hdfArrays.get(port);
                     //a_of_p[channel][index] = token;
-                    //if (_debug_info) {
-                        //System.out.println("hdfArray index = " + index + 
+                    //if (_debugging) {
+                        //_debug("hdfArray index = " + index + 
                           //  " value = " + a_of_p[channel][index].toString());
                     //}
                     //index ++;
                 //}
             }
-            if (_debug_info) {
-                System.out.println("total tokens available at port: "
+            if (_debugging) {
+                _debug("total tokens available at port: "
                     + port.getFullName() + "  ");
             }
 
@@ -1269,24 +1296,38 @@ public class FSMActor extends CompositeEntity
             //int length = l_of_p[channel].size();
             int length = l_of_p[channel].size();
             if (length > 0) {
-                Token[] a = new Token[length];
+                Token[] tokens = new Token[length];
                 //a= (Token[])(l_of_p.toArray());
-                l_of_p[channel].toArray(a);      
-                shadowVariables[channel][0].setToken(BooleanToken.TRUE);
-                shadowVariables[channel][1].setToken(a[0]);
-                //shadowVariables[cha   nnel][2].setToken(new ArrayToken(l_of_p[channel]));
-                shadowVariables[channel][2].setToken(new ArrayToken(a));
+                l_of_p[channel].toArray(tokens);    
+                
+                _setInputTokenMap(portName + 
+                        "_isPresent", port, BooleanToken.TRUE);
+                _setInputTokenMap(portChannelName + 
+                        "_isPresent", port, BooleanToken.TRUE);
+                _setInputTokenMap(portName, port, tokens[0]);
+                _setInputTokenMap(portChannelName, port, tokens[0]);
+                ArrayToken arrayToken = new ArrayToken(tokens);
+                _setInputTokenMap(portName + "Array", port, arrayToken);
+                _setInputTokenMap(portChannelName + "Array", port, arrayToken);
             } else {
-                shadowVariables[channel][0].setToken(BooleanToken.FALSE);
+                _setInputTokenMap(portName + "_isPresent", port, 
+                        BooleanToken.FALSE);
+                _setInputTokenMap(portChannelName + "_isPresent", port,
+                        BooleanToken.FALSE);
+//                 _setInputTokenMap(portName, null);
+//                 _setInputTokenMap(portChannelName, null);
+//                 _setInputTokenMap(portName + "Array", null);
+//                 _setInputTokenMap(portChannelName + "Array", null);
                 if (_debugging) {
                     _debug("---", port.getName(), "("+channel+
                         ") has no token.");
                 }
             }
         } else {
-            shadowVariables[channel][0].setUnknown(true);
-            shadowVariables[channel][1].setUnknown(true);
-            shadowVariables[channel][2].setUnknown(true);
+            // FIXME!
+//             shadowVariables[channel][0].setUnknown(true);
+//             shadowVariables[channel][1].setUnknown(true);
+//             shadowVariables[channel][2].setUnknown(true);
         }
     }
 
@@ -1316,7 +1357,8 @@ public class FSMActor extends CompositeEntity
     protected State _currentState = null;
 
     // A map from ports to corresponding input variables.
-    protected Map _inputVariableMap = new HashMap();
+    // protected Map _inputVariableMap = new HashMap();
+    protected Map _inputTokenMap = new HashMap();
 
     // The last chosen transition.
     protected Transition _lastChosenTransition = null;
@@ -1457,6 +1499,8 @@ public class FSMActor extends CompositeEntity
             throw new InternalErrorException("Constructor error "
                     + ex.getMessage());
         }
+        
+        _identifierToPort = new HashMap();
         /*
         try {
             tokenHistorySize = 
@@ -1468,10 +1512,34 @@ public class FSMActor extends CompositeEntity
         */
     }
     
+    // Ensure that the given identifier can only be associated with
+    // the given port, and then set it's value in the _inputTokenMap
+    // to the given token.
+    private void _setInputTokenMap(String name, Port inputPort, Token token) 
+            throws IllegalActionException {
+        _setIdentifierToPort(name, inputPort);
+        _inputTokenMap.put(name, token);
+    }
+
+    // Associate the given identifier as referring to some aspect of
+    // the given input port.  If the given identifier is already
+    // associated with another port, then throw an exception.
+    private void _setIdentifierToPort(String name, Port inputPort) 
+            throws IllegalActionException {
+        Port previousPort = (Port)_identifierToPort.get(name);
+        if(previousPort != null && previousPort != inputPort) {
+            throw new IllegalActionException("Name conflict in finite state"
+                    + " machine.  The identifier \"" + name 
+                    + "\" is associated with the port " + previousPort 
+                    + " and with the port " + inputPort);
+        }
+        _identifierToPort.put(name, inputPort);
+    }
+
     // Check whether the names of the input variables match the names of the
     // input ports. If a mismatch is found, create new input variables for
     // the port.
-    private void _updateInputVariables() throws IllegalActionException {
+    /* private void _updateInputVariables() throws IllegalActionException {
         Iterator inPorts = inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             IOPort port = (IOPort)inPorts.next();
@@ -1495,12 +1563,98 @@ public class FSMActor extends CompositeEntity
                 _createInputVariables(port);
             }
         }
+       }*/
+
+    /** This class implements a scope, which is used to evaluate the 
+     *  parsed expressions.  This class is currently rather simple, 
+     *  but in the future should allow the values of input ports to 
+     *  be referenced without having shadow variables.
+     */
+    private class PortScope extends ModelScope {
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.Token get(String name)
+                throws IllegalActionException {
+            // Check to see if it is something we refer to.
+            Token token = (Token)_inputTokenMap.get(name);
+            if(token != null) {
+                return token;
+            }
+
+            Variable result = getScopedVariable(
+                    null, FSMActor.this, name);
+            if (result != null) {
+                return result.getToken();
+            } else {
+                return null;
+            }
+        }
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.type.Type getType(String name)
+                throws IllegalActionException {
+            // Check to see if this is something we refer to.
+            Port port = (Port)_identifierToPort.get(name);
+            if(port != null && port instanceof Typeable) {
+                return ((Typeable)port).getType();
+            }
+                            
+            Variable result = getScopedVariable(
+                    null, FSMActor.this, name);
+            if (result != null) {
+                return result.getType();
+            } else {
+                return null;
+            }
+        }
+
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            // Check to see if this is something we refer to.
+            Port port = (Port)_identifierToPort.get(name);
+            if(port != null && port instanceof Typeable) {
+                return ((Typeable)port).getTypeTerm();
+            }
+                            
+            Variable result = getScopedVariable(
+                    null, FSMActor.this, name);
+            if (result != null) {
+                return result.getTypeTerm();
+            } else {
+                return null;
+            }
+        }
+        
+        /** Return the list of identifiers within the scope.
+         *  @return The list of identifiers within the scope.
+         */
+        public Set identifierSet() {
+            Set set = getAllScopedVariableNames(null, FSMActor.this);
+            set.addAll(_identifierToPort.keySet());
+            return set;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    //private Parameter _portRate;
 
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
@@ -1527,6 +1681,8 @@ public class FSMActor extends CompositeEntity
     // Version of the reference to the initial state.
     private long _initialStateVersion = -1;
     
+    private HashMap _identifierToPort;
+
     // Version of the workspace when the last input variables were created.
     private long _inputVariableVersion = -1;
 
@@ -1536,10 +1692,6 @@ public class FSMActor extends CompositeEntity
     // True if the current state is a final state.
     private boolean _reachedFinalState;
     
-    // Set to true to enable debugging.
-    private boolean _debug_info = false;
-    //private boolean _debug_info = true;
-
     // A flag indicating whether the controller 
     // is under an HDFFSMDirector.
     private boolean _HDFFSMActor = false;

@@ -45,10 +45,10 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ModalPort
 /**
-A port for modal models.  This port mirrors certain changes to it in the
-ports of the controller and refinements of the modal model. It is designed
-to work closely with RefinementPort, since changes to the ports can be initiated
-in either class.
+A port for modal models.  This port mirrors certain changes to it in
+the ports of the controller and refinements of the modal model. It is
+designed to work closely with RefinementPort, since changes to the
+ports can be initiated in either class.
 
 @see RefinementPort
 @author Edward A. Lee

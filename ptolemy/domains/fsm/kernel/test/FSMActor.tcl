@@ -137,31 +137,6 @@ test FSMActor-4.1 {test setting initial state} {
 ######################################################################
 ####
 #
-test FSMActor-5.1 {test creating input variables} {
-    set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    set dir [java::new ptolemy.actor.Director $e0 dir]
-    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
-    set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
-    [java::field $fsm initialStateName] setExpression s0
-    set p0 [java::new ptolemy.actor.TypedIOPort $fsm p0]
-    $p0 setInput true
-    set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
-    $p1 setInput true
-    $p1 setMultiport true
-    set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 e2]
-    set p2 [java::new ptolemy.actor.TypedIOPort $e2 p2]
-    $p2 setMultiport true
-    set r0 [java::new ptolemy.actor.TypedIORelation $e0 r0]
-    set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
-    $r1 setWidth 2
-    $p0 link $r0
-    $p1 link $r1
-    $p2 link $r0
-    $p2 link $r1
-    $dir preinitialize
-    listToNames [$fsm attributeList]
-} {_iconDescription initialStateName finalStateNames _nonStrictMarker p0_isPresent p0 p0Array p1_0_isPresent p1_0 p1_0Array p1_1_isPresent p1_1 p1_1Array}
-
 test FSMActor-5.2 {test handling port name change} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set dir [java::new ptolemy.actor.Director $e0 dir]
@@ -195,11 +170,18 @@ test FSMActor-5.2 {test handling port name change} {
     $dir iterate 1
     $dir wrapup
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p1 > 5
-  in .<Unnamed Object>.fsm.t0._guard
+} {{ptolemy.kernel.util.IllegalActionException: Error evaluating guard expression: p1 > 5
+  in .<Unnamed Object>.fsm.t0
 Because:
 The ID p1 is undefined.}}
-    
+   
+test FSMActor-5.3 {guard must be true whenever trigger is true} {
+    $t0 setTriggerExpression "pp > -5"
+    catch {$t0 isTriggered} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: The trigger: pp > -5 is true but the guard: pp > 5 is false.
+  in .<Unnamed Object>.fsm.t0}}
+ 
 ######################################################################
 ####
 #
@@ -247,10 +229,8 @@ test FSMActor-6.1 {test action methods} {
     set re0 [[$fsm currentState] getFullName]
     $fsm prefire
     $fsm fire
-    set v0 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p1_0_isPresent]]
-    set v1 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p1_0]]
-    set re1 [[$v0 getToken] toString]
-    set re2 [expr {[$v1 getToken] == [java::null]}]
+    set re1 [[[$fsm getPortScope] get p1_0_isPresent] toString]
+    set re2 [java::isnull [[$fsm getPortScope] get p1_0]]
     $fsm postfire
     $rec prefire
     $rec fire
@@ -260,8 +240,8 @@ test FSMActor-6.1 {test action methods} {
     $p3 broadcast $tok
     $fsm prefire
     $fsm fire
-    set re3 [[$v0 getToken] toString]
-    set re4 [[$v1 getToken] toString]
+    set re3 [[[$fsm getPortScope] get p1_0_isPresent] toString]
+    set re4 [[[$fsm getPortScope] get p1_0] toString]
     $fsm postfire
     $rec prefire
     $rec fire
@@ -271,8 +251,8 @@ test FSMActor-6.1 {test action methods} {
     $p3 broadcast $tok
     $fsm prefire
     $fsm fire
-    set re5 [[$v0 getToken] toString]
-    set re6 [[$v1 getToken] toString]
+    set re5 [[[$fsm getPortScope] get p1_0_isPresent] toString]
+    set re6 [[[$fsm getPortScope] get p1_0] toString]
     $fsm postfire
     set re7 [[$fsm currentState] getFullName]
     $rec prefire
@@ -293,7 +273,7 @@ test FSMActor-6.1 {test action methods} {
 
 test FSMActor-6.2 {test typeConstraints} {
     listToStrings [$fsm typeConstraintList]
-} {{(ptolemy.actor.TypedIOPort {..fsm.p1}, int) <= (ptolemy.data.expr.Variable {..fsm.p1_0} 6, int)} {(ptolemy.actor.TypedIOPort {..fsm.p1}, int) <= (ptolemy.data.expr.Variable {..fsm.p1_1} 6, int)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Variable {..fsm.p1_0_isPresent} true, boolean)} {(TypeConstant, int) <= (ptolemy.data.expr.Variable {..fsm.p1_0} 6, int)} {(TypeConstant, {int}) <= (ptolemy.data.expr.Variable {..fsm.p1_0Array} {6}, {int})} {(TypeConstant, boolean) <= (ptolemy.data.expr.Variable {..fsm.p1_1_isPresent} true, boolean)} {(TypeConstant, int) <= (ptolemy.data.expr.Variable {..fsm.p1_1} 6, int)} {(TypeConstant, {int}) <= (ptolemy.data.expr.Variable {..fsm.p1_1Array} {6}, {int})} {(ptolemy.domains.fsm.kernel.AbstractActionsAttribute$TypeFunction, int, (p1_0+1)) <= (ptolemy.actor.TypedIOPort {..fsm.p2}, int)} {(TypeConstant, double) <= (ptolemy.data.expr.Parameter {..fsm.t0.exitAngle} 0.628318530718, double)} {(TypeConstant, double) <= (ptolemy.data.expr.Parameter {..fsm.t0.gamma} 0.0, double)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.reset} false, boolean)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.preemptive} false, boolean)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Variable {..fsm.t0._guard} true, boolean)}}
+} {{(ptolemy.domains.fsm.kernel.AbstractActionsAttribute$TypeFunction, int, (p1_0+1)) <= (ptolemy.actor.TypedIOPort {..fsm.p2}, int)} {(TypeConstant, double) <= (ptolemy.data.expr.Parameter {..fsm.t0.exitAngle} 0.628318530718, double)} {(TypeConstant, double) <= (ptolemy.data.expr.Parameter {..fsm.t0.gamma} 0.0, double)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.reset} false, boolean)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.preemptive} false, boolean)}}
 
 ######################################################################
 ####

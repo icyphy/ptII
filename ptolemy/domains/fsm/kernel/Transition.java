@@ -33,8 +33,10 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
@@ -58,8 +60,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-// FIXME: Replace StringAttribute with lazy variables, and remove _guard.
-// Other places where this could be done?
 
 //////////////////////////////////////////////////////////////////////////
 //// Transition
@@ -181,7 +181,7 @@ public class Transition extends ComponentRelation {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
-            }
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -265,20 +265,19 @@ public class Transition extends ComponentRelation {
         // attributes used to convey expressions without being evaluated.
         // _guard and _trigger are the variables that do the evaluation.
         if (attribute == guardExpression) {
-            String expr = guardExpression.getExpression();
-            _guard.setExpression(expr);
-
+            _guardParseTree = null;
+            
             // If the executive director is HSDirector, 
             if (_exeDirectorIsHSDirector) {                
                 // Invalid a relation list for the transition.
                 _relationList.destroy();
                 // Reconstruct the relation list.
-                _parseTreeEvaluator.setEvaluationMode(true);
+                ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
+                    .setEvaluationMode(true);
             }
         }
         if (attribute == triggerExpression) {
-            String expr = triggerExpression.getExpression();
-            _trigger.setExpression(expr);
+            _triggerParseTree = null;
         }
         if (attribute == refinementName) {
             _refinementVersion = -1;
@@ -308,25 +307,23 @@ public class Transition extends ComponentRelation {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-                Transition newObject = (Transition)super.clone(workspace);
-                newObject.guardExpression =
-                (StringAttribute)newObject.getAttribute("guardExpression");
-                newObject.preemptive = (Parameter)newObject.getAttribute("preemptive");
-                newObject.triggerExpression =
-                (StringAttribute)newObject.getAttribute("triggerExpression");
-                newObject.refinementName =
-                (StringAttribute)newObject.getAttribute("refinementName");
-                newObject._guard = (Variable)newObject.getAttribute("_guard");
-
-                newObject._trigger = (Variable)newObject.getAttribute("_trigger");
-                newObject._actionListsVersion = -1;
-                newObject._choiceActionList = new LinkedList();
-                newObject._commitActionList = new LinkedList();
-                newObject._stateVersion = -1;
-                return newObject;
-            }
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Transition newObject = (Transition)super.clone(workspace);
+        newObject.guardExpression =
+        (StringAttribute)newObject.getAttribute("guardExpression");
+        newObject.preemptive = (Parameter)newObject.getAttribute("preemptive");
+        newObject.triggerExpression =
+        (StringAttribute)newObject.getAttribute("triggerExpression");
+        newObject.refinementName =
+        (StringAttribute)newObject.getAttribute("refinementName");
+        newObject._guardParseTree = null;        
+        newObject._triggerParseTree = null;
+        newObject._actionListsVersion = -1;
+        newObject._choiceActionList = new LinkedList();
+        newObject._commitActionList = new LinkedList();
+        newObject._stateVersion = -1;
+        return newObject;
+    }
 
     /** Return the list of commit actions contained by this transition.
      *  @return The list of commit actions contained by this transition.
@@ -353,7 +350,7 @@ public class Transition extends ComponentRelation {
      *  @return The guard expression.
      */
     public String getGuardExpression() {
-        return _guard.getExpression();
+        return guardExpression.getExpression();
     }
 
     /** Return a string describing this transition. The string has two lines.
@@ -464,7 +461,7 @@ public class Transition extends ComponentRelation {
      *  @return The trigger expression.
      */
     public String getTriggerExpression() {
-        return _trigger.getExpression();
+        return triggerExpression.getExpression();
     }
 
     /** Return true if the transition is enabled, that is the guard is true, or
@@ -475,18 +472,31 @@ public class Transition extends ComponentRelation {
     public boolean isEnabled() throws IllegalActionException {
         try {
             if (_exeDirectorIsHSDirector && !_relationList.isEmpty()) {
-                _parseTreeEvaluator.setEvaluationMode(false);
+                ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
+                    .setEvaluationMode(true);
             }
-            Token token = _guard.getToken();
+            FSMActor fsmActor = (FSMActor)getContainer();
+            if(_guardParseTree == null) {
+                String expr = getGuardExpression();
+                // Parse the guard expression.
+                PtParser parser = new PtParser();
+                _guardParseTree = parser.generateParseTree(expr);
+            }
+            Token token = _parseTreeEvaluator.evaluateParseTree(
+                    _guardParseTree, fsmActor.getPortScope());
             if (token == null) {
                 return false;
             }
-            //FIXME: deal with continuous varialbes and discrete variables
+            //FIXME: deal with continuous variables and discrete variables
             // using signalType.
             boolean result = ((BooleanToken)token).booleanValue();
             return result;
         } catch (UnknownResultException ex) {
             return false;
+        } catch (IllegalActionException ex) {
+            throw new IllegalActionException(this, ex, 
+                    "Error evaluating guard expression: " 
+                    + getGuardExpression());
         }
     }
 
@@ -510,16 +520,34 @@ public class Transition extends ComponentRelation {
      *   trigger, or the trigger is true but the guard is false.
      */
     public boolean isTriggered() throws IllegalActionException {
-        Token token = _trigger.getToken();
-        boolean result = ((BooleanToken)token).booleanValue();
-        token = _guard.getToken();
-        boolean guardValue = ((BooleanToken)token).booleanValue();
-        if (result == true && guardValue == false) {
+        FSMActor fsmActor = (FSMActor)getContainer();
+
+        if(_triggerParseTree == null) {
+            String expr = triggerExpression.getExpression();
+            // Parse the guard expression.
+            PtParser parser = new PtParser();
+            _triggerParseTree = parser.generateParseTree(expr);
+        }
+        Token triggerToken = _parseTreeEvaluator.evaluateParseTree(
+                    _triggerParseTree, fsmActor.getPortScope());
+        boolean triggerValue = ((BooleanToken)triggerToken).booleanValue();
+     
+        if(_guardParseTree == null) {
+            String expr = guardExpression.getExpression();
+            // Parse the guard expression.
+            PtParser parser = new PtParser();
+            _guardParseTree = parser.generateParseTree(expr);
+        }
+        Token guardToken = _parseTreeEvaluator.evaluateParseTree(
+                    _guardParseTree, fsmActor.getPortScope());
+        boolean guardValue = ((BooleanToken)guardToken).booleanValue();
+     
+        if (triggerValue == true && guardValue == false) {
             throw new IllegalActionException(this, "The trigger: "
                     + getTriggerExpression() + " is true but the guard: "
                     + getGuardExpression() + " is false.");
         }
-        return result;
+        return triggerValue;
     }
 
     /** Override the base class to ensure that the proposed container
@@ -675,11 +703,6 @@ public class Transition extends ComponentRelation {
         preemptive.setToken(BooleanToken.FALSE);
         triggerExpression = new StringAttribute(this, "triggerExpression");
         triggerExpression.setVisibility(Settable.NONE);
-        _guard = new Variable(this, "_guard");
-        // Make the variable lazy since it will often have
-        // an expression that cannot be evaluated.
-        _guard.setLazy(true);
-        _guard.setTypeEquals(BaseType.BOOLEAN);
         
         _exeDirectorIsHSDirector = false;
         
@@ -689,6 +712,8 @@ public class Transition extends ComponentRelation {
         
         CompositeEntity container = (CompositeEntity) getContainer();
         
+        _parseTreeEvaluator = new ParseTreeEvaluator();
+
         // If the executive director is HSDirector, 
         if (container != null) {
             TypedCompositeActor modalModel =
@@ -712,22 +737,12 @@ public class Transition extends ComponentRelation {
                 
                 _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
                         _relationList, 1e-4);
-                
-                // Register the guard expression with the above parse
-                // tree evaluator
-                _guard.setParseTreeEvaluator( 
-                        (ParseTreeEvaluator) _parseTreeEvaluator);
             }
         }
         
         // If the executive director is FSMDirector, do nothing.
                 
-        _trigger = new Variable(this, "_trigger");
-        // Make the variable lazy since it will often have
-        // an expression that cannot be evaluated.
-        _trigger.setLazy(true);
-        _trigger.setTypeEquals(BaseType.BOOLEAN);
-        // add refinement name parameter
+        // Add refinement name parameter
         refinementName = new StringAttribute(this, "refinementName");
     }
 
@@ -769,11 +784,11 @@ public class Transition extends ComponentRelation {
     // Cached destination state of this transition.
     private State _destinationState = null;
 
-    // Variable for evaluating guard.
-    private Variable _guard = null;
-
     // Flag to indicate whether the executive director is HSDirector.
     private boolean _exeDirectorIsHSDirector = false;
+    
+    // The parse tree for the guard expression.
+    private ASTPtRootNode _guardParseTree;
     
     // Set to true when the transition is preemptive.
     private boolean _preemptive = false;
@@ -784,8 +799,8 @@ public class Transition extends ComponentRelation {
     // Version of cached source/destination state.
     private long _stateVersion = -1;
 
-    // Variable for evaluating trigger.
-    private Variable _trigger = null;
+    // The parse tree for the trigger expression.
+    private ASTPtRootNode _triggerParseTree;
 
     // Cached reference to the refinement of this state.
     private TypedActor[] _refinement = null;
@@ -797,6 +812,6 @@ public class Transition extends ComponentRelation {
     private RelationList _relationList;
 
     // The parse tree evaluator for the transition.
-    private ParseTreeEvaluatorForGuardExpression _parseTreeEvaluator;
+    private ParseTreeEvaluator _parseTreeEvaluator;
 
 }

@@ -39,28 +39,27 @@ import java.util.ListIterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// RelationList
-/** A RelationList contains a list of relations of a guard expression.
- It provides facilities to access the former and current information of
- each relation of a guard expression during its evaluation. The information
- includes type and difference information. (See ParseTreeEvaluatorForGuardExpression
- for detailed explanation of type and difference.) 
- <p>
- This attribute is non-persistent and will not be exported into MoML.
- <p>
- This class is designed to be used with ParseTreeEvaluatorForGuardExpression.
- The common usage would be like:
- <p>
-         <i>// Construct a relation list for a transition.
-			// The first argument of the constructor is a 
-			// transition.</i>
-         _relationList = new RelationList(this, "relationList");
- <p>
-         <i>// Associate the relation list with the ParseTreeEvaluatorForGuardExpression</i>
-         _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList);
- <p>
-         <i>// Register the guard expression with the above parse tree evaluator</i>
-         _guard.setParseTreeEvaluator( (ParseTreeEvaluator) _parseTreeEvaluator);
- <p>
+/** 
+
+A RelationList contains a list of relations of a guard expression.  It
+provides facilities to access the former and current information of
+each relation of a guard expression during its evaluation. The
+information includes type and difference information. (See
+ParseTreeEvaluatorForGuardExpression for detailed explanation of type
+and difference.) This attribute is non-persistent and will not be
+exported into MoML.
+
+<p> This class is designed to be used with
+ ParseTreeEvaluatorForGuardExpression.  The common usage would be
+ like:
+
+ <p> <i>// Construct a relation list for a transition.  // The first
+  argument of the constructor is a // transition.</i> _relationList =
+  new RelationList(this, "relationList");
+ 
+<p> <i>// Associate the relation list with the
+         ParseTreeEvaluatorForGuardExpression</i> _parseTreeEvaluator
+         = new ParseTreeEvaluatorForGuardExpression(_relationList);
 
 @author Haiyang Zheng
 @version $Id$
@@ -131,16 +130,17 @@ public class RelationList extends Attribute {
         _relationList.clear();
     }
 
-    /** Return the former difference of the relation which has the maximum
-     *  current difference.
+    /** Return the former difference of the relation which has the
+     *  maximum current difference.
      *  @return The former distance of a relation.
      */
     public double getFormerMaximumDistance() {
-        return ((RelationNode) _relationList.get(_maximumDifferenceIndex)).getFormerDifference();
+        return ((RelationNode) _relationList.get(
+                        _maximumDifferenceIndex)).getFormerDifference();
     }
 
-    /** Return true if there is some event caused by some relation type change.
-     *  Return True If there is some event detected.
+    /** Return true if there is some event caused by some relation
+     *  type change.  Return True If there is some event detected.
      */
     public boolean hasEvent(){
         boolean result = false;
@@ -168,8 +168,8 @@ public class RelationList extends Attribute {
     	return _relationList.size();
     }
     
-    /** Iterating the relation list and get the maximum current difference of
-     *  all the relations.
+    /** Iterating the relation list and get the maximum current
+     *  difference of all the relations.
      *  @return maximumDistance The maximum current distance.
      */
     public double maximumDifference() {
@@ -190,21 +190,26 @@ public class RelationList extends Attribute {
         return maxDifference;
     }
 
-    /** Return the index of the relation with the maximum current difference.
-     *  @return index The index of the relation with maximum current distance.
+    /** Return the index of the relation with the maximum current
+     *  difference.
+     *  @return index The index of the relation with maximum current
+     *  distance.
      */
     public int maximumDifferenceIndex() {
         return _maximumDifferenceIndex;
     }
 
-    /** Update the relation in the relation list referred by the relation index
-     *  argument with the given type and difference information.
-     *  @param relationIndex The position of the relation in the relation list.
+    /** Update the relation in the relation list referred by the
+     *  relation index argument with the given type and difference
+     *  information.
+     *  @param relationIndex The position of the relation in the
+     *  relation list.
      *  @param type The current type of the relation.
      *  @param difference The current difference of the relation.
      */
     public void setRelation(int relationIndex, int type, double difference) {
-        RelationNode relationNode = (RelationNode) _relationList.get(relationIndex);
+        RelationNode relationNode = (RelationNode)
+            _relationList.get(relationIndex);
         relationNode.setValue(type);
         relationNode.setDifference(difference);
     }
@@ -293,9 +298,10 @@ public class RelationList extends Attribute {
             _difference = difference;
         }
 
-        /** Return true if type changed and the former type information is valid.
-         *  @return True If the type changed and the former type information is
-         *  valid.
+        /** Return true if type changed and the former type
+         *  information is valid.
+         *  @return True If the type changed and the former type
+         *  information is valid.
          */
         public boolean typeChanged(){
             return (_formerType != 0) && (_formerType != _currentType);

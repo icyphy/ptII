@@ -48,46 +48,50 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeEvaluatorForGuardExpression
 /**
-A ParseTreeEvaluatorForGuardExpression contains a relation list which is
-used to indicate the value change of the relations embedded in a guard
-expression. It extends ParseTreeEvaluator. It is specially designed for
-guard expressions associated with transitions of FSM. It visits a parse
-tree and evaluates it into a token.
-<p>
-The ParseTreeEvaluatorForGuardExpression has two operation modes: construction
-and updat. During construction mode, the relation list expands. During update
-mode, the relation list doesn't expand but has its element updated.
-<p>
-During the parse tree evaluation, if the visiting node is a leaf node and
-the evaluated token is a boolean token, or the visiting node is a relational
-node, the evaluator decides the 'difference' and 'relationType' of the node,
-and stores these information into the relation list.
-<p>
-The 'difference' of a node is calculated this way:
-<p>
-For a leaf node evaluated as a boolean token, the difference is 0. For a
-relation node, (scalarLeft relationOperator scalarRight), the difference
-is the absolute double value of (scalarLeft - scalarRight).
-<p>
-The 'relationType' of a node has 5 different values with meaning:
-1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.
-It is calculated this way:
-<p>
-For a leaf node evaluated as a boolean token, the relationType is assigned
-according to the boolean value of the result token, 1 for true and 2 for false.
-For a relation node, (scalarLeft relationOperator scalarRight), the relationType
-depends on the relationOperator. If the relationOperator is '==' or '!=', rhe
+A ParseTreeEvaluatorForGuardExpression contains a relation list which
+is used to indicate the value change of the relations embedded in a
+guard expression. It extends ParseTreeEvaluator. It is specially
+designed for guard expressions associated with transitions of FSM. It
+visits a parse tree and evaluates it into a token.
+
+<p> The ParseTreeEvaluatorForGuardExpression has two operation modes:
+construction and updat. During construction mode, the relation list
+expands. During update mode, the relation list doesn't expand but has
+its element updated.
+
+<p> During the parse tree evaluation, if the visiting node is a leaf
+node and the evaluated token is a boolean token, or the visiting node
+is a relational node, the evaluator decides the 'difference' and
+'relationType' of the node, and stores these information into the
+relation list.
+
+<p> The 'difference' of a node is calculated this way:
+
+<p> For a leaf node evaluated as a boolean token, the difference is
+0. For a relation node, (scalarLeft relationOperator scalarRight), the
+difference is the absolute double value of (scalarLeft - scalarRight).
+
+<p> The 'relationType' of a node has 5 different values with meaning:
+1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.  It
+is calculated this way:
+
+<p> For a leaf node evaluated as a boolean token, the relationType is
+assigned according to the boolean value of the result token, 1 for
+true and 2 for false.  For a relation node, (scalarLeft
+relationOperator scalarRight), the relationType depends on the
+relationOperator. If the relationOperator is '==' or '!=', rhe
 relationType can be 3 indicating the two scalars equal or not equal, 4
-indicating the left scalar is less than the right one, and 5 to indicate left
-scalar is bigger than the right one. For other kind of relationOperators, the
-relationType is assigned according to the boolean value of the relation, i.e.,
-1 for true and 2 for false.
-<p>
-If the evaluator is in construction mode, the node information is added into
-a relationList, if it is in update mode, the according element of a relationList
-gets updated.
-<p>
-Note, this evaluator does not use short-circuit evaluation on logical nodes.
+indicating the left scalar is less than the right one, and 5 to
+indicate left scalar is bigger than the right one. For other kind of
+relationOperators, the relationType is assigned according to the
+boolean value of the relation, i.e., 1 for true and 2 for false.
+
+<p> If the evaluator is in construction mode, the node information is
+added into a relationList, if it is in update mode, the according
+element of a relationList gets updated.
+
+<p> Note, this evaluator does not use short-circuit evaluation on
+logical nodes.
 
 @author Haiyang Zheng
 @version $Id
