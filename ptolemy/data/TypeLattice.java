@@ -226,8 +226,7 @@ public final class TypeLattice
 	lattice.addEdge(tInt, tLong);
 	lattice.addEdge(tInt, tIntMatrix);
 	lattice.addEdge(tInt, tDouble);
-
-        lattice.addEdge(tFix, tGeneral);
+        lattice.addEdge(tFix, tScalar);
         lattice.addEdge(tNaT, tFix);
 
         lattice.addEdge(tNaT, tInt);
