@@ -1535,7 +1535,7 @@ public class SDFScheduler extends Scheduler {
         StringBuffer buffer = new StringBuffer();
         buffer.append("<group>\n");
 
-        Iterator entities = container.entityList().iterator();
+        Iterator entities = firings.keySet().iterator();
         while (entities.hasNext()) {
             Entity entity = (Entity) entities.next();
             int firingCount =
