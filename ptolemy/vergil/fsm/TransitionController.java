@@ -86,8 +86,7 @@ import java.awt.event.ActionEvent;
 /**
 This class provides interaction techniques for transitions in an FSM.
 
-@author Steve Neuendorffer
-@contributor Edward A. Lee
+@author Steve Neuendorffer, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */

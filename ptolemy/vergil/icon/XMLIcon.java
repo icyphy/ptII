@@ -64,8 +64,7 @@ The XML schema used in the "_iconDescription" and "_smallIconDescription"
 attributes is SVG (scalable vector graphics), although currently Diva
 only supports a small subset of SVG.
 
-@author Steve Neuendorffer, John Reekie
-@contributor Edward A. Lee
+@author Steve Neuendorffer, John Reekie, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */

@@ -59,8 +59,7 @@ This controller allows states to be moved and context menus to be accessed,
 but does not provide interaction for adding or removing states or
 transitions.
 
-@author Steve Neuendorffer
-@contributor Edward A. Lee
+@author Steve Neuendorffer, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */
