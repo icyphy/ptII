@@ -19,7 +19,8 @@ sections below
 
 <h3>Java</h3>
 Ptolemy II uses JDK1.2.2, which is available from
-<a href="http://java.sun.com/products/jdk/1.2" target="_top"><CODE>http://java.sun.com/products/jdk/1.2</CODE></a>
+<a href="http://java.sun.com/products/jdk/1.2" target="_top"><CODE>http://java.sun.com/products/jdk/1.2</CODE></a>.
+<p>Ptolemy II has also been successfully built and run with JDK1.3beta.
 
 <h3><a name="Plugin">JDK Plugin</a></h3>
 All of the applet demonstrations use JDK1.2, so to run the applets
@@ -48,57 +49,9 @@ The primary difference between Ptjacl and Jacl1.1 is that Ptjacl
 is shipped as one jar file.
 
  <p>The Ptjacl jar file at <CODE>$PTII/lib/ptjacl.jar</CODE>
-is shipped with Ptolemy II.  Below are instructions about
-how to update <CODE>ptjacl.jar</CODE> and how to run Jacl.
+is shipped with Ptolemy II.
 
-<ol>
-<li> Download ptjacl.jar from <a href="http://ptolemy.eecs.berkeley.edu/~cxh/java/jacl/ptjacl.html" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/~cxh/java/jacl/ptjacl.html</CODE></a>
-
-<li> Unzip it with Winzip or info-zip
-
-<li> Copy the <CODE>ptjacl.jar</CODE> file to <CODE>$PTII/lib</CODE>
-<pre>
-cp ptjacl.jar $PTII/lib
-</pre>
-
-<li> Rerun <CODE>configure</CODE>
-<pre>
-cd $PTII
-rm -f config.cache
-./configure
-</pre>
-
-<li> Run the tests
-<pre>
-make tests
-</pre>
-</ol>
-
-To run Jacl in Bourne Shell
-<pre>
-CLASSPATH=$PTII/lib/ptjacl.jar
-export CLASSPATH
-java tcl.lang.Shell
-</pre>
-
-To run Jacl in the C shell
-<pre>
-setenv CLASSPATH $PTII/lib/ptjacl.jar
-java tcl.lang.Shell
-</pre>
-
-
-To run Jacl as a standalone window in Bourne Shell, use
-the tcl.lang.PanelShellApp class instead of tcl.lang.Shell:
-<pre>
-CLASSPATH=$PTII/lib/ptjacl.jar
-export CLASSPATH
-java tcl.lang.PanelShellApp
-</pre>
-
-
-
-For more information about Jacl and Tcl Blend, see
+ <p>For more information about Jacl and Tcl Blend, see
 <menu>
 <li> <a href="http://www.scriptics.com/software/java.html" target="_top">Scriptics Jacl and Tcl Blend page</a>.
 
@@ -118,16 +71,12 @@ JavaCC is the Java Compiler Compiler, which similar to <CODE>yacc</CODE>
 and <CODE>lex</CODE>.
  <p>JavaCC is only necessary if you modify the expression parser in
 <CODE>ptolemy/data/expr</CODE>.
- <p>As of 4/98, Ptolemy II was using JavaCC 0.8pre2.
- <p>Under JDK1.2.1 and JavaCC1.0 under Windows NT4.0, you may
-get a NullPointerException.  The workaround is to either use
-JavaCC 0.8pre2 or install a new JIT available from
-<a href="http://developer.javasoft.com/developer/earlyAccess/jdk12/jit/index.html" target="_top">The Sun Java Developer's Connection.</a> 
+ <p>As of 1/00, Ptolemy II was using JavaCC 1.1
 
  <p>To install JavaCC, follow the instructions below
 <ol>
-<li> Download JavaCC0.8pre1.class from
-<a href="http://www.sun.com/suntest" target="_top"><CODE>http://www.sun.com/suntest</CODE></a>
+<li> Download JavaCC1_1.class from
+<a href="http://www.metamata.com/JavaCC/" target="_top"><CODE>http://www.metamata.com/JavaCC/</CODE></a>
 
 <li> Set your CLASSPATH to <CODE>.</CODE>
 <pre>
@@ -141,7 +90,7 @@ was downloaded to.
 <li> Run <CODE>java</CODE> on the file.  Note that you should
 <B>not</B> include the <CODE>.class</CODE> suffix in the command line.
 <pre>
-java JavaCC0.8pre2
+java Java1_1
 </pre>
 
 <li> <CODE>$PTII/configure</CODE> looks for JavaCC in

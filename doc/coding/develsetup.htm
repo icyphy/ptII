@@ -17,7 +17,7 @@ emulate the U.C. Berkeley developer setup.
 Locally, the master development tree is in <CODE>~ptII</CODE>.
 We use the Concurrent Versions System (CVS) to manage the source files.
 For more information about CVS, see
-<a href="http://www.cyclic.com" target="_top"><CODE>http://www.cyclic.com</CODE></a>.
+<a href="http://www.sourcegear.com/CVS" target="_top"><CODE>http://www.sourcegear.com/CVS</CODE></a>
 
 Locally, the CVS Repository is in <CODE>~cvs/Repository</CODE>.
 
@@ -100,7 +100,7 @@ sh ~ptII/adm/copyright/chkcopyright `cat ~/tmp/ff | grep -v .class | grep -v cod
 
 <li> Tag the tree as the release tree and create a branch
 For more information about CVS, see the 
-<a href="http://ptolemy.eecs.berkeley.edu/cvsdoc/">Ptolemy CVS Pages</a>
+<a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">Gigascale CVS Pages</a>
 
  <p>To make a branch for 0.4beta, use the following command:
 <pre>
@@ -109,19 +109,14 @@ cvs tag -b rel-0-4-beta
 </pre>
 Then check out the release branch  with
 <pre>
-cd ~/ptII/adm/trees
+cd ~/src
 cvs co -r rel-0-4-beta ptII
 mv ptII ptII0.4
 </pre>
 
 <li> The nightly build uses a makefile in ~ptII/adm (not shipped)
 to build the release.  Copy the most recent makefile and
-set up a new tree for the release tree by changing 
-MAJOR_VERSION, MINOR_VERSION and PTIIHOME:
-
-<pre>
-PTIIHOME =	/users/$(USER)/adm/trees/ptII$(VERSION)
-</pre>
+set up a new tree for the release tree.
 
 </ol>
 
