@@ -549,6 +549,7 @@ public class SchematicEntity extends PTMLTemplateObject
 						      terminal));
                     
 		} catch (Exception ex) {
+                    ex.printStackTrace();
 		    throw new InternalErrorException(ex.getMessage());
 		    // This should never happen, because the terminals in the
 		    // template must follow the same rules as the schematic 

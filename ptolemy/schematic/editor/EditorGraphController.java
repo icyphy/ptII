@@ -32,6 +32,8 @@ package ptolemy.schematic.editor;
 
 import ptolemy.schematic.util.*;
 import ptolemy.schematic.xml.*;
+import diva.gui.*;
+import diva.gui.toolbox.*;
 import diva.graph.*; 
 import diva.graph.model.*;
 import diva.canvas.*;
@@ -42,10 +44,12 @@ import diva.canvas.toolbox.*;
 import java.awt.geom.Rectangle2D;
 import diva.util.Filter;
 import java.awt.event.InputEvent;
+import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.net.URL;
+import javax.swing.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorGraphController
@@ -74,9 +78,9 @@ public class EditorGraphController extends GraphController {
      */
     private TerminalCreator _terminalCreator;
 
-    /** The interactor for creating new entities
+    /** The interactor for creating context sensitive menus.
      */
-    //  private EntityCreator _entityCreator;
+    private MenuCreator _menuCreator;
 
     /** The interactor that interactively creates edges
      */
@@ -93,6 +97,10 @@ public class EditorGraphController extends GraphController {
     private MouseFilter _shiftFilter = new MouseFilter (
             InputEvent.BUTTON1_MASK,
             InputEvent.SHIFT_MASK);
+
+    /** The filter for context sensitive menus
+     */
+    private MouseFilter _menuFilter = new MouseFilter (3);
 
     /**
      * Create a new basic controller with default 
@@ -287,6 +295,11 @@ ef.route();
         _edgeCreator = new EdgeCreator();
         _edgeCreator.setMouseFilter(_controlFilter);
         getNodeInteractor().addInteractor(_edgeCreator);
+
+        // MenuCreator 
+        _menuCreator = new MenuCreator();
+        _menuCreator.setMouseFilter(_menuFilter);
+        getNodeInteractor().addInteractor(_menuCreator);       
     }
 
     /**
@@ -372,42 +385,6 @@ ef.route();
     }
 
     ///////////////////////////////////////////////////////////////
-    //// EntityCreator
-
-    /** An inner class that places a terminal at the clicked-on point
-     * on the screen, if control-clicked with mouse button 1. This
-     * needs to be made more customizable.
-     */
-    /*
-// This has been replaced by drag and drop of entities.
-    protected class EntityCreator extends AbstractInteractor {
-        public void mousePressed(LayerEvent e) {
-	    EntityTemplate template = new EntityTemplate();
-	    //FIXME Hack to get a usable icon
-	    try {
-		URL urlbase = new URL("file:" + System.getProperty("PTII"));
-		URL iconlibURL = new URL(urlbase, 
-		    "ptII/ptolemy/schematic/util/test/exampleRootIconLibrary.ptml");
-		URL entitylibURL = new URL(urlbase, 
-		    "ptII/ptolemy/schematic/util/test/exampleRootEntityLibrary.ptml");
-		IconLibrary iconlibrary = 
-		    PTMLObjectFactory.parseIconLibrary(iconlibURL);
-		EntityLibrary entitylibrary = 
-		    PTMLObjectFactory.parseEntityLibrary(
-			entitylibURL, iconlibrary);
-		template = entitylibrary.findEntityTemplate("SDF.SaveImage");
-	    } catch (Exception ex) {
-		System.out.println(ex.getMessage());
-                ex.printStackTrace();
-	    }
-	    //End Hack
-
-            Node n = getGraphImpl().createCompositeNode(template);
-            addEntity((SchematicEntity)n, e.getLayerX(), e.getLayerY());
-        }
-    }
-    */
-    ///////////////////////////////////////////////////////////////
     //// EdgeDropper
 
     /** An inner class that handles interactive changes to connectivity.
@@ -471,4 +448,40 @@ ef.route();
             layer.grabPointer(e, gh);
         }
     }
+
+    /** An interactor that creates context-sensitive menus.
+     */
+    protected class MenuCreator extends AbstractInteractor {
+        public void mousePressed(LayerEvent e) {
+            Figure source = e.getFigureSource();
+	    Node sourcenode = (Node) source.getUserObject();
+            if(sourcenode instanceof SchematicEntity) {
+                JPopupMenu menu = 
+                    new EntityContextMenu((SchematicEntity) sourcenode);
+                menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
+            }
+        }
+    }
+
+    /** A Context Sensitive menu for entities
+     */
+    public class EntityContextMenu extends JPopupMenu {
+        public EntityContextMenu(SchematicEntity entity) {
+            super(entity.getName());
+            Action action;
+            action = new AbstractAction ("Get Parameters") {
+                public void actionPerformed(ActionEvent e) {
+                    // Create a dialog and attach the dialog values 
+                    // to the parameters of the entity
+                    System.out.println("Object = " + getValue("target"));
+                }
+            };
+            action.putValue("target", entity);
+            action.putValue("tooltip", "Get Parameters");
+            JMenuItem item = add(action);
+            item.setToolTipText("Get Parameters");
+            action.putValue("menuItem", item);
+        }
+    }
 }
+
