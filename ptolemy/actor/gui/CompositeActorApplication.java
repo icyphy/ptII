@@ -116,7 +116,7 @@ public class CompositeActorApplication implements ExecutionListener {
     /** Report that an execution error has occurred.  This method
      *  is called by the specified manager.
      *  @param manager The manager calling this method.
-     *  @param ex The exeception being reported.
+     *  @param ex The exception being reported.
      */
     public void executionError(Manager manager, Exception ex) {
         report(ex);
