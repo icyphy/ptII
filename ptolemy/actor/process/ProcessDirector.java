@@ -456,8 +456,12 @@ public class ProcessDirector extends Director {
      */
     public void wrapup() throws IllegalActionException {
         // Kill all branch controllers
-        _inputBranchController.deactivateBranches();
-        _outputBranchController.deactivateBranches();
+        if( _inputBranchController != null ) {
+            _inputBranchController.deactivateBranches();
+        }
+        if( _outputBranchController != null ) {
+            _outputBranchController.deactivateBranches();
+        }
         
 	// Wake up threads if they are stopped.
         ProcessThread thread = null;
