@@ -51,9 +51,9 @@ PTCLASSALLJARS = \
 		csp/csp.jar \
 		ct/ct.jar \
 		dde/dde.jar \
+		fsm/fsm.jar \
 		de/de.jar \
 		pn/pn.jar \
-		sc/sc.jar \
 		sdf/sdf.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
