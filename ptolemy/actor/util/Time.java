@@ -31,6 +31,7 @@ package ptolemy.actor.util;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
+import ptolemy.actor.TimedDirector;
 import ptolemy.data.TokenUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Utilities;
@@ -60,7 +61,8 @@ public class Time implements Comparable {
      *  the given container. 
      *  @param container The container of this time object.
      *  @exception IllegalActionException If the container is 
-     *  neither a director nor an actor.
+     *  neither a timed director nor an actor, or the director
+     *  of the container (an actor) is not a timed director.
      */
     public Time(Executable container) throws IllegalActionException {
         _init(container);
@@ -71,7 +73,8 @@ public class Time implements Comparable {
      *  @param container The container of this time object.
      *  @param value The time value.
      *  @exception IllegalActionException If the container is 
-     *  neither a director nor an actor.
+     *  neither a timed director nor an actor, or the director
+     *  of the container (an actor) is not a timed director.
      */
     public Time(Executable container, double value) 
         throws IllegalActionException {
@@ -179,11 +182,20 @@ public class Time implements Comparable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Initialize the states. Throw an illegalActionException if the
-    // given container argument is neither a director or an actor.
+    // Initialize the states. Throw an IllegalActionException if the
+    // given container argument is neither a timed director nor an actor, 
+    // or the director of the container (an actor) is not a timed director.
     private void _init(Executable container) throws IllegalActionException {
-        if (!(_container instanceof Actor) 
-            && !(_container instanceof Director)) {
+        boolean wrongContainerType = true;
+        if (container instanceof Actor) {
+            Director director = ((Actor)container).getDirector();
+            if (director instanceof TimedDirector) {
+                wrongContainerType = false;
+            }
+        } else if (container instanceof TimedDirector) {
+            wrongContainerType = false;
+        }
+        if (wrongContainerType) {
             throw new IllegalActionException("Can not create " +
                 "a Time object because the container is neither " +
                 "a director nor an actor.");
