@@ -41,7 +41,6 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.kernel.solver.*;
 import ptolemy.domains.ct.lib.*;
 import ptolemy.plot.Plot;

@@ -35,7 +35,6 @@ import java.awt.event.*;
 
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.lib.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;

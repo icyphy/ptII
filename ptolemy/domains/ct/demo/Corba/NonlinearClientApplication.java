@@ -40,7 +40,6 @@ import ptolemy.actor.corba.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.kernel.solver.*;
 import ptolemy.domains.ct.lib.*;
 

@@ -32,7 +32,6 @@ package ptolemy.domains.ct.demo.Helicopter;
 
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.kernel.util.*;
-import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.lib.*;
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.actor.*;
