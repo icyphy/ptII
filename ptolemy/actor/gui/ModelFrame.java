@@ -135,7 +135,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     /** Report that execution of the model has finished.
      *  @param manager The manager calling this method.
      */
-    public synchronized void executionFinished(Manager manager) {
+    public void executionFinished(Manager manager) {
         report("execution finished.");
     }
 
