@@ -84,24 +84,13 @@ demo_interpreted: $(PTCLASSJAR)
 
 codegen: generate_sdf_code compile_codegen preverify build_prc run_codegen kvm
 
-# FIXME: JAVASRC_SKELETON_DIR needs to go away.
-# It is the location of the java sources and the .skel files
-# If you don't have these, copy them from /users/ptII/vendors/sun/src/
-# See $PTII/ptolemy/java/lang/makefile
-JAVASRC_SKELETON_DIR=$(PTII)/vendors/sun/src
-
 # Read in SOURCE_SYSTEM_CLASS and generate .java files in $PTII/$(OUTPKG)
 generate_sdf_code: $(JCLASS) $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).java
 $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).java:
 	@echo "###################################"
 	@echo "# Generating code for $(SOURCE_SYSTEM_CLASS) in $PTII/$(OUTPKG)"
 	@echo "###################################"
-	@if [ ! -d "$(JAVASRC_SKELETON_DIR)" ]; then \
-		echo "Warning $(JAVASRC_SKELETON_DIR) does not exist"; \
-		echo "Copy the zip file from /users/ptII/vendors/sun/src/"; \
-		echo "See $PTII/ptolemy/java/lang/makefile for details"; \
-	fi
-	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)" \
+	CLASSPATH="$(ROOT)" \
 	$(JAVA) $(JAVA_VERBOSE) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 		-class $(SOURCE_SYSTEM_CLASS) \
 		-iterations $(ITERATIONS) \
