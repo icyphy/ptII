@@ -242,16 +242,6 @@ public class CachedMethod {
         _cachedMethods.clear();
     }
 
-    /** Return a verbose description of the cached method being invoked
-     */
-    public String methodDescription() {
-        if(isValid()) {
-            return _method.toString();
-        } else {
-            return "INVALID METHOD!!!";
-        }
-    }
-
     /** Return true if the argument is an instance of CachedMethod
      *  that represents the same method or function as this instance.
      *  Note that if this returns true, then both this instance and
@@ -348,7 +338,8 @@ public class CachedMethod {
                 //         + argumentTypes[i].getClass());
                 if (argumentTypes[i] instanceof ArrayType) {
                     hasArray = true;
-                    newArgTypes[i] = ((ArrayType)argumentTypes[i]).getElementType();
+                    newArgTypes[i] = ((ArrayType)argumentTypes[i])
+                        .getElementType();
                     isArrayArg[i] = true;
                 } else {
                     newArgTypes[i] = argumentTypes[i];
@@ -412,6 +403,13 @@ public class CachedMethod {
         return cachedMethod;
     }
 
+    /** Return the type of this class, which is one of METHOD or FUNCTION.
+     *  @return The type of this class.
+     */
+    public int getCachedMethodType() {
+        return _type;
+    }
+
     /** Return the conversions the are applied to the arguments of
      *  this function or method.  Note that in most cases, it is not
      *  necessary to call this method, as the invoke() method provides
@@ -443,13 +441,6 @@ public class CachedMethod {
             throw new IllegalActionException("No method " + toString() +
                     " was found!");
         }
-    }
-
-    /** Return the type of this class, which is one of METHOD or FUNCTION.
-     *  @return The type of this class.
-     */
-    public int getCachedMethodType() {
-        return _type;
     }
 
     /** Return the type of the token that results from an invocation
@@ -585,6 +576,16 @@ public class CachedMethod {
      */
     public boolean isValid() {
         return (_method != null);
+    }
+
+    /** Return a verbose description of the cached method being invoked
+     */
+    public String methodDescription() {
+        if(isValid()) {
+            return _method.toString();
+        } else {
+            return "INVALID METHOD!!!";
+        }
     }
 
     /** Return a string representation.
@@ -747,8 +748,8 @@ public class CachedMethod {
         }
         try {
             // Tokens can be converted to native types.
-            if (formal.isAssignableFrom(
-                        ConversionUtilities.convertTokenTypeToJavaType(actual))) {
+            if (formal.isAssignableFrom(ConversionUtilities
+                    .convertTokenTypeToJavaType(actual))) {
                 return NATIVE_CONVERSION;
             }
         } catch (IllegalActionException ex) {
@@ -879,59 +880,6 @@ public class CachedMethod {
         _cachedMethods.put(cachedMethod, cachedMethod);
     }
 
-    // Find a CachedMethod of type METHOD, in a class that extends
-    // from the type indicated by argumentTypes[0], that accepts arguments
-    // argumentTypes[1..length].  Return null if no method can be found.
-    private static CachedMethod _findMETHOD(
-            String methodName, Type[] argumentTypes)
-            throws IllegalActionException {
-        CachedMethod cachedMethod = null;
-        // Try to reflect the method.
-        int num = argumentTypes.length;
-        ArgumentConversion[] conversions = new ArgumentConversion[num - 1];
-
-        Class destTokenClass = argumentTypes[0].getTokenClass();
-        Type[] methodArgTypes;
-        if (num == 1) {
-            methodArgTypes = null;
-        } else {
-            methodArgTypes = new Type[num - 1];
-            for (int i = 1; i < num; i++) {
-                methodArgTypes[i-1] = argumentTypes[i];
-            }
-        }
-
-        try {
-            Method method = _polymorphicGetMethod(destTokenClass,
-                    methodName, methodArgTypes, conversions);
-            if (method != null) {
-                cachedMethod = new CachedMethod(methodName, argumentTypes,
-                        method, conversions, METHOD);
-            }
-        } catch (SecurityException security) {
-            // If we are running under an Applet, then we
-            // may end up here if, for example, we try
-            // to invoke the non-existent quantize function on
-            // java.lang.Math.
-        }
-
-        if (cachedMethod == null) {
-            // Native convert the base class.
-            // System.out.println("Checking for base conversion");
-            destTokenClass = ConversionUtilities
-                .convertTokenTypeToJavaType(argumentTypes[0]);
-
-            Method method = _polymorphicGetMethod(destTokenClass,
-                    methodName, methodArgTypes, conversions);
-            if (method != null) {
-                cachedMethod = new BaseConvertCachedMethod(
-                        methodName, argumentTypes, method,
-                        NATIVE_CONVERSION, conversions);
-            }
-        }
-        return cachedMethod;
-    }
-
     // Find a CachedMethod of type FUNCTION, in a registered class,
     // that accepts arguments argumentTypes[0..length].  Return null if no
     // method can be found.
@@ -987,6 +935,59 @@ public class CachedMethod {
             //        + preferredConversions[0]);
             cachedMethod = new CachedMethod(methodName, argumentTypes,
                     preferredMethod, preferredConversions, FUNCTION);
+        }
+        return cachedMethod;
+    }
+
+    // Find a CachedMethod of type METHOD, in a class that extends
+    // from the type indicated by argumentTypes[0], that accepts arguments
+    // argumentTypes[1..length].  Return null if no method can be found.
+    private static CachedMethod _findMETHOD(
+            String methodName, Type[] argumentTypes)
+            throws IllegalActionException {
+        CachedMethod cachedMethod = null;
+        // Try to reflect the method.
+        int num = argumentTypes.length;
+        ArgumentConversion[] conversions = new ArgumentConversion[num - 1];
+
+        Class destTokenClass = argumentTypes[0].getTokenClass();
+        Type[] methodArgTypes;
+        if (num == 1) {
+            methodArgTypes = null;
+        } else {
+            methodArgTypes = new Type[num - 1];
+            for (int i = 1; i < num; i++) {
+                methodArgTypes[i-1] = argumentTypes[i];
+            }
+        }
+
+        try {
+            Method method = _polymorphicGetMethod(destTokenClass,
+                    methodName, methodArgTypes, conversions);
+            if (method != null) {
+                cachedMethod = new CachedMethod(methodName, argumentTypes,
+                        method, conversions, METHOD);
+            }
+        } catch (SecurityException security) {
+            // If we are running under an Applet, then we
+            // may end up here if, for example, we try
+            // to invoke the non-existent quantize function on
+            // java.lang.Math.
+        }
+
+        if (cachedMethod == null) {
+            // Native convert the base class.
+            // System.out.println("Checking for base conversion");
+            destTokenClass = ConversionUtilities
+                .convertTokenTypeToJavaType(argumentTypes[0]);
+
+            Method method = _polymorphicGetMethod(destTokenClass,
+                    methodName, methodArgTypes, conversions);
+            if (method != null) {
+                cachedMethod = new BaseConvertCachedMethod(
+                        methodName, argumentTypes, method,
+                        NATIVE_CONVERSION, conversions);
+            }
         }
         return cachedMethod;
     }
@@ -1122,7 +1123,9 @@ public class CachedMethod {
                 TypeArgumentConversion argumentConversion =
                     (TypeArgumentConversion)conversion;
                 // FIXME: compare types.
-                if(TypeLattice.compare(_conversionType, argumentConversion._conversionType) == ptolemy.graph.CPO.LOWER) {
+                if(TypeLattice.compare(_conversionType,
+                        argumentConversion._conversionType)
+                        == ptolemy.graph.CPO.LOWER) {
                     return true;
                 }
                 return _conversion.isPreferableTo(
@@ -1135,7 +1138,8 @@ public class CachedMethod {
         /** Return a string representation of this conversion.
          */
         public String toString() {
-            return "TypeConversion(" + _conversionType + ", " + _conversion + ") " + _preference;
+            return "TypeConversion(" + _conversionType + ", "
+                + _conversion + ") " + _preference;
         }
         private ptolemy.data.type.Type _conversionType;
         private ArgumentConversion _conversion;
@@ -1190,13 +1194,6 @@ public class CachedMethod {
             super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;
-        }
-
-        /** Return an appropriate description of the method being invoked.
-         */
-        public String methodDescription() {
-            return "ArrayMapped{" +
-                _cachedMethod.methodDescription() + "}";
         }
 
         /** Invoke the method represented by this CachedMethod.  This
@@ -1272,6 +1269,13 @@ public class CachedMethod {
             return new ArrayType(elementType);
         }
 
+        /** Return an appropriate description of the method being invoked.
+         */
+        public String methodDescription() {
+            return "ArrayMapped{" +
+                _cachedMethod.methodDescription() + "}";
+        }
+
         private CachedMethod _cachedMethod;
         private boolean[] _reducedArgs;
     }
@@ -1290,13 +1294,6 @@ public class CachedMethod {
             super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;
-        }
-
-        /** Return an appropriate description of the method being invoked.
-         */
-        public String methodDescription() {
-            return "MatrixMapped{" +
-                _cachedMethod.methodDescription() + "}";
         }
 
         /** Run method represented by this cachedMethod.  This
@@ -1374,6 +1371,14 @@ public class CachedMethod {
             Type elementType = _cachedMethod.getReturnType();
             return UnsizedMatrixType.getMatrixTypeForElementType(elementType);
         }
+
+        /** Return an appropriate description of the method being invoked.
+         */
+        public String methodDescription() {
+            return "MatrixMapped{" +
+                _cachedMethod.methodDescription() + "}";
+        }
+
         private CachedMethod _cachedMethod;
         private boolean[] _reducedArgs;
     }

@@ -110,7 +110,7 @@ public class ConversionUtilities {
      * extracted and re-encapsulated in a token.  If no other
      * conversion is possible, then this method will simply return an
      * ObjectToken wrapping the object.
-     * @throws IllegalActionException If the selected conversion fails.
+     * @exception IllegalActionException If the selected conversion fails.
      * @return A new token.
      */
     public static ptolemy.data.Token convertJavaTypeToToken(Object object)
@@ -213,6 +213,89 @@ public class ConversionUtilities {
         return returnValue;
     }
 
+    /** Convert a java class, representing a Java type, to a
+     *  corresponding instance of a ptolemy type object, as consistent
+     *  with the convertJavaTypeToToken method.
+     *  @exception IllegalActionException If the token class is not
+     *  recognized, or creating the type fails.
+     */
+    public static Type convertJavaTypeToTokenType(Class tokenClass)
+            throws ptolemy.kernel.util.IllegalActionException {
+        try {
+            if (tokenClass.equals(ptolemy.data.Token.class)) {
+                return BaseType.GENERAL;
+            } else if (ptolemy.data.ArrayToken.class.isAssignableFrom(
+                    tokenClass)) {
+                Type type = new ArrayType(BaseType.GENERAL);
+                return type;
+            } else if (ptolemy.data.RecordToken.class.isAssignableFrom(
+                    tokenClass)) {
+                Type type = new RecordType(new String[0], new Type[0]);
+                return type;
+            } else if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
+                Type type = BaseType.forClassName(tokenClass.getName());
+                if (type == null) {
+                    throw new IllegalActionException(
+                            "Could not return type for class " + tokenClass);
+                }
+                return type;
+            } else if (tokenClass.equals(Boolean.class) ||
+                    tokenClass.equals(Boolean.TYPE)) {
+                return BaseType.BOOLEAN;
+            } else if (tokenClass.equals(Byte.class) ||
+                    tokenClass.equals(Byte.TYPE)) {
+                return BaseType.UNSIGNED_BYTE;
+            } else if (tokenClass.equals(Integer.class) ||
+                    tokenClass.equals(Integer.TYPE)) {
+                return BaseType.INT;
+            } else if (tokenClass.equals(Long.class) ||
+                    tokenClass.equals(Long.TYPE)) {
+                return BaseType.LONG;
+            } else if (tokenClass.equals(Double.class) ||
+                    tokenClass.equals(Double.TYPE)) {
+                return BaseType.DOUBLE;
+            } else if (tokenClass.equals(Float.class) ||
+                    tokenClass.equals(Float.TYPE)) {
+                // Note that we lose some information here..  oh well.
+                return BaseType.DOUBLE;
+            } else if (tokenClass.equals(Complex.class)) {
+                return BaseType.COMPLEX;
+            } else if (tokenClass.equals(FixPoint.class)) {
+                return BaseType.FIX;
+            } else if (tokenClass.equals(String.class)) {
+                return BaseType.STRING;
+            } else if (tokenClass.equals(Class.forName("[[Z"))) {
+                return BaseType.BOOLEAN_MATRIX;
+            } else if (tokenClass.equals(Class.forName("[[I"))) {
+                return BaseType.INT_MATRIX;
+            } else if (tokenClass.equals(Class.forName("[[J"))) {
+                return BaseType.LONG_MATRIX;
+            } else if (tokenClass.equals(Class.forName("[[D"))) {
+                return BaseType.DOUBLE_MATRIX;
+            } else if (tokenClass.equals(
+                    Class.forName("[[Lptolemy.math.Complex;"))) {
+                return BaseType.COMPLEX_MATRIX;
+            }  else if (tokenClass.equals(
+                    Class.forName("[[Lptolemy.math.FixPoint;"))) {
+                return BaseType.FIX_MATRIX;
+            } else if (tokenClass.isArray()) {
+                return new ArrayType(convertJavaTypeToTokenType(
+                        tokenClass.getComponentType()));
+
+            } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
+                return BaseType.OBJECT;
+            } else {
+                // This should really never happen, since every class
+                // should be caught by the isAssignable test above,
+                // but I don't like the dangling else if.
+                throw new InternalErrorException(
+                        "type not found: " + tokenClass);
+            }
+        } catch(ClassNotFoundException ex) {
+            throw new IllegalActionException(null, ex, ex.getMessage());
+        }
+    }
+
     /** Convert a Token to a corresponding Java object.  This method
      * is called by the expression language to unmarshal numeric
      * objects from tokens.  If the argument is an array token, this
@@ -223,7 +306,7 @@ public class ConversionUtilities {
      * Java numeric encapsulating object, e.g. java.lang.Double, if
      * necessary.  If no conversion is possible, then this method
      * throws an exception.
-     * @throws IllegalActionException If the selected conversion fails.
+     * @exception IllegalActionException If the selected conversion fails.
      * @return An object that is not a ptolemy.data.Token or an array
      * of ptolemy.data.Token.
      */
@@ -340,89 +423,6 @@ public class ConversionUtilities {
                     "token type not recognized: " + token);
         }
         return returnValue;
-    }
-
-    /** Convert a java class, representing a Java type, to a
-     *  corresponding instance of a ptolemy type object, as consistent
-     *  with the convertJavaTypeToToken method.
-     *  @exception IllegalActionException If the token class is not
-     *  recognized, or creating the type fails.
-     */
-    public static Type convertJavaTypeToTokenType(Class tokenClass)
-            throws ptolemy.kernel.util.IllegalActionException {
-        try {
-            if (tokenClass.equals(ptolemy.data.Token.class)) {
-                return BaseType.GENERAL;
-            } else if (ptolemy.data.ArrayToken.class.isAssignableFrom(
-                    tokenClass)) {
-                Type type = new ArrayType(BaseType.GENERAL);
-                return type;
-            } else if (ptolemy.data.RecordToken.class.isAssignableFrom(
-                    tokenClass)) {
-                Type type = new RecordType(new String[0], new Type[0]);
-                return type;
-            } else if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
-                Type type = BaseType.forClassName(tokenClass.getName());
-                if (type == null) {
-                    throw new IllegalActionException(
-                            "Could not return type for class " + tokenClass);
-                }
-                return type;
-            } else if (tokenClass.equals(Boolean.class) ||
-                    tokenClass.equals(Boolean.TYPE)) {
-                return BaseType.BOOLEAN;
-            } else if (tokenClass.equals(Byte.class) ||
-                    tokenClass.equals(Byte.TYPE)) {
-                return BaseType.UNSIGNED_BYTE;
-            } else if (tokenClass.equals(Integer.class) ||
-                    tokenClass.equals(Integer.TYPE)) {
-                return BaseType.INT;
-            } else if (tokenClass.equals(Long.class) ||
-                    tokenClass.equals(Long.TYPE)) {
-                return BaseType.LONG;
-            } else if (tokenClass.equals(Double.class) ||
-                    tokenClass.equals(Double.TYPE)) {
-                return BaseType.DOUBLE;
-            } else if (tokenClass.equals(Float.class) ||
-                    tokenClass.equals(Float.TYPE)) {
-                // Note that we lose some information here..  oh well.
-                return BaseType.DOUBLE;
-            } else if (tokenClass.equals(Complex.class)) {
-                return BaseType.COMPLEX;
-            } else if (tokenClass.equals(FixPoint.class)) {
-                return BaseType.FIX;
-            } else if (tokenClass.equals(String.class)) {
-                return BaseType.STRING;
-            } else if (tokenClass.equals(Class.forName("[[Z"))) {
-                return BaseType.BOOLEAN_MATRIX;
-            } else if (tokenClass.equals(Class.forName("[[I"))) {
-                return BaseType.INT_MATRIX;
-            } else if (tokenClass.equals(Class.forName("[[J"))) {
-                return BaseType.LONG_MATRIX;
-            } else if (tokenClass.equals(Class.forName("[[D"))) {
-                return BaseType.DOUBLE_MATRIX;
-            } else if (tokenClass.equals(
-                    Class.forName("[[Lptolemy.math.Complex;"))) {
-                return BaseType.COMPLEX_MATRIX;
-            }  else if (tokenClass.equals(
-                    Class.forName("[[Lptolemy.math.FixPoint;"))) {
-                return BaseType.FIX_MATRIX;
-            } else if (tokenClass.isArray()) {
-                return new ArrayType(convertJavaTypeToTokenType(
-                        tokenClass.getComponentType()));
-
-            } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
-                return BaseType.OBJECT;
-            } else {
-                // This should really never happen, since every class
-                // should be caught by the isAssignable test above,
-                // but I don't like the dangling else if.
-                throw new InternalErrorException(
-                        "type not found: " + tokenClass);
-            }
-        } catch(ClassNotFoundException ex) {
-            throw new IllegalActionException(null, ex, ex.getMessage());
-        }
     }
 
     /** Convert the given ptolemy type object to a java class

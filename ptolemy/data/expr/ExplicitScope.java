@@ -79,7 +79,8 @@ public class ExplicitScope implements ParserScope {
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
-    public ptolemy.data.type.Type getType(String name) throws IllegalActionException {
+    public ptolemy.data.type.Type getType(String name)
+            throws IllegalActionException {
         Variable variable = (Variable)_list.get(name);
         if (variable == null) {
             return null;

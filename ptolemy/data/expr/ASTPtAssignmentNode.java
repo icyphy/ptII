@@ -1,4 +1,4 @@
-/* ASTPtFunctionApplicationNode represents function nodes or array references in the parse tree
+/* ASTPtAssignmentNode represents assignment nodes in the parse tree
 
  Copyright (c) 1998-2003 The Regents of the University of California and
  Research in Motion Limited.
@@ -76,20 +76,20 @@ public class ASTPtAssignmentNode extends ASTPtRootNode {
             writer.printParseTree(getExpressionTree());
     }
 
-    public String getIdentifier() {
-        Node n = jjtGetChild(0);
-        if (!(n instanceof ASTPtLeafNode))
-            return null;
-        else
-            return ((ASTPtLeafNode)n).getName();
-    }
-
     public ASTPtRootNode getExpressionTree() {
         Node n = jjtGetChild(1);
         if (!(n instanceof ASTPtRootNode))
             return null;
         else
             return (ASTPtRootNode)n;
+    }
+
+    public String getIdentifier() {
+        Node n = jjtGetChild(0);
+        if (!(n instanceof ASTPtLeafNode))
+            return null;
+        else
+            return ((ASTPtLeafNode)n).getName();
     }
 
     public void jjtClose() {

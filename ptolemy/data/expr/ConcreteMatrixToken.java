@@ -77,17 +77,17 @@ public class ConcreteMatrixToken extends MatrixToken {
         throw new ArrayIndexOutOfBoundsException("Empty matrix.");
     }
 
-    /** Return the type of this token.
-     *  @return BaseType.MATRIX.
-     */
-    public Type getType() {
-        return BaseType.MATRIX;
-    }
-
     /** Return the number of rows of the contained matrix.
      *  @return Zero.
      */
     public int getRowCount() {
         return 0;
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.MATRIX.
+     */
+    public Type getType() {
+        return BaseType.MATRIX;
     }
 }

@@ -150,6 +150,21 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
+    /** Test if the given identifier is valid.
+     */
+    protected boolean _isValidName(String name)
+            throws IllegalActionException {
+        if (_scope != null) {
+            try {
+                return (_scope.getType(name) != null);
+            } catch (Exception ex) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     /** Loop through all of the children of this node,
      *  visiting each one of them, which will cause their token
      *  value to be determined.
@@ -171,20 +186,8 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
         child.visit(this);
     }
 
-    /** Test if the given identifier is valid.
-     */
-    protected boolean _isValidName(String name)
-            throws IllegalActionException {
-        if (_scope != null) {
-            try {
-                return (_scope.getType(name) != null);
-            } catch (Exception ex) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
 
     protected ParserScope _scope;
     protected Set _set;

@@ -138,7 +138,8 @@ public class FixPointFunctions {
      *  @param integerBits The number of bits used for the integer part.
      *  @return A fixed point representation of the value.
      */
-    public static FixPoint fix(double value, int numberOfBits, int integerBits) {
+    public static FixPoint fix(double value, int numberOfBits,
+            int integerBits) {
         Precision precision = new Precision( numberOfBits, integerBits);
         return Quantizer.round(value, precision);
     }

@@ -69,10 +69,10 @@ To allow extension of the parser capabilities without modifying
 the kernel code, method calls on Tokens are supported with the following
 syntax  (token).methodName(comma separated arguments).
 <p>
-Method arguments are processed as described in
-{@link ASTPtFunctionApplicationNode}. However, to allow element-by-element method
-calls on ArrayTokens, the following sequence is followed here to find
-a method to execute:
+Method arguments are processed as described in {@link
+ASTPtFunctionApplicationNode}.  However, to allow element-by-element
+method calls on ArrayTokens, the following sequence is followed here
+to find a method to execute:
 <ul>
 <li>Look for a method with tokens as supplied by PtParser.</li>
 <li>If that fails, convert all instances of ArrayToken to Token[] and
@@ -108,17 +108,17 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
         return _methodName;
     }
 
+    public void jjtClose() {
+        super.jjtClose();
+        // We cannot assume anything about a method call.
+        _isConstant = false;
+    }
+
     /** Traverse this node with the given visitor.
      */
     public void visit(ParseTreeVisitor visitor)
             throws IllegalActionException {
         visitor.visitMethodCallNode(this);
-    }
-
-    public void jjtClose() {
-        super.jjtClose();
-        // We cannot assume anything about a method call.
-        _isConstant = false;
     }
 
     /** Need to store the method name of the method call.

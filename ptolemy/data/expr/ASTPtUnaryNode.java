@@ -66,6 +66,13 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
         return _lexicalToken;
     }
 
+    /** Return true if this node represents the bitwise negation of its
+     *  child.
+     */
+    public boolean isBitwiseNot() {
+        return _isBitwiseNot;
+    }
+
     /** Return true if this node is (hierarchically) congruent to the
      *  given node, under the given renaming of bound identifiers.
      *  Derived classes should extend this method to add additional
@@ -97,13 +104,6 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
      */
     public boolean isNot() {
         return _isNot;
-    }
-
-    /** Return true if this node represents the bitwise negation of its
-     *  child.
-     */
-    public boolean isBitwiseNot() {
-        return _isBitwiseNot;
     }
 
     /** Traverse this node with the given visitor.

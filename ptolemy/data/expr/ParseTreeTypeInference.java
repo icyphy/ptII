@@ -107,51 +107,6 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 (Type)TypeLattice.lattice().leastUpperBound(childTypes));
     }
 
-    /** Set the type of the given node to be a function type whose
-     *  argument types are determined by the children of the node.
-     *  The return type of the function type is determined by
-     *  inferring the type of function's expression in a scope that
-     *  adds identifiers for each argument to the current scope.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException {
-        final Map map = new HashMap();
-        for (int i = 0; i < node._argTypes.length; i++) {
-            map.put(node.getArgumentNameList().get(i),
-                    node.getArgumentTypes()[i]);
-        }
-        // Push the current scope.
-        final ParserScope currentScope = _scope;
-        ParserScope functionScope = new ParserScope() {
-                public ptolemy.data.Token get(String name) {
-                    return null;
-                }
-                public Type getType(String name)
-                        throws IllegalActionException {
-                    Type type = (Type)map.get(name);
-                    if (type == null && currentScope != null) {
-                        return currentScope.getType(name);
-                    } else {
-                        return type;
-                    }
-                }
-                public Set identifierSet() throws IllegalActionException {
-                    Set set = currentScope.identifierSet();
-                    set.addAll(map.keySet());
-                    return set;
-                }
-            };
-        _scope = functionScope;
-        node.getExpressionTree().visit(this);
-        Type returnType = _inferredChildType;
-        FunctionType type = new FunctionType(node._argTypes, returnType);
-        _setType(node, type);
-        _scope = currentScope;
-        return;
-    }
-
     /** Set the type of the given node to be the return type of the
      *  function determined for the given node.
      *  @param node The specified node.
@@ -259,6 +214,51 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             throw new IllegalActionException("No matching function " +
                     node.getFunctionName() + "( " + buffer + " ).");
         }
+    }
+
+    /** Set the type of the given node to be a function type whose
+     *  argument types are determined by the children of the node.
+     *  The return type of the function type is determined by
+     *  inferring the type of function's expression in a scope that
+     *  adds identifiers for each argument to the current scope.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an inference error occurs.
+     */
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
+            throws IllegalActionException {
+        final Map map = new HashMap();
+        for (int i = 0; i < node._argTypes.length; i++) {
+            map.put(node.getArgumentNameList().get(i),
+                    node.getArgumentTypes()[i]);
+        }
+        // Push the current scope.
+        final ParserScope currentScope = _scope;
+        ParserScope functionScope = new ParserScope() {
+                public ptolemy.data.Token get(String name) {
+                    return null;
+                }
+                public Type getType(String name)
+                        throws IllegalActionException {
+                    Type type = (Type)map.get(name);
+                    if (type == null && currentScope != null) {
+                        return currentScope.getType(name);
+                    } else {
+                        return type;
+                    }
+                }
+                public Set identifierSet() throws IllegalActionException {
+                    Set set = currentScope.identifierSet();
+                    set.addAll(map.keySet());
+                    return set;
+                }
+            };
+        _scope = functionScope;
+        node.getExpressionTree().visit(this);
+        Type returnType = _inferredChildType;
+        FunctionType type = new FunctionType(node._argTypes, returnType);
+        _setType(node, type);
+        _scope = currentScope;
+        return;
     }
 
     /** Set the type of the given node to be the least upper bound of
@@ -507,27 +507,6 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         return BaseType.GENERAL;
     }
 
-    /** Test if the given identifier is valid.
-     */
-    protected boolean _isValidName(String name)
-            throws IllegalActionException {
-        if (_scope != null) {
-            try {
-                return (_scope.getType(name) != null);
-            } catch (Exception ex) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    protected void _setType(ASTPtRootNode node, Type type) {
-        //      System.out.println("type of " + node + " is " + type);
-        _inferredChildType = type;
-        node.setType(type);
-    }
-
     /** Loop through all of the children of this node,
      *  visiting each one of them, which will cause their token
      *  value to be determined.
@@ -556,6 +535,27 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
         child.visit(this);
         return _inferredChildType;
+    }
+
+    /** Test if the given identifier is valid.
+     */
+    protected boolean _isValidName(String name)
+            throws IllegalActionException {
+        if (_scope != null) {
+            try {
+                return (_scope.getType(name) != null);
+            } catch (Exception ex) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    protected void _setType(ASTPtRootNode node, Type type) {
+        //      System.out.println("type of " + node + " is " + type);
+        _inferredChildType = type;
+        node.setType(type);
     }
 
     protected ParserScope _scope;

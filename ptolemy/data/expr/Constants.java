@@ -87,7 +87,7 @@ public class Constants {
         // NOTE: Construct these arrays rather than using keySet()
         // and values() because we have no assurance that those will
         // return the contents in the same order.
-        int size =_table.size();
+        int size = _table.size();
         String[] names = new String[size];
         ptolemy.data.Token[] values = new ptolemy.data.Token[size];
         Iterator keys = _table.keySet().iterator();
@@ -172,10 +172,10 @@ public class Constants {
         _table.put("MinLong", new LongToken(Long.MIN_VALUE));
         _table.put("MaxDouble", new DoubleToken(Double.MAX_VALUE));
         _table.put("MinDouble", new DoubleToken(Double.MIN_VALUE));
-        _table.put("PositiveInfinity", new DoubleToken(Double.POSITIVE_INFINITY));
-        _table.put("NegativeInfinity", new DoubleToken(Double.NEGATIVE_INFINITY));
-
-
+        _table.put("PositiveInfinity",
+                new DoubleToken(Double.POSITIVE_INFINITY));
+        _table.put("NegativeInfinity",
+                new DoubleToken(Double.NEGATIVE_INFINITY));
 
         // Type constants.
         _table.put("boolean", BooleanToken.FALSE);

@@ -53,7 +53,6 @@ public class ConcreteScalarToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Return the type of this token.
      *  @return BaseType.SCALAR.
      */

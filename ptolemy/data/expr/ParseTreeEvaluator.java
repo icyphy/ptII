@@ -212,36 +212,6 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
     }
 
-    /** Define a function, where the children specify the argument types
-     *  and the expression.  The expression is not evaluated. The resulting
-     *  token in the node is an instance of FunctionToken.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
-     */
-    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException {
-
-        ASTPtRootNode cloneTree;
-
-        ParseTreeSpecializer specializer = new ParseTreeSpecializer();
-        cloneTree = specializer.specialize(node.getExpressionTree(),
-                node.getArgumentNameList(), _scope);
-
-        // Infer the return type.
-        if (_typeInference == null) {
-            _typeInference = new ParseTreeTypeInference();
-        }
-        _typeInference.inferTypes(node, _scope);
-        FunctionType type = (FunctionType)node.getType();
-        ExpressionFunction definedFunction =
-            new ExpressionFunction(
-                    node.getArgumentNameList(), node.getArgumentTypes(),
-                    cloneTree);
-        FunctionToken result = new FunctionToken(definedFunction, type);
-        _evaluatedChildToken = (result);
-        return;
-    }
-
     /** Apply a function to the children of the specified node.
      *  This also handles indexing into matrices and arrays, which look
      *  like function calls.
@@ -407,6 +377,36 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token result = _functionCall(
                 node.getFunctionName(), argTypes, argValues);
         _evaluatedChildToken = (result);
+    }
+
+    /** Define a function, where the children specify the argument types
+     *  and the expression.  The expression is not evaluated. The resulting
+     *  token in the node is an instance of FunctionToken.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an evaluation error occurs.
+     */
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
+            throws IllegalActionException {
+
+        ASTPtRootNode cloneTree;
+
+        ParseTreeSpecializer specializer = new ParseTreeSpecializer();
+        cloneTree = specializer.specialize(node.getExpressionTree(),
+                node.getArgumentNameList(), _scope);
+
+        // Infer the return type.
+        if (_typeInference == null) {
+            _typeInference = new ParseTreeTypeInference();
+        }
+        _typeInference.inferTypes(node, _scope);
+        FunctionType type = (FunctionType)node.getType();
+        ExpressionFunction definedFunction =
+            new ExpressionFunction(
+                    node.getArgumentNameList(), node.getArgumentTypes(),
+                    cloneTree);
+        FunctionToken result = new FunctionToken(definedFunction, type);
+        _evaluatedChildToken = (result);
+        return;
     }
 
     /** Evaluate the first child, and depending on its (boolean) result,
@@ -1161,6 +1161,19 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
     }
 
+    /** Add a record to the current trace corresponding to the given message.
+     *  If the trace is null, do nothing.
+     */
+    protected void _trace(String string) {
+        if(_trace != null) {
+            for(int i = 0; i < _depth; i++) {
+                _trace.append("  ");
+            }
+            _trace.append(string);
+            _trace.append("\n");
+        }
+    }
+
     /** Add a record to the current trace corresponding to the start
      *  of the evaluation of the given node.  If the trace is null, then
      *  do nothing.
@@ -1187,19 +1200,6 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
             _trace.append("Node " + node.getClass().getName() +
                     " evaluated to " + _evaluatedChildToken + "\n");
-        }
-    }
-
-    /** Add a record to the current trace corresponding to the given message.
-     *  If the trace is null, do nothing.
-     */
-    protected void _trace(String string) {
-        if(_trace != null) {
-            for(int i = 0; i < _depth; i++) {
-                _trace.append("  ");
-            }
-            _trace.append(string);
-            _trace.append("\n");
         }
     }
 
