@@ -78,11 +78,21 @@ public class Synchronizer extends Transformer {
 
     /** Consume exactly one token from each input channel and output
      *  the tokens on the corresponding output channels.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director or
+         if the number of input channels does not equal the number of
+         output channels.
      */
     public void fire() throws IllegalActionException {
-        for (int i = 0; i < input.getWidth(); i++) {
-            output.send(i, input.get(i));
+        int outWidth = output.getWidth();
+        int inWidth = input.getWidth();
+        if (inWidth != outWidth) {
+            throw new IllegalActionException(this, 
+                    "Unequal synchronizer channels: " + inWidth + 
+                    " inputs and " + outWidth + " outputs.");
+        } else {
+            for (int i = 0; i < inWidth; i++) {
+                output.send(i, input.get(i));
+            }
         }
     }
 
