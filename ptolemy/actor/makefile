@@ -48,7 +48,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	hoc/hoc.jar \
 	gui/gui.jar \
 	lib/lib.jar \
 	parameters/parameters.jar \
