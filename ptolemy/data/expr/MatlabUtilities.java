@@ -94,22 +94,16 @@ public class MatlabUtilities {
 
 	    //long[] engine = matlabEngine.open();
 
-	    if (_engine == null) {
-		// Opening the matlab engine each time is very slow
-		// Instead, we open it once.
-		// FIXME: Is this safe?  I think so, since we 
-		// clear the variables each time
-		_engine = (long []) _engineOpen
-		    .invoke(matlabEngine, new Object[0]);
-	    }
-
+	    // Opening the matlab engine each time is very slow
+	    _engine = (long []) _engineOpen
+		.invoke(matlabEngine, new Object[0]);
+	
 	    try {
 	    
 		synchronized (
-                        _engineGetSemaphore.invoke(
-                                matlabEngine, new Object[0])
-                        //matlabEngine.getSemaphore();
-                        ) {
+			      //matlabEngine.getSemaphore();
+			      matlabEngine ) {
+
 		    String addPathCommand = null;         // Assume none
 		    ptolemy.data.Token previousPath = null;
 		    ptolemy.data.Token packageDirectories = null;
@@ -145,19 +139,20 @@ public class MatlabUtilities {
 			    //    (engine, "previousPath_=path");
 
 
-			    _engineEvalString.invoke(matlabEngine,
-                                    new Object[] {
-                                        _engine, "previousPath_=path"
-                                    });
+			    //_engineEvalString.invoke(matlabEngine,
+                            //        new Object[] {
+                            //            _engine, "previousPath_=path"
+                            //        });
                                 
 
 			    //previousPath = matlabEngine.get
 			    //    (engine, "previousPath_");
 
-			    _engineGet.invoke(matlabEngine,
-                                    new Object[] {
-                                        _engine, "previousPath_"
-                                    });
+			    //previousPath = (ptolemy.data.Token)
+			    //	_engineGet.invoke(matlabEngine,
+                            //        new Object[] {
+                            //            _engine, "previousPath_"
+                            //        });
 
 			}
 		    }
@@ -209,7 +204,7 @@ public class MatlabUtilities {
 
 		    //result = matlabEngine.get(engine, "result__");
 
-		    result = (ptolemy.data.Token)
+		    result = (ptolemy.data.vToken)
 			_engineGet.invoke(matlabEngine,
                                 new Object[] {
                                     _engine, "result__"
@@ -217,12 +212,11 @@ public class MatlabUtilities {
 		}
 	    }
 	    finally {
-		// FIXME: We used to close the engine here, Is this necessary?
 		//matlabEngine.close(engine);
-		// 	    _engineClose.invoke(matlabEngine,
-		// 			       new Object[] {
-		// 				   engine
-		// 			       });
+		_engineClose.invoke(matlabEngine,
+				    new Object[] {
+					_engine
+				    });
 
 	    }
 	    return result;
@@ -281,10 +275,6 @@ public class MatlabUtilities {
                         String.class
                     });
 
-	    _engineGetSemaphore = _engineClass.getMethod("getSemaphore",
-                    new Class[0]);
-
-
 	    _engineOpen = _engineClass.getMethod("open", new Class[0]);
 
 	    _enginePut = _engineClass.getMethod("put",
@@ -321,9 +311,6 @@ public class MatlabUtilities {
 
     // ptolemy.matlab.Engine.get();
     private static Method _engineGet;
-
-    // ptolemy.matlab.Engine.getSemaphore();
-    private static Method _engineGetSemaphore;
 
     // ptolemy.matlab.Engine.open();
     private static Method _engineOpen;
