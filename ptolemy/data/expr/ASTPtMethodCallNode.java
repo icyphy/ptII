@@ -193,10 +193,10 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
             argTypes[0] = argValues[0].getClass();
             for (int i = 1; i < num; i++) {
                 ptolemy.data.Token child = _childTokens[i];
-                Object[] javaArg = 
+                Object[] javaArg =
                      ASTPtFunctionNode.convertTokenToJavaType(child);
                 argValues[i] = javaArg[0];
-                argTypes[i] = (Class)javaArg[1];                
+                argTypes[i] = (Class)javaArg[1];
             }
             try {
                 result = CachedMethod.findAndRunMethod
@@ -218,19 +218,19 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
         }
 
         // If result is still null, then try converting
-        // arg 0 to its java type... 
+        // arg 0 to its java type...
         if (result == null ) {
             ptolemy.data.Token child = _childTokens[0];
-            Object[] javaArg = 
+            Object[] javaArg =
                 ASTPtFunctionNode.convertTokenToJavaType(child);
             argValues[0] = javaArg[0];
-            argTypes[0] = (Class)javaArg[1];                
+            argTypes[0] = (Class)javaArg[1];
             result = CachedMethod.findAndRunMethod
                 (_methodName, argTypes, argValues, CachedMethod.METHOD);
         }
 
         if (result != null) {
-            ptolemy.data.Token retval = 
+            ptolemy.data.Token retval =
                 ASTPtFunctionNode.convertJavaTypeToToken(result);
             if (retval == null) {
                 throw new IllegalActionException

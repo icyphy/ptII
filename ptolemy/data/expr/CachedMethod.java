@@ -57,8 +57,8 @@ PtParser.
 {@link # REAL} {@link #METHOD}s exist in various class instances
 (Tokens or other).
 {@link #CONSTRUCTED} functions/methods are functions/methods
-"constructed" by FindAndRunMethod using the argument dimension reduction 
-technique. {@link #MISSING} methods are the ones for which the search 
+"constructed" by FindAndRunMethod using the argument dimension reduction
+technique. {@link #MISSING} methods are the ones for which the search
 has failed. The existence of either of these in the cache avoids
 the expensive (function) search through all the registered
 function classes.<p>

@@ -328,7 +328,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             }
             // Now have the arguments converted, look through all the
             // classes registered with the parser for the appropriate
-            // function. 
+            // function.
             result = CachedMethod.findAndRunMethod
                 (_funcName, argTypes, argValues, CachedMethod.FUNCTION);
         }
