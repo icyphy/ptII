@@ -97,10 +97,17 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+all: jclass doc-files
 	@echo "Run 'make demos' to run all the tutorials"
 
 install: all jars
+
+doc-files:
+	if [ ! -d doc-files ]; then \
+	    echo "Updating doc-files directory for javadoc"; \
+	    mkdir doc-files; \
+	    cp ../../doc/packages/canvas/tutorial/images/*.gif doc-files; \
+	fi
 
 DEMOS = $(JSRCS:%.java=%)
 demos: $(DEMOS)

@@ -52,7 +52,7 @@ public class MouseFilter {
     /** The alternate selection filter -- accepts button 1 with shift.
      */
     public static MouseFilter alternateSelectionFilter =
-    new MouseFilter(1,InputEvent.SHIFT_MASK);
+    new MouseFilter(1, InputEvent.SHIFT_MASK);
 
     /** The mouse button mask
      */
@@ -61,16 +61,15 @@ public class MouseFilter {
     | InputEvent.BUTTON2_MASK
     | InputEvent.BUTTON3_MASK;
 
-    /** The modifier mask
+    /** The modifier mask.
      */
-    private int _modifierMask =
+    private int _modifierMask = 
     InputEvent.SHIFT_MASK
-    | InputEvent.CTRL_MASK;
-
-    // AWT is lame
-    //| InputEvent.ALT_MASK
-    //| InputEvent.META_MASK;
-
+    | InputEvent.CTRL_MASK
+    | InputEvent.ALT_MASK
+    | InputEvent.ALT_GRAPH_MASK
+    | InputEvent.META_MASK;
+    
     /** The modifier flags, after masking
      */
     private int _modifierFlags = 0;
@@ -167,8 +166,9 @@ public class MouseFilter {
         int m = event.getModifiers();
         boolean val = (m & _buttonMask) != 0 &&
             (_modifierFlags == (m & _modifierMask));
-        //System.out.println("FILTER = " + this);
-        //System.out.println("ACCEPT? = " + val);
+//         System.out.println("event = " + event);
+//         System.out.println("FILTER = " + this);
+//         System.out.println("ACCEPT? = " + val);
         return val;
     }
 
@@ -177,10 +177,10 @@ public class MouseFilter {
     public String toString () {
         StringBuffer result = new StringBuffer();
         result.append(super.toString()
-                + "; Button " + LayerEvent.toString(_buttonMask)
-                + "; Modifiers " + LayerEvent.toString(_modifierFlags)
-                + "; Modifier mask " + LayerEvent.toString(_modifierMask)
-                + "; Press Number " + LayerEvent.toString(_pressNumber));
+                + "; Button " + MouseEvent.getMouseModifiersText(_buttonMask)
+                + "; Modifiers " + MouseEvent.getMouseModifiersText(_modifierFlags)
+                + "; Modifier mask " + MouseEvent.getMouseModifiersText(_modifierMask)
+                + "; Press Number " + _pressNumber);
         return result.toString();
     }
 }

@@ -357,12 +357,12 @@ if [ "$PTJXTA_DIR" = "jxta" ]; then
 fi
 
 #### PSDF is Parameterized Synchronous Data Flow
-# PTPSDF_DIR is set to psdf if configure found synthesis.jar
+# PTPSDF_DIR is set to psdf if configure found mapss.jar
 PTPSDF_DIR=@PTPSDF_DIR@
 PSDF_JARS=""
 if [ "$PTPSDF_DIR" = "psdf" ]; then 
     PSDF_DIR="@PSDF_DIR@"
-    PSDF_JARS="${CLASSPATHSEPARATOR}${PSDF_DIR}/synthesis.jar"
+    PSDF_JARS="${CLASSPATHSEPARATOR}${PSDF_DIR}/mapss.jar"
 fi
 
 #### Saxon is the XSLT and XQuery Processor (http://saxon.sourceforge.net/)
@@ -373,7 +373,12 @@ SAXON_JAR=${CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
 # FIXME: configure needs to find TinyOS and use a variable like PTTOSROOT
 # In the short term, we just use TOSROOT, which the user should have
 # set during the installation of TinyOS.
-TOSJARS=${CLASSPATHSEPARATOR}${TOSROOT}
+#
+# The problem is that the nesc/configure script does not understand
+# "c:/" style syntax, it works with "/cygdrive/c/", yet Java
+# does not understand /cygdrive/c syntax, so we hack
+TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+TOSJARS=${CLASSPATHSEPARATOR}${TOSROOT_NO_CYGDRIVE}
 
 #### X10 is the interface library for power line communication, see
 # http://x10.homelinux.org/download.html

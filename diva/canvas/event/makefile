@@ -48,6 +48,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	EventAcceptor.java \
 	EventLayer.java \
+	ExtendedMouseFilter.java \
 	LayerAdapter.java \
 	LayerConsumer.java \
 	LayerEvent.java \

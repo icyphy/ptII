@@ -335,9 +335,11 @@ public class JCanvas extends JComponent implements Printable {
 
     /** Process a mouse event. This method overrides the inherited
      * method to create a LayerEvent or LayerMotionEvent and pass the
-     * event on to its pane (if it is not null).
-     * The mouse event is passed to the superclass' method for
-     * handling.
+     * event on to its pane (if it is not null).  The mouse event is
+     * passed to the superclass' method for handling.  Note that the
+     * event is always passed on to the base class event processing
+     * (i.e. MouseListeners added to the canvas) regardless of whether
+     * or not the event was consumed.
      */
     protected void processMouseEvent(MouseEvent e) {
         internalProcessMouseEvent(e);
@@ -345,10 +347,12 @@ public class JCanvas extends JComponent implements Printable {
     }
 
     /** Process a mouse motion event. This method overrides the
-     * inherited method to create a LayerEvent or LayerMotionEvent
-     * and pass the event on to its pane (if it is not null).
-     * The mouse event is passed to the superclass' method for
-     * handling.
+     * inherited method to create a LayerEvent or LayerMotionEvent and
+     * pass the event on to its pane (if it is not null).  The mouse
+     * event is passed to the superclass method for handling.  Note
+     * that the event is always passed on to the base class event
+     * processing (i.e. MouseListeners added to the canvas) regardless
+     * of whether or not the event was consumed.
      */
     protected void processMouseMotionEvent(MouseEvent e) {
         internalProcessMouseEvent(e);

@@ -53,6 +53,10 @@ import diva.canvas.Figure;
  * @author John Reekie
  */
 public class LayerEvent extends MouseEvent {
+    // Note: This class now uses the improved JDK1.4 mechanism for
+    // processing mouse events using getModifiersEx() which correspond
+    // correctly to alt, etc. Unfortunately, this means that is now
+    // incompatible with jdk1.3. Oh well.
 
     /** The layer source
      * @serial
@@ -85,8 +89,8 @@ public class LayerEvent extends MouseEvent {
      */
     public LayerEvent (MouseEvent e) {
         super(e.getComponent(), e.getID(), e.getWhen(),
-                e.getModifiers(), e.getX(), e.getY(),
-                e.getClickCount(), e.isPopupTrigger() );
+                e.getModifiersEx(), e.getX(), e.getY(),
+                e.getClickCount(), e.isPopupTrigger(), e.getButton());
 
         _backingEvent = e;
         _layerX = e.getX();
@@ -100,8 +104,8 @@ public class LayerEvent extends MouseEvent {
      */
     public LayerEvent (MouseEvent e, int id) {
         super(e.getComponent(), id, e.getWhen(),
-                e.getModifiers(), e.getX(), e.getY(),
-                e.getClickCount(), e.isPopupTrigger() );
+                e.getModifiersEx(), e.getX(), e.getY(),
+                e.getClickCount(), e.isPopupTrigger(), e.getButton());
 
         _backingEvent = e;
         _layerX = e.getX();
@@ -192,58 +196,59 @@ public class LayerEvent extends MouseEvent {
     public String toString () {
         StringBuffer result = new StringBuffer(this.getClass().getName());
         result.append("[" + idToString(getID())
-                + ",mods=" + toString(getModifiers())
+                + ",mods=" + getModifiersExText(getModifiersEx())
                 + ",clickcount=" + getClickCount()
                 + ",figure=" + getFigureSource()
                 + ",layer=(" + _layerX + "," + _layerY + ")"
+                + ",consumed=" + isConsumed()
                 + "]");
-        return result.toString();
+        return result.toString() + _backingEvent;
     }
 
-    /** Print the string representation of modifier flags
-     */
-    public static String toString (int flags) {
-        StringBuffer result = new StringBuffer();
-        int i = 256;
-        boolean sep = false;
-        while (i > 0) {
-            String s = flagToString(i & flags);
-            if (s != null) {
-                if (sep) {
-                    result.append("|");
-                }
-                result.append(s);
-                sep = true;
-            }
-            i = i / 2;
-        }
-        return result.toString();
-    }
+     /** Print the string representation of modifier flags
+      */
+     public static String toString (int flags) {
+         StringBuffer result = new StringBuffer();
+         int i = 256;
+         boolean sep = false;
+         while (i > 0) {
+             String s = flagToString(i & flags);
+             if (s != null) {
+                 if (sep) {
+                     result.append("|");
+                 }
+                 result.append(s);
+                 sep = true;
+             }
+             i = i / 2;
+         }
+         return result.toString();
+     }
 
-    /** Print the string representation of a single flag
-     */
-    private static String flagToString(int flag) {
-        switch (flag) {
-        case InputEvent.BUTTON1_MASK:
-            return "BUTTON1_MASK";
-        case InputEvent.BUTTON2_MASK:
-            return "BUTTON2_MASK";
-        case InputEvent.BUTTON3_MASK:
-            return "BUTTON3_MASK";
+     /** Print the string representation of a single flag
+      */
+     private static String flagToString(int flag) {
+         switch (flag) {
+         case InputEvent.BUTTON1_MASK:
+             return "BUTTON1_MASK";
+         case InputEvent.BUTTON2_MASK:
+             return "BUTTON2_MASK";
+         case InputEvent.BUTTON3_MASK:
+             return "BUTTON3_MASK";
 
-        case InputEvent.CTRL_MASK:
-            return "CTRL_MASK";
-        case InputEvent.SHIFT_MASK:
-            return "SHIFT_MASK";
+         case InputEvent.CTRL_MASK:
+             return "CTRL_MASK";
+         case InputEvent.SHIFT_MASK:
+             return "SHIFT_MASK";
 
-            //// AWT is too stupid to handle these properly
-            //case InputEvent.ALT_MASK:
-            //return "ALT_MASK";
-            //case InputEvent.META_MASK:
-            //return "META_MASK";
-        }
-        return null;
-    }
+             //// AWT is too stupid to handle these properly
+             //case InputEvent.ALT_MASK:
+             //return "ALT_MASK";
+             //case InputEvent.META_MASK:
+             //return "META_MASK";
+         }
+         return null;
+     }
 
     /** Print the string representation of an event ID
      */

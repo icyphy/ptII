@@ -55,12 +55,6 @@ import diva.canvas.interactor.SelectionModel;
  */
 public class BasicNodeController implements NodeController {
 
-    /** The filter for control operations
-     */
-    private MouseFilter _controlFilter = new MouseFilter (
-            InputEvent.BUTTON1_MASK,
-            InputEvent.CTRL_MASK);
-
     private Interactor _interactor;
     private NodeRenderer _renderer;
     private GraphController _controller;

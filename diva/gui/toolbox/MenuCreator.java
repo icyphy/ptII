@@ -25,6 +25,7 @@
 */
 package diva.gui.toolbox;
 
+import java.awt.event.MouseEvent;
 import java.awt.event.InputEvent;
 
 import javax.swing.JPopupMenu;
@@ -59,10 +60,17 @@ public class MenuCreator extends AbstractInteractor {
      * Set the menu factory to the given factory.
      */
     public MenuCreator(MenuFactory factory) {
-        MouseFilter filter = new MouseFilter (
-                InputEvent.BUTTON3_MASK);
-        setMouseFilter(filter);
         setMenuFactory(factory);
+        setMouseFilter(new MouseFilter(InputEvent.BUTTON3_MASK));
+    }
+
+    /**
+     * When a mouse press happens, ask the factory to create a menu and show
+     * it on the screen.  Consume the mouse event.  If the factory is set to
+     * null, then ignore the event and do not consume it.
+     */
+    public void mousePressed(LayerEvent e) {
+        _doEvent(e);
     }
 
     /**
@@ -71,19 +79,25 @@ public class MenuCreator extends AbstractInteractor {
      * null, then ignore the event and do not consume it.
      */
     public void mouseReleased(LayerEvent e) {
-        if (_factory != null) {
-            Figure source = e.getFigureSource();
-            JPopupMenu menu = _factory.create(source);
-            if (menu == null) return;
-            menu.show(e.getComponent(), e.getX(), e.getY());
-            e.consume();
-        }
+        _doEvent(e);
     }
 
     /** Set the menu factory.
      */
     public void setMenuFactory(MenuFactory factory) {
         _factory = factory;
+    }
+
+    /** Process a mousePressed or mouseReleased event.
+     */
+    private void _doEvent(LayerEvent e) {
+        if (_factory != null && e.isPopupTrigger()) {
+            Figure source = e.getFigureSource();
+            JPopupMenu menu = _factory.create(source);
+            if (menu == null) return;
+            menu.show(e.getComponent(), e.getX(), e.getY());
+            e.consume();
+        }
     }
 }
 
