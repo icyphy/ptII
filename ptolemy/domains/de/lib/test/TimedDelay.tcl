@@ -91,7 +91,7 @@ Because:
 Cannot have negative delay: -1.0
   in .top.TimedDelay}}
 
-test TimedDelay-4.1 {test a self loop with the zero TimedDelay} {
+test TimedDelay-4.1 {test a self loop without a TimedDelay} {
     set e0 [deModel 3.0]
     set clock [java::new ptolemy.actor.lib.Clock $e0 clock]
     set add [java::new ptolemy.actor.lib.AddSubtract $e0 add]
@@ -108,7 +108,7 @@ test TimedDelay-4.1 {test a self loop with the zero TimedDelay} {
 } {{ptolemy.kernel.util.IllegalActionException: Found zero delay loop including: .top.add, .top.add
   in .top}}
 
-test TimedDelay-5.1 {test a more complex loop with the zero TimedDelay} {
+test TimedDelay-5.1 {test a more complex loop without a TimedDelay} {
     set e0 [deModel 3.0]
     set clock [java::new ptolemy.actor.lib.Clock $e0 clock]
     set add [java::new ptolemy.actor.lib.AddSubtract $e0 add]
