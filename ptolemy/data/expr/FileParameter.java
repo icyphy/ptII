@@ -78,14 +78,37 @@ The following special file names are understood:
 </ul>
 Note, however, that these file names cannot be converted to URLs
 using the asURL() method.
-<p>
-A file name can also contain the string "$PTII", which refers to
-the home directory of the Ptolemy II installation, or the string
-"$CWD", which refers the current working directory, or "$HOME",
-which refers to the user's home directory.  These values are
-obtained from the Java properties <i>ptolemy.ptII.dir</i>,
-<i>user.dir</i>, and <i>user.home</i>, respectively.  These
-properties are normally set when a Ptolemy II application starts.
+A file name can also contain the following strings that start
+with "$", which get substituted
+with the appropriate values.
+<table>
+ <tr>
+  <th>String</th>
+  <th>Description</th>
+  <th>Property</th>
+ </tr>
+ <tr>
+  <tr><code>$CWD</code></tr>
+  <tr>The current working directory</tr>
+  <tr><code>user.dir</code></tr>
+ </tr>
+ <tr>
+  <tr><code>$HOME</code></tr>
+  <tr>The user's home directory</tr>
+  <tr><code>user.home</code></tr>
+ </tr>
+ <tr>
+  <tr><code>$PTII</code></tr>
+  <tr>The home directory of the Ptolemy II installation</tr>
+  <tr><code>ptolemy.ptII.dir</code></tr>
+ </tr>
+ <tr>
+  <tr><code>$TMP</code></tr>
+  <tr>The temporary directory</tr>
+  <tr><code>java.io.tmpdir</code></tr>
+ </tr>
+</table>
+The above properties are normally set when a Ptolemy II application starts.
 <p>
 If a file name begins with the reference "$CLASSPATH", then when
 the file is opened for reading, the openForReading() method
