@@ -84,8 +84,9 @@ public class PNDirector extends Director {
 
     public synchronized  void decreaseActiveCount() {
 	_activeActorsCount--;	    
-	//System.out.println("decreasing active count");
+	System.out.println("decreasing active count");
 	_checkForDeadlock();
+        _checkForPause();
     }
     
     /** This does not do anything in PN.
@@ -144,13 +145,13 @@ public class PNDirector extends Director {
                 actor.createReceivers();
                 PNThread pnt = new PNThread(actor);
                 _threadlist.insertFirst(pnt);
-                //increaseActiveCount();
+                increaseActiveCount();
             }
             Enumeration threads = _threadlist.elements();
             //Starting threads;
             while (threads.hasMoreElements()) {
                 PNThread pnt = (PNThread)threads.nextElement();
-                increaseActiveCount();
+                //increaseActiveCount();
                 pnt.start();
             }
         }
@@ -159,6 +160,11 @@ public class PNDirector extends Director {
 
     public synchronized void increaseActiveCount() {
 	_activeActorsCount++;
+    }
+
+    public void paused() {
+        _pausedcount++;
+        _checkForPause();
     }
 
     public LinkedList setPause(boolean pause) throws IllegalActionException {
@@ -255,7 +261,7 @@ public class PNDirector extends Director {
 	try {
 	    // The private member is created only if mutation is being used.
 	    super.queueMutation(mutation);
-	    setPause(true);
+	    _pausedRecs = setPause(true);
 	    synchronized(this) {
 		_urgentMutations = true;
 		//setPause(true);
@@ -274,6 +280,7 @@ public class PNDirector extends Director {
 	_readBlockCount++;
 	//System.out.println("Readblocked with count "+_readBlockCount);
 	_checkForDeadlock();
+        _checkForPause();
 	return;
     }
 
@@ -348,6 +355,7 @@ public class PNDirector extends Director {
 	_writeblockedQs.insertFirst(queue);
 	//System.out.println("WriteBlockedQ "+_writeBlockCount );
 	_checkForDeadlock();
+        _checkForPause();
 	return;
     } 
     
@@ -402,6 +410,16 @@ public class PNDirector extends Director {
 	    _deadlock = true;
 	    //FIXME: Who should the notify go on?
 	    notifyAll();
+	}
+	return;
+    }
+
+    private synchronized void _checkForPause() {
+	//System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" *PAUSED*"+"pausedcoint = "+_pausedcount);
+	if (_readBlockCount + _writeBlockCount + _pausedcount >= _activeActorsCount) {
+	    _paused = true;
+	    //FIXME: Who should the notify go on?
+            notifyAll();
 	}
 	return;
     }
@@ -473,12 +491,19 @@ public class PNDirector extends Director {
 	    writebl = _writeBlockCount;
 	}
 	//}
-	//System.out.println(" deadlock = "+_deadlock+" and mut ="+_urgentMutations);
+	//System.out.println(" deadlock = "+deadl+" and mut ="+urgentmut);
 	if (urgentmut) {
-	    //FIXME: Should get a linked list anyway, for what about 
-	    //paused receivers of deleted actors?
-	    //FIXME: I should perhaps check that all of them are paused!!
-	    LinkedList pausedrecs = setPause(true);
+	    //FIXME: Should get a linked list anyway, for what about; 
+	    //paused receivers of deleted actors?;
+            //FIXME: I should perhaps check that all of them are paused!!;
+            //LinkedList pausedrecs = setPause(true);
+            synchronized (this) {
+                while (!_paused) {
+                    workspace().wait(this);
+                }
+                _paused = false;
+            }
+            //isPaused();
 	    //System.out.println("Performed mutations");
 	    //boolean mutationOccured = false;
 	    //while (_performMutations()) {
@@ -498,7 +523,7 @@ public class PNDirector extends Director {
             }
 	    //System.out.println("Done mutations");
 	    //setPause(false);
-	    setResume(pausedrecs);
+	    setResume(_pausedRecs);
 	    //}
 	    //_urgentMutations = false;
 	    return false;
@@ -559,9 +584,11 @@ public class PNDirector extends Director {
     ////                         private variables                 ////
     
     private long _activeActorsCount = 0;
+    private long _pausedcount = 0;
 
     private LinkedList _threadlist = new LinkedList();
     private boolean _pause = false;
+    private boolean _paused = false;
     private boolean _mutate = true;
     // Container is the CompositeEntity the executive is responsible for
     //private CompositeEntity _container;
@@ -578,7 +605,7 @@ public class PNDirector extends Director {
     private boolean _urgentMutations = false;
     // No of stars blocking on write.
     private int _writeBlockCount = 0;
-    //private LinkedList _readblockedQs = new LinkedList();
+    private LinkedList _pausedRecs = new LinkedList();
     private LinkedList _writeblockedQs = new LinkedList();
     private PNActorListener _pnActorListener;
 }
