@@ -215,10 +215,20 @@ the Pxgraph class.  Note that printing in the Pxgraph class requires
 JDK1.1 and later.
 
  <P>The 
-<A HREF="../../ptplot2html.tcl"><CODE>ptplot2html.tcl</CODE></A> Tcl
+<A HREF="../../ptplot2mif.tcl"><CODE>ptplot2mif.tcl</CODE></A> Tcl
 script can be used to convert the PostScript output of the Pxgraph
 application to Framemaker MIF format.  This script requires Tcl and 
-probably works only with the Sun Solaris JDK.
+probably works only with the Sun Solaris JDK.  To create a MIF file,
+use the <CODE>pxgraph</CODE> script to display your data, print to file,
+then run <CODE>ptplot2mif.tcl</CODE> on your file
+
+ <P>You might want to use the <CODE>-print</CODE> option to bring up
+the print window immediately and the <CODE>-o</CODE> option to specify
+an output file for the PostScript.  Below is an example:
+<PRE>
+pxgraph -print -o /tmp/data.ps demo/data.plt
+ptplot2mif.tcl /tmp/data.ps &gt; /tmp/data.mif
+</PRE>
 
 <DT>  <A NAME="twofiles"><B>3.4 How do I plot two datafiles in an applet? </B></A>
 <DD>The <CODE>pxgraphargs</CODE> applet parameter can be used to pass
