@@ -51,13 +51,13 @@ public class CSPPut extends CSPActor {
 
     /**
      */
-    public CSPPut(CompositeActor cont, String name, int count)
+    public CSPPut(CompositeActor cont, String name, int numTokens)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
          outputPort = new IOPort(this, "output", false, true);
-	 _count = count;
-	 _tokens = new Token[_count];
+	 _numTokens = numTokens;
+	 _tokens = new Token[_numTokens];
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@ public class CSPPut extends CSPActor {
     public void fire() throws IllegalActionException {
 	int cnt = 0; 
 	Token token = new Token();
-	while(cnt < _count) {
+	while(cnt < _numTokens) {
 	    outputPort.send(0, _tokens[cnt]);
 	    cnt++;
 	}
@@ -84,7 +84,7 @@ public class CSPPut extends CSPActor {
     ////                        private variables                       ////
 
     public IOPort outputPort;
-    private int _count;
+    private int _numTokens;
     private int _pauseCnt = -1;
     private Token[] _tokens = null;
 }
