@@ -66,12 +66,12 @@ $pxgraph -test -brb 1.0 -bar $tmpfile
 $pxgraph -test -brw 0.8 -bar $tmpfile
 $pxgraph -test -fg green $tmpfile
 $pxgraph -test -gw 10 $tmpfile
-$pxgraph -test -lf 9x15 $tmpfile
+$pxgraph -test -lf helvetica-ITALIC-20 $tmpfile
 $pxgraph -test -lx 0.5,1.5 $tmpfile
 $pxgraph -test -ly 0.5,1.5 $tmpfile
 $pxgraph -test -lx 0.5,1.5 -ly 0.5,1.5 $tmpfile
 $pxgraph -test -t "This is the Title" $tmpfile
-$pxgraph -test -tf 9x15 $tmpfile
+$pxgraph -test -tf Courier-BOLD-16 $tmpfile
 $pxgraph -test -x Years -y "$ Profit" $tmpfile
 $pxgraph -test -zg Yellow $tmpfile
 $pxgraph -test -zw 5 $tmpfile
@@ -85,5 +85,5 @@ $pxgraph -test ./demo/bargraph.plt
 $pxgraph -test http://ptolemy.eecs.berkeley.edu/java/plot/demo/data.plt
 
 # Sample run from Ptolemy
-$pxgraph -test -t "Integrator Demo" -P -x n =800x400+0+0 -1 control -0 final demo/data/integrator1.plt demo/data/integrator2.plt
+$pxgraph -test -binary -t "Integrator Demo" -P -x n =800x400+0+0 -1 control -0 final demo/data/integrator1.plt demo/data/integrator2.plt
 
