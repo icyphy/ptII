@@ -33,12 +33,16 @@
 
 ME =		ptolemy/actor/lib
 
+# $PTII/configure looks for the Java Communications API and sets PTJSPACES_DIR
+# in $PTII/mk/ptII.mk if was found.  Otherwise, PTCOMM_DIR is empty.
+#
 # $PTII/configure looks for javasound and sets PTJAVASOUND_DIR
-# in $PTII/mk/ptII.mk if it was found.  Otherwise, PTJAVASOUND is empty
+# in $PTII/mk/ptII.mk if it was found.  Otherwise, PTJAVASOUND is empty.
+#
 # $PTII/configure looks for Jini and sets PTJSPACES_DIR in
-# $PTII/mk/ptII.mk if was found.  Otherwise, PTJSPACES_DIR is empty
-DIRS = 		conversions gui logic hoc io \
-		test $(PTJAVASOUND_DIR) $(PTJSPACES_DIR)
+# $PTII/mk/ptII.mk if was found.  Otherwise, PTJSPACES_DIR is empty.
+DIRS = 		conversions gui logic hoc \
+		test $(PTCOMM_DIR) $(PTJAVASOUND_DIR) $(PTJSPACES_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
@@ -58,10 +62,11 @@ PTCLASSALLJARS = \
 	conversions/conversions.jar \
 	gui/gui.jar \
 	hoc/hoc.jar \
-	logic/logic.jar
+	logic/logic.jar \
+	net/net.jar
 
-# Don't include io.jar, it requires javacomm
-#        io/io.jar 
+# Don't include comm.jar, it requires javacomm
+#        comm/comm.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -167,6 +172,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	comm
 	doc \
 	javasound \
 	jspaces \
@@ -175,15 +181,12 @@ OPTIONAL_FILES = \
 	'RecordUpdater$$1.class' \
 	'RecordUpdater$$FunctionTerm.class' \
 	'Scale$$1.class' \
-	'Scale$$PortParamFunction.class' \
-	io
+	'Scale$$PortParamFunction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
