@@ -28,6 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 /* This is an static class that allows debug print statements to be
    inserted into code and easily ignored when not needed.
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.kernel;

@@ -25,6 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (liuxj@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 

@@ -25,6 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;

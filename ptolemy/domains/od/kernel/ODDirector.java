@@ -26,6 +26,7 @@ to the Ordered Dataflow model of computation.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (davisj@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
