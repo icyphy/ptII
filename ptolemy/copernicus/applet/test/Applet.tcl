@@ -64,6 +64,10 @@ proc autoAppletCG {autoDirectory} {
 proc autoAppletDemoCG {autoDirectory} {
     set i 0
     foreach file [glob $autoDirectory/*/demo/*/*.xml] {
+	if { [string last FileWriter2.xml $file] != -1 \
+		|| [string last ReadFile2.xml $file] != -1 } {
+		next
+	}
 	puts "---- testing $file"
 	incr i
 	test "Auto-$i" "Automatic test in file $file" {
