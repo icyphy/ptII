@@ -143,15 +143,15 @@ public class Expression extends TypedAtomicActor {
                 try {
                     // Have to remove any attribute with the name of the port
                     // first.
-                    String portname = port.getName();
+                    String portName = port.getName();
                     // FIXME
-                    // Attribute attr = getAttribute(portname);
+                    // Attribute attr = getAttribute(portName);
                     // if (attr != null) {
                     //    attr.setContainer(null);
                     //}
                     PassiveVariable pvar =
                         new PassiveVariable(workspace());
-                    pvar.setName(portname);
+                    pvar.setName(portName);
                     _variables.prepend(pvar);
                 } catch (IllegalActionException ex) {
                     // Not expected because a variable can be added to this
