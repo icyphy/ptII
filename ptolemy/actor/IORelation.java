@@ -611,10 +611,10 @@ public class IORelation extends ComponentRelation {
     // The two input arrays must have the same number of rows.
     private Receiver[][] _cascade(Receiver[][] array1, Receiver[][] array2)
             throws InvalidStateException {
-        if (array1.length <= 0) {
+        if (array1 == null || array1.length <= 0) {
             return array2;
         }
-        if (array2.length <= 0) {
+        if (array2 == null || array2.length <= 0) {
             return array1;
         }
         int width = getWidth();
