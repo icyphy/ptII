@@ -105,11 +105,17 @@ test BasePNDirector-5.1 {Test action methods} {
 ####
 #
 test BasePNDirector-5.2 {Test creation of a receiver} {
-    set r1 [$d3 newReceiver]
+    set r1 [java::cast ptolemy.domains.pn.kernel.PNQueueReceiver \
+	    [$d3 newReceiver]]
     #FIXME: Check if this is correct!
     set p1 [$d4 getAttribute "Initial_queue_capacity"]
-    $p1 setToken [java::new {ptolemy.data.IntToken int} 5]
-    set r2 [$d4 newReceiver]
+    #$p1 setToken [java::new {ptolemy.data.IntToken int} 5]
+
+    # _testSetToken is defined in $PTII/util/testsuite/testParams.tcl
+    _testSetToken $p1 [java::new {ptolemy.data.IntToken int} 5]
+
+    set r2 [java::cast ptolemy.domains.pn.kernel.PNQueueReceiver \
+	    [$d4 newReceiver]]
     list [$r1 getCapacity] [$r2 getCapacity]
 } {1 5}
 
@@ -126,7 +132,7 @@ test BasePNDirector-7.1 {Test finishing methods} {
     $d71 setName D71    
     $e71 setDirector $d71
     set p1 [$d71 getAttribute "Initial_queue_capacity"]
-    $p1 setToken [java::new {ptolemy.data.IntToken int} 5]
+    _testSetToken $p1 [java::new {ptolemy.data.IntToken int} 5]
     set t1 [java::new ptolemy.domains.pn.kernel.test.TestDirector $e71 t1]
     set p1 [$t1 getPort input]
     set p2 [$t1 getPort output]
@@ -165,7 +171,7 @@ test BasePNDirector-7.2 {Test artificial deadlock detection} {
     $d72 setName D72    
     $e72 setDirector $d72
     set p1 [$d72 getAttribute "Initial_queue_capacity"]
-    $p1 setToken [java::new {ptolemy.data.IntToken int} 0]
+    _testSetToken $p1 [java::new {ptolemy.data.IntToken int} 0]
     set t1 [java::new ptolemy.domains.pn.kernel.test.TestDirector $e72 t1]
     set p1 [$t1 getPort input]
     set p2 [$t1 getPort output]
