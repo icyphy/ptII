@@ -9,11 +9,11 @@
 <parameter name="filename" type="string"/>
 <port name="image" output="true" type="doubleArray"/>
 <xmlgraphic>
-<rect color="blue" fill="hatch" points="0 0 10 10"/>
+<rect color="red" fill="red" points="-20 -20 40 40"/>
 <!-- ovals are described in terms of a bounding box -->
 <textline font="helvetica" points="0 0">Hello!</textline>
-<polygon points="0 0 10 10 15 10 15 0"/>
-<ellipse fill="blue" points="0 0 10 10"/>
+<polygon points="0 0 30 30 0 30 30 0" fill="blue"/>
+<ellipse fill="yellow" points="0 0 10 10"/>
 </xmlgraphic>
 </icon>
 

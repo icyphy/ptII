@@ -258,6 +258,8 @@ public class PTMLObjectFactory {
             String v = e.getAttribute(n);        
             graphic.setAttribute(n, v);
         }
+
+        graphic.setAttribute("content", e.getPCData());
         return graphic;
     }
 

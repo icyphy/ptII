@@ -95,6 +95,7 @@ public class EditorNodeRenderer implements NodeRenderer {
 
     /** 
      * Return a shape given a URL
+     * FIXME hack for testing underlying stuff.
      */
     public Figure getFigure(String url) {
         try {
@@ -147,7 +148,7 @@ public class EditorNodeRenderer implements NodeRenderer {
             double scale = getCompositeScale();
             rep.getTransformContext().getTransform().scale(scale, scale);
 
-            Figure f = getFigure("file:/c:/users/neuendor/ptII/ptolemy/" + 
+            Figure f = getFigure("file:/users/neuendor/ptII/ptolemy/" + 
 				 "schematic/util/test/" + 
 				 "exampleIconLibrary.ptml");
 

@@ -37,6 +37,9 @@ import collections.*;
 import ptolemy.schematic.xml.XMLElement;
 import diva.util.java2d.*;
 import java.awt.*;
+import java.awt.geom.*;
+import java.util.*;
+import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphicElement
@@ -86,6 +89,99 @@ public class GraphicElement extends Object {
     }
 
     /**
+     * Return the color of this element, by turning the color
+     * attribute into a brush. If no color attribute exists, then use
+     * black.
+     */
+    public Paint getColor() {
+        if(!hasAttribute("color")) {
+            return getColorByString("black");
+        } else {
+            return getColorByString(getAttribute("color"));
+        }
+    }
+
+    /**
+     * Return the value of the content attribute of this graphic element.
+     * If no content attribute exists, return an empty string.  This is 
+     * primarily useful for textual elements.
+     */
+    public String getContent() {
+        if(!hasAttribute("content")) {
+            return new String("");
+        } else {
+            return getAttribute("content");
+        }
+    }
+
+    /**
+     * Return the fill of this element, by turning the color
+     * attribute into a brush. If no fill attribute exists, then use
+     * black.
+     */
+    public Paint getFill() {
+        if(!hasAttribute("fill")) {
+            return getColorByString("black");
+        } else {
+            return getColorByString(getAttribute("fill"));
+        }
+    }
+
+    public Paint getColorByString(String colorName) {
+        colorName = colorName.toLowerCase();
+        if(colorName.equals("black")) return Color.black;
+        if(colorName.equals("blue")) return Color.blue;
+        if(colorName.equals("cyan")) return Color.cyan;
+        if(colorName.equals("darkgray")) return Color.darkGray;
+        if(colorName.equals("gray")) return Color.gray;
+        if(colorName.equals("green")) return Color.green;
+        if(colorName.equals("lightgray")) return Color.lightGray;
+        if(colorName.equals("magenta")) return Color.magenta;
+        if(colorName.equals("orange")) return Color.orange;
+        if(colorName.equals("pink")) return Color.pink;
+        if(colorName.equals("red")) return Color.red;
+        if(colorName.equals("white")) return Color.white;
+        if(colorName.equals("yellow")) return Color.yellow;
+        return Color.black;
+    }
+
+    public float getWidth() {
+        if(!hasAttribute("width")) return 1;
+        DoubleToken token = new DoubleToken(getAttribute("width"));
+        return (float)token.doubleValue();
+    }
+
+    /**
+     * Return the size of the iteration returned by the points method.
+     */
+    public int numberOfPoints() {
+        CircularList doubleList = new CircularList();
+        if(!hasAttribute("points")) 
+            return 0;
+        String pointsAttribute = getAttribute("points");
+        StringTokenizer pointsTokens = new StringTokenizer(pointsAttribute);
+        return pointsTokens.countTokens();
+    }
+
+    /**
+     * Return an enumeration of DoubleTokens parsed from the
+     * points attribute of this element.  If no points attribute exists,
+     * then return an Enumeration with no elements.
+     */
+    public Enumeration points() {
+        CircularList doubleList = new CircularList();
+        if(!hasAttribute("points")) 
+            return doubleList.elements();
+        String pointsAttribute = getAttribute("points");
+        StringTokenizer pointsTokens = new StringTokenizer(pointsAttribute);
+        while(pointsTokens.hasMoreElements()) {
+            String tokenString = (String)pointsTokens.nextElement();
+            doubleList.insertLast(new DoubleToken(tokenString));
+        }
+        return doubleList.elements();
+    }
+            
+    /**
      * Return a painted object that looks like this graphic element
      * [FIXME: cache this]
      * [FIXME: this is ugly..  is there a better way?]
@@ -94,19 +190,57 @@ public class GraphicElement extends Object {
     public PaintedObject getPaintedObject() {
         PaintedObject paintedObject;
         if(_type.equals("rect")) {
-            Rectangle shape = new Rectangle(-20, -20, 40, 40);
-            paintedObject = new PaintedShape(shape, Color.red, 0);
+            int pointsCount = numberOfPoints();
+            double pointx, pointy;
+            Rectangle2D shape;
+            //FIXME if these are illegal, what should we do?
+            if(pointsCount < 2) 
+                return GraphicElement._errorObject;
+            Enumeration allPoints = points();
+            pointx = ((DoubleToken) allPoints.nextElement())
+                .doubleValue();
+            pointy = ((DoubleToken) allPoints.nextElement())
+                .doubleValue();
+            shape = new Rectangle2D.Double(pointx, pointy, 0, 0);
+            while(allPoints.hasMoreElements()) {
+                pointx = ((DoubleToken) allPoints.nextElement())
+                    .doubleValue();
+                if(allPoints.hasMoreElements()) {
+                    pointy = ((DoubleToken) allPoints.nextElement())
+                        .doubleValue();
+                    shape.add(pointx, pointy);
+                }
+            }
+            paintedObject = new PaintedShape(shape, getFill(), getWidth());
         } else if(_type.equals("textline")) {
-            paintedObject = new PaintedString("test string");
+            paintedObject = new PaintedString(getContent());
+            
         } else if(_type.equals("polygon")) {
-	    Polygon2D shape = new Polygon2D.Double(0, 0);
-	    shape.lineTo(30, 30);
-	    shape.lineTo(0, 30);
-	    shape.lineTo(30, 0);
-	    paintedObject = new PaintedShape(shape, Color.blue, 2);
+            int pointsCount = numberOfPoints();
+            double pointx, pointy;
+            Polygon2D shape;
+            if(pointsCount < 2) 
+                return GraphicElement._errorObject;
+            Enumeration allPoints = points();
+            pointx = ((DoubleToken) allPoints.nextElement())
+                .doubleValue();
+            pointy = ((DoubleToken) allPoints.nextElement())
+                .doubleValue();
+            shape = new Polygon2D.Double(pointx, pointy);
+            while(allPoints.hasMoreElements()) {
+                pointx = ((DoubleToken) allPoints.nextElement())
+                    .doubleValue();
+                if(allPoints.hasMoreElements()) {
+                    pointy = ((DoubleToken) allPoints.nextElement())
+                        .doubleValue();
+                    shape.lineTo(pointx, pointy);
+                }
+            }
+	    paintedObject = new PaintedShape(shape, getFill(), getWidth());
 	} else { // if(_type.equals("ellipse")
+            //FIXME how do you handle ellipses?
             Rectangle shape = new Rectangle(0, 0, 10, 10);
-            paintedObject = new PaintedShape(shape, Color.black, 0);
+            paintedObject = new PaintedShape(shape, getFill(), getWidth());
 	}
         return paintedObject;
     }
@@ -151,6 +285,8 @@ public class GraphicElement extends Object {
         return str + ")";
     }
 
+    private static PaintedString _errorObject = new PaintedString("ERROR!");
+    
     private LLMap _attributes;
     private String _type;
 }
