@@ -47,6 +47,10 @@ are feeded back. The accumulation of the quantized values is the digital output.
         </property>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}}">
     </property>

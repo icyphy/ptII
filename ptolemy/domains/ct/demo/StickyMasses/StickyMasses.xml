@@ -52,6 +52,10 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
         </property>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
     </property>
     <property name="position1" class="ptolemy.data.expr.Parameter" value="0.0">
     </property>
