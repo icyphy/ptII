@@ -51,8 +51,8 @@ JSRCS = \
 	DDEGetToken.java \
 	DDEPut.java \
 	DDEPutToken.java \
-	FlowThru.java \
-	TwoPut.java
+	FlowThru.java 
+	#TwoPut.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
