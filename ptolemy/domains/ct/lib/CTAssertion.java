@@ -59,8 +59,8 @@ import java.util.List;
 //// CTAssertion
 /**
 The CTAssertion actor evaluates an assertion that includes references
-to the inputs. The ports are referenced by the variables that have 
-the same name as the port. If the assertion is satisfied, nothing 
+to the inputs. The ports are referenced by the variables that have
+the same name as the port. If the assertion is satisfied, nothing
 happens. If not, an exception will be thrown.
 To use this class, instantiate it, then add ports (instances of TypedIOPort).
 In vergil, you can add ports by right clicking on the icon and selecting
@@ -145,7 +145,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
         super.initialize();
         _eventMissed = false;
     }
-    
+
     /** Return true if this step does not violate the assertion.
      *  If the assertion does not hold, reduce the step size half and
      *  return false.
@@ -155,13 +155,13 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
 
 	try {
 	    BooleanToken result = (BooleanToken) evaluate();
-	    
+
 	    if (!result.booleanValue()) {
-		
+
 		if (_debugging) {
 		    _debug(this.getFullName() + " adjusts the step size");
 		}
-		
+
 		CTDirector dir = (CTDirector)getDirector();
 		_eventMissed = true;
 
@@ -169,7 +169,7 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
 		_refineStep = 0.5*dir.getCurrentStepSize();
 
 		if (_debugging) _debug(getFullName() +
-				       " Former stepsize as " + dir.getCurrentStepSize() + 
+				       " Former stepsize as " + dir.getCurrentStepSize() +
 				       "\nRefined step at" +  _refineStep);
 		return false;
 	    }
@@ -177,12 +177,12 @@ public class CTAssertion extends Assertion implements CTStepSizeControlActor {
 		if (_debugging) {
 		    _debug(this.getFullName() + " need not adjust the step size");
 		}
-	    }		    
+	    }
 	} catch (IllegalActionException e) {
 	    // which should not happen
 	    return false;
 	}
-	
+
 	_eventMissed = false;
 	return true;
     }
