@@ -127,6 +127,16 @@ public class ObjectToken extends Token {
         }
     }
 
+    /** Return the string value of the object.  Get t
+     */
+    public String stringValue() {
+        if (_value != null) {
+            return _value.toString();
+        } else {
+            return super.stringValue();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
