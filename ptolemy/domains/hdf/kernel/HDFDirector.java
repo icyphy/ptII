@@ -95,7 +95,7 @@ value of this parameter is 100.
 <LI>
 A. Girault, B. Lee, and E. A. Lee,
 ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
-Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
+Finite State Machines with Multiple Concurrency Models</A>, '' April 13,
 1998.</LI>
 </ol>
 
@@ -232,14 +232,16 @@ public class HDFDirector extends SDFDirector {
                 _scheduleCache = new HashMap();
                 _scheduleKeyList = new ArrayList(cacheSize);
                 _cacheSize = cacheSize;
-                 
                 // When using a schedule from the cache, the external
                 // Rates also need to be updated. So we also need to
-                // cache the external rates. 
+                // cache the external rates.
                 _externalRatesCache = new TreeMap();
                 _externalRatesKeyList = new ArrayList(cacheSize);
             }
-            if (_scheduleCache.containsKey(rateKey)) {
+            if (rateKey == _mostRecentRates) {
+                schedule = ((SDFScheduler)scheduler).getSchedule();
+            } else if (_scheduleCache.containsKey(rateKey)) {
+                _mostRecentRates = rateKey;
                 // cache hit.
                 if (_debug_info) {
                     System.out.println(getName() +
@@ -255,10 +257,11 @@ public class HDFDirector extends SDFDirector {
                     _externalRatesKeyList.add(0, rateKey);
                 }
                 schedule = (Schedule)_scheduleCache.get(rateKey);
-                Map externalRates = (Map)_externalRatesCache.get(rateKey); 
+                Map externalRates = (Map)_externalRatesCache.get(rateKey);
                 ((SDFScheduler)scheduler).setContainerRates(externalRates);
                 //schedule = ((SDFScheduler)scheduler).getSchedule();
             } else {
+                _mostRecentRates = rateKey;
                 // cache miss.
                 if (_debug_info) {
                     System.out.println(getName() +
@@ -280,7 +283,7 @@ public class HDFDirector extends SDFDirector {
                 }
                 // Add key/schedule to the schedule map.
                 schedule = ((SDFScheduler)scheduler).getSchedule();
-                Map externalRates = 
+                Map externalRates =
                     ((SDFScheduler)scheduler).getExternalRates();
                 _externalRatesCache.put(rateKey, externalRates);
                 _scheduleCache.put(rateKey, schedule);
@@ -288,11 +291,11 @@ public class HDFDirector extends SDFDirector {
         }
         return schedule;
     }
-    
-    /** Initialize the actors associated with this director. 
-     *  If this method is called immediatley after preinitialize(), 
+
+    /** Initialize the actors associated with this director.
+     *  If this method is called immediatley after preinitialize(),
      *  then it will not compute the schedule because it was done
-     *  in preinitialize(). Otherwise it needs to re-compute 
+     *  in preinitialize(). Otherwise it needs to re-compute
      *  the schedule in case this director is nested in a refinement
      *  of FSM and the "reset" in the guard is set to be true.
      *  @exception IllegalActionException If the initialize() method of
@@ -306,29 +309,9 @@ public class HDFDirector extends SDFDirector {
             _preinitializeFlag = false;
             SDFScheduler scheduler = (SDFScheduler)getScheduler();
             getSchedule();
-        }    
+        }
     }
-    
-    /** Preinitialize the actors associated with this director.
-     *  The super class method will compute the schedule. If this
-     *  HDF director is at the top level, then update the number
-     *  of firings per top-level iteration for each actor from the
-     *  top level down to the bottom level.
-     *  @exception IllegalActionException If the super class
-     *  preintialize throws it, or if the updateFiringCount method
-     *  throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        //_scheduleKeyList.clear();
-        super.preinitialize();
-        _preinitializeFlag = true;
-        CompositeActor container = (CompositeActor)getContainer();
-        Director exeDirector = container.getExecutiveDirector();
-        if (exeDirector == null) {
-            updateFiringCount(1, true);
-        } 
-    }
-    
+
     /** Get the HDF schedule since schedule may change in the postfire.
      *  If this director is at the top level, then update the number of
      *  firings per top-level iteration for each actor from the top level
@@ -354,11 +337,34 @@ public class HDFDirector extends SDFDirector {
             //|| (! (exeDirector instanceof HDFFSMDirector))
             //|| (! (exeDirector instanceof HDFDirector))
             ) {
+            _directorFiringsPerIteration = 1;
             updateFiringCount(1, false);
         }
         return super.postfire();
     }
-    
+
+    /** Preinitialize the actors associated with this director.
+     *  The super class method will compute the schedule. If this
+     *  HDF director is at the top level, then update the number
+     *  of firings per top-level iteration for each actor from the
+     *  top level down to the bottom level.
+     *  @exception IllegalActionException If the super class
+     *  preintialize throws it, or if the updateFiringCount method
+     *  throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        //_scheduleKeyList.clear();
+        _mostRecentRates = "";
+        super.preinitialize();
+        _preinitializeFlag = true;
+        CompositeActor container = (CompositeActor)getContainer();
+        Director exeDirector = container.getExecutiveDirector();
+        if (exeDirector == null) {
+            _directorFiringsPerIteration = 1;
+            updateFiringCount(1, true);
+        }
+    }
+
     /** Set the number of firings per top-level iteration of the
      *  current director.
      *  @param firingsPerIteration Number of firings per top-level
@@ -367,7 +373,7 @@ public class HDFDirector extends SDFDirector {
     public void setDirectorFiringsPerIteration(int firingsPerIteration) {
         _directorFiringsPerIteration = firingsPerIteration;
     }
-    
+
     /** Update the number of firings per top-level iteration of
      *  each actor in the current director.
      *  @param directorFiringCount The number of firings per
@@ -375,74 +381,40 @@ public class HDFDirector extends SDFDirector {
      *  director.
      *  @param preinitializeFlag Flag indicating whether this
      *  method is called in the preinitialize() method.
-     *  @throws IllegalActionException If no schedule can be found,
+     *  @exception IllegalActionException If no schedule can be found,
      *  or if the updateFiringsCount method in HDFFSMDirector throws it.
      */
     public void updateFiringCount
-        (int directorFiringCount, boolean preinitializeFlag) 
+        (int directorFiringCount, boolean preinitializeFlag)
             throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
         Scheduler scheduler = ((SDFDirector)this).getScheduler();
         for (Iterator entities = container.deepEntityList().iterator();
                      entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
-            int firingCount = 
+            int firingCount =
                 ((SDFScheduler)scheduler).getFiringCount(entity);
             if (entity instanceof CompositeActor) {
-                Director director =((CompositeActor)entity).getDirector();
+                Director director = ((CompositeActor)entity).getDirector();
                 if (director instanceof HDFFSMDirector) {
                     firingCount = firingCount * directorFiringCount;
                     ((HDFFSMDirector)director)
                         .setFiringsPerScheduleIteration(firingCount);
-                    ((HDFFSMDirector)director).updateFiringCount(firingCount, preinitializeFlag);  
+                    ((HDFFSMDirector)director)
+                        .updateFiringCount(firingCount, preinitializeFlag);
                 } else if (director instanceof HDFDirector) {
                     firingCount = firingCount * directorFiringCount;
-                    ((HDFDirector)director).setDirectorFiringsPerIteration(firingCount);
-                    ((HDFDirector)director).
-                        updateFiringCount(firingCount, preinitializeFlag);
+                    ((HDFDirector)director)
+                        .setDirectorFiringsPerIteration(firingCount);
+                    ((HDFDirector)director)
+                        .updateFiringCount(firingCount, preinitializeFlag);
                 }
             }
-        }           
+        }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Initialize the object. In this case, we give the HDFDirector a
-     *  default scheduler of the class HDFScheduler.
-     */
-    private void _init() {
-        try {
-            SDFScheduler scheduler =
-                new SDFScheduler(this, uniqueName("Scheduler"));
-            setScheduler(scheduler);
-        }
-        catch (Exception e) {
-            // if setScheduler fails, then we should just set it to Null.
-            // this should never happen because we don't override
-            // setScheduler() to do sanity checks.
-            throw new InternalErrorException(
-                    "Could not create Default Scheduler:\n" +
-                    e.getMessage());
-        }
-        try {
-            int cacheSize = 100;
-            _cacheSize = cacheSize;
-            scheduleCacheSize
-                = new Parameter(this,"scheduleCacheSize",new IntToken(cacheSize));
-
-            _scheduleCache = new HashMap();
-            _scheduleKeyList = new ArrayList(cacheSize);
-            
-            _externalRatesCache = new TreeMap();
-            _externalRatesKeyList = new ArrayList(cacheSize);
-        }
-        catch (Exception e) {
-            throw new InternalErrorException(
-                    "Cannot create default iterations parameter:\n" +
-                    e.getMessage());
-        }
-    }
 
     /** Return a list of all the input ports contained by the
      *  deeply contained entities of the container of this director.
@@ -504,6 +476,45 @@ public class HDFDirector extends SDFDirector {
         return outputPortList;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Initialize the object. In this case, we give the HDFDirector a
+     *  default scheduler of the class HDFScheduler.
+     */
+    private void _init() {
+        try {
+            SDFScheduler scheduler =
+                new SDFScheduler(this, uniqueName("Scheduler"));
+            setScheduler(scheduler);
+        }
+        catch (Exception e) {
+            // if setScheduler fails, then we should just set it to Null.
+            // this should never happen because we don't override
+            // setScheduler() to do sanity checks.
+            throw new InternalErrorException(
+                    "Could not create Default Scheduler:\n" +
+                    e.getMessage());
+        }
+        try {
+            int cacheSize = 100;
+            _cacheSize = cacheSize;
+            scheduleCacheSize = new Parameter(this,
+                "scheduleCacheSize",new IntToken(cacheSize));
+
+            _scheduleCache = new HashMap();
+            _scheduleKeyList = new ArrayList(cacheSize);
+            _externalRatesCache = new TreeMap();
+            _externalRatesKeyList = new ArrayList(cacheSize);
+        }
+        catch (Exception e) {
+            throw new InternalErrorException(
+                    "Cannot create default iterations parameter:\n" +
+                    e.getMessage());
+        }
+    }
+
+
     // The hashmap for the schedule cache.
     private Map _scheduleCache;
     private List _scheduleKeyList;
@@ -514,14 +525,16 @@ public class HDFDirector extends SDFDirector {
     private Map _externalRatesCache;
     private List _externalRatesKeyList;
 
+    private String _mostRecentRates;
+
     // A flag indicating whether the intialize() method is
     // called immediately after the preinitialize() method.
     private boolean _preinitializeFlag;
-    
-    // Number of firings per top-level iteration 
+
+    // Number of firings per top-level iteration
     // of the current director.
     private int _directorFiringsPerIteration = 1;
-    
+
     // Set to true to enable debugging.
     //private boolean _debug_info = true;
     private boolean _debug_info = false;
