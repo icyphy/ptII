@@ -71,9 +71,11 @@ JSRCS = \
 	PNImageSource.java \
 	MatrixPacker.java \
 	MatrixUnpacker.java \
+	RandomValueSource.java \
 	RLDecoder.java \
 	RLEncoder.java \
 	ImageDisplay.java \
+	PNPlot.java \
 	RadioController.java
 
 EXTRA_SRCS =	$(JSRCS)
