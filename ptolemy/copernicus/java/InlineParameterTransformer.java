@@ -210,6 +210,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
+        NamedObjAnalysis namedObjAnalysis = new NamedObjAnalysis(method, null);
 
         for (Iterator units = body.getUnits().snapshotIterator();
              units.hasNext();) {
@@ -299,14 +300,17 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         // If we are invoking a method on a
                         // variable class, then attempt to get the
                         // constant value of the variable.
-                        Attribute attribute =
-                            getAttributeValue(method, (Local)r.getBase(), stmt, localDefs, localUses);
+                        Attribute attribute = (Attribute)
+                            namedObjAnalysis.getObject((Local)r.getBase());
+                        //   getAttributeValue(method, (Local)r.getBase(), stmt, localDefs, localUses);
+                                                
                         if (debug) System.out.println("Settable base = " + attribute);
-
+                        
                         // If the attribute resolves to null, then
                         // replace the invocation with an
                         // exception throw.
                         if (attribute == null) {
+                             if (debug) System.out.println("replacing with NullPointerException!");
                             Local exceptionLocal =
                                 SootUtilities.createRuntimeException(
                                         body, stmt,
@@ -342,7 +346,8 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                             continue;
                         }
 
-                        // Get some references to the container of the attribute.
+                        // Get some references to the container of the
+                        // attribute.
                         Entity container =
                             FieldsForEntitiesTransformer.getEntityContainerOfObject(attribute);
                         Local thisLocal = body.getThisLocal();
@@ -751,6 +756,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                 Iterator pairs = localUses.getUsesOf(stmt).iterator();
                 while (pairs.hasNext()) {
                     UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
+                    System.out.println("unit = " + pair.getUnit());
                     if (pair.getUnit() instanceof DefinitionStmt) {
                         DefinitionStmt useStmt = (DefinitionStmt)pair.getUnit();
                         if (useStmt.getLeftOp() instanceof FieldRef) {

@@ -72,6 +72,7 @@ JSRCS = \
 	InlineTokenTransformer.java \
 	Main.java \
 	ModelTransformer.java \
+	NamedObjAnalysis.java \
 	NamedObjEliminator.java \
 	NamedObjEqualityEliminator.java \
 	ParseTreeCodeGenerator.java \
