@@ -50,6 +50,23 @@
 # 18) Warn if the clone method copies port or parameters
 # 19) Warn if there is no trailing newline
 # 20) Warn if the class comment has * on each line.
+
+# Determine if we are on windows and try to set JAVAHOME
+windows=no
+case "${OSTYPE-no}" in
+# Cygwin Bash
+    cygwin*)
+	windows=yes;;
+# Tcsh
+    Windows*)
+	windows=yes;;
+esac
+
+awk=awk
+if [ "$windows" = "yes" ]; then
+    awk=gawk
+fi
+
 for file in $@
 do
 
@@ -60,7 +77,7 @@ do
 		grep -v 'write-protected' |
 		grep -v ' _'`
 	if [ "x$results" != "x" ]; then
-		echo "$results" | awk '{
+		echo "$results" | $awk '{
 		    # If this is a constructor, then do not complain
 		    split($2,f,"(")
 		    # Skip over comments that start with //
@@ -81,7 +98,7 @@ do
 		grep -v 'private static final class' |
 		grep -v 'private variables' | grep -v ' _'`
 	if [ "x$results" != "x" ]; then
-		echo "$results" | awk '{
+		echo "$results" | $awk '{
 		    # If this is a constructor, then do not complain
 		    split($2,f,"(")
 		    # Skip over comments that start with //
@@ -97,10 +114,10 @@ do
 	fi
 
 	# Look for lines longer than 80 chars
-	awk 'length($0) > 80 {if ($0 !~ /[Hh][Rr][Ee][Ff]/ && $1 !~ /@version/ ) {print FILENAME": Line more than 80 chars:"; print $0}}' $file
+	$awk 'length($0) > 80 {if ($0 !~ /[Hh][Rr][Ee][Ff]/ && $1 !~ /@version/ ) {print FILENAME": Line more than 80 chars:"; print $0}}' $file
 
 	# Look for public statements after private etc.
-        awk '$1 == "public" {sawpublic=1
+        $awk '$1 == "public" {sawpublic=1
 				if (sawprivate == 1 && sawinner != 1) {
 				   print FILENAME": public is after private"
 				   print $0
@@ -153,7 +170,7 @@ do
 	done
 
 	# Look for @version: or @author:
-	awk '$0 ~ /@author:/ {
+	$awk '$0 ~ /@author:/ {
 	    print FILENAME": Remove trailing : from @author:"
 	    print $0
 	}
@@ -210,7 +227,7 @@ do
 	# Check the rating
 	results=`egrep '^@AcceptedRating' $file`
 	if [ "x$results" != "x" ]; then
-	    rating=`echo $results | awk '{print $2}' `
+	    rating=`echo $results | $awk '{print $2}' `
 	    if [ "$rating" != "Green" ]; then
 		echo "$file: does not have an AcceptedRating of Green"
 		echo "$results"
@@ -288,7 +305,7 @@ do
         # 18) Warn if the clone method copies port or parameters
 	results=`egrep 'Object clone\(W' $file`
 	if [ "x$results" != "x" ]; then
-	    awk '{  if ($0 ~ /Object clone/) {
+	    $awk '{  if ($0 ~ /Object clone/) {
 			clonedecl=NR
 		    } else {
 			if ($0 ~ /getPort/ || $0 ~ /getAttribute/) {
