@@ -169,7 +169,19 @@ You need not install Java3d if you are not planning on using GR domain.
  <p>If you plan on recompiling the GR domain, then install the Java 3D SDK
 and runtime.  If you plan on only running the GR domain demos, then
 installing only the Java 3D runtime should be sufficient.
-We have verified the demos with the Java 3D 1.2.1_03 SDF (DirectX Version).
+We have verified the demos with the Java 3D 1.2.1_04 SDK (DirectX Version).
+
+<p>Note that JDK1.4.0 requires Java 3D 1.2.1_04.  If you run
+with Java 3D 1.2.1_03 and JDK1.4.0, the GR demos will fail to initialize
+and you will see the message:
+<pre>
+Fail to create back buffer - DDERR_INALIDPARAM
+</pre>
+The Java 3D 1.2.1_04 release notes say that this bug:
+<pre>
+4470749 Java3D fail to initialize underlying OGL/D3D library in jdk1.4
+</pre>
+was fixed in Java 3D 1.2.1_04
 
 <h3><a name="matlab">Matlab</a></h3>
 Ptolemy II includes an interface to Matlab that was  
