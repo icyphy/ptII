@@ -30,7 +30,10 @@
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.actor.NoRoomException;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.util.*;
 
 import java.util.Collections;
@@ -111,6 +114,12 @@ public abstract class AbstractActionsAttribute extends Action {
         if (_destinationsListVersion != workspace().getVersion()) {
             _updateDestinations();
         }
+        if (_parseTreeEvaluator == null) {
+            _parseTreeEvaluator = new ParseTreeEvaluator();
+        }
+        if (_scope == null) {
+            _scope = new ActionScope();
+        }
     }
 
     /** Return the channel number associated with the given name, assuming
@@ -185,16 +194,22 @@ public abstract class AbstractActionsAttribute extends Action {
 
         if (expression == null) return;
 
+        PtParser parser = new PtParser();
+
         // Initialize the lists that store the commands to be executed.
         _destinationNames = new LinkedList();
         _numbers = new LinkedList();
         _variables = new LinkedList();
+        _parseTrees = new LinkedList();
 
         // Indicate that the _destinations list is invalid.  We defer
         // determination of the destinations because the destinations
         // may not have been created yet.
         _destinationsListVersion = -1;
 
+        // FIXME: There is a conflict between the format for matrices
+        // and this separator.  Use the expression language to do this
+        // separation.
         StringTokenizer commands = new StringTokenizer(expression, ";");
         while (commands.hasMoreTokens()) {
             String command = commands.nextToken();
@@ -203,7 +218,7 @@ public abstract class AbstractActionsAttribute extends Action {
             int equalSign = command.indexOf("=");
             if (equalSign < 1 || equalSign >= command.length()-1) {
                 throw new IllegalActionException(this,
-                        "Malformed action: expected destination == "
+                        "Malformed action: expected destination = "
                         + "expression. Got: "
                         + command);
             }
@@ -217,7 +232,7 @@ public abstract class AbstractActionsAttribute extends Action {
                 int closeParen = completeDestinationSpec.indexOf(")");
                 if (closeParen < openParen) {
                     throw new IllegalActionException(this,
-                            "Malformed action: expected destination == "
+                            "Malformed action: expected destination = "
                             + "expression. Got: " + command);
                 }
                 _destinationNames.add(
@@ -229,7 +244,7 @@ public abstract class AbstractActionsAttribute extends Action {
                     _numbers.add(new Integer(channelSpec));
                 } catch (NumberFormatException ex) {
                     throw new IllegalActionException(this,
-                            "Malformed action: expected destination == "
+                            "Malformed action: expected destination = "
                             + "expression. Got: " + command);
                 }
             } else {
@@ -237,7 +252,11 @@ public abstract class AbstractActionsAttribute extends Action {
                 _destinationNames.add(completeDestinationSpec);
                 _numbers.add(null);
             }
-
+            
+            // Parse the expression
+            _parseTrees.add(parser.generateParseTree(
+                                    command.substring(equalSign + 1).trim()));
+            
             // Next, create a variable in the transition to
             // evaluate this expression with the appropriate scope.
             Transition transition = (Transition)getContainer();
@@ -316,6 +335,15 @@ public abstract class AbstractActionsAttribute extends Action {
     // updated.
     protected long _destinationsListVersion = -1;
 
+    // The list of parse trees.
+    protected List _parseTrees; 
+
+    // The parse tree evaluator.
+    protected ParseTreeEvaluator _parseTreeEvaluator;
+    
+    // The scope.
+    protected ActionScope _scope;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -350,6 +378,54 @@ public abstract class AbstractActionsAttribute extends Action {
             _destinationsListVersion = workspace().getVersion();
         } finally {
             workspace().doneReading();
+        }
+    }
+
+
+    private class ActionScope extends ModelScope {
+
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.Token get(String name)
+                throws IllegalActionException {
+            Variable result = getScopedVariable(
+                    null,
+                    (NamedObj)AbstractActionsAttribute.this, name);
+            return result.getToken();
+        }
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.type.Type getType(String name)
+                throws IllegalActionException {
+            Variable result = getScopedVariable(
+                    null,
+                    (NamedObj)AbstractActionsAttribute.this, name);
+            if (result != null) {
+                return result.getType();
+            } else {
+                return null;
+            }
+        }
+
+        /** Return the list of variables within the scope.
+         *  Note that this method is an extremely inefficient to refer
+         *  to the scope of a variable because it constructs a list containing
+         *  every variable in the scope.  It is best to avoid calling it
+         *  and instead just use the get() method.
+         *  @return The list of variables within the scope.
+         */
+        public NamedList variableList() {
+            return null;
         }
     }
 }

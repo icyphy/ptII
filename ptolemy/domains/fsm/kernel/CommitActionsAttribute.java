@@ -32,6 +32,7 @@ package ptolemy.domains.fsm.kernel;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.kernel.CompositeEntity;
@@ -143,16 +144,29 @@ public class CommitActionsAttribute
         if (_destinations != null) {
             Iterator destinations = _destinations.iterator();
             Iterator channels = _numbers.iterator();
-            Iterator variables = _variables.iterator();
+            //     Iterator variables = _variables.iterator();
+            Iterator parseTrees = _parseTrees.iterator();
             while (destinations.hasNext()) {
-                Variable variable = (Variable)variables.next();
+                //        Variable variable = (Variable)variables.next();
                 NamedObj nextDestination = (NamedObj)destinations.next();
                 // Need to get the next channel even if it's not used.
                 Integer channel = (Integer)channels.next();
+                ASTPtRootNode parseTree = (ASTPtRootNode)parseTrees.next();
+                Token token;
+                try {                       
+                    token = _parseTreeEvaluator.evaluateParseTree(
+                            parseTree, _scope);
+                } catch (IllegalActionException ex) {
+                    // Chain exceptions to get the actor that
+                    // threw the exception.
+                    throw new IllegalActionException(this, ex, "Expression invalid.");
+                }
                 if (nextDestination instanceof IOPort) {
                     IOPort destination = (IOPort)nextDestination;
+                    
                     try {
-                        Token token = variable.getToken();
+
+                        //Token token = result;//variable.getToken();
                         if (channel != null) {
                             if (token == null) {
                                 destination.sendClear(channel.intValue());
@@ -198,7 +212,7 @@ public class CommitActionsAttribute
                 } else if (nextDestination instanceof Variable) {
                     Variable destination = (Variable)nextDestination;
                     try {
-                        Token token = variable.getToken();
+                        //Token token = variable.getToken();
                         destination.setToken(token);
                         if (_debugging) {
                             _debug(getFullName() + " variable: "
