@@ -102,9 +102,8 @@ applet is displayed on a XGA screen-->
 //--></SCRIPT>
 <!-- /HTML CONVERTER -->
 </CENTER>
-The <a href="@sanitizedModelName@Vergil.htm">block diagram</a>
-for the model was constructed using the Ptolemy II schematic editor
-called Vergil.
+This applet is implemented in MoML, as shown in a 
+The <a href="@sanitizedModelName@Vergil.htm">Vergil block diagram</a>.
 </p>
 </BODY>
 </HTML>
