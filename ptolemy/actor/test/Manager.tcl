@@ -106,7 +106,7 @@ test Manager-8.3 {Test run-time type checking} {
     $director initialize
     catch {$p1 broadcast $token} msg
     list $msg
-} {{java.lang.IllegalArgumentException: send: token cannot be converted to the resolved type of this port.}}
+} {{java.lang.IllegalArgumentException: Run-time type checking failed. token: ptolemy.data.DoubleToken, port: .E0.E1.P1, port type: ptolemy.data.IntToken}}
 
 ######################################################################
 ####
