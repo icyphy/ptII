@@ -153,7 +153,7 @@ be represented, then you should use the derived class Parameter instead.
 
 */
 
-public class Variable extends Attribute implements Typeable {
+public class Variable extends Attribute implements Typeable, Settable {
 
     /** Construct a variable in the default workspace with an empty string
      *  as its name. The variable is added to the list of objects in the
