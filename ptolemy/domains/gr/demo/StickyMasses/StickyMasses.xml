@@ -63,7 +63,7 @@
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[30, 10]">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="467.5, 155.5">
+        <property name="_location" class="ptolemy.moml.Location" value="475.5, 185.5">
         </property>
         <port name="displacement for red bob" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -112,8 +112,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -121,6 +119,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -135,8 +135,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -144,6 +142,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -252,8 +252,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -261,6 +259,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -325,8 +325,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -334,6 +332,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -420,8 +420,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -429,6 +427,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -493,8 +493,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -502,6 +500,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -516,8 +516,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -525,6 +523,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -673,9 +673,9 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="radius" class="ptolemy.data.expr.Parameter" value="0.40">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -941,13 +941,13 @@
             </property>
             <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-            </property>
             <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.2">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
             </property>
             <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -1012,13 +1012,13 @@
             </property>
             <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-            </property>
             <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="5.8">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
             </property>
             <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -1097,13 +1097,13 @@
             </property>
             <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-            </property>
             <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.2">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="487.0, 289.0">
             </property>
@@ -1176,8 +1176,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -1185,6 +1183,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1199,8 +1199,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -1208,6 +1206,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1316,8 +1316,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -1325,6 +1323,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1389,8 +1389,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -1398,6 +1396,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1484,8 +1484,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -1493,6 +1491,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1557,8 +1557,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -1566,6 +1564,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1580,8 +1580,6 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="span of revolution" class="ptolemy.data.expr.Parameter" value="PI">
                 </property>
                 <property name="slices" class="ptolemy.data.expr.Parameter" value="10">
@@ -1589,6 +1587,8 @@
                 <property name="cross-section radius" class="ptolemy.data.expr.Parameter" value="crossradius">
                 </property>
                 <property name="hull radius" class="ptolemy.data.expr.Parameter" value="hullradius">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1737,9 +1737,9 @@
                 </property>
                 <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
-                </property>
                 <property name="radius" class="ptolemy.data.expr.Parameter" value="0.40">
+                </property>
+                <property name="pose" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0, 0.0; 0.0, 1.0, 0.0, 0.0; 0.0, 0.0, 1.0, 0.0; 0.0, 0.0, 0.0, 1.0]">
                 </property>
                 <property name="wireframe only" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -2213,26 +2213,6 @@
         <link port="Translate3D4.sceneGraphIn" relation="relation10"/>
         <link port="Translate3D4.sceneGraphOut" relation="relation20"/>
     </entity>
-    <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-        <property name="_location" class="ptolemy.moml.Location" value="365.0, 139.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="ZeroOrderHold2" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-        <property name="_location" class="ptolemy.moml.Location" value="366.0, 199.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -2369,43 +2349,43 @@
             <relation name="Tr1" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="touched_isPresent">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.p = P1; Together.v = (V1+V2)/2.0; Together.stickiness = 10.0">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <relation name="Tr2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(Force) &gt; Stickiness">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = P1; Separate.p2 = P1; Separate.v1 = V1; Separate.v2 = V1">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <relation name="initTransition" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = p1; Separate.p2 = p2; Separate.v1 = v1; Separate.v2 = v2">
                 </property>
@@ -2850,24 +2830,16 @@
         <link port="Together.P2" relation="_R3"/>
         <link port="Together.V1" relation="HSV1"/>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="193.0, 194.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="199.0, 183.0">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="140.0, 307.0">
         </vertex>
     </relation>
-    <link port="viewer.displacement for red bob" relation="relation"/>
-    <link port="viewer.displacement for blue bob" relation="relation4"/>
-    <link port="ZeroOrderHold.input" relation="relation7"/>
-    <link port="ZeroOrderHold.output" relation="relation"/>
-    <link port="ZeroOrderHold2.input" relation="relation8"/>
-    <link port="ZeroOrderHold2.output" relation="relation4"/>
+    <link port="viewer.displacement for red bob" relation="relation7"/>
+    <link port="viewer.displacement for blue bob" relation="relation8"/>
     <link port="TimedPlotter.input" relation="relation7"/>
     <link port="TimedPlotter.input" relation="relation8"/>
     <link port="Hybrid System.P1" relation="relation7"/>
