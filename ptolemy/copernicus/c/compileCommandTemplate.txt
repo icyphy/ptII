@@ -12,7 +12,7 @@
  -watchDogTimer "@watchDogTimeout@"
  -outputDirectory "@ptIIUserDirectory@/@targetPath@"
  -targetPackage "@targetPackage@"
- -templateDirectory "ptolemy/copernicus/java"
+ -templateDirectory "ptolemy/copernicus/c"
  -generatorAttributeFileName "@_generatorAttributeFileName@"
  -sootArgs
  @compileOptions@
