@@ -212,23 +212,50 @@ public class CTScheduler extends Scheduler{
         }
     }
    
-    /** Return an enumeration of step size control actors.
+    /** Return an enumeration of step size control (SSC) actors in the 
+     *  state and state transiotion schedule. These are the step size
+     *  control actors in the dx/dt=f(x,u,t) equations.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
      *  Otherwise, it will be reconstructed and cached.
      *  This method read-synchronizes on the workspace.
      *  @return An enumeration of step size control actors.
+     *  @exception IllegalActionException If thrown by the schedule() method.
      * 
      */
-    public Enumeration stepSizeControlActors() {
+    public Enumeration stateTransitionSSCActors() 
+            throws IllegalActionException {
         try {
 	    workspace().getReadAccess();
-            if(_dynamicversion != workspace().getVersion()) {
-                _classifyActors();
-                _dynamicversion = workspace().getVersion();
+            if(!valid()) {
+                schedule();
             }
-            return _ssctrl.elements();
+            return _statessc.elements();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** Return an enumeration of step size control (SSC) actors in the output
+     *  schedule. These are the step size control actors in the 
+     *  y = g(x,u,t) equations.
+     *  This enumeration is locally
+     *  cached. If workspace version equals to the cached version,
+     *  then it returns the cached enumeration.
+     *  Otherwise, it will be reconstructed and cached.
+     *  This method read-synchronizes on the workspace.
+     *  @return An enumeration of step size control actors.
+     *  @exception IllegalActionException If thrown by the schedule() method.
+     * 
+     */
+    public Enumeration outputSSCActors() throws IllegalActionException {
+        try {
+	    workspace().getReadAccess();
+            if(!valid()) {
+                schedule();
+            }
+            return _outputssc.elements();
         } finally {
             workspace().doneReading();
         }
@@ -491,7 +518,9 @@ public class CTScheduler extends Scheduler{
             _ectrl = new LinkedList();  //deprecated.
             _evdct = new LinkedList();
             _memaris = new LinkedList();
-            _ssctrl = new LinkedList(); 
+            _statessc = new LinkedList();
+            _outputssc = new LinkedList();
+            //_ssctrl = new LinkedList(); 
             _evgen = new LinkedList(); 
             _evint = new LinkedList(); 
             _stateful = new LinkedList(); 
@@ -502,7 +531,8 @@ public class CTScheduler extends Scheduler{
             _ectrl.clear();  // deprecated.
             _evdct.clear();
             _memaris.clear();
-            _ssctrl.clear();
+            _statessc.clear();
+            _outputssc.clear();
             _evgen.clear();
             _evint.clear();
             _stateful.clear();
@@ -530,9 +560,9 @@ public class CTScheduler extends Scheduler{
             if (a instanceof CTEventInterpreter) {
                 _evint.insertLast(a);
             }
-            if (a instanceof CTStepSizeControlActor) {
-                _ssctrl.insertLast(a);
-            }
+            // if (a instanceof CTStepSizeControlActor) {
+            //     _ssctrl.insertLast(a);
+            // }
             if (!(_successors(a).hasMoreElements())) {
                 // previously !((a.outputPorts()).hasMoreElements())) {
                 _sink.insertLast(a);
@@ -542,6 +572,10 @@ public class CTScheduler extends Scheduler{
             } else {
                 _arith.insertLast(a);
             }
+            // Step size control (SSC) actors are classified according to 
+            // their location in the schedule. So they are assigned 
+            // in the _schedule() method.
+
             //FIXME: Sould also do the following checks:
             // For each eventGenerator, its successors should either
             // be eventInterpreters or "Discrete (composite) actors."
@@ -622,15 +656,27 @@ public class CTScheduler extends Scheduler{
             // Dynamic actors are reverse ordered.
             Object[] xsort = g.topologicalSort(dynactors);
             for(int i=0; i < xsort.length; i++) {
-                _stateschedule.insertFirst((Actor)xsort[i]);
+                Actor a = (Actor)xsort[i];
+                _stateschedule.insertFirst(a);
+                if (a instanceof CTStepSizeControlActor) {
+                    // Note: they are not ordered, but insertFirst is
+                    // considered more efficient.
+                    _statessc.insertFirst(a);
+                }
             }
             _scheList.insertLast(_stateschedule);
-
+            
             // State transition map
             Object[] fx = g.backwardReachableNodes(dynactors);
             Object[] fxsort = g.topologicalSort(fx);
             for(int i=0; i < fxsort.length; i++) {
-                _transitionschedule.insertLast(fxsort[i]);
+                Actor a = (Actor)fxsort[i];
+                _transitionschedule.insertLast(a);
+                if (a instanceof CTStepSizeControlActor) {
+                    // Note: they are not ordered, but insertFirst is
+                    // considered more efficient.
+                    _statessc.insertFirst(a);
+                }
             }
             _scheList.insertLast(_transitionschedule);
         }
@@ -649,7 +695,13 @@ public class CTScheduler extends Scheduler{
             Object[] gx = g.backwardReachableNodes(sinkactors);
             Object[] gxsort = g.topologicalSort(gx);
             for(int i=0; i < gxsort.length; i++) {
-                _outputschedule.insertLast(gxsort[i]);
+                Actor a = (Actor)gxsort[i];
+                _outputschedule.insertLast(a);
+                if (a instanceof CTStepSizeControlActor) {
+                    // Note: they are not ordered, but insertFirst is
+                    // considered more efficient.
+                    _outputssc.insertFirst(a);
+                }
             }
             // add sinks to the output schedule
             _outputschedule.appendElements(_sink.elements());
@@ -774,8 +826,10 @@ public class CTScheduler extends Scheduler{
     private transient LinkedList _evdct;
     // A linkedLost of memaris actors.
     private transient LinkedList _memaris;
-    // A linkedLost of step size control actors.
-    private transient LinkedList _ssctrl;
+    // A linkedLost of SSC actors in the state and transition schedule.
+    private transient LinkedList _statessc;
+    // A linkedLost of SSC actors in the state and transition schedule.
+    private transient LinkedList _outputssc;
     // A linkedLost of event generators.
     private transient LinkedList _evgen;
     // A linkedLost of event interpreters.

@@ -220,7 +220,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @return The local trancation error tolerance.
      *  FIXME: change to getErrorTolerance
      */
-    public final double getLTETolerance() {
+    public final double getErrorTolerance() {
         return _lteTolerance;
     }
 
