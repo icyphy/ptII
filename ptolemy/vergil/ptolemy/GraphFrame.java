@@ -100,6 +100,7 @@ import diva.graph.layout.LevelLayout;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FocusMouseListener;
 import diva.gui.toolbox.JPanner;
+import diva.util.java2d.ShapeUtilities;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.LocationAttribute;
@@ -593,12 +594,13 @@ public abstract class GraphFrame extends PtolemyFrame
 	}
     }
 
-    /** Print the document to a printer, represented by the specified graphics
-     *  object.  This method assumes that a view exists of the this document
-     *  in the application.
+    /** Print the visible portion of the graph to a printer,
+     *  which is represented by the specified graphics object.
      *  @param graphics The context into which the page is drawn.
      *  @param format The size and orientation of the page being drawn.
      *  @param index The zero based index of the page to be drawn.
+     *  @param view A rectangle specifying the portion of the graph
+     *   to print.
      *  @returns PAGE_EXISTS if the page is rendered successfully, or
      *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
      *  @exception PrinterException If the print job is terminated.
@@ -606,8 +608,11 @@ public abstract class GraphFrame extends PtolemyFrame
     public int print(Graphics graphics, PageFormat format,
             int index) throws PrinterException {
 	if(_jgraph != null) {
-            return _jgraph.print(graphics, format, index);
-        } else return NO_SUCH_PAGE;
+            Rectangle view = _graphScrollPane.getViewport().getViewRect();
+            return _jgraph.print(graphics, format, index, view);
+        } else {
+            return NO_SUCH_PAGE;
+        }
     }
 
     /** Set the center location of the visible part of the pane.
@@ -858,6 +863,31 @@ public abstract class GraphFrame extends PtolemyFrame
             ((AbstractPtolemyGraphModel)gm).removeListeners();
         }
         return super._close();
+    }
+
+    /** Return the bounds of the visible area (a subset of the
+     *  overall canvas), taking into account the current zoom and pan.
+     *  The returned rectangle is in the logical coordinates of the
+     *  canvas.  That is, the upper left of the rectangle represents
+     *  a location on the canvas (one could place an object there by
+     *  specifying that location).
+     *  @return The bounds of the visible area of the canvas.
+     */
+    protected Rectangle2D _getViewBounds() {
+        Rectangle view = _graphScrollPane.getViewport().getViewRect();
+
+        // Take into account the current zoom and pan.
+        JCanvas canvas = _jgraph.getGraphPane().getCanvas();
+        AffineTransform current = canvas.getCanvasPane()
+                .getTransformContext().getTransform();
+        Rectangle2D bounds = view;
+        try {
+            AffineTransform inverse = current.createInverse();
+            bounds = ShapeUtilities.transformBounds(view, inverse);
+        } catch (NoninvertibleTransformException ex) {
+            // Ignore and use original bounds.
+        }
+        return bounds;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1287,6 +1317,29 @@ public abstract class GraphFrame extends PtolemyFrame
 	public PtolemyLayoutTarget(GraphController controller) {
 	    super(controller);
 	}
+
+        /** Return the viewport of the given graph as a rectangle
+         *  in logical coordinates.
+         */
+        public Rectangle2D getViewport(Object composite) {
+            GraphModel model = getController().getGraphModel();
+            if(composite == getRootGraph()) {
+                // Take into account the current zoom and pan.
+                Rectangle2D bounds = _getViewBounds();
+
+                double width = bounds.getWidth();
+                double height = bounds.getHeight();
+
+                double borderPercentage = (1-getLayoutPercentage())/2;
+                double x = borderPercentage*width + bounds.getX();
+                double y = borderPercentage*height + bounds.getY();
+                double w = getLayoutPercentage()*width;
+                double h = getLayoutPercentage()*height;
+                return new Rectangle2D.Double(x, y, w, h);
+            } else {
+                return super.getViewport(composite);
+            }
+        }  
 
 	/** Translate the figure associated with the given node in the
 	 *  target's view by the given delta.
