@@ -329,8 +329,22 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
             case 1:
                 {
-                    InequalityTerm firstArgTerm = (InequalityTerm) argTerms.get(0);
-
+                    InequalityTerm firstArgTerm = null;
+		    try {
+			firstArgTerm = (InequalityTerm) argTerms.get(0);
+		    } catch (java.lang.ClassCastException e) {
+			System.err.println("SpecializeTokenVisitor."
+					   + "visitMethodCallNode: " + e
+					   + "\n node = " + node
+					   + "\n node.getArgs() = " + node.getArgs()
+					   + "\n args = " + args
+					   + "\n argTerms = " + argTerms
+					   + "\n argTerms.get(0) = " 
+					   + (( argTerms == null) ?
+					      "null" : argTerms.get(0))
+					   );
+			throw e;
+		    }
                     if (!variableAccessedTerm &&
                             (firstArgTerm instanceof VariableTerm)) {
                         retval = _makeVariableTerm(returnType, null);
