@@ -118,6 +118,10 @@ public class DataMapEnvironment implements Environment {
         throw new InterpreterException("localVars() not yet implemented.");
     }
 
+    public Map localBindings() {
+        throw new InterpreterException("localBindings() not yet implemented.");
+    }
+
     public boolean  isLocalVar(Object variable) {
         // FIXME
         throw new InterpreterException("isLocalVar() not yet implemented.");
