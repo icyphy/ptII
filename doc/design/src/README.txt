@@ -9,3 +9,14 @@ To regenerate TOC and Index:
 
 (5) is not essential.
 
+
+Acrobat distiller has an option that by default "downsamples
+images to 72 dpi."  This seems dumb.  Turning this off fixes
+the printing problems with chapter 3, with no noticable increase
+in file size.  See the file ~eal/TMP/design.pdf.  I've also checked
+in some minor fixes in the domain chapters, and regenerated everything.
+The pdf file in ~eal/TMP is the latest version.
+
+BTW, in Distiller,
+If you also turn off compression of images, the file size increases
+from about 3.7M to about 8M.  So don't do that!
