@@ -40,12 +40,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// TokenMultiplexor
 /**
- The TokenMultiplexor has a multiport  input port and an output port.  The
- types of the ports are undeclared and will be resolved by the type resolution mechanism, with the constraint that the output type must be greater than or equal to the input type. On each call to the fire method, the actor reads 
-one token from the current input, and writes one token to an output channel.
-If there is no token on the input, then it will not produce a token on
-the  output.  In the next iteration of this actor, it will
-read  the next channel.
+ The TokenMultiplexor has a multiport input port and an output port.
+The types of the ports are undeclared and will be resolved by the type
+resolution mechanism, with the constraint that the output type must be
+greater than or equal to the input type. On each call to the fire
+method, the actor reads one token from the current input, and writes
+one token to an output channel.  If there is no token on the input,
+then it will not produce a token on the output.  In the next iteration
+of this actor, it will read the next channel.
 
 @author Paul Whitaker, Mudit Goel, Edward A. Lee, Christopher Hylands
 @version $Id$
