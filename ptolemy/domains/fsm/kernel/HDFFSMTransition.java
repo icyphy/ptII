@@ -219,7 +219,8 @@ public class HDFFSMTransition extends FSMTransition {
      *  The director method setGuardTokenHistory() sets the
      *  number of guard tokens (largest n in dataIn$n).
      */
-    public void setupScope() throws NameDuplicationException, IllegalActionException {
+    public void setupScope()
+            throws NameDuplicationException, IllegalActionException {
 	if (_debugging) _debug("HDFFSMTransition: setupScope()");
 	HDFFSMController ctrl = (HDFFSMController)getContainer();
 	HDFFSMDirector direct = ((HDFFSMDirector)ctrl.getDirector());
@@ -247,7 +248,8 @@ public class HDFFSMTransition extends FSMTransition {
 		//	   + var1.toString());
 	    }
         } else {
-	    //throw new IllegalActionException((HDFFSMController)getContainer(), this,
+	    //throw new IllegalActionException(
+            //      (HDFFSMController)getContainer(), this,
 	    //      "The guard variable is null");
 	    if (_debugging) _debug("The guard variable list is null");
 	}

@@ -141,13 +141,15 @@ public class FSMController extends CompositeEntity implements TypedActor {
             Iterator trans = _initialTransitions.iterator();
             while (trans.hasNext()) {
                 FSMTransition tr = (FSMTransition)trans.next();
-                newobj._initialTransitions.add(newobj.getRelation(tr.getName()));
+                newobj._initialTransitions.add(
+                        newobj.getRelation(tr.getName()));
             }
         }
         newobj._currentState = null;
         newobj._takenTransition = null;
         if (_localVariables != null) {
-            newobj._localVariables = (VariableList)newobj.getAttribute("LocalVariables");
+            newobj._localVariables =
+                (VariableList)newobj.getAttribute("LocalVariables");
         }
         // From AtomicActor.
         newobj._inputPortsVersion = -1;
@@ -407,7 +409,8 @@ public class FSMController extends CompositeEntity implements TypedActor {
             // FIXME!!
             // ignore for now
 
-            throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
+            throw new InvalidStateException(this,
+                    "DEAL WITH IT" + ex.getMessage());
 
         }
         // Set local variables to their initial value.
@@ -492,9 +495,11 @@ public class FSMController extends CompositeEntity implements TypedActor {
             if (actor == null) {
                 return true;
             }
-            // If the refinement is an FSMController or an FSM system, then the trigger
-            // actions of the taken transition should be input to the actor to enable
-            // initial transitions.
+
+            // If the refinement is an FSMController or an FSM system,
+            // then the trigger actions of the taken transition should be
+            // input to the actor to enable initial transitions.
+
             // ADD THIS!
             //            if (actor instanceof FSMController) {
             //                // Do what's needed.
@@ -536,7 +541,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
     /** Set the initial state for the FSM. This method must be
      *  called exactly once to set the starting state.
      *  @param state The initial state, an instance of FSMState.
-     *  @exception IllegalActionException thrown if this method
+     *  @exception IllegalActionException If this method
      *  is called more than once.
      */
     public void setInitialState(FSMState initialState)
@@ -551,7 +556,8 @@ public class FSMController extends CompositeEntity implements TypedActor {
 
     public void setInitialTransition(FSMTransition initialTransition)
             throws IllegalActionException {
-        if (initialTransition != null && initialTransition.getContainer() != this) {
+        if (initialTransition != null &&
+                initialTransition.getContainer() != this) {
             throw new IllegalActionException(this, initialTransition,
                     "Initial transition is not contained by FSMController.");
         }
@@ -627,6 +633,27 @@ public class FSMController extends CompositeEntity implements TypedActor {
     public void wrapup() throws IllegalActionException {
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    // The name of the local variable list.
+    public static final String LOCAL_VARIABLE_LIST = "LocalVariables";
+
+    /** The name of the input status variable list.
+     */
+    public static final String INPUT_STATUS_VAR_LIST = "InputStatusVars";
+
+    /** The name of the input value variable list.
+     */
+    public static final String INPUT_VALUE_VAR_LIST = "InputValueVars";
+
+    public static final BooleanToken PRESENT = new BooleanToken(true);
+    public static final BooleanToken ABSENT = new BooleanToken(false);
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected method                  ////
+
 
     /** Add a state to this controller with minimal error checking.
      *  This overrides the base-class method to make sure the argument
@@ -645,8 +672,8 @@ public class FSMController extends CompositeEntity implements TypedActor {
             throws IllegalActionException, NameDuplicationException {
         if (!(entity instanceof FSMState)) {
             throw new IllegalActionException(this, entity,
-                    "FSMController can only contain entities that are instances"
-                    + " of FSMState");
+                    "FSMController can only contain entities that are " +
+                    "instances of FSMState");
         }
         // FSMState is not an Actor
         super._addEntity(entity);
@@ -695,7 +722,8 @@ public class FSMController extends CompositeEntity implements TypedActor {
             throws IllegalActionException, NameDuplicationException {
         if (!(relation instanceof FSMTransition)) {
             throw new IllegalActionException(this, relation,
-                    "FSMController can only contain instances of FSMTransition.");
+                    "FSMController can only contain instances of " +
+                    "FSMTransition.");
         }
         super._addRelation(relation);
     }
@@ -775,13 +803,15 @@ public class FSMController extends CompositeEntity implements TypedActor {
             if (port.numLinks() > 0) {
                 if (port.hasToken(0)) {
 
-                    //System.out.println("Port " + port.getFullName() + " has token.");
+                    //System.out.println("Port " + port.getFullName() +
+                    //       " has token.");
 
                     _inputStatusVars.setVarValue(port.getName(), PRESENT);
                     _inputValueVars.setVarValue(port.getName(), port.get(0));
                 } else {
 
-                    //System.out.println("Port " + port.getFullName() + " has no token.");
+                    //System.out.println("Port " + port.getFullName() +
+                    //  " has no token.");
 
                     _inputStatusVars.setVarValue(port.getName(), ABSENT);
                 }
@@ -821,40 +851,9 @@ public class FSMController extends CompositeEntity implements TypedActor {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                         protected variables               ////
 
-    // The name of the local variable list.
-    public static final String LOCAL_VARIABLE_LIST = "LocalVariables";
-
-    /** The name of the input status variable list.
-     */
-    public static final String INPUT_STATUS_VAR_LIST = "InputStatusVars";
-
-    /** The name of the input value variable list.
-     */
-    public static final String INPUT_VALUE_VAR_LIST = "InputValueVars";
-
-    public static final BooleanToken PRESENT = new BooleanToken(true);
-    public static final BooleanToken ABSENT = new BooleanToken(false);
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Create receivers for each input port.
-     *  @exception IllegalActionException If any port throws it.
-     */
-    private void _createReceivers() throws IllegalActionException {
-        Iterator inports = inputPortList().iterator();
-        while (inports.hasNext()) {
-            IOPort inport = (IOPort)inports.next();
-            inport.createReceivers();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
     /** @serial The current state. */
     protected FSMState _currentState = null;
@@ -884,5 +883,17 @@ public class FSMController extends CompositeEntity implements TypedActor {
     protected transient long _outputPortsVersion = -1;
     protected transient List _cachedOutputPorts;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
+    /** Create receivers for each input port.
+     *  @exception IllegalActionException If any port throws it.
+     */
+    private void _createReceivers() throws IllegalActionException {
+        Iterator inports = inputPortList().iterator();
+        while (inports.hasNext()) {
+            IOPort inport = (IOPort)inports.next();
+            inport.createReceivers();
+        }
+    }
 }

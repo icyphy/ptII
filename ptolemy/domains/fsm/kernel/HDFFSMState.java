@@ -132,7 +132,8 @@ public class HDFFSMState extends FSMState {
             if (vlist != null) {
                 vlist.setContainer(null);
             }
-            vlist = (VariableList)newobj.getAttribute(LOCAL_INPUT_VALUE_VAR_LIST);
+            vlist =
+                (VariableList)newobj.getAttribute(LOCAL_INPUT_VALUE_VAR_LIST);
             if (vlist != null) {
                 vlist.setContainer(null);
             }

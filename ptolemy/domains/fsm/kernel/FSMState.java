@@ -116,7 +116,8 @@ public class FSMState extends ComponentEntity {
             if (vlist != null) {
                 vlist.setContainer(null);
             }
-            vlist = (VariableList)newobj.getAttribute(LOCAL_INPUT_VALUE_VAR_LIST);
+            vlist =
+                (VariableList)newobj.getAttribute(LOCAL_INPUT_VALUE_VAR_LIST);
             if (vlist != null) {
                 vlist.setContainer(null);
             }
@@ -228,66 +229,6 @@ public class FSMState extends ComponentEntity {
         return _initEntry;
     }
 
-    /** Generate preemptive/non-preemptive transitions lists.
-     */
-    private void _createTransLists() {
-        try {
-            workspace().getReadAccess();
-            _preTrans = new LinkedList();
-            _nonPreTrans = new LinkedList();
-            if (_outgoing != null) {
-                Enumeration out_trans = _outgoing.linkedRelations();
-                FSMTransition trans;
-                while (out_trans.hasMoreElements()) {
-                    trans = (FSMTransition)out_trans.nextElement();
-                    if (trans.sourceState() != this) {
-                        continue;
-                    }
-                    if (trans.isPreemptive()) {
-                        _preTrans.addFirst(trans);
-                    } else {
-                        _nonPreTrans.addFirst(trans);
-                    }
-                }
-            }
-            _transVersion = workspace().getVersion();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
-    /** Return the port connecting all incoming transitions.
-     */
-    protected ComponentPort _incomingPort() {
-        if (_incoming == null) {
-            try {
-                workspace().getWriteAccess();
-                _incoming = new ComponentPort(this, INCOMING_PORT);
-            } catch (IllegalActionException ex) {
-            } catch (NameDuplicationException ex) {
-            } finally {
-                workspace().doneWriting();
-            }
-        }
-        return _incoming;
-    }
-
-    /** Return the port connecting all outgoing transitions.
-     */
-    protected ComponentPort _outgoingPort() {
-        if (_outgoing == null) {
-            try {
-                workspace().getWriteAccess();
-                _outgoing = new ComponentPort(this, OUTGOING_PORT);
-            } catch (IllegalActionException ex) {
-            } catch (NameDuplicationException ex) {
-            } finally {
-                workspace().doneWriting();
-            }
-        }
-        return _outgoing;
-    }
-
     /** Create a transition to this state.
      */
     public FSMTransition createTransitionFrom(FSMState source) {
@@ -328,6 +269,20 @@ public class FSMState extends ComponentEntity {
         return trans;
     }
 
+    /** Set the value of the local input status variables to ABSENT.
+     */
+    public void resetLocalInputStatus() {
+        if (_localStatusVars == null) {
+            return;
+        }
+        try {
+            _localStatusVars.setAllVariables(FSMController.ABSENT);
+        } catch (IllegalActionException ex) {
+            // this should not happen
+            throw new InternalErrorException(ex.getMessage());
+        }
+    }
+
     /** Add all of the output ports of this state's refining actor to the
      *  scope. Here, the scope refers to the scope of variables
      *  which can be used as part of a guard expression or action
@@ -350,11 +305,15 @@ public class FSMState extends ComponentEntity {
 		 * the scope.
 		 */
 		// FIXME: This is not a very elegant solution!
-                _localStatusVars.createVariables(java.util.Collections.enumeration(_refinement.outputPortList()));
+                _localStatusVars.createVariables(
+                        java.util.Collections.enumeration(
+                                _refinement.outputPortList()));
 		/* Add the output ports of this state's refining actor to
 		 * the scope.
 		 */
-                _localValueVars.createVariables(java.util.Collections.enumeration(_refinement.outputPortList()));
+                _localValueVars.createVariables(
+                        java.util.Collections.enumeration(
+                                _refinement.outputPortList()));
             } else {
                 _localStatusVars = null;
                 _localValueVars = null;
@@ -363,20 +322,6 @@ public class FSMState extends ComponentEntity {
             // this should not happen
         } catch (NameDuplicationException ex) {
             // this should not happen
-        }
-    }
-
-    /** Set the value of the local input status variables to ABSENT.
-     */
-    public void resetLocalInputStatus() {
-        if (_localStatusVars == null) {
-            return;
-        }
-        try {
-            _localStatusVars.setAllVariables(FSMController.ABSENT);
-        } catch (IllegalActionException ex) {
-            // this should not happen
-            throw new InternalErrorException(ex.getMessage());
         }
     }
 
@@ -392,8 +337,45 @@ public class FSMState extends ComponentEntity {
         _localStatusVars.setVarValue(name, FSMController.PRESENT);
     }
 
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected methods                 ////
+
+
+    /** Return the port connecting all incoming transitions.
+     */
+    protected ComponentPort _incomingPort() {
+        if (_incoming == null) {
+            try {
+                workspace().getWriteAccess();
+                _incoming = new ComponentPort(this, INCOMING_PORT);
+            } catch (IllegalActionException ex) {
+            } catch (NameDuplicationException ex) {
+            } finally {
+                workspace().doneWriting();
+            }
+        }
+        return _incoming;
+    }
+
+    /** Return the port connecting all outgoing transitions.
+     */
+    protected ComponentPort _outgoingPort() {
+        if (_outgoing == null) {
+            try {
+                workspace().getWriteAccess();
+                _outgoing = new ComponentPort(this, OUTGOING_PORT);
+            } catch (IllegalActionException ex) {
+            } catch (NameDuplicationException ex) {
+            } finally {
+                workspace().doneWriting();
+            }
+        }
+        return _outgoing;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** The name of the outgoing port.  */
     public static final String OUTGOING_PORT = "Outgoing";
@@ -416,7 +398,7 @@ public class FSMState extends ComponentEntity {
     public static final String LOCAL_INPUT_VALUE_VAR_LIST = "LocalValueVars";
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     /** @serial The actor refining this state. */
     protected Actor _refinement = null;
@@ -450,4 +432,35 @@ public class FSMState extends ComponentEntity {
 
     /** @serial The port connects to all outgoing transitions. */
     protected ComponentPort _outgoing = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Generate preemptive/non-preemptive transitions lists.
+     */
+    private void _createTransLists() {
+        try {
+            workspace().getReadAccess();
+            _preTrans = new LinkedList();
+            _nonPreTrans = new LinkedList();
+            if (_outgoing != null) {
+                Enumeration out_trans = _outgoing.linkedRelations();
+                FSMTransition trans;
+                while (out_trans.hasMoreElements()) {
+                    trans = (FSMTransition)out_trans.nextElement();
+                    if (trans.sourceState() != this) {
+                        continue;
+                    }
+                    if (trans.isPreemptive()) {
+                        _preTrans.addFirst(trans);
+                    } else {
+                        _nonPreTrans.addFirst(trans);
+                    }
+                }
+            }
+            _transVersion = workspace().getVersion();
+        } finally {
+            workspace().doneReading();
+        }
+    }
 }
