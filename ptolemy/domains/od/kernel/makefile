@@ -61,7 +61,6 @@ JSRCS = \
         ODReceiver.java \
         ODSourceActor.java \
         RcvrTimeTriple.java \
-        TerminateProcessException.java \
         TimedQueueReceiver.java
 
 
