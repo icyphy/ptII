@@ -808,17 +808,19 @@ public class SDFScheduler extends Scheduler {
                                 tokencount[channel] + " tokens.");
 		}
 
-		if (_debugging) _debug("Actors that can be scheduled:");
-		Iterator actorsLeft = readyToScheduleActorList.iterator();
-		while(actorsLeft.hasNext()) {
-		    Entity e = (Entity)actorsLeft.next();
-		    if (_debugging) _debug(e.getFullName());
-		}
-		if (_debugging) _debug("Actors with firings left:");
-		actorsLeft = unscheduledActorList.iterator();
-		while(actorsLeft.hasNext()) {
-		    Entity e = (Entity)actorsLeft.next();
-		    if (_debugging) _debug(e.getFullName());
+		if (_debugging) {
+                    _debug("Actors that can be scheduled:");
+                    Iterator actorsLeft = readyToScheduleActorList.iterator();
+                    while(actorsLeft.hasNext()) {
+                        Entity e = (Entity)actorsLeft.next();
+                        _debug(e.getFullName());
+                    }
+                    _debug("Actors with firings left:");
+                    actorsLeft = unscheduledActorList.iterator();
+                    while(actorsLeft.hasNext()) {
+                        Entity e = (Entity)actorsLeft.next();
+                        _debug(e.getFullName());
+                    }
 		}
 
 		// pick an actor that is ready to fire.
