@@ -143,8 +143,8 @@ public class SignatureVerifier extends SignatureActor {
                 if (!_signature.verify(signatureData)) {
                     throw new IllegalActionException(this,
                             "Signature verification failed, "
-                            "potential corruption or man in the "
-                            "middle attack?");
+                            + "potential corruption or man in the "
+                            + "middle attack?");
                 }
             } catch (java.security.GeneralSecurityException ex) {
                 throw new IllegalActionException(this, ex,
