@@ -135,13 +135,15 @@ public class ComponentPort extends Port {
     /** Clone the object and register the clone in the workspace.
      *  The result is a port with no connections and no container that
      *  is registered with the workspace.
+     *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
+     *  @return The cloned ComponentPort.
      */
-    public Object clone() throws CloneNotSupportedException {
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
         // NOTE: It is not actually necessary to override the base class
         // method, but we do it anyway so that the exact behavior of this
         // method is documented with the class.
-        return super.clone();
+        return super.clone(ws);
     }
 
     /** Deeply enumerate the ports connected to this port on the outside.

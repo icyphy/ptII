@@ -108,6 +108,20 @@ public class ComponentRelation extends Relation {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+    /** Clone the object and register the clone in the workspace.
+     *  The result is a relation with no connections and no container that
+     *  is registered with the workspace.
+     *  @param ws The workspace in which to place the cloned object.
+     *  @exception CloneNotSupportedException Thrown only in derived classes.
+     *  @return The cloned ComponentRelation.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        // NOTE: It is not actually necessary to override the base class
+        // method, but we do it anyway so that the exact behavior of this
+        // method is documented with the class.
+        return super.clone(ws);
+    }
+
     /** Deeply enumerate the ports linked to this relation. Look through
      *  all transparent ports and return only opaque ports.
      *  This method is synchronized on the workspace.
@@ -222,6 +236,18 @@ public class ComponentRelation extends Relation {
             throw new IllegalActionException(this, port,
                     "ComponentRelation can only link to a ComponentPort.");
         }
+    }
+
+    /** Clear references that are not valid in a cloned object.  The clone()
+     *  method makes a field-by-field copy, which results
+     *  in invalid references to objects. 
+     *  In this class, this method reinitializes the private member
+     *  _portList.
+     *  @param ws The workspace the cloned object is to be placed in.
+     */
+    protected void _clear(Workspace ws) {
+        super._clear(ws);
+        _container = null;
     }
 
     /////////////////////////////////////////////////////////////////////////

@@ -112,16 +112,18 @@ public class Entity extends NamedObj {
      *  The result is an entity with clones of the ports of the original
      *  entity.  The ports are not connected to anything, and the entity
      *  is registered with the workspace.
+     *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
      *   as their container the cloned entity (this should not occur).
+     *  @return The cloned entity.
      */
-    public Object clone() throws CloneNotSupportedException {
-        Entity newentity = (Entity)super.clone();
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        Entity newentity = (Entity)super.clone(ws);
         // Clone the ports.
         Enumeration ports = getPorts();
         while (ports.hasMoreElements()) {
             Port port = (Port)ports.nextElement();
-            Port newport = (Port)port.clone();
+            Port newport = (Port)port.clone(ws);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally.  If they do, throw a
             // CloneNotSupportedException.
@@ -314,7 +316,7 @@ public class Entity extends NamedObj {
     }
 
     /** Clear references that are not valid in a cloned object.  The clone()
-     *  method makes a field-by-field copy, which results
+     *  method in Object makes a field-by-field copy, which results
      *  in invalid references to objects. 
      *  In this class, this method reinitializes the private member
      *  _portList.

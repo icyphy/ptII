@@ -103,14 +103,16 @@ public class ComponentEntity extends Entity {
     /** Clone the object and register the clone in the workspace.
      *  The result is an entity with the same ports as the original, but
      *  no connections, that is registered with the workspace.
+     *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
      *   as their container the cloned entity (this should not occur).
+     *  @return The cloned ComponentEntity.
      */
-    public Object clone() throws CloneNotSupportedException {
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
         // NOTE: It is not actually necessary to override the base class
         // method, but we do it anyway so that the exact behavior of this
         // method is documented with the class.
-        return super.clone();
+        return super.clone(ws);
     }
 
     /** Get the container entity.

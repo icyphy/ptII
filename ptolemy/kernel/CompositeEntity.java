@@ -142,18 +142,20 @@ public class CompositeEntity extends ComponentEntity {
      *  The connections of the relations are duplicated in the new entity,
      *  unless they cross levels, in which case an exception is thrown.
      *  The entity is registered with the workspace.
+     *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException If the entity contains
      *   level crossing transitions so that its connections cannot be cloned.
+     *  @return The cloned CompositeEntity.
      */
-    public Object clone() throws CloneNotSupportedException {
-        CompositeEntity newentity = (CompositeEntity)super.clone();
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        CompositeEntity newentity = (CompositeEntity)super.clone(ws);
 
         // Clone the contained relations.
         Enumeration relations = getRelations();
         while (relations.hasMoreElements()) {
             ComponentRelation relation =
                 (ComponentRelation)relations.nextElement();
-            ComponentRelation newrelation = (ComponentRelation)relation.clone();
+            ComponentRelation newrelation=(ComponentRelation)relation.clone(ws);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally.  If they do, throw a
             // CloneNotSupportedException.
@@ -170,7 +172,7 @@ public class CompositeEntity extends ComponentEntity {
         Enumeration entities = getEntities();
         while (entities.hasMoreElements()) {
             ComponentEntity entity= (ComponentEntity)entities.nextElement();
-            ComponentEntity newsubentity = (ComponentEntity)entity.clone();
+            ComponentEntity newsubentity = (ComponentEntity)entity.clone(ws);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally.  If they do, throw a
             // CloneNotSupportedException.
