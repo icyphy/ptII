@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.DataOutputStream;
 import java.net.URL;
@@ -97,16 +98,13 @@ public class GraphDocument extends AbstractDocument {
             throw new IllegalStateException(
                     "GraphDocument " + getTitle() + " has no current file");
         }
-        String filename = getFile().getCanonicalPath();
-	URL urlbase = new URL("file:");
-	URL schematicURL = new URL(urlbase,  filename);
-	    
-        System.out.println("Parsing " + schematicURL);
+        String filename = getFile().getAbsolutePath();
+	URL schematicURL = new URL("file", null, filename);
 	MoMLParser parser = new MoMLParser();
 	CompositeEntity toplevel =
 	    (CompositeEntity) parser.parse(schematicURL,
-					   schematicURL.openStream());	
-        setGraph(toplevel);
+					   new FileInputStream(getFile()));
+	setGraph(toplevel);
     }
 
     /** Save the document to the current file.
