@@ -104,11 +104,16 @@ public class VariableDelay extends TimedDelay {
      *  postfire method can produce it to the output.
      *  Read one token from the delay input, if there is any.
      *  Use the new delay for later input tokens.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director, 
+     *  or a negative delay is received.
      */
     public void fire() throws IllegalActionException {
         delay.update();
         _delay = ((DoubleToken)delay.getToken()).doubleValue();
+        if (_delay < 0) {
+            throw new IllegalActionException("Can not have a " +
+                    "negative delay. Check whether overflow happens.");
+        }
         // NOTE: the newDelay may be 0.0, which may change
         // the causality property of the model. 
         // We leave the model designers to decide whether the
