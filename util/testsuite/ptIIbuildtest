@@ -6,7 +6,7 @@ if [ ! -d "$PTII" ]; then
 	exit 9
 fi
 
-$PTII/util/testsuite/ptIIbuildfast
+sh $PTII/util/testsuite/ptIIbuildfast
 
 cd $PTII
 make JFLAGS= tests
