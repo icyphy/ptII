@@ -380,7 +380,7 @@ public class LabeledList implements List {
         return _elements.toArray(array);
     }
 
-    /** Return a string representation of this list, given a delimeter
+    /** Return a string representation of this list, given a delimiter
      *  for separating successive elements, and a flag that indicates
      *  whether element labels should be included in the string.
      *  The string
