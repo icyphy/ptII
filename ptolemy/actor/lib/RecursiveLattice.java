@@ -103,7 +103,7 @@ Prentice-Hall, Englewood Cliffs, NJ, 1988.
 @see LevinsonDurbin
 @see Lattice
 @see ptolemy.domains.sdf.lib.VariableRecursiveLattice
-@author Edward A. Lee, Christopher Hylands
+@author Edward A. Lee, Christopher Hylands, Steve Neuenodorffer
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -177,12 +177,6 @@ public class RecursiveLattice extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            System.arraycopy(_backward, 0,
-                    _backwardCache, 0,
-                    _backward.length);
-            System.arraycopy(_forward, 0,
-                    _forwardCache, 0,
-                    _forward.length);
             DoubleToken inputValue = (DoubleToken)input.get(0);
             // NOTE: The following code is ported from Ptolemy Classic.
             double k;
@@ -229,6 +223,20 @@ public class RecursiveLattice extends Transformer {
         return super.postfire();
     }
 
+    /** Check to see if this actor is ready to fire.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        // Get a copy of the current filter state that we can modify.
+        System.arraycopy(_backward, 0,
+                _backwardCache, 0,
+                _backwardCache.length);
+        System.arraycopy(_forward, 0,
+                _forwardCache, 0,
+                _forwardCache.length);
+        return super.prefire();
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

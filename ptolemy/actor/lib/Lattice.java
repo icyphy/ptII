@@ -99,7 +99,7 @@ Prentice-Hall, Englewood Cliffs, NJ, 1988.
 @see LevinsonDurbin
 @see RecursiveLattice
 @see ptolemy.domains.sdf.lib.VariableLattice
-@author Edward A. Lee, Christopher Hylands
+@author Edward A. Lee, Christopher Hylands, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -169,12 +169,6 @@ public class Lattice extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            System.arraycopy(_backward, 0,
-                    _backwardCache, 0,
-                    _order + 1);
-            System.arraycopy(_forward, 0,
-                    _forwardCache, 0,
-                    _order + 1);
             DoubleToken in = (DoubleToken)input.get(0);
        
             _forwardCache[0] = in.doubleValue();   // _forwardCache(0) = x(n)
@@ -212,6 +206,20 @@ public class Lattice extends Transformer {
         return super.postfire();
     }
 
+    /** Check to see if this actor is ready to fire.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        // Get a copy of the current filter state that we can modify.
+        System.arraycopy(_backward, 0,
+                _backwardCache, 0,
+                _order + 1);
+        System.arraycopy(_forward, 0,
+                _forwardCache, 0,
+                _order + 1);
+        return super.prefire();
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
