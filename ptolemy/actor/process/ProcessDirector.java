@@ -256,6 +256,8 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
+        if( _debugging ) _debug("ProcessDirector returning _notDone = " 
+                + _notDone);
 	return _notDone;
     }
 
@@ -392,17 +394,31 @@ public class ProcessDirector extends Director {
     }
 
     /** Stop the input branch controller of this director by 
-     *  ending the current iteration of the controller.
+     *  ending the current iteration of the controller. This
+     *  method will block until the output branch controller
+     *  has stopped due to all of the branches it controls
+     *  stopping.
      */
     public void  stopInputBranchController() {
+        Workspace workspace = workspace();
         _inputBranchController.endIteration();
+        while( !_inputBranchController.isBlocked() ) {
+            workspace.wait(this);
+        }
     }
     
     /** Stop the output branch controller of this director by 
-     *  ending the current iteration of the controller.
+     *  ending the current iteration of the controller. This
+     *  method will block until the output branch controller
+     *  has stopped due to all of the branches it controls
+     *  stopping.
      */
     public void  stopOutputBranchController() {
-        _inputBranchController.endIteration();
+        Workspace workspace = workspace();
+        _outputBranchController.endIteration();
+        while( !_outputBranchController.isBlocked() ) {
+            workspace.wait(this);
+        }
     }
     
     /** Terminates all threads under control of this director immediately.
