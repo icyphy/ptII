@@ -101,7 +101,7 @@ public class FIFOQueue implements Cloneable {
 
     /** Clone this queue. The cloned queue has no container. The
      *  objects in the queue themselves are not cloned.
-     *  @return A clone of this queue
+     *  @return A clone of this queue.
      */
     public Object clone() {
         return new FIFOQueue(this);
@@ -121,14 +121,6 @@ public class FIFOQueue implements Cloneable {
      */
     public List elementList() {
         return _queueList;
-    }
-
-    /** Return true if the number of objects in the queue equals the
-     *  queue capacity.
-     *  @return A boolean indicating whether the queue is full.
-     */
-    public boolean isFull() {
-        return _queueList.size() == _queueCapacity;
     }
 
     /** Return an object in the queue or history. The object is not
@@ -217,6 +209,14 @@ public class FIFOQueue implements Cloneable {
      */
     public int historySize() {
         return _historyList.size();
+    }
+
+    /** Return true if the number of objects in the queue equals the
+     *  queue capacity.
+     *  @return A boolean indicating whether the queue is full.
+     */
+    public boolean isFull() {
+        return _queueList.size() == _queueCapacity;
     }
 
     /** Put an object in the queue and return true if this will not

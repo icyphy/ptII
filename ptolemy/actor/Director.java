@@ -475,8 +475,8 @@ public class Director extends Attribute implements Executable {
      *  methods. This method is called by CompositeActor when an actor
      *  sets its container to that composite actor.  Typically, that
      *  will occur when a model is first constructed, and during the
-     *  execute() method of a ChangeRequest that is queued using
-     *  requestChange().  In this base class, the request is delegated
+     *  execute() method of a ChangeRequest.
+     *  In this base class, the request is delegated
      *  to the manager. If there is no manager, or if the container
      *  is not an instance of CompositeActor, then do nothing.
      *  @param actor The actor to initialize.

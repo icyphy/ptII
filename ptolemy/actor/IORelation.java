@@ -417,7 +417,6 @@ public class IORelation extends ComponentRelation {
         }
     }
 
-
     /** Specify the container, adding the relation to the list
      *  of relations in the container.
      *  If this relation already has a container, remove it
