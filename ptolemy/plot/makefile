@@ -82,7 +82,8 @@ EXTRA_SRCS = $(JSRCS) \
 	PtolemyGraphics1_2.java.in \
 	copyright.txt \
 	index.htm \
-	ptplot \
+	ptplot.in \
+	ptplot.isj \
 	pxgraph.bat
 
 # Non-source files such as README files and subdirectories
@@ -94,6 +95,8 @@ OPTIONAL_FILES = \
 	$(DIRS) \
 	adm \
 	manifest.tmp \
+	ptplot \
+	pxgraph \
 	$(PTCLASSJAR) \
 	$(PTCLASSZIP)\
 	ptolemy.plot$(JVERSION).tar.gz \
@@ -102,6 +105,7 @@ OPTIONAL_FILES = \
 	PtolemyGraphics.java \
 	'Message$$1.class' \
 	'Message$$2.class' \
+	'PlotBox$$CommandListener.class' \
 	'PlotBox$$DragListener.class' \
 	'PlotBox$$FillButtonListener.class' \
 	'PlotBox$$ZoomListener.class' \
@@ -261,6 +265,10 @@ fixtmpdist:
 	@echo "JShield needs the ico file to be in the top level directory"
 	cp $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/img/ptplot.ico \
 		$(PTTMPDIR)/$(PTDIST)
+	@echo "Setting up doc directory"
+	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/codeDoc
+	cd $(PTTMPDIR)/$(PTDIST); \
+	CLASSPATH=. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc ptolemy.plot
 	@echo "Fixing up doc/download directory"
 	rm -rf $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download
 	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download
