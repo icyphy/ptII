@@ -802,7 +802,7 @@ public final class Workspace implements Nameable, Serializable {
     /** @serial Indicate that the workspace is read-only, and no changes in
      * this Workspace object is permitted.
      */
-    private boolean _readOnly = false;
+    // private boolean _readOnly = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
