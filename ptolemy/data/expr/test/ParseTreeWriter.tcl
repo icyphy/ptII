@@ -104,7 +104,7 @@ test ParseTreeWriter-2.7 {Construct a Parser, try integer format specifiers} {
 # 
 test ParseTreeWriter-2.8 {Construct a Parser, try long format specifiers} {
     list [theTest "29l"] [theTest "035L"] [theTest "0x1Dl"] [theTest "0X1dL"]
-} {29l 29l 29l 29l} {Longs are not preserved}
+} {29L 29L 29L 29L}
 
 ######################################################################
 ####
@@ -145,7 +145,7 @@ test ParseTreeWriter-4.2 {Construct a Parser,test use of equality operator on st
 ####
 test ParseTreeWriter-4.3 {Construct a Parser,test shift operators} {
     list [theTest "2 << 2"] [theTest "-4 >> 1"] [theTest "-4L >>> 1"] [theTest "4UB >> 2"]
-} {(2<<2) (-4>>1) (-4>>>1) (4ub>>2)}
+} {(2<<2) (-4>>1) (-4L>>>1) (4ub>>2)}
 
 ######################################################################
 ####
@@ -226,7 +226,7 @@ test ParseTreeWriter-9.0 {Check that evaluation of the parse tree does not chang
 # Need to test that constants can be registered and recognized by the parser.
 test ParseTreeWriter-10.0 {Test that constants can be registered and recognized by the parser} {
     list [theTest "half + one + neil"] [theTest "boolean == true"] [theTest "long"]
-} {(0.5+1+\"neil\") (true==true) 1000}
+} {(0.5+1+\"neil\") (true==true) 1000L}
 
 ######################################################################
 ####

@@ -185,7 +185,7 @@ test PtParser-2.8 {Construct a Parser, try long format specifiers} {
     set res4  [ $root evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4  toString]
-} {29 29 29 29}
+} {29L 29L 29L 29L}
 
 ######################################################################
 ####
@@ -284,7 +284,7 @@ test PtParser-4.3 {Construct a Parser,test shift operators} {
     set res4  [ $root4 evaluateParseTree ]
    
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]  
-} {8 -2 9223372036854775806 1ub}
+} {8 -2 9223372036854775806L 1ub}
 
 ######################################################################
 ####
@@ -392,7 +392,7 @@ test PtParser-7.0 {Construct a Parser, try simple functional if then else} {
     catch {[[ $p1 {generateParseTree String} "(true)?(7L):(6.0)\n"] evaluateParseTree] toString} res3
  
     list [$res1 toString] [$res2 toString] $res3
-} {7 7.0 {ptolemy.kernel.util.IllegalActionException: Cannot convert token 7 to type scalar, because scalar is not a concrete type.}}
+} {7 7.0 {ptolemy.kernel.util.IllegalActionException: Cannot convert token 7L to type scalar, because scalar is not a concrete type.}}
 
 ######################################################################
 ####
@@ -549,7 +549,7 @@ test PtParser-10.0 {Test that constants can be registered and recognized by the 
     set res1 [ $root1 evaluateParseTree ]
     set value4 [$res1 toString]
     list $value1 $value2 $value3 $value4
-} {5.8598744820488 {"1.5neil"} true 1000}
+} {5.8598744820488 {"1.5neil"} true 1000L}
 ######################################################################
 ####
 # Need to test that functions can access methods registered in the 

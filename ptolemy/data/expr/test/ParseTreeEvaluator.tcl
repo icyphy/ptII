@@ -104,7 +104,7 @@ test ParseTreeEvaluator-2.7 {Construct a Parser, try integer format specifiers} 
 # 
 test ParseTreeEvaluator-2.8 {Construct a Parser, try long format specifiers} {
     list [theTest "29l"] [theTest "035L"] [theTest "0x1Dl"] [theTest "0X1dL"]
-} {29l 29l 29l 29l} {Longs are not preserved}
+} {29L 29L 29L 29L}
 
 ######################################################################
 ####
@@ -145,7 +145,7 @@ test ParseTreeEvaluator-4.2 {Construct a Parser,test use of equality operator on
 ####
 test ParseTreeEvaluator-4.3 {Construct a Parser,test shift operators} {
     list [theTest "2 << 2"] [theTest "-4 >> 1"] [theTest "-4L >>> 1"] [theTest "4UB >> 2"]
-} {8 -2 9223372036854775806 1ub}
+} {8 -2 9223372036854775806L 1ub}
 
 ######################################################################
 ####
