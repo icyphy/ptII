@@ -72,10 +72,11 @@ public class PNInterleave extends AtomicActor{
         Token data;
 	while (true) {
 	    int width = _input.getWidth();
-	    for (int i=0; i<width; i++) {
+	    for (int i = 0; i<width; i++) {
 		data = _input.get(i);
 		_output.broadcast(data);
-                System.out.println("Interleave writes "+((IntToken)data).intValue());
+                System.out.println("Interleave writes " +
+                        ((IntToken)data).intValue());
 	    }
 	}
     }
