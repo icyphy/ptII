@@ -50,8 +50,7 @@ represented as inequalities between Typeable objects.
 @see ptolemy.graph.InequalityTerm
 */
 
-public interface Typeable
-{
+public interface Typeable {
     /** Return the type of this object. An exception is thrown if the type
      *  cannot be determined. This can happen if the type of this object
      *  is dependent on some other objects whose value is not available yet.
@@ -85,7 +84,7 @@ public interface Typeable
      *  than the argument.  Because the argument is a concrete type,
      *  rather than a Typeable object (which may not yet have a type),
      *  the constraint is immediately enforced.
-     *  @param An instance of Type.
+     *  @param type An instance of Type.
      *  @exception IllegalActionException If the type of this object
      *   already violates this constraint.
      */
