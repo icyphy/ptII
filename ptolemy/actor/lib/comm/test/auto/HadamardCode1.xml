@@ -11,19 +11,19 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 90.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 128, 815, 511}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 748}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 637]">
     </property>
     <entity name="HadamardCode" class="ptolemy.actor.lib.comm.HadamardCode">
         <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="log2Length" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 200.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -46,7 +46,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 210.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -56,38 +56,12 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="16">
-        </property>
-        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 285.0">
-        </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="16">
-            </property>
-        </port>
-    </entity>
     <entity name="DoubleToMatrix" class="ptolemy.domains.sdf.lib.DoubleToMatrix">
         <property name="rows" class="ptolemy.data.expr.Parameter" value="4">
         </property>
         <property name="columns" class="ptolemy.data.expr.Parameter" value="4">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 200.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -109,35 +83,99 @@
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[1.0, 1.0, 1.0, 1.0; 1.0, -1.0, 1.0, -1.0; 1.0, 1.0, -1.0, -1.0; 1.0, -1.0, -1.0, 1.0]}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[4.0, 0.0, 0.0, 0.0; 0.0, 4.0, 0.0, 0.0; 0.0, 0.0, 4.0, 0.0; 0.0, 0.0, 0.0, 4.0]}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="675.0, 265.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[double]">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="output = H*H'">
+        </property>
+        <property name="get1x1asScalars" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="getIntegerMatrices" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="580.0, 265.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[double]">
+            </property>
+        </port>
+        <port name="H" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 210.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="16">
+            </property>
+        </port>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="345.0, 210.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="235.0, 210.0">
+        </vertex>
+    </relation>
     <link port="HadamardCode.output" relation="relation3"/>
-    <link port="HadamardCode.index" relation="relation2"/>
-    <link port="Const.output" relation="relation"/>
-    <link port="ArrayToSequence.input" relation="relation"/>
-    <link port="ArrayToSequence.output" relation="relation2"/>
+    <link port="HadamardCode.index" relation="relation8"/>
+    <link port="Const.output" relation="relation2"/>
     <link port="DoubleToMatrix.input" relation="relation3"/>
     <link port="DoubleToMatrix.output" relation="relation4"/>
-    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="NonStrictTest.input" relation="relation6"/>
+    <link port="MatlabExpression.output" relation="relation6"/>
+    <link port="MatlabExpression.H" relation="relation4"/>
+    <link port="ArrayToSequence.input" relation="relation2"/>
+    <link port="ArrayToSequence.output" relation="relation8"/>
 </entity>
