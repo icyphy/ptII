@@ -33,8 +33,9 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 
-import java.util.Enumeration;
+import java.util.*;
 import collections.LinkedList;
+import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFCompositeActor
@@ -43,7 +44,7 @@ A CompositeActor that can exist in an SDF-scheduled domain.   Implements
 rated ports via the DataflowActor interface.
 
 @author Stephen Neuendorffer
-@version $Id$
+@version @(#)SDFCompositeActor.java	1.3 10/12/98
 @see ptolemy.actors.CompositeActor
 @see ptolemy.actors.IOPort
 */
@@ -114,13 +115,72 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         }
     }
 
+   /** Get the number of tokens that are produced or consumed 
+     *  on the designated port of this Actor.   
+     *
+     *  @throw IllegalActionException if port is not contained in this actor, 
+     *  or the port is not an Input port.
+     *  @throw IllegalActionException if the Port is not connected on the 
+     *  inside and has not been explicitly set, thus the rate cannot be 
+     *  determined.
+     *  @return The number of tokens consumed on the port.
+     */
+    public int getTokenConsumptionRate(IOPort p) 
+            throws IllegalActionException{
+
+        Debug.println("getTokenConsumptionRate:");
+        if(!p.isInput()) throw new IllegalActionException("IOPort " +
+                p.getName() + " is not an Input Port.");
+        Port pp = getPort(p.getName());
+        if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
+                p.getName() + " is not contained in Actor " + 
+                getName());
+
+        // If we've previously set the rate explicitly, then use that, 
+        // Otherwise we'll go on and try to extrapolate.
+        if(_tokenconsumption.includesKey(p)) {
+            Integer tokens = (Integer) _tokenconsumption.at(p);
+            return tokens.intValue();
+        }
+
+        Debug.println("Finished Sanity Checks");
+
+        SDFDirector director = (SDFDirector) getDirector();
+        SDFScheduler scheduler = (SDFScheduler) director.getScheduler();
+        Debug.println("Starting Sub-schedule");
+        Enumeration schedule = scheduler.schedule();
+        Debug.println("Finished Sub-Schedule");
+        
+        Enumeration ports = p.insidePorts();
+        if(ports.hasMoreElements() == false) 
+            throw new IllegalActionException("Port " + p.getName() +
+                    " is not connected on the inside, " +
+                    "leaving its rate indeterminate.");
+        IOPort connectedPort = (IOPort) ports.nextElement();
+        ComponentEntity connectedActor = 
+            (ComponentEntity) connectedPort.getContainer();
+        
+        Debug.println("getting connectedrate");
+        int connectedrate = ((DataflowActor) connectedActor).
+            getTokenConsumptionRate(connectedPort);
+        Debug.println((new Integer(connectedrate)).toString());
+
+        Debug.println("getting firing");
+        int firing = scheduler.getFiringCount(connectedActor);
+        Debug.println((new Integer(firing)).toString());
+
+        Debug.println("return rate of:" + (new Integer(connectedrate*firing)).intValue());
+        return connectedrate * firing;
+    }
 
     /** Get the number of tokens that are produced or consumed 
      *  on the designated port of this Actor.   
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @throw IllegalActionException if port is not contained in this actor,
+     *  is not an output port.
      *  @throw IllegalActionException if the Port is not connected on the 
-     *  inside, and thus the rate cannot be determined.
+     *  inside and the rate has not been explicitly set, thus the rate cannot
+     *  be determined.
      *  @return The number of tokens produced on the port.
      */
     public int getTokenProductionRate(IOPort p) throws IllegalActionException {
@@ -132,6 +192,11 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " + 
                 getName());
+
+        if(_tokenproduction.includesKey(p)) {
+            Integer tokens = (Integer) _tokenproduction.at(p);
+            return tokens.intValue();
+        }
 
         Debug.println("Finished Sanity Checks");
 
@@ -163,126 +228,56 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         return connectedrate * firing;
     }
 
-        
-    /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor.   
-     *
-     *  @throw IllegalActionException if port is not contained in this actor.
-     *  @return The number of tokens consumed on the port.
+    /** This method sets the value returned by getTokenConsumptionRate on the
+     *  port.   If this method is not called, then getTokenConsumptionRate will
+     *  attempt to extrapolate the proper values by scheduling the contained 
+     *  actors.   This method allows domains that in general don't support 
+     *  strict dataflow semantics to be encapsulated within strict dataflow
+     *  domains.
+     *  @param IOPort the number of tokens consumed on the port.
+     *  @throw IllegalActionException if port is not contained in this actor,
+     *  or the port is not an input port.
      */
-    public int getTokenConsumptionRate(IOPort p) 
-            throws IllegalActionException{
+    public void setTokenConsumptionRate(IOPort p, int count)
+            throws IllegalActionException {
 
-        Debug.println("getTokenConsumptionRate:");
         if(!p.isInput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Input Port.");
         Port pp = getPort(p.getName());
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " + 
                 getName());
-       Debug.println("Finished Sanity Checks");
-
-        SDFDirector director = (SDFDirector) getDirector();
-        SDFScheduler scheduler = (SDFScheduler) director.getScheduler();
-        Debug.println("Starting Sub-schedule");
-        Enumeration schedule = scheduler.schedule();
-        Debug.println("Finished Sub-Schedule");
-        
-        Enumeration ports = p.insidePorts();
-        if(ports.hasMoreElements() == false) 
-            throw new IllegalActionException("Port " + p.getName() +
-                    " is not connected on the inside, " +
-                    "leaving its rate indeterminate.");
-        IOPort connectedPort = (IOPort) ports.nextElement();
-        ComponentEntity connectedActor = 
-            (ComponentEntity) connectedPort.getContainer();
-        
-        Debug.println("getting connectedrate");
-        int connectedrate = ((DataflowActor) connectedActor).
-            getTokenConsumptionRate(connectedPort);
-        Debug.println((new Integer(connectedrate)).toString());
-
-        Debug.println("getting firing");
-        int firing = scheduler.getFiringCount(connectedActor);
-        Debug.println((new Integer(firing)).toString());
-
-        Debug.println("return rate of:" + (new Integer(connectedrate*firing)).intValue());
-        return connectedrate * firing;
+        _tokenconsumption.putAt(p, new Integer(count));
     }
 
-    /** If this actor is opaque, invoke the postfire() method of its
-     *  local director and transfer output data.
-     *  Specifically, transfer any data from the output ports of this composite
-     *  to the ports connected on the outside. The transfer is accomplished
-     *  by calling the transferOuputs() method of the executive director.
-     *  If there is no executive director, then no transfer occurs.
-     *  This method is read-synchronized on the workspace.
+    /** Set the number of tokens that are produced or consumed 
+     *  on the designated port of this Actor.   It may also
+     *  be called in an opaque CompositeActor to place a non-dataflow domain
+     *  inside of a dataflow domain.  (In this case the CompositeActor cannot
+     *  determine the rate by scheduling the contained domain, and it must be
+     *  explicitly declared.) 
      *
-     *  @return True if the execution can continue into the next iteration.
-     *  @exception IllegalActionException If there is no director,
-     *   or if the director's postfire() method throws it, or if this
-     *   actor is not opaque.
+     *  @throw IllegalActionException if port is not contained in this actor,
+     *  or is not an output port.
+     *  @return The number of tokens produced on the port.
      */
-    /*    public boolean postfire() throws IllegalActionException {
-        try {
-            workspace().getReadAccess();
-            if (!isOpaque()) {
-                throw new IllegalActionException(this,
-                        "Cannot invoke postfire a non-opaque actor.");
-            }
-            // Note that this is assured of firing the local director,
-            // not the executive director, because this is opaque.
-            boolean oktocontinue = getDirector().postfire();
-            // The composite actor is opaque.
-            // Use the executive director to transfer outputs.
-            Director edir = getExecutiveDirector();
-            if (edir != null) {
-                Enumeration ports = outputPorts();
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort)ports.nextElement();
-                    edir.transferOutputs(p);
-                }
-            }
-            return oktocontinue;
-        } finally {
-            workspace().doneReading();
-        }
+    public void setTokenProductionRate(IOPort p, int count) 
+            throws IllegalActionException {
+        Debug.println("getTokenProductionRate:");
+        if(!p.isOutput()) throw new IllegalActionException("IOPort " +
+                p.getName() + " is not an Input Port.");
+        Port pp = getPort(p.getName());
+        if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
+                p.getName() + " is not contained in Actor " + 
+                getName());
+        _tokenproduction.putAt(p, new Integer(count));
     }
-*/
-    /** If this actor is opaque, transfer input data and invoke the prefire()
-     *  method of the local director. Specifically, transfer any data from
-     *  the input ports of this composite to the ports connected on the inside.
-     *  The transfer is accomplished by calling the transferInputs() method
-     *  of the local director (the exact behavior of which depends on the
-     *  domain).  This method returns true if the actor is
-     *  ready to fire (determined by the prefire() method of the director).
-     *  It is read-synchronized on the workspace.
-     *
-     *  @exception IllegalActionException If there is no director,
-     *   or if the director's prefire() method throws it, or if this actor
-     *   is not opaque.
-     *  @exception NameDuplicationException If the prefire() method of the
-     *   director throws it (while performing mutations, if any).
-     */
-    /*    public boolean prefire()
-            throws IllegalActionException, NameDuplicationException {
-        try {
-            workspace().getReadAccess();
-            if (!isOpaque()) {
-                throw new IllegalActionException(this,
-                        "Cannot invoke prefire a non-opaque actor.");
-            }
-            // Use the local director to transfer outputs.
-            Enumeration ports = inputPorts();
-            while(ports.hasMoreElements()) {
-                IOPort p = (IOPort)ports.nextElement();
-                Director direct = getDirector();
-                director.transferInputs(p);
-            }
-            return getDirector().prefire();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-*/
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
+
+    private HashedMap _tokenconsumption;
+    private HashedMap _tokenproduction;
+            
 }
