@@ -77,7 +77,6 @@ public class CTZeroOrderHold extends TypedAtomicActor
         output.setInput(false);
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
-        _lastToken = new DoubleToken(0.0);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -115,6 +114,15 @@ public class CTZeroOrderHold extends TypedAtomicActor
      */
     public void fire() throws IllegalActionException{
         output.broadcast(_lastToken);
+    }
+
+    /** Initialize token. If there is no input, the initial token is
+     *  a zero Double Token.
+     *  @exception IllegalActionException If thrown by the super class.
+     */
+    public void initialize() throws IllegalActionException{
+        super.initialize();
+        _lastToken = new DoubleToken(0.0);
     }
 
     ////////////////////////////////////////////////////////////////////////
