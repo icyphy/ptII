@@ -104,10 +104,13 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
 	@echo "There are also long tests in this directory."
 	@echo "Run 'make test_long' to run these tests, which will take 4 hrs" 
 	$(JTCLSH) alljtests.tcl
+	$(MAKE) cleanFileWriter cleanRunCompositeActor
 
 test_long: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) longjtests.tcl \
 		cleanFileWriter cleanRunCompositeActor
 	$(JTCLSH) longjtests.tcl
+	$(MAKE) cleanFileWriter cleanRunCompositeActor
+
 
 # lonjtests.tcl is used to source all the long tcl files that use Java
 longjtests.tcl: makefile
