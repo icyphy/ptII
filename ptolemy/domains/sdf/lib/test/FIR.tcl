@@ -37,6 +37,7 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+set VERBOSE 1
 ######################################################################
 #### Test FIR in an SDF model
 #
@@ -96,13 +97,19 @@ test FIR-2.1 {Test FIR type exeception} {
     $tapParam setToken $fixArrayToken
 
     catch { [$e0 getManager] execute } msg
-	list $msg
 
-} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:
-  .top.rec.input: scalar
-  .top.FIRclone.output: scalar
-}}
-
+    # Note, this order of the error message might be platform dependent
+    set containsException [regexp \
+	    {ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:} \
+	    $msg]
+    set containsFIRclone [regexp \
+	    {.top.FIRclone.output: scalar} \
+	    $msg]
+    set containsRecInput [regexp \
+	    {.top.rec.input: scalar} \
+	    $msg]
+    list $containsException $containsFIRclone $containsRecInput
+} {1 1 1}
 
 test FIR-3.1 {Test FIR for FIX datatype} {
     set e0 [sdfModel 10 ]
