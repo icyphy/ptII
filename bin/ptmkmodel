@@ -390,7 +390,7 @@ public class $appletclass extends $appletparent {
             _plot.plot.addLegend(0, "Input");
             _plot.plot.setXLabel("Time");
             _plot.plot.setYLabel("Wait time");
-            _plot.plot.setXRange(0.0, _getStopTime());
+            _plot.plot.setXRange(0.0, 10);
             _plot.plot.setYRange(-1.0, 4.0);
             _plot.plot.setSize(450,200);
             _plot.fillOnWrapup.setToken(new BooleanToken(false));
@@ -415,7 +415,7 @@ public class $appletclass extends $appletparent {
      *   parameters have somehow been set.
      */
     protected void _go() throws IllegalActionException {
-        _plot.plot.setXRange(0.0, _getStopTime());
+        _plot.plot.setXRange(0.0, 10);
         super._go();
     }
 
