@@ -80,7 +80,7 @@ test_jsimple: $(EXTRA_SRCS) jclass
 demo:
 	CLASSPATH="$(CLASSPATH)" java ptolemy.kvm.kernel.test.ExampleSystem
 
-ExampleSystemSpotlet.prc: ExampleSystemSpotlet.class
+ExampleSystemSpotlet.prc: ExampleSystemSpotlet.class $(JCLASS)
 	CLASSPATH="$(CLASSPATH)" java palm.database.MakePalmApp -classpath "$(CLASSPATH)" -v -skiplist java.lang:com.sun.kjava ptolemy.kvm.kernel.test.ExampleSystemSpotlet
 
 depend:
