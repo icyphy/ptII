@@ -99,7 +99,7 @@ public class FooBar {
 	}
 
 
-	System.out.println(msg);
+	// System.out.println(msg);
     }
 
     ///////////////////////////////////////////////////////////////////
