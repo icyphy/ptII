@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	IconEditor.java \
+	SimpleSelection.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
