@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data
 
-DIRS = 		expr test type
+DIRS = 		expr test #type
 
 # Root of the Ptolemy II directory
 ROOT =		../..
