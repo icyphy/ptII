@@ -1,6 +1,6 @@
 /* An actor that translates the input 3D shape
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,7 +50,7 @@ This actor represents a translation of a two-dimensional GR scene.
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
 public class Translate2D extends GRTransform2D {
 

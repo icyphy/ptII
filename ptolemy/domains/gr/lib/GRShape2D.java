@@ -1,6 +1,6 @@
 /* An abstract base class for shaded GR Actors
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -54,7 +54,7 @@ or can be entered manually as an array of double values of the form
 
 @author Steve Neuendorffer, Ismael M. Sarmiento
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
 abstract public class GRShape2D extends GRActor2D {
 
@@ -75,10 +75,10 @@ abstract public class GRShape2D extends GRActor2D {
         sceneGraphOut.setTypeEquals(Scene2DToken.TYPE);
 
         rgbFillColor = new ColorAttribute(this, "rgbFillColor");
-        rgbFillColor.setExpression("{1.0,1.0,1.0,1.0}");
+        rgbFillColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
 
         rgbOutlineColor = new ColorAttribute(this, "rgbOutlineColor");
-        rgbOutlineColor.setExpression("{0.0,0.0,0.0,1.0}");
+        rgbOutlineColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
 
         outlineWidth = new Parameter(this, "outlineWidth",
                 new DoubleToken(1.0));
@@ -95,13 +95,16 @@ abstract public class GRShape2D extends GRActor2D {
 
     /** The red, green, blue, and alpha components of the interior color
      *  of the figure.  This parameter must contain an array of double values.
-     *  The default value is {1.0,1.0,1.0,1.0}, corresponding to opaque white.
+     *  The default value is {1.0, 1.0, 1.0, 1.0},
+     *  corresponding to opaque white.
      */
+
     public ColorAttribute rgbFillColor;
 
     /** The red, green, blue and alpha components of the outline color
      *  of the figure.  This parameter must contain an array of double values.
-     *  The default value is {0.0,0.0,0.0,1.0}, corresponding to opaque black.
+     *  The default value is {0.0, 0.0, 0.0, 1.0},
+     *  corresponding to opaque black.
      */
     public ColorAttribute rgbOutlineColor;
 
@@ -130,6 +133,10 @@ abstract public class GRShape2D extends GRActor2D {
         super.attributeChanged(attribute);
     }
 
+    public BasicFigure getFigure() {
+        return _figure;
+    }
+
     /** Create the figure for this actor.
      *
      *  @exception IllegalActionException If the current director
@@ -141,10 +148,6 @@ abstract public class GRShape2D extends GRActor2D {
         _setAppearance(_figure);
     }
 
-
-    public BasicFigure getFigure(){
-        return _figure;
-    }
 
     /** Return false if the scene graph is already initialized.
      *

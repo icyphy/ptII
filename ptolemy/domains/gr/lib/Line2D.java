@@ -1,6 +1,6 @@
 /* Create a line with the endpoints provided by the user.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -52,7 +52,7 @@ import diva.canvas.toolbox.BasicFigure;
 
 @author Steve Neuendorffer, Ismael M. Sarmiento
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
 public class Line2D extends GRActor2D {
 
@@ -73,7 +73,7 @@ public class Line2D extends GRActor2D {
         sceneGraphOut.setTypeEquals(Scene2DToken.TYPE);
 
         rgbColor = new ColorAttribute(this, "rgbColor");
-        rgbColor.setExpression("{0.0,0.0,0.0,1.0}");
+        rgbColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
 
         lineWidth = new Parameter(this, "lineWidth",
                 new DoubleToken(1.0));
@@ -108,7 +108,7 @@ public class Line2D extends GRActor2D {
 
     /** The red, green, blue, and alpha components of the line.  This
      *  parameter must contain an array of double values.  The default
-     *  value is {0.0,0.0,0.0,0.0}, corresponding to opaque black.
+     *  value is {0.0, 0.0, 0.0, 1.0}, corresponding to opaque black.
      */
     public ColorAttribute rgbColor;
 

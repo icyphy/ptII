@@ -1,6 +1,6 @@
 /* Create a figure from a user specified image file.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,7 +56,7 @@ format.
 
 @author Ismael M. Sarmiento, Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
 public class Image2D extends GRActor2D {
 
@@ -95,7 +95,8 @@ public class Image2D extends GRActor2D {
 
 
     /** Create the imageFigure.
-     *  @exception If base class throws such an exception.
+     *  @exception IllegalActionException If the base class throws such
+     *  an exception.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();

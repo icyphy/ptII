@@ -51,7 +51,7 @@ corners, and should be zero for a boring old rectangle.
 
 @author Ismael M. Sarmiento, Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
 public class Rectangle2D extends RectangularFigure2D {
 
@@ -104,7 +104,7 @@ public class Rectangle2D extends RectangularFigure2D {
 
     /** Update the figure's position and size when the user changes
      *  the appropriate parameters.
-     * @throws IllegalActionException If a parameter value is not valid.
+     * @exception IllegalActionException If a parameter value is not valid.
      */
     protected void _updateFigure() throws IllegalActionException{
         java.awt.geom.RoundRectangle2D.Double rectangle =

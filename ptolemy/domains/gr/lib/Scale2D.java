@@ -1,6 +1,6 @@
 /* Scale a two-dimensional figure based on the size provided by the user.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -55,7 +55,7 @@ figure.
 
 @author Ismael M. Sarmiento, Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
 public class Scale2D extends GRTransform2D {
 

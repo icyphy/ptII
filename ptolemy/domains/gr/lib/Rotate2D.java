@@ -1,7 +1,7 @@
 /* Rotate a two-dimensional figure based on the angle and anchor
    point provided by the user.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -64,7 +64,7 @@ will be relative to the positve X-axis.
 
 @author Ismael M. Sarmiento, Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
 public class Rotate2D extends GRTransform2D {
 
@@ -180,7 +180,7 @@ public class Rotate2D extends GRTransform2D {
         double anchorYValue = _oldAnchorY;
 
         boolean needsTransform = false;
-        if(theta.getWidth() != 0 && theta.hasToken(0)){
+        if (theta.getWidth() != 0 && theta.hasToken(0)){
             angle = ((DoubleToken) theta.get(0)).doubleValue();
             needsTransform = true;
 
@@ -188,26 +188,29 @@ public class Rotate2D extends GRTransform2D {
                 angle = Math.toRadians(angle);
         }
 
-        if(anchorX.getWidth() != 0 && anchorX.hasToken(0)){
+        if (anchorX.getWidth() != 0 && anchorX.hasToken(0)){
             anchorXValue = ((DoubleToken) anchorX.get(0)).doubleValue();
             needsTransform = true;
         }
 
-        if(anchorY.getWidth() != 0 && anchorY.hasToken(0)) {
+        if (anchorY.getWidth() != 0 && anchorY.hasToken(0)) {
             anchorYValue = -((DoubleToken) anchorY.get(0)).doubleValue();
             needsTransform = true;
         }
 
 
-        if(needsTransform){
-            final AffineTransform inputTransform = AffineTransform.getRotateInstance(
-                    angle, anchorXValue, anchorYValue);
+        if (needsTransform){
+            final AffineTransform inputTransform =
+                AffineTransform.getRotateInstance(angle,
+                        anchorXValue, anchorYValue);
 
-            if(!figure.getTransformContext().getTransform().equals(inputTransform)){
+            if ( !figure.getTransformContext().getTransform()
+                    .equals(inputTransform)){
 
-                if(!_isAccumulating()){
+                if (!_isAccumulating()){
                     inputTransform.concatenate(
-                            figure.getTransformContext().getInverseTransform());
+                            figure.getTransformContext()
+                            .getInverseTransform());
                 }
 
                 figure.transform(inputTransform);

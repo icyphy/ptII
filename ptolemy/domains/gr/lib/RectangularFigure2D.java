@@ -1,7 +1,7 @@
 /* Create a rectangle, rounded rectangle, or ellipse with the size and
- * position specified by the user.
+position specified by the user.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,7 +56,7 @@ displayed.
 
 @author Ismael M. Sarmiento, Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
 public abstract class RectangularFigure2D extends GRShape2D {
 
@@ -146,7 +146,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
      * @param dimension The size of the rectangle along a single axis.
      * @return A DoubleToken containing the offset needed to center the
      * figure.
-     * @throws IllegalActionException If getToken() method throws such
+     * @exception IllegalActionException If getToken() method throws such
      * an exception.
      */
     protected double _getCenterOffset(Parameter dimension)
@@ -157,7 +157,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
 
     /** Return the center point of the rectangle as a Point.Double.
      * @return The rectangle's center point as a Point.Double.
-     * @throws IllegalActionException If getToken() method throws such
+     * @exception IllegalActionException If getToken() method throws such
      * an exception.
      */
     protected Point.Double _getCenterPoint() throws IllegalActionException {
@@ -168,7 +168,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
 
     /** Calculate the lower left point of the rectangle as a Point.Double.
      * @return The lower left point of the rectangle as a Point.Double.
-     * @throws IllegalActionException If getToken() method throws such
+     * @exception IllegalActionException If getToken() method throws such
      * an exception.
      */
     protected Point.Double _getCornerPoint() throws IllegalActionException {
@@ -181,7 +181,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
 
     /** Update the figure's position and size when the user changes
      *  the appropriate parameters.
-     * @throws IllegalActionException If getToken() generates
+     * @exception IllegalActionException If getToken() generates
      * IllegalActionExeception.
      */
     protected abstract void _updateFigure() throws IllegalActionException;

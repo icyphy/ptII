@@ -1,6 +1,6 @@
 /* An abstract base class for transforming input 3D shape
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -55,7 +55,7 @@ accumulated or reset during firing.
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 3.1
 */
 abstract public class GRTransform2D extends GRActor2D {
 
@@ -104,15 +104,6 @@ abstract public class GRTransform2D extends GRActor2D {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Setup the transform object.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        CompositeFigure compositeFigure = new CompositeFigure();
-        _figure = compositeFigure;
-        _applyInitialTransform(_figure);
-    }
-
     /** Consume inputs from any input ports and apply transformation
      *  according to the state of this actor.
      *  @exception IllegalActionException If the value of some parameters
@@ -122,6 +113,15 @@ abstract public class GRTransform2D extends GRActor2D {
         //  all state changes must be done in postfire()
         super.fire();
         _applyTransform(_figure);
+    }
+
+    /** Setup the transform object.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        CompositeFigure compositeFigure = new CompositeFigure();
+        _figure = compositeFigure;
+        _applyInitialTransform(_figure);
     }
 
     ///////////////////////////////////////////////////////////////////
