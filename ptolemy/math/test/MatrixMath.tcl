@@ -1803,10 +1803,10 @@ testMatrixMatrixScalar within $types
 ####
 ##  *ArrayMath Test out boolean within(xxx[], xxx[], xxx[])
 
-# FIXME: Why is it ok to have negative values for complex numbers
+# Note that it is ok to have negative values for complex numbers
 # but not the others
 set types [list \
-        [list Complex ptolemy.math.Complex complex {0}] \
+        [list Complex ptolemy.math.Complex complex {1}] \
   	[list Double double double {0}] \
   	[list Float float float {0}] \
   	[list Integer int int {0}] \
@@ -1821,11 +1821,11 @@ testArrayMathArrayArrayArray within $types
 # The matrices contain negative elements, which will cause
 # this to return within(xxx[][], xxx[][], xxx[][]) to return false
 
-# FIXME: Why is it ok to have negative values for complex numbers
+# Note that it is ok to have negative values for complex numbers
 # but not the others
 
 set types [list \
-	[list Complex ptolemy.math.Complex complex {0}] \
+	[list Complex ptolemy.math.Complex complex {1}] \
 	[list Double double double {0}] \
 	[list Float float float {0}] \
 	[list Integer int int {0}] \
