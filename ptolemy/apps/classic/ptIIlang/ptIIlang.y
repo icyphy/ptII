@@ -2,7 +2,7 @@
 /************************************************************************
  Version: @(#)ptlang.y	2.103	10/31/99
 
-Copyright (c)1990-1999  The Regents of the University of California.
+Copyright (c)1990-2005  The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -1152,19 +1152,24 @@ void genPort ()
 	}
 	sprintf (str2, "        %s = new TypedIOPort(this, \"%s\", %s);\n", portName, portName, str1);
 	strcat (javaConsStuff, str2);
+
+	if (portMulti) {
+	        sprintf (str2, "        %s.setMultiport(true);\n", portName);
+		strcat (javaConsStuff, str2);
+	}
+
 	char ptIIType[MEDBUFSIZE];
 	sprintf(ptIIType,cvtToUpper(portType));
 	if (strcmp(ptIIType, "FLOAT") == 0) {
 		sprintf(ptIIType, "DOUBLE");
 	}
 	
-	if (portMulti) {
-	        sprintf (str2, "        %s.setMultiport(true);\n", portName);
+	if (strcmp(ptIIType, "ANYTYPE") != 0) {
+		// Don't set the type
+		sprintf (str2, "        %s.setTypeEquals(BaseType.%s);\n",
+			portName, ptIIType);
 		strcat (javaConsStuff, str2);
 	}
-	sprintf (str2, "        %s.setTypeEquals(BaseType.%s);\n",
-		 portName, ptIIType);
-	strcat (javaConsStuff, str2);
 
 	// Ports
 	sprintf (str2, "\n    /**\n"); 
@@ -1526,6 +1531,22 @@ void cvtMethod( src_in, dst_in)
 	src = src_end;
     }
     *dst = '\0';
+}
+
+void insertComments( src_in, dst_in)
+    char *src_in, *dst_in;
+{
+    char	*src = src_in, *dst = dst_in;
+    for (; *src!='\0'; src++) {	
+	*dst++ = *src;
+	if (*src == NEWLINE) {
+	    *dst++ = ' '; *dst++ = ' '; *dst++ = ' '; *dst++ = ' ';
+	    *dst++ = ' '; *dst++ = ' '; *dst++ = ' '; *dst++ = ' ';
+	    *dst++ = '/';
+	    *dst++ = '/';
+
+	}
+    }
 }
 
 void genMethod( fp, src)
@@ -2054,10 +2075,12 @@ void genDef ()
 		if (codeBody[i] && !inlineFlag[i]) {
 		    char *dst = malloc(2*strlen(codeBody[i])+MEDBUFSIZE);
 		    cvtMethod( codeBody[i], dst);
+		    char *dst2 = malloc(2*strlen(codeBody[i])+MEDBUFSIZE);
+		    insertComments(dst, dst2);	
 		    fprintf (fp, "\n    /**\n");
 		    fprintf (fp, "     */\n");
-		    fprintf (fp, "    public %s %s() {\n        /*\n   \n    %s\n         */\n",
-		      codeType[i], codeFuncName[i], dst);
+		    fprintf (fp, "    public %s %s() {\n    %s\n",
+		      codeType[i], codeFuncName[i], dst2);
 		    if (strncmp(codeType[i], "void", 4) != 0) { 
 			    fprintf (fp, "        // Dummy return value.\n");
 			    char returnValue[SMALLBUFSIZE];
@@ -2100,9 +2123,7 @@ void genDef ()
 /* generate the CodeBlocks */
 	if (numBlocks > 0) {
 		fprintf(fp, "    ///////////////////////////////////////////////////////////////////\n");
-		fprintf(fp, "    ////                     private variables                     ////\n");
-
-		fprintf (fp, "\n    // Codeblock(s)\n");
+		fprintf(fp, "    ////                     Codeblocks                     ////\n");
         }
 	for (i=0; i<numBlocks; i++) {
 	    if ( codeBlockArgs[i] == NULL ) {
@@ -2111,6 +2132,8 @@ void genDef ()
 		genCodeBlock( fp, codeBlocks[i], 0);
 		fprintf (fp, ";\n");
 	    } else {
+		// FIXME: codeBlockArgs might have "const char", which
+		// should be converted to String
 		fprintf (fp, "\n    public String %s (%s) {\n",
 			codeBlockNames[i],codeBlockArgs[i]);
 		fprintf (fp, "        return\n        ");
@@ -2544,7 +2567,7 @@ yylexBody(pCurChar)
 
     /* if !docMode, put a "#line" directive in the token */
     if (!docMode) {
-	sprintf(p, "# line %d \"%s\"\n", yyline, inputFile);
+	sprintf(p, "    //# line %d \"%s\"\n", yyline, inputFile);
 	p += strlen(p);
     }
 
