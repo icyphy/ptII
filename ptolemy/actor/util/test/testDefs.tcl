@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998 The Regents of the University of California.
+# @Copyright (c) 1997- The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -33,20 +33,24 @@
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
 if [info exist env(PTOLEMY)] {
-    set TYCHO $env(PTOLEMY)/tycho
+    set PTII $env(PTOLEMY)/tycho/java
 }
 
 if [info exist env(TYCHO)] {
-    set TYCHO $env(TYCHO)
+    set PTII $env(TYCHO)/java
 }
 
-if {![info exist TYCHO]} {
+if [info exist env(PTII)] {
+    set PTII $env(PTII)
+}
+
+if {![info exist PTII]} {
     # If we are here, then we are probably running jacl and we can't
     # read environment variables
-    set TYCHO [file join [pwd] .. .. .. ..]
+    set PTII [file join [pwd] .. .. .. .. ]
 }
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source [file join $TYCHO java pt kernel util test testDefs.tcl]
+    source [file join $PTII util testsuite testDefs.tcl]
 } {}
