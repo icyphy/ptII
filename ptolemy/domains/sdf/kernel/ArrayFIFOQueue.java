@@ -53,7 +53,7 @@ capacity is zero.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class ArrayFIFOQueue implements Cloneable {
+public final class ArrayFIFOQueue implements Cloneable {
 
     /** Construct an empty queue with no container.
      */
@@ -269,12 +269,31 @@ public class ArrayFIFOQueue implements Cloneable {
     public boolean put(Object element[]) {
         if (_queuecapacity - _queuesize >= element.length) {
             int i;
+            if(element.length <= (_queuecapacity - _queuefront)) {
+                System.arraycopy(element, 0, _queuearray, _queuefront, 
+                        element.length);
+                _queuefront += element.length;
+                if(_queuefront >= _queuecapacity) 
+                    _queuefront = _queuefront % _queuecapacity;
+                _queuesize += element.length;
+            } else {
+                System.arraycopy(element, 0, _queuearray, _queuefront, 
+                        _queuecapacity - _queuefront);
+                System.arraycopy(element, _queuecapacity - _queuefront,
+                        _queuearray, 0, 
+                        element.length - (_queuecapacity - _queuefront));
+                _queuefront += element.length;
+                if(_queuefront >= _queuecapacity) 
+                    _queuefront = _queuefront % _queuecapacity;
+                _queuesize += element.length;
+            }  
+                /*
             for(i = 0; i < element.length; i++) {
                 _queuearray[_queuefront++] = element[i];
                 if(_queuefront >= _queuecapacity) 
                     _queuefront = _queuefront % _queuecapacity;
                 _queuesize++;
-            }
+                }*/
             return true;
         } else {
             Object newqueue[] = new Object[_queuecapacity * 2];
@@ -408,14 +427,30 @@ public class ArrayFIFOQueue implements Cloneable {
      *  @return An object from the queue.
      *  @exception NoSuchElementException If the queue is empty.
      */
-    public Object take(int count) throws NoSuchElementException {
+    public Object[] take(int count) throws NoSuchElementException {
         Object obj[] = null;
         try {
             if(_queuesize < count) 
                 throw new NoSuchElementException("Empty Queue");
             obj = new Object[count];
-            int i;
-            for(i = 0; i < count; i++) {
+            
+            if(count <= (_queuecapacity - _queueback)) {
+                System.arraycopy(_queuearray, _queueback, obj, 0,
+                        count);
+            } else {
+                System.arraycopy(_queuearray, _queueback, obj, 0,
+                        _queuecapacity - _queueback);
+                System.arraycopy(_queuearray, 0,
+                        obj, _queuecapacity - _queueback,
+                        count - (_queuecapacity - _queueback));
+            }
+            _queueback += count;
+            if(_queueback >= _queuecapacity) 
+                _queueback = _queueback % _queuecapacity;
+            _queuesize -= count;
+            
+            /*
+              for(i = 0; i < count; i++) {
                 obj[i] = _queuearray[_queueback];
                 _queuearray[_queueback] = null;
                 _queueback++;
@@ -423,6 +458,7 @@ public class ArrayFIFOQueue implements Cloneable {
                     _queueback = _queueback % _queuecapacity;
                 _queuesize--;
             }
+             */
         } catch (NoSuchElementException ex) {
             String str = "";
             if (_container != null) {

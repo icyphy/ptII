@@ -57,7 +57,7 @@ than simply removed. By default, the history capacity is zero.
 @version $Id$
 @see ptolemy.actor.util.FIFOQueue
 */
-public class SDFReceiver implements Receiver {
+public final class SDFReceiver implements Receiver {
 
     /** Construct an empty receiver with no container.
      */
@@ -137,7 +137,7 @@ public class SDFReceiver implements Receiver {
          history.
      *  @exception NoTokenException If the offset is out of range.
      */
-    /*    public Token get(int offset) {
+    public Token get(int offset) {
         try {
             return (Token)_queue.get(offset);
         } catch (NoSuchElementException ex) {
@@ -147,14 +147,16 @@ public class SDFReceiver implements Receiver {
                     + " in history.");
         }
     }
-    */
+    
 
-    public Token[] get(int count) {
+    public void get(Token t[]) {
        try {
-            return (Token[])_queue.take(count);
+           Object o[] = _queue.take(t.length);
+           System.arraycopy(o, 0 , t, 0, t.length);
+            return;
         } catch (NoSuchElementException ex) {
             throw new NoTokenException(getContainer(),
-                    "Count " + count + " out of range with " + _queue.size()
+                    "Count " + t.length + " out of range with " + _queue.size()
                     + " tokens in the receiver and " + _queue.historySize()
                     + " in history.");
         }

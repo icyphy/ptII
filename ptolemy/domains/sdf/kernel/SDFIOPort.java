@@ -139,18 +139,24 @@ public final class SDFIOPort extends IOPort {
         } finally {
             workspace().doneReading();
         }
-        for (int i = 0; i < tokens.length; i++) {
-            Token tt = null;
-            for (int j = 0; j < localRec[channelindex].length; j++) {
-                Token ttt = localRec[channelindex][j].get();
-                if (tt == null) tt = ttt;
+        if((localRec[channelindex].length > 1)|| 
+                !(localRec[channelindex][0] instanceof SDFReceiver)) {
+            for (int i = 0; i < tokens.length; i++) {
+                Token tt = null;
+                for (int j = 0; j < localRec[channelindex].length; j++) {
+                    Token ttt = localRec[channelindex][j].get();
+                    if (tt == null) tt = ttt;
+                }
+                if (tt == null) {
+                    throw new NoTokenException(this,
+                            "get: No token to return.");
+                }
+                tokens[i] = tt;
             }
-            if (tt == null) {
-                throw new NoTokenException(this,
-                        "get: No token to return.");
-            }
-            tokens[i] = tt;
         }
+        else {
+            ((SDFReceiver) localRec[channelindex][0]).get(tokens);
+        }    
     }
 
     /** Send an array of tokens to all receivers connected to the

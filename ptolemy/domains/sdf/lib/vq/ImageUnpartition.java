@@ -89,7 +89,7 @@ public final class ImageUnpartition extends SDFAtomicActor {
 
 	for(j = 0, a = 0; j < yframesize; j += ypartsize)
             for(i = 0; i < xframesize; i += xpartsize, a++) {
-                part = message[a].intArray();
+                part = message[a].intArrayRef();
                 for(y = 0; y < ypartsize; y++)
                     System.arraycopy(part, y * xpartsize, 
                             frame, (j + y) * xframesize + i, xpartsize);

@@ -47,7 +47,7 @@ operations are added to the math package.
 @author Yuhong Xiong
 @version $Id$
 */
-public class ImageToken extends MatrixToken {
+public final class ImageToken extends MatrixToken {
 
     /** Construct an ImageToken with a one by one array. The
      *  only element in the array has value 0.

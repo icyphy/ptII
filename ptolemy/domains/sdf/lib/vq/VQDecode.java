@@ -42,7 +42,7 @@ import java.io.*;
 @version $Id$
 */
 
-public class VQDecode extends SDFAtomicActor {
+public final class VQDecode extends SDFAtomicActor {
     public VQDecode(CompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 

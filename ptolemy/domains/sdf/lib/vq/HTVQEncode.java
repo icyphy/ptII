@@ -42,7 +42,7 @@ import java.io.*;
 @version $Id$
 */
 
-public class HTVQEncode extends SDFAtomicActor {
+public final class HTVQEncode extends SDFAtomicActor {
     public HTVQEncode(CompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
