@@ -6,7 +6,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[114, 113]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 10]">
     </property>
     <property name="HDE Director" class="ptolemy.domains.de.kernel.HDEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -52,90 +52,6 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="q" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Q">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="760.0, 455.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="0.0" max="6.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="d" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="d">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="350.0, 305.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter31</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="0.0" max="10.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="d'" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="d'">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="765.0, 180.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter32</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="0.0" max="10.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="StateSampler" class="ptolemy.domains.hde.lib.StateSampler">
         <property name="_location" class="ptolemy.moml.Location" value="540.0, 375.0">
         </property>
@@ -172,62 +88,6 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-    </entity>
-    <entity name="load" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="load">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="235.0, 310.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter31</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="5.0" max="6.0"/>
-<yRange min="0.0" max="5.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="data" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Data">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="215.0, 400.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter31</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="0.0" max="10.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
     </entity>
     <entity name="5:Clock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
@@ -311,16 +171,10 @@
     <link port="Select.input" relation="relation2"/>
     <link port="Select.output" relation="relation3"/>
     <link port="Select.control" relation="relation6"/>
-    <link port="q.input" relation="relation"/>
-    <link port="q.input" relation="relation5"/>
-    <link port="d.input" relation="relation3"/>
-    <link port="d'.input" relation="relation19"/>
     <link port="StateSampler.input" relation="relation19"/>
     <link port="StateSampler.output" relation="relation5"/>
     <link port="StateSampler.trigger" relation="relation"/>
     <link port="Clock.output" relation="relation"/>
-    <link port="load.input" relation="relation6"/>
-    <link port="data.input" relation="relation2"/>
     <link port="5:Clock.output" relation="relation2"/>
     <link port="6:Clock.output" relation="relation6"/>
     <link port="Test.input" relation="relation19"/>
