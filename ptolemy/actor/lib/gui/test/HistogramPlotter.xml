@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/moml.dtd">
+<model name="test" class="ptolemy.actor.TypedCompositeActor">
+    <director name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+	<property name="iterations" value="1000"/>
+    </director>
+    <entity name="ramp" class="ptolemy.actor.lib.Gaussian"/>
+    <entity name="display" class="ptolemy.actor.lib.gui.HistogramPlotter">
+        <property name="fillOnWrapup" value="false"/>
+        <configure><![CDATA[
+            <?xml version="1.0" standalone="no"?>
+            <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+                      "http://ptolemy.eecs.berkeley.edu/xml/dtd/plotml.dtd">
+            <plot>
+                <xRange min="-4.0" max="4.0"/>
+                <yRange min="0.0" max="250"/>
+                <size width="450" height="300"/>
+                <bin width="0.5" offset="0.1"/>
+                <title>Histogram of a Gaussian</title>
+            </plot>
+        ]]></configure>
+    </entity>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation"/>
+    <link port="ramp.output" relation="r1"/>
+    <link port="display.input" relation="r1"/>
+</model>

@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/moml.dtd">
+<model name="test" class="ptolemy.actor.TypedCompositeActor">
+    <director name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+	<property name="iterations" value="10"/>
+    </director>
+    <property name="filename"
+              class="ptolemy.data.expr.Parameter"
+              value="&quot;&quot;"/>
+    <entity name="ramp" class="ptolemy.actor.lib.Ramp"/>
+    <entity name="writer" class="ptolemy.actor.lib.FileWriter">
+        <property name="filename" value="filename"/>
+    </entity>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation"/>
+    <link port="ramp.output" relation="r1"/>
+    <link port="writer.input" relation="r1"/>
+
+    <entity name="blah" class="ptolemy.actor.lib.Ramp">
+	<property name="init" value="&quot;xxxxx&quot;"/>
+	<property name="step" value="&quot;xxxxx&quot;"/>
+    </entity>
+    <relation name="r2" class="ptolemy.actor.TypedIORelation"/>
+    <link port="blah.output" relation="r2"/>
+    <link port="writer.input" relation="r2"/>
+</model>
