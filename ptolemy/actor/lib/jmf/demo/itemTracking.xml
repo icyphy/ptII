@@ -1,0 +1,120 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="itemTracking" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1017, 79, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
+        <property name="formatName" class="ptolemy.kernel.util.StringAttribute" value="YUV">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="RGB" class="ptolemy.kernel.util.StringAttribute" value="RGB">
+                </property>
+                <property name="YUV" class="ptolemy.kernel.util.StringAttribute" value="YUV">
+                </property>
+            </property>
+        </property>
+        <property name="deviceNumber" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 110.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ColorFinder" class="ptolemy.actor.lib.jmf.ColorFinder">
+        <property name="yLowValue" class="ptolemy.data.expr.Parameter" value="110">
+        </property>
+        <property name="yHighValue" class="ptolemy.data.expr.Parameter" value="210">
+        </property>
+        <property name="uLowValue" class="ptolemy.data.expr.Parameter" value="85">
+        </property>
+        <property name="uHighValue" class="ptolemy.data.expr.Parameter" value="110">
+        </property>
+        <property name="vLowValue" class="ptolemy.data.expr.Parameter" value="120">
+        </property>
+        <property name="vHighValue" class="ptolemy.data.expr.Parameter" value="130">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 95.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="outputX" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="outputY" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 165.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 95.0">
+        </property>
+        <port name="inputX" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="inputY" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="145.0, 130.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="VideoCamera.output" relation="relation"/>
+    <link port="ColorFinder.input" relation="relation"/>
+    <link port="ColorFinder.outputX" relation="relation2"/>
+    <link port="ColorFinder.outputY" relation="relation3"/>
+    <link port="ImageDisplay.input" relation="relation"/>
+    <link port="XYPlotter.inputX" relation="relation2"/>
+    <link port="XYPlotter.inputY" relation="relation3"/>
+</entity>
