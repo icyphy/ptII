@@ -44,9 +44,9 @@ Berkeley, CA 94706</property>
         <property name="beanId">bean3</property>
         <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32JVMResolutionExtra">
             <property name="bundledJVMResource"/>
-            <property name="useCurrentJVM">False</property>
+            <property name="useCurrentJVM">True</property>
             <property array="True" length="0" name="JVMFileResources" type="string"/>
-            <property array="True" length="10" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+            <property array="True" length="11" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
                 <arrayItem type="com.installshield.util.jvm.JVMFile">
                     <property name="fullSearch">False</property>
                     <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_117.jvm</property>
@@ -86,6 +86,10 @@ Berkeley, CA 94706</property>
                 <arrayItem type="com.installshield.util.jvm.JVMFile">
                     <property name="fullSearch">False</property>
                     <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131.jvm</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.util.jvm.JVMFile">
+                    <property name="fullSearch">False</property>
+                    <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131b.jvm</property>
                 </arrayItem>
             </property>
             <property name="timeout">120</property>
@@ -178,24 +182,18 @@ Berkeley, CA 94706</property>
                 <action class="com.installshield.product.actions.JVMResolution" id="bean2">
                     <displayName>JVM Resolution</displayName>
                     <active>true</active>
-                    <extendedProperty name="solaris.jvm.resolution.extra.sparc" type="com.installshield.wizard.platform.solaris.extra.SolarisJVMResolutionExtra">
-                        <property name="bundledJVMResource"/>
-                        <property name="useCurrentJVM">False</property>
-                        <property array="True" length="0" name="JVMFileResources" type="string"/>
-                        <property array="True" length="0" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile"/>
-                        <property name="timeout">120</property>
-                        <property name="JVMResolution">1</property>
-                        <property name="bundledJVMSource"/>
-                        <property name="bundledJVMArguments">-qq -o</property>
-                    </extendedProperty>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32JVMResolutionExtra">
                         <property name="bundledJVMResource"/>
                         <property name="useCurrentJVM">False</property>
                         <property array="True" length="0" name="JVMFileResources" type="string"/>
-                        <property array="True" length="4" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                        <property array="True" length="7" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
                             <arrayItem type="com.installshield.util.jvm.JVMFile">
                                 <property name="fullSearch">False</property>
                                 <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131b.jvm</property>
                             </arrayItem>
                             <arrayItem type="com.installshield.util.jvm.JVMFile">
                                 <property name="fullSearch">False</property>
@@ -209,21 +207,19 @@ Berkeley, CA 94706</property>
                                 <property name="fullSearch">False</property>
                                 <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_130.jvm</property>
                             </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_122.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\ibm_win32_122.jvm</property>
+                            </arrayItem>
                         </property>
                         <property name="timeout">10</property>
                         <property name="JVMResolution">2</property>
                         <property name="bundledJVMSource">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13.jvm</property>
                         <property name="bundledJVMArguments"/>
-                    </extendedProperty>
-                    <extendedProperty name="solaris.jvm.resolution.extra.x86" type="com.installshield.wizard.platform.solaris.extra.SolarisJVMResolutionExtraX86">
-                        <property name="bundledJVMResource"/>
-                        <property name="useCurrentJVM">False</property>
-                        <property array="True" length="0" name="JVMFileResources" type="string"/>
-                        <property array="True" length="0" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile"/>
-                        <property name="timeout">120</property>
-                        <property name="JVMResolution">1</property>
-                        <property name="bundledJVMSource"/>
-                        <property name="bundledJVMArguments">-qq -o</property>
                     </extendedProperty>
                     <extendedProperty name="solaris.jvm.resolution" type="com.installshield.wizard.platform.solaris.extra.SolarisJVMResolutionExtra">
                         <property name="bundledJVMResource"/>
@@ -254,7 +250,7 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
                         <property name="showConsole">False</property>
-                        <property name="launcherUIDisplayTime">10</property>
+                        <property name="launcherUIDisplayTime">15</property>
                         <property name="fileName">vergil.exe</property>
                     </extendedProperty>
                     <property name="title">Vergil Launcher</property>
@@ -341,7 +337,7 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
                         <property name="showConsole">False</property>
-                        <property name="launcherUIDisplayTime">10</property>
+                        <property name="launcherUIDisplayTime">15</property>
                         <property name="fileName">vergildsp.exe</property>
                     </extendedProperty>
                     <property name="title">Vergil (DSP Only) Launcher</property>
@@ -1030,10 +1026,14 @@ Berkeley, CA 94706</property>
                 <arrayItem type="com.installshield.wizard.platform.win32.Win32LauncherDistribution">
                     <property name="enabled">True</property>
                     <property name="fileName">ptII1_0setup.exe</property>
-                    <property array="True" length="5" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                    <property array="True" length="6" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
                         <arrayItem type="com.installshield.util.jvm.JVMFile">
                             <property name="fullSearch">False</property>
-                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13.jvm</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131b.jvm</property>
                         </arrayItem>
                         <arrayItem type="com.installshield.util.jvm.JVMFile">
                             <property name="fullSearch">False</property>
@@ -1041,7 +1041,7 @@ Berkeley, CA 94706</property>
                         </arrayItem>
                         <arrayItem type="com.installshield.util.jvm.JVMFile">
                             <property name="fullSearch">False</property>
-                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_131.jvm</property>
+                            <property name="fileName">C:\Program Files\InstallShield\IPMP401\jvms\win32\sun_win32_13.jvm</property>
                         </arrayItem>
                         <arrayItem type="com.installshield.util.jvm.JVMFile">
                             <property name="fullSearch">False</property>
