@@ -1,5 +1,5 @@
-import ptolemy.domains.mems.lib.*;
-import ptolemy.domains.mems.gui.*;
+import ptolemy.domains.de.demo.mems.lib.*;
+import ptolemy.domains.de.demo.mems.gui.*;
 
 import ptolemy.plot.*;
 import ptolemy.actor.*;
