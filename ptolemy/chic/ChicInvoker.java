@@ -101,7 +101,7 @@ public class ChicInvoker extends Attribute {
      */
     public StringAttribute chicAttributeName;
 
-	///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Check the interface compatibility of all entities that are directly
