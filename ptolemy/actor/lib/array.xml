@@ -9,7 +9,6 @@
 
 <entity name="ArrayAppend" class="ptolemy.actor.lib.ArrayAppend"/>
 <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement"/>
-<entity name="ArrayElementI" class="ptolemy.actor.lib.ArrayElementI"/>
 <entity name="ArrayExtract" class="ptolemy.actor.lib.ArrayExtract"/>
 <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength"/>
 <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence"/>

@@ -79,7 +79,6 @@ JSRCS = \
 	Accumulator.java \
 	ArrayAppend.java \
 	ArrayElement.java \
-        ArrayElementI.java\
 	ArrayExtract.java \
 	ArrayLength.java \
 	Assertion.java \

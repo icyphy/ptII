@@ -30,18 +30,21 @@
 
 package ptolemy.actor.lib;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Typeable;
 import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -51,11 +54,11 @@ import java.util.List;
 Extract an element from an array.  This actor reads an array from the
 <i>input</i> port and sends one of its elements to the <i>output</i>
 port.  The element that is extracted is determined by the
-<i>index</i> parameter.  It is required that 0 &lt;= <i>index</i> &lt;
-<i>N</i>, where <i>N</i> is the length of the input array, or
+<i>index</i> parameter (or port).  It is required that
+0 &lt;= <i>index</i> &lt; <i>N</i>, where <i>N</i> is the
+length of the input array, or
 an exception will be thrown by the fire() method.
 
-@see ArrayElementI
 @see LookupTable
 @see RecordDisassembler
 @author Edward A. Lee, Elaine Cheong
@@ -78,7 +81,8 @@ public class ArrayElement extends Transformer {
         super(container, name);
 
         // Set parameters.
-        index = new Parameter(this, "index");
+        index = new PortParameter(this, "index");
+        index.setTypeEquals(BaseType.INT);
         index.setExpression("0");
     }
 
@@ -87,9 +91,10 @@ public class ArrayElement extends Transformer {
 
     /** The index into the input array.  This is an integer that
      *  defaults to 0, and is required to be less than or equal to the
-     *  length of the input array.
+     *  length of the input array. If the port is left unconnected,
+     *  then the parameter value will be used.
      */
-    public Parameter index;
+    public PortParameter index;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -98,12 +103,15 @@ public class ArrayElement extends Transformer {
      *  one of its elements on the output port.  If there is no token
      *  on the input, then no output is produced.
      *  @exception IllegalActionException If the <i>index</i> parameter
-     *   is out of range.
+     *   (or port value) is out of range.
      */
     public void fire() throws IllegalActionException {
+        // NOTE: This has be outside the if because we need to ensure
+        // that if an index token is provided that it is consumed even
+        // if there is no input token.
+        int indexValue = ((IntToken)index.getToken()).intValue();
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken)input.get(0);
-            int indexValue = ((IntToken)index.getToken()).intValue();
             if (indexValue < 0 || indexValue >= token.length()) {
                 throw new IllegalActionException(this,
                         "index " + indexValue
@@ -122,8 +130,6 @@ public class ArrayElement extends Transformer {
      *  @see ptolemy.actor.TypedAtomicActor#typeConstraintList
      */
     public List typeConstraintList() {
-	LinkedList result = new LinkedList();
-
 	Type inputType = input.getType();
         if (inputType == BaseType.UNKNOWN) {
 	    input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
@@ -133,13 +139,30 @@ public class ArrayElement extends Transformer {
 		    + "array type.");
 	}
 
+        // NOTE: superclass will put in type constraints for
+        // the input and output, so we can't invoke the superclass.
+	List result = new LinkedList();
+
+        // collect constraints from contained Typeables
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            Typeable port = (Typeable)ports.next();
+            result.addAll(port.typeConstraintList());
+        }
+
+        Iterator typeables = attributeList(Typeable.class).iterator();
+        while (typeables.hasNext()) {
+            Typeable typeable = (Typeable)typeables.next();
+            result.addAll(typeable.typeConstraintList());
+        }
+
+        // Add type constraint for the input.
 	ArrayType inputArrayType = (ArrayType)input.getType();
 	InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
 	Inequality inequality = new Inequality(elementTerm,
-			                       output.getTypeTerm());
+               output.getTypeTerm());
 
         result.add(inequality);
 	return result;
     }
 }
-
