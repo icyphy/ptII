@@ -56,7 +56,7 @@ public class NodeRendererTutorial {
         context.setSize(800, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {       
+            public void run() {
                 new NodeRendererTutorial(context);
                 context.setVisible(true);
             }
@@ -75,11 +75,11 @@ public class NodeRendererTutorial {
         NodeRenderer stringRenderer =
             new BasicNodeRenderer(bgc,
                     new Ellipse2D.Double(0.0,0.0,40.0,40.0),
-                    new Ellipse2D.Double(0.0,0.0,600.0,600.0), 
+                    new Ellipse2D.Double(0.0,0.0,600.0,600.0),
                     Color.blue, Color.blue, .3);
         NodeRenderer integerRenderer =
             new BasicNodeRenderer(bgc,
-                    new Rectangle2D.Double(0.0,0.0,40.0,40.0), 
+                    new Rectangle2D.Double(0.0,0.0,40.0,40.0),
                     new Rectangle2D.Double(0.0,0.0,600.0,600.0),
                     Color.orange, Color.orange, .3);
         NodeRenderer setRenderer =
@@ -87,7 +87,7 @@ public class NodeRendererTutorial {
                     new Ellipse2D.Double(0.0,0.0,40.0,40.0),
                     new Ellipse2D.Double(0.0,0.0,600.0,600.0),
                     Color.red, Color.red, .3);
-        TypedNodeRenderer typedRenderer = 
+        TypedNodeRenderer typedRenderer =
             new TypedNodeRenderer(bgc, defaultRenderer);
         typedRenderer.addTypedRenderer(Integer.class, integerRenderer);
         typedRenderer.addTypedRenderer(ArrayList.class, setRenderer);
@@ -99,17 +99,17 @@ public class NodeRendererTutorial {
         JGraph g = new JGraph(gp);
 
         // Display it all
-        context.getContentPane().add("Center", g);        
+        context.getContentPane().add("Center", g);
 
         // Build the model
         final MutableGraphModel model = makeTypedModel();
         bgc.setGraphModel(model);
-        
+
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {       
+            public void run() {
                 LevelLayout random =
                     new LevelLayout(new BasicLayoutTarget(bgc));
-                random.layout(model.getRoot());        
+                random.layout(model.getRoot());
             }
         });
     }
@@ -145,7 +145,7 @@ public class NodeRendererTutorial {
         model.addNode(this, n3, root);
         model.addNode(this, n4, root);
         model.addNode(this, n5, root);
-        
+
         Edge e1 = model.createEdge("e1");
         Edge e2 = model.createEdge("e2");
         Edge e3 = model.createEdge("e3");

@@ -48,7 +48,7 @@ public class PrepopulatedTutorial {
         context.setSize(300, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {       
+            public void run() {
                 new PrepopulatedTutorial(context);
                 context.setVisible(true);
             }
@@ -74,7 +74,7 @@ public class PrepopulatedTutorial {
         Edge y = model.createEdge("y");
         model.connectEdge(this, x, a, b);
         model.connectEdge(this, y, a, c);
-        
+
         // Display the model in three
         // different panes, using three
         // different techniques.
@@ -115,27 +115,27 @@ public class PrepopulatedTutorial {
      * post display" version is preferable, but this might
      * be useful in some cases.
      */
-    public void layoutPostDisplay(final MutableGraphModel model, 
+    public void layoutPostDisplay(final MutableGraphModel model,
             AppContext context) {
         final BasicGraphController bgc = new BasicGraphController();
         context.getContentPane().add(
                 new JGraph(new GraphPane(bgc, model)));
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {       
+            public void run() {
                 RandomLayout random =
                     new RandomLayout(new BasicLayoutTarget(bgc));
                 random.layout(model.getRoot());
-           
+
             }
-        }); 
+        });
     }
-    
+
     /**
      * In this version you construct the graph widget with
      * the default constructor (giving it an empty graph),
      * and then set the model once the window is showing.
      */
-    public void setModelPostDisplay(MutableGraphModel model, 
+    public void setModelPostDisplay(MutableGraphModel model,
             AppContext context) {
         BasicGraphController gc = new BasicGraphController();
         gc.addGraphViewListener(new IncrementalLayoutListener(

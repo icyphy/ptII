@@ -27,10 +27,10 @@ import diva.graph.layout.LevelLayout;
 import diva.graph.layout.RandomLayout;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
- 
+
 /**
  * This turotial expands on the simple tutorial and turns it into
- * a more complete graph editor.  Along with the editing window, 
+ * a more complete graph editor.  Along with the editing window,
  * the user has the ability to layout the graph.
  * Control-click to add nodes,
  * select a node and control-drag to create new edges.
@@ -44,7 +44,7 @@ public class EditorTutorial {
     GlobalLayout _layout;
     JGraph _editor;
     BasicGraphModel _model;
-    
+
     /**
      * Pop up an empty graph editing window.
      */
@@ -53,7 +53,7 @@ public class EditorTutorial {
         context.setSize(800, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {       
+            public void run() {
                 new EditorTutorial(context);
                 context.setVisible(true);
             }
@@ -65,7 +65,7 @@ public class EditorTutorial {
         GraphPane pane = new GraphPane(new BasicGraphController(), _model);
         _editor = new JGraph(pane);
         context.getContentPane().add("Center", _editor);
-        _target = 
+        _target =
             new BasicLayoutTarget(_editor.getGraphPane().getGraphController());
         _layout = new LevelLayout(_target);
         LayoutWidget lw = new LayoutWidget(_target, _model.getRoot(), true);
@@ -94,7 +94,7 @@ public class EditorTutorial {
          * The graph that will be layed out.
          */
         private Object _graph;
-        
+
         /**
          * Mapping from layout name to layout object.
          */
@@ -109,12 +109,12 @@ public class EditorTutorial {
          * List that user selects from to choose the layout.
          */
         JComboBox _layoutList;
-        
+
         /**
          * Button to apply the layout.
          */
         JButton _applyBtn;
-        
+
         /**
          * Set up the basic data structures, initialize the GUI, and then
          * initialize some default layout styles if the useDefaults parameter
@@ -132,11 +132,11 @@ public class EditorTutorial {
             _layoutList = new JComboBox();
             _layoutList.setEditable(false);
             _layoutList.addActionListener(new SelectionListener());
-            
+
             setLayout(new GridLayout(1, 2));
             add(_applyBtn);
             add(_layoutList);
-            
+
             if(useDefaults) {
                 initDefaultLayouts();
             }
@@ -162,7 +162,7 @@ public class EditorTutorial {
             _layoutList.addItem(name);
 
             //if the list was empty before
-            _applyBtn.setEnabled(true); 
+            _applyBtn.setEnabled(true);
         }
 
         private class SelectionListener implements java.awt.event.ActionListener {
