@@ -1913,7 +1913,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  This will return true if either setPersistent() has been called
      *  with argument true, or setClassElement() has been called with
      *  argument true and the class has not been modified.
-     *  @boolean Return true to suppress MoML export.
+     *  @return Return true to suppress MoML export.
      */
     protected boolean _suppressMoML() {
         return !isPersistent() || (_isClassElement && !_modifiedFromClass);
