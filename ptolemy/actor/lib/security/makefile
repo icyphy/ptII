@@ -31,7 +31,7 @@
 
 ME =            ptolemy/actor/lib/security
 
-DIRS =		test    	
+DIRS =		demo test    	
 
 # Root of the Java directory
 ROOT =          ../../../..
@@ -79,6 +79,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	demo \
 	'KeyToken$$KeyType.class'
 
 all: jclass $(ROOT)/ptKeystore
