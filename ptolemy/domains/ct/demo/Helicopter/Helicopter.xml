@@ -54,11 +54,11 @@ Five controllers are applied sequentially to the modes.</text>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[987, 704]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 662]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[182, 131]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 5, 1202, 820}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 5, 1036, 780}}">
     </property>
     <entity name="StartClimb" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -69,14 +69,24 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{false, true}">
         </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="421.0, 309.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
     </entity>
     <entity name="MINUS" class="ptolemy.actor.lib.Scale">
@@ -94,9 +104,17 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
     </entity>
     <entity name="Helicopter Position" class="ptolemy.actor.lib.gui.XYPlotter">
@@ -104,7 +122,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 110, 508, 293}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 238]">
         </property>
@@ -115,18 +133,26 @@ Five controllers are applied sequentially to the modes.</text>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="inputY" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Helicopter Position</title>
-<xRange min="-4.464903751167566E-5" max="212.36154886995388"/>
-<yRange min="1.5" max="10.975309836799838"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 </plot>?>
         </configure>
     </entity>
@@ -135,7 +161,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={537, 424, 508, 293}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 238]">
         </property>
@@ -146,14 +172,18 @@ Five controllers are applied sequentially to the modes.</text>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Horizontal Speed</title>
-<xRange min="0.0" max="70.0"/>
-<yRange min="-2.6081690452206085E-4" max="5.345840238131581"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 </plot>?>
         </configure>
     </entity>
@@ -162,7 +192,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={526, 108, 508, 293}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 238]">
         </property>
@@ -173,14 +203,18 @@ Five controllers are applied sequentially to the modes.</text>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Vertical Position</title>
-<xRange min="0.0" max="70.0"/>
-<yRange min="1.5" max="10.975309836799838"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 </plot>?>
         </configure>
     </entity>
@@ -195,56 +229,116 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 225.0">
-        </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 225.0">
+        </property>
         <port name="inputPx" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="inputDPx" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="inputDDPx" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="inputD3Px" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="inputD4Px" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="inputPz" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="inputDPz" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="inputDDPz" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="inputD3Pz" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="inputD4Pz" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="inputAction" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="outputVx" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="outputVz" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="outputV" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="outputR" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Hover">
@@ -434,6 +528,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
@@ -453,6 +549,8 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
@@ -474,6 +572,8 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
@@ -493,6 +593,8 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
@@ -647,45 +749,101 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputVx" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputVz" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputV" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputR" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -882,10 +1040,18 @@ Five controllers are applied sequentially to the modes.</text>
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                    </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
                     </property>
                 </port>
             </entity>
@@ -902,45 +1068,101 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputVx" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputVz" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputV" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputR" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -1142,45 +1364,101 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputVx" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputVz" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputV" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputR" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
             </entity>
             <entity name="ThresholdMonitor1" class="ptolemy.domains.ct.lib.ThresholdMonitor">
@@ -1194,10 +1472,18 @@ Five controllers are applied sequentially to the modes.</text>
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                    </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
                     </property>
                 </port>
             </entity>
@@ -1212,10 +1498,18 @@ Five controllers are applied sequentially to the modes.</text>
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                    </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
                     </property>
                 </port>
             </entity>
@@ -1419,45 +1713,101 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputVx" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputVz" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputV" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputR" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
             </entity>
             <entity name="ThresholdMonitor1" class="ptolemy.domains.ct.lib.ThresholdMonitor">
@@ -1471,10 +1821,18 @@ Five controllers are applied sequentially to the modes.</text>
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                    </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
                     </property>
                 </port>
             </entity>
@@ -1489,10 +1847,18 @@ Five controllers are applied sequentially to the modes.</text>
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                    </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
                     </property>
                 </port>
             </entity>
@@ -1698,45 +2064,101 @@ Five controllers are applied sequentially to the modes.</text>
                 </property>
                 <port name="inputPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputVx" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputVz" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputV" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="outputR" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -2012,33 +2434,73 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <port name="inputTm" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputDTm" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputDDTm" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputA" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputTh" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputDTh" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="outputD3Px" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="outputD4Px" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="outputD3Pz" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="outputD4Pz" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
         </entity>
         <entity name="IntegratorDTm" class="ptolemy.domains.ct.lib.Integrator">
@@ -2050,10 +2512,18 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -2070,33 +2540,73 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <port name="inputTm" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputDTm" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputDDTm" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputA" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputTh" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputDTh" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputVx" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputVz" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="outputDDDTm" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="outputDA" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
         </entity>
         <entity name="IntegratorPz" class="ptolemy.domains.ct.lib.Integrator">
@@ -2108,10 +2618,18 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -2124,10 +2642,18 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -2140,10 +2666,18 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -2152,7 +2686,7 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 426, 508, 293}}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 238]">
             </property>
@@ -2163,14 +2697,18 @@ Five controllers are applied sequentially to the modes.</text>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Pitch Angle</title>
-<xRange min="0.0" max="70.0"/>
-<yRange min="-0.029413061225061685" max="0.04148829691037337"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 </plot>?>
             </configure>
         </entity>
@@ -2183,10 +2721,18 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -2199,10 +2745,18 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -2215,10 +2769,18 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -2231,10 +2793,18 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -2247,10 +2817,18 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -2267,21 +2845,45 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <port name="inputTm" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputA" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="inputTh" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="outputDDPx" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="outputDDPz" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="outputDDTh" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
         </entity>
         <entity name="IntegratorDDTm" class="ptolemy.domains.ct.lib.Integrator">
@@ -2293,10 +2895,18 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
