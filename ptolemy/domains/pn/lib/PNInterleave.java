@@ -51,28 +51,22 @@ public class PNInterleave extends PNStar{
         super(workspace);
     }
  
+    /** Constructor Adds ports to the star
+     * @param myExecutive is the executive responsible for the simulation
+     * @exception NameDuplicationException indicates that an attempt to add
+     *  two ports with the same name has been made or a star with an 
+     *  identical name already exists.
+     */ 
     public PNInterleave(CompositeEntity container, String name)
              throws NameDuplicationException {
         super(container, name);
+        _input0 = newInPort(this, "input0");
+        _input1 = newInPort(this, "input1");
+        _output = newOutPort(this, "output");
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-
-    /** Initializes and adds ports to the star
-     * @param myExecutive is the executive responsible for the simulation
-     * @exception NameDuplicationException indicates that an attempt to add
-     *  two ports with the same name has been made
-     * @exception GraphException is thrown to indicate that a port with no 
-     *  name is being added to the star
-     */ 
-    public void initialize() 
-            throws NameDuplicationException, IllegalActionException {
-        _input1 = newInPort(this, "input1");
-        _input2 = newInPort(this, "input2");
-        _output = newOutPort(this, "output");
-        super.initialize(this);
-    }
 
     /** This reads tokens from each of it's inputs in a circular fashion and
      *  redirects them each to the output 
@@ -103,10 +97,10 @@ public class PNInterleave extends PNStar{
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* Input port */
+    // Input ports 
+    private PNInPort _input0;
     private PNInPort _input1;
-    private PNInPort _input2;
-    /* Output port */
+    // Output port 
     private PNOutPort _output;
 
 }

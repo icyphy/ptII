@@ -50,31 +50,22 @@ public class PNAlternate extends PNStar {
         super(workspace);
     }
     
-    /** Constructor
+    /** Constructor. Creates ports
+     * @exception NameDuplicationException is thrown if more than one port 
+     *  with the same name is added to the star or if another star with an
+     *  an identical name already exists.
      */
     public PNAlternate(CompositeEntity container, String name)
             throws NameDuplicationException {
         super(container, name);
+        _input = newInPort(this, "input");
+        _output0 = newOutPort(this, "output0");
+        _output1 = newOutPort(this, "output1");
     }
     
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-    
-    /** Initializes the Star. Should be called before execution
-     * @param myExecutive is the executive responsible for execution
-     * @exception NameDuplicationException is thrown if more than one port 
-     *  with the same name is added to the star
-     * @exception IllegalActionException is thrown if a port with a null
-     *  name is passed
-     */	
-    public void initialize()
-            throws NameDuplicationException, IllegalActionException {
-        _input = newInPort(this, "input");
-        _output1 = newOutPort(this, "output1");
-        _output2 = newOutPort(this, "output2");
-        super.initialize(this);
-    }
     
     /** Reads one Token from it's input port and writes this token to 
      *  it's output ports. Needs to read one token for every output
@@ -86,23 +77,23 @@ public class PNAlternate extends PNStar {
 	    int i;
 	    for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
                 data = (IntToken)readFrom(_input);
-                writeTo(_output1, data);
-                try {
-                    System.out.println(this.getName()+" writes "+
-                            ((IntToken)data).intValue()+" to "+
-                            _output1.getFullName());
-                } catch (InvalidStateException e) {
-                    System.err.println("Exception: " + e.toString());
-                }
+                writeTo(_output0, data);
+                //try {
+                //System.out.println(this.getName()+" writes "+
+                //((IntToken)data).intValue()+" to "+
+                //_output1.getFullName());
+                //} catch (InvalidStateException e) {
+                //System.err.println("Exception: " + e.toString());
+                //}
                 data = (IntToken)readFrom(_input);
-                writeTo(_output2, data);
-                try {
-                    System.out.println(this.getName()+" writes "+
-                            ((IntToken)data).intValue()+" to "+
-                            _output2.getFullName());
-                } catch (InvalidStateException e) {
-                    System.err.println("Exception: " + e.toString());
-                }
+                writeTo(_output1, data);
+                //try {
+                //System.out.println(this.getName()+" writes "+
+                //((IntToken)data).intValue()+" to "+
+                //_output2.getFullName());
+                //} catch (InvalidStateException e) {
+                //System.err.println("Exception: " + e.toString());
+                //}
             }                
         } catch (NoSuchElementException e) {
 	    System.out.println("Terminating "+ this.getName());
@@ -113,9 +104,9 @@ public class PNAlternate extends PNStar {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
     
-    /* The input port */
+    // The input port 
     private PNInPort _input;
-    /* The output port */
+    // The output port 
+    private PNOutPort _output0;
     private PNOutPort _output1;
-    private PNOutPort _output2;
 }

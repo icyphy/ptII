@@ -50,41 +50,23 @@ public class PNRedirect extends PNStar{
         super(workspace);
     }
 
-    /** Constructor
+    /** Constructor Adds ports to the star
+     * @exception NameDuplicationException indicates that an attempt to add
+     *  two ports with the same name has been made, or a star with an 
+     *  identical name already exists.
+     * @exception IllegalActionException a port with name null is being added
+     *  to the star
      */
     public PNRedirect(CompositeEntity container, String name)
              throws NameDuplicationException {
         super(container, name);
+        _input = newInPort(this, "input");
+        _output = newOutPort(this, "output");
     }
+    
  
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-
-    /** Initializes and adds ports to the star
-     * @param initValue is the initial token that the star puts in the stream
-     * @exception NameDuplicationException indicates that an attempt to add
-     *  two ports with the same name has been made
-     * @exception IllegalActionException a port with name null is being added
-     *  to the star
-     */
-    public void initialize(int initValue)
-            throws NameDuplicationException, IllegalActionException {
-        _initValue = new IntToken(initValue);
-        _input = newInPort(this, "input");
-        _output = newOutPort(this, "output");
-        super.initialize(this);
-    }
-
-    public void initialize() 
-            throws NameDuplicationException, IllegalActionException {
-        _input = newInPort(this, "input");
-        _output = newOutPort(this, "output");
-        super.initialize(this);
-    }
-
-    public void setInitState(int initvalue) {
-        _initValue = new IntToken(initValue);
-    }
 
     /** Reads a token from it's input stream and writes it to the output
      */
@@ -93,17 +75,25 @@ public class PNRedirect extends PNStar{
         IntToken data;
         try {
             writeTo(_output, _initValue);
-            System.out.println(this.getName()+" writes "+_initValue.intValue()+" to "+_output.getName());
+            //System.out.println(this.getName()+" writes "+_initValue.intValue()+" to "+_output.getName());
             for(i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
                 data = (IntToken)readFrom(_input);
                 writeTo(_output, data);
-                System.out.println(this.getName()+" writes "+data.intValue()+" to "+_output.getName());
+                //System.out.println(this.getName()+" writes "+data.intValue()+" to "+_output.getName());
             }
         } catch (NoSuchElementException e) {
 	    System.out.println("Terminating "+this.getName());
             return;
         }
     }
+
+    /** Initializes a token to be written to the output 
+     * @param initValue is the initial token that the star puts in the stream
+     */
+     public void setInitState(int initvalue) {
+        _initValue = new IntToken(initvalue);
+    }
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
@@ -114,6 +104,4 @@ public class PNRedirect extends PNStar{
     private PNInPort _input;
     /* Output port */
     private PNOutPort _output;
-    
-
 }

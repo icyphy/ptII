@@ -50,11 +50,15 @@ public class PNSieve extends PNStar {
         super(workspace);
     }
     
-    /** Constructor
+    /** Constructor  Adds port   
+     * @exception NameDuplicationException is thrown if more than one port 
+     *  with the same name is added to the star
      */
     public PNSieve(CompositeEntity container, String name)
             throws NameDuplicationException {
         super(container, name);
+        _input = newInPort(this, "input");
+        _output = null;
     }
     
 
@@ -62,18 +66,10 @@ public class PNSieve extends PNStar {
     ////                         public methods                           ////
     
     /** Initializes the Star. Should be called before execution
-     * @param myExecutive is the executive responsible for execution
-     * @exception NameDuplicationException is thrown if more than one port 
-     *  with the same name is added to the star
-     * @exception IllegalActionException is thrown if a port with a null
-     *  name is passed
+     * @param prime is the prime for this sieve
      */	
-    public void initialize(int prime)
-            throws NameDuplicationException, IllegalActionException {
-        _input = newInPort(this, "input");
-        _output = null;
+    public void setInitState(int prime) {
         _prime = prime;
-        super.initialize(this);
         System.out.println("Next Prime is "+ _prime);
     }
     
@@ -92,7 +88,7 @@ public class PNSieve extends PNStar {
                         /* yes - make the sieve for it */
                         PNSieve newSieve = new PNSieve((CompositeEntity)
                                 getContainer(), data.intValue() + "_sieve");
-                        newSieve.initialize(data.intValue());
+                        newSieve.setInitState(data.intValue());
                         _output = new PNOutPort(this, "output");
                         IORelation relation = new IORelation((CompositeEntity)
                                 getContainer(), data.intValue()+"_queue");
