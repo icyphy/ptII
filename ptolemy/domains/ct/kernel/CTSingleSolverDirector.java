@@ -606,6 +606,6 @@ public class CTSingleSolverDirector extends CTDirector {
     private ODESolver _defaultSolver = null;
 
     //indicate the first round of execution.
-    private boolean _first;
+    protected boolean _first;
 
 }

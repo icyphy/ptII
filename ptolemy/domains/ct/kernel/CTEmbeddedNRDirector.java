@@ -114,6 +114,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         }
         sch.setValid(false);
         _first = true;
+        _debug(getName() + " _first is set to true.");
         // don't need fireAt to run ahead of time.
         Director exe = ca.getExecutiveDirector();
         double tnow = exe.getCurrentTime();
@@ -125,11 +126,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     /** fire
      */
     public void fire() throws IllegalActionException {
-        if (_first && (getCurrentTime() == getStartTime())) {
-            produceOutput();
-            updateStates();
-            return;
-        }
+       
         _eventPhaseExecution();
         _prefireSystem();
         ODESolver solver = getCurrentODESolver();
@@ -183,26 +180,27 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
      */
     public boolean postfire() throws IllegalActionException {
         //super.postfire();
-        _first = false;
-        //_debug(this.getFullName() +
-        //        "postfire...................");
+        _debug(this.getFullName() + " postfire.");
         _eventPhaseExecution();
         updateStates();
-        double bp;
-        TotallyOrderedSet breakPoints = getBreakPoints();
-        if(breakPoints != null) {
-            while (!breakPoints.isEmpty()) {
-                bp = ((Double)breakPoints.first()).doubleValue();
-                if(bp < getCurrentTime() - getTimeResolution()) {
-                    breakPoints.removeFirst();
-                } else { // break point in the future, register to the outside.
-                    CompositeActor ca = (CompositeActor)getContainer();
-                    Director exe = ca.getExecutiveDirector();
-                    exe.fireAt(ca, bp);
-                    break;
+        if(!_first) {
+            double bp;
+            TotallyOrderedSet breakPoints = getBreakPoints();
+            if(breakPoints != null) {
+                while (!breakPoints.isEmpty()) {
+                    bp = ((Double)breakPoints.first()).doubleValue();
+                    if(bp < getCurrentTime() + getTimeResolution()) {
+                        breakPoints.removeFirst();
+                    } else { 
+                        // break point in the future, register to the outside.
+                        CompositeActor ca = (CompositeActor)getContainer();
+                        Director exe = ca.getExecutiveDirector();
+                        exe.fireAt(ca, bp);
+                        break;
+                    }
                 }
-            }
-        }    
+            }    
+        }
         return true;
     }
 
@@ -272,6 +270,11 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         setCurrentTime(_outsideTime);
         _outsideStepSize = nextIterTime - _outsideTime;
         setCurrentStepSize(_outsideStepSize);
+        if(_first) { // && (getCurrentTime() == getStartTime())) {
+            produceOutput();
+            updateStates();
+            _first = false;
+        }
         return true;
     }
 
@@ -326,5 +329,5 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     // The refined step size if this fire is not successful
     private double _refinedStep;
 
-    private boolean _first;
+    //private boolean _first;
 }

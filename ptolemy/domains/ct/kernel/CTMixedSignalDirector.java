@@ -577,7 +577,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
     private boolean _isTop;
 
     // indicate the first execution.
-    private boolean _first;
+    //private boolean _first;
 
     // The time for the "known good" state.
     private double _knownGoodTime;

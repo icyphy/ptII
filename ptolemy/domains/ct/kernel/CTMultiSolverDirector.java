@@ -254,6 +254,5 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     private String _breakpointsolverclass;
     // The default solver.
     private ODESolver _breakpointSolver = null;
-    //indicate the first round of execution.
-    private boolean _first; 
+   
 }
