@@ -1,0 +1,6 @@
+grep "undefined reference" gcj2.out | 
+	grep -v ::class | 
+	awk '{print substr($5, 2, length($5)-2)}' |
+	sed -e 's@::class\$@.class@' -e 's@::@/@g' |
+	awk '{print substr($0, 1, index($0, "(") - 1)}' |
+	awk -F / '{printf("%s", $1); for (i=2;i<NF;i++) {printf("/%s", $i)} printf(".class\n");}' | sort | uniq

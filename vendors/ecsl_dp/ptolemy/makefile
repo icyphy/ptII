@@ -129,7 +129,7 @@ cg/cruiseControlECSL:
 	$(PTII)/bin/copernicus -codeGenerator shallow \
 		-outputDirectory $(PTII)/$(TARGETPATH) \
 		-targetPath $(TARGETPATH) \
-		cruisecontrolECSL.moml
+		a.xml
 
 run_cg:
 	$(JAVA) \
@@ -147,14 +147,12 @@ cruiseControl.jar:
 		-main ptolemy.actor.gui.CompositeActorApplication \
 		"$(JAVA)" \
 			-classpath "$(PTII)/$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
-
-
-			ptolemy.actor.gui.PtExecuteApplication \
+			ptolemy.actor.gui.CompositeActorApplication \
 		        "-class" \
 		        "cruiseControlECSL.CGcruiseControlECSL"
 
 
-cruiseControl.jar:
+cruiseControl2.jar:
 	"$(TREESHAKE)" "$(JAR)" cruiseControl.jar \
 		-main ptolemy.actor.gui.MoMLSimpleApplication \
 		"$(JAVA)" \
@@ -174,20 +172,20 @@ run_treeshake: cruiseControl.jar
 GCJ_DIR =       /usr/local
 
 # The GNU C/Java compiler                                                      
-GCJ =           gcj
+GCJ =           gcj34
 GCJ_LIBDIR =    $(GCJ_DIR)/lib
 
-GCJ_JAR = /usr/local/share/java/libgcj-3.3.2.jar
+GCJ_JAR = /usr/local/share/java/libgcj-3.4.2.jar
 
 # GCJ Options, see http://gcc.gnu.org/onlinedocs/                              
 # If there is no -g or -O option, then the default is -g1                      
 #GCJ_FLAGS =    -static                                                        
 #GCJ_FLAGS =    -pg -g0 -O3 -fno-bounds-check --classpath=$(GCJ_JAR)           
-GCJ_FLAGS =     -g -O3 -fno-bounds-check --classpath=$(GCJ_JAR)
+GCJ_FLAGS =     -g -O3 -fno-bounds-check  --classpath=$(GCJ_JAR)
 GCJ_FLAGS =     -g
 
 gcj:
-	"$(GCJ)" -v $(GCJ_FLAGS) \
+	"$(GCJ)" $(GCJ_FLAGS) \
 		--main=ptolemy.actor.gui.MoMLSimpleApplication \
 		-o cruiseControl_gcj -L$(PTII)/ptolemy/moml -LMoML cruiseControl.jar
 
@@ -242,15 +240,17 @@ gcj_dirs:
 
 
 # Find the names of missing files
-missing:
-	grep "undefined reference" vendors/ecsl_dp/ptolemy/gcj2.out | grep ::class | awk '{print substr($$5, 2, length($$5)-2)}' | sed -e 's@::class\$$@.class@' -e 's@::@/@g' | sort | uniq 
+missing: missing1 run_missing2
+missing1:
+	grep "undefined reference" gcj2.out | grep ::class | awk '{print substr($$5, 2, length($$5)-2)}' | sed -e 's@::class\$$@.class@' -e 's@::@/@g' | sort | uniq 
+
+run_missing2:
+	./missing2
 
 update_jar:
 	cp c.jar cruiseControl.jar
 	$(JAR) -uf cruiseControl.jar \
 		org/w3c/dom/Document.class \
-		ptolemy/actor/gui/PtolemyQuery.class \
-		ptolemy/gui/Top.class \
 		ptolemy/data/expr/XMLParser.class
 	(cd $(PTII); $(JAR) -uf vendors/ecsl_dp/ptolemy/cruiseControl.jar `cat u3`)
 
