@@ -792,8 +792,6 @@ public class NamedObj implements Nameable, Debuggable,
      *  This method is read-synchronized on the workspace.
      *  @param parent An object that deeply contains this object.
      *  @return A string of the form "name2...nameN".
-     *  @exception IllegalActionException If the specified parent does not
-     *   deeply contain this object.
      */
     public String getName(NamedObj parent) {
 	if(parent == null) {
