@@ -126,7 +126,6 @@ public class PtolemyApplet extends JApplet implements ExecutionListener {
         } catch (Exception ex) {
             report("Warning: background parameter failed: ", ex);
         }
-        // FIXME: None of the following work!
         getRootPane().setBackground(_background);
         setBackground(_background);
         getContentPane().setBackground(_background);
@@ -285,6 +284,7 @@ public class PtolemyApplet extends JApplet implements ExecutionListener {
      *  This is protected so that derived classes can find out what the
      *  background color is. Derived classes may wish to know the
      *  color so they can match it in some of their components.
+     *  @deprecated Use the public method getBackground() instead.
      */
     protected Color _getBackground() {
         return _background;
