@@ -25,6 +25,12 @@
 </rendition>
 </entity>
 
+<entity name="FakePlotter" class="ptolemy.domains.dt.kernel.test.FakePlotter">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.source</configure>
+</rendition>
+</entity>
+
       </group>
     ?>
   </configure>
