@@ -121,8 +121,8 @@ public class InequalitySolver {
         // initialize all variables
 	Object init = least ? _cpo.bottom() : _cpo.top();
 	if (init == null) {
-	    throw new InvalidStateException("The underlining CPO is not" +
-				" a lattice.");
+	    throw new InvalidStateException("InequalitySolver.solve: " +
+			"The underlining CPO is not a lattice.");
 	}
 
 	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
@@ -150,6 +150,7 @@ public class InequalitySolver {
 	    Info info = (Info)_Ilist.elementAt(i);
 	    info._inCvar = least ? info._ineq.greaterTerm().settable()
 				 : info._ineq.lesserTerm().settable();
+
 	    if (info._inCvar) {
 	    	if (info._ineq.satisfied(_cpo)) {
 		    info._inserted = false;
@@ -175,7 +176,6 @@ public class InequalitySolver {
             int index = ((Integer)(_NS.first())).intValue();
             _NS.removeFirst();
 	    // end last FIXME
-
 
             Info info = (Info)(_Ilist.elementAt(index));
             info._inserted = false;
@@ -211,8 +211,8 @@ public class InequalitySolver {
                 int index1 = index1Wrap.intValue();
 		Info affectedInfo = (Info)_Ilist.elementAt(index1);
                 if (index1 != index && affectedInfo._inCvar) {
-                    if (info._ineq.satisfied(_cpo)) {    // drop
-                        if (info._inserted) {
+                    if (affectedInfo._ineq.satisfied(_cpo)) {    // drop
+                        if (affectedInfo._inserted) {
 
 			    // FIXME: restore this line for jdk1.2
 //                            _NS.remove(index1Wrap);
@@ -222,7 +222,7 @@ public class InequalitySolver {
 
                         }
                     } else {                        // insert
-                        if ( !info._inserted) {
+                        if ( !affectedInfo._inserted) {
 
 			    // FIXME: restore this line for jdk1.2
 //                            _NS.addFirst(index1Wrap);
