@@ -166,7 +166,10 @@ public class EntityController extends LocatableNodeController {
 		    } else if(ioport.isOutput()) {
 			outCount++;
 			outputs.addLast(port);
-		    }
+		    } else {
+                        inOutCount++;
+			inouts.addLast(port);
+		    } 
 		}
 	    }
 	    CompositeFigure figure =
