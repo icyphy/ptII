@@ -151,9 +151,10 @@ public class IOPort extends ComponentPort {
     ////                         public methods                    ////
 
     /** Send a token to all connected receivers.
-     *  The transfer is accomplished by calling the put()
-     *  method of the destination receivers.  The destination receivers
-     *  are obtained by calling getRemoteReceivers().
+     *  The transfer is accomplished by calling getRemoteReceivers()
+     *  to determine the number of channels with valid receivers and
+     *  then calling send on the appropriate channels.  
+     *  It would probably be faster to call put() directly on the receivers.
      *  If there are no destination receivers, then nothing is sent.
      *  This method is read-synchronized on the workspace.
      *
@@ -992,10 +993,10 @@ public class IOPort extends ComponentPort {
     }
 
     /** Send the specified token to all receivers connected to the
-     *  specified channel.  The first receiver gets the actual token,
-     *  while subsequent ones get a clone.  If there are no receivers,
-     *  then do nothing. The transfer is accomplished by calling the put()
-     *  method of the remote receivers.
+     *  specified channel.  Tokens are in general immutable, so each receiver
+     *  is given a reference to the same token and no clones are made.
+     *  If there are no receivers, then do nothing. The transfer is 
+     *  accomplished by calling the put() method of the remote receivers.
      *  <p>
      *  Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a put,
