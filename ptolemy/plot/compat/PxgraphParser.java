@@ -433,7 +433,7 @@ public class PxgraphParser {
         boolean sawbararg = false;  // Saw -bar arg.
         boolean sawnlarg = false;   // Saw -nl arg.
         String savedmarks = "none"; // Save _marks in case we have -P -bar -nl.
-        binary = false;     // Read a binary xgraph file.
+        _binary = false;     // Read a binary xgraph file.
 
         int width = 400, height = 400;
 
@@ -529,15 +529,15 @@ public class PxgraphParser {
                     _plot.setConnected(false);
                     continue;
                 } else if (arg.equals("-binary")) {
-                    binary = true;
+                    _binary = true;
                     _endian = _NATIVE_ENDIAN;
                     continue;
                 } else if (arg.equals("-bigendian")) {
-                    binary = true;
+                    _binary = true;
                     _endian = _BIG_ENDIAN;
                     continue;
                 } else if (arg.equals("-littleendian")) {
-                    binary = true;
+                    _binary = true;
                     _endian = _LITTLE_ENDIAN;
                     continue;
                 } else if (arg.equals("-db")) {
@@ -809,15 +809,14 @@ public class PxgraphParser {
     public void read(InputStream inputstream) throws IOException {
         DataInputStream in = new DataInputStream(
                 new BufferedInputStream(inputstream));
-        if (binary) {
+        if (_binary) {
             int c;
             float x = 0, y = 0, pointCount = 0;
             boolean byteSwapped = false;
             boolean connected = false;
             byte input[] = new byte[4];
 
-            int currentdataset = 0;
-
+	    if (_connected) connected = true;
             switch (_endian) {
             case _NATIVE_ENDIAN:
                 try {
@@ -837,6 +836,12 @@ public class PxgraphParser {
             }
 
             try {
+		// Flag that we are starting a new data set.
+		_firstinset = true;
+		// Flag that we have not seen a DataSet line in this file.
+		_sawfirstdataset = false;                           
+
+
                 c = in.readByte();
                 if ( c != 'd') {
                     // Assume that the data is one data set, consisting
@@ -859,14 +864,18 @@ public class PxgraphParser {
 
                     x = Float.intBitsToFloat(bits);
                     y = in.readFloat();
-                    _plot.addPoint(currentdataset, x, y, connected);
-                    connected = true;
+		    // _addLegendIfNecessary might increment _currentdataset
+		    connected = _addLegendIfNecessary(connected);
+                    _plot.addPoint(_currentdataset, x, y, connected);
+		    if (_connected) connected = true;
+
 
                     while (true) {
                         x = in.readFloat();
                         y = in.readFloat();
-                        _plot.addPoint(currentdataset, x, y, connected);
-                        connected = true;
+                        connected = _addLegendIfNecessary(connected);
+                        _plot.addPoint(_currentdataset, x, y, connected);
+			if (_connected) connected = true;
                     }
                 } else {
                     // Assume that the data is in the pxgraph binary format.
@@ -901,20 +910,23 @@ public class PxgraphParser {
                                 y = in.readFloat();
                             }
                             pointCount++;
-                            _plot.addPoint(currentdataset, x, y, connected);
-                            connected = true;
+                            connected = _addLegendIfNecessary(connected);
+			    _plot.addPoint(_currentdataset, x, y, connected);
+			    if (_connected) connected = true;
                             break;
                         case 'e':
                             // End of set name.
                             connected = false;
                             break;
                         case 'n':
+			    _firstinset = true;
+                            _sawfirstdataset = true;
                             StringBuffer datasetname = new StringBuffer();
-                            currentdataset++;
+                            _currentdataset++;
                             // New set name, ends in \n.
                             while (c != '\n')
                                 datasetname.append(in.readChar());
-                            _plot.addLegend(currentdataset,
+                            _plot.addLegend(_currentdataset,
                                     datasetname.toString());
                             _plot.setConnected(true);
                             break;
@@ -951,6 +963,30 @@ public class PxgraphParser {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    // Add a legend if necessary, return the value of the connected flag.
+    private boolean _addLegendIfNecessary(boolean connected) {
+        if (! _sawfirstdataset  || _currentdataset < 0) {
+            // We did not set a DataSet line, but
+            // we did get called with -<digit> args
+            _sawfirstdataset = true;
+            _currentdataset++;
+        }
+	if (_plot.getLegend(_currentdataset) == null) {
+            // We did not see a "DataSet" string yet,
+            // nor did we call addLegend().
+            _firstinset = true;
+            _sawfirstdataset = true;
+            _plot.addLegend(_currentdataset,
+                    new String("Set "+ _currentdataset));
+        }
+        if (_firstinset) {
+            connected = false;
+            _firstinset = false;
+        }
+        return connected;
+
+    }
+
     // Parse a string with a comma into two doubles.
     // If there is no comma, return a single double.
     private double[] _parseDoubles(String spec) {
@@ -982,12 +1018,23 @@ public class PxgraphParser {
     private static final int _LITTLE_ENDIAN = 2;
 
     // Flag indicating whether the command specified that the format
-    private boolean binary = false;
+    private boolean _binary = false;
+
+    private boolean _connected = true;
+
+    // The current dataset, used for handling multiple files
+    protected int _currentdataset = -1;
+
+    // For debugging, call with -db or -debug.
+    private static int _debug = 0;
 
     /** @serial Format to read data in. */
     private int _endian = _NATIVE_ENDIAN;
 
-    // For debugging, call with -db or -debug.
-    private static int _debug = 0;
+    // Is this the first datapoint in a set?
+    private boolean _firstinset = true;
+
+    // Have we seen a DataSet line in the current data file?
+    private boolean _sawfirstdataset = false;
 
 }
