@@ -1,4 +1,7 @@
 /*
+
+FIXME: Methods/fields are not in aphabetical order.
+
 A class that keeps track of exceptions and traps.
 
 Copyright (c) 2001-2002 The University of Maryland.
@@ -171,13 +174,11 @@ public class ExceptionTracker {
         _epc++;
         Iterator i = _trapChain.iterator();
 
-        //record all traps beginning here as active
+        // Record all traps beginning here as active
         while (i.hasNext()) {
             Trap ThisTrap = (Trap)i.next();
             if (ThisTrap.getBeginUnit() == u)
-                _currently_active_traps.addFirst(ThisTrap);
-                //so that traps are stored in the reverse order in which they
-                //are encountered. Most recent trap first.
+                _currently_active_traps.addLast(ThisTrap);
         }
     }
 
@@ -238,7 +239,7 @@ public class ExceptionTracker {
     /** Store the current state of the ExceptionTracker. */
     protected void _storeState() {
         _trapsForEachEpc.add(_currently_active_traps.clone());
-        //Yes, this is a list of lists.
+        //This is a list of lists.
     }
 
 

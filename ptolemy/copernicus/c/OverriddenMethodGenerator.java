@@ -1,4 +1,7 @@
 /*
+
+FIXME: Methods/fields are not in aphabetical order.
+
 A class that handles generation and management of Java methods that are
 over-ridden by pre-defined C code.
 
@@ -44,7 +47,7 @@ import soot.Type;
     methods to be replaced with pre-defined C code. This may be done for
     platform-specificness, correctness or performance considerations.
 
-    @author Ankush Varma 
+    @author Ankush Varma
     @version $Id$
 */
 

@@ -1,4 +1,7 @@
 /*
+
+FIXME: Methods/fields are not in aphabetical order.
+
 A class that handles generation and management of native methods.
 
 Copyright (c) 2002 The University of Maryland.
@@ -38,30 +41,33 @@ import java.io.File;
 import soot.SootMethod;
 import soot.Type;
 import soot.VoidType;
+import soot.BaseType;
+import soot.ArrayType;
+import soot.RefType;
 
 
 /**
     A class that handles generation and management of native methods. It
     uses stub files.  A "stub" file for a native method contains an
-    appropriate definition and returns data of the appropriate type, but does
-    not encapsulate any functionality. It is there to allow the code to be
-    compiled.
+    appropriate definition and returns data of the appropriate type, but
+    does not encapsulate any functionality. It is there to allow the code
+    to be compiled.
 
     The approach taken is that when a native method's code is asked for, it
-    returns the pre-defined C code for the method from a library. However, if
-    the body of the method has not been defined, then it simply generates a
-    stub for the method.
+    returns the pre-defined C code for the method from a library. However,
+    if the body of the method has not been defined, then it simply
+        generates a stub for the method.
 
     The native method code is stored in a directory (nativeLib). However,
     this does not contain any body code for the methods. The body codes for
     methods are stored in the directory nativeBodyLib. If a method's body
-    code exists in nativeBodyLib, then its code in nativeLib will just
-    have a #include for the file containing the body code. If the method's
-    body code does not exist in nativeBodyLib, then its code in nativeLib
-    will be a stub.
+    code exists in nativeBodyLib, then its code in nativeLib will just have
+    a #include for the file containing the body code. If the method's body
+    code does not exist in nativeBodyLib, then its code in nativeLib will
+    be a stub.
 
-    @author Ankush Varma
-    @version $Id$
+    @author Ankush Varma @version $Id: NativeMethodGenerator.java,v 1.2
+    2002/06/25 11:40:06 shuvra Exp $
  */
 public class NativeMethodGenerator {
 
@@ -100,6 +106,8 @@ public class NativeMethodGenerator {
      *  @param method The method for which a stub is needed.
      */
     public static void generateStub(SootMethod method) {
+        /* FIXME: Enable this when abstract methods are no longer treated
+         * like natives.
         if (!method.isNative()) {
             System.err.println(
                     "NativeMethodGenerator.generateStub(SootMethod):"
@@ -107,6 +115,7 @@ public class NativeMethodGenerator {
                     + method.toString()
                     + " is not native.\n");
         }
+        */
 
         // Leading Comment.
         StringBuffer code = new StringBuffer(
@@ -133,6 +142,26 @@ public class NativeMethodGenerator {
 
             if (!cReturnType.equals("void")) {
                 code.append(_indent(1) + cReturnType + " dummy;\n");
+                Type returnType = method.getReturnType();
+
+                // Initializing the variable prevents warnings from gcc -
+                // O2.
+                if (returnType instanceof BaseType) {
+                    // Allocate memory for objects. Set other data types to
+                    // 0.
+                    if (returnType instanceof RefType) {
+                        code.append(_indent(1)
+                                + "dummy = malloc(sizeof(struct "
+                                + cReturnType + "));\n");
+                    }
+                    else {
+                        code.append(_indent(1) + "dummy = 0;\n");
+                    }
+                }
+                else if (returnType instanceof ArrayType) {
+                    code.append(_indent(1) + "dummy = NULL;\n");
+                }
+
                 code.append(_indent(1) + "return dummy;\n");
             }
         }

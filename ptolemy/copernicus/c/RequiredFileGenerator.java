@@ -1,4 +1,6 @@
 /*
+FIXME: Methods/fields are not in aphabetical order.
+
 A class that generates the other required files in the
 transitive closure.
 
@@ -46,6 +48,7 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.SootField;
 import soot.Value;
+import soot.Trap;
 
 import soot.jimple.InvokeStmt;
 import soot.jimple.AssignStmt;
@@ -55,6 +58,8 @@ import soot.jimple.DefinitionStmt;
 import soot.jimple.Stmt;
 import soot.jimple.FieldRef;
 import soot.jimple.JimpleBody;
+
+import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
 
 /** A class that generates the other required files in the
     transitive closure.
@@ -70,6 +75,7 @@ public class RequiredFileGenerator {
     public void RequiredFileGenerator() {
         _requiredMethods = new HashSet();
         _requiredClasses = new HashSet();
+        _strictlyRequiredClasses = new HashSet();
     }
 
     /** Initialize and compute the required classes and methods.
@@ -98,16 +104,14 @@ public class RequiredFileGenerator {
         if (!compileMode.equals("singleClass")) {
             Scene.v().setSootClassPath(classPath);
             Scene.v().loadClassAndSupport(className);
-            _compute(classPath, className);
 
-            // Generate headers for everything in the transitive closure.
-
+            // Generate headers for everything in the transitive closure
+            // that does not already exist.
             Iterator j = Scene.v().getClasses().iterator();
             while(j.hasNext()) {
                 String nextClassName=((SootClass)j.next()).getName();
                 _generateHeaders(classPath, nextClassName, compileMode,
-                    verbose);
-                //_generateC(classPath, nextClassName, compileMode, verbose);
+                            verbose);
             }
 
 
@@ -135,22 +139,37 @@ public class RequiredFileGenerator {
         return (Collection) _requiredClasses;
     }
 
-    /** Returns whether a given method is required or not.
-        @param methodName Any method.
-        @return True if it is a required method.
-        A method is "required" if it is part of the active invoke graph.
-        If the RequiredFileGenerator was not initialized, it'll always
-        return true. All methods in the main class are automatically required.
-    */
-    public static boolean isRequiredMethod(SootMethod meth) {
+    /** Returns the set of classes that must be initialized by clinit
+     *  methods, initialization functions etc.
+     *
+     *  @return The set of classes that must be initialized.
+     */
+    public static Collection getStrictlyRequiredClasses() {
+        return (Collection) _strictlyRequiredClasses;
+    }
+
+
+    /** Returns whether a given method is required or not. Since we are
+     *  generating a static library of all methods, they are
+     *  all considered required. Thus this will always return true.
+     *
+     *  @param methodName Any method.
+     *  @return True if it is a required method.
+     */
+    public static boolean isRequiredMethod(SootMethod method) {
+
+        // Always returns true because we want a static library.
+        return true;
+        /*
         if (_requiredMethods != null) {
-            return _requiredMethods.contains(meth);
+            return _requiredMethods.contains(method);
         }
         else {
             // It goes here if it initialization(_compute()) was not
             // done.
             return true;
         }
+        */
     }
 
 
@@ -163,43 +182,40 @@ public class RequiredFileGenerator {
         // Initialize the scene and other variables.
         _requiredMethods = new HashSet();
         _requiredClasses = new HashSet();
+        _strictlyRequiredClasses = new HashSet();
+
         Scene.v().setSootClassPath(classPath);
         Scene.v().loadClassAndSupport(className);
-        Scene.v().setMainClass(Scene.v().getSootClass(className));
 
-        /*
-        ClassHierarchyAnalysis analyser = new ClassHierarchyAnalysis();
-        Scene.v().setActiveInvokeGraph(analyser.newInvokeGraph());
-        */
+        Iterator i = Scene.v().getClasses().iterator();
+
+        String nextClassName = new String();
+
+        while (i.hasNext())
+        {
+            _requiredClasses.add(i.next());
+        }
+
+
+       Scene.v().setMainClass(Scene.v().getSootClass(className));
+
 
         // Note all methods in the main class as required methods.
-         Iterator mainMethodsIter =
+         Iterator mainMethods =
                  Scene.v().getMainClass().getMethods().iterator();
 
         // Note all methods possibly called by any of the main methods as
         // required methods.
-         while (mainMethodsIter.hasNext()) {
-             SootMethod thisMethod = (SootMethod)mainMethodsIter.next();
+         while (mainMethods.hasNext()) {
+             SootMethod thisMethod = (SootMethod)mainMethods.next();
              _requiredMethods.add(thisMethod);
          }
 
-         // Add all required runtime methods to the list of required
-         // methods.
-         SootClass stringClass = Scene.v().
-                loadClassAndSupport("java.lang.String");
-         SootMethod initStringWithCharArray = stringClass.getMethod(
-                "void <init>(char[])");
-
-         SootClass system = Scene.v()
-                .loadClassAndSupport("java.lang.System");
-         SootMethod initSystem = system
-                .getMethodByName("initializeSystemClass");
-
-
-         _requiredMethods.add(initStringWithCharArray);
-         _requiredMethods.add(initSystem);
+         //System.out.println("Starting ...");
 
          _growRequiredTree();
+
+         //System.out.println("Ended...");
     }
 
 
@@ -219,12 +235,12 @@ public class RequiredFileGenerator {
         // ConcurrentModificationException from being thrown.
         // Iterate over all the classes and add their "clinit" methods to
         // the set of required methods.
-        Iterator requiredClassesIter = ((HashSet)_requiredClasses.clone()).
-                iterator();
+        Iterator requiredClasses = ((HashSet)_strictlyRequiredClasses.clone())
+                .iterator();
 
 
-        while (requiredClassesIter.hasNext()) {
-             SootClass thisClass = (SootClass)requiredClassesIter.next();
+        while (requiredClasses.hasNext()) {
+             SootClass thisClass = (SootClass)requiredClasses.next();
 
              if (thisClass.declaresMethod("void <clinit>()")) {
                  SootMethod initMethod =
@@ -239,44 +255,81 @@ public class RequiredFileGenerator {
              // The superclass of each class is also a required class.
              if (thisClass.hasSuperclass()) {
                  SootClass superclass = thisClass.getSuperclass();
-                 if (!_requiredClasses.contains(superclass)) {
-                     _requiredClasses.add(superclass);
+                 if (!_strictlyRequiredClasses.contains(superclass)) {
+                     _strictlyRequiredClasses.add(superclass);
                      newClassesAdded = true;
                  }
              }
 
+             // All methods of a class that correspond to methods declared
+             // in interfaces are required.
+             Iterator interfaces = thisClass.getInterfaces().iterator();
+             while (interfaces.hasNext()) {
+                 SootClass thisInterface = (SootClass)interfaces.next();
+
+                 Iterator interfaceMethods = thisInterface.getMethods()
+                        .iterator();
+
+                 while (interfaceMethods.hasNext()) {
+                    SootMethod interfaceMethod = (SootMethod)interfaceMethods
+                            .next();
+
+                    // To prevent non-concrete methods from being declared
+                    // as required.
+                    try {
+                        _requiredMethods.add(thisClass
+                                .getMethod(interfaceMethod.getSubSignature()));
+                    }
+                    catch (RuntimeException e) {
+                    }
+                 }
+             }
         }
+
+
 
         // For each method in the required set, find all the methods it
         // calls. Add these to the required set. Also find the fields it
         // accesses. All classes containing these fields are required.
         // FIXME: This is a correct, but non-optimal algorithm.
         // We clone to prevent ConcurrentModificationException.
-        Iterator requiredMethodsIter = ((HashSet)_requiredMethods.clone()).
+        Iterator requiredMethodsIterator = ((HashSet)_requiredMethods.clone()).
                 iterator();
 
-        while (requiredMethodsIter.hasNext()) {
-            SootMethod thisMethod = (SootMethod)requiredMethodsIter.next();
+        while (requiredMethodsIterator.hasNext()) {
+            SootMethod thisMethod = (SootMethod)requiredMethodsIterator.next();
 
             // Iterate over all methods called by this method.
-            Iterator targetsIter = _methodsCalledBy(thisMethod).iterator();
-            while (targetsIter.hasNext()) {
-                SootMethod targetMethod = (SootMethod)targetsIter.next();
+            Iterator targets = _methodsCalledBy(thisMethod).iterator();
+            while (targets.hasNext()) {
+                SootMethod targetMethod = (SootMethod)targets.next();
                 if (!_requiredMethods.contains(targetMethod)) {
                     newMethodsAdded = true;
                     _requiredMethods.add(targetMethod);
                 }
             }
 
-            // Iterate over all fields used by this method.
-            Iterator fieldsIter = _fieldsUsedBy(thisMethod).iterator();
-            while (fieldsIter.hasNext()) {
-                SootClass declaringClass =
-                        ((SootField)fieldsIter.next()).getDeclaringClass();
+            // Iterate over all exceptions thrown by or in  this method.
+            // All classes corresponding to those exceptions are added.
+            if (thisMethod.isConcrete()) {
+                Iterator traps = thisMethod.retrieveActiveBody()
+                        .getTraps().iterator();
 
-                if(!_requiredClasses.contains(declaringClass)) {
+                while (traps.hasNext()) {
+                    _strictlyRequiredClasses.add((SootClass)
+                            ((Trap)traps.next()).getException());
+                }
+            }
+
+            // Iterate over all fields used by this method.
+            Iterator fields = _fieldsUsedBy(thisMethod).iterator();
+            while (fields.hasNext()) {
+                SootClass declaringClass =
+                        ((SootField)fields.next()).getDeclaringClass();
+
+                if(!_strictlyRequiredClasses.contains(declaringClass)) {
                     newClassesAdded = true;
-                    _requiredClasses.add(declaringClass);
+                    _strictlyRequiredClasses.add(declaringClass);
                 }
             }
 
@@ -285,16 +338,17 @@ public class RequiredFileGenerator {
         // The set of required classes is all classes that declare at least
         // one required method or field. We've already taken care of the
         // fields. Here we take care of the methods.
-        requiredMethodsIter = ((HashSet)_requiredMethods.clone()).iterator();
-        while (requiredMethodsIter.hasNext()) {
+        requiredMethodsIterator = ((HashSet)_requiredMethods.clone())
+                .iterator();
+        while (requiredMethodsIterator.hasNext()) {
             SootMethod thisMethod =
-                    (SootMethod)requiredMethodsIter.next();
+                    (SootMethod)requiredMethodsIterator.next();
 
             SootClass declaringClass = thisMethod.getDeclaringClass();
 
-            if (!_requiredClasses.contains(declaringClass)) {
+            if (!_strictlyRequiredClasses.contains(declaringClass)) {
                 newClassesAdded = true;
-                _requiredClasses.add(declaringClass);
+                _strictlyRequiredClasses.add(declaringClass);
             }
         }
 
@@ -308,7 +362,10 @@ public class RequiredFileGenerator {
 
     }
 
-    /** Gets all methods called directly by a given method.
+    /** Gets all methods called directly by a given method. Causes changes
+     *  in Scene.v(), requiring it to be re-initialized if used after this
+     *  method.
+     *
      * @param method The method for which we want the target methods.
      * @return The collection of all methods called by this method.
      * FIXME: Does this need to be made more general?
@@ -317,24 +374,29 @@ public class RequiredFileGenerator {
         // Set of all the called methods.
         HashSet targets = new HashSet();
 
+        /*
+        Scene.v().loadClassAndSupport(method.getDeclaringClass().getName());
+        Scene.v().setMainClass(method.getDeclaringClass());
+        ClassHierarchyAnalysis analyser = new ClassHierarchyAnalysis();
+        Scene.v().setActiveInvokeGraph(analyser.newInvokeGraph());
 
-        // FIXME: What about native methods?
-        // It was found that "clinit" methods need to be generated even
-        // though they are not concrete.
-        /*if(method.isConcrete()
-                ||(method.toString().indexOf("clinit") != -1)
-                ||(method.getName().indexOf("<init>") != -1))
+        Iterator methodTargets = Scene.v().getActiveInvokeGraph()
+                .getTransitiveTargetsOf(method).iterator();
+        while (methodTargets.hasNext()) {
+            targets.add(methodTargets.next());
+        }
         */
+
         try {
             method.getDeclaringClass().setApplicationClass();
 
 
             // Iterate over all the units and see which ones call methods.
-            Iterator unitsIter = ((JimpleBody)method.retrieveActiveBody()).
+            Iterator units = ((JimpleBody)method.retrieveActiveBody()).
                     getUnits().iterator();
 
-            while (unitsIter.hasNext()) {
-                Unit unit = (Unit)unitsIter.next();
+            while (units.hasNext()) {
+                Unit unit = (Unit)units.next();
 
                 if (unit instanceof InvokeStmt) {
                         InvokeExpr invokeExpr = (InvokeExpr)(((InvokeStmt)unit)
@@ -352,7 +414,6 @@ public class RequiredFileGenerator {
 
                     if (rightOp instanceof InvokeExpr) {
                         targets.add(((InvokeExpr)rightOp).getMethod());
-
                     }
                 }
                 else if (unit instanceof IdentityStmt) {
@@ -363,7 +424,6 @@ public class RequiredFileGenerator {
 
                     }
                 }
-
             }
         }
         // In case some method cannot be analysed (for example some
@@ -372,6 +432,7 @@ public class RequiredFileGenerator {
         }
 
         return ((Collection) targets);
+
     }
 
     /** Gets all fields called directly by a given method.
@@ -386,11 +447,11 @@ public class RequiredFileGenerator {
         if(method.isConcrete()) {
             method.getDeclaringClass().setApplicationClass();
             // Iterate over all the units and see which ones use fields.
-            Iterator unitsIter = ((JimpleBody)method.retrieveActiveBody()).
+            Iterator units = ((JimpleBody)method.retrieveActiveBody()).
                     getUnits().iterator();
 
-            while (unitsIter.hasNext()) {
-                Unit unit = (Unit)unitsIter.next();
+            while (units.hasNext()) {
+                Unit unit = (Unit)units.next();
                 if (unit instanceof Stmt) {
                     if (((Stmt)unit).containsFieldRef()) {
                         fields.add(((FieldRef)((Stmt)unit).
@@ -436,18 +497,18 @@ public class RequiredFileGenerator {
             if (FileHandler.exists(fileName+".c")) {
                 if(verbose) System.out.println( "\texists:"+fileName+".c");
             }
-            // FIXME: Now c files are always overwritten.
-            // else {
-            code = cGenerator.generate(sootClass);
-            FileHandler.write(fileName+".c", code);
-            if (verbose) {
-                System.out.println( "\tcreated: " + fileName + ".c");
+            else
+            {
+                code = cGenerator.generate(sootClass);
+                FileHandler.write(fileName+".c", code);
+                if(verbose) System.out.println( "\tcreated: "
+                    +fileName+".c");
             }
-            // }
         }
     }
 
-    /** Generate the .h and "interface header" Files required for a given class.
+    /** Generate the .h and "interface header" Files required for a given
+     * class if they do not already exist.
      *  @param classPath The class path.
      *  @param className The class for which the files should be generated.
      *  @param compileMode The compilation mode.
@@ -495,26 +556,38 @@ public class RequiredFileGenerator {
         }
         else {
             code = iGenerator.generate(sootClass);
-            FileHandler.write(fileName
-                    + InterfaceFileGenerator.interfaceFileNameSuffix(), code);
-            if(verbose) System.out.println( "\tcreated: " + fileName
-                    + InterfaceFileGenerator.interfaceFileNameSuffix());
+            String name = fileName
+                    + InterfaceFileGenerator.interfaceFileNameSuffix();
+
+            if (! FileHandler.exists(name)) {
+                FileHandler.write(name, code);
+            }
+
+            if(verbose) {
+                System.out.println( "\tcreated: " + name);
+            }
         }
 
 
         // Generate the .h file.
         if(FileHandler.exists(fileName+".h")) {
-            if(verbose) System.out.println( "\texists: " + fileName + ".h");
+            if(verbose) {
+                System.out.println( "\texists: " + fileName + ".h");
+            }
         }
         else {
             code = hGenerator.generate(sootClass);
             FileHandler.write(fileName+".h", code);
-            if(verbose) System.out.println( "\tcreated: " + fileName + ".h");
+
+            if(verbose) {
+                System.out.println( "\tcreated: " + fileName + ".h");
+            }
         }
     }
 
     private static HashSet _requiredMethods;
     private static HashSet _requiredClasses;
+    private static HashSet _strictlyRequiredClasses;
 
 }
 

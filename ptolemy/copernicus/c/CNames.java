@@ -1,4 +1,6 @@
 /*
+FIXME: Methods/fields are not in aphabetical order.
+
 A class that determines names of various entities to use for
 C code generation.
 
@@ -157,7 +159,7 @@ public class CNames {
      *  @return The include file name.
      */
     public static String includeFileNameOf(SootClass source) {
-        return source.getName().replace('.', '/')  + ".h";
+        return _sanitize(source.getName().replace('.', '/')) + ".h";
     }
 
     /** Given a class, return the name of the function that implements
@@ -189,10 +191,10 @@ public class CNames {
     public static String classNameToFileName(String className) {
         if (isSystemClass(className)) {
             return(System.getProperty("j2c_lib")
-                + "/" + className.replace('.', '/'));
+                + "/" + _sanitize(className).replace('.', '/'));
         }
         else {
-            return(className);
+            return(_sanitize(className));
         }
     }
 
@@ -280,6 +282,17 @@ public class CNames {
         return "superclass";
     }
 
+    /** Return a version of a string with all $, <, >, or - characters
+     *  replaced by _.
+     *
+     *  @param name The String to be converted.
+     *  @return The sanitized version of this string.
+     */
+    public static String sanitize(String name) {
+        return _sanitize(name);
+    }
+
+
     /** Determine the C name associated with a Soot type. For RefType types,
      *  the C name returned is the name of the instance-specific data structure.
      *  To obtain the name of the class-specific data structure associated with
@@ -299,8 +312,8 @@ public class CNames {
         }
 
         if (type instanceof BooleanType) name = "short";
-        else if (type instanceof ByteType) name = "short";
-        else if (type instanceof CharType) name = "char";
+        else if (type instanceof ByteType) name = "char";
+        else if (type instanceof CharType) name = "short";
         else if (type instanceof DoubleType) name = "double";
         else if (type instanceof FloatType) name = "float";
         else if (type instanceof IntType) name = "long";

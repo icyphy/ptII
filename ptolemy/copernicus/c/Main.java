@@ -1,4 +1,7 @@
-/* Transform Actors using Soot and generate C code.
+/*
+ FIXME: Methods/fields are not in aphabetical order.
+
+ Transform Actors using Soot and generate C code.
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -77,19 +80,19 @@ public class Main extends KernelMain {
      *  @param args An array of Strings that control the transformation
      */
     public Main(String [] args) throws IllegalActionException {
-	    // args[0] contains the MoML class name.
-	    super(args[0]);
+        // args[0] contains the MoML class name.
+        super(args[0]);
     }
 
     /** Add transforms to the Scene.
      */
     public void addTransforms() {
 
-	    super.addTransforms();
+        super.addTransforms();
 
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
-	    // -p wjtp.watchDog time:30000
+        // -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
                 WatchDogTimer.v()));
 
@@ -100,9 +103,9 @@ public class Main extends KernelMain {
         //         NameSanitizer.v(_toplevel)));
 
         // Create instance classes for actors.
-	    // This transformer takes no input as far as soot is concerned
-	    // (i.e. no application classes) and creates application
-	    // classes from the model.
+        // This transformer takes no input as far as soot is concerned
+        // (i.e. no application classes) and creates application
+        // classes from the model.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.at", ActorTransformer.v(_toplevel)));
 
@@ -186,10 +189,10 @@ public class Main extends KernelMain {
             throws IllegalActionException, NameDuplicationException {
 
         _writer = null;
-	    Main main = new Main(args);
+        Main main = new Main(args);
 
-	    // Parse the model.
-	    CompositeActor toplevel = main.readInModel(args[0]);
+        // Parse the model.
+        CompositeActor toplevel = main.readInModel(args[0]);
 
         // Set of argument indices to skip when constructing the argument
         // list for Soot.
@@ -230,15 +233,15 @@ public class Main extends KernelMain {
             }
         }
 
-	    // Create instance classes for the actors.
-	    main.initialize(toplevel);
+        // Create instance classes for the actors.
+        main.initialize(toplevel);
 
-	    // Add Transforms to the Scene.
-	    main.addTransforms();
+        // Add Transforms to the Scene.
+        main.addTransforms();
 
         // Ignore exceptions that pertain to writing unnecessary class files
         // after code generation is complete.
-	    try {
+        try {
             main.generateCode(sootArguments);
         } catch (RuntimeException exception) {
             // Under debug mode, soot throws a RuntimeException if it

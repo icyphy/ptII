@@ -1,4 +1,7 @@
 /*
+
+FIXME: Methods/fields are not in aphabetical order.
+
 An implementation of the visitor design pattern that generates C code
 from Jimple statements.
 
@@ -49,7 +52,6 @@ import soot.jimple.internal.*;
     #_pop()}).
 
    @author Shuvra S. Bhattacharyya, Ankush Varma
-   @version $Id$
    @since Ptolemy II 2.0
 */
 public class CSwitch implements JimpleValueSwitch, StmtSwitch {
@@ -74,6 +76,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _context = new Context();
         _targetMap = new HashMap();
         _targetCount = 0;
+        indentLevel = 0;
     }
 
     /** Construct a new CSwitch with a given context. */
@@ -287,8 +290,10 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 +CNames.localNameOf((Local)v.getOp()));
         }
         else {
+            /*
             System.err.println("CSwitch.caseCastExpression does not"
                 +"handle null.");
+            */
 
             defaultCase(v);
         }
@@ -363,7 +368,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     public void caseInterfaceInvokeExpr(InterfaceInvokeExpr v) {
-        defaultCase(v);
+        _generateInstanceInvokeExpression(v);
+        //defaultCase(v);
     }
 
     public void caseLeExpr(LeExpr v) {
@@ -443,19 +449,96 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     public void caseShlExpr(ShlExpr v) {
-        _generateBinaryOperation(v,"<<");
-    }
+        v.getOp2().apply(this);
+        v.getOp1().apply(this);
+        String number = _pop().toString();
+        String shiftIndex = _pop().toString();
 
-    public void caseShrExpr(ShrExpr v) {
-        // Make sure that is never shifted by more than 31.
-        if (v.getOp2() instanceof IntConstant) {
-            IntConstant constant = (IntConstant)v.getOp2();
-            if (constant.value > 31) {
-                v.setOp2(IntConstant.v(31));
+        int dataWidth = 32;
+        // Number of bits in "int" for C. Java has 64bits, but we can't
+        // implement that in C yet.
+        Type dataType = v.getOp1().getType();
+
+        if (dataType instanceof BaseType) {
+            if (dataType instanceof ByteType) {
+                dataWidth = 8;
+            }
+            else if (dataType instanceof IntType) {
+                dataWidth = 32;
+            }
+            else if (dataType instanceof LongType) {
+                dataWidth = 32;
+                // FIXME: Wrong number of bits for "long".
+                // But ANSI C supports only 32.
+            }
+            else if (dataType instanceof ShortType) {
+                dataWidth = 16;
             }
         }
 
-        _generateBinaryOperation(v, ">>");
+        dataWidth--; // Because it saturates at N-1 bits.
+
+        _push("(" + shiftIndex + " <= " + dataWidth + ") ? "
+                + "(" + number + " << "
+                    + "(" + shiftIndex + "%" + dataWidth + ")"
+                + "):0");
+    }
+
+    public void caseShrExpr(ShrExpr v) {
+
+
+        v.getOp2().apply(this);
+        v.getOp1().apply(this);
+        String number = _pop().toString();
+        String shiftIndex = _pop().toString();
+
+        int dataWidth = 32;
+        // Number of bits in "int" for C. Java has 64bits, but we can't
+        // implement that in C yet.
+        Type dataType = v.getOp1().getType();
+
+        if (dataType instanceof BaseType) {
+            if (dataType instanceof ByteType) {
+                dataWidth = 8;
+            }
+            else if (dataType instanceof IntType) {
+                dataWidth = 32;
+            }
+            else if (dataType instanceof LongType) {
+                dataWidth = 32;
+                // FIXME: Wrong number of bits for "long". But ANSI C
+                // supports only 32.
+            }
+            else if (dataType instanceof ShortType) {
+                dataWidth = 16;
+            }
+        }
+
+        dataWidth--; // Because it saturates at N-1 bits.
+
+        // Note that we can simplify this further and generate more
+        // streamlined code when number or shiftIndex are statically known
+        // constants.
+        // We use the % operator to suppress warnings.
+        _push("(" + shiftIndex + " <= " + dataWidth + ") ? "
+                + "("
+                    + "(" + number + " > 0)? "
+                        + "("
+                            + number + " >> "
+                            + "(" + shiftIndex + " % " + dataWidth + ")"
+                    + "): "
+                    + "( "
+                        + "( -"
+                            + "("
+                                + "(-" + number + ") >> "
+                                + "("
+                                    +"(" + shiftIndex + " % " + dataWidth + ")"
+                                + ")"
+                            + ")"
+                        + ")"
+                        + " - 1"
+                    + ") "
+                + "): 0");
     }
 
     /** Generate code for a special invoke expression.
@@ -508,7 +591,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 v.toString().substring(v.toString().indexOf('<')+1,
                                        v.toString().indexOf(':'));
 
-            includeFileName = "\"" + includeFileName.replace('.', '/')+".h\"";
+            includeFileName = "\""
+                    + CNames.sanitize(includeFileName).replace('.', '/')
+                    + ".h\"";
 
             _context.addIncludeFile(includeFileName);
         }
@@ -517,6 +602,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         SootMethod method = v.getMethod();
 
         // Handling native methods here.
+        // FIXME: Redundant statements. If is same as else.
         if (method.isNative()) {
             _push(CNames.functionNameOf(method) + "("
                     + _generateArguments(v, 0) + ")");
@@ -533,7 +619,78 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     public void caseUshrExpr(UshrExpr v) {
-        defaultCase(v);
+        v.getOp2().apply(this);
+        v.getOp1().apply(this);
+        String number = _pop().toString();
+        String shiftIndex = _pop().toString();
+
+        int dataWidth = 32;
+        // Number of bits in "int" for C. Java has 64bits, but we can't
+        // implement that in C yet.
+        Type dataType = v.getOp1().getType();
+
+        // The "ifs" are in this order so that only the shortest data type
+        // is chosen.
+        if (dataType instanceof BaseType) {
+            if (dataType instanceof ByteType) {
+                dataWidth = 8;
+            }
+            else if (dataType instanceof ShortType) {
+                dataWidth = 16;
+            }
+            else if (dataType instanceof IntType) {
+                dataWidth = 32;
+            }
+            else if (dataType instanceof LongType) {
+                dataWidth = 32;
+                // FIXME: Wrong number of bits for "long". But ANSI C
+                // supports only 32.
+            }
+        }
+
+        long max = (long)Math.pow(2, dataWidth - 1) - 1;
+
+        // Because we can only shift by width - 1
+        dataWidth--;
+
+        if (v.getOp2() instanceof IntConstant) {
+            if (((IntConstant)v.getOp2()).value == 0) {
+                _push(number);
+                return; // Do not proceed to complex expression.
+            }
+        }
+
+        // We can trust >> only for positive numbers.
+        _push("(" + shiftIndex + " <= " + dataWidth + ")? "
+                + "("
+                    + "(" + number + " > 0)? "
+                        + "(" + number + " >> "
+                            + "(" + shiftIndex + " % " + dataWidth
+                            + ")"
+                        + "): "
+                        + "("
+                            + "("
+                                + "("
+                                        + "( - (" + number + "))"
+                                        + " >> "
+                                        + "("
+                                            + "(" + shiftIndex + " -1 "
+                                            + ")" + "%" + dataWidth
+                                        + ")"
+                                + ")"
+                                + " | "
+                                + "("
+                                    + "((unsigned long) " + max + ")"
+                                    + ">>"
+                                    + "(" + shiftIndex + "- 1)"
+                                + ")"
+                            + ")"
+                            + " - "
+                            + "("
+                                + "(-(" + number + ")) >> " + shiftIndex
+                            + ")"
+                        + ")"
+                + "): 0");
     }
 
     public void caseVirtualInvokeExpr(VirtualInvokeExpr v) {
@@ -636,6 +793,15 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         stmt.getRightOp().apply(this);
         stmt.getLeftOp().apply(this);
         StringBuffer code = new StringBuffer();
+        String indent = new String();
+
+        if (indentLevel == 1) {
+            indent = "    ";
+        }
+        else if (indentLevel == 2) {
+            indent = "        ";
+        }
+
 
         String castType = CNames.typeNameOf(stmt.getLeftOp().getType());
         if (stmt.getLeftOp().getType() instanceof ArrayType) {
@@ -657,7 +823,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         if (stmt.getRightOp() instanceof NewExpr) {
             stmt.getLeftOp().apply(this);
             // The &V is so that we get the name of the class structure.
-            code.append(";\n    " + _pop() + "->class = &V"
+            code.append(";\n" + indent + _pop() + "->class = &V"
                     + CNames.typeNameOf(stmt.getLeftOp().getType()));
         }
 
@@ -711,7 +877,26 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     public void caseLookupSwitchStmt(LookupSwitchStmt stmt) {
-        defaultCase(stmt);
+        StringBuffer code = new StringBuffer();
+        int numberOfTargets = stmt.getTargetCount();
+
+        code.append("switch ("
+                + CNames.localNameOf((Local)stmt.getKey())
+                + ") {\n");
+
+        indentLevel++;
+
+        for (int i = 0; i < numberOfTargets; i++) {
+            code.append(_indent() + "case " + stmt.getLookupValue(i) + ": goto "
+                    + getLabel(stmt.getTarget(i)) + ";\n");
+        }
+
+        code.append(_indent() + "default: goto "
+                + getLabel(stmt.getDefaultTarget()) + ";\n");
+
+        indentLevel--;
+        code.append(_indent() + "}\n");
+        _push(code);
     }
 
     public void caseNopStmt(NopStmt stmt) {
@@ -773,7 +958,27 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     public void caseTableSwitchStmt(TableSwitchStmt stmt) {
-        defaultCase(stmt);
+        StringBuffer code = new StringBuffer();
+        int min = stmt.getLowIndex();
+        int max = stmt.getHighIndex();
+
+        code.append("switch ("
+                + CNames.localNameOf((Local)stmt.getKey())
+                + ") {\n");
+
+        indentLevel++;
+
+        for (int i = min; i <= max; i++) {
+            code.append(_indent() + "case " + i + ": goto "
+                    + getLabel(stmt.getTarget(i-min)) + ";\n");
+        }
+
+        code.append(_indent() + "default: goto "
+                + getLabel(stmt.getDefaultTarget()) + ";\n");
+
+        indentLevel--;
+        code.append(_indent() + "}\n");
+        _push(code);
     }
 
     public void caseThrowStmt(ThrowStmt stmt) {
@@ -787,9 +992,11 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             indent = "        ";
         }
 
-        _push("exception_id = (int)"
-            +CNames.localNameOf((Local)stmt.getOp())+";\n");
-        _push( indent + "longjmp(env, epc)");
+        _push("/* Throw exception of type " + stmt.getOp().getType().toString()
+            + " */\n"
+            + indent + "exception_id = (_EXCEPTION_INSTANCE)"
+                + CNames.localNameOf((Local)stmt.getOp())+";\n"
+            + indent + "longjmp(env, epc)");
 
     }
 
@@ -832,14 +1039,19 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         int count = previousArguments;
         while (args.hasNext()) {
-            Type expectedParamType = method.getParameterType(count
-                                            - previousArguments  );
+            Type expectedParamType = method
+                    .getParameterType(count - previousArguments);
 
-            if (count++ > 0) code.append(", ");
+            if (count++ > 0) {
+                code.append(", ");
+            }
+
             ((Value)args.next()).apply(this);
-            code.append("(" + CNames.typeNameOf(expectedParamType)
-                            + ") "
-                            +  _pop() );
+
+            String cast = new String ("("
+                    + CNames.typeNameOf(expectedParamType) + ") ");
+
+            code.append( cast +  _pop() );
 
         }
 
@@ -869,7 +1081,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 emptyDimensions = ((ArrayType)elementType).numDimensions;
             }
             else {
-                //if its a primitive type
+                // If its a primitive type.
                 elementClass = CNames.arrayClassPrefix +
                         CNames.typeNameOf(elementType) + "_elem";
                 elementSizeType = CNames.typeNameOf(elementType);
@@ -941,8 +1153,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         // We're using the class pointer only for abstract methods.
         // We don't do this if the instance is an array.
-        code = new StringBuffer(instanceName
-                    +"->class->methods."
+        code = new StringBuffer(
+                    instanceName
+                    + "->class->methods."
                     + CNames.methodNameOf(method));
 
         String cast = new String();
@@ -955,11 +1168,34 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                     + ")";
         }
 
+        // Make sure that the arguments are generated for the correct
+        // method and class. This needs to be done only for
+        // classes(RefType). This is done to suppress warnings caused by
+        // improper casts for the arguments.
+        if (expression.getBase().getType() instanceof RefType) {
+            // This is a "try" because some methods don't have names.
+            try {
+                SootClass actualClass = ((RefType)(expression.getBase()
+                        .getType())).getSootClass();
+
+                SootMethod actualMethod = actualClass.getMethod(method
+                        .getSubSignature());
+
+                expression.setMethod(actualMethod);
+
+                cast = "(" + CNames.instanceNameOf(actualClass) + ")";
+            }
+            catch (Exception e) {
+            }
+        }
+
+
         code.append("("
                 + cast
                 + instanceName
                 + _generateArguments(expression, 1)
                 + ")");
+
         _push(code);
     }
 
@@ -999,14 +1235,29 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      *  @param message The descriptive message.
      */
     protected void _unexpectedCase(Object object, String message) {
-        _push("0 /*" + object.getClass().getName() + "*/");
+        _push("epc++ /* UNEXPECTED CASE "
+                + object.getClass().getName()
+                + "*/; epc--");
 
-        /* FIXME: Enable this when diagnostic output is needed.
-
+        /*
         System.err.println("Unexpected code conversion case in CSwitch:\n"
                 + "        " + message + "\n        Case object is of class "
                 + object.getClass().getName());
         */
+    }
+
+
+    /** Returns the apropriate indentation based on the value of the
+     *  "indentLevel" variable.
+     *
+     *  @return A String containg 4 spaces for every level of indentation.
+     */
+    protected String _indent() {
+        StringBuffer code = new StringBuffer();
+        for (int i = 0; i< indentLevel; i++) {
+            code.append("    "); // 4 spaces.
+        }
+        return code.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

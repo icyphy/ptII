@@ -1,4 +1,7 @@
 /*
+
+FIXME: Methods/fields are not in aphabetical order.
+
 A C code generator for generating "interface header files"
 that implement Java classes.
 
@@ -97,16 +100,17 @@ public class InterfaceFileGenerator extends CodeGenerator {
         headerCode.append("#define _" + typeName + "_i_h\n\n");
         footerCode.append("\n#endif\n\n");
 
-        // FIXME: generate header code for inner classes (probably here).
-
         // Generate typedef for instance-specific structure. The actual
         // definition of the structure will be placed after the definition
         // of the class-specific structure.
-
-
         bodyCode.append("struct " + typeName + ";\n");
         bodyCode.append("typedef struct " + typeName + " *" +
                         typeName + ";\n\n");
+
+        // Generate the type declaration header for the class
+        // structure. This structure represents the class as a whole.
+        // A second structure will be defined to represent each instance of the
+        // class.
 
         bodyCode.append("/* Structure that implements " + className + " */\n");
         bodyCode.append("struct " + objectName +";\n\n");

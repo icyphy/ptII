@@ -1,4 +1,6 @@
 /*
+FIXME: Methods/fields are not in aphabetical order.
+
 A C code generator for generating "header files" (.h files) that implement
 Java classes.
 
@@ -87,7 +89,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         // An iterator over all different member declarations
         // (declarations for fields, methods, constructors, etc.) of the
         // given Java class declaration.
-        Iterator membersIter;
+        //Iterator members;
 
         // Extract the unique class name and instance-specific type name to
         // use for the class
@@ -111,18 +113,7 @@ public class HeaderFileGenerator extends CodeGenerator {
             headerCode.append("#include \"pccg_single.h\"\n\n");
         }
 
-
-        // FIXME: generate header code for inner classes (probably here)
-
-        // Generate typedef for instance-specific structure. The actual
-        // definition of the structure will be placed after the definition
-        // of the class-specific structure;
-
-
-        // Generate the type declaration header for the class
-        // structure. This structure represents the class as a whole.
-        // A second structure will be defined to represent each instance of the
-        // class.
+        // Structure that implements the class.
         bodyCode.append(_comment("Structure that implements Class " +
                 className));
         bodyCode.append("struct " + CNames.classNameOf(source) +
@@ -228,10 +219,6 @@ public class HeaderFileGenerator extends CodeGenerator {
 
         // Export function prototypes for all non-private
         // methods
-
-        // FIXME: Need better support for native methods here
-        // #include native files and generate stubs
-
         Iterator methods = source.getMethods().iterator();
         while (methods.hasNext()) {
             SootMethod method = (SootMethod)(methods.next());
@@ -264,8 +251,10 @@ public class HeaderFileGenerator extends CodeGenerator {
             _updateRequiredTypes(source.getSuperclass().getType());
         }
 
-        headerCode.append("#include \"" + className.replace('.', '/')
-                + InterfaceFileGenerator.interfaceFileNameSuffix() + "\"\n");
+        headerCode.append("#include \""
+                + CNames.sanitize(source.toString().replace('.', '/')
+                + InterfaceFileGenerator.interfaceFileNameSuffix() +
+                "\"\n"));
         headerCode.append(_generateIncludeDirectives());
         headerCode.append("\n" + _generateArrayInstanceDeclarations());
         headerCode.append("\n");
@@ -295,7 +284,8 @@ public class HeaderFileGenerator extends CodeGenerator {
             headerCode.append("#include ");
             String fileName = new String((String)includeFiles.next());
 
-            fileName = fileName.substring(0, fileName.length()-3)
+            fileName = CNames.sanitize(fileName.substring(0
+                            , fileName.length()-3))
                     + InterfaceFileGenerator.interfaceFileNameSuffix() + "\"";
 
             headerCode.append(fileName);
@@ -319,7 +309,8 @@ public class HeaderFileGenerator extends CodeGenerator {
             headerCode.append("#include \"");
             String fileName = new String((String)requiredTypes.next());
 
-            fileName = fileName.substring(0, fileName.length()-2)
+            fileName = CNames.sanitize(fileName.substring(0
+                            , fileName.length()-2))
                     + InterfaceFileGenerator.interfaceFileNameSuffix() + "\"";
 
             headerCode.append(fileName);

@@ -1,4 +1,7 @@
 /*
+
+FIXME: Methods/fields are not in aphabetical order.
+
 An application that converts a Java class into  C source files (an
 "interface header" file, a .h file and a .c file) that implement the class.
 
@@ -107,16 +110,16 @@ public class JavaToC {
 
         // Generate the "interface header" file.
         String code = iGenerator.generate(sootClass);
-        FileHandler.write(className
+        FileHandler.write(CNames.sanitize(className)
                 + InterfaceFileGenerator.interfaceFileNameSuffix(), code);
 
         // Generate the .h file.
         code = hGenerator.generate(sootClass);
-        FileHandler.write(className+".h", code);
+        FileHandler.write(CNames.sanitize(className) + ".h", code);
 
         // Generate the .c file.
         code = cGenerator.generate(sootClass);
-        FileHandler.write(className+".c", code);
+        FileHandler.write(CNames.sanitize(className) + ".c", code);
 
         if (!generateSingleClass) {
             // Generate other required files.
@@ -129,7 +132,7 @@ public class JavaToC {
             // Generate the file containing the wrapper for the main
             // method.
             code = mGenerator.generate(sootClass);
-            FileHandler.write(className + "_main.c", code);
+            FileHandler.write(CNames.sanitize(className) + "_main.c", code);
 
         }
     }
@@ -204,23 +207,4 @@ public class JavaToC {
         if(className.equals("")) showHelp();
 
     }
-
-    /** A dummy method used solely for testing purposes.
-     *  @param classPath The classPath.
-     */
-    private static void _test(String classPath) {
-
-            CNames.setup();
-            String className = new String("java.lang.System");
-
-            Scene.v().reset();
-            Scene.v().setSootClassPath(classPath);
-            Scene.v().loadClassAndSupport(className);
-            SootClass sootClass = Scene.v().getSootClass(className);
-            SootMethod method = sootClass.getMethodByName("nullInputStream");
-
-            System.out.println(OverriddenMethodGenerator.isOverridden(method));
-
-            throw new RuntimeException();
-        }
-    }
+}

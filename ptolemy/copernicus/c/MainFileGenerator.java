@@ -1,4 +1,7 @@
 /*
+
+FIXME: Methods/fields are not in aphabetical order.
+
 A C code generator for generating the c file containing the wrapper "main"
 method. This simply does some initialization and calls the main method of
 the class.
@@ -79,22 +82,22 @@ public class MainFileGenerator extends CodeGenerator {
                 + "Ptolemy C Code Generator. */\n\n");
         headerCode.append("/*Required include files. */\n");
         headerCode.append("#include <stdlib.h>\n");
+        headerCode.append("#include <setjmp.h>\n");
         headerCode.append("#include \"name_defs.h\"\n");
+        headerCode.append("#include \"strings.h\"\n");
         headerCode.append("#include \""
                 + CNames.classNameToFileName(source.getName())
                 + ".h\"\n");
 
-        Iterator requiredClassesIter = RequiredFileGenerator
-                .getRequiredClasses().iterator();
+        Iterator requiredClasses = RequiredFileGenerator
+                .getStrictlyRequiredClasses().iterator();
 
         // Call the Class Structure Initializations for all required
         // classes.
-        while (requiredClassesIter.hasNext()){
-            SootClass nextClass = (SootClass)requiredClassesIter.next();
-
-            headerCode.append("/* " + nextClass.toString() + " */\n");
-
-            headerCode.append("#include \"" 
+        headerCode.append("\n");
+        while (requiredClasses.hasNext()){
+            SootClass nextClass = (SootClass)requiredClasses.next();
+            headerCode.append("#include \""
                     + CNames.includeFileNameOf(nextClass)
                     + "\"\n");
         }
@@ -108,6 +111,8 @@ public class MainFileGenerator extends CodeGenerator {
         // Forward declaration of methods.
         headerCode.append("void classStructInit();\n");
         headerCode.append("void staticInit();\n");
+        headerCode.append("iA1_i1195259493_String "
+            + "commandLineArgs(int, char**);\n");
 
         headerCode.append("\nvoid _INITIALIZE_SYSTEM_CLASS();\n");
 
@@ -116,6 +121,7 @@ public class MainFileGenerator extends CodeGenerator {
             bodyCode.append(_generateMain(source) + "\n");
             bodyCode.append(_generateClassStructInit() + "\n");
             bodyCode.append(_generateStaticInit() + "\n");
+            bodyCode.append(_generateCommandLineArgs() + "\n");
         }
 
         return (headerCode.append(bodyCode.append(footerCode))).toString();
@@ -134,38 +140,42 @@ public class MainFileGenerator extends CodeGenerator {
         SootMethod mainMethod = source.getMethodByName("main");
 
         // Generate the actual C "main" method.
-        bodyCode.append("\nint main()\n{\n");
+        bodyCode.append("\nint main(int argc, char** argv)\n{\n");
+
+        // Variable declarations.
         bodyCode.append(_indent(1) + instanceName + " instance;\n");
 
         // String array for calling main with "String[] args".
-        if (mainMethod.getParameterCount() == 1) {
+        /*if (mainMethod.getParameterCount() == 1) {
             bodyCode.append(_indent(1)
                     + "iA1_i1195259493_String string_array;\n");
         }
+        */
 
         // Initialize required class structures.
         bodyCode.append("\n" + _indent(1) + "classStructInit();\n");
 
         // Call static initializers for required classes.
-        // FIXME: This should be enabled.
-        //bodyCode.append(_indent(1) + "staticInit();\n");
+        bodyCode.append(_indent(1) + "staticInit();\n");
 
         // Initialize java.lang.System()
         bodyCode.append(_indent(1) + "_INITIALIZE_SYSTEM_CLASS();\n");
 
         // Initialize the instance of the source class.
         bodyCode.append("\n" + _indent(1)
+                + "/* Initialize the instance of the main class. */\n");
+        bodyCode.append(_indent(1)
                 + "instance = malloc(sizeof(instance));\n");
         bodyCode.append(_indent(1) + "instance->class = &"
                 + CNames.classStructureNameOf(source) + ";\n");
-        bodyCode.append("\n");
-
         bodyCode.append(_indent(1) + structInitFunction
                 + "(&" + CNames.classStructureNameOf(source)+ ");\n");
 
-
         // Call the main method for the source class with the appropriate
         // parameters.
+        bodyCode.append("\n" + _indent(1)
+                + "/* Call the function corresponding to the main java "
+                + "method. */\n");
         bodyCode.append(_indent(1)
                 + CNames.functionNameOf(mainMethod) + "(" );
         // If the method is non-static, put the name of the instance as
@@ -174,15 +184,15 @@ public class MainFileGenerator extends CodeGenerator {
             bodyCode.append("instance");
             if (mainMethod.getParameterCount() == 1) {
                 // Assume that the only possible argument is String[]
-                // args, or nothing.
-                bodyCode.append(", string_array");
+                // args.
+                bodyCode.append(", commandLineArgs(argc, argv)");
             }
         }
         else {
             if (mainMethod.getParameterCount() == 1) {
                 // Assume that the only possible argument is String[]
-                // args, or nothing.
-                bodyCode.append("string_array");
+                // args.
+                bodyCode.append("commandLineArgs(argc, argv)");
             }
         }
 
@@ -208,24 +218,21 @@ public class MainFileGenerator extends CodeGenerator {
         code.append(_indent(1)
                 + "/* Class Structure initializations*/\n");
 
-        Iterator requiredClassesIter = RequiredFileGenerator
-                .getRequiredClasses().iterator();
+        Iterator requiredClasses = RequiredFileGenerator
+                .getStrictlyRequiredClasses().iterator();
 
         // Call the Class Structure Initializations for all required
         // classes.
-        while (requiredClassesIter.hasNext()){
-            SootClass nextClass = (SootClass)requiredClassesIter.next();
+        while (requiredClasses.hasNext()){
+            SootClass nextClass = (SootClass)requiredClasses.next();
 
-            // FIXME: Does not initialize inner classes. Inner Classes have
-            // a "$" in their name.
-            if (nextClass.toString().indexOf("$") == -1) {
-                code.append("\n" + _indent(1) + "/* " + nextClass.toString()
-                        + " */\n");
+            code.append("\n" + _indent(1) + "/* " + nextClass.toString()
+                    + " */\n");
 
-                code.append(_indent(1) +  CNames.initializerNameOf(nextClass)
-                        + "(&" + CNames.classStructureNameOf(nextClass)
-                        + ");\n");
-            }
+            code.append(_indent(1) +  CNames.initializerNameOf(nextClass)
+                    + "(&" + CNames.classStructureNameOf(nextClass)
+                    + ");\n");
+
         }
 
         code.append("}\n");
@@ -247,16 +254,16 @@ public class MainFileGenerator extends CodeGenerator {
         code.append(_indent(1)
                 + "/* Static initialization methods. */\n");
 
-        Iterator requiredClassesIter = RequiredFileGenerator
-                .getRequiredClasses().iterator();
+        Iterator requiredClasses = RequiredFileGenerator
+                .getStrictlyRequiredClasses().iterator();
 
-        requiredClassesIter = RequiredFileGenerator.getRequiredClasses()
+        requiredClasses = RequiredFileGenerator.getStrictlyRequiredClasses()
                 .iterator();
-        while (requiredClassesIter.hasNext()){
+        while (requiredClasses.hasNext()){
             // Invoke the static initializer method (clinit) for the class if it
             // exists.
             SootMethod initializer;
-            SootClass nextClass = (SootClass)requiredClassesIter.next();
+            SootClass nextClass = (SootClass)requiredClasses.next();
 
             // FIXME: Does not initialize inner classes. Inner Classes have
             // a "$" in their name.
@@ -277,4 +284,40 @@ public class MainFileGenerator extends CodeGenerator {
         return code.toString();
     }
 
+    /** Generates a function that converts the C command-line
+     * arguments(argc,argv) into the String array that java wants.
+     *
+     * @return The code for the commandLineArgs function that makes this
+     * conversion.
+     */
+    private String _generateCommandLineArgs() {
+        StringBuffer code = new StringBuffer();
+
+        code.append("iA1_i1195259493_String "
+            + "commandLineArgs(int argc, char** argv) {\n");
+        code.append(_indent(1) + "int i;\n");
+        code.append(_indent(1) + "iA1_i1195259493_String string_array;\n\n");
+
+        // Allocate memory for the string array.
+        code.append(_indent(1) + "string_array = "
+                +
+                "pccg_array_allocate((PCCG_CLASS_PTR)"
+                + "malloc(sizeof(PCCG_ARRAY_CLASS)), "
+                + "sizeof(_STRING_INSTANCE_STRUCT), "
+                + "1, 0, argc - 1);\n");
+        // Set the elements of the String array correctly.
+        code.append(_indent(1)
+                + "for(i = 1; i < argc; i++) {\n");
+        code.append(_indent(2)
+                + CNames.arrayReferenceFunction
+                + "(string_array, _STRING_INSTANCE_STRUCT, i - 1)"
+                + " = charArrayToString(argv[i]);\n");
+        code.append(_indent(1) + "}\n\n");
+
+        code.append(_indent(1) + "return string_array;\n");
+        code.append("}\n");
+
+
+        return code.toString();
+    }
 }

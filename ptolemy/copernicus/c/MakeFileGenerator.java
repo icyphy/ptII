@@ -1,4 +1,7 @@
-/* A class that generates a makefile for a given class.
+/*
+FIXME: Methods/fields are not in aphabetical order.
+
+A class that generates a makefile for a given class.
 
 Copyright (c) 2002 The University of Maryland.
 All rights reserved.
@@ -33,6 +36,7 @@ package ptolemy.copernicus.c;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import soot.Scene;
 import soot.SootClass;
@@ -69,6 +73,7 @@ public class MakeFileGenerator {
                 + "\n");
         code.append("LIB = " + System.getProperty("j2c_lib","/j2c_lib")
                 + "\n");
+        code.append("LIB_FILE = $(LIB)/j2c_lib.a\n");
 
         // The -g flag is for gdb debugging.
         //code.append("CFLAGS = -g -Wall -pedantic\n");
@@ -83,36 +88,63 @@ public class MakeFileGenerator {
                 + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n"
                 + "\t" + className + "_main.c\\\n");
 
+
+        HashSet libSources = new HashSet();
+
+        // Generate all source files for user classes.
         Iterator i = RequiredFileGenerator.getRequiredClasses().iterator();
-
         while (i.hasNext()) {
-            String name = _classNameToMakeFileName(
-                ((SootClass)i.next()).getName());
+            SootClass nextClass = (SootClass)i.next();
 
-            // A name with a "$" in it represents an inner class.
-            // FIXME: We don't want to compile inner classes for now.
-            if (name.indexOf("$") == -1) {
+            String name = _classNameToMakeFileName(nextClass.getName());
+
+            // Go over each name. If it is not a system class, add it to
+            // "sources" else add it to libSources.
+            if (!CNames.isSystemClass(nextClass.getName())) {
                 code.append("\t" + name + ".c\\\n");
             }
+            else {
+                libSources.add(name);
+            }
+        }
+
+        // Generate all the source files for system(library) classes.
+        code.append("\n\nLIB_SOURCES = ");
+        i = libSources.iterator();
+        while (i.hasNext()) {
+            code.append("\t" + (String)i.next() + ".c\\\n");
         }
 
         code.append("\n");// Takes care of blank line for last "\".
 
-
+        // Definitions for various kinds of files.
         code.append("\nOBJECTS = $(SOURCES:.c=.o)\n");
         code.append(  "HEADERS = $(SOURCES:.c=.h)\n");
         code.append( "IHEADERS = $(SOURCES:.c="
                 + InterfaceFileGenerator.interfaceFileNameSuffix() + ")\n");
 
-        code.append(className + ".exe : $(OBJECTS)\n");
-        code.append("\tgcc -g $(OBJECTS) -o "+ className +".exe\n");
+        code.append("\nLIB_OBJECTS = $(LIB_SOURCES:.c=.o)\n");
+        code.append(  "LIB_HEADERS = $(LIB_SOURCES:.c=.h)\n");
+        code.append( "LIB_IHEADERS = $(LIB_SOURCES:.c="
+                + InterfaceFileGenerator.interfaceFileNameSuffix() + ")\n");
 
+        // Main Target.
+        code.append("\n"+ className + ".exe : $(OBJECTS) $(LIB_FILE)\n");
+        code.append("\tgcc -g $(OBJECTS) $(LIB_FILE) -o "+ className +".exe\n");
+
+        // Conversion from .c to .o
         code.append(".c.o:\n");
         code.append("\tgcc $(CFLAGS) -c  -I $(RUNTIME) -I $(LIB) "
                 + "-I $(NATIVE_BODIES) $< -o $@ "
                 + "\n\n");
 
-        code.append(".PHONY:depend\n\n");
+        // Library generation.
+        code.append("$(LIB_FILE): $(LIB_OBJECTS)\n");
+        code.append("\tar r $(LIB_FILE) $(LIB_OBJECTS)\n");
+        code.append("\tranlib $(LIB_FILE)\n");
+
+        // Other targets.
+        code.append("\n.PHONY:depend\n\n");
         code.append("depend:\n");
         code.append("\t$(DEPEND) $(SOURCES)>makefile.tmp;\\\n");
         code.append("\tcat $(THIS) makefile.tmp>"
@@ -121,7 +153,7 @@ public class MakeFileGenerator {
         code.append("\n");
 
         code.append("clean:\n");
-        code.append("\trm $(OBJECTS);\n");
+        code.append("\trm $(OBJECTS) $(LIB_OBJECTS) $(LIB_FILE);\n");
 
         code.append("# DO NOT DELETE THIS LINE "
                     + " -- make depend depends on it.\n\n");
@@ -140,6 +172,7 @@ public class MakeFileGenerator {
         StringBuffer name = new StringBuffer(
             CNames.classNameToFileName(className));
 
+        /* FIXME: Remove this code.
         // Replace "$" with "$$"so that the make utility interprets names
         // correctly.
         for(int j = 0;j<name.length();j++) {
@@ -148,6 +181,7 @@ public class MakeFileGenerator {
                 j++;
             }
         }
+        */
 
         return name.toString();
     }

@@ -58,7 +58,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	CNames.java \
-    CWriter.java \
+	CWriter.java \
 	CodeFileGenerator.java \
 	CodeGenerator.java \
 	Context.java \
@@ -94,7 +94,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "To rn the demo, cd to 'test', and run 'make demo'."
+	@echo "To run the demo, cd to 'test', and run 'make demo'."
 
 install: all jars
 
