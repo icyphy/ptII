@@ -81,16 +81,17 @@ test PNQueueReceiver-2.2 {Check for correct IOPort container in new receiver} {
 ######################################################################
 ####
 #
-test PNQueueReceiver-3.1 {Check hasToken} {
-    list [expr {[$rec hasToken] == 1} ]
+test PNQueueReceiver-3.1 {Check hasRoom} {
+    # hasRoom(int) always returns true
+    list [$rec hasRoom] [$rec hasRoom -1] [$rec hasRoom 0] [$rec hasRoom 10] \
 } {1}
 
 ######################################################################
 ####
 #
-test PNQueueReceiver-3.2 {Check hasRoom} {
-    list [expr {[$rec hasToken] == 1} ]
-} {1}
+test PNQueueReceiver-3.2 {Check hasToken} {
+    # hasToken(int) always returns true
+    list [$rec hasToken] [$rec hasToken -1] [$rec hasToken 0] [$rec hasToken 10] } {1 1 1 1}
 
 ######################################################################
 ####
@@ -108,8 +109,22 @@ test PNQueueReceiver-3.4 {Test the setting of the blocking flags} {
     list [$rec isReadBlocked] [$rec isWriteBlocked]
 } {1 1}
 
-
-
+# Call the various boundary* methods on the receiver
+proc describeBoundary {receiver} {
+    return [list [$receiver isConnectedToBoundary] [$receiver isConnectedToBoundaryInside] [$receiver isConnectedToBoundaryOutside] [$receiver isConsumerReceiver] [$receiver isProducerReceiver] [$receiver isReadBlocked] [$receiver isWriteBlocked]]
+}
+######################################################################
+####
+#
+test PNQueueReceiver-3.5 {Test the various boolean methods} {
+    $rec setReadPending false
+    $rec setWritePending false
+    set r1 [describeBoundary $rec]
+    $rec setReadPending true
+    $rec setWritePending true
+    set r2 [describeBoundary $rec]
+    list $r1 $r2
+} {{0 0 0 0 0 0 0} {0 0 0 0 0 1 1}}
 
 ######################################################################
 ####
