@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/vergil/ptolemy/img
+ME =		ptolemy/vergil/basic/img
 
 # Sub directories to run make in.
 DIRS =
@@ -65,5 +65,6 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
+install: jars
 
 include $(ROOT)/mk/ptno-compile.mk
