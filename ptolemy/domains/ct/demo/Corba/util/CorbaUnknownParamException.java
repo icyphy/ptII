@@ -7,7 +7,7 @@
 
 package ptolemy.domains.ct.demo.Corba.util;
 public final class CorbaUnknownParamException
-	extends org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity {
+    extends org.omg.CORBA.UserException implements org.omg.CORBA.portable.IDLEntity {
     //	instance variables
     public String paramName;
     public String message;

@@ -211,9 +211,9 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      * @return True if this receiver is connected to the inside of a
      *  boundary port; return false otherwise.
      */
-     public boolean isConnectedToBoundary() {
-	 return _boundaryDetector.isConnectedToBoundary();
-     }
+    public boolean isConnectedToBoundary() {
+        return _boundaryDetector.isConnectedToBoundary();
+    }
 
     /** Return true if this receiver is connected to the inside of a
      *  boundary port. A boundary port is an opaque port that is
@@ -250,7 +250,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     public boolean isConsumerReceiver() {
         if( isConnectedToBoundary() ) {
-             return true;
+            return true;
         }
     	return false;
     }
@@ -264,9 +264,9 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      * @return True if this receiver is contained on the inside of
      *  a boundary port; return false otherwise.
      */
-     public boolean isInsideBoundary() {
-	 return _boundaryDetector.isInsideBoundary();
-     }
+    public boolean isInsideBoundary() {
+        return _boundaryDetector.isInsideBoundary();
+    }
 
     /** Return true if this receiver is contained on the outside of a
      *  boundary port. A boundary port is an opaque port that is
@@ -277,9 +277,9 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      * @return True if this receiver is contained on the outside of
      *  a boundary port; return false otherwise.
      */
-     public boolean isOutsideBoundary() {
-	 return _boundaryDetector.isOutsideBoundary();
-     }
+    public boolean isOutsideBoundary() {
+        return _boundaryDetector.isOutsideBoundary();
+    }
 
     /** This class serves as an example of a ProducerReceiver and
      *  hence this method returns true;
@@ -317,8 +317,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             _otherBranch = branch;
         } else {
             /*
-            CSPDirector director = ((CSPDirector)((Actor)
-        	    (getContainer().getContainer())).getDirector());
+              CSPDirector director = ((CSPDirector)((Actor)
+              (getContainer().getContainer())).getDirector());
             */
             _getDirector()._actorBlocked(this);
             _otherBranch = branch;
@@ -442,8 +442,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             _otherBranch.registerRcvrUnBlocked(this);
         } else {
             /*
-            CSPDirector director = ((CSPDirector)((Actor)
-        	    (getContainer().getContainer())).getDirector());
+              CSPDirector director = ((CSPDirector)((Actor)
+              (getContainer().getContainer())).getDirector());
             */
             _getDirector()._actorUnBlocked(this);
 
@@ -537,7 +537,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   branch of its conditional construct(CIF or CDO) to succeed.
      */
     protected synchronized void _setConditionalSend(boolean v,
-	      ConditionalBranchController p) {
+            ConditionalBranchController p) {
         _conditionalSendWaiting = v;
 	_otherController = p;
     }
@@ -553,7 +553,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   branch of its conditional construct(CIF or CDO) to succeed.
      */
     protected synchronized void _setConditionalReceive(boolean v,
-	      ConditionalBranchController p) {
+            ConditionalBranchController p) {
         _conditionalReceiveWaiting = v;
 	_otherController = p;
     }

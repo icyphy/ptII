@@ -72,7 +72,7 @@ public class RecordType extends StructuredType {
     public RecordType(String[] labels, Type[] types) {
         if (labels.length != types.length) {
             throw new IllegalArgumentException("RecordType: the labels " +
-                "and types arrays do not have the same size.");
+                    "and types arrays do not have the same size.");
         }
 
         for (int i=0; i<labels.length; i++) {
@@ -356,8 +356,8 @@ public class RecordType extends StructuredType {
             }
         } catch (IllegalActionException iae) {
             throw new InternalErrorException("RecordType.initialize: Cannot " +
-                "initialize the element type to " + t + " " +
-                iae.getMessage());
+                    "initialize the element type to " + t + " " +
+                    iae.getMessage());
         }
     }
 
@@ -373,7 +373,7 @@ public class RecordType extends StructuredType {
             throws IllegalActionException {
         if ( !this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("RecordType.updateType: " +
-                "The argument is not a substitution instance of this type.");
+                    "The argument is not a substitution instance of this type.");
         }
 
         Iterator iter = _fields.keySet().iterator();
@@ -442,8 +442,8 @@ public class RecordType extends StructuredType {
     protected StructuredType _greatestLowerBound(StructuredType t) {
         if ( !(t instanceof RecordType)) {
             throw new IllegalArgumentException(
-                "RecordType.greatestLowerBound: The argument is not a " +
-                "RecordType.");
+                    "RecordType.greatestLowerBound: The argument is not a " +
+                    "RecordType.");
         }
 
         RecordType argRecType = (RecordType)t;
@@ -473,7 +473,7 @@ public class RecordType extends StructuredType {
                 types[i] = type1;
             } else {
                 types[i] = (Type)TypeLattice.lattice().greatestLowerBound(
-                                                           type1, type2);
+                        type1, type2);
             }
             i++;
         }
@@ -517,7 +517,7 @@ public class RecordType extends StructuredType {
             Type type1 = this.get(labels[i]);
             Type type2 = argRecType.get(labels[i]);
             types[i] = (Type)TypeLattice.lattice().leastUpperBound(
-                                                           type1, type2);
+                    type1, type2);
             i++;
         }
 
@@ -558,7 +558,7 @@ public class RecordType extends StructuredType {
 
     // the representative in the type lattice is the empty record.
     private static RecordType _representative =
-                        new RecordType(new String[0], new Type[0]);
+    new RecordType(new String[0], new Type[0]);
 
     ///////////////////////////////////////////////////////////////////
     ////                           inner class                     ////
@@ -576,7 +576,7 @@ public class RecordType extends StructuredType {
                 _resolvedType = _declaredType;
             } catch (CloneNotSupportedException cnse) {
                 throw new InternalErrorException("RecordType.FieldType: " +
-                    "The specified type cannot be cloned.");
+                        "The specified type cannot be cloned.");
             }
         }
 
@@ -586,7 +586,7 @@ public class RecordType extends StructuredType {
         /** Return this RecordType.
          *  @return a RecordType.
          */
-            public Object getAssociatedObject() {
+        public Object getAssociatedObject() {
             return _recordType;
         }
 
@@ -601,7 +601,7 @@ public class RecordType extends StructuredType {
          *  variable. Otherwise, return an array of size zero.
          *  @return An array of InequalityTerm.
          */
-            public InequalityTerm[] getVariables() {
+        public InequalityTerm[] getVariables() {
             if (isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];
                 variable[0] = this;
@@ -638,8 +638,8 @@ public class RecordType extends StructuredType {
 
         /** Test if this field type is a type variable.
          *  @return True if this field type is a type variable.
-              */
-            public boolean isSettable() {
+         */
+        public boolean isSettable() {
             return (!_declaredType.isConstant());
         }
 
@@ -665,11 +665,11 @@ public class RecordType extends StructuredType {
             }
 
             if ( !_declaredType.isSubstitutionInstance((Type)e)) {
-                    throw new IllegalActionException("FieldType.setValue:" +
-                    " The new type is not a substitution instance of the " +
-                    "field type. field type: " +
-                    _declaredType.toString() + "new type: " +
-                    e.toString());
+                throw new IllegalActionException("FieldType.setValue:" +
+                        " The new type is not a substitution instance of the " +
+                        "field type. field type: " +
+                        _declaredType.toString() + "new type: " +
+                        e.toString());
             }
 
             if (_declaredType == BaseType.NAT) {
@@ -677,8 +677,8 @@ public class RecordType extends StructuredType {
                     _resolvedType = (Type)((Type)e).clone();
 		} catch (CloneNotSupportedException cnse) {
                     throw new InternalErrorException(
-		        "RecordType$FieldType.setValue: " +
-                        "The specified type cannot be cloned.");
+                            "RecordType$FieldType.setValue: " +
+                            "The specified type cannot be cloned.");
                 }
             } else {
                 ((StructuredType)_resolvedType).updateType((StructuredType)e);

@@ -229,10 +229,10 @@ public class CSPDirector extends CompositeProcessDirector {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         Iterator actors =
-                ((CompositeActor)getContainer()).deepEntityList().iterator();
+            ((CompositeActor)getContainer()).deepEntityList().iterator();
         while( _delayedActorList.size() > 0 ) {
             DelayListLink val =
-                    (DelayListLink)_delayedActorList.get(0);
+                (DelayListLink)_delayedActorList.get(0);
             val._actor._cancelDelay();
             _delayedActorList.remove(0);
             _actorsDelayed--;
@@ -345,7 +345,7 @@ public class CSPDirector extends CompositeProcessDirector {
                     done = true;
                 }
             }
-        // } else if( _actorsBlocked == _getActiveActorsCount() ) {
+            // } else if( _actorsBlocked == _getActiveActorsCount() ) {
         } else if( _getBlockedActorsCount() == _getActiveActorsCount() ) {
             // Real deadlock.
             System.out.println("REAL DEADLOCK");

@@ -311,9 +311,9 @@ public class Variable extends Attribute implements Typeable, Settable {
 
 	// set _declaredType and _varType
 	if (_declaredType instanceof StructuredType &&
-					!_declaredType.isConstant()) {
+                !_declaredType.isConstant()) {
 	    newvar._declaredType =
-				(Type)((StructuredType)_declaredType).clone();
+                (Type)((StructuredType)_declaredType).clone();
 	    newvar._varType = newvar._declaredType;
 	}
         // _typeAtMost is preserved
@@ -333,7 +333,7 @@ public class Variable extends Attribute implements Typeable, Settable {
      *  @param name The name to use instead of the current name.
      */
     public void exportMoML(Writer output, int depth, String name)
-             throws IOException {
+            throws IOException {
     }
 
     /** Get the expression currently used by this variable. The expression
@@ -620,11 +620,11 @@ public class Variable extends Attribute implements Typeable, Settable {
                     var._removeScopeDependent(this);
                 }
                 /*
-                Enumeration vars = _scope.elements();
-                while (vars.hasMoreElements()) {
-                    Variable var = (Variable)vars.nextElement();
-                    var._removeScopeDependent(this);
-                }
+                  Enumeration vars = _scope.elements();
+                  while (vars.hasMoreElements()) {
+                  Variable var = (Variable)vars.nextElement();
+                  var._removeScopeDependent(this);
+                  }
                 */
             }
             if (_scopeVariables != null) {
@@ -778,10 +778,10 @@ public class Variable extends Attribute implements Typeable, Settable {
 		_token = type.convert(_token);
 	    } else {
                 throw new IllegalActionException(this,
-		    "Variable.setTypeEquals(): the currently contained " +
-		    "token " + _token.getClass().getName() + "(" +
-		    _token.toString() + ") is not compatible " +
-		    "with the desired type " + type.toString());
+                        "Variable.setTypeEquals(): the currently contained " +
+                        "token " + _token.getClass().getName() + "(" +
+                        _token.toString() + ") is not compatible " +
+                        "with the desired type " + type.toString());
 	    }
         }
 
@@ -799,7 +799,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 	_varType = _declaredType;
 	if (_token != null && _declaredType instanceof StructuredType) {
 	    ((StructuredType)_varType).updateType(
-					(StructuredType)_token.getType());
+                    (StructuredType)_token.getType());
         }
     }
 
@@ -837,7 +837,7 @@ public class Variable extends Attribute implements Typeable, Settable {
             // The value of this variable is undefined.
         }
         return super.toString() + " " +
-                ((val == null) ? "value undefined" : val.toString());
+            ((val == null) ? "value undefined" : val.toString());
     }
 
     /** Return the type constraints of this variable.
@@ -1162,15 +1162,15 @@ public class Variable extends Attribute implements Typeable, Settable {
 		newToken = _declaredType.convert(newToken);
 	    } else {
                 throw new IllegalActionException(this, "Variable._setToken: " +
-		    "Cannot store a token of type " +
-		    newToken.getType().toString() + ", which is incompatible" +
-		    " with type " + _varType.toString());
+                        "Cannot store a token of type " +
+                        newToken.getType().toString() + ", which is incompatible" +
+                        " with type " + _varType.toString());
 	    }
 
 	    // update _varType to the type of the new token.
 	    if (_declaredType instanceof StructuredType) {
 	    	((StructuredType)_varType).updateType(
-				(StructuredType)newToken.getType());
+                        (StructuredType)newToken.getType());
 	    } else {
 		// _declaredType is a BaseType
 		_varType = newToken.getType();
@@ -1181,15 +1181,15 @@ public class Variable extends Attribute implements Typeable, Settable {
                 // Recalculate this in case the type has changed.
                 Type tokenType = newToken.getType();
                 int comparison
-                        = TypeLattice.compare(tokenType, _typeAtMost);
+                    = TypeLattice.compare(tokenType, _typeAtMost);
                 if ((comparison == CPO.HIGHER)
                         || (comparison == CPO.INCOMPARABLE)) {
                     // Incompatible type!
                     throw new IllegalActionException(this,
-                    "Cannot store a token of type "
-                    + tokenType.toString()
-                    + ", which is not less than or equal to "
-                    + _typeAtMost.toString());
+                            "Cannot store a token of type "
+                            + tokenType.toString()
+                            + ", which is not less than or equal to "
+                            + _typeAtMost.toString());
 
                 }
             }
@@ -1246,7 +1246,7 @@ public class Variable extends Attribute implements Typeable, Settable {
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
                 if( !oldVarType.isEqualTo(_varType) &&
-					oldVarType != BaseType.NAT) {
+                        oldVarType != BaseType.NAT) {
                     container.attributeTypeChanged(this);
                 }
                 container.attributeChanged(this);
@@ -1263,7 +1263,7 @@ public class Variable extends Attribute implements Typeable, Settable {
             _token = oldToken;
 	    if (_varType instanceof StructuredType) {
                 ((StructuredType)_varType).updateType(
-						(StructuredType)oldVarType);
+                        (StructuredType)oldVarType);
 	    } else {
 		_varType = oldVarType;
 	    }
@@ -1372,7 +1372,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 	        return getType();
 	    } catch (IllegalActionException ex) {
 		throw new InternalErrorException("Variable " +
-		"TypeTerm.getValue(): Cannot get type. " + ex.getMessage());
+                        "TypeTerm.getValue(): Cannot get type. " + ex.getMessage());
 	    }
         }
 
@@ -1401,12 +1401,12 @@ public class Variable extends Attribute implements Typeable, Settable {
 
 	    if ( !isSettable()) {
 		throw new IllegalActionException("TypeTerm.initialize: " +
-		    "The type is not settable.");
+                        "The type is not settable.");
 	    }
 
 	    if ( !(e instanceof Type)) {
 		throw new IllegalActionException("TypeTerm.initialize: " +
-		    "The argument is not a Type.");
+                        "The argument is not a Type.");
 	    }
 
 	    if (_declaredType == BaseType.NAT) {
@@ -1441,8 +1441,8 @@ public class Variable extends Attribute implements Typeable, Settable {
                 return false;
 	    } catch (IllegalActionException ex) {
 		throw new InternalErrorException("Variable " +
-		"TypeTerm.isValueAcceptable(): Cannot get type. " +
-		ex.getMessage());
+                        "TypeTerm.isValueAcceptable(): Cannot get type. " +
+                        ex.getMessage());
 	    }
         }
 
@@ -1453,13 +1453,13 @@ public class Variable extends Attribute implements Typeable, Settable {
         public void setValue(Object e) throws IllegalActionException {
 	    if ( !isSettable()) {
 	    	throw new IllegalActionException("TypeTerm.setValue: The " +
-		    "type is not settable.");
+                        "type is not settable.");
 	    }
 
 	    if ( !_declaredType.isSubstitutionInstance((Type)e)) {
 	    	throw new IllegalActionException("TypeTerm.setValue: The " +
-		    "argument is not a substitution instance of the type " +
-		    "of this variable.");
+                        "argument is not a substitution instance of the type " +
+                        "of this variable.");
 	    }
 
 	    if (_declaredType == BaseType.NAT) {
@@ -1479,7 +1479,7 @@ public class Variable extends Attribute implements Typeable, Settable {
                 return "(" + _variable.toString() + ", " + getType() + ")";
 	    } catch (IllegalActionException ex) {
 		throw new InternalErrorException("Variable " +
-		"TypeTerm.toString(): Cannot get type. " + ex.getMessage());
+                        "TypeTerm.toString(): Cannot get type. " + ex.getMessage());
 	    }
         }
 

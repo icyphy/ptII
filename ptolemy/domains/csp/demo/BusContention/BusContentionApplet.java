@@ -400,9 +400,9 @@ public class BusContentionApplet extends CSPApplet {
 	    // Create and set up the selection dragger
 	    _selectionDragger = new SelectionDragger(pane);
 	    _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)getEdgeController().getEdgeInteractor());
+                    (SelectionInteractor)getEdgeController().getEdgeInteractor());
 	    _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)getNodeController().getNodeInteractor());
+                    (SelectionInteractor)getNodeController().getNodeInteractor());
 	}
     }
 

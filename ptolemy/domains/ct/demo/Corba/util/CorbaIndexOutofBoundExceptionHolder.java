@@ -7,7 +7,7 @@
 
 package ptolemy.domains.ct.demo.Corba.util;
 public final class CorbaIndexOutofBoundExceptionHolder
-     implements org.omg.CORBA.portable.Streamable{
+    implements org.omg.CORBA.portable.Streamable{
     //	instance variable
     public ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException value;
     //	constructors

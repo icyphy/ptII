@@ -47,7 +47,7 @@ public class AttributeChanged extends Entity {
     private double _param;
 
     public AttributeChanged(String name)
-             throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(name);
         param = new Parameter(this, "param", new DoubleToken(1.0));
     }
