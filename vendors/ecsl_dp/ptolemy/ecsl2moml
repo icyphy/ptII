@@ -393,23 +393,31 @@ $0 ~ /<entity/ {
        } else if ($1 ~ /<InputPort/) {
            print "<property name=\"input\"/>"
        }  
+
+       longName = containerStack[containerCount] "." name
+
        if (index(relation, " ") != 0) {
-           # The relation name has spaces in it, so this is a multiport
-           print indent "    <property name=\"multiport\"/>"
+           if (class == "ptolemy.domains.ct.lib.Integrator") { 
+               # The class cannot handle a multiport, so add a relation.
+               addRelationsContainer[longName] = containerStack[containerCount]
+               addRelations[longName] = name
+               name = name "_multiPort"
+               longName = containerStack[containerCount] "_" name
+
+           } else { 
+               # The relation name has spaces in it, so this is a multiport
+               print indent "    <property name=\"multiport\"/>"
+           }
        }
 
        print indent "</port>"
 
- 
-       longName = containerStack[containerCount] "." name
        if (length(links[longName]) == 0) { 
            links[longName] = relation
        } else {
            # Already have a relation for this longName
            links[longName] = links[longName] " " relation
        }
-
-       print "xxxx: (" links[longName] ") " longName " " relation 
 
        # Second, we handle the case where OutputPort 
        # has a dstLine field _and_ a srcLine field
@@ -430,6 +438,16 @@ $1 ~ /<\/entity>/ {
     container = containerStack[containerCount] 
     containerCount -= 1         
     indent = substr($0, 0, index($0,"<") - 1)  
+
+
+    for (addRelation in addRelations) {
+       if ( length(addRelations[addRelation]) > 0 ) {
+           addRelationsFullName = addRelationsContainer[addRelation] "_" addRelations[addRelation] "_multiPort"
+           print indent "<relation name=\"" addRelationsFullName "\" class=\"ptolemy.actor.TypedIORelation\"/>"
+           print indent "<link port=\"" addRelation "\" relation=\"" addRelationsFullName "\"/>" 
+           addRelations[addRelation] = ""
+       }
+    }
 
 
     # We need to add the link statements outside the container.
