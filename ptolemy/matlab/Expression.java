@@ -206,18 +206,9 @@ public class Expression extends TypedAtomicActor {
         super.preinitialize();
         try {
             matlabEngine = new Engine();
-        } catch (LinkageError err) {
-            throw new IllegalActionException(this, err,
-                 "There was a problem invoking the Ptolemy II Matlab interface"
-                 + ".\nThe interface has been tested under Windows and Linux,\n"
-                 + "requires that Matlab be installed on the local machine."
-                 + "Refer to $PTII/ptolemy/matlab/makefile for more"
-                 + "information.");
-        } catch (Exception ex2) {
-            // If we get a LinkageError the first time we run, then
-            // the second and subsequent times we run we may get a 
-            // NoClassDefFound exception 
-            throw new IllegalActionException(this, ex2,
+        } catch (Throwable throwable) {
+            // LinkageError is and Error, not an exceptoin
+            throw new IllegalActionException(this, throwable,
                  "There was a problem invoking the Ptolemy II Matlab interface"
                  + ".\nThe interface has been tested under Windows and Linux,\n"
                  + "requires that Matlab be installed on the local machine."
