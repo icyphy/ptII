@@ -153,8 +153,8 @@ public class FIR extends SDFTransformer {
      */
     public Parameter interpolation;
 
-    /** The taps of the filter. This is a row vector embedded in a
-     *  token of type MatrixToken. By default, it contains a single one,
+    /** The taps of the filter. This has a type of ArrayToken.
+     *  By default, it contains an array with a single integer one,
      *  meaning that the output of the filter is the same as the input.
      */
     public Parameter taps;

@@ -75,7 +75,6 @@ public class Delay extends SDFTransformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // FIXME: this parameter should be an array type.
         initialOutputs = new Parameter(this, "initialOutputs");
         initialOutputs.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         initialOutputs.setExpression("{0}");
@@ -93,7 +92,7 @@ public class Delay extends SDFTransformer {
     ////                     ports and parameters                  ////
 
     /** The values that will be produced in the initialize method.
-     *  This parameter must contain a MatrixToken with one row.
+     *  This parameter must contain an ArrayToken.
      *  It defaults to contain a single zero-valued integer token.
      *  Changes to this parameter after initialize() has been invoked
      *  are ignored until the next execution of the model.
@@ -111,7 +110,6 @@ public class Delay extends SDFTransformer {
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute != initialOutputs) {
-            // The base class will probably throw an exception.
             super.attributeTypeChanged(attribute);
         }
     }
