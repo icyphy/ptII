@@ -365,7 +365,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 _updateLinks((ComponentRelation)relations.next());
             }
         }
-        return true;
+        return super._update();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -736,11 +736,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          */
         public void removeNode(final Object eventSource, Object node) {
             NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
-            String elementName = null;
-            if (deleteObj instanceof ComponentEntity) {
-                // Object is an entity.
-                elementName = "deleteEntity";
-            } else {
+            if (!(deleteObj instanceof ComponentEntity)) {
                 throw new InternalErrorException(
                         "Attempt to remove a node that is not an Entity. " +
                         "node = " + node);
@@ -749,7 +745,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             // Make the request in the context of the container.
             NamedObj container = (NamedObj)deleteObj.getContainer();;
 
-            String moml = "<" + elementName + " name=\""
+            String moml = "<deleteEntity name=\""
                 + deleteObj.getName() + "\"/>\n";
 
 
