@@ -41,6 +41,7 @@ import ptolemy.data.ObjectToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.XmlToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.GeneralToken;
 import ptolemy.graph.CPO;
@@ -373,6 +374,20 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final ObjectType OBJECT = new ObjectType();
 
+	 /** The XmlToken data type */
+	public static class XmlTokenType extends BaseType {
+		private XmlTokenType() {
+			super(XmlToken.class, "xmltoken");
+		}
+		public Token convert(Token t) throws IllegalActionException {
+			return XmlToken.convert(t);
+		}
+		public int getTypeHash() {
+			return 8;
+		}
+	}
+	public static final XmlTokenType XMLTOKEN = new XmlTokenType();
+    
     /** The scalar data type: The least upper bound of all the scalar types. */
     public static class ScalarType extends BaseType {
         private ScalarType() {
