@@ -56,6 +56,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.xalan.serialize.Serializer;
 import org.apache.xalan.serialize.SerializerFactory;
+import org.xml.sax.InputSource;
 import org.w3c.dom.Document;
 
 //////////////////////////////////////////////////////////////////////////
@@ -81,6 +82,8 @@ public class XSLTUtilities {
 
     /** Parse a document.
      * @param filename The file name of the xml file to be read in
+     * The filename is passed to org.xml.sax.InputSource(String),
+     * so it may be a file name or a URL.
      * @return the parsed document.
      * @exception Exception Thrown if there is a problem with the
      * transformation.
@@ -88,7 +91,9 @@ public class XSLTUtilities {
     public static Document parse(String filename) throws Exception {
 	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        return builder.parse(new File(filename));
+	// We use InputSource here so that we can specify the filename
+	// argument as a jar url so that HSIFToMoML works under Web Start.
+	return builder.parse(new InputSource(filename));
     }
 
     /** Given a Document, generate a String.
