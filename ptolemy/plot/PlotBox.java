@@ -157,7 +157,14 @@ YLog: on
 </pre>
 The grid labels represent powers of 10.  Note that if a logarithmic
 scale is used, then the values must be positive.  Non-positive values
-will be silently dropped.
+will be silently dropped.  Note further that when using logarithmic
+axes that the log of input data is taken as the data is added to the plot.
+This means that <pre>XLog: on</pre> or <pre>YLog: on</pre> should
+appear before any data.  Also, the value of the XTicks or YTicks
+directives should be in log units.  So, <pre>XTicks: 1K 3</pre>
+will display the string <pre>1K</pre> at the 1000 mark.
+
+
 <p>
 By default, tick marks are connected by a light grey background grid.
 This grid can be turned off with the following command:
@@ -1186,6 +1193,9 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     /** Specify whether the X axis is drawn with a logarithmic scale.
+     *  If you would like to have the X axis drawn with a 
+     *  logarithmic axis, then setXLog(true) should be called before
+     *  adding any data points.
      *  @param xlog If true, logarithmic axis is used.
      */
     public void setXLog(boolean xlog) {
@@ -1219,6 +1229,9 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     /** Specify whether the Y axis is drawn with a logarithmic scale.
+     *  If you would like to have the Y axis drawn with a 
+     *  logarithmic axis, then setYLog(true) should be called before
+     *  adding any data points.
      *  @param ylog If true, logarithmic axis is used.
      */
     public void setYLog(boolean ylog) {
