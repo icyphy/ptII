@@ -51,9 +51,76 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test PTMLParser-2.1 {Constructor tests} {
+    set e0 [java::new ptolemy.schematic.PTMLParser "file:/users/neuendor/ptII/ptolemy/schematic/test/exampleschematic.ptml"]
+    set element [$e0 parse]
+    list [$element toString]
+} {{<Document>
+<schematic version="1.0" name="SDF">
+<description>Icons for use within SDF</description>
+<entity name="Load BMP File" iconlibrary="examplelibrary.ptml">
+<description>Load the Image that will be transmitted and stored.</description>
+<entitytype ports="2" name="loadimage"></entitytype>
+<parameter value="" name="filename" type="string"></parameter>
+<port name="image" input="false" type="doubleArray" output="true"></port>
+</entity>
+<entity name="Save BMP file" iconlibrary="examplelibrary.ptml">
+<entitytype ports="2" name="saveimage"></entitytype>
+<parameter value="" name="filename" type="string"></parameter>
+<port name="image" input="true" type="doubleArray" output="false"></port>
+</entity>
+<relation name="R1">
+<link port="image" entity="Load BMP File"></link>
+<link port="image" entity="Save BMP File"></link>
+</relation>
+<parameter value="SDF" name="domain" type="string"></parameter>
+<parameter value="1.0" name="starttime" type="double"></parameter>
+<parameter value="7.0" name="endtime" type="double"></parameter>
+</schematic>
+</Document>
+}}
+    
+test PTMLParser-2.2 {Constructor tests} {
     set e0 [java::new ptolemy.schematic.PTMLParser "file:/users/neuendor/ptII/ptolemy/schematic/test/examplelibrary.ptml"]
     set element [$e0 parse]
-    $element toString
-} {}
+    list [$element toString]
+} {{<Document>
+<iconlibrary version="1.0" name="SDF">
+<header>
+<description>Icons for use within SDF</description>
+<sublibrary file="domains/sdf/lib/icons/htvq.pti"></sublibrary>
+<sublibrary file="domains/sdf/lib/icons/communication.pti"></sublibrary>
+</header>
+<icon name="LoadImage">
+<description>Load an image from a file</description>
+<entitytype ports="2" name="loadimage"></entitytype>
+<graphic format="tcl">
+<tclscript>
+
+</tclscript>
+</graphic>
+<parameter value="" name="filename" type="string"></parameter>
+<port name="image" input="false" type="doubleArray" output="true"></port>
+</icon>
+<icon name="SaveImage">
+<entitytype ports="2" name="saveimage"></entitytype>
+<port name="filename" input="true" type="string" output="false"></port>
+<port name="image" input="true" type="doubleArray" output="false"></port>
+<graphic format="xml">
+<line width="5" style="dotted" points="0 0 10 10"></line>
+<rect fill="hatch" points="0 0 10 10" color="blue"></rect>
+<ellipse fill="blue" points="0 0 10 10"></ellipse>
+<polygon points="0 0 10 10 15 10 15 0"></polygon>
+<textline font="helvetica" points="0 0">
+Hello!
+</textline>
+<textbox alignX="center" alignY="top" points="0 0 100 100">
+Hello! This is a nice big text box in a ptolemy icon.
+</textbox>
+<image format="gif" compression="zip" points="0 0 100 100" file="icon.gif"></image>
+</graphic>
+</icon>
+</iconlibrary>
+</Document>
+}}
     
-    
+        

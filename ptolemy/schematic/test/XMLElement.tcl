@@ -57,10 +57,8 @@ test XMLElement-2.1 {Constructor tests} {
     $attributes putAt name2 value2
     set e1 [java::new ptolemy.schematic.XMLElement element $attributes]
     list [$e0 toString] [$e1 toString]
-} {{<element>
-</element>
-} {<element name1="value1" name2="value2">
-</element>
+} {{<element></element>
+} {<element name1="value1" name2="value2"></element>
 }}
 
 ######################################################################
@@ -75,11 +73,9 @@ test XMLElement-3.1 {addChildElement tests} {
     $e0 addChildElement $e1
     list [$e0 toString] [$e1 toString]
 } {{<element0>
-<element1 name1="value1" name2="value2">
-</element1>
+<element1 name1="value1" name2="value2"></element1>
 </element0>
-} {<element1 name1="value1" name2="value2">
-</element1>
+} {<element1 name1="value1" name2="value2"></element1>
 }}
 
 
@@ -90,10 +86,8 @@ test XMLElement-3.2 {removeChildElement tests} {
     # NOTE: Uses the setup above
     $e0 removeChildElement $e1
     list [$e0 toString] [$e1 toString]
-} {{<element0>
-</element0>
-} {<element1 name1="value1" name2="value2">
-</element1>
+} {{<element0></element0>
+} {<element1 name1="value1" name2="value2"></element1>
 }}
 
 ######################################################################
@@ -144,8 +138,7 @@ test XMLElement-5.1 {setAttribute tests} {
     $e0 setAttribute name1 value1
     $e0 setAttribute name2 value2
     $e0 toString
-} {<element0 name1="value1" name2="value2">
-</element0>
+} {<element0 name1="value1" name2="value2"></element0>
 }
 
 
@@ -156,8 +149,7 @@ test XMLElement-6.2 {removeAttribute tests} {
     # NOTE: Uses the setup above
     $e0 removeAttribute name1
     $e0 toString
-} {<element0 name2="value2">
-</element0>
+} {<element0 name2="value2"></element0>
 }
 
 ######################################################################
@@ -191,8 +183,7 @@ test XMLElement-8.1 {setPCData tests} {
     set e0 [java::new ptolemy.schematic.XMLElement element0]
     $e0 setPCData "hello this is a test\n"
     $e0 toString
-} {<element0>
-hello this is a test
+} {<element0>hello this is a test
 </element0>
 }
 
@@ -204,8 +195,7 @@ test XMLElement-8.2 {setPCData tests} {
     $e0 setPCData "hello this is a test"
     $e0 appendPCData " of appending\n"
     $e0 toString
-} {<element0>
-hello this is a test of appending
+} {<element0>hello this is a test of appending
 </element0>
 }
 
@@ -218,8 +208,7 @@ test XMLElement-8.3 {setPCData tests} {
     $e0 appendPCData " of appending\n"
     $e0 setPCData "and resetting PCData\n"    
     $e0 toString
-} {<element0>
-and resetting PCData
+} {<element0>and resetting PCData
 </element0>
 }
 
