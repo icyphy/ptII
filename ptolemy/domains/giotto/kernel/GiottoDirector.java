@@ -33,7 +33,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.actor.sched.Scheduler;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -44,7 +43,9 @@ import ptolemy.kernel.util.Workspace;
 
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoDirector
@@ -52,9 +53,10 @@ import java.util.LinkedList;
 
 FIXME: document this.
 
-@see ptolemy.domains.sdf.kernel.GiottoReceiver
+@see ptolemy.domains.kernel.GiottoReceiver
+@see ptolemy.domains.kernel.GiottoScheduler
 
-@author  Cristoph Meyer, Ben Horowitz, and Edward A. Lee
+@author  Christoph Meyer, Ben Horowitz, and Edward A. Lee
 @version $Id$
 */
 public class GiottoDirector extends StaticSchedulingDirector {
@@ -136,21 +138,18 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public void fire() throws IllegalActionException {
         _postfirereturns = true;
-        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-        if (container == null) {
-            throw new IllegalActionException(this, "Has no container!");
-        } else {
-            Enumeration allactors = getScheduler().schedule();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement();
-		if(_debugging) {
-		    _debug("Iterating " + ((NamedObj)actor).getFullName());
-		}
-                if (actor.iterate(1) == STOP_ITERATING) {
-                    _postfirereturns = false;
-                }
-            }
-        }
+
+        TypedCompositeActor container = (TypedCompositeActor) getContainer();
+
+        if (container != null) {
+            Enumeration giottoSchedule = getScheduler().schedule();
+
+	    if (_debugging)
+		_debug("Giotto director firing!");
+	    
+	    _postfirereturns = _fire(giottoSchedule);
+        } else
+	    throw new IllegalActionException(this, "Has no container!");
     }
 
     /** Return a new receiver consistent with the Giotto domain.
@@ -158,7 +157,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public Receiver newReceiver() {
         Receiver receiver = new GiottoReceiver();
+
         _receivers.add(receiver);
+
         return receiver;
     }
 
@@ -170,6 +171,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+
         _iteration = 0;
     }
 
@@ -187,17 +189,25 @@ public class GiottoDirector extends StaticSchedulingDirector {
         // NOTE: Some of these receivers may no longer be in use, so this
         // will be inefficient for models that are continually mutating.
         // However, it is functionally harmless.
-        Iterator receivers = _receivers.iterator();
-        while(receivers.hasNext()) {
-            GiottoReceiver receiver = (GiottoReceiver)receivers.next();
-            receiver.update();
-        }
+
+        /* Legacy: Iterator receivers = _receivers.iterator();
+
+	   while(receivers.hasNext()) {
+	   GiottoReceiver receiver = (GiottoReceiver) receivers.next();
+
+	   receiver.update();
+	   } */
+
         int numiterations = ((IntToken) (iterations.getToken())).intValue();
+
         _iteration++;
+
         if((numiterations > 0) && (_iteration >= numiterations)) {
             _iteration = 0;
+
             return false;
         }
+
         return _postfirereturns;
     }
 
@@ -220,15 +230,68 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     private void _init()
             throws IllegalActionException, NameDuplicationException {
-        // NOTE: This scheduler should probably be replaced by a
-        // GiottoScheduler.  This scheduler returns a schedule that
-        // fires actors in the order that they were created.
-        Scheduler scheduler = new Scheduler(workspace());
+
+        GiottoScheduler scheduler = new GiottoScheduler(workspace());
+
         setScheduler(scheduler);
+
         iterations = new Parameter(this, "iterations", new IntToken(0));
 
         // FIXME: Remove this after debugging, or when GUI supports it.
         addDebugListener(new StreamListener());
+    }
+
+    private boolean _fire(Enumeration schedule)
+	throws IllegalActionException {
+
+	boolean postfire = true;
+
+	if (schedule != null)
+	    while (schedule.hasMoreElements()) {
+		List samePeriodList = (List) schedule.nextElement();
+
+		Enumeration samePeriod = Collections.enumeration(samePeriodList);
+
+		while (samePeriod.hasMoreElements()) {
+		    Actor actor = (Actor) samePeriod.nextElement();
+
+		    if (_debugging)
+			_debug("Prefiring " + ((NamedObj)actor).getFullName());
+
+		    if (actor.prefire()) {
+			if (_debugging)
+			    _debug("Firing " + ((NamedObj)actor).getFullName());
+
+			actor.fire();
+		    }
+		}
+
+		// Assumption: schedule has even number of elements.
+
+		List higherPeriodList = (List) schedule.nextElement();
+		
+		if (higherPeriodList != null) {
+		    Enumeration higherPeriod = Collections.enumeration(higherPeriodList);
+
+		    // Recursive call.
+		    postfire = _fire(higherPeriod) && postfire;
+		}
+
+		samePeriod = Collections.enumeration(samePeriodList);
+
+		while (samePeriod.hasMoreElements()) {
+		    Actor actor = (Actor) samePeriod.nextElement();
+
+		    if (_debugging)
+			_debug("Postfiring " +
+			       ((NamedObj)actor).getFullName());
+
+		    if (!actor.postfire())
+			postfire = false;
+		}
+	    }
+
+	return postfire;
     }
 
     ///////////////////////////////////////////////////////////////////

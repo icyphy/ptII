@@ -41,7 +41,7 @@ import ptolemy.data.Token;
 /**
 A receiver for the Giotto domain.  FIXME: Description of how this works.
 
-@author  Cristoph Meyer, Ben Horowitz, and Edward A. Lee
+@author  Christoph Meyer, Ben Horowitz, and Edward A. Lee
 @version $Id$
 */
 public class GiottoReceiver extends AbstractReceiver {
@@ -71,7 +71,7 @@ public class GiottoReceiver extends AbstractReceiver {
             throw new NoTokenException(getContainer(),
                     "Attempt to get data from an empty receiver.");
         }
-        return _token;;
+        return _token;
     }
 
     /** Return true, since writing to the receiver is always allowed.
@@ -97,11 +97,14 @@ public class GiottoReceiver extends AbstractReceiver {
      *  @exception NoRoomException Not thrown in this class.
      */
     public void put(Token token) throws NoRoomException {
-        _nextToken = token;
+	// Legacy: _nextToken = token;
+
+        _token = token;
     }
 
     /** Update the receiver by making any token that has been
      *  passed to put() available to get().
+     *  FIX ME: not needed.
      */
     public void update() {
         _token = _nextToken;
@@ -110,7 +113,7 @@ public class GiottoReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The next token.
+    // The next token. FIX ME: not needed.
     private Token _nextToken = null;
 
     // The token available for reading.
