@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/colt/demo
 
-DIRS =		AllColt
+DIRS =		ColtRandom
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -49,7 +49,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	AllColt/AllColt.jar
+	ColtRandom/ColtRandom.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
