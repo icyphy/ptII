@@ -63,10 +63,7 @@ MISC_FILES = \
 	carmodel.xml \
 	LeadingCar.xml \
 	FollowingCar.xml \
-	Monitor.xml \
-	leadingCar \
-	followingCar \
-	monitor
+	Monitor.xml
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
