@@ -111,18 +111,31 @@ set long2_2nonzero [java::new {long[][]} {2 2} [list [list 2 -1] \
 #    arraySize - the suffix of the variable name that contains the
 #                the test data. If arraySize is 2_2, then long2_2, int2_2
 #                etc. should exist
-proc testMatrixScalar {op types {arraySize 2_2}} {
+#    opSignature - the signature of the op, usually something like
+#                  {[list $op "$t\[\]\[\]" $t]}
+#    arg1 - The first argument to pass to $op, for example: {[subst $$matrix]}
+# 
+# This proc is rather complex because it is fairly flexible.
+#
+proc testMatrixMath {op types arraySize opSignature arg1 arg2} {
     foreach typeList $types {
 	set m [lindex $typeList 0]
 	set t [lindex $typeList 1]
 	set v [lindex $typeList 2]
 	set expectedResults [lindex $typeList 3]
 	
-	test testMatrixScalar-$op "$m.MatrixMath.$op\($t\[\]\[\], $t\)" {
+	test testMatrixMatrix-$op \
+		"$m.MatrixMath.[subst $opSignature]" {
 	    set matrix ${v}${arraySize}
 	    global $matrix ${v}1
-	    set matrixResults [java::call ptolemy.math.${m}MatrixMath \
-		    [list $op "$t\[\]\[\]" $t] [subst $$matrix] [subst $${v}1]]
+	    if { $arg2 == {}} {
+		set matrixResults [java::call ptolemy.math.${m}MatrixMath \
+			[subst $opSignature] [subst $arg1]]
+	    } else {
+		set matrixResults [java::call ptolemy.math.${m}MatrixMath \
+			[subst $opSignature] [subst $arg1] [subst $arg2]]
+	    }
+
 	    set stringResults [java::call ptolemy.math.${m}MatrixMath \
 		    toString $matrixResults]	
 	    regsub -all {,} $stringResults {} stringAsList
@@ -132,44 +145,6 @@ proc testMatrixScalar {op types {arraySize 2_2}} {
 	} {}
     }
 }
-
-# Test an operation that takes a matrix and a matrix
-# like add(long[][], long[][])
-# Arguments:
-#    op - The operation to be tested, for example "add"
-#    types - a list of lists of types, where each element of the list
-#            contains four subelements: 
-#              The base matrix type, which would go in 
-#                    ptolemy.math.xxxMatrixMath
-#              The base type, for example double or Complex
-#              The base name of the variable to use, for example double 
-#              The expected results
-#    arraySize - the suffix of the variable name that contains the
-#                the test data. If arraySize is 2_2, then long2_2, int2_2
-#                etc. should exist
-proc testMatrixMatrix {op types {arraySize 2_2}} {
-    foreach typeList $types {
-	set m [lindex $typeList 0]
-	set t [lindex $typeList 1]
-	set v [lindex $typeList 2]
-	set expectedResults [lindex $typeList 3]
-	
-	test testMatrixMatrix-$op \
-		"$m.MatrixMath.$op\($t\[\]\[\], $t\[\]\[\]\)" {
-	    set matrix ${v}${arraySize}
-	    global $matrix ${v}1
-	    set matrixResults [java::call ptolemy.math.${m}MatrixMath \
-		    [list $op "$t\[\]\[\]" $t\[\]\[\]] [subst $$matrix] [subst $${v}${arraySize}]]
-	    set stringResults [java::call ptolemy.math.${m}MatrixMath \
-		    toString $matrixResults]	
-	    regsub -all {,} $stringResults {} stringAsList
-	    puts "got: $stringAsList"
-	    puts "expected: $expectedResults"
-	    epsilonDiff $stringAsList $expectedResults
-	} {}
-    }
-}
-
 
 # Test an operation that takes a matrix
 # like allocCopy(long[][])
@@ -185,54 +160,23 @@ proc testMatrixMatrix {op types {arraySize 2_2}} {
 #    arraySize - the suffix of the variable name that contains the
 #                the test data. If arraySize is 2_2, then long2_2, int2_2
 #                etc. should exist
-proc testMatrix2 {op types {arraySize 2_2}} {
-    foreach typeList $types {
-	set m [lindex $typeList 0]
-	set t [lindex $typeList 1]
-	set v [lindex $typeList 2]
-	set expectedResults [lindex $typeList 3]
-	
-	test testMatrixMatrix-$op \
-		"$m.MatrixMath.$op\($t\[\]\[\]\)" {
-	    set matrix ${v}${arraySize}
-	    global $matrix ${v}1
-	    set matrixResults [java::call ptolemy.math.${m}MatrixMath \
-		    [list $op "$t\[\]\[\]"] [subst $$matrix]]
-	    set stringResults [java::call ptolemy.math.${m}MatrixMath \
-		    toString $matrixResults]	
-	    regsub -all {,} $stringResults {} stringAsList
-	    puts "got: $stringAsList"
-	    puts "expected: $expectedResults"
-	    epsilonDiff $stringAsList $expectedResults
-	} {}
-    }
-}
-proc testMatrixMath {op types {arraySize 2_2} matrixArguments} {
-    foreach typeList $types {
-	set m [lindex $typeList 0]
-	set t [lindex $typeList 1]
-	set v [lindex $typeList 2]
-	set expectedResults [lindex $typeList 3]
-	
-	test testMatrixMatrix-$op \
-		"$m.MatrixMath.$op\($t\[\]\[\]\)" {
-	    set matrix ${v}${arraySize}
-	    global $matrix ${v}1
-	    set matrixResults [java::call ptolemy.math.${m}MatrixMath \
-		    $matrixArguments]
-	    set stringResults [java::call ptolemy.math.${m}MatrixMath \
-		    toString $matrixResults]	
-	    regsub -all {,} $stringResults {} stringAsList
-	    puts "got: $stringAsList"
-	    puts "expected: $expectedResults"
-	    epsilonDiff $stringAsList $expectedResults
-	} {}
-    }
+proc testMatrix {op types {arraySize 2_2}} {
+    testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]"]} {[subst $$matrix]} {}
 }
 
-proc testMatrix {op types {arraySize 2_2}} {
-    testMatrixMath $op $types $arraySize {$op [subst $$matrix]}
+# Test an operation that takes a matrix and a scalar,
+# like add(long[][], long)
+proc testMatrixScalar {op types {arraySize 2_2}} {
+    testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]" $t]} {[subst $$matrix]} {[subst $${v}1]}
 }
+
+# Test an operation that takes a matrix and a matrix
+# like add(long[][], long[][])
+proc testMatrixMatrix {op types {arraySize 2_2}} {
+    testMatrixMath $op $types $arraySize {[list $op "$t\[\]\[\]" "$t\[\]\[\]"]} {[subst $$matrix]} {[subst $${v}${arraySize}]}
+}
+
+
 ######################################################################
 ####
 #  Test out: xxx[][] add(xxx[][], xxx)
