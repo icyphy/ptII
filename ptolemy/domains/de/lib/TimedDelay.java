@@ -164,9 +164,12 @@ public class TimedDelay extends DETransformer {
             _currentInput = null;
         }
         // produce output
-        // NOTE: the delay may be zero. However, if there is already some output
-        // scheduled to produce at the current time before the current input
-        // arrives, the current input is delayed to the next firing to produce.
+
+        // NOTE: the delay may be zero. However, if there is already
+        // some output scheduled to produce at the current time before
+        // the current input arrives, the current input is delayed to
+        // the next firing to produce.
+
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
         if (_delayedOutputTokens.size() > 0) {
@@ -223,7 +226,8 @@ public class TimedDelay extends DETransformer {
         }
         // Schedule the not handled current input for future firing.
         if (_currentInput != null) {
-            _delayedOutputTokens.put(new TimedEvent(delayToTime, _currentInput));
+            _delayedOutputTokens.put(
+                    new TimedEvent(delayToTime, _currentInput));
             getDirector().fireAt(this, delayToTime);
         }
         return super.postfire();
