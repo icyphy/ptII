@@ -47,7 +47,7 @@ The base type for nodes in an abstract syntax tree.  Note that the
 AST can have as nodes just about anything.  If a node is a List, then
 it will be interpreted as a hierarchical object.  An instance of this
 class is also a hierarchical object.
-
+@version $Id$
 */
 public abstract class TreeNode extends TrackedPropertyMap
     implements ITreeNode {
