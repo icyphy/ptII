@@ -54,7 +54,7 @@ public interface InequalityTerm {
 
     /** Checks if this term can be set to a constant.  Only a variable
      *  can be set, constants and functions cannot.
-     *  @returns <code>true</code> if this term is a variable;
+     *  @return <code>true</code> if this term is a variable;
      *   <code>false</code> otherwise.
      */
     public boolean settable();
