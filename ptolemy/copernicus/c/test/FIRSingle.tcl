@@ -120,11 +120,10 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     eval exec gcc -o firSingle [glob *.o]
 
     # Run the executible.
-    set output [exec "firSingle"]
-    
+    set output [exec firSingle]
+    puts "output = $output"
     # Check if the output is correct.
     set template "11.000000 4.000000 9.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000"
-    string first $template $output]
-    
+    string first $template $output
 } {0}
 

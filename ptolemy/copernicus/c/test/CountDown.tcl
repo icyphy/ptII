@@ -121,7 +121,7 @@ test CountDown-1.1 {Generate all required files for CountDown.java} {
     regsub -all [java::call System getProperty "line.separator"] \
 	    $results "\n" results2
     list $results2
-} {10
+} {{10
 9
 8
 7
@@ -131,4 +131,4 @@ test CountDown-1.1 {Generate all required files for CountDown.java} {
 3
 2
 1
-0}
+0}}
