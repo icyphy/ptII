@@ -498,11 +498,13 @@ set longDuration 8000
 #### sleep
 # sleep for 'seconds'.
 #
-proc sleep {seconds} {
+proc sleep {seconds {printDots 1}} {
     puts -nonewline "sleeping $seconds seconds: "
     set endtime [expr [clock seconds] + $seconds]
     while {[clock seconds] < $endtime} {
-	puts -nonewline "."
+	if { $printDots == 1 } {
+	    puts -nonewline "."
+	}
 	update
     }
 }
