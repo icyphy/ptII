@@ -100,7 +100,7 @@ public class ShellTextArea extends JPanel {
 
     /** Get the interpreter that has been registered with setInterpreter().
      *  @return The interpreter, or null if none has been set.
-     *  @see setInterpreter(ShellInterpreter)
+     *  @see #setInterpreter(ShellInterpreter)
      */
     public ShellInterpreter getInterpreter() {
         return _interpreter;
