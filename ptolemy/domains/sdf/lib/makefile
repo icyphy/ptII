@@ -73,8 +73,7 @@ JSRCS = \
 	SDFTransformer.java \
 	SequenceToArray.java \
         SequenceToDoubleMatrix.java \
-	UpSample.java \
-	VariableFIR.java
+	UpSample.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	sdfentities.xml
