@@ -49,7 +49,7 @@ if [ file isdirectory auto/knownFailedTests ] {
 		$PTII [file join [pwd] $file] {$PTII}]
 	puts "------------------ testing $relativeFilename (Known Failure) "
 	test "Auto" "Automatic test in file $relativeFilename" {
-	    createAndExecute $file
+	    createAndExecute $relativeFilename
 	    list {}
 	} {{}} {KNOWN_FAILURE}
     }
@@ -62,7 +62,7 @@ foreach file [glob auto/*.xml] {
 
     puts "------------------ testing $relativeFilename"
     test "Auto" "Automatic test in file $relativeFilename" {
-        set application [createAndExecute file]
+        set application [createAndExecute [subst $relativeFilename]]
         list {}
     } {{}}
     test "Auto-rerun" "Automatic test rerun in file $file" {
