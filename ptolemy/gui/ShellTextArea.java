@@ -56,7 +56,7 @@ public class ShellTextArea extends JPanel {
     public ShellTextArea () {
 	// Graphics
 	super(new BorderLayout());
-	_jTextArea = new JTextArea("", 10, 40);
+	_jTextArea = new JTextArea("", 20, 80);
 	JScrollPane jScrollPane = new JScrollPane(_jTextArea);
 	add(jScrollPane);
 
