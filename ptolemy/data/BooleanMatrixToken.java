@@ -1,4 +1,4 @@
-/* A token that contains a 2-D boolean array.
+/* A token that contains a 2-D boolean matrix.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -38,15 +38,15 @@ import ptolemy.data.expr.ASTPtRootNode;
 //////////////////////////////////////////////////////////////////////////
 //// BooleanMatrixToken
 /**
-A token that contains a 2-D boolean array.
+A token that contains a 2-D boolean matrix.
 
 @author Yuhong Xiong
 @version $Id$
 */
 public class BooleanMatrixToken extends MatrixToken {
 
-    /** Construct an BooleanMatrixToken with a one by one array. The
-     *  only element in the array has value false.
+    /** Construct an BooleanMatrixToken with a one by one matrix. The
+     *  only element in the matrix has value false.
      */
     public BooleanMatrixToken() {
 	_rowCount = 1;
@@ -55,11 +55,11 @@ public class BooleanMatrixToken extends MatrixToken {
 	_value[0][0] = false;
     }
 
-    /** Construct a BooleanMatrixToken with the specified 2-D array.
-     *  This method makes a copy of the array and stores the copy,
-     *  so changes on the specified array after this token is
+    /** Construct a BooleanMatrixToken with the specified 2-D matrix.
+     *  This method makes a copy of the matrix and stores the copy,
+     *  so changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @exception NullPointerException If the specified array
+     *  @exception NullPointerException If the specified matrix
      *   is null.
      */
     public BooleanMatrixToken(boolean[][] value) {
@@ -105,9 +105,9 @@ public class BooleanMatrixToken extends MatrixToken {
         }
     }
 
-    /** Return a copy of the contained 2-D array.
-     *  It is safe for the caller to modify the returned array.
-     *  @return A 2-D boolean array.
+    /** Return a copy of the contained 2-D matrix.
+     *  It is safe for the caller to modify the returned matrix.
+     *  @return A 2-D boolean matrix.
      */
     public boolean[][] booleanMatrix() {
         boolean[][] result = new boolean[_rowCount][_columnCount];
@@ -173,7 +173,7 @@ public class BooleanMatrixToken extends MatrixToken {
     /** Test if the content of this token is equal to that of the specified
      *  token. These two tokens are equal only if the specified token
      *  is also a BooleanMatrixToken with the same dimension, and all the
-     *  corresponding elements of the arrays are equal.
+     *  corresponding elements of the matrices are equal.
      *  @param token The token with which to test equality.
      *  @return A booleanToken containing the result.
      *  @exception IllegalActionException If the specified token is
@@ -203,11 +203,11 @@ public class BooleanMatrixToken extends MatrixToken {
 	    } else {
 		tem = (BooleanMatrixToken)convert(token);
 	    }
-	    boolean[][] array = tem.booleanMatrix();
+	    boolean[][] matrix = tem.booleanMatrix();
 
 	    for (int i = 0; i < _rowCount; i++) {
 		for (int j = 0; j < _columnCount; j++) {
-		    if (_value[i][j] != array[i][j]) {
+		    if (_value[i][j] != matrix[i][j]) {
 			return new BooleanToken(false);
 		    }
 		}
@@ -223,21 +223,21 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @return A BooleanToken containing the matrix element.
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the corresponding range
-     *   of the index of the contained array.
+     *   of the index of the contained matrix.
      */
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
 	return new BooleanToken(_value[row][column]);
     }
 
-    /** Return the element of the contained array at the specified
+    /** Return the element of the contained matrix at the specified
      *  row and column.
      *  @param row The row index of the desired element.
      *  @param column The column index of the desired element.
-     *  @return The boolean at the specified array entry.
+     *  @return The boolean at the specified matrix entry.
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the corresponding range
-     *   of the index of the contained array.
+     *   of the index of the contained matrix.
      */
     public boolean getElementAt(int row, int column) {
         return _value[row][column];

@@ -1,4 +1,4 @@
-/* A token that contains a 2-D Complex array.
+/* A token that contains a 2-D Complex matrix.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -39,7 +39,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 //////////////////////////////////////////////////////////////////////////
 //// ComplexMatrixToken
 /**
-A token that contains a 2-D Complex array.
+A token that contains a 2-D Complex matrix.
 
 @author Yuhong Xiong
 @version $Id$
@@ -47,8 +47,8 @@ A token that contains a 2-D Complex array.
 */
 public class ComplexMatrixToken extends MatrixToken {
 
-    /** Construct an ComplexMatrixToken with a one by one array. The
-     *  only element in the array has value 0.0
+    /** Construct an ComplexMatrixToken with a one by one matrix. The
+     *  only element in the matrix has value 0.0
      */
     public ComplexMatrixToken() {
         _rowCount = 1;
@@ -58,8 +58,8 @@ public class ComplexMatrixToken extends MatrixToken {
     }
 
     /** Construct a ComplexMatrixToken with the specified 2-D matrix.
-     *  Make a copy of the array and store the copy,
-     *  so that changes on the specified array after this token is
+     *  Make a copy of the matrix and store the copy,
+     *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
      *  @exception NullPointerException If the specified matrix
      *   is null.
@@ -68,13 +68,13 @@ public class ComplexMatrixToken extends MatrixToken {
         _initialize(value, DO_COPY);
     }
 
-    /** Construct a ComplexMatrixToken with the specified 2-D array.
-     *  If copy is DO_COPY, make a copy of the array and store the copy,
-     *  so that changes on the specified array after this token is
+    /** Construct a ComplexMatrixToken with the specified 2-D matrix.
+     *  If copy is DO_COPY, make a copy of the matrix and store the copy,
+     *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  If copy is DO_NOT_COPY, just reference the array (do not copy
+     *  If copy is DO_NOT_COPY, just reference the matrix (do not copy
      *  its contents). This saves some time and memory.
-     *  The argument array should NOT be modified after this constructor
+     *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability.
      *  @exception NullPointerException If the specified matrix
      *   is null.
@@ -168,7 +168,7 @@ public class ComplexMatrixToken extends MatrixToken {
         return add(token);
     }
 
-    /** Return the content of this token as a new 2-D Complex array.
+    /** Return the content of this token as a new 2-D Complex matrix.
      *  @return A 2-D Complex matrix
      */
     public Complex[][] complexMatrix() {
@@ -238,7 +238,7 @@ public class ComplexMatrixToken extends MatrixToken {
     /** Test if the content of this token is equal to that of the specified
      *  token. These two tokens are equal only if the specified token
      *  is also a matrix token with the same dimension, and all the
-     *  corresponding elements of the arrays are equal, and lossless
+     *  corresponding elements of the matrices are equal, and lossless
      *  conversion is possible from either this token to the specified
      *  one, or vice versa.
      *  @param token The token with which to test equality.
@@ -278,21 +278,21 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A ComplexToken containing the matrix element.
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the corresponding range
-     *   of the index of the contained array.
+     *   of the index of the contained matrix.
      */
     public Token getElementAsToken(final int row, final int column)
             throws ArrayIndexOutOfBoundsException {
         return new ComplexToken(_value[row][column]);
     }
 
-    /** Return the element of the contained array at the specified
+    /** Return the element of the contained matrix at the specified
      *  row and column.
      *  @param row The row index of the desired element.
      *  @param column The column index of the desired element.
-     *  @return The Complex at the specified array entry.
+     *  @return The Complex at the specified matrix entry.
      *  @exception ArrayIndexOutOfBoundsException If the specified
      *   row or column number is outside the corresponding range
-     *   of the index of the contained array.
+     *   of the index of the contained matrix.
      */
     public Complex getElementAt(final int row, final int column) {
         return _value[row][column];
@@ -514,10 +514,10 @@ public class ComplexMatrixToken extends MatrixToken {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Return a reference to the internal 2-D array of complex numbers that
+    /** Return a reference to the internal 2-D matrix of complex numbers that
      *  represents this Token. Because no copying is done, the contents must
      *  NOT be modified to preserve the immutability of Token.
-     *  @return A 2-D complex array.
+     *  @return A 2-D complex matrix.
      */
     protected Complex[][] _getInternalComplexMatrix() {
         return _value;
