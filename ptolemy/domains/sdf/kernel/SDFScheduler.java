@@ -1119,13 +1119,13 @@ should be avoided.
                                         IOPort inputPort = (IOPort) inputPorts.nextElement();
                                         int tokens =
                                             ((Integer) waitingTokens.at(inputPort)).intValue();
-                                        int tokenrate =
+                                        int tokenRate =
                                             _getTokenConsumptionRate(inputPort);
-                                        tokens -= tokenrate;
+                                        tokens -= tokenRate;
 
                                         // keep track of whether or not this actor can fire again
                                         // immediately
-                                        if(tokens < tokenrate) stillReadyToSchedule = false;
+                                        if(tokens < tokenRate) stillReadyToSchedule = false;
 
                                         // update the number of pseudo-tokens waiting on each input
                                         waitingTokens.putAt(inputPort, new Integer(tokens));
