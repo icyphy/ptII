@@ -177,8 +177,11 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         // Method calls are generally not cached...  They are repeated
         // every time the tree is evaluated.
 
-        int argCount = node.jjtGetNumChildren();
-        _generateAllChildren(node);
+        int numChildren = node.jjtGetNumChildren();
+        int argCount = numChildren - 1;
+        for (int i = 1; i < numChildren; i++) {
+            _generateChild(node, i);
+        }
 
         if(_isValidName(node.getFunctionName())) {
             Local local = _getLocalForName(node.getFunctionName());
@@ -302,9 +305,9 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
    
         // The array of token types that the method takes.
         ptolemy.data.type.Type[] argTypes =
-            new ptolemy.data.type.Type[node.jjtGetNumChildren()];
-        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-            argTypes[i] = ((ASTPtRootNode)node.jjtGetChild(i)).getType();
+            new ptolemy.data.type.Type[argCount];
+        for (int i = 0; i < argCount; i++) {
+            argTypes[i] = ((ASTPtRootNode)node.jjtGetChild(i + 1)).getType();
         }
 
         // Find the method...
@@ -335,8 +338,8 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
      
         CachedMethod.ArgumentConversion[] conversions = 
             cachedMethod.getConversions();
-        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-            Local tokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(i));
+        for (int i = 0; i < argCount; i++) {
+            Local tokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(i + 1));
 
             // Insert the appropriate conversion.
             Local argLocal = _convertTokenArgToJavaArg(
@@ -494,7 +497,10 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
             throws IllegalActionException {
         Local tokenLocal;
 
-        if(returnType.equals(PtolemyUtilities.tokenType)) {
+        if(returnType instanceof RefType &&
+                SootUtilities.derivesFrom(
+                        ((RefType)returnType).getSootClass(), 
+                        PtolemyUtilities.tokenClass)) {
             tokenLocal = returnLocal;
         } else if(returnType.equals(
                           ArrayType.v(PtolemyUtilities.tokenType, 1))) {
