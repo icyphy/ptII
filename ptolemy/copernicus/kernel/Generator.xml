@@ -263,9 +263,9 @@ $Id$
 
      <property name="watchDogTimeout" 
                class="ptolemy.data.expr.StringParameter"
-	       value="600000"
+	       value="720000"
 	       >
-	       <doc>The number of milliseconds that code generation will run for. Defaults to 600000, which is 10 minutes.</doc>
+	       <doc>The number of milliseconds that code generation will run for. Defaults to 720000, which is 12 minutes.</doc>
      </property>
 
 </group>
