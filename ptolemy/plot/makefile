@@ -75,17 +75,8 @@ PLOTMLAPPLETJAR =	plotmlapplet.jar
 # jar file does not include the pxgraph classes.
 PLOTAPPLICATIONJAR =	plotapplication.jar
 
-# Jar file containing Render class files used by
-# actor.lib.gui.MatrixVisualizer but not to used by the Ptplot applets. 
-RENDERJAR =		render.jar
-
-# Jar file containing the Render class used by
-# actor.lib.gui.MatrixVisualizer but not to used by the Ptplot applets. 
-RENDERJAVA =		Render.java
-
 # Java Sources, keep these alphabetical,
 JSRCS = \
-	$(RENDERJAVA) \
 	CmdLineArgException.java \
 	EditablePlot.java \
 	EditListener.java \
@@ -125,7 +116,6 @@ OPTIONAL_FILES = \
 	adm \
 	histogram \
 	manifest.tmp \
-	$(RENDERJAR) \
 	$(PTCLASSALLJAR) \
 	'EditablePlot$$EditMouseListener.class' \
 	'EditablePlot$$ModifyListener.class' \
@@ -164,11 +154,7 @@ OPTIONAL_FILES = \
 	'PlotFrame$$FileMenuListener.class' \
 	'PlotFrame$$FormatListener.class' \
 	'PlotFrame$$PLTOrXMLFileFilter.class' \
-	'PlotFrame$$SpecialMenuListener.class' \
-	'Render$$1.class' \
-	'RenderApplication$$1.class' \
-	Render.java \
-	Render.class 
+	'PlotFrame$$SpecialMenuListener.class'
 
 # Files to be removed by 'make clean'
 KRUFT = \
@@ -180,7 +166,6 @@ all: sources jclass
 
 install: all jars \
 		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR) \
-		$(RENDERJAR)
 	(cd ../../bin; $(MAKE) install)
 
 
@@ -253,12 +238,6 @@ APPLICATIONCLASSFILES = \
 		'$(ME)/PlotApplication$$2.class' \
 		$(ME)/PlotApplication.class
 
-# Render class files used by actor.lib.gui.MatrixVisualizer but
-# not to used by the Ptplot applets 
-RENDERCLASSFILES = \
-		'$(ME)/Render$$1.class' \
-		$(ME)/Render.class \
-
 # Jar file for simple applets
 $(PTAUXJAR): $(JSRCS) $(JCLASS)
 	rm -f $@
@@ -300,14 +279,6 @@ $(PLOTAPPLICATIONJAR): $(JSRCS) $(JCLASS)
 		$(COMPLEXCLASSFILES) \
 		$(ME)/plotml/*.class \
 		com/microstar/xml/*.class \
-            )
-
-# Jar file containing Render class files used by
-# actor.lib.gui.MatrixVisualizer but not to used by the Ptplot applets. 
-$(RENDERJAR): $(JSRCS) $(JCLASS)
-	rm -f $@
-	(cd $(ROOT); "$(JAR)" cf $(ME)/$@ \
-		$(RENDERCLASSFILES) \
             )
 
 # Get the rest of the rules
