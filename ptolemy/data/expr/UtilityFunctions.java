@@ -58,7 +58,7 @@ public class UtilityFunctions {
      * @return StringToken containing the string referred to by the
      *   environment variable.
      */
-     public static StringToken env(String envName) {
+    public static StringToken env(String envName) {
         return new StringToken("Hello world!");
     }
 
@@ -76,34 +76,34 @@ public class UtilityFunctions {
      * @return StringToken containing the text contained in
      *   the specified file.
      * */
-     public static StringToken readFile(String filename) {
-         // temporary hack, need to work out way to obtain the path.
-         String curDir = System.getProperty("user.dir");
-         //System.out.println("Directory is " + curDir);
-         File fileT = new File(curDir, filename);
-         //System.out.println("Trying to open file: " + fileT.toString());
-         BufferedReader fin = null;
-         String line;
-         String result = "";
-         try {
-             if (fileT.exists()) {
-                 fin = new BufferedReader(new FileReader(fileT));
-                 while (true) {
-                     try {
-                         line = fin.readLine();
-                     } catch (IOException e) {
-                         break;
-                     }
+    public static StringToken readFile(String filename) {
+        // temporary hack, need to work out way to obtain the path.
+        String curDir = System.getProperty("user.dir");
+        //System.out.println("Directory is " + curDir);
+        File fileT = new File(curDir, filename);
+        //System.out.println("Trying to open file: " + fileT.toString());
+        BufferedReader fin = null;
+        String line;
+        String result = "";
+        try {
+            if (fileT.exists()) {
+                fin = new BufferedReader(new FileReader(fileT));
+                while (true) {
+                    try {
+                        line = fin.readLine();
+                    } catch (IOException e) {
+                        break;
+                    }
 
-                     if (line == null) break;
-                     result += line;
-                     //System.out.println("read in line: " + line);
-                 }
-             }
-         } catch (FileNotFoundException e) {
-             // what should we do here?
-         }
-         //System.out.println("Contents of file are: " + result);
-         return new StringToken(result);
-     }
- }
+                    if (line == null) break;
+                    result += line;
+                    //System.out.println("read in line: " + line);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            // what should we do here?
+        }
+        //System.out.println("Contents of file are: " + result);
+        return new StringToken(result);
+    }
+}
