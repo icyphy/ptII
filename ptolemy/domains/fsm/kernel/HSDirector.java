@@ -242,9 +242,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         boolean eventPresent = false;
         Iterator actors = _enabledRefinements.iterator();
         while (!eventPresent && actors.hasNext()) {
-            // Note that the refinement is a CTCompositeActor.
-            CTEventGenerator actor = (CTEventGenerator)actors.next();
-            eventPresent |= actor.hasCurrentEvent();
+            Actor actor = (Actor)actors.next();
+            if (actor instanceof CTCompositeActor) {
+                eventPresent |= 
+                    ((CTCompositeActor)actor).hasCurrentEvent();
+            }
         }
         return eventPresent;
     }
