@@ -1949,11 +1949,17 @@ public class MoMLParser extends HandlerBase {
 				Class.forName(className, true, _classLoader);
 			} catch (NoClassDefFoundError ex) {
 			    throw new XmlException("Failed to find class '"
-                                    + className + "': "
-                                    + KernelException.stackTraceToString(ex),
+                                    + className + "'",
                                     _currentExternalEntity(),
                                     _parser.getLineNumber(),
-                                    _parser.getColumnNumber());
+                                    _parser.getColumnNumber(), ex);
+			} catch (SecurityException ex) {
+                            // An applet might throw this.
+			    throw new XmlException("Failed to find class '"
+                                    + className + "'",
+                                    _currentExternalEntity(),
+                                    _parser.getLineNumber(),
+                                    _parser.getColumnNumber(), ex);
 			}
                     }
 
