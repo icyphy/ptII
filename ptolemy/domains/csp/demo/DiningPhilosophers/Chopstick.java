@@ -166,10 +166,10 @@ public class Chopstick extends CSPActor {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-            ////                         private variables                      ////
+    /////////////////////////////////////////////////////////////////////
+    ////                         private variables                   ////
 
-            private TypedIOPort leftIn;
+    private TypedIOPort leftIn;
     private TypedIOPort leftOut;
     private TypedIOPort rightIn;
     private TypedIOPort rightOut;
