@@ -77,7 +77,7 @@ EXTRA_SRCS =	PtParser.jjt $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) doc
+MISC_FILES =	$(DIRS)
 
 # OPTIONAL_JSRCS files are created by javacc.
 # javadoc generates html for files in $(OPTIONAL_JSRCS)
@@ -101,6 +101,7 @@ DERIVED_JSRCS = PtParser.java
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =  \
+	doc \
 	$(OPTIONAL_JSRCS) \
 	message.txt \
 	JJPtParserCalls.class \
