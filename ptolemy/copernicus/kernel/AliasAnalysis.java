@@ -43,6 +43,10 @@ import java.util.Set;
 
    FIXME: I think we need an augmented interface for
    flow-sensitive analysis?
+
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public interface AliasAnalysis {
     /** Return the set of other fields and locals that reference

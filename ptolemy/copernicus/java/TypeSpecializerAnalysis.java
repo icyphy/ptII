@@ -95,6 +95,10 @@ import soot.toolkits.scalar.SimpleLocalUses;
    at least that the types of each variable along each path are the
    same...  as such, it works very badly if there are any instanceof
    checks, along with some other program constructs.
+
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class TypeSpecializerAnalysis {
 

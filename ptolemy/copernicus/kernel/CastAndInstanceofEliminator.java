@@ -56,6 +56,9 @@ import java.util.*;
    inferred types) then this transformer will likely create code that is no
    longer verifiable.
 
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 
 public class CastAndInstanceofEliminator extends BodyTransformer {

@@ -79,6 +79,9 @@ import soot.toolkits.scalar.LocalSplitter;
    the the types of a port.  This transformation enables the token unboxing
    performed by the TokenToNativeTransformer
 
+   @author Stephen Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
 */
 public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
