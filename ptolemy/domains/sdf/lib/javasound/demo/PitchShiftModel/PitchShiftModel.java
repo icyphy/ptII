@@ -70,12 +70,7 @@ import ptolemy.plot.*;
 /**
 A simple model demonstrating the use of the AudioSource and 
 AudioSink actors, using the SDF domain. This demo performs pitch 
-shifting on a soundfile in the current directory.
-Note that AudioSource will not work unless the Java 1.3 SDK
-is used.
-// FIXME: currently requies that a soundfile with name 
-// "welcome_pt.wav", mono, 11 kHz sample rate, be in
-// current directory.
+shifting on audio captured from the microphone.
 @author Brian K. Vogel
 @version $Id$
 */
@@ -107,7 +102,7 @@ public class PitchShiftModel extends TypedCompositeActor {
 
 
 	    // Begin debug.
-	    StreamListener sa2 = new StreamListener();
+	    //StreamListener sa2 = new StreamListener();
 	    //_sdfDirector.addDebugListener(sa2);
 	    // End debug.
 
@@ -125,12 +120,16 @@ public class PitchShiftModel extends TypedCompositeActor {
 
 	     controlpanel.setLayout(new BorderLayout());
 
-	    PtolemyQuery _ptQuery = new PtolemyQuery();
+	     //PtolemyQuery _ptQuery = new PtolemyQuery(_sdfDirector);
+	     PtolemyQuery _ptQuery = new PtolemyQuery();
 	    
 	    controlpanel.add("West", _ptQuery);
 
 	    _ptQuery.addSlider("pitchSlider", "Pitch Scale Factor",
 			     1000, 400, 3000);
+
+	    _ptQuery.addLine("pitchLine", "Pitch Scale Factor x 1000",
+			     "1000");
 
 	    frame.getContentPane().add(controlpanel, BorderLayout.CENTER);
 	    //Finish setting up the frame, and show it.
@@ -148,24 +147,34 @@ public class PitchShiftModel extends TypedCompositeActor {
 	    // End of gui stuff.
 
 	    // Set the sampling rate to use.
-	    int sampleRate = 11025;
+	    int sampleRate = 22050;
+
+	    int channels = 1;
+
+	    // Size of internal Java Sound buffer (in samples) to use 
+	    //for real-time capture/playback.
+	    int buffSize = 4096;
 
 	    // Set the token consumption rate and production rate to use.
 	    // Larger values may speed up execution.
-	    int cPRate = 512;
+	    int cPRate = 256;
 
 	    AudioSource soundSource = new AudioSource(this, "soundSource");
+	    // Set the production rate(a performance optimization).
+	    soundSource.tokenProductionRate.setToken(new IntToken(cPRate));
 	    // Specify where to get the sound file.
-	    soundSource.pathName.setToken(new StringToken("1-welcome.wav"));
-	    
-            // Read audio data from a local file instread of a URL.
-            soundSource.isURL.setToken(new BooleanToken(false));
+	    //soundSource.pathName.setToken(new StringToken("1-welcome.wav"));
+	    // Read audio form microphone (real-time capture).
+	    soundSource.source.setToken(new StringToken("mic"));
+	    soundSource.sampleRate.setToken(new IntToken(sampleRate));
+	    soundSource.channels.setToken(new IntToken(channels));
+	    soundSource.bufferSize.setToken(new IntToken(buffSize));
 	
 	    // The slider value updats the value parameter of this
 	    // actor to control the pitch scale factor.
 	    Const pitchScaleSource =
 		new Const(this, "pitchScaleSource");
-	    	    pitchScaleSource.value.setTypeEquals(DoubleToken.class);
+	    	    pitchScaleSource.value.setTypeEquals(BaseType.DOUBLE);
 	    // Set constant pitch scale factor.
 	    pitchScaleSource.value.setToken(new DoubleToken(1.0));
 		 
@@ -178,7 +187,7 @@ public class PitchShiftModel extends TypedCompositeActor {
 	    // only supports the integer type (IntToken).
 	    Scale controlGain =
 		new Scale(this, "controlGain");
-	    	    controlGain.factor.setTypeEquals(DoubleToken.class);
+	    	    controlGain.factor.setTypeEquals(BaseType.DOUBLE);
 	    // Set constant pitch scale factor.
 	    //pitchScaleSource.value.setToken(new DoubleToken(1.0));
 	    controlGain.factor.setExpression("0.001");
@@ -196,12 +205,14 @@ public class PitchShiftModel extends TypedCompositeActor {
 	    pitchShift.consumptionProductionRate.setToken(new IntToken(cPRate));
 
             AudioSink soundSink = new AudioSink(this, "soundSink");
-	  soundSink.fileName.setToken(new StringToken("outputFile.au"));  // FIXME: Does nothing.
-	  
-         
-	  soundSink.sampRate.setToken(new IntToken(sampleRate));
-	  
-
+	    //soundSink.pathName.setToken(new StringToken("outputFile.wav"));
+	    soundSink.sink.setToken(new StringToken("speaker"));
+	    //soundSink.sink.setToken(new StringToken("file"));
+	    soundSink.sampleRate.setToken(new IntToken(sampleRate));
+	    soundSink.sampleSizeInBits.setToken(new IntToken(16));
+	    soundSink.tokenConsumptionRate.setToken(new IntToken(cPRate));
+	    soundSink.channels.setToken(new IntToken(channels));
+	    soundSink.bufferSize.setToken(new IntToken(buffSize));
 	  
 	    this.connect(pitchDetect.output, pitchShift.pitchIn);
 	    this.connect(pitchScaleSource.output, controlGain.input);
@@ -219,6 +230,7 @@ public class PitchShiftModel extends TypedCompositeActor {
             pitchShift.input.link(rel1);
 
 	    _ptQuery.attachParameter(pitchScaleSource.value, "pitchSlider");
+	    _ptQuery.attachParameter(pitchScaleSource.value, "pitchLine");
 	    //_ptQuery.attachParameter(soundSink.fileName, "pitchSlider");
 
 
