@@ -34,7 +34,8 @@ Created : May 1998
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.*;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.data.BooleanToken;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtLogicalNode
@@ -51,37 +52,47 @@ nodes in the parse tree.
 */
 public class ASTPtLogicalNode extends ASTPtRootNode {
 
-    protected ptolemy.data.Token _resolveNode()
+    /** Evaluate the parse tree of a conditional-and or conditional-or
+     *  expression.
+     *  @exception IllegalActionException If an error occurs when trying to
+     *  evaluate a sub-expression.
+     *  @return The token containing the result of the expression.
+     */
+    public ptolemy.data.Token evaluateParseTree()
             throws IllegalActionException {
+        if (_isConstant && _ptToken != null) {
+            return _ptToken;
+        }
+
         int num = jjtGetNumChildren();
-        if (num == 1) {
-            return _childTokens[0];
-        }
-        boolean values[] = new boolean[num];
-        int i = 0;
-        for ( i = 0; i < num; i++ ) {
-            if (!(_childTokens[i] instanceof BooleanToken)) {
+	int numOperators = _lexicalTokens.size();
+	if (num <= 1 || numOperators != num - 1) {
+	    throw new InternalErrorException(
+	            "PtParser error: the parse tree for a conditional-and "
+		    + "or conditional-or expression does not have the correct "
+		    + "number of children or operators.");
+	}
+
+	Token operator = (Token)_lexicalTokens.getFirst();
+	boolean isAnd = false;
+	if (operator.image.equalsIgnoreCase("&&")) {
+	    isAnd = true;
+	}
+
+        for (int i = 0; i < num; i++) {
+	    ASTPtRootNode child = (ASTPtRootNode)jjtGetChild(i);
+	    ptolemy.data.Token value = child.evaluateParseTree();
+            if (!(value instanceof BooleanToken)) {
                 throw new IllegalActionException("Cannot perform logical "
-                        + "operation on " + _childTokens[i].getClass());
+                        + "operation on " + value.getClass());
             }
-            values[i] =
-                ((ptolemy.data.BooleanToken)_childTokens[i]).booleanValue();
-        }
-        boolean result = values[0];
-        for (i = 0; i < _lexicalTokens.size(); i++) {
-            Token x = (Token)_lexicalTokens.removeFirst();
-            // need to reinsert at end if want to reParse tree
-            _lexicalTokens.add(x);
-            if ( x.image.equalsIgnoreCase("&&") ) {
-                result = (result && values[i+1]);
-            } else if ( x.image.equalsIgnoreCase("||") ) {
-                result = (result || values[i+1]);
-            } else {
-                throw new IllegalActionException("operator on booleans: " +
-                        x.image + " are illegal, check parse tree");
-            }
-        }
-        return new ptolemy.data.BooleanToken(result);
+	    if (((BooleanToken)value).booleanValue() != isAnd) {
+		_ptToken = new ptolemy.data.BooleanToken(!isAnd);
+		return _ptToken;
+	    }
+	}
+	_ptToken = new ptolemy.data.BooleanToken(isAnd);
+	return _ptToken;
     }
 
     public ASTPtLogicalNode(int id) {
