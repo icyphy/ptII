@@ -167,8 +167,8 @@ public class CTSquareWave extends CTActor {
         }
         _frequency = f;
         _halfperiod = (double)1.0/((double)2.0*_frequency);
-        _debug("_maxVaue=" + _maxValue);
-        _debug("_minVaue=" + _minValue);
+        _debug("_maxValue=" + _maxValue);
+        _debug("_minValue=" + _minValue);
         _debug("_Frequency=" + _frequency);
         _debug("_halfperiod=" + _halfperiod);
     }
