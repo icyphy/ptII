@@ -144,7 +144,6 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Produce normalised declarations for all notations.
-     * @see diva.util.xml#makeExternalIdentifiers(String, String)
      */
     public void writeDTDNotations (Writer out) throws IOException {
         Enumeration notationNames = _parser.declaredNotations();
@@ -166,8 +165,6 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Produce normalised declarations for all general entities.
-     * @see diva.util.xml#makeLiteral(String)
-     * @see diva.util.xml#makeExternalIdentifiers(String, String)
      */
     public void writeDTDEntities (Writer out) throws IOException {
         Enumeration entityNames = _parser.declaredEntities();
@@ -213,7 +210,6 @@ public class XmlWriter extends LoggableOp {
 
     /**
      * Produce normalised declarations for all elements.
-     * @see diva.util.xml#writeDTDAttributes(String, Writer)
      */
     public void writeDTDElements (Writer out) throws IOException {
         Enumeration elementNames = _parser.declaredElements();
