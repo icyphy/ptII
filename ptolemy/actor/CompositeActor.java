@@ -458,7 +458,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  local director and transfer output data.
      *  Specifically, transfer any data from the output ports of this composite
      *  to the ports connected on the outside. The transfer is accomplished
-     *  by calling the transferOuputs() method of the executive director.
+     *  by calling the transferOutputs() method of the executive director.
      *  If there is no executive director, then no transfer occurs.
      *  This method is read-synchronized on the workspace.
      *
