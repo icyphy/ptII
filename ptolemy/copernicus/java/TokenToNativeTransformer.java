@@ -175,15 +175,15 @@ public class TokenToNativeTransformer extends SceneTransformer {
             depth--;
         }
 
-        List classList = new LinkedList();
-        classList.addAll(Scene.v().getApplicationClasses());
-        updateTokenTypes(classList, depth, unsafeLocalSet, debug);
-        for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-             classes.hasNext();) {
-            SootClass entityClass = (SootClass)classes.next();
+//         List classList = new LinkedList();
+//         classList.addAll(Scene.v().getApplicationClasses());
+//         updateTokenTypes(classList, depth, unsafeLocalSet, debug);
+//         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
+//              classes.hasNext();) {
+//             SootClass entityClass = (SootClass)classes.next();
             
-            inlineTypeMethods(entityClass, depth, unsafeLocalSet, debug);
-        }
+//             inlineTypeMethods(entityClass, depth, unsafeLocalSet, debug);
+//         }
     }    
 
     public void updateTokenTypes(List list, int depth, Set unsafeLocalSet, boolean debug) {
@@ -198,7 +198,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
                 System.out.println("method = " + method);
-    
+                
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
                 
                 // First split local variables that are used in
@@ -274,13 +274,14 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
         TypeSpecializerAnalysis typeAnalysis =
             new TypeSpecializerAnalysis(list, unsafeLocalSet);
-
+        
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
              classes.hasNext();) {
             SootClass entityClass = (SootClass)classes.next();
             
             // Specialize the code, according to the analyzed types.
-            TypeSpecializer.specializeTypes(debug, entityClass, unsafeLocalSet, typeAnalysis);
+            TypeSpecializer.specializeTypes(debug, entityClass, 
+                    unsafeLocalSet, typeAnalysis);
         }
     }
 
@@ -506,7 +507,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                                         inlinee, (Stmt)unit, method);
                                                 doneSomething = true;
                                             } else {
-                                                System.out.println("inlinee is not concrete!: " + inlinee);
+                                                throw new RuntimeException(
+                                                        "inlinee is not concrete!: " + inlinee);
                                             }
                                         }
                                     } else {

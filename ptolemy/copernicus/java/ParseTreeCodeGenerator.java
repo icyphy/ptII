@@ -120,45 +120,45 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         _assert(node.isBitwiseAnd() ^ node.isBitwiseOr() ^ node.isBitwiseXor(),
                 node, "Invalid operation");
 
-        Type bitwiseType = RefType.v("ptolemy.data.BitwiseOperationToken");
+        RefType bitwiseType = PtolemyUtilities.getSootTypeForTokenType(
+                ((ASTPtRootNode) node.jjtGetChild(0)).getType());
+        SootClass tokenClass = bitwiseType.getSootClass();
+
         Local tokenLocal = Jimple.v().newLocal("token", 
                 bitwiseType);
         _body.getLocals().add(tokenLocal);
       
         _units.insertBefore(Jimple.v().newAssignStmt(
-                           tokenLocal,
-                           Jimple.v().newCastExpr(
-                                   resultLocal,
-                                   bitwiseType)), _insertPoint);
+                                    tokenLocal,
+                                    Jimple.v().newCastExpr(
+                                            resultLocal,
+                                            bitwiseType)), _insertPoint);
             
         for (int i = 1; i < numChildren; i++ ) {
             Local nextLocal = (Local)_nodeToLocal.get(node.jjtGetChild(i));
        
+            SootMethod method;
             if(node.isBitwiseAnd()) {
-                _units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                tokenLocal,
-                                Jimple.v().newInterfaceInvokeExpr(
-                                        tokenLocal,
-                                        PtolemyUtilities.tokenBitwiseAndMethod,
-                                        nextLocal)), _insertPoint);
+                method = SootUtilities.searchForMethodByName(
+                        tokenClass, "bitwiseAnd");
             } else if(node.isBitwiseOr()) {
-                _units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                tokenLocal,
-                                Jimple.v().newInterfaceInvokeExpr(
-                                        tokenLocal,
-                                        PtolemyUtilities.tokenBitwiseOrMethod,
-                                        nextLocal)), _insertPoint);
+                method = SootUtilities.searchForMethodByName(
+                        tokenClass, "bitwiseOr");
+            } else if(node.isBitwiseXor()) {
+                method = SootUtilities.searchForMethodByName(
+                  tokenClass, "bitwiseXor");
             } else {
-                _units.insertBefore(
-                        Jimple.v().newAssignStmt(
-                                tokenLocal,
-                                Jimple.v().newInterfaceInvokeExpr(
-                                        tokenLocal,
-                                        PtolemyUtilities.tokenBitwiseXorMethod,
-                                        nextLocal)), _insertPoint);
-            } 
+                throw new RuntimeException("Unrecognized node");
+            }
+
+            _units.insertBefore(
+                    Jimple.v().newAssignStmt(
+                            tokenLocal,
+                            Jimple.v().newVirtualInvokeExpr(
+                                    tokenLocal,
+                                    method,
+                                    nextLocal)), _insertPoint);
+            
         }
         Local tokenCastLocal = Jimple.v().newLocal("token", 
                 PtolemyUtilities.tokenType);

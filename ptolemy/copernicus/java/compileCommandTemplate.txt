@@ -21,11 +21,10 @@
  -p wjtp.iat targetPackage:@targetPackage@
  -p wjtp.ipt targetPackage:@targetPackage@
  -p wjtp.itt targetPackage:@targetPackage@
- -p wjtp.ttn targetPackage:@targetPackage@
+ -p wjtp.ttn debug,targetPackage:@targetPackage@
  -p wjtp.ts targetPackage:@targetPackage@
  -p wjtp.noe targetPackage:@targetPackage@
  -p wjtp.nee targetPackage:@targetPackage@
- -p wjtp.cie targetPackage:@targetPackage@
  -p wjtp.snapshot1 "outDir:@ptIIUserDirectory@/@targetPath@/jimple1"
  -p wjtp.snapshot2 "outDir:@ptIIUserDirectory@/@targetPath@/jimple2"
  -p wjtp.snapshot3 "outDir:@ptIIUserDirectory@/@targetPath@/jimple3"

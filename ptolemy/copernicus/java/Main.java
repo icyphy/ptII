@@ -342,12 +342,12 @@ public class Main extends KernelMain {
                 new Transform("wjtp.doe",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
-        /*  
+        /*         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot6", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot6", ClassWriter.v()));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(_toplevel)));
@@ -489,16 +489,19 @@ public class Main extends KernelMain {
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
          */
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        //    _addStandardOptimizations(Scene.v().getPack("wjtp"));
          
         // This snapshot should be last...
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.finalSnapshot",
+                new Transform("wjtp.snapshot6",
                         JimpleWriter.v()));
         // And write C!
-        //         Scene.v().getPack("wjtp").add(
-        //                 new Transform("wjtp.finalSnapshot", CWriter.v()));
-       
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.finalSnapshot", CWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.finalSnapshot",
+                        JimpleWriter.v()));
+            
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.watchDogCancel",
                         WatchDogTimer.v(), "cancel:true"));

@@ -94,6 +94,7 @@ public class TypeSpecializerAnalysis {
      *  Ptolemy type.  Exclude locals in the given set from the typing algorithm.
      */
     public TypeSpecializerAnalysis(SootClass theClass, Set unsafeLocals) {
+        System.out.println("Starting type specialization");
         _unsafeLocals = unsafeLocals;
 
         _solver = new InequalitySolver(TypeLattice.lattice());
@@ -139,15 +140,18 @@ public class TypeSpecializerAnalysis {
           
             //       throw new RuntimeException("NO Type solution found!");
         }
+        System.out.println("Done");  
     }
 
-    /** Specialize all token types that appear in the given list of class.
-     *  Return a map from locals and fields in the class to their new specific
-     *  Ptolemy type.  Exclude locals in the given set from the typing algorithm.
+    /** Specialize all token types that appear in the given list of
+     *  class.  Return a map from locals and fields in the class to
+     *  their new specific Ptolemy type.  Exclude locals in the given
+     *  set from the typing algorithm.
      *  @param list A list of SootClass.
      */
     public TypeSpecializerAnalysis(List list, Set unsafeLocals) {
         //  _debug = true;
+        System.out.println("Starting type specialization list");
         _unsafeLocals = unsafeLocals;
 
         _solver = new InequalitySolver(TypeLattice.lattice());
@@ -196,6 +200,7 @@ public class TypeSpecializerAnalysis {
           
             //       throw new RuntimeException("NO Type solution found!");
         }
+        System.out.println("Done");  
     }
 
     public Type getSpecializedSootType(Local local) {
@@ -280,6 +285,7 @@ public class TypeSpecializerAnalysis {
 
     private void _collectConstraints(SootClass entityClass, boolean debug) {
         if (debug) System.out.println("collecting constraints for " + entityClass);
+        System.out.println("collecting constraints for " + entityClass);
         // Loop through all the fields.
         for (Iterator fields = entityClass.getFields().iterator();
              fields.hasNext();) {
@@ -328,8 +334,10 @@ public class TypeSpecializerAnalysis {
             // this will help us figure out where locals are defined.
             SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
             SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
-            MustAliasAnalysis aliasAnalysis = new MustAliasAnalysis(unitGraph);
-
+            System.out.println("computing aliases for " + method);
+            MustAliasAnalysis aliasAnalysis = null; //new MustAliasAnalysis(unitGraph);
+            System.out.println("done computing aliases for " + method);
+  
             for (Iterator locals = body.getLocals().iterator();
                  locals.hasNext();) {
                 Local local = (Local)locals.next();
@@ -338,7 +346,8 @@ public class TypeSpecializerAnalysis {
                 }
                 // Ignore things that aren't reference types.
                 Type type = local.getType();
-                _createInequalityTerm(debug, local, type, _objectToInequalityTerm);
+                _createInequalityTerm(debug, local,
+                        type, _objectToInequalityTerm);
             }
             for (Iterator units = body.getUnits().iterator();
                  units.hasNext();) {
@@ -348,8 +357,8 @@ public class TypeSpecializerAnalysis {
                     Value leftOp = ((AssignStmt)stmt).getLeftOp();
                     Value rightOp = ((AssignStmt)stmt).getRightOp();
 
-                    // Note that the only real possibilities on the left side are
-                    // a local or a fieldRef.
+                    // Note that the only real possibilities on the
+                    // left side are a local or a fieldRef.
                     InequalityTerm leftOpTerm =
                         _getInequalityTerm(method, debug, leftOp,
                                 _solver, _objectToInequalityTerm, stmt,
@@ -377,8 +386,8 @@ public class TypeSpecializerAnalysis {
                         _addInequality(debug, _solver, leftOpTerm, rightOpTerm);
                     }
                 } else if (stmt instanceof InvokeStmt) {
-                    // Still call getInequalityTerm because there may be side effects
-                    // that cause type constraints.
+                    // Still call getInequalityTerm because there may
+                    // be side effects that cause type constraints.
                     _getInequalityTerm(method, debug,
                             ((InvokeStmt)stmt).getInvokeExpr(),
                             _solver, _objectToInequalityTerm, stmt,
@@ -386,6 +395,7 @@ public class TypeSpecializerAnalysis {
                 }
             }
         }
+        System.out.println("done collecting constraints for " + entityClass);
     }
   
     // Given an object (which must be either a local, or a field) of

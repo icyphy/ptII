@@ -56,15 +56,15 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug";
+        return super.getDeclaredOptions() + "targetPackage debug";
     }
 
     protected void internalTransform(Body b, String phaseName, Map options)
     {
         JimpleBody body = (JimpleBody)b;
 
-        System.out.println("CastAndInstanceofEliminator.internalTransform("
-                + b.getMethod() + phaseName + ")");
+//         System.out.println("CastAndInstanceofEliminator.internalTransform("
+//                 + b.getMethod() + phaseName + ")");
 
         boolean debug = Options.getBoolean(options, "debug");
 
