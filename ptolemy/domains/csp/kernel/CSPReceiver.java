@@ -38,7 +38,8 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.util.InvalidStateException;
 
-import java.util.Enumeration;
+import java.util.List;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPReceiver
@@ -178,10 +179,11 @@ public class CSPReceiver implements ProcessReceiver {
                      (ComponentEntity)innerPort.getContainer(); 
              Port outerPort = null; 
              ComponentEntity outerEntity = null; 
-             Enumeration enum = innerPort.connectedPorts(); 
+             List portList = innerPort.connectedPortList(); 
+             Iterator ports = portList.iterator();
              
-             while( enum.hasMoreElements() ) {
-                 outerPort = (Port)enum.nextElement();
+             while( ports.hasNext() ) {
+                 outerPort = (Port)ports.next();
                  outerEntity = (ComponentEntity)outerPort.getContainer();
                  if( outerEntity == innerEntity.getContainer() ) {
 		     // The port container of this receiver is 
