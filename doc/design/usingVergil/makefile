@@ -54,7 +54,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	index.htm \
-	expressions.htm \
 	usingVergil.pdf
 
 EXTRA_SRCS = \
@@ -82,8 +81,7 @@ update:
 	cp $(WEBWORKSSRC)/*.html .
 	cp $(WEBWORKSSRC)/images/* images
 	mv usingVergil.html index.htm
-	mv expressions.html expressions.htm
-	files="index.htm expressions.htm"; \
+	files="index.htm"; \
 	for file in $$files; \
 	do \
 		echo "$$file"; \
