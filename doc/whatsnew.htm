@@ -345,6 +345,10 @@ of changes that are handled.
 <h3>Backward compatible issues that are not handled automatically</h3>
 
 <menu>
+<li> The FileWriter and DoubleReader actors have been removed, use
+the LineWriter or ExpressionWriter actors instead of FileWriter
+and use the LineReader and ExpressionReader actors instead of
+DoubleReader.
 <li> In the CT (continuous-time) domain, instances of Clock and
 TriggeredClock very likely should be manually changed to
 ContinuousClock and TriggeredContinuousClock. The reason for this is that
