@@ -978,6 +978,13 @@ public class Manager extends NamedObj implements Runnable {
             return Manager.this;
         }
 
+	/** Print out the current state.
+	 */
+	public String toString() {
+	    return new String("Manager " + getManager() + 
+			      " is in state " + getDescription());
+	}
+
         private String _description;
     }
 }
