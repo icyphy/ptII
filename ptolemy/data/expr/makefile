@@ -62,24 +62,21 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
+	ASTPtBitwiseOpNode.java \
+	ASTPtFunctionNode.java \
+	ASTPtLogicalNode.java \
+	ASTPtMiscNode.java \
+	ASTPtProductNode.java \
+	ASTPtRelationalNode.java \
 	ASTPtSimpleNode.java \
 	ASTPtSumNode.java \
-	ASTPtProductNode.java \
-	ASTPtUnaryNode.java \
-	ASTPtRelationalNode.java \
-	ASTPtLogicalNode.java \
-	ASTPtFunctionNode.java \
-	Node.java \
-	ASCII_CharStream.java \
-	Token.java \
-	TokenMgrError.java \
-	ParseException.java 
+	ASTPtUnaryNode.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	doc test
+MISC_FILES =	# doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
