@@ -83,31 +83,7 @@ SOURCECLASS = FIR.xml
 SOOT_USER_ARGS = 
 
 demo: jclass
-	$(JAVA) -Xmx128M -Xms128M \
-		 -classpath "$(CLASSPATH)" \
-		ptolemy.copernicus.jhdl.Main \
-		$(SOURCECLASS) \
-		-d "$(ROOT)" \
-		-p wjtp.at deep,targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.clt \
-		targetPackage:$(TARGETPACKAGE)$(ITERATIONS_PARAMETER) \
-		-p wjtp.fot targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.ffat targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.ffpt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.idt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.iat targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.ipt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.itt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.ttn disabled,targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.snapshot1 outDir:$(ROOT)/$(TARGETPATH)/jimple1 \
-		-p wjtp.snapshot2 outDir:$(ROOT)/$(TARGETPATH)/jimple2 \
-		-p wjtp.snapshot3 outDir:$(ROOT)/$(TARGETPATH)/jimple3 \
-		-p wjtp.snapshot4 outDir:$(ROOT)/$(TARGETPATH)/jimple4 \
-		-p wjtp.snapshot5 outDir:$(ROOT)/$(TARGETPATH)/jimple5 \
-		-p wjtp.iee enabled \
-		-p wjtp.circuit outDir:$(ROOT)/$(TARGETPATH),targetPackage:$(TARGETPACKAGE) \
-		$(SOOT_USER_ARGS)
+	copernicusjhdl FIR.xml
 
 interpret: jclass
 	@echo "Run as a Ptolemy system"

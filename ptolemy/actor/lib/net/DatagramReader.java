@@ -769,8 +769,8 @@ public class DatagramReader extends TypedAtomicActor {
      *
      *  I did a bit of nosing around and discovered how stopFire()
      *  gets called.  The Manager initiates the call on the
-     *  CompositeActor.  * It then calls stopFire() on the Director.
-     *  The Director fans * out the call to every actor below it.
+     *  CompositeActor.  It then calls stopFire() on the Director.
+     *  The Director fans out the call to every actor below it.
      *
      *  The director/manager insists on calling fire() after every
      *  call of prefire().  Even when it has issued a stopFire()

@@ -529,7 +529,7 @@ public class Main extends KernelMain {
      */
     public void addTransforms() {
 	super.addTransforms();
-    addStandardTransforms(_toplevel);
+        addStandardTransforms(_toplevel);
         // And write C!
        //  Scene.v().getPack("wjtp").add(
 //                 new Transform("wjtp.finalSnapshot", CWriter.v()));
