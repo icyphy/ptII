@@ -530,7 +530,6 @@ public class Exec extends TypedAtomicActor {
          *  if we read any data, notify the other thread. 
          */
         public void run() {
-            System.out.println("Exec: " + this + "run()");
             try {
                 InputStreamReader inputStreamReader =
                     new InputStreamReader(_inputStream);
