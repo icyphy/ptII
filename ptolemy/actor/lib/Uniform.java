@@ -115,7 +115,7 @@ public class Uniform extends RandomSource {
                 (upperBound.getToken())).doubleValue();
         if (lowerValue > upperValue) {
             throw new IllegalActionException(this,
-            "Invalid bounds: lowerBound is greater than upperBound.");
+                    "Invalid bounds: lowerBound is greater than upperBound.");
         }
         double rawNum = _random.nextDouble();
         _current = rawNum*(upperValue - lowerValue) + lowerValue;
