@@ -117,14 +117,43 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
         return set;
     }
 
+    /** Return the set of other fields and locals that must reference
+     *  the same object as the given local, at a point before
+     *  the given unit.
+     */
+    public Set getAliasesOfBefore(NewExpr constructor, Unit unit) {
+        Map map = (Map)getFlowBefore(unit);
+        Set set = new HashSet();
+        if(map.get(constructor) != null) {
+            set.addAll((Set)map.get(constructor));
+        }
+        set.remove(constructor);
+        return set;
+    }
 
-    // Formulation:
-    // The dataflow information is stored in a map from each aliasable object (SootField or Local)
-    // to a set of aliases.  Note that for each alias-set there is exactly one instance of HashSet
-    // stored in the map.  This is implemented as a flow-insensitive analysis.  
-    // Method calls are handled conservatively, and we assume that they affect the values of all
-    // fields (i.e. aliases for all fields are killed.
-    // If the object has no other aliases, or any maybe-aliases, then it points to null.
+    /** Return the set of other fields and locals that must reference
+     *  the same object as the given field, at a point after
+     *  the given unit.
+     */
+    public Set getAliasesOfAfter(NewExpr constructor, Unit unit) {
+        Map map = (Map)getFlowAfter(unit);
+        Set set = new HashSet();
+        if(map.get(constructor) != null) {
+            set.addAll((Set)map.get(constructor));
+        }
+        set.remove(constructor);
+        return set;
+    }
+
+    // Formulation: The dataflow information is stored in a map from
+    // each aliasable object (SootField or Local) to a set of aliases.
+    // Note that for each alias-set there is exactly one instance of
+    // HashSet stored in the map.  This is implemented as a
+    // flow-sensitive intraprocedural analysis.  Method calls are handled
+    // conservatively, and we assume that they affect the values of
+    // all fields (i.e. aliases for all fields are killed.  If the
+    // object has no other aliases, or any maybe-aliases, then it
+    // points to null.
     protected Object newInitialFlow() {
         return new HashMap();
     }
@@ -309,6 +338,9 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
         } else if(value instanceof CastExpr) {
             // Must be a local.
             return ((CastExpr)value).getOp();
+        } else if(value instanceof NewExpr ||
+                value instanceof NewArrayExpr) {
+            return value;
         } else return null;
     }
 

@@ -450,7 +450,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
             return ((CastExpr)value).getOp();
         } else if(value instanceof NewExpr ||
                 value instanceof NewArrayExpr ||
-                  value instanceof Constant) {
+                value instanceof Constant) {
             // If we haven't defined the expression yet, then it should
             // point to a new object.
             Object object = _constructorMap.get(value);
