@@ -11,7 +11,7 @@
       <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
       <property name="TM Director" class="ptolemy.domains.tm.kernel.TMDirector"/>
       <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
-      <property name="RTP Director" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
+      <!-- Don't include RTP -->
       <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
          <property name="scheduler">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
