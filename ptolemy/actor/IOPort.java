@@ -717,10 +717,23 @@ public class IOPort extends ComponentPort {
     }
     
     /** Return the current time associated with a certain channel.
-     *  In domains other than DT, this method reverts to the director's
-     *  getCurrentTime() method.  In DT, there is a local time 
-     *  associated with each channel of each port.
-     *  @return The current time associated with a certain channel 
+     *  In most domains, this is just the current time of the director.
+     *  However, in some domains, the current time is a per-channel
+     *  concept.  If the channel has a token to be read (i.e. hasToken()
+     *  returns true), then the current time is the time associated with
+     *  that token.  If there is no token to be read, then the current
+     *  time is the time of most recently read token. If no token has been
+     *  previously read, then the current time is 0.0.  Notice that this
+     *  means that an actor accessing time should do things in the
+     *  following order:
+     *  <pre>
+     *     if (hasToken(n)) {
+     *        double time = port.getCurrentTime(n);
+     *        Token token = port.get(n);
+     *     }
+     *  </pre>
+     *  I.e., getCurrentTime() is called before get().
+     *  Currently, only the DT domain uses this per-channel time feature.
      */
     public double getCurrentTime(int channelIndex) 
                                      throws IllegalActionException {
