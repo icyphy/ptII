@@ -121,22 +121,6 @@ public class CSPMemory extends CSPActor {
             } else if( br == -1 ) {
                 return;
             }
-            
-            /*
-            // Receive Branch
-            branches[0] = new ConditionalReceive(true, _input, 0, 0);
-            
-            // Send Branch
-            branches[1] = new ConditionalSend(true, _output, 0, 1, token);
-            
-            if( br == 0 ) {
-                token = (StringToken)branches[0].getToken();
-                _strValue = token.stringValue();
-            } else if( br == -1 ) {
-                _strValue = "write";
-                return;
-            }
-            */
         }
     }
     
