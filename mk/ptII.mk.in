@@ -124,7 +124,8 @@ JAVAC = 	$(PTJAVA_DIR)/bin/javac
 # Flags to pass to javac.  Usually something like '-g -depend'
 JDEBUG =	-g
 JOPTIMIZE =	-O
-JFLAGS = 	$(JDEBUG) $(JOPTIMIZE)
+JTARGET =	-target 1.1
+JFLAGS = 	$(JDEBUG) $(JOPTIMIZE) $(JTARGET)
 
 # The 'javadoc' program
 JAVADOC = 	$(PTJAVA_DIR)/bin/javadoc
