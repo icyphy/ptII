@@ -2066,5 +2066,6 @@ test MoMLChangeRequest-14.0 {test export moml from a derived instance} {
         <property name="p" class="ptolemy.data.expr.Parameter" value="10">
         </property>
     </entity>
-</entity>}}
+</entity>
+}}
 
