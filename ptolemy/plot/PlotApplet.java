@@ -60,6 +60,14 @@ If no URL is given, then a sample plot is generated.
  */
 public class PlotApplet extends JApplet {
 
+    /** Construct a Plot applet */
+    public PlotApplet() {
+        super();
+        if (_mutex == null) {
+            _mutex = new Object();
+        }
+    }
+
     /** Return a string describing this applet.
      *  @return A string describing the applet.
      */
@@ -89,11 +97,12 @@ public class PlotApplet extends JApplet {
     /** Initialize the applet.  Read the applet parameters.
      */
     public void init() {
-        super.init();
+        synchronized (_mutex) {
+            super.init();
 
-        if (_plot == null) {
-            _plot = newPlot();
-        }
+            if (_plot == null) {
+                _plot = newPlot();
+            }
         getContentPane().add(plot(), BorderLayout.NORTH);
 
         // Process the width and height applet parameters
@@ -142,6 +151,7 @@ public class PlotApplet extends JApplet {
                 System.err.println("PlotApplet: error reading input file: " +e);
             }
         }
+        }
     }
 
     /** Create a new Plot object for the applet.  Derived classes can
@@ -182,7 +192,12 @@ public class PlotApplet extends JApplet {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private variables               ////
+
+    // Work around problem in Java 1.3.1_08 where if we create
+    // 6 instances of a Plot applet then navigate forward then
+    // back - IE and Navigator hang. (Roger Robins)
+    private static Object _mutex = null;
 
     // The Plot component we are running.
     private transient PlotBox _plot;
