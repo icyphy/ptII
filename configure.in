@@ -415,7 +415,18 @@ else
 	# $PTII/ptolemy/apps/makefile if jhdl was found
 	PTJHDL_DIR=jhdl
     else
+	JHDL_JAR=$PTII/vendors/jhdl/JHDL_0_3_4_1.jar
+	if test -f "$JHDL_JAR"; then
+	    AC_MSG_RESULT([$JHDL_JAR])
+	    # Set to jhdl and used in
+	    # $PTII/ptolemy/apps/makefile if jhdl was found
+	    PTJHDL_DIR=jhdl
+	fi    
+    fi	
+
+    if test "$PTJHDL_DIR" = ""; then
         AC_MSG_WARN(['Failed to find PTII/vendors/jhdl/JHDL_0_3_4.jar
+    or JHDL_0_3_4_1.jar
     perhaps Jhdl is not installed?
     You need not download Jhdl unless you plan on using code generation
     The Jhdl SDK can be downloaded from http://www.jhdl.org'])
