@@ -222,9 +222,9 @@ test Director-8.1 {Test type checking} {
 ######################################################################
 ####
 #
-test Director-8.1.1 {Test run-time type checking} {
+test Director-8.2 {Test run-time type checking} {
     #use setup above
-    set token [java::new ptolemy.data.IntToken 3]
+    set token [java::new {ptolemy.data.IntToken int} 3]
     $director initialize
     $p1 broadcast $token
     set rtoken [$p2 get 0]
@@ -234,7 +234,7 @@ test Director-8.1.1 {Test run-time type checking} {
 ######################################################################
 ####
 #
-test Director-8.1.2 {Test run-time type checking} {
+test Director-8.3 {Test run-time type checking} {
     #use setup above
     set token [java::new ptolemy.data.DoubleToken]
     $director initialize
@@ -245,7 +245,7 @@ test Director-8.1.2 {Test run-time type checking} {
 ######################################################################
 ####
 #
-test Director-8.2 {Test type resolution} {
+test Director-8.4 {Test type resolution} {
     # use the setup above
     $p1 setDeclaredType [java::null]
 
@@ -258,7 +258,7 @@ test Director-8.2 {Test type resolution} {
 ######################################################################
 ####
 #
-test Director-8.3 {Test type resolution} {
+test Director-8.5 {Test type resolution} {
     # use the setup above
     $p1 setDeclaredType $t1
     $p2 setDeclaredType [java::null]
@@ -272,7 +272,7 @@ test Director-8.3 {Test type resolution} {
 ######################################################################
 ####
 #
-test Director-8.4 {Test type resolution} {
+test Director-8.6 {Test type resolution} {
     set director [java::new ptolemy.actor.Director]
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setExecutiveDirector $director
@@ -333,7 +333,7 @@ ptolemy.data.DoubleToken ptolemy.data.Token ptolemy.data.DoubleToken}
 ######################################################################
 ####
 #
-test Director-8.5 {Test type resolution} {
+test Director-8.7 {Test type resolution} {
     # use the setup above
     set tInt [[java::new ptolemy.data.IntToken] getClass]
     $p1 setDeclaredType $tDouble
