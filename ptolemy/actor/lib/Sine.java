@@ -73,9 +73,11 @@ public class Sine extends Transformer {
 
         // parameters
         amplitude = new Parameter(this, "amplitude", new DoubleToken(1.0));
+	amplitude.setTypeEquals(BaseType.DOUBLE);
         omega = new Parameter(this, "omega", new DoubleToken(1.0));
+	omega.setTypeEquals(BaseType.DOUBLE);
         phase = new Parameter(this, "phase", new DoubleToken(0.0));
-
+	phase.setTypeEquals(BaseType.DOUBLE);
 
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);

@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import java.util.Random;
 
@@ -61,6 +62,7 @@ public abstract class RandomSource extends Source {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         seed = new Parameter(this, "seed", new LongToken(0));
+	seed.setTypeEquals(BaseType.LONG);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -103,6 +103,7 @@ public class Pulse extends SequenceSource {
 
         // Set the Repeat Flag.
         repeat = new Parameter(this, "repeat", new BooleanToken(false));
+	repeat.setTypeEquals(BaseType.BOOLEAN);
         attributeChanged(repeat);
 
 	// set type constraint
@@ -124,7 +125,7 @@ public class Pulse extends SequenceSource {
     public Parameter indexes;
 
     /** The values that will be produced at the specified indexes.
-     *  This parameter must contain a MatrixToken with one row.
+     *  This parameter must contain an ArrayToken.
      */
     public Parameter values;
 

@@ -70,6 +70,7 @@ public class Bernoulli extends RandomSource {
 
         trueProbability = new Parameter(this, "trueProbability",
                 new DoubleToken(0.5));
+	trueProbability.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
