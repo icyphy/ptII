@@ -31,7 +31,7 @@ import java.util.*;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// Cpo
+//// CPO
 /**
 An interface for Complete Partial Order(CPO). 
 Please see "Introduction to Lattices and Order" by Davey and Priestley
@@ -46,8 +46,8 @@ public interface CPO
     /** Compares two elements in this CPO.
      *  @param e1 an object representing a CPO element.
      *  @param e2 another object representing a CPO element.
-     *  @return one of <code>Cpo.STRICT_LESS, Cpo.EQUAL,
-     *   Cpo.STRICT_GREATER, Cpo.INCOMPARABLE</code>.
+     *  @return one of <code>CPO.STRICT_LESS, CPO.EQUAL,
+     *   CPO.STRICT_GREATER, CPO.INCOMPARABLE</code>.
      *  @exception IllegalArgumentException at least one element
      *   doesn't belong to this CPO.
      */
@@ -117,7 +117,7 @@ public interface CPO
      *   belong to this CPO.
      */
      // FIXME: up-set may be infinite for infinite CPOs.  move this to
-     // FiniteCpo class?
+     // FiniteCPO class?
     public Object[] upSet(Object e);
     
      /** Computes the down-set of an element in this CPO.
@@ -128,7 +128,7 @@ public interface CPO
       *   belong to this CPO.
       */
       // FIXME: down-set may be infinite for infinite CPOs.  move this to
-      // FiniteCpo class?
+      // FiniteCPO class?
     public Object[] downSet(Object e);    
 
     /** Finds the bottom element of this CPO.
