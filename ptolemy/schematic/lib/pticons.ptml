@@ -7,10 +7,10 @@
 <iconlibrary name="root" version="1.0">
 <header>
     <description>Icons for use within SDF</description>
-    <sublibrary url="../../domains/generic/icons/sources.ptml"/>
-    <sublibrary url="../../domains/generic/icons/sinks.ptml"/>
-    <sublibrary url="../../domains/generic/icons/filters.ptml"/>
-    <sublibrary url="../../domains/generic/icons/math.ptml"/>
+    <sublibrary name="Sources" url="../../domains/generic/icons/sources.ptml"/>
+    <sublibrary name="Sinks" url="../../domains/generic/icons/sinks.ptml"/>
+    <sublibrary name="Filters" url="../../domains/generic/icons/filters.ptml"/>
+    <sublibrary name="Math" url="../../domains/generic/icons/math.ptml"/>
 </header>
 
 <!-- Normally, icons go here. This top-level library has no icons. -->
