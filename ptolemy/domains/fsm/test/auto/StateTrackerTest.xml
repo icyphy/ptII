@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StateTrackerTest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 75.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 175, 891, 518}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1179, 229, 891, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[676, 400]">
     </property>
@@ -50,6 +50,10 @@ David Hermann, Research in Motion</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 20.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.0, 200.0}">
+    </property>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -66,6 +70,8 @@ David Hermann, Research in Motion</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 170.0">
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
+            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
@@ -77,10 +83,6 @@ David Hermann, Research in Motion</text></svg></configure>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="A">
-            </property>
-            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
@@ -125,51 +127,29 @@ expression to show how the Set and Output Actions still function as normally.</t
             <entity name="A" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="A">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 70.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <entity name="B" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="B">
-                </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 290.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <entity name="C" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="C">
-                </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 185.0">
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 0">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -179,19 +159,11 @@ expression to show how the Set and Output Actions still function as normally.</t
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
-                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="relation2">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 0">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -201,10 +173,6 @@ expression to show how the Set and Output Actions still function as normally.</t
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
-                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="relation">
                 </property>
             </relation>
@@ -212,8 +180,6 @@ expression to show how the Set and Output Actions still function as normally.</t
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in &gt; 0">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out  = out + &quot; (C to A)&quot;">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.9439824861203945">
                 </property>
@@ -223,19 +189,11 @@ expression to show how the Set and Output Actions still function as normally.</t
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
             </relation>
             <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in &lt; 0">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = out + &quot; (C to B)&quot;">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.8096521121105863">
                 </property>
@@ -244,12 +202,6 @@ expression to show how the Set and Output Actions still function as normally.</t
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <link port="A.incomingPort" relation="relation3"/>
@@ -302,13 +254,6 @@ expression to show how the Set and Output Actions still function as normally.</t
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 165.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -360,13 +305,6 @@ expression to show how the Set and Output Actions still function as normally.</t
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 165.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -423,28 +361,10 @@ expression to show how the Set and Output Actions still function as normally.</t
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 165.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 285.0">
                 </property>
-                <port name="plus" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="minus" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -500,17 +420,6 @@ expression to show how the Set and Output Actions still function as normally.</t
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 285.0">
                 </property>
-                <port name="plus" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="minus" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="&quot; (A to C)&quot;">
@@ -524,13 +433,6 @@ expression to show how the Set and Output Actions still function as normally.</t
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 165.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -590,13 +492,6 @@ expression to show how the Set and Output Actions still function as normally.</t
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 165.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -629,7 +524,7 @@ expression to show how the Set and Output Actions still function as normally.</t
         <link port="C.in" relation="inRelation"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
@@ -642,13 +537,6 @@ expression to show how the Set and Output Actions still function as normally.</t
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 170.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -661,13 +549,6 @@ expression to show how the Set and Output Actions still function as normally.</t
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 170.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;State A&quot;, &quot;State A&quot;, &quot;State A&quot;, &quot;State A (A to C)&quot;, &quot;State C (C to B)&quot;, &quot;State B&quot;, &quot;State B&quot;, &quot;State B&quot;, &quot;State B (B to C)&quot;, &quot;State C (C to A)&quot;, &quot;State A&quot;, &quot;State A&quot;}">
@@ -680,13 +561,6 @@ expression to show how the Set and Output Actions still function as normally.</t
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 180.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
