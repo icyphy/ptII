@@ -70,6 +70,7 @@ public class Query extends JPanel {
         _entryPanel.setOpaque(true);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
         // Left Justify.
         _entryPanel.setAlignmentX(0.0f);
         _messagePanel.setAlignmentX(0.0f);
@@ -166,12 +167,22 @@ public class Query extends JPanel {
         JTextField entryBox = new JTextField(defaultValue, _width);
         entryBox.setBackground(Color.white);
         _addPair(name, lbl, entryBox);
+
         // Add the listener last so that there is no notification
         // of the first value.
         entryBox.addActionListener(new QueryActionListener(name));
+
         // Add a listener for loss of focus.  When the entry gains
         // and then loses focus, listeners are notified of an update,
-        // but only if the value has changed since the last loss of focus.
+        // but only if the value has changed since the last notification.
+        // NOTE: Unfortunately, Java calls this listener some random
+        // time after the window has been closed.  It is not even a
+        // a queued event when the window is closed.  Thus, we have
+        // a subtle bug where if you enter a value in a line, do not
+        // hit return, and then click on the X to close the window,
+        // the value is restored to the original, and then sometime
+        // later, the focus is lost and the entered value becomes
+        // the value of the parameter.  I don't know of any workaround.
         entryBox.addFocusListener(new QueryFocusListener(name));
     }
 
@@ -392,6 +403,17 @@ public class Query extends JPanel {
         }
     }
 
+    /** Nofify listeners of the current value of all entries, unless
+     *  those entries have not changed since the last notification.
+     */
+    public void notifyListeners() {
+        Iterator names = _entries.keySet().iterator();
+        while(names.hasNext()) {
+            String name = (String)names.next();
+            _notifyListeners(name);
+        }
+    }
+
     /** Remove a listener.  If the listener has not been added, then
      *  do nothing.
      *  @param listener The listener to remove.
@@ -453,6 +475,10 @@ public class Query extends JPanel {
             + " a string representation for entries of type "
             + result.getClass());
         }
+        // Record the new value as if it was the previously notified
+        // value.  Thus, any future change from this value will trigger
+        // notification.
+        _previous.put(name, value);
     }
 
     /** Set the value in the entry with the given name and notify listeners.
@@ -612,8 +638,7 @@ public class Query extends JPanel {
                     new BoxLayout(_messagePanel, BoxLayout.Y_AXIS));
             _messagePanel.add(_messageArea);
             // Add a spacer.
-            Component strut = Box.createVerticalStrut(10);
-            _messagePanel.add(strut);
+            _messagePanel.add(Box.createRigidArea(new Dimension(0,10)));
         } else {
             _messageArea.setText(message);
         }
@@ -785,7 +810,9 @@ public class Query extends JPanel {
         if(_listeners != null) {
             String previous = (String)_previous.get(name);
             String newValue = stringValue(name);
-            if (newValue.equals(previous)) return;
+            if (newValue.equals(previous)) {
+                return;
+            }
 
             // Store the new value to prevent repeated notification.
             // This must be done before listeners are notified, because
@@ -796,9 +823,9 @@ public class Query extends JPanel {
 
             Enumeration listeners = _listeners.elements();
             while(listeners.hasMoreElements()) {
-                QueryListener queueListener =
+                QueryListener queryListener =
                     (QueryListener)(listeners.nextElement());
-                queueListener.changed(name);
+                queryListener.changed(name);
             }
         }
     }
