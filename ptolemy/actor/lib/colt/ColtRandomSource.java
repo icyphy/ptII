@@ -16,6 +16,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import cern.jet.random.AbstractDistribution;
@@ -30,6 +31,16 @@ import edu.cornell.lassp.houle.RngPack.Ranmar;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 
+//////////////////////////////////////////////////////////////////////////
+//// ColtRandomSource
+/** Base class for Colt random sources.
+
+   @author David Bauer and Kostas Oikonomou
+   @version $Id$
+   @since Ptolemy II 4.1
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
+ */ 
 public abstract class ColtRandomSource extends RandomSource
     implements ChangeListener {
 
@@ -42,8 +53,7 @@ public abstract class ColtRandomSource extends RandomSource
      *   actor with this name.
      */
     public ColtRandomSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException
-    {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         index = 0;
@@ -54,9 +64,6 @@ public abstract class ColtRandomSource extends RandomSource
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** This method creates the parameter object if it does not yet exist,
@@ -64,25 +71,23 @@ public abstract class ColtRandomSource extends RandomSource
      *  and adds it to the high level RNG actor.
      */
     public Parameter getRandomElementClass(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException
-    {
+            throws IllegalActionException, NameDuplicationException {
         randomElementClass =
             (Parameter) container.getAttribute("Random Number Generator");
         coltSeed = (Parameter) container.getAttribute("coltSeed");
 
-        if (randomElementClass == null)
-            {
-                randomElementClass =
-                    new Parameter(container, "Random Number Generator",
+        if (randomElementClass == null) {
+            randomElementClass =
+                new Parameter(container, "Random Number Generator",
                         new StringToken(randomElementClassNames[index]));
 
-                ChoiceStyle s = new ChoiceStyle(randomElementClass, "s");
-                for (int i = 0; i < randomElementClassNames.length; i++)
-                    {
-                        Parameter a =
-                            new Parameter(s, "s"+i, new StringToken(randomElementClassNames[i]));
-                    }
+            ChoiceStyle s = new ChoiceStyle(randomElementClass, "s");
+            for (int i = 0; i < randomElementClassNames.length; i++) {
+                Parameter a =
+                    new Parameter(s, "s" + i,
+                            new StringToken(randomElementClassNames[i]));
             }
+        }
 
         if (coltSeed == null) {
             coltSeed =
@@ -137,43 +142,40 @@ public abstract class ColtRandomSource extends RandomSource
         if (-1 != req.getDescription().indexOf("coltSeed")) {
             try {
                 _coltSeed = ((LongToken) (coltSeed.getToken())).longValue();
-            } catch (IllegalActionException e) {
-                e.printStackTrace();
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(this, ex,
+                        "Failed to get Colt seed"); 
             }
-
-            //System.err.println("New _coltSeed: " + _coltSeed);
             return;
         }
 
-        if (-1 == req.getDescription().indexOf("Random Number Generator"))
+        if (-1 == req.getDescription().indexOf("Random Number Generator")) {
             return;
+        }
 
         String reClass = randomElementClass.getExpression();
 
-        if (-1 != reClass.indexOf(randomElementClassNames[0]) && index != 0) {
-                randomElement = new DRand((int)_coltSeed);
-                index = 0;
-            } else if (-1 !=
-                    reClass.indexOf(randomElementClassNames[1]) && index != 1)
-                {
-                    randomElement = new MersenneTwister((int)_coltSeed);
-                    index = 1;
-                } else if (-1 != reClass.indexOf(randomElementClassNames[2]) && index != 2)
-                    {
-                        randomElement = new Ranecu(_coltSeed);
-                        index = 2;
-                    } else if (-1 != reClass.indexOf(randomElementClassNames[3]) && index != 3)
-                        {
-                            randomElement = new Ranlux(_coltSeed);
-                            index = 3;
-                        } else if (-1 != reClass.indexOf(randomElementClassNames[4]) && index != 4)
-                            {
-                                randomElement = new Ranmar(_coltSeed);
-                                index = 4;
-                            }
-
-        //System.err.println("New randomElement: " + index);
-        //System.err.println("Changed executed");
+        if (-1 != reClass.indexOf(randomElementClassNames[0])
+                && index != 0) {
+            randomElement = new DRand((int)_coltSeed);
+            index = 0;
+        } else if (-1 != reClass.indexOf(randomElementClassNames[1])
+                && index != 1) {
+            randomElement = new MersenneTwister((int)_coltSeed);
+            index = 1;
+        } else if (-1 != reClass.indexOf(randomElementClassNames[2])
+                && index != 2) {
+            randomElement = new Ranecu(_coltSeed);
+            index = 2;
+        } else if (-1 != reClass.indexOf(randomElementClassNames[3])
+                && index != 3) {
+            randomElement = new Ranlux(_coltSeed);
+            index = 3;
+        } else if (-1 != reClass.indexOf(randomElementClassNames[4])
+                && index != 4) {
+            randomElement = new Ranmar(_coltSeed);
+            index = 4;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

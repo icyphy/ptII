@@ -78,7 +78,8 @@ public class ColtNormal extends ColtRandomSource {
 
         coltMean = new Parameter(this, "mean", new DoubleToken(1.0));
         coltMean.setTypeEquals(BaseType.DOUBLE);
-        coltStandardDeviation= new Parameter(this, "standardDeviation", new DoubleToken(1.0));
+        coltStandardDeviation =
+            new Parameter(this, "standardDeviation", new DoubleToken(1.0));
         coltStandardDeviation.setTypeEquals(BaseType.DOUBLE);
 
         randomElementClass = getRandomElementClass(container);
@@ -119,7 +120,8 @@ public class ColtNormal extends ColtRandomSource {
     public boolean prefire() throws IllegalActionException {
 
         double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
-        double standardDeviation = ((DoubleToken) coltStandardDeviation.getToken()).doubleValue();
+        double standardDeviation =
+            ((DoubleToken) coltStandardDeviation.getToken()).doubleValue();
 
         ((Normal) rng).setState(mean, standardDeviation);
         _current = ((Normal) rng).nextDouble();

@@ -78,7 +78,7 @@ public class ColtZeta extends ColtRandomSource {
 
         coltRo = new Parameter(this, "ro", new DoubleToken(1.0));
         coltRo.setTypeEquals(BaseType.DOUBLE);
-        coltPk= new Parameter(this, "pk", new DoubleToken(1.0));
+        coltPk = new Parameter(this, "pk", new DoubleToken(1.0));
         coltPk.setTypeEquals(BaseType.DOUBLE);
 
         randomElementClass = getRandomElementClass(container);
