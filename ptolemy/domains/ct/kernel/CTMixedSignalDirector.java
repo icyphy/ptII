@@ -470,6 +470,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         while(getCurrentTime() < (getOutsideTime()-getTimeResolution())) {
             _fireOneIteration();
         }
+        System.out.println("***Catch up time"+getCurrentTime());
     }
 
     /** Mark the current state as the known good state. Call the
