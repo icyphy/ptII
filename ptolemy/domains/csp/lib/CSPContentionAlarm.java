@@ -80,17 +80,17 @@ public class CSPContentionAlarm extends CSPActor {
         while(true) {
             // State 1
             generateEvents( new ExecEvent( this, 1 ) );
-	    System.out.println("\t\t\t\tSTATE 1: " +getName());
+	    // System.out.println("\t\t\t\tSTATE 1: " +getName());
             _input.get(0);
 
             // State 2
             generateEvents( new ExecEvent( this, 2 ) );
-	    System.out.println("\t\t\t\tSTATE 2: " +getName());
+	    // System.out.println("\t\t\t\tSTATE 2: " +getName());
             waitForDeadlock();
 
             // State 3
             generateEvents( new ExecEvent( this, 3 ) );
-	    System.out.println("\t\t\t\tSTATE 3: " +getName());
+	    // System.out.println("\t\t\t\tSTATE 3: " +getName());
             _output.send(0, new Token());
         }
     }

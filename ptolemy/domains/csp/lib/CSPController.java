@@ -107,7 +107,7 @@ public class CSPController extends CSPActor {
             // State 1: Wait for 1st Request
             //
             generateEvents( new ExecEvent( this, 1 ) );
-	    System.out.println("\t\t\tSTATE 1: " +getName());
+	    // System.out.println("\t\t\tSTATE 1: " +getName());
             ConditionalBranch[] reqBrchs =
                     new ConditionalBranch[_numRequestInChannels];
             for( int i=0; i<_numRequestInChannels; i++ ) {
@@ -129,7 +129,7 @@ public class CSPController extends CSPActor {
             // State 2: Notify Contention Alarm of 1st Request
             //
             generateEvents( new ExecEvent( this, 2 ) );
-	    System.out.println("\t\t\tSTATE 2: " +getName());
+	    // System.out.println("\t\t\tSTATE 2: " +getName());
             _contendOut.send(0, new Token() );
 
 
@@ -137,7 +137,7 @@ public class CSPController extends CSPActor {
             // State 3: Wait for Contenders and Send Ack's
             //
             generateEvents( new ExecEvent( this, 3 ) );
-	    System.out.println("\t\t\tSTATE 3: " +getName());
+	    // System.out.println("\t\t\tSTATE 3: " +getName());
             _losingPortChannelCodes = new LinkedList();
             boolean continueCDO = true;
             while( continueCDO ) {
@@ -171,7 +171,7 @@ public class CSPController extends CSPActor {
                     // State 4: Contention is Over
                     //
                     generateEvents( new ExecEvent( this, 4 ) );
-	            System.out.println("\t\t\tSTATE 4: " +getName());
+	            // System.out.println("\t\t\tSTATE 4: " +getName());
 
                     reqBrchs[br].getToken();
 
