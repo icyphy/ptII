@@ -77,24 +77,25 @@ public class TransformerAdapter extends SceneTransformer {
         Iterator classes = Scene.v().getApplicationClasses().iterator();
         while (classes.hasNext()) {
             SootClass theClass = (SootClass)classes.next();
-            try {
-                Iterator methods = theClass.getMethods().iterator();
-                while (methods.hasNext()) {
-                    SootMethod m = (SootMethod) methods.next();
-                    if (!m.isConcrete())
-                        continue;
-
-                    JimpleBody body = (JimpleBody) m.retrieveActiveBody();
-
+            Iterator methods = theClass.getMethods().iterator();
+            while (methods.hasNext()) {
+                SootMethod method = (SootMethod) methods.next();
+                if (!method.isConcrete())
+                    continue;
+                try {
+                    
+                    JimpleBody body = (JimpleBody) method.retrieveActiveBody();
+                    
                     // FIXME: pass in the options.
                     // Currently this is not possible because the
                     // internalTransform method is protected.
                     _transformer.transform(body, phaseName, "");
+                    
+                } catch (RuntimeException ex) {
+                    System.err.println("Exception occured while processing "
+                            + method);
+                    throw ex;
                 }
-            } catch (RuntimeException ex) {
-                System.err.println("Exception occured while processing class: "
-                        + theClass);
-                throw ex;
             }
         }
     }
