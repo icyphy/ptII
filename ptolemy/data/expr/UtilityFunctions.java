@@ -44,6 +44,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -371,6 +373,61 @@ public class UtilityFunctions {
         }
 
         return returnMatrix;
+    }
+
+    /** Get the string text contained in the specified resource.
+     *  Resource strings look like filenames without a leading slash
+     *  and are always loaded relative to the Java class path. 
+     *  An empty string is returned if the specified file could
+     *  not be located.  If the contents of the file consists of more
+     *  than one line, then \n characters are converted to spaces, and
+     *  \r characters are removed.  For example, if a file contains
+     *  <pre> " foo " </pre> Then
+     *  <code>eval(readfile("foo.txt"))</code> will return <code>" foo
+     *  "</code>.  FIXME: this is a bug, we need to be smarter here.
+     *  <br>Use readFile({@link #findFile}) to specify files relative
+     *  to the current user directory or classpath.<p> A StringToken
+     *  can be converted to any valid Token it represents with the
+     *  Ptolemy II expression language eval() function.  eval() is
+     *  implemented in ptolemy.data.expr.ASTPtFunctionNode.java.  For
+     *  example: <code>eval(readFile("taps"))</code><p>
+     *
+     *  @param name The file we want to read the text from.
+     *  @return StringToken containing the text contained in
+     *  the specified file.
+     *  @exception IllegalActionException If for the given filename
+     *  a file cannot be opened.
+     *  @see ptolemy.data.expr.ASTPtFunctionNode
+     */
+    public static StringToken readResource(String name)
+            throws IllegalActionException {
+        URL url = ClassLoader.getSystemResource(name);
+        System.out.println("Trying to open url: " + url.toString());
+        String result = "";
+        try {
+            InputStream stream = url.openStream();
+            String line;
+            String newline = System.getProperty("line.separator");
+            BufferedReader fin = new BufferedReader(
+                    new InputStreamReader(stream));
+            while (true) {
+                try {
+                    line = fin.readLine();
+                } catch (IOException e) {
+                    break;
+                }
+                
+                if (line == null) break;
+                result += line + newline;
+                //System.out.println("read in line: \"" +
+                //   line + newline + "\"");
+            }
+        } catch (IOException ex) {
+           // what should we do here?
+            throw new IllegalActionException(null, ex, "File not found");
+        }
+        //System.out.println("Contents of file are: " + result);
+        return new StringToken(result);
     }
 
     /** Create an array that contains the specified element

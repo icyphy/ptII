@@ -84,14 +84,6 @@ public class CommandLineTemplate {
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
-        // Hack, to ensure that data classes are statically loaded.
-        // If you don't have this, then profiling has a difficult time
-        // distinguishing between data allocation and classes that are
-        // dynamically loaded.
-        if(ptolemy.data.type.TypeLattice.compare(new ptolemy.data.IntToken(7).getType(),new ptolemy.data.type.ArrayType(ptolemy.data.type.BaseType.BOOLEAN))<7) {
-            System.out.println(new ptolemy.data.IntToken(7).toString());
-        }
-
         try {
             CommandLineTemplate app = new CommandLineTemplate();
             app.processArgs(args);
@@ -124,8 +116,6 @@ public class CommandLineTemplate {
             Iterator models = _models.iterator();
             while (models.hasNext()) {
 
-                long startTime = System.currentTimeMillis();
-
                 Runtime runtime = Runtime.getRuntime();
 
                 CompositeActor model = (CompositeActor)models.next();
@@ -141,10 +131,15 @@ public class CommandLineTemplate {
                 System.gc();
                 Thread.sleep(1000);
 
+                long startTime = System.currentTimeMillis();
                 long totalMemory1 = runtime.totalMemory()/1024;
                 long freeMemory1 = runtime.freeMemory()/1024;
                 timeAndMemory(startTime,
                         totalMemory1, freeMemory1, buffer1);
+
+                System.out.println(modelName +
+                        ": Stats before execution:    "
+                        + buffer1);
                   
                 // Second, we run and print memory stats.
                 startRun(model);
@@ -154,37 +149,20 @@ public class CommandLineTemplate {
                 timeAndMemory(startTime,
                         totalMemory2, freeMemory2, buffer2);
                 
+                System.out.println(modelName +
+                        ": Execution stats:           "
+                        + buffer2);
+
                 // GC, again to the log.
                 System.gc();
                 Thread.sleep(1000);
 
-                // Print out the time and memory...   Note that we do this
-                // after GCing, to get the best possible log of memory usage.
-                System.out.println(modelName +
-                        ": Stats before execution:    "
-                        + buffer1);
-                System.out.println(modelName +
-                        ": Execution stats:           "
-                        + buffer2);
-              
                 long totalMemory3 = runtime.totalMemory()/1024;
                 long freeMemory3 = runtime.freeMemory()/1024;
                 System.out.println(modelName +
                         ": After Garbage Collection:  "
                         + timeAndMemory(startTime,
                                 totalMemory3, freeMemory3));
-//                 System.out.println(modelName +
-//                         ": construction size:         "
-//                         + totalMemory1 + "K - " + freeMemory1 + "K = "
-//                         + (totalMemory1 - freeMemory1) + "K");
-//                 System.out.println(modelName +
-//                         ": model alloc. while exec. : "
-//                         + freeMemory1 + "K - " + freeMemory3 + "K = "
-//                         + (freeMemory1 - freeMemory3) + "K");
-//                 System.out.println(modelName +
-//                         ": model alloc. runtime data: "
-//                         + freeMemory3 + "K - " + freeMemory2 + "K = "
-//                         + (freeMemory3 - freeMemory2) + "K");
 
                 // Print out the standard stats at the end
                 // so as not to break too many scripts

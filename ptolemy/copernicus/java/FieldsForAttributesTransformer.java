@@ -153,29 +153,37 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                         // Replace calls to getDirector with
                         // null.  FIXME: we should be able to
                         // do better than this?
-                        box.setValue(NullConstant.v());
+                        if(unit instanceof InvokeStmt) {
+                            body.getUnits().remove(unit);
+                        } else {
+                            box.setValue(NullConstant.v());
+                        }
                     } else if (r.getMethod().getSubSignature().equals(
                                        _getAttributeSig)) {
-                        // Replace calls to getAttribute(arg)
-                        // when arg is a string that can be
-                        // statically evaluated.
-                        Value nameValue = r.getArg(0);
-                        if (Evaluator.isValueConstantValued(nameValue)) {
-                            StringConstant nameConstant =
-                                (StringConstant)
-                                Evaluator.getConstantValueOf(nameValue);
-                            String name = nameConstant.value;
-                            // perform type analysis to determine what the
-                            // type of the base is.
-                            
-                            Local baseLocal = (Local)r.getBase();
-                            _replaceGetAttributeMethod(
-                                    body, box, baseLocal,
-                                    name, unit, localDefs);
+                        if(unit instanceof InvokeStmt) {
+                                body.getUnits().remove(unit);
                         } else {
-                            String string = "Attribute cannot be " +
-                                "statically determined";
-                            throw new RuntimeException(string);
+                            // Replace calls to getAttribute(arg)
+                            // when arg is a string that can be
+                            // statically evaluated.
+                            Value nameValue = r.getArg(0);
+                            if (Evaluator.isValueConstantValued(nameValue)) {
+                                StringConstant nameConstant =
+                                    (StringConstant)
+                                    Evaluator.getConstantValueOf(nameValue);
+                                String name = nameConstant.value;
+                                // perform type analysis to determine what the
+                                // type of the base is.
+                                
+                                Local baseLocal = (Local)r.getBase();
+                                _replaceGetAttributeMethod(
+                                        body, box, baseLocal,
+                                        name, unit, localDefs);
+                            } else {
+                                String string = "Attribute cannot be " +
+                                    "statically determined";
+                                throw new RuntimeException(string);
+                            }
                         }
                     }
                 }
@@ -238,6 +246,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                         unit);
             }
             if (attributeField != null) {
+                System.out.println(unit.getClass().toString());
+                System.out.println(box.getClass().toString());
                 box.setValue(Jimple.v().newInstanceFieldRef(
                        local, attributeField));
             } else {

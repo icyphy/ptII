@@ -43,6 +43,8 @@ PTPACKAGE = 	@modelName@
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
+CSRCS = 	@cFiles@
+
 JSRCS = 
 
 JCLASS = 	@javaClasses@
@@ -623,6 +625,50 @@ recompileSnapshots:
 		done; \
 	done
 
+###############################
+# C compilation rules
+
+# Standard variables
+RUNTIME = $(ROOT)/ptolemy/copernicus/c/runtime
+NATIVE_BODIES = $(ROOT)/runtime/native_bodies/
+OVER_BODIES = $(ROOT)/runtime/over_bodies/
+# Make a param
+LIB = $(ROOT)/ptolemy/copernicus/c/test/testOutput/j2c_lib
+LIB_FILE = $(LIB)/j2c_lib.a
+CFLAGS = -g -Wall -Wno-trigraphs
+DEPEND = gcc -Wno-trigraphs -MM -I $(RUNTIME) -I $(LIB) -I $(NATIVE_BODIES) -I $(OVER_BODIES)
+
+THIS = makefile
+SOURCES = @cFiles@
+
+LIB_SOURCES = @cLibFiles@
+
+OBJECTS = $(SOURCES:.c=.o)
+HEADERS = $(SOURCES:.c=.h)
+IHEADERS = $(SOURCES:.c=_i.h)
+
+LIB_OBJECTS = $(LIB_SOURCES:.c=.o)
+LIB_HEADERS = $(LIB_SOURCES:.c=.h)
+LIB_IHEADERS = $(LIB_SOURCES:.c=_i.h)
+
+@modelName@.exe : $(OBJECTS) $(LIB_FILE)
+	gcc -g $(OBJECTS) $(LIB_FILE) -o @modelName@.exe
+.c.o:
+	gcc $(CFLAGS) -c  -I $(RUNTIME) -I $(LIB) -I $(NATIVE_BODIES) $< -o $@ 
+
+$(LIB_FILE): $(LIB_OBJECTS)
+	ar r $(LIB_FILE) $(LIB_OBJECTS)
+	ranlib $(LIB_FILE)
+
+.PHONY:depend
+
+depend:
+	$(DEPEND) $(SOURCES)>makefile.tmp;\
+	cat $(THIS) makefile.tmp > @modelName@.mk;\
+	rm makefile.tmp;
+
+#clean:
+#	rm $(OBJECTS) $(LIB_OBJECTS) $(LIB_FILE);
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

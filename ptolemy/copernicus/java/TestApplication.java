@@ -85,6 +85,21 @@ public class TestApplication implements ChangeListener {
         // parameters if the xml file was specified as an absolute path.
         CompositeActor toplevel = null;
 
+        // First, we gc and then print the memory stats
+        // BTW to get more info about gc,
+        // use java -verbose:gc -Xloggc:filename . . .
+        System.gc();
+        Thread.sleep(1000);
+
+        Runtime runtime = Runtime.getRuntime();
+
+        // Get the memory stats before we get the model name
+        // just to be sure that getting the model name does
+        // not skew are data too much
+        long startTime = System.currentTimeMillis();
+        long totalMemory1 = runtime.totalMemory()/1024;
+        long freeMemory1 = runtime.freeMemory()/1024;
+
         try {
             URL url = new URL(null, xmlFilename);
             toplevel = (CompositeActor) parser.parse(url,
@@ -110,22 +125,6 @@ public class TestApplication implements ChangeListener {
                 "TestApplication");
         toplevel.setManager(manager);
         toplevel.addChangeListener(this);
-
-        // First, we gc and then print the memory stats
-        // BTW to get more info about gc,
-        // use java -verbose:gc -Xloggc:filename . . .
-        System.gc();
-        Thread.sleep(1000);
-
-        long startTime = System.currentTimeMillis();
-
-        Runtime runtime = Runtime.getRuntime();
-
-        // Get the memory stats before we get the model name
-        // just to be sure that getting the model name does
-        // not skew are data too much
-        long totalMemory1 = runtime.totalMemory()/1024;
-        long freeMemory1 = runtime.freeMemory()/1024;
 
         String modelName = toplevel.getName();
 
@@ -156,26 +155,10 @@ public class TestApplication implements ChangeListener {
                 ": After Garbage Collection:  "
                 + Manager.timeAndMemory(startTime,
                         totalMemory3, freeMemory3));
-        System.out.println(modelName +
-                ": construction size:         "
-                + totalMemory1 + "K - " + freeMemory1 + "K = "
-                + (totalMemory1 - freeMemory1) + "K");
-        System.out.println(modelName +
-                ": model alloc. while exec. : "
-                + freeMemory1 + "K - " + freeMemory3 + "K = "
-                + (freeMemory1 - freeMemory3) + "K");
-        System.out.println(modelName +
-                ": model alloc. runtime data: "
-                + freeMemory3 + "K - " + freeMemory2 + "K = "
-                + (freeMemory3 - freeMemory2) + "K");
 
         // Print out the standard stats at the end
         // so as not to break too many scripts
-        System.out.println(standardStats
-                + " Stat: " + (totalMemory1 - freeMemory1)
-                + "K StatRT: " + (freeMemory1 - freeMemory3)
-                + "K DynRT: " + (freeMemory3 - freeMemory2)
-                + "K");
+        System.out.println(standardStats);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -132,6 +132,11 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.clt",
                         CommandLineTransformer.v(toplevel)));
+
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ta",
+                        new TransformerAdapter(TypeAssigner.v())));
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
