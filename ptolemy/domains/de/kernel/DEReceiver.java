@@ -156,6 +156,13 @@ public class DEReceiver extends AbstractReceiver {
     public final boolean hasToken() {
         return (!_tokens.isEmpty());
     }
+    
+    /** Return true if there are n tokens tokens available to the get() method.
+     *  @return True if there are more tokens.
+     */
+    public final boolean hasToken(int n) {
+        return (_tokens.size() >= n);
+    }
 
     /** Put a token into this receiver. Note that
      *  this token does not become immediately available to the get() method.
