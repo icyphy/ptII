@@ -84,7 +84,7 @@ proc enumMethodToNames {enummethod args} {
 }
 
 ######################################################################
-#### enumToList
+#### enumToObjects
 # Convert an enumeration to a list.  The list contains references
 # to instances of Java Object.
 #
@@ -162,6 +162,50 @@ proc iterToObjects {iter} {
 #
 proc iterToTokenValues {iter} {
     return [objectsToTokenValues [iterToObjects $iter]]
+}
+
+######################################################################
+#### listToObjects
+# Convert a Java List to a Tcl list.  The list contains references
+# to instances of Java Object.
+#
+proc listToObjects {list} {
+    if {$list != [java::null]} {
+        return [iterToObjects [$list iterator]]
+    } else {
+        return {}
+    }
+}
+
+######################################################################
+#### listToNames
+# Return a list of the names of the objects in the specified Java List.
+# These objects are assumed to implement the Nameable interface.  If any
+# object in the enumeration does not do this, then its name is reported as
+# NOT_NAMEABLE.
+#
+proc listToNames {list} {
+    return [objectsToNames [listToObjects $list]]
+}
+
+######################################################################
+#### listToFullNames
+# Return a list of the full names of the objects in the specified Java List.
+# These objects are assumed to implement the Nameable interface.  If any
+# object in the enumeration does not do this, then its name is reported as
+# NOT_NAMEABLE.
+#
+proc listToFullNames {list} {
+    return [objectsToFullNames [listToObjects $list]]
+}
+
+######################################################################
+#### listToStrings
+# Return a list of strings obtained by invoking the toString method
+# on the objects in the argument, which is an enumeration.
+#
+proc listToStrings {list} {
+    return [objectsToStrings [listToObjects $list]]
 }
 
 ######################################################################
