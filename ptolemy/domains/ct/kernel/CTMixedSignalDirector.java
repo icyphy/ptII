@@ -113,6 +113,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    // parameter of default runaheadlength
+    public Parameter RunAheadLength;
+
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute matches
@@ -206,7 +213,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
                 _refinedStep = getCurrentTime() - getOutsideTime();
                 _setEventPhase(true);
                 return;
-            } else if (getCurrentTime()>=getIterationEndTime()) {
+            } else if (getCurrentTime() >= getIterationEndTime()) {
                 exe.fireAt(ca, getCurrentTime());
                 _isFireSuccessful = true;
                 _setEventPhase(false);
@@ -304,7 +311,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
      *  to synchronize time with the executive director. In particular,
      *  it will compare its local time, say t, with the current time
      *  of the executive director, say t0.
-     *  If t==t0, does nothing. <BR>
+     *  If t == t0, does nothing. <BR>
      *  If t > t0, then rollback to the "known good" time, which should be
      *  less than the outside time. And catch up
      *  to the outside time. <BR>
@@ -336,7 +343,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             // ca should have beed checked in _isTopLevel()
             Director exe = ca.getExecutiveDirector();
             _outsideTime = exe.getCurrentTime();
-            _debug("Outside Time =" + _outsideTime);
+            _debug("Outside Time = " + _outsideTime);
             double timeAcc = getTimeResolution();
             double nextIterTime = exe.getNextIterationTime();
             double runlength = nextIterTime - _outsideTime;
@@ -389,7 +396,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             // fireAt(null, _outsideTime);
             // fireAt(null, getIterationEndTime());
             // Now it's guaranteed that the current time is the outside time.
-            _debug("Iteration end time="+getIterationEndTime());
+            _debug("Iteration end time = " + getIterationEndTime());
         }
         return true;
     }
@@ -447,7 +454,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         CTScheduler scheduler = (CTScheduler) getScheduler();
         Enumeration memactors = scheduler.statefulActors();
         while(memactors.hasMoreElements()) {
-            CTStatefulActor mem =(CTStatefulActor)memactors.nextElement();
+            CTStatefulActor mem = (CTStatefulActor)memactors.nextElement();
             _debug("Restore State..."+
                     ((Nameable)mem).getName());
             mem.goToMarkedState();
@@ -500,7 +507,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         CTScheduler scheduler = (CTScheduler) getScheduler();
         Enumeration memactors = scheduler.statefulActors();
         while(memactors.hasMoreElements()) {
-            CTStatefulActor mem =(CTStatefulActor)memactors.nextElement();
+            CTStatefulActor mem = (CTStatefulActor)memactors.nextElement();
             _debug("Save State..."+
                     ((Nameable)mem).getName());
             mem.markState();
@@ -584,9 +591,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
 
     // The current outside time.
     private double _outsideTime;
-
-    // parameter of default runaheadlength
-    public Parameter RunAheadLength;
 
     // variable of runaheadlength
     private double _runAheadLength;
