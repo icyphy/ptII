@@ -237,12 +237,34 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 	set modelClass Main
     }
 
+    # Take a stab at guessing the number of iterations
+    # The deep codegen makefile exepcts ITERATIONS_PARAMETER to be set to
+    # somethink like ",iterations:400"
+    set iterationsParameter ""
+    set compositeActor [java::cast ptolemy.actor.CompositeActor $toplevel]
+    set director [$compositeActor getDirector]
+    set iterations [$director getAttribute iterations]
+    if { $iterations == [java::null] } {
+	puts "WARNING: iterations parameter not found in\n '$modelName',\n \
+		perhaps this model is not SDF?"
+    } else {
+	set iterationsValue [[java::cast ptolemy.data.IntToken \
+	    [[java::cast ptolemy.data.expr.Parameter \
+	    $iterations]  getToken]] doubleValue]
+	puts "iterationsValue = $iterationsValue"
+	if { "$iterationsValue" == "0"} {
+	    puts "WARNING: iterationsValue was 0, defaulting to 200"
+	    set iterationsValue 200
+	}
+	set iterationsParameter ",iterations:$iterationsValue"
+    }
+
     set command compileDemo
     puts "Now running 'make ... $command', this could take 60 seconds or so"
 
     set results ""
     # make -C is a GNU make extension that changes to a directory
-    set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath ITERATIONS_PARAMETER= $command]
+    set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath ITERATIONS_PARAMETER=$iterationsParameter $command]
     puts $results
 #    if [catch {set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
 #	puts $results
